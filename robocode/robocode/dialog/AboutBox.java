@@ -182,7 +182,7 @@ private javax.swing.JLabel getCopyrightLabel() {
 		try {
 			copyrightLabel = new javax.swing.JLabel();
 			copyrightLabel.setName("copyrightLabel");
-			copyrightLabel.setText("(c) Copyright 2001 Mathew Nelson");
+			copyrightLabel.setText("(c) Copyright 2001 Mathew Nelson ");
 		} catch (java.lang.Throwable e) {
 			log(e);
 		}
@@ -246,6 +246,7 @@ private javax.swing.JPanel getMainPanel() {
 			JPanel secondRow = new JPanel();
 			secondRow.setLayout(new GridLayout(1,2)); //BoxLayout(secondRow,BoxLayout.X_AXIS));
 			secondRow.add(getCopyrightLabel());
+//			secondRow.add(new JLabel("   "));
 			secondRow.add(getWebsiteLabel());
 			mainPanel.add(secondRow);
 			
