@@ -1,3 +1,9 @@
+Version 1.0.7
+(2/18/2005)
+------------
+o Released as opensource under Common Public License
+o New explosion graphics
+
 Version 1.0.6
 (7/17/2002)
 ------------
