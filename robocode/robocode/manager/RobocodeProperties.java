@@ -51,7 +51,7 @@ public class RobocodeProperties {
 	private final static String VERSIONCHECKED="robocode.versionchecked";
 	private final static String ROBOT_FILESYSTEM_QUOTA = "robocode.robot.filesystem.quota";
 	private final static String CONSOLE_QUOTA = "robocode.console.quota";
-	private final static String CPU_CONSTANT = "robocode.cpu.constant.500";
+	private final static String CPU_CONSTANT = "robocode.cpu.constant.1000";
 	private final static String LAST_RUN_VERSION = "robocode.version.lastrun";
 	private RobocodeManager manager = null;
 

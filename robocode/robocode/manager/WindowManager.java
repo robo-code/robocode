@@ -138,7 +138,7 @@ public void showVersionsTxt() {
 		manager.getBrowserManager().openURL(helpurl);
 	} catch (IOException e) {
 			JOptionPane.showMessageDialog(robocodeFrame,
-				"Sorry, I was unable to open a browser for you.  Please visit the following url: " + helpurl,
+				e.getMessage(),
 				"Unable to open browser!",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -157,7 +157,7 @@ public void showHelpApi() {
 		manager.getBrowserManager().openURL(helpurl);
 	} catch (IOException e) {
 			JOptionPane.showMessageDialog(robocodeFrame,
-				"Sorry, I was unable to open a browser for you.  Please visit the following url: " + helpurl,
+				e.getMessage(),
 				"Unable to open browser!",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -175,7 +175,7 @@ public void showFaq() {
 		manager.getBrowserManager().openURL(helpurl);
 	} catch (IOException e) {
 			JOptionPane.showMessageDialog(robocodeFrame,
-				"Sorry, I was unable to open a browser for you.  Please visit the following url: " + helpurl,
+				e.getMessage(),
 				"Unable to open browser!",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -193,7 +193,7 @@ public void showOnlineHelp() {
 		manager.getBrowserManager().openURL(helpurl);
 	} catch (IOException e) {
 			JOptionPane.showMessageDialog(robocodeFrame,
-				"Sorry, I was unable to open a browser for you.  Please visit the following url: " + helpurl,
+				e.getMessage(),
 				"Unable to open browser!",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -317,8 +317,8 @@ public void showSplashScreen() {
 		manager.getRobotRepositoryManager().getRobotRepository();
 		Utils.setStatus("Loading graphics...");
 		manager.getImageManager().initialize(splashScreen);
-		Utils.setStatus("");
 		manager.getCpuManager().getCpuConstant();
+		Utils.setStatus("");
 		long diff = 4000 - (System.currentTimeMillis() - starttime);
 		if (diff > 0)
 			Thread.sleep(diff);

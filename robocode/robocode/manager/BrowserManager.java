@@ -17,6 +17,8 @@
 package robocode.manager;
 
 import java.io.IOException;
+import java.io.File;
+import robocode.util.Constants;
 
 /**
  * @author mat
@@ -27,13 +29,30 @@ import java.io.IOException;
 public class BrowserManager {
 	
 	RobocodeManager manager;
+	String browserCommand;
+	
 	public BrowserManager(RobocodeManager manager)
 	{
 		this.manager = manager;
+		if (File.separatorChar == '/')
+			browserCommand = Constants.cwd() + File.separator + "browser.sh";
+		else
+			browserCommand = Constants.cwd() + File.separator + "browser.bat";
 	}
 	
 	public void openURL(String url) throws IOException
 	{
-		throw new IOException("BrowserManager not implemented in this version of Robocode.");
+		Process p = Runtime.getRuntime().exec(browserCommand + " " + url);
+
+		try {
+			p.waitFor();
+		}
+		catch (InterruptedException e) {}
+
+		if (p.exitValue() != 0) {
+			throw new IOException("Unable to launch " + browserCommand + ".  Please check it, or launch " + url + " in your browser.");
+		}
+
+		try {Thread.sleep(1000);} catch (InterruptedException e) {}
 	}
 }

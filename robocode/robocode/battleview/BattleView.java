@@ -971,6 +971,22 @@ private void paintRobocodeLogo(Graphics g) {
 
 	g.setFont(bf);
 	g.drawString("Robocode",left,top + height - descent);
+	
+	/*
+	String version = "Version " + manager.getVersionManager().getVersion();
+	Font sf = new Font("Dialog",Font.BOLD,24);
+	fm = g.getFontMetrics(sf);
+	width = fm.stringWidth(version);
+	height = fm.getHeight();
+	descent = fm.getDescent();
+	left = getWidth() - width;
+	top = getHeight() - descent;
+	g.setFont(sf);
+	g.drawString(version,left,top);
+	*/
+	
+	
+	
 	return;
 }
 

@@ -718,7 +718,7 @@ public void showHelpApi() {
 		manager.getBrowserManager().openURL(helpurl);
 	} catch (IOException e) {
 			JOptionPane.showMessageDialog(this,
-				"Sorry, I was unable to open a browser for you.  Please visit the following url: " + helpurl,
+				e.getMessage(),
 				"Unable to open browser!",
 				JOptionPane.INFORMATION_MESSAGE);
 	}

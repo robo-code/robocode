@@ -115,7 +115,7 @@ public class VersionManager {
 					manager.getBrowserManager().openURL(installurl);
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
-						"Sorry, I was unable to open a browser for you.  Please visit the following url: " + installurl,
+						e.getMessage(),
 						"Unable to open browser!",
 						JOptionPane.INFORMATION_MESSAGE);
 				}
