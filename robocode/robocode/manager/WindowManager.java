@@ -295,18 +295,22 @@ public void showTeamPackager() {
  * Creation date: (9/3/2001 12:52:13 PM)
  */
 public void showSplashScreen() {
+	//System.out.println("Creating.");
 	// Create the splash screen 
 	SplashScreen splashScreen = new SplashScreen(manager);
 
+	//System.out.println("PCS");
 	// Pack, center, and show it
 	Utils.packCenterShow(splashScreen);
 
 	for (int i = 0; i < 5 * 20 && !splashScreen.isPainted(); i++)
 	{
+		//System.out.println("waiting...");
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException ie) {};
 	}
+	//System.out.println("done waiting.");
 
 	Utils.setStatusLabel(splashScreen.getSplashLabel());
 	try {

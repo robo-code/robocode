@@ -475,7 +475,7 @@ public double getRadarHeading() {
 }
 
 /**
- * Returns the number of the current round (1 to getNumRounds()) in the battle
+ * Returns the number of the current round (0 to getNumRounds()-1) in the battle
  * @return the number of the current round in the battle
  */
 public int getRoundNum() {

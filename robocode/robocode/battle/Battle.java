@@ -1294,7 +1294,7 @@ public class Battle implements Runnable {
 			synchronized (unsafeLoaderMonitor) {
 				try {
 					setUnsafeLoaderThreadRunning(true);
-					unsafeLoaderMonitor.wait();
+					unsafeLoaderMonitor.wait(180000);
 				} catch (InterruptedException e) {
 				}
 			}

@@ -32,6 +32,9 @@ public class Utils {
 	private static RobocodeListener logListener = null;
 	private static String logBuffer = "";
 	private static Point locationFixer = null;
+	private static double twoPi = 2 * Math.PI;
+	private static double threePiOverTwo = 3 * Math.PI / 2;
+	private static double piOverTwo = Math.PI / 2;
 
 /**
  * Insert the method's description here.
@@ -329,7 +332,32 @@ public static double normalAbsoluteAngle(double angle) {
 	  fixedAngle += 2 * Math.PI;
 	while (fixedAngle >= 2 * Math.PI)
 	  fixedAngle -= 2 * Math.PI;
+	
 	return fixedAngle;
+}
+
+public static double normalNearAbsoluteAngle(double angle)
+{
+	double fixedAngle = normalAbsoluteAngle(angle);
+	if (isNear(fixedAngle,0))
+		fixedAngle = 0;
+	else if (isNear(fixedAngle,piOverTwo))
+		fixedAngle = piOverTwo;
+	else if (isNear(fixedAngle,Math.PI))
+		fixedAngle = Math.PI;
+	else if (isNear(fixedAngle,threePiOverTwo))
+		fixedAngle = threePiOverTwo;
+	else if (isNear(fixedAngle,twoPi))
+		fixedAngle = 0;
+	
+	return fixedAngle;
+}
+
+private static boolean isNear(double angle1, double angle2)
+{
+	if (Math.abs(angle1 - angle2) < .00001)
+		return true;
+	return false;
 }
 /**
  * Insert the method's description here.
@@ -347,22 +375,24 @@ public static double normalRelativeAngle(double angle) {
 	  fixedAngle -= 2 * Math.PI;
 	return fixedAngle;
 }
+
 /**
  * Insert the method's description here.
  * Creation date: (9/3/2001 12:52:13 PM)
  */
 public static void packCenterShow(Window window) {
-
+	
 	// We don't want to receive the resize event for this pack!
 	window.removeComponentListener(windowPositionManager);
-		
+	//System.out.println("pack");	
 	window.pack();
-
+	//System.out.println("center");
 	center(window);
-
+	//System.out.println("show");
 	window.setVisible(true);
+	//System.out.println("show2");
 	// Second time to fix bug with menus in some jres
-	window.setVisible(true);
+	//window.setVisible(true);
 }
 /**
  * Insert the method's description here.
@@ -622,17 +652,22 @@ private static Point fixLocation(Window w, Point o)
 
 public static void setLocationFix()
 {
+	return;
+	
+	/*
 	checkAccess("Set Location Fix");
 	JFrame f = new JFrame("");
-	f.setLocation(0,0);
+	f.setLocation(100,100);
 	f.setVisible(true);
 	Point after = f.getLocation();
-	if (after.x == 0 && after.y == 0)
+	if (after.x == 100 && after.y == 100)
 		locationFixer = null;
 	else
-		locationFixer = new Point(-after.x,-after.y);
+		locationFixer = new Point(100-after.x,100-after.y);
+	System.out.println("Location fixer: " + locationFixer);
 	f.setVisible(false);
 	f.dispose();
+	*/
 }
 
 }

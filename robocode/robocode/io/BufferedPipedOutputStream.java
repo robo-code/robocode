@@ -77,7 +77,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 			waiting = true;
 			try {
 				if (!closed)
-					wait();
+					wait(10000);
 				if (closed)
 				{
 					return -1;

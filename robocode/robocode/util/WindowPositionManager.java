@@ -53,7 +53,7 @@ public Properties getWindowPositions() {
 		{
 			return;
 		}
-		setWindowRect((Window)e.getComponent(),e.getComponent().getBounds());
+		setWindowRect(true,(Window)e.getComponent(),e.getComponent().getBounds());
 	}
 	public void componentResized(ComponentEvent e) {
 		// Hack, because we cannot detect maximized frame in Java 1.3
@@ -62,7 +62,7 @@ public Properties getWindowPositions() {
 		{
 			return;
 		}
-		setWindowRect((Window)e.getComponent(),e.getComponent().getBounds());
+		setWindowRect(false,(Window)e.getComponent(),e.getComponent().getBounds());
 	}
 	public void componentShown(ComponentEvent e) {
 	}
@@ -73,9 +73,12 @@ public Properties getWindowPositions() {
  */
 public Rectangle getWindowRect(Window window) {
 	window.addComponentListener(this);
-	String rString = (String)getWindowPositions().get(window.getName() + "(" + window.getPreferredSize().width + "," + window.getPreferredSize().height + ")");
+	String rString = (String)getWindowPositions().get(window.getName() + "(" + window.getPreferredSize().width/10 + "-" + window.getPreferredSize().height/10 + ")");
 	if (rString == null)
+	{
+//		System.out.println("Could not find " + window.getName());
 		return null;
+	}
 	else
 	{
 		StringTokenizer tokenizer = new StringTokenizer(rString,",");
@@ -84,6 +87,8 @@ public Rectangle getWindowRect(Window window) {
 		int width = Integer.parseInt(tokenizer.nextToken());
 		int height = Integer.parseInt(tokenizer.nextToken());
 		Rectangle r = new Rectangle(x,y,width,height);
+		
+//		System.out.println(window.getName() + " returning " + r.x + "," + r.y);
 		
 		return r;
 	}
@@ -121,8 +126,9 @@ public void saveWindowPositions() {
  * Creation date: (10/23/2001 1:21:55 PM)
  * @param windowName java.lang.String
  */
-public void setWindowRect(Window w, Rectangle rect) {
-	String rString = new String(rect.x + "," + rect.y + "," + rect.width + "," + rect.height);
-	getWindowPositions().put(w.getName() + "(" + w.getPreferredSize().width + "," + w.getPreferredSize().height + ")",rString);
+public void setWindowRect(boolean move, Window w, Rectangle rect) {
+	//System.out.println(w.getName() + " moved? " + move + " to " + rect.x + "," + rect.y);
+	String rString = new String(rect.x + "," + rect.y + "-" + rect.width + "," + rect.height);
+	getWindowPositions().put(w.getName() + "(" + w.getPreferredSize().width/10 + "," + w.getPreferredSize().height/10 + ")",rString);
 }
 }

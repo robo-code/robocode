@@ -378,14 +378,14 @@ public void checkWallCollision()
 	if (hitWall)
 	{
 		double velocity1 = 0, velocity2 = 0;
-		if (Math.sin(heading) != 0 && fixx != 0)
+		if (Math.abs(Math.sin(heading)) > .00001 && fixx != 0)
 		{
 			velocity1 = fixx / Math.sin(heading);
 		}
 		else
 			velocity1 = 0;
 
-		if (Math.cos(heading) != 0 && fixy != 0)
+		if (Math.abs(Math.cos(heading)) > .00001 && fixy != 0)
 		{
 			velocity2 = fixy / Math.cos(heading);
 		}
@@ -404,9 +404,16 @@ public void checkWallCollision()
 */
 	//System.out.println(heading + " - sin: " + Math.sin(heading));
 //	System.out.println(heading + " - cos: " + Math.cos(heading));
-	
+
+
 		double dx = fixv * Math.sin(heading);
  		double dy = fixv * Math.cos(heading);
+ 		
+ 		// Sanity
+ 		if (Math.abs(dx) < Math.abs(fixx))
+ 			dx = fixx;
+ 		if (Math.abs(dy) < Math.abs(fixy))
+ 			dy = fixy;
  	  
  	  	// IF THIS IS NOT HERE
  	  	// STRANGE THINGS HAPPEN UNDER IBM JAVA 1.4
@@ -414,7 +421,6 @@ public void checkWallCollision()
 		if (Double.isNaN(velocity1));
 		if (Double.isNaN(velocity2));
 		
-  	  //System.out.print("Moving back " + fixv + " from " + x + "," + y + " with heading " + heading);
   	  //double amt;
   	  //amt = fixv;
 	  	//System.out.println(heading + "," + fixx + "," + fixy + "," + fixv + "(" + velocity1 + "," + velocity2 + ")");
@@ -989,7 +995,7 @@ public final void tick ()
 		//log("Notifying battle that we're asleep");
 		//log("Sleeping and waiting for battle to wake us up.");
 		try {
-			this.wait();
+			this.wait(10000); // attempt to catch bug.
 		} catch (InterruptedException e) {
 			log("Wait interrupted");
 		}
@@ -1202,6 +1208,7 @@ public void updateGunHeading() {
  */
 public void updateHeading() {
 
+	boolean normalizeHeading = true;
 	turnRate = Math.min(maxTurnRate, (.4 + .6 * (1 - (Math.abs(velocity) / systemMaxVelocity))) * systemMaxTurnRate);
 	
 //	angleToTurn = normalRelativeAngle(angleToTurn);
@@ -1263,8 +1270,18 @@ public void updateHeading() {
 		}
 	  }
 	}
+	else
+		normalizeHeading = false;
 
-	heading = Utils.normalAbsoluteAngle(heading);
+	if (normalizeHeading)
+	{
+		if (angleToTurn == 0)
+		{
+			heading = Utils.normalNearAbsoluteAngle(heading);
+		}
+		else
+			heading = Utils.normalAbsoluteAngle(heading);
+	}
 	if (Double.isNaN(heading))
 		System.out.println("HOW IS HEADING NAN HERE");
 
