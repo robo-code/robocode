@@ -22,19 +22,9 @@ import robocode.manager.*;
  * RobocodeEngine - Class for controlling Robocode.
  * Copyright 2001 Mathew A. Nelson
  *
- * <p>If you are using Java 1.4, there's nothing special you need to do.
+ * <p>Requires Java 1.4
  * 
- * <p>If you are using Java 1.3, you will need to create a new policy file so that Robocode's security manager does not prevent your program from running, as follows:
- *
- * <p>In a file named "robocode.policy" enter the following:
- * <pre>
- * grant {
- *  permission java.security.AllPermission;
- * };
- * </pre>
- * <p>When running, include the tag:
- * <pre>-Djava.security.policy=robocode.policy</pre>
- * @see <a target="_top" href="http://robocode.alphaworks.ibm.com">robocode.alphaworks.ibm.com</a>
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  * @author Mathew A. Nelson
  */
 public class RobocodeEngine {

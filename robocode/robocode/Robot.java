@@ -25,8 +25,8 @@ import java.awt.Color;
  * <BR> Positive x is right.
  * <BR> Positive y is up.
  *
- * @see <a target="_top" href="http://robocode.alphaworks.ibm.com">robocode.alphaworks.ibm.com</a>
- * @see <a href="http://robocode.alphaworks.ibm.com/myfirstrobot/MyFirstRobot.html">Building your first robot<a>
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
+ * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">Building your first robot<a>
  */
 public class Robot extends _Robot implements Runnable {
 

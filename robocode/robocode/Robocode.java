@@ -22,7 +22,7 @@ import robocode.security.*;
  * Robocode - A programming game involving battling AI tanks.<BR/>
  * Copyright 2001 Mathew Nelson
  *
- * @see <a target="_top" href="http://robocode.alphaworks.ibm.com">robocode.alphaworks.ibm.com</a>
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  * @author Mathew A. Nelson
  */
 public class Robocode {

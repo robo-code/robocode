@@ -356,7 +356,7 @@ public static boolean installCompiler(RobocodeEditor editor) {
 						JOptionPane.showMessageDialog(editor,"Robocode was unable to build and test Jikes.\n" +
 							"Please consult the console window for errors.\n" +
 							"For help with this, please post to the discussion at:\n" +
-							"http://robocode.alphaworks.ibm.com/","Error",JOptionPane.ERROR_MESSAGE);
+							"http://robocode.net/forum","Error",JOptionPane.ERROR_MESSAGE);
 						compilerOptions = "-deprecation -g";
 						compilerClassPath = "-classpath " + javalib + File.pathSeparator + "robocode.jar" + File.pathSeparator + getRobotPath();
 						getCompilerProperties().setCompilerOptions(compilerOptions);
@@ -387,7 +387,7 @@ public static boolean installCompiler(RobocodeEditor editor) {
 					JOptionPane.showMessageDialog(editor,"Robocode was unable to successfully compile with Jikes\n" +
 						"Please consult the console window for errors.\n" +
 						"For help with this, please post to the discussion at:\n" +
-						"http://robocode.alphaworks.ibm.com/","Error",JOptionPane.ERROR_MESSAGE);
+						"http://robocode.sourceforge.net/forum","Error",JOptionPane.ERROR_MESSAGE);
 					saveCompilerProperties();
 					rv = false;
 				}
@@ -401,7 +401,7 @@ public static boolean installCompiler(RobocodeEditor editor) {
 			JOptionPane.showMessageDialog(editor,"Robocode was unable to extract Jikes." +
 				"Please consult the console window for errors.\n" +
 				"For help with this, please post to the discussion at:\n" +
-				"http://robocode.alphaworks.ibm.com/","Error",JOptionPane.ERROR_MESSAGE);
+				"http://robocode.sourceforge.net/forum","Error",JOptionPane.ERROR_MESSAGE);
 			compilerOptions = "-deprecation -g";
 			compilerClassPath = "-classpath " + javalib + File.pathSeparator + "robocode.jar" + File.pathSeparator + getRobotPath();
 			getCompilerProperties().setCompilerOptions(compilerOptions);

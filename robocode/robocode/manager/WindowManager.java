@@ -170,7 +170,7 @@ public void showHelpApi() {
  */
 public void showFaq() {
 	
-	String helpurl = "http://robocode.alphaworks.ibm.com/help/robocode.faq.txt";
+	String helpurl = "http://robocode.sourceforge.net/help/robocode.faq.txt";
 	try {
 		manager.getBrowserManager().openURL(helpurl);
 	} catch (IOException e) {
@@ -188,8 +188,7 @@ public void showFaq() {
  */
 public void showOnlineHelp() {
 	
-//	String helpurl = "http://robocode.alphaworks.ibm.com/help/help.html?version=" + manager.getVersionManager().getVersion();
-	String helpurl = "http://robocode.alphaworks.ibm.com/help/index.html";
+	String helpurl = "http://robocode.sourceforge.net/help/index.html";
 	try {
 		manager.getBrowserManager().openURL(helpurl);
 	} catch (IOException e) {

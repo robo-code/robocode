@@ -65,7 +65,7 @@ public class VersionManager {
 		//log("Checking for new version...");
 		URL u = null;
 		try {
-			u = new URL("http://robocode.alphaworks.ibm.com/version/version.html");
+			u = new URL("http://robocode.sourceforge.net/version/version.html");
 		} catch (java.net.MalformedURLException e) {
 			log("Unable to check for new version: " + e);
 			if (notifyNoUpdate)
@@ -102,8 +102,8 @@ public class VersionManager {
 			return false;
 		}
 	
-		String installurl = "http://robocode.alphaworks.ibm.com/install/Install.html";
-		String helpurl = "http://robocode.alphaworks.ibm.com/version/checkversion.html?version=" + version;
+		String installurl = "http://robocode.sourceforge.net/installer";
+		String helpurl = "http://robocode.sourceforge.net/version/checkversion.html?version=" + version;
 		if (!v.equals(getVersion()))
 		{
 			if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
@@ -140,7 +140,7 @@ public class VersionManager {
 	
 		return true;
 		
-	//	String helpurl = "http://robocode.alphaworks.ibm.com/version/checkversion.html?version=" + version;
+	//	String helpurl = "http://robocode.sourceforge.net/version/checkversion.html?version=" + version;
 			
 	//	BrowserControl.displayURL(helpurl);
 	

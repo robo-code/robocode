@@ -422,7 +422,7 @@ private javax.swing.JLabel getWebsiteLabel() {
 		try {
 			websiteLabel = new javax.swing.JLabel();
 			websiteLabel.setName("websiteLabel");
-			websiteLabel.setText("robocode.alphaworks.ibm.com");
+			websiteLabel.setText("robocode.net");
 		} catch (java.lang.Throwable e) {
 			log(e);
 		}
