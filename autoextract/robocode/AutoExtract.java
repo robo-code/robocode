@@ -96,6 +96,7 @@ public boolean acceptReject(String text) {
 	JTextPane t = new JTextPane();
 	t.setContentType("text/html");
 	t.setText(text);
+	t.setFont(new Font("Dialog",Font.PLAIN,12));
 	t.setEditable(false);
 
 	JScrollPane s = new JScrollPane();
