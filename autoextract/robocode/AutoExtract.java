@@ -261,7 +261,7 @@ public boolean extract(String src, File dest) {
 		File installDir = null;
 		File suggestedDir = null;;
 		AutoExtract extractor = new AutoExtract();
-		if (extractor.acceptLicense("license.html"))
+		if (extractor.acceptLicense("cpl-v10.html"))
 		{
 			if (argv.length == 1)
 				suggestedDir = new File(argv[0]);
