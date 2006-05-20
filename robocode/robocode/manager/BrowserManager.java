@@ -8,6 +8,7 @@
  * Contributors:
  *     Mathew Nelson - initial API and implementation
  *******************************************************************************/
+
 /*
  * Created on Feb 16, 2005
  *
@@ -16,9 +17,11 @@
  */
 package robocode.manager;
 
+
 import java.io.IOException;
 import java.io.File;
 import robocode.util.Constants;
+
 
 /**
  * @author mat
@@ -31,28 +34,29 @@ public class BrowserManager {
 	RobocodeManager manager;
 	String browserCommand;
 	
-	public BrowserManager(RobocodeManager manager)
-	{
+	public BrowserManager(RobocodeManager manager) {
 		this.manager = manager;
-		if (File.separatorChar == '/')
+		if (File.separatorChar == '/') {
 			browserCommand = Constants.cwd() + File.separator + "browser.sh";
-		else
+		} else {
 			browserCommand = Constants.cwd() + File.separator + "browser.bat";
+		}
 	}
 	
-	public void openURL(String url) throws IOException
-	{
+	public void openURL(String url) throws IOException {
 		Process p = Runtime.getRuntime().exec(browserCommand + " " + url);
 
 		try {
 			p.waitFor();
-		}
-		catch (InterruptedException e) {}
+		} catch (InterruptedException e) {}
 
 		if (p.exitValue() != 0) {
-			throw new IOException("Unable to launch " + browserCommand + ".  Please check it, or launch " + url + " in your browser.");
+			throw new IOException(
+					"Unable to launch " + browserCommand + ".  Please check it, or launch " + url + " in your browser.");
 		}
 
-		try {Thread.sleep(1000);} catch (InterruptedException e) {}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
 	}
 }

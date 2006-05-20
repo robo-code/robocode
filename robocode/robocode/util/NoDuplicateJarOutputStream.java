@@ -1,54 +1,55 @@
-/*******************************************************************************
- * Copyright (c) 2001 Mathew Nelson
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.robocode.net/license/CPLv1.0.html
- * 
- * Contributors:
- *     Mathew Nelson - initial API and implementation
- *******************************************************************************/
-/*
- * (c) Copyright 2001 Mathew Nelson.
- * All Rights Reserved.
- */
-package robocode.util;
-
-import java.io.*;
-import java.util.jar.*;
-import java.util.zip.*;
-import java.util.*;
-
-/**
- * @version 	1.0
- * @author
- */
-public class NoDuplicateJarOutputStream extends JarOutputStream {
-	private Hashtable entries = new Hashtable();
-	
-	public NoDuplicateJarOutputStream(OutputStream out) throws IOException
-	{
-		super(out);
-	}
-	public NoDuplicateJarOutputStream(OutputStream out, Manifest man) throws IOException
-	{
-		super(out,man);
-	}
-	public void putNextEntry(ZipEntry ze) throws IOException
-	{
-		if (entries.containsKey(ze.getName()))
-		{
-			throw new ZipException("duplicate entry: " + ze.getName());
-		}
-		entries.put(ze.getName(),"");
-		super.putNextEntry(ze);
-	}
-	public void closeEntry() throws IOException
-	{
-		super.closeEntry();
-	}
-	
-	private static void log(String s) {
-		Utils.log(s);
-	}
-}
+/*******************************************************************************
+ * Copyright (c) 2001 Mathew Nelson
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.robocode.net/license/CPLv1.0.html
+ * 
+ * Contributors:
+ *     Mathew Nelson - initial API and implementation
+ *******************************************************************************/
+
+/*
+ * (c) Copyright 2001 Mathew Nelson.
+ * All Rights Reserved.
+ */
+package robocode.util;
+
+
+import java.io.*;
+import java.util.jar.*;
+import java.util.zip.*;
+import java.util.*;
+
+
+/**
+ * @version 	1.0
+ * @author
+ */
+public class NoDuplicateJarOutputStream extends JarOutputStream {
+	private Hashtable entries = new Hashtable();
+	
+	public NoDuplicateJarOutputStream(OutputStream out) throws IOException {
+		super(out);
+	}
+
+	public NoDuplicateJarOutputStream(OutputStream out, Manifest man) throws IOException {
+		super(out, man);
+	}
+
+	public void putNextEntry(ZipEntry ze) throws IOException {
+		if (entries.containsKey(ze.getName())) {
+			throw new ZipException("duplicate entry: " + ze.getName());
+		}
+		entries.put(ze.getName(), "");
+		super.putNextEntry(ze);
+	}
+
+	public void closeEntry() throws IOException {
+		super.closeEntry();
+	}
+	
+	private static void log(String s) {
+		Utils.log(s);
+	}
+}
