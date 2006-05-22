@@ -6,7 +6,13 @@
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Added NAME, FILENAME, and FOLDERNAME constants for installation
+ *       customization
+ *     - Replaced deprecated method calls
+ *     - Code cleanup
  *******************************************************************************/
 package robocode;
 
@@ -19,26 +25,27 @@ import java.awt.event.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (8/3/2001 2:59:24 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original version)
+ * @author Flemming N. Larsen (current version)
  */
 public class AutoExtract implements ActionListener {
-	public javax.swing.JDialog licenseDialog = null;
-	public boolean accepted = false;
-	public String spinner[] = { "-", "\\", "|", "/"};
-	public String message = "";
-	public static String osName = System.getProperty("os.name");
-	public static double osVersion = doubleValue(System.getProperty("os.version"));
-	
-	/**
-	 * AutoExtract constructor comment.
-	 */
-	public AutoExtract() {
-		super();
-	}
+	private static final String NAME = "Robocode";
 
-	public static double doubleValue(String s) {
+	private static final String FILENAME = "robocode";
+	private static final String FOLDER_NAME = "Robocode";
+
+	private static final String OS_NAME = System.getProperty("os.name");
+	private static final double OS_VERSION = doubleValue(System.getProperty("os.version"));
+
+	private static final char SPINNER[] = { '-', '\\', '|', '/' };
+
+	private JDialog licenseDialog;
+
+	private boolean accepted;
+
+	private String message = "";
+
+	private static double doubleValue(String s) {
 		int p = s.indexOf(".");
 
 		if (p >= 0) {
@@ -47,32 +54,25 @@ public class AutoExtract implements ActionListener {
 		if (p >= 0) {
 			s = s.substring(0, p);
 		}
-	
+
 		double d = 0.0;
 
 		try {
 			d = Double.parseDouble(s);
 		} catch (NumberFormatException e) {}
+
 		return d;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/3/2001 3:04:13 PM)
-	 * @return boolean
-	 * @param src java.io.File
-	 * @param dest java.io.File
-	 */
-	public boolean acceptLicense(String licenseFile) {
-
+	private boolean acceptLicense(String licenseFile) {
 		String licenseText = "";
-	
+
 		InputStream is = getClass().getClassLoader().getResourceAsStream(licenseFile);
 
 		if (is == null) { // no license
 			return true;
 		}
-		
+
 		BufferedReader r = new BufferedReader(new InputStreamReader(is));
 
 		try {
@@ -83,26 +83,22 @@ public class AutoExtract implements ActionListener {
 				line = r.readLine();
 			}
 			return acceptReject(licenseText);
-		
+
 		} catch (IOException e) {
 			System.err.println("Could not read line from license file: " + e);
 		}
 		return true;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/6/2001 4:23:18 PM)
-	 * @return boolean
-	 */
-	public boolean acceptReject(String text) {
+	private boolean acceptReject(String text) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	
+
 		licenseDialog = new JDialog();
 		licenseDialog.setTitle("License Agreement");
 		licenseDialog.setModal(true);
 		licenseDialog.setLocation((screenSize.width - 500) / 2, (screenSize.height - 400) / 2);
 		licenseDialog.setSize(500, 400);
+
 		JTextPane t = new JTextPane();
 
 		t.setContentType("text/html");
@@ -120,6 +116,7 @@ public class AutoExtract implements ActionListener {
 		JPanel p = new JPanel();
 
 		p.setLayout(new BorderLayout());
+
 		JButton b1 = new JButton("Accept");
 		JButton b2 = new JButton("Cancel");
 
@@ -128,42 +125,21 @@ public class AutoExtract implements ActionListener {
 
 		b1.addActionListener(this);
 		b2.addActionListener(this);
-	
+
 		licenseDialog.getContentPane().add(p, BorderLayout.SOUTH);
-	
-		licenseDialog.show();
-		// System.out.println("Dialog closed.");
+		licenseDialog.setVisible(true);
+
 		return accepted;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/6/2001 5:14:21 PM)
-	 * @param e java.awt.event.ActionEvent
-	 */
 	public void actionPerformed(ActionEvent e) {
-		accepted = false;
-		if (e.getActionCommand().equals("Accept")) {
-			accepted = true;
-			// System.out.println("Accepted.");
-			licenseDialog.dispose();
-			licenseDialog = null;
-		} else if (e.getActionCommand().equals("Cancel")) {
-			// System.out.println("Cancelled.");
-			licenseDialog.dispose();
-			licenseDialog = null;
-		}
+		accepted = e.getActionCommand().equals("Accept");
+
+		licenseDialog.dispose();
+		licenseDialog = null;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/3/2001 3:04:13 PM)
-	 * @return boolean
-	 * @param src java.io.File
-	 * @param dest java.io.File
-	 */
-	public boolean extract(String src, File dest) {
-
+	private boolean extract(String src, File dest) {
 		JDialog statusDialog = new JDialog();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -172,7 +148,7 @@ public class AutoExtract implements ActionListener {
 		if (File.separatorChar == '/') {
 			height = 100;
 		}
-	
+
 		statusDialog.setTitle("Installing");
 		statusDialog.setLocation((screenSize.width - 500) / 2, (screenSize.height - height) / 2);
 		statusDialog.setSize(500, height);
@@ -181,8 +157,8 @@ public class AutoExtract implements ActionListener {
 		statusDialog.getContentPane().setLayout(new BorderLayout());
 		statusDialog.getContentPane().add(status, BorderLayout.CENTER);
 
-		statusDialog.show();
-	
+		statusDialog.setVisible(true);
+
 		FileOutputStream fos = null;
 		String entryName = "";
 
@@ -199,6 +175,7 @@ public class AutoExtract implements ActionListener {
 			}
 			JOptionPane.showMessageDialog(null,
 					r + "\nContains an exclamation point.  Please move the file to a different directory.");
+
 			System.exit(0);
 		}
 		try {
@@ -218,14 +195,15 @@ public class AutoExtract implements ActionListener {
 
 						dir.mkdirs();
 					} else {
-						status.setText(entryName + " " + spinner[spin++]);
-						// System.out.print("Extracting file " + entry.getName() + ".");
+						status.setText(entryName + " " + SPINNER[spin++]);
+
 						File out = new File(dest, entry.getName());
 						File parentDirectory = new File(out.getParent());
 
 						parentDirectory.mkdirs();
+
 						fos = new FileOutputStream(out);
-					
+
 						int index = 0;
 						int num = 0;
 						int count = 0;
@@ -235,15 +213,12 @@ public class AutoExtract implements ActionListener {
 							index += num;
 							count++;
 							if (count > 80) {
-								status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
+								status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
 								if (spin > 3) {
 									spin = 0;
 								}
 								count = 0;
-								// System.out.println("");
 							}
-							// System.out.print(".");
-						
 						}
 						fos.close();
 
@@ -252,14 +227,14 @@ public class AutoExtract implements ActionListener {
 								Runtime.getRuntime().exec("chmod 755 " + out.toString());
 							}
 						}
-					
-						status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
-						// System.out.println(".  Extracted " + index +  " bytes"); 
+
+						status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
 					}
 				}
 				entry = jarIS.getNextJarEntry();
 			}
 			statusDialog.dispose();
+
 			message = "Installation successful";
 			return true;
 		} catch (IOException e) {
@@ -273,27 +248,26 @@ public class AutoExtract implements ActionListener {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
-		
+
 		File installDir = null;
 		File suggestedDir = null;
 
-		;
 		AutoExtract extractor = new AutoExtract();
 
 		if (extractor.acceptLicense("cpl-v10.html")) {
 			if (argv.length == 1) {
 				suggestedDir = new File(argv[0]);
 			} else if (File.separatorChar == '\\') {
-				suggestedDir = new File("c:\\robocode\\");
+				suggestedDir = new File("C:\\" + FOLDER_NAME + '\\');
 			} else {
-				suggestedDir = new File(System.getProperty("user.home") + File.separator + "robocode" + File.separator);
+				suggestedDir = new File(System.getProperty("user.home") + File.separator + FOLDER_NAME + File.separator);
 			}
 
 			boolean done = false;
 
 			while (!done) {
 				int rc = JOptionPane.showConfirmDialog(null,
-						"Robocode will be installed in:\n" + suggestedDir + "\nIs this ok?", "Installing Robocode",
+						NAME + " will be installed in:\n" + suggestedDir + "\nIs this ok?", "Installing " + NAME,
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (rc == JOptionPane.YES_OPTION) {
@@ -315,7 +289,7 @@ public class AutoExtract implements ActionListener {
 			}
 			if (!installDir.exists()) {
 				int rc = JOptionPane.showConfirmDialog(null,
-						installDir.getPath() + "\ndoes not exist.  Would you like to create it?", "Installing Robocode",
+						installDir.getPath() + "\ndoes not exist.  Would you like to create it?", "Installing " + NAME,
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (rc == JOptionPane.YES_OPTION) {
@@ -325,10 +299,11 @@ public class AutoExtract implements ActionListener {
 					System.exit(0);
 				}
 			}
+
 			boolean rv = extractor.extract("extract.jar", installDir);
 
 			if (rv) {
-				extractor.createShortcuts(installDir, "robocode.bat", "Robocode", "Robocode");
+				extractor.createShortcuts(installDir);
 			} else {
 				JOptionPane.showMessageDialog(null, extractor.message);
 			}
@@ -338,34 +313,34 @@ public class AutoExtract implements ActionListener {
 		}
 		System.exit(0);
 	}
-	
-	public void createShortcuts(File installDir, String runnable, String folder, String name) {
-		
-		if (osName.toLowerCase().indexOf("win") == 0) {
-			if (createWindowsShortcuts(installDir, runnable, folder, name)) {} else {
+
+	private void createShortcuts(File installDir) {
+		if (OS_NAME.toLowerCase().indexOf("win") == 0) {
+			if (createWindowsShortcuts(installDir)) {} else {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
-						+ installDir.getAbsolutePath() + "\n" + "robocode.bat");
+						message + "\n" + "To start " + NAME + ", enter the following at a command prompt:\n" + "cd "
+						+ installDir.getAbsolutePath() + "\n" + FILENAME + ".bat");
 			}
-		} else if (osName.toLowerCase().indexOf("mac") == 0) {
-			if (osVersion >= 10.1) {
+		} else if (OS_NAME.toLowerCase().indexOf("mac") == 0) {
+			if (OS_VERSION >= 10.1) {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, browse to " + installDir + " then double-click robocode.jar\n");
+						message + "\n" + "To start " + NAME + ", browse to " + installDir + " then double-click " + FILENAME
+						+ ".jar\n");
 			} else {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
-						+ installDir.getAbsolutePath() + "\n" + "./robocode.sh");
+						message + "\n" + "To start " + NAME + ", enter the following at a command prompt:\n" + "cd "
+						+ installDir.getAbsolutePath() + "\n" + "./" + FILENAME + ".sh");
 			}
 		} else {
 			JOptionPane.showMessageDialog(null,
-					message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
-					+ installDir.getAbsolutePath() + "\n" + "./robocode.sh");
+					message + "\n" + "To start " + NAME + ", enter the following at a command prompt:\n" + "cd "
+					+ installDir.getAbsolutePath() + "\n" + "./" + FILENAME + ".sh");
 		}
 	}
-	
-	public boolean createWindowsShortcuts(File installDir, String runnable, String folder, String name) {
+
+	private boolean createWindowsShortcuts(File installDir) {
 		int rc = JOptionPane.showConfirmDialog(null,
-				"Would you like to install a shortcut to Robocode in the Start menu? (Recommended)", "Create Shortcuts",
+				"Would you like to install a shortcut to " + NAME + " in the Start menu? (Recommended)", "Create Shortcuts",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 		if (rc != JOptionPane.YES_OPTION) {
@@ -374,7 +349,7 @@ public class AutoExtract implements ActionListener {
 
 		String command = null;
 
-		if (osName.indexOf("9") != -1) {
+		if (OS_NAME.indexOf("9") != -1) {
 			command = "command.com /c cscript.exe "; // /nologo
 		} else {
 			command = "cmd.exe /c cscript.exe ";
@@ -388,44 +363,49 @@ public class AutoExtract implements ActionListener {
 				out.println("Shell = new ActiveXObject(\"WScript.Shell\");");
 				out.println("ProgramsPath = Shell.SpecialFolders(\"Programs\");");
 				out.println("fso = new ActiveXObject(\"Scripting.FileSystemObject\");");
-				out.println("if (!fso.folderExists(ProgramsPath + \"\\\\" + folder + "\"))");
-				out.println("	fso.CreateFolder(ProgramsPath + \"\\\\" + folder + "\");");
-				out.println("link = Shell.CreateShortcut(ProgramsPath + \"\\\\" + folder + "\\\\" + name + ".lnk\");");
+				out.println("if (!fso.folderExists(ProgramsPath + \"\\\\" + NAME + "\"))");
+				out.println("	fso.CreateFolder(ProgramsPath + \"\\\\" + NAME + "\");");
+				out.println("link = Shell.CreateShortcut(ProgramsPath + \"\\\\" + NAME + "\\\\" + NAME + ".lnk\");");
 				out.println("link.Arguments = \"\";");
-				out.println("link.Description = \"" + name + "\";");
+				out.println("link.Description = \"" + NAME + "\";");
 				out.println("link.HotKey = \"\";");
 				out.println(
-						"link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + "robocode.ico,0\";");
-				out.println("link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + runnable + "\";");
+						"link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + FILENAME + ".ico,0\";");
+				out.println(
+						"link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + FILENAME + ".bat" + "\";");
 				out.println("link.WindowStyle = 1;");
 				out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\";");
 				out.println("link.Save();");
 				out.println("DesktopPath = Shell.SpecialFolders(\"Desktop\");");
-				out.println("link = Shell.CreateShortcut(DesktopPath + \"\\\\" + name + ".lnk\");");
+				out.println("link = Shell.CreateShortcut(DesktopPath + \"\\\\" + NAME + ".lnk\");");
 				out.println("link.Arguments = \"\";");
-				out.println("link.Description = \"" + name + "\";");
+				out.println("link.Description = \"" + NAME + "\";");
 				out.println("link.HotKey = \"\";");
 				out.println(
-						"link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + "robocode.ico,0\";");
-				out.println("link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + runnable + "\";");
+						"link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + FILENAME + ".ico,0\";");
+				out.println(
+						"link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + FILENAME + ".bat" + "\";");
 				out.println("link.WindowStyle = 1;");
 				out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\";");
 				out.println("link.Save();");
 				out.println("WScript.Echo(\"Shortcuts created.\");");
 
 				out.close();
+
 				Process p = Runtime.getRuntime().exec(command + " makeshortcut.js", null, installDir);
 
 				p.waitFor();
+
 				int rv = p.exitValue();
 
 				try {
 					shortcutMaker.delete();
 				} catch (Exception e) {}
+
 				if (rv == 0) {
 					JOptionPane.showMessageDialog(null,
-							message + "\n" + "A Robocode program group has been added to your Start menu\n"
-							+ "A Robocode icon has been added to your desktop.");
+							message + "\n" + "A " + FOLDER_NAME + " program group has been added to your Start menu\n" + "A "
+							+ FOLDER_NAME + " icon has been added to your desktop.");
 					return true;
 				} else {
 					return false;
@@ -438,7 +418,7 @@ public class AutoExtract implements ActionListener {
 		}
 	}
 
-	public String escaped(String s) {
+	private String escaped(String s) {
 		String r = "";
 
 		for (int i = 0; i < s.length(); i++) {
