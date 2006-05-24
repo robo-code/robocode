@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!--  Apache Ant build script for building the Robocode setup file          -->
+<!-- ====================================================================== -->
+
+<project name="Robocode" default="build" basedir=".">
+  <description>Apache Ant build script for Robocode</description>
+  
+  <!-- ====================================== -->
+  <!-- Global properties                      -->
+  <!-- ====================================== -->
+
+  <loadfile property="version" srcfile="../robocode/resources/versions.txt">
+    <filterchain>
+      <headfilter lines="1"/>
+      <replacestring from="Version " to=""/>
+      <striplinebreaks/>
+    </filterchain>
+  </loadfile>
+
+  <property name="build" location="build" />
+
+  <property name="src.robocode" location="../robocode" />
+  <property name="src.extract" location="../robocodeextract" />
+  <property name="src.autoextract" location="../autoextract" />
+
+  <property name="build.classes" location="${build}/classes" />
+  <property name="build.javadoc" location="${build}/javadoc" />
+
+  <property name="build.robocode" location="${build.classes}/robocode" />
+  <property name="build.robots" location="${build.classes}/robots" />
+  <property name="build.autoextract" location="${build.classes}/autoextract" />
+
+  <property name="setup.filename" value="robocode-setup-${version}.jar"/>
+  <property name="setup.file" location="${build}/${setup.filename}"/>
+
+  <!-- ====================================== -->
+  <!-- Default Excludes                       -->
+  <!-- ====================================== -->
+
+  <defaultexcludes add="**/*.bak"/>      <!-- Windows backup files -->
+  <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
+  <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
+  <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
+  
+  <!-- ====================================== -->
+  <!-- Target: init                           -->
+  <!-- ====================================== -->
+  <target name="init" description="Initialize the build">
+    <!-- Does nothing yet -->
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: build                          -->
+  <!-- ====================================== -->
+  <target
+      name="build"
+      description="Build the Robocode setup file"
+      depends="extract.jar"
+      unless="build.uptodate">
+
+    <echo message="Building Robocode setup file (${setup.filename})..."/>
+
+    <!-- Clean all build files -->
+    <antcall target="clean"/>
+
+    <!-- Compile Auto-extract sources -->
+    <antcall target="compile.autoextract"/>
+
+    <!-- Create the Robocode setup file -->
+	<jar destfile="${setup.file}">
+      <!-- Specify files to include -->
+      <fileset dir="${build.autoextract}"/>     <!-- Auto extract classes -->
+      <fileset dir="${src.robocode}">          
+        <include name="license/cpl-v10.html"/>  <!-- License file -->
+      </fileset>
+      <fileset dir="${build}">
+        <include name="extract.jar"/>           <!-- extract.jar file -->
+      </fileset>
+      <!-- Set the main class of the manifest -->
+      <manifest>
+        <attribute name="Main-Class" value="robocode.AutoExtract"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <uptodate property="build.uptodate" targetfile="${setup.file}">
+    <srcfiles dir="${src.robocode}" includes="**/*"/>
+    <srcfiles dir="${src.extract}" includes="**/*"/>
+    <srcfiles dir="${src.autoextract}" includes="**/*"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: compile.robocode               -->
+  <!-- ====================================== -->
+  <target
+      name="compile.robocode"
+      description="Compile Robocode sources"
+      depends="init"
+      unless=""> 
+
+    <echo message="Compiling Robocode sources..."/>
+ 
+    <!-- Compile all Robocode sources -->
+    <compile srcdir="${src.robocode}" destdir="${build.robocode}"/>
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: compile.robots                 -->
+  <!-- ====================================== -->
+  <target
+      name="compile.robots"
+      description="Compile Robots sources"
+      depends="init, robocode.jar">
+
+    <echo message="Compiling Robot sources..."/>
+
+    <!-- Compile all Robots sources -->
+    <compile
+        srcdir="${src.extract}/robots"
+        destdir="${build.robots}"
+        classpath="${build}/robocode.jar"/>
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: compile.autoextract            -->
+  <!-- ====================================== -->
+  <target
+      name="compile.autoextract"
+      description="Compile Auto-extract sources"
+      depends="init">
+
+    <echo message="Compiling Auto-extract sources..."/>
+
+    <!-- Compile the Auto-extract sources -->
+    <compile srcdir="${src.autoextract}" destdir="${build.autoextract}"/>
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: robocode.jar                   -->
+  <!-- ====================================== -->
+  <target
+      name="robocode.jar"
+      description="Build robocode.jar file"
+      depends="compile.robocode"
+      unless="robocode.jar.uptodate">
+
+    <echo message="Building robocode.jar..."/>
+
+    <!-- Create the robocode.jar file -->
+    <jar destfile="${build}/robocode.jar">
+      <!-- Specify files to include -->
+      <fileset dir="${build.robocode}"/>        <!-- Class files -->
+      <fileset dir="${src.robocode}">
+        <include name="resources/**"/>          <!-- Resource files -->
+        <include name="license/cpl-v10.html"/>  <!-- License file -->
+      </fileset>
+      <!-- Set the main class of the manifest -->
+      <manifest>
+        <attribute name="Main-Class" value="robocode.Robocode"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <uptodate property="robocode.jar.uptodate" targetfile="${build}/robocode.jar">
+    <srcfiles dir="${src.robocode}" includes="**/*"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: extract.jar                    -->
+  <!-- ====================================== -->
+  <target
+      name="extract.jar"
+      description="Build extract.jar file"
+      depends="robocode.jar, javadoc"
+      unless="extract.jar.uptodate">
+
+    <echo message="Building extract.jar..."/>
+
+    <!-- Compile Robots sources -->
+    <antcall target="compile.robots"/>
+
+    <!-- Create the extract.jar file -->
+    <jar destfile="${build}/extract.jar">
+      <!-- Specify files to include -->
+      <fileset dir="${src.extract}"/>   <!-- All files from the extract folder -->
+      <fileset dir="${build}">
+        <include name="robocode.jar"/>  <!-- Builded robocode.jar file -->
+        <include name="javadoc/**"/>    <!-- Builded javadoc files -->
+        <include name="robots/**"/>     <!-- Builded sample robots -->
+      </fileset>
+      <fileset dir="${src.robocode}">
+        <include name="license/cpl-v10.html"/>     <!-- License file -->
+        <include name="resources/versions.txt"/>   <!-- Versions file -->
+      </fileset>
+    </jar>
+  </target>
+
+  <uptodate property="extract.jar.uptodate" targetfile="${build}/extract.jar">
+    <srcfiles dir="${src.extract}" includes="**/*"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: javadoc                        -->
+  <!-- ====================================== -->
+  <target
+      name="javadoc"
+      description="Generate javadoc"
+      depends="init"
+      unless="javadoc.uptodate">
+
+    <echo message="Generating javadoc..."/>
+
+    <!-- Create the javadoc folder for the javadoc generator -->
+    <mkdir dir="${build.javadoc}"/>
+    <!-- Generate the javadoc documentation -->
+    <javadoc
+        destdir="${build.javadoc}"
+        sourcepath="${src.robocode}"
+        packagenames="robocode"
+        windowtitle="Robocode API"/>
+  </target>
+
+  <uptodate property="javadoc.uptodate" targetfile="${build.javadoc}/index.html">
+    <srcfiles dir="${src.robocode}" includes="**/*.java"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: install                        -->
+  <!-- ====================================== -->
+  <target
+      name="install"
+      description="Install Robocode"
+      depends="build">
+
+    <echo message="Installing Robocode..."/>
+
+    <!-- Run the Robocode setup file -->
+    <java jar="${setup.file}" fork="true"/>
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: quick-install                  -->
+  <!-- ====================================== -->
+  <target
+      name="quick-install"
+      description="Quick install Robocode"
+      depends="extract.jar">
+
+    <echo message="Quick-installing Robocode..."/>
+
+    <!-- Ask user where to install Robocode -->
+    <input
+        message="To which folder do you want to install Robocode?"
+        addproperty="install-dir"/>
+
+    <!-- Create the installation folder -->
+    <mkdir dir="${install-dir}"/>
+    <!-- Extract the extract.jar into the installation folder -->
+    <unjar src="${build}/extract.jar" dest="${install-dir}"/>
+  </target>
+
+  <!-- Clean up all build files -->
+  <target
+      name="clean"
+      description="Clean up build files">
+
+    <echo message="Cleaning up build files..."/>
+
+    <!-- Delete the folder containing all build files -->
+    <delete dir="${build}"/>
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Macro: compile                         -->
+  <!-- ====================================== -->
+  <macrodef name="compile">
+    <attribute name="srcdir"/>
+    <attribute name="destdir"/>
+    <attribute name="classpath" default=""/>
+    <sequential>
+      <!-- Create folder for class files -->
+      <mkdir dir="@{destdir}"/>
+      <!-- Compile the sources -->
+      <javac
+          srcdir="@{srcdir}"
+          destdir="@{destdir}"
+          classpath="@{classpath}"
+          source="1.4"
+          target="1.4"
+          debug="false"
+          optimize="true"
+          includes="**/*.java"
+      />
+    </sequential>
+  </macrodef>
+
+</project>
