@@ -28,7 +28,10 @@
       <fileset dir="resources"/>
     </copy>
 
-    <!-- Compile (sample) robots -->
+    <!-- Build robocode.jar (classpath for robots) -->
+    <antcall target="robocode.jar"/>
+
+      <!-- Compile (sample) robots -->
     <antcall target="compile.robots"/>
 
     <!-- Copy compiles robots to Robocode working directory -->
@@ -36,6 +39,10 @@
       <fileset dir="${build.robots}"/>
     </copy>
 
+    <copy todir="${build}/battles">
+      <fileset dir="../robocodeextract/battles"/>
+    </copy>
+ 
   </target>
 
 </project>
