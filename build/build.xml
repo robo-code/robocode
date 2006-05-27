@@ -4,13 +4,14 @@
 <!--  Apache Ant build script for building the Robocode setup file          -->
 <!-- ====================================================================== -->
 
-<project name="Robocode" default="build" basedir=".">
-  <description>Apache Ant build script for Robocode</description>
+<project name="build" default="build" basedir=".">
+  <description>Apache Ant build script for building the Robocode setup file</description>
   
   <!-- ====================================== -->
   <!-- Global properties                      -->
   <!-- ====================================== -->
 
+  <!-- Read out the version from the versions.txt -->
   <loadfile property="version" srcfile="../robocode/resources/versions.txt">
     <filterchain>
       <headfilter lines="1"/>
@@ -19,19 +20,25 @@
     </filterchain>
   </loadfile>
 
+  <!-- Disable debug information when compiling -->  
+  <property name="debug" value="off"/>
+
+  <!-- The build folder -->
   <property name="build" location="build" />
 
+  <!-- The source folders -->
   <property name="src.robocode" location="../robocode" />
   <property name="src.extract" location="../robocodeextract" />
   <property name="src.autoextract" location="../autoextract" />
 
+  <!-- The output folders -->
   <property name="build.classes" location="${build}/classes" />
   <property name="build.javadoc" location="${build}/javadoc" />
-
   <property name="build.robocode" location="${build.classes}/robocode" />
   <property name="build.robots" location="${build.classes}/robots" />
   <property name="build.autoextract" location="${build.classes}/autoextract" />
 
+  <!-- The output setup file -->
   <property name="setup.filename" value="robocode-setup-${version}.jar"/>
   <property name="setup.file" location="${build}/${setup.filename}"/>
 
@@ -57,13 +64,10 @@
   <target
       name="build"
       description="Build the Robocode setup file"
-      depends="extract.jar"
+      depends="clean, extract.jar"
       unless="build.uptodate">
 
     <echo message="Building Robocode setup file (${setup.filename})..."/>
-
-    <!-- Clean all build files -->
-    <antcall target="clean"/>
 
     <!-- Compile Auto-extract sources -->
     <antcall target="compile.autoextract"/>
@@ -129,13 +133,18 @@
   <target
       name="compile.autoextract"
       description="Compile Auto-extract sources"
-      depends="init">
+      depends="init"
+      unless="autoextract.uptodate">
 
     <echo message="Compiling Auto-extract sources..."/>
 
     <!-- Compile the Auto-extract sources -->
     <compile srcdir="${src.autoextract}" destdir="${build.autoextract}"/>
   </target>
+
+  <uptodate property="autoextract.uptodate" targetfile="${build.autoextract}/AutoExtract.class">
+    <srcfiles dir="${src.autoextract}" includes="**/*"/>
+  </uptodate>
 
   <!-- ====================================== -->
   <!-- Target: robocode.jar                   -->
@@ -289,7 +298,8 @@
           classpath="@{classpath}"
           source="1.4"
           target="1.4"
-          debug="false"
+          debug="${debug}"
+          debuglevel="lines,vars,source"
           optimize="true"
           includes="**/*.java"
       />
