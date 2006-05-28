@@ -24,19 +24,19 @@
   <property name="debug" value="off"/>
 
   <!-- The build folder -->
-  <property name="build" location="build" />
+  <property name="build" location="build"/>
 
   <!-- The source folders -->
-  <property name="src.robocode" location="../robocode" />
-  <property name="src.extract" location="../robocodeextract" />
-  <property name="src.autoextract" location="../autoextract" />
+  <property name="src.robocode" location="../robocode"/>
+  <property name="src.extract" location="../robocodeextract"/>
+  <property name="src.autoextract" location="../autoextract"/>
 
   <!-- The output folders -->
-  <property name="build.classes" location="${build}/classes" />
-  <property name="build.javadoc" location="${build}/javadoc" />
-  <property name="build.robocode" location="${build.classes}/robocode" />
-  <property name="build.robots" location="${build.classes}/robots" />
-  <property name="build.autoextract" location="${build.classes}/autoextract" />
+  <property name="build.classes" location="${build}/classes"/>
+  <property name="build.javadoc" location="${build}/javadoc"/>
+  <property name="build.robocode" location="${build.classes}/robocode"/>
+  <property name="build.robots" location="${build.classes}/robots"/>
+  <property name="build.autoextract" location="${build.classes}/autoextract"/>
 
   <!-- The output setup file -->
   <property name="setup.filename" value="robocode-setup-${version}.jar"/>
@@ -76,7 +76,7 @@
 	<jar destfile="${setup.file}">
       <!-- Specify files to include -->
       <fileset dir="${build.autoextract}"/>     <!-- Auto extract classes -->
-      <fileset dir="${src.robocode}">          
+      <fileset dir="${src.extract}">
         <include name="license/cpl-v10.html"/>  <!-- License file -->
       </fileset>
       <fileset dir="${build}">
@@ -163,6 +163,8 @@
       <fileset dir="${build.robocode}"/>        <!-- Class files -->
       <fileset dir="${src.robocode}">
         <include name="resources/**"/>          <!-- Resource files -->
+      </fileset>
+      <fileset dir="${src.extract}">
         <include name="license/cpl-v10.html"/>  <!-- License file -->
       </fileset>
       <!-- Set the main class of the manifest -->
@@ -200,8 +202,10 @@
         <include name="robots/**"/>     <!-- Builded sample robots -->
       </fileset>
       <fileset dir="${src.robocode}">
-        <include name="license/cpl-v10.html"/>     <!-- License file -->
-        <include name="resources/versions.txt"/>   <!-- Versions file -->
+        <include name="resources/versions.txt"/>  <!-- Versions file -->
+      </fileset>
+      <fileset dir="${src.extract}">
+        <include name="license/cpl-v10.html"/>    <!-- License file(s) -->
       </fileset>
     </jar>
   </target>
