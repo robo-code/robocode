@@ -1,53 +1,59 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics to buttons
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
 
 
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import java.net.*;
 
-import robocode.util.Utils;
 import robocode.manager.*;
 import robocode.repository.*;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Matthew Reeder, Flemming N. Larsen (current)
+ */
 public class TeamCreator extends JDialog implements WizardListener {
 
-	private JPanel teamCreatorContentPane = null;
+	private JPanel teamCreatorContentPane;
 
-	private WizardCardPanel wizardPanel = null;
-	private WizardController wizardController = null;
+	private WizardCardPanel wizardPanel;
+	private WizardController wizardController;
 	
-	// private FilenamePanel filenamePanel = null;
-	// private ConfirmPanel confirmPanel = null;
-	
-	private RobotSelectionPanel robotSelectionPanel = null;
-	private TeamCreatorOptionsPanel teamCreatorOptionsPanel = null;
+	private RobotSelectionPanel robotSelectionPanel;
+	private TeamCreatorOptionsPanel teamCreatorOptionsPanel;
 
 	private int minRobots = 2;
 	private int maxRobots = 10;
 	
-	private RobotRepositoryManager robotRepositoryManager = null;
-	private RobocodeManager manager = null;
+	private RobotRepositoryManager robotRepositoryManager;
+	private RobocodeManager manager;
 	
 	private EventHandler eventHandler = new EventHandler();
+
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
 				getRobotSelectionPanel().refreshRobotList();
 			}
 		}
-		;
 	}
 	
 	public TeamCreator(RobotRepositoryManager robotRepositoryManager) {
@@ -59,129 +65,71 @@ public class TeamCreator extends JDialog implements WizardListener {
 
 	protected TeamCreatorOptionsPanel getTeamCreatorOptionsPanel() {
 		if (teamCreatorOptionsPanel == null) {
-			try {
-				teamCreatorOptionsPanel = new TeamCreatorOptionsPanel(this);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			teamCreatorOptionsPanel = new TeamCreatorOptionsPanel(this);
 		}
 		return teamCreatorOptionsPanel;
 	}
 
-	private javax.swing.JPanel getTeamCreatorContentPane() {
+	private JPanel getTeamCreatorContentPane() {
 		if (teamCreatorContentPane == null) {
-			try {
-				teamCreatorContentPane = new javax.swing.JPanel();
-				teamCreatorContentPane.setName("robotPackagerContentPane");
-				teamCreatorContentPane.setLayout(new java.awt.BorderLayout());
-				teamCreatorContentPane.add(getWizardController(), java.awt.BorderLayout.SOUTH);
-				teamCreatorContentPane.add(getWizardPanel(), java.awt.BorderLayout.CENTER);
-				getWizardPanel().getWizardController().setFinishButtonText("Create Team!");
-				teamCreatorContentPane.registerKeyboardAction(eventHandler, "Refresh",
-						KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-				teamCreatorContentPane.registerKeyboardAction(eventHandler, "Refresh",
-						KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_FOCUSED);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			teamCreatorContentPane = new JPanel();
+			teamCreatorContentPane.setLayout(new BorderLayout());
+			teamCreatorContentPane.add(getWizardController(), BorderLayout.SOUTH);
+			teamCreatorContentPane.add(getWizardPanel(), BorderLayout.CENTER);
+			getWizardPanel().getWizardController().setFinishButtonTextAndMnemonic("Create Team!", 'C', 0);
+			teamCreatorContentPane.registerKeyboardAction(eventHandler, "Refresh",
+					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			teamCreatorContentPane.registerKeyboardAction(eventHandler, "Refresh",
+					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_FOCUSED);
 		}
 		return teamCreatorContentPane;
 	}
 
 	/**
 	 * Return the Page property value.
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
 	protected RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			try {
-				robotSelectionPanel = new RobotSelectionPanel(robotRepositoryManager, minRobots, maxRobots, false,
-						"Select the robots for this team.", false, true, true, false, false, false, null);
-				robotSelectionPanel.setName("Robots available for team");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robotSelectionPanel = new RobotSelectionPanel(robotRepositoryManager, minRobots, maxRobots, false,
+					"Select the robots for this team.", false, true, true, false, false, false, null);
 		}
 		return robotSelectionPanel;
 	}
 
 	/**
 	 * Return the tabbedPane.
-	 * @return javax.swing.JTabbedPane
+	 * 
+	 * @return JTabbedPane
 	 */
 	private WizardCardPanel getWizardPanel() {
 		if (wizardPanel == null) {
-			try {
-				wizardPanel = new WizardCardPanel(this);
-				wizardPanel.setName("wizardPanel");
-				wizardPanel.add(getRobotSelectionPanel(), "Select robots");
-				wizardPanel.add(getTeamCreatorOptionsPanel(), "Select options");
-				// wizardPanel.add(getFilenamePanel(),"Select filename");
-				// wizardPanel.add(getConfirmPanel(),"Confirm");
-				// getWizardPanelLayout().addLayoutComponent(getRobotSelectionPanel(),"Select robot");
-				// getWizardPanelLayout().addLayoutComponent(getPackagerOptionsPanel(),"Select options");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			wizardPanel = new WizardCardPanel(this);
+			wizardPanel.add(getRobotSelectionPanel(), "Select robots");
+			wizardPanel.add(getTeamCreatorOptionsPanel(), "Select options");
 		}
 		return wizardPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 11:25:12 AM)
-	 */
 	public void initialize() {
-		try {
-			setName("Team Creator");
-			setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-			// setSize(550, 380);
-			setTitle("Create a team");
-			setContentPane(getTeamCreatorContentPane());
-			// addComponentListener(eventHandler);
-			// addWindowListener(eventHandler);
-		} catch (java.lang.Throwable e) {
-			log(e);
-		}
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	public void log(String s) {
-		Utils.log(s);
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	public void log(Throwable e) {
-		Utils.log(e);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setTitle("Create a team");
+		setContentPane(getTeamCreatorContentPane());
 	}
 
 	private WizardController getWizardController() {
 		if (wizardController == null) {
-			try {
-				wizardController = getWizardPanel().getWizardController();
-				wizardController.setName("wizardController");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			wizardController = getWizardPanel().getWizardController();
 		}
 		return wizardController;
 	}
 
 	public void cancelButtonActionPerformed() {
-		java.awt.AWTEvent evt = new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING);
-
-		this.dispatchEvent(evt);
+		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		return;
 	}
-	
+
 	public void finishButtonActionPerformed() {
 		try {
 			int rc = createTeam();
@@ -198,7 +146,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			JOptionPane.showMessageDialog(this, e.toString(), "Team Creation Failed", JOptionPane.ERROR_MESSAGE, null);
 		}
 	}
-	
+
 	public int createTeam() throws IOException {
 		File f = new File(robotRepositoryManager.getRobotsDirectory(),
 				teamCreatorOptionsPanel.getTeamPackage().replace('.', File.separatorChar)
@@ -243,17 +191,13 @@ public class TeamCreator extends JDialog implements WizardListener {
 		teamSpec.setMembers(robotSelectionPanel.getSelectedRobotsAsString());
 		teamSpec.setRobocodeVersion(manager.getVersionManager().getVersion());
 
-		// authorEmail = props.getProperty(TEAM_AUTHOR_EMAIL);
-		// authorWebsite = props.getProperty(TEAM_AUTHOR_WEBSITE);
-
 		FileOutputStream out = new FileOutputStream(f);
 
 		teamSpec.store(out, "Robocode robot team");
 		out.close();
-		
+
 		robotRepositoryManager.clearRobotList();
 
 		return 0;
 	}
 }
-

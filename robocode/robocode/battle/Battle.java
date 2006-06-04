@@ -1,109 +1,102 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Replaced the ContestantPeerVector, BulletPeerVector, and RobotPeerVector
+ *       with plain Vector
+ *     - Integration of robocode.render
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.battle;
 
 
 import java.util.Vector;
-
-import robocode.MessageEvent;
-import robocode.Robot;
-import robocode.RobotDeathEvent;
-import robocode.SkippedTurnEvent;
+import robocode.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.dialog.RobotButton;
-import robocode.manager.BattleManager;
-import robocode.manager.FpsManager;
-import robocode.manager.RobocodeManager;
-import robocode.peer.BulletPeer;
-import robocode.peer.BulletPeerVector;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantPeerVector;
-import robocode.peer.RobotPeer;
-import robocode.peer.RobotPeerVector;
-import robocode.peer.TeamPeer;
+import robocode.manager.*;
+import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (12/13/2000 9:38:33 PM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class Battle implements Runnable {
 
 	// Objects we use
 	private BattleView battleView;
 	private BattleField battleField;
-	private BattleManager battleManager = null;
-	private RobocodeManager manager = null;
+	private BattleManager battleManager;
+	private RobocodeManager manager;
 
 	// Battle items	
-	private java.lang.Thread battleThread;
-	private boolean running = false;
-	private boolean abortBattles = false;
+	private Thread battleThread;
+	private boolean running;
+	private boolean abortBattles;
 
 	// Option related items
 	private double gunCoolingRate = .1;
 
 	// Inactivity related items
-	private int inactiveTurnCount = 0;
-	private double inactivityEnergy = 0.0;
+	private int inactiveTurnCount;
+	private double inactivityEnergy;
 	private long inactivityTime;
 
 	// FPS related items
-	private FpsManager fpsManager = null;
+	private FpsManager fpsManager;
 	private int initialDelay = 50;
 	private int delay = 33;
 	private int optimalFPS = 30;
-	private int framesDisplayedThisSecond = 0;
-	private long displayFpsTime = 0;
+	private int framesDisplayedThisSecond;
+	private long displayFpsTime;
 
 	// Turn skip related items	
 	private int maxSkippedTurns = 30;
 	private int maxSkippedTurnsWithIO = 240;
-	private String nonDeterministicRobots = null;
+	private String nonDeterministicRobots;
 	private boolean deterministic = true;
 
 	// Current round items
-	private int numRounds = 0;
-	private int roundNum = 0;
-	private int currentTime = 0;
-	private int endTimer = 0;
-	private int stopTime = 0;
-	private int activeRobots = 0;
-	private RobotPeerVector deathEvents = new RobotPeerVector();
+	private int numRounds;
+	private int roundNum;
+	private int currentTime;
+	private int endTimer;
+	private int stopTime;
+	private int activeRobots;
+	private Vector deathEvents = new Vector(); // <RobotPeer>
 
 	// Objects in the battle
-	private RobotPeerVector robots;
-	private ContestantPeerVector contestants;
-	private BulletPeerVector bullets;
+	private Vector robots; // <RobotPeer>
+	private Vector contestants; // <ContestantPeer>
+	private Vector bullets; // <BulletPeer>
 
 	// Results related items
-	private boolean exitOnComplete = false;
-	private boolean showResultsDialog = false;
+	private boolean exitOnComplete;
+	private boolean showResultsDialog;
 
 	// Results for RobocodeEngine controller
-	private BattleSpecification battleSpecification = null;
+	private BattleSpecification battleSpecification;
 
 	// Robot loading related items
-	private java.lang.Thread unsafeLoadRobotsThread = null;
+	private Thread unsafeLoadRobotsThread;
 	private Object unsafeLoaderMonitor = new Object();
-	private boolean unsafeLoaderThreadRunning = false;
-	private boolean robotsLoaded = false;
+	private boolean unsafeLoaderThreadRunning;
+	private boolean robotsLoaded;
 
 	// Pause related items
-	boolean wasPaused = false;
+	private boolean wasPaused;
 
 	/**
 	 * Battle constructor
@@ -119,9 +112,9 @@ public class Battle implements Runnable {
 		this.manager = manager;
 		this.battleManager = manager.getBattleManager();
 		battleView.setBattle(this);
-		robots = new RobotPeerVector();
-		bullets = new BulletPeerVector();
-		contestants = new ContestantPeerVector();
+		robots = new Vector(); // <RobotPeer>
+		bullets = new Vector(); // <BulletPeer>
+		contestants = new Vector(); // <ContestantPeer>
 		fpsManager = new FpsManager(this);
 	}
 
@@ -137,7 +130,6 @@ public class Battle implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
-
 		running = true;
 
 		if (unsafeLoadRobotsThread != null && Thread.currentThread() == unsafeLoadRobotsThread) {
@@ -150,22 +142,17 @@ public class Battle implements Runnable {
 			initialize();
 		} catch (NullPointerException e) {
 			if (!abortBattles) {
-				log("Null pointer exception in battle.initialize");
+				Utils.log("Null pointer exception in battle.initialize");
 				e.printStackTrace();
 				throw e;
 			}
 		}
-
-		// battleActiveTime = System.currentTimeMillis();
-		// battleMonitorThread = new Thread(this);
-		// battleMonitorThread.start();
 
 		deterministic = true;
 		nonDeterministicRobots = null;
 
 		setRoundNum(0);
 		while (!abortBattles && getRoundNum() < getNumRounds()) {
-			// battleActiveTime = System.currentTimeMillis();
 			battleView.setTitle("Robocode: Starting Round " + (roundNum + 1) + " of " + numRounds);
 			try {
 				setupRound();
@@ -176,17 +163,16 @@ public class Battle implements Runnable {
 				cleanupRound();
 			} catch (NullPointerException e) {
 				if (!abortBattles) {
-					log("Null pointer exception running a battle");
+					Utils.log("Null pointer exception running a battle");
 					throw e;
 				} else {
-					log("Warning:  Null pointer exception while aborting battle.");
+					Utils.log("Warning:  Null pointer exception while aborting battle.");
 				}
 			} catch (Exception e) {
-				log("Exception running a battle: " + e);
+				Utils.log("Exception running a battle: " + e);
 			}
 
 			setRoundNum(getRoundNum() + 1);
-
 		}
 
 		for (int i = 0; i < robots.size(); i++) {
@@ -228,20 +214,10 @@ public class Battle implements Runnable {
 		running = false;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/23/2000 6:00:49 AM)
-	 * @param bullet robocode.peer.BulletPeer
-	 */
 	public void addBullet(BulletPeer bullet) {
 		bullets.add(bullet);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/15/2000 12:17:31 PM)
-	 * @param robot robocode.peer.robot.RobotClassManager
-	 */
 	public void addRobot(RobotClassManager robotClassManager) {
 
 		RobotPeer robotPeer = new RobotPeer(robotClassManager, battleManager.getManager().getRobotRepositoryManager(),
@@ -263,11 +239,13 @@ public class Battle implements Runnable {
 		int count = 0;
 
 		for (int i = 0; i < robots.size(); i++) {
-			if ((robots.elementAt(i)).getRobotClassManager().getClassNameManager().getFullClassNameWithVersion().equals(
+			RobotPeer rp = (RobotPeer) robots.elementAt(i);
+
+			if (rp.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion().equals(
 					robotPeer.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion())) {
 				if (count == 0) {
-					if (!robots.elementAt(i).isDuplicate()) {
-						robots.elementAt(i).setDuplicate(0);
+					if (!rp.isDuplicate()) {
+						rp.setDuplicate(0);
 					}
 				}
 				count++;
@@ -285,46 +263,16 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public ContestantPeerVector getContestants() {
+	public Vector getContestants() { // <ContestantPeer>
 		return contestants;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/28/2000 1:52:24 PM)
-	 */
 	public void cleanup() {
-
-		/*
-		 for (int i = 0; i < robotGraphics.size(); i++)
-		 {
-		 ((RobotGraphics)robotGraphics.remove(0)).finalize();
-		 
-		 }
-		 */
-		
-		/*
-		 for (int i = 0; i < robots.size(); i++)
-		 {
-		 PrivateRobot r = (PrivateRobot)robots.elementAt(i);
-		 if (r.robotDialog != null)
-		 {
-		 r.robotDialog.dispose();
-		 r.robotDialog = null;
-		 }
-		 }
-		 */
 		robots.clear();
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/29/2000 9:21:26 AM)
-	 */
 	public void cleanupRound() {
-
-		log("Round " + (roundNum + 1) + " cleaning up.");
+		Utils.log("Round " + (roundNum + 1) + " cleaning up.");
 
 		RobotPeer r;
 
@@ -333,114 +281,49 @@ public class Battle implements Runnable {
 			r.getRobotThreadManager().waitForStop();
 			r.getRobotStatistics().generateTotals();
 		}
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/16/2001 2:14:31 PM)
-	 * @param r robocode.JSafeRobot
-	 */
 	public void generateDeathEvents(RobotPeer r) {
 		deathEvents.add(r);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/14/2000 2:44:31 PM)
-	 * @return robocode.BattleField
-	 */
 	public BattleField getBattleField() {
 		return battleField;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/21/2000 12:39:04 PM)
-	 * @return java.lang.Thread
-	 */
-	public java.lang.Thread getBattleThread() {
+	public Thread getBattleThread() {
 		return battleThread;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/15/2001 12:45:22 PM)
-	 * @return java.util.Vector
-	 */
-	public BulletPeerVector getBullets() {
+	public Vector getBullets() { // <BulletPeer>
 		return bullets;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/15/2001 12:47:29 PM)
-	 * @return int
-	 */
 	public int getCurrentTime() {
 		return currentTime;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/16/2001 1:59:55 PM)
-	 * @return int
-	 */
 	public double getGunCoolingRate() {
 		return gunCoolingRate;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 10:50:39 AM)
-	 * @return int
-	 */
 	public long getInactivityTime() {
 		return inactivityTime;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/1/2001 5:25:01 PM)
-	 * @return int
-	 */
-	// public int getMaxWaitCount() {
-	// return maxWaitCount;
-	// }
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 9:54:39 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getNonDeterministicRobots() {
+	public String getNonDeterministicRobots() {
 		return nonDeterministicRobots;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/16/2001 1:49:17 PM)
-	 * @return int
-	 */
 	public int getNumRounds() {
 		return numRounds;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 10:58:20 AM)
-	 * @return int
-	 */
 	public int getOptimalFPS() {
 		return optimalFPS;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/15/2001 12:45:03 PM)
-	 * @return java.util.Vector
-	 */
-	public RobotPeerVector getRobots() {
+	public Vector getRobots() { // <RobotPeer>
 		return robots;
 	}
 
@@ -458,15 +341,11 @@ public class Battle implements Runnable {
 		battleView.setDisplayOptions();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/29/2000 9:13:50 AM)
-	 */
 	public void initialize() {
 		setOptions();
 		manager.getImageManager().resetColorIndex();
 
-		// log("Starting loader thread.");
+		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
 
 		unsafeThreadGroup.setDaemon(true);
@@ -491,35 +370,19 @@ public class Battle implements Runnable {
 		manager.getWindowManager().getRobocodeFrame().validate();
 
 		battleView.setPaintMode(BattleView.PAINTBATTLE);
-		battleView.draw(false);
+		battleView.showNextFrame();
 		// Pre-load robot classes without security...
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 		// in the safe robot loader the class is linked.
 		for (int i = 0; i < robots.size(); i++) {
 			r = (RobotPeer) robots.elementAt(i);
-			// RobocodeClassLoader cl = new RobocodeClassLoader(getClass().getClassLoader(),r.getRobotClassManager().getRobotProperties(),r);
-			// r.getRobotClassManager().setRobotClassLoader(cl);
 			try {
-
-				// getClass().getClassLoader().loadClass(r.robotClass);
 				String className = r.getRobotClassManager().getFullClassName();
 				Class c = r.getRobotClassManager().getRobotClassLoader().loadRobotClass(className, true);
 
-				/* String expectedClassName = robocode.getRobotDatabase().getProperty(className);
-				 if (!expectedClassName.equals(c.getSuperclass().getName()))
-				 {
-				 log("Updating robot database: " + className + " is now of class: " + c.getSuperclass().getName());
-				 robocode.getRobotDatabase().setProperty(className,c.getSuperclass().getName());
-				 robocode.saveRobotDatabase();
-				 }
-				 */
 				r.getRobotClassManager().setRobotClass(c);
 				r.getRobotFileSystemManager().initializeQuota();
-				// for (int j = 0; j < r.getRobotClass().getInnerClasses().size(); j++)
-				// {
-				// log("Loading inner class " + (String)r.getRobotClass().getInnerClasses().elementAt(j));
-				// robotClassLoader.loadRobotClass((String)r.getRobotClass().getInnerClasses().elementAt(j));
-				// }
+
 				r = (RobotPeer) robots.elementAt(i);
 				Class[] interfaces = c.getInterfaces();
 
@@ -539,95 +402,43 @@ public class Battle implements Runnable {
 						break;
 					}
 				}
-				battleView.draw(true);
-
+				battleView.showNextFrame();
 			} catch (Throwable e) {
 				r.out.println("SYSTEM: Could not load " + r.getName() + " : " + e);
 				e.printStackTrace(r.out);
-				// if (e instanceof Exception) {
-				// ((Exception)e).printStackTrace(r.out);
-				// }
 			}
 		}
 		abortBattles = false;
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/28/2001 4:36:23 PM)
-	 * @return boolean
-	 */
 	public boolean isDeterministic() {
 		return deterministic;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 4:07:25 PM)
-	 * @return boolean
-	 */
 	public boolean isExitOnComplete() {
 		return exitOnComplete;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/21/2000 2:36:41 PM)
-	 * @return boolean
-	 */
 	public synchronized boolean isRobotsLoaded() {
 		return robotsLoaded;
 	}
 
-	private void log(String s) {
-		Utils.log(s);
-		System.err.flush();
-	}
-
-	private void log(String s, boolean newline) {
-		Utils.log(s, newline);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
-
-	private void log(String s, Throwable e) {
-		Utils.log(s, e);
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/21/2000 12:05:59 PM)
-	 */
 	public void printSystemThreads() {
-
 		Thread systemThreads[] = new Thread[256];
 
 		battleThread.getThreadGroup().enumerate(systemThreads, false);
-		log("Threads: ------------------------");
+		Utils.log("Threads: ------------------------");
 		for (int i = 0; i < systemThreads.length; i++) {
 			if (systemThreads[i] != null) {
-				log(systemThreads[i].getName());
+				Utils.log(systemThreads[i].getName());
 			}
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/15/2000 12:17:31 PM)
-	 * @param bullet robocode.peer.BulletPeer
-	 */
 	public void removeBullet(BulletPeer bullet) {
-
 		bullets.remove(bullet);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/4/2001 3:12:25 AM)
-	 */
 	public void resetInactiveTurnCount(double energyLoss) {
 		if (energyLoss < 0) {
 			return;
@@ -639,13 +450,8 @@ public class Battle implements Runnable {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/29/2000 9:24:41 AM)
-	 */
 	public void runRound() {
-		log("Let the games begin!");
-
+		Utils.log("Let the games begin!");
 		fpsManager.initialize();
 		boolean battleOver = false;
 
@@ -657,9 +463,6 @@ public class Battle implements Runnable {
 		currentTime = 0;
 		delay = initialDelay;
 		inactiveTurnCount = 0;
-
-		// lastscore = 0;
-		// nextscore = 0;
 
 		while (!battleOver) {
 			if (shouldPause()) {
@@ -711,11 +514,7 @@ public class Battle implements Runnable {
 
 			// Repaint
 			if (battleView != null) {
-				try {
-					battleView.draw(false);
-				} catch (NullPointerException e) {
-					log(e);
-				}
+				battleView.showNextFrame();
 			}
 
 			// Robot time!
@@ -723,7 +522,6 @@ public class Battle implements Runnable {
 
 			fpsManager.update();
 
-			// log("to delay");
 			// Delay to match framerate
 			try {
 				Thread.sleep(delay);
@@ -732,7 +530,6 @@ public class Battle implements Runnable {
 		}
 		battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 		bullets.clear();
-		// System.gc();
 	}
 
 	private boolean shouldPause() {
@@ -773,14 +570,12 @@ public class Battle implements Runnable {
 			}
 		}
 		setActiveRobots(ar);
-
 	}
 
 	private void wakeupRobots() {
 		RobotPeer r;
-		// Wake up all robot threads 
-		int count;
 
+		// Wake up all robot threads 
 		for (int i = 0; i < robots.size(); i++) {
 			r = (RobotPeer) robots.elementAt(i);
 			if (r.isRunning()) {
@@ -798,7 +593,7 @@ public class Battle implements Runnable {
 							r.wait(manager.getCpuManager().getCpuConstant());
 						} catch (InterruptedException e) {
 							// ?
-							log("Wait for " + r + " interrupted.");
+							Utils.log("Wait for " + r + " interrupted.");
 						}
 					}
 				}
@@ -806,7 +601,7 @@ public class Battle implements Runnable {
 					r.setSkippedTurns(0);
 				} else {
 					r.setSkippedTurns(r.getSkippedTurns() + 1);
-					// log(r.getName() + " has skipped " + r.getSkippedTurns() + " turns.");
+
 					r.getEventManager().add(new SkippedTurnEvent());
 
 					// Actually, Robocode is never deterministic due to Robots
@@ -818,8 +613,7 @@ public class Battle implements Runnable {
 					} else if (nonDeterministicRobots.indexOf(r.getName()) == -1) {
 						nonDeterministicRobots += "," + r.getName();
 					}
-					if (
-							(!r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurns))
+					if ((!r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurns))
 							|| (r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurnsWithIO))) {
 						r.out.println(
 								"SYSTEM: " + r.getName() + " has not performed any actions in a reasonable amount of time.");
@@ -828,7 +622,7 @@ public class Battle implements Runnable {
 						r.getRobotThreadManager().forceStop();
 					}
 				}
-			} // if isrunning
+			} // if isRunning
 		}
 	}
 
@@ -847,7 +641,7 @@ public class Battle implements Runnable {
 		for (int i = 0; i < bullets.size(); i++) {
 			int osize = bullets.size();
 
-			(bullets.elementAt(i)).update();
+			((BulletPeer) bullets.elementAt(i)).update();
 			if (bullets.size() < osize) {
 				i--;
 			}
@@ -864,8 +658,10 @@ public class Battle implements Runnable {
 					continue;
 				}
 				for (int j = 0; j < deathEvents.size(); j++) {
-					r.getEventManager().add(new RobotDeathEvent(((RobotPeer) deathEvents.elementAt(j)).getName()));
-					if (r.getTeamPeer() == null || r.getTeamPeer() != deathEvents.elementAt(j).getTeamPeer()) {
+					RobotPeer de = (RobotPeer) deathEvents.elementAt(j);
+
+					r.getEventManager().add(new RobotDeathEvent(de.getName()));
+					if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
 						r.getRobotStatistics().scoreSurvival();
 					}
 				}
@@ -873,15 +669,16 @@ public class Battle implements Runnable {
 		}
 		// Compute scores for dead robots
 		for (int i = 0; i < deathEvents.size(); i++) {
-			r = deathEvents.elementAt(i);
-
+			r = (RobotPeer) deathEvents.elementAt(i);
 			if (r.getTeamPeer() == null) {
 				r.getRobotStatistics().scoreDeath(getActiveContestantCount(r));
 			} else {
 				boolean teammatesalive = false;
 
 				for (int j = 0; j < robots.size(); j++) {
-					if (robots.elementAt(j).getTeamPeer() == r.getTeamPeer() && (!robots.elementAt(j).isDead())) {
+					RobotPeer tm = (RobotPeer) robots.elementAt(j);
+
+					if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
 						teammatesalive = true;
 						break;
 					}
@@ -889,33 +686,24 @@ public class Battle implements Runnable {
 				if (!teammatesalive) {
 					r.getRobotStatistics().scoreDeath(getActiveContestantCount(r));
 				}
-				// else
-				// log(r.getName() + " still has teammates alive, not scoring at time" + getCurrentTime());
 			}
-			// if (r.getTeamPeer() == null)
-			// r.getRobotStatistics().scoreDeath(getActiveRobots() - deathEvents.size());
-			// else
-			// {
-			// }
 		}
 	}
 
 	private void performScans() {
-
 		RobotPeer r;
 
-		// log("scans");
 		// Perform scans, handle messages
 		for (int i = 0; i < robots.size(); i++) {
 			r = (RobotPeer) robots.elementAt(i);
 
 			if (!r.isDead()) {
 				if (r.getScan() == true) {
-					// log("enter scan");
+					// Enter scan
 					System.err.flush();
 
 					r.scan();
-					// log("exit scan");
+					// Exit scan
 					r.setScan(false);
 				}
 
@@ -943,7 +731,7 @@ public class Battle implements Runnable {
 				TeamPeer winningTeam = null;
 
 				for (int i = 0; i < robots.size(); i++) {
-					r = robots.elementAt(i);
+					r = (RobotPeer) robots.elementAt(i);
 					if (!r.isDead()) {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreWinner();
@@ -965,7 +753,7 @@ public class Battle implements Runnable {
 
 			if (endTimer == 4 * 30) {
 				for (int i = 0; i < robots.size(); i++) {
-					r = robots.elementAt(i);
+					r = (RobotPeer) robots.elementAt(i);
 					if (!r.isDead()) {
 						r.halt();
 					}
@@ -989,7 +777,7 @@ public class Battle implements Runnable {
 		int count = 0;
 
 		for (int i = 0; i < contestants.size(); i++) {
-			ContestantPeer c = contestants.elementAt(i);
+			ContestantPeer c = (ContestantPeer) contestants.elementAt(i);
 
 			if (c instanceof RobotPeer) {
 				RobotPeer r = (RobotPeer) c;
@@ -1011,62 +799,30 @@ public class Battle implements Runnable {
 		return count;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/14/2000 2:44:31 PM)
-	 * @param newBattleField robocode.BattleField
-	 */
 	public void setBattleField(BattleField newBattleField) {
 		battleField = newBattleField;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/21/2000 12:39:04 PM)
-	 * @param newBattleThread java.lang.Thread
-	 */
-	public void setBattleThread(java.lang.Thread newBattleThread) {
+	public void setBattleThread(Thread newBattleThread) {
 		battleThread = newBattleThread;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/15/2001 12:47:29 PM)
-	 * @param newCurrentTime int
-	 */
 	public void setCurrentTime(int newCurrentTime) {
 		currentTime = newCurrentTime;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/28/2001 4:36:23 PM)
-	 * @param newDeterministic boolean
-	 */
 	void setDeterministic(boolean newDeterministic) {
 		deterministic = newDeterministic;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 4:07:25 PM)
-	 * @param newExitOnComplete boolean
-	 */
 	public void setExitOnComplete(boolean newExitOnComplete) {
 		exitOnComplete = newExitOnComplete;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/4/2001 1:21:50 AM)
-	 */
 	public void setFPS(int frames, long time) {
-
 		int fps = ((int) ((double) frames * (1000.0 / (double) time)));
 
 		if (fps != optimalFPS) {
-			int diff = fps - optimalFPS;
-			// log("FPS is " + fps + " but want " + optimalFPS);
 			int diffDelay = (int) ((1000.0 / optimalFPS) - (1000.0 / fps));
 
 			if (diffDelay > 0) {
@@ -1075,10 +831,7 @@ public class Battle implements Runnable {
 			delay += diffDelay;
 			if (delay < 0) {
 				delay = 0;
-				// log("Delay at minimum: " + delay);
 			}
-			// else
-			// log("Battle adjusting delay " + diffDelay + " to " + delay);
 		}
 		if (battleView.isDisplayFps()) {
 			framesDisplayedThisSecond += frames;
@@ -1097,80 +850,44 @@ public class Battle implements Runnable {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/16/2001 1:59:55 PM)
-	 * @param newFireDelay int
-	 */
 	public void setGunCoolingRate(double newGunCoolingRate) {
 		gunCoolingRate = newGunCoolingRate;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 10:50:39 AM)
-	 * @param newInactivityTime int
-	 */
 	public void setInactivityTime(long newInactivityTime) {
 		inactivityTime = newInactivityTime;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/16/2001 1:49:17 PM)
-	 * @param numRounds int
-	 */
 	public void setNumRounds(int numRounds) {
 		this.numRounds = numRounds;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 10:58:20 AM)
-	 * @param newOptimalFPS int
-	 */
 	public void setOptimalFPS(int newOptimalFPS) {
 		optimalFPS = newOptimalFPS;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/18/2001 1:41:00 PM)
-	 * @param rules java.util.Properties
-	 */
 	public void setProperties(BattleProperties battleProperties) {
 		try {
 			setNumRounds(battleProperties.getNumRounds());
 			setGunCoolingRate(battleProperties.getGunCoolingRate());
 			setInactivityTime(battleProperties.getInactivityTime());
 		} catch (Exception e) {
-			log("Exception setting battle properties", e);
+			Utils.log("Exception setting battle properties", e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/21/2000 2:36:41 PM)
-	 * @param newRobotsLoaded boolean
-	 */
 	public synchronized void setRobotsLoaded(boolean newRobotsLoaded) {
 		robotsLoaded = newRobotsLoaded;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/29/2000 9:21:26 AM)
-	 */
 	public void setupRound() {
-
-		// battleActiveTime = System.currentTimeMillis();
-		log("----------------------");
-		log("Round " + (roundNum + 1) + " initializing..", false);
+		Utils.log("----------------------");
+		Utils.log("Round " + (roundNum + 1) + " initializing..", false);
 		currentTime = 0;
 
 		setRobotsLoaded(false);
 		while (!isUnsafeLoaderThreadRunning()) {
-			// log("waiting for loader to start.");
+			// waiting for loader to start
 			battleView.repaint();
 			try {
 				Thread.sleep(100);
@@ -1190,39 +907,19 @@ public class Battle implements Runnable {
 		}
 
 		battleView.setPaintMode(BattleView.PAINTBATTLE);
-		battleView.draw(true);
+		battleView.showNextFrame();
 
-		// log("notifying loader");
+		// Notifying loader
 		synchronized (unsafeLoaderMonitor) {
 			unsafeLoaderMonitor.notify();
 		}
 		while (!isRobotsLoaded()) {
-			// battleActiveTime = System.currentTimeMillis();
-			// log("waiting for loader");
-			battleView.draw(false);
+			battleView.showNextFrame();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {}
 		}
 
-		// battleActiveTime = System.currentTimeMillis();
-
-		// log("Placing Robots");
-		/* moved to unsafeloadrobots and initialize.
-		 for (int i = 0; i < robots.size(); i++)
-		 {
-		 r = (RobotPeer)robots.elementAt(i);
-		 double  x=0,y=0,heading=0;
-		 for (int j = 0; j < 1000; j++)
-		 {
-		 x = r.getWidth() + Math.random() * (battleField.getWidth() - 2 * r.getWidth());
-		 y = r.getHeight() + Math.random() * (battleField.getHeight() - 2 * r.getHeight());
-		 heading = 2 * Math.PI * Math.random();
-		 r.initialize(x,y,heading);
-		 if (validSpot(r) == true) break;
-		 }
-		 }
-		 */
 		for (int i = 0; i < robots.size(); i++) {
 			r = (RobotPeer) robots.elementAt(i);
 			if (r.getRobotClassManager().getClassNameManager().getFullPackage() != null
@@ -1240,7 +937,8 @@ public class Battle implements Runnable {
 		
 		activeRobots = robots.size();
 		manager.getThreadManager().reset();
-		// log("Turning on robots.",false);
+
+		// Turning on robots
 		for (int i = 0; i < robots.size(); i++) {
 			r = (RobotPeer) robots.elementAt(i);
 			manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
@@ -1248,43 +946,27 @@ public class Battle implements Runnable {
 
 			synchronized (r) {
 				try {
-					log(".", false);
+					Utils.log(".", false);
 					r.getRobotThreadManager().start();
 					// Wait for the robot to go to sleep (take action)
 					r.wait(waitTime);
 
-					/* for (int count = 0; r.isSleeping() == false && count < 300 * manager.getCpuManager().getCpuConstant(); count++)
-					 {
-					 r.wait(1);
-					 if (count % 100 == 0)
-					 log("Still waiting for " + r.getName() + " after" +  (System.currentTimeMillis() - start) + " ms");
-					 }
-					 */
 				} catch (InterruptedException e) {
-					log("Wait for " + r + " interrupted.");
+					Utils.log("Wait for " + r + " interrupted.");
 				}
 			}
-			battleView.draw(false);
+			battleView.showNextFrame();
 			if (!r.isSleeping()) {
-				log("\n" + r.getName() + " still has not started after " + waitTime + " ms... giving up.");
+				Utils.log("\n" + r.getName() + " still has not started after " + waitTime + " ms... giving up.");
 			}
 		}
-		log("");
-
+		Utils.log("");
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/28/2000 2:19:52 PM)
-	 */
 	public void stop() {
 		stop(false);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/28/2000 2:19:52 PM)
-	 */
 	public void stop(boolean showResultsDialog) {
 		if (running == false) {
 			cleanup();
@@ -1306,26 +988,21 @@ public class Battle implements Runnable {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/21/2000 2:33:22 PM)
-	 */
 	public void unsafeLoadRobots() {
-
 		while (true) {
-			// log("Loader waiting.");
+			// Loader waiting
 			synchronized (unsafeLoaderMonitor) {
 				try {
 					setUnsafeLoaderThreadRunning(true);
 					unsafeLoaderMonitor.wait(180000);
 				} catch (InterruptedException e) {}
 			}
-			// log("Loader awake.");
+			// Loader awake
 			if (getRoundNum() >= getNumRounds() || abortBattles == true) {
-				// log("Robot loader thread terminating.");
+				// Robot loader thread terminating
 				return;
 			}
-			// log("Loading robots");
+			// Loading robots
 			RobotPeer r;
 
 			for (int i = 0; i < robots.size(); i++) {
@@ -1337,11 +1014,9 @@ public class Battle implements Runnable {
 					manager.getThreadManager().setLoadingRobot(r);
 					robotClass = r.getRobotClassManager().getRobotClass();
 					if (robotClass == null) {
-						// log("SYSTEM:  Skipping robot: " + r.getName());
 						r.out.println("SYSTEM: Skipping robot: " + r.getName());
 						continue;
 					}
-					// log("Loading with classloader: " + robotClass.getClassLoader());
 					Robot bot = (Robot) robotClass.newInstance();
 
 					bot.out = r.getOut();
@@ -1369,25 +1044,14 @@ public class Battle implements Runnable {
 							break;
 						}
 					}
-					battleView.draw(false);
+					battleView.showNextFrame();
 				}
-				// else
-				// r.initialize(r.getX(),r.getY(),r.getHeading());
-				// else initialize did it for us...
-
 			} // for
 			manager.getThreadManager().setLoadingRobot(null);
-			// robocode.getThreadManager().setRobotLoaderThread(null);	
 			setRobotsLoaded(true);
 		}
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/23/2000 12:32:34 PM)
-	 * @return boolean
-	 */
 	public boolean validSpot(RobotPeer robot) {
 		robot.updateBoundingBox();
 		for (int i = 0; i < robots.size(); i++) {
@@ -1404,6 +1068,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the activeRobots.
+	 * 
 	 * @return Returns a int
 	 */
 	public synchronized int getActiveRobots() {
@@ -1440,6 +1105,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the activeRobots.
+	 * 
 	 * @param activeRobots The activeRobots to set
 	 */
 	private synchronized void setActiveRobots(int activeRobots) {
@@ -1448,6 +1114,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the roundNum.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getRoundNum() {
@@ -1456,6 +1123,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the roundNum.
+	 * 
 	 * @param roundNum The roundNum to set
 	 */
 	public void setRoundNum(int roundNum) {
@@ -1464,6 +1132,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the unsafeLoaderThreadRunning.
+	 * 
 	 * @return Returns a boolean
 	 */
 	public synchronized boolean isUnsafeLoaderThreadRunning() {
@@ -1472,6 +1141,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the unsafeLoaderThreadRunning.
+	 * 
 	 * @param unsafeLoaderThreadRunning The unsafeLoaderThreadRunning to set
 	 */
 	public synchronized void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
@@ -1480,6 +1150,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the battleSpecification.
+	 * 
 	 * @return Returns a BattleSpecification
 	 */
 	public BattleSpecification getBattleSpecification() {
@@ -1488,6 +1159,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the battleSpecification.
+	 * 
 	 * @param battleSpecification The battleSpecification to set
 	 */
 	public void setBattleSpecification(BattleSpecification battleSpecification) {
@@ -1496,10 +1168,10 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the manager.
+	 * 
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {
 		return manager;
 	}
-
 }

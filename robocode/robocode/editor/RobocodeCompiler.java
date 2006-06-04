@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
 
@@ -17,16 +20,15 @@ import robocode.dialog.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (11/5/2001 6:40:39 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobocodeCompiler {
 	
-	public String compilerBinary = null;
-	public RobocodeEditor editor = null;
-	public String compilerOptions = null;
-	public String compilerClassPath = null;
+	public String compilerBinary;
+	public RobocodeEditor editor;
+	public String compilerOptions;
+	public String compilerClassPath;
 
 	/**
 	 * RobocodeCompiler constructor comment.
@@ -39,13 +41,7 @@ public class RobocodeCompiler {
 		this.editor = editor;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/5/2001 6:53:41 PM)
-	 * @param fileName java.lang.String
-	 */
 	public void compile(String fileName) {
-	
 		if (fileName.indexOf(" ") >= 0) {
 			fileName = "\"" + fileName + "\"";
 		}
@@ -62,7 +58,7 @@ public class RobocodeCompiler {
 		try {
 			String command = compilerBinary + " " + compilerOptions + " " + compilerClassPath + " " + fileName;
 
-			log("Compile command: " + command);
+			Utils.log("Compile command: " + command);
 			Process p = Runtime.getRuntime().exec(command, null, Constants.cwd());
 
 			console.processStream(p.getInputStream());
@@ -84,14 +80,5 @@ public class RobocodeCompiler {
 			console.append("Compile interrupted.\n");
 			console.setTitle("Compile interrupted.");
 		}
-
-	}
-
-	private static void log(String s) {
-		Utils.log(s);
-	}
-
-	private static void log(Throwable e) {
-		Utils.log(e);
 	}
 }

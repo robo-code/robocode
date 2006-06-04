@@ -1,82 +1,87 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Changes to facilitate Undo/Redo
+ *     - Support for line numbers
+ *     - Window menu
+ *     - Launching the Replace dialog using ctrl+H
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
 
 
-import java.io.*;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.awt.Rectangle;
+import javax.swing.undo.*;
+import javax.swing.filechooser.FileFilter;
+import java.io.*;
 import java.util.*;
-import robocode.util.*;
+import java.beans.*;
+import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (4/9/2001 5:15:56 PM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Matthew Reeder, Flemming N. Larsen (current)
  */
-public class EditWindow extends javax.swing.JInternalFrame implements CaretListener {
+public class EditWindow extends JInternalFrame implements CaretListener, PropertyChangeListener {
 
-	public RobocodeEditorKit editorKit = null;
-	public java.lang.String fileName = null;
-	public java.lang.String robotName = null;
-	public boolean modified = false;
-	private RobocodeEditor editor = null;
-	private javax.swing.JEditorPane editorPane = null;
-	private javax.swing.JPanel editWindowContentPane = null;
-	public javax.swing.JFrame frame = null;
-	public File robotsDirectory = null;
-	private javax.swing.JScrollPane scrollPane = null;
+	public RobocodeEditorKit editorKit;
+	public String fileName;
+	public String robotName;
+	public boolean modified;
+	private RobocodeEditor editor;
+	private JEditorPane editorPane;
+	private JPanel editWindowContentPane;
+	public JFrame frame;
+	public File robotsDirectory;
+	private JScrollPane scrollPane;
+
+	private LineNumbers lineNumbers;
+	private UndoManager undoManager;
 
 	/**
 	 * Return the editorPane property value.
-	 * @return javax.swing.JEditorPane
+	 * 
+	 * @return JEditorPane
 	 */
-	public javax.swing.JEditorPane getEditorPane() {
+	public JEditorPane getEditorPane() {
 		if (editorPane == null) {
-			try {
-				editorPane = new javax.swing.JEditorPane();
-				editorPane.setName("editorPane");
-				editorPane.setFont(new java.awt.Font("monospaced", 0, 12));
-				// editorPane.setBounds(0, 0, 6, 22);
-				editorPane.setContentType("text/java");
-				editorKit = new RobocodeEditorKit();
-				editorPane.setEditorKitForContentType("text/java", editorKit);
-				editorPane.setContentType("text/java");
-				editorKit.setEditWindow(this);
-				editorPane.addCaretListener(this);
-				((JavaDocument) editorPane.getDocument()).setEditWindow(this);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			editorPane = new JEditorPane();
+			editorPane.setFont(new Font("monospaced", 0, 12));
+			editorPane.setContentType("text/java");
+			editorKit = new RobocodeEditorKit();
+			editorPane.setEditorKitForContentType("text/java", editorKit);
+			editorPane.setContentType("text/java");
+			editorKit.setEditWindow(this);
+			editorPane.addCaretListener(this);
+			((JavaDocument) editorPane.getDocument()).setEditWindow(this);
+			editorPane.getDocument().addUndoableEditListener(getUndoManager());
+			editorPane.addPropertyChangeListener(this);
+
+			InputMap im = editorPane.getInputMap();
+
+			// read: hack.
+			im.put(KeyStroke.getKeyStroke("ctrl H"), editor.getReplaceAction()); // FIXME: Replace hack with better solution?
 		}
 		return editorPane;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:05:06 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getFileName() {
+	public String getFileName() {
 		return fileName;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:55:48 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getRobotName() {
+	public String getRobotName() {
 		return robotName;
 	}
 
@@ -85,8 +90,8 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 	 */
 	private void initialize() {
 		try {
-			this.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-				public void internalFrameClosing(javax.swing.event.InternalFrameEvent e) {
+			this.addInternalFrameListener(new InternalFrameAdapter() {
+				public void internalFrameClosing(InternalFrameEvent e) {
 					if (!modified) {
 						editor.setLineStatus(-1);
 						dispose();
@@ -94,9 +99,10 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 						editor.setLineStatus(-1);
 						dispose();
 					}
+					editor.removeFromWindowMenu(EditWindow.this);
 					return;
 				}
-				;
+
 				public void internalFrameDeactivated(InternalFrameEvent e) {
 					editor.setLineStatus(-1);
 				}
@@ -105,38 +111,27 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 					editor.setLineStatus(-1);
 				}
 			});
-			setName("EditWindow");
 			setResizable(true);
-			setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			setIconifiable(true);
 			setClosable(true);
 			setMaximum(false);
-			setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/icon.jpg")));
+			setFrameIcon(new ImageIcon(getClass().getResource("/resources/icons/icon.jpg")));
 			setSize(553, 441);
 			setMaximizable(true);
 			setTitle("Edit Window");
 			setContentPane(getEditWindowContentPane());
-		} catch (java.lang.Throwable e) {
-			log(e);
+			editor.addToWindowMenu(this);
+		} catch (Throwable e) {
+			Utils.log(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:05:06 PM)
-	 * @param newFileName java.lang.String
-	 */
-	public void setFileName(java.lang.String newFileName) {
+	public void setFileName(String newFileName) {
 		fileName = newFileName;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:56:22 PM)
-	 * @param newModified boolean
-	 */
 	public void setModified(boolean modified) {
-	
 		if (this.modified == false && modified == true) {
 			this.modified = true;
 			if (fileName != null) {
@@ -158,53 +153,41 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:55:48 PM)
-	 * @param newRobotName java.lang.String
-	 */
-	public void setRobotName(java.lang.String newRobotName) {
+	public void setRobotName(String newRobotName) {
 		robotName = newRobotName;
 	}
 
-	/**
-	 * EditWindow constructor,
-	 */
 	public EditWindow(RobocodeEditor editor, File robotsDirectory) {
 		super();
-		initialize();
 		this.editor = editor;
 		this.robotsDirectory = robotsDirectory;
+		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/10/2001 1:03:12 PM)
-	 * @param e javax.swing.event.CaretEvent
-	 */
 	public void caretUpdate(CaretEvent e) {
 		int lineend = getEditorPane().getDocument().getDefaultRootElement().getElementIndex(e.getDot());
 
 		editor.setLineStatus(lineend);
-
-		/*
-		 //	log("Caret at position: " + e.getDot() + " mark " + e.getMark());
-		 log("Caret at position: " + e.getDot() + " mark " + e.getMark());
-		 int linestart = getEditorPane().getDocument().getDefaultRootElement().getElementIndex(e.getMark());
-		 log("Caret from line: " + linestart + " to line: " + lineend);
-		 */
 	}
 
 	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/23/2001 12:06:39 PM)
+	 * Event handler for PropertyChangeListener
+	 * 
+	 * If the Document changes, adds clears out our UndoManager and attaches it
+	 * to the new document.
 	 */
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getOldValue() instanceof JavaDocument) {
+			getUndoManager().discardAllEdits();
+			((JavaDocument) e.getNewValue()).addUndoableEditListener(getUndoManager());
+		}
+	}
+
 	public void compile() {
 		if (!fileSave(true, true)) {
 			error("You must save before compiling.");
 			return;
 		}
-
 		RobocodeCompiler compiler = editor.getCompiler();
 
 		if (compiler != null) {
@@ -212,170 +195,21 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 		} else {
 			JOptionPane.showMessageDialog(editor, "No compiler installed.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-
-		/*
-		 String compilerClassName = "sun.tools.javac.Main";
-
-		 // Get compiler class	
-		 Class compilerClass = null;
-		 try {
-		 compilerClass = Class.forName(compilerClassName);
-		 } catch (ClassNotFoundException e) {
-		 error("Sorry, class " + compilerClassName + " not installed.  Do you have tools.jar?");
-		 return;
-		 }
-
-		 OutputStream out = new java.io.ByteArrayOutputStream(4096);
-
-		 // Set constructor parameters
-		 Object[] constructorParams = new Object[2];
-		 constructorParams[0] = out;
-		 constructorParams[1] = "robocode Compiler";
-
-		 // Get constructor parameter classes
-		 Class[] constructorParamClasses = new Class[constructorParams.length];
-		 for (int i = 0; i < constructorParams.length; i++)
-		 {
-		 constructorParamClasses[i] = constructorParams[i].getClass();
-		 }
-		 
-		 // Replace PrintStream with OutputStream, or we won't find the constructor.
-		 try {
-		 constructorParamClasses[0] = Class.forName("java.io.OutputStream");
-		 } catch (Exception e) {
-		 error("Sorry, could not find class java.io.OutputStream");
-		 return;
-		 }
-
-		 // Get the constructor itself
-		 java.lang.reflect.Constructor constructor = null;
-		 try {
-		 constructor = compilerClass.getConstructor(constructorParamClasses);
-		 } catch (Exception e) {
-		 error("Sorry, could not find appropriate constructor: " + e);
-		 return;
-		 }
-
-		 // Use the constructor to create an instance of the compiler
-		 Object compiler = null;
-		 try {
-		 compiler = constructor.newInstance(constructorParams);
-		 } catch (Exception e) {
-		 error("Sorry, could not instantiate compiler: " + e);
-		 return;
-		 }
-
-		 // Set the compile parameters
-		 //log(new File(".").getAbsolutePath());
-		 String[] compilerParams = new String[5];
-		 compilerParams[0] = "-deprecation";
-		 compilerParams[1] = "-g";
-		 compilerParams[2] = "-classpath";
-
-		 compilerParams[3] = "robocode.jar" + File.pathSeparator + robotPath;
-		 compilerParams[4] = fileName;
-
-		 Object[] methodParams = new Object[1];
-		 methodParams[0] = compilerParams;
-
-		 // Get the compile parameter classes (only 1 actually, String[])	
-		 Class[] methodParamClasses = new Class[methodParams.length];
-		 for (int i = 0; i < methodParams.length; i++)
-		 {
-		 methodParamClasses[i] = methodParams[i].getClass();
-		 }
-
-		 // Get the compile method
-		 java.lang.reflect.Method method = null;
-		 try {
-		 method = compilerClass.getMethod("compile",methodParamClasses);
-		 } catch (Exception e) {
-		 error("Sorry, could not get compile method: " + e);
-		 return;
-		 }
-
-		 // Finally... invoke the compiler!
-		 boolean rv;
-		 try {
-		 Object returnValue = null;
-		 returnValue = method.invoke(compiler,methodParams);
-		 try {
-		 rv = ((Boolean)returnValue).booleanValue();
-		 } catch (ClassCastException e) {
-		 error("Sorry, Could not determine return value");
-		 return;
-		 }
-		 } catch (Exception e) {
-		 error("Sorry, could not invoke compile method: " + e);
-		 return;
-		 }
-
-		 String outputTitle;
-		 if (rv == true)
-		 {
-		 outputTitle = "Compiled successfully.";
-		 }
-		 else
-		 {
-		 outputTitle = "Compile failed.";
-		 }
-
-		 CompilerOutputDialog d;
-		 if (frame != null)
-		 d = new CompilerOutputDialog(frame,outputTitle,false);
-		 else d = new CompilerOutputDialog();
-		 d.setText(outputTitle +"\n" + out.toString());
-		 d.pack();
-		 d.pack();
-		 robocode.util.Utils.packCenterShow(frame,d);
-		 /*	d.pack();
-		 d.show();
-		 */
-	
-		/*
-		 try {
-		 sun.tools.javac.Main m=new sun.tools.javac.Main(System.err,"My Compiler");
-		 String[] b = new String[3];
-		 b[0] = "-classpath";
-		 b[1] = "robocode.jar";
-		 b[2] = fileName;
-		 boolean rv = m.compile(b);
-		 error ("Compile: " + rv);
-		 } catch (Exception e) {
-		 log("Caught.");
-		 }
-		 */
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:27:07 PM)
-	 * @param msg java.lang.String
-	 */
 	public void error(String msg) {
-		Object[] options = { "OK" };
+		Object[] options = {
+			"OK"
+		};
 
 		JOptionPane.showOptionDialog(this, msg, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,
 				options, options[0]);
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/19/2001 3:55:52 PM)
-	 * @return boolean - whether cancelled
-	 * @param editWindow robocode.editor.EditWindow
-	 */
 	public boolean fileSave(boolean confirm) {
 		return fileSave(confirm, false);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/19/2001 3:55:52 PM)
-	 * @return boolean - whether cancelled
-	 * @param editWindow robocode.editor.EditWindow
-	 */
 	public boolean fileSave(boolean confirm, boolean mustSave) {
 		if (confirm) {
 			if (!modified) {
@@ -401,14 +235,13 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 			if (ok == JOptionPane.CANCEL_OPTION) {
 				return false;
 			}
-		
 		}
 		String fileName = getFileName();
 
 		if (fileName == null) {
 			return fileSaveAs();
 		}
-	
+
 		String reasonableFilename = getReasonableFilename();
 
 		if (reasonableFilename != null) {
@@ -434,7 +267,7 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 					}
 				}
 			} catch (Exception e) {
-				log("Unable to check reasonable filename: " + e);
+				Utils.log("Unable to check reasonable filename: " + e);
 			}
 		}
 		File f = new File(fileName);
@@ -452,14 +285,7 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 		return true;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/19/2001 3:55:52 PM)
-	 * @return boolean
-	 * @param editWindow robocode.editor.EditWindow
-	 */
 	public boolean fileSaveAs() {
-
 		String fileName; // = editWindow.getFileName();
 		String javaFileName = null;
 		String saveDir = null;
@@ -478,12 +304,12 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 				if (pEIndex > 0) {
 					packageTree = text.substring(pIndex + 8, pEIndex) + File.separatorChar;
 					packageTree = packageTree.replace('.', File.separatorChar);
-					
+
 					fileName += packageTree;
 					saveDir = fileName;
 				}
 			}
-		
+
 			pIndex = text.indexOf("public class ");
 			if (pIndex >= 0) {
 				int pEIndex = text.indexOf(" ", pIndex + 13);
@@ -507,8 +333,6 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 		} catch (ArrayIndexOutOfBoundsException e) {
 			error("Could not parse package and class names.");
 		}
-		
-		// }
 
 		File f = new File(saveDir);
 
@@ -532,10 +356,9 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 
 		chooser = new JFileChooser(f); // .getAbsoluteFile().toString());
 		chooser.setCurrentDirectory(f);
-		// log("opening at: " + f.getAbsoluteFile().toString());
-		
-		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-			public boolean accept(java.io.File pathname) {
+
+		FileFilter filter = new FileFilter() {
+			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
 					return true;
 				}
@@ -596,48 +419,24 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 		return true;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:34:48 PM)
-	 * @return robocode.editor.RobocodeEditorKit
-	 */
 	public RobocodeEditorKit getEditorKit() {
 		return editorKit;
 	}
 
-	/**
-	 * Return the editWindowContentPane
-	 * @return javax.swing.JPanel
-	 */
-	private javax.swing.JPanel getEditWindowContentPane() {
+	private JPanel getEditWindowContentPane() {
 		if (editWindowContentPane == null) {
-			try {
-				editWindowContentPane = new javax.swing.JPanel();
-				editWindowContentPane.setName("editWindow");
-				editWindowContentPane.setLayout(new java.awt.BorderLayout());
-				editWindowContentPane.setDoubleBuffered(true);
-				editWindowContentPane.add(getScrollPane(), "Center");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			editWindowContentPane = new JPanel();
+			editWindowContentPane.setLayout(new BorderLayout());
+			editWindowContentPane.setDoubleBuffered(true);
+			editWindowContentPane.add(getScrollPane(), "Center");
 		}
 		return editWindowContentPane;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/23/2001 2:39:53 PM)
-	 * @return javax.swing.JFrame
-	 */
-	public javax.swing.JFrame getFrame() {
+	public JFrame getFrame() {
 		return frame;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/10/2001 12:10:07 PM)
-	 * @return java.lang.String
-	 */
 	public String getPackage() {
 		String text = getEditorPane().getText();
 		int pIndex = text.indexOf("package ");
@@ -655,14 +454,8 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/1/2001 5:42:28 PM)
-	 * @return java.lang.String
-	 */
 	public String getReasonableFilename() {
 		String fileName = robotsDirectory.getPath() + File.separatorChar;
-		String saveDir = fileName;
 		String javaFileName = null;
 		String packageTree = null;
 
@@ -679,11 +472,11 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 				}
 				if (inComment && (token.equals("*/") || token.equals("**/"))) {
 					inComment = false;
-				} 
+				}
 				if (inComment) {
 					continue;
 				}
-					
+
 				if (packageTree == null && token.equals("package")) {
 					packageTree = tokenizer.nextToken();
 					if (packageTree == null || packageTree.equals("")) {
@@ -692,134 +485,87 @@ public class EditWindow extends javax.swing.JInternalFrame implements CaretListe
 					packageTree = packageTree.replace('.', File.separatorChar);
 					packageTree += File.separator;
 					fileName += packageTree;
-					saveDir = fileName;
 				}
 				if (javaFileName == null && token.equals("class")) {
 					javaFileName = tokenizer.nextToken() + ".java";
 					fileName += javaFileName;
 					return fileName;
-				}	
+				}
 			}
-
-			/*
-			 int pIndex = text.indexOf("package ");
-			 if (pIndex >= 0)
-			 {
-			 StringTokenizer tokenizer = new StringTokenizer(text.substring(pIndex)," \t\r\n;");
-			 String skip = tokenizer.nextToken();
-			 packageTree = tokenizer.nextToken();
-			 packageTree = packageTree.replace('.',File.separatorChar);
-
-			 if (packageTree == null || packageTree.equals(""))
-			 return null;
-			 packageTree += File.separator;
-			 fileName += packageTree;
-			 saveDir = fileName;
-			 } 
-			 else return null;
-			 
-			 pIndex = text.indexOf("class ");
-			 if (pIndex >= 0)
-			 {
-			 StringTokenizer tokenizer = new StringTokenizer(text.substring(pIndex)," \t\r\n;");
-			 String skip = tokenizer.nextToken();
-			 javaFileName = tokenizer.nextToken() + ".java";
-			 fileName += javaFileName;
-			 }
-			 else
-			 return null;
-			 */
 		} catch (Exception e) {
 			return null;
 		}
-
 		return null;
-		// fileName;
 	}
 
 	/**
 	 * Return the scrollPane
-	 * @return javax.swing.JScrollPane
+	 * 
+	 * @return JScrollPane
 	 */
-	private javax.swing.JScrollPane getScrollPane() {
+	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
-			try {
-				scrollPane = new javax.swing.JScrollPane();
-				scrollPane.setName("scrollPane");
-				scrollPane.setViewportView(getEditorPane());
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			scrollPane = new JScrollPane();
+			scrollPane.setViewportView(getEditorPane());
+			scrollPane.setRowHeaderView(getLineNumbers());
 		}
 		return scrollPane;
 	}
 
 	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
+	 * Return the lineNumbers
+	 * @ robocode.editor.LineNumbers
 	 */
-	public void log(String s) {
-		Utils.log(s);
+	private LineNumbers getLineNumbers() {
+		if (lineNumbers == null) {
+			lineNumbers = new LineNumbers(getEditorPane());
+		}
+		return lineNumbers;
 	}
 
 	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
+	 * Returns the undoManager
+	 * @ UndoManager
 	 */
-	public void log(Throwable e) {
-		Utils.log(e);
+	private UndoManager getUndoManager() {
+		if (undoManager == null) {
+			undoManager = new UndoManager();
+		}
+		return undoManager;
 	}
 
 	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/20/2001 1:29:33 PM)
+	 * Undo
 	 */
+	public void undo() {
+		if (getUndoManager().canUndo()) {
+			getUndoManager().undo();
+		}
+	}
+
+	/**
+	 * Redo
+	 */
+	public void redo() {
+		if (getUndoManager().canRedo()) {
+			getUndoManager().redo();
+		}
+	}
+
 	public void scrollToTop() {
 		getEditorPane().scrollRectToVisible(new Rectangle(0, 0, 10, 10));
-
-		/*
-		 java.awt.EventQueue.invokeLater(new Runnable() {
-		 public void run() {
-		 getEditorPane().setCaretPosition(0);
-		 getEditorPane().requestFocus();
-		 getEditorPane().scrollRectToVisible(new Rectangle(0,0,10,10));
-		 getJScrollPane1().scrollRectToVisible(new Rectangle(0,0,10,10));
-		 //	error("Scrolled to top");
-		 }
-		 });
-		 */	
-	
-		/* JScrollBar b = getJScrollPane1().getVerticalScrollBar();
-		 if (b != null)
-		 {
-		 int minVal = b.getMinimum();
-		 b.setValue(minVal);
-		 error("Scrolled to top");
-		 }
-		 */
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/23/2001 2:39:53 PM)
-	 * @param newFrame javax.swing.JFrame
-	 */
-	public void setFrame(javax.swing.JFrame newFrame) {
+	public void setFrame(JFrame newFrame) {
 		frame = newFrame;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:27:07 PM)
-	 * @param msg java.lang.String
-	 */
 	public void success(String msg) {
-		Object[] options = { "OK" };
+		Object[] options = {
+			"OK"
+		};
 
 		JOptionPane.showOptionDialog(this, msg, "Success", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
 				null, options, options[0]);
-
 	}
 }

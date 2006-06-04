@@ -1,33 +1,35 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.control;
 
 
 import java.io.*;
 import java.security.*;
-
-import robocode.security.*;
+import java.util.Vector;
 import robocode.*;
-
 import robocode.manager.*;
+import robocode.repository.*;
+import robocode.security.*;
 
 
 /**
  * RobocodeEngine - Class for controlling Robocode.
- * Copyright 2001 Mathew A. Nelson
- *
- * <p>Requires Java 1.4
  * 
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
- * @author Mathew A. Nelson
+ *
+ * @author Mathew A. Nelson (original)
  */
 public class RobocodeEngine {
 	private RobocodeListener listener = null;
@@ -37,6 +39,7 @@ public class RobocodeEngine {
 	
 	/**
 	 * Creates a new RobocodeEngine
+	 * 
 	 * @param robocodeHome should be the root robocode directory (i.e. c:\robocode)
 	 * @param listener Your listener
 	 */
@@ -70,10 +73,6 @@ public class RobocodeEngine {
 			return;
 		}
 		Thread.currentThread().setName("Application Thread");
-		// Policy.getPolicy().getPermissions(new CodeSource(null,null)).add(new AllPermission());
-		// Policy.getPolicy().getPermissions(getClass().getProtectionDomain().getCodeSource()).add(new AllPermission());
-		// System.out.println("code source is " + getClass().getProtectionDomain().getCodeSource());
-		// System.out.println("other code source is " + listener.getClass().getProtectionDomain().getCodeSource());
 		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
 		Policy.setPolicy(securityPolicy);
@@ -98,7 +97,6 @@ public class RobocodeEngine {
 			System.setErr(syserr);
 		}
 		System.setIn(sysin);
-
 	}
 	
 	/**
@@ -106,12 +104,12 @@ public class RobocodeEngine {
 	 * This method disposes the Robocode window
 	 */
 	public void close() {
-		// robocode.util.Utils.saveWindowPositions();
 		manager.getWindowManager().getRobocodeFrame().dispose();
 	}
 	
 	/**
 	 * Returns the installed version of Robocode.
+	 * 
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
@@ -127,25 +125,16 @@ public class RobocodeEngine {
 		
 	/**
 	 * Gets a list of robots available for battle.
+	 * 
 	 * @return An array of all available robots.
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		robocode.repository.Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
-		robocode.repository.FileSpecificationVector v = robotRepository.getRobotSpecificationsVector(false, false, true,
-				false, false, true);
-
+		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
+		Vector v = robotRepository.getRobotSpecificationsVector(false, false, true, false, false, true); // <FileSpecification>
 		RobotSpecification robotSpecs[] = new RobotSpecification[v.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
 			robotSpecs[i] = new RobotSpecification((robocode.repository.RobotSpecification) v.elementAt(i));
-
-			/*
-			 robocode.local.FileSpecification robotSpecification = (robocode.local.FileSpecification)robotRepository.getRobotSpecificationsVector(false,false,true,false,false,true).elementAt(i);
-			 if (robotSpecification.isDevelopmentVersion() && robotSpecification.getVersion() != null)
-			 robotSpecs[i] = new RobotSpecification(robotSpecification.getNameManager().getFullClassName(),robotSpecification.getVersion() + "*");
-			 else
-			 robotSpecs[i] = new RobotSpecification(robotSpecification.getNameManager().getFullClassName(),robotSpecification.getVersion());
-			 */
 		}
 		return robotSpecs;
 	}
@@ -164,6 +153,4 @@ public class RobocodeEngine {
 	public void abortCurrentBattle() {
 		manager.getBattleManager().stop(false);
 	}
-  
 }
-

@@ -1,23 +1,27 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.editor;
 
 
+import javax.swing.*;
+import javax.swing.text.*;
+import java.io.*;
+
+
 /**
- * Insert the type's description here.
- * Creation date: (4/4/2001 2:41:16 PM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
-public class RobocodeEditorKit extends javax.swing.text.DefaultEditorKit {
-	public EditWindow editWindow = null;
+public class RobocodeEditorKit extends DefaultEditorKit {
+	public EditWindow editWindow;
 
 	/**
 	 * RobocodeEditorKit constructor
@@ -61,7 +65,6 @@ public class RobocodeEditorKit extends javax.swing.text.DefaultEditorKit {
 
 		doc.setEditWindow(editWindow);
 		return doc;
-	
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class RobocodeEditorKit extends javax.swing.text.DefaultEditorKit {
 	 *
 	 * @return the set of actions
 	 */
-	public javax.swing.Action[] getActions() {
+	public Action[] getActions() {
 		return super.getActions();
 	}
 
@@ -101,7 +104,7 @@ public class RobocodeEditorKit extends javax.swing.text.DefaultEditorKit {
 	 *
 	 * @return the factory
 	 */
-	public javax.swing.text.ViewFactory getViewFactory() {
+	public ViewFactory getViewFactory() {
 		return new RobocodeViewFactory();
 	}
 
@@ -118,7 +121,7 @@ public class RobocodeEditorKit extends javax.swing.text.DefaultEditorKit {
 	 * @exception BadLocationException if pos represents an invalid
 	 *   location within the document.
 	 */
-	public void read(java.io.InputStream in, javax.swing.text.Document doc, int pos) throws java.io.IOException, javax.swing.text.BadLocationException {
+	public void read(InputStream in, Document doc, int pos) throws IOException, BadLocationException {
 		super.read(in, doc, pos);
 	}
 
@@ -140,15 +143,10 @@ public class RobocodeEditorKit extends javax.swing.text.DefaultEditorKit {
 	 * @exception BadLocationException if pos represents an invalid
 	 *   location within the document.
 	 */
-	public void read(java.io.Reader in, javax.swing.text.Document doc, int pos) throws java.io.IOException, javax.swing.text.BadLocationException {
+	public void read(Reader in, Document doc, int pos) throws IOException, BadLocationException {
 		super.read(in, doc, pos);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 5:05:58 PM)
-	 * @param newEditWindow robocode.editor.EditWindow
-	 */
 	public void setEditWindow(EditWindow newEditWindow) {
 		editWindow = newEditWindow;
 	}
@@ -188,7 +186,7 @@ public class RobocodeEditorKit extends javax.swing.text.DefaultEditorKit {
 	 * @exception BadLocationException if pos represents an invalid
 	 *   location within the document.
 	 */
-	public void write(java.io.Writer out, javax.swing.text.Document doc, int pos, int len) throws java.io.IOException, javax.swing.text.BadLocationException {
+	public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
 		super.write(out, doc, pos, len);
 	}
 }

@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.security;
 
@@ -15,30 +18,17 @@ import java.io.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/18/2001 6:42:47 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
-public class SecurePrintStream extends java.io.PrintStream {
-	private RobocodePermission printPermission = null;
+public class SecurePrintStream extends PrintStream {
 
-	/**
-	 * SecurePrintStream constructor comment.
-	 * @param out java.io.OutputStream
-	 */
-	public SecurePrintStream(java.io.OutputStream out, String accessString) {
+	public SecurePrintStream(OutputStream out, String accessString) {
 		super(out);
-		this.printPermission = new RobocodePermission(accessString);
 	}
 
-	/**
-	 * SecurePrintStream constructor comment.
-	 * @param out java.io.OutputStream
-	 * @param autoFlush boolean
-	 */
-	public SecurePrintStream(java.io.OutputStream out, boolean autoFlush, String accessString) {
+	public SecurePrintStream(OutputStream out, boolean autoFlush, String accessString) {
 		super(out, autoFlush);
-		this.printPermission = new RobocodePermission(accessString);
 	}
 
 	public final boolean checkError() {
@@ -242,7 +232,6 @@ public class SecurePrintStream extends java.io.PrintStream {
 	}
 
 	public final void println(String x) {
-		// super.println("Checking for " + x);
 		PrintStream out = checkAccess();
 
 		if (out == this) {
@@ -282,10 +271,6 @@ public class SecurePrintStream extends java.io.PrintStream {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 6:49:33 PM)
-	 */
 	private PrintStream checkAccess() {
 		SecurityManager securityManager = System.getSecurityManager();
 

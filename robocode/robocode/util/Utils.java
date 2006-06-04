@@ -1,12 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Added setFixedSize() method
+ *     - Removed setLocationFix()
  *******************************************************************************/
 package robocode.util;
 
@@ -21,27 +25,23 @@ import robocode.security.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (9/5/2001 12:49:30 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class Utils {
-	private static java.awt.Point origin = new Point(0, 0);
+	private static Point origin = new Point(0, 0);
 	private static WindowPositionManager windowPositionManager = new WindowPositionManager();
-	private static JLabel statusLabel = null;
-	private static PrintWriter statusWriter = null;
-	private static JLabel defaultStatusLabel = null;
-	private static RobocodeListener logListener = null;
+	private static JLabel statusLabel;
+	private static PrintWriter statusWriter;
+	private static JLabel defaultStatusLabel;
+	private static RobocodeListener logListener;
 	private static String logBuffer = "";
-	private static Point locationFixer = null;
-	private static double twoPi = 2 * Math.PI;
-	private static double threePiOverTwo = 3 * Math.PI / 2;
-	private static double piOverTwo = Math.PI / 2;
+	private static Point locationFixer;
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 6:49:33 PM)
-	 */
+	private final static double TWO_PI = 2 * Math.PI;
+	private final static double THREE_PI_OVER_TWO = 3 * Math.PI / 2;
+	private final static double PI_OVER_TWO = Math.PI / 2;
+
 	public static void checkAccess(String s) {
 		SecurityManager securityManager = System.getSecurityManager();
 
@@ -55,29 +55,15 @@ public class Utils {
 		Utils.logListener = logListener;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void center(Window w) {
 		center(null, w);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void center(Window main, Window w) {
-
 		center(main, w, true);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void center(Window main, Window w, boolean move) {
-
 		Point location = null;
 		Dimension size = null;
 
@@ -137,10 +123,6 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void centerShow(Window main, Window window) {
 
 		center(main, window);
@@ -150,11 +132,12 @@ public class Utils {
 		window.setVisible(true);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/30/2001 9:45:28 AM)
-	 * @param f java.io.File
-	 */
+	public static void setFixedSize(JComponent component, Dimension size) {
+		component.setPreferredSize(size);
+		component.setMinimumSize(size);
+		component.setMaximumSize(size);
+	}
+
 	public static boolean deleteDir(File f) {
 		if (!f.isDirectory()) {
 			return false;
@@ -184,24 +167,13 @@ public class Utils {
 		return true;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:27:07 PM)
-	 * @param msg java.lang.String
-	 */
 	public static void error(JFrame frame, String msg) {
 		Object[] options = { "OK" };
 
 		JOptionPane.showOptionDialog(frame, msg, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,
 				options, options[0]);
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 2:36:11 PM)
-	 * @param w java.awt.Window
-	 */
 	public static void fitWindow(Window w) {
 		// We don't want to receive the resize event for this pack!
 		// ... yes we do!
@@ -211,12 +183,6 @@ public class Utils {
 		center(null, w, false);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/26/2001 7:46:42 PM)
-	 * @return java.lang.String
-	 * @param fileName java.lang.String
-	 */
 	public static String getClassName(String fileName) {
 		// if (fileName.indexOf(" ") > 0)
 		// fileName = fileName.substring(0,fileName.indexOf(" "));
@@ -244,12 +210,6 @@ public class Utils {
 		return fileName.substring(lastdot);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/16/2001 4:45:05 PM)
-	 * @return java.lang.String
-	 * @param i int
-	 */
 	public static String getPlacementString(int i) {
 		String result = "" + i;
 
@@ -267,18 +227,7 @@ public class Utils {
 		return result;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
 	public static void log(String s) {
-
-		/* try {
-		 throw new RuntimeException("from: ");
-		 } catch (RuntimeException e) {
-		 e.printStackTrace(System.err);
-		 }*/
 		if (logListener == null) {
 			System.err.println(s);
 		} else {
@@ -286,11 +235,6 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
 	public static void log(String s, Throwable e) {
 		if (logListener == null) {
 			System.err.println(s + ": " + e);
@@ -300,11 +244,6 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
 	public static void log(String s, boolean newline) {
 		if (logListener == null) {
 			if (newline) {
@@ -323,11 +262,6 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
 	public static void log(Throwable e) {
 		if (logListener == null) {
 			System.err.println(e);
@@ -337,12 +271,6 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/18/2000 10:56:34 PM)
-	 * @return double
-	 * @param angle double
-	 */
 	public static double normalAbsoluteAngle(double angle) {
 		if (angle >= 0 && angle < 2.0 * Math.PI) {
 			return angle;
@@ -364,13 +292,13 @@ public class Utils {
 
 		if (isNear(fixedAngle, 0)) {
 			fixedAngle = 0;
-		} else if (isNear(fixedAngle, piOverTwo)) {
-			fixedAngle = piOverTwo;
+		} else if (isNear(fixedAngle, PI_OVER_TWO)) {
+			fixedAngle = PI_OVER_TWO;
 		} else if (isNear(fixedAngle, Math.PI)) {
 			fixedAngle = Math.PI;
-		} else if (isNear(fixedAngle, threePiOverTwo)) {
-			fixedAngle = threePiOverTwo;
-		} else if (isNear(fixedAngle, twoPi)) {
+		} else if (isNear(fixedAngle, THREE_PI_OVER_TWO)) {
+			fixedAngle = THREE_PI_OVER_TWO;
+		} else if (isNear(fixedAngle, TWO_PI)) {
 			fixedAngle = 0;
 		}
 	
@@ -384,12 +312,6 @@ public class Utils {
 		return false;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/18/2000 10:56:34 PM)
-	 * @return double
-	 * @param angle double
-	 */
 	public static double normalRelativeAngle(double angle) {
 		if (angle > -Math.PI && angle <= Math.PI) {
 			return angle;
@@ -405,31 +327,15 @@ public class Utils {
 		return fixedAngle;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void packCenterShow(Window window) {
-	
 		// We don't want to receive the resize event for this pack!
 		window.removeComponentListener(windowPositionManager);
-		// System.out.println("pack");	
 		window.pack();
-		// System.out.println("center");
 		center(window);
-		// System.out.println("show");
 		window.setVisible(true);
-		// System.out.println("show2");
-		// Second time to fix bug with menus in some jres
-		// window.setVisible(true);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void packCenterShow(Window main, Window window) {
-
 		// We don't want to receive the resize event for this pack!
 		window.removeComponentListener(windowPositionManager);
 		
@@ -442,12 +348,7 @@ public class Utils {
 		window.setVisible(true);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void packCenterShow(Window main, Window window, boolean pack) {
-
 		// We don't want to receive the resize event for this pack!
 		window.removeComponentListener(windowPositionManager);
 		
@@ -460,12 +361,7 @@ public class Utils {
 		window.setVisible(true);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void packPlaceShow(Window window) {
-
 		window.pack();
 
 		place(window);
@@ -475,12 +371,7 @@ public class Utils {
 		window.setVisible(true);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public static void place(Window w) {
-
 		// Center a window
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension size = w.getSize();
@@ -503,19 +394,10 @@ public class Utils {
 		origin.y += 10;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 1:36:16 PM)
-	 */
 	public static void saveWindowPositions() {
 		windowPositionManager.saveWindowPositions();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
 	public static void message(String s) {
 		JOptionPane.showMessageDialog(null, s, "Message", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -524,11 +406,6 @@ public class Utils {
 		JOptionPane.showMessageDialog(null, s, "Warning", JOptionPane.WARNING_MESSAGE);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
 	public static void messageError(String s) {
 		JOptionPane.showMessageDialog(null, s, "Message", JOptionPane.ERROR_MESSAGE);
 	}
@@ -590,9 +467,7 @@ public class Utils {
 				System.out.println(threads[j].getName());
 			}
 			System.out.println("---------------");
-		
 		}
-	
 	}
 
 	public static int compare(String p1, String c1, String v1, String p2, String c2, String v2) {
@@ -688,31 +563,7 @@ public class Utils {
 		return true;
 	}
 
-	private static Point fixLocation(Window w, Point o) {
-		if (locationFixer != null) {
-			return new Point(o.x + locationFixer.x, o.y + locationFixer.y);
-		} else {
-			return o;
-		}
+	private static Point fixLocation(Window w, Point p) {
+		return (locationFixer != null) ? new Point(p.x + locationFixer.x, p.y + locationFixer.y) : p;
 	}
-
-	public static void setLocationFix() {
-		return;
-	
-		/*
-		 checkAccess("Set Location Fix");
-		 JFrame f = new JFrame("");
-		 f.setLocation(100,100);
-		 f.setVisible(true);
-		 Point after = f.getLocation();
-		 if (after.x == 100 && after.y == 100)
-		 locationFixer = null;
-		 else
-		 locationFixer = new Point(100-after.x,100-after.y);
-		 System.out.println("Location fixer: " + locationFixer);
-		 f.setVisible(false);
-		 f.dispose();
-		 */
-	}
-
 }

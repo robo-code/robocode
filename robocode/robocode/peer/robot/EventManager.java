@@ -1,27 +1,33 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Fix for HyperThreading hang issue with the getTime() method that was
+ *       synchronized before, which sometimes caused a deadlock to occur in the
+ *       code processing the hitWall event.
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.peer.robot;
 
 
+import java.util.*;
 import robocode.*;
-import java.util.Vector;
 import robocode.peer.RobotPeer;
-import robocode.util.*;
 import robocode.exception.*;
+import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (9/10/2001 5:33:06 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Matthew Reeder, Flemming N. Larsen (current)
  */
 public class EventManager {
 	private RobotPeer robotPeer = null;
@@ -31,7 +37,6 @@ public class EventManager {
 	private int hitWallEventPriority = 30;
 	private int hitRobotEventPriority = 40;
 	private int bulletHitEventPriority = 50;
-	private int bulletHitBulletEventPriority = 50;
 	private int bulletMissedEventPriority = 60;
 	private int robotDeathEventPriority = 70;
 	private int messageEventPriority = 80;
@@ -41,8 +46,7 @@ public class EventManager {
 
 	private int currentTopEventPriority;
 
-	private Vector customEvents = new Vector();
-	private java.util.Vector backwardsCompatibilitySavedCustomEvents = new Vector();
+	private Vector customEvents = new Vector(); // <Condition>
 	private EventQueue eventQueue;
 
 	private double fireAssistAngle;
@@ -66,53 +70,28 @@ public class EventManager {
 		reset();
 	}
 
-	public void finalize() {/* System.out.println("Finalizing " + robotPeer.getName() + " eventmanager.");
-		 backwardsCompatibilitySavedCustomEvents = null;
-		 customEvents = null;
-		 robotPeer = null;
-		 eventQueue = null;
-		 */}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 11:35:22 AM)
-	 * @param o java.lang.Object
-	 */
-	public synchronized boolean add(Object o) {
+	public synchronized boolean add(Event e) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAXQUEUESIZE) {
 				System.out.println(
 						"Not adding to " + robotPeer.getName() + "'s queue, exceeded " + MAXQUEUESIZE + " events in queue.");
 				return false;
 			}
-			return eventQueue.add(o);
+			return eventQueue.add(e);
 		}
 		return false;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 10:29:36 AM)
-	 * @param condition robocode.JCondition
-	 */
 	public synchronized void addCustomEvent(Condition condition) {
 		customEvents.add(condition);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 6:14:36 PM)
-	 */
 	public synchronized void clearAllEvents(boolean includingSystemEvents) {
 		// Fixed in 1.0.4
 		// currentTopEventPriority = Integer.MIN_VALUE;
 		eventQueue.clear(includingSystemEvents);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 6:14:36 PM)
-	 */
 	public synchronized void clear(long clearTime) {
 		eventQueue.clear(clearTime);
 	}
@@ -120,20 +99,20 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all events currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getAllEvents();
-	 *   Event e;
+	 *    Vector v = getAllEvents();
+	 *    Event e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (Event)v.elementAt(i);
-	 *      if (e instanceof HitByRobotEvent)
+	 *       e = (Event)v.elementAt(i);
+	 *       if (e instanceof HitByRobotEvent)
 	 *        <i> (do something with e) </i>
-	 *      else if (e instanceof HitByBulletEvent)
+	 *       else if (e instanceof HitByBulletEvent)
 	 *        <i> (so something else with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onBulletHit
 	 * @see #onBulletHitBullet
 	 * @see #onBulletMissed
@@ -150,10 +129,10 @@ public class EventManager {
 	 * @see robocode.HitWallEvent
 	 * @see robocode.SkippedTurnEvent
 	 * @see robocode.Event
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-	public synchronized java.util.Vector getAllEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getAllEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			events.add(eventQueue.elementAt(i));
@@ -164,23 +143,23 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all BulletHitBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getBulletHitBulletEvents();
-	 *   BulletHitBulletEvent e;
+	 *    Vector v = getBulletHitBulletEvents();
+	 *    BulletHitBulletEvent e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (BulletHitBulletEvent)v.elementAt(i);
+	 *       e = (BulletHitBulletEvent)v.elementAt(i);
 	 *      <i> (do something with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onBulletHitBullet
 	 * @see robocode.BulletHitBulletEvent
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-	public synchronized java.util.Vector getBulletHitBulletEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getBulletHitBulletEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			if (eventQueue.elementAt(i) instanceof BulletHitBulletEvent) {
@@ -193,23 +172,23 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all BulletHitEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getBulletHitEvents();
-	 *   BulletHitEvent e;
+	 *    Vector v = getBulletHitEvents();
+	 *    BulletHitEvent e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (BulletHitEvent)v.elementAt(i);
+	 *       e = (BulletHitEvent)v.elementAt(i);
 	 *      <i> (do something with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onBulletHit
 	 * @see robocode.BulletHitEvent
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-	public synchronized java.util.Vector getBulletHitEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getBulletHitEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			if (eventQueue.elementAt(i) instanceof BulletHitEvent) {
@@ -222,23 +201,23 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all BulletMissedEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getBulletHitEvents();
-	 *   BulletMissedEvent e;
+	 *    Vector v = getBulletHitEvents();
+	 *    BulletMissedEvent e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (BulletMissedEvent)v.elementAt(i);
+	 *       e = (BulletMissedEvent)v.elementAt(i);
 	 *      <i> (do something with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onBulletMissed
 	 * @see robocode.BulletMissedEvent
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-	public synchronized java.util.Vector getBulletMissedEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getBulletMissedEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			if (eventQueue.elementAt(i) instanceof BulletMissedEvent) {
@@ -248,21 +227,10 @@ public class EventManager {
 		return events;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/26/2001 2:36:27 PM)
-	 * @return int
-	 */
 	public int getCurrentTopEventPriority() {
 		return currentTopEventPriority;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 10:25:03 AM)
-	 * @param c java.lang.Class
-	 * @param priority int
-	 */
 	public int getEventPriority(String eventClass) {
 		if (eventClass.equals("robocode.BulletHitEvent") || eventClass.equals("BulletHitEvent")) {
 			return bulletHitEventPriority;
@@ -291,12 +259,6 @@ public class EventManager {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 10:25:03 AM)
-	 * @param c java.lang.Class
-	 * @param priority int
-	 */
 	public int getEventPriority(Event e) {
 		if (e instanceof ScannedRobotEvent) {
 			return scannedRobotEventPriority;
@@ -337,11 +299,6 @@ public class EventManager {
 		return 0;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 7:07:20 PM)
-	 * @return double
-	 */
 	public double getFireAssistAngle() {
 		return fireAssistAngle;
 	}
@@ -349,24 +306,23 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all HitByBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getHitByBulletEvents();
-	 *   HitByBulletEvent e;
+	 *    Vector v = getHitByBulletEvents();
+	 *    HitByBulletEvent e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (HitByBulletEvent)v.elementAt(i);
+	 *       e = (HitByBulletEvent)v.elementAt(i);
 	 *      <i> (do something with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onHitByBullet
 	 * @see robocode.HitByBulletEvent
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-
-	public synchronized java.util.Vector getHitByBulletEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getHitByBulletEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			if (eventQueue.elementAt(i) instanceof HitByBulletEvent) {
@@ -379,23 +335,23 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all HitRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getHitRobotEvents();
-	 *   HitRobotEvent e;
+	 *    Vector v = getHitRobotEvents();
+	 *    HitRobotEvent e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (HitRobotEvent)v.elementAt(i);
+	 *       e = (HitRobotEvent)v.elementAt(i);
 	 *      <i> (do something with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onHitRobot
 	 * @see robocode.HitRobotEvent
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-	public synchronized java.util.Vector getHitRobotEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getHitRobotEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			if (eventQueue.elementAt(i) instanceof HitRobotEvent) {
@@ -408,23 +364,23 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all HitWallEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getHitWallEvents();
-	 *   HitWallEvent e;
+	 *    Vector v = getHitWallEvents();
+	 *    HitWallEvent e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (HitWallEvent)v.elementAt(i);
+	 *       e = (HitWallEvent)v.elementAt(i);
 	 *      <i> (do something with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onHitWall
 	 * @see robocode.HitWallEvent
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-	public synchronized java.util.Vector getHitWallEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getHitWallEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			if (eventQueue.elementAt(i) instanceof HitWallEvent) {
@@ -434,20 +390,10 @@ public class EventManager {
 		return events;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/28/2001 12:58:47 PM)
-	 * @param interruptable boolean
-	 */
 	public boolean getInterruptible(int priority) {
 		return this.interruptible[priority];
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 5:45:01 PM)
-	 * @return robocode.Robot
-	 */
 	private synchronized Robot getRobot() {
 		return robot;
 	}
@@ -457,44 +403,37 @@ public class EventManager {
 		if (r instanceof AdvancedRobot) {
 			this.useFireAssist = false;
 		}
-
 	}
 
 	/**
 	 * Returns a vector containing all RobotDeathEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getRobotDeathEvents();
-	 *   RobotDeathEvent e;
+	 *    Vector v = getRobotDeathEvents();
+	 *    RobotDeathEvent e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (RobotDeathEvent)v.elementAt(i);
+	 *       e = (RobotDeathEvent)v.elementAt(i);
 	 *      <i> (do something with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onRobotDeath
 	 * @see robocode.RobotDeathEvent
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-
-	public synchronized java.util.Vector getRobotDeathEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getRobotDeathEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			if (eventQueue.elementAt(i) instanceof RobotDeathEvent) {
-				events.add(eventQueue.elementAt(i));
+				events.add((Event) eventQueue.elementAt(i));
 			}
 		}
 		return events;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/26/2001 2:37:09 PM)
-	 * @return int
-	 */
 	public int getScannedRobotEventPriority() {
 		return scannedRobotEventPriority;
 	}
@@ -502,92 +441,62 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all ScannedRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * 
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getScannedRobotEvents();
-	 *   ScannedRobotEvent e;
+	 *    Vector v = getScannedRobotEvents();
+	 *    ScannedRobotEvent e;
 	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (ScannedRobotEvent)v.elementAt(i);
+	 *       e = (ScannedRobotEvent)v.elementAt(i);
 	 *      <i> (do something with e) </i>
-	 *   }
+	 *    }
 	 * </pre>
-	 *
+	 * 
 	 * @see #onScannedRobot
 	 * @see robocode.ScannedRobotEvent
-	 * @see java.util.Vector
+	 * @see Vector
 	 */
-	public synchronized java.util.Vector getScannedRobotEvents() {
-		Vector events = new Vector();
+	public synchronized Vector getScannedRobotEvents() {
+		Vector events = new Vector(); // <Event>
 
 		for (int i = 0; i < eventQueue.size(); i++) {
 			if (eventQueue.elementAt(i) instanceof ScannedRobotEvent) {
-				events.add(eventQueue.elementAt(i));
+				events.add((Event) eventQueue.elementAt(i));
 			}
 		}
 		return events;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/21/2000 2:24:41 PM)
-	 * @return long
-	 */
-	public synchronized long getTime() {
+	// NOTE:
+	// Do not make this method synchronized as the processing of the hitWall
+	// event might cause a deadlock situation! Moreover, the getTime() on
+	// robotPeer is already synchronized, so it's not necessary anyways.
+	public long getTime() {
 		return robotPeer.getTime();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 7:06:41 PM)
-	 * @return boolean
-	 */
 	public boolean isFireAssistValid() {
 		return fireAssistValid;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:40:07 PM)
-	 * @return int
-	 * @param e robocode.BulletHitEvent
-	 */
 	public void onBulletHit(BulletHitEvent e) {
 		if (getRobot() != null) {
 			getRobot().onBulletHit(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:40:07 PM)
-	 * @return int
-	 * @param e robocode.BulletHitBulletEvent
-	 */
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
 		if (getRobot() != null) {
 			getRobot().onBulletHitBullet(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:40:36 PM)
-	 * @return int
-	 * @param e robocode.BulletMissedEvent
-	 */
 	public void onBulletMissed(BulletMissedEvent e) {
 		if (getRobot() != null) {
 			getRobot().onBulletMissed(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:39:43 PM)
-	 * @return int
-	 * @param e robocode.CustomEvent
-	 */
 	public void onCustomEvent(CustomEvent e) {
 		if (getRobot() != null) {
 			if (getRobot() instanceof AdvancedRobot) {
@@ -596,83 +505,42 @@ public class EventManager {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:42:29 PM)
-	 * @return int
-	 * @param e robocode.DeathEvent
-	 */
 	public void onDeath(DeathEvent e) {
 		if (getRobot() != null) {
 			getRobot().onDeath(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:39:43 PM)
-	 * @return int
-	 * @param e robocode.HitByBulletEvent
-	 */
 	public void onHitByBullet(HitByBulletEvent e) {
 		if (getRobot() != null) {
 			getRobot().onHitByBullet(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:39:01 PM)
-	 * @return int
-	 * @param e robocode.HitRobotEvent
-	 */
 	public void onHitRobot(HitRobotEvent e) {
 		if (getRobot() != null) {
 			getRobot().onHitRobot(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 10:23:24 AM)
-	 * @param e robocode.HitWallEvent
-	 */
 	public void onHitWall(HitWallEvent e) {
 		if (getRobot() != null) {
 			getRobot().onHitWall(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:41:23 PM)
-	 * @return int
-	 * @param e robocode.RobotDeathEvent
-	 */
 	public void onRobotDeath(RobotDeathEvent e) {
 		if (getRobot() != null) {
 			getRobot().onRobotDeath(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:41:05 PM)
-	 * @return int
-	 * @param e robocode.ScannedRobotEvent
-	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		if (getRobot() != null) {
 			getRobot().onScannedRobot(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:42:29 PM)
-	 * @return int
-	 * @param e robocode.SkippedTurnEvent
-	 */
 	public void onSkippedTurn(SkippedTurnEvent e) {
 		Robot r = getRobot();
 
@@ -681,12 +549,6 @@ public class EventManager {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:42:29 PM)
-	 * @return int
-	 * @param e robocode.SkippedTurnEvent
-	 */
 	public void onMessageReceived(MessageEvent e) {
 		Robot r = getRobot();
 
@@ -695,22 +557,12 @@ public class EventManager {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 12:42:56 PM)
-	 * @return int
-	 * @param e robocode.WinEvent
-	 */
 	public void onWin(WinEvent e) {
 		if (getRobot() != null) {
 			getRobot().onWin(e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 6:56:39 PM)
-	 */
 	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
@@ -727,53 +579,32 @@ public class EventManager {
 				}
 			}
 		}
-	
-		// Process event queue here
-		int numEvents = eventQueue.size();
 
+		// Process event queue here
 		eventQueue.sort();
 		Event currentEvent = null;
 
 		if (eventQueue.size() > 0) {
 			currentEvent = (Event) eventQueue.elementAt(0);
-
-			/*
-			 if (currentTopEventPriority > Integer.MIN_VALUE &&
-			 currentEvent.getPriority() == currentTopEventPriority &&
-			 getInterruptable(currentTopEventPriority))
-			 {
-			 setInterruptable(currentTopEventPriority,false); // we're going to restart it, so reset.
-			 robotPeer.out.println("I am going to interrupt an event.  CurrentTop is "+ currentTopEventPriority + ".  New event has priority " + currentEvent.getPriority());
-			 // We are already in an event handler, took action, and a new event
-			 // was generated.  So we want to break out of the old handler to process it here.
-			 throw new EventInterruptedException(currentEvent.getPriority());
-			 }
-			 */
-		
 		}
-	
-		int callingEventPriority = currentTopEventPriority;
-		// robotPeer.out.println("Entering event loop with ctep: " + currentTopEventPriority);
-		long clearTime = getTime() - 1;
-
 		while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority) {
 			// robotPeer.out.println("processing event of priority: " + currentEvent.getPriority() + " in loop with ctep: " + currentTopEventPriority);
 			if (currentTopEventPriority > Integer.MIN_VALUE && currentEvent.getPriority() == currentTopEventPriority
 					&& getInterruptible(currentTopEventPriority)) {
 				setInterruptible(currentTopEventPriority, false); // we're going to restart it, so reset.
-				// robotPeer.out.println("I am going to interrupt an event.  CurrentTop is "+ currentTopEventPriority + ".  New event has priority " + currentEvent.getPriority());
-				// We are already in an event handler, took action, and a new event
-				// was generated.  So we want to break out of the old handler to process it here.
+
+				// We are already in an event handler, took action, and a new event was generated.
+				// So we want to break out of the old handler to process it here.
 				throw new EventInterruptedException(currentEvent.getPriority());
 			} else if (currentEvent.getPriority() == currentTopEventPriority) {
 				// robotPeer.out.println("Next event is same priority but not interruptable, ending loop.");
 				break;
 			}
-		
+
 			int oldTopEventPriority = currentTopEventPriority;
 
 			currentTopEventPriority = currentEvent.getPriority();
-		
+
 			eventQueue.remove(currentEvent);
 			try {
 				if (currentEvent instanceof HitWallEvent) {
@@ -817,26 +648,18 @@ public class EventManager {
 					robotPeer.out.println("Unknown event: " + currentEvent);
 				}
 				setInterruptible(currentTopEventPriority, false);
-	
+
 			} catch (EventInterruptedException e) {
 				fireAssistValid = false;
 				currentEvent = (Event) eventQueue.elementAt(0);
-				// robotPeer.out.println("Event of priority: " + currentTopEventPriority + " interrupted with event of priority " + currentEvent.getPriority());
-				// robotPeer.out.println("There are " + eventQueue.size() + " events now... clearing old ones.");
-				// eventQueue.clear(getTime() - 1);
-				// robotPeer.out.println("There are now " + eventQueue.size() + " events.");
 			} catch (RuntimeException e) {
-				// eventQueue.clear(getTime() - 1);
 				currentTopEventPriority = oldTopEventPriority;
 				throw e;
 			} catch (Error e) {
-				// System.out.println("Caught: " + e);
-				// eventQueue.clear(getTime() - 1);
 				currentTopEventPriority = oldTopEventPriority;
 				throw e;
 			}
 			currentTopEventPriority = oldTopEventPriority;
-			// robotPeer.out.println("End of loop, resetting ctep to: " + currentTopEventPriority);
 			if (eventQueue.size() > 0) {
 				currentEvent = (Event) eventQueue.elementAt(0);
 			} else {
@@ -846,31 +669,16 @@ public class EventManager {
 		// eventQueue.clear(clearTime);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 10:29:36 AM)
-	 * @param condition robocode.JCondition
-	 */
 	public void removeCustomEvent(Condition condition) {
 		customEvents.remove(condition);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 6:14:36 PM)
-	 */
 	public synchronized void reset() {
 		currentTopEventPriority = Integer.MIN_VALUE;
 		clearAllEvents(true);
 		customEvents.clear();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/25/2001 10:25:03 AM)
-	 * @param c java.lang.Class
-	 * @param priority int
-	 */
 	public void setEventPriority(String eventClass, int priority) {
 		if (priority < 0) {
 			robotPeer.out.println("SYSTEM: Priority must be between 0 and 99.");
@@ -883,8 +691,6 @@ public class EventManager {
 		}
 		if (eventClass.equals("robocode.BulletHitEvent") || eventClass.equals("BulletHitEvent")) {
 			bulletHitEventPriority = priority;
-		} else if (eventClass.equals("robocode.BulletHitBulletEvent") || eventClass.equals("BulletHitBulletEvent")) {
-			bulletHitBulletEventPriority = priority;
 		} else if (eventClass.equals("robocode.BulletMissedEvent") || eventClass.equals("BulletMissedEvent")) {
 			bulletMissedEventPriority = priority;
 		} else if (eventClass.equals("robocode.HitByBulletEvent") || eventClass.equals("HitByBulletEvent")) {
@@ -911,25 +717,14 @@ public class EventManager {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 7:06:41 PM)
-	 * @param newFireAssistValid boolean
-	 */
 	public void setFireAssistValid(boolean newFireAssistValid) {
 		fireAssistValid = newFireAssistValid;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/28/2001 12:58:47 PM)
-	 * @param interruptable boolean
-	 */
 	public void setInterruptible(int priority, boolean interruptable) {
 		if (priority < 0 || priority > 99) {
 			return;
 		}
-		
 		this.interruptible[priority] = interruptable;
 	}
 }

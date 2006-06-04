@@ -1,90 +1,71 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics to buttons and tabs
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
 
 
-/**
- * Insert the type's description here.
- * Creation date: (12/28/2000 1:18:50 AM)
- * @author: Administrator
- */
-import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
- 
-import robocode.util.*;
+import javax.swing.*;
+import java.util.Vector;
 import robocode.manager.*;
 import robocode.battle.BattleProperties;
-import robocode.repository.FileSpecificationVector;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (12/28/2000 1:18:50 AM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Matthew Reeder, Flemming N. Larsen (current)
  */
 public class NewBattleDialog extends JDialog implements WizardListener {
 
 	private EventHandler eventHandler = new EventHandler();
-	private JPanel newBattleDialogContentPane = null;
-	private WizardTabbedPane tabbedPane = null;
-	private NewBattleBattleFieldTab battleFieldTab = null;
+	private JPanel newBattleDialogContentPane;
+	private WizardTabbedPane tabbedPane;
+	private NewBattleBattleFieldTab battleFieldTab;
 
 	private BattleProperties battleProperties;
 
-	private NewBattleRulesTab rulesTab = null;
-	private WizardController wizardController = null;
+	private NewBattleRulesTab rulesTab;
+	private WizardController wizardController;
 	public int MAXROBOTS = 256; // 64;
 	public int MINROBOTS = 1;
-	private RobotSelectionPanel robotSelectionPanel = null;
-	// private Vector selectedRobotList = null;
-	private RobocodeManager manager = null;
 
-	class EventHandler implements java.awt.event.WindowListener, ActionListener {
+	private RobotSelectionPanel robotSelectionPanel;
 
-		public void windowActivated(java.awt.event.WindowEvent e) {}
-		;
-		public void windowClosed(java.awt.event.WindowEvent e) {}
-		;
-		public void windowClosing(java.awt.event.WindowEvent e) {
+	private RobocodeManager manager;
+
+	class EventHandler extends WindowAdapter implements ActionListener {
+		public void windowClosing(WindowEvent e) {
 			if (e.getSource() == NewBattleDialog.this) { 
 				manager.getBattleManager().resumeBattle();
 			}
 		}
-		;
-		public void windowDeactivated(java.awt.event.WindowEvent e) {}
-		;
-		public void windowDeiconified(java.awt.event.WindowEvent e) {}
-		;
-		public void windowIconified(java.awt.event.WindowEvent e) {}
-		;
-		public void windowOpened(java.awt.event.WindowEvent e) {}
-		;
+
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
 				getRobotSelectionPanel().refreshRobotList();
 			}
 		}
-		;
 	}
-
-
-	;
 
 	/**
 	 * Comment
 	 */
 	public void cancelButtonActionPerformed() {
-		java.awt.AWTEvent evt = new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING);
-
-		this.dispatchEvent(evt);
+		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		return;
 	}
 
@@ -124,71 +105,52 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 				manager.getBattleManager().startNewBattle(battleProperties, false);
 			}
 		}).start();
-		java.awt.AWTEvent evt = new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING);
-
-		this.dispatchEvent(evt);
+		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		return;
 	}
 
 	/**
 	 * Return the battleFieldTab
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
 	private NewBattleBattleFieldTab getBattleFieldTab() {
 		if (battleFieldTab == null) {
-			try {
-				battleFieldTab = new NewBattleBattleFieldTab();
-				battleFieldTab.setName("battleFieldTab");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			battleFieldTab = new NewBattleBattleFieldTab();
 		}
 		return battleFieldTab;
 	}
 
 	/**
 	 * Return the newBattleDialogContentPane
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
-	private javax.swing.JPanel getNewBattleDialogContentPane() {
+	private JPanel getNewBattleDialogContentPane() {
 		if (newBattleDialogContentPane == null) {
-			try {
-				newBattleDialogContentPane = new javax.swing.JPanel();
-				newBattleDialogContentPane.setName("newBattleDialogContentPane");
-				newBattleDialogContentPane.setLayout(new java.awt.BorderLayout());
-				newBattleDialogContentPane.add(getWizardController(), java.awt.BorderLayout.SOUTH);
-				newBattleDialogContentPane.add(getTabbedPane(), java.awt.BorderLayout.CENTER);
-				newBattleDialogContentPane.registerKeyboardAction(eventHandler, "Refresh",
-						KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			newBattleDialogContentPane = new JPanel();
+			newBattleDialogContentPane.setLayout(new BorderLayout());
+			newBattleDialogContentPane.add(getWizardController(), BorderLayout.SOUTH);
+			newBattleDialogContentPane.add(getTabbedPane(), BorderLayout.CENTER);
+			newBattleDialogContentPane.registerKeyboardAction(eventHandler, "Refresh",
+					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		}
 		return newBattleDialogContentPane;
 	}
 
 	/**
 	 * Return the rulesTab property value.
+	 * 
 	 * @return robocode.dialog.NewBattleRulesTab
 	 */
 	private NewBattleRulesTab getRulesTab() {
 		if (rulesTab == null) {
-			try {
-				rulesTab = new robocode.dialog.NewBattleRulesTab();
-				rulesTab.setName("Rules");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			rulesTab = new robocode.dialog.NewBattleRulesTab();
 		}
 		return rulesTab;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/28/2000 1:28:02 PM)
-	 * @return java.util.Vector
-	 */
-	public FileSpecificationVector getSelectedRobots() {
+	public Vector getSelectedRobots() { // <FileSpecification>
 		return getRobotSelectionPanel().getSelectedRobots();
 	}
 
@@ -196,28 +158,16 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	 * Initialize the class.
 	 */
 	private void initialize() {
-		try {
-			setName("newBattleDialog");
-			setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-			setTitle("New Battle");
-			setContentPane(getNewBattleDialogContentPane());
-			addWindowListener(eventHandler);
-		} catch (java.lang.Throwable e) {
-			log(e);
-		}
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
-
-	private void log(String s) {
-		Utils.log(s);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setTitle("New Battle");
+		setContentPane(getNewBattleDialogContentPane());
+		addWindowListener(eventHandler);
 	}
 
 	/**
 	 * NewBattleDialog constructor comment.
-	 * @param owner java.awt.Frame
+	 * 
+	 * @param owner Frame
 	 */
 	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
 		super(manager.getWindowManager().getRobocodeFrame());
@@ -229,83 +179,67 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the wizardController
-	 * @return javax.swing.JButton
+	 * 
+	 * @return JButton
 	 */
 	private WizardController getWizardController() {
 		if (wizardController == null) {
-			try {
-				wizardController = getTabbedPane().getWizardController();
-				wizardController.setName("wizardController");
-				wizardController.setFinishButtonText("Start Battle");
-				wizardController.setFocusOnEnabled(true);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			wizardController = getTabbedPane().getWizardController();
+			wizardController.setFinishButtonTextAndMnemonic("Start Battle", 'S', 0);
+			wizardController.setFocusOnEnabled(true);
 		}
 		return wizardController;
 	}
 
 	/**
 	 * Return the Page property value.
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
 	private RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			try {
+			String selectedRobots = "";
 
-				String selectedRobots = "";
-
-				if (battleProperties != null) {
-					selectedRobots = battleProperties.getSelectedRobots();
-				}
-	
-				robotSelectionPanel = new RobotSelectionPanel(manager.getRobotRepositoryManager(), MINROBOTS, MAXROBOTS,
-						true, "Select robots for the battle", false, false, false, false, false,
-						!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
-				robotSelectionPanel.setName("Robots");
-			} catch (java.lang.Throwable e) {
-				log(e);
+			if (battleProperties != null) {
+				selectedRobots = battleProperties.getSelectedRobots();
 			}
+			robotSelectionPanel = new RobotSelectionPanel(manager.getRobotRepositoryManager(), MINROBOTS, MAXROBOTS,
+					true, "Select robots for the battle", false, false, false, false, false,
+					!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}
 		return robotSelectionPanel;
 	}
 
 	/**
 	 * Return the tabbedPane.
-	 * @return javax.swing.JTabbedPane
+	 * 
+	 * @return JTabbedPane
 	 */
 	private WizardTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
-			try {
-				tabbedPane = new WizardTabbedPane(this);
-				tabbedPane.setName("tabbedPane");
-				// tabbedPane.setBounds(10, 6, 521, 335);
-				tabbedPane.insertTab("Robots", null, getRobotSelectionPanel(), null, 0);
-				tabbedPane.insertTab("BattleField", null, getBattleFieldTab(), null, 1);
-				tabbedPane.insertTab("Rules", null, getRulesTab(), null, 2);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			tabbedPane = new WizardTabbedPane(this);
+			tabbedPane.insertTab("Robots", null, getRobotSelectionPanel(), null, 0);
+			tabbedPane.setMnemonicAt(0, KeyEvent.VK_R);
+			tabbedPane.setDisplayedMnemonicIndexAt(0, 0);
+			tabbedPane.insertTab("BattleField", null, getBattleFieldTab(), null, 1);
+			tabbedPane.setMnemonicAt(1, KeyEvent.VK_F);
+			tabbedPane.setDisplayedMnemonicIndexAt(1, 6);
+			tabbedPane.insertTab("Rules", null, getRulesTab(), null, 2);
+			tabbedPane.setMnemonicAt(2, KeyEvent.VK_U);
+			tabbedPane.setDisplayedMnemonicIndexAt(2, 1);
 		}
 		return tabbedPane;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/8/2001 12:40:42 PM)
-	 * @param battleProperties java.util.Properties
-	 */
 	private void processBattleProperties() {
 		if (battleProperties == null) {
 			return;
 		}
-
 		getBattleFieldTab().setBattleFieldWidth(battleProperties.getBattlefieldWidth());
 		getBattleFieldTab().setBattleFieldHeight(battleProperties.getBattlefieldHeight());
 		getRobotSelectionPanel().setNumRounds(battleProperties.getNumRounds());
-	
+
 		getRulesTab().setGunCoolingRate(battleProperties.getGunCoolingRate());
 		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
 	}
-
 }

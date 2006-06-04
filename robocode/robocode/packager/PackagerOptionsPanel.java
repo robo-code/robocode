@@ -1,51 +1,56 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Replaced deprecated show() method with setVisible(true)
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.packager;
 
 
-import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
-
-import robocode.dialog.*;
+import javax.swing.*;
+import javax.swing.event.*;
 import java.net.URL;
+import java.util.Vector;
+import robocode.dialog.*;
 
 import robocode.util.*;
 import robocode.repository.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/19/2001 12:07:51 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class PackagerOptionsPanel extends WizardPanel {
-	RobotPackager robotPackager = null;
-	JCheckBox includeSource = null;
+	RobotPackager robotPackager;
+	JCheckBox includeSource;
 	EventHandler eventHandler = new EventHandler();
 
-	JLabel authorLabel = null;
-	JTextField authorField = null;
-	JLabel descriptionLabel = null;
-	JTextArea descriptionArea = null;
-	JLabel versionLabel = null;
-	JTextField versionField = null;
-	JLabel versionHelpLabel = null;
-	JLabel webpageLabel = null;
-	JTextField webpageField = null;
-	JLabel webpageHelpLabel = null;
+	JLabel authorLabel;
+	JTextField authorField;
+	JLabel descriptionLabel;
+	JTextArea descriptionArea;
+	JLabel versionLabel;
+	JTextField versionField;
+	JLabel versionHelpLabel;
+	JLabel webpageLabel;
+	JTextField webpageField;
+	JLabel webpageHelpLabel;
 
 	class EventHandler implements ComponentListener, KeyListener, DocumentListener {
 		int count = 0;
+
 		public void insertUpdate(DocumentEvent e) {
 			fireStateChanged();
 		}
@@ -64,15 +69,14 @@ public class PackagerOptionsPanel extends WizardPanel {
 
 		public void componentShown(ComponentEvent e) {
 			// log("Component Shown!");
-			FileSpecificationVector selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			Vector selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots(); // <FileSpecification>
 
-			if (selectedRobots != null && (/* robotPackager.isTeamPackager() ||*/selectedRobots.size() == 1)) {
+			if (selectedRobots != null && (selectedRobots.size() == 1)) {
 				FileSpecification fileSpecification = (FileSpecification) selectedRobots.elementAt(0);
 				String v = fileSpecification.getVersion();
 
 				if (v == null || v.equals("")) {
 					getVersionHelpLabel().setVisible(false);
-					// log("Help Label not visible.");
 					v = "1.0";
 				} else {
 					if (v.length() == 10) {
@@ -122,8 +126,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 				getWebpageHelpLabel().setVisible(true);
 				getDescriptionLabel().setText(
 						"Please enter a short description of your robot (up to 3 lines of 72 chars each).");
-
-			} else if (/* !robotPackager.isTeamPackager() &&*/selectedRobots.size() > 1) {
+			} else if (selectedRobots.size() > 1) {
 				getVersionLabel().setVisible(false);
 				getVersionField().setVisible(false);
 				getVersionHelpLabel().setVisible(false);
@@ -146,40 +149,25 @@ public class PackagerOptionsPanel extends WizardPanel {
 
 		public void keyReleased(KeyEvent e) {}
 
-		public void keyTyped(KeyEvent e) {// if (e.getSource() == getJarFilenameTextField())
-			// PackagerOptionsPanel.this.keyTyped = true;
-		}
-
+		public void keyTyped(KeyEvent e) {}
 	}
-	public javax.swing.JPanel robotListPanel = null;
 
-	/**
-	 * PackagerOptionsPanel constructor comment.
-	 */
+	public JPanel robotListPanel;
+
 	public PackagerOptionsPanel(RobotPackager robotPackager) {
 		super();
 		this.robotPackager = robotPackager;
 		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 12:28:02 PM)
-	 * @return javax.swing.JCheckBox
-	 */
-	public javax.swing.JCheckBox getIncludeSource() {
+	public JCheckBox getIncludeSource() {
 		if (includeSource == null) {
 			includeSource = new JCheckBox("Include source", true);
 		}
 		return includeSource;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 12:09:49 PM)
-	 */
 	private void initialize() {
-		setName("packagerOptionsPanel");
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JLabel label = new JLabel("It is up to you whether or not to include the source when you distribute your robot.");
@@ -218,13 +206,9 @@ public class PackagerOptionsPanel extends WizardPanel {
 	
 		add(getDescriptionLabel());
 	
-		// System.out.println(getDescriptionArea().getPreferredSize());
-		// System.out.println(getDescriptionArea().getPreferredScrollableViewportSize());
-	
 		JScrollPane scrollPane = new JScrollPane(getDescriptionArea(), JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-		// System.out.println(scrollPane.getPreferredSize());
 		scrollPane.setMaximumSize(scrollPane.getPreferredSize());
 		scrollPane.setMinimumSize(new Dimension(100, scrollPane.getPreferredSize().height));
 		scrollPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
@@ -255,16 +239,11 @@ public class PackagerOptionsPanel extends WizardPanel {
 
 		JPanel panel = new JPanel();
 
-		// panel.setBackground(Color.blue);
 		panel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(panel);
 		addComponentListener(eventHandler);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/20/2001 11:24:52 AM)
-	 */
 	public boolean isReady() {
 		if (getVersionLabel().isVisible()) {
 			if (getVersionField().getText().equals("")) {
@@ -304,27 +283,21 @@ public class PackagerOptionsPanel extends WizardPanel {
 		return true;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 2:27:51 PM)
-	 * @param args java.lang.String[]
-	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("options");
 
 		frame.setSize(new Dimension(500, 300));
 		frame.getContentPane().add(new PackagerOptionsPanel(null));
 		frame.pack();
-		frame.show();
-		frame.addWindowListener(new java.awt.event.WindowAdapter() {
-			public void windowClosing(java.awt.event.WindowEvent e) {
+		frame.setVisible(true);
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
 				e.getWindow().dispose();
 			}
 
-			public void windowClosed(java.awt.event.WindowEvent e) {
+			public void windowClosed(WindowEvent e) {
 				System.exit(0);
 			}
-			;
 		});
 	}
 
@@ -336,12 +309,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 		return authorLabel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/1/2001 5:05:39 PM)
-	 * @return javax.swing.JTextField
-	 */
-	public javax.swing.JTextField getAuthorField() {
+	public JTextField getAuthorField() {
 		if (authorField == null) {
 			authorField = new JTextField(40);
 		}
@@ -356,15 +324,12 @@ public class PackagerOptionsPanel extends WizardPanel {
 		return descriptionLabel;
 	}
 
-	public javax.swing.JTextArea getDescriptionArea() {
+	public JTextArea getDescriptionArea() {
 		if (descriptionArea == null) {
 			LimitedDocument doc = new LimitedDocument(3, 72);
 
 			descriptionArea = new JTextArea(doc, null, 3, 72);
 			doc.addDocumentListener(eventHandler);
-			// descriptionArea.setMaximumSize(descriptionArea.getPreferredScrollableViewportSize());
-			// descriptionArea.setLineWrap(true);
-			// descriptionArea.setWrapStyleWord(true);
 		}
 		return descriptionArea;
 	}
@@ -384,19 +349,11 @@ public class PackagerOptionsPanel extends WizardPanel {
 
 			versionField = new JTextField(doc, null, 10);
 			doc.addDocumentListener(eventHandler);
-			// descriptionArea.setMaximumSize(descriptionArea.getPreferredScrollableViewportSize());
-			// descriptionArea.setLineWrap(true);
-			// descriptionArea.setWrapStyleWord(true);
 		}
 		return versionField;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/1/2001 4:58:14 PM)
-	 * @return javax.swing.JLabel
-	 */
-	public javax.swing.JLabel getVersionHelpLabel() {
+	public JLabel getVersionHelpLabel() {
 		if (versionHelpLabel == null) {
 			versionHelpLabel = new JLabel("<-- Make sure to delete the asterisk and type in a new version number");
 		}
@@ -411,19 +368,14 @@ public class PackagerOptionsPanel extends WizardPanel {
 		return webpageLabel;
 	}
 
-	public javax.swing.JTextField getWebpageField() {
+	public JTextField getWebpageField() {
 		if (webpageField == null) {
 			webpageField = new JTextField(40);
 		}
 		return webpageField;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/1/2001 5:13:42 PM)
-	 * @return javax.swing.JLabel
-	 */
-	public javax.swing.JLabel getWebpageHelpLabel() {
+	public JLabel getWebpageHelpLabel() {
 		if (webpageHelpLabel == null) {
 			webpageHelpLabel = new JLabel("");
 		}

@@ -1,19 +1,26 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Removed getBattleView().setDoubleBuffered(false) as RobocodeNG uses
+ *       BufferStrategy
+ *     - Replaced FileSpecificationVector, RobotPeerVector, and
+ *       RobotClassManagerVector with plain Vector
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
 
 
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
-import javax.swing.*;
 
 import robocode.util.*;
 import robocode.battle.*;
@@ -25,25 +32,20 @@ import robocode.security.RobocodeSecurityManager;
 import robocode.peer.*;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class BattleManager {
 	private BattleProperties battleProperties = new BattleProperties();
-	private String battleFilename = null;
-	private java.lang.String battlePath = null;
-	private Battle battle = null;
-	private boolean battleRunning = false;
-	private int pauseCount = 0;
-	private java.lang.String resultsFile = null;
-	private RobocodeManager manager = null;
-	
-	Vector bugFixLoaderCache = null;
-
-	private void log(String s) {
-		Utils.log(s);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
+	private String battleFilename;
+	private String battlePath;
+	private Battle battle;
+	private boolean battleRunning;
+	private int pauseCount;
+	private String resultsFile;
+	private RobocodeManager manager;
+	Vector bugFixLoaderCache;
 
 	public BattleManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -53,21 +55,16 @@ public class BattleManager {
 		if (getBattle() != null) {
 			getBattle().stop(showResultsDialog);
 		}
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/27/2001 5:52:37 PM)
-	 * @param battleProperties java.util.Properties
-	 */
 	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete) {
 		this.battleProperties = battleProperties;
 
-		FileSpecificationVector robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
-				false, false, false, false, false, false);
-		RobotClassManagerVector battlingRobotsVector = new RobotClassManagerVector();
-	
+		Vector robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(// <FileSpecification>
+				false,
+				false, false, false, false, false);
+		Vector battlingRobotsVector = new Vector(); // <RobotClassManager>
+
 		StringTokenizer tokenizer;
 
 		if (battleProperties.getSelectedRobots() != null) {
@@ -93,31 +90,25 @@ public class BattleManager {
 							teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
 							while (teamTokenizer.hasMoreTokens()) {
 								bot = teamTokenizer.nextToken();
-								// log("Looking for: " + bot);
 								RobotSpecification match = null;
 
 								for (int j = 0; j < robotSpecificationsVector.size(); j++) {
 									currentFileSpecification = (FileSpecification) robotSpecificationsVector.elementAt(j);
-									// log("Looking at: " + currentFileSpecification.getName());
+
 									// Teams cannot include teams
 									if (currentFileSpecification instanceof TeamSpecification) {
 										continue;
 									}
-									
 									if (currentFileSpecification.getNameManager().getUniqueFullClassNameWithVersion().equals(
 											bot)) {
-									
-										// log("Found " + currentFileSpecification.getNameManager().getUniqueFullClassNameWithVersion() + ", " + currentTeam.getRootDir() + " - " + currentFileSpecification.getRootDir());
 										// Found team member
 										match = (RobotSpecification) currentFileSpecification;
 										if (currentTeam.getRootDir().equals(currentFileSpecification.getRootDir())
 												|| currentTeam.getRootDir().equals(
 														currentFileSpecification.getRootDir().getParentFile())) {
-											// log("This is a match.");
 											break;
 										}
-										// else
-										// log("Still looking.");
+										// else, still looking
 									}
 								}
 								battlingRobotsVector.add(new RobotClassManager(match, teamManager));
@@ -133,10 +124,11 @@ public class BattleManager {
 
 	public void startNewBattle(robocode.control.BattleSpecification battleSpecification) {
 		this.battleProperties = battleSpecification.getBattleProperties();
-		FileSpecificationVector robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
-				false, false, false, false, false, false);
-		RobotClassManagerVector battlingRobotsVector = new RobotClassManagerVector();
-	
+		Vector robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(// <FileSpecification>
+				false,
+				false, false, false, false, false);
+		Vector battlingRobotsVector = new Vector(); // <RobotClassManager>
+
 		robocode.control.RobotSpecification[] robotSpecs = battleSpecification.getRobots();
 
 		for (int i = 0; i < robotSpecs.length; i++) {
@@ -155,8 +147,6 @@ public class BattleManager {
 			boolean found = false;
 
 			for (int j = 0; j < robotSpecificationsVector.size(); j++) {
-				// log("compare" + ((FileSpecification)robotSpecificationsVector.elementAt(j)).getNameManager().getUniqueFullClassNameWithVersion() +
-				// " to " + bot);
 				if (((FileSpecification) robotSpecificationsVector.elementAt(j)).getNameManager().getUniqueFullClassNameWithVersion().equals(
 						bot)) {
 					RobotSpecification robotSpec = (RobotSpecification) robotSpecificationsVector.elementAt(j);
@@ -169,7 +159,7 @@ public class BattleManager {
 				}
 			}
 			if (!found) {
-				log("Aborting battle, could not find robot: " + bot);
+				Utils.log("Aborting battle, could not find robot: " + bot);
 				if (manager.getListener() != null) {
 					manager.getListener().battleAborted(battleSpecification);
 				}
@@ -179,22 +169,12 @@ public class BattleManager {
 		startNewBattle(battlingRobotsVector, false, battleSpecification);
 	}
 
-	private void startNewBattle(RobotClassManagerVector battlingRobotsVector, boolean exitOnComplete, robocode.control.BattleSpecification battleSpecification) {
+	private void startNewBattle(Vector battlingRobotsVector, boolean exitOnComplete,
+			robocode.control.BattleSpecification battleSpecification) { // <RobotClassManager>
 
-		/*
-		 * if (battlingRobotsVector.size() <= 0)
-		 {
-		 log("no selected robots");
-		 return;
-		 }
-		 */
-
-		log("Preparing battle..."); 
-	  
+		Utils.log("Preparing battle...");
 		if (battle != null) {
 			bugFixLoaderCache = new Vector();
-			for (int i = 0; i < battle.getRobots().size(); i++) {// bugFixLoaderCache.add(battle.getRobots().elementAt(i).getRobotClassManager().getRobotClassLoader());
-			}
 			battle.stop();
 		}
 
@@ -204,7 +184,7 @@ public class BattleManager {
 		manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);
 		battle = new Battle(manager.getWindowManager().getRobocodeFrame().getBattleView(), battleField, manager);
 		battle.setExitOnComplete(exitOnComplete);
-	
+
 		// Only used when controlled by RobocodeEngine
 		battle.setBattleSpecification(battleSpecification);
 
@@ -221,7 +201,7 @@ public class BattleManager {
 			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
 			((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
 		}
-	
+
 		manager.getWindowManager().getRobocodeFrame().getBattleView().setVisible(true);
 		manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
 
@@ -236,64 +216,34 @@ public class BattleManager {
 		manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
 		manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 
-		if (pauseCount == 0 && isBattleRunning()) {
-			manager.getWindowManager().getRobocodeFrame().getBattleView().setDoubleBuffered(false);
-		}
-
 		if (manager.getWindowManager().getRobocodeFrame().getPauseResumeButton().getText().equals("Resume")) {
 			manager.getWindowManager().getRobocodeFrame().pauseResumeButtonActionPerformed();
 		}
-		
+
 		manager.getRobotDialogManager().setActiveBattle(battle);
 		battleThread.start();
-	
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 11:51:54 AM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getBattleFilename() {
+	public String getBattleFilename() {
 		return battleFilename;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 11:51:54 AM)
-	 * @param newBattleFilename java.lang.String
-	 */
-	public void setBattleFilename(java.lang.String newBattleFilename) {
+	public void setBattleFilename(String newBattleFilename) {
 		battleFilename = newBattleFilename;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/4/2001 2:03:55 PM)
-	 * @return boolean
-	 */
 	public boolean isPaused() {
 		return (pauseCount != 0);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/5/2001 12:23:36 PM)
-	 */
 	public void pauseBattle() {
 		pauseCount++;
 		if (pauseCount == 1) {
 			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattlePaused(true);
 		}
-		// RepaintManager.currentManager(robocodeFrame).setDoubleBufferingEnabled(true);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/24/2001 12:32:40 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getBattlePath() {
+	public String getBattlePath() {
 		if (battlePath == null) {
 			battlePath = System.getProperty("BATTLEPATH");
 			if (battlePath == null) {
@@ -304,22 +254,13 @@ public class BattleManager {
 		return battlePath;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:27:54 PM)
-	 */
 	public void saveBattle() {
 		pauseBattle();
 		saveBattleProperties();
 		resumeBattle();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:29:52 PM)
-	 */
 	public void saveBattleAs() {
-
 		pauseBattle();
 		File f = new File(getBattlePath());
 
@@ -367,16 +308,11 @@ public class BattleManager {
 			saveBattleProperties();
 		}
 		resumeBattle();
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/18/2001 3:21:22 PM)
-	 */
 	public void saveBattleProperties() {
 		if (battleProperties == null) {
-			log("Cannot save null battle properties");
+			Utils.log("Cannot save null battle properties");
 			return;
 		}
 		if (battleFilename == null) {
@@ -388,34 +324,22 @@ public class BattleManager {
 
 			battleProperties.store(out, "Battle Properties");
 		} catch (IOException e) {
-			log("IO Exception saving battle properties: " + e);
+			Utils.log("IO Exception saving battle properties: " + e);
 		}
-	
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/18/2001 3:43:41 PM)
-	 */
 	public void loadBattleProperties() {
 		try {
 			FileInputStream in = new FileInputStream(battleFilename);
 
 			battleProperties.load(in);
 		} catch (FileNotFoundException e) {
-			log("No file " + battleFilename + " found, using defaults.");
-
+			Utils.log("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {
-			log("IO Exception reading " + battleFilename + ": " + e);
+			Utils.log("IO Exception reading " + battleFilename + ": " + e);
 		}
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:15:33 PM)
-	 * @return robocode.Battle
-	 */
 	public Battle getBattle() {
 		return battle;
 	}
@@ -426,11 +350,6 @@ public class BattleManager {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:16:41 PM)
-	 * @return java.util.Properties
-	 */
 	public BattleProperties getBattleProperties() {
 		if (battleProperties == null) {
 			battleProperties = new BattleProperties();
@@ -442,10 +361,6 @@ public class BattleManager {
 		battleProperties = null;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/5/2001 12:23:36 PM)
-	 */
 	public void resumeBattle() {
 		// Resume is done after a short delay,
 		// so that a user switching from menu to menu won't cause
@@ -467,29 +382,14 @@ public class BattleManager {
 		}).start();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 8:07:00 PM)
-	 * @return boolean
-	 */
 	public boolean isBattleRunning() {
 		return battleRunning;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:15:33 PM)
-	 * @param newBattle robocode.Battle
-	 */
 	public void setBattle(Battle newBattle) {
 		battle = newBattle;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 8:07:00 PM)
-	 * @param newBattleRunning boolean
-	 */
 	public void setBattleRunning(boolean newBattleRunning) {
 		battleRunning = newBattleRunning;
 		if (pauseCount == 0) {
@@ -498,28 +398,18 @@ public class BattleManager {
 		// javax.swing.RepaintManager.currentManager(robocodeFrame).setDoubleBufferingEnabled(battleRunning);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 4:42:27 PM)
-	 * @param newResultsFile java.lang.String
-	 */
-	public void setResultsFile(java.lang.String newResultsFile) {
+	public void setResultsFile(String newResultsFile) {
 		resultsFile = newResultsFile;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 4:42:27 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getResultsFile() {
+	public String getResultsFile() {
 		return resultsFile;
 	}
 
 	public void sendResultsToListener(Battle battle, robocode.control.RobocodeListener listener) {
-		RobotPeerVector orderedRobots = (RobotPeerVector) battle.getRobots().clone();
+		Vector orderedRobots = new Vector(battle.getRobots()); // <RobotPeer>
 
-		orderedRobots.sort(); // Collections.sort(orderedRobots);
+		Collections.sort(orderedRobots);
 
 		robocode.control.RobotResults results[] = new robocode.control.RobotResults[orderedRobots.size()];
 
@@ -536,12 +426,7 @@ public class BattleManager {
 		listener.battleComplete(battle.getBattleSpecification(), results);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/16/2001 3:25:34 PM)
-	 */
 	public void printResultsData(Battle battle) {
-	
 		PrintStream out;
 		boolean close = false;
 
@@ -554,7 +439,7 @@ public class BattleManager {
 				out = new PrintStream(new FileOutputStream(f));
 				close = true;
 			} catch (IOException e) {
-				log(e);
+				Utils.log(e);
 				return;
 			}
 		}
@@ -569,11 +454,10 @@ public class BattleManager {
 
 	/**
 	 * Gets the manager.
+	 * 
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {
 		return manager;
 	}
-
 }
-

@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
 
@@ -16,6 +19,10 @@ import java.net.*;
 import robocode.util.*;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class TeamSpecification extends FileSpecification implements Serializable, Cloneable {
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";
@@ -25,6 +32,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 	private final static String TEAM_WEBPAGE = "team.webpage";
 	private final static String TEAM_MEMBERS = "team.members";
 	private final static String TEAM_JAVA_SOURCE_INCLUDED = "team.java.source.included";
+
 	protected boolean teamJavaSourceIncluded = false;
 
 	private String members = "";
@@ -36,7 +44,6 @@ public class TeamSpecification extends FileSpecification implements Serializable
 		this.rootDir = rootDir;
 		valid = true;
 		String filename = f.getName();
-		String filepath = f.getPath();
 		String fileType = Utils.getFileType(filename);
 
 		if (fileType.equals(".team")) {
@@ -45,24 +52,22 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 				load(in);
 			} catch (IOException e) {
-				log("Warning:  Could not load team: " + f);
+				Utils.log("Warning:  Could not load team: " + f);
 			}
 			if (filename.indexOf(" ") >= 0) {
 				setName(prefix + Utils.getClassName(filename.substring(0, filename.indexOf(" "))));
 			} else {
 				setName(prefix + Utils.getClassName(filename));
 			}
-			// log("Got name " + getName() + " from " + filename);
 			setFileLastModified(f.lastModified());
 			setFileLength(f.length());
 			setFileType(".team");
 			try {
 				setFilePath(f.getCanonicalPath());
 			} catch (IOException e) {
-				log("Warning:  Unable to determine canonical path for " + f.getPath());
+				Utils.log("Warning:  Unable to determine canonical path for " + f.getPath());
 				setFilePath(f.getPath());
 			}
-			// log("Set team thisfilename to " + f.getPath());
 			setThisFileName(f.getPath());
 			setFileName(f.getName());
 		} else {
@@ -105,6 +110,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotName.
+	 * 
 	 * @param robotName The robotName to set
 	 */
 	public void setName(String name) {
@@ -113,6 +119,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotDescription.
+	 * 
 	 * @param robotDescription The robotDescription to set
 	 */
 	public void setTeamDescription(String teamDescription) {
@@ -122,6 +129,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotAuthorName.
+	 * 
 	 * @param robotAuthorName The robotAuthorName to set
 	 */
 	public void setTeamAuthorName(String teamAuthorName) {
@@ -131,6 +139,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotAuthorEmail.
+	 * 
 	 * @param robotAuthorEmail The robotAuthorEmail to set
 	 */
 	public void setTeamAuthorEmail(String teamAuthorEmail) {
@@ -140,6 +149,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotAuthorWebsite.
+	 * 
 	 * @param robotAuthorWebsite The robotAuthorWebsite to set
 	 */
 	public void setTeamAuthorWebsite(String teamAuthorWebsite) {
@@ -147,20 +157,9 @@ public class TeamSpecification extends FileSpecification implements Serializable
 		props.setProperty(TEAM_AUTHOR_WEBSITE, teamAuthorWebsite);
 	}
 
-	private void log(String s) {
-		Utils.log(s);
-	}
-	
-	private void log(String s, Throwable t) {
-		Utils.log(s, t);
-	}
-	
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
-	
 	/**
 	 * Sets the robotVersion.
+	 * 
 	 * @param robotVersion The robotVersion to set
 	 */
 	public void setTeamVersion(String teamVersion) {
@@ -170,6 +169,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotWebpage.
+	 * 
 	 * @param robotWebpage The robotWebpage to set
 	 */
 	public void setTeamWebpage(URL teamWebpage) {
@@ -183,6 +183,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Gets the members.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getMembers() {
@@ -191,13 +192,14 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the members.
+	 * 
 	 * @param members The members to set
 	 */
 	public void setMembers(String members) {
 		this.members = members;
 		props.setProperty(TEAM_MEMBERS, members);
 	}
-	
+
 	public void addMember(RobotSpecification robotSpecification) {
 		if (members == null || members.equals("")) {
 			members = robotSpecification.getFullClassNameWithVersion();
@@ -209,6 +211,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Gets the teamJavaSourceIncluded.
+	 * 
 	 * @return Returns a boolean
 	 */
 	public boolean getTeamJavaSourceIncluded() {
@@ -217,6 +220,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the teamJavaSourceIncluded.
+	 * 
 	 * @param teamJavaSourceIncluded The teamJavaSourceIncluded to set
 	 */
 	public void setTeamJavaSourceIncluded(boolean teamJavaSourceIncluded) {
@@ -224,4 +228,3 @@ public class TeamSpecification extends FileSpecification implements Serializable
 		props.setProperty(TEAM_JAVA_SOURCE_INCLUDED, "" + teamJavaSourceIncluded);
 	}
 }
-

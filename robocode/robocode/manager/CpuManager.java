@@ -1,35 +1,30 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.manager;
 
 
 import java.util.Date;
+import robocode.util.Utils;
 
-import robocode.util.*;
 
-
+/**
+ * @author Mathew A. Nelson (original)
+ */
 public class CpuManager {
 	private int cpuConstant = -1;
-	private RobocodeManager manager = null;
+	private RobocodeManager manager;
 	
 	public CpuManager(RobocodeManager manager) {
 		this.manager = manager;
-	}
-
-	private void log(String s) {
-		Utils.log(s);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
 	}
 
 	public int getCpuConstant() {
@@ -70,7 +65,8 @@ public class CpuManager {
 					cpuConstant = 10;
 				}
 				
-				log("Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
+				Utils.log(
+						"Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
 				manager.getProperties().setCpuConstant(cpuConstant);
 				manager.saveProperties();
 			}
@@ -83,6 +79,4 @@ public class CpuManager {
 		}
 		return cpuConstant;
 	}
-	
 }
-

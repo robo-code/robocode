@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.control;
 
@@ -16,7 +17,8 @@ import robocode.battle.*;
 
 /**
  * Defines a battle
- * @author Mathew A. Nelson
+ * 
+ * @author Mathew A. Nelson (original)
  */
 public class BattleSpecification {
 	private BattlefieldSpecification battlefield;
@@ -71,6 +73,7 @@ public class BattleSpecification {
 
 	/**
 	 * Gets the inactivityTime for this battle
+	 * 
 	 * @return the inactivityTime for this battle
 	 */
 	public long getInactivityTime() {
@@ -79,6 +82,7 @@ public class BattleSpecification {
 	
 	/**
 	 * Gets the gunCoolingRate for this battle
+	 * 
 	 * @return the gunCoolingRate for this battle
 	 */
 	public double getGunCoolingRate() {
@@ -87,6 +91,7 @@ public class BattleSpecification {
 	
 	/**
 	 * Gets the battleField for this battle
+	 * 
 	 * @return the battleField for this battle
 	 */
 	public BattlefieldSpecification getBattlefield() {
@@ -95,6 +100,7 @@ public class BattleSpecification {
 	
 	/**
 	 * Gets the number of rounds in this battle
+	 * 
 	 * @return the number of rounds in this battle
 	 */
 	public int getNumRounds() {
@@ -103,6 +109,7 @@ public class BattleSpecification {
 	
 	/**
 	 * Gets the robots participating in this battle
+	 * 
 	 * @return the robots participating in this battle
 	 */
 	public RobotSpecification[] getRobots() {
@@ -112,10 +119,10 @@ public class BattleSpecification {
 	/**
 	 * Used by Robocode, you do not need to use this.
 	 * This method may not exist in a future version of Robocode.
+	 *
+	 * @deprecated
 	 */
 	public BattleProperties getBattleProperties() {
 		return battleProperties;
 	}
-
 }
-

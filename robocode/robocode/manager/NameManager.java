@@ -1,39 +1,43 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
 
 
 import java.io.*;
-import robocode.util.Utils;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class NameManager implements Serializable {
 	
-	private java.lang.String fullClassName = null;
-	private java.lang.String version = null;
-	private boolean developmentVersion = false;
+	private String fullClassName;
+	private String version;
+	private boolean developmentVersion;
 	
-	private java.lang.String fullClassNameWithVersion = null;
-	private java.lang.String uniqueFullClassNameWithVersion = null;
-	private java.lang.String fullPackage = null;
-	private java.lang.String rootPackage = null;
-	private java.lang.String shortClassName = null;
-	private java.lang.String veryShortClassName = null;
-	private java.lang.String shortClassNameWithVersion = null;
-	private java.lang.String veryShortClassNameWithVersion = null;
-	private java.lang.String uniqueVeryShortClassNameWithVersion = null;
-	private java.lang.String uniqueShortClassNameWithVersion = null;
+	private String fullClassNameWithVersion;
+	private String uniqueFullClassNameWithVersion;
+	private String fullPackage;
+	private String rootPackage;
+	private String shortClassName;
+	private String veryShortClassName;
+	private String shortClassNameWithVersion;
+	private String veryShortClassNameWithVersion;
+	private String uniqueVeryShortClassNameWithVersion;
+	private String uniqueShortClassNameWithVersion;
 
-	private boolean isTeam = false;
-	
 	private NameManager() {}
 	
 	public NameManager(String className, String version, boolean developmentVersion, boolean isTeam) {
@@ -42,7 +46,6 @@ public class NameManager implements Serializable {
 		}
 			
 		this.fullClassName = className;
-		this.isTeam = isTeam;
 		if (version != null) {
 			if (version.length() > 10) {
 				version = version.substring(0, 10);
@@ -53,18 +56,10 @@ public class NameManager implements Serializable {
 	}
 	
 	public String getFullClassName() {
-		// if (isTeam)
-		// return "Team: " + fullClassName;
-		// else
 		return fullClassName;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getRootPackage() {
+	public String getRootPackage() {
 		if (rootPackage == null) {
 			if (fullClassName.indexOf(".") > 0) {
 				rootPackage = fullClassName.substring(0, fullClassName.indexOf("."));
@@ -75,17 +70,10 @@ public class NameManager implements Serializable {
 		return rootPackage;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getShortClassName() {
+	public String getShortClassName() {
 		if (shortClassName == null) {
 			if (getFullClassName().lastIndexOf(".") > 0) {
 				shortClassName = getFullClassName().substring(getFullClassName().lastIndexOf(".") + 1);
-				// if (isTeam)
-				// shortClassName = "Team: " + shortClassName;
 			} else {
 				shortClassName = getFullClassName();
 			}
@@ -93,12 +81,7 @@ public class NameManager implements Serializable {
 		return shortClassName;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getShortClassNameWithVersion() {
+	public String getShortClassNameWithVersion() {
 		if (shortClassNameWithVersion == null) {
 			if (getVersion().equals("")) {
 				shortClassNameWithVersion = getShortClassName();
@@ -113,7 +96,7 @@ public class NameManager implements Serializable {
 	 * Example: sample.Walls 1.0*
 	 * The * indicates a development version, or not from the cache.
 	 */
-	public java.lang.String getUniqueFullClassNameWithVersion() {
+	public String getUniqueFullClassNameWithVersion() {
 		if (uniqueFullClassNameWithVersion == null) {
 			if (getFullClassNameWithVersion().equals(getFullClassName())) {
 				uniqueFullClassNameWithVersion = getFullClassName();
@@ -128,12 +111,7 @@ public class NameManager implements Serializable {
 		return uniqueFullClassNameWithVersion;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getUniqueShortClassNameWithVersion() {
+	public String getUniqueShortClassNameWithVersion() {
 		if (uniqueShortClassNameWithVersion == null) {
 			if (getShortClassName().equals(getShortClassNameWithVersion())) {
 				uniqueShortClassNameWithVersion = getShortClassName();
@@ -148,12 +126,7 @@ public class NameManager implements Serializable {
 		return uniqueShortClassNameWithVersion;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getUniqueVeryShortClassNameWithVersion() {
+	public String getUniqueVeryShortClassNameWithVersion() {
 		if (uniqueVeryShortClassNameWithVersion == null) {
 			if (getVeryShortClassName().equals(getVeryShortClassNameWithVersion())) {
 				uniqueVeryShortClassNameWithVersion = getVeryShortClassName();
@@ -172,24 +145,14 @@ public class NameManager implements Serializable {
 		return developmentVersion;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getVersion() {
+	public String getVersion() {
 		if (version == null) {
 			version = "";
 		}
 		return version;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getVeryShortClassName() {
+	public String getVeryShortClassName() {
 		if (veryShortClassName == null) {
 			veryShortClassName = getShortClassName();
 			if (veryShortClassName.length() > 12) {
@@ -199,12 +162,7 @@ public class NameManager implements Serializable {
 		return veryShortClassName;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getVeryShortClassNameWithVersion() {
+	public String getVeryShortClassNameWithVersion() {
 		if (veryShortClassNameWithVersion == null) {
 			if (getVersion().equals("")) {
 				veryShortClassNameWithVersion = getVeryShortClassName();
@@ -215,12 +173,7 @@ public class NameManager implements Serializable {
 		return veryShortClassNameWithVersion;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getFullClassNameWithVersion() {
+	public String getFullClassNameWithVersion() {
 		if (fullClassNameWithVersion == null) {
 			if (getVersion().equals("")) {
 				fullClassNameWithVersion = getFullClassName();
@@ -231,12 +184,7 @@ public class NameManager implements Serializable {
 		return fullClassNameWithVersion;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/27/2001 1:28:54 PM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getFullPackage() {
+	public String getFullPackage() {
 		if (fullPackage == null) {
 			if (fullClassName.lastIndexOf(".") > 0) {
 				fullPackage = fullClassName.substring(0, fullClassName.lastIndexOf("."));
@@ -246,10 +194,4 @@ public class NameManager implements Serializable {
 		}
 		return fullPackage;
 	}
-	
-	private static void log(String s) {
-		Utils.log(s);
-	}
-
 }
-

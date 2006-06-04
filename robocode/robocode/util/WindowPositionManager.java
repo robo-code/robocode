@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.util;
 
@@ -15,12 +18,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
+import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/23/2001 1:09:54 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
  */
 public class WindowPositionManager implements ComponentListener {
 	private Properties windowPositions = null;
@@ -40,9 +42,9 @@ public class WindowPositionManager implements ComponentListener {
 
 				windowPositions.load(in);
 			} catch (FileNotFoundException e) {
-				log("Creating window.properties file");
+				Utils.log("Creating window.properties file");
 			} catch (Exception e) {
-				log(e);
+				Utils.log(e);
 			}
 		}
 		return windowPositions;
@@ -70,11 +72,6 @@ public class WindowPositionManager implements ComponentListener {
 
 	public void componentShown(ComponentEvent e) {}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 1:21:55 PM)
-	 * @param windowName java.lang.String
-	 */
 	public Rectangle getWindowRect(Window window) {
 		window.addComponentListener(this);
 		String rString = (String) getWindowPositions().get(
@@ -82,7 +79,6 @@ public class WindowPositionManager implements ComponentListener {
 				+ ")");
 
 		if (rString == null) {
-			// System.out.println("Could not find " + window.getName());
 			return null;
 		} else {
 			StringTokenizer tokenizer = new StringTokenizer(rString, ",");
@@ -90,53 +86,22 @@ public class WindowPositionManager implements ComponentListener {
 			int y = Integer.parseInt(tokenizer.nextToken());
 			int width = Integer.parseInt(tokenizer.nextToken());
 			int height = Integer.parseInt(tokenizer.nextToken());
-			Rectangle r = new Rectangle(x, y, width, height);
 		
-			// System.out.println(window.getName() + " returning " + r.x + "," + r.y);
-		
-			return r;
+			return new Rectangle(x, y, width, height);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 5:24:19 PM)
-	 * @param s java.lang.String
-	 */
-	public void log(String s) {
-		Utils.log(s);
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 5:24:19 PM)
-	 * @param s java.lang.String
-	 */
-	public void log(Throwable e) {
-		Utils.log(e);
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 1:34:46 PM)
-	 */
 	public void saveWindowPositions() {
 		try {
 			FileOutputStream out = new FileOutputStream(new File(Constants.cwd(), "window.properties"));
 
 			getWindowPositions().store(out, "Robocode window sizes");
 		} catch (IOException e) {
-			log("Warning:  Unable to save window positions: " + e);
+			Utils.log("Warning:  Unable to save window positions: " + e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 1:21:55 PM)
-	 * @param windowName java.lang.String
-	 */
 	public void setWindowRect(boolean move, Window w, Rectangle rect) {
-		// System.out.println(w.getName() + " moved? " + move + " to " + rect.x + "," + rect.y);
 		String rString = new String(rect.x + "," + rect.y + "-" + rect.width + "," + rect.height);
 
 		getWindowPositions().put(

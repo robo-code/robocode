@@ -1,25 +1,27 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.packager;
 
 
 import java.io.*;
 import java.util.*;
-import robocode.util.*;
+import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/8/2001 1:04:11 AM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class ClassAnalyzer {
 	private final static byte CONSTANT_Class = 7;
@@ -68,20 +70,20 @@ public class ClassAnalyzer {
 		 attribute_info attributes[attributes_count];
 		 }
 		 */
-		Vector referencedClasses = new Vector();
+		Vector referencedClasses = new Vector(); // <String>
 		String strings[];
-		Vector classNameIndexes = new Vector();
+		Vector classNameIndexes = new Vector(); // <Integer>
 
 		try {
 			DataInputStream in = new DataInputStream(new ByteArrayInputStream(classFile));
 			long magic = in.readInt();
 
 			if (magic != 0xCAFEBABE) {
-				log("Not a class file!");
+				Utils.log("Not a class file!");
 				return null;
 			}
-			int minor_version = in.readUnsignedShort();
-			int major_version = in.readUnsignedShort();
+			in.readUnsignedShort(); // minor version
+			in.readUnsignedShort(); // major version
 			int constant_pool_count = in.readUnsignedShort();
 
 			strings = new String[constant_pool_count];
@@ -126,7 +128,6 @@ public class ClassAnalyzer {
 						int name_index = in.readUnsignedShort();
 
 						classNameIndexes.add(new Integer(name_index));
-						// log("There is a class at index: " + name_index);
 					}
 					break;
 
@@ -150,8 +151,8 @@ public class ClassAnalyzer {
 				case CONSTANT_Fieldref:
 				case CONSTANT_Methodref:
 				case CONSTANT_InterfaceMethodref: {
-						int class_index = in.readUnsignedShort();
-						int name_and_type_index = in.readUnsignedShort();
+						in.readUnsignedShort(); // class index
+						in.readUnsignedShort(); // name and type index
 					}
 					break;
 
@@ -162,7 +163,7 @@ public class ClassAnalyzer {
 				 }
 				 */
 				case CONSTANT_String: {
-						int string_index = in.readUnsignedShort();
+						in.readUnsignedShort(); // string index
 					}
 					break;
 
@@ -178,7 +179,7 @@ public class ClassAnalyzer {
 				 */
 				case CONSTANT_Integer:
 				case CONSTANT_Float: {
-						int bytes = in.readInt();
+						in.readInt(); // bytes
 					}
 					break;
 
@@ -198,9 +199,8 @@ public class ClassAnalyzer {
 
 				case CONSTANT_Long:  
 				case CONSTANT_Double: {
-						int high_bytes = in.readInt();
-						int low_bytes = in.readInt();
-
+						in.readInt(); // high bytes
+						in.readInt(); // low bytes
 						i++; // see "all 8-byte..." comment above.
 					}
 					break;
@@ -213,8 +213,8 @@ public class ClassAnalyzer {
 				 }
 				 */
 				case CONSTANT_NameAndType: {
-						int name_index = in.readUnsignedShort();
-						int descriptor_index = in.readUnsignedShort();
+						in.readUnsignedShort(); // name index
+						in.readUnsignedShort(); // descriptor index
 					}
 					break;
 
@@ -229,7 +229,6 @@ public class ClassAnalyzer {
 						String utf8_string = in.readUTF();
 
 						strings[i] = utf8_string;
-						// log("The string at index " + i + " is: " + utf8_string);
 					}
 					break;
 				} // switch
@@ -244,18 +243,8 @@ public class ClassAnalyzer {
 			if (className.indexOf("[") != 0) {
 				referencedClasses.add(className);
 			} // strings[((Integer)classNameIndexes.elementAt(i)).intValue()]);
-			// log("Adding class: " + referencedClasses.elementAt(referencedClasses.size() - 1));
 		}
 	
 		return referencedClasses;
 	}              
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 5:43:37 PM)
-	 * @param s java.lang.String
-	 */
-	private static void log(String s) {
-		Utils.log(s);
-	}
 }

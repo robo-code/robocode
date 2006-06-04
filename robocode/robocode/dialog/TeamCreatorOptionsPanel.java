@@ -1,52 +1,57 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
 
 
-import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 import java.net.URL;
+import java.util.Vector;
 
 import robocode.util.*;
 import robocode.repository.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/19/2001 12:07:51 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class TeamCreatorOptionsPanel extends WizardPanel {
-	TeamCreator teamCreator = null;
-	robocode.packager.RobotPackager teamPackager = null;
+	TeamCreator teamCreator;
+	robocode.packager.RobotPackager teamPackager;
 	EventHandler eventHandler = new EventHandler();
 
-	JLabel authorLabel = null;
-	JTextField authorField = null;
-	JLabel descriptionLabel = null;
-	JTextArea descriptionArea = null;
-	JLabel webpageLabel = null;
-	JTextField webpageField = null;
-	JLabel webpageHelpLabel = null;
+	JLabel authorLabel;
+	JTextField authorField;
+	JLabel descriptionLabel;
+	JTextArea descriptionArea;
+	JLabel webpageLabel;
+	JTextField webpageField;
+	JLabel webpageHelpLabel;
 
-	JLabel teamNameLabel = null;
-	JLabel teamPackageLabel = null;
-	JTextField teamNameField = null;
+	JLabel teamNameLabel;
+	JLabel teamPackageLabel;
+	JTextField teamNameField;
 	
-	private String teamPackage = null;
+	private String teamPackage;
 	
-	class EventHandler implements ComponentListener, KeyListener, DocumentListener {
+	class EventHandler implements ComponentListener, DocumentListener {
 		int count = 0;
+
 		public void insertUpdate(DocumentEvent e) {
 			fireStateChanged();
 		}
@@ -64,7 +69,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			FileSpecificationVector selectedRobots;
+			Vector selectedRobots; // <FileSpecification>
 
 			if (teamCreator != null) {
 				selectedRobots = teamCreator.getRobotSelectionPanel().getSelectedRobots();
@@ -103,7 +108,6 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 					getWebpageField().setText(u.toString());
 				}
 				
-				// getVersionHelpLabel().setVisible(true);
 				getAuthorLabel().setVisible(true);
 				getAuthorField().setVisible(true);
 				getWebpageLabel().setVisible(true);
@@ -111,26 +115,14 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 				getWebpageHelpLabel().setVisible(true);
 				getDescriptionLabel().setText(
 						"Please enter a short description of this team (up to 3 lines of 72 chars each).");
-
 			}
 		}
 
 		public void componentResized(ComponentEvent e) {}
-
-		public void keyPressed(KeyEvent e) {}
-
-		public void keyReleased(KeyEvent e) {}
-
-		public void keyTyped(KeyEvent e) {// if (e.getSource() == getJarFilenameTextField())
-			// PackagerOptionsPanel.this.keyTyped = true;
-		}
-
 	}
-	public javax.swing.JPanel robotListPanel = null;
 
-	/**
-	 * PackagerOptionsPanel constructor comment.
-	 */
+	public JPanel robotListPanel;
+
 	public TeamCreatorOptionsPanel(TeamCreator teamCreator) {
 		super();
 		this.teamCreator = teamCreator;
@@ -143,18 +135,11 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 12:09:49 PM)
-	 */
 	private void initialize() {
-		setName("teamCreatorOptionsPanel");
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
 		getTeamNameLabel().setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(getTeamNameLabel());
-
 		JPanel p = new JPanel();
 
 		p.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -167,68 +152,46 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		p.add(getTeamNameField());
 		add(p);
 
-		/* getTeamNameField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
-		 getTeamNameField().setMaximumSize(getTeamNameField().getPreferredSize());
-		 add(getTeamNameField());
-		 */		
 		JLabel label = new JLabel(" ");
 
 		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(label);
-
 		label = new JLabel(" ");
 		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(label);
-	
+
 		add(getDescriptionLabel());
-	
-		// System.out.println(getDescriptionArea().getPreferredSize());
-		// System.out.println(getDescriptionArea().getPreferredScrollableViewportSize());
-	
+
 		JScrollPane scrollPane = new JScrollPane(getDescriptionArea(), JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-		// System.out.println(scrollPane.getPreferredSize());
 		scrollPane.setMaximumSize(scrollPane.getPreferredSize());
 		scrollPane.setMinimumSize(new Dimension(100, scrollPane.getPreferredSize().height));
 		scrollPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(scrollPane);
-
 		label = new JLabel(" ");
 		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(label);
-
 		add(getAuthorLabel());
-
 		getAuthorField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
 		getAuthorField().setMaximumSize(getAuthorField().getPreferredSize());
 		add(getAuthorField());
-
 		label = new JLabel(" ");
 		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(label);
-
 		add(getWebpageLabel());
-
 		getWebpageField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
 		getWebpageField().setMaximumSize(getWebpageField().getPreferredSize());
 		add(getWebpageField());
-
 		getWebpageHelpLabel().setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(getWebpageHelpLabel());
-
 		JPanel panel = new JPanel();
 
-		// panel.setBackground(Color.blue);
 		panel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		add(panel);
 		addComponentListener(eventHandler);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/20/2001 11:24:52 AM)
-	 */
 	public boolean isReady() {
 		if (getTeamNameField().getText().equals("")) {
 			return false;
@@ -247,12 +210,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		return authorLabel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/1/2001 5:05:39 PM)
-	 * @return javax.swing.JTextField
-	 */
-	public javax.swing.JTextField getAuthorField() {
+	public JTextField getAuthorField() {
 		if (authorField == null) {
 			authorField = new JTextField(40);
 		}
@@ -267,7 +225,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		return descriptionLabel;
 	}
 
-	public javax.swing.JTextArea getDescriptionArea() {
+	public JTextArea getDescriptionArea() {
 		if (descriptionArea == null) {
 			LimitedDocument doc = new LimitedDocument(3, 72);
 
@@ -280,11 +238,6 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		return descriptionArea;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/1/2001 4:58:14 PM)
-	 * @return javax.swing.JLabel
-	 */
 	public JLabel getWebpageLabel() {
 		if (webpageLabel == null) {
 			webpageLabel = new JLabel("Please enter a URL for your team's webpage (optional)");
@@ -293,26 +246,21 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		return webpageLabel;
 	}
 
-	public javax.swing.JTextField getWebpageField() {
+	public JTextField getWebpageField() {
 		if (webpageField == null) {
 			webpageField = new JTextField(40);
 		}
 		return webpageField;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/1/2001 5:13:42 PM)
-	 * @return javax.swing.JLabel
-	 */
-	public javax.swing.JLabel getWebpageHelpLabel() {
+	public JLabel getWebpageHelpLabel() {
 		if (webpageHelpLabel == null) {
 			webpageHelpLabel = new JLabel("");
 		}
 		return webpageHelpLabel;
 	}
 
-	public javax.swing.JTextField getTeamNameField() {
+	public JTextField getTeamNameField() {
 		if (teamNameField == null) {
 			LimitedDocument doc = new LimitedClassnameDocument(1, 32);
 
@@ -322,14 +270,14 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		return teamNameField;
 	}
 
-	public javax.swing.JLabel getTeamNameLabel() {
+	public JLabel getTeamNameLabel() {
 		if (teamNameLabel == null) {
 			teamNameLabel = new JLabel("");
 		}
 		return teamNameLabel;
 	}
 
-	public javax.swing.JLabel getTeamPackageLabel() {
+	public JLabel getTeamPackageLabel() {
 		if (teamPackageLabel == null) {
 			teamPackageLabel = new JLabel("");
 		}
@@ -338,6 +286,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 
 	/**
 	 * Gets the teamPackage.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getTeamPackage() {
@@ -347,5 +296,4 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 			return teamPackage;
 		}
 	}
-
 }

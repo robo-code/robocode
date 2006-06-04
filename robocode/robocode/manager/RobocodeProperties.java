@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Added option for viewing ground
  *******************************************************************************/
 package robocode.manager;
 
@@ -14,13 +17,12 @@ package robocode.manager;
 import java.io.*;
 import java.util.*;
 import java.text.*;
-import robocode.util.*;
+import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/11/2001 4:00:25 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobocodeProperties {
 	
@@ -29,6 +31,7 @@ public class RobocodeProperties {
 	private boolean optionsViewRobotNames = true;
 	private boolean optionsViewScanArcs = false;
 	private boolean optionsViewRobotEnergy = true;
+	private boolean optionsViewGround = true;
 	private boolean optionsViewFps = true;
 	private int optionsBattleDesiredFps = 30;
 	private boolean optionsBattleAllowColorChanges = false;
@@ -36,7 +39,7 @@ public class RobocodeProperties {
 	private String optionsDevelopmentPath = "";
 	private String lastRunVersion = "";
 	
-	private Date versionChecked = null;
+	private Date versionChecked;
 	private long robotFilesystemQuota = 200000;
 	private long consoleQuota = 8192;
 	private int cpuConstant = 200;
@@ -46,6 +49,7 @@ public class RobocodeProperties {
 	private final static String OPTIONS_VIEW_ROBOTNAMES = "robocode.options.view.robotNames";
 	private final static String OPTIONS_VIEW_SCANARCS = "robocode.options.view.scanArcs";
 	private final static String OPTIONS_VIEW_ROBOTENERGY = "robocode.options.view.robotEnergy";
+	private final static String OPTIONS_VIEW_GROUND = "robocode.options.view.ground";
 	private final static String OPTIONS_VIEW_FPS = "robocode.options.view.FPS";
 	private final static String OPTIONS_BATTLE_DESIREDFPS = "robocode.options.battle.desiredFPS";
 	private final static String OPTIONS_BATTLE_ALLOWCOLORCHANGES = "robocode.options.battle.allowColorChanges";
@@ -56,22 +60,15 @@ public class RobocodeProperties {
 	private final static String CONSOLE_QUOTA = "robocode.console.quota";
 	private final static String CPU_CONSTANT = "robocode.cpu.constant.1000";
 	private final static String LAST_RUN_VERSION = "robocode.version.lastrun";
-	private RobocodeManager manager = null;
+	private RobocodeManager manager;
 
 	public RobocodeProperties(RobocodeManager manager) {
 		this.manager = manager;
 	}
 	
-	private void log(String s) {
-		Utils.log(s);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
-
 	/**
 	 * Gets the optionsViewRobotNames.
+	 * 
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewRobotNames() {
@@ -80,6 +77,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewRobotNames.
+	 * 
 	 * @param optionsViewRobotNames The optionsViewRobotNames to set
 	 */
 	public void setOptionsViewRobotNames(boolean optionsViewRobotNames) {
@@ -89,6 +87,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewScanArcs.
+	 * 
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewScanArcs() {
@@ -97,6 +96,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewScanArcs.
+	 * 
 	 * @param optionsViewScanArcs The optionsViewScanArcs to set
 	 */
 	public void setOptionsViewScanArcs(boolean optionsViewScanArcs) {
@@ -106,6 +106,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewRobotEnergy.
+	 * 
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewRobotEnergy() {
@@ -114,6 +115,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewRobotEnergy.
+	 * 
 	 * @param optionsViewRobotEnergy The optionsViewRobotEnergy to set
 	 */
 	public void setOptionsViewRobotEnergy(boolean optionsViewRobotEnergy) {
@@ -122,7 +124,27 @@ public class RobocodeProperties {
 	}
 
 	/**
+	 * Gets the optionsViewGround.
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsViewGround() {
+		return optionsViewGround;
+	}
+
+	/**
+	 * Sets the optionsViewGround.
+	 * 
+	 * @param optionsViewGround The optionsViewGround to set
+	 */
+	public void setOptionsViewGround(boolean optionsViewGround) {
+		this.optionsViewGround = optionsViewGround;
+		props.setProperty(OPTIONS_VIEW_GROUND, "" + optionsViewGround);
+	}
+
+	/**
 	 * Gets the optionsViewFps.
+	 * 
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewFps() {
@@ -131,6 +153,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewFps.
+	 * 
 	 * @param optionsViewFps The optionsViewFps to set
 	 */
 	public void setOptionsViewFps(boolean optionsViewFps) {
@@ -140,6 +163,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsBattleDesiredFps.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getOptionsBattleDesiredFps() {
@@ -148,6 +172,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsBattleDesiredFps.
+	 * 
 	 * @param optionsBattleDesiredFps The optionsBattleDesiredFps to set
 	 */
 	public void setOptionsBattleDesiredFps(int optionsBattleDesiredFps) {
@@ -175,6 +200,7 @@ public class RobocodeProperties {
 	
 	/**
 	 * Gets the versionChecked.
+	 * 
 	 * @return Returns a String
 	 */
 	public Date getVersionChecked() {
@@ -183,6 +209,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the versionChecked.
+	 * 
 	 * @param versionChecked The versionChecked to set
 	 */
 	public void setVersionChecked(Date versionChecked) {
@@ -192,6 +219,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the robotFilesystemQuota.
+	 * 
 	 * @return Returns a long
 	 */
 	public long getRobotFilesystemQuota() {
@@ -200,6 +228,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the robotFilesystemQuota.
+	 * 
 	 * @param robotFilesystemQuota The robotFilesystemQuota to set
 	 */
 	public void setRobotFilesystemQuota(long robotFilesystemQuota) {
@@ -209,6 +238,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the consoleQuota.
+	 * 
 	 * @return Returns a long
 	 */
 	public long getConsoleQuota() {
@@ -217,6 +247,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the consoleQuota.
+	 * 
 	 * @param consoleQuota The consoleQuota to set
 	 */
 	public void setConsoleQuota(long consoleQuota) {
@@ -226,6 +257,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the cpuConstant.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getCpuConstant() {
@@ -234,6 +266,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the cpuConstant.
+	 * 
 	 * @param cpuConstant The cpuConstant to set
 	 */
 	public void setCpuConstant(int cpuConstant) {
@@ -243,6 +276,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsDevelopmentPath
+	 * 
 	 * @return Returns a String
 	 */
 	public String getOptionsDevelopmentPath() {
@@ -251,6 +285,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsDevelopmentPath.
+	 * 
 	 * @param optionsDevelopmentPath The optionsDevelopmentPath to set
 	 */
 	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
@@ -273,7 +308,6 @@ public class RobocodeProperties {
 		props.load(in);
 		optionsViewRobotNames = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTNAMES, "true")).booleanValue();
 		optionsViewScanArcs = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SCANARCS, "false")).booleanValue();
-		;
 		optionsViewRobotEnergy = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true")).booleanValue();
 		optionsViewFps = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
 		optionsBattleDesiredFps = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDFPS, "30"));
@@ -289,7 +323,7 @@ public class RobocodeProperties {
 		try {
 			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
 		} catch (Exception e) {
-			log("Initializing version check date.");
+			Utils.log("Initializing version check date.");
 			setVersionChecked(new Date());
 		}
 		
@@ -304,11 +338,11 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the cpuConstant.
+	 * 
 	 * @param cpuConstant The cpuConstant to set
 	 */
 	public void setLastRunVersion(String lastRunVersion) {
 		this.lastRunVersion = lastRunVersion;
 		props.setProperty(LAST_RUN_VERSION, "" + lastRunVersion);
 	}
-
 }

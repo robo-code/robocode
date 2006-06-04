@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.io;
 
@@ -15,24 +16,24 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ */
 public class BufferedPipedOutputStream extends OutputStream {
 
-	byte buf[] = null; // new byte[8192];
-	int readIndex = 0;
-	int writeIndex = 0;
-	boolean waiting = false;
-	private BufferedPipedInputStream in = null;
-	private boolean closed = false;
-	private boolean skipLines = false;
-	private boolean blocking = false;
+	byte buf[];
+	int readIndex;
+	int writeIndex;
+	boolean waiting;
+	private BufferedPipedInputStream in;
+	private boolean closed;
+	private boolean skipLines;
 	
 	private BufferedPipedOutputStream() {}
 	
 	public BufferedPipedOutputStream(int bufferSize, boolean skipLines, boolean blocking) {
 		this.buf = new byte[bufferSize];
 		this.skipLines = skipLines;
-		this.blocking = blocking;
-		
 	}
 
 	/*
@@ -107,14 +108,6 @@ public class BufferedPipedOutputStream extends OutputStream {
 		} else if (len == 0) {
 			return 0;
 		}
-
-		/*
-		 if (readIndex == writeIndex && blocking == false)
-		 {
-		 System.out.println("read returning 0.");
-		 return 0;
-		 }
-		 */			
 		int first = read();
 
 		if (first == -1) {
@@ -156,6 +149,4 @@ public class BufferedPipedOutputStream extends OutputStream {
 			notify();
 		}
 	}
-
 }
-

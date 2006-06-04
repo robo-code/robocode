@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
 
@@ -15,7 +16,10 @@ package robocode;
  * This class is used by the system as a placeholder for all deprecated calls.
  * <P>You should create a {@link robocode.AdvancedRobot AdvancedRobot} instead.
  * <P>There is no guarantee that this class will exist in future versions of Robocode.
+ *
  * @see robocode.AdvancedRobot
+ *
+ * @author Mathew A. Nelson
  */
 public class _AdvancedRobot extends Robot {
 	
@@ -24,7 +28,6 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated use #setTurnGunLeft
 	 */
-
 	public void setTurnGunLeftDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
@@ -37,7 +40,6 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated use #setTurnGunRight
 	 */
-
 	public void setTurnGunRightDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
@@ -45,7 +47,6 @@ public class _AdvancedRobot extends Robot {
 		} else {
 			uninitializedException("setTurnGunRight");
 		}
-
 	}
 
 	/**
@@ -70,7 +71,6 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated use #setTurnRadarLeft
 	 */
-
 	public void setTurnRadarLeftDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
@@ -83,7 +83,6 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated use #setTurnLeft
 	 */
-
 	public void setTurnLeftDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
@@ -96,7 +95,6 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated use getHeading
 	 */
-
 	public double getHeadingDegrees() {
 		return getHeading();
 	}
@@ -190,6 +188,4 @@ public class _AdvancedRobot extends Robot {
 		}
 		return 0;
 	}
-
 }
-

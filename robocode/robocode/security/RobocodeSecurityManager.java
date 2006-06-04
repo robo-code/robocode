@@ -1,42 +1,41 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.security;
 
 
 import java.util.*;
 import java.io.*;
+
+import robocode.RobocodeFileOutputStream;
 import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.manager.*;
  
 
 /**
- * Insert the type's description here.
- * Creation date: (12/15/2000 11:26:11 AM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobocodeSecurityManager extends SecurityManager {
-	private Hashtable outputStreamThreads;
-	private Vector safeThreads;
-	private Vector safeThreadGroups;
-	private java.lang.Thread battleThread = null;
-	public java.lang.String status;
-	private java.lang.Thread[] groupThreads = new Thread[256];
-	private static RuntimePermission threadPermission;
-	private static RuntimePermission threadGroupPermission;
+	private Hashtable outputStreamThreads; // <Thread, RobocodeFileOutputStream>
+	private Vector safeThreads; // <Thread>
+	private Vector safeThreadGroups; // <ThreadGroup>
+	private Thread battleThread;
+	public String status;
 
-	private java.lang.ThreadGroup rootGroup = getRootGroup();
-	private ThreadManager threadManager = null;
-	private java.io.PrintStream sysout = System.out;
-	private java.io.PrintStream syserr = System.err;
+	private ThreadManager threadManager;
+	private PrintStream syserr = System.err;
 	private Object safeSecurityContext;
 	private boolean enabled = true;
 
@@ -45,55 +44,33 @@ public class RobocodeSecurityManager extends SecurityManager {
 	 */
 	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled) {
 		super();
-		safeThreads = new Vector();
+		safeThreads = new Vector(); // <Thread>
 		safeThreads.add(safeThread);
-		safeThreadGroups = new Vector();
-		outputStreamThreads = new Hashtable();
+		safeThreadGroups = new Vector(); // <ThreadGroup>
+		outputStreamThreads = new Hashtable(); // <Thread, RobocodeFileOutputStream>
 		this.threadManager = threadManager;
 		safeSecurityContext = getSecurityContext();
 		this.enabled = enabled;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/27/2001 8:27:10 PM)
-	 * @param o robocode.RobocodeFileOutputStream
-	 * @param t java.lang.Thread
-	 */
-	private synchronized void addRobocodeOutputStream(robocode.RobocodeFileOutputStream o) {
+	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
 		outputStreamThreads.put(Thread.currentThread(), o);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/28/2000 3:01:34 PM)
-	 * @param safeThread java.lang.Thread
-	 */
 	public synchronized void addSafeThread(Thread safeThread) {
 		checkPermission(new RobocodePermission("addSafeThread"));
 		safeThreads.add(safeThread);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/28/2000 3:01:34 PM)
-	 * @param safeThread java.lang.Thread
-	 */
 	public synchronized void addSafeThreadGroup(ThreadGroup safeThreadGroup) {
 		checkPermission(new RobocodePermission("addSafeThreadGroup"));
 		safeThreadGroups.add(safeThreadGroup);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 6:54:45 PM)
-	 * @param g java.lang.ThreadGroup
-	 */
 	public synchronized void checkAccess(Thread t) {
 		super.checkAccess(t);
 		Thread c = Thread.currentThread();
 
-		// syserr.println(Thread.currentThread().getName() + " checking access to " + t.getName());
 		if (isSafeThread(c) && getSecurityContext().equals(safeSecurityContext)) {
 			return;
 		}
@@ -108,13 +85,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 			} else {
 				checkPermission(new RuntimePermission("modifyThread"));
 				return;
-				// throw new java.security.AccessControlException("Preventing unknown thread " + Thread.currentThread().getName() + " from access to thread: " + t.getName());
 			}
 		}
 	
-		// if (c != t)
-		// throw new java.security.AccessControlException("Preventing " + Thread.currentThread().getName() + " from access to a thread.");
-
 		ThreadGroup cg = c.getThreadGroup();
 		ThreadGroup tg = t.getThreadGroup();
 
@@ -141,14 +114,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 6:54:45 PM)
-	 * @param g java.lang.ThreadGroup
-	 */
 	public synchronized void checkAccess(ThreadGroup g) {
 		super.checkAccess(g);
-		// syserr.println(Thread.currentThread().getName() + " checking access to " + g.getName());
+
 		Thread c = Thread.currentThread();
 
 		if (isSafeThread(c) && getSecurityContext().equals(safeSecurityContext)) {
@@ -170,7 +138,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 				throw new java.security.AccessControlException(
 						"Preventing " + r.getName() + " from access to threadgroup: " + g.getName());
 			} else {
-				// throw new java.security.AccessControlException("Preventing unknown thread " + Thread.currentThread().getName() + " from access to threadgroup: " + g.getName());
 				checkPermission(new RuntimePermission("modifyThreadGroup"));
 				return;
 			}
@@ -185,9 +152,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 				throw new java.security.AccessControlException(
 						"Preventing " + Thread.currentThread().getName() + " from access to threadgroup: " + g.getName()
 						+ ".  You may only create 5 threads.");
-			}
-			if (g.activeCount() == 1) {// r.out.println("SYSTEM:  Warning:  Multithreaded robots are allowed,");
-				// r.out.println("SYSTEM:  but not officially supported yet.  Results may be unpredictable.");
 			}
 			return;
 		}
@@ -209,7 +173,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 	}
 
 	public synchronized void checkPermission(java.security.Permission perm) {
-
 		// For John Burkey at Apple
 		if (!enabled) {
 			return;
@@ -221,8 +184,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (getSecurityContext().equals(safeSecurityContext)) {
 			return;
 		}
-		// else
-		// System.err.println("checking permission with context " + getSecurityContext() + " (safe is " + safeSecurityContext + ")");
 		Thread c = Thread.currentThread();
 		
 		// Ok, could be system, could be robot
@@ -231,8 +192,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		try {
 			super.checkPermission(perm);
 			return;
-		} catch (SecurityException e) {// System.out.println("SecurityManager: Super returns not allowed for " + perm);
-		}
+		} catch (SecurityException e) {}
 
 		// For development purposes, allow read any file if override is set.
 		if (perm instanceof FilePermission) {
@@ -240,7 +200,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			if (fp.getActions().equals("read")) {
 				if (System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals("true")) {
-					// syserr.println("Warning:  OVERRIDEFILEREADSECURITY on.  Allowing read access to " + fp.getName());
 					return;
 				}
 			}
@@ -248,19 +207,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		// Allow reading of properties.
 		if (perm instanceof PropertyPermission) {
-			PropertyPermission pp = (PropertyPermission) perm;
-
 			if (perm.getActions().equals("read")) {
 				return;
 			}
 		}
 	
 		if (perm instanceof RuntimePermission) {
-			RuntimePermission rp = (RuntimePermission) perm;
-
 			if (perm.getName() != null && perm.getName().length() >= 24) {
 				if (perm.getName().substring(0, 24).equals("accessClassInPackage.sun")) {
-					// syserr.println("Allowing access to " + perm.getName());
 					return;
 				}
 			}
@@ -329,7 +283,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			} // Robot wants access to write something		
 			else if (fp.getActions().equals("write")) {
 				// Get the RobocodeOutputStream the robot is trying to use.
-				robocode.RobocodeFileOutputStream o = getRobocodeOutputStream();
+				RobocodeFileOutputStream o = getRobocodeOutputStream();
 
 				// There isn't one.  Deny access.
 				if (o == null) {
@@ -398,7 +352,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 					} // Not a writable directory.
 					else {
 						r.setEnergy(0.0);
-						// r.out.println("I would allow access to: " + fileSystemManager.getWritableDirectory());
 						throw new java.security.AccessControlException(
 								"Preventing " + r.getName() + " from access: " + perm
 								+ ": You may only delete files in your own data directory. ");
@@ -440,12 +393,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 				"Preventing " + Thread.currentThread().getName() + " from access: " + perm);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/27/2001 8:23:14 PM)
-	 * @param o robocode.RobocodeFileOutputStream
-	 */
-	public void getFileOutputStream(robocode.RobocodeFileOutputStream o, boolean append) throws java.io.FileNotFoundException {
+	public void getFileOutputStream(RobocodeFileOutputStream o, boolean append) throws FileNotFoundException {
 		if (o == null) {
 			throw new NullPointerException("Null RobocodeFileOutputStream");
 		}
@@ -468,18 +416,12 @@ public class RobocodeSecurityManager extends SecurityManager {
 		o.setFileOutputStream(fos);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/27/2001 8:27:10 PM)
-	 * @param o robocode.RobocodeFileOutputStream
-	 * @param t java.lang.Thread
-	 */
-	private synchronized robocode.RobocodeFileOutputStream getRobocodeOutputStream() {
+	private synchronized RobocodeFileOutputStream getRobocodeOutputStream() {
 		if (outputStreamThreads.get(Thread.currentThread()) == null) {
 			return null;
 		}
-		if (outputStreamThreads.get(Thread.currentThread()) instanceof robocode.RobocodeFileOutputStream) {
-			return (robocode.RobocodeFileOutputStream) outputStreamThreads.get(Thread.currentThread());
+		if (outputStreamThreads.get(Thread.currentThread()) instanceof RobocodeFileOutputStream) {
+			return (RobocodeFileOutputStream) outputStreamThreads.get(Thread.currentThread());
 		} else {
 			outputStreamThreads.remove(Thread.currentThread());
 			throw new java.security.AccessControlException(
@@ -487,30 +429,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 	}
 
-	private static ThreadGroup getRootGroup() {
-		ThreadGroup root = Thread.currentThread().getThreadGroup();
-
-		while (root.getParent() != null) {
-			root = root.getParent();
-		}
-		return root;
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/22/2000 1:08:02 AM)
-	 * @return java.lang.String
-	 */
-	public java.lang.String getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/23/2001 10:15:31 AM)
-	 * @return boolean
-	 * @param c java.lang.Thread
-	 */
 	public boolean isSafeThread(Thread c) {
 		if (c == battleThread) {
 			return true;
@@ -533,51 +455,24 @@ public class RobocodeSecurityManager extends SecurityManager {
 		return false;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/27/2001 8:27:10 PM)
-	 * @param o robocode.RobocodeFileOutputStream
-	 * @param t java.lang.Thread
-	 */
 	private synchronized void removeRobocodeOutputStream() {
 		outputStreamThreads.remove(Thread.currentThread());
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/28/2000 3:01:34 PM)
-	 * @param safeThread java.lang.Thread
-	 */
 	public void removeSafeThread(Thread safeThread) {
 		checkPermission(new RobocodePermission("removeSafeThread"));
 		safeThreads.remove(safeThread);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/28/2000 5:41:01 PM)
-	 * @param newBattleThread java.lang.Thread
-	 */
-	public void setBattleThread(java.lang.Thread newBattleThread) {
+	public void setBattleThread(Thread newBattleThread) {
 		checkPermission(new RobocodePermission("setBattleThread"));
 		battleThread = newBattleThread;
-		// addSafeThread(battleThread);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (12/22/2000 1:08:02 AM)
-	 * @param newStatus java.lang.String
-	 */
-	public void setStatus(java.lang.String newStatus) {
+	public void setStatus(String newStatus) {
 		status = newStatus;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/7/2001 1:32:37 PM)
-	 * @param s java.lang.String
-	 */
 	public void threadOut(String s) {
 		Thread c = Thread.currentThread();
 		RobotPeer r = threadManager.getRobotPeer(c);
@@ -592,13 +487,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		r.out.println(s);
 	}   
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/7/2001 1:32:37 PM)
-	 * @param s java.lang.String
-	 */
 	public PrintStream getRobotOutputStream() {
-		// syserr.println("Getting robot output stream.");
 		Thread c = Thread.currentThread();
 
 		try {
@@ -628,7 +517,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 			syserr.println("Unable to get output stream: " + e);
 			return syserr;
 		}
-
 	}
 
 	public boolean isSafeThread() {

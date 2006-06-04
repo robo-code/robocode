@@ -1,21 +1,28 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
 
 
 import java.io.*;
 import java.net.*;
-import robocode.util.*;
+import robocode.util.Utils;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class RobotSpecification extends FileSpecification implements Serializable {
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
@@ -24,21 +31,15 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 	private final static String ROBOT_JAVA_SOURCE_INCLUDED = "robot.java.source.included";
 	private final static String ROBOT_VERSION = "robot.version";
 	private final static String ROBOT_CLASSNAME = "robot.classname";
-	private final static String ROBOT_CLASSPATH = "robot.classpath";
 	private final static String ROBOT_WEBPAGE = "robot.webpage";
 	
-	/* public String getClassName() {
-	 return getFullClassName();
-	 }
-	 */
-
 	private String uid = "";
 	
-	protected boolean robotJavaSourceIncluded = false;
+	protected boolean robotJavaSourceIncluded;
 	protected String robotClassPath;
 	
-	private boolean teamRobot = false;
-	private boolean droid = false;
+	private boolean teamRobot;
+	private boolean droid;
 	
 	// Used in RobotRepositoryManager
 	protected RobotSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
@@ -50,20 +51,12 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 		this.developmentVersion = developmentVersion;
 		if (prefix.equals("") && fileType.equals(".jar")) {
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
-
-			/* setRobotClassPath(f.getPath());
-			 setFileLastModified(f.lastModified());
-			 setFileLength(f.length());
-			 setFileType(".jar");
-			 setFilePath(f.getPath());
-			 setFileName(f.getName()); */
 		} else if (fileType.equals(".team")) {
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
 		} else if (fileType.equals(".java")) {
 			loadProperties(filepath);
 			setName(prefix + Utils.getClassName(filename));
 			setRobotClassPath(rootDir.getPath());
-			
 		} else if (fileType.equals(".class")) {
 			loadProperties(filepath);
 			setName(prefix + Utils.getClassName(filename));
@@ -84,7 +77,6 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 	}
 	
 	private void loadProperties(String filepath) {
-		
 		// Load properties if they exist...
 		String pfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".properties";
 		File pf = new File(pfn);
@@ -97,19 +89,17 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 				in.close();
 				if (pf.length() == 0) {
 					setRobotVersion("?");
-					// log("I am setting version to ?");
 					if (!developmentVersion) {
 						valid = false;
 					}
 				}
 			} // Don't accept robots in robotcache without .properties file
 			else if (!developmentVersion) {
-				// log(filepath + " is not valid.");
 				valid = false;
 			}
 		} catch (IOException e) {
 			// Oh well.
-			log("Warning:  Could not load properties file: " + pfn);
+			Utils.log("Warning:  Could not load properties file: " + pfn);
 		}
 		setThisFileName(pfn);
 		String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
@@ -131,13 +121,11 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 			try {
 				setFilePath(classFile.getCanonicalPath());
 			} catch (IOException e) {
-				log("Warning:  Unable to determine canonical path for " + classFile.getPath());
+				Utils.log("Warning:  Unable to determine canonical path for " + classFile.getPath());
 				setFilePath(classFile.getPath());
 			}
 			setFileName(classFile.getName());
 		}
-		// else
-		// log("Warning:  Cannot process " + files[i].getName() + "... have you compiled it?");
 	}
 
 	public void load(FileInputStream in) throws IOException {
@@ -170,6 +158,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the robotName.
+	 * 
 	 * @param robotName The robotName to set
 	 */
 	public void setName(String name) {
@@ -179,6 +168,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the robotDescription.
+	 * 
 	 * @param robotDescription The robotDescription to set
 	 */
 	public void setRobotDescription(String robotDescription) {
@@ -188,6 +178,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the robotAuthorName.
+	 * 
 	 * @param robotAuthorName The robotAuthorName to set
 	 */
 	public void setRobotAuthorName(String robotAuthorName) {
@@ -197,6 +188,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the robotAuthorEmail.
+	 * 
 	 * @param robotAuthorEmail The robotAuthorEmail to set
 	 */
 	public void setRobotAuthorEmail(String robotAuthorEmail) {
@@ -206,6 +198,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the robotAuthorWebsite.
+	 * 
 	 * @param robotAuthorWebsite The robotAuthorWebsite to set
 	 */
 	public void setRobotAuthorWebsite(String robotAuthorWebsite) {
@@ -215,6 +208,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Gets the robotJavaSourceIncluded.
+	 * 
 	 * @return Returns a boolean
 	 */
 	public boolean getRobotJavaSourceIncluded() {
@@ -223,6 +217,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the robotJavaSourceIncluded.
+	 * 
 	 * @param robotJavaSourceIncluded The robotJavaSourceIncluded to set
 	 */
 	public void setRobotJavaSourceIncluded(boolean robotJavaSourceIncluded) {
@@ -230,20 +225,9 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 		props.setProperty(ROBOT_JAVA_SOURCE_INCLUDED, "" + robotJavaSourceIncluded);
 	}
 
-	private void log(String s) {
-		Utils.log(s);
-	}
-	
-	private void log(String s, Throwable t) {
-		Utils.log(s, t);
-	}
-	
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
-	
 	/**
 	 * Sets the robotVersion.
+	 * 
 	 * @param robotVersion The robotVersion to set
 	 */
 	public void setRobotVersion(String robotVersion) {
@@ -257,6 +241,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Gets the robotClasspath.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getRobotClassPath() {
@@ -265,6 +250,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the robotClasspath.
+	 * 
 	 * @param robotClasspath The robotClasspath to set
 	 */
 	public void setRobotClassPath(String robotClassPath) {
@@ -273,6 +259,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the robotWebpage.
+	 * 
 	 * @param robotWebpage The robotWebpage to set
 	 */
 	public void setRobotWebpage(URL robotWebpage) {
@@ -286,6 +273,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Gets the uid.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getUid() {
@@ -294,6 +282,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 	/**
 	 * Sets the uid.
+	 * 
 	 * @param uid The uid to set
 	 */
 	public void setUid(String uid) {
@@ -303,17 +292,16 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 	public boolean isTeamRobot() {
 		return teamRobot;
 	}
-	
+
 	public boolean isDroid() {
 		return droid;
 	}
-	
+
 	public void setTeamRobot(boolean teamRobot) {
 		this.teamRobot = teamRobot;
 	}
-	
+
 	public void setDroid(boolean droid) {
 		this.droid = droid;
 	}
 }
-

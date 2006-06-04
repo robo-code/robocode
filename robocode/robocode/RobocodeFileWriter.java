@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
 
@@ -16,12 +17,16 @@ import java.io.*;
 
 /**
  * See java.io.FileWriter
+ * 
  * @see java.io.FileWriter
+ * 
+ * @author Mathew A. Nelson
  */
 public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 
 	/**
 	 * RobocodeFileWriter constructor -- see java.io.FileWriter for docs!
+	 * 
 	 * @see java.io.FileWriter
 	 */
 	public RobocodeFileWriter(File file) throws IOException {
@@ -30,6 +35,7 @@ public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 
 	/**
 	 * RobocodeFileWriter constructor -- see java.io.FileWriter for docs!
+	 * 
 	 * @see java.io.FileWriter
 	 */
 	public RobocodeFileWriter(FileDescriptor fd) {
@@ -38,6 +44,7 @@ public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 
 	/**
 	 * RobocodeFileWriter constructor -- see java.io.FileWriter for docs!
+	 * 
 	 * @see java.io.FileWriter
 	 */
 	public RobocodeFileWriter(String fileName) throws IOException {
@@ -46,6 +53,7 @@ public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 
 	/**
 	 * RobocodeFileWriter constructor -- see java.io.FileWriter for docs!
+	 * 
 	 * @see java.io.FileWriter
 	 */
 	public RobocodeFileWriter(String fileName, boolean append) throws IOException {

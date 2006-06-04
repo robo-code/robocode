@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.util;
 
@@ -17,6 +18,8 @@ package robocode.util;
  *    -- This is why the outcode() method is here, below
  * 2. The problem still exists with Rectangle2D.Double as of Java 1.4,
  *    -- This is why we're using Rectangle2D.Float
+ *
+ * @author Mathew A. Nelson (original)
  */
 public class BoundingRectangle extends java.awt.geom.Rectangle2D.Float {
 	public BoundingRectangle() {
@@ -57,9 +60,4 @@ public class BoundingRectangle extends java.awt.geom.Rectangle2D.Float {
 		}
 		return out;
 	}
-	
-	private void log(String s) {
-		Utils.log(s);
-	}
 }
-

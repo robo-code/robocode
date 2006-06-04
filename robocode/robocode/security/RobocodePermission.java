@@ -1,27 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.security;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (9/27/2001 7:32:48 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
  */
 public class RobocodePermission extends java.security.Permission {
 
-	/**
-	 * RobocodePermission constructor comment.
-	 * @param name java.lang.String
-	 */
 	public RobocodePermission(String name) {
 		super(name);
 	}

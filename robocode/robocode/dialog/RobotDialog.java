@@ -1,72 +1,61 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Rewritten to compact code
+ *     - Added Javadoc comments
+ *     - Added "Debug Paint" button
+ *     - Added isPaintEnabled()
  *******************************************************************************/
 package robocode.dialog;
 
 
-import robocode.peer.*;
 import java.awt.*;
-import robocode.util.*;
+import java.awt.event.*;
+import javax.swing.*;
+import robocode.peer.*;
+import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (1/24/2001 3:14:21 PM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
-public class RobotDialog extends javax.swing.JFrame {
-	private javax.swing.JPanel robotDialogContentPane = null;
-	private javax.swing.JPanel buttonPanel = null;
-	private RobotPeer robotPeer = null;
-	EventHandler eventHandler = new EventHandler();
-	private ConsoleScrollPane consoleScrollPane = null;
-	public java.awt.Rectangle bottomRect = new java.awt.Rectangle(0, 32767, 1, 1);
-	private javax.swing.JButton clearButton = null;
-	private javax.swing.JButton okButton = null;
-	private javax.swing.JButton killButton = null;
-	private boolean slave = false;
+public class RobotDialog extends JFrame {
+	public final static Dimension BUTTON_SIZE = new Dimension(100, 25);
+	private RobotPeer robotPeer;
+	private boolean slave;
+	private ConsoleScrollPane scrollPane;
+	private JPanel robotDialogContentPane;
+	private JPanel buttonPanel;
+	private JButton okButton;
+	private JButton clearButton;
+	private JButton killButton;
+	private JToggleButton paintButton;
+	private boolean isPaintEnabled;
 
-	class EventHandler implements java.awt.event.ActionListener, java.awt.event.WindowListener {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			if (e.getSource() == RobotDialog.this.getOkButton()) { 
+	private ActionListener eventHandler = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			Object src = e.getSource();
+
+			if (src == RobotDialog.this.getOkButton()) {
 				okButtonActionPerformed();
-			}
-			if (e.getSource() == RobotDialog.this.getClearButton()) {
+			} else if (src == RobotDialog.this.getClearButton()) {
 				clearButtonActionPerformed();
-			}
-			if (e.getSource() == RobotDialog.this.getKillButton()) {
+			} else if (src == RobotDialog.this.getKillButton()) {
 				killButtonActionPerformed();
+			} else if (src == RobotDialog.this.getPaintButton()) {
+				paintButtonActionPerformed();
 			}
 		}
-		;
-		public void windowActivated(java.awt.event.WindowEvent e) {}
-		;
-		public void windowClosed(java.awt.event.WindowEvent e) {}
-		;
-		public void windowClosing(java.awt.event.WindowEvent e) {// RobotDialog.this.getConsoleScrollPane().
-			// if (e.getSource() == RobotDialog.this) 
-			// robotDialogWindowClosing(e);
-		}
-		;
-		public void windowDeactivated(java.awt.event.WindowEvent e) {}
-		;
-		public void windowDeiconified(java.awt.event.WindowEvent e) {}
-		;
-		public void windowIconified(java.awt.event.WindowEvent e) {}
-		;
-		public void windowOpened(java.awt.event.WindowEvent e) {}
-		;
-	}
-
-
-	;
+	};
 
 	/**
 	 * RobotDialog constructor
@@ -78,207 +67,31 @@ public class RobotDialog extends javax.swing.JFrame {
 	}
 
 	/**
-	 * Comment
-	 */
-	private void clearButtonActionPerformed() {
-		getConsoleScrollPane().setText("");
-		return;
-	}
-
-	/**
-	 * Return the buttonPanel
-	 * @return javax.swing.JPanel
-	 */
-	private javax.swing.JPanel getButtonPanel() {
-		if (buttonPanel == null) {
-			try {
-				buttonPanel = new javax.swing.JPanel();
-				buttonPanel.setName("buttonPanel");
-				// buttonPanel.setPreferredSize(new java.awt.Dimension(100, 30));
-				buttonPanel.setLayout(getButtonPanelLayout());
-				// buttonPanel.setMaximumSize(new java.awt.Dimension(32767, 32767));
-				// buttonPanel.setMinimumSize(new java.awt.Dimension(100, 30));
-				buttonPanel.add(getOkButton(), getOkButton().getName());
-				buttonPanel.add(getClearButton(), getClearButton().getName());
-				buttonPanel.add(getKillButton(), getKillButton().getName());
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
-		}
-		return buttonPanel;
-	}
-
-	/**
-	 * Return the JPanel1FlowLayout property value.
-	 * @return java.awt.FlowLayout
-	 */
-	private java.awt.LayoutManager getButtonPanelLayout() {
-		java.awt.FlowLayout buttonPanelLayout = null;
-
-		try {
-			buttonPanelLayout = new java.awt.FlowLayout();
-			buttonPanelLayout.setAlignment(java.awt.FlowLayout.RIGHT);
-		} catch (java.lang.Throwable e) {
-			log(e);
-		}
-		;
-		return buttonPanelLayout;
-	}
-
-	/**
-	 * Return the clearButton.
-	 * @return javax.swing.JButton
-	 */
-	private javax.swing.JButton getClearButton() {
-		if (clearButton == null) {
-			try {
-				clearButton = new javax.swing.JButton();
-				clearButton.setName("clearButton");
-				clearButton.setText("Clear");
-				clearButton.setPreferredSize(new java.awt.Dimension(80, 25));
-				clearButton.setMaximumSize(new java.awt.Dimension(80, 25));
-				clearButton.setMinimumSize(new java.awt.Dimension(80, 25));
-				clearButton.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
-		}
-		return clearButton;
-	}
-
-	/**
-	 * Return the killButton.
-	 * @return javax.swing.JButton
-	 */
-	private javax.swing.JButton getKillButton() {
-		if (killButton == null) {
-			try {
-				killButton = new javax.swing.JButton();
-				killButton.setName("killButton");
-				killButton.setText("Kill Robot");
-				killButton.setPreferredSize(new java.awt.Dimension(80, 25));
-				killButton.setMaximumSize(new java.awt.Dimension(80, 25));
-				killButton.setMinimumSize(new java.awt.Dimension(80, 25));
-				java.awt.Insets i = killButton.getInsets();
-
-				i.left = 0;
-				i.right = 0;
-				killButton.setMargin(i);
-
-				killButton.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
-		}
-		return killButton;
-	}
-
-	/**
-	 * Return the okButton.
-	 * @return javax.swing.JButton
-	 */
-	private javax.swing.JButton getOkButton() {
-		if (okButton == null) {
-			try {
-				okButton = new javax.swing.JButton();
-				okButton.setName("okButton");
-				okButton.setText("OK");
-				okButton.setPreferredSize(new java.awt.Dimension(80, 25));
-				okButton.setMaximumSize(new java.awt.Dimension(80, 25));
-				okButton.setMinimumSize(new java.awt.Dimension(80, 25));
-				okButton.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
-		}
-		return okButton;
-	}
-
-	/**
-	 * Return the consoleScrollPane.
-	 * @return robocode.dialog.ConsoleScrollPane
-	 */
-	private ConsoleScrollPane getConsoleScrollPane() {
-		if (consoleScrollPane == null) {
-			try {
-				consoleScrollPane = new ConsoleScrollPane();
-				consoleScrollPane.setName("consoleScrollPane");
-				consoleScrollPane.getTextPane().setBackground(Color.darkGray);
-				consoleScrollPane.getTextPane().setForeground(Color.white);
-				// consoleScrollPane.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
-		}
-		return consoleScrollPane;
-	}
-
-	/**
-	 * Return the robotDialogContentPane.
-	 * @return javax.swing.JPanel
-	 */
-	private javax.swing.JPanel getRobotDialogContentPane() {
-		if (robotDialogContentPane == null) {
-			try {
-				robotDialogContentPane = new javax.swing.JPanel();
-				robotDialogContentPane.setName("JDialogContentPane");
-				robotDialogContentPane.setLayout(new java.awt.BorderLayout());
-				robotDialogContentPane.add(getButtonPanel(), "South");
-				robotDialogContentPane.add(getConsoleScrollPane(), "Center");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
-		}
-		return robotDialogContentPane;
-	}
-
-	/**
-	 * Initialize the class.
+	 * Initialize the dialog
 	 */
 	private void initialize() {
-		try {
-			setName("RobotDialog");
-			setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-			setSize(426, 240);
-			setContentPane(getRobotDialogContentPane());
-			addWindowListener(eventHandler);
-			if (slave) {
-				getKillButton().setEnabled(false);
-			}
-		} catch (java.lang.Throwable e) {
-			log(e);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setContentPane(getRobotDialogContentPane());
+		if (slave) {
+			getKillButton().setEnabled(false);
 		}
 	}
 
 	/**
-	 * Comment
+	 * Sets the robot peer of this dialog
+	 *
+	 * @param robotPeer the robot peer of this dialog
 	 */
-	public void killButtonActionPerformed() {
-		robotPeer.setDead(true);
+	public void setRobotPeer(RobotPeer robotPeer) {
+		this.robotPeer = robotPeer;
+		getConsoleScrollPane().setText("");
+		getConsoleScrollPane().processStream(robotPeer.getOut().getInputStream());
 	}
 
 	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	public void log(Throwable e) {
-		Utils.log(e);
-	}
-
-	/**
-	 * Comment
-	 */
-	public void okButtonActionPerformed() {
-		dispose();
-		return;
-	}
-
-	/**
-	 * When robotDialog is packed, we want to set a reasonable size.
-	 * However, after that, we need a null preferred size so the scrollpane will scroll.
+	 * When robotDialog is packed, we want to set a reasonable size. However,
+	 * after that, we need a null preferred size so the scrollpane will scroll.
 	 * (preferred size should be based on the text inside)
-	 * Creation date: (9/5/2001 5:46:18 PM)
 	 */
 	public void pack() {
 		getConsoleScrollPane().setPreferredSize(new Dimension(426, 200));
@@ -287,13 +100,154 @@ public class RobotDialog extends javax.swing.JFrame {
 	}
 
 	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/23/2001 4:14:47 PM)
-	 * @param newSafeRobot robocode.JSafeRobot
+	 * Returns the dialog's content pane
+	 * 
+	 * @return the dialog's content pane
 	 */
-	public void setRobotPeer(RobotPeer robotPeer) {
-		this.robotPeer = robotPeer;
+	private JPanel getRobotDialogContentPane() {
+		if (robotDialogContentPane == null) {
+			robotDialogContentPane = new JPanel();
+			robotDialogContentPane.setLayout(new BorderLayout());
+			robotDialogContentPane.add(getConsoleScrollPane());
+			robotDialogContentPane.add(getButtonPanel(), BorderLayout.SOUTH);
+		}
+		return robotDialogContentPane;
+	}
+
+	/**
+	 * Returns the console scroll pane
+	 * 
+	 * @return the console scroll pane
+	 */
+	private ConsoleScrollPane getConsoleScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new ConsoleScrollPane();
+			JTextArea textPane = scrollPane.getTextPane();
+
+			textPane.setBackground(Color.darkGray);
+			textPane.setForeground(Color.white);
+		}
+		return scrollPane;
+	}
+
+	/**
+	 * Returns the button panel
+	 * 
+	 * @return the button panel
+	 */
+	private JPanel getButtonPanel() {
+		if (buttonPanel == null) {
+			buttonPanel = new JPanel();
+			buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			buttonPanel.add(getOkButton());
+			buttonPanel.add(getClearButton());
+			buttonPanel.add(getKillButton());
+			buttonPanel.add(getPaintButton());
+		}
+		return buttonPanel;
+	}
+
+	/**
+	 * Returns the OK button
+	 * 
+	 * @return the OK button
+	 */
+	private JButton getOkButton() {
+		if (okButton == null) {
+			okButton = getNewButton("OK");
+		}
+		return okButton;
+	}
+
+	/**
+	 * Returns the Clear button
+	 * 
+	 * @return the Clear button
+	 */
+	private JButton getClearButton() {
+		if (clearButton == null) {
+			clearButton = getNewButton("Clear");
+		}
+		return clearButton;
+	}
+
+	/**
+	 * Returns the Kill button.
+	 * 
+	 * @return the Kill button
+	 */
+	private JButton getKillButton() {
+		if (killButton == null) {
+			killButton = getNewButton("Kill Robot");
+		}
+		return killButton;
+	}
+
+	/**
+	 * Returns the Paint button.
+	 * 
+	 * @return the Paint button
+	 */
+	private JToggleButton getPaintButton() {
+		if (paintButton == null) {
+			paintButton = new JToggleButton("Debug Paint");
+			Utils.setFixedSize(paintButton, BUTTON_SIZE);
+			paintButton.addActionListener(eventHandler);
+		}
+		return paintButton;
+	}
+
+	/**
+	 * Returns a new button with event handler and with the specified text
+	 *
+	 * @param text The text of the button
+	 * @return a new button with event handler and with the specified text
+	 */
+	private JButton getNewButton(String text) {
+		JButton button = new JButton(text);
+
+		Utils.setFixedSize(button, BUTTON_SIZE);
+		button.addActionListener(eventHandler);
+		return button;
+	}
+
+	/**
+	 * Is called when the OK button has been activated
+	 */
+	private void okButtonActionPerformed() {
+		dispose();
+		return;
+	}
+
+	/**
+	 * Is called when the Clear button has been activated
+	 */
+	private void clearButtonActionPerformed() {
 		getConsoleScrollPane().setText("");
-		getConsoleScrollPane().processStream(robotPeer.getOut().getInputStream());
+		return;
+	}
+
+	/**
+	 * Is called when the Kill button has been activated
+	 */
+	private void killButtonActionPerformed() {
+		robotPeer.setDead(true);
+	}
+
+	/**
+	 * Is called when the Paint button has been activated
+	 */
+	private void paintButtonActionPerformed() {
+		isPaintEnabled = getPaintButton().isSelected();
+		robotPeer.setPaintEnabled(isPaintEnabled);
+	}
+
+	/**
+	 * Returns true if onPaint() is enabled; false otherwise
+	 *
+	 * @return true if onPaint() is enabled; false otherwise
+	 */
+	public boolean isPaintEnabled() {
+		return isPaintEnabled;
 	}
 }

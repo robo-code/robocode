@@ -1,12 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
 
@@ -14,12 +18,14 @@ package robocode.repository;
 import java.util.*;
 import java.io.*;
 
-import robocode.util.Utils;
 
-
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class FileSpecificationDatabase implements Serializable {
 
-	private Hashtable hash = new Hashtable();
+	private Hashtable hash = new Hashtable(); // <String, FileSpecification>
 	
 	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
@@ -49,7 +55,6 @@ public class FileSpecificationDatabase implements Serializable {
 				if (spec.isDevelopmentVersion() != isDevelopmentVersion) {
 					continue;
 				}
-				// log("comparing " + fullClassName + " with " + spec.getFullClassName());
 				if (fullClassName.equals(spec.getFullClassName())) {
 					if (version == null && spec.getVersion() == null) {
 						return true;
@@ -80,7 +85,6 @@ public class FileSpecificationDatabase implements Serializable {
 				if (spec.isDevelopmentVersion() != isDevelopmentVersion) {
 					continue;
 				}
-				// log("comparing " + fullClassName + " with " + spec.getFullClassName());
 				if (fullClassName.equals(spec.getFullClassName())) {
 					if (version == null && spec.getVersion() == null) {
 						return spec;
@@ -96,8 +100,8 @@ public class FileSpecificationDatabase implements Serializable {
 		return null;
 	}
 	
-	public FileSpecificationVector getFileSpecifications() {
-		FileSpecificationVector v = new FileSpecificationVector();
+	public Vector getFileSpecifications() {
+		Vector v = new Vector();
 		Enumeration e = hash.keys();
 
 		while (e.hasMoreElements()) {
@@ -106,8 +110,8 @@ public class FileSpecificationDatabase implements Serializable {
 		return v;
 	}
 	
-	public FileSpecificationVector getJarSpecifications() {
-		FileSpecificationVector v = new FileSpecificationVector();
+	public Vector getJarSpecifications() {
+		Vector v = new Vector();
 		Enumeration e = hash.keys();
 
 		while (e.hasMoreElements()) {
@@ -170,12 +174,9 @@ public class FileSpecificationDatabase implements Serializable {
 				if (spec.isDevelopmentVersion()) {
 					continue;
 				}
-				// log("comparing " + fullClassName + " with " + spec.getFullClassName());
 				if (fullClassName.equals(spec.getFullClassName())) {
-					if (
-							(version == null && spec.getVersion() == null) || (
-							(version != null && spec.getVersion() != null) && (version.equals(spec.getVersion()))
-							)) {
+					if ((version == null && spec.getVersion() == null)
+							|| ((version != null && spec.getVersion() != null) && (version.equals(spec.getVersion())))) {
 						if (unduplicatedSpec == null) {
 							unduplicatedSpec = spec;
 							unduplicatedSpec.setDuplicate(false);
@@ -195,13 +196,4 @@ public class FileSpecificationDatabase implements Serializable {
 	public void put(String key, FileSpecification spec) {
 		hash.put(key, spec);
 	}
-
-	private void log(String s) {
-		Utils.log(s);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
 }
-

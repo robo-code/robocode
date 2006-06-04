@@ -1,39 +1,41 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *    - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
 
 
 import java.awt.*;
+import java.awt.datatransfer.*;
 import java.awt.event.*;
 import javax.swing.*;
-import robocode.util.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (4/23/2001 2:22:53 PM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
-public class ConsoleDialog extends javax.swing.JDialog {
-	private javax.swing.JPanel consoleDialogContentPane = null;
-	private javax.swing.JPanel buttonsPanel = null;
-	private ConsoleScrollPane scrollPane = null;
-	private javax.swing.JButton okButton = null;
-	private JMenu editMenu = null;
-	private JMenuItem editCopyMenuItem = null;
-	private JMenuBar consoleDialogMenuBar = null;
+public class ConsoleDialog extends JDialog {
+	private JPanel consoleDialogContentPane;
+	private JPanel buttonsPanel;
+	private ConsoleScrollPane scrollPane;
+	private JButton okButton;
+	private JMenu editMenu;
+	private JMenuItem editCopyMenuItem;
+	private JMenuBar consoleDialogMenuBar;
 	EventHandler eventHandler = new EventHandler();
 
 	class EventHandler implements ActionListener {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == ConsoleDialog.this.getOkButton() || e.getSource() == getConsoleDialogContentPane()) { 
 				okButtonActionPerformed();
 			}
@@ -53,94 +55,72 @@ public class ConsoleDialog extends javax.swing.JDialog {
 
 	/**
 	 * CompilerOutputDialog constructor comment.
-	 * @param owner java.awt.Frame
+	 * 
+	 * @param owner Frame
 	 * @param modal boolean
 	 */
-	public ConsoleDialog(java.awt.Frame owner, String title, boolean modal) {
+	public ConsoleDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
 		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/23/2001 2:29:23 PM)
-	 * @param text java.lang.String
-	 */
 	public synchronized void append(String text) {
 		getScrollPane().append(text);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/7/2001 8:03:44 PM)
-	 */
 	public void editCopyActionPerformed() {
-		// System.out.println("Copy");
-		java.awt.datatransfer.StringSelection ss;
+		StringSelection ss;
 		String s = getScrollPane().getSelectedText();
 
 		if (s == null) {
 			s = getScrollPane().getText();
 		}
-		ss = new java.awt.datatransfer.StringSelection(s);
+		ss = new StringSelection(s);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
 	}
 
 	/**
 	 * Return the buttonsPanel
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
-	private javax.swing.JPanel getButtonsPanel() {
+	private JPanel getButtonsPanel() {
 		if (buttonsPanel == null) {
-			try {
-				buttonsPanel = new javax.swing.JPanel();
-				buttonsPanel.setName("buttonsPanel");
-				buttonsPanel.setPreferredSize(new java.awt.Dimension(100, 30));
-				buttonsPanel.setLayout(new java.awt.GridBagLayout());
-				buttonsPanel.setMinimumSize(new java.awt.Dimension(20, 20));
-				buttonsPanel.setMaximumSize(new java.awt.Dimension(1000, 30));
+			buttonsPanel = new JPanel();
+			buttonsPanel.setPreferredSize(new Dimension(100, 30));
+			buttonsPanel.setLayout(new GridBagLayout());
+			buttonsPanel.setMinimumSize(new Dimension(20, 20));
+			buttonsPanel.setMaximumSize(new Dimension(1000, 30));
 
-				java.awt.GridBagConstraints constraintsOKButton = new java.awt.GridBagConstraints();
+			GridBagConstraints constraintsOKButton = new GridBagConstraints();
 
-				constraintsOKButton.gridx = 1;
-				constraintsOKButton.gridy = 1;
-				constraintsOKButton.ipadx = 34;
-				constraintsOKButton.insets = new java.awt.Insets(2, 173, 3, 168);
-				getButtonsPanel().add(getOkButton(), constraintsOKButton);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			constraintsOKButton.gridx = 1;
+			constraintsOKButton.gridy = 1;
+			constraintsOKButton.ipadx = 34;
+			constraintsOKButton.insets = new Insets(2, 173, 3, 168);
+			getButtonsPanel().add(getOkButton(), constraintsOKButton);
 		}
 		return buttonsPanel;
 	}
 
 	/**
 	 * Return the compilerOutputDialogContentPane
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
-	private javax.swing.JPanel getConsoleDialogContentPane() {
+	private JPanel getConsoleDialogContentPane() {
 		if (consoleDialogContentPane == null) {
-			try {
-				consoleDialogContentPane = new javax.swing.JPanel();
-				consoleDialogContentPane.setName("consoleDialogContentPane");
-				consoleDialogContentPane.setLayout(new java.awt.BorderLayout());
-				consoleDialogContentPane.add(getButtonsPanel(), "South");
-				consoleDialogContentPane.add(getScrollPane(), "Center");
-				consoleDialogContentPane.registerKeyboardAction(eventHandler,
-						KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), JComponent.WHEN_FOCUSED);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			consoleDialogContentPane = new JPanel();
+			consoleDialogContentPane.setLayout(new BorderLayout());
+			consoleDialogContentPane.add(getButtonsPanel(), "South");
+			consoleDialogContentPane.add(getScrollPane(), "Center");
+			consoleDialogContentPane.registerKeyboardAction(eventHandler, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+					JComponent.WHEN_FOCUSED);
 		}
 		return consoleDialogContentPane;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/7/2001 8:01:01 PM)
-	 * @return javax.swing.JMenuBar
-	 */
-	public javax.swing.JMenuBar getConsoleDialogMenuBar() {
+	public JMenuBar getConsoleDialogMenuBar() {
 		if (consoleDialogMenuBar == null) {
 			consoleDialogMenuBar = new JMenuBar();
 			consoleDialogMenuBar.add(getEditMenu());
@@ -148,12 +128,7 @@ public class ConsoleDialog extends javax.swing.JDialog {
 		return consoleDialogMenuBar;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/7/2001 8:01:06 PM)
-	 * @return javax.swing.JMenuItem
-	 */
-	public javax.swing.JMenuItem getEditCopyMenuItem() {
+	public JMenuItem getEditCopyMenuItem() {
 		if (editCopyMenuItem == null) {
 			editCopyMenuItem = new JMenuItem("Copy");
 			editCopyMenuItem.addActionListener(eventHandler);
@@ -161,12 +136,7 @@ public class ConsoleDialog extends javax.swing.JDialog {
 		return editCopyMenuItem;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/7/2001 8:01:11 PM)
-	 * @return javax.swing.JMenu
-	 */
-	public javax.swing.JMenu getEditMenu() {
+	public JMenu getEditMenu() {
 		if (editMenu == null) {
 			editMenu = new JMenu("Edit");
 			editMenu.add(getEditCopyMenuItem());
@@ -176,34 +146,26 @@ public class ConsoleDialog extends javax.swing.JDialog {
 
 	/**
 	 * Return the okButton
-	 * @return javax.swing.JButton
+	 * 
+	 * @return JButton
 	 */
-	public javax.swing.JButton getOkButton() {
+	public JButton getOkButton() {
 		if (okButton == null) {
-			try {
-				okButton = new javax.swing.JButton();
-				okButton.setName("okButton");
-				okButton.setText("OK");
-				okButton.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			okButton = new JButton();
+			okButton.setText("OK");
+			okButton.addActionListener(eventHandler);
 		}
 		return okButton;
 	}
 
 	/**
 	 * Return the scrollPane.
-	 * @return javax.swing.JScrollPane
+	 * 
+	 * @return JScrollPane
 	 */
 	private ConsoleScrollPane getScrollPane() {
 		if (scrollPane == null) {
-			try {
-				scrollPane = new ConsoleScrollPane();
-				scrollPane.setName("consoleScrollPane");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			scrollPane = new ConsoleScrollPane();
 		}
 		return scrollPane;
 	}
@@ -212,68 +174,25 @@ public class ConsoleDialog extends javax.swing.JDialog {
 	 * Initialize the class.
 	 */
 	private void initialize() {
-		try {
-			setName("CompilerOutputDialog");
-			setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-			setSize(426, 240);
-			setContentPane(getConsoleDialogContentPane());
-			// getRootPane().setDefaultButton(getOkButton());
-			setJMenuBar(getConsoleDialogMenuBar());
-		} catch (java.lang.Throwable e) {
-			log(e);
-		}
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setSize(426, 240);
+		setContentPane(getConsoleDialogContentPane());
+		setJMenuBar(getConsoleDialogMenuBar());
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	public void log(String s) {
-		Utils.log(s);
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	public void log(Throwable e) {
-		Utils.log(e);
-	}
-
-	/**
-	 * Comment
-	 */
 	public void okButtonActionPerformed() {
-		java.awt.AWTEvent evt = new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING);
-	
-		dispatchEvent(evt);
+		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		return;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/7/2001 4:59:58 PM)
-	 * @param in java.io.InputStream
-	 */
 	public void processStream(java.io.InputStream in) {
 		scrollPane.processStream(in);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/24/2001 3:26:12 PM)
-	 */
 	public void scrollToBottom() {
 		getScrollPane().scrollToBottom();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/23/2001 2:29:23 PM)
-	 * @param text java.lang.String
-	 */
 	public void setText(String text) {
 		getScrollPane().setText(text);
 	}

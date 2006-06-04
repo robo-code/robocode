@@ -1,12 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics to buttons
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
 
@@ -16,62 +22,57 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
-import java.util.Vector;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import robocode.repository.*;
 import robocode.manager.RobotRepositoryManager;
-import robocode.util.*;
+import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (8/26/2001 5:19:04 PM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Matthew Reeder, Flemming N. Larsen  (current)
  */
 public class RobotSelectionPanel extends WizardPanel {
 
-	private AvailableRobotsPanel availableRobotsPanel = null;
+	private AvailableRobotsPanel availableRobotsPanel;
 
-	private JPanel selectedRobotsPanel = null;
-	private JScrollPane selectedRobotsScrollPane = null;
-	private JList selectedRobotsList = null;
+	private JPanel selectedRobotsPanel;
+	private JScrollPane selectedRobotsScrollPane;
+	private JList selectedRobotsList;
 	
-	private JTree selectedRobotsTree = null;
-
-	private JPanel buttonsPanel = null;
-	private JPanel addButtonsPanel = null;
-
-	private JPanel removeButtonsPanel = null;
-	private JButton addButton = null;
-	private JButton addAllButton = null;
-	private JButton removeButton = null;
-	private JButton removeAllButton = null;
+	private JPanel buttonsPanel;
+	private JPanel addButtonsPanel;
+	private JPanel removeButtonsPanel;
+	private JButton addButton;
+	private JButton addAllButton;
+	private JButton removeButton;
+	private JButton removeAllButton;
 
 	private EventHandler eventHandler = new EventHandler();
-	private RobotDescriptionPanel descriptionPanel = null;
-	private String instructions = null;
-	private javax.swing.JLabel instructionsLabel = null;
-	private JPanel mainPanel = null;
+	private RobotDescriptionPanel descriptionPanel;
+	private String instructions;
+	private JLabel instructionsLabel;
+	private JPanel mainPanel;
 	private int maxRobots = 1;
 	private int minRobots = 1;
-	private JPanel numRoundsPanel = null;
-	private JTextField numRoundsTextField = null;
-	private boolean onlyShowSource = false;
-	private boolean onlyShowWithPackage = false;
-	private boolean onlyShowRobots = false;
-	private boolean onlyShowDevelopment = false;
-	private boolean onlyShowPackaged = false;
-	private boolean ignoreTeamRobots = false;
-	private String preSelectedRobots = null;
-	private RobotNameCellRenderer robotNamesCellRenderer = null;
-	private FileSpecificationVector selectedRobots = new FileSpecificationVector();
-	private boolean showNumRoundsPanel = false;
-	private RobotRepositoryManager robotManager = null;
-	private boolean listBuilt = false;
+	private JPanel numRoundsPanel;
+	private JTextField numRoundsTextField;
+	private boolean onlyShowSource;
+	private boolean onlyShowWithPackage;
+	private boolean onlyShowRobots;
+	private boolean onlyShowDevelopment;
+	private boolean onlyShowPackaged;
+	private boolean ignoreTeamRobots;
+	private String preSelectedRobots;
+	private RobotNameCellRenderer robotNamesCellRenderer;
+	private Vector selectedRobots = new Vector(); // <FileSpecification>
+	private boolean showNumRoundsPanel;
+	private RobotRepositoryManager robotManager;
+	private boolean listBuilt;
 
-	class EventHandler implements ActionListener, ListSelectionListener, KeyListener, HierarchyListener {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+	class EventHandler implements ActionListener, ListSelectionListener, HierarchyListener {
+		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == RobotSelectionPanel.this.getAddAllButton()) {
 				addAllButtonActionPerformed();
 			} else if (e.getSource() == RobotSelectionPanel.this.getAddButton()) {
@@ -82,40 +83,14 @@ public class RobotSelectionPanel extends WizardPanel {
 				removeButtonActionPerformed();
 			}
 		}
-		;
+
 		public void valueChanged(ListSelectionEvent e) {
 			if (e.getValueIsAdjusting() == true) {
 				return;
 			}
-			
 			if (e.getSource() == getSelectedRobotsList()) {
 				selectedRobotsListSelectionChanged();
 			}
-
-			/*
-			 if (e.getSource() == getAvailableRobotsList() || e.getSource() == getSelectedRobotsList())
-			 {
-			 JList list = (JList)e.getSource();
-			 //log(e.getSource() + " selection changed to " + list.getMinSelectionIndex() + "," + list.getMaxSelectionIndex());
-			 if (list.getMinSelectionIndex() == list.getMaxSelectionIndex())
-			 {
-			 RobotClassManager classManager = (RobotClassManager)list.getModel().getElementAt(e.getFirstIndex());
-			 getDescriptionLabel().setText(classManager.getName());
-			 }
-			 }
-			 */
-		}
-
-		public void keyPressed(KeyEvent e) {
-			System.out.println("Key pressed: " + e);
-		}
-
-		public void keyReleased(KeyEvent e) {
-			System.out.println("Key released: " + e);
-		}
-
-		public void keyTyped(KeyEvent e) {
-			System.out.println("Key typed: " + e);
 		}
 
 		public void hierarchyChanged(HierarchyEvent e) {
@@ -127,15 +102,15 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
-
-	;
-	
 	private RobotSelectionPanel() {}
 
 	/**
 	 * NewBattleRobotsTab constructor comment.
 	 */
-	public RobotSelectionPanel(RobotRepositoryManager robotManager, int minRobots, int maxRobots, boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage, boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots, String preSelectedRobots) {
+	public RobotSelectionPanel(RobotRepositoryManager robotManager, int minRobots, int maxRobots,
+			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
+			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
+			String preSelectedRobots) {
 		super();
 		this.showNumRoundsPanel = showNumRoundsPanel;
 		this.minRobots = minRobots;
@@ -153,20 +128,16 @@ public class RobotSelectionPanel extends WizardPanel {
 		showInstructions();
 	}
 
-	/**
-	 * Comment
-	 */
 	private void addAllButtonActionPerformed() {
 		JList selectedList = getSelectedRobotsList();
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) selectedList.getModel();
-
-		FileSpecificationVector availableRobots = availableRobotsPanel.getAvailableRobots();
+		Vector availableRobots = availableRobotsPanel.getAvailableRobots(); // <FileSpecification>
 
 		for (int i = 0; i < availableRobots.size(); i++) {
 			selectedRobots.add(availableRobots.elementAt(i));
 		}
 		availableRobotsPanel.clearSelection();
-	
+
 		selectedList.clearSelection();
 		selectedModel.changed();
 		fireStateChanged();
@@ -178,23 +149,13 @@ public class RobotSelectionPanel extends WizardPanel {
 		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	private void addButtonActionPerformed() {
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) getSelectedRobotsList().getModel();
-
-		FileSpecificationVector moves = availableRobotsPanel.getSelectedRobots();
+		Vector moves = availableRobotsPanel.getSelectedRobots(); // <FileSpecification>
 
 		for (int i = 0; i < moves.size(); i++) {
-			// if (moves.elementAt(i) instanceof RobotSpecification)
 			selectedRobots.add(moves.elementAt(i));
-			// else if (moves.elementAt(i) instanceof TeamSpecification)
-			// {
-			// log("Add team: " + moves.elementAt(i));
-			// }
 		}
-
 		availableRobotsPanel.clearSelection();
 		selectedModel.changed();
 		fireStateChanged();
@@ -208,148 +169,102 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the addAllButton
-	 * @return javax.swing.JButton
+	 * 
+	 * @return JButton
 	 */
-	private javax.swing.JButton getAddAllButton() {
+	private JButton getAddAllButton() {
 		if (addAllButton == null) {
-			try {
-				addAllButton = new javax.swing.JButton();
-				addAllButton.setName("addAllButton");
-				addAllButton.setText("Add All ->");
-				addAllButton.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			addAllButton = new JButton();
+			addAllButton.setText("Add All ->");
+			addAllButton.setMnemonic('l');
+			addAllButton.setDisplayedMnemonicIndex(5);
+			addAllButton.addActionListener(eventHandler);
 		}
 		return addAllButton;
 	}
 
 	/**
 	 * Return the addButton
-	 * @return javax.swing.JButton
+	 * 
+	 * @return JButton
 	 */
-	private javax.swing.JButton getAddButton() {
+	private JButton getAddButton() {
 		if (addButton == null) {
-			try {
-				addButton = new javax.swing.JButton();
-				addButton.setName("addButton");
-				addButton.setText("Add ->");
-				addButton.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			addButton = new JButton();
+			addButton.setText("Add ->");
+			addButton.setMnemonic('A');
+			addButton.setDisplayedMnemonicIndex(0);
+			addButton.addActionListener(eventHandler);
 		}
 		return addButton;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	private JPanel getAddButtonsPanel() {
 		if (addButtonsPanel == null) {
-			try {
-				addButtonsPanel = new javax.swing.JPanel();
-				addButtonsPanel.setName("addButtonsPanel");
-
-				addButtonsPanel.setLayout(new java.awt.GridLayout(2, 1));
-				
-				addButtonsPanel.add(getAddButton());
-				addButtonsPanel.add(getAddAllButton());
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			addButtonsPanel = new JPanel();
+			addButtonsPanel.setLayout(new GridLayout(2, 1));
+			addButtonsPanel.add(getAddButton());
+			addButtonsPanel.add(getAddAllButton());
 		}
 		return addButtonsPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	private JPanel getButtonsPanel() {
 		if (buttonsPanel == null) {
-			try {
-				buttonsPanel = new javax.swing.JPanel();
-				buttonsPanel.setName("buttonsPanel");
-
-				buttonsPanel.setLayout(new java.awt.BorderLayout(5, 5));
-				buttonsPanel.setBorder(BorderFactory.createEmptyBorder(21, 5, 5, 5));
-				buttonsPanel.add(getAddButtonsPanel(), java.awt.BorderLayout.NORTH);
-
-				if (showNumRoundsPanel) {
-					buttonsPanel.add(getNumRoundsPanel(), BorderLayout.CENTER);
-				}
-			
-				buttonsPanel.add(getRemoveButtonsPanel(), java.awt.BorderLayout.SOUTH);
-			} catch (java.lang.Throwable e) {
-				log(e);
+			buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BorderLayout(5, 5));
+			buttonsPanel.setBorder(BorderFactory.createEmptyBorder(21, 5, 5, 5));
+			buttonsPanel.add(getAddButtonsPanel(), BorderLayout.NORTH);
+			if (showNumRoundsPanel) {
+				buttonsPanel.add(getNumRoundsPanel(), BorderLayout.CENTER);
 			}
+			buttonsPanel.add(getRemoveButtonsPanel(), BorderLayout.SOUTH);
 		}
 		return buttonsPanel;
 	}
 
 	/**
 	 * Return the removeAllButton
-	 * @return javax.swing.JButton
+	 * 
+	 * @return JButton
 	 */
-	private javax.swing.JButton getRemoveAllButton() {
+	private JButton getRemoveAllButton() {
 		if (removeAllButton == null) {
-			try {
-				removeAllButton = new javax.swing.JButton();
-				removeAllButton.setName("removeAllButton");
-				removeAllButton.setText("<- Remove All");
-				removeAllButton.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			removeAllButton = new JButton();
+			removeAllButton.setText("<- Remove All");
+			removeAllButton.setMnemonic('v');
+			removeAllButton.setDisplayedMnemonicIndex(7);
+			removeAllButton.addActionListener(eventHandler);
 		}
 		return removeAllButton;
 	}
 
 	/**
 	 * Return the removeButton property value.
-	 * @return javax.swing.JButton
+	 * 
+	 * @return JButton
 	 */
-	private javax.swing.JButton getRemoveButton() {
+	private JButton getRemoveButton() {
 		if (removeButton == null) {
-			try {
-				removeButton = new javax.swing.JButton();
-				removeButton.setName("removeButton");
-				removeButton.setText("<- Remove");
-				removeButton.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			removeButton = new JButton();
+			removeButton.setText("<- Remove");
+			removeButton.setMnemonic('m');
+			removeButton.setDisplayedMnemonicIndex(5);
+			removeButton.addActionListener(eventHandler);
 		}
 		return removeButton;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	private JPanel getRemoveButtonsPanel() {
 		if (removeButtonsPanel == null) {
-			try {
-				removeButtonsPanel = new javax.swing.JPanel();
-				removeButtonsPanel.setName("removeButtonsPanel");
-
-				removeButtonsPanel.setLayout(new java.awt.GridLayout(2, 1));
-					
-				removeButtonsPanel.add(getRemoveButton());
-				removeButtonsPanel.add(getRemoveAllButton());
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			removeButtonsPanel = new JPanel();
+			removeButtonsPanel.setLayout(new GridLayout(2, 1));
+			removeButtonsPanel.add(getRemoveButton());
+			removeButtonsPanel.add(getRemoveAllButton());
 		}
 		return removeButtonsPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 6:37:01 PM)
-	 */
 	public String getSelectedRobotsAsString() {
 		String s = "";
 
@@ -359,120 +274,82 @@ public class RobotSelectionPanel extends WizardPanel {
 			}
 			s += ((FileSpecification) selectedRobots.elementAt(i)).getNameManager().getUniqueFullClassNameWithVersion();
 		}
-		// System.out.println("Returning selected robots: " + s);
 		return s;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 6:37:01 PM)
-	 */
-	public FileSpecificationVector getSelectedRobots() {
+	public Vector getSelectedRobots() {
 		return selectedRobots;
 	}
 
 	/**
 	 * Return the selectedRobotsList.
-	 * @return javax.swing.JList
+	 * 
+	 * @return JList
 	 */
-	private javax.swing.JList getSelectedRobotsList() {
+	private JList getSelectedRobotsList() {
 		if (selectedRobotsList == null) {
-			try {
-				selectedRobotsList = new javax.swing.JList();
-				selectedRobotsList.setName("JSelectedList");
-				selectedRobotsList.setModel(new SelectedRobotsModel());
-				selectedRobotsList.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-				robotNamesCellRenderer = new RobotNameCellRenderer();
-				selectedRobotsList.setCellRenderer(robotNamesCellRenderer);
-				MouseListener mouseListener = new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						if (e.getClickCount() == 2) {
-							removeButtonActionPerformed();
-						}
-						if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-							contextMenuActionPerformed();
-						}
+			selectedRobotsList = new JList();
+			selectedRobotsList.setModel(new SelectedRobotsModel());
+			selectedRobotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			robotNamesCellRenderer = new RobotNameCellRenderer();
+			selectedRobotsList.setCellRenderer(robotNamesCellRenderer);
+			MouseListener mouseListener = new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount() == 2) {
+						removeButtonActionPerformed();
 					}
-				};
+					if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+						contextMenuActionPerformed();
+					}
+				}
+			};
 
-				selectedRobotsList.addMouseListener(mouseListener);
-				selectedRobotsList.addListSelectionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			selectedRobotsList.addMouseListener(mouseListener);
+			selectedRobotsList.addListSelectionListener(eventHandler);
 		}
 		return selectedRobotsList;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	private JPanel getSelectedRobotsPanel() {
 		if (selectedRobotsPanel == null) {
-			try {
-				selectedRobotsPanel = new javax.swing.JPanel();
-				selectedRobotsPanel.setName("selectedRobotsPanel");
-				selectedRobotsPanel.setLayout(new java.awt.BorderLayout());
-				selectedRobotsPanel.setPreferredSize(new Dimension(120, 100));
-				selectedRobotsPanel.setBorder(
-						BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Selected Robots"));
-				selectedRobotsPanel.add(getSelectedRobotsScrollPane(), java.awt.BorderLayout.CENTER);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			selectedRobotsPanel = new JPanel();
+			selectedRobotsPanel.setLayout(new BorderLayout());
+			selectedRobotsPanel.setPreferredSize(new Dimension(120, 100));
+			selectedRobotsPanel.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Selected Robots"));
+			selectedRobotsPanel.add(getSelectedRobotsScrollPane(), BorderLayout.CENTER);
 		}
 		return selectedRobotsPanel;
 	}
 
 	/**
 	 * Return the selectedRobotsScrollPane property value.
-	 * @return javax.swing.JScrollPane
+	 * 
+	 * @return JScrollPane
 	 */
-	private javax.swing.JScrollPane getSelectedRobotsScrollPane() {
+	private JScrollPane getSelectedRobotsScrollPane() {
 		if (selectedRobotsScrollPane == null) {
-			try {
-				selectedRobotsScrollPane = new javax.swing.JScrollPane();
-				selectedRobotsScrollPane.setName("selectedRobotsScrollPane");
-				selectedRobotsScrollPane.setViewportView(getSelectedRobotsList());
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			selectedRobotsScrollPane = new JScrollPane();
+			selectedRobotsScrollPane.setViewportView(getSelectedRobotsList());
 		}
 		return selectedRobotsScrollPane;
 	}
 
 	/**
 	 * Return the Page property value.
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
 	private void initialize() {
-		try {
-			setName("Robots");
-			setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-			setLayout(new BorderLayout());
-			add(getInstructionsLabel(), BorderLayout.NORTH);
-			add(getMainPanel(), BorderLayout.CENTER);
-			add(getDescriptionPanel(), BorderLayout.SOUTH);
-			this.addHierarchyListener(eventHandler);
-			this.setVisible(true);
-		} catch (java.lang.Throwable e) {
-			log(e);
-		}
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		setLayout(new BorderLayout());
+		add(getInstructionsLabel(), BorderLayout.NORTH);
+		add(getMainPanel(), BorderLayout.CENTER);
+		add(getDescriptionPanel(), BorderLayout.SOUTH);
+		this.addHierarchyListener(eventHandler);
+		this.setVisible(true);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	public void log(Throwable e) {
-		Utils.log(e);
-	}
-
-	/**
-	 * Comment
-	 */
 	private void removeAllButtonActionPerformed() {
 		JList selectedList = getSelectedRobotsList();
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) selectedList.getModel();
@@ -487,26 +364,14 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private void contextMenuActionPerformed() {}
 
-	/**
-	 * Comment
-	 */
 	private void removeButtonActionPerformed() {
 		JList selectedList = getSelectedRobotsList();
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) selectedList.getModel();
-
-		Vector removeVec = new Vector();
 		int sel[] = selectedList.getSelectedIndices();
 
 		for (int i = 0; i < sel.length; i++) {
 			selectedRobots.remove(sel[i] - i);
-			// removeVec.add(selectedRobots.elementAt(sel[i]));
 		}
-
-		/* for (int i = 0; i < removeVec.size(); i++)
-		 {
-		 selectedRobots.remove(removeVec.elementAt(i));
-		 }*/
-
 		selectedList.clearSelection();
 		selectedModel.changed();
 		fireStateChanged();
@@ -519,8 +384,8 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
+		private boolean useShortNames;
 
-		private boolean useShortNames = false;
 		public RobotNameCellRenderer() {
 			setOpaque(true);
 		}
@@ -529,14 +394,10 @@ public class RobotSelectionPanel extends WizardPanel {
 			this.useShortNames = useShortNames;
 		}
 
-		public Component getListCellRendererComponent(
-				JList list,
-				Object value,
-				int index,
-				boolean isSelected,
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setComponentOrientation(list.getComponentOrientation());
-		
+
 			if (isSelected) {
 				setBackground(list.getSelectionBackground());
 				setForeground(list.getSelectionForeground());
@@ -567,19 +428,17 @@ public class RobotSelectionPanel extends WizardPanel {
 
 			setEnabled(list.isEnabled());
 			setFont(list.getFont());
-		
-			// setBorder((cellHasFocus) ? UIManager.getBorder("List.focusCellHighlightBorder") : noFocusBorder);
 
 			return this;
 		}
 	}
 
 
-	class SelectedRobotsModel extends javax.swing.AbstractListModel {
+	class SelectedRobotsModel extends AbstractListModel {
 		public void changed() {
 			fireContentsChanged(this, 0, getSize());
 		}
-	
+
 		public int getSize() {
 			return selectedRobots.size();
 		}
@@ -589,240 +448,145 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/30/2001 1:38:51 PM)
-	 * @param robocode robocode.Robocode
-	 */
 	public void buildRobotList() {
 		new Thread(new Runnable() {
 			public void run() {
-				// try {Thread.sleep(100);} catch (InterruptedException e) {}
-				getAvailableRobotsPanel().setRobotList(null); // new FileSpecificationVector());
-				// System.out.println("nulled it.");
-				FileSpecificationVector v = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsVector(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
+				getAvailableRobotsPanel().setRobotList(null); // new Vector<FileSpecification>());
+				Vector v = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsVector(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots); // <FileSpecification>
 
-				// System.out.println("got it.");
 				getAvailableRobotsPanel().setRobotList(v);
-				// System.out.println("set it.");
-			
 				if (selectedRobots != null && !selectedRobots.equals("")) {
-					// System.out.println("setting selected.");
 					setSelectedRobots(getAvailableRobotsPanel().getRobotList(), preSelectedRobots);
 					preSelectedRobots = null;
 				}
-				// System.out.println("Done building robot list.");
 			}
 		}).start();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	public AvailableRobotsPanel getAvailableRobotsPanel() {
 		if (availableRobotsPanel == null) {
-			try {
-				availableRobotsPanel = new AvailableRobotsPanel(getAddButton(), "Available Robots",
-						getSelectedRobotsList(), this);
-				availableRobotsPanel.setName("availableRobotsPanel");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			availableRobotsPanel = new AvailableRobotsPanel(getAddButton(), "Available Robots", getSelectedRobotsList(),
+					this);
 		}
 		return availableRobotsPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	private RobotDescriptionPanel getDescriptionPanel() {
 		if (descriptionPanel == null) {
-			try {
-				descriptionPanel = new RobotDescriptionPanel(robotManager.getManager());
-				descriptionPanel.setName("descriptionPanel");
-				descriptionPanel.setBorder(BorderFactory.createEmptyBorder(1, 10, 1, 10));
-				// descriptionPanel.setPreferredSize(new Dimension(descriptionPanel.getPreferredSize,66));
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			descriptionPanel = new RobotDescriptionPanel(robotManager.getManager());
+			descriptionPanel.setBorder(BorderFactory.createEmptyBorder(1, 10, 1, 10));
 		}
 		return descriptionPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	private JLabel getInstructionsLabel() {
 		if (instructionsLabel == null) {
-			try {
-				instructionsLabel = new javax.swing.JLabel();
-				instructionsLabel.setName("instructionsLabel");
-				if (instructions != null) {
-					instructionsLabel.setText(instructions);
-				}
-			} catch (java.lang.Throwable e) {
-				log(e);
+			instructionsLabel = new JLabel();
+			if (instructions != null) {
+				instructionsLabel.setText(instructions);
 			}
 		}
 		return instructionsLabel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	private JPanel getMainPanel() {
 		if (mainPanel == null) {
-			try {
-				mainPanel = new javax.swing.JPanel();
-				mainPanel.setName("mainPanel");
+			mainPanel = new JPanel();
+			mainPanel.setPreferredSize(new Dimension(550, 300));
+			GridBagLayout layout = new GridBagLayout();
 
-				mainPanel.setPreferredSize(new Dimension(550, 300));
-				GridBagLayout layout = new GridBagLayout();
+			mainPanel.setLayout(layout);
 
-				mainPanel.setLayout(layout);
-			
-				GridBagConstraints constraints = new GridBagConstraints();
+			GridBagConstraints constraints = new GridBagConstraints();
 
-				constraints.fill = java.awt.GridBagConstraints.BOTH;
-				constraints.weightx = 2;
-				constraints.weighty = 1;
-				constraints.anchor = GridBagConstraints.NORTHWEST;
-				constraints.gridwidth = 2;
-				layout.setConstraints(getAvailableRobotsPanel(), constraints);
-				mainPanel.add(getAvailableRobotsPanel());
-
-				constraints.gridwidth = 1;
-				constraints.weightx = 0;
-				constraints.weighty = 0;
-				constraints.anchor = GridBagConstraints.CENTER;
-				layout.setConstraints(getButtonsPanel(), constraints);
-				mainPanel.add(getButtonsPanel());
-
-				constraints.gridwidth = GridBagConstraints.REMAINDER;
-				constraints.weightx = 1;
-				constraints.weighty = 1;
-				constraints.anchor = GridBagConstraints.NORTHWEST;
-				layout.setConstraints(getSelectedRobotsPanel(), constraints);
-				mainPanel.add(getSelectedRobotsPanel());
-
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.weightx = 2;
+			constraints.weighty = 1;
+			constraints.anchor = GridBagConstraints.NORTHWEST;
+			constraints.gridwidth = 2;
+			layout.setConstraints(getAvailableRobotsPanel(), constraints);
+			mainPanel.add(getAvailableRobotsPanel());
+			constraints.gridwidth = 1;
+			constraints.weightx = 0;
+			constraints.weighty = 0;
+			constraints.anchor = GridBagConstraints.CENTER;
+			layout.setConstraints(getButtonsPanel(), constraints);
+			mainPanel.add(getButtonsPanel());
+			constraints.gridwidth = GridBagConstraints.REMAINDER;
+			constraints.weightx = 1;
+			constraints.weighty = 1;
+			constraints.anchor = GridBagConstraints.NORTHWEST;
+			layout.setConstraints(getSelectedRobotsPanel(), constraints);
+			mainPanel.add(getSelectedRobotsPanel());
 		}
 		return mainPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 7:59:58 PM)
-	 * @return int
-	 */
 	public int getNumRounds() {
 		try {
 			return Integer.parseInt(getNumRoundsTextField().getText());
 		} catch (NumberFormatException e) {
 			return 10;
 		}
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 8:41:29 PM)
-	 */
 	private JPanel getNumRoundsPanel() {
 		if (numRoundsPanel == null) {
-			try {
-				numRoundsPanel = new javax.swing.JPanel();
-				numRoundsPanel.setName("numRoundsPanel");
-				numRoundsPanel.setLayout(new BoxLayout(numRoundsPanel, BoxLayout.Y_AXIS));
-				numRoundsPanel.setBorder(BorderFactory.createEmptyBorder());
-				numRoundsPanel.add(new JPanel());
-			
-				JPanel j = new JPanel();
+			numRoundsPanel = new JPanel();
+			numRoundsPanel.setLayout(new BoxLayout(numRoundsPanel, BoxLayout.Y_AXIS));
+			numRoundsPanel.setBorder(BorderFactory.createEmptyBorder());
+			numRoundsPanel.add(new JPanel());
+			JPanel j = new JPanel();
 
-				j.setLayout(new BoxLayout(j, BoxLayout.Y_AXIS));
-				TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-						"Number of Rounds");
+			j.setLayout(new BoxLayout(j, BoxLayout.Y_AXIS));
+			TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+					"Number of Rounds");
 
-				j.setBorder(border);
-				j.add(getNumRoundsTextField());
-				// System.out.println(border.getMinimumSize(j));
-				j.setPreferredSize(new Dimension(border.getMinimumSize(j).width, j.getPreferredSize().height));
-				j.setMinimumSize(j.getPreferredSize());
-				j.setMaximumSize(j.getPreferredSize());
-				// j.setMaximumSize(new Dimension(150,50));
-				// j.setMinimumSize(new Dimension(150,50));
-				// j.setPreferredSize(new Dimension(150,50));
-				numRoundsPanel.add(j);
-				numRoundsPanel.add(new JPanel());
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			j.setBorder(border);
+			j.add(getNumRoundsTextField());
+			j.setPreferredSize(new Dimension(border.getMinimumSize(j).width, j.getPreferredSize().height));
+			j.setMinimumSize(j.getPreferredSize());
+			j.setMaximumSize(j.getPreferredSize());
+			numRoundsPanel.add(j);
+			numRoundsPanel.add(new JPanel());
 		}
 		return numRoundsPanel;
 	}
 
 	/**
 	 * Return the numRoundsTextField
-	 * @return javax.swing.JTextField
+	 * 
+	 * @return JTextField
 	 */
-	private javax.swing.JTextField getNumRoundsTextField() {
+	private JTextField getNumRoundsTextField() {
 		if (numRoundsTextField == null) {
-			try {
-				numRoundsTextField = new javax.swing.JTextField();
-				numRoundsTextField.setName("numRoundsTextField");
-				numRoundsTextField.setAutoscrolls(false);
-				numRoundsTextField.setPreferredSize(new Dimension(50, 16));
-				numRoundsTextField.setMaximumSize(new Dimension(50, 16));
-				numRoundsTextField.setMinimumSize(new Dimension(50, 16));
-				// Center in panel
-				numRoundsTextField.setAlignmentX((float) .5);
-				// Center text in textfield
-				numRoundsTextField.setHorizontalAlignment(JTextField.CENTER);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			numRoundsTextField = new JTextField();
+			numRoundsTextField.setAutoscrolls(false);
+			numRoundsTextField.setPreferredSize(new Dimension(50, 16));
+			numRoundsTextField.setMaximumSize(new Dimension(50, 16));
+			numRoundsTextField.setMinimumSize(new Dimension(50, 16));
+			// Center in panel
+			numRoundsTextField.setAlignmentX((float) .5);
+			// Center text in textfield
+			numRoundsTextField.setHorizontalAlignment(JTextField.CENTER);
 		}
 		return numRoundsTextField;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 6:37:01 PM)
-	 */
 	public int getSelectedRobotsCount() {
 		return selectedRobots.size();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:44:02 PM)
-	 * @return boolean
-	 */
 	public boolean isReady() {
 		return (getSelectedRobotsCount() >= minRobots && getSelectedRobotsCount() <= maxRobots);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/30/2001 1:38:51 PM)
-	 * @param robocode robocode.Robocode
-	 */
 	public void refreshRobotList() {
-		getAvailableRobotsPanel().setRobotList(null); // new FileSpecificationVector());
+		getAvailableRobotsPanel().setRobotList(null);
 		RobotSelectionPanel.this.robotManager.clearRobotList();
 		buildRobotList();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/15/2001 3:53:26 PM)
-	 */
 	private void selectedRobotsListSelectionChanged() {
 		int sel[] = getSelectedRobotsList().getSelectedIndices();
 
@@ -837,27 +601,17 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/26/2001 7:59:58 PM)
-	 * @return int
-	 */
 	public void setNumRounds(int numRounds) {
 		getNumRoundsTextField().setText("" + numRounds);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 2:47:58 PM)
-	 * @param selectedRobotsString java.lang.String
-	 */
-	private void setSelectedRobots(FileSpecificationVector robotList, String selectedRobotsString) {
+	private void setSelectedRobots(Vector robotList, String selectedRobotsString) { // <FileSpecification>
 		if (selectedRobotsString != null) {
 			StringTokenizer tokenizer;
 
 			tokenizer = new StringTokenizer(selectedRobotsString, ",");
 			if (robotList == null) {
-				log(new RuntimeException("Cannot add robots to a null robots list!"));
+				Utils.log(new RuntimeException("Cannot add robots to a null robots list!"));
 				return;
 			}
 			this.selectedRobots.clear();
@@ -877,19 +631,10 @@ public class RobotSelectionPanel extends WizardPanel {
 		fireStateChanged();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/15/2001 5:11:50 PM)
-	 * @param classManager robocode.peer.robot.RobotClassManager
-	 */
 	public void showDescription(FileSpecification robotSpecification) {
 		getDescriptionPanel().showDescription(robotSpecification);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 6:06:46 PM)
-	 */
 	public void showInstructions() {
 		if (instructions != null) {
 			instructionsLabel.setText(instructions);
@@ -899,12 +644,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 6:06:46 PM)
-	 */
 	public void showWrongNumInstructions() {
-
 		if (minRobots == maxRobots) {
 			if (minRobots == 1) {
 				instructionsLabel.setText("Please select exactly 1 robot.");

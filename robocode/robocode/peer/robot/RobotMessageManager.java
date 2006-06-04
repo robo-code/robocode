@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -16,15 +19,16 @@ import java.util.*;
 import robocode.*;
 import robocode.io.*;
 import robocode.peer.*;
-import robocode.util.Utils;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class RobotMessageManager {
 	
-	// TeamMessageSizer sizer = new TeamMessageSizer();
-	// ObjectOutputStream out = null;
-	RobotPeer robotPeer = null;
-	Vector messageEvents = new Vector();
+	RobotPeer robotPeer;
+	Vector messageEvents = new Vector(); // <MessageEvent>
  	
 	ObjectOutputStream out;
 	ObjectInputStream in;
@@ -57,8 +61,7 @@ public class RobotMessageManager {
 						|| (receiver.getName().length() >= name.length()
 								&& receiver.getName().substring(0, name.length()).equals(name))
 								|| (receiver.getNonVersionedName().length() >= name.length()
-										&& receiver.getNonVersionedName().substring(0, name.length()).equals(name))
-										) {
+										&& receiver.getNonVersionedName().substring(0, name.length()).equals(name))) {
 					if (name == null && receiver == robotPeer) {
 						continue;
 					}
@@ -76,7 +79,6 @@ public class RobotMessageManager {
 					}
 				}
 			}
-			// throw new IOException("Teammate: " + receiver.getName() + " is dead.");
 		}
 		// Note:  Does nothing, simply throws IOException if too many bytes.
 	}
@@ -84,10 +86,7 @@ public class RobotMessageManager {
 	public synchronized void addMessage(String sender, Serializable o) {
 		if (!robotPeer.isDead()) {
 			messageEvents.add(new MessageEvent(sender, o));
-			// System.out.println("I have a new message at time: " + robotPeer.getTime());
 		}
-		// else
-		// throw new RobotException(robotPeer.getName() + " is dead.");
 	}
 	
 	public Vector getMessageEvents() {
@@ -97,10 +96,4 @@ public class RobotMessageManager {
 	public void clearMessageEvents() {
 		messageEvents.clear();
 	}
-	
-	private void log(String s) {
-		Utils.log(s);
-	}
-	
 }
-

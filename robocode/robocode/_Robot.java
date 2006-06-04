@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode;
 
@@ -19,13 +22,16 @@ import robocode.exception.*;
  * This class is used by the system, as well as being a placeholder for all all deprecated (meaning, you should not use them) calls.
  * <P>You should create a {@link robocode.Robot Robot} instead.
  * <P>There is no guarantee that this class will exist in future versions of Robocode.
+ *
  * @see robocode.Robot
+ *
+ * @author Mathew A. Nelson
  */
 public class _Robot {
 	RobotPeer peer;
-	private java.lang.String robotImageName = null;
-	private java.lang.String gunImageName = null;
-	private java.lang.String radarImageName = null;
+	private String robotImageName;
+	private String gunImageName;
+	private String radarImageName;
 	
 	protected _Robot() {}
 
@@ -41,7 +47,7 @@ public class _Robot {
 	/**
 	 * Insert the method's description here.
 	 * Creation date: (8/27/2001 1:36:54 PM)
-	 * @param s java.lang.String
+	 * @param s String
 	 */
 	protected void uninitializedException(String s) {
 		throw new RobotException(
@@ -97,7 +103,6 @@ public class _Robot {
 			uninitializedException("getBattleNum");
 			return 0; // never called
 		}
-
 	}
 
 	/**
@@ -109,44 +114,42 @@ public class _Robot {
 	/**
 	 * @deprecated This call is not used.
 	 */
-	public java.lang.String getGunImageName() {
+	public String getGunImageName() {
 		return gunImageName;
 	}
 
 	/**
 	 * @deprecated This call is not used.
 	 */
-	public void setGunImageName(java.lang.String newGunImageName) {
+	public void setGunImageName(String newGunImageName) {
 		gunImageName = newGunImageName;
 	}
 
 	/**
 	 * @deprecated This call is not used.
 	 */
-	public void setRadarImageName(java.lang.String newRadarImageName) {
+	public void setRadarImageName(String newRadarImageName) {
 		radarImageName = newRadarImageName;
 	}
 
 	/**
 	 * @deprecated This call is not used.
 	 */
-	public void setRobotImageName(java.lang.String newRobotImageName) {
+	public void setRobotImageName(String newRobotImageName) {
 		robotImageName = newRobotImageName;
 	}
 
 	/**
 	 * @deprecated This call is not used.
 	 */
-	public java.lang.String getRadarImageName() {
+	public String getRadarImageName() {
 		return radarImageName;
 	}
 
 	/**
 	 * @deprecated This call is not used.
 	 */
-	public java.lang.String getRobotImageName() {
+	public String getRobotImageName() {
 		return robotImageName;
 	}
-
 }
-

@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
 
@@ -17,7 +18,10 @@ package robocode;
  * <P>You should create a {@link robocode.AdvancedRobot AdvancedRobot} instead.
  * <P>There is no guarantee that this class will exist in future versions of Robocode.
  * <P>(The Radians methods themselves will continue work, however).
+ *
  * @see robocode.AdvancedRobot
+ *
+ * @author Mathew A. Nelson
  */
 public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	
@@ -28,7 +32,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *  The value returned will be between 0 and 2 * PI.
 	 * @return the direction the robot is facing, in radians.
 	 */
-
 	public double getHeadingRadians() {
 		if (peer != null) {
 			peer.getCall();
@@ -43,7 +46,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Sets the robot to turn left by radians.
 	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
 	 */
-
 	public void setTurnLeftRadians(double radians) {
 		if (peer != null) {
 			peer.setCall();
@@ -106,7 +108,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Returns gun heading in radians.  This is a value from 0 to 2*Pi, where 0 points to the top of the screen.
 	 * @return gun heading
 	 */
-
 	public double getGunHeadingRadians() {
 		if (peer != null) {
 			return peer.getGunHeading();
@@ -120,7 +121,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Returns radar heading in radians.  This is a value from 0 to 2*Pi, where 0 points to the top of the screen.
 	 * @return radar heading
 	 */
-
 	public double getRadarHeadingRadians() {
 		if (peer != null) {
 			return peer.getRadarHeading();
@@ -134,7 +134,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Sets the gun to turn left by radians.
 	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
 	 */
-
 	public void setTurnGunLeftRadians(double radians) {
 		if (peer != null) {
 			peer.setCall();
@@ -148,7 +147,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Sets the gun to turn right by radians.
 	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
 	 */
-
 	public void setTurnGunRightRadians(double radians) {
 		if (peer != null) {
 			peer.setCall();
@@ -162,7 +160,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Sets the radar to turn left by radians.
 	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
 	 */
-
 	public void setTurnRadarLeftRadians(double radians) {
 		if (peer != null) {
 			peer.setCall();
@@ -259,6 +256,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Gets angle remaining in the gun's turn, in radians
+	 * 
 	 * @return angle remaining in the gun's turn, in radians
 	 */
 	public double getGunTurnRemainingRadians() {
@@ -273,6 +271,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Gets angle remaining in the radar's turn, in radians
+	 * 
 	 * @return angle remaining in the radar's turn, in radians
 	 */
 	public double getRadarTurnRemainingRadians() {
@@ -287,6 +286,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Gets angle remaining in the robot's turn, in radians.
+	 * 
 	 * @return angle remaining in the robot's turn, in radians
 	 */
 	public double getTurnRemainingRadians() {
@@ -298,6 +298,4 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 			return 0; // never called
 		}
 	}
-
 }
-

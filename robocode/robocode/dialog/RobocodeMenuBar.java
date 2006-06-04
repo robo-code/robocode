@@ -1,624 +1,634 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics and a few accelerators to all menus and menu
+ *       items
+ *     Flemming N. Larsen
+ *     - Added menu items for RobocodeNG API, Robo Wiki, Yahoo Group Robocode,
+ *       and Robocode Repository
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
 
 
+import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
+import robocode.Robocode;
 import robocode.manager.*;
-import robocode.util.*;
+import robocode.util.Utils;
 
 
 /**
  * Handles menu display and interaction for Robocode.
- * Creation date: (8/22/2001 1:15:52 PM)
- * @author: Mathew Nelson
+ * 
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen, Matthew Reeder (current)
  */
-public class RobocodeMenuBar extends javax.swing.JMenuBar {
+public class RobocodeMenuBar extends JMenuBar {
 
 	// Battle menu
-	private JMenu battleMenu = null;
-	private JMenuItem battleNewMenuItem = null;
-	private JMenuItem battleOpenMenuItem = null;
-	private JSeparator battleMenuSeparator1 = null;
-	private JMenuItem battleSaveMenuItem = null;
-	private JMenuItem battleSaveAsMenuItem = null;
-	private JMenuItem battleExitMenuItem = null;
+	private JMenu battleMenu;
+	private JMenuItem battleNewMenuItem;
+	private JMenuItem battleOpenMenuItem;
+	private JMenuItem battleSaveMenuItem;
+	private JMenuItem battleSaveAsMenuItem;
+	private JMenuItem battleExitMenuItem;
 
 	// Robot menu
-	private JMenu robotMenu = null;
-	private JMenuItem robotEditorMenuItem = null;
-	private JMenuItem robotImportMenuItem = null;
-	private JMenuItem robotPackagerMenuItem = null;
+	private JMenu robotMenu;
+	private JMenuItem robotEditorMenuItem;
+	private JMenuItem robotImportMenuItem;
+	private JMenuItem robotPackagerMenuItem;
 
 	// Team menu
-	private JMenu teamMenu = null;
-	private JMenuItem teamCreateTeamMenuItem = null;
+	private JMenu teamMenu;
+	private JMenuItem teamCreateTeamMenuItem;
 	
 	// Options menu
-	private JMenu optionsMenu = null;
-	private JMenuItem optionsPreferencesMenuItem = null;
-	private JMenuItem optionsFitWindowMenuItem = null;
+	private JMenu optionsMenu;
+	private JMenuItem optionsPreferencesMenuItem;
+	private JMenuItem optionsFitWindowMenuItem;
 
 	// Help Menu
-	private JMenu helpMenu = null;
-	private JMenuItem helpOnlineHelpMenuItem = null;
-	private JMenuItem helpCheckForNewVersionMenuItem = null;
-	private JMenuItem helpVersionsTxtMenuItem = null;
-	private JMenuItem helpRobocodeApiMenuItem = null;
-	private JMenuItem helpFaqMenuItem = null;
-	private JMenuItem helpAboutMenuItem = null;
-	private RobocodeFrame robocodeFrame = null;
-	private RobocodeManager manager = null;
-	
-	class EventHandler implements java.awt.event.ActionListener, javax.swing.event.MenuListener {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			if (e.getSource() == RobocodeMenuBar.this.getBattleNewMenuItem()) {
+	private JMenu helpMenu;
+	private JMenuItem helpOnlineHelpMenuItem;
+	private JMenuItem helpCheckForNewVersionMenuItem;
+	private JMenuItem helpVersionsTxtMenuItem;
+	private JMenuItem helpRobocodeApiMenuItem;
+	private JMenuItem helpFaqMenuItem;
+	private JMenuItem helpAboutMenuItem;
+	private JMenuItem helpRobocodeMenuItem;
+	private JMenuItem helpRoboWikiMenuItem;
+	private JMenuItem helpYahooGroupRobocodeMenuItem;
+	private JMenuItem helpRobocodeRepositoryMenuItem;
+	private RobocodeFrame robocodeFrame;
+	private RobocodeManager manager;
+
+	class EventHandler implements ActionListener, MenuListener {
+		public void actionPerformed(ActionEvent e) {
+			Object source = e.getSource();
+			RobocodeMenuBar mb = RobocodeMenuBar.this;
+
+			// Battle menu
+			if (source == mb.getBattleNewMenuItem()) {
 				battleNewActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getBattleOpenMenuItem()) {
+			} else if (source == mb.getBattleOpenMenuItem()) {
 				battleOpenActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getBattleSaveMenuItem()) {
+			} else if (source == mb.getBattleSaveMenuItem()) {
 				battleSaveActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getBattleSaveAsMenuItem()) {
+			} else if (source == mb.getBattleSaveAsMenuItem()) {
 				battleSaveAsActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getBattleExitMenuItem()) {
+			} else if (source == mb.getBattleExitMenuItem()) {
 				battleExitActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getRobotEditorMenuItem()) {
+
+				// Robot Editor menu
+			} else if (source == mb.getRobotEditorMenuItem()) {
 				robotEditorActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getRobotImportMenuItem()) {
+			} else if (source == mb.getRobotImportMenuItem()) {
 				robotImportActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getRobotPackagerMenuItem()) {
+			} else if (source == mb.getRobotPackagerMenuItem()) {
 				robotPackagerActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getTeamCreateTeamMenuItem()) {
+
+				// Team / Create Team menu
+			} else if (source == mb.getTeamCreateTeamMenuItem()) {
 				teamCreateTeamActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getOptionsPreferencesMenuItem()) {
+
+				// Options / Preferences menu
+			} else if (source == mb.getOptionsPreferencesMenuItem()) {
 				optionsPreferencesActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getOptionsFitWindowMenuItem()) {
+			} else if (source == mb.getOptionsFitWindowMenuItem()) {
 				optionsFitWindowActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getHelpFaqMenuItem()) {
-				helpFaqActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getHelpOnlineHelpMenuItem()) {
+
+				// Help menu
+			} else if (source == mb.getHelpOnlineHelpMenuItem()) {
 				helpOnlineHelpActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getHelpRobocodeApiMenuItem()) {
+			} else if (source == mb.getHelpRobocodeApiMenuItem()) {
 				helpRobocodeApiActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getHelpCheckForNewVersionMenuItem()) {
+			} else if (source == mb.getHelpFaqMenuItem()) {
+				helpFaqActionPerformed();
+			} else if (source == mb.getHelpRobocodeMenuItem()) {
+				helpRobocondeNgMenuItemActionPerformed();
+			} else if (source == mb.getHelpRoboWikiMenuItem()) {
+				helpRoboWikiMenuItemActionPerformed();
+			} else if (source == mb.getHelpYahooGroupRobocodeMenuItem()) {
+				helpYahooGroupRobocodeActionPerformed();
+			} else if (source == mb.getHelpRobocodeRepositoryMenuItem()) {
+				helpRobocodeRepositoryActionPerformed();
+			} else if (source == mb.getHelpCheckForNewVersionMenuItem()) {
 				helpCheckForNewVersionActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getHelpVersionsTxtMenuItem()) {
+			} else if (source == mb.getHelpVersionsTxtMenuItem()) {
 				helpVersionsTxtActionPerformed();
-			}
-			if (e.getSource() == RobocodeMenuBar.this.getHelpAboutMenuItem()) {
+			} else if (source == mb.getHelpAboutMenuItem()) {
 				helpAboutActionPerformed();
 			}
 		}
-		;
-		public void menuDeselected(javax.swing.event.MenuEvent e) {
+
+		public void menuDeselected(MenuEvent e) {
 			manager.getBattleManager().resumeBattle();
 		}
-		;
-		public void menuSelected(javax.swing.event.MenuEvent e) {
+
+		public void menuSelected(MenuEvent e) {
 			manager.getBattleManager().pauseBattle();
 		}
-		;
-		public void menuCanceled(javax.swing.event.MenuEvent e) {}
-		;
+
+		public void menuCanceled(MenuEvent e) {}
 	}
-
-
-	;
 
 	public RobocodeMenuBar.EventHandler eventHandler = new EventHandler();
 
 	/**
-	 * RoboCodeMenu constructor comment.
+	 * RoboCodeMenu constructor
 	 */
 	public RobocodeMenuBar(RobocodeManager manager, RobocodeFrame robocodeFrame) {
 		super();
 		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
-		setName("RobocodeMenu");
 		add(getBattleMenu());
 		add(getRobotMenu());
 		add(getOptionsMenu());
 		add(getHelpMenu());
 	}
 
-	/**
-	 * Comment
-	 */
 	public void battleExitActionPerformed() {
-		java.awt.AWTEvent evt = new java.awt.event.WindowEvent(robocodeFrame, java.awt.event.WindowEvent.WINDOW_CLOSING);
+		java.awt.AWTEvent evt = new WindowEvent(robocodeFrame, WindowEvent.WINDOW_CLOSING);
 
 		robocodeFrame.dispatchEvent(evt);
-		return;
 	}
 
 	/**
 	 * Handle battleNew menu item action
 	 */
 	public void battleNewActionPerformed() {
-
 		manager.getWindowManager().showNewBattleDialog(manager.getBattleManager().getBattleProperties());
-	
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void battleOpenActionPerformed() {
 		manager.getWindowManager().showBattleOpenDialog();
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void battleSaveActionPerformed() {
 		manager.getBattleManager().saveBattle();
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void battleSaveAsActionPerformed() {
 		manager.getBattleManager().saveBattleAs();
-		return;
 	}
 
 	/**
 	 * Return the battleExitMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getBattleExitMenuItem() {
 		if (battleExitMenuItem == null) {
-			try {
-				battleExitMenuItem = new javax.swing.JMenuItem();
-				battleExitMenuItem.setName("battleExitMenuItem");
-				battleExitMenuItem.setText("Exit");
-				battleExitMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			battleExitMenuItem = new JMenuItem();
+			battleExitMenuItem.setText("Exit");
+			battleExitMenuItem.setMnemonic('x');
+			battleExitMenuItem.setDisplayedMnemonicIndex(1);
+			battleExitMenuItem.addActionListener(eventHandler);
 		}
 		return battleExitMenuItem;
 	}
 
 	/**
 	 * Return the Battle Menu
-	 * @return javax.swing.JMenu
+	 * 
+	 * @return JMenu
 	 */
 	public JMenu getBattleMenu() {
 		if (battleMenu == null) {
-			try {
-				battleMenu = new JMenu();
-				battleMenu.setName("battleMenu");
-				battleMenu.setText("Battle");
-			
-				battleMenu.add(getBattleNewMenuItem());
-				battleMenu.add(getBattleOpenMenuItem());
-				battleMenu.add(getBattleMenuSeparator1());
-				battleMenu.add(getBattleSaveMenuItem());
-				battleMenu.add(getBattleSaveAsMenuItem());
-				battleMenu.add(getBattleExitMenuItem());
-			
-				battleMenu.addMenuListener(eventHandler);
-			} catch (Throwable e) {
-				log(e);
-			}
+			battleMenu = new JMenu();
+			battleMenu.setText("Battle");
+			battleMenu.setMnemonic('B');
+			battleMenu.setDisplayedMnemonicIndex(0);
+			battleMenu.add(getBattleNewMenuItem());
+			battleMenu.add(getBattleOpenMenuItem());
+			battleMenu.add(new JSeparator());
+			battleMenu.add(getBattleSaveMenuItem());
+			battleMenu.add(getBattleSaveAsMenuItem());
+			battleMenu.add(getBattleExitMenuItem());
+			battleMenu.addMenuListener(eventHandler);
 		}
 		return battleMenu;
 	}
 
 	/**
-	 * Return the battleMenuSeparator1.
-	 * @return javax.swing.JSeparator
-	 */
-	private javax.swing.JSeparator getBattleMenuSeparator1() {
-		if (battleMenuSeparator1 == null) {
-			try {
-				battleMenuSeparator1 = new javax.swing.JSeparator();
-				battleMenuSeparator1.setName("battleMenuSeparator1");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
-		}
-		return battleMenuSeparator1;
-	}
-
-	/**
 	 * Return the battleNewMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getBattleNewMenuItem() {
 		if (battleNewMenuItem == null) {
-			try {
-				battleNewMenuItem = new javax.swing.JMenuItem();
-				battleNewMenuItem.setName("battleNewMenuItem");
-				battleNewMenuItem.setText("New");
-				battleNewMenuItem.addActionListener(eventHandler);
-			} catch (Throwable e) {
-				log(e);
-			}
+			battleNewMenuItem = new JMenuItem();
+			battleNewMenuItem.setText("New");
+			battleNewMenuItem.setMnemonic('N');
+			battleNewMenuItem.setDisplayedMnemonicIndex(0);
+			battleNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK, false));
+			battleNewMenuItem.addActionListener(eventHandler);
 		}
 		return battleNewMenuItem;
 	}
 
 	/**
 	 * Return the battleOpenMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getBattleOpenMenuItem() {
 		if (battleOpenMenuItem == null) {
-			try {
-				battleOpenMenuItem = new javax.swing.JMenuItem();
-				battleOpenMenuItem.setName("battleOpenMenuItem");
-				battleOpenMenuItem.setText("Open");
-				battleOpenMenuItem.addActionListener(eventHandler);
-			} catch (Throwable e) {
-				log(e);
-			}
+			battleOpenMenuItem = new JMenuItem();
+			battleOpenMenuItem.setText("Open");
+			battleOpenMenuItem.setMnemonic('O');
+			battleOpenMenuItem.setDisplayedMnemonicIndex(0);
+			battleOpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK, false));
+			battleOpenMenuItem.addActionListener(eventHandler);
 		}
 		return battleOpenMenuItem;
 	}
 
 	/**
 	 * Return the battleSaveAsMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	public JMenuItem getBattleSaveAsMenuItem() {
 		if (battleSaveAsMenuItem == null) {
-			try {
-				battleSaveAsMenuItem = new javax.swing.JMenuItem();
-				battleSaveAsMenuItem.setName("battleSaveAsMenuItem");
-				battleSaveAsMenuItem.setText("Save As");
-				battleSaveAsMenuItem.setEnabled(false);
-				battleSaveAsMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			battleSaveAsMenuItem = new JMenuItem();
+			battleSaveAsMenuItem.setText("Save As");
+			battleSaveAsMenuItem.setMnemonic('A');
+			battleSaveAsMenuItem.setDisplayedMnemonicIndex(5);
+			battleSaveAsMenuItem.setAccelerator(
+					KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK, false));
+			battleSaveAsMenuItem.setEnabled(false);
+			battleSaveAsMenuItem.addActionListener(eventHandler);
 		}
 		return battleSaveAsMenuItem;
 	}
 
 	/**
 	 * Return the battleSaveMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	public JMenuItem getBattleSaveMenuItem() {
 		if (battleSaveMenuItem == null) {
-			try {
-				battleSaveMenuItem = new javax.swing.JMenuItem();
-				battleSaveMenuItem.setName("battleSaveMenuItem");
-				battleSaveMenuItem.setText("Save");
-				battleSaveMenuItem.setEnabled(false);
-				battleSaveMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Exception e) {
-				log(e);
-			}
+			battleSaveMenuItem = new JMenuItem();
+			battleSaveMenuItem.setText("Save");
+			battleSaveMenuItem.setMnemonic('S');
+			battleSaveMenuItem.setDisplayedMnemonicIndex(0);
+			battleSaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK, false));
+			battleSaveMenuItem.setEnabled(false);
+			battleSaveMenuItem.addActionListener(eventHandler);
 		}
 		return battleSaveMenuItem;
 	}
 
 	/**
 	 * Return the helpAboutMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpAboutMenuItem() {
 		if (helpAboutMenuItem == null) {
-			try {
-				helpAboutMenuItem = new javax.swing.JMenuItem();
-				helpAboutMenuItem.setName("helpAboutMenuItem");
-				helpAboutMenuItem.setText("About");
-				helpAboutMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			helpAboutMenuItem = new JMenuItem();
+			helpAboutMenuItem.setText("About");
+			helpAboutMenuItem.setMnemonic('A');
+			helpAboutMenuItem.setDisplayedMnemonicIndex(0);
+			helpAboutMenuItem.addActionListener(eventHandler);
 		}
 		return helpAboutMenuItem;
 	}
 
 	/**
 	 * Return the helpCheckForNewVersion menu item.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpCheckForNewVersionMenuItem() {
 		if (helpCheckForNewVersionMenuItem == null) {
-			try {
-				helpCheckForNewVersionMenuItem = new javax.swing.JMenuItem();
-				helpCheckForNewVersionMenuItem.setName("helpCheckForNewVersionMenuItem");
-				helpCheckForNewVersionMenuItem.setText("Check for new version");
-				helpCheckForNewVersionMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			helpCheckForNewVersionMenuItem = new JMenuItem();
+			helpCheckForNewVersionMenuItem.setText("Check for new version");
+			helpCheckForNewVersionMenuItem.setMnemonic('C');
+			helpCheckForNewVersionMenuItem.setDisplayedMnemonicIndex(0);
+			helpCheckForNewVersionMenuItem.addActionListener(eventHandler);
 		}
 		return helpCheckForNewVersionMenuItem;
 	}
 
 	/**
 	 * Return the Help Menu.
-	 * @return javax.swing.JMenu
+	 * 
+	 * @return JMenu
 	 */
-	public javax.swing.JMenu getHelpMenu() {
+	public JMenu getHelpMenu() {
 		if (helpMenu == null) {
-			try {
-				helpMenu = new javax.swing.JMenu();
-				helpMenu.setName("helpMenu");
-				helpMenu.setText("Help");
-				helpMenu.add(getHelpOnlineHelpMenuItem());
-				helpMenu.add(getHelpRobocodeApiMenuItem());
-				helpMenu.add(getHelpCheckForNewVersionMenuItem());
-				helpMenu.add(getHelpVersionsTxtMenuItem());
-				helpMenu.add(getHelpFaqMenuItem());
-				helpMenu.add(getHelpAboutMenuItem());
-				helpMenu.addMenuListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			helpMenu = new JMenu();
+			helpMenu.setText("Help");
+			helpMenu.setMnemonic('H');
+			helpMenu.setDisplayedMnemonicIndex(0);
+			helpMenu.add(getHelpOnlineHelpMenuItem());
+			helpMenu.add(getHelpRobocodeApiMenuItem());
+			helpMenu.add(getHelpFaqMenuItem());
+			helpMenu.add(new JSeparator());
+			helpMenu.add(getHelpRobocodeMenuItem());
+			helpMenu.add(getHelpRoboWikiMenuItem());
+			helpMenu.add(getHelpYahooGroupRobocodeMenuItem());
+			helpMenu.add(getHelpRobocodeRepositoryMenuItem());
+			helpMenu.add(new JSeparator());
+			helpMenu.add(getHelpCheckForNewVersionMenuItem());
+			helpMenu.add(getHelpVersionsTxtMenuItem());
+			helpMenu.add(new JSeparator());
+			helpMenu.add(getHelpAboutMenuItem());
+			helpMenu.addMenuListener(eventHandler);
 		}
 		return helpMenu;
 	}
 
 	/**
 	 * Return the helpOnlineHelpMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpFaqMenuItem() {
 		if (helpFaqMenuItem == null) {
-			try {
-				helpFaqMenuItem = new javax.swing.JMenuItem();
-				helpFaqMenuItem.setName("helpFaqMenuItem");
-				helpFaqMenuItem.setText("Robocode FAQ");
-				helpFaqMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			helpFaqMenuItem = new JMenuItem();
+			helpFaqMenuItem.setText("Robocode FAQ");
+			helpFaqMenuItem.setMnemonic('F');
+			helpFaqMenuItem.setDisplayedMnemonicIndex(9);
+			helpFaqMenuItem.addActionListener(eventHandler);
 		}
 		return helpFaqMenuItem;
 	}
 
 	/**
 	 * Return the helpOnlineHelpMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpOnlineHelpMenuItem() {
 		if (helpOnlineHelpMenuItem == null) {
-			try {
-				helpOnlineHelpMenuItem = new javax.swing.JMenuItem();
-				helpOnlineHelpMenuItem.setName("helpOnlineHelpMenuItem");
-				helpOnlineHelpMenuItem.setText("Online Help");
-				helpOnlineHelpMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			helpOnlineHelpMenuItem = new JMenuItem();
+			helpOnlineHelpMenuItem.setText("Online Help");
+			helpOnlineHelpMenuItem.setMnemonic('O');
+			helpOnlineHelpMenuItem.setDisplayedMnemonicIndex(0);
+			helpOnlineHelpMenuItem.addActionListener(eventHandler);
 		}
 		return helpOnlineHelpMenuItem;
 	}
 
 	/**
 	 * Return the helpVersionsTxtMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpVersionsTxtMenuItem() {
 		if (helpVersionsTxtMenuItem == null) {
-			try {
-				helpVersionsTxtMenuItem = new javax.swing.JMenuItem();
-				helpVersionsTxtMenuItem.setName("VersionsTxt");
-				helpVersionsTxtMenuItem.setText("Version Info");
-				helpVersionsTxtMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			helpVersionsTxtMenuItem = new JMenuItem();
+			helpVersionsTxtMenuItem.setText("Version Info");
+			helpVersionsTxtMenuItem.setMnemonic('V');
+			helpVersionsTxtMenuItem.setDisplayedMnemonicIndex(0);
+			helpVersionsTxtMenuItem.addActionListener(eventHandler);
 		}
 		return helpVersionsTxtMenuItem;
 	}
 
 	/**
 	 * Return the helpRobocodeApiMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpRobocodeApiMenuItem() {
 		if (helpRobocodeApiMenuItem == null) {
-			try {
-				helpRobocodeApiMenuItem = new javax.swing.JMenuItem();
-				helpRobocodeApiMenuItem.setName("helpRobocodeApiMenuItem");
-				helpRobocodeApiMenuItem.setText("Robocode API");
-				helpRobocodeApiMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			helpRobocodeApiMenuItem = new JMenuItem();
+			helpRobocodeApiMenuItem.setText("Robocode API");
+			helpRobocodeApiMenuItem.setMnemonic('A');
+			helpRobocodeApiMenuItem.setDisplayedMnemonicIndex(9);
+			helpRobocodeApiMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeApiMenuItem;
 	}
 
 	/**
+	 * Return the helpRoboWikiMenuItem.
+	 * 
+	 * @return JMenuItem
+	 */
+	private JMenuItem getHelpRobocodeMenuItem() {
+		if (helpRobocodeMenuItem == null) {
+			helpRobocodeMenuItem = new JMenuItem();
+			helpRobocodeMenuItem.setText("Robocode Home");
+			helpRobocodeMenuItem.setMnemonic('H');
+			helpRobocodeMenuItem.setDisplayedMnemonicIndex(11);
+			helpRobocodeMenuItem.addActionListener(eventHandler);
+		}
+		return helpRobocodeMenuItem;
+	}
+
+	/**
+	 * Return the helpRoboWikiMenuItem.
+	 * 
+	 * @return JMenuItem
+	 */
+	private JMenuItem getHelpRoboWikiMenuItem() {
+		if (helpRoboWikiMenuItem == null) {
+			helpRoboWikiMenuItem = new JMenuItem();
+			helpRoboWikiMenuItem.setText("RoboWiki");
+			helpRoboWikiMenuItem.setMnemonic('W');
+			helpRoboWikiMenuItem.setDisplayedMnemonicIndex(4);
+			helpRoboWikiMenuItem.addActionListener(eventHandler);
+		}
+		return helpRoboWikiMenuItem;
+	}
+
+	/**
+	 * Return the helpYahooGroupRobocodeMenuItem.
+	 * 
+	 * @return JMenuItem
+	 */
+	private JMenuItem getHelpYahooGroupRobocodeMenuItem() {
+		if (helpYahooGroupRobocodeMenuItem == null) {
+			helpYahooGroupRobocodeMenuItem = new JMenuItem();
+			helpYahooGroupRobocodeMenuItem.setText("Yahoo Group: Robocode");
+			helpYahooGroupRobocodeMenuItem.setMnemonic('Y');
+			helpYahooGroupRobocodeMenuItem.setDisplayedMnemonicIndex(0);
+			helpYahooGroupRobocodeMenuItem.addActionListener(eventHandler);
+		}
+		return helpYahooGroupRobocodeMenuItem;
+	}
+
+	/**
+	 * Return the helpRobocodeRepositoryMenuItem.
+	 * 
+	 * @return JMenuItem
+	 */
+	private JMenuItem getHelpRobocodeRepositoryMenuItem() {
+		if (helpRobocodeRepositoryMenuItem == null) {
+			helpRobocodeRepositoryMenuItem = new JMenuItem();
+			helpRobocodeRepositoryMenuItem.setText("Robocode Repository");
+			helpRobocodeRepositoryMenuItem.setMnemonic('p');
+			helpRobocodeRepositoryMenuItem.setDisplayedMnemonicIndex(11);
+			helpRobocodeRepositoryMenuItem.addActionListener(eventHandler);
+		}
+		return helpRobocodeRepositoryMenuItem;
+	}
+
+	/**
 	 * Return the optionsPreferencesMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getOptionsFitWindowMenuItem() {
 		if (optionsFitWindowMenuItem == null) {
-			try {
-				optionsFitWindowMenuItem = new javax.swing.JMenuItem();
-				optionsFitWindowMenuItem.setName("optionsFitWindowMenuItem");
-				optionsFitWindowMenuItem.setText("Default Window Size");
-				optionsFitWindowMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			optionsFitWindowMenuItem = new JMenuItem();
+			optionsFitWindowMenuItem.setText("Default Window Size");
+			optionsFitWindowMenuItem.setMnemonic('D');
+			optionsFitWindowMenuItem.setDisplayedMnemonicIndex(0);
+			optionsFitWindowMenuItem.addActionListener(eventHandler);
 		}
 		return optionsFitWindowMenuItem;
 	}
 
 	/**
 	 * Return the Options Menu.
-	 * @return javax.swing.JMenu
+	 * 
+	 * @return JMenu
 	 */
 	private JMenu getOptionsMenu() {
 		if (optionsMenu == null) {
-			try {
-				optionsMenu = new javax.swing.JMenu();
-				optionsMenu.setName("optionsMenu");
-				optionsMenu.setText("Options");
-				optionsMenu.add(getOptionsPreferencesMenuItem());
-				optionsMenu.add(getOptionsFitWindowMenuItem());
-				optionsMenu.addMenuListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			optionsMenu = new JMenu();
+			optionsMenu.setText("Options");
+			optionsMenu.setMnemonic('O');
+			optionsMenu.setDisplayedMnemonicIndex(0);
+			optionsMenu.add(getOptionsPreferencesMenuItem());
+			optionsMenu.add(getOptionsFitWindowMenuItem());
+			optionsMenu.addMenuListener(eventHandler);
 		}
 		return optionsMenu;
 	}
 
 	/**
 	 * Return the optionsPreferencesMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getOptionsPreferencesMenuItem() {
 		if (optionsPreferencesMenuItem == null) {
-			try {
-				optionsPreferencesMenuItem = new javax.swing.JMenuItem();
-				optionsPreferencesMenuItem.setName("optionsPreferencesMenuItem");
-				optionsPreferencesMenuItem.setText("Preferences");
-				optionsPreferencesMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			optionsPreferencesMenuItem = new JMenuItem();
+			optionsPreferencesMenuItem.setText("Preferences");
+			optionsPreferencesMenuItem.setMnemonic('P');
+			optionsPreferencesMenuItem.setDisplayedMnemonicIndex(0);
+			optionsPreferencesMenuItem.addActionListener(eventHandler);
 		}
 		return optionsPreferencesMenuItem;
 	}
 
 	/**
 	 * Return the robotEditorMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getRobotEditorMenuItem() {
 		if (robotEditorMenuItem == null) {
-			try {
-				robotEditorMenuItem = new javax.swing.JMenuItem();
-				robotEditorMenuItem.setName("robotEditorMenuItem");
-				robotEditorMenuItem.setText("Editor");
-				robotEditorMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robotEditorMenuItem = new JMenuItem();
+			robotEditorMenuItem.setText("Editor");
+			robotEditorMenuItem.setMnemonic('E');
+			robotEditorMenuItem.setDisplayedMnemonicIndex(0);
+			robotEditorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK, false));
+			robotEditorMenuItem.addActionListener(eventHandler);
 		}
 		return robotEditorMenuItem;
 	}
 
 	/**
 	 * Return the robotImportMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getRobotImportMenuItem() {
 		if (robotImportMenuItem == null) {
-			try {
-				robotImportMenuItem = new javax.swing.JMenuItem();
-				robotImportMenuItem.setName("robotImportMenuItem");
-				robotImportMenuItem.setText("Import downloaded robot");
-				robotImportMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robotImportMenuItem = new JMenuItem();
+			robotImportMenuItem.setText("Import downloaded robot");
+			robotImportMenuItem.setMnemonic('I');
+			robotImportMenuItem.setDisplayedMnemonicIndex(0);
+			robotImportMenuItem.addActionListener(eventHandler);
 		}
 		return robotImportMenuItem;
 	}
 
 	/**
 	 * Return the Robot Menu.
-	 * @return javax.swing.JMenu
+	 * 
+	 * @return JMenu
 	 */
 	public JMenu getRobotMenu() {
 		if (robotMenu == null) {
-			try {
-				robotMenu = new javax.swing.JMenu();
-				robotMenu.setName("robotMenu");
-				robotMenu.setText("Robot");
-				robotMenu.add(getRobotEditorMenuItem());
-				robotMenu.add(getRobotImportMenuItem());
-				robotMenu.add(getRobotPackagerMenuItem());
-				robotMenu.add(getTeamMenu());
-				robotMenu.addMenuListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robotMenu = new JMenu();
+			robotMenu.setText("Robot");
+			robotMenu.setMnemonic('R');
+			robotMenu.setDisplayedMnemonicIndex(0);
+			robotMenu.add(getRobotEditorMenuItem());
+			robotMenu.add(getRobotImportMenuItem());
+			robotMenu.add(getRobotPackagerMenuItem());
+			robotMenu.add(getTeamMenu());
+			robotMenu.addMenuListener(eventHandler);
 		}
 		return robotMenu;
 	}
 
 	/**
 	 * Return the robotPackagerMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getRobotPackagerMenuItem() {
 		if (robotPackagerMenuItem == null) {
-			try {
-				robotPackagerMenuItem = new javax.swing.JMenuItem();
-				robotPackagerMenuItem.setName("robotPackagerMenuItem");
-				robotPackagerMenuItem.setText("Package robot for upload");
-				robotPackagerMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robotPackagerMenuItem = new JMenuItem();
+			robotPackagerMenuItem.setText("Package robot for upload");
+			robotPackagerMenuItem.setMnemonic('P');
+			robotPackagerMenuItem.setDisplayedMnemonicIndex(0);
+			robotPackagerMenuItem.addActionListener(eventHandler);
 		}
 		return robotPackagerMenuItem;
 	}
 
 	/**
 	 * Return the Team Menu.
-	 * @return javax.swing.JMenu
+	 * 
+	 * @return JMenu
 	 */
 	public JMenu getTeamMenu() {
 		if (teamMenu == null) {
-			try {
-				teamMenu = new javax.swing.JMenu();
-				teamMenu.setName("teamMenu");
-				teamMenu.setText("Team");
-				teamMenu.add(getTeamCreateTeamMenuItem());
-				teamMenu.addMenuListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			teamMenu = new JMenu();
+			teamMenu.setText("Team");
+			teamMenu.setMnemonic('T');
+			teamMenu.setDisplayedMnemonicIndex(0);
+			teamMenu.add(getTeamCreateTeamMenuItem());
+			teamMenu.addMenuListener(eventHandler);
 		}
 		return teamMenu;
 	}
 
 	/**
 	 * Return the teamCreateTeamMenuItem.
-	 * @return javax.swing.JMenuItem
+	 * 
+	 * @return JMenuItem
 	 */
 	private JMenuItem getTeamCreateTeamMenuItem() {
 		if (teamCreateTeamMenuItem == null) {
-			try {
-				teamCreateTeamMenuItem = new javax.swing.JMenuItem();
-				teamCreateTeamMenuItem.setName("teamCreateTeamMenuItem");
-				teamCreateTeamMenuItem.setText("Create Team");
-				teamCreateTeamMenuItem.addActionListener(eventHandler);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			teamCreateTeamMenuItem = new JMenuItem();
+			teamCreateTeamMenuItem.setText("Create Team");
+			teamCreateTeamMenuItem.setMnemonic('C');
+			teamCreateTeamMenuItem.setDisplayedMnemonicIndex(0);
+			teamCreateTeamMenuItem.addActionListener(eventHandler);
 		}
 		return teamCreateTeamMenuItem;
 	}
@@ -627,100 +637,62 @@ public class RobocodeMenuBar extends javax.swing.JMenuBar {
 		manager.getWindowManager().showCreateTeamDialog();
 	}
 
-	/**
-	 * Comment
-	 */
 	public void helpAboutActionPerformed() {
 		manager.getWindowManager().showAboutBox();
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void helpCheckForNewVersionActionPerformed() {
 		manager.getVersionManager().checkForNewVersion(true);
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void helpFaqActionPerformed() {
-
 		manager.getWindowManager().showFaq();
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void helpOnlineHelpActionPerformed() {
-
 		manager.getWindowManager().showOnlineHelp();
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void helpVersionsTxtActionPerformed() {
-
 		manager.getWindowManager().showVersionsTxt();
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void helpRobocodeApiActionPerformed() {
 		manager.getWindowManager().showHelpApi();
-		return;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	public void log(Throwable e) {
-		Utils.log(e);
+	public void helpRobocondeNgMenuItemActionPerformed() {
+		manager.getWindowManager().showRobocodeHome();
 	}
 
-	/**
-	 * Comment
-	 */
+	public void helpRoboWikiMenuItemActionPerformed() {
+		manager.getWindowManager().showRoboWiki();
+	}
+
+	public void helpYahooGroupRobocodeActionPerformed() {
+		manager.getWindowManager().showYahooGroupRobocode();
+	}
+
+	public void helpRobocodeRepositoryActionPerformed() {
+		manager.getWindowManager().showRobocodeRepository();
+	}
+
 	public void optionsFitWindowActionPerformed() {
 		Utils.fitWindow(manager.getWindowManager().getRobocodeFrame());
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void optionsPreferencesActionPerformed() {
-
 		manager.getWindowManager().showOptionsPreferences();
-		return;
 	}
 
-	/**
-	 * Comment
-	 */
 	public void robotEditorActionPerformed() {
 		manager.getWindowManager().showRobocodeEditor();
 	}
 
-	/**
-	 * Comment
-	 */
 	public void robotImportActionPerformed() {
 		manager.getWindowManager().showImportRobotDialog();
 	}
 
-	/**
-	 * Comment
-	 */
 	public void robotPackagerActionPerformed() {
 		manager.getWindowManager().showRobotPackager();
 	}

@@ -1,19 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.control;
 
 
 /**
  * Defines a battlefield
- * @author Mathew A. Nelson
+ * 
+ * @author Mathew A. Nelson (original)
  */
 public class BattlefieldSpecification {
 	private int width;
@@ -28,6 +30,7 @@ public class BattlefieldSpecification {
 	
 	/**
 	 * Creates a battlefield of any width and height.
+	 * 
 	 * @param width Width of this battlefield
 	 * @param height Height of this battlefield
 	 */
@@ -42,6 +45,7 @@ public class BattlefieldSpecification {
 
 	/**
 	 * Gets the height of this battlefield.
+	 * 
 	 * @return Returns the height of this battlefield.
 	 */
 	public int getHeight() {
@@ -50,11 +54,10 @@ public class BattlefieldSpecification {
 
 	/**
 	 * Gets the width of this battlefield.
+	 * 
 	 * @return Returns the width of this battlefield.
 	 */
 	public int getWidth() {
 		return width;
 	}
-
 }
-

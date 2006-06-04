@@ -1,28 +1,32 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.packager;
 
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
+import javax.swing.*;
 
 import robocode.dialog.*;
 import robocode.repository.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/19/2001 12:07:51 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class ConfirmPanel extends WizardPanel {
 	RobotPackager robotPackager = null;
@@ -51,7 +55,8 @@ public class ConfirmPanel extends WizardPanel {
 			repaint();
 		}
 	}
-	public javax.swing.JPanel robotListPanel = null;
+
+	public JPanel robotListPanel = null;
 
 	/**
 	 * PackagerOptionsPanel constructor comment.
@@ -62,51 +67,28 @@ public class ConfirmPanel extends WizardPanel {
 		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 1:31:41 PM)
-	 * @return javax.swing.JLabel
-	 */
-	public javax.swing.JPanel getRobotListPanel() {
+	public JPanel getRobotListPanel() {
 		if (robotListPanel == null) {
 			robotListPanel = new JPanel();
 			robotListPanel.setLayout(new BoxLayout(robotListPanel, BoxLayout.Y_AXIS));
-			// robotListPanel.add(new JLabel("You have selected man.SpinBot for packagin."));
 			robotListPanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-			// robotListPanel.setMaximumSize(new Dimension(10000,robotListPanel.getPreferredSize().height));
 		}
 		return robotListPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 12:09:49 PM)
-	 */
 	private void initialize() {
-		setName("confirmPanel");
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		addComponentListener(eventHandler);
 		add(new JPanel());
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/20/2001 11:24:52 AM)
-	 */
 	public boolean isReady() {
 		return visible;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/22/2001 2:24:23 PM)
-	 * @param selectedRobots java.util.Vector
-	 */
-	public void setSelectedRobots(FileSpecificationVector selectedRobots) {
+	public void setSelectedRobots(Vector selectedRobots) { // <FileSpecification>
 		getRobotListPanel().removeAll();
-	
-		// String prefix =	robocode.getRobotPath() + File.separator + "outgoing" + File.separator;
 
 		if (selectedRobots == null || selectedRobots.size() == 0) {
 			getRobotListPanel().add(new JLabel("You have not yet selected any robots."));
@@ -125,16 +107,12 @@ public class ConfirmPanel extends WizardPanel {
 		}
 		getRobotListPanel().add(new JLabel(""));
 		getRobotListPanel().setMaximumSize(new Dimension(10000, robotListPanel.getPreferredSize().height));
-		// getRobotListPanel().setMaximumSize(robotListPanel.getPreferredSize());
+
 		validate();
 	}
 
 	private boolean visible = false;
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/22/2001 5:29:48 PM)
-	 */
 	public void updateFields() {
 		removeAll();
 		setSelectedRobots(robotPackager.getRobotSelectionPanel().getSelectedRobots());
@@ -150,6 +128,7 @@ public class ConfirmPanel extends WizardPanel {
 		add(Box.createVerticalStrut(20));
 		add(new JLabel("If all of the above is correct, click the Package button to start packaging."));
 		add(new JPanel());
+
 		revalidate();
 	}
 }

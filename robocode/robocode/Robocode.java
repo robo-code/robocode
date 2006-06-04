@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode;
 
@@ -22,46 +25,30 @@ import robocode.security.*;
 
 /**
  * Robocode - A programming game involving battling AI tanks.<BR/>
- * Copyright 2001 Mathew Nelson
+ * Copyright (c)  2001, 2006 Mathew Nelson and Robocode contributors
  *
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
- * @author Mathew A. Nelson
+ *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class Robocode {
-	private RobocodeManager manager = null;
+	private RobocodeManager manager;
 
 	/**
 	 * Use the command-line to start Robocode.
 	 * The command is:  java -jar robocode.jar
 	 * @param args an array of command-line arguments
 	 */
-	public static void main(java.lang.String[] args) {
-	
+	public static void main(String[] args) {
 		Robocode robocode = new Robocode();
 	
 		robocode.initialize(args);
-
-		/*
-		 new Thread(new Runnable()
-		 {
-		 public void run()
-		 {
-		 int i = 0;
-		 while (true)
-		 {
-		 try {Thread.sleep(1000);} catch (InterruptedException e) {}
-		 System.err.println("ok " + i++);
-		 }
-		 }
-		 }
-		 ).start();
-		 */
 	}
 
 	private Robocode() {}
 
 	private boolean initialize(String args[]) {
-		// System.out.println(getClass().getProtectionDomain().getCodeSource().getLocation());
 		try {
 			manager = new RobocodeManager(false, null);
 		
@@ -77,18 +64,7 @@ public class Robocode {
 			}
 		
 			Thread.currentThread().setName("Application Thread");
-			// System.out.println(Policy.getPolicy().getPermissions(new CodeSource(null,null)) + ""); //.add(new AllPermission());
 		
-			// Policy.getPolicy().getPermissions(getClass().getProtectionDomain().getCodeSource()).add(new AllPermission());
-
-			// System.out.println(""+getClass().getProtectionDomain().getPermissions()); //.add(new AllPermission());
-			// if(true)System.exit(0);
-		
-			// System.out.println("code source is " + getClass().getProtectionDomain().getCodeSource());
-			// System.out.println("other code source is " + listener.getClass().getProtectionDomain().getCodeSource());
-		
-		
-			// This allows us, in Java 1.4, to use a custom 'classpath' policy.
 			RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
 			Policy.setPolicy(securityPolicy);
@@ -184,9 +160,6 @@ public class Robocode {
 				return true;
 			}
 
-			// manager.getWindowManager().getRobocodeFrame().setState(JFrame.ICONIFIED);
-			// manager.getWindowManager().showRobocodeFrame();
-		
 			if (!minimize && battleFilename == null) {
 				manager.getWindowManager().showSplashScreen();
 			}
@@ -197,8 +170,6 @@ public class Robocode {
 			if (minimize) {
 				manager.getWindowManager().getRobocodeFrame().setState(JFrame.ICONIFIED);
 			}
-			// else
-			// manager.getWindowManager().getRobocodeFrame().setState(JFrame.NORMAL);
 
 			if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
 				manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
@@ -208,27 +179,13 @@ public class Robocode {
 			
 			return true;
 		} catch (Throwable e) {
-			log(e);
+			Utils.log(e);
 			return false;
 		}
-
 	}
 
-	private void log(String s) {
-		Utils.log(s);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/23/2001 4:50:58 PM)
-	 */
 	private void printUsage() {
 		System.out.println(
 				"Usage: robocode [-cwd directory] [-battle filename [-results filename] [-fps fps] [-minimize]]");
 	}
-
 }

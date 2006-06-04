@@ -1,17 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Fix for HyperThreading hang issue
+ *     Stefan Westen & Flemming N. Larsen
+ *     - Added onPaint() method for debug painting
+ *     Flemming N. Larsen
+ *     - Fixed Javadoc documentation
  *******************************************************************************/
 package robocode;
 
 
-import java.awt.Color;
+import java.awt.*;
 
 
 /**
@@ -29,6 +36,9 @@ import java.awt.Color;
  *
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">Building your first robot<a>
+ *
+ * @author Mathew A. Nelson (original)
+ * @author Matthew Reeder, Stefan Westen, Flemming N. Larsen (current)
  */
 public class Robot extends _Robot implements Runnable {
 
@@ -74,11 +84,11 @@ public class Robot extends _Robot implements Runnable {
 		} else {
 			uninitializedException("back");
 		}
-	
 	}
 
 	/**
 	 * Get height of the current battlefield.
+	 * 
 	 * @return The height of the battlefield.
 	 */
 	public double getBattleFieldHeight() {
@@ -93,6 +103,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Get width of the current battlefield.
+	 * 
 	 * @return The width of the battlefield.
 	 */
 	public double getBattleFieldWidth() {
@@ -103,15 +114,14 @@ public class Robot extends _Robot implements Runnable {
 			uninitializedException("getBattleFieldWidth");
 			return 0; // never called
 		}
-	
 	}
 
 	/**
 	 * Returns the direction the robot is facing, in degrees.  
 	 *  The value returned will be between 0 and 360.
+	 * 
 	 * @return the direction the robot is facing, in degrees.
 	 */
-
 	public double getHeading() {
 		if (peer != null) {
 			peer.getCall();
@@ -132,6 +142,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the height of the robot
+	 * 
 	 * @return the height of the robot
 	 */
 	public double getHeight() {
@@ -146,6 +157,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the robot's name
+	 * 
 	 * @return the robot's name
 	 */
 	public String getName() {
@@ -160,6 +172,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the width of the robot
+	 * 
 	 * @return the width of the robot
 	 */
 	public double getWidth() {
@@ -174,6 +187,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the X position of the robot.  (0,0) is at the bottom left of the battlefield.
+	 * 
 	 * @return the X position of the robot
 	 */
 	public double getX() {
@@ -188,6 +202,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the Y position of the robot.  (0,0) is at the bottom left of the battlefield.
+	 * 
 	 * @return the Y position of the robot
 	 */
 	public double getY() {
@@ -224,7 +239,7 @@ public class Robot extends _Robot implements Runnable {
 	 * <PRE>
 	 *   turnLeft(90);
 	 * </PRE>
-	 * @param How many degrees to rotate left.
+	 * @param degrees How many degrees to rotate left.
 	 */
 	public void turnLeft(double degrees) {
 		if (peer != null) {
@@ -243,9 +258,8 @@ public class Robot extends _Robot implements Runnable {
 	 * <PRE>
 	 *   turnRight(90);
 	 * </PRE>
-	 * @param How many degrees to rotate right.
+	 * @param degrees How many degrees to rotate right.
 	 */
-
 	public void turnRight(double degrees) {
 		if (peer != null) {
 			peer.turnChassis(Math.toRadians(degrees));
@@ -319,7 +333,6 @@ public class Robot extends _Robot implements Runnable {
 	 *
 	 * @see #fire
 	 */
-
 	public Bullet fireBullet(double power) {
 		if (peer != null) {
 			Bullet b = peer.setFire(power);
@@ -334,6 +347,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the rate at which the gun will cool down.
+	 * 
 	 * @see #getGunHeat
 	 * @return the gun cooling rate
 	 */
@@ -349,6 +363,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns gun heading in degrees.  This is a value from 0 to 360, where 0 points to the top of the screen.
+	 * 
 	 * @return gun heading
 	 */
 	public double getGunHeading() {
@@ -364,6 +379,7 @@ public class Robot extends _Robot implements Runnable {
 	/**
 	 * Returns the current heat of the gun.  You cannot fire unless this is 0.
 	 * (Calls to fire will succeed, but will not actually fire unless getGunHeat() == 0
+	 * 
 	 * @return the current gun heat
 	 */
 	public double getGunHeat() {
@@ -378,6 +394,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the number of rounds in the current battle
+	 * 
 	 * @return the number of rounds in the current battle
 	 */
 	public int getNumRounds() {
@@ -392,12 +409,21 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns how many opponents are left 
+	 * 
 	 * @return how many opponents are left
 	 */
 	public int getOthers() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getOthers();
+			// peer.getOthers() is synchronized, and it calls a synchronized method in Battle, so in
+			// order to return successfully, we need to be able to get a lock on both peer and the
+			// Battle.  Since the battle has synchronized methods which call synchronized methods in
+			// RobotPeer, the Battle thread locks these two objects in the opposite order often, so
+			// in order to avoid deadlock, we need to make sure the battle is free before calling this
+			// method.
+			synchronized (peer.getBattle()) {
+				return peer.getOthers();
+			}
 		} else {
 			uninitializedException("getOthers");
 			return 0; // never called
@@ -406,6 +432,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns radar heading in degrees.  This is a value from 0 to 360, where 0 points to the top of the screen.
+	 * 
 	 * @return radar heading
 	 */
 	public double getRadarHeading() {
@@ -420,6 +447,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the number of the current round (0 to getNumRounds()-1) in the battle
+	 * 
 	 * @return the number of the current round in the battle
 	 */
 	public int getRoundNum() {
@@ -430,7 +458,6 @@ public class Robot extends _Robot implements Runnable {
 			uninitializedException("getRoundNum");
 			return 0; // never called
 		}
-
 	}
 
 	/**
@@ -438,6 +465,7 @@ public class Robot extends _Robot implements Runnable {
 	 * Note:  1 battle consists of multiple rounds
 	 * Time is reset to 0 at the beginning of every round.
 	 * getTime() is equivalent to the number of frames displayed this round.
+	 * 
 	 * @return the current game time
 	 */
 	public long getTime() {
@@ -452,6 +480,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the velocity of the robot.
+	 * 
 	 * @return the velocity of the robot
 	 */
 	public double getVelocity() {
@@ -740,7 +769,8 @@ public class Robot extends _Robot implements Runnable {
 	 *
 	 * <P>Note:  The gun compensating this way does count as "turning the gun".  See {@link #setAdjustRadarForGunTurn} for details.
 	 *
-	 * @param adjustGunForRobotTurn
+	 * @param newAdjustGunForRobotTurn <CODE>true</CODE> if the gun must move independent of the robot's turn;
+	 *        <CODE>false</code> if the gun must move dependent/relative to of the robot's turn
 	 * @see #setAdjustRadarForGunTurn
 	 */
 	public void setAdjustGunForRobotTurn(boolean newAdjustGunForRobotTurn) {
@@ -784,7 +814,8 @@ public class Robot extends _Robot implements Runnable {
 	 * with the same value, unless you have already called it yourself.  This
 	 * behavior is primarily for backward compatibility with older Robocode robots.
 	 *
-	 * @param adjustGunForRobotTurn
+	 * @param newAdjustRadarForGunTurn <CODE>true</CODE> if the radar must move independent of the gun's turn;
+	 *        <CODE>false</code> if the radar must move dependent/relative to of the gun's turn
 	 * @see #setAdjustRadarForRobotTurn
 	 * @see #setAdjustGunForRobotTurn
 	 */
@@ -862,7 +893,7 @@ public class Robot extends _Robot implements Runnable {
 	 * <PRE>
 	 *   turnGunLeft(90);
 	 * </PRE>
-	 * @param How many degrees to rotate the gun left.
+	 * @param degrees How many degrees to rotate the gun left.
 	 */
 	public void turnGunLeft(double degrees) {
 		if (peer != null) {
@@ -880,7 +911,7 @@ public class Robot extends _Robot implements Runnable {
 	 * <PRE>
 	 *   turnGunRight(90);
 	 * </PRE>
-	 * @param How many degrees to rotate the gun right.
+	 * @param degrees How many degrees to rotate the gun right.
 	 */
 	public void turnGunRight(double degrees) {
 		if (peer != null) {
@@ -900,7 +931,7 @@ public class Robot extends _Robot implements Runnable {
 	 * <PRE>
 	 *   turnRadarLeft(90);
 	 * </PRE>
-	 * @param How many degrees to rotate the radar left.
+	 * @param degrees How many degrees to rotate the radar left.
 	 */
 	public void turnRadarLeft(double degrees) {
 		if (peer != null) {
@@ -920,9 +951,8 @@ public class Robot extends _Robot implements Runnable {
 	 * <PRE>
 	 *   turnRadarRight(90);
 	 * </PRE>
-	 * @param How many degrees to rotate the radar right.
+	 * @param degrees How many degrees to rotate the radar right.
 	 */
-
 	public void turnRadarRight(double degrees) {
 		if (peer != null) {
 			peer.turnRadar(Math.toRadians(degrees));
@@ -933,6 +963,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the robot's current energy
+	 * 
 	 * @return the robot's energy
 	 */
 	public double getEnergy() {
@@ -969,7 +1000,8 @@ public class Robot extends _Robot implements Runnable {
 	 *
 	 * </PRE>
 	 *
-	 * @param adjustRadarForRobotTurn
+	 * @param newAdjustRadarForRobotTurn <CODE>true</CODE> if the radar must move independent of the robots's turn;
+	 *        <CODE>false</code> if the radar must move dependent/relative to of the robots's turn
 	 * @see #setAdjustGunForRobotTurn
 	 * @see #setAdjustRadarForGunTurn
 	 */
@@ -983,23 +1015,14 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Says something onscreen.
-	 * The duration the text stays on screen is based on the length of the text.
-	 * If a robot calls say() while a previous say() is still onscreen, the new
-	 * text will be ignored.
-	 * @return Whether what was said is now onscreen.
+	 * This method is called every time the robot is painted if the robot
+	 * painting feature is enabled on your robot. You should override this
+	 * method if you want to draw items on the battle field. This method is
+	 * very useful when debugging your robot.
+	 * 
+	 * @since Robocode v1.1
+	 * 
+	 * @param g The graphics context to use for painting
 	 */
-
-	/*
-	 public boolean say(String text) {
-	 if (peer != null)
-	 return peer.say(text);
-	 else
-	 {
-	 uninitializedException("say");
-	 return false;
-	 }
-	 }
-	 */
-
+	public void onPaint(Graphics2D g) {}
 }

@@ -1,43 +1,41 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Replaced ContestantPeerVector with plain Vector
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.battle;
 
 
+import java.util.*;
 import robocode.peer.*;
 import robocode.util.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/30/2001 4:21:31 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
-	Battle battle = null;
-	ContestantPeerVector orderedContestants = null;
-	String title = null;
+	private Battle battle;
+	private Vector orderedContestants; // <ContestantPeer>
+	private String title;
 	
-	/**
-	 * BattleResultsTableModel constructor comment.
-	 */
 	public BattleResultsTableModel(Battle battle) {
 		super();
 		this.battle = battle;
-		orderedContestants = (ContestantPeerVector) battle.getContestants().clone();
-		orderedContestants.sort();
+		orderedContestants = new Vector(battle.getContestants()); // <ContestantPeer>
+		Collections.sort(orderedContestants);
 	}
 
-	/**
-	 * getColumnCount method comment.
-	 */
 	public int getColumnCount() {
 		return 11; 
 	}
@@ -77,40 +75,24 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		case 10:
 			return "Survival 3rds";
 
-		// case 10: return "Total\nbullet\ndamage\ndealt";
-		// case 11: return "Total ramming damage dealt";
-		// case 12: return "Total bullet damage received";
-		// case 13: return "Total ramming damage received";
 		default:
 			return "";
 		}
 	}
 
-	/**
-	 * getRowCount method comment.
-	 */
 	public int getRowCount() {
 		return orderedContestants.size();
 	}
 
-	/**
-	 * getColumnCount method comment.
-	 */
 	public String getTitle() {
 		if (title == null) {
-			// if (battle.isDeterministic())
 			title = "Results for " + battle.getRoundNum() + " rounds";
-			// else
-			// title="Results for " + battle.getNumRounds() + " rounds (Not deterministic - " + battle.getNonDeterministicRobots() + " skipped turns.)";
 		}
 		return title;
 	}
 
-	/**
-	 * getValueAt method comment.
-	 */
 	public Object getValueAt(int row, int col) {
-		ContestantPeer r = orderedContestants.elementAt(row);
+		ContestantPeer r = (ContestantPeer) orderedContestants.elementAt(row);
 
 		switch (col) {
 		case 0: {
@@ -125,10 +107,9 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			}
 			if (r instanceof TeamPeer) {
 				return Utils.getPlacementString(place) + ": Team: " + r.getName();
-			} // getRobotClassManager().getUniqueFullClassNameWithVersion();
-			else {
+			} else {
 				return Utils.getPlacementString(place) + ": " + r.getName();
-			} // getRobotClassManager().getUniqueFullClassNameWithVersion();
+			}
 		}
 
 		case 1: {
@@ -171,32 +152,11 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return "" + (int) (r.getStatistics().getTotalThirds());
 		}
 
-		/* case 10:
-		 {
-		 return "" + (int)(r.getStatistics().getTotalBulletDamageDealt());
-		 }
-		 case 11:
-		 {
-		 return "" + (int)(r.getStatistics().getTotalRammingDamageDealt());
-		 }
-		 case 12:
-		 {
-		 return "" + (int)(r.getStatistics().getTotalBulletDamageReceived());
-		 }
-		 case 13:
-		 {
-		 return "" + (int)(r.getStatistics().getTotalRammingDamageReceived());
-		 }*/
 		default:
 			return "";
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/30/2001 4:28:21 PM)
-	 * @param out java.io.PrintStream
-	 */
 	public void print(java.io.PrintStream out) {
 		out.println(getTitle());
 		for (int col = 0; col < getColumnCount(); col++) {

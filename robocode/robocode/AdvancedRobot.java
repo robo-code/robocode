@@ -1,20 +1,28 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
+
+
+import java.io.File;
+import java.util.Vector;
 
 
 /**
  * A more advanced type of robot that allows non-blocking calls, custom events, and writes to the filesystem.
  * <P>If you have not already, you should create a {@link robocode.Robot Robot} first.
+ *
  * @see robocode.Robot
+ *
+ * @author Mathew A. Nelson
  */
 public class AdvancedRobot extends _AdvancedRadiansRobot {
 
@@ -61,7 +69,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * Sets the robot to turn left by degrees.
 	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
 	 */
-
 	public void setTurnLeft(double degrees) {
 		if (peer != null) {
 			peer.setCall();
@@ -111,7 +118,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.Robot#fireBullet
 	 * @see #setFire
 	 */
-
 	public Bullet setFireBullet(double power) {
 		if (peer != null) {
 			peer.setCall();
@@ -204,7 +210,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.Event
 	 * @see java.util.Vector
 	 */
-	public java.util.Vector getAllEvents() {
+	public Vector getAllEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getAllEvents();
@@ -232,7 +238,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.BulletHitBulletEvent
 	 * @see java.util.Vector
 	 */
-	public java.util.Vector getBulletHitBulletEvents() {
+	public Vector getBulletHitBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getBulletHitBulletEvents();
@@ -260,7 +266,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.BulletHitEvent
 	 * @see java.util.Vector
 	 */
-	public java.util.Vector getBulletHitEvents() {
+	public Vector getBulletHitEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getBulletHitEvents();
@@ -288,7 +294,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.BulletMissedEvent
 	 * @see java.util.Vector
 	 */
-	public java.util.Vector getBulletMissedEvents() {
+	public Vector getBulletMissedEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getBulletMissedEvents();
@@ -303,7 +309,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * The system will create the directory for you, you do not need to create it.
 	 * @see #getDataFile
 	 */
-	public java.io.File getDataDirectory() {
+	public File getDataDirectory() {
 		if (peer != null) {
 			peer.getCall();
 			peer.setIORobot(true);
@@ -312,7 +318,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 			uninitializedException("getDataDirectory");
 			return null; // never called
 		}
-	
 	}
 
 	/**
@@ -321,11 +326,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * See the sample robots for examples.
 	 * @see #getDataDirectory
 	 */
-	public java.io.File getDataFile(String filename) {
+	public File getDataFile(String filename) {
 		if (peer != null) {
 			peer.getCall();
 			peer.setIORobot(true);
-			return new java.io.File(peer.getRobotFileSystemManager().getWritableDirectory(), filename);
+			return new File(peer.getRobotFileSystemManager().getWritableDirectory(), filename);
 		} else {
 			uninitializedException("getDataFile");
 			return null; // never called
@@ -334,6 +339,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Returns the quota available in your data directory, in bytes.
+	 * 
 	 * @see #getDataDirectory
 	 */
 	public long getDataQuotaAvailable() {
@@ -367,6 +373,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Gets angle remaining in the gun's turn, in degrees
+	 * 
 	 * @return angle remaining in the gun's turn, in degrees
 	 */
 	public double getGunTurnRemaining() {
@@ -396,8 +403,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.HitByBulletEvent
 	 * @see java.util.Vector
 	 */
-
-	public java.util.Vector getHitByBulletEvents() {
+	public Vector getHitByBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getHitByBulletEvents();
@@ -425,7 +431,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.HitRobotEvent
 	 * @see java.util.Vector
 	 */
-	public java.util.Vector getHitRobotEvents() {
+	public Vector getHitRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getHitRobotEvents();
@@ -453,7 +459,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.HitWallEvent
 	 * @see java.util.Vector
 	 */
-	public java.util.Vector getHitWallEvents() {
+	public Vector getHitWallEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getHitWallEvents();
@@ -465,6 +471,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Gets angle remaining in the radar's turn, in degrees.
+	 * 
 	 * @return angle remaining in the radar's turn
 	 */
 	public double getRadarTurnRemaining() {
@@ -495,8 +502,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.RobotDeathEvent
 	 * @see java.util.Vector
 	 */
-
-	public java.util.Vector getRobotDeathEvents() {
+	public Vector getRobotDeathEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getRobotDeathEvents();
@@ -536,6 +542,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Gets angle remaining in the robot's turn, in degrees.
+	 * 
 	 * @return angle remaining in the robot's turn, in degrees
 	 */
 	public double getTurnRemaining() {
@@ -550,6 +557,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Checks if the gun is set to adjust for the robot turning.
+	 * 
 	 * @see #setAdjustGunForRobotTurn
 	 * @return if the gun is set to adjust for the robot turning.
 	 */
@@ -565,6 +573,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Checks if the radar is set to adjust for the gun turning.
+	 * 
 	 * @see #setAdjustRadarForGunTurn
 	 * @return if the radar is set to adjust for the gun turning.
 	 */
@@ -763,7 +772,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * Sets the gun to turn right by degrees.
 	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
 	 */
-
 	public void setTurnGunRight(double degrees) {
 		if (peer != null) {
 			peer.setCall();
@@ -771,14 +779,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		} else {
 			uninitializedException("setTurnGunRight");
 		}
-
 	}
 
 	/**
 	 * Sets the radar to turn left by degrees.
 	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
 	 */
-
 	public void setTurnRadarLeft(double degrees) {
 		if (peer != null) {
 			peer.setCall();
@@ -816,6 +822,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Checks if the radar is set to adjust for the robot turning.
+	 * 
 	 * @see #setAdjustRadarForRobotTurn
 	 * @return if the radar is set to adjust for the robot turning.
 	 */
@@ -854,5 +861,4 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.Event
 	 */
 	public void onSkippedTurn(SkippedTurnEvent event) {}
-
 }

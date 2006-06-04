@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -15,16 +16,19 @@ import java.io.*;
 import robocode.io.*;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ */
 public class RobotOutputStream extends java.io.PrintStream {
-	private BufferedPipedOutputStream bufferedStream = null;
-	private PrintStream out = null;
+	private BufferedPipedOutputStream bufferedStream;
+	private PrintStream out;
 	
-	private Thread battleThread = null;
-	
-	private int count = 0;
+	private Thread battleThread;
+
+	private int count;
 	private int max = 100;
 	
-	private boolean messaged = false;
+	private boolean messaged;
 
 	public RobotOutputStream(Thread battleThread) {
 		super(new BufferedPipedOutputStream(8192, true, true));
@@ -211,5 +215,4 @@ public class RobotOutputStream extends java.io.PrintStream {
 			t.printStackTrace(out);
 		}
 	}
-
 }

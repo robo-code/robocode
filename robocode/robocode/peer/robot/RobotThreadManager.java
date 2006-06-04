@@ -1,49 +1,42 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.peer.robot;
 
 
 import robocode.peer.RobotPeer;
 import robocode.util.RobocodeDeprecated;
-import robocode.util.*;
+import robocode.util.Utils;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (9/18/2001 5:55:30 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobotThreadManager {
-	private RobotPeer robotPeer = null;
-	private Thread runThread = null;
-	private ThreadGroup runThreadGroup = null;
-	private boolean disabled = false;
-	private long cpuTime = 0;
-	
-	/**
-	 * RobotThreadHandler constructor comment.
-	 */
+	private RobotPeer robotPeer;
+	private Thread runThread;
+	private ThreadGroup runThreadGroup;
+	private boolean disabled;
+	private long cpuTime;
+
 	public RobotThreadManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
 		runThreadGroup = new ThreadGroup(robotPeer.getName());
 		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/10/2001 3:57:34 PM)
-	 */
 	public void forceStop() {
-	
-		// log("forceStop called...");
 		if (runThread != null && runThread.isAlive()) {
 			try {
 				runThread.setPriority(Thread.MIN_PRIORITY);
@@ -53,17 +46,16 @@ public class RobotThreadManager {
 			robotPeer.setRunning(false);
 			robotPeer.getRobotStatistics().setNoScoring(true);
 			if (runThread.isAlive()) {
-				// log("Warning!  Going deprecated. " + runThread.getName());
 				RobocodeDeprecated.stopThread(this, runThread);
 			}
 			try {
 				runThread.join(5000);
 			} catch (InterruptedException e) {} catch (Exception e) {}
 			if (runThread.isAlive()) {
-				log("Warning!  Unable to stop thread: " + runThread.getName());
+				Utils.log("Warning!  Unable to stop thread: " + runThread.getName());
 			} else {
 				robotPeer.out.println("SYSTEM: This robot has been stopped.  No score will be generated.");
-				log(robotPeer.getName() + " has been stopped.  No score will be generated.");
+				Utils.log(robotPeer.getName() + " has been stopped.  No score will be generated.");
 			}
 		}
 
@@ -90,59 +82,42 @@ public class RobotThreadManager {
 				threads[i].join(1000);
 			} catch (InterruptedException e) {
 				robotPeer.out.println("SYSTEM:  Thread: " + threads[i].getName() + " join interrupted."); 
-				log("Thread: " + threads[i].getName() + " join interrupted."); 
+				Utils.log("Thread: " + threads[i].getName() + " join interrupted.");
 			} catch (Exception e) {}
 			if (threads[i].isAlive()) {
-				log("Warning! Unable to stop thread: " + threads[i].getName());
+				Utils.log("Warning! Unable to stop thread: " + threads[i].getName());
 			} else {
 				robotPeer.out.println("SYSTEM:  Thread: " + threads[i].getName() + " has been stopped.");
-				log("Thread: " + threads[i].getName() + " has been stopped.");
+				Utils.log("Thread: " + threads[i].getName() + " has been stopped.");
 			}
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/24/2001 3:15:40 PM)
-	 * @return java.lang.ThreadGroup
-	 */
 	public ThreadGroup getThreadGroup() {
 		return runThreadGroup;
-	}
-
-	private void log(String s) {
-		Utils.log(s);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
-	}
-
-	private void log(String s, Throwable e) {
-		Utils.log(s, e);
 	}
 
 	public void cleanup() {
 		try {
 			runThreadGroup.destroy();
 		} catch (Exception e) {
-			log("Warning, could not destroy " + runThreadGroup.getName(), e);
+			Utils.log("Warning, could not destroy " + runThreadGroup.getName(), e);
 		}
 	}
 
 	public void start() {
 		if (disabled) {
-			log("Not starting robot: " + robotPeer.getName() + " due to JVM bug.");
+			Utils.log("Not starting robot: " + robotPeer.getName() + " due to JVM bug.");
 			return;
 		}
-		// log("Starting thread: " + robotPeer.getName());
+
 		try {
 			runThread = new Thread(runThreadGroup, robotPeer, robotPeer.getName());
 			runThread.setDaemon(true);
 			runThread.setPriority(Thread.NORM_PRIORITY);
 			runThread.start();
 		} catch (Exception e) {
-			log("Exception starting thread: " + e);
+			Utils.log("Exception starting thread: " + e);
 		}
 	}
 
@@ -153,22 +128,22 @@ public class RobotThreadManager {
 		runThread.interrupt();
 		for (int j = 0; j < 20 && runThreadGroup.activeCount() > 0; j++) {
 			if (j == 10) {
-				log("Waiting for robot: " + robotPeer.getName() + " to stop");
+				Utils.log("Waiting for robot: " + robotPeer.getName() + " to stop");
 			}
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {}
 		}
 		if (runThread.isAlive()) {
-			log(robotPeer.getName() + " is not stopping.  Forcing a stop.");
+			Utils.log(robotPeer.getName() + " is not stopping.  Forcing a stop.");
 			forceStop();
 		}
 		if (runThreadGroup.activeCount() > 0) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-				log("Robot " + robotPeer.getName() + " has threads still running.  Forcing a stop.");
+				Utils.log("Robot " + robotPeer.getName() + " has threads still running.  Forcing a stop.");
 				forceStop();
 			} else {
-				log(
+				Utils.log(
 						"Robot " + robotPeer.getName()
 						+ " has threads still running.  Not stopping them because security is off.");
 			}
@@ -177,6 +152,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Gets the runThread.
+	 * 
 	 * @return Returns a Thread
 	 */
 	public Thread getRunThread() {
@@ -185,6 +161,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Gets the disabled.
+	 * 
 	 * @return Returns a boolean
 	 */
 	public boolean getDisabled() {
@@ -193,6 +170,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Sets the disabled.
+	 * 
 	 * @param disabled The disabled to set
 	 */
 	public void setDisabled(boolean disabled) {
@@ -201,6 +179,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Gets the cpuTime.
+	 * 
 	 * @return Returns a double
 	 */
 	public long getCpuTime() {
@@ -209,6 +188,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Sets the cpuTime.
+	 * 
 	 * @param cpuTime The cpuTime to set
 	 */
 	public void addCpuTime(long cpuTime) {
@@ -217,6 +197,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Sets the cpuTime.
+	 * 
 	 * @param cpuTime The cpuTime to set
 	 */
 	public void resetCpuTime() {

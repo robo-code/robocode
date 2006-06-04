@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
 
@@ -16,10 +17,13 @@ import robocode.peer.BulletPeer;
 
 /**
  * Represents a bullet.  This is returned from fireBullet(), and all the bullet-related events.
+ *
  * @see robocode.Robot#fireBullet
  * @see robocode.BulletHitBulletEvent
  * @see robocode.BulletHitEvent
  * @see robocode.BulletMissedEvent
+ *
+ * @author Mathew A. Nelson
  */
 public class Bullet {
 	private robocode.peer.BulletPeer peer = null;
@@ -51,6 +55,7 @@ public class Bullet {
 
 	/**
 	 * Returns the name of the robot that fired this bullet
+	 * 
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getName() {
@@ -73,6 +78,7 @@ public class Bullet {
 	/**
 	 * Returns the velocity of this bullet.
 	 * Currently, this is a constant.
+	 *
 	 * @return velocity of the bullet that hit you
 	 */
 	public double getVelocity() {
@@ -81,6 +87,7 @@ public class Bullet {
 
 	/**
 	 * Returns the name of the robot that this bullet hit, or null.
+	 * 
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getVictim() {
@@ -93,6 +100,7 @@ public class Bullet {
 
 	/**
 	 * Returns the x position of the bullet.
+	 * 
 	 * @return the x position of the bullet.
 	 */
 	public double getX() {
@@ -101,6 +109,7 @@ public class Bullet {
 
 	/**
 	 * Returns the y position of the bullet.
+	 * 
 	 * @return the y position of the bullet.
 	 */
 	public double getY() {

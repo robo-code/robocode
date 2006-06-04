@@ -1,18 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
 
 
 /**
  * The basic superclass of all Robocode events
+ *
+ * @author Mathew A. Nelson
  */
 public class Event implements Comparable {
 	private int priority = 0;
@@ -58,6 +61,7 @@ public class Event implements Comparable {
 
 	/**
 	 * Returns the priority of the event.
+	 * 
 	 * @return the priority of the event.
 	 */
 	public int getPriority() {
@@ -66,6 +70,7 @@ public class Event implements Comparable {
 
 	/**
 	 * Returns the time the event occurred.
+	 * 
 	 * @return the time the event occurred.
 	 */
 	public long getTime() {

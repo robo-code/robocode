@@ -1,17 +1,23 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics to buttons
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
  *******************************************************************************/
 package robocode.dialog;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
@@ -23,34 +29,33 @@ import robocode.manager.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/11/2001 2:12:31 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Matthew Reeder, Flemming N. Larsen (current)
  */
 public class RobotExtractor extends JDialog implements WizardListener {
-	String unusedrobotPath = null;
+	String unusedrobotPath;
 
 	private int minRobots = 1;
 	private int maxRobots = 1; // 250;
 
-	private JPanel robotImporterContentPane = null;
+	private JPanel robotImporterContentPane;
 
-	private WizardCardPanel wizardPanel = null;
-	private WizardController buttonsPanel = null;
-	private RobotSelectionPanel robotSelectionPanel = null;
+	private WizardCardPanel wizardPanel;
+	private WizardController buttonsPanel;
+	private RobotSelectionPanel robotSelectionPanel;
 	
 	public byte buf[] = new byte[4096];
-	private StringWriter output = null;
+	private StringWriter output;
 	private RobotRepositoryManager robotManager;
 
 	private EventHandler eventHandler = new EventHandler();
+
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
 				getRobotSelectionPanel().refreshRobotList();
 			}
 		}
-		;
 	}
 
 	/**
@@ -62,24 +67,14 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 2:04:48 PM)
-	 */
 	public void cancelButtonActionPerformed() {
-		java.awt.AWTEvent evt = new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING);
+		AWTEvent evt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
 
 		this.dispatchEvent(evt);
 		return;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 2:04:48 PM)
-	 */
 	public void finishButtonActionPerformed() {
-		String resultsString;
-	
 		int rc = extractRobot();
 		ConsoleDialog d;
 
@@ -91,144 +86,76 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		if (rc < 8) {
 			this.dispose();
 		}
-	
 	}
 
 	/**
 	 * Return the buttonsPanel
-	 * @return javax.swing.JButton
+	 * 
+	 * @return JButton
 	 */
 	private WizardController getButtonsPanel() {
 		if (buttonsPanel == null) {
-			try {
-				buttonsPanel = getWizardPanel().getWizardController();
-				buttonsPanel.setName("buttonsPanel");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			buttonsPanel = getWizardPanel().getWizardController();
 		}
 		return buttonsPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/11/2001 2:13:04 PM)
-	 * @param name java.lang.String
-	 */
 	public Enumeration getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
-
-		/* RobotPeer r = new RobotPeer(classManager,robotManager,0);
-		 RobocodeClassLoader cl = new RobocodeClassLoader(getClass().getClassLoader(),classManager.getRobotProperties(),r);
-		 r.getRobotClassManager().setRobotClassLoader(cl);
-		 Class c = cl.loadRobotClass(r.getRobotClassManager().getFullClassName(),true);
-		 return classManager.getReferencedClasses();
-		 */	
-		Class c = robotClassManager.getRobotClassLoader().loadRobotClass(robotClassManager.getFullClassName(), true);
-
+		robotClassManager.getRobotClassLoader().loadRobotClass(robotClassManager.getFullClassName(), true);
 		return robotClassManager.getReferencedClasses();
 	}
 
 	/**
-	 * Return the optionsPanel
-	 * @return robocode.dialog.TeamCreatorOptionsPanel
-	 */
-
-	/* protected TeamCreatorOptionsPanel getTeamOptionsPanel() {
-	 if (teamOptionsPanel == null) {
-	 try {
-	 teamOptionsPanel = new TeamCreatorOptionsPanel(this);
-	 } catch (java.lang.Throwable e) {
-	 log(e);
-	 }
-	 }
-	 return teamOptionsPanel;
-	 }
-	 */
-
-	/**
 	 * Return the newBattleDialogContentPane
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
-	private javax.swing.JPanel getRobotImporterContentPane() {
+	private JPanel getRobotImporterContentPane() {
 		if (robotImporterContentPane == null) {
-			try {
-				robotImporterContentPane = new javax.swing.JPanel();
-				robotImporterContentPane.setName("robotExtractorContentPane");
-				robotImporterContentPane.setLayout(new java.awt.BorderLayout());
-				robotImporterContentPane.add(getButtonsPanel(), java.awt.BorderLayout.SOUTH);
-				robotImporterContentPane.add(getWizardPanel(), java.awt.BorderLayout.CENTER);
-				getWizardPanel().getWizardController().setFinishButtonText("Extract!");
-				robotImporterContentPane.registerKeyboardAction(eventHandler, "Refresh",
-						KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-				robotImporterContentPane.registerKeyboardAction(eventHandler, "Refresh",
-						KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_FOCUSED);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robotImporterContentPane = new JPanel();
+			robotImporterContentPane.setLayout(new BorderLayout());
+			robotImporterContentPane.add(getButtonsPanel(), BorderLayout.SOUTH);
+			robotImporterContentPane.add(getWizardPanel(), BorderLayout.CENTER);
+			getWizardPanel().getWizardController().setFinishButtonTextAndMnemonic("Extract!", 'E', 0);
+			robotImporterContentPane.registerKeyboardAction(eventHandler, "Refresh",
+					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			robotImporterContentPane.registerKeyboardAction(eventHandler, "Refresh",
+					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_FOCUSED);
 		}
 		return robotImporterContentPane;
 	}
 
 	/**
 	 * Return the Page property value.
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			try {
-				// if (!isTeamPackager())
-				robotSelectionPanel = new RobotSelectionPanel(robotManager, minRobots, maxRobots, false,
-						"Select the robot you would like to extract to the robots directory.  Robots not shown do not include source.",
-						true, true, true, false, true, true, null);
-				// else
-				// robotSelectionPanel = new RobotSelectionPanel(robotManager, minRobots, maxRobots, false,
-				// "Select the robots for the team you would like to package.", /*true*/false, true, true, false, true, null);
-				robotSelectionPanel.setName("Robots available for extract");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robotSelectionPanel = new RobotSelectionPanel(robotManager, minRobots, maxRobots, false,
+					"Select the robot you would like to extract to the robots directory.  Robots not shown do not include source.",
+					true, true, true, false, true, true, null);
 		}
 		return robotSelectionPanel;
 	}
 
 	/**
 	 * Return the tabbedPane.
-	 * @return javax.swing.JTabbedPane
+	 * 
+	 * @return JTabbedPane
 	 */
 	private WizardCardPanel getWizardPanel() {
 		if (wizardPanel == null) {
-			try {
-				wizardPanel = new WizardCardPanel(this);
-				wizardPanel.setName("wizardPanel");
-				wizardPanel.add(getRobotSelectionPanel(), "Select robot");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			wizardPanel = new WizardCardPanel(this);
+			wizardPanel.add(getRobotSelectionPanel(), "Select robot");
 		}
 		return wizardPanel;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/18/2001 11:25:12 AM)
-	 */
 	public void initialize() {
-		try {
-			setName("Robot Extractor");
-			setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-			setTitle("Robot Extract");
-			setContentPane(getRobotImporterContentPane());
-		} catch (java.lang.Throwable e) {
-			log(e);
-		}
-	}
-
-	private void log(String s) {
-		Utils.log(s);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setTitle("Robot Extract");
+		setContentPane(getRobotImporterContentPane());
 	}
 
 	private int extractRobot() {
@@ -238,9 +165,9 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		output = new StringWriter();
 		PrintWriter out = new PrintWriter(output);
 
-		out.println("Robot Extract");	
-		FileSpecificationVector selectedRobots = getRobotSelectionPanel().getSelectedRobots();
-		FileSpecification spec = selectedRobots.elementAt(0);
+		out.println("Robot Extract");
+		Vector selectedRobots = getRobotSelectionPanel().getSelectedRobots(); // <FileSpecification>
+		FileSpecification spec = (FileSpecification) selectedRobots.elementAt(0);
 
 		try {
 			Utils.setStatusWriter(out);
@@ -258,6 +185,5 @@ public class RobotExtractor extends JDialog implements WizardListener {
 			rv = 8;
 		}
 		return rv;
-	
 	}
 }

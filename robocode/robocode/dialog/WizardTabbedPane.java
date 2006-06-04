@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.dialog;
 
@@ -18,9 +19,7 @@ import javax.swing.event.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/19/2001 5:39:05 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
  */
 public class WizardTabbedPane extends JTabbedPane implements Wizard {
 	private WizardController wizardController;
@@ -36,7 +35,6 @@ public class WizardTabbedPane extends JTabbedPane implements Wizard {
 				setWizardControllerOnPanel((WizardPanel) e.getChild());
 				getWizardController().stateChanged(new ChangeEvent(e.getChild()));
 			}
-
 		}
 
 		public void stateChanged(javax.swing.event.ChangeEvent e) {
@@ -45,10 +43,6 @@ public class WizardTabbedPane extends JTabbedPane implements Wizard {
 		}
 	}
 
-	/**
-	 * TabbedPaneWizard constructor comment.
-	 * @param tabbedPane javax.swing.JTabbedPane
-	 */
 	public WizardTabbedPane(WizardListener listener) {
 		this.listener = listener;
 		initialize();
@@ -62,11 +56,6 @@ public class WizardTabbedPane extends JTabbedPane implements Wizard {
 		return getSelectedComponent();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:21:07 PM)
-	 * @return robocode.dialog.WizardController
-	 */
 	public WizardController getWizardController() {
 		if (wizardController == null) {
 			wizardController = new WizardController(this);
@@ -74,37 +63,19 @@ public class WizardTabbedPane extends JTabbedPane implements Wizard {
 		return wizardController;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:36:28 PM)
-	 * @return robocode.dialog.WizardListener
-	 */
 	public WizardListener getWizardListener() {
 		return listener;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 5:52:00 PM)
-	 */
 	public void initialize() {
 		addChangeListener(eventHandler);
 		addContainerListener(eventHandler);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 5:26:19 PM)
-	 */
 	public boolean isBackAvailable() {
 		return (currentIndex > 0);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 7:04:35 PM)
-	 * @return boolean
-	 */
 	public boolean isCurrentPanelReady() {
 		Component c = getCurrentPanel();
 
@@ -115,10 +86,6 @@ public class WizardTabbedPane extends JTabbedPane implements Wizard {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 5:26:19 PM)
-	 */
 	public boolean isNextAvailable() {
 		return ((currentIndex < getComponentCount() - 1) && isCurrentPanelReady());
 	}
@@ -140,9 +107,6 @@ public class WizardTabbedPane extends JTabbedPane implements Wizard {
 		setSelectedIndex(currentIndex + 1);
 	}
 
-	/**
-	 * @param panel robocode.dialog.WizardPanel
-	 */
 	public void setWizardControllerOnPanel(WizardPanel panel) {
 		panel.setWizardController(getWizardController());
 	}

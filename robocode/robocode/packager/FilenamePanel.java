@@ -1,41 +1,48 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Replaced deprecated show() method with setVisible(true)
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.packager;
 
 
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Vector;
 
 import robocode.dialog.*;
 import robocode.repository.*;
 import robocode.util.*;
 
-import javax.swing.text.*;
-
 
 /**
- * Insert the type's description here.
- * Creation date: (10/19/2001 12:07:51 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class FilenamePanel extends WizardPanel {
-	RobotPackager robotPackager = null;
+	private RobotPackager robotPackager;
 
-	EventHandler eventHandler = new EventHandler();
-	private boolean robocodeErrorShown = false;
-	
-	class EventHandler implements ActionListener, DocumentListener, ComponentListener {
+	private EventHandler eventHandler = new EventHandler();
+	private boolean robocodeErrorShown;
+
+	private JButton browseButton;
+	private JTextField filenameField;	
+
+	private class EventHandler implements ActionListener, DocumentListener, ComponentListener {
 		public void insertUpdate(DocumentEvent e) {
 			fireStateChanged();
 		}
@@ -61,73 +68,46 @@ public class FilenamePanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			if (true) // getFilenameField().getText().equals("(none selected)"))
-			{
-				String fileName = new File(Constants.cwd(), "robots").getAbsolutePath() + File.separator;
-				File outgoingFile = new File(fileName);
+			String fileName = new File(Constants.cwd(), "robots").getAbsolutePath() + File.separator;
+			File outgoingFile = new File(fileName);
 
-				if (!outgoingFile.exists()) {
-					outgoingFile.mkdirs();
-				}
-				String jarName = "myrobots.jar";
-				// if (!robotPackager.isTeamPackager())
-				// {
-				FileSpecificationVector selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
-
-				if (selectedRobots != null && selectedRobots.size() == 1) {
-					jarName = ((FileSpecification) selectedRobots.elementAt(0)).getFullClassName() + "_"
-							+ robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
-				}
-				// }
-				/* else
-				 {
-				 jarName = robotPackager.getTeamOptionsPanel().getTeamPackage() +
-				 robotPackager.getTeamOptionsPanel().getTeamNameField().getText() + "_" +
-				 robotPackager.getTeamOptionsPanel().getVersionField().getText() + ".jar";
-				 
-				 //robotPackager.getTeamOptionsPanel().getTeamName() + "_" + robotPackager.getTeamOptionsPanel().getVersion() + ".jar";
-				 }
-				 */
-				getFilenameField().setText(fileName + jarName);
-				Caret caret = getFilenameField().getCaret();
-
-				caret.setDot(fileName.length()); // robocode.getWriteRobotPath().length() + 10);
-				caret.moveDot(fileName.length() + jarName.length() - 4); // caret.getDot() + 16);
+			if (!outgoingFile.exists()) {
+				outgoingFile.mkdirs();
 			}
+			String jarName = "myrobots.jar";
+			Vector selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots(); // <FileSpecification>
+
+			if (selectedRobots != null && selectedRobots.size() == 1) {
+				jarName = ((FileSpecification) selectedRobots.elementAt(0)).getFullClassName() + "_"
+						+ robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
+			}
+				 
+			getFilenameField().setText(fileName + jarName);
+			Caret caret = getFilenameField().getCaret();
+
+			caret.setDot(fileName.length()); // robocode.getWriteRobotPath().length() + 10);
+			caret.moveDot(fileName.length() + jarName.length() - 4); // caret.getDot() + 16);
+
 			getFilenameField().requestFocus();
 		}
 	}
-	public javax.swing.JPanel robotListPanel = null;
 
-	/**
-	 * PackagerOptionsPanel constructor comment.
-	 */
 	public FilenamePanel(RobotPackager robotPackager) {
 		super();
 		this.robotPackager = robotPackager;
 		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 12:09:49 PM)
-	 */
 	private void initialize() {
-		setName("filenamePanel");
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(new JLabel("Please type in a .jar file to save this robot package to: "));
-		// add(new JLabel("Example:  robots" + File.separator + "myrobot.jar"));
 		add(getFilenameField());
 		add(getBrowseButton());
 		add(new JPanel());
 		addComponentListener(eventHandler);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/20/2001 11:24:52 AM)
-	 */
 	public boolean isReady() {
 		if (filenameField.getText() == null) {
 			return false;
@@ -153,28 +133,15 @@ public class FilenamePanel extends WizardPanel {
 		return false;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 2:27:51 PM)
-	 * @param args java.lang.String[]
-	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("options");
 
 		frame.setSize(new Dimension(500, 300));
 		frame.getContentPane().add(new FilenamePanel(null));
-		frame.show();
+		frame.setVisible(true);
 	}
 
-	private JButton browseButton = null;
-	private JTextField filenameField = null;
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/22/2001 3:28:23 PM)
-	 * @return javax.swing.JButton
-	 */
-	public javax.swing.JButton getBrowseButton() {
+	public JButton getBrowseButton() {
 		if (browseButton == null) {
 			browseButton = new JButton("Browse");
 			browseButton.addActionListener(eventHandler);
@@ -182,12 +149,7 @@ public class FilenamePanel extends WizardPanel {
 		return browseButton;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/22/2001 3:12:22 PM)
-	 * @return javax.swing.JLabel
-	 */
-	public javax.swing.JTextField getFilenameField() {
+	public JTextField getFilenameField() {
 		if (filenameField == null) {
 			filenameField = new JTextField("(none selected)", 60);
 			filenameField.setMaximumSize(filenameField.getPreferredSize());
@@ -196,10 +158,6 @@ public class FilenamePanel extends WizardPanel {
 		return filenameField;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/22/2001 3:16:43 PM)
-	 */
 	public boolean showFileSelectDialog() {
 		String fileName = "outgoing" + File.separatorChar;
 		String saveDir = fileName;
@@ -213,7 +171,7 @@ public class FilenamePanel extends WizardPanel {
 		chooser.setCurrentDirectory(f);
 		
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-			public boolean accept(java.io.File pathname) {
+			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
 					return true;
 				}

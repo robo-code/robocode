@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
 
@@ -14,6 +15,8 @@ package robocode;
 /**
  * This event is sent to {@link robocode.Robot#onBulletHit onBulletHit}
  * when one of your bullets hits another robot.
+ * 
+ * @author Mathew A. Nelson
  */
 public class BulletHitEvent extends Event {
 	private String name;
@@ -32,6 +35,7 @@ public class BulletHitEvent extends Event {
 
 	/**
 	 * Returns the Bullet that hit.
+	 * 
 	 * @return Bullet
 	 */
 	public Bullet getBullet() {
@@ -55,9 +59,10 @@ public class BulletHitEvent extends Event {
 
 	/**
 	 * Returns the name of the robot you hit.
+	 * 
 	 * @return the name of the robot you hit.
 	 */
-	public java.lang.String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -71,7 +76,7 @@ public class BulletHitEvent extends Event {
 	/**
 	 * @deprecated use getName()
 	 */
-	public java.lang.String getRobotName() {
+	public String getRobotName() {
 		return name;
 	}
 }

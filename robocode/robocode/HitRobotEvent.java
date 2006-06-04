@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
 
@@ -14,12 +15,14 @@ package robocode;
 /**
  * A HitRobotEvent is sent to {@link robocode.Robot#onHitRobot} when you collide with another robot
  * You can use the information contained in this event to determine what to do.
+ * 
+ * @author Mathew A. Nelson
  */
 public class HitRobotEvent extends Event {
-	private java.lang.String robotName;
+	private String robotName;
 	private double bearing;
 	private double energy;
-	private boolean atFault = false;
+	private boolean atFault;
 
 	/**
 	 * Called by the game to create a new HitRobotEvent.
@@ -33,6 +36,7 @@ public class HitRobotEvent extends Event {
 
 	/**
 	 * Returns the angle to the robot you hit, relative to your robot's heading.  -180 <= getBearing() < 180
+	 * 
 	 * @return the angle to the robot you hit, in degrees
 	 */
 	public double getBearing() {
@@ -48,6 +52,7 @@ public class HitRobotEvent extends Event {
 
 	/**
 	 * Returns the angle to the robot you hit in radians, relative to your robot's heading.  -PI <= getBearing() < PI
+	 * 
 	 * @return the angle to the robot you hit, in radians
 	 */
 	public double getBearingRadians() {
@@ -56,6 +61,7 @@ public class HitRobotEvent extends Event {
 
 	/**
 	 * Returns the energy of the robot you hit
+	 * 
 	 * @return the energy of the robot you hit
 	 */
 	public double getEnergy() {
@@ -64,16 +70,17 @@ public class HitRobotEvent extends Event {
 
 	/**
 	 * Returns the name of the robot you hit
+	 * 
 	 * @return the name of the robot you hit
 	 */
-	public java.lang.String getName() {
+	public String getName() {
 		return robotName;
 	}
 
 	/**
 	 * @deprecated use getName
 	 */
-	public java.lang.String getRobotName() {
+	public String getRobotName() {
 		return robotName;
 	}
 
@@ -83,6 +90,7 @@ public class HitRobotEvent extends Event {
 	 * will have stopped and been marked complete.
 	 * Note:  If two robots are moving toward each other and collide,
 	 * they will each receive two HitRobotEvents.  The first will be the one with isMyFault() == true.
+	 * 
 	 * @return whether or not you were moving toward the other robot.
 	 */
 	public boolean isMyFault() {

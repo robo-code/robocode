@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
 
@@ -14,6 +15,8 @@ package robocode;
 /**
  * A ScannedRobotEvent is sent to {@link robocode.Robot#onScannedRobot} when you scan a robot.
  * You can use the information contained in this event to determine what to do.
+ * 
+ * @author Mathew A. Nelson
  */
 public class ScannedRobotEvent extends Event {
 	private String name;
@@ -40,6 +43,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the angle to the robot, relative to your robot's heading, in degrees.  -180 < getRobotBearing() <= 180
+	 * 
 	 * @return the angle to the robot
 	 */
 	public double getBearing() {
@@ -48,6 +52,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the angle to the robot, relative to your robot's heading, in radians.  -PI < getRobotBearingRadians() <= PI
+	 * 
 	 * @return the angle to the robot
 	 */
 	public double getBearingRadians() {
@@ -56,6 +61,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the distance to the robot you scanned (your center to his center).
+	 * 
 	 * @return the distance to the robot you scanned.
 	 */
 	public double getDistance() {
@@ -64,6 +70,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the energy of the robot
+	 * 
 	 * @return the energy of the robot
 	 */
 	public double getEnergy() {
@@ -72,6 +79,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the direction the robot is facing, in degrees.  0 <= getRobotHeading() < 360
+	 * 
 	 * @return the direction the robot is facing
 	 */
 	public double getHeading() {
@@ -80,6 +88,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the direction the robot is facing, in radians.  0 <= getRobotHeading() < 2*PI
+	 * 
 	 * @return the direction the robot is facing
 	 */
 	public double getHeadingRadians() {
@@ -95,9 +104,10 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the name of the robot
+	 * 
 	 * @return the name of the robot
 	 */
-	public java.lang.String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -160,7 +170,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getName()
 	 */
-	public java.lang.String getRobotName() {
+	public String getRobotName() {
 		return getName();
 	}
 
@@ -173,6 +183,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the velocity of the robot
+	 * 
 	 * @return the velocity of the robot
 	 */
 	public double getVelocity() {

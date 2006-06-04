@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.editor;
 
@@ -16,9 +17,7 @@ import java.io.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (11/5/2001 10:38:05 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
  */
 public class CompilerProperties {
 	public final static String COMPILER_BINARY = "compiler.binary";
@@ -33,15 +32,13 @@ public class CompilerProperties {
 	
 	private Properties props = new Properties();
 	
-	/**
-	 * CompilerProperties constructor comment.
-	 */
 	public CompilerProperties() {
 		super();
 	}
 
 	/**
 	 * Returns the compilerBinary.
+	 * 
 	 * @return String
 	 */
 	public String getCompilerBinary() {
@@ -53,6 +50,7 @@ public class CompilerProperties {
 
 	/**
 	 * Returns the compilerClasspath.
+	 * 
 	 * @return String
 	 */
 	public String getCompilerClasspath() {
@@ -64,6 +62,7 @@ public class CompilerProperties {
 
 	/**
 	 * Returns the compilerOptions.
+	 * 
 	 * @return String
 	 */
 	public String getCompilerOptions() {
@@ -75,6 +74,7 @@ public class CompilerProperties {
 
 	/**
 	 * Returns the robocodeVersion.
+	 * 
 	 * @return String
 	 */
 	public String getRobocodeVersion() {
@@ -88,6 +88,7 @@ public class CompilerProperties {
 
 	/**
 	 * Sets the compilerBinary.
+	 * 
 	 * @param compilerBinary The compilerBinary to set
 	 */
 	public void setCompilerBinary(String compilerBinary) {
@@ -97,6 +98,7 @@ public class CompilerProperties {
 
 	/**
 	 * Sets the compilerClasspath.
+	 * 
 	 * @param compilerClasspath The compilerClasspath to set
 	 */
 	public void setCompilerClasspath(String compilerClasspath) {
@@ -106,6 +108,7 @@ public class CompilerProperties {
 
 	/**
 	 * Sets the compilerOptions.
+	 * 
 	 * @param compilerOptions The compilerOptions to set
 	 */
 	public void setCompilerOptions(String compilerOptions) {
@@ -115,6 +118,7 @@ public class CompilerProperties {
 
 	/**
 	 * Sets the robocodeVersion.
+	 * 
 	 * @param robocodeVersion The robocodeVersion to set
 	 */
 	public void setRobocodeVersion(String robocodeVersion) {
@@ -133,5 +137,4 @@ public class CompilerProperties {
 	public void store(OutputStream os, String header) throws IOException {
 		props.store(os, header);
 	}
-
 }

@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
 
@@ -16,23 +19,21 @@ import java.net.*;
 import javax.swing.*;
 import java.util.*;
 
-import robocode.util.*;
+import robocode.Robocode;
+import robocode.util.Constants;
+import robocode.util.Utils;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class VersionManager {
 	private String version = null;
 	private RobocodeManager manager = null;
 	
 	public VersionManager(RobocodeManager manager) {
 		this.manager = manager;
-	}
-
-	private void log(String s) {
-		Utils.log(s);
-	}
-
-	private void log(Throwable e) {
-		Utils.log(e);
 	}
 
 	public void checkUpdateCheck() {
@@ -56,18 +57,13 @@ public class VersionManager {
 		}
 	}
 	
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:54:57 PM)
-	 */
 	public boolean checkForNewVersion(boolean notifyNoUpdate) {
-		// log("Checking for new version...");
 		URL u = null;
 
 		try {
 			u = new URL("http://robocode.sourceforge.net/version/version.html");
-		} catch (java.net.MalformedURLException e) {
-			log("Unable to check for new version: " + e);
+		} catch (MalformedURLException e) {
+			Utils.log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
 				Utils.messageError("Unable to check for new version: " + e);
 			}
@@ -80,17 +76,17 @@ public class VersionManager {
 			URLConnection urlConnection = u.openConnection();
 
 			if (urlConnection instanceof HttpURLConnection) {
-				log("Update checking with http.");
+				Utils.log("Update checking with http.");
 				HttpURLConnection h = (HttpURLConnection) urlConnection;
 
 				if (h.usingProxy()) {
-					log("http using proxy.");
+					Utils.log("http using proxy.");
 				}
 			}
 			
 			reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 		} catch (IOException e) {
-			log("Unable to check for new version: " + e);
+			Utils.log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
 				Utils.messageError("Unable to check for new version: " + e);
 			}
@@ -102,7 +98,7 @@ public class VersionManager {
 		try {
 			v = reader.readLine();
 		} catch (IOException e) {
-			log("Unable to check for new version: " + e);
+			Utils.log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
 				Utils.messageError("Unable to check for new version: " + e);
 			}
@@ -110,7 +106,6 @@ public class VersionManager {
 		}
 	
 		String installurl = "http://robocode.sourceforge.net/installer";
-		String helpurl = "http://robocode.sourceforge.net/version/checkversion.html?version=" + version;
 
 		if (!v.equals(getVersion())) {
 			if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
@@ -139,40 +134,13 @@ public class VersionManager {
 		}
 	
 		return true;
-		
-		// String helpurl = "http://robocode.sourceforge.net/version/checkversion.html?version=" + version;
-			
-		// BrowserControl.displayURL(helpurl);
-	
-		/*
-		 java.net.URL u;
-		 try {
-		 u = new java.net.URL(helpurl);
-		 } catch (java.net.MalformedURLException e) {
-		 log("Could not form a URL from " + helpurl);
-		 return;
-		 }
-		 
-		 RobocodeHtmlDialog hd = new RobocodeHtmlDialog();
-		 Dimension dialogSize = hd.getPreferredSize();
-		 Dimension frameSize = robocodeFrame.getSize();
-		 Point loc = robocodeFrame.getLocation();
-		 hd.setTitle("Check Version");
-		 hd.setURL(u);
-		 hd.show();
-		 */
 	}
 	
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/18/2001 3:43:41 PM)
-	 */
 	public String getVersion() {
-		if (this.version == null) {
-			// this.version = getVersionFromFile();
-			this.version = getVersionFromJar();
+		if (version == null) {
+			version = getVersionFromJar();
 		}
-		return this.version;
+		return version;
 	}
 	
 	private String getVersionFromJar() {
@@ -182,25 +150,21 @@ public class VersionManager {
 			URL versionsUrl = getClass().getResource("/resources/versions.txt");
 
 			if (versionsUrl == null) {
-				log("no url");
-			} else {// log(versionsUrl.toString());
-				// log(versionsUrl.getClass().toString());
+				Utils.log("no url");
 			}
 				
 			BufferedReader in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
 
-			// FileReader(new File(Constants.cwd(),"versions.txt")));
 			versionString = in.readLine();
 			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
 				versionString = in.readLine();
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
-			log("No versions.txt file in robocode.jar.");
+			Utils.log("No versions.txt file in robocode.jar.");
 			versionString = "unknown";
-	
 		} catch (IOException e) {
-			log("IO Exception reading versions.txt from robocode.jar" + e);
+			Utils.log("IO Exception reading versions.txt from robocode.jar" + e);
 			versionString = "unknown";
 		}
 	
@@ -214,17 +178,12 @@ public class VersionManager {
 			}
 		}
 		if (version.equals("unknown")) {
-			log("Warning:  Getting version from file.");
+			Utils.log("Warning:  Getting version from file.");
 			return getVersionFromFile();
 		}
 		return version;
-	
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/18/2001 3:43:41 PM)
-	 */
 	private String getVersionFromFile() {
 		String versionString = null;
 
@@ -236,11 +195,11 @@ public class VersionManager {
 				versionString = in.readLine();
 			}
 		} catch (FileNotFoundException e) {
-			log("No versions.txt file.");
+			Utils.log("No versions.txt file.");
 			versionString = "unknown";
 	
 		} catch (IOException e) {
-			log("IO Exception reading versions.txt" + e);
+			Utils.log("IO Exception reading versions.txt" + e);
 			versionString = "unknown";
 		}
 	
@@ -254,8 +213,5 @@ public class VersionManager {
 			}
 		}
 		return version;
-	
 	}
-	
 }
-

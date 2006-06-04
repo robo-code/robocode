@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.security;
 
@@ -17,16 +20,20 @@ import java.io.*;
 import java.net.*;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class RobocodeSecurityPolicy extends Policy {
-	Policy parentPolicy = null;
-	PermissionCollection permissionCollection = null;
-	Vector trustedCodeUrls;
+	Policy parentPolicy;
+	PermissionCollection permissionCollection;
+	Vector trustedCodeUrls; // <URL>
 	
 	public RobocodeSecurityPolicy(Policy parentPolicy) {
 		this.parentPolicy = parentPolicy;
 		this.permissionCollection = new Permissions();
 		this.permissionCollection.add(new AllPermission());
-		trustedCodeUrls = new Vector();
+		trustedCodeUrls = new Vector(); // <URL>
 		trustedCodeUrls.add(getClass().getProtectionDomain().getCodeSource().getLocation());
 
 		String classPath = System.getProperty("java.class.path");
@@ -44,13 +51,10 @@ public class RobocodeSecurityPolicy extends Policy {
 	}
 	
 	public PermissionCollection getPermissions(ProtectionDomain domain) {
-		// System.err.println("Getting permissions for domain " + domain);
 		return getPermissions(domain.getCodeSource());
 	}
 	
 	public PermissionCollection getPermissions(CodeSource codeSource) {
-		
-		// System.err.println("Getting permissions for " + codeSource.getLocation());
 		// Trust everyone on the classpath
 		if (trustedCodeUrls.contains(codeSource.getLocation())) {
 			return permissionCollection;
@@ -66,16 +70,10 @@ public class RobocodeSecurityPolicy extends Policy {
 		} else {
 			// Not on classpath?  Not trusted.
 			return false;
-			// return parentPolicy.implies(domain,permission);
 		}
 	}
 
 	public void refresh() {
 		parentPolicy.refresh();
 	}
-	
-	private void log(String s) {
-		System.err.println(s);
-	}
 }
-

@@ -1,53 +1,39 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.util;
 
 
+import java.awt.*;
 import javax.swing.text.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/25/2001 10:42:52 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
  */
-public class LimitedDocument extends javax.swing.text.PlainDocument {
+public class LimitedDocument extends PlainDocument {
 	int maxRows = Integer.MAX_VALUE;
 	int maxCols = Integer.MAX_VALUE;
 
-	/**
-	 * LimitedDocument constructor comment.
-	 */
 	public LimitedDocument() {
 		super();
 	}
 
-	/**
-	 * LimitedDocument constructor comment.
-	 */
 	public LimitedDocument(int maxRows, int maxCols) {
 		super();
 		this.maxRows = maxRows;
 		this.maxCols = maxCols;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/25/2001 10:53:26 PM)
-	 * @param offs int
-	 * @param str java.lang.String
-	 * @param a javax.swing.text.AttributeSet
-	 */
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-	
 		Element rootElement = getDefaultRootElement();
 		int i = str.indexOf("\n");
 		int newlines = 0;
@@ -60,7 +46,7 @@ public class LimitedDocument extends javax.swing.text.PlainDocument {
 		int currentLines = rootElement.getElementCount();
 
 		if (newlines > 0 && currentLines + newlines > maxRows) {
-			java.awt.Toolkit.getDefaultToolkit().beep();
+			Toolkit.getDefaultToolkit().beep();
 			return;
 		}
 
@@ -103,9 +89,8 @@ public class LimitedDocument extends javax.swing.text.PlainDocument {
 					currentLen -= carry;
 				}
 			}
-			// System.out.println("Test: linelen: " + lineLen + " currentLen: " + currentLen);
 			if (lineLen + currentLen > maxCols + 1) {
-				java.awt.Toolkit.getDefaultToolkit().beep();
+				Toolkit.getDefaultToolkit().beep();
 				return;
 			}
 			
@@ -113,6 +98,5 @@ public class LimitedDocument extends javax.swing.text.PlainDocument {
 		}
 
 		super.insertString(offs, str, a);
-	
 	}
 }

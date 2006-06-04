@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.dialog;
 
@@ -18,9 +19,8 @@ import javax.swing.event.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/19/2001 5:39:05 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class WizardCardPanel extends JPanel implements Wizard {
 	private WizardController wizardController;
@@ -42,6 +42,7 @@ public class WizardCardPanel extends JPanel implements Wizard {
 
 	/**
 	 * WizardCardLayout constructor
+	 * 
 	 * @param listener WizardListener
 	 */
 	public WizardCardPanel(WizardListener listener) {
@@ -49,21 +50,12 @@ public class WizardCardPanel extends JPanel implements Wizard {
 		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:11:13 PM)
-	 */
 	public void back() {
 		currentIndex--;
 		getWizardController().stateChanged(null);
 		getCardLayout().previous(this);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:27:00 PM)
-	 * @return java.awt.CardLayout
-	 */
 	public java.awt.CardLayout getCardLayout() {
 		if (cardLayout == null) {
 			cardLayout = new CardLayout();
@@ -75,11 +67,6 @@ public class WizardCardPanel extends JPanel implements Wizard {
 		return getComponent(currentIndex);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:21:07 PM)
-	 * @return robocode.dialog.WizardController
-	 */
 	public WizardController getWizardController() {
 		if (wizardController == null) {
 			wizardController = new WizardController(this);
@@ -87,37 +74,19 @@ public class WizardCardPanel extends JPanel implements Wizard {
 		return wizardController;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:35:18 PM)
-	 * @return robocode.dialog.WizardListener
-	 */
 	public WizardListener getWizardListener() {
 		return listener;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:25:04 PM)
-	 */
 	public void initialize() {
 		this.setLayout(getCardLayout());
 		this.addContainerListener(eventHandler);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 5:26:19 PM)
-	 */
 	public boolean isBackAvailable() {
 		return (currentIndex > 0);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 7:04:35 PM)
-	 * @return boolean
-	 */
 	public boolean isCurrentPanelReady() {
 		Component c = getCurrentPanel();
 
@@ -128,10 +97,6 @@ public class WizardCardPanel extends JPanel implements Wizard {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 5:26:19 PM)
-	 */
 	public boolean isNextAvailable() {
 		return ((currentIndex < getComponentCount() - 1) && isCurrentPanelReady());
 	}
@@ -145,19 +110,12 @@ public class WizardCardPanel extends JPanel implements Wizard {
 		return true;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/19/2001 6:11:13 PM)
-	 */
 	public void next() {
 		currentIndex++;
 		getWizardController().stateChanged(null);
 		getCardLayout().next(this);
 	}
 
-	/**
-	 * @param panel robocode.dialog.WizardPanel
-	 */
 	public void setWizardControllerOnPanel(WizardPanel panel) {
 		panel.setWizardController(getWizardController());
 	}

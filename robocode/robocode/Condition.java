@@ -1,14 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode;
+
+
+import robocode.security.RobocodeSecurityManager;
 
 
 /**
@@ -26,10 +32,13 @@ package robocode;
  *  </PRE>
  * You should note that by extending Condition, you are actually creating an inner class -- so
  * if you distribute your robot, there will be multiple class files.  (i.e. Target$1.class)
+ *
  * @see robocode.AdvancedRobot#waitFor
  * @see robocode.AdvancedRobot#addCustomEvent
  * @see robocode.AdvancedRobot#removeCustomEvent
  * @see robocode.AdvancedRobot#onCustomEvent
+ * 
+ * @author Mathew A. Nelson
  */
 public abstract class Condition {
 
@@ -41,7 +50,7 @@ public abstract class Condition {
 	/**
 	 * The name of this condition
 	 */
-	public String name = null;
+	public String name;
 
 	/**
 	 * Creates a new, unnamed Condition with the default priority.
@@ -63,8 +72,8 @@ public abstract class Condition {
 		if (priority < 0) {
 			SecurityManager m = System.getSecurityManager();
 
-			if (m instanceof robocode.security.RobocodeSecurityManager) {
-				robocode.security.RobocodeSecurityManager rsm = (robocode.security.RobocodeSecurityManager) m;
+			if (m instanceof RobocodeSecurityManager) {
+				RobocodeSecurityManager rsm = (RobocodeSecurityManager) m;
 
 				rsm.threadOut("SYSTEM: Priority must be between 0 and 99.");
 				rsm.threadOut("SYSTEM: Priority for condition " + name + " will be 0.");
@@ -73,8 +82,8 @@ public abstract class Condition {
 		} else if (priority > 99) {
 			SecurityManager m = System.getSecurityManager();
 
-			if (m instanceof robocode.security.RobocodeSecurityManager) {
-				robocode.security.RobocodeSecurityManager rsm = (robocode.security.RobocodeSecurityManager) m;
+			if (m instanceof RobocodeSecurityManager) {
+				RobocodeSecurityManager rsm = (RobocodeSecurityManager) m;
 
 				rsm.threadOut("SYSTEM: Priority must be between 0 and 99.");
 				rsm.threadOut("SYSTEM: Priority for condition " + name + " will be 99.");
@@ -87,7 +96,7 @@ public abstract class Condition {
 	/**
 	 * @return the name of this condition
 	 */
-	public java.lang.String getName() {
+	public String getName() {
 		if (name != null) {
 			return name;
 		} else {
@@ -104,9 +113,9 @@ public abstract class Condition {
 
 	/**
 	 * Sets the name of this condition
-	 * @param newName java.lang.String
+	 * @param newName String
 	 */
-	public void setName(java.lang.String newName) {
+	public void setName(String newName) {
 		name = newName;
 	}
 
@@ -128,5 +137,4 @@ public abstract class Condition {
 	 * @return true if the condition has been met, false otherwise.
 	 */
 	public abstract boolean test();         
- 
 }

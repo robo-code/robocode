@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.battle;
 
@@ -15,6 +16,9 @@ import java.util.Properties;
 import java.io.*;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ */
 public class BattleProperties {
 	
 	private Properties props = new Properties();
@@ -35,6 +39,7 @@ public class BattleProperties {
 
 	/**
 	 * Gets the battlefieldWidth.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getBattlefieldWidth() {
@@ -43,6 +48,7 @@ public class BattleProperties {
 
 	/**
 	 * Sets the battlefieldWidth.
+	 * 
 	 * @param battlefieldWidth The battlefieldWidth to set
 	 */
 	public void setBattlefieldWidth(int battlefieldWidth) {
@@ -52,6 +58,7 @@ public class BattleProperties {
 
 	/**
 	 * Gets the battlefieldHeight.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getBattlefieldHeight() {
@@ -60,6 +67,7 @@ public class BattleProperties {
 
 	/**
 	 * Sets the battlefieldHeight.
+	 * 
 	 * @param battlefieldHeight The battlefieldHeight to set
 	 */
 	public void setBattlefieldHeight(int battlefieldHeight) {
@@ -69,6 +77,7 @@ public class BattleProperties {
 
 	/**
 	 * Gets the numRounds.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getNumRounds() {
@@ -77,6 +86,7 @@ public class BattleProperties {
 
 	/**
 	 * Sets the numRounds.
+	 * 
 	 * @param numRounds The numRounds to set
 	 */
 	public void setNumRounds(int numRounds) {
@@ -86,6 +96,7 @@ public class BattleProperties {
 
 	/**
 	 * Gets the gunCoolingRate.
+	 * 
 	 * @return Returns a double
 	 */
 	public double getGunCoolingRate() {
@@ -94,6 +105,7 @@ public class BattleProperties {
 
 	/**
 	 * Sets the gunCoolingRate.
+	 * 
 	 * @param gunCoolingRate The gunCoolingRate to set
 	 */
 	public void setGunCoolingRate(double gunCoolingRate) {
@@ -103,6 +115,7 @@ public class BattleProperties {
 
 	/**
 	 * Gets the inactivityTime.
+	 * 
 	 * @return Returns a int
 	 */
 	public long getInactivityTime() {
@@ -111,6 +124,7 @@ public class BattleProperties {
 
 	/**
 	 * Sets the inactivityTime.
+	 * 
 	 * @param inactivityTime The inactivityTime to set
 	 */
 	public void setInactivityTime(long inactivityTime) {
@@ -120,6 +134,7 @@ public class BattleProperties {
 
 	/**
 	 * Gets the selectedRobots.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getSelectedRobots() {
@@ -128,6 +143,7 @@ public class BattleProperties {
 
 	/**
 	 * Sets the selectedRobots.
+	 * 
 	 * @param selectedRobots The selectedRobots to set
 	 */
 	public void setSelectedRobots(String selectedRobots) {
@@ -148,6 +164,4 @@ public class BattleProperties {
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 	}
-
 }
-

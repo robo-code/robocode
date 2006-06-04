@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
 
@@ -20,9 +23,8 @@ import robocode.manager.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (10/11/2001 4:00:25 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public abstract class FileSpecification implements Comparable, Serializable, Cloneable {
 	
@@ -30,9 +32,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 	
 	private final static String ROBOCODE_VERSION = "robocode.version";
 	private final static String LIBRARY_DESCRIPTION = "library.description";
-	
-	private static int rebuild = 0;
-	
+
 	protected String name;
 	protected String description;
 	protected String authorName;
@@ -40,36 +40,33 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 	protected String authorWebsite;
 	protected String version;
 	protected String robocodeVersion;
-	protected boolean developmentVersion = false;
-	protected boolean valid = false;
+	protected boolean developmentVersion;
+	protected boolean valid;
 	protected URL webpage;
 	protected String libraryDescription;
-	protected File rootDir = null;
-	private File packageFile = null;
+	protected File rootDir;
+	private File packageFile;
 	
 	private String filePath;
 	private String fileName;
 	private String propertiesFileName;
 	private String thisFileName;
 	private String fileType;
-	private NameManager nameManager = null;
+	private NameManager nameManager;
 	private long fileLastModified;
 	private long fileLength;
 
-	private boolean duplicate = false;
+	private boolean duplicate;
 
 	public Object clone() {
 		try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
-			log("Clone not supported!");
+			Utils.log("Clone not supported!");
 			return null;
 		}
 	}
 		
-	/**
-	 * RobocodeProperties constructor comment.
-	 */
 	protected FileSpecification() {}
 
 	public abstract String getUid();	
@@ -95,7 +92,6 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 		newSpec.storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
 		
 		return newSpec;
-
 	}
 
 	private void storeJarFile(File robotDir, File robotCacheDir) {
@@ -120,9 +116,6 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 	public File getJarFile() // File robotDir, File robotCacheDir)
 	{
 		return packageFile;
-		
-		/*
-		 */
 	}
 	
 	public String toString() {
@@ -133,26 +126,13 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 		return developmentVersion;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/30/2001 3:33:44 PM)
-	 * @return boolean
-	 * @param o java.lang.Object
-	 */
 	public int compareTo(Object o) {
-
-		/* if (this instanceof TeamSpecification && o instanceof RobotSpecification)
-		 return -1;
-		 if (this instanceof RobotSpecification && o instanceof TeamSpecification)
-		 return 1;
-		 */
 		if (o instanceof FileSpecification) {
 			FileSpecification other = (FileSpecification) o;
 			
 			return Utils.compare(getNameManager().getFullPackage(), getNameManager().getFullClassName(),
 					getNameManager().getVersion(), other.getNameManager().getFullPackage(),
 					other.getNameManager().getFullClassName(), other.getNameManager().getVersion());
-			
 		}
 		return 0;
 	}
@@ -168,7 +148,6 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 			return false;
 		}
 		return true;
-		
 	}
 
 	public boolean isSameFile(FileSpecification other) {
@@ -184,12 +163,6 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 		return true;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/26/2001 9:39:32 PM)
-	 * @return boolean
-	 * @param o java.lang.Object
-	 */
 	public boolean equals(Object o) {
 		if (o == null) {
 			return false;
@@ -231,6 +204,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the robotName.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getName() {
@@ -239,6 +213,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the robotDescription.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getDescription() {
@@ -247,6 +222,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the robotAuthorName.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getAuthorName() {
@@ -255,6 +231,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the robotAuthorEmail.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getAuthorEmail() {
@@ -263,6 +240,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the robotAuthorWebsite.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getAuthorWebsite() {
@@ -271,6 +249,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the robotVersion.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getVersion() {
@@ -279,6 +258,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the robocodeVersion
+	 * 
 	 * @return Returns a String
 	 */
 	public String getRobocodeVersion() {
@@ -287,6 +267,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Sets the robocodeVersion
+	 * 
 	 * @param robocodeVersion to set
 	 */
 	public void setRobocodeVersion(String robocodeVersion) {
@@ -297,14 +278,15 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 	public String getLibraryDescription() {
 		return libraryDescription;
 	}
-	
+
 	public void setLibraryDescription(String libraryDescription) {
 		this.libraryDescription = libraryDescription;
 		props.setProperty(LIBRARY_DESCRIPTION, libraryDescription);
 	}
-	
+
 	/**
 	 * Gets the thisFilename.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getThisFileName() {
@@ -313,6 +295,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Sets the thisFilename.
+	 * 
 	 * @param thisFilename The thisFilename to set
 	 */
 	public void setThisFileName(String thisFileName) {
@@ -321,6 +304,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the filePath.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getFilePath() {
@@ -329,6 +313,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Sets the filePath.
+	 * 
 	 * @param filePath The filePath to set
 	 */
 	public void setFilePath(String filePath) {
@@ -337,6 +322,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the propertiesFilename.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getPropertiesFileName() {
@@ -345,6 +331,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Sets the propertiesFilename.
+	 * 
 	 * @param propertiesFilename The propertiesFilename to set
 	 */
 	public void setPropertiesFileName(String propertiesFileName) {
@@ -353,6 +340,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the filename.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getFileName() {
@@ -361,6 +349,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Sets the filename.
+	 * 
 	 * @param filename The filename to set
 	 */
 	public void setFileName(String fileName) {
@@ -369,6 +358,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the fileType.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getFileType() {
@@ -377,6 +367,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Sets the fileType.
+	 * 
 	 * @param fileType The fileType to set
 	 */
 	public void setFileType(String fileType) {
@@ -385,6 +376,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the robotWebpage.
+	 * 
 	 * @return Returns a String
 	 */
 	public URL getWebpage() {
@@ -393,6 +385,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the fileLastModified.
+	 * 
 	 * @return Returns a String
 	 */
 	public long getFileLastModified() {
@@ -401,6 +394,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Sets the fileLastModified.
+	 * 
 	 * @param fileLastModified The fileLastModified to set
 	 */
 	public void setFileLastModified(long fileLastModified) {
@@ -409,6 +403,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Gets the fileLength.
+	 * 
 	 * @return Returns a String
 	 */
 	public long getFileLength() {
@@ -417,6 +412,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 	/**
 	 * Sets the fileLength.
+	 * 
 	 * @param fileLength The fileLength to set
 	 */
 	public void setFileLength(long fileLength) {
@@ -426,53 +422,35 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 	public void store(OutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
-	
+
 	protected void load(FileInputStream in) throws IOException {
 		props.load(in);
 		robocodeVersion = props.getProperty(ROBOCODE_VERSION);
 		libraryDescription = props.getProperty(LIBRARY_DESCRIPTION);
 	}
-	
+
 	public String getFullPackage() {
 		return getNameManager().getFullPackage();
 	}
-	
+
 	public String getFullClassNameWithVersion() {
 		return getNameManager().getFullClassNameWithVersion();
 	}
-	
+
 	public String getFullClassName() {
 		return getNameManager().getFullClassName();
 	}
-	
-	private static void log(String s) {
-		Utils.log(s);
-	}
-	
-	private static void log(String s, Throwable t) {
-		Utils.log(s, t);
-	}
-	
-	private static void log(Throwable e) {
-		Utils.log(e);
-	}
-	
-	/**
-	 * Gets the valid.
-	 * @return Returns a boolean
-	 */
+
 	public boolean getValid() {
 		return valid;
 	}
-	
+
 	public boolean isDuplicate() {
 		return duplicate;
 	}
 
 	public void setDuplicate(boolean isDuplicate) {
-		// if (isDuplicate)
-		// log("Setting to duplicate.");
-		this.duplicate = isDuplicate;	
+		this.duplicate = isDuplicate;
 	}
 
 	public NameManager getNameManager() {
@@ -487,27 +465,17 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 		}
 		return nameManager;
 	}
-	
+
 	public boolean exists() {
 		return new File(getFilePath()).exists();
 	}
 
 	/**
 	 * Gets the rootDir.
+	 * 
 	 * @return Returns a File
 	 */
 	public File getRootDir() {
 		return rootDir;
 	}
-
-	/**
-	 * Sets the rootDir.
-	 * @param rootDir The rootDir to set
-	 */
-
-	/* public void setRootDir(File rootDir) {
-	 this.rootDir = rootDir;
-	 }
-	 */
-
 }

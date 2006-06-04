@@ -1,12 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Added showInBrowser() for displaying content from an URL
+ *     - Added showRoboWiki(), showYahooGroupRobocode(), showRobocodeRepository()
+ *     - Removed the Thread.sleep(diff) from showSplashScreen()
  *******************************************************************************/
 package robocode.manager;
 
@@ -21,34 +26,27 @@ import robocode.packager.*;
 import robocode.util.*;
 
 
+/**
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
+ */
 public class WindowManager {
 	
-	private RobocodeEditor robocodeEditor = null;
-	private RobotPackager robotPackager = null;
-	private RobotExtractor robotExtractor = null;
-	private RobocodeFrame robocodeFrame = null;
-	private RobocodeManager manager = null;
-	private TeamCreator teamCreator = null;
+	private RobocodeEditor robocodeEditor;
+	private RobotPackager robotPackager;
+	private RobotExtractor robotExtractor;
+	private RobocodeFrame robocodeFrame;
+	private RobocodeManager manager;
+	private TeamCreator teamCreator;
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:26:17 PM)
-	 * @param newRobocodeFrame robocode.RoboCodeFrame
-	 */
+	public WindowManager(RobocodeManager manager) {
+		this.manager = manager;
+	}
+	
 	public void setRobocodeFrame(RobocodeFrame newRobocodeFrame) {
 		robocodeFrame = newRobocodeFrame;
 	}
 
-	public WindowManager(RobocodeManager manager) {
-		this.manager = manager;
-		Utils.setLocationFix();
-	}
-	
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:26:17 PM)
-	 * @return robocode.RoboCodeFrame
-	 */
 	public RobocodeFrame getRobocodeFrame() {
 		if (robocodeFrame == null) {
 			// Create the frame
@@ -68,23 +66,11 @@ public class WindowManager {
 	}
 
 	public void showAboutBox() {
-		AboutBox aboutBox = new AboutBox(manager);
+		AboutBox aboutBox = new AboutBox(robocodeFrame, manager);
 
 		Utils.packCenterShow(robocodeFrame, aboutBox);
-
-		/* Dimension dialogSize = aboutBox.getPreferredSize();
-		 Dimension frameSize = robocodeFrame.getSize();
-		 Point loc = robocodeFrame.getLocation();
-		 aboutBox.setLocation((frameSize.width - dialogSize.width) / 2 + loc.x, (frameSize.height - dialogSize.height) / 2 + loc.y);
-		 aboutBox.setModal(true);
-		 aboutBox.show();
-		 */
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:23:11 PM)
-	 */
 	public void showBattleOpenDialog() {
 		manager.getBattleManager().pauseBattle();
 		File f = new File(manager.getBattleManager().getBattlePath());
@@ -128,80 +114,45 @@ public class WindowManager {
 		manager.getBattleManager().resumeBattle();	
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:53:17 PM)
-	 */
 	public void showVersionsTxt() {
-		String helpurl = "file:" + new File(Constants.cwd(), "").getAbsoluteFile() // System.getProperty("user.dir")
-				+ System.getProperty("file.separator") + "versions.txt";
+		String url = "file://" + new File(Constants.cwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
+				+ "versions.txt";
 		
-		// BrowserControl.displayURL(helpurl);
-		try {
-			manager.getBrowserManager().openURL(helpurl);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(robocodeFrame, e.getMessage(), "Unable to open browser!",
-					JOptionPane.INFORMATION_MESSAGE);
-		}
+		showInBrowser(url);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:53:17 PM)
-	 */
 	public void showHelpApi() {
-		String helpurl = "file:" + new File(Constants.cwd(), "").getAbsoluteFile()
-				+ System.getProperty("file.separator") + "javadoc" + System.getProperty("file.separator") + "index.html";
+		String url = "file://" + new File(Constants.cwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
+				+ "javadoc" + System.getProperty("file.separator") + "index.html";
 		
-		try {
-			manager.getBrowserManager().openURL(helpurl);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(robocodeFrame, e.getMessage(), "Unable to open browser!",
-					JOptionPane.INFORMATION_MESSAGE);
-		}
-
+		showInBrowser(url);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:54:09 PM)
-	 */
 	public void showFaq() {
-	
-		String helpurl = "http://robocode.sourceforge.net/help/robocode.faq.txt";
-
-		try {
-			manager.getBrowserManager().openURL(helpurl);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(robocodeFrame, e.getMessage(), "Unable to open browser!",
-					JOptionPane.INFORMATION_MESSAGE);
-		}
-
+		showInBrowser("http://robocode.sourceforge.net/help/robocode.faq.txt");
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:54:09 PM)
-	 */
 	public void showOnlineHelp() {
-	
-		String helpurl = "http://robocode.sourceforge.net/help/index.html";
-
-		try {
-			manager.getBrowserManager().openURL(helpurl);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(robocodeFrame, e.getMessage(), "Unable to open browser!",
-					JOptionPane.INFORMATION_MESSAGE);
-		}
-
+		showInBrowser("http://robocode.sourceforge.net/help");
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:52:21 PM)
-	 */
-	public void showOptionsPreferences() {
+	public void showRobocodeHome() {
+		showInBrowser("http://robocode.sourceforge.net");
+	}
 
+	public void showRoboWiki() {
+		showInBrowser("http://robowiki.net");
+	}
+
+	public void showYahooGroupRobocode() {
+		showInBrowser("http://groups.yahoo.com/group/robocode");
+	}
+
+	public void showRobocodeRepository() {
+		showInBrowser("http://robocoderepository.com");
+	}
+
+	public void showOptionsPreferences() {
 		manager.getBattleManager().pauseBattle();
 	
 		// Create the preferencesDialog
@@ -209,13 +160,8 @@ public class WindowManager {
 
 		// Show it
 		Utils.packCenterShow(robocodeFrame, preferencesDialog);
-
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/16/2001 3:25:34 PM)
-	 */
 	public void showResultsDialog(Battle battle) {
 		ResultsDialog resultsDialog = new ResultsDialog(robocodeFrame, battle);
 
@@ -223,10 +169,6 @@ public class WindowManager {
 		Utils.packCenterShow(robocodeFrame, resultsDialog);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:50:26 PM)
-	 */
 	public void showRobocodeEditor() {
 		if (robocodeEditor == null) {
 			robocodeEditor = new robocode.editor.RobocodeEditor(manager);
@@ -237,10 +179,6 @@ public class WindowManager {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:50:26 PM)
-	 */
 	public void showRobotPackager() {
 		if (robotPackager != null) {
 			robotPackager.dispose();
@@ -253,15 +191,10 @@ public class WindowManager {
 		return;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:50:26 PM)
-	 */
 	public void showRobotExtractor(JFrame owner) {
 		if (robotExtractor != null) {
 			robotExtractor.dispose();
 			robotExtractor = null;
-			// System.gc();
 		}
 		
 		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
@@ -269,69 +202,31 @@ public class WindowManager {
 		Utils.packCenterShow(robotExtractor);
 	}
 
-	/*
-	 public void showTeamPackager() {
-	 if (teamPackager != null)
-	 {
-	 teamPackager.dispose();
-	 teamPackager = null;
-	 System.gc();
-	 }
-	 
-	 teamPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager(),true);
-	 // Pack, center, and show it
-	 Utils.packCenterShow(teamPackager);
-	 }
-	 */
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/3/2001 12:52:13 PM)
-	 */
 	public void showSplashScreen() {
-		// System.out.println("Creating.");
 		// Create the splash screen 
 		SplashScreen splashScreen = new SplashScreen(manager);
 
-		// System.out.println("PCS");
 		// Pack, center, and show it
 		Utils.packCenterShow(splashScreen);
-
 		for (int i = 0; i < 5 * 20 && !splashScreen.isPainted(); i++) {
-			// System.out.println("waiting...");
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException ie) {}
-			;
 		}
-		// System.out.println("done waiting.");
+		Utils.setStatusLabel(splashScreen.getSplashLabel());
+
+		manager.getRobotRepositoryManager().getRobotRepository();
 
 		Utils.setStatusLabel(splashScreen.getSplashLabel());
-		try {
-			long starttime = System.currentTimeMillis();
+		manager.getImageManager();
+		manager.getCpuManager().getCpuConstant();
 
-			manager.getRobotRepositoryManager().getRobotRepository();
-			Utils.setStatus("Loading graphics...");
-			manager.getImageManager().initialize(splashScreen);
-			manager.getCpuManager().getCpuConstant();
-			Utils.setStatus("");
-			long diff = 4000 - (System.currentTimeMillis() - starttime);
-
-			if (diff > 0) {
-				Thread.sleep(diff);
-			}
-		} catch (InterruptedException ie) {}
-		;
+		Utils.setStatus("");
 		Utils.setStatusLabel(null);
-		splashScreen.dispose();
 
+		splashScreen.dispose();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/22/2001 1:49:03 PM)
-	 * @param battleProperties java.util.Properties
-	 */
 	public void showNewBattleDialog(BattleProperties battleProperties) {
 		manager.getBattleManager().pauseBattle();
 	
@@ -342,11 +237,6 @@ public class WindowManager {
 		return;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 3:11:43 PM)
-	 * @return boolean
-	 */
 	public boolean closeRobocodeEditor() {
 		if (robocodeEditor == null) {
 			return true;
@@ -357,11 +247,11 @@ public class WindowManager {
 		}
 
 		return robocodeEditor.close();
-	
 	}
 
 	/**
 	 * Gets the manager.
+	 * 
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {
@@ -439,7 +329,6 @@ public class WindowManager {
 				if (JOptionPane.showConfirmDialog(getRobocodeFrame(), outputFile + " already exists.  Overwrite?",
 						"Warning", JOptionPane.YES_NO_OPTION)
 						== JOptionPane.NO_OPTION) {
-					// JOptionPane.showMessageDialog(getRobocodeFrame(),"Import cancelled.");
 					return;
 				}
 			}
@@ -456,8 +345,20 @@ public class WindowManager {
 				}
 			}
 		}
-
 	}
 
+	/**
+	 * Shows a web page using the browser manager.
+	 * 
+	 * @param url
+	 *        The URL of the web page
+	 */
+	private void showInBrowser(String url) {
+		try {
+			manager.getBrowserManager().openURL(url);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(robocodeFrame, e.getMessage(), "Unable to open browser!",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
 }
-

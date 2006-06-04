@@ -1,46 +1,56 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Matthew Reeder
+ *     - Changes for Find/Replace commands and Window menu
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
 
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.text.*;
+import javax.swing.filechooser.FileFilter;
 import java.io.*;
 import robocode.manager.*;
 import robocode.util.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (4/3/2001 2:04:07 PM)
- * @author: Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Matthew Reeder, Flemming N. Larsen (current)
  */
 public class RobocodeEditor extends JFrame implements Runnable {
-	private JPanel robocodeEditorContentPane = null;
+	private JPanel robocodeEditorContentPane;
 
-	private RobocodeEditorMenuBar robocodeEditorMenuBar = null;
-	private JDesktopPane desktopPane = null;
-	public boolean isApplication = false;
+	private RobocodeEditorMenuBar robocodeEditorMenuBar;
+	private JDesktopPane desktopPane;
+	public boolean isApplication;
 
-	public java.awt.Point origin = new Point();
-	public File robotsDirectory = null;
-	private JToolBar statusBar = null;
-	private JLabel lineLabel = null;
+	public Point origin = new Point();
+	public File robotsDirectory;
+	private JToolBar statusBar;
+	private JLabel lineLabel;
 
-	private RobocodeProperties robocodeProperties = null;
-	private File editorDirectory = null;
-	private RobocodeManager manager = null;
-	
+	private RobocodeProperties robocodeProperties;
+	private File editorDirectory;
+	private RobocodeManager manager;
+
+	private FindReplaceDialog findReplaceDialog;
+	private ReplaceAction replaceAction;
+
 	EventHandler eventHandler = new EventHandler();
+
 	class EventHandler implements ComponentListener {
 		public void componentMoved(ComponentEvent e) {}
 
@@ -51,6 +61,21 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 
 		public void componentResized(ComponentEvent e) {}
+	}
+
+
+	/**
+	 * Action that launches the Replace dialog.
+	 * 
+	 * The reason this is needed (and the menubar isn't sufficient) is that
+	 * ctrl+H is bound in JTextComponents at a lower level to backspace and in
+	 * order to override this, I need to rebind it to an Action when the
+	 * JEditorPane is created.
+	 */
+	class ReplaceAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			replaceDialog();
+		}
 	}
 
 	/**
@@ -67,10 +92,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		initialize();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/5/2001 2:41:04 PM)
-	 */
 	public void addPlaceShowFocus(JInternalFrame internalFrame) {
 		getDesktopPane().add(internalFrame);
 	
@@ -104,11 +125,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/20/2001 1:14:00 PM)
-	 * @return boolean
-	 */
 	public boolean close() {
 		JInternalFrame[] frames = getDesktopPane().getAllFrames();
 		EditWindow editWindow = null;
@@ -124,21 +140,16 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				}
 			}
 		}
-		;
+
 		if (isApplication) {
 			System.exit(0);
 		} else {
 			dispose();
 			return true;
 		}
-
 		return true;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/5/2001 2:33:21 PM)
-	 */
 	public void createNewJavaFile() {
 		String packageName = null;
 
@@ -196,7 +207,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	
 		editWindow.getEditorPane().setText(template);
 		editWindow.getEditorPane().setCaretPosition(0);
-		javax.swing.text.Document d = editWindow.getEditorPane().getDocument();
+		Document d = editWindow.getEditorPane().getDocument();
 
 		if (d instanceof JavaDocument) {
 			((JavaDocument) d).setEditing(true);
@@ -204,17 +215,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		addPlaceShowFocus(editWindow);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/5/2001 2:33:21 PM)
-	 */
 	public void createNewRobot() {
 		boolean done = false;
 		String message = "Type in the name for your robot.\nExample: MyFirstRobot";
 		String name = "";
 
 		while (!done) {
-		
 			name = (String) JOptionPane.showInputDialog(this, message, "New Robot", JOptionPane.PLAIN_MESSAGE, null,
 					null, name);
 			if (name == null) {
@@ -260,7 +266,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		String packageName = "";
 
 		while (!done) {
-		
 			packageName = (String) JOptionPane.showInputDialog(this, message, name + " - package name",
 					JOptionPane.PLAIN_MESSAGE, null, null, packageName);
 			if (packageName == null) {
@@ -284,7 +289,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 					message = "The string you entered contains an invalid character.\nPlease use only letters and/or digits.";
 					done = false;
 				}
-			
 			}
 			if (!done) {
 				continue;
@@ -312,7 +316,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 		EditWindow editWindow = new EditWindow(this, robotsDirectory);
 
-		// editWindow.setTitle("Editing - " + name);//newRobotDialog.getNewRobotName());
 		editWindow.setRobotName(name);
 		editWindow.setModified(false);
 	
@@ -357,7 +360,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	
 		editWindow.getEditorPane().setText(template);
 		editWindow.getEditorPane().setCaretPosition(0);
-		javax.swing.text.Document d = editWindow.getEditorPane().getDocument();
+		Document d = editWindow.getEditorPane().getDocument();
 
 		if (d instanceof JavaDocument) {
 			((JavaDocument) d).setEditing(true);
@@ -368,11 +371,14 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/19/2001 12:59:17 PM)
-	 * @return robocode.editor.EditWindow
-	 */
+	public void findDialog() {
+		getFindReplaceDialog().showDialog(false);
+	}
+
+	public void replaceDialog() {
+		getFindReplaceDialog().showDialog(true);
+	}
+
 	public EditWindow getActiveWindow() {
 		JInternalFrame[] frames = getDesktopPane().getAllFrames();
 		EditWindow editWindow = null;
@@ -390,11 +396,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return editWindow;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/5/2001 6:44:32 PM)
-	 * @return robocode.editor.RobocodeCompiler
-	 */
 	public RobocodeCompiler getCompiler() {
 		RobocodeCompiler compiler = RobocodeCompilerFactory.createCompiler(this);
 
@@ -406,77 +407,57 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the desktopPane
-	 * @return javax.swing.JDesktopPane
+	 * 
+	 * @return JDesktopPane
 	 */
-	public javax.swing.JDesktopPane getDesktopPane() {
+	public JDesktopPane getDesktopPane() {
 		if (desktopPane == null) {
-			try {
-				desktopPane = new javax.swing.JDesktopPane();
-				desktopPane.setName("desktopPane");
-				desktopPane.setBackground(new java.awt.Color(128, 128, 128));
-				desktopPane.setPreferredSize(new Dimension(600, 500));
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			desktopPane = new JDesktopPane();
+			desktopPane.setBackground(new Color(128, 128, 128));
+			desktopPane.setPreferredSize(new Dimension(600, 500));
 		}
 		return desktopPane;
 	}
 
 	/**
 	 * Return the line label.
-	 * @return javax.swing.JLabel
+	 * 
+	 * @return JLabel
 	 */
-	private javax.swing.JLabel getLineLabel() {
+	private JLabel getLineLabel() {
 		if (lineLabel == null) {
-			try {
-				lineLabel = new javax.swing.JLabel();
-				lineLabel.setName("lineLabel");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			lineLabel = new JLabel();
 		}
 		return lineLabel;
 	}
 
 	/**
 	 * Return the robocodeEditorContentPane
-	 * @return javax.swing.JPanel
+	 * 
+	 * @return JPanel
 	 */
-	private javax.swing.JPanel getRobocodeEditorContentPane() {
+	private JPanel getRobocodeEditorContentPane() {
 		if (robocodeEditorContentPane == null) {
-			try {
-				robocodeEditorContentPane = new javax.swing.JPanel();
-				robocodeEditorContentPane.setName("robocodeEditorContentPane");
-				robocodeEditorContentPane.setLayout(new java.awt.BorderLayout());
-				robocodeEditorContentPane.add(getDesktopPane(), "Center");
-				robocodeEditorContentPane.add(getStatusBar(), "South");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robocodeEditorContentPane = new JPanel();
+			robocodeEditorContentPane.setLayout(new BorderLayout());
+			robocodeEditorContentPane.add(getDesktopPane(), "Center");
+			robocodeEditorContentPane.add(getStatusBar(), "South");
 		}
 		return robocodeEditorContentPane;
 	}
 
 	/**
 	 * Return the robocodeEditorMenuBar property value.
+	 * 
 	 * @return robocode.editor.RobocodeEditorMenuBar
 	 */
 	private RobocodeEditorMenuBar getRobocodeEditorMenuBar() {
 		if (robocodeEditorMenuBar == null) {
-			try {
-				robocodeEditorMenuBar = new RobocodeEditorMenuBar(this);
-				robocodeEditorMenuBar.setName("robocodeEditorMenuBar");
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			robocodeEditorMenuBar = new RobocodeEditorMenuBar(this);
 		}
 		return robocodeEditorMenuBar;
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/18/2001 3:43:41 PM)
-	 */
 	public RobocodeProperties getRobocodeProperties() {
 		if (robocodeProperties == null) {
 			robocodeProperties = new RobocodeProperties(manager);
@@ -485,9 +466,9 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 				robocodeProperties.load(in);
 			} catch (FileNotFoundException e) {
-				log("No robocode.properties file, using defaults.");
+				Utils.log("No robocode.properties file, using defaults.");
 			} catch (IOException e) {
-				log("IO Exception reading robocode.properties" + e);
+				Utils.log("IO Exception reading robocode.properties" + e);
 			}
 		}
 		return robocodeProperties;
@@ -495,82 +476,97 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the toolBar.
-	 * @return javax.swing.JToolBar
+	 * 
+	 * @return JToolBar
 	 */
-	private javax.swing.JToolBar getStatusBar() {
+	private JToolBar getStatusBar() {
 		if (statusBar == null) {
-			try {
-				statusBar = new javax.swing.JToolBar();
-				statusBar.setName("statusBar");
-				statusBar.setLayout(new BorderLayout());
-				statusBar.add(getLineLabel(), BorderLayout.WEST);
-			} catch (java.lang.Throwable e) {
-				log(e);
-			}
+			statusBar = new JToolBar();
+			statusBar.setLayout(new BorderLayout());
+			statusBar.add(getLineLabel(), BorderLayout.WEST);
 		}
 		return statusBar;
+	}
+
+	/**
+	 * Return the findReplaceDialog
+	 * 
+	 * @return robocode.editor.FindReplaceDialog
+	 */
+	public FindReplaceDialog getFindReplaceDialog() {
+		if (findReplaceDialog == null) {
+			findReplaceDialog = new FindReplaceDialog(this);
+		}
+		return findReplaceDialog;
+	}
+
+	/**
+	 * Return the replaceAction
+	 * 
+	 * @return Action
+	 */
+	public Action getReplaceAction() {
+		if (replaceAction == null) {
+			replaceAction = new ReplaceAction();
+		}
+		return replaceAction;
+	}
+
+	/**
+	 * Adds the given window to the Window menu.
+	 */
+	public void addToWindowMenu(EditWindow window) {
+		WindowMenuItem item = new WindowMenuItem(window, getRobocodeEditorMenuBar().getWindowMenu());
+
+		getRobocodeEditorMenuBar().getMoreWindowsDialog().addWindowItem(item);
+	}
+
+	/**
+	 * Adds the given window to the Window menu.
+	 */
+	public void removeFromWindowMenu(EditWindow window) {
+		Component[] components = getRobocodeEditorMenuBar().getWindowMenu().getMenuComponents();
+
+		for (int i = 0; i < components.length; i++) {
+			if (components[i] instanceof WindowMenuItem) {
+				WindowMenuItem item = (WindowMenuItem) components[i];
+
+				if (item.getEditWindow() == window) {
+					getRobocodeEditorMenuBar().getWindowMenu().remove(item);
+				}
+				getRobocodeEditorMenuBar().getMoreWindowsDialog().removeWindowItem(item);
+				break;
+			}
+		}
 	}
 
 	/**
 	 * Initialize the class.
 	 */
 	private void initialize() {
-		try {
-			addWindowListener(new java.awt.event.WindowAdapter() {
-				public void windowClosing(java.awt.event.WindowEvent e) {
-					close();
-				}
-			});
-			setName("RoboCodeEditor");
-			setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-			setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icons/icon.jpg")));
-			setTitle("Robot Editor");
-			// setSize(595, 539);
-			setJMenuBar(getRobocodeEditorMenuBar());
-			setContentPane(getRobocodeEditorContentPane());
-			addComponentListener(eventHandler);
-		} catch (java.lang.Throwable e) {
-			log(e);
-		}
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	public void log(String s) {
-		Utils.log(s);
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	private static void log(String s, Throwable e) {
-		Utils.log(s, e);
-	}
-
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 1:41:21 PM)
-	 * @param e java.lang.Exception
-	 */
-	private void log(Throwable e) {
-		Utils.log(e);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				close();
+			}
+		});
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		setIconImage(ImageUtil.getImage(this, "/resources/icons/icon.jpg"));
+		setTitle("Robot Editor");
+		setJMenuBar(getRobocodeEditorMenuBar());
+		setContentPane(getRobocodeEditorContentPane());
+		addComponentListener(eventHandler);
 	}
 
 	/**
 	 * main entrypoint - starts the part when it is run as an application
-	 * @param args java.lang.String[]
+	 * 
+	 * @param args the arguments for the application
 	 */
-	public static void main(java.lang.String[] args) {
+	public static void main(String[] args) {
 		try {
 
 			/* Set native look and feel */
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
 			RobocodeEditor robocodeEditor;
 
 			robocodeEditor = new RobocodeEditor(null);
@@ -590,26 +586,19 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			robocodeEditor.setVisible(true);
 			// 2nd time for bug in some JREs
 			robocodeEditor.setVisible(true);
-
 		} catch (Throwable e) {
-			log("Exception in RoboCodeEditor.main", e);
+			Utils.log("Exception in RoboCodeEditor.main", e);
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/5/2001 2:44:59 PM)
-	 */
 	public void openRobot() {
 		if (editorDirectory == null) {
 			editorDirectory = robotsDirectory;
 		}
-
 		JFileChooser chooser;
 
 		chooser = new JFileChooser(editorDirectory);
-		
-		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+		FileFilter filter = new FileFilter() {
 			public boolean accept(File pathname) {
 				if (pathname.isHidden()) {
 					return false;
@@ -643,14 +632,13 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 			editorDirectory = chooser.getSelectedFile().getParentFile();
 			try {
-				// JOptionPane.showMessageDialog(this,"I will try to read " + robotFilename);
 				EditWindow editWindow = new EditWindow(this, robotsDirectory);
 
 				editWindow.getEditorPane().read(new FileReader(robotFilename), new File(robotFilename));
 				editWindow.getEditorPane().setCaretPosition(0);
 				editWindow.setFileName(robotFilename);
 				editWindow.setModified(false);
-				javax.swing.text.Document d = editWindow.getEditorPane().getDocument();
+				Document d = editWindow.getEditorPane().getDocument();
 
 				if (d instanceof JavaDocument) {
 					((JavaDocument) d).setEditing(true);
@@ -658,29 +646,19 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				addPlaceShowFocus(editWindow);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, e.toString());
-				log(e);
+				Utils.log(e);
 			}
 		}
-
 	}
 
 	public void extractRobot() {
 		manager.getWindowManager().showRobotExtractor(this);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (4/18/2001 4:27:07 PM)
-	 * @param msg java.lang.String
-	 */
 	public void run() {
 		getCompiler();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/5/2001 2:46:03 PM)
-	 */
 	public void saveAsRobot() {
 		EditWindow editWindow = getActiveWindow();
 
@@ -689,13 +667,9 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/18/2001 3:21:22 PM)
-	 */
 	public void saveRobocodeProperties() {
 		if (robocodeProperties == null) {
-			log("Cannot save null robocode properties");
+			Utils.log("Cannot save null robocode properties");
 			return;
 		}
 		try {
@@ -703,15 +677,10 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 			robocodeProperties.store(out, "Robocode Properties");
 		} catch (IOException e) {
-			log(e);
+			Utils.log(e);
 		}
-	
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (1/18/2001 3:21:22 PM)
-	 */
 	public void resetCompilerProperties() {
 		CompilerProperties props = RobocodeCompilerFactory.getCompilerProperties();
 
@@ -720,10 +689,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		getCompiler();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (9/5/2001 2:46:03 PM)
-	 */
 	public void saveRobot() {
 		EditWindow editWindow = getActiveWindow();
 
@@ -732,11 +697,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (10/10/2001 1:15:24 PM)
-	 * @param line int
-	 */
 	public void setLineStatus(int line) {
 		if (line >= 0) {
 			getLineLabel().setText("Line: " + (line + 1));
@@ -745,49 +705,24 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/22/2001 2:53:17 PM)
-	 */
 	public void showHelpApi() {
 		String helpurl = "file:" + new File(Constants.cwd(), "").getAbsoluteFile() // System.getProperty("user.dir")
 				+ System.getProperty("file.separator") + "javadoc" + System.getProperty("file.separator") + "index.html";
-		
-		// BrowserControl.displayURL(helpurl);
+
 		try {
 			manager.getBrowserManager().openURL(helpurl);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open browser!",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-
-		/*
-		 java.net.URL u;
-		 try {
-		 u = new java.net.URL(helpurl);
-		 } catch (java.net.MalformedURLException e) {
-		 log("Could not form a URL from " + helpurl);
-		 return;
-		 }
-
-
-		 // Create the dialog
-		 RobocodeHtmlDialog hd = new RobocodeHtmlDialog();
-		 Dimension dialogSize = hd.getPreferredSize();
-		 Dimension frameSize = robocodeFrame.getSize();
-		 Point loc = robocodeFrame.getLocation();
-		 hd.setTitle("Robocode API");
-		 hd.setURL(u);
-		 hd.show();
-		 */
 	}
 
 	/**
 	 * Gets the manager.
+	 * 
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {
 		return manager;
 	}
-
 }
