@@ -76,7 +76,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * <PRE>
 	 *   turnLeftRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param How many radians to rotate left.
+	 * @param radians How many radians to rotate left.
 	 */
 	public void turnLeftRadians(double radians) {
 		if (peer != null) {
@@ -94,7 +94,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * <PRE>
 	 *   turnRightRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param How many radians to rotate right.
+	 * @param radians How many radians to rotate right.
 	 */
 	public void turnRightRadians(double radians) {
 		if (peer != null) {
@@ -190,7 +190,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * <PRE>
 	 *   turnGunLeftRadians(Math.PI /2);
 	 * </PRE>
-	 * @param How many radians to rotate the gun left.
+	 * @param radians How many radians to rotate the gun left.
 	 */
 	public void turnGunLeftRadians(double radians) {
 		if (peer != null) {
@@ -208,7 +208,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * <PRE>
 	 *   turnGunRightRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param How many radians to rotate the gun right.
+	 * @param radians How many radians to rotate the gun right.
 	 */
 	public void turnGunRightRadians(double radians) {
 		if (peer != null) {
@@ -226,7 +226,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * <PRE>
 	 *   turnRadarLeftRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param How many radians to rotate the radar left.
+	 * @param radians How many radians to rotate the radar left.
 	 */
 	public void turnRadarLeftRadians(double radians) {
 		if (peer != null) {
@@ -244,7 +244,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * <PRE>
 	 *   turnRadarRightRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param How many radians to rotate the radar right.
+	 * @param radians How many radians to rotate the radar right.
 	 */
 	public void turnRadarRightRadians(double radians) {
 		if (peer != null) {
