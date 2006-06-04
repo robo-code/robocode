@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 Mathew Nelson and Robocode contributors
+ * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 import javax.swing.*;
 import java.awt.*;
@@ -15,33 +18,22 @@ import java.net.*;
 
 
 /**
- * Insert the type's description here.
- * Creation date: (11/4/2001 7:44:32 PM)
- * @author: Administrator
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class InstallApplet extends java.applet.Applet implements Runnable {
-	Thread runThread = null;
+	Thread runThread;
 
 	String line[] = new String[10];
 	String bottomLine = "";
 
-	Image osi = null;
-	Graphics osg = null;
+	Image osi;
+	Graphics osg;
 	
-	/**
-	 * InstallApplet constructor comment.
-	 */
 	public InstallApplet() {
 		super();
-		// add(new JLabel("Congratulations!  You are ready to install Robocode."));
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/4/2001 8:24:26 PM)
-	 * @param g java.awt.Graphics
-	 * @param s java.lang.String
-	 */
 	public void centerString(Graphics g, String s) {
 
 		int left, top, descent;
@@ -52,13 +44,13 @@ public class InstallApplet extends java.applet.Applet implements Runnable {
 		height = fm.getHeight();
 		descent = fm.getDescent();
 
-		left = bounds().width / 2 - width / 2;
-		top = bounds().height / 2 - height / 2;
+		left = getBounds().width / 2 - width / 2;
+		top = getBounds().height / 2 - height / 2;
 
-		if (left + width > bounds().width) {
+		if (left + width > getBounds().width) {
 			left = getWidth() - width;
 		}
-		if (top + height >= bounds().height) {
+		if (top + height >= getBounds().height) {
 			top = getHeight() - height - 1;
 		}
 		if (left < 0) {
@@ -70,49 +62,33 @@ public class InstallApplet extends java.applet.Applet implements Runnable {
 		g.drawString(s, left, top + height - descent);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/8/2001 12:41:48 AM)
-	 * @return java.awt.Point
-	 * @param s java.lang.String
-	 * @param line int
-	 */
 	public Point getStartPosition(Graphics g, String s, int line) {
 		FontMetrics fm = g.getFontMetrics();
-		int l = (bounds().width - fm.stringWidth(s)) / 2;
+		int l = (getBounds().width - fm.stringWidth(s)) / 2;
 		int t = (1 + line) * fm.getHeight();
 
 		return new Point(l, t);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/4/2001 8:06:53 PM)
-	 */
 	public void init() {
 		line[0] = "Initializing...";
 		setBackground(Color.white);
 		repaint();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/4/2001 8:00:44 PM)
-	 * @param g java.awt.Graphics
-	 */
 	public void paint(java.awt.Graphics g) {
 		if (osi == null || osg == null) {	
 			if (osi == null) {
-				osi = createImage(bounds().width, bounds().height);
+				osi = createImage(getBounds().width, getBounds().height);
 			}
 			osg = osi.getGraphics();
 			if (osg == null) {
 				g.setColor(Color.white);
-				g.fillRect(0, 0, bounds().width, bounds().height);
+				g.fillRect(0, 0, getBounds().width, getBounds().height);
 			}
 		}
 		osg.setColor(Color.white);
-		osg.fillRect(0, 0, bounds().width, bounds().height);
+		osg.fillRect(0, 0, getBounds().width, getBounds().height);
 		osg.setColor(Color.black);
 		for (int i = 0; i < 10; i++) {
 			if (line[i] != null) {
@@ -123,14 +99,10 @@ public class InstallApplet extends java.applet.Applet implements Runnable {
 		}
 		Point p = getStartPosition(osg, bottomLine, 0);
 
-		osg.drawString(bottomLine, p.x, bounds().height - 5);
+		osg.drawString(bottomLine, p.x, getBounds().height - 5);
 		g.drawImage(osi, 0, 0, this);
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/4/2001 8:06:53 PM)
-	 */
 	public void run() {
 		bottomLine = ""; // ** Applet running, you may ignore the following instructions **";
 		setBackground(Color.white);
@@ -147,7 +119,6 @@ public class InstallApplet extends java.applet.Applet implements Runnable {
 		boolean easyroad = false;
 		boolean upgrade = false;
 	
-		// String query = getDocumentBase().getQuery();
 		String query = getParameter("query");
 
 		if (query == null) {
@@ -220,55 +191,16 @@ public class InstallApplet extends java.applet.Applet implements Runnable {
 					getAppletContext().showDocument(new URL(getDocumentBase(), "install_other.html"));
 				}
 			}
-
-			/* else
-			 {
-			 if (!oldMac)
-			 getAppletContext().showDocument(new URL(getDocumentBase(),"detectjavaversion_manual.html"));
-			 else
-			 getAppletContext().showDocument(new URL(getDocumentBase(),"needmacosx.html"));
-			 
-			 }*/
 		} catch (MalformedURLException e) {
 			line[5] = "Unable to proceed: " + e;
 			repaint();
 		}
 
-		// add(new Label("You are using Java vendor " + System.getProperty("java.vendor")));
-		// add(new Label("You are on OS:  " + ));
-		// add(new Label("You are on arch: " + System.getProperty("os.arch")));
-		// add(new Label("You are on OS version: " + System.getProperty("os.version")));
-
-		/*
-		 try {
-		 getAppletContext().showDocument(new URL("http://www.bugg.com"));
-		 } catch (MalformedURLException e) {
-		 }
-		 */
-		
-		/*
-		 String result = "No result";
-		 try {
-		 Process p = Runtime.getRuntime().exec("java -version");
-		 DataInputStream in = new DataInputStream(p.getInputStream());
-		 result = in.readLine();
-		 } catch (Exception e) {
-		 result = e.toString();
-		 }
-		 add(new Label(result));
-		 */
 		validate();
 		repaint();
 	}
 
-	/**
-	 * Insert the method's description here.
-	 * Creation date: (11/4/2001 8:06:53 PM)
-	 */
 	public void start() {
-
-		runThread = new Thread(this);
-		runThread.start();
-	
+		runThread = new Thread(this).start();
 	}
 }
