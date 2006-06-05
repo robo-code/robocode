@@ -217,8 +217,8 @@ public class BattleView extends Canvas {
 	public void paintBattle(Graphics2D g) {
 
 		// Clear canvas
-		setBackground(CANVAS_BG_COLOR);
-		g.clearRect(0, 0, getWidth(), getHeight());
+		g.setColor(CANVAS_BG_COLOR);
+		g.fillRect(0, 0, getWidth(), getHeight());
 
 		// Calculate border space
 		double dx = (getWidth() - scale * battleField.getWidth()) / 2;
@@ -306,25 +306,34 @@ public class BattleView extends Canvas {
 		for (int i = 0; i < battle.getRobots().size(); i++) {
 			c = (RobotPeer) battle.getRobots().elementAt(i);
 
-			int x, y;
-
-			x = (int) c.getX();
-			y = battle.getBattleField().getHeight() - (int) c.getY();
-
-			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-
 			if (c.isDead()) {
 				if (drawGround) {
 					RenderImage explodeDebrise = imageManager.getExplosionDebrise();
 					
+					int x = (int) c.getX();
+					int y = battle.getBattleField().getHeight() - (int) c.getY();
+
+					AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+
 					explodeDebrise.setTransform(at);
 					explodeDebrise.paint(g);
 				}
-			} else {
-				int colorIndex = c.getColorIndex();
-	
+			}
+		}
+
+		for (int i = 0; i < battle.getRobots().size(); i++) {
+			c = (RobotPeer) battle.getRobots().elementAt(i);
+
+			if (!c.isDead()) {
+				int x = (int) c.getX();
+				int y = battle.getBattleField().getHeight() - (int) c.getY();
+
+				AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+
 				at.rotate(c.getHeading());
-				
+
+				int colorIndex = c.getColorIndex();
+
 				RenderImage robotRenderImage = imageManager.getColoredRobotRenderImage(colorIndex);
 	
 				robotRenderImage.setTransform(at);
