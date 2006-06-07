@@ -4,7 +4,7 @@
 <!--  Apache Ant build script for building the Robocode Auto-extract        -->
 <!-- ====================================================================== -->
 
-<project name="autoextract" default="build" basedir=".">
+<project name="autoextract" default="build" basedir="../build">
   <description>Apache Ant build script for building the Robocode Auto-extract</description>
 
   <!-- Enable debug information when compiling -->  
@@ -18,13 +18,8 @@
   <!-- ====================================== -->
   <target
       name="build"
-      description="Build the Robocode Auto-extract">
-
-    <!-- Compile the Auto-extract -->
-    <antcall target="compile.autoextract"/>
-
-    <!-- Build extract.jar that Auto-extract needs in order to run -->
-    <antcall target="extract.jar"/>
+      description="Build the Robocode Auto-extract"
+  	  depends="compile.autoextract, extract.jar">
   </target>
 
 </project>
