@@ -3,11 +3,11 @@
 	<name>autoextract</name>
 	<comment></comment>
 	<projects>
+		<project>robocodeextract</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
-			<triggers>clean,full,incremental,</triggers>
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
