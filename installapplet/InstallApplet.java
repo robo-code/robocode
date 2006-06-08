@@ -11,9 +11,7 @@
  *     Flemming N. Larsen
  *     - Code cleanup
  *******************************************************************************/
-import javax.swing.*;
 import java.awt.*;
-import java.io.*;
 import java.net.*;
 
 
@@ -114,7 +112,6 @@ public class InstallApplet extends java.applet.Applet implements Runnable {
 		line[0] = "Java version " + javaVersion;
 		line[1] = "Operating system: " + osName;
 		boolean greenLight = false;
-		boolean oldMac = false;
 		boolean is14 = (javaVersion.compareTo("1.4") >= 0);
 		boolean easyroad = false;
 		boolean upgrade = false;
@@ -139,7 +136,6 @@ public class InstallApplet extends java.applet.Applet implements Runnable {
 				line[3] = "Sorry, you must be running at least Mac OS X to run Robocode.";
 				line[4] = "(" + javaVersion + " is too old)";
 				line[5] = "Please upgrade to OS X and come back!";
-				oldMac = true;
 			} else {
 				line[3] = "Sorry, unable to determine if Robocode will run on your system...";
 				line[4] = "(" + javaVersion + " is too old)";
@@ -201,6 +197,7 @@ public class InstallApplet extends java.applet.Applet implements Runnable {
 	}
 
 	public void start() {
-		runThread = new Thread(this).start();
+		runThread = new Thread(this);
+		runThread.start();
 	}
 }
