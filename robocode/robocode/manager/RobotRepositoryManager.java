@@ -19,7 +19,6 @@ import java.util.*;
 import java.util.jar.*;
 import javax.swing.*;
 
-import robocode.Robocode;
 import robocode.peer.robot.*;
 import robocode.util.*;
 import robocode.repository.*;

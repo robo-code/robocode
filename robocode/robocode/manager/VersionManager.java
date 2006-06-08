@@ -19,7 +19,6 @@ import java.net.*;
 import javax.swing.*;
 import java.util.*;
 
-import robocode.Robocode;
 import robocode.util.Constants;
 import robocode.util.Utils;
 

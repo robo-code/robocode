@@ -162,12 +162,9 @@ public class FilenamePanel extends WizardPanel {
 		String fileName = "outgoing" + File.separatorChar;
 		String saveDir = fileName;
 
-		JFileChooser chooser;
-
 		File f = new File(saveDir);
-		String jv = System.getProperty("java.version");
 
-		chooser = new JFileChooser(f); // .getAbsoluteFile().toString());
+		JFileChooser chooser = new JFileChooser(f); // .getAbsoluteFile().toString());
 		chooser.setCurrentDirectory(f);
 		
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {

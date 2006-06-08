@@ -20,7 +20,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.util.jar.*;
-import robocode.Robocode;
+
 import robocode.util.Constants;
 import robocode.util.Utils;
 import robocode.dialog.*;

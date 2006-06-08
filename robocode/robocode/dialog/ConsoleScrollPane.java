@@ -24,8 +24,6 @@ import java.io.*;
  * @author Flemming N. Larsen (current)
  */
 public class ConsoleScrollPane extends JScrollPane {
-	private JPanel consoleDialogContentPane;
-	private JScrollPane scrollPane;
 	private JTextArea textPane;
 	private Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);
 	

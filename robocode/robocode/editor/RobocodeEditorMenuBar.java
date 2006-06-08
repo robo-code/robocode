@@ -21,7 +21,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import robocode.Robocode;
 import robocode.util.Utils;
 
 
