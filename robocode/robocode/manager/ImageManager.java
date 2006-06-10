@@ -39,8 +39,8 @@ public class ImageManager {
 	private Image robotImage;
 	private Image gunImage;
 	private Image radarImage;
+
 	private RenderImage robotRenderImage;
-	
 	private RenderImage gunRenderImage;
 	private RenderImage radarRenderImage;
 	
@@ -55,16 +55,15 @@ public class ImageManager {
 	private RenderImage coloredGunRenderImage[] = new RenderImage[MAX_NUM_COLORS];
 	private RenderImage coloredRadarRenderImage[] = new RenderImage[MAX_NUM_COLORS];
 	
-	private Component component;
-
-	public ImageManager() {}	
+	public ImageManager() {
+		initialize();
+	}	
 
 	public void resetColorIndex() {
 		nextColorIndex = 0;
 	}
 
-	public void initialize(Component component) {
-		this.component = component;
+	public void initialize() {
 		getRobotImage();
 		getGunImage();
 		getRadarImage();
@@ -120,9 +119,6 @@ public class ImageManager {
 			while (!done) {
 				if (getClass().getResource(getExplodeFilename(numExplosions, 0)) != null) {
 					numExplosions++;
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {}
 				} else {
 					done = true;
 				}
@@ -140,7 +136,7 @@ public class ImageManager {
 				explodeImages[i] = new Image[f][EXPLODE_SIZES];
 			
 				for (int j = 0; j < f; j++) {
-					explodeImages[i][j][0] = ImageUtil.getImage(component, getExplodeFilename(i, j));
+					explodeImages[i][j][0] = ImageUtil.getImage(this, getExplodeFilename(i, j));
 					if (j == 0) {
 						explodeDimension[i] = new Dimension(explodeImages[i][j][0].getWidth(null),
 								explodeImages[i][j][0].getHeight(null));
@@ -192,7 +188,7 @@ public class ImageManager {
 	 */
 	private Image getRobotImage() {
 		if (robotImage == null) {
-			robotImage = ImageUtil.getBufferedImage(component, "/resources/images/body.png");	
+			robotImage = ImageUtil.getBufferedImage(this, "/resources/images/body.png");	
 		}
 		return robotImage;
 	}
@@ -204,7 +200,7 @@ public class ImageManager {
 	 */
 	private Image getGunImage() {
 		if (gunImage == null) {
-			gunImage = ImageUtil.getBufferedImage(component, "/resources/images/turret.png");
+			gunImage = ImageUtil.getBufferedImage(this, "/resources/images/turret.png");
 		}
 		return gunImage;
 	}
@@ -216,7 +212,7 @@ public class ImageManager {
 	 */
 	private Image getRadarImage() {
 		if (radarImage == null) {
-			radarImage = ImageUtil.getBufferedImage(component, "/resources/images/radar.png");
+			radarImage = ImageUtil.getBufferedImage(this, "/resources/images/radar.png");
 		}
 		return radarImage;
 	}	
