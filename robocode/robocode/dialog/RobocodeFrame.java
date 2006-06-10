@@ -139,7 +139,6 @@ public class RobocodeFrame extends JFrame {
 		super();
 		this.windowManager = manager.getWindowManager();
 		this.manager = manager;
-		manager.getImageManager().initialize(this);
 		initialize();
 	}
 
