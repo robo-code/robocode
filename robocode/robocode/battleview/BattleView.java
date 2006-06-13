@@ -93,8 +93,6 @@ public class BattleView extends Canvas {
 		this.robocodeFrame = robocodeFrame;
 		this.imageManager = imageManager;
 		this.manager = manager;
-
-		imageManager.initialize(this);
 	}
 
 	/**
@@ -111,9 +109,10 @@ public class BattleView extends Canvas {
 			}
 			
 			Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-
 			paintBattle(g);
-			
+			g.dispose();
+
+			// Flush the buffer to the main graphics
 			if (getGraphics() != null) {
 				// FNL: The above check to prevents internal NullPointerException in
 				// Component.BltBufferStrategy.show()	
@@ -303,13 +302,13 @@ public class BattleView extends Canvas {
 	private void drawRobots(Graphics2D g) {
 		RobotPeer c;
 
-		for (int i = 0; i < battle.getRobots().size(); i++) {
-			c = (RobotPeer) battle.getRobots().elementAt(i);
+		if (drawGround) {
+			RenderImage explodeDebrise = imageManager.getExplosionDebrise();
 
-			if (c.isDead()) {
-				if (drawGround) {
-					RenderImage explodeDebrise = imageManager.getExplosionDebrise();
-					
+			for (int i = 0; i < battle.getRobots().size(); i++) {
+				c = (RobotPeer) battle.getRobots().elementAt(i);
+	
+				if (c.isDead()) {
 					int x = (int) c.getX();
 					int y = battle.getBattleField().getHeight() - (int) c.getY();
 
