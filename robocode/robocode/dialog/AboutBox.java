@@ -48,19 +48,21 @@ public class AboutBox extends JDialog {
 	private final static String HTML_TEMPLATE = "<head><style type=\"text/css\">p, td {font-family: sans-serif;"
 			+ "font-size: 10px}</style></head>" + "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT
 			+ "\"><table><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
-			+ "\"></td><td><table width=\"100%\"><tr><td><b>Robocode</b>"
-			+ "<p>&copy; Copyright 2001-2005 Mathew A. Nelson<br>&copy; Copyright 2006 Robocode contributors</td>"
-			+ "<td><b>Version: " + TAG_ROBOCODE_VERSION + "</b><p>robocode.net<br></td></tr></table><center>"
-			+ "<p>Originally designed and programmed by Mathew A. Nelson<p>Graphics by Garett S. Hourihan"
-			+ "<p><b>Contributors:</b><br>Flemming N. Larsen (RobocodeNG/2006), Matthew Reeder a.k.a.<br>"
-			+ "Kawigi (OpenSource Robocode), John Villar (RobocodeNG),<br>and Stefan Westen (RobocodeSG)<br>"
-			+ "<p>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
+			+ "\"></td><td><table width=\"100%\"><tr><td><b>Robocode</b><br><br>"
+			+ "&copy;&nbsp;Copyright 2001-2005 Mathew A. Nelson<br>&copy;&nbsp;Copyright 2006 Robocode contributors</td>"
+			+ "<td><b>Version: " + TAG_ROBOCODE_VERSION + "</b><br><br>robocode.net<br>&nbsp;</td></tr></table><center><br>"
+			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan"
+			+ "<p><b>Contributors:</b><br><br>Flemming N. Larsen (RobocodeNG and Robocode 2006),<br>"
+			+ "Matthew Reeder a.k.a. Kawigi (OpenSource Robocode),<br>"
+			+ "John Villar & Ascander Jr (RobocodeNG),<br>"
+			+ "and Stefan Westen (RobocodeSG)"
+			+ "<br><br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
 	// Robocode version
 	private String robocodeVersion;
 	
-	// File path to Robocode icon
-	private String iconFilePath;
+	// Robocode icon URL
+	private java.net.URL iconURL;
 
 	// Content pane
 	private JPanel aboutBoxContentPane;
@@ -89,7 +91,8 @@ public class AboutBox extends JDialog {
 		super(owner);
 
 		robocodeVersion = manager.getVersionManager().getVersion();
-		iconFilePath = getClass().getResource("/resources/icons/largeicon.jpg").getFile();	
+		
+		iconURL = getClass().getResource("/resources/icons/largeicon.jpg");	
 
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("About Robocode");
@@ -161,7 +164,8 @@ public class AboutBox extends JDialog {
 	 */
 	private String getHtmlText() {
 		if (htmlText == null) {
-			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, "file://" + iconFilePath).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION, System.getProperty("java.version")).replaceAll(
+			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION,
+					System.getProperty("java.version")).replaceAll(
 					TAG_JAVA_VENDOR, System.getProperty("java.vendor"));
 		}
 		return htmlText;
