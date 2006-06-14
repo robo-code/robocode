@@ -1,5 +1,5 @@
 Version 1.1
-(6/6/2006)
+(14/6/2006)
 The "Continuation" release
 -----------
 o Added feature for Debug Painting
@@ -16,7 +16,8 @@ o New rendering engine based on Java2D
   -- Graphics is drawn faster as Java2D make use of hardware acceleration
   -- Robot colors are now painting using the HSB color model
   -- Graphics is resized when the battle window is resized
-  -- Added painting of ground tiles (can be disabled) with explosion debrise
+  -- Added "Visible ground" option in "View Options" which will paint background tiles
+     and explosion debrises
   -- The battlefield is always centered in the battle window
 o Bugfixes
   -- HyperThreading issue fixed that caused hangs
