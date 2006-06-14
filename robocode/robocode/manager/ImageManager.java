@@ -136,7 +136,7 @@ public class ImageManager {
 				explodeImages[i] = new Image[f][EXPLODE_SIZES];
 			
 				for (int j = 0; j < f; j++) {
-					explodeImages[i][j][0] = ImageUtil.getImage(this, getExplodeFilename(i, j));
+					explodeImages[i][j][0] = ImageUtil.getBufferedImage(this, getExplodeFilename(i, j));
 					if (j == 0) {
 						explodeDimension[i] = new Dimension(explodeImages[i][j][0].getWidth(null),
 								explodeImages[i][j][0].getHeight(null));
