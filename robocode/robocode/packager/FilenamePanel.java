@@ -165,6 +165,7 @@ public class FilenamePanel extends WizardPanel {
 		File f = new File(saveDir);
 
 		JFileChooser chooser = new JFileChooser(f); // .getAbsoluteFile().toString());
+
 		chooser.setCurrentDirectory(f);
 		
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
