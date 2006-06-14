@@ -25,6 +25,7 @@ package robocode.battleview;
 import java.awt.*;
 import java.awt.image.*;
 import java.awt.geom.*;
+
 import robocode.dialog.RobocodeFrame;
 import robocode.peer.*;
 import robocode.battlefield.*;
@@ -78,8 +79,11 @@ public class BattleView extends Canvas {
 	private ImageManager imageManager;
 
 	private RobocodeManager manager;
-	
+
 	private BufferStrategy bufferStrategy;
+
+	private Image offscreenImage;
+	private Graphics2D offscreenGfx;
 
 	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
@@ -109,7 +113,8 @@ public class BattleView extends Canvas {
 			}
 			
 			Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-			paintBattle(g);
+
+			paint(g);
 			g.dispose();
 
 			// Flush the buffer to the main graphics
@@ -138,6 +143,14 @@ public class BattleView extends Canvas {
 	}
 
 	private void initialize() {
+		if (offscreenImage != null) {
+			offscreenImage.flush();
+			offscreenImage = null;
+		}
+
+		offscreenImage = createImage(getWidth(), getHeight());
+		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
+
 		if (bufferStrategy == null) {
 			createBufferStrategy(2);
 			bufferStrategy = getBufferStrategy();
@@ -154,6 +167,7 @@ public class BattleView extends Canvas {
 		} else {
 			scale = 1;
 		}
+		offscreenGfx.scale(scale, scale);
 
 		// Scale font
 		smallFont = new Font("Dialog", Font.PLAIN, (int) (10 / scale));
@@ -208,12 +222,28 @@ public class BattleView extends Canvas {
 	}
 
 	public void paint(Graphics g) {
-		if (paintMode == PAINTROBOCODELOGO) {
+		switch (paintMode) {
+		case PAINTROBOCODELOGO:
 			paintRobocodeLogo(g);
+			return;
+
+		case PAINTBATTLE: {
+			if (!initialized) {
+				initialize();
+			}
+			paintBattle(offscreenGfx);
+			break;
+		}
+		}
+		// If offscreenImage is null, we're drawing singlebuffered anyway
+		if (offscreenImage != null) {
+			g.drawImage(offscreenImage, 0, 0, null);
 		}
 	}
 
 	public void paintBattle(Graphics2D g) {
+		// Reset transform
+		g.setTransform(new AffineTransform());
 
 		// Clear canvas
 		g.setColor(CANVAS_BG_COLOR);
@@ -252,8 +282,8 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawGround(Graphics2D g) {
-		// Ground should not be drawn
 		if (!drawGround) {
+			// Ground should not be drawn
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, battleField.getWidth(), battleField.getHeight());
 		} else {
@@ -264,17 +294,17 @@ public class BattleView extends Canvas {
 
 			// Draw the pre-rendered ground if it is available
 			if (groundImage != null) {
-				AffineTransform savedTx = g.getTransform();
-
-				g.setTransform(new AffineTransform());
-
-				int groundWidth = groundImage.getWidth(null);
-				int geoundHeight = groundImage.getHeight(null);
+				int groundWidth = (int) (battleField.getWidth() * scale);
+				int groundHeight = (int) (battleField.getHeight() * scale);
 
 				int dx = (getWidth() - groundWidth) / 2;
-				int dy = (getHeight() - geoundHeight) / 2;
+				int dy = (getHeight() - groundHeight) / 2;
 
-				g.drawImage(groundImage, dx, dy, groundWidth, geoundHeight, null);
+				AffineTransform savedTx = g.getTransform();
+				
+				g.setTransform(new AffineTransform());
+
+				g.drawImage(groundImage, dx, dy, groundWidth, groundHeight, null);
 
 				g.setTransform(savedTx);
 			}
@@ -519,12 +549,7 @@ public class BattleView extends Canvas {
 			java.io.FileOutputStream o = new java.io.FileOutputStream(fileName);
 			com.sun.image.codec.jpeg.JPEGImageEncoder encoder = com.sun.image.codec.jpeg.JPEGCodec.createJPEGEncoder(o);
 
-			BufferedImage screenImage = new BufferedImage(battleField.getWidth(), battleField.getWidth(),
-					BufferedImage.TYPE_INT_RGB);
-
-			paint(screenImage.getGraphics());
-			encoder.encode(screenImage);
-
+			encoder.encode((BufferedImage) offscreenImage);
 			o.close();
 		} catch (Exception e) {
 			Utils.log("Could not save frame: " + e);
