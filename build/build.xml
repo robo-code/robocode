@@ -52,12 +52,25 @@
   <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
   
   <!-- ====================================== -->
+  <!-- Target: init                           -->
+  <!-- ====================================== -->
+  <target
+      name="init"
+      description="Initializes the build">
+
+  	<echo message="Initializes the build..."/>
+
+  	<!-- Create folder for containing build files -->
+  	<mkdir dir="${build}"/>
+  </target>
+
+  <!-- ====================================== -->
   <!-- Target: build                          -->
   <!-- ====================================== -->
   <target
       name="build"
       description="Build the Robocode setup file"
-      depends="clean, extract.jar, compile.autoextract"
+      depends="clean, init, extract.jar, compile.autoextract"
       unless="build.uptodate">
 
     <echo message="Building Robocode setup file (${setup.filename})..."/>
@@ -87,6 +100,7 @@
   <target
       name="compile.robocode"
       description="Compile robocode"
+  	  depends="init"
       unless="robocode.uptodate"> 
 
     <echo message="Compiling robocode..."/>
@@ -108,7 +122,7 @@
   <target
       name="compile.robots"
       description="Compile robots"
-      depends="compile.robocode"
+      depends="init, compile.robocode"
       unless="robots.uptodate">
 
     <echo message="Compiling robots..."/>
@@ -130,6 +144,7 @@
   <target
       name="compile.autoextract"
       description="Compile auto-extract"
+  	  depends="init"
       unless="autoextract.uptodate">
 
     <echo message="Compiling auto-extract..."/>
@@ -148,7 +163,7 @@
   <target
       name="robocode.jar"
       description="Build robocode.jar"
-      depends="compile.robocode"
+      depends="init, compile.robocode"
       unless="robocode.jar.uptodate">
 
     <echo message="Building robocode.jar..."/>
@@ -178,7 +193,7 @@
   <target
       name="extract.jar"
       description="Build extract.jar"
-      depends="robocode.jar, javadoc, compile.robots"
+      depends="init, robocode.jar, javadoc, compile.robots"
       unless="extract.jar.uptodate">
 
     <echo message="Building extract.jar..."/>
@@ -209,6 +224,7 @@
   <target
       name="javadoc"
       description="Generate javadoc"
+  	  depends="init"
       unless="javadoc.uptodate">
 
     <echo message="Generating javadoc..."/>
