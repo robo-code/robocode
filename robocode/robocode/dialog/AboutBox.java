@@ -52,7 +52,7 @@ public class AboutBox extends JDialog {
 			+ "&copy;&nbsp;Copyright 2001-2005 Mathew A. Nelson<br>&copy;&nbsp;Copyright 2006 Robocode contributors</td>"
 			+ "<td><b>Version: " + TAG_ROBOCODE_VERSION + "</b><br><br>robocode.net<br>&nbsp;</td></tr></table><center><br>"
 			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan"
-			+ "<p><b>Contributors:</b><br><br>Flemming N. Larsen (RobocodeNG and Robocode 2006),<br>"
+			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (RobocodeNG and Robocode 2006),<br>"
 			+ "Matthew Reeder a.k.a. Kawigi (OpenSource Robocode),<br>"
 			+ "John Villar & Ascander Jr (RobocodeNG),<br>"
 			+ "and Stefan Westen (RobocodeSG)"
