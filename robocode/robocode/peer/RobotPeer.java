@@ -9,6 +9,8 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Bugfix: [1467215] updateMovement() checked for distanceRemaining > 1
+ *       instead of distanceRemaining > 0 if slowingDown and moveDirection == -1
  *     - Code cleanup
  *******************************************************************************/
 package robocode.peer;
@@ -935,7 +937,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (slowingDown) {
 			if (moveDirection == 1 && distanceRemaining < 0) {
 				desiredDistanceRemaining = 0;
-			} else if (moveDirection == -1 && distanceRemaining > 1) {
+			} else if (moveDirection == -1 && distanceRemaining > 0) {
 				desiredDistanceRemaining = 0;
 			}
 		}
