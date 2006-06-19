@@ -257,10 +257,9 @@ public class AutoExtract implements ActionListener {
 		if (extractor.acceptLicense("cpl-v10.html")) {
 			if (argv.length == 1) {
 				suggestedDir = new File(argv[0]);
-			} else if (File.separatorChar == '\\') {
-				suggestedDir = new File("C:\\" + FOLDER_NAME + '\\');
 			} else {
-				suggestedDir = new File(System.getProperty("user.home") + File.separator + FOLDER_NAME + File.separator);
+				String root = (File.separatorChar == '\\') ? "C:" : System.getProperty("user.home");
+				suggestedDir = new File(root + File.separatorChar + FOLDER_NAME + File.separatorChar);
 			}
 
 			boolean done = false;
@@ -316,7 +315,7 @@ public class AutoExtract implements ActionListener {
 
 	private void createShortcuts(File installDir) {
 		if (OS_NAME.toLowerCase().indexOf("win") == 0) {
-			if (createWindowsShortcuts(installDir)) {} else {
+			if (!createWindowsShortcuts(installDir)) {
 				JOptionPane.showMessageDialog(null,
 						message + "\n" + "To start " + NAME + ", enter the following at a command prompt:\n" + "cd "
 						+ installDir.getAbsolutePath() + "\n" + FILENAME + ".bat");
@@ -363,9 +362,9 @@ public class AutoExtract implements ActionListener {
 				out.println("Shell = new ActiveXObject(\"WScript.Shell\");");
 				out.println("ProgramsPath = Shell.SpecialFolders(\"Programs\");");
 				out.println("fso = new ActiveXObject(\"Scripting.FileSystemObject\");");
-				out.println("if (!fso.folderExists(ProgramsPath + \"\\\\" + NAME + "\"))");
-				out.println("	fso.CreateFolder(ProgramsPath + \"\\\\" + NAME + "\");");
-				out.println("link = Shell.CreateShortcut(ProgramsPath + \"\\\\" + NAME + "\\\\" + NAME + ".lnk\");");
+				out.println("if (!fso.folderExists(ProgramsPath + \"\\\\" + FOLDER_NAME + "\"))");
+				out.println("	fso.CreateFolder(ProgramsPath + \"\\\\" + FOLDER_NAME + "\");");
+				out.println("link = Shell.CreateShortcut(ProgramsPath + \"\\\\" + FOLDER_NAME + "\\\\" + FILENAME + ".lnk\");");
 				out.println("link.Arguments = \"\";");
 				out.println("link.Description = \"" + NAME + "\";");
 				out.println("link.HotKey = \"\";");
@@ -377,7 +376,7 @@ public class AutoExtract implements ActionListener {
 				out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\";");
 				out.println("link.Save();");
 				out.println("DesktopPath = Shell.SpecialFolders(\"Desktop\");");
-				out.println("link = Shell.CreateShortcut(DesktopPath + \"\\\\" + NAME + ".lnk\");");
+				out.println("link = Shell.CreateShortcut(DesktopPath + \"\\\\" + FILENAME + ".lnk\");");
 				out.println("link.Arguments = \"\";");
 				out.println("link.Description = \"" + NAME + "\";");
 				out.println("link.HotKey = \"\";");
