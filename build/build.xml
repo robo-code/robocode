@@ -70,8 +70,7 @@
   <target
       name="build"
       description="Build the Robocode setup file"
-      depends="clean, init, extract.jar, compile.autoextract"
-      unless="build.uptodate">
+      depends="clean, extract.jar, compile.autoextract">
 
     <echo message="Building Robocode setup file (${setup.filename})..."/>
 
@@ -87,12 +86,6 @@
       </manifest>
     </jar>
   </target>
-
-  <uptodate property="build.uptodate" targetfile="${setup.file}">
-    <srcfiles dir="${src.robocode}"/>
-    <srcfiles dir="${src.extract}"/>
-    <srcfiles dir="${src.autoextract}"/>
-  </uptodate>
 
   <!-- ====================================== -->
   <!-- Target: compile.robocode               -->
