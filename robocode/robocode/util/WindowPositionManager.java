@@ -74,9 +74,8 @@ public class WindowPositionManager implements ComponentListener {
 
 	public Rectangle getWindowRect(Window window) {
 		window.addComponentListener(this);
-		String rString = (String) getWindowPositions().get(
-				window.getName() + "(" + window.getPreferredSize().width / 10 + "-" + window.getPreferredSize().height / 10
-				+ ")");
+		
+		String rString = (String) getWindowPositions().get(window.getName());
 
 		if (rString == null) {
 			return null;
@@ -102,9 +101,8 @@ public class WindowPositionManager implements ComponentListener {
 	}
 
 	public void setWindowRect(boolean move, Window w, Rectangle rect) {
-		String rString = new String(rect.x + "," + rect.y + "-" + rect.width + "," + rect.height);
+		String rString = new String(rect.x + "," + rect.y + "," + rect.width + "," + rect.height);
 
-		getWindowPositions().put(
-				w.getName() + "(" + w.getPreferredSize().width / 10 + "," + w.getPreferredSize().height / 10 + ")", rString);
+		getWindowPositions().put(w.getName(), rString);
 	}
 }
