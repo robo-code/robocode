@@ -353,6 +353,7 @@ public class RobocodeFrame extends JFrame {
 	 * Initialize the class.
 	 */
 	private void initialize() {
+		setName("RobocodeFrame");
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setTitle("Robocode");
 		setIconImage(ImageUtil.getImage(this, "/resources/icons/icon.jpg"));
