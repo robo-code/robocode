@@ -205,6 +205,10 @@ public class BattleManager {
 		manager.getWindowManager().getRobocodeFrame().getBattleView().setVisible(true);
 		manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
 
+		if (manager.getListener() == null && exitOnComplete == false) {
+			manager.getWindowManager().getRobocodeFrame().sizeToPreferred();
+		}
+
 		for (int i = 0; i < battlingRobotsVector.size(); i++) {
 			battle.addRobot((RobotClassManager) battlingRobotsVector.elementAt(i));
 		}
