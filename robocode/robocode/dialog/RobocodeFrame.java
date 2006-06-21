@@ -153,7 +153,6 @@ public class RobocodeFrame extends JFrame {
 	 */
 	private void battleViewResized() {
 		battleView.setInitialized(false);
-		battleView.repaint();
 	}
 
 	/**
@@ -358,7 +357,7 @@ public class RobocodeFrame extends JFrame {
 		setTitle("Robocode");
 		setIconImage(ImageUtil.getImage(this, "/resources/icons/icon.jpg"));
 		setResizable(true);
-
+		
 		// FNL: Make sure that menus are heavy-weight components so that the menus are not painted
 		// behind the BattleView which is a heavy-weight component. This must be done before
 		// adding any menu to the menubar.
@@ -417,10 +416,6 @@ public class RobocodeFrame extends JFrame {
 			manager.getBattleManager().resumeBattle();
 		}
 		return;
-	}
-
-	public void sizeToPreferred() {
-		Utils.packCenterShow(this);
 	}
 
 	public void stopButtonActionPerformed() {
