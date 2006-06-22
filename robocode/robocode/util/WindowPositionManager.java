@@ -72,10 +72,16 @@ public class WindowPositionManager implements ComponentListener {
 
 	public void componentShown(ComponentEvent e) {}
 
+	public void setWindowRect(boolean move, Window w, Rectangle rect) {
+		String rString = new String(rect.x + "," + rect.y + "," + rect.width + "," + rect.height);
+
+		getWindowPositions().put(w.getClass().getName(), rString);
+	}
+
 	public Rectangle getWindowRect(Window window) {
 		window.addComponentListener(this);
 		
-		String rString = (String) getWindowPositions().get(window.getName());
+		String rString = (String) getWindowPositions().get(window.getClass().getName());
 
 		if (rString == null) {
 			return null;
@@ -98,11 +104,5 @@ public class WindowPositionManager implements ComponentListener {
 		} catch (IOException e) {
 			Utils.log("Warning:  Unable to save window positions: " + e);
 		}
-	}
-
-	public void setWindowRect(boolean move, Window w, Rectangle rect) {
-		String rString = new String(rect.x + "," + rect.y + "," + rect.width + "," + rect.height);
-
-		getWindowPositions().put(w.getName(), rString);
 	}
 }
