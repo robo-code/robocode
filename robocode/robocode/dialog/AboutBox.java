@@ -97,6 +97,7 @@ public class AboutBox extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("About Robocode");
 		setContentPane(getAboutBoxContentPane());
+		setResizable(false);
 	}
 
 	/**
