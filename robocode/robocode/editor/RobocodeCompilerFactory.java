@@ -177,13 +177,22 @@ public class RobocodeCompilerFactory {
 			javalib = javahome + "/lib/rt.jar";
 		}
 		
-		return '"' + javalib + '"';
+		if (javalib.indexOf(" ") >= 0) {
+			return '"' + javalib + '"';
+		}
+		
+		return javalib;
 	}
 	
 	private static String getRobotPath() {
 		if (robotPath == null) {
 			robotPath = System.getProperty("ROBOTPATH", "robots");
 		}
+
+		if (robotPath.indexOf(" ") >= 0) {
+			return '"' + robotPath + '"';
+		}
+		
 		return robotPath;
 	}
 
