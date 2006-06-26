@@ -15,7 +15,8 @@
  *     - Removed all code for handling dirty rectangles, which is not necessary
  *       anymore due to the new robocode.render.
  *     - Code cleanup
- *     - Support for Robot.onPaint() method using MirrorGraphics for mirroring
+ *     - Added drawRobotPaint() to support for painting the robots using their
+ *       Robot.onPaint() method
  *       the painting.
  *     - Added the ability to enable and disable drawing the ground.
  *     - Added support for Robocode SG painting
@@ -427,17 +428,7 @@ public class BattleView extends Canvas {
 						smallFontMetrics);
 			}
 			if (c.isPaintEnabled() && c.getRobot() != null) {
-				// TODO: Store and restore transformation, fills etc. (safe-guard)
-
-				if (c.isSGPaintEnabled()) {
-					c.getRobot().onPaint(g);
-				} else {
-					synchronized (mirroredGraphics) {
-						mirroredGraphics.bind(g, battleField.getHeight());
-						c.getRobot().onPaint(mirroredGraphics);
-						mirroredGraphics.release();
-					}
-				}
+				drawRobotPaint(g, c);
 			}
 			if (c.getSayTextPeer() != null) {
 				if (c.getSayTextPeer().getText() != null) {
@@ -449,6 +440,35 @@ public class BattleView extends Canvas {
 		}
 	}
 
+	private void drawRobotPaint(Graphics2D g, RobotPeer robotPeer) {
+		// Store rendering attributes
+		Paint origPaint = g.getPaint();
+		Font origFont = g.getFont();
+		Stroke origStroke = g.getStroke();
+		AffineTransform origTransform = g.getTransform();
+		Composite origComposite = g.getComposite();
+		Shape origClip = g.getClip();
+
+		// Do the painting
+		if (robotPeer.isSGPaintEnabled()) {
+			robotPeer.getRobot().onPaint(g);
+		} else {
+			synchronized (mirroredGraphics) {
+				mirroredGraphics.bind(g, battleField.getHeight());
+				robotPeer.getRobot().onPaint(mirroredGraphics);
+				mirroredGraphics.release();
+			}
+		}
+
+		// Restore the rendering attributes
+		g.setPaint(origPaint);
+		g.setFont(origFont);
+		g.setStroke(origStroke);
+		g.setTransform(origTransform);
+		g.setComposite(origComposite);
+		g.setClip(origClip);
+	}
+	
 	private void drawBullets(Graphics2D g) {
 		BulletPeer b;
 		int l, t;
