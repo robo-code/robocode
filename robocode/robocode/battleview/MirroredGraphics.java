@@ -35,9 +35,6 @@ public class MirroredGraphics extends Graphics2D {
 	// The wrapped Graphics2D object
 	private Graphics2D g;
 
-	// The original transform of the Graphics2D object that must be restored when release() is called
-	private AffineTransform origTx;
-
 	// The original transform mirrored
 	private AffineTransform origTxMirrored = new AffineTransform();
 
@@ -56,9 +53,8 @@ public class MirroredGraphics extends Graphics2D {
 	 */
 	public void bind(Graphics2D g, int height) {
 		this.g = g;
-		this.origTx = g.getTransform();
 
-		origTxMirrored.setTransform(origTx);
+		origTxMirrored.setTransform(g.getTransform());
 		origTxMirrored.translate(0, height);
 		origTxMirrored.scale(1, -1);
 
@@ -71,7 +67,7 @@ public class MirroredGraphics extends Graphics2D {
 	 * @see #bind(Graphics2D, int)
 	 */
 	public void release() {
-		g.setTransform(origTx);
+		// Does nothing currently
 	}
 
 	public void setTransform(AffineTransform Tx) {
