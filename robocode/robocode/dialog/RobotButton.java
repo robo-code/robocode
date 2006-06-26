@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Added setPaintEnabled() in constructor
+ *     - Added setPaintEnabled() and setSGPaintEnabled() in constructor
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -43,6 +43,7 @@ public class RobotButton extends JButton implements ActionListener {
 		if (robotDialog != null) {
 			robotDialog.setRobotPeer(robotPeer);
 			robotPeer.setPaintEnabled(robotDialog.isPaintEnabled());
+			robotPeer.setSGPaintEnabled(robotDialog.isSGPaintEnabled());
 		}
 	}
 

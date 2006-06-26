@@ -14,10 +14,11 @@
  *     - Integration of robocode.render.
  *     - Removed all code for handling dirty rectangles, which is not necessary
  *       anymore due to the new robocode.render.
- *     - Support for Robot.onPaint() method using MirrorGraphics for mirroring
- *       the debug painting.
- *     - Added the ability to enable and disable drawing the ground.
  *     - Code cleanup
+ *     - Support for Robot.onPaint() method using MirrorGraphics for mirroring
+ *       the painting.
+ *     - Added the ability to enable and disable drawing the ground.
+ *     - Added support for Robocode SG painting
  *******************************************************************************/
 package robocode.battleview;
 
@@ -301,7 +302,6 @@ public class BattleView extends Canvas {
 				int dy = (getHeight() - groundHeight) / 2;
 
 				AffineTransform savedTx = g.getTransform();
-				
 				g.setTransform(new AffineTransform());
 
 				g.drawImage(groundImage, dx, dy, groundWidth, groundHeight, null);
@@ -426,8 +426,12 @@ public class BattleView extends Canvas {
 				centerString(g, c.getVeryShortName(), x, y + imgHeight / 2 + smallFontMetrics.getHeight() / 2, smallFont,
 						smallFontMetrics);
 			}
-			if (c.isPaintEnabled()) {
-				if (c.getRobot() != null) {
+			if (c.isPaintEnabled() && c.getRobot() != null) {
+				// TODO: Store and restore transformation, fills etc. (safe-guard)
+
+				if (c.isSGPaintEnabled()) {
+					c.getRobot().onPaint(g);
+				} else {
 					synchronized (mirroredGraphics) {
 						mirroredGraphics.bind(g, battleField.getHeight());
 						c.getRobot().onPaint(mirroredGraphics);

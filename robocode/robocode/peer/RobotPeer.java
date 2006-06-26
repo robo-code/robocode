@@ -9,9 +9,11 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Bugfix: [1467215] updateMovement() checked for distanceRemaining > 1
- *       instead of distanceRemaining > 0 if slowingDown and moveDirection == -1
  *     - Code cleanup
+ *     - Added setPaintEnabled() and isPaintEnabled()
+ *     - Added setSGPaintEnabled() and isSGPaintEnabled()
+ *     - Bugfix: updateMovement() checked for distanceRemaining > 1 instead of
+ *       distanceRemaining > 0 if slowingDown and moveDirection == -1
  *******************************************************************************/
 package robocode.peer;
 
@@ -153,6 +155,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private final long maxGetCallCount = 10000;
 		
 	private boolean paintEnabled;
+	private boolean sgPaintEnabled;
 
 	public TextPeer getSayTextPeer() {
 		return sayTextPeer;
@@ -1644,5 +1647,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public boolean isPaintEnabled() {
 		return paintEnabled;
+	}
+
+	public void setSGPaintEnabled(boolean enabled) {
+		sgPaintEnabled = enabled;
+	}
+
+	public boolean isSGPaintEnabled() {
+		return sgPaintEnabled;
 	}
 }
