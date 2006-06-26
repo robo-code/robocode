@@ -54,7 +54,7 @@ public class RobocodeCompiler {
 		}
 		console.setSize(500, 400);
 		console.setText("Compiling...\n");
-		robocode.util.Utils.centerShow(editor, console);
+		Utils.centerShow(editor, console);
 		try {
 			String command = compilerBinary + " " + compilerOptions + " " + compilerClassPath + " " + fileName;
 
