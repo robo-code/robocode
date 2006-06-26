@@ -11,7 +11,7 @@
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue
  *     Stefan Westen & Flemming N. Larsen
- *     - Added onPaint() method for debug painting
+ *     - Added onPaint() method for painting the robot
  *     Flemming N. Larsen
  *     - Fixed Javadoc documentation
  *******************************************************************************/
