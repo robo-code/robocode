@@ -1,17 +1,23 @@
 Version 1.1.1
-(26/6/2006)
+(27/6/2006)
 -------------
 o Bugfixes
   -- updateMovement() that checked for "distanceRemaining > 1" instead of "distanceRemaining > 0"
      when slowing down
   -- The window position and sizes were not loaded properly from the windows.properties file
   -- The radar was not colored correctly due to a bug in the coloring filter
+  -- Robot text-output error has been fixed according to the solution provided by Matt
+     (msj(at)sysmatrix(dot)net)
 o Added 1200x1200 battle field size as one of the standard sizes, and set the size step to 100.
   -- This feature was added to accommodate RoboRumble@Home
 o The battle window is no longer reset every time a new battle is started and the window size and
   position is saved into the windows.properties file
 o The robot colors are now painted using a true HSL color model
   -- The change to use the HSL color model fixed the bug regarding none or wrong coloring.
+o Added a checkbox to enable Robocode SG painting in the robot console
+  -- The "Debug paint" button in the robot console has been renamed to "Paint"
+  -- The "Paint" button enables painting in general, and by trickering "Robocode SG", the robot
+     (debug) painting will be rendered as Robocode SG does it.
 
 Version 1.1
 (14/6/2006)
