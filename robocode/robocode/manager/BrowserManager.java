@@ -32,6 +32,9 @@ public class BrowserManager {
 		} else {
 			browserCommand = Constants.cwd() + File.separator + "browser.bat";
 		}
+		if (browserCommand.indexOf(" ") != -1) {
+			browserCommand = '"' + browserCommand + '"';
+		}
 	}
 	
 	public void openURL(String url) throws IOException {
