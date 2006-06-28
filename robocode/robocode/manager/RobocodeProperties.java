@@ -309,6 +309,7 @@ public class RobocodeProperties {
 		optionsViewRobotNames = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTNAMES, "true")).booleanValue();
 		optionsViewScanArcs = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SCANARCS, "false")).booleanValue();
 		optionsViewRobotEnergy = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true")).booleanValue();
+		optionsViewGround = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_GROUND, "true")).booleanValue();
 		optionsViewFps = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
 		optionsBattleDesiredFps = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDFPS, "30"));
 		optionsBattleAllowColorChanges = Boolean.valueOf(props.getProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "false")).booleanValue();
