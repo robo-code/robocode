@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Updated Jikes compiler to version 1.22
  *     - Changed deprecated method calls
+ *     - File names are being quoted
  *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
@@ -177,11 +178,7 @@ public class RobocodeCompilerFactory {
 			javalib = javahome + "/lib/rt.jar";
 		}
 		
-		if (javalib.indexOf(" ") >= 0) {
-			return '"' + javalib + '"';
-		}
-		
-		return javalib;
+		return Utils.quoteFileName(javalib);
 	}
 	
 	private static String getRobotPath() {
@@ -189,11 +186,7 @@ public class RobocodeCompilerFactory {
 			robotPath = System.getProperty("ROBOTPATH", "robots");
 		}
 
-		if (robotPath.indexOf(" ") >= 0) {
-			return '"' + robotPath + '"';
-		}
-		
-		return robotPath;
+		return Utils.quoteFileName(robotPath);
 	}
 
 	public static boolean installCompiler(RobocodeEditor editor) {
