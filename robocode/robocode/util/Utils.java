@@ -9,8 +9,9 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Added setFixedSize() method
+ *     - Added setFixedSize()
  *     - Removed setLocationFix()
+ *     - Added quoteFileName()
  *******************************************************************************/
 package robocode.util;
 
@@ -184,8 +185,6 @@ public class Utils {
 	}
 
 	public static String getClassName(String fileName) {
-		// if (fileName.indexOf(" ") > 0)
-		// fileName = fileName.substring(0,fileName.indexOf(" "));
 		int lastdot = fileName.lastIndexOf('.');
 
 		if (lastdot < 0) {
@@ -565,5 +564,12 @@ public class Utils {
 
 	private static Point fixLocation(Window w, Point p) {
 		return (locationFixer != null) ? new Point(p.x + locationFixer.x, p.y + locationFixer.y) : p;
+	}
+	
+	public static String quoteFileName(String fileName) {
+		if (fileName.matches(".*\\s+?.*")) {
+			return '"' + fileName +'"';
+		}	
+		return fileName;
 	}
 }
