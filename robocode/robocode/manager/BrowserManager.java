@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Simplified the assembly of the browserCommand
+ *     - Rewritten
  *******************************************************************************/
 package robocode.manager;
 
@@ -23,6 +23,7 @@ import robocode.util.Constants;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class BrowserManager {
 	
@@ -37,13 +38,15 @@ public class BrowserManager {
 	}
 	
 	public void openURL(String url) throws IOException {
+		url = Utils.quoteFileName(url);
+		
 		Process p = Runtime.getRuntime().exec(browserCommand + " " + url);
 
 		try {
 			p.waitFor();
 		} catch (InterruptedException e) {}
 
-		if (p.exitValue() != 0) {
+		if (p.exitValue() < 0) {
 			throw new IOException(
 					"Unable to launch " + browserCommand + ".  Please check it, or launch " + url + " in your browser.");
 		}
