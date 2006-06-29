@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - File name is being quoted
  *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
@@ -42,9 +43,8 @@ public class RobocodeCompiler {
 	}
 
 	public void compile(String fileName) {
-		if (fileName.indexOf(" ") >= 0) {
-			fileName = "\"" + fileName + "\"";
-		}
+		fileName = Utils.quoteFileName(fileName);
+
 		ConsoleDialog console;
 
 		if (editor != null) {
