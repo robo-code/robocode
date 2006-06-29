@@ -8,12 +8,16 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Simplified the assembly of the browserCommand
  *******************************************************************************/
 package robocode.manager;
 
 
 import java.io.IOException;
 import java.io.File;
+
+import robocode.util.Utils;
 import robocode.util.Constants;
 
 
@@ -27,14 +31,9 @@ public class BrowserManager {
 	
 	public BrowserManager(RobocodeManager manager) {
 		this.manager = manager;
-		if (File.separatorChar == '/') {
-			browserCommand = Constants.cwd() + File.separator + "browser.sh";
-		} else {
-			browserCommand = Constants.cwd() + File.separator + "browser.bat";
-		}
-		if (browserCommand.indexOf(" ") != -1) {
-			browserCommand = '"' + browserCommand + '"';
-		}
+
+		browserCommand = Utils.quoteFileName(
+				Constants.cwd() + File.separator + "browser." + (File.separatorChar == '/' ? "sh" : "bat"));
 	}
 	
 	public void openURL(String url) throws IOException {
