@@ -11,6 +11,8 @@
  *     Matthew Reeder
  *     - Changes for Find/Replace commands and Window menu
  *     Flemming N. Larsen
+ *     - Bugfixed the removeFromWindowMenu() method which did not remove the
+ *       correct item, and did not break out of the loop when it was found.
  *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
@@ -533,9 +535,9 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 				if (item.getEditWindow() == window) {
 					getRobocodeEditorMenuBar().getWindowMenu().remove(item);
+					getRobocodeEditorMenuBar().getMoreWindowsDialog().removeWindowItem(item);
+					break;
 				}
-				getRobocodeEditorMenuBar().getMoreWindowsDialog().removeWindowItem(item);
-				break;
 			}
 		}
 	}
