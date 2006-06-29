@@ -16,6 +16,7 @@
     <filterchain>
       <headfilter lines="1"/>
       <replacestring from="Version " to=""/>
+      <replacestring from=" " to="-"/>
       <striplinebreaks/>
     </filterchain>
   </loadfile>
