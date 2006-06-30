@@ -43,7 +43,7 @@
 
     <!-- Copy browser batch files -->
     <copy todir="${build}">
-      <fileset file="browser.*"/>
+      <fileset file="../robocodeextract/browser.*"/>
     </copy>
     
   </target>
