@@ -1,1 +1,1 @@
-java -Xmx256M -jar robocode.jar
+%java -jar robocode.jar
