@@ -9,8 +9,9 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Bugfix: Changed the if-statement of "if (!closed) wait(10000)" in the
- *       read() method to a while-statement in order to correct text-output bug. 
+ *     - Bugfix: Changed the if-statement of "if (readIndex == writeIndex)" in
+ *       the read() method to a while-statement in order to correct text-output
+ *       bug, where old text or odd characters were printed out 
  *******************************************************************************/
 package robocode.io;
 
@@ -81,10 +82,10 @@ public class BufferedPipedOutputStream extends OutputStream {
 	}
 	
 	protected synchronized int read() throws IOException {
-		if (readIndex == writeIndex) {
+		while (readIndex == writeIndex) {
 			waiting = true;
 			try {
-				while (!closed) {
+				if (!closed) {
 					wait(10000);
 				}
 				if (closed) {
