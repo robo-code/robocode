@@ -9,6 +9,8 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Removed check for the system property "SINGLEBUFFER", as it is not used
+ *       anymore
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -58,10 +60,6 @@ public class Robocode {
 			if (System.getProperty("WORKINGDIRECTORY") != null) {
 				Constants.setWorkingDirectory(new File(System.getProperty("WORKINGDIRECTORY")));
 			}
-			if (System.getProperty("SINGLEBUFFER", "false").equals("true")) {
-				javax.swing.RepaintManager.currentManager(manager.getWindowManager().getRobocodeFrame()).setDoubleBufferingEnabled(
-						false);
-			}
 		
 			Thread.currentThread().setName("Application Thread");
 		
@@ -103,7 +101,7 @@ public class Robocode {
 				System.setErr(syserr);
 			}
 			System.setIn(sysin);
-
+			
 			boolean noDisplay = false;
 			boolean minimize = false;
 			String battleFilename = null;
