@@ -1,1 +1,1 @@
-%java -jar robocode.jar
+%java -Dsun.io.useCanonCaches=false -jar robocode.jar
