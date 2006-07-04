@@ -1,1 +1,1 @@
-start %1
+explorer %1
