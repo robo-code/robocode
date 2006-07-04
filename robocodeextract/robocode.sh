@@ -1,2 +1,2 @@
 #!/bin/sh
-java -Xmx256M -jar robocode.jar
+java -Xmx512M -Dsun.io.useCanonCaches=false -jar robocode.jar
