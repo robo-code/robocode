@@ -1,29 +1,32 @@
 Version 1.1.1
-(29/6/2006)
+(6/7/2006)
 -------------
 o Bugfixes
   -- The CPU speed detection has been changed to accept 50 times as many clock cycles than with
-     with v1.0.7. Robots than ran fine under v1.0.6 were skipping turns like crazy under v1.0.7.
+     with v1.0.7. Robots than ran fine under v1.0.6 were skipping turns like crazy under v1.0.7
   -- Robot text-output error has been fixed according to the solution provided by Matt
      (msj(at)sysmatrix(dot)net)
   -- The window position and sizes were not loaded properly from the windows.properties file
   -- The state of the "View option" was not loaded correctly, and hence always set to enabled
-     everytime Robocode was restarted.
+     everytime Robocode was restarted
   -- updateMovement() that checked for "distanceRemaining > 1" instead of "distanceRemaining > 0"
      when slowing down
   -- The radar was not colored correctly due to a bug in the coloring filter
   -- The Robocode editor's window menu did not remove closed windows properly when muliple windows
      were opened in the editor
+  -- Various part of Robocode did not work properly if installed into a folder containing spaces,
+     e.g. compiling and viewing the API documentation did not work.
 o Added 1200x1200 battle field size as one of the standard sizes, and set the size step to 100.
   -- This feature was added to accommodate RoboRumble@Home
 o The battle window is no longer reset every time a new battle is started and the window size and
   position is saved into the windows.properties file
 o The robot colors are now painted using a true HSL color model
   -- The change to use the HSL color model fixed the bug regarding none or wrong coloring.
+  -- Also, the lumination of the robot colors has been changed
 o Added a checkbox to enable Robocode SG painting in the robot console
   -- The "Debug paint" button in the robot console has been renamed to "Paint"
   -- The "Paint" button enables painting in general, and by trickering "Robocode SG", the robot
-     (debug) painting will be rendered as Robocode SG does it.
+     (debug) painting will be rendered as Robocode SG does it
 
 Version 1.1
 (14/6/2006)
