@@ -222,7 +222,7 @@ public class ImageManager {
 			return getRobotRenderImage();
 		}
 		if (coloredRobotRenderImage[colorIndex] == null) {
-			Image coloredImage = ImageUtil.createColorModifiedImage(getRobotImage(), getRobotColor(colorIndex));
+			Image coloredImage = ImageUtil.createColouredRobotImage(getRobotImage(), getRobotColor(colorIndex));
 
 			coloredRobotRenderImage[colorIndex] = new RenderImage(coloredImage);
 		}
@@ -234,7 +234,7 @@ public class ImageManager {
 			return getGunRenderImage();
 		}
 		if (coloredGunRenderImage[colorIndex] == null) {
-			Image coloredImage = ImageUtil.createColorModifiedImage(getGunImage(), getGunColor(colorIndex));
+			Image coloredImage = ImageUtil.createColouredRobotImage(getGunImage(), getGunColor(colorIndex));
 
 			coloredGunRenderImage[colorIndex] = new RenderImage(coloredImage);
 		}
@@ -246,7 +246,7 @@ public class ImageManager {
 			return getRadarRenderImage();
 		}
 		if (coloredRadarRenderImage[colorIndex] == null) {
-			Image coloredImage = ImageUtil.createColorModifiedImage(getRadarImage(), getRadarColor(colorIndex));
+			Image coloredImage = ImageUtil.createColouredRobotImage(getRadarImage(), getRadarColor(colorIndex));
 
 			coloredRadarRenderImage[colorIndex] = new RenderImage(coloredImage);
 		}
@@ -327,9 +327,9 @@ public class ImageManager {
 			gunColors[colorIndex] = gunColor;
 			radarColors[colorIndex] = radarColor;
 		
-			Image coloredRobotImage = ImageUtil.createColorModifiedImage(getRobotImage(), robotColor);
-			Image coloredGunImage = ImageUtil.createColorModifiedImage(getGunImage(), gunColor);
-			Image coloredRadarImage = ImageUtil.createColorModifiedImage(getRadarImage(), radarColor);
+			Image coloredRobotImage = ImageUtil.createColouredRobotImage(getRobotImage(), robotColor);
+			Image coloredGunImage = ImageUtil.createColouredRobotImage(getGunImage(), gunColor);
+			Image coloredRadarImage = ImageUtil.createColouredRobotImage(getRadarImage(), radarColor);
 
 			coloredRobotRenderImage[colorIndex] = new RenderImage(coloredRobotImage);
 			coloredGunRenderImage[colorIndex] = new RenderImage(coloredGunImage);
