@@ -80,14 +80,14 @@ public class ImageUtil {
 	}
 	
 	/**
-	 * Creates a new image where the colors of the source image are changed
-	 * into one single other color.
+	 * Create a copy of an robot image into a coloured robot image. The colors of the
+	 * input image are changed into the input color, but with the same lumination.
 	 *
 	 * @param img the source image
 	 * @param color the new color that substitutes the old color(s) in the source image
 	 * @return a new image
 	 */
-	public static Image createColorModifiedImage(Image img, Color color) {
+	public static Image createColouredRobotImage(Image img, Color color) {
 		return (color == null)
 				? img
 				: (img == null)
@@ -115,7 +115,8 @@ public class ImageUtil {
 			float[] HSL = RGBtoHSL(r, g, b);
 
 			if (HSL[1] > 0) {
-				return argb & 0xff000000 | HSLtoRGB(hsl[0], hsl[1], (HSL[2] + hsl[2]) / 2);
+				float L = Math.min(Math.max((0.15f + (hsl[2] + HSL[2] - 0.5f)), 0), 1);				
+				return argb & 0xff000000 | HSLtoRGB(hsl[0], hsl[1], L);
 			}
 			return argb;
 		}
