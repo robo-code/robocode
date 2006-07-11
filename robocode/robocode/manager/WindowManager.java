@@ -188,7 +188,6 @@ public class WindowManager {
 		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager(), false);
 		// Pack, center, and show it
 		Utils.packCenterShow(robotPackager);
-		return;
 	}
 
 	public void showRobotExtractor(JFrame owner) {
@@ -234,7 +233,6 @@ public class WindowManager {
 
 		// Pack, center, and show it
 		Utils.packCenterShow(robocodeFrame, newBattleDialog);
-		return;
 	}
 
 	public boolean closeRobocodeEditor() {

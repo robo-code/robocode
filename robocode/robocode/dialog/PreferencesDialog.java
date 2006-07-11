@@ -56,7 +56,6 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	public void cancelButtonActionPerformed() {
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		return;
 	}
 
 	/**
@@ -138,6 +137,5 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		viewOptionsTab.storePreferences();
 		developmentOptionsTab.storePreferences();
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		return;
 	}
 }

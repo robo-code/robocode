@@ -103,7 +103,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getVisibleRobotNameCheckBox().setSelected(true);
 		getVisibleScanArcsCheckBox().setSelected(false);
 		getVisibleGroundCheckBox().setSelected(true);
-		return;
 	}
 
 	private void desiredFpsTextFieldStateChanged() {
@@ -121,27 +120,22 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		} catch (NumberFormatException e) {
 			getDesiredFpsLabel().setText("Desired FPS: ???");
 		}
-		return;
 	}
 
 	private void maxFpsButtonActionPerformed() {
 		getDesiredFpsTextField().setText("" + MAXFPS);
-		return;
 	}
 
 	private void minFpsButtonActionPerformed() {
 		getDesiredFpsTextField().setText("" + MINFPS);
-		return;
 	}
 
 	private void fastFpsButtonActionPerformed() {
 		getDesiredFpsTextField().setText("" + FASTFPS);
-		return;
 	}
 
 	private void defaultFpsButtonActionPerformed() {
 		getDesiredFpsTextField().setText("" + DEFAULTFPS);
-		return;
 	}
 
 	/**

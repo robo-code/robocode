@@ -66,7 +66,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	 */
 	public void cancelButtonActionPerformed() {
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		return;
 	}
 
 	/**
@@ -106,7 +105,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			}
 		}).start();
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		return;
 	}
 
 	/**

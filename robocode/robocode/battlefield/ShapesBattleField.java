@@ -42,7 +42,6 @@ public class ShapesBattleField implements BattleField {
 	}
 
 	public void drawShapes(Graphics2D osg) {
-		return;
 	}
 
 	public BoundingRectangle getBoundingBox() {

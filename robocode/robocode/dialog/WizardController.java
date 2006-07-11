@@ -54,12 +54,10 @@ public class WizardController extends JPanel implements ChangeListener {
 
 	private void backButtonActionPerformed() {
 		wizard.back();
-		return;
 	}
 
 	private void cancelButtonActionPerformed() {
 		wizard.getWizardListener().cancelButtonActionPerformed();
-		return;
 	}
 
 	private void finishButtonActionPerformed() {

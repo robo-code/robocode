@@ -146,7 +146,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		} else if (selectedModel.getSize() > maxRobots) {
 			showWrongNumInstructions();
 		}
-		return;
 	}
 
 	private void addButtonActionPerformed() {
@@ -164,7 +163,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		} else if (selectedModel.getSize() > maxRobots) {
 			showWrongNumInstructions();
 		}
-		return;
 	}
 
 	/**
@@ -359,7 +357,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		selectedModel.changed();
 		fireStateChanged();
 		showInstructions();
-		return;
 	}
 
 	private void contextMenuActionPerformed() {}
@@ -380,7 +377,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		} else {
 			showInstructions();
 		}
-		return;
 	}
 
 	class RobotNameCellRenderer extends JLabel implements ListCellRenderer {

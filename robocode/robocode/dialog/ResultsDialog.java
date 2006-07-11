@@ -217,7 +217,6 @@ public class ResultsDialog extends JDialog {
 		}
 		validate();
 		repaint();
-		return;
 	}
 
 	private void setResultsData() {

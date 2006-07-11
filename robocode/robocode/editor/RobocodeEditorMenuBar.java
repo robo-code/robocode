@@ -166,14 +166,12 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editWindow.setFrame(editor);
 			editWindow.compile();
 		}
-		return;
 	}
 
 	public void compilerOptionsPreferencesActionPerformed() {
 		CompilerPreferencesDialog d = new CompilerPreferencesDialog(editor);
 
 		Utils.packCenterShow(editor, d);
-		return;
 	}
 
 	private void compilerOptionsResetCompilerActionPerformed() {
@@ -182,7 +180,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 				editor.resetCompilerProperties();
 			}
 		}).start();
-		return;
 	}
 
 	public void disableMenus() {
@@ -204,94 +201,76 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 		evt = new WindowEvent(editor, WindowEvent.WINDOW_CLOSING);
 		editor.dispatchEvent(evt);
-		return;
 	}
 
 	public void fileNewJavaFileActionPerformed() {
 		editor.createNewJavaFile();
-		return;
 	}
 
 	public void fileNewRobotActionPerformed() {
 		editor.createNewRobot();
-		return;
 	}
 
 	public void fileOpenActionPerformed() {
 		editor.openRobot();
-		return;
 	}
 
 	public void fileExtractActionPerformed() {
 		editor.extractRobot();
-		return;
 	}
 
 	public void fileSaveActionPerformed() {
 		editor.saveRobot();
-		return;
 	}
 
 	public void fileSaveAsActionPerformed() {
 		editor.saveAsRobot();
-		return;
 	}
 
 	public void editUndoActionPerformed() {
 		editor.getActiveWindow().undo();
-		return;
 	}
 
 	public void editRedoActionPerformed() {
 		editor.getActiveWindow().redo();
-		return;
 	}
 
 	public void editCutActionPerformed() {
 		editor.getActiveWindow().getEditorPane().cut();
-		return;
 	}
 
 	public void editCopyActionPerformed() {
 		editor.getActiveWindow().getEditorPane().copy();
-		return;
 	}
 
 	public void editPasteActionPerformed() {
 		editor.getActiveWindow().getEditorPane().paste();
-		return;
 	}
 
 	public void editDeleteActionPerformed() {
 		editor.getActiveWindow().getEditorPane().replaceSelection(null);
-		return;
 	}
 
 	public void editSelectAllActionPerformed() {
 		editor.getActiveWindow().getEditorPane().selectAll();
-		return;
 	}
 
 	public void editFindActionPerformed() {
 		editor.findDialog();
-		return;
 	}
 
 	public void editReplaceActionPerformed() {
 		editor.replaceDialog();
-		return;
 	}
 
 	public void editFindNextActionPerformed() {
 		editor.getFindReplaceDialog().findNext();
-		return;
 	}
 
 	public void windowCloseActionPerformed() {
 		if (editor.getActiveWindow() != null) {
 			editor.getActiveWindow().doDefaultCloseAction();
 		}
-		return;
 	}
 
 	public void windowCloseAllActionPerformed() {
@@ -302,12 +281,10 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 				frames[i].doDefaultCloseAction();
 			}
 		}
-		return;
 	}
 
 	public void windowMoreWindowsActionPerformed() {
 		getMoreWindowsDialog().setVisible(true);
-		return;
 	}
 
 	/**
@@ -886,7 +863,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	public void helpRobocodeApiActionPerformed() {
 		editor.showHelpApi();
-		return;
 	}
 
 	/**

@@ -251,7 +251,6 @@ public class RobotDialog extends JFrame {
 	 */
 	private void okButtonActionPerformed() {
 		dispose();
-		return;
 	}
 
 	/**
@@ -259,7 +258,6 @@ public class RobotDialog extends JFrame {
 	 */
 	private void clearButtonActionPerformed() {
 		getConsoleScrollPane().setText("");
-		return;
 	}
 
 	/**

@@ -469,7 +469,6 @@ public class RobotRepositoryManager {
 		} else {
 			getRobotDatabase().put(key, spec);
 		}
-		return;
 	}
 
 	private void conflictLog(String s) {

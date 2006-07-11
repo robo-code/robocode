@@ -78,7 +78,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 		AWTEvent evt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
 
 		this.dispatchEvent(evt);
-		return;
 	}
 
 	public void copy(FileInputStream in, NoDuplicateJarOutputStream out) throws IOException {

@@ -415,12 +415,10 @@ public class RobocodeFrame extends JFrame {
 			getPauseResumeButton().setDisplayedMnemonicIndex(0);
 			manager.getBattleManager().resumeBattle();
 		}
-		return;
 	}
 
 	public void stopButtonActionPerformed() {
 		windowManager.getManager().getBattleManager().stop(true);
-		return;
 	}
 
 	/**

@@ -51,7 +51,6 @@ public class PreferencesTeamOptionsTab extends WizardPanel {
 
 	private void defaultsButtonActionPerformed() {
 		getOptionsTeamShowTeamRobotsCheckBox().setSelected(false);
-		return;
 	}
 
 	/**
