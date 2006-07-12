@@ -1,3 +1,12 @@
+Version 1.1.2 Beta
+(11/7/2006)
+-------------
+o Bugfixes
+  -- It was not possible to install Robocode on Mac OS X Panther (10.3.9) due to a buggy
+     autoextract
+  -- The buildJikes.sh contained the ^M (DOS return-carrige characters), which do not belong in a
+     Unix/Linux file  ;-)
+
 Version 1.1.1
 (6/7/2006)
 -------------
@@ -15,7 +24,8 @@ o Bugfixes
   -- The Robocode editor's window menu did not remove closed windows properly when muliple windows
      were opened in the editor
   -- Various part of Robocode did not work properly if installed into a folder containing spaces,
-     e.g. compiling and viewing the API documentation did not work.
+     e.g. compiling and viewing the API documentation did not work
+  -- Installing and compiling under Mac 10.3.9 was fixed.
 o Added 1200x1200 battle field size as one of the standard sizes, and set the size step to 100.
   -- This feature was added to accommodate RoboRumble@Home
 o The battle window is no longer reset every time a new battle is started and the window size and
@@ -27,6 +37,9 @@ o Added a checkbox to enable Robocode SG painting in the robot console
   -- The "Debug paint" button in the robot console has been renamed to "Paint"
   -- The "Paint" button enables painting in general, and by trickering "Robocode SG", the robot
      (debug) painting will be rendered as Robocode SG does it
+o Added the "-Xmx512M" option to the batch files extending the max. memory heap size to 512 MB
+o Added the "-Dsun.io.useCanonCaches=false" which fixes some SecurityException issues on robots
+  that read from files, and also fixed the installing and compiling problem under Mac 10.3.9
 
 Version 1.1
 (14/6/2006)
