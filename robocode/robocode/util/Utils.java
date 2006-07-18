@@ -568,7 +568,7 @@ public class Utils {
 	
 	public static String quoteFileName(String fileName) {
 		if (fileName.matches(".*\\s+?.*")) {
-			return '"' + fileName +'"';
+			return '"' + fileName + '"';
 		}	
 		return fileName;
 	}
