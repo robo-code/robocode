@@ -41,8 +41,7 @@ public class ShapesBattleField implements BattleField {
 		shapes[2] = new BoundingRectangle(580, 470, 20, 130);
 	}
 
-	public void drawShapes(Graphics2D osg) {
-	}
+	public void drawShapes(Graphics2D osg) {}
 
 	public BoundingRectangle getBoundingBox() {
 		return boundingBox;

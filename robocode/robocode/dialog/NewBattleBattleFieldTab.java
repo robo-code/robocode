@@ -156,6 +156,7 @@ public class NewBattleBattleFieldTab extends JPanel {
 		}
 	}
 
+
 	private class EventHandler implements ActionListener, ChangeListener {
 
 		public void actionPerformed(ActionEvent e) {

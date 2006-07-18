@@ -66,8 +66,7 @@ public class MirroredGraphics extends Graphics2D {
 	 * 
 	 * @see #bind(Graphics2D, int)
 	 */
-	public void release() {
-		// Does nothing currently
+	public void release() {// Does nothing currently
 	}
 
 	public void setTransform(AffineTransform Tx) {
