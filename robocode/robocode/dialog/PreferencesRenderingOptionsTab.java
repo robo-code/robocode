@@ -50,10 +50,11 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private void initialize() {
 		eventHandler = new EventHandler();
 
-		setLayout(new GridLayout(1, 2));
+		setLayout(new GridLayout(1, 3));
 
 		add(getSpecificSettingsPanel());
 		add(getPredefinedSettingsPanel());
+		add(new JPanel());
 
 		loadPreferences(manager.getProperties());
 	}
@@ -70,13 +71,15 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.insets = new Insets(5, 5, 5, 5);
 			c.anchor = GridBagConstraints.PAGE_START;
+			c.weightx = 1;
 
-			c.weightx = 1f / 5;
+			c.gridwidth = 2;
 
 			c.gridx = 0;
 			c.gridy = 0;
-			c.gridwidth = 2;
-			specificSettingsPanel.add(new JLabel("Here you can specify individual rendering options:"), c);
+			specificSettingsPanel.add(new JLabel("Set individual rendering options:"), c);
+
+			c.gridwidth = 1;
 
 			c.gridy = 1;
 			specificSettingsPanel.add(new JLabel("Antialiasing"), c);
@@ -124,7 +127,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			c.gridx = 0;
 			c.gridy = 0;
 			c.gridwidth = 3;
-			predefinedSettingsPanel.add(new JLabel("Here you can set the all rendering settings towards:"), c);
+			predefinedSettingsPanel.add(new JLabel("Set all rendering settings towards:"), c);
 
 			c.weightx = 1f / 3;
 			c.gridwidth = 1;
