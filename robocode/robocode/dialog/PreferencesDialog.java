@@ -11,6 +11,7 @@
  *     Matthew Reeder
  *     - Added keyboard mnemonics to tabs
  *     Flemming N. Larsen
+ *     - Added Rendering Options tab
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -24,13 +25,15 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder, Flemming N. Larsen (current)
+ * @author Matthew Reeder (keyboard mnemonics)
+ * @author Flemming N. Larsen (current)
  */
 public class PreferencesDialog extends JDialog implements WizardListener {
 	private JPanel preferencesDialogContentPane;
 	private WizardTabbedPane tabbedPane;
 	private WizardController buttonsPanel;
 	private PreferencesViewOptionsTab viewOptionsTab;
+	private PreferencesRenderingOptionsTab renderingOptionsTab;
 	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
 
 	EventHandler eventHandler = new EventHandler();
@@ -94,26 +97,34 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private WizardTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
 			tabbedPane = new WizardTabbedPane(this);
+
 			tabbedPane.insertTab("View Options", null, getViewOptionsTab(), null, 0);
 			tabbedPane.setMnemonicAt(0, KeyEvent.VK_V);
 			tabbedPane.setDisplayedMnemonicIndexAt(0, 0);
-			tabbedPane.insertTab("Development Options", null, getDevelopmentOptionsTab(), null, 1);
-			tabbedPane.setMnemonicAt(1, KeyEvent.VK_D);
+
+			tabbedPane.insertTab("Rendering Options", null, getRenderingOptionsTab(), null, 1);
+			tabbedPane.setMnemonicAt(0, KeyEvent.VK_R);
 			tabbedPane.setDisplayedMnemonicIndexAt(1, 0);
+
+			tabbedPane.insertTab("Development Options", null, getDevelopmentOptionsTab(), null, 2);
+			tabbedPane.setMnemonicAt(1, KeyEvent.VK_D);
+			tabbedPane.setDisplayedMnemonicIndexAt(2, 0);
 		}
 		return tabbedPane;
 	}
 
-	/**
-	 * Return the viewOptionsTab
-	 * 
-	 * @return JPanel
-	 */
 	private JPanel getViewOptionsTab() {
 		if (viewOptionsTab == null) {
 			viewOptionsTab = new PreferencesViewOptionsTab(manager);
 		}
 		return viewOptionsTab;
+	}
+
+	private JPanel getRenderingOptionsTab() {
+		if (renderingOptionsTab == null) {
+			renderingOptionsTab = new PreferencesRenderingOptionsTab(manager);
+		}
+		return renderingOptionsTab;
 	}
 
 	private JPanel getDevelopmentOptionsTab() {
@@ -135,7 +146,9 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	public void finishButtonActionPerformed() {
 		viewOptionsTab.storePreferences();
+		renderingOptionsTab.storePreferences();
 		developmentOptionsTab.storePreferences();
+
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 }
