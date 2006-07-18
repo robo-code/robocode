@@ -53,10 +53,9 @@ public class AboutBox extends JDialog {
 			+ "<td><b>Version: " + TAG_ROBOCODE_VERSION + "</b><br><br>robocode.net<br>&nbsp;</td></tr></table><center><br>"
 			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan"
 			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (RobocodeNG and Robocode 2006),<br>"
-			+ "Matthew Reeder a.k.a. Kawigi (OpenSource Robocode),<br>"
-			+ "John Villar & Ascander Jr (RobocodeNG),<br>"
-			+ "and Stefan Westen (RobocodeSG)"
-			+ "<br><br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
+			+ "Matthew Reeder a.k.a. Kawigi (OpenSource Robocode),<br>" + "John Villar & Ascander Jr (RobocodeNG),<br>"
+			+ "and Stefan Westen (RobocodeSG)" + "<br><br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
+			+ "</center></td></tr></table></body>";
 
 	// Robocode version
 	private String robocodeVersion;
@@ -165,8 +164,7 @@ public class AboutBox extends JDialog {
 	 */
 	private String getHtmlText() {
 		if (htmlText == null) {
-			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION,
-					System.getProperty("java.version")).replaceAll(
+			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION, System.getProperty("java.version")).replaceAll(
 					TAG_JAVA_VENDOR, System.getProperty("java.vendor"));
 		}
 		return htmlText;
