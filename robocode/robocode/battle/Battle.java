@@ -370,7 +370,7 @@ public class Battle implements Runnable {
 		manager.getWindowManager().getRobocodeFrame().validate();
 
 		battleView.setPaintMode(BattleView.PAINTBATTLE);
-		battleView.showNextFrame();
+		battleView.update();
 		// Pre-load robot classes without security...
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 		// in the safe robot loader the class is linked.
@@ -402,7 +402,7 @@ public class Battle implements Runnable {
 						break;
 					}
 				}
-				battleView.showNextFrame();
+				battleView.update();
 			} catch (Throwable e) {
 				r.out.println("SYSTEM: Could not load " + r.getName() + " : " + e);
 				e.printStackTrace(r.out);
@@ -514,7 +514,7 @@ public class Battle implements Runnable {
 
 			// Repaint
 			if (battleView != null) {
-				battleView.showNextFrame();
+				battleView.update();
 			}
 
 			// Robot time!
@@ -907,14 +907,14 @@ public class Battle implements Runnable {
 		}
 
 		battleView.setPaintMode(BattleView.PAINTBATTLE);
-		battleView.showNextFrame();
+		battleView.update();
 
 		// Notifying loader
 		synchronized (unsafeLoaderMonitor) {
 			unsafeLoaderMonitor.notify();
 		}
 		while (!isRobotsLoaded()) {
-			battleView.showNextFrame();
+			battleView.update();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {}
@@ -955,7 +955,7 @@ public class Battle implements Runnable {
 					Utils.log("Wait for " + r + " interrupted.");
 				}
 			}
-			battleView.showNextFrame();
+			battleView.update();
 			if (!r.isSleeping()) {
 				Utils.log("\n" + r.getName() + " still has not started after " + waitTime + " ms... giving up.");
 			}
@@ -1044,7 +1044,7 @@ public class Battle implements Runnable {
 							break;
 						}
 					}
-					battleView.showNextFrame();
+					battleView.update();
 				}
 			} // for
 			manager.getThreadManager().setLoadingRobot(null);
