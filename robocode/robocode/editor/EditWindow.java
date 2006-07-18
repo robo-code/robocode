@@ -92,10 +92,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 		try {
 			this.addInternalFrameListener(new InternalFrameAdapter() {
 				public void internalFrameClosing(InternalFrameEvent e) {
-					if (!modified) {
-						editor.setLineStatus(-1);
-						dispose();
-					} else if (fileSave(true)) {
+					if (!modified || fileSave(true)) {
 						editor.setLineStatus(-1);
 						dispose();
 					}
