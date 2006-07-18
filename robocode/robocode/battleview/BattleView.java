@@ -105,7 +105,7 @@ public class BattleView extends Canvas {
 	/**
 	 * Shows the next frame. The game calls this every frame.
 	 */
-	public void showNextFrame() {
+	public void update() {
 		try {
 			if (robocodeFrame.isIconified() || (getWidth() <= 0) || (getHeight() <= 0)) {
 				return;
@@ -476,35 +476,35 @@ public class BattleView extends Canvas {
 	}
 	
 	private void drawBullets(Graphics2D g) {
-		BulletPeer b;
-		int l, t;
+		BulletPeer bullet;
+		int x, y;
 
 		for (int i = 0; i < battle.getBullets().size(); i++) {
-			b = (BulletPeer) battle.getBullets().elementAt(i);
-			if (!b.isActive() && !b.hitVictim && !b.hitBullet) {
+			bullet = (BulletPeer) battle.getBullets().elementAt(i);
+			if (!bullet.isActive() && !bullet.hitVictim && !bullet.hitBullet) {
 				continue;
 			}
 
-			if (!b.hitVictim && !b.hitBullet) {
-				l = (int) b.getX() - 2;
-				t = (int) (battle.getBattleField().getHeight() - b.getY() - 3);
+			if (!bullet.hitVictim && !bullet.hitBullet) {
+				x = (int) bullet.getX() - 2;
+				y = (int) (battle.getBattleField().getHeight() - bullet.getY() - 3);
 
 				if (scale > .5) {
-					g.drawImage(imageManager.getBulletImage(), l, t, null);
+					g.drawImage(imageManager.getBulletImage(), x, y, null);
 				} else {
-					g.drawImage(imageManager.getBulletImage(), l, t, (int) (1 / scale + 1.0), (int) (1 / scale + 1.0),
+					g.drawImage(imageManager.getBulletImage(), x, y, (int) (1 / scale + 1.0), (int) (1 / scale + 1.0),
 							null);
 				}
 			} else {
 				int sizeIndex, halfSize;
 
-				if (b instanceof ExplosionPeer) {
+				if (bullet instanceof ExplosionPeer) {
 					sizeIndex = 0;
 					halfSize = 40;
-					l = (int) b.getX() - b.getWidth() / 2;
-					t = (int) (battle.getBattleField().getHeight() - b.getY() - b.getHeight() / 2);
+					x = (int) bullet.getX() - bullet.getWidth() / 2;
+					y = (int) (battle.getBattleField().getHeight() - bullet.getY() - bullet.getHeight() / 2);
 				} else {
-					double power = b.getPower();
+					int power = (int)bullet.getPower();
 
 					if (power >= 4) {
 						sizeIndex = 5;
@@ -518,19 +518,17 @@ public class BattleView extends Canvas {
 						sizeIndex = 1;
 					}
 
-					if (b.hitBullet) {
+					if (bullet.hitBullet) {
 						sizeIndex = 2;
 					}
 
 					halfSize = sizeIndex * imageManager.getExplodeSizeMultiplier() / 2;
-					l = (int) b.getX() - halfSize;
-					t = (int) (battle.getBattleField().getHeight() - b.getY() - halfSize);
+					x = (int) bullet.getX() - halfSize;
+					y = (int) (battle.getBattleField().getHeight() - bullet.getY() - halfSize);
 				}
 
-				try {
-					drawExplodeImage(g, imageManager.getExplosionImage(b.getWhichExplosion(), b.getFrame(), sizeIndex),
-							l, t);
-				} catch (ArrayIndexOutOfBoundsException e) {}
+				// Draw explosion
+				g.drawImage(imageManager.getExplosionImage(bullet.getWhichExplosion(), bullet.getFrame(), sizeIndex), x, y, null);
 			}
 		}
 	}
@@ -568,10 +566,6 @@ public class BattleView extends Canvas {
 			top = 0;
 		}
 		g.drawString(s, left, (top + height - descent));
-	}
-
-	private void drawExplodeImage(Graphics g, Image i, int x, int y) {
-		g.drawImage(i, x, y, null);
 	}
 
 	public void saveFrame(String fileName) {
