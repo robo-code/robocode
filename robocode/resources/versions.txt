@@ -1,11 +1,12 @@
 Version 1.1.2 Beta
-(11/7/2006)
+(18/7/2006)
 -------------
 o Bugfixes
-  -- It was not possible to install Robocode on Mac OS X Panther (10.3.9) due to a buggy
-     autoextract
   -- The buildJikes.sh contained the ^M (DOS return-carrige characters), which do not belong in a
      Unix/Linux file  ;-)
+o Added Rendering Options to the Preferences
+  - It now possible to change the settings for Antialiasing, Text Antialiasing, Rendering Method,
+    and number of rendering buffers
 
 Version 1.1.1
 (6/7/2006)
