@@ -14,12 +14,13 @@
  *     - Integration of robocode.render.
  *     - Removed all code for handling dirty rectangles, which is not necessary
  *       anymore due to the new robocode.render.
- *     - Code cleanup
  *     - Added drawRobotPaint() to support for painting the robots using their
  *       Robot.onPaint() method
  *       the painting.
  *     - Added the ability to enable and disable drawing the ground.
  *     - Added support for Robocode SG painting
+ *     - Added rendering hints
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.battleview;
 
@@ -113,7 +114,7 @@ public class BattleView extends Canvas {
 			if (!initialized) {
 				initialize();
 			}
-			
+
 			Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 
 			paint(g);
@@ -153,8 +154,10 @@ public class BattleView extends Canvas {
 		offscreenImage = createImage(getWidth(), getHeight());
 		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 
+		offscreenGfx.setRenderingHints(manager.getProperties().getRenderingHints());
+
 		if (bufferStrategy == null) {
-			createBufferStrategy(2);
+			createBufferStrategy(manager.getProperties().getOptionsRenderingNoBuffers());
 			bufferStrategy = getBufferStrategy();
 		}
 
@@ -207,8 +210,10 @@ public class BattleView extends Canvas {
 		int groundHeight = (int) (battleField.getHeight() * scale);
 	
 		groundImage = new BufferedImage(groundWidth, groundHeight, BufferedImage.TYPE_INT_RGB);
-	
+
 		Graphics2D groundGfx = (Graphics2D) groundImage.getGraphics();
+
+		groundGfx.setRenderingHints(manager.getProperties().getRenderingHints());
 
 		groundGfx.setTransform(AffineTransform.getScaleInstance(scale, scale));
 	
@@ -303,6 +308,7 @@ public class BattleView extends Canvas {
 				int dy = (getHeight() - groundHeight) / 2;
 
 				AffineTransform savedTx = g.getTransform();
+
 				g.setTransform(new AffineTransform());
 
 				g.drawImage(groundImage, dx, dy, groundWidth, groundHeight, null);
