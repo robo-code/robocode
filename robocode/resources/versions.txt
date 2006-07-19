@@ -11,6 +11,7 @@ o Explosions are no longer pre-scaled in 6 fixed sizes, but instead scaled real-
   -- The explosion sizes are now more precise depending on bullet damage, and the memory usage for
      the explosions has been brought down
   -- Possible fix for explosions on the iMac, where explosions are painted as filled circles?!
+o Bullets are now painted as filled white energy balls with a size that matches the bullet energy
 
 Version 1.1.1
 (6/7/2006)
