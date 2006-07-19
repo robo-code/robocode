@@ -143,7 +143,7 @@ public class Battle implements Runnable {
 		} catch (NullPointerException e) {
 			if (!abortBattles) {
 				Utils.log("Null pointer exception in battle.initialize");
-				e.printStackTrace();
+				e.printStackTrace(System.err);
 				throw e;
 			}
 		}
