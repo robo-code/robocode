@@ -26,6 +26,8 @@ import robocode.*;
  * @author Flemming N. Larsen (current)
  */
 public class BulletPeer {
+	private int WHICH_EXPLOSION = 0;
+
 	private double velocity;
 
 	private double heading;
@@ -46,8 +48,6 @@ public class BulletPeer {
 	private BattleField battleField;
 
 	private double power;
-
-	public Rectangle dirtyRect;
 
 	protected boolean active = true;
 
@@ -308,19 +308,16 @@ public class BulletPeer {
 			setY(victim.getY() + deltaY);
 			hitVictimTime++;
 			frame = hitVictimTime;
-			if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(getWhichExplosion())) {
+			if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
 				hitVictim = false;
 			}
 		} else if (hitBullet) {
 			hitBulletTime++;
 			frame = hitBulletTime;
-			if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(getWhichExplosion())) {
+			if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
 				hitBullet = false;
 			}
-		} else if (dirtyRect == null) {
-			battle.removeBullet(this);
 		}
-
 	}
 
 	public void updateMovement() {
@@ -337,6 +334,6 @@ public class BulletPeer {
 	}
 
 	public int getWhichExplosion() {
-		return 0;
+		return WHICH_EXPLOSION;
 	}
 }
