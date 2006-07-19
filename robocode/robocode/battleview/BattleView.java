@@ -340,7 +340,7 @@ public class BattleView extends Canvas {
 		RobotPeer c;
 
 		if (drawGround) {
-			RenderImage explodeDebrise = imageManager.getExplosionDebrise();
+			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
 			for (int i = 0; i < battle.getRobots().size(); i++) {
 				c = (RobotPeer) battle.getRobots().elementAt(i);
@@ -477,8 +477,9 @@ public class BattleView extends Canvas {
 	
 	private void drawBullets(Graphics2D g) {
 		BulletPeer bullet;
-		int x, y;
 
+		double x, y;
+		
 		for (int i = 0; i < battle.getBullets().size(); i++) {
 			bullet = (BulletPeer) battle.getBullets().elementAt(i);
 			if (!bullet.isActive() && !bullet.hitVictim && !bullet.hitBullet) {
@@ -486,49 +487,38 @@ public class BattleView extends Canvas {
 			}
 
 			if (!bullet.hitVictim && !bullet.hitBullet) {
-				x = (int) bullet.getX() - 2;
-				y = (int) (battle.getBattleField().getHeight() - bullet.getY() - 3);
+				x = bullet.getX() - 2;
+				y = (battle.getBattleField().getHeight() - bullet.getY() - 3);
 
 				if (scale > .5) {
-					g.drawImage(imageManager.getBulletImage(), x, y, null);
+					g.drawImage(imageManager.getBulletImage(), (int) x, (int) y, null);
 				} else {
-					g.drawImage(imageManager.getBulletImage(), x, y, (int) (1 / scale + 1.0), (int) (1 / scale + 1.0),
-							null);
+					g.drawImage(imageManager.getBulletImage(), (int) x, (int) y, (int) (1 / scale + 1.0),
+							(int) (1 / scale + 1.0), null);
 				}
 			} else {
-				int sizeIndex, halfSize;
+				x = bullet.getX();
+				y = battle.getBattleField().getHeight() - bullet.getY();
+				
+				AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
-				if (bullet instanceof ExplosionPeer) {
-					sizeIndex = 0;
-					halfSize = 40;
-					x = (int) bullet.getX() - bullet.getWidth() / 2;
-					y = (int) (battle.getBattleField().getHeight() - bullet.getY() - bullet.getHeight() / 2);
-				} else {
-					int power = (int)bullet.getPower();
-
-					if (power >= 4) {
-						sizeIndex = 5;
-					} else if (power >= 3) {
-						sizeIndex = 4;
-					} else if (power >= 2) {
-						sizeIndex = 3;
-					} else if (power >= 1) {
-						sizeIndex = 2;
-					} else {
-						sizeIndex = 1;
-					}
+				if (!(bullet instanceof ExplosionPeer)) {
+					double scale;
 
 					if (bullet.hitBullet) {
-						sizeIndex = 2;
+						scale = 2.0 * 15 / 128;
+					} else {
+						scale = bullet.getPower() * 15 / 128;
 					}
-
-					halfSize = sizeIndex * imageManager.getExplodeSizeMultiplier() / 2;
-					x = (int) bullet.getX() - halfSize;
-					y = (int) (battle.getBattleField().getHeight() - bullet.getY() - halfSize);
+					
+					at.scale(scale, scale);
 				}
-
-				// Draw explosion
-				g.drawImage(imageManager.getExplosionImage(bullet.getWhichExplosion(), bullet.getFrame(), sizeIndex), x, y, null);
+				
+				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getWhichExplosion(),
+						bullet.getFrame());
+				
+				explosionRenderImage.setTransform(at);
+				explosionRenderImage.paint(g);
 			}
 		}
 	}
