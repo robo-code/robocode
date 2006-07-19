@@ -20,6 +20,8 @@
  *     - Added the ability to enable and disable drawing the ground.
  *     - Added support for Robocode SG painting
  *     - Added rendering hints
+ *     - Bullets are now painted as filled circles with a size that matches the
+ *       bullet energy.
  *     - Code cleanup
  *******************************************************************************/
 package robocode.battleview;
@@ -47,6 +49,8 @@ public class BattleView extends Canvas {
 	public static final int PAINTBATTLE = 1;
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
+	
+	private final static Area BULLET_AREA = new Area(new Ellipse2D.Double(-0.5, -0.5, 1, 1));
 	
 	private RobocodeFrame robocodeFrame;
 
@@ -486,22 +490,20 @@ public class BattleView extends Canvas {
 				continue;
 			}
 
+			x = bullet.getX();
+			y = battle.getBattleField().getHeight() - bullet.getY();
+
+			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+
 			if (!bullet.hitVictim && !bullet.hitBullet) {
-				x = bullet.getX() - 2;
-				y = (battle.getBattleField().getHeight() - bullet.getY() - 3);
+				double scale = bullet.getPower() * 1.5;
 
-				if (scale > .5) {
-					g.drawImage(imageManager.getBulletImage(), (int) x, (int) y, null);
-				} else {
-					g.drawImage(imageManager.getBulletImage(), (int) x, (int) y, (int) (1 / scale + 1.0),
-							(int) (1 / scale + 1.0), null);
-				}
-			} else {
-				x = bullet.getX();
-				y = battle.getBattleField().getHeight() - bullet.getY();
+				at.scale(scale, scale);
+				Area bulletArea = BULLET_AREA.createTransformedArea(at);
 				
-				AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-
+				g.setColor(Color.WHITE);
+				g.fill(bulletArea);
+			} else {	
 				if (!(bullet instanceof ExplosionPeer)) {
 					double scale;
 
@@ -513,7 +515,7 @@ public class BattleView extends Canvas {
 					
 					at.scale(scale, scale);
 				}
-				
+			
 				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getWhichExplosion(),
 						bullet.getFrame());
 				
