@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.peer;
 
@@ -17,10 +19,10 @@ import robocode.battle.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class ExplosionPeer extends BulletPeer {
-	private int whichExplosion = 1;
-	private java.awt.Dimension dimension;
+	private int WHICH_EXPLOSION = 1;
 
 	public ExplosionPeer(RobotPeer owner, Battle battle) {
 		super(owner, battle);
@@ -30,27 +32,18 @@ public class ExplosionPeer extends BulletPeer {
 		hitVictimTime = 0;
 		setPower(1);
 		active = false;
-		this.dimension = battle.getManager().getImageManager().getExplodeDimension(whichExplosion);
 	}
 
 	public final void update() {
 		setX(getOwner().getX());
 		setY(getOwner().getY());
 		frame++;
-		if (frame >= getBattle().getManager().getImageManager().getExplosionFrames(whichExplosion)) {
+		if (frame >= getBattle().getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
 			battle.removeBullet(this);
 		}
 	}
 
 	public int getWhichExplosion() {
-		return whichExplosion;
-	}
-	
-	public int getWidth() {
-		return dimension.width;
-	}
-	
-	public int getHeight() {
-		return dimension.height;
+		return WHICH_EXPLOSION;
 	}
 }
