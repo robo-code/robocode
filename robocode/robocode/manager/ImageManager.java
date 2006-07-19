@@ -16,6 +16,10 @@ package robocode.manager;
 
 import java.awt.*;
 import java.awt.image.*;
+import java.net.URL;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+
 import robocode.render.*;
 import robocode.util.*;
 
@@ -28,14 +32,9 @@ public class ImageManager {
 	private Image[] groundImages = new Image[5];
 	private Image bulletImage;
 
-	private Image[][][] explodeImages;
+	private RenderImage[][] explodeRenderImages;
 	private RenderImage explodeDebriseRenderImage;
 
-	private final int EXPLODE_SIZE_MULTIPLIER = 15;
-	private final int EXPLODE_SIZES = 6;
-	private int numExplosions;
-	private Dimension[] explodeDimension;
-	
 	private Image robotImage;
 	private Image gunImage;
 	private Image radarImage;
@@ -43,8 +42,7 @@ public class ImageManager {
 	private RenderImage robotRenderImage;
 	private RenderImage gunRenderImage;
 	private RenderImage radarRenderImage;
-	
-	private int nextColorIndex;
+
 	private final int MAX_NUM_COLORS = 16;
 	
 	private Color robotColors[] = new Color[MAX_NUM_COLORS];
@@ -55,6 +53,8 @@ public class ImageManager {
 	private RenderImage coloredGunRenderImage[] = new RenderImage[MAX_NUM_COLORS];
 	private RenderImage coloredRadarRenderImage[] = new RenderImage[MAX_NUM_COLORS];
 	
+	private int nextColorIndex;
+
 	public ImageManager() {
 		initialize();
 	}	
@@ -68,7 +68,7 @@ public class ImageManager {
 		getGunImage();
 		getRadarImage();
 		getBulletImage();
-		getExplosionImage(0, 0, 0);
+		getExplosionRenderImage(0, 0);
 	}
 
 	/**
@@ -91,89 +91,64 @@ public class ImageManager {
 		return groundImages[index];
 	}
 	
-	public Dimension getExplodeDimension(int which) {
-		if (explodeDimension == null) {
-			getExplosionImage(which, 0, 0);
-		}
-		return explodeDimension[which];
-	}
-
 	public int getNumExplosions() {
-		return explodeImages.length;
+		return explodeRenderImages.length;
 	}
 
-	public int getExplosionFrames(int whichExplosion) {
-		return explodeImages[whichExplosion].length;
+	public int getExplosionFrames(int which) {
+		return explodeRenderImages[which].length;
 	}
 
-	/**
-	 * Gets an explosion image
-	 * Loads from disk if necessary.
-	 * @return an explosion image
-	 */
-	public Image getExplosionImage(int which, int frame, int size) {
-		if (explodeImages == null) {
+	public RenderImage getExplosionRenderImage(int which, int frame) {
+		if (explodeRenderImages == null) {
+
 			boolean done = false;
 
-			numExplosions = 0;
-			while (!done) {
-				if (getClass().getResource(getExplodeFilename(numExplosions, 0)) != null) {
-					numExplosions++;
-				} else {
-					done = true;
+			int numExplosion, numFrame;
+
+			ArrayList explosions = new ArrayList();
+
+			for (numExplosion = 1; !done; numExplosion++) {
+				ArrayList frames = new ArrayList();
+
+				for (numFrame = 1;; numFrame++) {
+					StringBuffer filename = new StringBuffer("/resources/images/explosion/explosion");
+
+					filename.append(numExplosion).append('-').append(numFrame).append(".png");
+
+					URL url = getClass().getResource(filename.toString());
+
+					if (url == null) {
+						if (numFrame == 1) {
+							done = true;
+						} else {
+							explosions.add(frames);
+						}
+						break;
+					}
+
+					try {
+						frames.add(new RenderImage(ImageIO.read(url)));
+					} catch (Exception e) {
+						Utils.log("Could not load image: " + filename);
+						break;
+					}		
 				}
 			}
-		
-			explodeImages = new Image[numExplosions][][];
-			explodeDimension = new Dimension[numExplosions];
-		
-			for (int i = 0; i < numExplosions; i++) {
-				int f = 1;
-
-				while (getClass().getResource(getExplodeFilename(i, f)) != null) {
-					f++;
-				}
-				explodeImages[i] = new Image[f][EXPLODE_SIZES];
 			
-				for (int j = 0; j < f; j++) {
-					explodeImages[i][j][0] = ImageUtil.getBufferedImage(this, getExplodeFilename(i, j));
-					if (j == 0) {
-						explodeDimension[i] = new Dimension(explodeImages[i][j][0].getWidth(null),
-								explodeImages[i][j][0].getHeight(null));
-					}
-					for (int k = 1; k < EXPLODE_SIZES; k++) {
-						int psize = EXPLODE_SIZE_MULTIPLIER * k;
+			numExplosion = explosions.size();
+			explodeRenderImages = new RenderImage[numExplosion][];
 
-						explodeImages[i][j][k] = new BufferedImage(psize, psize, BufferedImage.TYPE_INT_ARGB);
-						Graphics eg = explodeImages[i][j][k].getGraphics();
+			for (int i = numExplosion - 1; i >= 0; i--) {
+				ArrayList frames = (ArrayList) explosions.get(i);
 
-						eg.drawImage(explodeImages[i][j][0], 0, 0, psize, psize, null);
-					}
-				}
-
-				// TODO:  Get more efficient about resizing (rather than a cheesy if)
-				if (i == 0) {
-					for (int j = 0; j < f; j++) {
-						for (int k = 1; k < EXPLODE_SIZES; k++) {
-							int psize = EXPLODE_SIZE_MULTIPLIER * k;
-
-							explodeImages[i][j][k] = new BufferedImage(psize, psize, BufferedImage.TYPE_INT_ARGB);
-							Graphics eg = explodeImages[i][j][k].getGraphics();
-
-							eg.drawImage(explodeImages[i][j][0], 0, 0, psize, psize, null);
-						}
-					}
-				}
+				explodeRenderImages[i] = (RenderImage[]) frames.toArray(new RenderImage[0]);
 			}
 		}
-		return explodeImages[which][frame][size];
+		return explodeRenderImages[which][frame];
 	}
 
-	private String getExplodeFilename(int which, int frame) {
-		return "/resources/images/explosion/explosion" + (which + 1) + "-" + (frame + 1) + ".png";
-	}
-
-	public RenderImage getExplosionDebrise() {
+	public RenderImage getExplosionDebriseRenderImage() {
 		if (explodeDebriseRenderImage == null) {
 			explodeDebriseRenderImage = new RenderImage(
 					ImageUtil.getBufferedImage(this, "/resources/images/ground/explode_debris.png"));
@@ -272,14 +247,6 @@ public class ImageManager {
 			radarRenderImage = new RenderImage(getRadarImage());
 		}
 		return radarRenderImage;
-	}
-
-	/**
-	 * Gets the explodeSizeMultiplier.
-	 * @return Returns a int
-	 */
-	public int getExplodeSizeMultiplier() {
-		return EXPLODE_SIZE_MULTIPLIER;
 	}
 
 	public Color getRobotColor(int index) {
