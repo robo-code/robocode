@@ -67,20 +67,7 @@ public class ImageManager {
 		getRobotImage();
 		getGunImage();
 		getRadarImage();
-		getBulletImage();
 		getExplosionRenderImage(0, 0);
-	}
-
-	/**
-	 * Gets the bullet image.
-	 * Loads from disk if necessary.
-	 * @return the bullet image
-	 */
-	public Image getBulletImage() {
-		if (bulletImage == null) {
-			bulletImage = ImageUtil.getBufferedImage(this, "/resources/images/g1bullet.gif");			
-		}
-		return bulletImage;
 	}
 
 	public Image getGroundTileImage(int index) {
