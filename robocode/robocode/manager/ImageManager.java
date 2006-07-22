@@ -15,7 +15,6 @@ package robocode.manager;
 
 
 import java.awt.*;
-import java.awt.image.*;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
@@ -30,7 +29,6 @@ import robocode.util.*;
  */
 public class ImageManager {
 	private Image[] groundImages = new Image[5];
-	private Image bulletImage;
 
 	private RenderImage[][] explodeRenderImages;
 	private RenderImage explodeDebriseRenderImage;
