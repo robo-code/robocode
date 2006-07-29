@@ -121,7 +121,12 @@ public class BattleView extends Canvas {
 
 			Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 
-			paint(g);
+			offscreenGfx.setRenderingHints(manager.getProperties().getRenderingHints());
+
+			paintBattle(offscreenGfx);
+
+			g.drawImage(offscreenImage, 0, 0, null);
+
 			g.dispose();
 
 			// Flush the buffer to the main graphics
@@ -134,6 +139,19 @@ public class BattleView extends Canvas {
 		} catch (Exception e) {
 			Utils.log("Could not draw: " + e);
 			e.printStackTrace(System.err);
+		}
+	}
+
+	public void paint(Graphics g) {
+		switch (paintMode) {
+		case PAINTROBOCODELOGO:
+			paintRobocodeLogo(g);
+			return;
+
+		case PAINTBATTLE: {
+			update();
+			break;
+		}
 		}
 	}
 
@@ -155,10 +173,8 @@ public class BattleView extends Canvas {
 			offscreenImage = null;
 		}
 
-		offscreenImage = createImage(getWidth(), getHeight());
+		offscreenImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
 		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-
-		offscreenGfx.setRenderingHints(manager.getProperties().getRenderingHints());
 
 		if (bufferStrategy == null) {
 			createBufferStrategy(manager.getProperties().getOptionsRenderingNoBuffers());
@@ -229,26 +245,6 @@ public class BattleView extends Canvas {
 					groundGfx.drawImage(img, x * groundTileWidth, y * groundTileHeight, null);
 				}
 			}
-		}
-	}
-
-	public void paint(Graphics g) {
-		switch (paintMode) {
-		case PAINTROBOCODELOGO:
-			paintRobocodeLogo(g);
-			return;
-
-		case PAINTBATTLE: {
-			if (!initialized) {
-				initialize();
-			}
-			paintBattle(offscreenGfx);
-			break;
-		}
-		}
-		// If offscreenImage is null, we're drawing singlebuffered anyway
-		if (offscreenImage != null) {
-			g.drawImage(offscreenImage, 0, 0, null);
 		}
 	}
 
