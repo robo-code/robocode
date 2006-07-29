@@ -70,7 +70,7 @@ public class ImageManager {
 
 	public Image getGroundTileImage(int index) {
 		if (groundImages[index] == null) {
-			groundImages[index] = ImageUtil.getBufferedImage(this,
+			groundImages[index] = ImageUtil.getImage(this,
 					"/resources/images/ground/blue_metal/blue_metal_" + index + ".png");
 		}		
 		return groundImages[index];
@@ -136,7 +136,7 @@ public class ImageManager {
 	public RenderImage getExplosionDebriseRenderImage() {
 		if (explodeDebriseRenderImage == null) {
 			explodeDebriseRenderImage = new RenderImage(
-					ImageUtil.getBufferedImage(this, "/resources/images/ground/explode_debris.png"));
+					ImageUtil.getImage(this, "/resources/images/ground/explode_debris.png"));
 		}
 		return explodeDebriseRenderImage;
 	}
@@ -148,7 +148,7 @@ public class ImageManager {
 	 */
 	private Image getRobotImage() {
 		if (robotImage == null) {
-			robotImage = ImageUtil.getBufferedImage(this, "/resources/images/body.png");	
+			robotImage = ImageUtil.getImage(this, "/resources/images/body.png");	
 		}
 		return robotImage;
 	}
@@ -160,7 +160,7 @@ public class ImageManager {
 	 */
 	private Image getGunImage() {
 		if (gunImage == null) {
-			gunImage = ImageUtil.getBufferedImage(this, "/resources/images/turret.png");
+			gunImage = ImageUtil.getImage(this, "/resources/images/turret.png");
 		}
 		return gunImage;
 	}
@@ -172,7 +172,7 @@ public class ImageManager {
 	 */
 	private Image getRadarImage() {
 		if (radarImage == null) {
-			radarImage = ImageUtil.getBufferedImage(this, "/resources/images/radar.png");
+			radarImage = ImageUtil.getImage(this, "/resources/images/radar.png");
 		}
 		return radarImage;
 	}	
