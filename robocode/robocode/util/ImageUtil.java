@@ -51,35 +51,6 @@ public class ImageUtil {
 	}
 
 	/**
-	 * Returns an buffered image resource that reside in memory.
-	 *
-	 * @param obj an object used for loading the image thru it's classloader
-	 * @param filename the filename of the image to load
-	 * @return the loaded image that is buffered
-	 */
-	public static BufferedImage getBufferedImage(Object obj, String filename) {
-		return createBufferedImage(getImage(obj, filename));
-	}
-
-	/**
-	 * Creates a buffered image that resides in memory based on another image.
-	 *
-	 * @param img the image to create the buffer for
-	 * @return an buffered image of the specified image
-	 */
-	public static BufferedImage createBufferedImage(Image img) {
-		if (img == null) {
-			return null;
-		}
-		
-		BufferedImage bufImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		bufImage.getGraphics().drawImage(img, 0, 0, null);
-
-		return bufImage;
-	}
-	
-	/**
 	 * Create a copy of an robot image into a coloured robot image. The colors of the
 	 * input image are changed into the input color, but with the same lumination.
 	 *
