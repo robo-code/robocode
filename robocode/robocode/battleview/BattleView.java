@@ -17,7 +17,8 @@
  *     - Added drawRobotPaint() to support for painting the robots using their
  *       Robot.onPaint() method
  *       the painting.
- *     - Added the ability to enable and disable drawing the ground.
+ *     - Added the ability to enable and disable drawing the ground and
+ *       explosions
  *     - Added support for Robocode SG painting
  *     - Added rendering hints
  *     - Bullets are now painted as filled circles with a size that matches the
@@ -499,7 +500,8 @@ public class BattleView extends Canvas {
 				
 				g.setColor(Color.WHITE);
 				g.fill(bulletArea);
-			} else {	
+
+			} else if (manager.getProperties().getOptionsViewExplosions()) {	
 				if (!(bullet instanceof ExplosionPeer)) {
 					double scale;
 
@@ -511,7 +513,7 @@ public class BattleView extends Canvas {
 					
 					at.scale(scale, scale);
 				}
-			
+
 				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getWhichExplosion(),
 						bullet.getFrame());
 				
