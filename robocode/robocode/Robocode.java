@@ -11,8 +11,7 @@
  *     Flemming N. Larsen
  *     - Removed check for the system property "SINGLEBUFFER", as it is not used
  *       anymore
- *     - Replaced the noDisplay with manager.disableGUI() and
- *       manager.isGUIEnabled()
+ *     - Replaced the noDisplay with manager.setEnableGUI() and isGUIEnabled()
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -125,7 +124,7 @@ public class Robocode {
 				} else if (args[i].equals("-minimize")) {
 					minimize = true;
 				} else if (args[i].equals("-nodisplay")) {
-					manager.disableGUI();
+					manager.setEnableGUI(false);
 				} else if (args[i].equals("-?") || args[i].equals("-help")) {
 					printUsage();
 					System.exit(0);
