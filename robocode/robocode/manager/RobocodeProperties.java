@@ -36,6 +36,7 @@ public class RobocodeProperties {
 	private boolean optionsViewRobotEnergy = true;
 	private boolean optionsViewGround = true;
 	private boolean optionsViewFps = true;
+	private boolean optionsViewExplosions = true;
 	private int optionsRenderingAntialiasing = 0; // 0 = default, 1 = on, 2 = off 
 	private int optionsRenderingTextAntialiasing = 0; // 0 = default, 1 = on, 2 = off
 	private int optionsRenderingMethod = 0; // 0 = default, 1 = speed, 2 = quality
@@ -57,6 +58,7 @@ public class RobocodeProperties {
 	private final static String OPTIONS_VIEW_ROBOTENERGY = "robocode.options.view.robotEnergy";
 	private final static String OPTIONS_VIEW_GROUND = "robocode.options.view.ground";
 	private final static String OPTIONS_VIEW_FPS = "robocode.options.view.FPS";
+	private final static String OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions";
 	private final static String OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing";
 	private final static String OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing";
 	private final static String OPTIONS_RENDERING_METHOD = "robocode.options.rendering.method";
@@ -172,6 +174,25 @@ public class RobocodeProperties {
 	public void setOptionsViewFps(boolean optionsViewFps) {
 		this.optionsViewFps = optionsViewFps;
 		props.setProperty(OPTIONS_VIEW_FPS, "" + optionsViewFps);
+	}
+
+	/**
+	 * Gets the optionsViewExplosions.
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsViewExplosions() {
+		return optionsViewExplosions;
+	}
+
+	/**
+	 * Sets the optionsViewExplosions.
+	 * 
+	 * @param optionsViewFps The optionsViewExplosions to set
+	 */
+	public void setOptionsViewExplosions(boolean optionsViewExplosions) {
+		this.optionsViewExplosions = optionsViewExplosions;
+		props.setProperty(OPTIONS_VIEW_EXPLOSIONS, "" + optionsViewExplosions);
 	}
 
 	/**
@@ -460,6 +481,7 @@ public class RobocodeProperties {
 		optionsViewRobotEnergy = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true")).booleanValue();
 		optionsViewGround = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_GROUND, "true")).booleanValue();
 		optionsViewFps = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
+		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
 		optionsRenderingAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0"));
 		optionsRenderingTextAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0"));
 		optionsRenderingMethod = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0"));
