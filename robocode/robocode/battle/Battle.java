@@ -12,6 +12,9 @@
  *     - Replaced the ContestantPeerVector, BulletPeerVector, and RobotPeerVector
  *       with plain Vector
  *     - Integration of robocode.render
+ *     - BattleView is not given via the constructor anymore, but is retrieved
+ *       from the RobocodeManager. In addition, the battleView is now allowed to
+ *       be null, e.g. if no GUI is available
  *     - Code cleanup
  *******************************************************************************/
 package robocode.battle;

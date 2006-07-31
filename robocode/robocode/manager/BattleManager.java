@@ -13,6 +13,7 @@
  *       BufferStrategy
  *     - Replaced FileSpecificationVector, RobotPeerVector, and
  *       RobotClassManagerVector with plain Vector
+ *     - Added check for if GUI is enabled before using graphical components
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;

@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Removed check for the system property "SINGLEBUFFER", as it is not used
  *       anymore
+ *     - Replaced the noDisplay with manager.disableGUI() and
+ *       manager.isGUIEnabled()
  *     - Code cleanup
  *******************************************************************************/
 package robocode;

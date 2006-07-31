@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Added disableGUI() and isGUIEnabled()
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -21,6 +22,7 @@ import robocode.control.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobocodeManager {
 	private BattleManager battleManager;
