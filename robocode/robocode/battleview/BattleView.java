@@ -120,23 +120,25 @@ public class BattleView extends Canvas {
 				initialize();
 			}
 
-			Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+			if (offscreenImage != null) {
+				
+				offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 
-			offscreenGfx.setRenderingHints(manager.getProperties().getRenderingHints());
+				offscreenGfx.setRenderingHints(manager.getProperties().getRenderingHints());
 
-			paintBattle(offscreenGfx);
+				paintBattle(offscreenGfx);
 
-			g.drawImage(offscreenImage, 0, 0, null);
+				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+				g.drawImage(offscreenImage, 0, 0, null);
+				g.dispose();
 
-			g.dispose();
-
-			// Flush the buffer to the main graphics
-			if (getGraphics() != null) {
-				// FNL: The above check to prevents internal NullPointerException in
-				// Component.BltBufferStrategy.show()	
-				bufferStrategy.show();
+				// Flush the buffer to the main graphics
+				if (getGraphics() != null) {
+					// FNL: The above check to prevents internal NullPointerException in
+					// Component.BltBufferStrategy.show()	
+					bufferStrategy.show();
+				}
 			}
-
 		} catch (Exception e) {
 			Utils.log("Could not draw: " + e);
 			e.printStackTrace(System.err);
@@ -190,10 +192,11 @@ public class BattleView extends Canvas {
 			
 			scale = Math.min((double) getWidth() / battleField.getWidth(),
 					(double) getHeight() / battleField.getHeight());
+
+			offscreenGfx.scale(scale, scale);
 		} else {
 			scale = 1;
 		}
-		offscreenGfx.scale(scale, scale);
 
 		// Scale font
 		smallFont = new Font("Dialog", Font.PLAIN, (int) (10 / scale));
