@@ -11,7 +11,8 @@
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons and other controls
  *     Flemming N. Larsen
- *     - Added visible ground option
+ *     - Added visible ground and visible explosions option
+ *     - Changed some keyboard mnemonics
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -34,6 +35,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JCheckBox visibleRobotEnergyCheckBox;
 	private JCheckBox visibleRobotNameCheckBox;
 	private JCheckBox visibleScanArcsCheckBox;
+	private JCheckBox visibleExplosionsCheckBox;
 	private JCheckBox visibleGroundCheckBox;
 
 	private JTextField desiredFpsTextField;
@@ -102,6 +104,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getVisibleRobotEnergyCheckBox().setSelected(true);
 		getVisibleRobotNameCheckBox().setSelected(true);
 		getVisibleScanArcsCheckBox().setSelected(false);
+		getVisibleExplosionsCheckBox().setSelected(true);
 		getVisibleGroundCheckBox().setSelected(true);
 	}
 
@@ -206,8 +209,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			optionsBattleAllowColorChangesCheckBox = new JCheckBox();
 			optionsBattleAllowColorChangesCheckBox.setText(
 					"Allow robots to change colors repeatedly (Slow, not recommended)");
-			optionsBattleAllowColorChangesCheckBox.setMnemonic('r');
-			optionsBattleAllowColorChangesCheckBox.setDisplayedMnemonicIndex(6);
+			optionsBattleAllowColorChangesCheckBox.setMnemonic('h');
+			optionsBattleAllowColorChangesCheckBox.setDisplayedMnemonicIndex(17);
 		}
 		return optionsBattleAllowColorChangesCheckBox;
 	}
@@ -220,9 +223,9 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton getMaxFpsButton() {
 		if (maxFpsButton == null) {
 			maxFpsButton = new JButton();
-			maxFpsButton.setText("Max FPS");
-			maxFpsButton.setMnemonic('x');
-			maxFpsButton.setDisplayedMnemonicIndex(2);
+			maxFpsButton.setText("Max");
+			maxFpsButton.setMnemonic('M');
+			maxFpsButton.setDisplayedMnemonicIndex(0);
 			maxFpsButton.addActionListener(eventHandler);
 		}
 		return maxFpsButton;
@@ -253,8 +256,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		if (minFpsButton == null) {
 			minFpsButton = new JButton();
 			minFpsButton.setText("Minimum");
-			minFpsButton.setMnemonic('M');
-			minFpsButton.setDisplayedMnemonicIndex(0);
+			minFpsButton.setMnemonic('i');
+			minFpsButton.setDisplayedMnemonicIndex(1);
 			minFpsButton.addActionListener(eventHandler);
 		}
 		return minFpsButton;
@@ -357,6 +360,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			visibleOptionsPanel.add(getVisibleRobotEnergyCheckBox());
 			visibleOptionsPanel.add(getVisibleRobotNameCheckBox());
 			visibleOptionsPanel.add(getVisibleScanArcsCheckBox());
+			visibleOptionsPanel.add(getVisibleExplosionsCheckBox());
 			visibleOptionsPanel.add(getVisibleGroundCheckBox());
 			visibleOptionsPanel.add(getOptionsBattleAllowColorChangesCheckBox());
 			visibleOptionsPanel.add(new JLabel(" "));
@@ -411,6 +415,21 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	/**
+	 * Return the visibleExplosionsCheckBox
+	 * 
+	 * @return JCheckBox
+	 */
+	private JCheckBox getVisibleExplosionsCheckBox() {
+		if (visibleExplosionsCheckBox == null) {
+			visibleExplosionsCheckBox = new JCheckBox();
+			visibleExplosionsCheckBox.setText("Visible Explosions");
+			visibleExplosionsCheckBox.setMnemonic('x');
+			visibleExplosionsCheckBox.setDisplayedMnemonicIndex(9);
+		}
+		return visibleExplosionsCheckBox;
+	}
+
+	/**
 	 * Return the visibleGroundCheckBox
 	 * 
 	 * @return JCheckBox
@@ -440,6 +459,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getVisibleRobotNameCheckBox().setSelected(robocodeProperties.getOptionsViewRobotNames());
 		getVisibleRobotEnergyCheckBox().setSelected(robocodeProperties.getOptionsViewRobotEnergy());
 		getVisibleScanArcsCheckBox().setSelected(robocodeProperties.getOptionsViewScanArcs());
+		getVisibleExplosionsCheckBox().setSelected(robocodeProperties.getOptionsViewExplosions());
 		getVisibleGroundCheckBox().setSelected(robocodeProperties.getOptionsViewGround());
 		getDesiredFpsTextField().setText("" + robocodeProperties.getOptionsBattleDesiredFps());
 		getOptionsBattleAllowColorChangesCheckBox().setSelected(robocodeProperties.getOptionsBattleAllowColorChanges());
@@ -450,6 +470,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		manager.getProperties().setOptionsViewRobotEnergy(getVisibleRobotEnergyCheckBox().isSelected());
 		manager.getProperties().setOptionsViewFps(getDisplayFpsCheckBox().isSelected());
 		manager.getProperties().setOptionsViewScanArcs(getVisibleScanArcsCheckBox().isSelected());
+		manager.getProperties().setOptionsViewExplosions(getVisibleExplosionsCheckBox().isSelected());
 		manager.getProperties().setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
 		manager.getProperties().setOptionsBattleDesiredFps(Integer.parseInt(getDesiredFpsTextField().getText()));
 		manager.getProperties().setOptionsBattleAllowColorChanges(
