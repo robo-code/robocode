@@ -102,7 +102,6 @@ public class Robocode {
 			}
 			System.setIn(sysin);
 			
-			boolean noDisplay = false;
 			boolean minimize = false;
 			String battleFilename = null;
 			String resultsFilename = null;
@@ -124,8 +123,7 @@ public class Robocode {
 				} else if (args[i].equals("-minimize")) {
 					minimize = true;
 				} else if (args[i].equals("-nodisplay")) {
-					noDisplay = true;
-					// manager.getWindowManager().getRobocodeFrame().setVisible(false);
+					manager.disableGUI();
 				} else if (args[i].equals("-?") || args[i].equals("-help")) {
 					printUsage();
 					System.exit(0);
@@ -154,7 +152,7 @@ public class Robocode {
 				// New functionality as of 0.98.3 is, when minimized, fps is max
 				manager.getBattleManager().getBattle().setOptimalFPS(fps);
 			}
-			if (noDisplay) {
+			if (!manager.isGUIEnabled()) {
 				return true;
 			}
 

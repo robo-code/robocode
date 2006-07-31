@@ -37,7 +37,9 @@ public class RobocodeManager {
 	
 	private RobocodeProperties properties;
 	private RobocodeListener listener;
-	
+
+	private boolean usesGUI = true;
+
 	// Must use slave constructor
 	private RobocodeManager() {}
 	
@@ -215,5 +217,13 @@ public class RobocodeManager {
 			browserManager = new BrowserManager(this);
 		}
 		return browserManager;
+	}
+
+	public boolean isGUIEnabled() {
+		return usesGUI;
+	}
+
+	public void disableGUI() {
+		usesGUI = false;
 	}
 }

@@ -181,8 +181,10 @@ public class BattleManager {
 		BattleField battleField = new ShapesBattleField(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight());
 
-		manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);
-		battle = new Battle(manager.getWindowManager().getRobocodeFrame().getBattleView(), battleField, manager);
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);			
+		}
+		battle = new Battle(battleField, manager);
 		battle.setExitOnComplete(exitOnComplete);
 
 		// Only used when controlled by RobocodeEngine
@@ -202,21 +204,26 @@ public class BattleManager {
 			((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
 		}
 
-		manager.getWindowManager().getRobocodeFrame().getBattleView().setVisible(true);
-		manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().getBattleView().setVisible(true);
+			manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
+		}
 
 		for (int i = 0; i < battlingRobotsVector.size(); i++) {
 			battle.addRobot((RobotClassManager) battlingRobotsVector.elementAt(i));
 		}
 
-		manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
-		manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
+			manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+	
+			if (manager.getWindowManager().getRobocodeFrame().getPauseResumeButton().getText().equals("Resume")) {
+				manager.getWindowManager().getRobocodeFrame().pauseResumeButtonActionPerformed();
+			}
 
-		if (manager.getWindowManager().getRobocodeFrame().getPauseResumeButton().getText().equals("Resume")) {
-			manager.getWindowManager().getRobocodeFrame().pauseResumeButtonActionPerformed();
+			manager.getRobotDialogManager().setActiveBattle(battle);
 		}
 
-		manager.getRobotDialogManager().setActiveBattle(battle);
 		battleThread.start();
 	}
 
@@ -235,7 +242,9 @@ public class BattleManager {
 	public void pauseBattle() {
 		pauseCount++;
 		if (pauseCount == 1) {
-			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattlePaused(true);
+			if (manager.isGUIEnabled()) {
+				manager.getWindowManager().getRobocodeFrame().getBattleView().setBattlePaused(true);
+			}
 		}
 	}
 
@@ -389,9 +398,10 @@ public class BattleManager {
 	public void setBattleRunning(boolean newBattleRunning) {
 		battleRunning = newBattleRunning;
 		if (pauseCount == 0) {
-			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattlePaused(!newBattleRunning);
+			if (manager.isGUIEnabled()) {
+				manager.getWindowManager().getRobocodeFrame().getBattleView().setBattlePaused(!newBattleRunning);
+			}
 		}
-		// javax.swing.RepaintManager.currentManager(robocodeFrame).setDoubleBufferingEnabled(battleRunning);
 	}
 
 	public void setResultsFile(String newResultsFile) {

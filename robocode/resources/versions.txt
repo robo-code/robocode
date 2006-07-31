@@ -1,19 +1,23 @@
 Version 1.1.2 Beta
-(31/7/2006)
+(1/8/2006)
 -------------
 o Bugfixes
   -- The buildJikes.sh contained the ^M (DOS return-carrige characters), which do not belong in a
      Unix/Linux file  ;-)
 o Added Rendering Options to the Preferences
   -- It now possible to change the settings for Antialiasing, Text Antialiasing, Rendering Method,
-    and number of rendering buffers
+     and number of rendering buffers
 o Explosions are no longer pre-scaled in 6 fixed sizes, but instead scaled real-time using Java2D
   -- The explosion sizes are now more precise depending on bullet damage, and the memory usage for
-     the explosions has been brought down
+     the explosions has been brought down by not using pre-scaled explosion images
   -- Possible fix for explosions on the iMac, where explosions are painted as filled circles?!
 o Bullets are now painted as filled white energy balls with a size that matches the bullet energy
 o Added the option "Visible Explosions" in the View Options to the Preferences
   -- This option makes it possible to enable and disable the painting of explosions
+o No graphical components are loaded anymore when Robocode is run from the command-line with the
+  -nodisplay option
+  -- This feature has been added in order to run Robocode on Unix-like systems that don't have X
+     installed on them
 o Changed some keyboard mnemonics in the View Options in the Preferences
 
 Version 1.1.1

@@ -102,20 +102,21 @@ public class Battle implements Runnable {
 	 * Battle constructor
 	 */
 	public Battle(
-			BattleView battleView,
 			BattleField battleField,
 			RobocodeManager manager) {
 		super();
 
-		this.battleView = battleView;
+		if (manager.isGUIEnabled()) {
+			this.battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			this.battleView.setBattle(this);
+		}
 		this.battleField = battleField;
 		this.manager = manager;
 		this.battleManager = manager.getBattleManager();
-		battleView.setBattle(this);
-		robots = new Vector(); // <RobotPeer>
-		bullets = new Vector(); // <BulletPeer>
-		contestants = new Vector(); // <ContestantPeer>
-		fpsManager = new FpsManager(this);
+		this.robots = new Vector(); // <RobotPeer>
+		this.bullets = new Vector(); // <BulletPeer>
+		this.contestants = new Vector(); // <ContestantPeer>
+		this.fpsManager = new FpsManager(this);
 	}
 
 	/**
@@ -153,11 +154,15 @@ public class Battle implements Runnable {
 
 		setRoundNum(0);
 		while (!abortBattles && getRoundNum() < getNumRounds()) {
-			battleView.setTitle("Robocode: Starting Round " + (roundNum + 1) + " of " + numRounds);
+			if (battleView != null) {
+				battleView.setTitle("Robocode: Starting Round " + (roundNum + 1) + " of " + numRounds);
+			}
 			try {
 				setupRound();
 				battleManager.setBattleRunning(true);
-				battleView.setTitle("Robocode: Round " + (roundNum + 1) + " of " + numRounds);
+				if (battleView != null) {
+					battleView.setTitle("Robocode: Round " + (roundNum + 1) + " of " + numRounds);
+				}
 				runRound();
 				battleManager.setBattleRunning(false);
 				cleanupRound();
@@ -192,12 +197,14 @@ public class Battle implements Runnable {
 				} else {
 					manager.getListener().battleAborted(battleSpecification);
 				}
-			} else {
+			} else if (manager.isGUIEnabled()) {
 				manager.getWindowManager().showResultsDialog(this);
 			}
-			battleView.setTitle("Robocode");
-			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-			battleView.repaint();
+			if (battleView != null) {
+				battleView.setTitle("Robocode");
+				battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+				battleView.repaint();
+			}
 			System.gc();
 			System.gc();
 			System.gc();
@@ -338,7 +345,9 @@ public class Battle implements Runnable {
 
 	public void setOptions() {
 		setOptimalFPS(manager.getProperties().getOptionsBattleDesiredFps());
-		battleView.setDisplayOptions();
+		if (battleView != null) {
+			battleView.setDisplayOptions();
+		}
 	}
 
 	public void initialize() {
@@ -358,19 +367,29 @@ public class Battle implements Runnable {
 
 		RobotPeer r;
 
-		battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-		manager.getWindowManager().getRobocodeFrame().clearRobotButtons();
+		if (battleView != null) {
+			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+		}
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().clearRobotButtons();
+		}
 
 		for (int i = 0; i < robots.size(); i++) {
 			r = (RobotPeer) robots.elementAt(i);
 			r.preInitialize();
-			manager.getWindowManager().getRobocodeFrame().addRobotButton(
-					new RobotButton(manager.getRobotDialogManager(), r));
+			if (manager.isGUIEnabled()) {
+				manager.getWindowManager().getRobocodeFrame().addRobotButton(
+						new RobotButton(manager.getRobotDialogManager(), r));
+			}
 		}
-		manager.getWindowManager().getRobocodeFrame().validate();
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().validate();
+		}
 
-		battleView.setPaintMode(BattleView.PAINTBATTLE);
-		battleView.update();
+		if (battleView != null) {
+			battleView.setPaintMode(BattleView.PAINTBATTLE);
+			battleView.update();
+		}
 		// Pre-load robot classes without security...
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 		// in the safe robot loader the class is linked.
@@ -402,7 +421,9 @@ public class Battle implements Runnable {
 						break;
 					}
 				}
-				battleView.update();
+				if (battleView != null) {
+					battleView.update();
+				}
 			} catch (Throwable e) {
 				r.out.println("SYSTEM: Could not load " + r.getName() + " : " + e);
 				e.printStackTrace(r.out);
@@ -528,17 +549,21 @@ public class Battle implements Runnable {
 			} catch (InterruptedException e) {}
 
 		}
-		battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+		if (battleView != null) {
+			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+		}
 		bullets.clear();
 	}
 
 	private boolean shouldPause() {
 		if (battleManager.isPaused() && abortBattles == false) {
 			if (!wasPaused) {
-				if (roundNum < numRounds) {
-					battleView.setTitle("Robocode: Round " + (roundNum + 1) + " of " + numRounds + " (paused)");
-				} else {
-					battleView.setTitle("Robocode (paused)");
+				if (battleView != null) {
+					if (roundNum < numRounds) {
+						battleView.setTitle("Robocode: Round " + (roundNum + 1) + " of " + numRounds + " (paused)");
+					} else {
+						battleView.setTitle("Robocode (paused)");
+					}
 				}
 			}
 			try {
@@ -548,10 +573,12 @@ public class Battle implements Runnable {
 		}
 		if (wasPaused) {
 			fpsManager.reset();
-			if (roundNum < numRounds) {
-				battleView.setTitle("Robocode: Round " + (roundNum + 1) + " of " + numRounds);
-			} else {
-				battleView.setTitle("Robocode");
+			if (battleView != null) {
+				if (roundNum < numRounds) {
+					battleView.setTitle("Robocode: Round " + (roundNum + 1) + " of " + numRounds);
+				} else {
+					battleView.setTitle("Robocode");
+				}
 			}
 			return false;
 		}
@@ -833,7 +860,7 @@ public class Battle implements Runnable {
 				delay = 0;
 			}
 		}
-		if (battleView.isDisplayFps()) {
+		if (battleView != null && battleView.isDisplayFps()) {
 			framesDisplayedThisSecond += frames;
 			displayFpsTime += time;
 			if (displayFpsTime > 500) {
@@ -844,8 +871,9 @@ public class Battle implements Runnable {
 				framesDisplayedThisSecond = 0;
 			}
 		}
-		if (manager.getWindowManager().getRobocodeFrame().isVisible() == false
-				|| manager.getWindowManager().getRobocodeFrame().isIconified() == true) {
+		if (manager.isGUIEnabled()
+				&& (!manager.getWindowManager().getRobocodeFrame().isVisible()
+						|| manager.getWindowManager().getRobocodeFrame().isIconified())) {
 			delay = 0;
 		}
 	}
@@ -888,7 +916,9 @@ public class Battle implements Runnable {
 		setRobotsLoaded(false);
 		while (!isUnsafeLoaderThreadRunning()) {
 			// waiting for loader to start
-			battleView.repaint();
+			if (battleView != null) {
+				battleView.repaint();
+			}
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {}
@@ -906,15 +936,19 @@ public class Battle implements Runnable {
 			r.out.println("=========================");
 		}
 
-		battleView.setPaintMode(BattleView.PAINTBATTLE);
-		battleView.update();
+		if (battleView != null) {
+			battleView.setPaintMode(BattleView.PAINTBATTLE);
+			battleView.update();
+		}
 
 		// Notifying loader
 		synchronized (unsafeLoaderMonitor) {
 			unsafeLoaderMonitor.notify();
 		}
 		while (!isRobotsLoaded()) {
-			battleView.update();
+			if (battleView != null) {
+				battleView.update();
+			}
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {}
@@ -955,7 +989,9 @@ public class Battle implements Runnable {
 					Utils.log("Wait for " + r + " interrupted.");
 				}
 			}
-			battleView.update();
+			if (battleView != null) {
+				battleView.update();
+			}
 			if (!r.isSleeping()) {
 				Utils.log("\n" + r.getName() + " still has not started after " + waitTime + " ms... giving up.");
 			}
@@ -981,9 +1017,11 @@ public class Battle implements Runnable {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {}
 				}
-				battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-				battleView.repaint();
-				battleView = null;
+				if (battleView != null) {
+					battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+					battleView.repaint();
+					battleView = null;
+				}
 			}
 		}
 	}
@@ -1044,7 +1082,9 @@ public class Battle implements Runnable {
 							break;
 						}
 					}
-					battleView.update();
+					if (battleView != null) {
+						battleView.update();
+					}
 				}
 			} // for
 			manager.getThreadManager().setLoadingRobot(null);
