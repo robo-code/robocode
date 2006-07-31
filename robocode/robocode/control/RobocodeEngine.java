@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - GUI is disabled per default. If the setVisible() is called, the GUI will
+ *       be enabled. The close() method is only calling dispose() on the
+ *       RobocodeFrame if the GUI is enabled
  *     - Code cleanup
  *******************************************************************************/
 package robocode.control;
@@ -18,10 +21,12 @@ package robocode.control;
 import java.io.*;
 import java.security.*;
 import java.util.Vector;
+
 import robocode.*;
 import robocode.manager.*;
 import robocode.repository.*;
 import robocode.security.*;
+import robocode.util.*;
 
 
 /**
@@ -30,10 +35,11 @@ import robocode.security.*;
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  *
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobocodeEngine {
-	private RobocodeListener listener = null;
-	private RobocodeManager manager = null;
+	private RobocodeListener listener;
+	private RobocodeManager manager;
 	
 	private RobocodeEngine() {}
 	
@@ -46,7 +52,7 @@ public class RobocodeEngine {
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
 		init(robocodeHome, listener);
 	}
-	
+
 	/**
 	 * Creates a new RobocodeEngine using robocode.jar to determine the robocodeHome file.
 	 * @param listener Your listener
@@ -65,9 +71,10 @@ public class RobocodeEngine {
 	private void init(File robocodeHome, RobocodeListener listener) {
 		this.listener = listener;
 		manager = new RobocodeManager(true, listener);
+		manager.setEnableGUI(false);
 		
 		try {
-			robocode.util.Constants.setWorkingDirectory(robocodeHome);
+			Constants.setWorkingDirectory(robocodeHome);
 		} catch (IOException e) {
 			System.err.println(e);
 			return;
@@ -91,9 +98,7 @@ public class RobocodeEngine {
 		SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
 
 		System.setOut(sysout);
-		if (System.getProperty("debug", "false").equals("true")) {
-			;
-		} else {
+		if (!System.getProperty("debug", "false").equals("true")) {
 			System.setErr(syserr);
 		}
 		System.setIn(sysin);
@@ -104,7 +109,9 @@ public class RobocodeEngine {
 	 * This method disposes the Robocode window
 	 */
 	public void close() {
-		manager.getWindowManager().getRobocodeFrame().dispose();
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().dispose();
+		}
 	}
 	
 	/**
@@ -120,6 +127,7 @@ public class RobocodeEngine {
 	 * Shows or hides the Robocode window.
 	 */
 	public void setVisible(boolean visible) {
+		manager.setEnableGUI(true);
 		manager.getWindowManager().getRobocodeFrame().setVisible(visible);
 	}
 		
@@ -143,7 +151,7 @@ public class RobocodeEngine {
 	 * Runs a battle
 	 */
 	public void runBattle(BattleSpecification battle) {
-		robocode.util.Utils.setLogListener(listener);
+		Utils.setLogListener(listener);
 		manager.getBattleManager().startNewBattle(battle);
 	}
 
