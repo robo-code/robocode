@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Added disableGUI() and isGUIEnabled()
+ *     - Added setEnableGUI() and isGUIEnabled()
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -225,7 +225,7 @@ public class RobocodeManager {
 		return usesGUI;
 	}
 
-	public void disableGUI() {
-		usesGUI = false;
+	public void setEnableGUI(boolean enableGUI) {
+		usesGUI = enableGUI;
 	}
 }
