@@ -476,7 +476,7 @@ public class Battle implements Runnable {
 
 	public void runRound() {
 		Utils.log("Let the games begin!");
-		fpsManager.initialize();
+		fpsManager.reset();
 		boolean battleOver = false;
 
 		endTimer = 0;

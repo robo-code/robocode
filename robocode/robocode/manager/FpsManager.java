@@ -8,6 +8,9 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Removed initialize() which did only call reset(). Now reset() is called
+ *       instead of initialize()
  *******************************************************************************/
 package robocode.manager;
 
@@ -17,6 +20,7 @@ import robocode.battle.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class FpsManager {
 	
@@ -26,10 +30,6 @@ public class FpsManager {
 	
 	public FpsManager(Battle battle) {
 		this.battle = battle;
-	}
-	
-	public void initialize() {
-		reset();
 	}
 	
 	public void reset() {
