@@ -75,7 +75,12 @@ public class BattleView extends Canvas {
 	private boolean drawRobotName;
 	private boolean drawRobotEnergy;
 	private boolean drawScanArcs;
+	private boolean drawExplosions;
 	private boolean drawGround;
+
+	private int noBuffers;
+	
+	private RenderingHints renderingHints;
 
 	// Debugging and fps
 	private boolean displayFps;
@@ -123,8 +128,7 @@ public class BattleView extends Canvas {
 			if (offscreenImage != null) {
 				
 				offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-
-				offscreenGfx.setRenderingHints(manager.getProperties().getRenderingHints());
+				offscreenGfx.setRenderingHints(renderingHints);
 
 				paintBattle(offscreenGfx);
 
@@ -163,11 +167,18 @@ public class BattleView extends Canvas {
 	}
 
 	public void setDisplayOptions() {
-		displayFps = manager.getProperties().getOptionsViewFps();
-		drawRobotName = manager.getProperties().getOptionsViewRobotNames();
-		drawRobotEnergy = manager.getProperties().getOptionsViewRobotEnergy();
-		drawScanArcs = manager.getProperties().getOptionsViewScanArcs();
-		drawGround = manager.getProperties().getOptionsViewGround();
+		RobocodeProperties props = manager.getProperties();
+		
+		displayFps = props.getOptionsViewFps();
+		drawRobotName = props.getOptionsViewRobotNames();
+		drawRobotEnergy = props.getOptionsViewRobotEnergy();
+		drawScanArcs = props.getOptionsViewScanArcs();
+		drawGround = props.getOptionsViewGround();
+		drawExplosions = props.getOptionsViewExplosions();
+
+		noBuffers = props.getOptionsRenderingNoBuffers();
+
+		renderingHints = props.getRenderingHints();
 	}
 
 	private void initialize() {
@@ -180,7 +191,7 @@ public class BattleView extends Canvas {
 		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 
 		if (bufferStrategy == null) {
-			createBufferStrategy(manager.getProperties().getOptionsRenderingNoBuffers());
+			createBufferStrategy(noBuffers);
 			bufferStrategy = getBufferStrategy();
 		}
 
@@ -237,7 +248,7 @@ public class BattleView extends Canvas {
 
 		Graphics2D groundGfx = (Graphics2D) groundImage.getGraphics();
 
-		groundGfx.setRenderingHints(manager.getProperties().getRenderingHints());
+		groundGfx.setRenderingHints(renderingHints);
 
 		groundGfx.setTransform(AffineTransform.getScaleInstance(scale, scale));
 	
@@ -504,7 +515,7 @@ public class BattleView extends Canvas {
 				g.setColor(Color.WHITE);
 				g.fill(bulletArea);
 
-			} else if (manager.getProperties().getOptionsViewExplosions()) {	
+			} else if (drawExplosions) {	
 				if (!(bullet instanceof ExplosionPeer)) {
 					double scale;
 
