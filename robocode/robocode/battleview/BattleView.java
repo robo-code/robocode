@@ -385,7 +385,7 @@ public class BattleView extends Canvas {
 
 				int colorIndex = c.getColorIndex();
 
-				RenderImage robotRenderImage = imageManager.getColoredRobotRenderImage(colorIndex);
+				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(colorIndex);
 	
 				robotRenderImage.setTransform(at);
 				robotRenderImage.paint(g);

@@ -33,21 +33,21 @@ public class ImageManager {
 	private RenderImage[][] explodeRenderImages;
 	private RenderImage explodeDebriseRenderImage;
 
-	private Image robotImage;
+	private Image bodyImage;
 	private Image gunImage;
 	private Image radarImage;
 
-	private RenderImage robotRenderImage;
+	private RenderImage bodyRenderImage;
 	private RenderImage gunRenderImage;
 	private RenderImage radarRenderImage;
 
-	private final int MAX_NUM_COLORS = 16;
-	
-	private Color robotColors[] = new Color[MAX_NUM_COLORS];
+	private final int MAX_NUM_COLORS = 256;
+
+	private Color bodyColors[] = new Color[MAX_NUM_COLORS];
 	private Color gunColors[] = new Color[MAX_NUM_COLORS];
 	private Color radarColors[] = new Color[MAX_NUM_COLORS];
 	
-	private RenderImage coloredRobotRenderImage[] = new RenderImage[MAX_NUM_COLORS];
+	private RenderImage coloredBodyRenderImage[] = new RenderImage[MAX_NUM_COLORS];
 	private RenderImage coloredGunRenderImage[] = new RenderImage[MAX_NUM_COLORS];
 	private RenderImage coloredRadarRenderImage[] = new RenderImage[MAX_NUM_COLORS];
 	
@@ -62,7 +62,7 @@ public class ImageManager {
 	}
 
 	public void initialize() {
-		getRobotImage();
+		getBodyImage();
 		getGunImage();
 		getRadarImage();
 		getExplosionRenderImage(0, 0);
@@ -142,15 +142,15 @@ public class ImageManager {
 	}
 	
 	/**
-	 * Gets the robot image
+	 * Gets the body image
 	 * Loads from disk if necessary.
-	 * @return the robot image
+	 * @return the body image
 	 */
-	private Image getRobotImage() {
-		if (robotImage == null) {
-			robotImage = ImageUtil.getImage(this, "/resources/images/body.png");	
+	private Image getBodyImage() {
+		if (bodyImage == null) {
+			bodyImage = ImageUtil.getImage(this, "/resources/images/body.png");	
 		}
-		return robotImage;
+		return bodyImage;
 	}
 	
 	/**
@@ -177,16 +177,16 @@ public class ImageManager {
 		return radarImage;
 	}	
 	
-	public RenderImage getColoredRobotRenderImage(int colorIndex) {
+	public RenderImage getColoredBodyRenderImage(int colorIndex) {
 		if (colorIndex == -1) {
-			return getRobotRenderImage();
+			return getBodyRenderImage();
 		}
-		if (coloredRobotRenderImage[colorIndex] == null) {
-			Image coloredImage = ImageUtil.createColouredRobotImage(getRobotImage(), getRobotColor(colorIndex));
+		if (coloredBodyRenderImage[colorIndex] == null) {
+			Image coloredImage = ImageUtil.createColouredRobotImage(getBodyImage(), getBodyColor(colorIndex));
 
-			coloredRobotRenderImage[colorIndex] = new RenderImage(coloredImage);
+			coloredBodyRenderImage[colorIndex] = new RenderImage(coloredImage);
 		}
-		return coloredRobotRenderImage[colorIndex];
+		return coloredBodyRenderImage[colorIndex];
 	}
 
 	public RenderImage getColoredGunRenderImage(int colorIndex) {
@@ -213,11 +213,11 @@ public class ImageManager {
 		return coloredRadarRenderImage[colorIndex];
 	}
 
-	private RenderImage getRobotRenderImage() {
-		if (robotRenderImage == null) {
-			robotRenderImage = new RenderImage(getRobotImage());
+	private RenderImage getBodyRenderImage() {
+		if (bodyRenderImage == null) {
+			bodyRenderImage = new RenderImage(getBodyImage());
 		}
-		return robotRenderImage;
+		return bodyRenderImage;
 	}
 
 	private RenderImage getGunRenderImage() {
@@ -234,9 +234,9 @@ public class ImageManager {
 		return radarRenderImage;
 	}
 
-	public Color getRobotColor(int index) {
+	public Color getBodyColor(int index) {
 		try {
-			return robotColors[index];
+			return bodyColors[index];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			Utils.log("No such robot color: " + index);
 			return null;
@@ -275,15 +275,15 @@ public class ImageManager {
 			return -1;
 		}
 		if (colorIndex < MAX_NUM_COLORS) {
-			robotColors[colorIndex] = robotColor;
+			bodyColors[colorIndex] = robotColor;
 			gunColors[colorIndex] = gunColor;
 			radarColors[colorIndex] = radarColor;
 		
-			Image coloredRobotImage = ImageUtil.createColouredRobotImage(getRobotImage(), robotColor);
+			Image coloredRobotImage = ImageUtil.createColouredRobotImage(getBodyImage(), robotColor);
 			Image coloredGunImage = ImageUtil.createColouredRobotImage(getGunImage(), gunColor);
 			Image coloredRadarImage = ImageUtil.createColouredRobotImage(getRadarImage(), radarColor);
 
-			coloredRobotRenderImage[colorIndex] = new RenderImage(coloredRobotImage);
+			coloredBodyRenderImage[colorIndex] = new RenderImage(coloredRobotImage);
 			coloredGunRenderImage[colorIndex] = new RenderImage(coloredGunImage);
 			coloredRadarRenderImage[colorIndex] = new RenderImage(coloredRadarImage);
 
