@@ -23,6 +23,8 @@
  *     - Added rendering hints
  *     - Bullets are now painted as filled circles with a size that matches the
  *       bullet energy.
+ *     - Bullets and scan arcs are now painted using the robot's bullet and scan
+ *       color
  *     - Code cleanup
  *******************************************************************************/
 package robocode.battleview;
@@ -288,7 +290,7 @@ public class BattleView extends Canvas {
 		drawGround(g);
 
 		// Draw battlefield objects
-		drawObjects(g);
+//		drawObjects(g);
 
 		// Draw scan arcs
 		drawScanArcs(g);
@@ -383,9 +385,7 @@ public class BattleView extends Canvas {
 
 				at.rotate(c.getHeading());
 
-				int colorIndex = c.getColorIndex();
-
-				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(colorIndex);
+				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(c.getBodyColor());
 	
 				robotRenderImage.setTransform(at);
 				robotRenderImage.paint(g);
@@ -393,7 +393,7 @@ public class BattleView extends Canvas {
 				at = AffineTransform.getTranslateInstance(x, y);
 				at.rotate(c.getGunHeading());
 	
-				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(colorIndex);
+				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(c.getGunColor());
 	
 				gunRenderImage.setTransform(at);
 				gunRenderImage.paint(g);
@@ -402,7 +402,7 @@ public class BattleView extends Canvas {
 					at = AffineTransform.getTranslateInstance(x, y);
 					at.rotate(c.getRadarHeading());
 	
-					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(colorIndex);
+					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(c.getRadarColor());
 	
 					radarRenderImage.setTransform(at);
 					radarRenderImage.paint(g);
@@ -511,8 +511,12 @@ public class BattleView extends Canvas {
 
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
-				
-				g.setColor(Color.WHITE);
+
+				Color bulletColor = bullet.getOwner().getBulletColor();
+				if (bulletColor == null) {
+					bulletColor = Color.WHITE;
+				}
+				g.setColor(bulletColor);
 				g.fill(bulletArea);
 
 			} else if (drawExplosions) {	
@@ -590,10 +594,10 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private Rectangle drawScanArc(Graphics2D g, RobotPeer c) {
+	private Rectangle drawScanArc(Graphics2D g, RobotPeer robot) {
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
-		g.setColor(Color.blue);
-		Arc2D.Double scanArc = (Arc2D.Double) c.getScanArc().clone();
+
+		Arc2D.Double scanArc = (Arc2D.Double) robot.getScanArc().clone();
 		double aStart = scanArc.getAngleStart();
 		double aExtent = scanArc.getAngleExtent();
 
@@ -603,7 +607,13 @@ public class BattleView extends Canvas {
 			aStart += 360;
 		}
 		scanArc.setAngleStart(aStart);
-		scanArc.y = battle.getBattleField().getHeight() - c.getY() - c.getScanRadius();
+		scanArc.y = battle.getBattleField().getHeight() - robot.getY() - robot.getScanRadius();
+
+		Color scanColor = robot.getScanColor();
+		if (scanColor == null) {
+			scanColor = Color.BLUE;
+		}
+		g.setColor(scanColor);
 
 		if (aExtent >= .5) {
 			g.fill(scanArc);
