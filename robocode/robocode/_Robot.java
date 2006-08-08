@@ -29,7 +29,8 @@ import robocode.exception.*;
  *
  * @see robocode.Robot
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class _Robot {
 	RobotPeer peer;
