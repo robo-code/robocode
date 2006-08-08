@@ -14,6 +14,11 @@
  *     - Added setSGPaintEnabled() and isSGPaintEnabled()
  *     - Bugfix: updateMovement() checked for distanceRemaining > 1 instead of
  *       distanceRemaining > 0 if slowingDown and moveDirection == -1
+ *     - Replaced the colorIndex with bodyColor, gunColor, and radarColor
+ *     - Replaced the setColors() with setBodyColor(), setGunColor(), and
+ *       setRadarColor()
+ *     - Added bulletColor, scanColor, setBulletColor(), and setScanColor() and
+ *       removed getColorIndex()
  *******************************************************************************/
 package robocode.peer;
 
@@ -131,8 +136,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private String shortName;
 	private int skippedTurns;
 	private RobotStatistics statistics;
-	
-	private int colorIndex = -1;
+
+	private Color bodyColor;
+	private Color gunColor;
+	private Color radarColor;
+	private Color bulletColor;
+	private Color scanColor;
 	
 	private int setColorRoundNum = -1;
 	
@@ -1590,26 +1599,44 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return true;
 	}
 
-	public synchronized int getColorIndex() {
-		return colorIndex;
+	public Color getBodyColor() {
+		return bodyColor;
+	}
+	
+	public void setBodyColor(Color color) {
+		bodyColor = color;
+	}
+	
+	public Color getRadarColor() {
+		return radarColor;
 	}
 
-	public synchronized void setColors(Color robotColor, Color gunColor, Color radarColor) {
-		if (getBattle().getManager().getProperties().getOptionsBattleAllowColorChanges() == false) {
-			if (getRoundNum() == setColorRoundNum) {
-				return;
-			}
-			if (getRoundNum() != 0) {
-				return;
-			}
-		}
+	public void setRadarColor(Color color) {
+		radarColor = color;
+	}
 
-		if (colorIndex == -1) {
-			colorIndex = imageManager.getNewColorsIndex(robotColor, gunColor, radarColor);
-			setColorRoundNum = getRoundNum();
-		} else {
-			imageManager.replaceColorsIndex(colorIndex, robotColor, gunColor, radarColor);
-		}
+	public Color getGunColor() {
+		return gunColor;
+	}
+
+	public void setGunColor(Color color) {
+		gunColor = color;
+	}
+
+	public Color getBulletColor() {
+		return bulletColor;
+	}
+
+	public void setBulletColor(Color color) {
+		bulletColor = color;
+	}
+
+	public Color getScanColor() {
+		return scanColor;
+	}
+
+	public void setScanColor(Color color) {
+		scanColor = color;
 	}
 
 	public RobotMessageManager getMessageManager() {
