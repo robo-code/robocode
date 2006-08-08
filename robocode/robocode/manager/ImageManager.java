@@ -9,14 +9,15 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Rewritten to support new rendering engine
+ *     - Rewritten to support new rendering engine and to use dynamic coloring
+ *       instead of static color index
  *******************************************************************************/
 package robocode.manager;
 
 
 import java.awt.*;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.*;
 import javax.imageio.ImageIO;
 
 import robocode.render.*;
@@ -30,8 +31,8 @@ import robocode.util.*;
 public class ImageManager {
 	private Image[] groundImages = new Image[5];
 
-	private RenderImage[][] explodeRenderImages;
-	private RenderImage explodeDebriseRenderImage;
+	private RenderImage[][] explosionRenderImages;
+	private RenderImage debriseRenderImage;
 
 	private Image bodyImage;
 	private Image gunImage;
@@ -43,23 +44,14 @@ public class ImageManager {
 
 	private final int MAX_NUM_COLORS = 256;
 
-	private Color bodyColors[] = new Color[MAX_NUM_COLORS];
-	private Color gunColors[] = new Color[MAX_NUM_COLORS];
-	private Color radarColors[] = new Color[MAX_NUM_COLORS];
-	
-	private RenderImage coloredBodyRenderImage[] = new RenderImage[MAX_NUM_COLORS];
-	private RenderImage coloredGunRenderImage[] = new RenderImage[MAX_NUM_COLORS];
-	private RenderImage coloredRadarRenderImage[] = new RenderImage[MAX_NUM_COLORS];
-	
-	private int nextColorIndex;
+	private HashMap coloredBodyRenderImageMap = new HashMap();
+	private HashMap coloredGunRenderImageMap = new HashMap();
+	private HashMap coloredRadarRenderImageMap = new HashMap();
+
 
 	public ImageManager() {
 		initialize();
 	}	
-
-	public void resetColorIndex() {
-		nextColorIndex = 0;
-	}
 
 	public void initialize() {
 		getBodyImage();
@@ -77,15 +69,15 @@ public class ImageManager {
 	}
 	
 	public int getNumExplosions() {
-		return explodeRenderImages.length;
+		return explosionRenderImages.length;
 	}
 
 	public int getExplosionFrames(int which) {
-		return explodeRenderImages[which].length;
+		return explosionRenderImages[which].length;
 	}
 
 	public RenderImage getExplosionRenderImage(int which, int frame) {
-		if (explodeRenderImages == null) {
+		if (explosionRenderImages == null) {
 
 			boolean done = false;
 
@@ -122,23 +114,23 @@ public class ImageManager {
 			}
 			
 			numExplosion = explosions.size();
-			explodeRenderImages = new RenderImage[numExplosion][];
+			explosionRenderImages = new RenderImage[numExplosion][];
 
 			for (int i = numExplosion - 1; i >= 0; i--) {
 				ArrayList frames = (ArrayList) explosions.get(i);
 
-				explodeRenderImages[i] = (RenderImage[]) frames.toArray(new RenderImage[0]);
+				explosionRenderImages[i] = (RenderImage[]) frames.toArray(new RenderImage[0]);
 			}
 		}
-		return explodeRenderImages[which][frame];
+		return explosionRenderImages[which][frame];
 	}
 
 	public RenderImage getExplosionDebriseRenderImage() {
-		if (explodeDebriseRenderImage == null) {
-			explodeDebriseRenderImage = new RenderImage(
+		if (debriseRenderImage == null) {
+			debriseRenderImage = new RenderImage(
 					ImageUtil.getImage(this, "/resources/images/ground/explode_debris.png"));
 		}
-		return explodeDebriseRenderImage;
+		return debriseRenderImage;
 	}
 	
 	/**
@@ -177,40 +169,43 @@ public class ImageManager {
 		return radarImage;
 	}	
 	
-	public RenderImage getColoredBodyRenderImage(int colorIndex) {
-		if (colorIndex == -1) {
-			return getBodyRenderImage();
+	public RenderImage getColoredBodyRenderImage(Color color) {
+		RenderImage img = (RenderImage) coloredBodyRenderImageMap.get(color);
+		if (img == null) {
+			if (coloredBodyRenderImageMap.size() < MAX_NUM_COLORS) {
+				img = new RenderImage(ImageUtil.createColouredRobotImage(getBodyImage(), color));
+				coloredBodyRenderImageMap.put(color, img);
+			} else {
+				img = getBodyRenderImage();
+			}
 		}
-		if (coloredBodyRenderImage[colorIndex] == null) {
-			Image coloredImage = ImageUtil.createColouredRobotImage(getBodyImage(), getBodyColor(colorIndex));
-
-			coloredBodyRenderImage[colorIndex] = new RenderImage(coloredImage);
-		}
-		return coloredBodyRenderImage[colorIndex];
+		return img;
 	}
 
-	public RenderImage getColoredGunRenderImage(int colorIndex) {
-		if (colorIndex == -1) {
-			return getGunRenderImage();
+	public RenderImage getColoredGunRenderImage(Color color) {
+		RenderImage img = (RenderImage) coloredGunRenderImageMap.get(color);
+		if (img == null) {
+			if (coloredGunRenderImageMap.size() < MAX_NUM_COLORS) {
+				img = new RenderImage(ImageUtil.createColouredRobotImage(getGunImage(), color));
+				coloredGunRenderImageMap.put(color, img);
+			} else {
+				img = getGunRenderImage();
+			}
 		}
-		if (coloredGunRenderImage[colorIndex] == null) {
-			Image coloredImage = ImageUtil.createColouredRobotImage(getGunImage(), getGunColor(colorIndex));
-
-			coloredGunRenderImage[colorIndex] = new RenderImage(coloredImage);
-		}
-		return coloredGunRenderImage[colorIndex];
+		return img;
 	}
 
-	public RenderImage getColoredRadarRenderImage(int colorIndex) {
-		if (colorIndex == -1) {
-			return getRadarRenderImage();
+	public RenderImage getColoredRadarRenderImage(Color color) {
+		RenderImage img = (RenderImage) coloredRadarRenderImageMap.get(color);
+		if (img == null) {
+			if (coloredRadarRenderImageMap.size() < MAX_NUM_COLORS) {
+				img = new RenderImage(ImageUtil.createColouredRobotImage(getRadarImage(), color));
+				coloredRadarRenderImageMap.put(color, img);
+			} else {
+				img = getRadarRenderImage();
+			}
 		}
-		if (coloredRadarRenderImage[colorIndex] == null) {
-			Image coloredImage = ImageUtil.createColouredRobotImage(getRadarImage(), getRadarColor(colorIndex));
-
-			coloredRadarRenderImage[colorIndex] = new RenderImage(coloredImage);
-		}
-		return coloredRadarRenderImage[colorIndex];
+		return img;
 	}
 
 	private RenderImage getBodyRenderImage() {
@@ -232,64 +227,5 @@ public class ImageManager {
 			radarRenderImage = new RenderImage(getRadarImage());
 		}
 		return radarRenderImage;
-	}
-
-	public Color getBodyColor(int index) {
-		try {
-			return bodyColors[index];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			Utils.log("No such robot color: " + index);
-			return null;
-		}
-	}
-
-	public Color getGunColor(int index) {
-		try {
-			return gunColors[index];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			Utils.log("No such gun color: " + index);
-			return null;
-		}
-	}
-
-	public Color getRadarColor(int index) {
-		try {
-			return radarColors[index];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			Utils.log("No such radar color: " + index);
-			return null;
-		}
-	}
-
-	public synchronized int getNewColorsIndex(Color robotColor, Color gunColor, Color radarColor) {
-		if (nextColorIndex < MAX_NUM_COLORS) {
-			replaceColorsIndex(nextColorIndex, robotColor, gunColor, radarColor);
-			return nextColorIndex++;
-		} else {
-			return -1;
-		}
-	}
-
-	public synchronized int replaceColorsIndex(int colorIndex, Color robotColor, Color gunColor, Color radarColor) {
-		if (colorIndex == -1) {
-			return -1;
-		}
-		if (colorIndex < MAX_NUM_COLORS) {
-			bodyColors[colorIndex] = robotColor;
-			gunColors[colorIndex] = gunColor;
-			radarColors[colorIndex] = radarColor;
-		
-			Image coloredRobotImage = ImageUtil.createColouredRobotImage(getBodyImage(), robotColor);
-			Image coloredGunImage = ImageUtil.createColouredRobotImage(getGunImage(), gunColor);
-			Image coloredRadarImage = ImageUtil.createColouredRobotImage(getRadarImage(), radarColor);
-
-			coloredBodyRenderImage[colorIndex] = new RenderImage(coloredRobotImage);
-			coloredGunRenderImage[colorIndex] = new RenderImage(coloredGunImage);
-			coloredRadarRenderImage[colorIndex] = new RenderImage(coloredRadarImage);
-
-			return colorIndex;
-		} else {
-			return -1;
-		}
 	}
 }
