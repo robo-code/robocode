@@ -10,10 +10,13 @@
  *     - Initial API and implementation
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue
- *     Stefan Westen & Flemming N. Larsen
+ *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
  *     - Added onPaint() method for painting the robot
  *     Flemming N. Larsen
  *     - Fixed Javadoc documentation
+ *     - Removed setColors(), which has been replaced with setBodyColor(),
+ *       setGunColor(), and setRadarColor()
+ *     - Added setBulletColor() and setScanColor()
  *******************************************************************************/
 package robocode;
 
@@ -829,8 +832,7 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Call this method to set your robot's colors.
-	 * You may only call this method one time per battle.
+	 * Call this method to set your robot's body color.
 	 * A null indicates the default (blue-ish) color.
 	 * 
 	 * <PRE>
@@ -839,21 +841,133 @@ public class Robot extends _Robot implements Runnable {
 	 *   import java.awt.Color;
 	 * 
 	 *   public void run() {
-	 *     setColors(Color.black,Color.red,new Color(150,0,150));
+	 *     setBodyColor(Color.black));
 	 *   }
 	 * </PRE>
 	 * 
-	 * @param robotColor Your robot's color
-	 * @param gunColor Your robot's gun color
-	 * @param radarColor Your robot's radar color
+	 * @param color Your robot's new body color
 	 * @see java.awt.Color
+	 *
+	 * @since 1.1.2
 	 */
-	public void setColors(Color robotColor, Color gunColor, Color radarColor) {
+	public void setBodyColor(Color color) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setColors(robotColor, gunColor, radarColor);
+			peer.setBodyColor(color);
 		} else {
-			uninitializedException("setColors");
+			uninitializedException("setBodyColor");
+		}
+	}
+
+	/**
+	 * Call this method to set your robot's gun color.
+	 * A null indicates the default (blue-ish) color.
+	 * 
+	 * <PRE>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 * 
+	 *   public void run() {
+	 *     setGunColor(Color.red));
+	 *   }
+	 * </PRE>
+	 *
+	 * @param color Your robot's new gun color
+	 * @see java.awt.Color
+	 *
+	 * @since 1.1.2
+	 */
+	public void setGunColor(Color color) {
+		if (peer != null) {
+			peer.setCall();
+			peer.setGunColor(color);
+		} else {
+			uninitializedException("setGunColor");
+		}
+	}
+
+	/**
+	 * Call this method to set your robot's radar color.
+	 * A null indicates the default (blue-ish) color.
+	 * 
+	 * <PRE>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 * 
+	 *   public void run() {
+	 *     setRadarColor(Color.yellow));
+	 *   }
+	 * </PRE>
+	 *
+	 * @param color Your robot's new radar color
+	 * @see java.awt.Color
+	 *
+	 * @since 1.1.2
+	 */
+	public void setRadarColor(Color color) {
+		if (peer != null) {
+			peer.setCall();
+			peer.setRadarColor(color);
+		} else {
+			uninitializedException("setRadarColor");
+		}
+	}
+
+	/**
+	 * Call this method to set your robot's bullet color.
+	 * A null indicates the default white color.
+	 * 
+	 * <PRE>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 * 
+	 *   public void run() {
+	 *     setBulletColor(Color.green));
+	 *   }
+	 * </PRE>
+	 *
+	 * @param color Your robot's new bullet color
+	 * @see java.awt.Color
+	 *
+	 * @since 1.1.2
+	 */
+	public void setBulletColor(Color color) {
+		if (peer != null) {
+			peer.setCall();
+			peer.setBulletColor(color);
+		} else {
+			uninitializedException("setBulletColor");
+		}
+	}
+
+	/**
+	 * Call this method to set your robot's scan color.
+	 * A null indicates the default (blue-ish) color.
+	 * 
+	 * <PRE>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 * 
+	 *   public void run() {
+	 *     setScanColor(Color.orange));
+	 *   }
+	 * </PRE>
+	 *
+	 * @param color Your robot's new scane color
+	 * @see java.awt.Color
+	 *
+	 * @since 1.1.2
+	 */
+	public void setScanColor(Color color) {
+		if (peer != null) {
+			peer.setCall();
+			peer.setScanColor(color);
+		} else {
+			uninitializedException("setScanColor");
 		}
 	}
 
@@ -1020,9 +1134,9 @@ public class Robot extends _Robot implements Runnable {
 	 * method if you want to draw items on the battle field. This method is
 	 * very useful when debugging your robot.
 	 * 
-	 * @since Robocode v1.1
-	 * 
 	 * @param g The graphics context to use for painting
+	 * 
+	 * @since 1.1
 	 */
 	public void onPaint(Graphics2D g) {}
 }
