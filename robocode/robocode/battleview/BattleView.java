@@ -334,11 +334,11 @@ public class BattleView extends Canvas {
 			}
 		}
 	}
-
+/*
 	private void drawObjects(Graphics2D g) {
 		((ShapesBattleField) battleField).drawShapes(g);
 	}
-
+*/
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
 			RobotPeer c;
@@ -494,7 +494,7 @@ public class BattleView extends Canvas {
 		BulletPeer bullet;
 
 		double x, y;
-		
+
 		for (int i = 0; i < battle.getBullets().size(); i++) {
 			bullet = (BulletPeer) battle.getBullets().elementAt(i);
 			if (!bullet.isActive() && !bullet.hitVictim && !bullet.hitBullet) {
@@ -507,7 +507,8 @@ public class BattleView extends Canvas {
 			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
 			if (!bullet.hitVictim && !bullet.hitBullet) {
-				double scale = bullet.getPower() * 1.5;
+				// scale = 2 * sqrt(r^2 / MIN_POWER * bulletPower) = 2 * sqrt(0.5^2 / 0.1 * bulletPower)
+				double scale = 2 * Math.sqrt(2.5 * bullet.getPower());
 
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
