@@ -21,6 +21,7 @@ package robocode.battle;
 
 
 import java.util.Vector;
+
 import robocode.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
@@ -355,7 +356,6 @@ public class Battle implements Runnable {
 
 	public void initialize() {
 		setOptions();
-		manager.getImageManager().resetColorIndex();
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
@@ -550,7 +550,6 @@ public class Battle implements Runnable {
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {}
-
 		}
 		if (battleView != null) {
 			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
