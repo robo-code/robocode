@@ -29,6 +29,7 @@ o The setColors() method is now deprecated and replaced by setBodyColor(), setRa
   setScanColor()
 o Two new methods has been added: setBulletColor() for changing the bullet color, and
   setScanColor() for changing the scan color (used for drawing scan arcs)
+o Restart button has been added in order to restart a battle
 
 Version 1.1.1
 (6/7/2006)
