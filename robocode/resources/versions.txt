@@ -1,5 +1,5 @@
 Version 1.1.2 Beta 2
-(8/8/2006)
+(9/8/2006)
 -------------
 o Bugfixes
   -- The buildJikes.sh contained the ^M (DOS return-carrige characters), which do not belong in a
@@ -12,7 +12,12 @@ o Explosions are no longer pre-scaled in 6 fixed sizes, but instead scaled real-
      the explosions has been brought down by not using pre-scaled explosion images
   -- This fixed the painting of explosions on the iMac, where explosions were painted as filled
      circles with version 1.1 and 1.1.1
-o Bullets are now painted as filled white energy balls with a size that matches the bullet energy
+o Bullets are now painted as filled energy balls with a size that depends on the bullet energy
+  -- The size (circle area) is calculated so that:
+     - A bullet with power = 0.1 (minimum power) uses 1 pixel
+     - A bullet with power = 3 (maximum power) uses 30 pixels
+  -- In addition, explosions when a bullet hits a robot or another bullet are also depending on
+     the bullet energy
 o Added the option "Visible Explosions" in the View Options to the Preferences
   -- This option makes it possible to enable and disable the painting of explosions
 o No graphical components are loaded anymore when Robocode is run from the command-line with the
@@ -24,9 +29,6 @@ o The setColors() method is now deprecated and replaced by setBodyColor(), setRa
   setScanColor()
 o Two new methods has been added: setBulletColor() for changing the bullet color, and
   setScanColor() for changing the scan color (used for drawing scan arcs)
-o Previously Robocode could handle up to max. 16 robots with different colors based on a static
-  color index. Now this index has been replaced with a more dynamic color index that can handle
-  256 different body, gun, and radar colors (user-defined).
 
 Version 1.1.1
 (6/7/2006)
