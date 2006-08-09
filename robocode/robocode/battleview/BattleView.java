@@ -22,6 +22,7 @@
  *     - Added support for Robocode SG painting
  *     - Added rendering hints
  *     - Bullets are now painted as filled circles with a size that matches the
+ *       bullet energy. Explosions from bullet hits are also sized based on the
  *       bullet energy.
  *     - Bullets and scan arcs are now painted using the robot's bullet and scan
  *       color
@@ -522,14 +523,8 @@ public class BattleView extends Canvas {
 
 			} else if (drawExplosions) {	
 				if (!(bullet instanceof ExplosionPeer)) {
-					double scale;
+					double scale = Math.sqrt(1000 * bullet.getPower()) / 128;
 
-					if (bullet.hitBullet) {
-						scale = 2.0 * 15 / 128;
-					} else {
-						scale = bullet.getPower() * 15 / 128;
-					}
-					
 					at.scale(scale, scale);
 				}
 
