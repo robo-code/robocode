@@ -14,6 +14,7 @@
  *     - Replaced FileSpecificationVector, RobotPeerVector, and
  *       RobotClassManagerVector with plain Vector
  *     - Added check for if GUI is enabled before using graphical components
+ *     - Added restart() method
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -58,6 +59,11 @@ public class BattleManager {
 		}
 	}
 
+	public void restart() {
+		stop(false);
+		startNewBattle(battleProperties, false);
+	}
+	
 	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete) {
 		this.battleProperties = battleProperties;
 
