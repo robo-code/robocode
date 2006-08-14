@@ -13,6 +13,8 @@
  *     Flemming N. Larsen
  *     - Added visible ground and visible explosions option
  *     - Changed some keyboard mnemonics
+ *     - Changed from using FPS into using TPS (Turns per Second), but added a
+ *       "Display FPS in titlebar" option
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -27,10 +29,16 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder, Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (current)
  */
 public class PreferencesViewOptionsTab extends WizardPanel {
-	EventHandler eventHandler = new EventHandler();
+
+	private static final int MIN_TPS = 1;
+	private static final int DEFAULT_TPS = 30;
+	private static final int FAST_TPS = 45;
+	private static final int MAX_TPS = 10000;	
+
+	private EventHandler eventHandler = new EventHandler();
 
 	private JCheckBox visibleRobotEnergyCheckBox;
 	private JCheckBox visibleRobotNameCheckBox;
@@ -38,56 +46,52 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JCheckBox visibleExplosionsCheckBox;
 	private JCheckBox visibleGroundCheckBox;
 
-	private JTextField desiredFpsTextField;
-	private JLabel desiredFpsLabel;
+	private JTextField desiredTpsTextField;
+	private JLabel desiredTpsLabel;
 	private JButton defaultsButton;
 	private JCheckBox displayFpsCheckBox;
+	private JCheckBox displayTpsCheckBox;
 	private JCheckBox optionsBattleAllowColorChangesCheckBox;
 	
 	private JPanel visibleOptionsPanel;
-	private JPanel fpsOptionsPanel;
+	private JPanel tpsOptionsPanel;
 
-	private JButton minFpsButton;
-	private JButton defaultFpsButton;
-	private JButton fastFpsButton;
-	private JButton maxFpsButton;
-	
-	private int MINFPS = 1;
-	private int DEFAULTFPS = 30;
-	private int FASTFPS = 45;
-	private int MAXFPS = 10000;	
+	private JButton minTpsButton;
+	private JButton defaultTpsButton;
+	private JButton fastTpsButton;
+	private JButton maxTpsButton;
 
-	public RobocodeManager manager;
+	private RobocodeManager manager;
 	
-	class EventHandler implements ActionListener, DocumentListener {
+	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == PreferencesViewOptionsTab.this.getDefaultsButton()) {
 				defaultsButtonActionPerformed();
 			}
-			if (e.getSource() == PreferencesViewOptionsTab.this.getDefaultFpsButton()) {
-				defaultFpsButtonActionPerformed();
+			if (e.getSource() == PreferencesViewOptionsTab.this.getDefaultTpsButton()) {
+				defaultTpsButtonActionPerformed();
 			}
-			if (e.getSource() == PreferencesViewOptionsTab.this.getMinFpsButton()) {
-				minFpsButtonActionPerformed();
+			if (e.getSource() == PreferencesViewOptionsTab.this.getMinTpsButton()) {
+				minTpsButtonActionPerformed();
 			}
-			if (e.getSource() == PreferencesViewOptionsTab.this.getFastFpsButton()) {
-				fastFpsButtonActionPerformed();
+			if (e.getSource() == PreferencesViewOptionsTab.this.getFastTpsButton()) {
+				fastTpsButtonActionPerformed();
 			}
-			if (e.getSource() == PreferencesViewOptionsTab.this.getMaxFpsButton()) {
-				maxFpsButtonActionPerformed();
+			if (e.getSource() == PreferencesViewOptionsTab.this.getMaxTpsButton()) {
+				maxTpsButtonActionPerformed();
 			}
 		}
 
 		public void changedUpdate(DocumentEvent e) {
-			PreferencesViewOptionsTab.this.desiredFpsTextFieldStateChanged();
+			PreferencesViewOptionsTab.this.desiredTpsTextFieldStateChanged();
 		}
 
 		public void insertUpdate(DocumentEvent e) {
-			PreferencesViewOptionsTab.this.desiredFpsTextFieldStateChanged();
+			PreferencesViewOptionsTab.this.desiredTpsTextFieldStateChanged();
 		}
 
 		public void removeUpdate(DocumentEvent e) {
-			PreferencesViewOptionsTab.this.desiredFpsTextFieldStateChanged();
+			PreferencesViewOptionsTab.this.desiredTpsTextFieldStateChanged();
 		}
 	}
 
@@ -108,37 +112,37 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getVisibleGroundCheckBox().setSelected(true);
 	}
 
-	private void desiredFpsTextFieldStateChanged() {
+	private void desiredTpsTextFieldStateChanged() {
 		fireStateChanged();
 		try {
-			int fps = Integer.parseInt(getDesiredFpsTextField().getText());
-			String s = "" + fps;
+			int tps = Integer.parseInt(getDesiredTpsTextField().getText());
+			String s = "" + tps;
 
-			if (fps < MINFPS) {
-				s = "Too low, must be at least " + MINFPS;
-			} else if (fps > MAXFPS) {
-				s = "Too high, max is " + MAXFPS;
+			if (tps < MIN_TPS) {
+				s = "Too low, must be at least " + MIN_TPS;
+			} else if (tps > MAX_TPS) {
+				s = "Too high, max is " + MAX_TPS;
 			}
-			getDesiredFpsLabel().setText("Desired FPS: " + s);
+			getDesiredTpsLabel().setText("Desired TPS: " + s);
 		} catch (NumberFormatException e) {
-			getDesiredFpsLabel().setText("Desired FPS: ???");
+			getDesiredTpsLabel().setText("Desired TPS: ???");
 		}
 	}
 
-	private void maxFpsButtonActionPerformed() {
-		getDesiredFpsTextField().setText("" + MAXFPS);
+	private void maxTpsButtonActionPerformed() {
+		getDesiredTpsTextField().setText("" + MAX_TPS);
 	}
 
-	private void minFpsButtonActionPerformed() {
-		getDesiredFpsTextField().setText("" + MINFPS);
+	private void minTpsButtonActionPerformed() {
+		getDesiredTpsTextField().setText("" + MIN_TPS);
 	}
 
-	private void fastFpsButtonActionPerformed() {
-		getDesiredFpsTextField().setText("" + FASTFPS);
+	private void fastTpsButtonActionPerformed() {
+		getDesiredTpsTextField().setText("" + FAST_TPS);
 	}
 
-	private void defaultFpsButtonActionPerformed() {
-		getDesiredFpsTextField().setText("" + DEFAULTFPS);
+	private void defaultTpsButtonActionPerformed() {
+		getDesiredTpsTextField().setText("" + DEFAULT_TPS);
 	}
 
 	/**
@@ -148,8 +152,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JButton getDefaultsButton() {
 		if (defaultsButton == null) {
-			defaultsButton = new JButton();
-			defaultsButton.setText("Defaults");
+			defaultsButton = new JButton("Defaults");
 			defaultsButton.setMnemonic('u');
 			defaultsButton.setDisplayedMnemonicIndex(4);
 			defaultsButton.addActionListener(eventHandler);
@@ -158,30 +161,29 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	/**
-	 * Return the desiredFpsLabel property value.
+	 * Return the desiredTpsLabel property value.
 	 * 
 	 * @return JLabel
 	 */
-	private JLabel getDesiredFpsLabel() {
-		if (desiredFpsLabel == null) {
-			desiredFpsLabel = new JLabel();
-			desiredFpsLabel.setText("Desired FPS: ");
+	private JLabel getDesiredTpsLabel() {
+		if (desiredTpsLabel == null) {
+			desiredTpsLabel = new JLabel("Desired TPS: ");
 		}
-		return desiredFpsLabel;
+		return desiredTpsLabel;
 	}
 
 	/**
-	 * Return the fpsSlider property value.
+	 * Return the desiredTpsTextField property value.
 	 * 
-	 * @return JSlider
+	 * @return JTextField
 	 */
-	private JTextField getDesiredFpsTextField() {
-		if (desiredFpsTextField == null) {
-			desiredFpsTextField = new JTextField();
-			desiredFpsTextField.setColumns(5);
-			desiredFpsTextField.getDocument().addDocumentListener(eventHandler);
+	private JTextField getDesiredTpsTextField() {
+		if (desiredTpsTextField == null) {
+			desiredTpsTextField = new JTextField();
+			desiredTpsTextField.setColumns(5);
+			desiredTpsTextField.getDocument().addDocumentListener(eventHandler);
 		}
-		return desiredFpsTextField;
+		return desiredTpsTextField;
 	}
 
 	/**
@@ -191,8 +193,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getDisplayFpsCheckBox() {
 		if (displayFpsCheckBox == null) {
-			displayFpsCheckBox = new JCheckBox();
-			displayFpsCheckBox.setText("Display FPS in titlebar");
+			displayFpsCheckBox = new JCheckBox("Display FPS in titlebar");
 			displayFpsCheckBox.setMnemonic('P');
 			displayFpsCheckBox.setDisplayedMnemonicIndex(9);
 		}
@@ -200,15 +201,27 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	/**
-	 * Return the displayFpsCheckBox
+	 * Return the displayTpsCheckBox
+	 * 
+	 * @return JCheckBox
+	 */
+	private JCheckBox getDisplayTpsCheckBox() {
+		if (displayTpsCheckBox == null) {
+			displayTpsCheckBox = new JCheckBox("Display TPS in titlebar");
+			displayTpsCheckBox.setMnemonic('T');
+			displayTpsCheckBox.setDisplayedMnemonicIndex(8);
+		}
+		return displayTpsCheckBox;
+	}
+
+	/**
+	 * Return the optionsBattleAllowColorChangesCheckBox
 	 * 
 	 * @return JCheckBox
 	 */
 	private JCheckBox getOptionsBattleAllowColorChangesCheckBox() {
 		if (optionsBattleAllowColorChangesCheckBox == null) {
-			optionsBattleAllowColorChangesCheckBox = new JCheckBox();
-			optionsBattleAllowColorChangesCheckBox.setText(
-					"Allow robots to change colors repeatedly (Slow, not recommended)");
+			optionsBattleAllowColorChangesCheckBox = new JCheckBox("Allow robots to change colors repeatedly (Slow, not recommended)");
 			optionsBattleAllowColorChangesCheckBox.setMnemonic('h');
 			optionsBattleAllowColorChangesCheckBox.setDisplayedMnemonicIndex(17);
 		}
@@ -216,82 +229,78 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	/**
-	 * Return the maxFpsButton
+	 * Return the maxTpsButton
 	 * 
 	 * @return JButton
 	 */
-	private JButton getMaxFpsButton() {
-		if (maxFpsButton == null) {
-			maxFpsButton = new JButton();
-			maxFpsButton.setText("Max");
-			maxFpsButton.setMnemonic('M');
-			maxFpsButton.setDisplayedMnemonicIndex(0);
-			maxFpsButton.addActionListener(eventHandler);
+	private JButton getMaxTpsButton() {
+		if (maxTpsButton == null) {
+			maxTpsButton = new JButton("Max");
+			maxTpsButton.setMnemonic('M');
+			maxTpsButton.setDisplayedMnemonicIndex(0);
+			maxTpsButton.addActionListener(eventHandler);
 		}
-		return maxFpsButton;
+		return maxTpsButton;
 	}
 
 	/**
-	 * Return the defaultFpsButton
+	 * Return the defaultTpsButton
 	 * 
 	 * @return JButton
 	 */
-	private JButton getDefaultFpsButton() {
-		if (defaultFpsButton == null) {
-			defaultFpsButton = new JButton();
-			defaultFpsButton.setText("Default");
-			defaultFpsButton.setMnemonic('l');
-			defaultFpsButton.setDisplayedMnemonicIndex(5);
-			defaultFpsButton.addActionListener(eventHandler);
+	private JButton getDefaultTpsButton() {
+		if (defaultTpsButton == null) {
+			defaultTpsButton = new JButton("Default");
+			defaultTpsButton.setMnemonic('l');
+			defaultTpsButton.setDisplayedMnemonicIndex(5);
+			defaultTpsButton.addActionListener(eventHandler);
 		}
-		return defaultFpsButton;
+		return defaultTpsButton;
 	}
 
 	/**
-	 * Return the minFpsButton
+	 * Return the minTpsButton
 	 * 
 	 * @return JButton
 	 */
-	private JButton getMinFpsButton() {
-		if (minFpsButton == null) {
-			minFpsButton = new JButton();
-			minFpsButton.setText("Minimum");
-			minFpsButton.setMnemonic('i');
-			minFpsButton.setDisplayedMnemonicIndex(1);
-			minFpsButton.addActionListener(eventHandler);
+	private JButton getMinTpsButton() {
+		if (minTpsButton == null) {
+			minTpsButton = new JButton("Minimum");
+			minTpsButton.setMnemonic('i');
+			minTpsButton.setDisplayedMnemonicIndex(1);
+			minTpsButton.addActionListener(eventHandler);
 		}
-		return minFpsButton;
+		return minTpsButton;
 	}
 
 	/**
-	 * Return the fastFpsButton
+	 * Return the fastTpsButton
 	 * 
 	 * @return JButton
 	 */
-	private JButton getFastFpsButton() {
-		if (fastFpsButton == null) {
-			fastFpsButton = new JButton();
-			fastFpsButton.setText("Fast");
-			fastFpsButton.setMnemonic('a');
-			fastFpsButton.setDisplayedMnemonicIndex(1);
-			fastFpsButton.addActionListener(eventHandler);
+	private JButton getFastTpsButton() {
+		if (fastTpsButton == null) {
+			fastTpsButton = new JButton("Fast");
+			fastTpsButton.setMnemonic('a');
+			fastTpsButton.setDisplayedMnemonicIndex(1);
+			fastTpsButton.addActionListener(eventHandler);
 		}
-		return fastFpsButton;
+		return fastTpsButton;
 	}
 
 	/**
-	 * Return the fpsOptionsPanel
+	 * Return the tpsOptionsPanel
 	 * 
 	 * @return JPanel
 	 */
-	private JPanel getFpsOptionsPanel() {
-		if (fpsOptionsPanel == null) {
-			fpsOptionsPanel = new JPanel();
-			fpsOptionsPanel.setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Frames Per Second"));
+	private JPanel getTpsOptionsPanel() {
+		if (tpsOptionsPanel == null) {
+			tpsOptionsPanel = new JPanel();
+			tpsOptionsPanel.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Turns Per Second (TPS)"));
 			GridBagLayout layout = new GridBagLayout();
 
-			fpsOptionsPanel.setLayout(layout);
+			tpsOptionsPanel.setLayout(layout);
 			GridBagConstraints constraints = new GridBagConstraints();
 
 			constraints.fill = 1;
@@ -299,17 +308,15 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			constraints.anchor = GridBagConstraints.NORTHWEST;
 
 			constraints.gridwidth = GridBagConstraints.REMAINDER;
-			layout.setConstraints(getDisplayFpsCheckBox(), constraints);
-			fpsOptionsPanel.add(getDisplayFpsCheckBox());
+			tpsOptionsPanel.add(getDisplayTpsCheckBox(), constraints);
+			tpsOptionsPanel.add(getDisplayFpsCheckBox(), constraints);
 
 			JLabel label = new JLabel(" ");
 
-			layout.setConstraints(label, constraints);
-			fpsOptionsPanel.add(label);
+			tpsOptionsPanel.add(label, constraints);
 			constraints.gridwidth = GridBagConstraints.REMAINDER;
-			layout.setConstraints(getDesiredFpsLabel(), constraints);
-			fpsOptionsPanel.add(getDesiredFpsLabel());
-			getDesiredFpsLabel().setHorizontalAlignment(JLabel.CENTER);
+			tpsOptionsPanel.add(getDesiredTpsLabel(), constraints);
+			getDesiredTpsLabel().setHorizontalAlignment(JLabel.CENTER);
 
 			JPanel p = new JPanel();
 			JPanel q = new JPanel();
@@ -318,33 +325,27 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 			p.add(q);
 
-			p.add(getDesiredFpsTextField());
+			p.add(getDesiredTpsTextField());
 			q = new JPanel();
 			p.add(q);
 
 			constraints.gridwidth = GridBagConstraints.REMAINDER;
-			layout.setConstraints(p, constraints);
-			fpsOptionsPanel.add(p);
+			tpsOptionsPanel.add(p, constraints);
 			JLabel label2 = new JLabel(" ");
 
-			layout.setConstraints(label2, constraints);
-			fpsOptionsPanel.add(label2);
+			tpsOptionsPanel.add(label2, constraints);
 			constraints.gridwidth = 1;
 			constraints.fill = 0;
 			constraints.weighty = 1;
 			constraints.weightx = 0;
-			layout.setConstraints(getMinFpsButton(), constraints);
-			fpsOptionsPanel.add(getMinFpsButton());
-			layout.setConstraints(getDefaultFpsButton(), constraints);
-			fpsOptionsPanel.add(getDefaultFpsButton());
-			layout.setConstraints(getFastFpsButton(), constraints);
-			fpsOptionsPanel.add(getFastFpsButton());
+			tpsOptionsPanel.add(getMinTpsButton(), constraints);
+			tpsOptionsPanel.add(getDefaultTpsButton(), constraints);
+			tpsOptionsPanel.add(getFastTpsButton(), constraints);
 			constraints.weightx = 1;
 			constraints.gridwidth = GridBagConstraints.REMAINDER;
-			layout.setConstraints(getMaxFpsButton(), constraints);
-			fpsOptionsPanel.add(getMaxFpsButton());
+			tpsOptionsPanel.add(getMaxTpsButton(), constraints);
 		}
-		return fpsOptionsPanel;
+		return tpsOptionsPanel;
 	}
 
 	/**
@@ -376,8 +377,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getVisibleRobotEnergyCheckBox() {
 		if (visibleRobotEnergyCheckBox == null) {
-			visibleRobotEnergyCheckBox = new JCheckBox();
-			visibleRobotEnergyCheckBox.setText("Visible Robot Energy");
+			visibleRobotEnergyCheckBox = new JCheckBox("Visible Robot Energy");
 			visibleRobotEnergyCheckBox.setMnemonic('E');
 			visibleRobotEnergyCheckBox.setDisplayedMnemonicIndex(14);
 		}
@@ -391,8 +391,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getVisibleRobotNameCheckBox() {
 		if (visibleRobotNameCheckBox == null) {
-			visibleRobotNameCheckBox = new JCheckBox();
-			visibleRobotNameCheckBox.setText("Visible Robot Name");
+			visibleRobotNameCheckBox = new JCheckBox("Visible Robot Name");
 			visibleRobotNameCheckBox.setMnemonic('o');
 			visibleRobotNameCheckBox.setDisplayedMnemonicIndex(9);
 		}
@@ -406,8 +405,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getVisibleScanArcsCheckBox() {
 		if (visibleScanArcsCheckBox == null) {
-			visibleScanArcsCheckBox = new JCheckBox();
-			visibleScanArcsCheckBox.setText("Visible Scan Arcs (Cool, but may slow down game)");
+			visibleScanArcsCheckBox = new JCheckBox("Visible Scan Arcs (Cool, but may slow down game)");
 			visibleScanArcsCheckBox.setMnemonic('S');
 			visibleScanArcsCheckBox.setDisplayedMnemonicIndex(8);
 		}
@@ -421,8 +419,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getVisibleExplosionsCheckBox() {
 		if (visibleExplosionsCheckBox == null) {
-			visibleExplosionsCheckBox = new JCheckBox();
-			visibleExplosionsCheckBox.setText("Visible Explosions");
+			visibleExplosionsCheckBox = new JCheckBox("Visible Explosions");
 			visibleExplosionsCheckBox.setMnemonic('x');
 			visibleExplosionsCheckBox.setDisplayedMnemonicIndex(9);
 		}
@@ -436,8 +433,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getVisibleGroundCheckBox() {
 		if (visibleGroundCheckBox == null) {
-			visibleGroundCheckBox = new JCheckBox();
-			visibleGroundCheckBox.setText("Visible Ground");
+			visibleGroundCheckBox = new JCheckBox("Visible Ground");
 			visibleGroundCheckBox.setMnemonic('G');
 			visibleGroundCheckBox.setDisplayedMnemonicIndex(8);
 		}
@@ -450,41 +446,44 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private void initialize() {
 		setLayout(new GridLayout(1, 2));
 		add(getVisibleOptionsPanel());
-		add(getFpsOptionsPanel());
+		add(getTpsOptionsPanel());
 		loadPreferences(manager.getProperties());
 	}
 
 	private void loadPreferences(RobocodeProperties robocodeProperties) {
-		getDisplayFpsCheckBox().setSelected(robocodeProperties.getOptionsViewFps());
+		getDisplayFpsCheckBox().setSelected(robocodeProperties.getOptionsViewFPS());
+		getDisplayTpsCheckBox().setSelected(robocodeProperties.getOptionsViewTPS());
 		getVisibleRobotNameCheckBox().setSelected(robocodeProperties.getOptionsViewRobotNames());
 		getVisibleRobotEnergyCheckBox().setSelected(robocodeProperties.getOptionsViewRobotEnergy());
 		getVisibleScanArcsCheckBox().setSelected(robocodeProperties.getOptionsViewScanArcs());
 		getVisibleExplosionsCheckBox().setSelected(robocodeProperties.getOptionsViewExplosions());
 		getVisibleGroundCheckBox().setSelected(robocodeProperties.getOptionsViewGround());
-		getDesiredFpsTextField().setText("" + robocodeProperties.getOptionsBattleDesiredFps());
+		getDesiredTpsTextField().setText("" + robocodeProperties.getOptionsBattleDesiredTPS());
 		getOptionsBattleAllowColorChangesCheckBox().setSelected(robocodeProperties.getOptionsBattleAllowColorChanges());
 	}
 
 	public void storePreferences() {
-		manager.getProperties().setOptionsViewRobotNames(getVisibleRobotNameCheckBox().isSelected());
-		manager.getProperties().setOptionsViewRobotEnergy(getVisibleRobotEnergyCheckBox().isSelected());
-		manager.getProperties().setOptionsViewFps(getDisplayFpsCheckBox().isSelected());
-		manager.getProperties().setOptionsViewScanArcs(getVisibleScanArcsCheckBox().isSelected());
-		manager.getProperties().setOptionsViewExplosions(getVisibleExplosionsCheckBox().isSelected());
-		manager.getProperties().setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
-		manager.getProperties().setOptionsBattleDesiredFps(Integer.parseInt(getDesiredFpsTextField().getText()));
-		manager.getProperties().setOptionsBattleAllowColorChanges(
-				getOptionsBattleAllowColorChangesCheckBox().isSelected());
+		RobocodeProperties props = manager.getProperties();
+
+		props.setOptionsViewFPS(getDisplayFpsCheckBox().isSelected());
+		props.setOptionsViewTPS(getDisplayTpsCheckBox().isSelected());
+		props.setOptionsViewRobotNames(getVisibleRobotNameCheckBox().isSelected());
+		props.setOptionsViewRobotEnergy(getVisibleRobotEnergyCheckBox().isSelected());
+		props.setOptionsViewScanArcs(getVisibleScanArcsCheckBox().isSelected());
+		props.setOptionsViewExplosions(getVisibleExplosionsCheckBox().isSelected());
+		props.setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
+		props.setOptionsBattleDesiredTPS(Integer.parseInt(getDesiredTpsTextField().getText()));
+		props.setOptionsBattleAllowColorChanges(getOptionsBattleAllowColorChangesCheckBox().isSelected());
 		manager.saveProperties();
 	}
 
 	public boolean isReady() {
 		try {
-			int fps = Integer.parseInt(getDesiredFpsTextField().getText());
+			int tps = Integer.parseInt(getDesiredTpsTextField().getText());
 
-			if (fps < MINFPS) {
+			if (tps < MIN_TPS) {
 				return false;
-			} else if (fps > MAXFPS) {
+			} else if (tps > MAX_TPS) {
 				return false;
 			}
 		} catch (Exception e) {
