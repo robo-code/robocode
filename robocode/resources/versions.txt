@@ -1,9 +1,20 @@
 Version 1.1.2 Beta 2
-(9/8/2006)
+(14/8/2006)
+The "Robocode is now TPS centric instead of FPS centric" release
 -------------
 o Bugfixes
-  -- The buildJikes.sh contained the ^M (DOS return-carrige characters), which do not belong in a
-     Unix/Linux file  ;-)
+  -- The buildJikes.sh contained the ^M (DOS return-carrige characters), which do not belong
+     in a Unix/Linux file  ;-)
+o Robocode is no longer FPS (Frames Per Second) centric, meaning that 1 turn (time unit) = 1 frame
+  -- Robocode is now TPS (Turns Per Second) centric, meaning that 1 turn is not necessarily equal
+     to 1 frame anymore. You specify how many turns you want to compute every second (desired TPS),
+     and Robocode will render as many frames as possible depending on the TPS. If the TPS is
+     higher than the FPS, some turns are not rendered. However, this does not mean that turns are
+     skipped.
+  -- The higher TPS, the lower the FPS will get.
+  -- The better graphics hardware acceleration the higher TPS and FPS
+  -- Replaced the -fps (Frames Per Second) command line option with the -tps (Turns Per Second)
+  -- Now there is an option to display both the TPS and FPS in the titlebar in the View Options
 o Added Rendering Options to the Preferences
   -- It now possible to change the settings for Antialiasing, Text Antialiasing, Rendering Method,
      and number of rendering buffers
@@ -14,23 +25,23 @@ o Explosions are no longer pre-scaled in 6 fixed sizes, but instead scaled real-
      circles with version 1.1 and 1.1.1
 o Bullets are now painted as filled energy balls with a size that depends on the bullet energy
   -- The size (circle area) is calculated so that:
-     - A bullet with power = 0.1 (minimum power) uses 1 pixel
-     - A bullet with power = 3 (maximum power) uses 30 pixels
+  -- A bullet with power = 0.1 (minimum power) uses 1 pixel
+  -- A bullet with power = 3 (maximum power) uses 30 pixels
   -- In addition, explosions when a bullet hits a robot or another bullet are also depending on
      the bullet energy
 o Added the option "Visible Explosions" in the View Options to the Preferences
   -- This option makes it possible to enable and disable the painting of explosions
-o No graphical components are loaded anymore when Robocode is run from the command line with the
-  -nodisplay option
-  -- This feature has been added in order to run Robocode on Unix-like systems that don't have X
-     installed on them
-o Changed some keyboard mnemonics in the View Options in the Preferences
-o The setColors() method is now deprecated and replaced by setBodyColor(), setRadarColor(), and
-  setScanColor()
-o Two new methods has been added: setBulletColor() for changing the bullet color, and
-  setScanColor() for changing the scan color (used for drawing scan arcs)
+o The setColors() method is now deprecated
+  -- Replaced by setBodyColor(), setRadarColor(), and setScanColor()
+o Two new methods has been added:
+  -- setBulletColor() for changing the bullet color, and
+  -- setScanColor() for changing the scan color (used for drawing scan arcs)
 o Restart button has been added in order to restart a battle
-o Replaced the -fps (Frames Per Second) command line option with the -tps (Turns Per Second)
+o No graphical components are loaded anymore when Robocode is run from the command line with
+  the -nodisplay option
+  -- This feature has been added in order to run Robocode on Unix-like systems that don't have
+     X installed on them
+o Changed some keyboard mnemonics in the View Options in the Preferences
 
 Version 1.1.1
 (6/7/2006)
