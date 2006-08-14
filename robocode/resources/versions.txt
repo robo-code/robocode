@@ -20,7 +20,7 @@ o Bullets are now painted as filled energy balls with a size that depends on the
      the bullet energy
 o Added the option "Visible Explosions" in the View Options to the Preferences
   -- This option makes it possible to enable and disable the painting of explosions
-o No graphical components are loaded anymore when Robocode is run from the command-line with the
+o No graphical components are loaded anymore when Robocode is run from the command line with the
   -nodisplay option
   -- This feature has been added in order to run Robocode on Unix-like systems that don't have X
      installed on them
@@ -30,6 +30,7 @@ o The setColors() method is now deprecated and replaced by setBodyColor(), setRa
 o Two new methods has been added: setBulletColor() for changing the bullet color, and
   setScanColor() for changing the scan color (used for drawing scan arcs)
 o Restart button has been added in order to restart a battle
+o Replaced the -fps (Frames Per Second) command line option with the -tps (Turns Per Second)
 
 Version 1.1.1
 (6/7/2006)

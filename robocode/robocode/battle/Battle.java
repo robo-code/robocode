@@ -58,13 +58,9 @@ public class Battle implements Runnable {
 	private double inactivityEnergy;
 	private long inactivityTime;
 
-	// FPS related items
-	private FpsManager fpsManager;
-	private int initialDelay = 50;
-	private int delay = 33;
-	private int optimalFPS = 30;
-	private int framesDisplayedThisSecond;
-	private long displayFpsTime;
+	// TPS and FPS related items
+	int desiredTPS = 30;
+	long startTimeThisSec = 0;
 
 	// Turn skip related items	
 	private int maxSkippedTurns = 30;
@@ -120,7 +116,6 @@ public class Battle implements Runnable {
 		this.robots = new Vector(); // <RobotPeer>
 		this.bullets = new Vector(); // <BulletPeer>
 		this.contestants = new Vector(); // <ContestantPeer>
-		this.fpsManager = new FpsManager(this);
 	}
 
 	/**
@@ -330,10 +325,6 @@ public class Battle implements Runnable {
 		return numRounds;
 	}
 
-	public int getOptimalFPS() {
-		return optimalFPS;
-	}
-
 	public Vector getRobots() { // <RobotPeer>
 		return robots;
 	}
@@ -348,10 +339,14 @@ public class Battle implements Runnable {
 	}
 
 	public void setOptions() {
-		setOptimalFPS(manager.getProperties().getOptionsBattleDesiredFps());
+		setDesiredTPS(manager.getProperties().getOptionsBattleDesiredTPS());
 		if (battleView != null) {
 			battleView.setDisplayOptions();
 		}
+	}
+
+	public void setDesiredTPS(int desiredTPS) {
+		this.desiredTPS = desiredTPS;
 	}
 
 	public void initialize() {
@@ -476,7 +471,6 @@ public class Battle implements Runnable {
 
 	public void runRound() {
 		Utils.log("Let the games begin!");
-		fpsManager.reset();
 		boolean battleOver = false;
 
 		endTimer = 0;
@@ -485,17 +479,51 @@ public class Battle implements Runnable {
 		RobotPeer r;
 
 		currentTime = 0;
-		delay = initialDelay;
 		inactiveTurnCount = 0;
+
+		int turnsThisSec = 0;
+		int framesThisSec = 0;
+
+		long frameStartTime;
+		int currentFrameMillis = 0;
+
+		int totalRobotMillisThisSec = 0;
+		int totalFrameMillisThisSec = 0;
+		int totalTurnMillisThisSec;
+
+		float estFrameTimeThisSec;
+		float estimatedFPS = 0;
+
+		int estimatedTurnMillisThisSec;
+
+		int delay = 0;
+		
+		boolean resetThisSec = true;
 
 		while (!battleOver) {
 			if (shouldPause()) {
+				resetThisSec = true;
 				continue;
+			}
+
+			long turnStartTime = System.currentTimeMillis();
+			
+			if (resetThisSec) {
+				resetThisSec = false;
+
+				startTimeThisSec = turnStartTime;
+
+				turnsThisSec = 0;
+				framesThisSec = 0;
+
+				totalRobotMillisThisSec = 0;
+				totalFrameMillisThisSec = 0;
 			}
 
 			flushOldEvents();
 
 			currentTime++;
+			turnsThisSec++;
 
 			moveBullets();
 
@@ -536,27 +564,92 @@ public class Battle implements Runnable {
 
 			computeActiveRobots();
 
-			// Repaint
+			// Repaint frame
+
+			// Store the start time before the frame update
+			frameStartTime = System.currentTimeMillis();
+
 			if (battleView != null) {
-				battleView.update();
+				
+				// Update the battle view if the frame has not been painted yet this second
+				// or if it's time to paint the next frame
+				if ((totalFrameMillisThisSec == 0) || (frameStartTime - startTimeThisSec) > (framesThisSec * 1000f / estimatedFPS)) {
+					battleView.update();
+
+					framesThisSec++;
+				}
 			}
+
+			// Calculate the time spend on the frame update
+			currentFrameMillis = (int)(System.currentTimeMillis() - frameStartTime);
+
+			// Calculate the total time spend on frame updates this second
+			totalFrameMillisThisSec += currentFrameMillis;
 
 			// Robot time!
 			wakeupRobots();
 
-			fpsManager.update();
+			// Calculate the total time used for the robots only this second
+			totalRobotMillisThisSec += (int)(System.currentTimeMillis() - turnStartTime) - currentFrameMillis;
 
-			// Delay to match framerate
+			// Calculate the total turn time this second
+			totalTurnMillisThisSec = totalRobotMillisThisSec + totalFrameMillisThisSec;
+
+			// Estimate the time remaining this second to spend on frame updates
+			estFrameTimeThisSec = Math.max(0, 1000f - desiredTPS * (float)totalTurnMillisThisSec / turnsThisSec);
+
+			// Estimate the possible FPS based on the estimated frame time 
+			estimatedFPS = Math.max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
+
+			// Estimate the time that will be used on the total turn this second
+			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
+
+			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
+			if (manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible() &&
+					!manager.getWindowManager().getRobocodeFrame().isIconified()) {
+				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
+			} else {
+				delay = 0;
+			}
+
+			// Set flag for if the second has passed
+			resetThisSec = ((desiredTPS - turnsThisSec == 0) || ((System.currentTimeMillis() - startTimeThisSec) >= 1000));
+
+			// Delay to match desired TPS
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {}
+
+			if (resetThisSec && battleView != null) {
+				StringBuffer titleBuf = new StringBuffer("Robocode: Round ");
+				titleBuf.append(roundNum + 1).append(" of ").append(numRounds);
+
+				boolean dispTps = battleView.isDisplayTPS();
+				boolean dispFps = battleView.isDisplayFPS();
+
+				if (dispTps | dispFps) {
+					titleBuf.append(" (");
+					
+					if (dispTps) {
+						titleBuf.append(turnsThisSec).append(" TPS");
+					}
+					if (dispTps & dispFps) {
+						titleBuf.append(", ");
+					}
+					if (dispFps) {
+						titleBuf.append(framesThisSec).append(" FPS");
+					}
+					titleBuf.append(')');
+				}
+				battleView.setTitle(titleBuf.toString());
+			}
 		}
 		if (battleView != null) {
 			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 		}
 		bullets.clear();
 	}
-
+	
 	private boolean shouldPause() {
 		if (battleManager.isPaused() && abortBattles == false) {
 			if (!wasPaused) {
@@ -574,7 +667,6 @@ public class Battle implements Runnable {
 			return true;
 		}
 		if (wasPaused) {
-			fpsManager.reset();
 			if (battleView != null) {
 				if (roundNum < numRounds) {
 					battleView.setTitle("Robocode: Round " + (roundNum + 1) + " of " + numRounds);
@@ -848,38 +940,6 @@ public class Battle implements Runnable {
 		exitOnComplete = newExitOnComplete;
 	}
 
-	public void setFPS(int frames, long time) {
-		int fps = ((int) ((double) frames * (1000.0 / (double) time)));
-
-		if (fps != optimalFPS) {
-			int diffDelay = (int) ((1000.0 / optimalFPS) - (1000.0 / fps));
-
-			if (diffDelay > 0) {
-				diffDelay--;
-			}
-			delay += diffDelay;
-			if (delay < 0) {
-				delay = 0;
-			}
-		}
-		if (battleView != null && battleView.isDisplayFps()) {
-			framesDisplayedThisSecond += frames;
-			displayFpsTime += time;
-			if (displayFpsTime > 500) {
-				battleView.setTitle(
-						"Robocode: Round " + (roundNum + 1) + " of " + numRounds + " (" + 2 * framesDisplayedThisSecond
-						+ " FPS)");
-				displayFpsTime -= 500;
-				framesDisplayedThisSecond = 0;
-			}
-		}
-		if (manager.isGUIEnabled()
-				&& (!manager.getWindowManager().getRobocodeFrame().isVisible()
-						|| manager.getWindowManager().getRobocodeFrame().isIconified())) {
-			delay = 0;
-		}
-	}
-
 	public void setGunCoolingRate(double newGunCoolingRate) {
 		gunCoolingRate = newGunCoolingRate;
 	}
@@ -890,10 +950,6 @@ public class Battle implements Runnable {
 
 	public void setNumRounds(int numRounds) {
 		this.numRounds = numRounds;
-	}
-
-	public void setOptimalFPS(int newOptimalFPS) {
-		optimalFPS = newOptimalFPS;
 	}
 
 	public void setProperties(BattleProperties battleProperties) {

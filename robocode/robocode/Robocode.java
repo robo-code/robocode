@@ -12,6 +12,7 @@
  *     - Removed check for the system property "SINGLEBUFFER", as it is not used
  *       anymore
  *     - Replaced the noDisplay with manager.setEnableGUI() and isGUIEnabled()
+ *     - Replaced the -fps option with the -tps option
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -106,7 +107,7 @@ public class Robocode {
 			boolean minimize = false;
 			String battleFilename = null;
 			String resultsFilename = null;
-			int fps = 10000;
+			int tps = 10000;
 
 			for (int i = 0; i < args.length; i++) {
 				if (args[i].equals("-cwd") && (i < args.length + 1)) {
@@ -118,8 +119,8 @@ public class Robocode {
 				} else if (args[i].equals("-results") && (i < args.length + 1)) {
 					resultsFilename = args[i + 1];
 					i++;
-				} else if (args[i].equals("-fps") && (i < args.length + 1)) {
-					fps = Integer.parseInt(args[i + 1]);
+				} else if (args[i].equals("-tps") && (i < args.length + 1)) {
+					tps = Integer.parseInt(args[i + 1]);
 					i++;
 				} else if (args[i].equals("-minimize")) {
 					minimize = true;
@@ -149,9 +150,7 @@ public class Robocode {
 				manager.getBattleManager().setBattleFilename(battleFilename);
 				manager.getBattleManager().loadBattleProperties();
 				manager.getBattleManager().startNewBattle(manager.getBattleManager().getBattleProperties(), true);
-				// I don't think this works... doesn't matter.
-				// New functionality as of 0.98.3 is, when minimized, fps is max
-				manager.getBattleManager().getBattle().setOptimalFPS(fps);
+				manager.getBattleManager().getBattle().setDesiredTPS(tps);
 			}
 			if (!manager.isGUIEnabled()) {
 				return true;
@@ -183,6 +182,6 @@ public class Robocode {
 
 	private void printUsage() {
 		System.out.println(
-				"Usage: robocode [-cwd directory] [-battle filename [-results filename] [-fps fps] [-minimize]]");
+				"Usage: robocode [-cwd directory] [-battle filename [-results filename] [-tps tps] [-minimize]]");
 	}
 }
