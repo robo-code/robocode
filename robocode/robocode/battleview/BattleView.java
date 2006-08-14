@@ -26,6 +26,7 @@
  *       bullet energy.
  *     - Bullets and scan arcs are now painted using the robot's bullet and scan
  *       color
+ *     - Added the "Display TPS in titlebar" option
  *     - Code cleanup
  *******************************************************************************/
 package robocode.battleview;
@@ -85,8 +86,9 @@ public class BattleView extends Canvas {
 	
 	private RenderingHints renderingHints;
 
-	// Debugging and fps
-	private boolean displayFps;
+	// TPS and FPS
+	private boolean displayTPS;
+	private boolean displayFPS;
 
 	// Fonts and the like
 	private Font smallFont;
@@ -172,7 +174,8 @@ public class BattleView extends Canvas {
 	public void setDisplayOptions() {
 		RobocodeProperties props = manager.getProperties();
 		
-		displayFps = props.getOptionsViewFps();
+		displayTPS = props.getOptionsViewTPS();
+		displayFPS = props.getOptionsViewFPS();
 		drawRobotName = props.getOptionsViewRobotNames();
 		drawRobotEnergy = props.getOptionsViewRobotEnergy();
 		drawScanArcs = props.getOptionsViewScanArcs();
@@ -652,8 +655,12 @@ public class BattleView extends Canvas {
 		g.drawString("Robocode", left, top + height - descent);
 	}
 
-	public boolean isDisplayFps() {
-		return displayFps;
+	public boolean isDisplayTPS() {
+		return displayTPS;
+	}
+
+	public boolean isDisplayFPS() {
+		return displayFPS;
 	}
 
 	public void setInitialized(boolean initialized) {
