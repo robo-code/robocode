@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Added option for viewing ground, antialiasing, text antialiasing,
  *       rendering method, and method for getting the combined rendering hints
+ *     - Changed the FPS methods into TPS methods, but added the "Display FPS in
+ *       titlebar" option
  *******************************************************************************/
 package robocode.manager;
 
@@ -35,13 +37,14 @@ public class RobocodeProperties {
 	private boolean optionsViewScanArcs = false;
 	private boolean optionsViewRobotEnergy = true;
 	private boolean optionsViewGround = true;
-	private boolean optionsViewFps = true;
+	private boolean optionsViewTPS = true;
+	private boolean optionsViewFPS = true;
 	private boolean optionsViewExplosions = true;
 	private int optionsRenderingAntialiasing = 0; // 0 = default, 1 = on, 2 = off 
 	private int optionsRenderingTextAntialiasing = 0; // 0 = default, 1 = on, 2 = off
 	private int optionsRenderingMethod = 0; // 0 = default, 1 = speed, 2 = quality
 	private int optionsRenderingNoBuffers = 2; // 1 = single buffering, 2 = double buffering, 3 = tripple buffering 
-	private int optionsBattleDesiredFps = 30;
+	private int optionsBattleDesiredTPS = 30;
 	private boolean optionsBattleAllowColorChanges = false;
 	private boolean optionsTeamShowTeamRobots = false;
 	private String optionsDevelopmentPath = "";
@@ -57,13 +60,14 @@ public class RobocodeProperties {
 	private final static String OPTIONS_VIEW_SCANARCS = "robocode.options.view.scanArcs";
 	private final static String OPTIONS_VIEW_ROBOTENERGY = "robocode.options.view.robotEnergy";
 	private final static String OPTIONS_VIEW_GROUND = "robocode.options.view.ground";
+	private final static String OPTIONS_VIEW_TPS = "robocode.options.view.TPS";
 	private final static String OPTIONS_VIEW_FPS = "robocode.options.view.FPS";
 	private final static String OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions";
 	private final static String OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing";
 	private final static String OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing";
 	private final static String OPTIONS_RENDERING_METHOD = "robocode.options.rendering.method";
 	private final static String OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers";
-	private final static String OPTIONS_BATTLE_DESIREDFPS = "robocode.options.battle.desiredFPS";
+	private final static String OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS";
 	private final static String OPTIONS_BATTLE_ALLOWCOLORCHANGES = "robocode.options.battle.allowColorChanges";
 	private final static String OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots";
 	private final static String OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path";
@@ -158,22 +162,41 @@ public class RobocodeProperties {
 	}
 
 	/**
-	 * Gets the optionsViewFps.
+	 * Gets the optionsViewTPS.
 	 * 
 	 * @return Returns a boolean
 	 */
-	public boolean getOptionsViewFps() {
-		return optionsViewFps;
+	public boolean getOptionsViewTPS() {
+		return optionsViewTPS;
 	}
 
 	/**
-	 * Sets the optionsViewFps.
+	 * Sets the optionsViewTPS.
 	 * 
-	 * @param optionsViewFps The optionsViewFps to set
+	 * @param optionsViewTPS The optionsViewTPS to set
 	 */
-	public void setOptionsViewFps(boolean optionsViewFps) {
-		this.optionsViewFps = optionsViewFps;
-		props.setProperty(OPTIONS_VIEW_FPS, "" + optionsViewFps);
+	public void setOptionsViewTPS(boolean optionsViewTPS) {
+		this.optionsViewTPS = optionsViewTPS;
+		props.setProperty(OPTIONS_VIEW_TPS, "" + optionsViewTPS);
+	}
+
+	/**
+	 * Gets the optionsViewFPS.
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsViewFPS() {
+		return optionsViewFPS;
+	}
+
+	/**
+	 * Sets the optionsViewFPS.
+	 * 
+	 * @param optionsViewFPS The optionsViewFPS to set
+	 */
+	public void setOptionsViewFPS(boolean optionsViewFPS) {
+		this.optionsViewFPS = optionsViewFPS;
+		props.setProperty(OPTIONS_VIEW_FPS, "" + optionsViewFPS);
 	}
 
 	/**
@@ -188,7 +211,7 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsViewExplosions.
 	 * 
-	 * @param optionsViewFps The optionsViewExplosions to set
+	 * @param optionsViewExplosions The optionsViewExplosions to set
 	 */
 	public void setOptionsViewExplosions(boolean optionsViewExplosions) {
 		this.optionsViewExplosions = optionsViewExplosions;
@@ -332,22 +355,22 @@ public class RobocodeProperties {
 	}
 
 	/**
-	 * Gets the optionsBattleDesiredFps.
+	 * Gets the optionsBattleDesiredTPS.
 	 * 
 	 * @return Returns a int
 	 */
-	public int getOptionsBattleDesiredFps() {
-		return optionsBattleDesiredFps;
+	public int getOptionsBattleDesiredTPS() {
+		return optionsBattleDesiredTPS;
 	}
 
 	/**
-	 * Sets the optionsBattleDesiredFps.
+	 * Sets the optionsBattleDesiredTPS.
 	 * 
-	 * @param optionsBattleDesiredFps The optionsBattleDesiredFps to set
+	 * @param optionsBattleDesiredTPS The optionsBattleDesiredTPS to set
 	 */
-	public void setOptionsBattleDesiredFps(int optionsBattleDesiredFps) {
-		this.optionsBattleDesiredFps = optionsBattleDesiredFps;
-		props.setProperty(OPTIONS_BATTLE_DESIREDFPS, "" + optionsBattleDesiredFps);
+	public void setOptionsBattleDesiredTPS(int optionsBattleDesiredTPS) {
+		this.optionsBattleDesiredTPS = optionsBattleDesiredTPS;
+		props.setProperty(OPTIONS_BATTLE_DESIREDTPS, "" + optionsBattleDesiredTPS);
 	}
 
 	public boolean getOptionsBattleAllowColorChanges() {
@@ -480,13 +503,14 @@ public class RobocodeProperties {
 		optionsViewScanArcs = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SCANARCS, "false")).booleanValue();
 		optionsViewRobotEnergy = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true")).booleanValue();
 		optionsViewGround = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_GROUND, "true")).booleanValue();
-		optionsViewFps = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
+		optionsViewTPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_TPS, "true")).booleanValue();
+		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
 		optionsRenderingAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0"));
 		optionsRenderingTextAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0"));
 		optionsRenderingMethod = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0"));
 		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
-		optionsBattleDesiredFps = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDFPS, "30"));
+		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
 		optionsBattleAllowColorChanges = Boolean.valueOf(props.getProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "false")).booleanValue();
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
 		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
