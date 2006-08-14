@@ -1,5 +1,5 @@
 Version 1.1.2 Beta 2
-(14/8/2006)
+(8/14/2006)
 The "Robocode is now TPS centric instead of FPS centric" release
 -------------
 o Bugfixes
@@ -44,7 +44,7 @@ o No graphical components are loaded anymore when Robocode is run from the comma
 o Changed some keyboard mnemonics in the View Options in the Preferences
 
 Version 1.1.1
-(6/7/2006)
+(7/6/2006)
 -------------
 o Bugfixes
   -- The CPU speed detection has been changed to accept 50 times as many clock cycles than with
@@ -78,7 +78,7 @@ o Added the "-Dsun.io.useCanonCaches=false" which fixes some SecurityException i
   that read from files, and also fixed the installing and compiling problem under Mac 10.3.9
 
 Version 1.1
-(14/6/2006)
+(6/14/2006)
 The "Continuation" release
 -----------
 o Added feature for Debug Painting
