@@ -352,7 +352,7 @@ public class BattleView extends Canvas {
 				if (c.isDead()) {
 					continue;
 				}
-				c.arcRect = drawScanArc((Graphics2D) g, c); 
+				drawScanArc((Graphics2D) g, c); 
 			}
 		}
 	}
