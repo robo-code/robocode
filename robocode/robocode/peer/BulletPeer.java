@@ -14,7 +14,6 @@
 package robocode.peer;
 
 
-import java.awt.Rectangle;
 import java.awt.geom.*;
 import robocode.battle.*;
 import robocode.battlefield.*;
