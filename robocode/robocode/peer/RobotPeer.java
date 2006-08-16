@@ -9,7 +9,6 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Code cleanup
  *     - Added setPaintEnabled() and isPaintEnabled()
  *     - Added setSGPaintEnabled() and isSGPaintEnabled()
  *     - Bugfix: updateMovement() checked for distanceRemaining > 1 instead of
@@ -19,6 +18,8 @@
  *       setRadarColor()
  *     - Added bulletColor, scanColor, setBulletColor(), and setScanColor() and
  *       removed getColorIndex()
+ *     - Optimizations
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.peer;
 
@@ -229,13 +230,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						if (distanceRemaining > 0) {
 							atFault = true;
 							distanceRemaining = 0;
-							getRobotStatistics().scoreRammingDamage(i, ramDamage);
+							statistics.scoreRammingDamage(i, ramDamage);
 						} else {
-							getRobotStatistics().damagedByRamming(ramDamage);
+							statistics.damagedByRamming(ramDamage);
 						}
 						this.setEnergy(energy - ramDamage);
 						r.setEnergy(r.energy - ramDamage);
-						r.getRobotStatistics().damagedByRamming(ramDamage);
+						r.statistics.damagedByRamming(ramDamage);
 						this.inCollision = true;
 						x -= movedx;
 						y -= movedy;
@@ -243,7 +244,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						if (r.getEnergy() == 0) {
 							if (!r.isDead()) {
 								r.setDead(true);
-								getRobotStatistics().scoreKilledEnemyRamming(i);
+								statistics.scoreKilledEnemyRamming(i);
 							}
 						}
 					} else if (velocity < 0 && (bearing < -Math.PI / 2 || bearing > Math.PI / 2)) {
@@ -251,13 +252,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						if (distanceRemaining < 0) {
 							atFault = true;
 							distanceRemaining = 0;
-							getRobotStatistics().scoreRammingDamage(i, ramDamage);
+							statistics.scoreRammingDamage(i, ramDamage);
 						} else {
-							getRobotStatistics().damagedByRamming(ramDamage);
+							statistics.damagedByRamming(ramDamage);
 						}
 						this.setEnergy(energy - ramDamage);
 						r.setEnergy(r.energy - ramDamage);
-						r.getRobotStatistics().damagedByRamming(ramDamage);
+						r.statistics.damagedByRamming(ramDamage);
 						this.inCollision = true;
 						x -= movedx;
 						y -= movedy;
@@ -265,7 +266,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						if (r.getEnergy() == 0) {
 							if (!r.isDead()) {
 								r.setDead(true);
-								getRobotStatistics().scoreKilledEnemyRamming(i);
+								statistics.scoreKilledEnemyRamming(i);
 							}
 						}
 					} else {// out.println("I'm moving: " + distanceRemaining + " with bearing: " + Math.toDegrees(bearing));
@@ -412,27 +413,23 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public synchronized String getName() {
-		if (name == null) {
-			return robotClassManager.getClassNameManager().getFullClassNameWithVersion();
-		} else {
-			return name;
-		}
+		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+	}
+
+	public synchronized String getShortName() {
+		return (shortName != null) ? shortName : robotClassManager.getClassNameManager().getUniqueShortClassNameWithVersion();
+	}
+
+	public synchronized String getVeryShortName() {
+		return (shortName != null) ? shortName : robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
 	}
 
 	public synchronized String getNonVersionedName() {
-		if (nonVersionedName == null) {
-			return robotClassManager.getClassNameManager().getFullClassName();
-		} else {
-			return nonVersionedName;
-		}
+		return (nonVersionedName != null) ? nonVersionedName : robotClassManager.getClassNameManager().getFullClassName();
 	}
 
 	public synchronized int getOthers() {
-		if (!isDead()) {
-			return battle.getActiveRobots() - 1;
-		} else {
-			return battle.getActiveRobots();
-		}
+		return battle.getActiveRobots() - (isDead() ? 0 : 1);
 	}
 
 	public synchronized double getRadarHeading() {
@@ -464,7 +461,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void run() {
-	
 		setRunning(true);
 
 		try {
@@ -505,11 +501,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean intersects(Arc2D arc, Rectangle2D rect) {
-		if (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
-				arc.getStartPoint().getY())) {
-			return true;
-		}		
-		return arc.intersects(rect);	
+		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),	arc.getStartPoint().getY())) ? true : arc.intersects(rect);	
 	}
 
 	public void scan() {
@@ -1100,10 +1092,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean isTeamLeader() {
-		if (getTeamPeer() != null && getTeamPeer().getTeamLeader() == this) {
-			return true;
-		}
-		return false;
+		return (getTeamPeer() != null && getTeamPeer().getTeamLeader() == this);
 	}
 
 	public synchronized long getTime() {
@@ -1403,19 +1392,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return scanRadius;
 	}
 
-	public String getShortName() {
-		if (shortName == null) {
-			return robotClassManager.getClassNameManager().getUniqueShortClassNameWithVersion();
-		} else {
-			return shortName;
-		}
-	}
-
 	public int getSkippedTurns() {
 		return skippedTurns;
 	}
 
-	public robocode.peer.robot.RobotStatistics getRobotStatistics() {
+	public RobotStatistics getRobotStatistics() {
 		return statistics;
 	}
 
@@ -1425,14 +1406,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized double getTurnRemaining() {
 		return angleToTurn;
-	}
-
-	public String getVeryShortName() {
-		if (shortName == null) {
-			return robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
-		} else {
-			return shortName;
-		}
 	}
 
 	public synchronized boolean isAdjustRadarForBodyTurn() {
