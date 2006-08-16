@@ -143,10 +143,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private Color bulletColor;
 	private Color scanColor;
 	
-	private int setColorRoundNum = -1;
-	
 	private RobotMessageManager messageManager;
-	private ImageManager imageManager;
 	private TeamPeer teamPeer;
 	private boolean droid;
 	private TextPeer sayTextPeer;
@@ -1286,7 +1283,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		eventManager = new EventManager(this);
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
-		imageManager = robotManager.getImageManager();
 		this.teamPeer = robotClassManager.getTeamManager();
 
 		// Create statistics after teamPeer set
