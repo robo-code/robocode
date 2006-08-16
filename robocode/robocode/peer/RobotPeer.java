@@ -49,9 +49,6 @@ import robocode.manager.*;
  * @author Flemming N. Larsen (current)
  */
 public class RobotPeer implements Runnable, ContestantPeer {
-	public boolean printit;
-	public int printcount;
-	
 	private double velocity;
 	private double heading;
 	private double radarHeading;
@@ -69,7 +66,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private double gunTurnRate = Math.toRadians(20.0);
 	private double radarTurnRate = Math.toRadians(45.0);
 
-	private double maxBraking = 2; // 0.7;
+	private double maxBraking = 2;
 
 	private boolean sleeping;
 
@@ -90,8 +87,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public RobotOutputStream out;
 
 	private boolean running;
-
-	public Rectangle arcRect;
 
 	private boolean isStopped;
 
@@ -122,7 +117,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	private boolean adjustRadarForBodyTurn;
 	private boolean adjustRadarForBodyTurnSet;
-	public boolean checkFileQuota;
+	private boolean checkFileQuota;
 	private double energy;
 	private double gunHeat;
 	private boolean halt;
@@ -1335,10 +1330,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public synchronized double getGunTurnRemaining() {
-		if (printit) {
-			System.err.println("returning getGunTurnRemaining to");
-			System.err.flush();
-		}
 		return gunAngleToTurn;
 	}
 
