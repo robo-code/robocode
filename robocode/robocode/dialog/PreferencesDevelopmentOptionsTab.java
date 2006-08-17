@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Code cleanup
+ *     - Rewritten + added browse button
  *******************************************************************************/
 package robocode.dialog;
 
@@ -17,6 +17,7 @@ package robocode.dialog;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import robocode.manager.*;
 
 
@@ -25,14 +26,28 @@ import robocode.manager.*;
  * @author Flemming N. Larsen (current)
  */
 public class PreferencesDevelopmentOptionsTab extends WizardPanel {
-	EventHandler eventHandler = new EventHandler();
-	private JTextField optionsDevelopmentPathTextField;
-	private JPanel developmentOptionsPanel;
-	
+
+	private JPanel optionsPanel;
+
+	private JButton browseButton;
+	private JTextField pathTextField;
+
 	public RobocodeManager manager;
 	
-	class EventHandler implements ActionListener {
-		public void actionPerformed(ActionEvent e) {}
+	private EventHandler eventHandler = new EventHandler();
+
+	private class EventHandler implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			if (e.getSource() == getBrowseButton()) {
+				JFileChooser chooser = new JFileChooser();
+
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				if (chooser.showOpenDialog(optionsPanel) == JFileChooser.APPROVE_OPTION) {
+					pathTextField.setText(chooser.getSelectedFile().getAbsolutePath());
+				}
+			}
+		}
 	}
 
 	/**
@@ -44,44 +59,82 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 		initialize();
 	}
 
-	private JTextField getOptionsDevelopmentPathTextField() {
-		if (optionsDevelopmentPathTextField == null) {
-			optionsDevelopmentPathTextField = new JTextField("", 80);
-			optionsDevelopmentPathTextField.setMaximumSize(optionsDevelopmentPathTextField.getPreferredSize());
-		}
-		return optionsDevelopmentPathTextField;
-	}
-
-	private JPanel getDevelopmentOptionsPanel() {
-		if (developmentOptionsPanel == null) {
-			developmentOptionsPanel = new JPanel();
-			developmentOptionsPanel.setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Development"));
-			developmentOptionsPanel.setLayout(new BoxLayout(developmentOptionsPanel, BoxLayout.Y_AXIS));
-			developmentOptionsPanel.add(
-					new JLabel(
-							"If you are using an external IDE to develop robots, you may enter the classpath to those robots here."));
-			developmentOptionsPanel.add(
-					new JLabel(
-							"(Example: c:\\eclipse\\workspace\\MyRobotProject" + java.io.File.pathSeparator
-							+ "c:\\eclipse\\workspace\\AnotherRobotProject"));
-			developmentOptionsPanel.add(getOptionsDevelopmentPathTextField());
-		}
-		return developmentOptionsPanel;
-	}
-
 	private void initialize() {
 		setLayout(new GridLayout(1, 2));
-		add(getDevelopmentOptionsPanel());
+		add(getOptionsPanel());
 		loadPreferences(manager.getProperties());
 	}
 
+	private JPanel getOptionsPanel() {
+		if (optionsPanel == null) {
+			optionsPanel = new JPanel();
+			optionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Development"));
+
+			GridBagLayout layout = new GridBagLayout();
+
+			optionsPanel.setLayout(layout);
+			GridBagConstraints c = new GridBagConstraints();
+
+			c.insets = new Insets(5, 5, 5, 5);
+			c.anchor = GridBagConstraints.NORTHWEST;
+
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth = 2;
+			c.weightx = 0;
+
+			optionsPanel.add(
+					new JLabel(
+							"If you are using an external IDE to develop robots, you may enter the classpath to those robots here."),
+							c);
+			c.gridy = 1;
+			optionsPanel.add(
+					new JLabel(
+							"(Example: c:\\eclipse\\workspace\\MyRobotProject" + java.io.File.pathSeparator
+							+ "c:\\eclipse\\workspace\\AnotherRobotProject"),
+							c);
+
+			c.fill = GridBagConstraints.NONE;
+			c.gridwidth = 1;
+			c.gridy = 2;
+			optionsPanel.add(getBrowseButton(), c);
+
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 1;
+			c.gridx = 1;
+			optionsPanel.add(getPathTextField(), c);
+
+			c.fill = GridBagConstraints.VERTICAL;
+			c.weighty = 1;
+			c.gridy = 3;
+			optionsPanel.add(new JPanel(), c);
+		}
+		return optionsPanel;
+	}
+
+	private JButton getBrowseButton() {
+		if (browseButton == null) {
+			browseButton = new JButton("Browse");
+			browseButton.setMnemonic('o');
+			browseButton.setDisplayedMnemonicIndex(2);
+			browseButton.addActionListener(eventHandler);
+		}
+		return browseButton;
+	}
+
+	private JTextField getPathTextField() {
+		if (pathTextField == null) {
+			pathTextField = new JTextField("", 80);
+			pathTextField.setMaximumSize(pathTextField.getPreferredSize());
+		}
+		return pathTextField;
+	}
+
 	private void loadPreferences(RobocodeProperties robocodeProperties) {
-		getOptionsDevelopmentPathTextField().setText(robocodeProperties.getOptionsDevelopmentPath());
+		getPathTextField().setText(robocodeProperties.getOptionsDevelopmentPath());
 	}
 
 	public void storePreferences() {
-		manager.getProperties().setOptionsDevelopmentPath(getOptionsDevelopmentPathTextField().getText());
+		manager.getProperties().setOptionsDevelopmentPath(getPathTextField().getText());
 		manager.saveProperties();
 	}
 
