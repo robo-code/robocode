@@ -1,5 +1,5 @@
-Version 1.1.2 Beta 2
-(8/14/2006)
+Version 1.1.2
+(8/17/2006)
 The "Robocode is now TPS centric instead of FPS centric" release
 -------------
 o Bugfixes
@@ -41,6 +41,7 @@ o No graphical components are loaded anymore when Robocode is run from the comma
   the -nodisplay option
   -- This feature has been added in order to run Robocode on Unix-like systems that don't have
      X installed on them
+o Added Browse button in the Development Options
 o Changed some keyboard mnemonics in the View Options in the Preferences
 
 Version 1.1.1
