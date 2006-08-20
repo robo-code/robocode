@@ -1,10 +1,11 @@
 Version 1.1.2
-(8/17/2006)
+(8/20/2006)
 The "Robocode is now TPS centric instead of FPS centric" release
 -------------
 o Bugfixes
   -- The buildJikes.sh contained the ^M (DOS return-carrige characters), which do not belong
      in a Unix/Linux file  ;-)
+  -- The radar color was sometimes painted with too much lumination (white)
 o Robocode is no longer FPS (Frames Per Second) centric, meaning that 1 turn (time unit) = 1 frame
   -- Robocode is now TPS (Turns Per Second) centric, meaning that 1 turn is not necessarily equal
      to 1 frame anymore. You specify how many turns you want to compute every second (desired TPS),
@@ -36,6 +37,10 @@ o The setColors() method is now deprecated
 o Two new methods has been added:
   -- setBulletColor() for changing the bullet color, and
   -- setScanColor() for changing the scan color (used for drawing scan arcs)
+o All sample robots has been updated
+  -- Deprecated methods are replaced by current methods
+  -- Colors has been added to each robot, except for MyFirstRobot, which should be kept as simple
+     as possible
 o Restart button has been added in order to restart a battle
 o No graphical components are loaded anymore when Robocode is run from the command line with
   the -nodisplay option
