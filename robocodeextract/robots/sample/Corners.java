@@ -1,11 +1,12 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * Corners - a sample robot by Mathew Nelson
+ * Corners - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * This robot moves to a corner, then swings the gun back and forth.
  * If it dies, it tries a new corner in the next round.
@@ -13,23 +14,29 @@ import robocode.*;
 public class Corners extends Robot {
 	int others; // Number of other robots in the game
 	static int corner = 0; // Which corner we are currently using
-	// static so that it keeps it between
-	// rounds.
+	// static so that it keeps it between rounds.
 	boolean stopWhenSeeRobot = false; // See goCorner()
-	
+
 	/**
-	 * run: Corners' main run function.
+	 * run:  Corners' main run function.
 	 */
 	public void run() {
+		// Set colors
+		setBodyColor(Color.red);
+		setGunColor(Color.black);
+		setRadarColor(Color.yellow);
+		setBulletColor(Color.green);
+		setScanColor(Color.green);
+
 		// Save # of other bots
 		others = getOthers();
-		
+
 		// Move to a corner
 		goCorner();
-		
+
 		// Initialize gun turn speed to 3
 		int gunIncrement = 3;
-		
+
 		// Spin gun back and forth
 		while (true) {
 			for (int i = 0; i < 30; i++) {
@@ -38,9 +45,9 @@ public class Corners extends Robot {
 			gunIncrement *= -1;
 		}
 	}
-	
+
 	/**
-	 * goCorner: A very inefficient way to get to a corner.  Can you do better?
+	 * goCorner:  A very inefficient way to get to a corner.  Can you do better?
 	 */
 	public void goCorner() {
 		// We don't want to stop when we're just turning...
@@ -58,7 +65,7 @@ public class Corners extends Robot {
 		// Turn gun to starting point
 		turnGunLeft(90);
 	}
-	
+
 	/**
 	 * onScannedRobot:  Stop and fire!
 	 */
@@ -80,7 +87,7 @@ public class Corners extends Robot {
 			smartFire(e.getDistance());
 		}
 	}
-	
+
 	/**
 	 * smartFire:  Custom fire method that determines firepower based on distance.
 	 */
@@ -102,21 +109,21 @@ public class Corners extends Robot {
 		if (others == 0) {
 			return;
 		}
-		
+
 		// If 75% of the robots are still alive when we die, we'll switch corners.
 		if ((others - getOthers()) / (double) others < .75) {
 			corner += 90;
 			if (corner == 270) {
 				corner = -90;
 			}
-			System.out.println("I died and did poorly... switching corner to " + corner);
+			out.println("I died and did poorly... switching corner to " + corner);
 		} else {
-			System.out.println("I died but did well.  I will still use corner " + corner);
+			out.println("I died but did well.  I will still use corner " + corner);
 		}
 	}
-	
+
 	/**
-	 * normalRelativeAngle:  returns angle such that -180<angle<=180
+	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
 	 */
 	public double normalRelativeAngle(double angle) {
 		if (angle > -180 && angle <= 180) {
@@ -132,5 +139,4 @@ public class Corners extends Robot {
 		}
 		return fixedAngle;
 	}
-}														
-
+}
