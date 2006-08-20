@@ -7,22 +7,33 @@ import java.io.*;
 
 
 /**
- * MyFirstLeader - a sample team robot by Mathew Nelson
+ * MyFirstLeader - a sample team robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Looks around for enemies, and orders teammates to fire
  */
 public class MyFirstLeader extends TeamRobot {
 
 	/**
-	 * run: Leader's default behavior
+	 * run:  Leader's default behavior
 	 */
 	public void run() {
-		// After trying out your robot, try uncommenting the import at the top,
-		// and the next line:
-		setColors(Color.red, Color.red, Color.red);
+		// Prepare RobotColors object
+		RobotColors c = new RobotColors();
+		c.bodyColor = Color.red;
+		c.gunColor = Color.red;
+		c.radarColor = Color.red;
+		c.scanColor = Color.yellow;
+		c.bulletColor = Color.yellow;
+
+		// Set the color of this robot containing the RobotColors
+		setBodyColor(c.bodyColor);
+		setGunColor(c.gunColor);
+		setRadarColor(c.radarColor);
+		setScanColor(c.scanColor);
+		setBulletColor(c.bulletColor);
 		try {
 			// Send RobotColors object to our entire team
-			broadcastMessage(new RobotColors(Color.red, Color.red, Color.red));
+			broadcastMessage(c);
 		} catch (IOException e) {}
 		// Normal behavior
 		while (true) {
@@ -33,7 +44,7 @@ public class MyFirstLeader extends TeamRobot {
 	}
 
 	/**
-	 * onScannedRobot: What to do when you see another robot
+	 * onScannedRobot:  What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// Don't fire on teammates
@@ -50,12 +61,12 @@ public class MyFirstLeader extends TeamRobot {
 			// Send enemy position to teammates
 			broadcastMessage(new Point(enemyX, enemyY));
 		} catch (IOException ex) {
-			System.out.println("Unable to send order: " + ex);
+			out.println("Unable to send order: " + ex);
 		}
 	}
 
 	/**
-	 * onHitByBullet: Turn perpendicular to bullet path
+	 * onHitByBullet:  Turn perpendicular to bullet path
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
 		turnLeft(90 - e.getBearing());

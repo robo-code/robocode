@@ -4,24 +4,22 @@ package sampleteam;
 import robocode.*;
 
 
-// import java.awt.Color;
-
 /**
- * SimpleDroid - a sample robot by Mathew Nelson
+ * SimpleDroid - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Follows orders of team leader
  */
 public class MyFirstDroid extends TeamRobot implements Droid {
 
 	/**
-	 * run: Droid's default behavior
+	 * run:  Droid's default behavior
 	 */
 	public void run() {
-		System.out.println("MyFirstDroid ready.");
+		out.println("MyFirstDroid ready.");
 	}
 	
 	/**
-	 * onMessageReceived: What to do when our leader sends a message
+	 * onMessageReceived:  What to do when our leader sends a message
 	 */
 	public void onMessageReceived(MessageEvent e) {
 		// Fire at a point
@@ -41,12 +39,16 @@ public class MyFirstDroid extends TeamRobot implements Droid {
 		else if (e.getMessage() instanceof RobotColors) {
 			RobotColors c = (RobotColors) e.getMessage();
 
-			setColors(c.getBodyColor(), c.getGunColor(), c.getRadarColor());
+			setBodyColor(c.bodyColor);
+			setGunColor(c.gunColor);
+			setRadarColor(c.radarColor);
+			setScanColor(c.scanColor);
+			setBulletColor(c.bulletColor);
 		}
 	}
-	
+
 	/**
-	 * normalRelativeAngle:  returns angle such that -180<angle<=180
+	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
 	 */	
 	public double normalRelativeAngle(double angle) {
 		if (angle > -180 && angle <= 180) {
