@@ -16,9 +16,9 @@ public class SittingDuck extends AdvancedRobot {
 	static boolean incrementedBattles = false;
 	
 	public void run() {
-		
-		setColors(Color.yellow, null, null);
-		
+		setBodyColor(Color.yellow);
+		setGunColor(Color.yellow);
+
 		int roundCount, battleCount;
 		
 		// Read file "count.dat" which contains 2 lines,
@@ -38,7 +38,7 @@ public class SittingDuck extends AdvancedRobot {
 			roundCount = 0;
 			battleCount = 0;
 		}
-		
+
 		// Increment the # of rounds
 		roundCount++;
 		// If we havenn't incremented # of battles already,
@@ -49,7 +49,7 @@ public class SittingDuck extends AdvancedRobot {
 			battleCount++;
 			incrementedBattles = true;
 		}
-		
+
 		try {
 			PrintStream w = new PrintStream(new RobocodeFileOutputStream(getDataFile("count.dat")));
 
@@ -65,9 +65,6 @@ public class SittingDuck extends AdvancedRobot {
 			out.println("IOException trying to write: " + e);
 		}
 
-		out.println("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles.");
-		
+		out.println("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles.");	
 	}
-
-}																				
-
+}
