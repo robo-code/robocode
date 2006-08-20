@@ -1,11 +1,12 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * Tracker - a sample robot by Mathew Nelson
+ * Tracker - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Locks onto a robot, moves close, fires when close.
  */
@@ -16,12 +17,22 @@ public class Tracker extends Robot {
 	String trackName; // Name of the robot we're currently tracking
 
 	/**
-	 * run: Tracker's main run function
+	 * run:  Tracker's main run function
 	 */	
 	public void run() {
+		// Set colors
+		setBodyColor(new Color(128, 128, 50));
+		setGunColor(new Color(50, 50, 20));
+		setRadarColor(new Color(200, 200, 70));
+		setScanColor(Color.white);
+		setBulletColor(Color.blue);
+		
+		// Prepare gun
 		trackName = null; // Initialize to not tracking anyone
 		setAdjustGunForRobotTurn(true); // Keep the gun still when we turn
 		gunTurnAmt = 10; // Initialize gunTurn to 10
+
+		// Loop forever
 		while (true) {
 			// turn the Gun (looks for enemy)
 			turnGunRight(gunTurnAmt);
@@ -43,7 +54,7 @@ public class Tracker extends Robot {
 	}
 	
 	/**
-	 * onScannedRobot: Here's the good stuff
+	 * onScannedRobot:  Here's the good stuff
 	 */	
 	public void onScannedRobot(ScannedRobotEvent e) {
 
@@ -85,7 +96,6 @@ public class Tracker extends Robot {
 			}
 		}
 		scan();
- 
 	}
 	
 	/**
@@ -120,7 +130,7 @@ public class Tracker extends Robot {
 	// normalAbsoluteAngle is not used in this robot,
 	// but is here for reference.
 	/**
-	 * normalAbsoluteAngle:  returns angle such that 0 <= angle < 360
+	 * normalAbsoluteAngle:  Returns angle such that 0 <= angle < 360
 	 */	
 	public double normalAbsoluteAngle(double angle) {
 		if (angle >= 0 && angle < 360) {
@@ -136,9 +146,9 @@ public class Tracker extends Robot {
 		}
 		return fixedAngle;
 	}
-	
+
 	/**
-	 * normalRelativeAngle:  returns angle such that -180<angle<=180
+	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
 	 */	
 	public double normalRelativeAngle(double angle) {
 		if (angle > -180 && angle <= 180) {
@@ -154,6 +164,4 @@ public class Tracker extends Robot {
 		}
 		return fixedAngle;
 	}
-
-}																																																																																																		
-
+}

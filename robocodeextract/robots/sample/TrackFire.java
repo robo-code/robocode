@@ -1,11 +1,12 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * TrackFire - a sample robot by Mathew Nelson
+ * TrackFire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Sits still.  Tracks and fires at the nearest robot it sees
  */
@@ -15,6 +16,14 @@ public class TrackFire extends Robot {
 	 * TrackFire's run method
 	 */
 	public void run() {
+		// Set colors
+		setBodyColor(Color.pink);
+		setGunColor(Color.pink);
+		setRadarColor(Color.pink);
+		setScanColor(Color.pink);
+		setBulletColor(Color.pink);
+		
+		// Loop forever
 		while (true) {
 			turnGunRight(10); // Scans automatically
 		}
@@ -49,12 +58,12 @@ public class TrackFire extends Robot {
 			scan();
 		}
 	}
-	
+
 	public void onWin(WinEvent e) {
 		// Victory dance	
 		turnRight(36000);
 	}
-	
+
 	// Helper function
 	public double normalRelativeAngle(double angle) {
 		if (angle > -180 && angle <= 180) {
@@ -70,6 +79,4 @@ public class TrackFire extends Robot {
 		}
 		return fixedAngle;
 	}
-
 }				
-

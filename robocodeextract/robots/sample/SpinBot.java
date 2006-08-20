@@ -1,11 +1,12 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * SpinBot - a sample robot by Mathew Nelson
+ * SpinBot - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Moves in a circle, firing hard when an enemy is detected
  */
@@ -15,6 +16,13 @@ public class SpinBot extends AdvancedRobot {
 	 * SpinBot's run method - Circle
 	 */
 	public void run() {
+		// Set colors
+		setBodyColor(Color.blue);
+		setGunColor(Color.blue);
+		setRadarColor(Color.black);
+		setScanColor(Color.yellow);
+
+		// Loop forever
 		while (true) {
 			// Tell the game that when we take move,
 			// we'll also want to turn right... a lot.
@@ -26,14 +34,14 @@ public class SpinBot extends AdvancedRobot {
 			// Repeat.
 		} 
 	}
-	
+
 	/**
 	 * onScannedRobot: Fire hard!
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		fire(3);
 	}
-	
+
 	/**
 	 * onHitRobot:  If it's our fault, we'll stop turning and moving,
 	 *              so we need to turn again to keep spinning.
@@ -46,5 +54,4 @@ public class SpinBot extends AdvancedRobot {
 			turnRight(10);
 		}
 	}
-}						
-
+}

@@ -1,11 +1,12 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * RamFire - a sample robot by Mathew Nelson
+ * RamFire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Drives at robots trying to ram them.
  * Fires when it hits them.
@@ -17,11 +18,16 @@ public class RamFire extends Robot {
 	 * run: Spin around looking for a target
 	 */
 	public void run() {
+		// Set colors
+		setBodyColor(Color.lightGray);
+		setGunColor(Color.gray);
+		setRadarColor(Color.darkGray);
+
 		while (true) {
 			turnRight(5 * turnDirection);
 		}
 	}
-	
+
 	/**
 	 * onScannedRobot:  We have a target.  Go get it.
 	 */
@@ -37,7 +43,7 @@ public class RamFire extends Robot {
 		ahead(e.getDistance() + 5);
 		scan(); // Might want to move ahead again!
 	}
-	
+
 	/**
 	 * onHitRobot:  Turn to face robot, fire hard, and ram him again!
 	 */

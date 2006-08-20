@@ -1,29 +1,37 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * Fire - a sample robot by Mathew Nelson
+ * Fire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Sits still.  Spins gun around.  Moves when hit.
  */
 public class Fire extends Robot {
 	int dist = 50; // distance to move when we're hit
-	
+
 	/**
-	 * run: Fire's main run function
+	 * run:  Fire's main run function
 	 */	
 	public void run() {
+		// Set colors
+		setBodyColor(Color.orange);
+		setGunColor(Color.orange);
+		setRadarColor(Color.red);
+		setScanColor(Color.red);
+		setBulletColor(Color.red);
+
 		// Spin the gun around slowly... forever
 		while (true) {
 			turnGunRight(5);
 		}
 	}
-	
+
 	/**
-	 * onScannedRobot: Fire!
+	 * onScannedRobot:  Fire!
 	 */	
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// If the other robot is close by, and we have plenty of life,
@@ -37,7 +45,7 @@ public class Fire extends Robot {
 		// Call scan again, before we turn the gun
 		scan();
 	}
-	
+
 	/**
 	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
 	 */	
@@ -48,7 +56,7 @@ public class Fire extends Robot {
 		dist *= -1;
 		scan();
 	}
-	
+
 	/**
 	 * onHitRobot:  Aim at it.  Fire Hard!
 	 */	
@@ -58,9 +66,9 @@ public class Fire extends Robot {
 		turnGunRight(turnGunAmt);
 		fire(3);
 	}
-	
+
 	/**
-	 * normalRelativeAngle:  returns angle such that -180<angle<=180
+	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
 	 */
 	public double normalRelativeAngle(double angle) {
 		if (angle > -180 && angle <= 180) {
@@ -76,6 +84,4 @@ public class Fire extends Robot {
 		}
 		return fixedAngle;
 	}
-
-}					
-
+}

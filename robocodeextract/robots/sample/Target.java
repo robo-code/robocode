@@ -1,11 +1,12 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * Target - a sample robot by Mathew Nelson
+ * Target - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Sits still.  Moves every time energy drops by 20.
  * This Robot demonstrates custom events.
@@ -13,11 +14,16 @@ import robocode.*;
 public class Target extends AdvancedRobot {
 
 	int trigger; // Keeps track of when to move
-	
+
 	/**
 	 * TrackFire's run method
 	 */
 	public void run() {
+		// Set colors
+		setBodyColor(Color.white);
+		setGunColor(Color.white);
+		setRadarColor(Color.white);
+		
 		// Initially, we'll move when life hits 80
 		trigger = 80;
 		// Add a custom event named "trigger hit",
@@ -44,6 +50,4 @@ public class Target extends AdvancedRobot {
 			ahead(100);
 		}
 	}
-}				
-
-
+}

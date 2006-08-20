@@ -1,11 +1,12 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * Walls - a sample robot by Mathew Nelson
+ * Walls - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * Moves around the outer edge with the gun facing in.
  */
@@ -18,6 +19,13 @@ public class Walls extends Robot {
 	 * run: Move around the walls
 	 */
 	public void run() {
+		// Set colors
+		setBodyColor(Color.black);
+		setGunColor(Color.black);
+		setRadarColor(Color.orange);
+		setBulletColor(Color.cyan);
+		setScanColor(Color.cyan);
+		
 		// Initialize moveAmount to the maximum possible for this battlefield.
 		moveAmount = Math.max(getBattleFieldWidth(), getBattleFieldHeight());
 		// Initialize peek to false
@@ -70,5 +78,4 @@ public class Walls extends Robot {
 			scan();
 		}
 	}
-}													
-
+}
