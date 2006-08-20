@@ -86,7 +86,7 @@ public class ImageUtil {
 			float[] HSL = RGBtoHSL(r, g, b);
 
 			if (HSL[1] > 0) {
-				float L = Math.min(Math.max((0.15f + (hsl[2] + HSL[2] - 0.5f)), 0), 1);				
+				float L = Math.min(1, (hsl[2] + HSL[2]) / 2 + hsl[2] / 7);				
 
 				return argb & 0xff000000 | HSLtoRGB(hsl[0], hsl[1], L);
 			}
