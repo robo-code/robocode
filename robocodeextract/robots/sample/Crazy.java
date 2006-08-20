@@ -1,11 +1,12 @@
 package sample;
 
 
+import java.awt.Color;
 import robocode.*;
 
 
 /**
- * Crazy - a sample robot by Mathew Nelson
+ * Crazy - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * 
  * This robot moves around in a crazy pattern
  */
@@ -16,6 +17,14 @@ public class Crazy extends AdvancedRobot {
 	 * run: Crazy's main run function
 	 */	
 	public void run() {
+		// Set colors
+		setBodyColor(new Color(0, 200, 0));
+		setGunColor(new Color(0, 150, 50));
+		setRadarColor(new Color(0, 100, 100));
+		setBulletColor(new Color(255, 255, 100));
+		setScanColor(new Color(255, 200, 200));
+
+		// Loop forever
 		while (true) {
 			// Tell the game we will want to move ahead 40000 -- some large number
 			setAhead(40000);
@@ -42,7 +51,7 @@ public class Crazy extends AdvancedRobot {
 			// then back to the top to do it all again
 		}
 	}
-	
+
 	/**
 	 * onHitWall:  Handle collision with wall.
 	 */	
@@ -50,9 +59,9 @@ public class Crazy extends AdvancedRobot {
 		// Bounce off!
 		reverseDirection();
 	}
-	
+
 	/**
-	 * reverseDirection: switch from ahead to back & vice versa
+	 * reverseDirection:  Switch from ahead to back & vice versa
 	 */	
 	public void reverseDirection() {
 		if (movingForward) {
@@ -63,7 +72,7 @@ public class Crazy extends AdvancedRobot {
 			movingForward = true;
 		}
 	}
-	
+
 	/**
 	 * onScannedRobot:  Fire!
 	 */	
@@ -80,5 +89,4 @@ public class Crazy extends AdvancedRobot {
 			reverseDirection();
 		}
 	}
-}		
-
+}
