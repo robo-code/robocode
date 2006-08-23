@@ -8,6 +8,9 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Bugfix: scoreDeath() incremented totalFirsts even if the robot was
+ *       already a winner, where scoreWinner() has already been called previously
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -18,6 +21,7 @@ import robocode.peer.TeamPeer;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	boolean noScoring;
@@ -187,7 +191,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	}
 
 	public void scoreDeath(int enemiesRemaining) {
-		if (enemiesRemaining == 0) {
+		if (enemiesRemaining == 0 && !robotPeer.isWinner()) {
 			totalFirsts++;
 		}
 		if (enemiesRemaining == 1) {
