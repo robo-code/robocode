@@ -9,6 +9,7 @@
  *     Mathew Nelson
  *     - initial API and implementation
  *     Flemming N. Larsen
+ *     - Replaced deprecated methods
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -121,7 +122,7 @@ public class AutoExtract implements ActionListener {
 	
 		licenseDialog.getContentPane().add(p, BorderLayout.SOUTH);
 	
-		licenseDialog.show();
+		licenseDialog.setVisible(true);
 
 		return accepted;
 	}
@@ -150,7 +151,7 @@ public class AutoExtract implements ActionListener {
 		statusDialog.getContentPane().setLayout(new BorderLayout());
 		statusDialog.getContentPane().add(status, BorderLayout.CENTER);
 
-		statusDialog.show();
+		statusDialog.setVisible(true);
 	
 		FileOutputStream fos = null;
 		String entryName = "";
