@@ -177,6 +177,8 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JButton getPredefinedPlatformDefaultButton() {
 		if (predefinedPlaformDefaultButton == null) {
 			predefinedPlaformDefaultButton = new JButton("Default");
+			predefinedPlaformDefaultButton.setMnemonic('u');
+			predefinedPlaformDefaultButton.setDisplayedMnemonicIndex(4);
 			predefinedPlaformDefaultButton.addActionListener(eventHandler);
 		}
 		return predefinedPlaformDefaultButton;
@@ -185,6 +187,8 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JButton getPredefinedSpeedButton() {
 		if (predefinedSpeedButton == null) {
 			predefinedSpeedButton = new JButton("Speed");
+			predefinedSpeedButton.setMnemonic('p');
+			predefinedSpeedButton.setDisplayedMnemonicIndex(1);
 			predefinedSpeedButton.addActionListener(eventHandler);
 		}
 		return predefinedSpeedButton;
@@ -193,6 +197,8 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JButton getPredefinedQualityButton() {
 		if (predefinedQualityButton == null) {
 			predefinedQualityButton = new JButton("Quality");
+			predefinedQualityButton.setMnemonic('Q');
+			predefinedQualityButton.setDisplayedMnemonicIndex(0);
 			predefinedQualityButton.addActionListener(eventHandler);
 		}
 		return predefinedQualityButton;
