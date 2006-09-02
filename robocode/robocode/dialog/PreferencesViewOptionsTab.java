@@ -405,8 +405,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JCheckBox getVisibleScanArcsCheckBox() {
 		if (visibleScanArcsCheckBox == null) {
 			visibleScanArcsCheckBox = new JCheckBox("Visible Scan Arcs (Cool, but may slow down game)");
-			visibleScanArcsCheckBox.setMnemonic('S');
-			visibleScanArcsCheckBox.setDisplayedMnemonicIndex(8);
+			visibleScanArcsCheckBox.setMnemonic('b');
+			visibleScanArcsCheckBox.setDisplayedMnemonicIndex(4);
 		}
 		return visibleScanArcsCheckBox;
 	}
