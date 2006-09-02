@@ -298,24 +298,23 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			tpsOptionsPanel = new JPanel();
 			tpsOptionsPanel.setBorder(
 					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Turns Per Second (TPS)"));
-			GridBagLayout layout = new GridBagLayout();
 
-			tpsOptionsPanel.setLayout(layout);
-			GridBagConstraints constraints = new GridBagConstraints();
+			tpsOptionsPanel.setLayout(new GridBagLayout());
+			GridBagConstraints c = new GridBagConstraints();
 
-			constraints.fill = 1;
-			constraints.weightx = 1;
-			constraints.anchor = GridBagConstraints.NORTHWEST;
+			c.fill = 1;
+			c.weightx = 1;
+			c.anchor = GridBagConstraints.NORTHWEST;
 
-			constraints.gridwidth = GridBagConstraints.REMAINDER;
-			tpsOptionsPanel.add(getDisplayTpsCheckBox(), constraints);
-			tpsOptionsPanel.add(getDisplayFpsCheckBox(), constraints);
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			tpsOptionsPanel.add(getDisplayTpsCheckBox(), c);
+			tpsOptionsPanel.add(getDisplayFpsCheckBox(), c);
 
 			JLabel label = new JLabel(" ");
 
-			tpsOptionsPanel.add(label, constraints);
-			constraints.gridwidth = GridBagConstraints.REMAINDER;
-			tpsOptionsPanel.add(getDesiredTpsLabel(), constraints);
+			tpsOptionsPanel.add(label, c);
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			tpsOptionsPanel.add(getDesiredTpsLabel(), c);
 			getDesiredTpsLabel().setHorizontalAlignment(JLabel.CENTER);
 
 			JPanel p = new JPanel();
@@ -329,21 +328,21 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			q = new JPanel();
 			p.add(q);
 
-			constraints.gridwidth = GridBagConstraints.REMAINDER;
-			tpsOptionsPanel.add(p, constraints);
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			tpsOptionsPanel.add(p, c);
 			JLabel label2 = new JLabel(" ");
 
-			tpsOptionsPanel.add(label2, constraints);
-			constraints.gridwidth = 1;
-			constraints.fill = 0;
-			constraints.weighty = 1;
-			constraints.weightx = 0;
-			tpsOptionsPanel.add(getMinTpsButton(), constraints);
-			tpsOptionsPanel.add(getDefaultTpsButton(), constraints);
-			tpsOptionsPanel.add(getFastTpsButton(), constraints);
-			constraints.weightx = 1;
-			constraints.gridwidth = GridBagConstraints.REMAINDER;
-			tpsOptionsPanel.add(getMaxTpsButton(), constraints);
+			tpsOptionsPanel.add(label2, c);
+			c.gridwidth = 1;
+			c.fill = 0;
+			c.weighty = 1;
+			c.weightx = 0;
+			tpsOptionsPanel.add(getMinTpsButton(), c);
+			tpsOptionsPanel.add(getDefaultTpsButton(), c);
+			tpsOptionsPanel.add(getFastTpsButton(), c);
+			c.weightx = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			tpsOptionsPanel.add(getMaxTpsButton(), c);
 		}
 		return tpsOptionsPanel;
 	}
