@@ -89,18 +89,20 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 			c.gridy = 1;
 			optionsPanel.add(
 					new JLabel(
-							"(Example: c:\\eclipse\\workspace\\MyRobotProject" + java.io.File.pathSeparator
+							"Example:  c:\\eclipse\\workspace\\MyRobotProject" + java.io.File.pathSeparator
 							+ "c:\\eclipse\\workspace\\AnotherRobotProject"),
 							c);
 
 			c.fill = GridBagConstraints.NONE;
 			c.gridwidth = 1;
 			c.gridy = 2;
+			c.insets = new Insets(3, 3, 3, 3);
 			optionsPanel.add(getBrowseButton(), c);
 
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.weightx = 1;
 			c.gridx = 1;
+			c.insets = new Insets(5, 5, 5, 5);
 			optionsPanel.add(getPathTextField(), c);
 
 			c.fill = GridBagConstraints.VERTICAL;
