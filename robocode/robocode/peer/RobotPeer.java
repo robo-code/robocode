@@ -20,11 +20,12 @@
  *       removed getColorIndex()
  *     - Optimizations
  *     - Code cleanup
+ *     Luis Crespo
+ *     - Added states
  *******************************************************************************/
 package robocode.peer;
 
 
-import java.awt.*;
 import java.awt.geom.*;
 import java.awt.Color;
 
@@ -46,9 +47,17 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Luis Crespo (added states)
  * @author Flemming N. Larsen (current)
  */
 public class RobotPeer implements Runnable, ContestantPeer {
+
+	// Robot States: all states last one turn, except ALIVE and DEAD
+	public static final int ROBOT_STATE_ALIVE = 0;
+	public static final int ROBOT_STATE_HIT_WALL = 1;
+	public static final int ROBOT_STATE_HIT_ROBOT = 2;
+	public static final int ROBOT_STATE_DEAD = 3;
+
 	private double velocity;
 	private double heading;
 	private double radarHeading;
@@ -158,6 +167,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
+
+	// Robot state
+	protected int robotState;
+	protected int oldRobotState;
 
 	public TextPeer getSayTextPeer() {
 		return sayTextPeer;
@@ -276,6 +289,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				} // if hit
 			} // if robot active & not me
 		} // for robots
+		if (inCollision) {
+			robotState = ROBOT_STATE_HIT_ROBOT;
+		}
 	}
 
 	public void checkWallCollision() {
@@ -369,6 +385,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			velocity = 0;
 			acceleration = 0;
 		}
+		if (hitWall) {
+			robotState = ROBOT_STATE_HIT_WALL;
+		}
 	}
 
 	public final void death() {
@@ -412,15 +431,21 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public synchronized String getShortName() {
-		return (shortName != null) ? shortName : robotClassManager.getClassNameManager().getUniqueShortClassNameWithVersion();
+		return (shortName != null)
+				? shortName
+				: robotClassManager.getClassNameManager().getUniqueShortClassNameWithVersion();
 	}
 
 	public synchronized String getVeryShortName() {
-		return (shortName != null) ? shortName : robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
+		return (shortName != null)
+				? shortName
+				: robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
 	}
 
 	public synchronized String getNonVersionedName() {
-		return (nonVersionedName != null) ? nonVersionedName : robotClassManager.getClassNameManager().getFullClassName();
+		return (nonVersionedName != null)
+				? nonVersionedName
+				: robotClassManager.getClassNameManager().getFullClassName();
 	}
 
 	public synchronized int getOthers() {
@@ -496,7 +521,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean intersects(Arc2D arc, Rectangle2D rect) {
-		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),	arc.getStartPoint().getY())) ? true : arc.intersects(rect);	
+		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
+				arc.getStartPoint().getY()))
+				? true
+				: arc.intersects(rect);	
 	}
 
 	public void scan() {
@@ -757,6 +785,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public final synchronized void update() {
+		oldRobotState = robotState;
+		robotState = dead ? ROBOT_STATE_DEAD : ROBOT_STATE_ALIVE;
 		updateGunHeat();
 
 		lastHeading = heading;
@@ -789,7 +819,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				scan = true;
 			}
 		}
-	
 	}
 
 	public synchronized void updateBoundingBox() {
@@ -1152,6 +1181,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		adjustRadarForBodyTurnSet = false;
 	
 		newBullet = null;
+
+		robotState = ROBOT_STATE_ALIVE;
+		oldRobotState = ROBOT_STATE_ALIVE;
 	}
 
 	public boolean isWinner() {
@@ -1642,5 +1674,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public boolean isSGPaintEnabled() {
 		return sgPaintEnabled;
+	}
+	
+	public int getRobotState() {
+		return dead ? ROBOT_STATE_DEAD : (oldRobotState == robotState) ? ROBOT_STATE_ALIVE : oldRobotState;
 	}
 }

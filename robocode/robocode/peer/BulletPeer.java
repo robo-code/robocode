@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Luis Crespo
+ *     - Added states
  *     Flemming N. Larsen
  *     - Code cleanup
  *******************************************************************************/
@@ -22,9 +24,19 @@ import robocode.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Luis Crespo (added states)
  * @author Flemming N. Larsen (current)
  */
 public class BulletPeer {
+	// Bullet states: all states last one turn, except MOVING and DONE
+	public static final int BULLET_STATE_SHOT = 0;
+	public static final int BULLET_STATE_MOVING = 1;
+	public static final int BULLET_STATE_HIT_VICTIM = 2;
+	public static final int BULLET_STATE_HIT_BULLET = 3;
+	public static final int BULLET_STATE_HIT_WALL = 4;
+	public static final int BULLET_STATE_EXPLODED = 5;
+	public static final int BULLET_STATE_DONE = 6;
+
 	private int WHICH_EXPLOSION = 0;
 
 	private double velocity;
@@ -67,6 +79,10 @@ public class BulletPeer {
 	protected int frame;
 
 	private Bullet bullet;
+	
+	// Bullet states
+	protected int bulletState;
+	protected int oldBulletState;
 
 	/**
 	 * BulletPeer constructor
@@ -78,6 +94,8 @@ public class BulletPeer {
 		this.battle = battle;
 		this.battleField = battle.getBattleField();
 		bullet = new Bullet(this);
+		bulletState = BULLET_STATE_SHOT;
+		oldBulletState = BULLET_STATE_SHOT;
 	}
 
 	public void checkBulletCollision() {
@@ -89,6 +107,7 @@ public class BulletPeer {
 				if (boundingLine.intersectsLine(b.getBoundingLine())
 						&& !boundingLine.getP1().equals(b.getBoundingLine().getP2())
 						&& !boundingLine.getP2().equals(b.getBoundingLine().getP1())) {
+					bulletState = BULLET_STATE_HIT_BULLET;
 					active = false;
 					b.active = false;
 					hitBullet = true;
@@ -136,6 +155,7 @@ public class BulletPeer {
 					r.getEventManager().add(
 							new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
 							getBullet()));
+					bulletState = BULLET_STATE_HIT_VICTIM;
 					owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
 					active = false;
 					hitVictim = true;
@@ -176,6 +196,7 @@ public class BulletPeer {
 			hitWall = true;
 		}
 		if (hitWall) {
+			bulletState = BULLET_STATE_HIT_WALL;
 			owner.getEventManager().add(new BulletMissedEvent(bullet));
 			active = false;
 		}
@@ -317,6 +338,21 @@ public class BulletPeer {
 				hitBullet = false;
 			}
 		}
+		updateBulletState();
+	}
+	
+	protected void updateBulletState() {
+		oldBulletState = bulletState;
+		if (bulletState == BULLET_STATE_SHOT) {
+			bulletState = BULLET_STATE_MOVING;
+		} else if (bulletState == BULLET_STATE_EXPLODED || bulletState == BULLET_STATE_HIT_BULLET
+				|| bulletState == BULLET_STATE_HIT_VICTIM || bulletState == BULLET_STATE_HIT_WALL) {
+			bulletState = BULLET_STATE_DONE;
+		}
+	}
+
+	public int getBulletState() {
+		return oldBulletState;
 	}
 
 	public void updateMovement() {

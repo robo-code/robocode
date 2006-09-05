@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Luis Crespo
+ *     - Added states
  *     Flemming N. Larsen
  *     - Code cleanup
  *******************************************************************************/
@@ -19,6 +21,7 @@ import robocode.battle.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Luis Crespo (added states)
  * @author Flemming N. Larsen (current)
  */
 public class ExplosionPeer extends BulletPeer {
@@ -32,6 +35,8 @@ public class ExplosionPeer extends BulletPeer {
 		hitVictimTime = 0;
 		setPower(1);
 		active = false;
+		bulletState = BULLET_STATE_EXPLODED;
+		oldBulletState = BULLET_STATE_EXPLODED;
 	}
 
 	public final void update() {
@@ -41,6 +46,7 @@ public class ExplosionPeer extends BulletPeer {
 		if (frame >= getBattle().getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
 			battle.removeBullet(this);
 		}
+		updateBulletState();
 	}
 
 	public int getWhichExplosion() {
