@@ -29,18 +29,21 @@ import robocode.manager.*;
  * @author Flemming N. Larsen (current)
  */
 public class PreferencesDialog extends JDialog implements WizardListener {
+
 	private JPanel preferencesDialogContentPane;
 	private WizardTabbedPane tabbedPane;
 	private WizardController buttonsPanel;
+
 	private PreferencesViewOptionsTab viewOptionsTab;
 	private PreferencesRenderingOptionsTab renderingOptionsTab;
+	private PreferencesSoundOptionsTab soundOptionsTab;
 	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
 
-	EventHandler eventHandler = new EventHandler();
+	private EventHandler eventHandler = new EventHandler();
 
-	public RobocodeManager manager;
+	private RobocodeManager manager;
 
-	class EventHandler extends WindowAdapter {
+	private class EventHandler extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
 			if (e.getSource() == PreferencesDialog.this) {
 				manager.getBattleManager().resumeBattle();
@@ -55,6 +58,16 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		super(manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
 		initialize();
+	}
+
+	/**
+	 * Initialize the class.
+	 */
+	private void initialize() {
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setTitle("Preferences");
+		setContentPane(getPreferencesDialogContentPane());
+		addWindowListener(eventHandler);
 	}
 
 	public void cancelButtonActionPerformed() {
@@ -103,12 +116,16 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 			tabbedPane.setDisplayedMnemonicIndexAt(0, 0);
 
 			tabbedPane.insertTab("Rendering Options", null, getRenderingOptionsTab(), null, 1);
-			tabbedPane.setMnemonicAt(0, KeyEvent.VK_R);
+			tabbedPane.setMnemonicAt(1, KeyEvent.VK_R);
 			tabbedPane.setDisplayedMnemonicIndexAt(1, 0);
 
-			tabbedPane.insertTab("Development Options", null, getDevelopmentOptionsTab(), null, 2);
-			tabbedPane.setMnemonicAt(1, KeyEvent.VK_D);
+			tabbedPane.insertTab("Sound Options", null, getSoundOptionsTab(), null, 2);
+			tabbedPane.setMnemonicAt(2, KeyEvent.VK_S);
 			tabbedPane.setDisplayedMnemonicIndexAt(2, 0);
+
+			tabbedPane.insertTab("Development Options", null, getDevelopmentOptionsTab(), null, 3);
+			tabbedPane.setMnemonicAt(3, KeyEvent.VK_D);
+			tabbedPane.setDisplayedMnemonicIndexAt(3, 0);
 		}
 		return tabbedPane;
 	}
@@ -127,6 +144,13 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		return renderingOptionsTab;
 	}
 
+	private JPanel getSoundOptionsTab() {
+		if (soundOptionsTab == null) {
+			soundOptionsTab = new PreferencesSoundOptionsTab(manager);
+		}
+		return soundOptionsTab;
+	}
+
 	private JPanel getDevelopmentOptionsTab() {
 		if (developmentOptionsTab == null) {
 			developmentOptionsTab = new PreferencesDevelopmentOptionsTab(manager);
@@ -134,19 +158,10 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		return developmentOptionsTab;
 	}
 
-	/**
-	 * Initialize the class.
-	 */
-	private void initialize() {
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setTitle("Preferences");
-		setContentPane(getPreferencesDialogContentPane());
-		addWindowListener(eventHandler);
-	}
-
 	public void finishButtonActionPerformed() {
 		viewOptionsTab.storePreferences();
 		renderingOptionsTab.storePreferences();
+		soundOptionsTab.storePreferences();
 		developmentOptionsTab.storePreferences();
 
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
