@@ -13,6 +13,7 @@
  *       rendering method, and method for getting the combined rendering hints
  *     - Changed the FPS methods into TPS methods, but added the "Display FPS in
  *       titlebar" option
+ *     - Added sound options
  *******************************************************************************/
 package robocode.manager;
 
@@ -33,21 +34,43 @@ public class RobocodeProperties {
 	
 	private Properties props = new Properties();
 	
+	// View Options (Arena)
+	private boolean optionsViewRobotEnergy = true;
 	private boolean optionsViewRobotNames = true;
 	private boolean optionsViewScanArcs = false;
-	private boolean optionsViewRobotEnergy = true;
+	private boolean optionsViewExplosions = true;
 	private boolean optionsViewGround = true;
+	private boolean optionsBattleAllowColorChanges = false;
+
+	// View Options (Turns Per Second)
 	private boolean optionsViewTPS = true;
 	private boolean optionsViewFPS = true;
-	private boolean optionsViewExplosions = true;
+
+	// Rendering Options
 	private int optionsRenderingAntialiasing = 0; // 0 = default, 1 = on, 2 = off 
 	private int optionsRenderingTextAntialiasing = 0; // 0 = default, 1 = on, 2 = off
 	private int optionsRenderingMethod = 0; // 0 = default, 1 = speed, 2 = quality
 	private int optionsRenderingNoBuffers = 2; // 1 = single buffering, 2 = double buffering, 3 = tripple buffering 
 	private int optionsBattleDesiredTPS = 30;
-	private boolean optionsBattleAllowColorChanges = false;
-	private boolean optionsTeamShowTeamRobots = false;
+
+	// Sound Options (Sound Effects)
+	private boolean optionsSoundEnableSound = false;
+	private boolean optionsSoundEnableGunShot = true;
+	private boolean optionsSoundEnableBulletHit = true;
+	private boolean optionsSoundEnableRobotDeath = true;
+	private boolean optionsSoundEnableWallCollision = true;
+	private boolean optionsSoundEnableRobotCollision = true;
+
+	// Sound Options (Mixer)
+	private String optionsSoundMixer = "DirectAudioDevice";
+	private boolean optionsSoundEnableMixerVolume = false;
+	private boolean optionsSoundEnableMixerPan = false;
+	
+	// Development Options
 	private String optionsDevelopmentPath = "";
+
+	private boolean optionsTeamShowTeamRobots = false;
+	
 	private String lastRunVersion = "";
 	private Date versionChecked;
 	private long robotFilesystemQuota = 200000;
@@ -63,12 +86,25 @@ public class RobocodeProperties {
 	private final static String OPTIONS_VIEW_TPS = "robocode.options.view.TPS";
 	private final static String OPTIONS_VIEW_FPS = "robocode.options.view.FPS";
 	private final static String OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions";
+	private final static String OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS";
+	private final static String OPTIONS_BATTLE_ALLOWCOLORCHANGES = "robocode.options.battle.allowColorChanges";
+
 	private final static String OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing";
 	private final static String OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing";
 	private final static String OPTIONS_RENDERING_METHOD = "robocode.options.rendering.method";
 	private final static String OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers";
-	private final static String OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS";
-	private final static String OPTIONS_BATTLE_ALLOWCOLORCHANGES = "robocode.options.battle.allowColorChanges";
+
+	private final static String OPTIONS_SOUND_ENABLESOUND = "robocode.options.sound.enableSound";
+	private final static String OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunShot";
+	private final static String OPTIONS_SOUND_ENABLEBULLETHIT = "robocode.options.sound.enableBulletHit";
+	private final static String OPTIONS_SOUND_ENABLEROBOTDEATH = "robocode.options.sound.enableRobotDeath";
+	private final static String OPTIONS_SOUND_ENABLEWALLCOLLISION = "robocode.options.sound.enableWallCollision";
+	private final static String OPTIONS_SOUND_ENABLEROBOTCOLLISION = "robocode.options.sound.enableRobotCollision";
+
+	private final static String OPTIONS_SOUND_MIXER = "robocode.options.sound.mixer";
+	private final static String OPTIONS_SOUND_ENABLEMIXERVOLUME = "robocode.options.sound.enableMixerVolume";
+	private final static String OPTIONS_SOUND_ENABLEMIXERPAN = "robocode.options.sound.enableMixerPan";
+	
 	private final static String OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots";
 	private final static String OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path";
 	private final static String VERSIONCHECKED = "robocode.versionchecked";
@@ -382,6 +418,177 @@ public class RobocodeProperties {
 		props.setProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "" + optionsBattleAllowColorChanges);
 	}
 	
+	/**
+	 * Gets the optionsSoundEnableSound
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsSoundEnableSound() {
+		return optionsSoundEnableSound;
+	}
+
+	/**
+	 * Sets the optionsSoundEnableSound.
+	 * 
+	 * @param optionsSoundEnableSound The optionsSoundEnableSound to set
+	 */
+	public void setOptionsSoundEnableSound(boolean optionsSoundEnableSound) {
+		this.optionsSoundEnableSound = optionsSoundEnableSound;
+		props.setProperty(OPTIONS_SOUND_ENABLESOUND, "" + optionsSoundEnableSound);
+	}
+
+	/**
+	 * Gets the optionsSoundEnableGunShot
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsSoundEnableGunShot() {
+		return optionsSoundEnableGunShot;
+	}
+
+	/**
+	 * Sets the optionsSoundEnableGunShot.
+	 * 
+	 * @param optionsSoundEnableGunShot The optionsSoundEnableGunShot to set
+	 */
+	public void setOptionsSoundEnableGunShot(boolean optionsSoundEnableGunShot) {
+		this.optionsSoundEnableGunShot = optionsSoundEnableGunShot;
+		props.setProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "" + optionsSoundEnableGunShot);
+	}
+
+	/**
+	 * Gets the optionsSoundEnableBulletHit
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsSoundEnableBulletHit() {
+		return optionsSoundEnableBulletHit;
+	}
+
+	/**
+	 * Sets the optionsSoundEnableBulletHit.
+	 * 
+	 * @param optionsSoundEnableBulletHit The optionsSoundEnableBulletHit to set
+	 */
+	public void setOptionsSoundEnableBulletHit(boolean optionsSoundEnableBulletHit) {
+		this.optionsSoundEnableBulletHit = optionsSoundEnableBulletHit;
+		props.setProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "" + optionsSoundEnableBulletHit);
+	}
+
+	/**
+	 * Gets the optionsSoundEnableRobotDeath
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsSoundEnableRobotDeath() {
+		return optionsSoundEnableRobotDeath;
+	}
+
+	/**
+	 * Sets the optionsSoundEnableRobotDeath.
+	 * 
+	 * @param optionsSoundEnableRobotDeath The optionsSoundEnableRobotDeath to set
+	 */
+	public void setOptionsSoundEnableRobotDeath(boolean optionsSoundEnableRobotDeath) {
+		this.optionsSoundEnableRobotDeath = optionsSoundEnableRobotDeath;
+		props.setProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "" + optionsSoundEnableRobotDeath);
+	}
+
+	/**
+	 * Gets the optionsSoundEnableWallCollision
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsSoundEnableWallCollision() {
+		return optionsSoundEnableWallCollision;
+	}
+
+	/**
+	 * Sets the optionsSoundEnableWallCollision.
+	 * 
+	 * @param optionsSoundEnableWallCollision The optionsSoundEnableWallCollision to set
+	 */
+	public void setOptionsSoundEnableWallCollision(boolean optionsSoundEnableWallCollision) {
+		this.optionsSoundEnableWallCollision = optionsSoundEnableWallCollision;
+		props.setProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "" + optionsSoundEnableWallCollision);
+	}
+
+	/**
+	 * Gets the optionsSoundEnableRobotCollision
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsSoundEnableRobotCollision() {
+		return optionsSoundEnableRobotCollision;
+	}
+
+	/**
+	 * Sets the optionsSoundEnableRobotCollision.
+	 * 
+	 * @param optionsSoundEnableRobotCollision The optionsSoundEnableRobotCollision to set
+	 */
+	public void setOptionsSoundEnableRobotCollision(boolean optionsSoundEnableRobotCollision) {
+		this.optionsSoundEnableRobotCollision = optionsSoundEnableRobotCollision;
+		props.setProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "" + optionsSoundEnableRobotCollision);
+	}
+
+	/**
+	 * Gets the optionsSoundEnableMixerVolume
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsSoundEnableMixerVolume() {
+		return optionsSoundEnableMixerVolume;
+	}
+
+	/**
+	 * Sets the optionsSoundMixer
+	 * 
+	 * @param optionsSoundMixer The optionsSoundMixer to set
+	 */
+	public void setOptionsSoundMixer(String optionsSoundMixer) {
+		this.optionsSoundMixer = optionsSoundMixer;
+		props.setProperty(OPTIONS_SOUND_MIXER, optionsSoundMixer);
+	}
+
+	/**
+	 * Gets the optionsSoundMixer
+	 * 
+	 * @return Returns a String
+	 */
+	public String getOptionsSoundMixer() {
+		return optionsSoundMixer;
+	}
+
+	/**
+	 * Sets the optionsSoundEnableMixerVolume.
+	 * 
+	 * @param optionsSoundEnableMixerVolume The optionsSoundEnableMixerVolume to set
+	 */
+	public void setOptionsSoundEnableMixerVolume(boolean optionsSoundEnableMixerVolume) {
+		this.optionsSoundEnableMixerVolume = optionsSoundEnableMixerVolume;
+		props.setProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "" + optionsSoundEnableMixerVolume);
+	}
+
+	/**
+	 * Gets the optionsSoundEnableMixerPan
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsSoundEnableMixerPan() {
+		return optionsSoundEnableMixerPan;
+	}
+
+	/**
+	 * Sets the optionsSoundEnableMixerPan.
+	 * 
+	 * @param optionsSoundEnableMixerPan The optionsSoundEnableMixerPan to set
+	 */
+	public void setOptionsSoundEnableMixerPan(boolean optionsSoundEnableMixerPan) {
+		this.optionsSoundEnableMixerPan = optionsSoundEnableMixerPan;
+		props.setProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "" + optionsSoundEnableMixerPan);
+	}
+
 	public boolean getOptionsTeamShowTeamRobots() {
 		return optionsTeamShowTeamRobots;
 	}
@@ -499,6 +706,7 @@ public class RobocodeProperties {
 	
 	public void load(FileInputStream in) throws IOException {
 		props.load(in);
+
 		optionsViewRobotNames = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTNAMES, "true")).booleanValue();
 		optionsViewScanArcs = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SCANARCS, "false")).booleanValue();
 		optionsViewRobotEnergy = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true")).booleanValue();
@@ -506,14 +714,28 @@ public class RobocodeProperties {
 		optionsViewTPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_TPS, "true")).booleanValue();
 		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
+		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
+		optionsBattleAllowColorChanges = Boolean.valueOf(props.getProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "false")).booleanValue();
+
 		optionsRenderingAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0"));
 		optionsRenderingTextAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0"));
 		optionsRenderingMethod = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0"));
 		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
-		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
-		optionsBattleAllowColorChanges = Boolean.valueOf(props.getProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "false")).booleanValue();
-		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
+
+		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false")).booleanValue();
+		optionsSoundEnableGunShot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true")).booleanValue();
+		optionsSoundEnableBulletHit = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "true")).booleanValue();
+		optionsSoundEnableRobotDeath = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "true")).booleanValue();
+		optionsSoundEnableRobotCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "true")).booleanValue();
+		optionsSoundEnableWallCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "true")).booleanValue();
+
+		optionsSoundMixer = props.getProperty(OPTIONS_SOUND_MIXER, "DirectAudioDevice");
+		optionsSoundEnableMixerVolume = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "false")).booleanValue();
+		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "false")).booleanValue();
+
 		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
+
+		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
 		
 		try {
