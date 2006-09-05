@@ -30,6 +30,7 @@ import robocode.dialog.RobotButton;
 import robocode.manager.*;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
+import robocode.sound.SoundManager;
 import robocode.util.Utils;
 
 
@@ -98,12 +99,13 @@ public class Battle implements Runnable {
 	// Pause related items
 	private boolean wasPaused;
 
+	// Sound manager
+	private SoundManager soundManager;
+
 	/**
 	 * Battle constructor
 	 */
-	public Battle(
-			BattleField battleField,
-			RobocodeManager manager) {
+	public Battle(BattleField battleField, RobocodeManager manager) {
 		super();
 
 		if (manager.isGUIEnabled()) {
@@ -113,6 +115,7 @@ public class Battle implements Runnable {
 		this.battleField = battleField;
 		this.manager = manager;
 		this.battleManager = manager.getBattleManager();
+		this.soundManager = new SoundManager(manager.getProperties());
 		this.robots = new Vector(); // <RobotPeer>
 		this.bullets = new Vector(); // <BulletPeer>
 		this.contestants = new Vector(); // <ContestantPeer>
@@ -500,6 +503,13 @@ public class Battle implements Runnable {
 		
 		boolean resetThisSec = true;
 
+		boolean soundInitialized = false;
+		
+		if (manager.isSoundEnabled()) {
+			soundManager.init();
+			soundInitialized = true;
+		}
+
 		while (!battleOver) {
 			if (shouldPause()) {
 				resetThisSec = true;
@@ -573,15 +583,19 @@ public class Battle implements Runnable {
 				
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
-				if ((totalFrameMillisThisSec == 0) || (frameStartTime - startTimeThisSec) > (framesThisSec * 1000f / estimatedFPS)) {
+				if ((totalFrameMillisThisSec == 0)
+						|| (frameStartTime - startTimeThisSec) > (framesThisSec * 1000f / estimatedFPS)) {
 					battleView.update();
 
 					framesThisSec++;
 				}
+				if (!manager.getWindowManager().getRobocodeFrame().isIconified()) {
+					playSounds();
+				}
 			}
 
 			// Calculate the time spend on the frame update
-			currentFrameMillis = (int)(System.currentTimeMillis() - frameStartTime);
+			currentFrameMillis = (int) (System.currentTimeMillis() - frameStartTime);
 
 			// Calculate the total time spend on frame updates this second
 			totalFrameMillisThisSec += currentFrameMillis;
@@ -590,13 +604,13 @@ public class Battle implements Runnable {
 			wakeupRobots();
 
 			// Calculate the total time used for the robots only this second
-			totalRobotMillisThisSec += (int)(System.currentTimeMillis() - turnStartTime) - currentFrameMillis;
+			totalRobotMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentFrameMillis;
 
 			// Calculate the total turn time this second
 			totalTurnMillisThisSec = totalRobotMillisThisSec + totalFrameMillisThisSec;
 
 			// Estimate the time remaining this second to spend on frame updates
-			estFrameTimeThisSec = Math.max(0, 1000f - desiredTPS * (float)totalTurnMillisThisSec / turnsThisSec);
+			estFrameTimeThisSec = Math.max(0, 1000f - desiredTPS * (float) totalTurnMillisThisSec / turnsThisSec);
 
 			// Estimate the possible FPS based on the estimated frame time 
 			estimatedFPS = Math.max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
@@ -605,15 +619,16 @@ public class Battle implements Runnable {
 			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
 
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-			if (manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible() &&
-					!manager.getWindowManager().getRobocodeFrame().isIconified()) {
+			if (manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible()
+					&& !manager.getWindowManager().getRobocodeFrame().isIconified()) {
 				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
 			} else {
 				delay = 0;
 			}
 
 			// Set flag for if the second has passed
-			resetThisSec = ((desiredTPS - turnsThisSec == 0) || ((System.currentTimeMillis() - startTimeThisSec) >= 1000));
+			resetThisSec = ((desiredTPS - turnsThisSec == 0)
+					|| ((System.currentTimeMillis() - startTimeThisSec) >= 1000));
 
 			// Delay to match desired TPS
 			try {
@@ -622,6 +637,7 @@ public class Battle implements Runnable {
 
 			if (resetThisSec && battleView != null) {
 				StringBuffer titleBuf = new StringBuffer("Robocode: Round ");
+
 				titleBuf.append(roundNum + 1).append(" of ").append(numRounds);
 
 				boolean dispTps = battleView.isDisplayTPS();
@@ -648,6 +664,10 @@ public class Battle implements Runnable {
 			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 		}
 		bullets.clear();
+
+		if (soundInitialized) {
+			soundManager.dispose();
+		}
 	}
 	
 	private boolean shouldPause() {
@@ -1271,5 +1291,27 @@ public class Battle implements Runnable {
 	 */
 	public RobocodeManager getManager() {
 		return manager;
+	}
+
+	/**
+	 * Plays sounds
+	 */
+	private void playSounds() {
+		if (manager.isSoundEnabled()) {
+			int i;
+			BulletPeer bp;
+			RobotPeer rp;
+
+			for (i = 0; i < getBullets().size(); i++) {
+				bp = (BulletPeer) getBullets().get(i);
+				soundManager.playBulletSound(bp);
+			}
+			for (i = 0; i < getRobots().size(); i++) {
+				rp = (RobotPeer) getRobots().get(i);
+				// Robot-hit-robot events play twice: once for each robot.
+				// The code could be improved in order to play only once.
+				soundManager.playRobotSound(rp);
+			}
+		}
 	}
 }
