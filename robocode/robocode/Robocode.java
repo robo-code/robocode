@@ -13,6 +13,7 @@
  *       anymore
  *     - Replaced the noDisplay with manager.setEnableGUI() and isGUIEnabled()
  *     - Replaced the -fps option with the -tps option
+ *     - Added -nosound option and disables sound i the -nogui is specified
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -28,7 +29,7 @@ import robocode.security.*;
 
 
 /**
- * Robocode - A programming game involving battling AI tanks.<BR/>
+ * Robocode - A programming game involving battling AI tanks.<br>
  * Copyright (c)  2001, 2006 Mathew Nelson and Robocode contributors
  *
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
@@ -37,6 +38,7 @@ import robocode.security.*;
  * @author Flemming N. Larsen (current)
  */
 public class Robocode {
+
 	private RobocodeManager manager;
 
 	/**
@@ -97,9 +99,7 @@ public class Robocode {
 			SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
 
 			System.setOut(sysout);
-			if (System.getProperty("debug", "false").equals("true")) {
-				;
-			} else {
+			if (!System.getProperty("debug", "false").equals("true")) {
 				System.setErr(syserr);
 			}
 			System.setIn(sysin);
@@ -126,6 +126,9 @@ public class Robocode {
 					minimize = true;
 				} else if (args[i].equals("-nodisplay")) {
 					manager.setEnableGUI(false);
+					manager.setEnableSound(false);
+				} else if (args[i].equals("-nosound")) {
+					manager.setEnableSound(false);
 				} else if (args[i].equals("-?") || args[i].equals("-help")) {
 					printUsage();
 					System.exit(0);
