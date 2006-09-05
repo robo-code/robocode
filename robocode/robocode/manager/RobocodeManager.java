@@ -40,7 +40,8 @@ public class RobocodeManager {
 	private RobocodeProperties properties;
 	private RobocodeListener listener;
 
-	private boolean usesGUI = true;
+	private boolean isGUIEnabled = true;
+	private boolean isSoundEnabled = true;
 
 	// Must use slave constructor
 	private RobocodeManager() {}
@@ -222,10 +223,18 @@ public class RobocodeManager {
 	}
 
 	public boolean isGUIEnabled() {
-		return usesGUI;
+		return isGUIEnabled;
 	}
 
-	public void setEnableGUI(boolean enableGUI) {
-		usesGUI = enableGUI;
+	public void setEnableGUI(boolean enable) {
+		isGUIEnabled = enable;
+	}
+
+	public boolean isSoundEnabled() {
+		return isSoundEnabled && getProperties().getOptionsSoundEnableSound();
+	}
+
+	public void setEnableSound(boolean enable) {
+		isSoundEnabled = enable;
 	}
 }
