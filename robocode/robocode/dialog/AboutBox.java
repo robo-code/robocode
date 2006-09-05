@@ -52,9 +52,12 @@ public class AboutBox extends JDialog {
 			+ "&copy;&nbsp;Copyright 2001-2005 Mathew A. Nelson<br>&copy;&nbsp;Copyright 2006 Robocode contributors</td>"
 			+ "<td><b>Version: " + TAG_ROBOCODE_VERSION + "</b><br><br>robocode.net<br>&nbsp;</td></tr></table><center><br>"
 			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan"
-			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (RobocodeNG and Robocode 2006),<br>"
-			+ "Matthew Reeder a.k.a. Kawigi (OpenSource Robocode),<br>" + "John Villar & Ascander Jr (RobocodeNG),<br>"
-			+ "and Stefan Westen (RobocodeSG)" + "<br><br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
+			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (main developer/administrator),<br>"
+			+ "Matthew Reeder (Editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
+			+ "Luis Crespo (Sound engine),<br>"
+			+ "Ascander Jr (graphics for ground tiles),<br>"
+			+ "and Stefan Westen (onPaint() method from RobocodeSG)<br>"
+			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
 			+ "</center></td></tr></table></body>";
 
 	// Robocode version
