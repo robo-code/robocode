@@ -22,6 +22,7 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 import java.awt.RenderingHints;
+import java.awt.RenderingHints.Key;
 
 import robocode.util.Utils;
 
@@ -63,8 +64,8 @@ public class RobocodeProperties {
 
 	// Sound Options (Mixer)
 	private String optionsSoundMixer = "DirectAudioDevice";
-	private boolean optionsSoundEnableMixerVolume = false;
-	private boolean optionsSoundEnableMixerPan = false;
+	private boolean optionsSoundEnableMixerVolume = true;
+	private boolean optionsSoundEnableMixerPan = true;
 	
 	// Development Options
 	private String optionsDevelopmentPath = "";
@@ -115,7 +116,8 @@ public class RobocodeProperties {
 
 	private RobocodeManager manager;
 
-	private RenderingHints renderingHints = new RenderingHints(new HashMap()); 
+	private RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
+
 
 	public RobocodeProperties(RobocodeManager manager) {
 		this.manager = manager;
@@ -730,8 +732,8 @@ public class RobocodeProperties {
 		optionsSoundEnableWallCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "true")).booleanValue();
 
 		optionsSoundMixer = props.getProperty(OPTIONS_SOUND_MIXER, "DirectAudioDevice");
-		optionsSoundEnableMixerVolume = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "false")).booleanValue();
-		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "false")).booleanValue();
+		optionsSoundEnableMixerVolume = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "true")).booleanValue();
+		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true")).booleanValue();
 
 		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
 
