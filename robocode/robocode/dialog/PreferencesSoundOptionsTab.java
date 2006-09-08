@@ -256,15 +256,12 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 			c.gridy = 3;
 			mixerOptionsPanel.add(new JLabel("Enable mixer features:"), c);
 
-			c.gridy = 4;
-			mixerOptionsPanel.add(new JLabel("(may slow down performance)"), c);
-
 			c.insets = new Insets(0, 0, 0, 0);
 
-			c.gridy = 5;
+			c.gridy = 4;
 			mixerOptionsPanel.add(getEnableMixerVolumeCheckBox(), c);
 
-			c.gridy = 6;
+			c.gridy = 5;
 			mixerOptionsPanel.add(getEnableMixerPanCheckBox(), c);
 		}
 		return mixerOptionsPanel;
