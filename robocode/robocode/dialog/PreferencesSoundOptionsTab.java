@@ -279,19 +279,15 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 			Line.Info clipLineInfo = new Line.Info(Clip.class);
 
 			Vector<Mixer.Info> mixers = new Vector<Mixer.Info>();
-			ArrayList<String> mixerNames = new ArrayList<String>();
 
 			for (Mixer.Info mi : mixerInfo) {
-				Mixer mixer = AudioSystem.getMixer(mi);
-				String name = mixer.getClass().getSimpleName();
-
-				if (mixer.getSourceLineInfo(clipLineInfo).length > 0 && !mixerNames.contains(name)) {
+				if (AudioSystem.getMixer(mi).getSourceLineInfo(clipLineInfo).length > 0) {
 					mixers.add(mi);
-					mixerNames.add(name);
 				}
 			}
 
 			mixerComboBox = new JComboBox(mixers);
+			mixerComboBox.setRenderer(new MixerInfoCellRenderer());
 			mixerComboBox.addActionListener(eventHandler);
 		}
 		return mixerComboBox;
@@ -438,4 +434,26 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	private void mixerDefaultButtonActionPerformed() {
 		setMixerCompoBox("DirectAudioDevice");
 	}
+
+	private class MixerInfoCellRenderer extends javax.swing.plaf.basic.BasicComboBoxRenderer {
+
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	         Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+	         Mixer.Info mi = (Mixer.Info) value;
+	    	 
+	    	 String text = mi.getName();
+
+	    	 if (!"Unknown Version".equals(mi.getVersion())) {
+	    		 text += ' ' + mi.getVersion();
+	    	 }
+	    	 if (!"Unknown Vendor".equals(mi.getVendor())) {
+	    		 text += " by " + mi.getVendor();
+	    	 }
+
+	         setText(text);
+
+	         return component;
+	     }
+	 }
 }
