@@ -9,6 +9,11 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Changed to give notification only if the available version number is
+ *       greater than the version retrieved from the robocode.jar file, and only
+ *       give warning if the user rejects downloading a new version, if the new
+ *       version is not an alfa or beta version
+ *     - Changed the checkdate time interval from 10 days to 5 days
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -28,8 +33,8 @@ import robocode.util.Utils;
  * @author Flemming N. Larsen (current)
  */
 public class VersionManager {
-	private String version = null;
-	private RobocodeManager manager = null;
+	private String version;
+	private RobocodeManager manager;
 	
 	public VersionManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -38,19 +43,21 @@ public class VersionManager {
 	public void checkUpdateCheck() {
 		Date lastCheckedDate = manager.getProperties().getVersionChecked();
 
+		Date today = new Date();
+
 		if (lastCheckedDate == null) {
-			lastCheckedDate = new Date();
+			lastCheckedDate = today;
 			manager.getProperties().setVersionChecked(lastCheckedDate);
 			manager.saveProperties();
 		}
 		Calendar checkDate = Calendar.getInstance();
 
 		checkDate.setTime(lastCheckedDate);
-		checkDate.add(Calendar.DATE, 10);
-		
-		if (checkDate.getTime().before(new Date())) {
+		checkDate.add(Calendar.DATE, 5);
+
+		if (checkDate.getTime().before(today)) {
 			if (checkForNewVersion(false)) {
-				manager.getProperties().setVersionChecked(new Date());
+				manager.getProperties().setVersionChecked(today);
 				manager.saveProperties();
 			}
 		}
@@ -106,7 +113,7 @@ public class VersionManager {
 	
 		String installurl = "http://robocode.sourceforge.net/installer";
 
-		if (!v.equals(getVersion())) {
+		if (v.compareToIgnoreCase(getVersion()) > 0) {
 			if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
 					"Version " + v + " of Robocode is now available.  Would you like to download it?",
 					"Version " + v + " available", JOptionPane.YES_NO_OPTION)
@@ -117,9 +124,7 @@ public class VersionManager {
 					JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
 							"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
 				}
-				// BrowserControl.displayURL(installurl);
-				// BrowserControl.displayURL(helpurl);
-			} else {
+			} else if (!v.matches(".*([Aa][Ll][Ff]|[Bb][Ee][Tt])[Aa].*")) {
 				JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
 						"It is highly recommended that you always download the latest version.  You may get it at "
 						+ installurl,
