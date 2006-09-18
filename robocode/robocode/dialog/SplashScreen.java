@@ -119,7 +119,7 @@ public class SplashScreen extends JWindow {
 	 * Initialize the splash screen
 	 */
 	private void initialize() {
-		splashImage = ImageUtil.getImage(this, "/resources/images/robocode_logo_tanks.jpg");
+		splashImage = ImageUtil.getImage(this, "/resources/images/robocode_logo_tanks.png");
 		setContentPane(getSplashScreenContentPane());
 		addWindowListener(eventHandler);
 	}
