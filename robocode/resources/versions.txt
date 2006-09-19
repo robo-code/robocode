@@ -1,14 +1,14 @@
 Version 1.1.3
 The "Java 5 and Sound" release
-(9/18/2006)
+(9/20/2006)
 -------------
 o Bugfixes
   -- Wrong 1st place scores for robots, which got 1 point for winning and also 1 point for the
      death of an enemy robot, and hence got 2 points instead of just 1 point for the 1st place
 o The minimum requirement for Robocode is now Java 5 (1.5.0)
   -- You must have at least a JRE 5.0 (1.5.0) or JDK 5.0.
-  -- Robocode has also been tested with the upcomming Java 6 (1.6.0) where it runs without any
-     problem (or at least known problems)
+  -- Robocode has also been tested with the upcomming Java 6 (1.6.0) where it seems to run
+     just fine
 o Sounds have been added to Robocode along with Sound Options
   -- The contributor of the Sound engine is Luis Crespo (email: lcrespom at gmail.com)
   -- You are able to change between available mixers (on your system)
@@ -16,15 +16,18 @@ o Sounds have been added to Robocode along with Sound Options
      in the left speaker
   -- Volume is supported, so that e.g. a bullet with more power makes more noise
   -- Note: Some mixers performs better, but might not support volume and/or panning
-o A new command line option, -nosound, has been added in order to turn sound support off
+o A new command line option, -nosound, has been added in order to turn off sound support
   -- This feature should prove useful on systems without sound support
 o Improved the notification about new available Robocode versions
   -- Now Robocode will only give a notification about a new available version if the version
      number is greater than the version retrieved from the robocode.jar file
   -- The check interval has been changed from 10 days into 5 days
+o New setColor methods:
+  -- The setColors(bodyColor, gunColor, radarColor) has been reintroduced
+  -- The setColors(bodyColor, gunColor, radarColor, bulletColor, scanColor) has been added
+  -- The setAllColor(color) has been added
+o The Robocode logo on the splash screen and battle view is now rendered using Java2D
 o The layout of the Developer Options was improved a bit
-o The Robocode logo on the splash screen has been changed so it is more clear and in the same
-  time takes up less space
 
 Version 1.1.2
 (8/20/2006)
