@@ -50,7 +50,7 @@ public class AboutBox extends JDialog {
 			+ "\"><table><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
 			+ "\"></td><td><table width=\"100%\"><tr><td><b>Robocode</b><br><br>"
 			+ "&copy;&nbsp;Copyright 2001-2005 Mathew A. Nelson<br>&copy;&nbsp;Copyright 2006 Robocode contributors</td>"
-			+ "<td><b>Version: " + TAG_ROBOCODE_VERSION + "</b><br><br>robocode.net<br>&nbsp;</td></tr></table><center><br>"
+			+ "<td><b>Version: " + TAG_ROBOCODE_VERSION + "</b><br><br>robocode.sourceforge.net<br>&nbsp;</td></tr></table><center><br>"
 			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan"
 			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (main developer/administrator),<br>"
 			+ "Matthew Reeder (Editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
