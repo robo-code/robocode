@@ -14,9 +14,9 @@
  *     - Added onPaint() method for painting the robot
  *     Flemming N. Larsen
  *     - Fixed Javadoc documentation
- *     - Removed setColors(), which has been replaced with setBodyColor(),
- *       setGunColor(), and setRadarColor()
- *     - Added setBulletColor() and setScanColor()
+ *     - Added setColors(Color, Color, Color, Color, Color), setAllColors(),
+ *       setBodyColor(), setGunColor(), setRadarColor(), setBulletColor(), and
+ *       setScanColor()
  *******************************************************************************/
 package robocode;
 
@@ -828,6 +828,108 @@ public class Robot extends _Robot implements Runnable {
 			peer.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
 		} else {
 			uninitializedException("setAdjustRadarForGunTurn");
+		}
+	}
+
+	/**
+	 * Call this method to set the color of your robot's body, gun, and radar.
+	 * You may only call this method one time per battle.
+	 * A null indicates the default (blue-ish) color.
+	 * 
+	 * <PRE>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 * 
+	 *   public void run() {
+	 *     setColors(Color.black,Color.red,new Color(150,0,150));
+	 *   }
+	 * </PRE>
+	 * 
+	 * @param robotColor Your robot's color
+	 * @param gunColor Your robot's gun color
+	 * @param radarColor Your robot's radar color
+	 * @see java.awt.Color
+	 */
+	public void setColors(Color robotColor, Color gunColor, Color radarColor) {
+		if (peer != null) {
+			peer.setCall();
+			peer.setBodyColor(robotColor);
+			peer.setGunColor(gunColor);
+			peer.setRadarColor(radarColor);
+		} else {
+			uninitializedException("setColors(Color, Color, Color)");
+		}
+	}
+
+	/**
+	 * Call this method to set the color of your robot's body, gun, radar,
+	 * bullet, and scan arc.
+	 * You may only call this method one time per battle.
+	 * A null indicates the default (blue-ish) color.
+	 * 
+	 * <PRE>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 * 
+	 *   public void run() {
+	 *     setColors(Color.black,Color.red,Color.green,Color.blue,Color.white);
+	 *   }
+	 * </PRE>
+	 * 
+	 * @param robotColor Your robot's color
+	 * @param gunColor Your robot's gun color
+	 * @param radarColor Your robot's radar color
+	 * @param bulletColor Your robot's bullet color
+	 * @param scanColor Your robot's scan arc color
+	 * @see java.awt.Color
+	 *
+	 * @since 1.1.3
+	 */
+	public void setColors(Color robotColor, Color gunColor, Color radarColor, Color bulletColor, Color scanColor) {
+		if (peer != null) {
+			peer.setCall();
+			peer.setBodyColor(robotColor);
+			peer.setGunColor(gunColor);
+			peer.setRadarColor(radarColor);
+			peer.setBulletColor(bulletColor);
+			peer.setScanColor(scanColor);
+		} else {
+			uninitializedException("setColors(Color, Color, Color, Color, Color)");
+		}
+	}
+
+	/**
+	 * Call this method to set all your robot's colors to the same color,
+	 * i.e. the color of the body, gun, radar, bullet, and scan arc.
+	 * A null indicates the default (blue-ish) color.
+	 * 
+	 * <PRE>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 * 
+	 *   public void run() {
+	 *     setAllColors(Color.red));
+	 *   }
+	 * </PRE>
+	 * 
+	 * @param color Your robot's new color
+	 * @see java.awt.Color
+	 *
+	 * @since 1.1.3
+	 */
+	public void setAllColors(Color color) {
+		if (peer != null) {
+			peer.setCall();
+			peer.setBodyColor(color);
+			peer.setGunColor(color);
+			peer.setRadarColor(color);
+			peer.setBulletColor(color);
+			peer.setScanColor(color);
+		} else {
+			uninitializedException("setAllColors");
 		}
 	}
 
