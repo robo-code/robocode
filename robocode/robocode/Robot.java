@@ -911,7 +911,7 @@ public class Robot extends _Robot implements Runnable {
 	 *   import java.awt.Color;
 	 * 
 	 *   public void run() {
-	 *     setAllColors(Color.red));
+	 *     setAllColors(Color.red);
 	 *   }
 	 * </PRE>
 	 * 
