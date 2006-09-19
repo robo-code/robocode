@@ -640,6 +640,8 @@ public class BattleView extends Canvas {
 		setBackground(Color.BLACK);
 		g.clearRect(0, 0, getWidth(), getHeight());
 
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320)/2, (getHeight() - 46) / 2));
 		g.setColor(Color.DARK_GRAY);
 		g.fill(robocodeTextPath);
