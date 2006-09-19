@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Changed to render the Robocode logo instead of using a bitmap image
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -16,10 +17,12 @@ package robocode.dialog;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
+
 import robocode.manager.*;
-import robocode.util.ImageUtil;
+import robocode.render.RobocodeLogo;
 
 
 /**
@@ -119,7 +122,9 @@ public class SplashScreen extends JWindow {
 	 * Initialize the splash screen
 	 */
 	private void initialize() {
-		splashImage = ImageUtil.getImage(this, "/resources/images/robocode_logo_tanks.png");
+		splashImage = new BufferedImage(RobocodeLogo.WIDTH, RobocodeLogo.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		new RobocodeLogo().paintLogoWithTanks(splashImage.getGraphics());
+		
 		setContentPane(getSplashScreenContentPane());
 		addWindowListener(eventHandler);
 	}
