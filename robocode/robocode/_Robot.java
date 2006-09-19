@@ -117,39 +117,6 @@ public class _Robot {
 	public void setInterruptible(boolean interruptible) {}
 
 	/**
-	 * @deprecated use setBodyColor(Color), setGunColor(Color), setRadarColor(Color) instead.
-	 *
-	 * Call this method to set your robot's colors.
-	 * You may only call this method one time per battle.
-	 * A null indicates the default (blue-ish) color.
-	 * 
-	 * <PRE>
-	 * Example:
-	 *   // Don't forget to import java.awt.Color at the top...
-	 *   import java.awt.Color;
-	 * 
-	 *   public void run() {
-	 *     setColors(Color.black,Color.red,new Color(150,0,150));
-	 *   }
-	 * </PRE>
-	 * 
-	 * @param bodyColor Your robot's body color
-	 * @param gunColor Your robot's gun color
-	 * @param radarColor Your robot's radar color
-	 * @see java.awt.Color
-	 */
-	public void setColors(Color bodyColor, Color gunColor, Color radarColor) {
-		if (peer != null) {
-			peer.setCall();
-			peer.setBodyColor(bodyColor);
-			peer.setGunColor(gunColor);
-			peer.setRadarColor(radarColor);
-		} else {
-			uninitializedException("setColors");
-		}
-	}
-
-	/**
 	 * @deprecated This call is not used.
 	 */
 	public String getGunImageName() {
