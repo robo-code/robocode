@@ -27,6 +27,7 @@
  *     - Bullets and scan arcs are now painted using the robot's bullet and scan
  *       color
  *     - Added the "Display TPS in titlebar" option
+ *     - Renders the Robocode logo using the RobocodeLogo class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.battleview;
@@ -103,6 +104,8 @@ public class BattleView extends Canvas {
 	private Image offscreenImage;
 	private Graphics2D offscreenGfx;
 
+	private GeneralPath robocodeTextPath = new robocode.render.RobocodeLogo().getRobocodeText();
+	
 	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
 	/**
@@ -157,7 +160,7 @@ public class BattleView extends Canvas {
 	public void paint(Graphics g) {
 		switch (paintMode) {
 		case PAINTROBOCODELOGO:
-			paintRobocodeLogo(g);
+			paintRobocodeLogo((Graphics2D)g);
 			return;
 
 		case PAINTBATTLE: {
@@ -633,26 +636,13 @@ public class BattleView extends Canvas {
 	/**
 	 * Draws the Robocode title in giant letters
 	 */
-	private void paintRobocodeLogo(Graphics g) {
+	private void paintRobocodeLogo(Graphics2D g) {
 		setBackground(Color.BLACK);
 		g.clearRect(0, 0, getWidth(), getHeight());
 
+		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320)/2, (getHeight() - 46) / 2));
 		g.setColor(Color.DARK_GRAY);
-		Font bf = new Font("Dialog", Font.BOLD, 72);
-		FontMetrics fm = g.getFontMetrics(bf);
-
-		int left, top, descent;
-		int width, height;
-
-		width = fm.stringWidth("Robocode");
-		height = fm.getHeight();
-		descent = fm.getDescent();
-	
-		left = getWidth() / 2 - width / 2;
-		top = getHeight() / 2 - height / 2;
-
-		g.setFont(bf);
-		g.drawString("Robocode", left, top + height - descent);
+		g.fill(robocodeTextPath);
 	}
 
 	public boolean isDisplayTPS() {
