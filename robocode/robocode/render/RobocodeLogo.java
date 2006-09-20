@@ -173,7 +173,7 @@ public class RobocodeLogo {
 		g.fill(shape);
 		
 		g.setStroke(THIN_STROKE);
-		g.setColor(DARK_GREEN_ALPHA_80);
+		g.setColor(GREEN_ALPHA_48);
 		g.draw(shape);
 	}
 
