@@ -8,6 +8,10 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Bugfix: Tabs were sometimes added at the end of the document when
+ *       strings are inserted. Bug fixed with the insertString() method, were the
+ *       tabCount is now decremented when a '}' is found in the current element
  *******************************************************************************/
 package robocode.editor;
 
@@ -21,15 +25,15 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  */
 public class JavaDocument extends PlainDocument {
-	public boolean needsRedraw;
-	public EditWindow editWindow;
+	private boolean needsRedraw;
+	private EditWindow editWindow;
 	private boolean editing;
 
 	public JavaDocument() {
 		super();
 	}
 
-	protected JavaDocument(javax.swing.text.AbstractDocument.Content c) {
+	protected JavaDocument(AbstractDocument.Content c) {
 		super(c);
 	}
 
@@ -42,7 +46,7 @@ public class JavaDocument extends PlainDocument {
 			super.insertString(offs, str, a);
 			return;
 		}
-	
+
 		if (str.equals("}")) {
 			if (getText(offs - 1, 1).equals("\t")) {
 				super.remove(offs - 1, 1);
@@ -65,6 +69,9 @@ public class JavaDocument extends PlainDocument {
 			}
 			if (elementText.indexOf("{") >= 0) {
 				tabCount++;
+			}
+			if (elementText.indexOf("}") >= 0) {
+				tabCount--;
 			}
 			String tabs = "";
 
