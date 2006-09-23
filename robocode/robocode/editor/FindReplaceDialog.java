@@ -366,7 +366,6 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			// launch error dialog?
 			return;
 		}
-		Pattern p = getCurrentPattern();
 		JEditorPane editorPane = currentWindow.getEditorPane();
 		String text = editorPane.getSelectedText();
 
@@ -374,15 +373,15 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			// no selection
 			return;
 		}
-		Matcher m = p.matcher(text);
+		Matcher m = getCurrentPattern().matcher(text);
 
 		if (m.matches()) {
+			String replacement = getReplaceField().getText();
+
 			if (getRegexButton().isSelected()) {
-				// allow capturing and cool stuff with regex replace. Advanced feature :-)
-				editorPane.replaceSelection(m.replaceFirst(getReplaceField().getText()));
-			} else {
-				editorPane.replaceSelection(getReplaceField().getText());
+				replacement = m.replaceFirst(replacement);
 			}
+			editorPane.replaceSelection(replacement);
 		}
 	}
 
@@ -393,23 +392,11 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			// launch error dialog?
 			return;
 		}
-		Pattern p = getCurrentPattern();
 		JEditorPane editorPane = currentWindow.getEditorPane();
 		String text = editorPane.getText();
-		Matcher m = p.matcher(text);
-		String replacement = getReplaceField().getText();
 
-		if (!getRegexButton().isSelected()) {
-			String newreplacement = "";
+		String replacement = getReplaceField().getText(); 
 
-			for (int i = 0; i < replacement.length(); i++) {
-				if (replacement.charAt(i) == '$' || replacement.charAt(i) == '\\') {
-					newreplacement += "\\" + replacement.charAt(i);
-				}
-				newreplacement += replacement.charAt(i);
-			}
-			replacement = newreplacement;
-		}
-		editorPane.setText(m.replaceAll(replacement));
+		editorPane.setText(getCurrentPattern().matcher(text).replaceAll(replacement));
 	}
 }
