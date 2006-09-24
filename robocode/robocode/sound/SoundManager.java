@@ -11,6 +11,11 @@
  *     Flemming N. Larsen
  *     - Integration into Robocode regarding controlling the sound from the Sound
  *       Options and Command Line
+ *     - Bugfix: When enabling sounds on-the-fly when it was originally disabled,
+ *       the PlaySound caused a NullPointerException because the sounds field had
+ *       not been intialized yet. Therefore a getSounds() factory methods has
+ *       been added which allocated the SoundCache instance and initializes the
+ *       SoundManager if the sounds field is null 
  *******************************************************************************/
 package robocode.sound;
 
@@ -55,11 +60,6 @@ public class SoundManager {
 	 */
 	public void init() {
 		theMixer = findMixer(properties.getOptionsSoundMixer());
-		sounds = new SoundCache(theMixer);
-		sounds.addSound("death", "/resources/sounds/explode.wav", 3);
-		sounds.addSound("gun", "/resources/sounds/zap.wav", 5);
-		sounds.addSound("hit", "/resources/sounds/shellhit.wav", 3);
-		sounds.addSound("collision", "/resources/sounds/13831_adcbicycle_22.wav", 2);
 
 		panSupported = false;
 		volSupported = false;
@@ -72,6 +72,24 @@ public class SoundManager {
 			volSupported = line.isControlSupported(FloatControl.Type.MASTER_GAIN);
 			panSupported = line.isControlSupported(FloatControl.Type.PAN);
 		} catch (LineUnavailableException e) {}
+	}
+
+	/**
+	 * Gets the sounds cache containing the sound clips.
+	 * 
+	 * @return a SoundCache instance
+	 */
+	private SoundCache getSounds() {
+		if (sounds == null) {
+			init();
+			
+			sounds = new SoundCache(theMixer);
+			sounds.addSound("death", "/resources/sounds/explode.wav", 3);
+			sounds.addSound("gun", "/resources/sounds/zap.wav", 5);
+			sounds.addSound("hit", "/resources/sounds/shellhit.wav", 3);
+			sounds.addSound("collision", "/resources/sounds/13831_adcbicycle_22.wav", 2);
+		}
+		return sounds;
 	}
 	
 	/**
@@ -96,7 +114,7 @@ public class SoundManager {
 	 * Performs shutdown, by liberating the sound table
 	 */
 	public void dispose() {
-		sounds.clear();
+		getSounds().clear();
 	}
 	
 	/**
@@ -107,7 +125,7 @@ public class SoundManager {
 	 * @param volume volume to be used, from 0 to 1
 	 */
 	private void playSound(Object key, float pan, float volume) {
-		Clip c = sounds.getSound(key);
+		Clip c = getSounds().getSound(key);
 
 		if (c == null) {
 			return;
