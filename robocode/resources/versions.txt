@@ -5,6 +5,10 @@ o Bugfixes
      extra tabs were sometimes added
   -- Sounds: When enabling sounds on-the-fly when it was originally disabled, Robocode
      crashed/halted due to a NullPointerException
+o Single-step debugging
+  -- The contributor of this feature is Luis Crespo (email: lcrespom at gmail.com)
+  -- The "Pause" button has been extended into "Pause/Debug", and a "Next Turn" button
+     is available to perform one turn at a time, which is vital for single-step debugging
 
 Version 1.1.3
 The "Java 5 and Sound" release
