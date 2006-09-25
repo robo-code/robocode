@@ -16,6 +16,9 @@
  *     - Added check for if GUI is enabled before using graphical components
  *     - Added restart() method
  *     - Code cleanup
+ *     Luis Crespo
+ *     - Added debug step feature, including the nextTurn(), shouldStep(),
+ *       startNewRound()
  *******************************************************************************/
 package robocode.manager;
 
@@ -48,6 +51,33 @@ public class BattleManager {
 	private String resultsFile;
 	private RobocodeManager manager;
 	Vector bugFixLoaderCache;
+	private int stepTurn;
+
+	/**
+	 * Steps for a single turn, then goes back to paused
+	 */
+	public void nextTurn() {
+		if (battleRunning) {
+			stepTurn = battle.getCurrentTime() + 1;
+		}
+	}
+	
+	/**
+	 * If the battle is paused, this method determines if it should perform one turn and then stop again.
+	 *
+	 * @return true if the battle should perform one turn, false otherwise
+	 */
+	public boolean shouldStep() {
+		// This code assumes it is called only if the battle is paused.
+		return stepTurn > battle.getCurrentTime();
+	}
+
+	/**
+	 * This method should be called to inform the battle manager that a new round is starting
+	 */
+	public void startNewRound() {
+		stepTurn = 0;
+	}
 
 	public BattleManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -230,10 +260,9 @@ public class BattleManager {
 
 			manager.getRobotDialogManager().setActiveBattle(battle);
 		}
-
 		battleThread.start();
 	}
-
+	
 	public String getBattleFilename() {
 		return battleFilename;
 	}

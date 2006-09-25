@@ -16,6 +16,8 @@
  *       from the RobocodeManager. In addition, the battleView is now allowed to
  *       be null, e.g. if no GUI is available
  *     - Code cleanup
+ *     Luis Crespo
+ *     - Added debug step feature
  *******************************************************************************/
 package robocode.battle;
 
@@ -509,9 +511,10 @@ public class Battle implements Runnable {
 			soundManager.init();
 			soundInitialized = true;
 		}
+		battleManager.startNewRound();
 
 		while (!battleOver) {
-			if (shouldPause()) {
+			if (shouldPause() && !battleManager.shouldStep()) {
 				resetThisSec = true;
 				continue;
 			}
@@ -698,7 +701,7 @@ public class Battle implements Runnable {
 		}
 		return false;
 	}
-
+	
 	private void computeActiveRobots() {
 		RobotPeer r;
 		int ar = 0;

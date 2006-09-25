@@ -54,7 +54,7 @@ public class AboutBox extends JDialog {
 			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan"
 			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (main developer/administrator),<br>"
 			+ "Matthew Reeder (Editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
-			+ "Luis Crespo (Sound engine),<br>"
+			+ "Luis Crespo (Sound engine, single-step debugging),<br>"
 			+ "Ascander Jr (graphics for ground tiles),<br>"
 			+ "and Stefan Westen (onPaint() method from RobocodeSG)<br>"
 			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR

@@ -15,6 +15,9 @@
  *       heavy-weight components in order to prevent battleview to hide menus
  *     - Changed so BattleView handles resizing instead of the RobocodeFrame
  *     - Code cleanup
+ *     Luis Crespo
+ *     - Added debug step feature by adding a "Next Turn" button, and changing
+ *       the "Pause" button into a "Pause/Debug" button
  *******************************************************************************/
 package robocode.dialog;
 
@@ -49,6 +52,7 @@ public class RobocodeFrame extends JFrame {
 	private JPanel robotButtonsPanel;
 	private JToolBar toolBar;
 	private JButton pauseResumeButton;
+	private JButton nextTurnButton;
 	private JButton stopButton;
 	private JButton restartButton;
 	private boolean iconified;
@@ -60,6 +64,8 @@ public class RobocodeFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == RobocodeFrame.this.getPauseResumeButton()) {
 				pauseResumeButtonActionPerformed();
+			} else if (e.getSource() == RobocodeFrame.this.getNextTurnButton()) {
+				nextTurnButtonActionPerformed();
 			} else if (e.getSource() == RobocodeFrame.this.getStopButton()) {
 				stopButtonActionPerformed();
 			} else if (e.getSource() == RobocodeFrame.this.getRestartButton()) {
@@ -304,7 +310,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public JButton getPauseResumeButton() {
 		if (pauseResumeButton == null) {
-			pauseResumeButton = new JButton("Pause");
+			pauseResumeButton = new JButton("Pause/Debug");
 			pauseResumeButton.setMnemonic('P');
 			pauseResumeButton.setDisplayedMnemonicIndex(0);
 			pauseResumeButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -312,6 +318,25 @@ public class RobocodeFrame extends JFrame {
 			pauseResumeButton.addActionListener(eventHandler);
 		}
 		return pauseResumeButton;
+	}
+
+	/**
+	 * Return the nextTurnButton
+	 * 
+	 * @return JButton
+	 */
+	private Component getNextTurnButton() {
+		if (nextTurnButton == null) {
+			nextTurnButton = new JButton("Next Turn");
+			nextTurnButton.setMnemonic('N');
+			nextTurnButton.setDisplayedMnemonicIndex(0);
+			nextTurnButton.setHorizontalTextPosition(SwingConstants.CENTER);
+			nextTurnButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+			nextTurnButton.addActionListener(eventHandler);
+
+			nextTurnButton.setVisible(false);
+		}
+		return nextTurnButton;
 	}
 
 	/**
@@ -357,6 +382,7 @@ public class RobocodeFrame extends JFrame {
 		if (toolBar == null) {
 			toolBar = new JToolBar();
 			toolBar.add(getPauseResumeButton());
+			toolBar.add(getNextTurnButton());
 			toolBar.add(getStopButton());
 			toolBar.add(getRestartButton());
 			toolBar.add(new JLabel(" "));
@@ -421,24 +447,35 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	public void pauseResumeButtonActionPerformed() {
-		if (getPauseResumeButton().getText().equals("Pause")) {
+		if (getPauseResumeButton().getText().equals("Pause/Debug")) {
 			getPauseResumeButton().setText("Resume");
 			getPauseResumeButton().setMnemonic('e');
 			getPauseResumeButton().setDisplayedMnemonicIndex(1);
+
+			getNextTurnButton().setVisible(true);
+
 			manager.getBattleManager().pauseBattle();
+
 		} else if (getPauseResumeButton().getText().equals("Resume")) {
-			getPauseResumeButton().setText("Pause");
+			getPauseResumeButton().setText("Pause/Debug");
 			getPauseResumeButton().setMnemonic('P');
 			getPauseResumeButton().setDisplayedMnemonicIndex(0);
+
+			getNextTurnButton().setVisible(false);
+
 			manager.getBattleManager().resumeBattle();
 		}
 	}
 
-	public void stopButtonActionPerformed() {
+	private void nextTurnButtonActionPerformed() {
+		windowManager.getManager().getBattleManager().nextTurn(); 
+	}
+
+	private void stopButtonActionPerformed() {
 		windowManager.getManager().getBattleManager().stop(true);
 	}
 
-	public void restartButtonActionPerformed() {
+	private void restartButtonActionPerformed() {
 		windowManager.getManager().getBattleManager().restart(); 
 	}
 
