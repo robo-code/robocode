@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5.0
  *******************************************************************************/
 package robocode.util;
 
@@ -22,7 +24,8 @@ import java.util.*;
  * @author Mathew A. Nelson (original)
  */
 public class NoDuplicateJarOutputStream extends JarOutputStream {
-	private Hashtable entries = new Hashtable(); // <String, String>
+
+	private Hashtable<String, String> entries = new Hashtable<String, String>();
 	
 	public NoDuplicateJarOutputStream(OutputStream out) throws IOException {
 		super(out);

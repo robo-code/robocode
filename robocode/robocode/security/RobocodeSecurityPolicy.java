@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Ported for Java 5.0
  *     - Code cleanup
  *******************************************************************************/
 package robocode.security;
@@ -27,13 +28,13 @@ import java.net.*;
 public class RobocodeSecurityPolicy extends Policy {
 	Policy parentPolicy;
 	PermissionCollection permissionCollection;
-	Vector trustedCodeUrls; // <URL>
+	Vector<URL> trustedCodeUrls; 
 	
 	public RobocodeSecurityPolicy(Policy parentPolicy) {
 		this.parentPolicy = parentPolicy;
 		this.permissionCollection = new Permissions();
 		this.permissionCollection.add(new AllPermission());
-		trustedCodeUrls = new Vector(); // <URL>
+		trustedCodeUrls = new Vector<URL>();
 		trustedCodeUrls.add(getClass().getProtectionDomain().getCodeSource().getLocation());
 
 		String classPath = System.getProperty("java.class.path");
@@ -56,21 +57,14 @@ public class RobocodeSecurityPolicy extends Policy {
 	
 	public PermissionCollection getPermissions(CodeSource codeSource) {
 		// Trust everyone on the classpath
-		if (trustedCodeUrls.contains(codeSource.getLocation())) {
-			return permissionCollection;
-		} else {
-			return parentPolicy.getPermissions(codeSource);
-		}
+		return (trustedCodeUrls.contains(codeSource.getLocation()))
+				? permissionCollection
+				: parentPolicy.getPermissions(codeSource);
 	}
 	
 	public boolean implies(ProtectionDomain domain, Permission permission) {
 		// Trust everyone on the classpath
-		if (trustedCodeUrls.contains(domain.getCodeSource().getLocation())) {
-			return true;
-		} else {
-			// Not on classpath?  Not trusted.
-			return false;
-		}
+		return (trustedCodeUrls.contains(domain.getCodeSource().getLocation()));
 	}
 
 	public void refresh() {

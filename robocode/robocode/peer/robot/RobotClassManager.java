@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Renamed 'enum' variables to allow compiling with Java 1.5
+ *     - Ported to Java 5.0
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -30,7 +30,7 @@ import robocode.util.Utils;
 public class RobotClassManager {
 	private RobotSpecification robotSpecification;
 	private Class robotClass;
-	private Hashtable referencedClasses = new Hashtable();
+	private Hashtable<String, String> referencedClasses = new Hashtable<String, String>();
 	private RobocodeClassLoader robotClassLoader = null;
 	// only used if we're being controlled by RobocodeEngine:
 	private robocode.control.RobotSpecification controlRobotSpecification;

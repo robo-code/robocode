@@ -11,6 +11,7 @@
  *     Matthew Reeder
  *     - Fixed compiler problem with protectionDomain
  *     Flemming N. Larsen
+ *     - Ported to Java 5.0
  *     - Code cleanup
  *******************************************************************************/
 package robocode.security;
@@ -33,7 +34,7 @@ import robocode.util.Utils;
  */
 public class RobocodeClassLoader extends ClassLoader {
 
-	private Hashtable cachedClasses = new Hashtable(); // <String, Class>
+	private Hashtable<String, Class> cachedClasses = new Hashtable<String, Class>(); 
 	
 	private RobotSpecification robotSpecification;
 	private robocode.peer.robot.RobotClassManager robotClassManager;
@@ -68,7 +69,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		return rootPackageDirectory;
 	}
 
-	public synchronized Class loadClass(String className, boolean resolve) throws ClassNotFoundException {
+	public synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
 
 		if (className.indexOf(robotClassManager.getRootPackage() + ".") == 0) {
 			return loadRobotClass(className, false);
@@ -83,7 +84,7 @@ public class RobocodeClassLoader extends ClassLoader {
 
 	public synchronized Class loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
 		if (cachedClasses.containsKey(name)) {
-			return (Class) cachedClasses.get(name);
+			return cachedClasses.get(name);
 		}
 
 		Class c = null;

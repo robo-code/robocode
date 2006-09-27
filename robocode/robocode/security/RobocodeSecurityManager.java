@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Ported to Java 5.0
  *     - Code cleanup
  *******************************************************************************/
 package robocode.security;
@@ -28,9 +29,9 @@ import robocode.manager.*;
  * @author Flemming N. Larsen (current)
  */
 public class RobocodeSecurityManager extends SecurityManager {
-	private Hashtable outputStreamThreads; // <Thread, RobocodeFileOutputStream>
-	private Vector safeThreads; // <Thread>
-	private Vector safeThreadGroups; // <ThreadGroup>
+	private Hashtable<Thread, RobocodeFileOutputStream> outputStreamThreads; 
+	private Vector<Thread> safeThreads; 
+	private Vector<ThreadGroup> safeThreadGroups;
 	private Thread battleThread;
 	public String status;
 
@@ -44,10 +45,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 	 */
 	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled) {
 		super();
-		safeThreads = new Vector(); // <Thread>
+		safeThreads = new Vector<Thread>();
 		safeThreads.add(safeThread);
-		safeThreadGroups = new Vector(); // <ThreadGroup>
-		outputStreamThreads = new Hashtable(); // <Thread, RobocodeFileOutputStream>
+		safeThreadGroups = new Vector<ThreadGroup>();
+		outputStreamThreads = new Hashtable<Thread, RobocodeFileOutputStream>(); 
 		this.threadManager = threadManager;
 		safeSecurityContext = getSecurityContext();
 		this.enabled = enabled;
@@ -442,10 +443,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return true;
 		}
 
-		ThreadGroup tg;
-
-		for (int i = 0; i < safeThreadGroups.size(); i++) {
-			tg = (ThreadGroup) safeThreadGroups.elementAt(i);
+		for (ThreadGroup tg : safeThreadGroups) {
 			if (c.getThreadGroup() == tg) {
 				safeThreads.add(c);
 				return true;

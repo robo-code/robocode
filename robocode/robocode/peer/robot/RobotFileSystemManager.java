@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5.0
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -26,7 +28,7 @@ public class RobotFileSystemManager {
 	RobotPeer robotPeer;
 	public long quotaUsed = 0;
 	public boolean quotaMessagePrinted = false;
-	public Vector streams = new Vector(); // <RobocodeFileOutputStream>
+	public Vector<RobocodeFileOutputStream> streams = new Vector<RobocodeFileOutputStream>(); 
 	long maxQuota = 0;
 
 	/**

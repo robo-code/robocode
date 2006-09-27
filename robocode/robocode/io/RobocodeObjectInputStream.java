@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5.0
  *******************************************************************************/
 package robocode.io;
 
@@ -27,7 +29,7 @@ public class RobocodeObjectInputStream extends java.io.ObjectInputStream {
 		this.classLoader = classLoader;
 	}
 
-	protected Class resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+	protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
 		String name = desc.getName();
 
 		try {
