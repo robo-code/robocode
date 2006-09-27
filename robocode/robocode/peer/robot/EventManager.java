@@ -13,6 +13,7 @@
  *       synchronized before, which sometimes caused a deadlock to occur in the
  *       code processing the hitWall event.
  *     Flemming N. Larsen
+ *     - Ported to Java 5.0
  *     - Code cleanup
  *******************************************************************************/
 package robocode.peer.robot;
@@ -46,7 +47,7 @@ public class EventManager {
 
 	private int currentTopEventPriority;
 
-	private Vector customEvents = new Vector(); // <Condition>
+	private Vector<Condition> customEvents = new Vector<Condition>();
 	private EventQueue eventQueue;
 
 	private double fireAssistAngle;
@@ -55,11 +56,11 @@ public class EventManager {
 
 	private int maxPriorities = 101;
 	private boolean interruptible[] = new boolean[maxPriorities];
-	
+
 	private int MAXQUEUESIZE = 256;
-	
+
 	private Robot robot;
-	
+
 	/**
 	 * EventManager constructor comment.
 	 */
@@ -83,7 +84,7 @@ public class EventManager {
 	}
 
 	public synchronized void addCustomEvent(Condition condition) {
-		customEvents.add(condition);
+		customEvents.addElement(condition);
 	}
 
 	public synchronized void clearAllEvents(boolean includingSystemEvents) {
@@ -102,10 +103,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getAllEvents();
-	 *    Event e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (Event)v.elementAt(i);
+	 *    for (Event e : getAllEvents()) {
 	 *       if (e instanceof HitByRobotEvent)
 	 *        <i> (do something with e) </i>
 	 *       else if (e instanceof HitByBulletEvent)
@@ -131,11 +129,11 @@ public class EventManager {
 	 * @see robocode.Event
 	 * @see Vector
 	 */
-	public synchronized Vector getAllEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<Event> getAllEvents() {
+		Vector<Event> events = new Vector<Event>();
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			events.add(eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			events.add((Event) e);
 		}
 		return events;
 	}
@@ -146,10 +144,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getBulletHitBulletEvents();
-	 *    BulletHitBulletEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (BulletHitBulletEvent)v.elementAt(i);
+	 *    for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
@@ -158,12 +153,12 @@ public class EventManager {
 	 * @see robocode.BulletHitBulletEvent
 	 * @see Vector
 	 */
-	public synchronized Vector getBulletHitBulletEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
+		Vector<BulletHitBulletEvent> events = new Vector<BulletHitBulletEvent>(); 
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			if (eventQueue.elementAt(i) instanceof BulletHitBulletEvent) {
-				events.add(eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			if (e instanceof BulletHitBulletEvent) {
+				events.add((BulletHitBulletEvent) e);
 			}
 		}
 		return events;
@@ -175,10 +170,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getBulletHitEvents();
-	 *    BulletHitEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (BulletHitEvent)v.elementAt(i);
+	 *    for (BulletHitEvent e : getBulletHitEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
@@ -187,12 +179,12 @@ public class EventManager {
 	 * @see robocode.BulletHitEvent
 	 * @see Vector
 	 */
-	public synchronized Vector getBulletHitEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<BulletHitEvent> getBulletHitEvents() {
+		Vector<BulletHitEvent> events = new Vector<BulletHitEvent>();
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			if (eventQueue.elementAt(i) instanceof BulletHitEvent) {
-				events.add(eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			if (e instanceof BulletHitEvent) {
+				events.add((BulletHitEvent) e);
 			}
 		}
 		return events;
@@ -204,10 +196,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getBulletHitEvents();
-	 *    BulletMissedEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (BulletMissedEvent)v.elementAt(i);
+	 *    for (BulletMissedEvent e : getBulletMissedEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
@@ -216,12 +205,12 @@ public class EventManager {
 	 * @see robocode.BulletMissedEvent
 	 * @see Vector
 	 */
-	public synchronized Vector getBulletMissedEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<BulletMissedEvent> getBulletMissedEvents() {
+		Vector<BulletMissedEvent> events = new Vector<BulletMissedEvent>();
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			if (eventQueue.elementAt(i) instanceof BulletMissedEvent) {
-				events.add(eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			if (e instanceof BulletMissedEvent) {
+				events.add((BulletMissedEvent) e);
 			}
 		}
 		return events;
@@ -309,10 +298,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getHitByBulletEvents();
-	 *    HitByBulletEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (HitByBulletEvent)v.elementAt(i);
+	 *    for (HitByBulletEvent e : getHitByBulletEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
@@ -321,12 +307,12 @@ public class EventManager {
 	 * @see robocode.HitByBulletEvent
 	 * @see Vector
 	 */
-	public synchronized Vector getHitByBulletEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<HitByBulletEvent> getHitByBulletEvents() {
+		Vector<HitByBulletEvent> events = new Vector<HitByBulletEvent>();
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			if (eventQueue.elementAt(i) instanceof HitByBulletEvent) {
-				events.add(eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			if (e instanceof HitByBulletEvent) {
+				events.add((HitByBulletEvent) e);
 			}
 		}
 		return events;
@@ -338,10 +324,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getHitRobotEvents();
-	 *    HitRobotEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (HitRobotEvent)v.elementAt(i);
+	 *    for (HitRobotEvent e : getHitRobotEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
@@ -350,12 +333,12 @@ public class EventManager {
 	 * @see robocode.HitRobotEvent
 	 * @see Vector
 	 */
-	public synchronized Vector getHitRobotEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<HitRobotEvent> getHitRobotEvents() {
+		Vector<HitRobotEvent> events = new Vector<HitRobotEvent>();
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			if (eventQueue.elementAt(i) instanceof HitRobotEvent) {
-				events.add(eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			if (e instanceof HitRobotEvent) {
+				events.add((HitRobotEvent) e);
 			}
 		}
 		return events;
@@ -367,10 +350,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getHitWallEvents();
-	 *    HitWallEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (HitWallEvent)v.elementAt(i);
+	 *    for (HitWallEvent e : getHitWallEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
@@ -379,12 +359,12 @@ public class EventManager {
 	 * @see robocode.HitWallEvent
 	 * @see Vector
 	 */
-	public synchronized Vector getHitWallEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<HitWallEvent> getHitWallEvents() {
+		Vector<HitWallEvent> events = new Vector<HitWallEvent>();
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			if (eventQueue.elementAt(i) instanceof HitWallEvent) {
-				events.add(eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			if (e instanceof HitWallEvent) {
+				events.add((HitWallEvent) e);
 			}
 		}
 		return events;
@@ -411,10 +391,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getRobotDeathEvents();
-	 *    RobotDeathEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (RobotDeathEvent)v.elementAt(i);
+	 *    for (RobotDeathEvent e : getRobotDeathEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
@@ -423,12 +400,12 @@ public class EventManager {
 	 * @see robocode.RobotDeathEvent
 	 * @see Vector
 	 */
-	public synchronized Vector getRobotDeathEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<RobotDeathEvent> getRobotDeathEvents() {
+		Vector<RobotDeathEvent> events = new Vector<RobotDeathEvent>();
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			if (eventQueue.elementAt(i) instanceof RobotDeathEvent) {
-				events.add((Event) eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			if (e instanceof RobotDeathEvent) {
+				events.add((RobotDeathEvent) e);
 			}
 		}
 		return events;
@@ -444,10 +421,7 @@ public class EventManager {
 	 * 
 	 * <P>Example:
 	 * <pre>
-	 *    Vector v = getScannedRobotEvents();
-	 *    ScannedRobotEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *       e = (ScannedRobotEvent)v.elementAt(i);
+	 *    for (ScannedRobotEvent e : getScannedRobotEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
@@ -456,12 +430,12 @@ public class EventManager {
 	 * @see robocode.ScannedRobotEvent
 	 * @see Vector
 	 */
-	public synchronized Vector getScannedRobotEvents() {
-		Vector events = new Vector(); // <Event>
+	public synchronized Vector<ScannedRobotEvent> getScannedRobotEvents() {
+		Vector<ScannedRobotEvent> events = new Vector<ScannedRobotEvent>();
 
-		for (int i = 0; i < eventQueue.size(); i++) {
-			if (eventQueue.elementAt(i) instanceof ScannedRobotEvent) {
-				events.add((Event) eventQueue.elementAt(i));
+		for (Object e : eventQueue) {
+			if (e instanceof ScannedRobotEvent) {
+				events.add((ScannedRobotEvent) e);
 			}
 		}
 		return events;
@@ -566,10 +540,8 @@ public class EventManager {
 	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
-			Condition c;
 
-			for (int i = 0; i < customEvents.size(); i++) {
-				c = (Condition) customEvents.elementAt(i);
+			for (Condition c : customEvents) {
 				robotPeer.setTestingCondition(true);
 				boolean conditionSatisfied = c.test();
 
@@ -666,7 +638,6 @@ public class EventManager {
 				currentEvent = null;
 			}
 		}
-		// eventQueue.clear(clearTime);
 	}
 
 	public void removeCustomEvent(Condition condition) {
@@ -704,8 +675,7 @@ public class EventManager {
 		} else if (eventClass.equals("robocode.ScannedRobotEvent") || eventClass.equals("ScannedRobotEvent")) {
 			scannedRobotEventPriority = priority;
 		} else if (eventClass.equals("robocode.CustomEvent") || eventClass.equals("CustomEvent")) {
-			robotPeer.out.println(
-					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
+			robotPeer.out.println("SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.SkippedTurnEvent") || eventClass.equals("SkippedTurnEvent")) {
 			robotPeer.out.println("SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.WinEvent") || eventClass.equals("WinEvent")) {
