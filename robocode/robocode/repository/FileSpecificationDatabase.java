@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - Ported to Java 5.0
  *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
@@ -25,12 +26,12 @@ import java.io.*;
  */
 public class FileSpecificationDatabase implements Serializable {
 
-	private Hashtable hash = new Hashtable(); // <String, FileSpecification>
+	private Hashtable<String, FileSpecification> hash = new Hashtable<String, FileSpecification>(); 
 	
 	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
 
-		hash = (Hashtable) in.readObject();
+		hash = (Hashtable<String, FileSpecification>) in.readObject();
 	}
 	
 	public void store(File f) throws IOException, FileNotFoundException {
@@ -100,25 +101,22 @@ public class FileSpecificationDatabase implements Serializable {
 		return null;
 	}
 	
-	public Vector getFileSpecifications() {
-		Vector v = new Vector();
-		Enumeration e = hash.keys();
+	public Vector<FileSpecification> getFileSpecifications() {
+		Vector<FileSpecification> v = new Vector<FileSpecification>();
 
-		while (e.hasMoreElements()) {
-			v.add((FileSpecification) hash.get(e.nextElement()));
+		for (String key : hash.keySet()) {
+			v.add(hash.get(key));
 		}
 		return v;
 	}
 	
-	public Vector getJarSpecifications() {
-		Vector v = new Vector();
-		Enumeration e = hash.keys();
+	public Vector<JarSpecification> getJarSpecifications() {
+		Vector<JarSpecification> v = new Vector<JarSpecification>();
 
-		while (e.hasMoreElements()) {
-			FileSpecification spec = (FileSpecification) hash.get(e.nextElement());
-
+		for (String key : hash.keySet()) {
+			FileSpecification spec = hash.get(key);
 			if (spec instanceof JarSpecification) {
-				v.add(spec);
+				v.add((JarSpecification) spec);
 			}
 		}
 		return v;
