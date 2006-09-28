@@ -18,7 +18,9 @@
  *     - Ported to Java 5.0
  *     - Code cleanup
  *     Luis Crespo
+ *     - Added sound features using the playSounds() method
  *     - Added debug step feature
+ *     - Added isRunning()
  *******************************************************************************/
 package robocode.battle;
 
@@ -1240,7 +1242,7 @@ public class Battle implements Runnable {
 	}
 
 	/**
-	 * Plays sounds
+	 * Plays sounds.
 	 */
 	private void playSounds() {
 		if (manager.isSoundEnabled()) {
@@ -1259,5 +1261,14 @@ public class Battle implements Runnable {
 				soundManager.playRobotSound(rp);
 			}
 		}
+	}
+
+	/**
+	 * Informs on whether the battle is running or not.
+	 * 
+	 * @return true if the battle is running, false otherwise
+	 */
+	public boolean isRunning() {
+		return running;
 	}
 }
