@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Luis Crespo
+ *     - Added getCurrentScore()
  *     Flemming N. Larsen
  *     - Bugfix: scoreDeath() incremented totalFirsts even if the robot was
  *       already a winner, where scoreWinner() has already been called previously
@@ -21,7 +23,7 @@ import robocode.peer.TeamPeer;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Luis Crespo, Flemming N. Larsen (current)
  */
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	boolean noScoring;
@@ -297,5 +299,10 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 			rammingDamageDealt = 0;
 			rammingDamageReceived = 0;
 		}
+	}
+
+	public double getCurrentScore() {
+		return bulletDamageScore + rammingDamageScore + survivalScore + killedEnemyRammingScore + killedEnemyBulletScore
+				+ winnerScore;
 	}
 }
