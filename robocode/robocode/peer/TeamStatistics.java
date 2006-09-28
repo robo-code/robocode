@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Luis Crespo
+ *     - Added getCurrentScore()
  *******************************************************************************/
 package robocode.peer;
 
@@ -187,6 +189,18 @@ public class TeamStatistics implements ContestantStatistics {
 
 		for (int i = 0; i < teamPeer.size(); i++) {
 			d += teamPeer.elementAt(i).getRobotStatistics().getTotalWinnerScore();
+		}
+		return d;
+	}
+
+	/*
+	 * @see ContestantStatistics#getCurrentScore()
+	 */
+	public double getCurrentScore() {
+		double d = 0;
+
+		for (int i = 0; i < teamPeer.size(); i++) {
+			d += teamPeer.elementAt(i).getRobotStatistics().getCurrentScore();
 		}
 		return d;
 	}

@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Luis Crespo
+ *     - Added getCurrentScore()
  *******************************************************************************/
 package robocode.peer;
 
@@ -44,4 +46,6 @@ public interface ContestantStatistics {
 	public int getTotalThirds();
 
 	public double getTotalWinnerScore();
+
+	public double getCurrentScore();
 }
