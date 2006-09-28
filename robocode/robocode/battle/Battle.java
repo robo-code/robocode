@@ -15,6 +15,7 @@
  *     - BattleView is not given via the constructor anymore, but is retrieved
  *       from the RobocodeManager. In addition, the battleView is now allowed to
  *       be null, e.g. if no GUI is available
+ *     - Ported to Java 5.0
  *     - Code cleanup
  *     Luis Crespo
  *     - Added debug step feature
@@ -78,12 +79,12 @@ public class Battle implements Runnable {
 	private int endTimer;
 	private int stopTime;
 	private int activeRobots;
-	private Vector deathEvents = new Vector(); // <RobotPeer>
+	private Vector<RobotPeer> deathEvents = new Vector<RobotPeer>();
 
 	// Objects in the battle
-	private Vector robots; // <RobotPeer>
-	private Vector contestants; // <ContestantPeer>
-	private Vector bullets; // <BulletPeer>
+	private Vector<RobotPeer> robots; 
+	private Vector<ContestantPeer> contestants;
+	private Vector<BulletPeer> bullets; 
 
 	// Results related items
 	private boolean exitOnComplete;
@@ -118,9 +119,9 @@ public class Battle implements Runnable {
 		this.manager = manager;
 		this.battleManager = manager.getBattleManager();
 		this.soundManager = new SoundManager(manager.getProperties());
-		this.robots = new Vector(); // <RobotPeer>
-		this.bullets = new Vector(); // <BulletPeer>
-		this.contestants = new Vector(); // <ContestantPeer>
+		this.robots = new Vector<RobotPeer>();
+		this.bullets = new Vector<BulletPeer>(); 
+		this.contestants = new Vector<ContestantPeer>();
 	}
 
 	/**
@@ -184,9 +185,7 @@ public class Battle implements Runnable {
 			setRoundNum(getRoundNum() + 1);
 		}
 
-		for (int i = 0; i < robots.size(); i++) {
-			RobotPeer r = (RobotPeer) robots.elementAt(i);
-
+		for (RobotPeer r : robots) {
 			r.out.close();
 			r.getRobotThreadManager().cleanup();
 		}
@@ -249,9 +248,7 @@ public class Battle implements Runnable {
 
 		int count = 0;
 
-		for (int i = 0; i < robots.size(); i++) {
-			RobotPeer rp = (RobotPeer) robots.elementAt(i);
-
+		for (RobotPeer rp : robots) {
 			if (rp.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion().equals(
 					robotPeer.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion())) {
 				if (count == 0) {
@@ -274,7 +271,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public Vector getContestants() { // <ContestantPeer>
+	public Vector<ContestantPeer> getContestants() {
 		return contestants;
 	}
 
@@ -285,10 +282,7 @@ public class Battle implements Runnable {
 	public void cleanupRound() {
 		Utils.log("Round " + (roundNum + 1) + " cleaning up.");
 
-		RobotPeer r;
-
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		for (RobotPeer r : robots) {
 			r.getRobotThreadManager().waitForStop();
 			r.getRobotStatistics().generateTotals();
 		}
@@ -306,7 +300,7 @@ public class Battle implements Runnable {
 		return battleThread;
 	}
 
-	public Vector getBullets() { // <BulletPeer>
+	public Vector<BulletPeer> getBullets() { 
 		return bullets;
 	}
 
@@ -330,14 +324,14 @@ public class Battle implements Runnable {
 		return numRounds;
 	}
 
-	public Vector getRobots() { // <RobotPeer>
+	public Vector<RobotPeer> getRobots() {
 		return robots;
 	}
 
 	public RobotPeer getRobotByName(String name) {
-		for (int i = 0; i < robots.size(); i++) {
-			if (((RobotPeer) robots.elementAt(i)).getName().equals(name)) {
-				return (RobotPeer) robots.elementAt(i);
+		for (RobotPeer r : robots) {
+			if (r.getName().equals(name)) {
+				return r;
 			}
 		}
 		return null;
@@ -368,8 +362,6 @@ public class Battle implements Runnable {
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
-		RobotPeer r;
-
 		if (battleView != null) {
 			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 		}
@@ -377,8 +369,7 @@ public class Battle implements Runnable {
 			manager.getWindowManager().getRobocodeFrame().clearRobotButtons();
 		}
 
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		for (RobotPeer r : robots) {
 			r.preInitialize();
 			if (manager.isGUIEnabled()) {
 				manager.getWindowManager().getRobocodeFrame().addRobotButton(
@@ -396,8 +387,7 @@ public class Battle implements Runnable {
 		// Pre-load robot classes without security...
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 		// in the safe robot loader the class is linked.
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		for (RobotPeer r : robots) {
 			try {
 				String className = r.getRobotClassManager().getFullClassName();
 				Class c = r.getRobotClassManager().getRobotClassLoader().loadRobotClass(className, true);
@@ -405,11 +395,10 @@ public class Battle implements Runnable {
 				r.getRobotClassManager().setRobotClass(c);
 				r.getRobotFileSystemManager().initializeQuota();
 
-				r = (RobotPeer) robots.elementAt(i);
 				Class[] interfaces = c.getInterfaces();
 
-				for (int j = 0; j < interfaces.length; j++) {
-					if (interfaces[j].getName().equals("robocode.Droid")) {
+				for (Class i : interfaces) {
+					if (i.getName().equals("robocode.Droid")) {
 						r.setDroid(true);
 					}
 				}
@@ -481,8 +470,6 @@ public class Battle implements Runnable {
 		endTimer = 0;
 		stopTime = 0;
 
-		RobotPeer r;
-
 		currentTime = 0;
 		inactiveTurnCount = 0;
 
@@ -543,9 +530,7 @@ public class Battle implements Runnable {
 			boolean zap = (inactiveTurnCount > inactivityTime);
 
 			// Move all bots
-			for (int i = 0; i < robots.size(); i++) {
-				r = (RobotPeer) robots.elementAt(i);
-
+			for (RobotPeer r : robots) {
 				r.updateSayText();
 
 				if (!r.isDead()) {
@@ -703,12 +688,10 @@ public class Battle implements Runnable {
 	}
 	
 	private void computeActiveRobots() {
-		RobotPeer r;
 		int ar = 0;
 
 		// Compute active robots
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		for (RobotPeer r : robots) {
 			if (!r.isDead()) {
 				ar++;
 			}
@@ -717,11 +700,8 @@ public class Battle implements Runnable {
 	}
 
 	private void wakeupRobots() {
-		RobotPeer r;
-
-		// Wake up all robot threads 
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		// Wake up all robot threads
+		for (RobotPeer r : robots) {
 			if (r.isRunning()) {
 				synchronized (r) {
 					// This call blocks until the
@@ -771,11 +751,8 @@ public class Battle implements Runnable {
 	}
 
 	private void flushOldEvents() {
-		RobotPeer r;
-
-		// New turn:  Flush any old events.	
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		// New turn:  Flush any old events.
+		for (RobotPeer r : robots) {
 			r.getEventManager().clear(currentTime - 1);
 		}
 	}
@@ -793,35 +770,26 @@ public class Battle implements Runnable {
 	}
 
 	private void handleDeathEvents() {
-		RobotPeer r;
-
 		if (deathEvents.size() > 0) {
-			for (int i = 0; i < robots.size(); i++) {
-				r = (RobotPeer) robots.elementAt(i);
-				if (r.isDead()) {
-					continue;
-				}
-				for (int j = 0; j < deathEvents.size(); j++) {
-					RobotPeer de = (RobotPeer) deathEvents.elementAt(j);
-
-					r.getEventManager().add(new RobotDeathEvent(de.getName()));
-					if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
-						r.getRobotStatistics().scoreSurvival();
+			for (RobotPeer r : robots) {
+				if (!r.isDead()) {
+					for (RobotPeer de : deathEvents) {
+						r.getEventManager().add(new RobotDeathEvent(de.getName()));
+						if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
+							r.getRobotStatistics().scoreSurvival();
+						}
 					}
 				}
 			}
 		}
 		// Compute scores for dead robots
-		for (int i = 0; i < deathEvents.size(); i++) {
-			r = (RobotPeer) deathEvents.elementAt(i);
+		for (RobotPeer r : deathEvents) {
 			if (r.getTeamPeer() == null) {
 				r.getRobotStatistics().scoreDeath(getActiveContestantCount(r));
 			} else {
 				boolean teammatesalive = false;
 
-				for (int j = 0; j < robots.size(); j++) {
-					RobotPeer tm = (RobotPeer) robots.elementAt(j);
-
+				for (RobotPeer tm : robots) {
 					if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
 						teammatesalive = true;
 						break;
@@ -835,12 +803,8 @@ public class Battle implements Runnable {
 	}
 
 	private void performScans() {
-		RobotPeer r;
-
 		// Perform scans, handle messages
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
-
+		for (RobotPeer r : robots) {
 			if (!r.isDead()) {
 				if (r.getScan() == true) {
 					// Enter scan
@@ -864,7 +828,6 @@ public class Battle implements Runnable {
 	}
 
 	private boolean checkBattleOver() {
-		RobotPeer r;
 		boolean battleOver = false;
 
 		// Check game over
@@ -874,8 +837,7 @@ public class Battle implements Runnable {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
-				for (int i = 0; i < robots.size(); i++) {
-					r = (RobotPeer) robots.elementAt(i);
+				for (RobotPeer r : robots) {
 					if (!r.isDead()) {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreWinner();
@@ -896,8 +858,7 @@ public class Battle implements Runnable {
 			}
 
 			if (endTimer == 4 * 30) {
-				for (int i = 0; i < robots.size(); i++) {
-					r = (RobotPeer) robots.elementAt(i);
+				for (RobotPeer r : robots) {
 					if (!r.isDead()) {
 						r.halt();
 					}
@@ -920,15 +881,9 @@ public class Battle implements Runnable {
 	public int getActiveContestantCount(RobotPeer peer) {
 		int count = 0;
 
-		for (int i = 0; i < contestants.size(); i++) {
-			ContestantPeer c = (ContestantPeer) contestants.elementAt(i);
-
-			if (c instanceof RobotPeer) {
-				RobotPeer r = (RobotPeer) c;
-
-				if (!r.isDead()) {
-					count++;
-				}
+		for (ContestantPeer c : contestants) {
+			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
+				count++;
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
 				TeamPeer t = (TeamPeer) c;
 
@@ -1004,10 +959,8 @@ public class Battle implements Runnable {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {}
 		}
-		RobotPeer r;
 
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		for (RobotPeer r : robots) {
 			if (roundNum > 0) {
 				r.preInitialize();
 			} // fake dead so robot won't display
@@ -1035,8 +988,7 @@ public class Battle implements Runnable {
 			} catch (InterruptedException e) {}
 		}
 
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		for (RobotPeer r : robots) {
 			if (r.getRobotClassManager().getClassNameManager().getFullPackage() != null
 					&& r.getRobotClassManager().getClassNameManager().getFullPackage().length() > 18) {
 				r.out.println("SYSTEM: Your package name is too long.  16 characters maximum please.");
@@ -1054,8 +1006,7 @@ public class Battle implements Runnable {
 		manager.getThreadManager().reset();
 
 		// Turning on robots
-		for (int i = 0; i < robots.size(); i++) {
-			r = (RobotPeer) robots.elementAt(i);
+		for (RobotPeer r : robots) {
 			manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
 			int waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000);
 
@@ -1122,10 +1073,7 @@ public class Battle implements Runnable {
 				return;
 			}
 			// Loading robots
-			RobotPeer r;
-
-			for (int i = 0; i < robots.size(); i++) {
-				r = (RobotPeer) robots.elementAt(i);
+			for (RobotPeer r : robots) {
 				r.setRobot(null);
 				Class robotClass = null;
 
@@ -1151,7 +1099,6 @@ public class Battle implements Runnable {
 					e.printStackTrace(r.out);
 				}
 				if (getRoundNum() > 0) {
-					r = (RobotPeer) robots.elementAt(i);
 					double x = 0, y = 0, heading = 0;
 
 					for (int j = 0; j < 1000; j++) {
@@ -1175,9 +1122,7 @@ public class Battle implements Runnable {
 
 	public boolean validSpot(RobotPeer robot) {
 		robot.updateBoundingBox();
-		for (int i = 0; i < robots.size(); i++) {
-			RobotPeer r = (RobotPeer) robots.elementAt(i);
-
+		for (RobotPeer r : robots) {
 			if (r != null && r != robot) {
 				if (robot.getBoundingBox().intersects(r.getBoundingBox())) {
 					return false;
@@ -1202,11 +1147,9 @@ public class Battle implements Runnable {
 		}
 
 		boolean found = false;
-		RobotPeer currentRobot = null;
 		TeamPeer currentTeam = null;
 
-		for (int i = 0; i < robots.size(); i++) {
-			currentRobot = (RobotPeer) robots.elementAt(i);
+		for (RobotPeer currentRobot : robots) {
 			if (!currentRobot.isDead()) {
 				if (!found) {
 					found = true;

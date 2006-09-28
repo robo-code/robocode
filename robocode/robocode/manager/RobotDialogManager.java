@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Renamed 'enum' variables to allow compiling with Java 1.5
  *     - Replaced RobotPeerVector with plain Vector
+ *     - Ported to Java 5.0
  *******************************************************************************/
 package robocode.manager;
 
@@ -27,7 +28,8 @@ import robocode.dialog.*;
  * @author Flemming N. Larsen (current)
  */
 public class RobotDialogManager {
-	Hashtable robotDialogHashtable = new Hashtable(); // <String, RobotDialog>
+
+	private Hashtable<String, RobotDialog> robotDialogHashtable = new Hashtable<String, RobotDialog>(); 
 	private RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {
@@ -36,16 +38,14 @@ public class RobotDialogManager {
 	}
 
 	public void setActiveBattle(Battle b) {
-		Vector v = b.getRobots(); // <RobotPeer>
+		Vector<RobotPeer> v = b.getRobots();
 		Enumeration keys = robotDialogHashtable.keys();
 
 		while (keys.hasMoreElements()) {
 			String name = (String) keys.nextElement();
-			RobotPeer r;
 			boolean found = false;
 
-			for (int i = 0; i < v.size(); i++) {
-				r = (RobotPeer) v.elementAt(i);
+			for (RobotPeer r : v) {
 				if (r.getName().equals(name)) {
 					found = true;
 					break;

@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Ported to Java 5.0
  *     - Code cleanup
  *******************************************************************************/
 package robocode.peer.robot;
@@ -28,7 +29,7 @@ import robocode.peer.*;
 public class RobotMessageManager {
 	
 	RobotPeer robotPeer;
-	Vector messageEvents = new Vector(); // <MessageEvent>
+	Vector<MessageEvent> messageEvents = new Vector<MessageEvent>(); 
  	
 	ObjectOutputStream out;
 	ObjectInputStream in;
