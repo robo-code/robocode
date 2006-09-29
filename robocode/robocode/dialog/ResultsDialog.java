@@ -17,7 +17,6 @@ package robocode.dialog;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.table.*;
 
 import robocode.battle.*;
@@ -30,34 +29,6 @@ import robocode.battle.*;
  * @author Flemming N. Larsen (current)
  */
 public class ResultsDialog extends JDialog {
-
-	class CenteredRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
-		boolean isBordered;
-
-		public CenteredRenderer(boolean isBordered) {
-			super();
-			this.setHorizontalAlignment(JLabel.CENTER);
-			this.isBordered = isBordered;
-			this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));	    
-		}
-
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-				boolean hasFocus, int row, int column) {
-			if (isBordered) {
-				this.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-				this.setBackground(SystemColor.menu);
-				this.setForeground(SystemColor.menuText);
-			} else if (isSelected) {
-				this.setBackground(SystemColor.textHighlight);
-				this.setForeground(SystemColor.textHighlightText);
-			} else {
-				this.setBackground(SystemColor.text);
-				this.setForeground(SystemColor.textText);
-			}
-			this.setText(value.toString());
-			return this;
-		}
-	}
 
 	private Battle battle;
 
@@ -225,12 +196,12 @@ public class ResultsDialog extends JDialog {
 
 		for (int x = 0; x < getBattleResultsTableModel().getColumnCount(); x++) {
 			if (x > 0) {
-				getResultsTable().getColumnModel().getColumn(x).setCellRenderer(new CenteredRenderer(false));
+				getResultsTable().getColumnModel().getColumn(x).setCellRenderer(new ResultsTableCellRenderer(false));
 			}
 			TableColumn column = getResultsTable().getColumnModel().getColumn(x);
 			Component comp = null;
 
-			column.setHeaderRenderer(new CenteredRenderer(true));
+			column.setHeaderRenderer(new ResultsTableCellRenderer(true));
 			comp = column.getHeaderRenderer().getTableCellRendererComponent(null, column.getHeaderValue(), false, false,
 					0, 0);
 			int width = comp.getPreferredSize().width;
