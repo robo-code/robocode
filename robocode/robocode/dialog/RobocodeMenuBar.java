@@ -12,14 +12,17 @@
  *     - Added keyboard mnemonics and a few accelerators to all menus and menu
  *       items
  *     Flemming N. Larsen
- *     - Added menu items for RobocodeNG API, Robo Wiki, Yahoo Group Robocode,
+ *     - Added menu items for Robocode API, Robo Wiki, Yahoo Group Robocode,
  *       and Robocode Repository
  *     - Code cleanup
+ *     Luis Crespo & Flemming N. Larsen
+ *     - Added check box menu item for "Show Rankings"
  *******************************************************************************/
 package robocode.dialog;
 
 
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -31,7 +34,7 @@ import robocode.util.Utils;
  * Handles menu display and interaction for Robocode.
  * 
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen, Matthew Reeder (current)
+ * @author Flemming N. Larsen, Matthew Reeder, Luis Crespo (current)
  */
 public class RobocodeMenuBar extends JMenuBar {
 
@@ -57,6 +60,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenu optionsMenu;
 	private JMenuItem optionsPreferencesMenuItem;
 	private JMenuItem optionsFitWindowMenuItem;
+	private JCheckBoxMenuItem optionsShowRankingCheckBoxMenuItem;
 
 	// Help Menu
 	private JMenu helpMenu;
@@ -73,7 +77,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private RobocodeFrame robocodeFrame;
 	private RobocodeManager manager;
 
-	class EventHandler implements ActionListener, MenuListener {
+	private class EventHandler implements ActionListener, MenuListener {
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
 			RobocodeMenuBar mb = RobocodeMenuBar.this;
@@ -107,6 +111,8 @@ public class RobocodeMenuBar extends JMenuBar {
 				optionsPreferencesActionPerformed();
 			} else if (source == mb.getOptionsFitWindowMenuItem()) {
 				optionsFitWindowActionPerformed();
+			} else if (source == mb.getOptionsShowRankingCheckBoxMenuItem()) {
+				optionsShowRankingActionPerformed();
 
 				// Help menu
 			} else if (source == mb.getHelpOnlineHelpMenuItem()) {
@@ -116,7 +122,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			} else if (source == mb.getHelpFaqMenuItem()) {
 				helpFaqActionPerformed();
 			} else if (source == mb.getHelpRobocodeMenuItem()) {
-				helpRobocondeNgMenuItemActionPerformed();
+				helpRobocondeMenuItemActionPerformed();
 			} else if (source == mb.getHelpRoboWikiMenuItem()) {
 				helpRoboWikiMenuItemActionPerformed();
 			} else if (source == mb.getHelpYahooGroupRobocodeMenuItem()) {
@@ -158,7 +164,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		add(getHelpMenu());
 	}
 
-	public void battleExitActionPerformed() {
+	private void battleExitActionPerformed() {
 		java.awt.AWTEvent evt = new WindowEvent(robocodeFrame, WindowEvent.WINDOW_CLOSING);
 
 		robocodeFrame.dispatchEvent(evt);
@@ -167,19 +173,19 @@ public class RobocodeMenuBar extends JMenuBar {
 	/**
 	 * Handle battleNew menu item action
 	 */
-	public void battleNewActionPerformed() {
+	private void battleNewActionPerformed() {
 		manager.getWindowManager().showNewBattleDialog(manager.getBattleManager().getBattleProperties());
 	}
 
-	public void battleOpenActionPerformed() {
+	private void battleOpenActionPerformed() {
 		manager.getWindowManager().showBattleOpenDialog();
 	}
 
-	public void battleSaveActionPerformed() {
+	private void battleSaveActionPerformed() {
 		manager.getBattleManager().saveBattle();
 	}
 
-	public void battleSaveAsActionPerformed() {
+	private void battleSaveAsActionPerformed() {
 		manager.getBattleManager().saveBattleAs();
 	}
 
@@ -498,6 +504,22 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	/**
+	 * Return the optionsShowRankingCheckBoxMenuItem.
+	 * 
+	 * @return JCheckBoxMenuItem
+	 */
+	private JCheckBoxMenuItem getOptionsShowRankingCheckBoxMenuItem() {
+		if (optionsShowRankingCheckBoxMenuItem == null) {
+			optionsShowRankingCheckBoxMenuItem = new JCheckBoxMenuItem();
+			optionsShowRankingCheckBoxMenuItem.setText("Ranking Panel");
+			optionsShowRankingCheckBoxMenuItem.setMnemonic('R');
+			optionsShowRankingCheckBoxMenuItem.setDisplayedMnemonicIndex(0);
+			optionsShowRankingCheckBoxMenuItem.addActionListener(eventHandler);
+		}
+		return optionsShowRankingCheckBoxMenuItem;
+	}
+
+	/**
 	 * Return the Options Menu.
 	 * 
 	 * @return JMenu
@@ -510,6 +532,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsMenu.setDisplayedMnemonicIndex(0);
 			optionsMenu.add(getOptionsPreferencesMenuItem());
 			optionsMenu.add(getOptionsFitWindowMenuItem());
+			optionsMenu.add(getOptionsShowRankingCheckBoxMenuItem());
 			optionsMenu.addMenuListener(eventHandler);
 		}
 		return optionsMenu;
@@ -605,7 +628,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	 * 
 	 * @return JMenu
 	 */
-	public JMenu getTeamMenu() {
+	private JMenu getTeamMenu() {
 		if (teamMenu == null) {
 			teamMenu = new JMenu();
 			teamMenu.setText("Team");
@@ -633,67 +656,71 @@ public class RobocodeMenuBar extends JMenuBar {
 		return teamCreateTeamMenuItem;
 	}
 
-	public void teamCreateTeamActionPerformed() {
+	private void teamCreateTeamActionPerformed() {
 		manager.getWindowManager().showCreateTeamDialog();
 	}
 
-	public void helpAboutActionPerformed() {
+	private void helpAboutActionPerformed() {
 		manager.getWindowManager().showAboutBox();
 	}
 
-	public void helpCheckForNewVersionActionPerformed() {
+	private void helpCheckForNewVersionActionPerformed() {
 		manager.getVersionManager().checkForNewVersion(true);
 	}
 
-	public void helpFaqActionPerformed() {
+	private void helpFaqActionPerformed() {
 		manager.getWindowManager().showFaq();
 	}
 
-	public void helpOnlineHelpActionPerformed() {
+	private void helpOnlineHelpActionPerformed() {
 		manager.getWindowManager().showOnlineHelp();
 	}
 
-	public void helpVersionsTxtActionPerformed() {
+	private void helpVersionsTxtActionPerformed() {
 		manager.getWindowManager().showVersionsTxt();
 	}
 
-	public void helpRobocodeApiActionPerformed() {
+	private void helpRobocodeApiActionPerformed() {
 		manager.getWindowManager().showHelpApi();
 	}
 
-	public void helpRobocondeNgMenuItemActionPerformed() {
+	private void helpRobocondeMenuItemActionPerformed() {
 		manager.getWindowManager().showRobocodeHome();
 	}
 
-	public void helpRoboWikiMenuItemActionPerformed() {
+	private void helpRoboWikiMenuItemActionPerformed() {
 		manager.getWindowManager().showRoboWiki();
 	}
 
-	public void helpYahooGroupRobocodeActionPerformed() {
+	private void helpYahooGroupRobocodeActionPerformed() {
 		manager.getWindowManager().showYahooGroupRobocode();
 	}
 
-	public void helpRobocodeRepositoryActionPerformed() {
+	private void helpRobocodeRepositoryActionPerformed() {
 		manager.getWindowManager().showRobocodeRepository();
 	}
 
-	public void optionsFitWindowActionPerformed() {
+	private void optionsFitWindowActionPerformed() {
 		Utils.fitWindow(manager.getWindowManager().getRobocodeFrame());
 	}
 
-	public void optionsPreferencesActionPerformed() {
+	private void optionsShowRankingActionPerformed() {
+		manager.getWindowManager().showRankingDialog(getOptionsShowRankingCheckBoxMenuItem().getState());
+	}
+
+	private void optionsPreferencesActionPerformed() {
 		manager.getWindowManager().showOptionsPreferences();
 	}
 
-	public void robotEditorActionPerformed() {
+	private void robotEditorActionPerformed() {
 		manager.getWindowManager().showRobocodeEditor();
 	}
 
-	public void robotImportActionPerformed() {
+	private void robotImportActionPerformed() {
 		manager.getWindowManager().showImportRobotDialog();
 	}
 
-	public void robotPackagerActionPerformed() {
+	private void robotPackagerActionPerformed() {
 		manager.getWindowManager().showRobotPackager();
 	}
 }
