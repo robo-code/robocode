@@ -12,6 +12,8 @@
  *     - Added showInBrowser() for displaying content from an URL
  *     - Added showRoboWiki(), showYahooGroupRobocode(), showRobocodeRepository()
  *     - Removed the Thread.sleep(diff) from showSplashScreen()
+ *     Luis Crespo & Flemming N. Larsen
+ *     - Added showRankingDialog()
  *******************************************************************************/
 package robocode.manager;
 
@@ -28,7 +30,7 @@ import robocode.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen, Luis Crespo (current)
  */
 public class WindowManager {
 	
@@ -38,6 +40,7 @@ public class WindowManager {
 	private RobocodeFrame robocodeFrame;
 	private RobocodeManager manager;
 	private TeamCreator teamCreator;
+	private RankingDialog rankingDialog;
 
 	public WindowManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -167,6 +170,15 @@ public class WindowManager {
 
 		resultsDialog.setSize(0, 0);
 		Utils.packCenterShow(robocodeFrame, resultsDialog);
+	}
+
+	public void showRankingDialog(boolean visible) {
+		if (rankingDialog == null) {
+			rankingDialog = new RankingDialog(robocodeFrame, manager);
+			rankingDialog.setSize(200, 400);
+			//Utils.packCenterShow(robocodeFrame, rankingDialog);
+		}
+		rankingDialog.setVisible(visible);
 	}
 
 	public void showRobocodeEditor() {
