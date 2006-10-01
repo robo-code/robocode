@@ -9,12 +9,16 @@
  *     Luis Crespo
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Integration and minor corrections
+ *     - Integration
+ *     - When this dialog is closed, the state of the check box for the Ranking
+ *       Panel in the Options Menu is set to unchecked
  *******************************************************************************/
 package robocode.dialog;
 
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -38,6 +42,13 @@ public class RankingDialog extends JDialog {
 	private BattleRankingTableModel rankingTableModel;
 	private Dimension tableSize;
 
+	
+	private class EventHandler extends WindowAdapter {
+		public void windowClosing(WindowEvent e) {
+			manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(false);
+		}
+	}
+	
 	/**
 	 * RankingDialog constructor
 	 */
@@ -55,8 +66,9 @@ public class RankingDialog extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getRankingContentPane());
 		startRefreshThread();
+		addWindowListener(new EventHandler());
 	}
-	
+
 	/**
 	 * Return the resultsTable.
 	 * 
