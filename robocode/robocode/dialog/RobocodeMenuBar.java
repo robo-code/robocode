@@ -508,7 +508,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	 * 
 	 * @return JCheckBoxMenuItem
 	 */
-	private JCheckBoxMenuItem getOptionsShowRankingCheckBoxMenuItem() {
+	public JCheckBoxMenuItem getOptionsShowRankingCheckBoxMenuItem() {
 		if (optionsShowRankingCheckBoxMenuItem == null) {
 			optionsShowRankingCheckBoxMenuItem = new JCheckBoxMenuItem();
 			optionsShowRankingCheckBoxMenuItem.setText("Ranking Panel");
