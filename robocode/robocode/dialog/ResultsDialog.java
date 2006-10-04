@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Corrected table cell heights when rendering
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -158,8 +159,7 @@ public class ResultsDialog extends JDialog {
 			resultsScrollPane.addComponentListener(eventHandler);
 
 			tableSize = new Dimension(getResultsTable().getColumnModel().getTotalColumnWidth(),
-					getResultsTable().getModel().getRowCount()
-					* (getResultsTable().getRowHeight() + getResultsTable().getRowMargin()));
+					getResultsTable().getModel().getRowCount() * (getResultsTable().getRowHeight()));
 			resultsTable.setPreferredScrollableViewportSize(tableSize);
 			resultsTable.setPreferredSize(tableSize);
 			resultsTable.setMinimumSize(tableSize);
