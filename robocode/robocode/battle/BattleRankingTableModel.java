@@ -9,7 +9,8 @@
  *     Luis Crespo
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Integration and minor corrections
+ *     - Removed of the @SuppressWarnings in getSortedContestants()
+ *     - Various optimizations
  *******************************************************************************/
 package robocode.battle;
 
@@ -20,6 +21,7 @@ import javax.swing.table.AbstractTableModel;
 
 import robocode.manager.RobocodeManager;
 import robocode.peer.ContestantPeer;
+import robocode.peer.RobotPeer;
 
 
 /**
@@ -46,11 +48,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	public int getRowCount() {
 		Vector contestants = getContestants();
 
-		if (contestants == null) {
-			return 0;
-		} else {
-			return contestants.size();
-		}
+		return (contestants != null) ? contestants.size() : 0;
 	}
 
 	public String getColumnName(int col) {
@@ -75,19 +73,18 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		if (contestants == null) {
 			return "";
 		}
-		ContestantPeer cp = (ContestantPeer) contestants.elementAt(row);
+		ContestantPeer cp = contestants.elementAt(row);
 
 		switch (col) {
 		case 0:
-			String name = cp.getName(); 
-
-			// TODO: this is a hack and fails in case that version numbers are used
-			// A getShortName() method should be added to ContestantPeer instead
-			int pos = name.lastIndexOf('.');
-
-			if (pos >= 0 && pos < name.length()) {
-				name = name.substring(pos + 1);
+			String name;
+			
+			if (cp instanceof RobotPeer) {
+				name = ((RobotPeer) cp).getVeryShortName(); 
+			} else {
+				name = cp.getName();
 			}
+
 			// return Utils.getPlacementString(row+1) + ": " + name;	 --> Discarded: space is very limited
 			return "" + (row + 1) + ": " + name;
 
@@ -95,11 +92,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			return (int) cp.getStatistics().getTotalScore();
 
 		case 2:
-			if (!battle.isRunning()) {
-				return 0;
-			} else {
-				return (int) cp.getStatistics().getCurrentScore();
-			}
+			return battle.isRunning() ? (int) cp.getStatistics().getCurrentScore() : 0;
 
 		default:
 			return "";
@@ -111,31 +104,24 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			return null;
 		}
 		battle = manager.getBattleManager().getBattle();
-		if (battle == null) {
-			return null;
-		}
-		return battle.getContestants();
+		
+		return (battle != null) ? battle.getContestants() : null;
 	}
 
-	// TODO: Fix the @SuppressWarnings
-	@SuppressWarnings("unchecked")
-	private Vector getSortedContestants() {
-		Vector contestants = getContestants();
+	private Vector<ContestantPeer> getSortedContestants() {
+		Vector<ContestantPeer> contestants = getContestants();
 
 		if (contestants == null) {
 			return null;
 		}
-		Vector sc = new Vector(contestants);
 
-		Collections.sort(sc, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				double score1, score2;
-				ContestantPeer cp1, cp2;
+		Vector<ContestantPeer> sc = new Vector<ContestantPeer>(contestants);
 
-				cp1 = (ContestantPeer) o1;
-				cp2 = (ContestantPeer) o2;
-				score1 = cp1.getStatistics().getTotalScore();
-				score2 = cp2.getStatistics().getTotalScore();
+		Collections.sort(sc, new Comparator<ContestantPeer>() {
+			public int compare(ContestantPeer cp1, ContestantPeer cp2) {
+				double score1 = cp1.getStatistics().getTotalScore();
+				double score2 = cp2.getStatistics().getTotalScore();
+
 				if (battle.isRunning()) {
 					score1 += cp1.getStatistics().getCurrentScore();
 					score2 += cp2.getStatistics().getCurrentScore();
