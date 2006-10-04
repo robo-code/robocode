@@ -12,13 +12,14 @@
  *     - Integration
  *     - When this dialog is closed, the state of the check box for the Ranking
  *       Panel in the Options Menu is set to unchecked
+ *     - The table height in the scroll panel is now automatically resized when
+ *       repainted in the repaint thread
  *******************************************************************************/
 package robocode.dialog;
 
 
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -29,7 +30,7 @@ import robocode.manager.RobocodeManager;
 /**
  * Dialog to display the running ranking of a battle
  * 
- * @author Luis Crespo
+ * @author Luis Crespo & Flemming N. Larsen
  */
 public class RankingDialog extends JDialog {
 
@@ -40,15 +41,8 @@ public class RankingDialog extends JDialog {
 	private JTable resultsTable;
 	private RobocodeManager manager;
 	private BattleRankingTableModel rankingTableModel;
-	private Dimension tableSize;
-
-	
-	private class EventHandler extends WindowAdapter {
-		public void windowClosing(WindowEvent e) {
-			manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(false);
-		}
-	}
-	
+	private Thread thread;
+		
 	/**
 	 * RankingDialog constructor
 	 */
@@ -65,8 +59,28 @@ public class RankingDialog extends JDialog {
 		setTitle("Ranking");
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getRankingContentPane());
-		startRefreshThread();
-		addWindowListener(new EventHandler());
+
+		addWindowListener(
+				new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
+						false);
+			}
+		});
+
+		addComponentListener(new ComponentAdapter() {
+			public void componentShown(ComponentEvent e) {
+				if (e.getSource() == RankingDialog.this) {
+					startRepaintThread();
+				}
+			}
+
+			public void componentHidden(ComponentEvent e) {
+				if (e.getSource() == RankingDialog.this) {
+					stopRepaintThread();
+				}
+			}
+		});
 	}
 
 	/**
@@ -77,32 +91,12 @@ public class RankingDialog extends JDialog {
 	private JTable getResultsTable() {
 		if (resultsTable == null) {
 			resultsTable = new JTable();
-			// resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			resultsTable.setColumnSelectionAllowed(true);
 			resultsTable.setRowSelectionAllowed(true);
 			resultsTable.getTableHeader().setReorderingAllowed(false);
 			setResultsData();
 		}
 		return resultsTable;
-	}
-
-	private void startRefreshThread() {
-		// Hehe, anonymous-inner-class obfuscation...
-		new Thread() {
-			public void run() {
-				pause(1000); // Make sure we start when the window is already visible
-				while (isVisible()) {
-					repaint();
-					pause(1000);
-				}
-			}
-
-			private void pause(int millis) {
-				try {
-					sleep(millis);
-				} catch (InterruptedException e) {}
-			}
-		}.start();
 	}
 
 	/**
@@ -129,17 +123,9 @@ public class RankingDialog extends JDialog {
 			resultsScrollPane = new JScrollPane();
 			resultsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			resultsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			resultsScrollPane.getViewport().setScrollMode(JViewport.BLIT_SCROLL_MODE);
 			resultsScrollPane.setViewportView(getResultsTable());
 			resultsScrollPane.setColumnHeaderView(resultsTable.getTableHeader());
-			resultsScrollPane.getViewport().setScrollMode(JViewport.BLIT_SCROLL_MODE);
-
-			tableSize = new Dimension(getResultsTable().getColumnModel().getTotalColumnWidth(),
-					getResultsTable().getModel().getRowCount()
-					* (getResultsTable().getRowHeight() + getResultsTable().getRowMargin()));
-
-			resultsTable.setPreferredScrollableViewportSize(tableSize);
-			resultsTable.setPreferredSize(tableSize);
-			resultsTable.setMinimumSize(tableSize);
 		}
 		return resultsScrollPane;
 	}
@@ -169,9 +155,12 @@ public class RankingDialog extends JDialog {
 					width = comp.getPreferredSize().width;
 				}
 			}
-			getResultsTable().getColumnModel().getColumn(x).setPreferredWidth(width);
-			getResultsTable().getColumnModel().getColumn(x).setMinWidth(width);
-			getResultsTable().getColumnModel().getColumn(x).setWidth(width);
+			TableColumn col = getResultsTable().getColumnModel().getColumn(x);
+
+			col.setPreferredWidth(width);
+			col.setMinWidth(width);
+			col.setWidth(width);
+
 			if (x >= 2 && width > maxScoreColWidth) {
 				maxScoreColWidth = width;
 			}
@@ -183,5 +172,29 @@ public class RankingDialog extends JDialog {
 			rankingTableModel = new BattleRankingTableModel(manager);
 		}
 		return rankingTableModel;
+	}
+
+	private void startRepaintThread() {
+		if (thread == null) {
+			thread = new Thread() {
+				public void run() {
+					while (thread == Thread.currentThread()) {
+						try {
+							sleep(1000);
+						} catch (InterruptedException e) {}
+
+						resultsTable.setSize(resultsTable.getColumnModel().getTotalColumnWidth(),
+								resultsTable.getModel().getRowCount() * resultsTable.getRowHeight());
+
+						repaint();
+					}
+				}
+			};
+			thread.start();
+		}
+	}
+	
+	private void stopRepaintThread() {
+		thread = null;
 	}
 }
