@@ -18,6 +18,7 @@
  *       setRadarColor()
  *     - Added bulletColor, scanColor, setBulletColor(), and setScanColor() and
  *       removed getColorIndex()
+ *     - Integration with robocode.Rules
  *     - Optimizations
  *     - Code cleanup
  *     Luis Crespo
@@ -29,20 +30,13 @@ package robocode.peer;
 import java.awt.geom.*;
 import java.awt.Color;
 
-import robocode.Robot;
-import robocode.Condition;
-import robocode.HitRobotEvent;
-import robocode.DeathEvent;
-import robocode.WinEvent;
-import robocode.HitWallEvent;
-import robocode.ScannedRobotEvent;
+import robocode.*;
 import robocode.exception.*;
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
-import robocode.util.*;
-import robocode.peer.BulletPeer;
 import robocode.peer.robot.*;
 import robocode.manager.*;
+import robocode.util.*;
 
 
 /**
@@ -66,16 +60,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private double y;
 
 	private double acceleration;
-	private double maxAcceleration = 1; // .4
-	private double maxVelocity = 8;
+	private double maxVelocity;	// Can be changed by user
+	private double maxTurnRate;	// Can be changed by user
 	private double angleToTurn;
 	private double radarAngleToTurn;
 	private double gunAngleToTurn;
-	private double turnRate;
-	private double gunTurnRate = Math.toRadians(20.0);
-	private double radarTurnRate = Math.toRadians(45.0);
-
-	private double maxBraking = 2;
 
 	private boolean sleeping;
 
@@ -87,7 +76,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	private BoundingRectangle boundingBox;
 	private Arc2D.Double scanArc;
-	private double scanRadius;
 
 	private boolean adjustGunForBodyTurn;
 	private boolean adjustRadarForGunTurn;
@@ -104,17 +92,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private double lastRadarHeading;
 	private double lastX;
 	private double lastY;
-	private double maxScanRadius = 1200;
-	private double maxTurnRate = Math.toRadians(10.0);
 
 	private double saveAngleToTurn;
 	private double saveDistanceToGo;
 	private double saveGunAngleToTurn;
 	private double saveRadarAngleToTurn;
 	private boolean scan;
-
-	private double systemMaxTurnRate = Math.toRadians(10.0);
-	private double systemMaxVelocity = 8;
 
 	private boolean winner;
 
@@ -131,14 +114,17 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private double gunHeat;
 	private boolean halt;
 	private boolean inCollision;
+
 	private String name;
+	private String shortName;
 	private String nonVersionedName;
+	
 	private int setCallCount;
 	private int getCallCount;
+
 	private RobotClassManager robotClassManager;
 	private RobotFileSystemManager robotFileSystemManager;
 	private RobotThreadManager robotThreadManager;
-	private String shortName;
 	private int skippedTurns;
 	private RobotStatistics statistics;
 
@@ -161,10 +147,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private BulletPeer newBullet;
 	
 	private boolean ioRobot;
-	
-	private final long maxSetCallCount = 10000;
-	private final long maxGetCallCount = 10000;
-		
+
+	private final long MAX_SET_CALL_COUNT = 10000;
+	private final long MAX_GET_CALL_COUNT = 10000;
+
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
 
@@ -277,9 +263,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 								statistics.scoreKilledEnemyRamming(i);
 							}
 						}
-					} else {// out.println("I'm moving: " + distanceRemaining + " with bearing: " + Math.toDegrees(bearing));
 					}
-
 					eventManager.add(
 							new HitRobotEvent(r.getName(), Utils.normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
 					r.getEventManager().add(
@@ -361,27 +345,17 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				dy = fixy;
 			}
  	  
-			// IF THIS IS NOT HERE
-			// STRANGE THINGS HAPPEN UNDER IBM JAVA 1.4
-			// ?????
-			if (Double.isNaN(velocity1)) {
-				;
-			}
-			if (Double.isNaN(velocity2)) {
-				;
-			}
-		
 			x += dx;
 			y += dy;
 
 			// Update energy, but do not reset inactiveTurnCount
 			if (robot instanceof robocode.AdvancedRobot) {
-				this.setEnergy(energy - (Math.max(Math.abs(velocity) * .5 - 1, 0)), false);
+				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
 			}
 
 			updateBoundingBox();
 	  
-			distanceRemaining = 0; // += Math.sqrt(dx * dx + dy * dy);
+			distanceRemaining = 0;
 			velocity = 0;
 			acceleration = 0;
 		}
@@ -547,16 +521,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		// All we need to do is adjust our angle by -90 for this to work.
 		startAngle -= Math.PI / 2;
 
-		scanRadius = maxScanRadius; // 1000.0; // - 2000.0 * Math.abs(scanRadians) / Math.PI; // approx
-
-		if (scanRadians < 0) {
-			startAngle += scanRadians;
-			scanRadians *= -1;
-		}
-
 		startAngle = Utils.normalAbsoluteAngle(startAngle);
 
-		scanArc.setArc(x - scanRadius, y - scanRadius, 2 * scanRadius, 2 * scanRadius, 180.0 * startAngle / Math.PI,
+		scanArc.setArc(x - Rules.RADAR_SCAN_RADIUS, y - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / Math.PI,
 				180.0 * scanRadians / Math.PI, Arc2D.PIE);
 
 		for (int i = 0; i < battle.getRobots().size(); i++) {
@@ -827,7 +794,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void updateGunHeading() {
 		if (gunAngleToTurn > 0) {
-			if (gunAngleToTurn < gunTurnRate) {
+			if (gunAngleToTurn < Rules.GUN_TURN_RATE_RADIANS) {
 				gunHeading += gunAngleToTurn;
 				radarHeading += gunAngleToTurn;
 				if (adjustRadarForGunTurn) {
@@ -835,15 +802,15 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				}
 				gunAngleToTurn = 0;
 			} else {
-				gunHeading += gunTurnRate;
-				radarHeading += gunTurnRate;
-				gunAngleToTurn -= gunTurnRate;
+				gunHeading += Rules.GUN_TURN_RATE_RADIANS;
+				radarHeading += Rules.GUN_TURN_RATE_RADIANS;
+				gunAngleToTurn -= Rules.GUN_TURN_RATE_RADIANS;
 				if (adjustRadarForGunTurn) {
-					radarAngleToTurn -= gunTurnRate;
+					radarAngleToTurn -= Rules.GUN_TURN_RATE_RADIANS;
 				}
 			}
 		} else if (gunAngleToTurn < 0) {
-			if (gunAngleToTurn > -gunTurnRate) {
+			if (gunAngleToTurn > -Rules.GUN_TURN_RATE_RADIANS) {
 				gunHeading += gunAngleToTurn;
 				radarHeading += gunAngleToTurn;
 				if (adjustRadarForGunTurn) {
@@ -851,11 +818,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				}
 				gunAngleToTurn = 0;
 			} else {
-				gunHeading -= gunTurnRate;
-				radarHeading -= gunTurnRate;
-				gunAngleToTurn += gunTurnRate;
+				gunHeading -= Rules.GUN_TURN_RATE_RADIANS;
+				radarHeading -= Rules.GUN_TURN_RATE_RADIANS;
+				gunAngleToTurn += Rules.GUN_TURN_RATE_RADIANS;
 				if (adjustRadarForGunTurn) {
-					radarAngleToTurn += gunTurnRate;
+					radarAngleToTurn += Rules.GUN_TURN_RATE_RADIANS;
 				}
 			}
 		}
@@ -865,7 +832,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public void updateHeading() {
 		boolean normalizeHeading = true;
 
-		turnRate = Math.min(maxTurnRate, (.4 + .6 * (1 - (Math.abs(velocity) / systemMaxVelocity))) * systemMaxTurnRate);
+		double turnRate = Math.min(maxTurnRate, (0.4 + 0.6 * (1 - (Math.abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
 	
 		if (angleToTurn > 0) {
 			if (angleToTurn < turnRate) {
@@ -953,7 +920,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				} else {
 					moveDirection = 0;
 				}
-					
 			}
 		}
 
@@ -966,7 +932,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				desiredDistanceRemaining = 0;
 			}
 		}
-		double slowDownVelocity = (int) ((maxBraking / 2) * (Math.sqrt(4 * Math.abs(desiredDistanceRemaining) + 1) - 1));
+		double slowDownVelocity = (int) ((Rules.DECELERATION / 2) * (Math.sqrt(4 * Math.abs(desiredDistanceRemaining) + 1) - 1));
 
 		if (moveDirection == -1) {
 			slowDownVelocity = -slowDownVelocity;
@@ -977,9 +943,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			if (moveDirection == 1) {
 				// Brake or accelerate
 				if (velocity < 0) {
-					acceleration = maxBraking;
+					acceleration = Rules.DECELERATION;
 				} else {
-					acceleration = maxAcceleration;
+					acceleration = Rules.ACCELERATION;
 				}
 				
 				if (velocity + acceleration > slowDownVelocity) {
@@ -987,11 +953,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				}
 			} else if (moveDirection == -1) {
 				if (velocity > 0) {
-					acceleration = -maxBraking;
+					acceleration = -Rules.DECELERATION;;
 				} else {
-					acceleration = -maxAcceleration;
+					acceleration = -Rules.ACCELERATION;
 				}
-			
+
 				if (velocity + acceleration < slowDownVelocity) {
 					slowingDown = true;
 				}
@@ -1000,21 +966,19 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	
 		if (slowingDown) {
 			// note:  if slowing down, velocity and distanceremaining have same sign
-			if (distanceRemaining != 0 && Math.abs(velocity) <= maxBraking && Math.abs(distanceRemaining) <= maxBraking) {
+			if (distanceRemaining != 0 && Math.abs(velocity) <= Rules.DECELERATION && Math.abs(distanceRemaining) <= Rules.DECELERATION) {
 				slowDownVelocity = distanceRemaining;
 			}
 		
 			double perfectAccel = slowDownVelocity - velocity;
 
-			if (perfectAccel > maxBraking) {
-				perfectAccel = maxBraking;
-			} else if (perfectAccel < -maxBraking) {
-				perfectAccel = -maxBraking;
+			if (perfectAccel > Rules.DECELERATION) {
+				perfectAccel = Rules.DECELERATION;
+			} else if (perfectAccel < -Rules.DECELERATION) {
+				perfectAccel = -Rules.DECELERATION;
 			}
 		
-			// log("perfect accel: " + perfectAccel);
 			acceleration = perfectAccel;
-		
 		}
 
 		// Calculate velocity
@@ -1024,10 +988,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		
 		velocity += acceleration;
 		if (velocity > maxVelocity) {
-			velocity -= Math.min(maxBraking, velocity - maxVelocity);
+			velocity -= Math.min(Rules.DECELERATION, velocity - maxVelocity);
 		}
 		if (velocity < -maxVelocity) {
-			velocity += Math.min(maxBraking, -velocity - maxVelocity);
+			velocity += Math.min(Rules.DECELERATION, -velocity - maxVelocity);
 		}
 
 		double dx = velocity * Math.sin(heading);
@@ -1058,20 +1022,20 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void updateRadarHeading() {
 		if (radarAngleToTurn > 0) {
-			if (radarAngleToTurn < radarTurnRate) {
+			if (radarAngleToTurn < Rules.RADAR_TURN_RATE_RADIANS) {
 				radarHeading += radarAngleToTurn;
 				radarAngleToTurn = 0;
 			} else {
-				radarHeading += radarTurnRate;
-				radarAngleToTurn -= radarTurnRate;
+				radarHeading += Rules.RADAR_TURN_RATE_RADIANS;
+				radarAngleToTurn -= Rules.RADAR_TURN_RATE_RADIANS;
 			}
 		} else if (radarAngleToTurn < 0) {
-			if (radarAngleToTurn > -radarTurnRate) {
+			if (radarAngleToTurn > -Rules.RADAR_TURN_RATE_RADIANS) {
 				radarHeading += radarAngleToTurn;
 				radarAngleToTurn = 0;
 			} else {
-				radarHeading -= radarTurnRate;
-				radarAngleToTurn += radarTurnRate;
+				radarHeading -= Rules.RADAR_TURN_RATE_RADIANS;
+				radarAngleToTurn += Rules.RADAR_TURN_RATE_RADIANS;
 			}
 		}
 
@@ -1161,7 +1125,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		scan = false;
 		scanArc.setAngleStart(0);
 		scanArc.setAngleExtent(0);
-		scanRadius = 0;
 		scanArc.setFrame(-100, -100, 1, 1);
 		eventManager.reset();
 		setMaxVelocity(999);
@@ -1200,7 +1163,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			out.println("You cannot setMaxTurnRate to: " + newTurnRate);
 			return;
 		}
-		maxTurnRate = Math.min(Math.toRadians(Math.abs(newTurnRate)), systemMaxTurnRate);
+		maxTurnRate = Math.min(Math.toRadians(Math.abs(newTurnRate)), Rules.MAX_TURN_RATE_RADIANS);
 	}
 
 	public synchronized void setMaxVelocity(double newVelocity) {
@@ -1208,7 +1171,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			out.println("You cannot setMaxVelocity to: " + newVelocity);
 			return;
 		}
-		maxVelocity = Math.min(Math.abs(newVelocity), systemMaxVelocity);
+		maxVelocity = Math.min(Math.abs(newVelocity), Rules.MAX_VELOCITY);
 	}
 
 	public synchronized final void setResume() {
@@ -1310,29 +1273,19 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			out.println("SYSTEM: You cannot call fire(NaN)");
 			return null;
 		}
-		double firePower = power;
-
-		if (firePower < .1) {
-			firePower = .1;
-		}
-		if (firePower > 3) {
-			firePower = 3;
-		}
-	  
 		if (gunHeat > 0 || getEnergy() == 0) {
 			return null;
 		}
 
-		if (firePower > energy) {
-			firePower = energy;
-		}
+		double firePower = Math.min(energy, Math.min(Math.max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+
 		this.setEnergy(energy - firePower);
 
-		gunHeat += 1 + (firePower / 5);
+		gunHeat += Rules.getGunHeat(firePower);
 		BulletPeer bullet = new BulletPeer(this, battle);
 
 		bullet.setPower(firePower);
-		bullet.setVelocity(20 - 3 * firePower);
+		bullet.setVelocity(Rules.getBulletSpeed(firePower));
 		if (eventManager.isFireAssistValid()) {
 			bullet.setHeading(eventManager.getFireAssistAngle());
 		} else {
@@ -1411,10 +1364,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return scanArc;
 	}
 
-	public double getScanRadius() {
-		return scanRadius;
-	}
-
 	public int getSkippedTurns() {
 		return skippedTurns;
 	}
@@ -1441,7 +1390,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized void setCall() {
 		setCallCount++;
-		if (setCallCount == maxSetCallCount) {
+		if (setCallCount == MAX_SET_CALL_COUNT) {
 			out.println("SYSTEM: You have made " + setCallCount + " calls to setXX methods without calling execute()");
 			throw new DisabledException("Too many calls to setXX methods");
 		}
@@ -1449,7 +1398,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized void getCall() {
 		getCallCount++;
-		if (getCallCount == maxGetCallCount) {
+		if (getCallCount == MAX_GET_CALL_COUNT) {
 			out.println("SYSTEM: You have made " + getCallCount + " calls to getXX methods without calling execute()");
 			throw new DisabledException("Too many calls to getXX methods");
 		}
