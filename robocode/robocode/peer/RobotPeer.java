@@ -29,6 +29,7 @@ package robocode.peer;
 
 import java.awt.geom.*;
 import java.awt.Color;
+import static java.lang.Math.*;
 
 import robocode.*;
 import robocode.exception.*;
@@ -60,8 +61,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private double y;
 
 	private double acceleration;
-	private double maxVelocity;	// Can be changed by user
-	private double maxTurnRate;	// Can be changed by user
+	private double maxVelocity; // Can be changed by user
+	private double maxTurnRate; // Can be changed by user
 	private double angleToTurn;
 	private double radarAngleToTurn;
 	private double gunAngleToTurn;
@@ -210,16 +211,16 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 					dx = r.getX() - x;
 					dy = r.getY() - y;
-					angle = Math.atan2(dx, dy);
+					angle = atan2(dx, dy);
 					double movedx, movedy;
 
-					movedx = velocity * Math.sin(heading);
-					movedy = velocity * Math.cos(heading);
+					movedx = velocity * sin(heading);
+					movedy = velocity * cos(heading);
 
 					boolean atFault = false;
 					double bearing = Utils.normalRelativeAngle(angle - heading);
 
-					if (velocity > 0 && bearing > -Math.PI / 2 && bearing < Math.PI / 2) {
+					if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
 						velocity = 0;
 						if (distanceRemaining > 0) {
 							atFault = true;
@@ -241,7 +242,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 								statistics.scoreKilledEnemyRamming(i);
 							}
 						}
-					} else if (velocity < 0 && (bearing < -Math.PI / 2 || bearing > Math.PI / 2)) {
+					} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
 						velocity = 0;
 						if (distanceRemaining < 0) {
 							atFault = true;
@@ -267,8 +268,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					eventManager.add(
 							new HitRobotEvent(r.getName(), Utils.normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
 					r.getEventManager().add(
-							new HitRobotEvent(getName(), Utils.normalRelativeAngle(Math.PI + angle - r.heading), getEnergy(),
-							false));
+							new HitRobotEvent(getName(), Utils.normalRelativeAngle(PI + angle - r.heading), getEnergy(), false));
 
 				} // if hit
 			} // if robot active & not me
@@ -287,14 +287,14 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			hitWall = true;
 			fixx = battleField.getBoundingBox().x + battleField.getBoundingBox().width - boundingBox.width
 					- boundingBox.x - .001;
-			angle = Utils.normalRelativeAngle(Math.PI / 2 - heading);
+			angle = Utils.normalRelativeAngle(PI / 2 - heading);
 			eventManager.add(new HitWallEvent(angle));
 		}
 	
 		if (boundingBox.x < battleField.getBoundingBox().x) {
 			hitWall = true;
 			fixx = battleField.getBoundingBox().x - boundingBox.x + .001;
-			angle = Utils.normalRelativeAngle(3 * Math.PI / 2 - heading);
+			angle = Utils.normalRelativeAngle(3 * PI / 2 - heading);
 			eventManager.add(new HitWallEvent(angle));
 		}
 		if (boundingBox.y + boundingBox.height > battleField.getBoundingBox().y + battleField.getBoundingBox().height) {
@@ -307,41 +307,41 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (boundingBox.y < battleField.getBoundingBox().y) {
 			hitWall = true;
 			fixy = battleField.getBoundingBox().y - boundingBox.y + .001;
-			angle = Utils.normalRelativeAngle(Math.PI - heading);
+			angle = Utils.normalRelativeAngle(PI - heading);
 			eventManager.add(new HitWallEvent(angle));
 		}
 
 		if (hitWall) {
 			double velocity1 = 0, velocity2 = 0;
 
-			if (Math.abs(Math.sin(heading)) > .00001 && fixx != 0) {
-				velocity1 = fixx / Math.sin(heading);
+			if (abs(sin(heading)) > .00001 && fixx != 0) {
+				velocity1 = fixx / sin(heading);
 			} else {
 				velocity1 = 0;
 			}
 
-			if (Math.abs(Math.cos(heading)) > .00001 && fixy != 0) {
-				velocity2 = fixy / Math.cos(heading);
+			if (abs(cos(heading)) > .00001 && fixy != 0) {
+				velocity2 = fixy / cos(heading);
 			} else {
 				velocity2 = 0;
 			}
 
 			double fixv = 0;
 
-			if (Math.max(Math.abs(velocity1), Math.abs(velocity2)) == Math.abs(velocity1)) {
+			if (max(abs(velocity1), abs(velocity2)) == abs(velocity1)) {
 				fixv = velocity1;
 			} else {
 				fixv = velocity2;
 			}
 
-			double dx = fixv * Math.sin(heading);
-			double dy = fixv * Math.cos(heading);
+			double dx = fixv * sin(heading);
+			double dy = fixv * cos(heading);
  		
 			// Sanity
-			if (Math.abs(dx) < Math.abs(fixx)) {
+			if (abs(dx) < abs(fixx)) {
 				dx = fixx;
 			}
-			if (Math.abs(dy) < Math.abs(fixy)) {
+			if (abs(dy) < abs(fixy)) {
 				dy = fixy;
 			}
  	  
@@ -510,21 +510,21 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		double scanRadians = radarHeading - lastRadarHeading;
 
 		// Check if we passed through 360
-		if (scanRadians < -Math.PI) {
-			scanRadians = 2 * Math.PI + scanRadians;
-		} else if (scanRadians > Math.PI) {
-			scanRadians = scanRadians - 2 * Math.PI;
+		if (scanRadians < -PI) {
+			scanRadians = 2 * PI + scanRadians;
+		} else if (scanRadians > PI) {
+			scanRadians = scanRadians - 2 * PI;
 		}
 
 		// In our coords, we are scanning clockwise, with +y up
 		// In java coords, we are scanning counterclockwise, with +y down
 		// All we need to do is adjust our angle by -90 for this to work.
-		startAngle -= Math.PI / 2;
+		startAngle -= PI / 2;
 
 		startAngle = Utils.normalAbsoluteAngle(startAngle);
 
-		scanArc.setArc(x - Rules.RADAR_SCAN_RADIUS, y - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / Math.PI,
-				180.0 * scanRadians / Math.PI, Arc2D.PIE);
+		scanArc.setArc(x - Rules.RADAR_SCAN_RADIUS, y - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
+				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
 		for (int i = 0; i < battle.getRobots().size(); i++) {
 			RobotPeer r = (RobotPeer) battle.getRobots().elementAt(i);
@@ -535,8 +535,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 					dx = r.getX() - x;
 					dy = r.getY() - y;
-					angle = Math.atan2(dx, dy);
-					dist = Math.sqrt(dx * dx + dy * dy);
+					angle = atan2(dx, dy);
+					dist = sqrt(dx * dx + dy * dy);
 					eventManager.add(
 							new ScannedRobotEvent(r.getName(), r.energy, Utils.normalRelativeAngle(angle - heading), dist,
 							r.getHeading(), r.getVelocity()));
@@ -832,7 +832,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public void updateHeading() {
 		boolean normalizeHeading = true;
 
-		double turnRate = Math.min(maxTurnRate, (0.4 + 0.6 * (1 - (Math.abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
+		double turnRate = min(maxTurnRate,
+				(0.4 + 0.6 * (1 - (abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
 	
 		if (angleToTurn > 0) {
 			if (angleToTurn < turnRate) {
@@ -932,7 +933,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				desiredDistanceRemaining = 0;
 			}
 		}
-		double slowDownVelocity = (int) ((Rules.DECELERATION / 2) * (Math.sqrt(4 * Math.abs(desiredDistanceRemaining) + 1) - 1));
+		double slowDownVelocity = (int) ((Rules.DECELERATION / 2) * (sqrt(4 * abs(desiredDistanceRemaining) + 1) - 1));
 
 		if (moveDirection == -1) {
 			slowDownVelocity = -slowDownVelocity;
@@ -953,7 +954,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				}
 			} else if (moveDirection == -1) {
 				if (velocity > 0) {
-					acceleration = -Rules.DECELERATION;;
+					acceleration = -Rules.DECELERATION;
+					;
 				} else {
 					acceleration = -Rules.ACCELERATION;
 				}
@@ -966,7 +968,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	
 		if (slowingDown) {
 			// note:  if slowing down, velocity and distanceremaining have same sign
-			if (distanceRemaining != 0 && Math.abs(velocity) <= Rules.DECELERATION && Math.abs(distanceRemaining) <= Rules.DECELERATION) {
+			if (distanceRemaining != 0 && abs(velocity) <= Rules.DECELERATION
+					&& abs(distanceRemaining) <= Rules.DECELERATION) {
 				slowDownVelocity = distanceRemaining;
 			}
 		
@@ -988,14 +991,14 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		
 		velocity += acceleration;
 		if (velocity > maxVelocity) {
-			velocity -= Math.min(Rules.DECELERATION, velocity - maxVelocity);
+			velocity -= min(Rules.DECELERATION, velocity - maxVelocity);
 		}
 		if (velocity < -maxVelocity) {
-			velocity += Math.min(Rules.DECELERATION, -velocity - maxVelocity);
+			velocity += min(Rules.DECELERATION, -velocity - maxVelocity);
 		}
 
-		double dx = velocity * Math.sin(heading);
-		double dy = velocity * Math.cos(heading);
+		double dx = velocity * sin(heading);
+		double dy = velocity * cos(heading);
 
 		x += dx;
 		y += dy;
@@ -1163,7 +1166,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			out.println("You cannot setMaxTurnRate to: " + newTurnRate);
 			return;
 		}
-		maxTurnRate = Math.min(Math.toRadians(Math.abs(newTurnRate)), Rules.MAX_TURN_RATE_RADIANS);
+		maxTurnRate = min(toRadians(abs(newTurnRate)), Rules.MAX_TURN_RATE_RADIANS);
 	}
 
 	public synchronized void setMaxVelocity(double newVelocity) {
@@ -1171,7 +1174,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			out.println("You cannot setMaxVelocity to: " + newVelocity);
 			return;
 		}
-		maxVelocity = Math.min(Math.abs(newVelocity), Rules.MAX_VELOCITY);
+		maxVelocity = min(abs(newVelocity), Rules.MAX_VELOCITY);
 	}
 
 	public synchronized final void setResume() {
@@ -1277,7 +1280,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			return null;
 		}
 
-		double firePower = Math.min(energy, Math.min(Math.max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+		double firePower = min(energy, min(max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
 
 		this.setEnergy(energy - firePower);
 
@@ -1476,7 +1479,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			setDead(true);
 			return;
 		}
-		energy -= Math.abs(zapAmount);
+		energy -= abs(zapAmount);
 		if (energy < .1) {
 			energy = 0;
 			distanceRemaining = 0;

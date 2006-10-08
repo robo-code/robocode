@@ -17,6 +17,7 @@ import javax.swing.text.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import static java.lang.Math.*;
 
 
 /**
@@ -120,16 +121,16 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(editorPane.getSelectionColor());
-		int start = Math.max(1, Math.min(anchor, lastIndex));
-		int end = Math.min(currentLines, Math.max(anchor, lastIndex));
+		int start = max(1, min(anchor, lastIndex));
+		int end = min(currentLines, max(anchor, lastIndex));
 
 		g.fillRect(0, (start - 1) * lineWidth - offset, textWidth, (end - start + 1) * lineWidth);
-		int maxwidth = Math.max(textWidth, fm.stringWidth("000"));
+		int maxwidth = max(textWidth, fm.stringWidth("000"));
 
 		for (int i = 1; i <= currentLines; i++) {
 			String str = Integer.toString(i);
 
-			maxwidth = Math.max(maxwidth, fm.stringWidth(str));
+			maxwidth = max(maxwidth, fm.stringWidth(str));
 			if (i >= start && i <= end) {
 				g.setColor(editorPane.getSelectedTextColor());
 			} else {
@@ -154,8 +155,8 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 	 * Handles selection in the text pane due to gestures on the line numbers.
 	 */
 	protected void doSelection() {
-		int first = Math.min(anchor, lastIndex);
-		int last = Math.max(anchor, lastIndex);
+		int first = min(anchor, lastIndex);
+		int last = max(anchor, lastIndex);
 
 		try {
 			String text = editorPane.getDocument().getText(0, editorPane.getDocument().getLength());

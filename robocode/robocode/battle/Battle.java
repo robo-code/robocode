@@ -26,6 +26,7 @@ package robocode.battle;
 
 
 import java.util.Vector;
+import static java.lang.Math.*;
 
 import robocode.*;
 import robocode.battlefield.BattleField;
@@ -407,9 +408,9 @@ public class Battle implements Runnable {
 				double x = 0, y = 0, heading = 0;
 
 				for (int j = 0; j < 1000; j++) {
-					x = r.getWidth() + Math.random() * (battleField.getWidth() - 2 * r.getWidth());
-					y = r.getHeight() + Math.random() * (battleField.getHeight() - 2 * r.getHeight());
-					heading = 2 * Math.PI * Math.random();
+					x = r.getWidth() + random() * (battleField.getWidth() - 2 * r.getWidth());
+					y = r.getHeight() + random() * (battleField.getHeight() - 2 * r.getHeight());
+					heading = 2 * PI * random();
 					r.initialize(x, y, heading);
 					if (validSpot(r) == true) {
 						break;
@@ -600,10 +601,10 @@ public class Battle implements Runnable {
 			totalTurnMillisThisSec = totalRobotMillisThisSec + totalFrameMillisThisSec;
 
 			// Estimate the time remaining this second to spend on frame updates
-			estFrameTimeThisSec = Math.max(0, 1000f - desiredTPS * (float) totalTurnMillisThisSec / turnsThisSec);
+			estFrameTimeThisSec = max(0, 1000f - desiredTPS * (float) totalTurnMillisThisSec / turnsThisSec);
 
 			// Estimate the possible FPS based on the estimated frame time 
-			estimatedFPS = Math.max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
+			estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
 
 			// Estimate the time that will be used on the total turn this second
 			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
@@ -1010,7 +1011,7 @@ public class Battle implements Runnable {
 		// Turning on robots
 		for (RobotPeer r : robots) {
 			manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
-			int waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000);
+			int waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000);
 
 			synchronized (r) {
 				try {
@@ -1104,9 +1105,9 @@ public class Battle implements Runnable {
 					double x = 0, y = 0, heading = 0;
 
 					for (int j = 0; j < 1000; j++) {
-						x = r.getWidth() + Math.random() * (battleField.getWidth() - 2 * r.getWidth());
-						y = r.getHeight() + Math.random() * (battleField.getHeight() - 2 * r.getHeight());
-						heading = 2 * Math.PI * Math.random();
+						x = r.getWidth() + random() * (battleField.getWidth() - 2 * r.getWidth());
+						y = r.getHeight() + random() * (battleField.getHeight() - 2 * r.getHeight());
+						heading = 2 * PI * random();
 						r.initialize(x, y, heading);
 						if (validSpot(r) == true) {
 							break;
