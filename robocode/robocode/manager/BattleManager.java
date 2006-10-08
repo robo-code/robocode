@@ -15,6 +15,7 @@
  *       RobotClassManagerVector with plain Vector
  *     - Added check for if GUI is enabled before using graphical components
  *     - Added restart() method
+ *     - Ported to Java 5
  *     - Code cleanup
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
@@ -100,7 +101,7 @@ public class BattleManager {
 		Vector robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(// <FileSpecification>
 				false,
 				false, false, false, false, false);
-		Vector battlingRobotsVector = new Vector(); // <RobotClassManager>
+		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
 		StringTokenizer tokenizer;
 
@@ -164,7 +165,7 @@ public class BattleManager {
 		Vector robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(// <FileSpecification>
 				false,
 				false, false, false, false, false);
-		Vector battlingRobotsVector = new Vector(); // <RobotClassManager>
+		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
 		robocode.control.RobotSpecification[] robotSpecs = battleSpecification.getRobots();
 
@@ -277,11 +278,6 @@ public class BattleManager {
 
 	public void pauseBattle() {
 		pauseCount++;
-		if (pauseCount == 1) {
-			if (manager.isGUIEnabled()) {
-				manager.getWindowManager().getRobocodeFrame().getBattleView().setBattlePaused(true);
-			}
-		}
 	}
 
 	public String getBattlePath() {
@@ -415,10 +411,6 @@ public class BattleManager {
 				if (pauseCount < 0) {
 					pauseCount = 0;
 				}
-				if (pauseCount == 0 && isBattleRunning()) {
-					manager.getWindowManager().getRobocodeFrame().getBattleView().setBattlePaused(false);
-				}
-				// RepaintManager.currentManager(robocodeFrame).setDoubleBufferingEnabled(false);
 			}
 		}).start();
 	}
@@ -433,11 +425,6 @@ public class BattleManager {
 
 	public void setBattleRunning(boolean newBattleRunning) {
 		battleRunning = newBattleRunning;
-		if (pauseCount == 0) {
-			if (manager.isGUIEnabled()) {
-				manager.getWindowManager().getRobocodeFrame().getBattleView().setBattlePaused(!newBattleRunning);
-			}
-		}
 	}
 
 	public void setResultsFile(String newResultsFile) {
