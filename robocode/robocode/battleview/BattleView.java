@@ -27,7 +27,8 @@
  *     - Bullets and scan arcs are now painted using the robot's bullet and scan
  *       color
  *     - Added the "Display TPS in titlebar" option
- *     - Renders the Robocode logo using the RobocodeLogo class
+ *     - Renders the Robocode losing the RobocodeLogo class
+ *     - Removed setBattlePaused
  *     - Code cleanup
  *******************************************************************************/
 package robocode.battleview;
@@ -609,7 +610,7 @@ public class BattleView extends Canvas {
 			aStart += 360;
 		}
 		scanArc.setAngleStart(aStart);
-		scanArc.y = battle.getBattleField().getHeight() - robot.getY() - robot.getScanRadius();
+		scanArc.y = battle.getBattleField().getHeight() - robot.getY() - robocode.Rules.RADAR_SCAN_RADIUS;
 
 		Color scanColor = robot.getScanColor();
 		if (scanColor == null) {
@@ -630,11 +631,8 @@ public class BattleView extends Canvas {
 		this.battleField = battleField;
 	}
 
-	// TODO: FNL: Remove?
-	public void setBattlePaused(boolean isPaused) {}
-
 	/**
-	 * Draws the Robocode title in giant letters
+	 * Draws the Robocode logo
 	 */
 	private void paintRobocodeLogo(Graphics2D g) {
 		setBackground(Color.BLACK);
@@ -642,7 +640,7 @@ public class BattleView extends Canvas {
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320)/2, (getHeight() - 46) / 2));
+		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2, (getHeight() - 46) / 2));
 		g.setColor(Color.DARK_GRAY);
 		g.fill(robocodeTextPath);
 	}
