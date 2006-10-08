@@ -11,6 +11,8 @@
  *     Luis Crespo
  *     - Added states
  *     Flemming N. Larsen
+ *     - Integration of robocode.Rules
+ *     - Optimizations
  *     - Code cleanup
  *******************************************************************************/
 package robocode.peer;
@@ -24,8 +26,8 @@ import robocode.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Luis Crespo (added states)
  * @author Flemming N. Larsen (current)
+ * @author Luis Crespo (added states)
  */
 public class BulletPeer {
 	// Bullet states: all states last one turn, except MOVING and DONE
@@ -37,10 +39,9 @@ public class BulletPeer {
 	public static final int BULLET_STATE_EXPLODED = 5;
 	public static final int BULLET_STATE_DONE = 6;
 
-	private int WHICH_EXPLOSION = 0;
+	private static final int WHICH_EXPLOSION = 0;
 
 	private double velocity;
-
 	private double heading;
 
 	private double x;
@@ -62,7 +63,7 @@ public class BulletPeer {
 
 	protected boolean active = true;
 
-	private java.awt.geom.Line2D boundingLine = new Line2D.Double();
+	private Line2D boundingLine = new Line2D.Double();
 
 	public boolean hitVictim;
 	public boolean hitBullet;
@@ -129,11 +130,8 @@ public class BulletPeer {
 
 			if (r != null && r != owner && !r.isDead()) {
 				if (r.getBoundingBox().intersectsLine(boundingLine)) {
-					double damage = 4 * power;
-
-					if (power > 1) {
-						damage += 2 * (power - 1);
-					}
+					double damage = Rules.getBulletDamage(power);
+					
 					double score = damage;
 
 					if (score > r.getEnergy()) {
@@ -150,7 +148,7 @@ public class BulletPeer {
 							owner.getRobotStatistics().scoreKilledEnemyBullet(i);
 						}
 					}
-					owner.setEnergy(owner.getEnergy() + power * 3); // damage);
+					owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 
 					r.getEventManager().add(
 							new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
@@ -359,11 +357,8 @@ public class BulletPeer {
 		lastX = x;
 		lastY = y;
 
-		double dx = velocity * Math.sin(heading);
-		double dy = velocity * Math.cos(heading);
-
-		x += dx;
-		y += dy;
+		x += velocity * Math.sin(heading);
+		y += velocity * Math.cos(heading);
 
 		boundingLine.setLine(lastX, lastY, x, y);
 	}
