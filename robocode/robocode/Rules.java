@@ -65,14 +65,18 @@ public final class Rules {
 	 * The maximum turning rate of the robot, which is 10 degress/turn.
 	 * Note, that the turn rate of the robot depends on it's velocity.
 	 *
-	 * @see MAX_TURN_RATE_RADIANS, getTurnRate(), getTurnRateRadians() 
+	 * @see #MAX_TURN_RATE_RADIANS
+	 * @see #getTurnRate
+	 * @see #getTurnRateRadians 
 	 */
 	public static final double MAX_TURN_RATE = 10;
 
 	/**
 	 * The maximum turning rate of the robot measured in radians instead of degrees.
 	 *
-	 * @see MAX_TURN_RATE, getTurnRate(), getTurnRateRadians() 
+	 * @see #MAX_TURN_RATE
+	 * @see #getTurnRate
+	 * @see #getTurnRateRadians 
 	 */
 	public static final double MAX_TURN_RATE_RADIANS = toRadians(MAX_TURN_RATE);
 
@@ -83,14 +87,14 @@ public final class Rules {
 	 * setAdjustGunForRobotTurn() has not been called at all (this is the default), then the gun turn is dependent on
 	 * the robot turn, and in this case the gun moves relatively to the robot body.
 	 * 
-	 * @see GUN_TURN_RATE_RADIANS
+	 * @see #GUN_TURN_RATE_RADIANS
 	 */
 	public static final double GUN_TURN_RATE = 20;
 
 	/**
 	 * The turning rate of the gun measured in radians instead of degrees.
 	 * 
-	 * @see GUN_TURN_RATE
+	 * @see #GUN_TURN_RATE
 	 */
 	public static final double GUN_TURN_RATE_RADIANS = toRadians(GUN_TURN_RATE);
 	
@@ -102,14 +106,14 @@ public final class Rules {
 	 * called or not called at all (this is the default), then the radar turn is dependent on the robot and/or gun
 	 * turn, and in this case the radar moves relatively to the gun and/or robot body.
 	 *
-	 * @see RADAR_TURN_RATE_RADIANS
+	 * @see #RADAR_TURN_RATE_RADIANS
 	 */
 	public static final double RADAR_TURN_RATE = 45;
 
 	/**
 	 * The turning rate of the radar measured in radians instead of degrees.
 	 *
-	 * @see RADAR_TURN_RATE
+	 * @see #RADAR_TURN_RATE
 	 */
 	public static final double RADAR_TURN_RATE_RADIANS = toRadians(RADAR_TURN_RATE);
 
@@ -130,7 +134,7 @@ public final class Rules {
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in degrees/turn.
 	 *
-	 * @see getTurnRateRadians()
+	 * @see #getTurnRateRadians
 	 */
 	public static double getTurnRate(double velocity) {
 		return 10 - 0.75 * velocity;
@@ -142,7 +146,7 @@ public final class Rules {
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in radians/turn.
 	 *
-	 * @see getTurnRate()
+	 * @see #getTurnRate
 	 */
 	public static double getTurnRateRadians(double velocity) {
 		return toRadians(getTurnRate(velocity));
