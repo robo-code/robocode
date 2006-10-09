@@ -70,6 +70,9 @@ public class RobocodeProperties {
 	// Development Options
 	private String optionsDevelopmentPath = "";
 
+	// Common Options
+	private boolean optionsCommonShowResults = true;
+
 	private boolean optionsTeamShowTeamRobots = false;
 	
 	private String lastRunVersion = "";
@@ -105,7 +108,9 @@ public class RobocodeProperties {
 	private final static String OPTIONS_SOUND_MIXER = "robocode.options.sound.mixer";
 	private final static String OPTIONS_SOUND_ENABLEMIXERVOLUME = "robocode.options.sound.enableMixerVolume";
 	private final static String OPTIONS_SOUND_ENABLEMIXERPAN = "robocode.options.sound.enableMixerPan";
-	
+
+	private final static String OPTIONS_COMMON_SHOW_RESULTS = "robocode.options.common.showResults";
+
 	private final static String OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots";
 	private final static String OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path";
 	private final static String VERSIONCHECKED = "robocode.versionchecked";
@@ -117,7 +122,6 @@ public class RobocodeProperties {
 	private RobocodeManager manager;
 
 	private RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
-
 
 	public RobocodeProperties(RobocodeManager manager) {
 		this.manager = manager;
@@ -702,6 +706,25 @@ public class RobocodeProperties {
 		props.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);
 	}
 
+	/**
+	 * Gets the optionsCommonShowResults
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsCommonShowResults() {
+		return optionsCommonShowResults;
+	}
+
+	/**
+	 * Sets the optionsCommonShowResults.
+	 * 
+	 * @param optionsCommonShowResults The optionsCommonShowResults to set
+	 */
+	public void setOptionsCommonShowResults(boolean optionsCommonShowResults) {
+		this.optionsCommonShowResults = optionsCommonShowResults;
+		props.setProperty(OPTIONS_COMMON_SHOW_RESULTS, "" + optionsCommonShowResults);
+	}
+
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
@@ -736,6 +759,8 @@ public class RobocodeProperties {
 		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true")).booleanValue();
 
 		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
+
+		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true")).booleanValue();
 
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
