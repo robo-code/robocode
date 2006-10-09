@@ -203,7 +203,7 @@ public class Battle implements Runnable {
 				} else {
 					manager.getListener().battleAborted(battleSpecification);
 				}
-			} else if (manager.isGUIEnabled()) {
+			} else if (manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
 				manager.getWindowManager().showResultsDialog(this);
 			}
 			if (battleView != null) {
