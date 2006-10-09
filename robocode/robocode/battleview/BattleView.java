@@ -135,7 +135,6 @@ public class BattleView extends Canvas {
 			}
 
 			if (offscreenImage != null) {
-				
 				offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 				offscreenGfx.setRenderingHints(renderingHints);
 
@@ -144,9 +143,14 @@ public class BattleView extends Canvas {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 				if (g != null) {
 					g.drawImage(offscreenImage, 0, 0, null);
-	
-					bufferStrategy.show();
-	
+
+					// Flush the buffer to the main graphics
+					if (getGraphics() != null) {
+						// FNL: The above check to prevents internal NullPointerException in
+						// Component.BltBufferStrategy.show()	
+						bufferStrategy.show();
+					}
+
 					g.dispose();
 				}
 			}
