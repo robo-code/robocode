@@ -21,6 +21,8 @@ import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
+import static java.lang.Math.*;
+
 import robocode.control.RobocodeListener;
 import robocode.security.*;
 
@@ -39,9 +41,9 @@ public class Utils {
 	private static String logBuffer = "";
 	private static Point locationFixer;
 
-	private final static double TWO_PI = 2 * Math.PI;
-	private final static double THREE_PI_OVER_TWO = 3 * Math.PI / 2;
-	private final static double PI_OVER_TWO = Math.PI / 2;
+	private final static double TWO_PI = 2 * PI;
+	private final static double THREE_PI_OVER_TWO = 3 * PI / 2;
+	private final static double PI_OVER_TWO = PI / 2;
 
 	public static void checkAccess(String s) {
 		SecurityManager securityManager = System.getSecurityManager();
@@ -271,16 +273,16 @@ public class Utils {
 	}
 
 	public static double normalAbsoluteAngle(double angle) {
-		if (angle >= 0 && angle < 2.0 * Math.PI) {
+		if (angle >= 0 && angle < 2.0 * PI) {
 			return angle;
 		}
 		double fixedAngle = angle;
 
 		while (fixedAngle < 0) {
-			fixedAngle += 2 * Math.PI;
+			fixedAngle += 2 * PI;
 		}
-		while (fixedAngle >= 2 * Math.PI) {
-			fixedAngle -= 2 * Math.PI;
+		while (fixedAngle >= 2 * PI) {
+			fixedAngle -= 2 * PI;
 		}
 	
 		return fixedAngle;
@@ -293,8 +295,8 @@ public class Utils {
 			fixedAngle = 0;
 		} else if (isNear(fixedAngle, PI_OVER_TWO)) {
 			fixedAngle = PI_OVER_TWO;
-		} else if (isNear(fixedAngle, Math.PI)) {
-			fixedAngle = Math.PI;
+		} else if (isNear(fixedAngle, PI)) {
+			fixedAngle = PI;
 		} else if (isNear(fixedAngle, THREE_PI_OVER_TWO)) {
 			fixedAngle = THREE_PI_OVER_TWO;
 		} else if (isNear(fixedAngle, TWO_PI)) {
@@ -305,23 +307,23 @@ public class Utils {
 	}
 
 	private static boolean isNear(double angle1, double angle2) {
-		if (Math.abs(angle1 - angle2) < .00001) {
+		if (abs(angle1 - angle2) < .00001) {
 			return true;
 		}
 		return false;
 	}
 
 	public static double normalRelativeAngle(double angle) {
-		if (angle > -Math.PI && angle <= Math.PI) {
+		if (angle > -PI && angle <= PI) {
 			return angle;
 		}
 		double fixedAngle = angle;
 
-		while (fixedAngle <= -Math.PI) {
-			fixedAngle += 2 * Math.PI;
+		while (fixedAngle <= -PI) {
+			fixedAngle += 2 * PI;
 		}
-		while (fixedAngle > Math.PI) {
-			fixedAngle -= 2 * Math.PI;
+		while (fixedAngle > PI) {
+			fixedAngle -= 2 * PI;
 		}
 		return fixedAngle;
 	}
