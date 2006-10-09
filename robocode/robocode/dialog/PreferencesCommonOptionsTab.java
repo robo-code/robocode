@@ -67,8 +67,8 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	private JCheckBox getShowResultsCheckBox() {
 		if (showResultsCheckBox == null) {
 			showResultsCheckBox = new JCheckBox("Show results when battle(s) ends");
-			showResultsCheckBox.setMnemonic('R');
-			showResultsCheckBox.setDisplayedMnemonicIndex(5);
+			showResultsCheckBox.setMnemonic('h');
+			showResultsCheckBox.setDisplayedMnemonicIndex(1);
 		}
 		return showResultsCheckBox;
 	}
