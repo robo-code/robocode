@@ -8,11 +8,13 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
- *     Matthew Reeder
- *     - Added keyboard mnemonics to tabs
  *     Flemming N. Larsen
  *     - Added Rendering Options tab
+ *     - Added Sound Options tab
+ *     - Added Common Options tab
  *     - Code cleanup
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics to View Options and Development Options tabs
  *******************************************************************************/
 package robocode.dialog;
 
@@ -25,8 +27,8 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder (keyboard mnemonics)
  * @author Flemming N. Larsen (current)
+ * @author Matthew Reeder (keyboard mnemonics)
  */
 public class PreferencesDialog extends JDialog implements WizardListener {
 
@@ -38,18 +40,17 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private PreferencesRenderingOptionsTab renderingOptionsTab;
 	private PreferencesSoundOptionsTab soundOptionsTab;
 	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
-
-	private EventHandler eventHandler = new EventHandler();
+	private PreferencesCommonOptionsTab commonOptionsTab;
 
 	private RobocodeManager manager;
 
-	private class EventHandler extends WindowAdapter {
+	private WindowAdapter eventHandler = new WindowAdapter() {
 		public void windowClosing(WindowEvent e) {
 			if (e.getSource() == PreferencesDialog.this) {
 				manager.getBattleManager().resumeBattle();
 			}
 		}
-	}
+	};
 
 	/**
 	 * PreferencesDialog constructor
@@ -126,6 +127,10 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 			tabbedPane.insertTab("Development Options", null, getDevelopmentOptionsTab(), null, 3);
 			tabbedPane.setMnemonicAt(3, KeyEvent.VK_D);
 			tabbedPane.setDisplayedMnemonicIndexAt(3, 0);
+
+			tabbedPane.insertTab("Common Options", null, getCommonOptionsTab(), null, 4);
+			tabbedPane.setMnemonicAt(4, KeyEvent.VK_O);
+			tabbedPane.setDisplayedMnemonicIndexAt(4, 1);
 		}
 		return tabbedPane;
 	}
@@ -158,11 +163,19 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		return developmentOptionsTab;
 	}
 
+	private JPanel getCommonOptionsTab() {
+		if (commonOptionsTab == null) {
+			commonOptionsTab = new PreferencesCommonOptionsTab(manager);
+		}
+		return commonOptionsTab;
+	}
+
 	public void finishButtonActionPerformed() {
 		viewOptionsTab.storePreferences();
 		renderingOptionsTab.storePreferences();
 		soundOptionsTab.storePreferences();
 		developmentOptionsTab.storePreferences();
+		commonOptionsTab.storePreferences();
 
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
