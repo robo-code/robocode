@@ -1,10 +1,11 @@
 Version 1.1.4 Beta
-(10/7/2006)
+(10/9/2006)
 o Bugfixes
-  -- Editor: When inserting text by copy'n'paste or search'n'replace into the Editor,
-     extra tabs were sometimes added
+  -- The BattleView was not updated on the primary monitor display on a dual monitor system
   -- Sounds: When enabling sounds on-the-fly when it was originally disabled, Robocode
      crashed/halted due to a NullPointerException
+  -- Editor: When inserting text by copy'n'paste or search'n'replace into the Editor,
+     extra tabs were sometimes added
 o Ranking Panel added to the Options menu
   -- The contributor of this feature is Luis Crespo (email: lcrespom at gmail.com)
   -- This panel shows the current robot rankings during battles
