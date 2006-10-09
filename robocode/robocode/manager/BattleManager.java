@@ -369,7 +369,7 @@ public class BattleManager {
 		try {
 			FileInputStream in = new FileInputStream(battleFilename);
 
-			battleProperties.load(in);
+			getBattleProperties().load(in);
 		} catch (FileNotFoundException e) {
 			Utils.log("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {

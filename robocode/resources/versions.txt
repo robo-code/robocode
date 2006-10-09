@@ -4,6 +4,8 @@ o Bugfixes
   -- The BattleView was not updated on the primary monitor display on a dual monitor system
   -- Sounds: When enabling sounds on-the-fly when it was originally disabled, Robocode
      crashed/halted due to a NullPointerException
+  -- Runtime exception (NullPointerException) when opening a battle the first time when a new
+     version of Robocode the first time
   -- Editor: When inserting text by copy'n'paste or search'n'replace into the Editor,
      extra tabs were sometimes added
 o Ranking Panel added to the Options menu
