@@ -16,8 +16,6 @@
 package robocode;
 
 
-import java.awt.Color;
-
 import robocode.peer.RobotPeer;
 import robocode.exception.*;
 
