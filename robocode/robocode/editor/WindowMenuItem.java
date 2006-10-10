@@ -24,6 +24,7 @@ import java.io.File;
  * 
  * @author Matthew Reeder (original)
  */
+@SuppressWarnings("serial")
 public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener {
 
 	// Maximum number of windows that will be shown on the menu (to get the rest, you'll

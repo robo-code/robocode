@@ -19,6 +19,7 @@ import javax.swing.text.*;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class LimitedDocument extends PlainDocument {
 	int maxRows = Integer.MAX_VALUE;
 	int maxCols = Integer.MAX_VALUE;

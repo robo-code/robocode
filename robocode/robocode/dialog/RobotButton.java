@@ -27,6 +27,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
 	private RobotPeer robotPeer;
 	private RobotDialog robotDialog;

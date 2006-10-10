@@ -27,6 +27,7 @@ import robocode.repository.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class AvailableRobotsPanel extends JPanel {
 
 	private Vector availableRobots = new Vector(); // <FileSpecification>
@@ -322,6 +323,7 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 
+	@SuppressWarnings("serial")
 	private class AvailablePackagesModel extends AbstractListModel {
 		public void changed() {
 			fireContentsChanged(this, 0, getSize());
@@ -337,6 +339,7 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 
+	@SuppressWarnings("serial")
 	private class AvailableRobotsModel extends AbstractListModel {
 		public void changed() {
 			fireContentsChanged(this, 0, getSize());
@@ -357,6 +360,7 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 
+	@SuppressWarnings("serial")
 	private class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
 		private boolean useShortNames = false;
 

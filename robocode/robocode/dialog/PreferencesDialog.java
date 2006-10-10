@@ -30,6 +30,7 @@ import robocode.manager.*;
  * @author Flemming N. Larsen (current)
  * @author Matthew Reeder (keyboard mnemonics)
  */
+@SuppressWarnings("serial")
 public class PreferencesDialog extends JDialog implements WizardListener {
 
 	private JPanel preferencesDialogContentPane;

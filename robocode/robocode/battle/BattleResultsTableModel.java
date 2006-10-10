@@ -24,6 +24,7 @@ import robocode.util.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
 	private Battle battle;
 	private Vector orderedContestants; // <ContestantPeer>

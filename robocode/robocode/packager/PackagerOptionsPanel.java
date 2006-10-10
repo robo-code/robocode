@@ -32,6 +32,7 @@ import robocode.repository.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class PackagerOptionsPanel extends WizardPanel {
 	RobotPackager robotPackager;
 	JCheckBox includeSource;

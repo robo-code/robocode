@@ -15,6 +15,7 @@ package robocode.exception;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class RobotException extends RuntimeException {
 
 	public RobotException() {

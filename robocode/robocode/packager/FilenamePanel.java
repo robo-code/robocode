@@ -33,6 +33,7 @@ import robocode.util.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class FilenamePanel extends WizardPanel {
 	private RobotPackager robotPackager;
 

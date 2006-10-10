@@ -24,6 +24,7 @@ import robocode.util.Utils;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class JavaDocument extends PlainDocument {
 	private boolean needsRedraw;
 	private EditWindow editWindow;

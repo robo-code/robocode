@@ -24,6 +24,7 @@ import robocode.manager.*;
 /**
  * @author Flemming N. Larsen (original)
  */
+@SuppressWarnings("serial")
 public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	private RobocodeManager manager;
@@ -435,6 +436,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		setMixerCompoBox("DirectAudioDevice");
 	}
 
+	@SuppressWarnings("serial")
 	private class MixerInfoCellRenderer extends javax.swing.plaf.basic.BasicComboBoxRenderer {
 
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

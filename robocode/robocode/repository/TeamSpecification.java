@@ -23,6 +23,7 @@ import robocode.util.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class TeamSpecification extends FileSpecification implements Serializable, Cloneable {
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";

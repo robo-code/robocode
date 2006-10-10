@@ -23,6 +23,7 @@ import java.io.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class ConsoleScrollPane extends JScrollPane {
 	private JTextArea textPane;
 	private Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);

@@ -24,6 +24,7 @@ import java.util.regex.*;
  * @author Matthew Reeder (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class FindReplaceDialog extends JDialog implements ActionListener {
 	private JTextField findField;
 	private JTextField replaceField;

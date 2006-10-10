@@ -25,6 +25,7 @@ import javax.swing.event.*;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class WizardController extends JPanel implements ChangeListener {
 
 	private EventHandler eventHandler = new EventHandler();

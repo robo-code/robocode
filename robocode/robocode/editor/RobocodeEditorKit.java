@@ -20,6 +20,7 @@ import java.io.*;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class RobocodeEditorKit extends DefaultEditorKit {
 	public EditWindow editWindow;
 

@@ -22,6 +22,7 @@ import javax.swing.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class NewBattleRulesTab extends JPanel {
 	private JLabel gunCoolingRateLabel;
 	private JTextField gunCoolingRateField;

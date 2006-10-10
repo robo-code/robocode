@@ -24,6 +24,7 @@ import javax.swing.*;
  * @author Matthew Reeder (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class MoreWindowsDialog extends JDialog implements ActionListener, MouseListener {
 	private JButton activateButton;
 	private JButton cancelButton;

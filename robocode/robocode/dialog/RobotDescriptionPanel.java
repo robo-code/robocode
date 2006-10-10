@@ -30,6 +30,7 @@ import robocode.manager.RobocodeManager;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class RobotDescriptionPanel extends JPanel {
 	JLabel robotNameLabel;
 	JLabel descriptionLabel[] = new JLabel[3];

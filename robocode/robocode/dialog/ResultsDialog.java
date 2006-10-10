@@ -29,6 +29,7 @@ import robocode.battle.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class ResultsDialog extends JDialog {
 
 	private Battle battle;

@@ -21,6 +21,7 @@ import java.io.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class ClassSpecification extends FileSpecification implements Serializable {
 
 	// Used in FileSpecification

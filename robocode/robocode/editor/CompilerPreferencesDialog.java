@@ -27,6 +27,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class CompilerPreferencesDialog extends JDialog {
 
 	JButton cancelButton;

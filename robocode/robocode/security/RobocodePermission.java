@@ -15,6 +15,7 @@ package robocode.security;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class RobocodePermission extends java.security.Permission {
 
 	public RobocodePermission(String name) {

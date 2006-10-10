@@ -33,6 +33,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen  (current)
  */
+@SuppressWarnings("serial")
 public class RobotSelectionPanel extends WizardPanel {
 
 	private AvailableRobotsPanel availableRobotsPanel;
@@ -379,6 +380,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
 		private boolean useShortNames;
 

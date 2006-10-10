@@ -32,6 +32,7 @@ import robocode.manager.*;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class RobotExtractor extends JDialog implements WizardListener {
 	String unusedrobotPath;
 

@@ -24,6 +24,7 @@ import java.io.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class FileSpecificationDatabase implements Serializable {
 
 	private Hashtable<String, FileSpecification> hash = new Hashtable<String, FileSpecification>(); 

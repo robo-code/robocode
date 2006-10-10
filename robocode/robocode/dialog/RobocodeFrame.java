@@ -35,6 +35,7 @@ import robocode.util.*;
  * @author Mathew Nelson (original)
  * @author Flemming N. Larsen, Matthew Reeder (current)
  */
+@SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
 	EventHandler eventHandler = new EventHandler();
 

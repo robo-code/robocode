@@ -22,7 +22,6 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 import java.awt.RenderingHints;
-import java.awt.RenderingHints.Key;
 
 import robocode.util.Utils;
 

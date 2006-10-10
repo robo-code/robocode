@@ -26,6 +26,7 @@ import static java.lang.Math.*;
  * 
  * @author Matthew Reeder (original)
  */
+@SuppressWarnings("serial")
 public class LineNumbers extends JComponent implements DocumentListener, MouseListener, MouseMotionListener,
 		CaretListener {
 

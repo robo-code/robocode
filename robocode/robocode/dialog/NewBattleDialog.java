@@ -29,6 +29,7 @@ import robocode.battle.BattleProperties;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class NewBattleDialog extends JDialog implements WizardListener {
 
 	private EventHandler eventHandler = new EventHandler();

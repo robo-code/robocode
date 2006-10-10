@@ -24,6 +24,7 @@ import javax.swing.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class ConsoleDialog extends JDialog {
 	private JPanel consoleDialogContentPane;
 	private JPanel buttonsPanel;

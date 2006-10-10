@@ -21,6 +21,7 @@ import javax.swing.event.*;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class WizardTabbedPane extends JTabbedPane implements Wizard {
 	private WizardController wizardController;
 	private int currentIndex = 0;

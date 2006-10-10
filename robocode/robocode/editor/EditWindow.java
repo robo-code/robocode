@@ -34,6 +34,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class EditWindow extends JInternalFrame implements CaretListener, PropertyChangeListener {
 
 	public RobocodeEditorKit editorKit;

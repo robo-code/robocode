@@ -26,6 +26,7 @@ import javax.swing.table.TableCellRenderer;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class ResultsTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
 	boolean isBordered;
 

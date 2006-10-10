@@ -29,6 +29,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	public final static Dimension BUTTON_SIZE = new Dimension(80, 25);
 	private RobotPeer robotPeer;

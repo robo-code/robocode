@@ -31,6 +31,7 @@ import robocode.render.RobocodeLogo;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class SplashScreen extends JWindow {
 	private final static Color LABEL_COLOR = Color.WHITE;
 
@@ -79,6 +80,7 @@ public class SplashScreen extends JWindow {
 	 * 
 	 * @return the splash panel
 	 */
+	@SuppressWarnings("serial")
 	private JPanel getSplashPanel() {
 		if (splashPanel == null) {
 			splashPanel = new JPanel() {

@@ -22,6 +22,7 @@ import robocode.Event;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class EventQueue extends Vector { // <Event>
 	public EventManager eventManager;
 

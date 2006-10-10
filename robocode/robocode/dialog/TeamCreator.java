@@ -30,6 +30,7 @@ import robocode.repository.*;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class TeamCreator extends JDialog implements WizardListener {
 
 	private JPanel teamCreatorContentPane;

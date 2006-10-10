@@ -15,6 +15,7 @@ package robocode.exception;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class DisabledException extends Error {
 
 	public DisabledException() {

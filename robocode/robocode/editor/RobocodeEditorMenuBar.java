@@ -28,6 +28,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenu fileMenu;
 

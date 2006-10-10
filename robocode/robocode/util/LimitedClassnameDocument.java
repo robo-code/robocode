@@ -18,6 +18,7 @@ import javax.swing.text.*;
 /**
  * @author Mathew A. Nelson (original)
  */
+@SuppressWarnings("serial")
 public class LimitedClassnameDocument extends LimitedDocument {
 
 	public LimitedClassnameDocument() {

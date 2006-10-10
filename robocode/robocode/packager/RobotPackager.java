@@ -38,6 +38,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class RobotPackager extends JDialog implements WizardListener {
 
 	private int minRobots = 1;

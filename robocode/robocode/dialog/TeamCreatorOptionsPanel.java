@@ -30,6 +30,7 @@ import robocode.repository.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class TeamCreatorOptionsPanel extends WizardPanel {
 	TeamCreator teamCreator;
 	robocode.packager.RobotPackager teamPackager;

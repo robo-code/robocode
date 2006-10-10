@@ -31,6 +31,7 @@ import robocode.manager.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class PreferencesViewOptionsTab extends WizardPanel {
 
 	private static final int MIN_TPS = 1;

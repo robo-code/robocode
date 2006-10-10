@@ -36,6 +36,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen, Matthew Reeder, Luis Crespo (current)
  */
+@SuppressWarnings("serial")
 public class RobocodeMenuBar extends JMenuBar {
 
 	// Battle menu

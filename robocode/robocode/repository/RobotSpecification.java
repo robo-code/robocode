@@ -23,6 +23,7 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class RobotSpecification extends FileSpecification implements Serializable {
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";

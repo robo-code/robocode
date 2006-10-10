@@ -22,6 +22,7 @@ import javax.swing.event.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class WizardCardPanel extends JPanel implements Wizard {
 	private WizardController wizardController;
 	private CardLayout cardLayout = null;

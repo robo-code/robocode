@@ -22,6 +22,7 @@ import robocode.manager.*;
 /**
  * @author Flemming N. Larsen (original)
  */
+@SuppressWarnings("serial")
 public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 	private RobocodeManager manager;

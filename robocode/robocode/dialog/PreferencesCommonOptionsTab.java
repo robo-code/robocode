@@ -21,6 +21,7 @@ import robocode.manager.*;
 /**
  * @author Flemming N. Larsen (original)
  */
+@SuppressWarnings("serial")
 public class PreferencesCommonOptionsTab extends WizardPanel {
 
 	private JPanel optionsPanel;

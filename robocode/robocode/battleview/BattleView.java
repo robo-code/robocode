@@ -51,6 +51,7 @@ import robocode.render.RenderImage;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class BattleView extends Canvas {
 	public static final int PAINTROBOCODELOGO = 0;
 	public static final int PAINTBATTLE = 1;

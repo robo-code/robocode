@@ -32,6 +32,7 @@ import robocode.util.*;
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder, Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class RobocodeEditor extends JFrame implements Runnable {
 	private JPanel robocodeEditorContentPane;
 
@@ -74,6 +75,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	 * order to override this, I need to rebind it to an Action when the
 	 * JEditorPane is created.
 	 */
+	@SuppressWarnings("serial")
 	class ReplaceAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			replaceDialog();

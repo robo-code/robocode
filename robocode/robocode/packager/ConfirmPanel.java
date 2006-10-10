@@ -28,6 +28,7 @@ import robocode.repository.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class ConfirmPanel extends WizardPanel {
 	RobotPackager robotPackager = null;
 

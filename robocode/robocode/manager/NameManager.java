@@ -21,6 +21,7 @@ import java.io.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
+@SuppressWarnings("serial")
 public class NameManager implements Serializable {
 	
 	private String fullClassName;
