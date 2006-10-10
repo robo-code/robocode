@@ -69,8 +69,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			// log("Component Shown!");
-			Vector selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots(); // <FileSpecification>
+			Vector<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots(); 
 
 			if (selectedRobots != null && (selectedRobots.size() == 1)) {
 				FileSpecification fileSpecification = (FileSpecification) selectedRobots.elementAt(0);

@@ -232,7 +232,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Packager");
-		Vector robotSpecificationsVector = robotManager.getRobotRepository().getRobotSpecificationsVector(// <FileSpecification>
+		Vector<FileSpecification> robotSpecificationsVector = robotManager.getRobotRepository().getRobotSpecificationsVector(
 				false, false, false, false, false, false);
 		String jarFilename = getFilenamePanel().getFilenameField().getText();
 		File f = new File(jarFilename);
@@ -252,7 +252,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 			out.println("Overwriting " + jarFilename);
 		}
-		Vector selectedRobots = getRobotSelectionPanel().getSelectedRobots(); // <FileSpecification>
+		Vector<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots(); 
 
 		// Create the jar file
 		Manifest manifest = new Manifest();

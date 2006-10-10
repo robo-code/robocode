@@ -88,7 +88,7 @@ public class ConfirmPanel extends WizardPanel {
 		return visible;
 	}
 
-	public void setSelectedRobots(Vector selectedRobots) { // <FileSpecification>
+	public void setSelectedRobots(Vector<FileSpecification> selectedRobots) {
 		getRobotListPanel().removeAll();
 
 		if (selectedRobots == null || selectedRobots.size() == 0) {

@@ -51,7 +51,6 @@ public class BattleManager {
 	private int pauseCount;
 	private String resultsFile;
 	private RobocodeManager manager;
-	Vector bugFixLoaderCache;
 	private int stepTurn;
 
 	/**
@@ -98,7 +97,7 @@ public class BattleManager {
 	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete) {
 		this.battleProperties = battleProperties;
 
-		Vector robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(// <FileSpecification>
+		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
 				false,
 				false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
@@ -162,7 +161,7 @@ public class BattleManager {
 
 	public void startNewBattle(robocode.control.BattleSpecification battleSpecification) {
 		this.battleProperties = battleSpecification.getBattleProperties();
-		Vector robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(// <FileSpecification>
+		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
 				false,
 				false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
@@ -207,12 +206,11 @@ public class BattleManager {
 		startNewBattle(battlingRobotsVector, false, battleSpecification);
 	}
 
-	private void startNewBattle(Vector battlingRobotsVector, boolean exitOnComplete,
-			robocode.control.BattleSpecification battleSpecification) { // <RobotClassManager>
+	private void startNewBattle(Vector<RobotClassManager> battlingRobotsVector, boolean exitOnComplete,
+			robocode.control.BattleSpecification battleSpecification) { 
 
 		Utils.log("Preparing battle...");
 		if (battle != null) {
-			bugFixLoaderCache = new Vector();
 			battle.stop();
 		}
 

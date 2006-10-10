@@ -76,18 +76,18 @@ public class FilenamePanel extends WizardPanel {
 				outgoingFile.mkdirs();
 			}
 			String jarName = "myrobots.jar";
-			Vector selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots(); // <FileSpecification>
+			Vector<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null && selectedRobots.size() == 1) {
-				jarName = ((FileSpecification) selectedRobots.elementAt(0)).getFullClassName() + "_"
-						+ robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
+				jarName = selectedRobots.elementAt(0).getFullClassName() + "_" +
+					robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
 			}
 				 
 			getFilenameField().setText(fileName + jarName);
 			Caret caret = getFilenameField().getCaret();
 
-			caret.setDot(fileName.length()); // robocode.getWriteRobotPath().length() + 10);
-			caret.moveDot(fileName.length() + jarName.length() - 4); // caret.getDot() + 16);
+			caret.setDot(fileName.length());
+			caret.moveDot(fileName.length() + jarName.length() - 4);
 
 			getFilenameField().requestFocus();
 		}
@@ -165,7 +165,7 @@ public class FilenamePanel extends WizardPanel {
 
 		File f = new File(saveDir);
 
-		JFileChooser chooser = new JFileChooser(f); // .getAbsoluteFile().toString());
+		JFileChooser chooser = new JFileChooser(f);
 
 		chooser.setCurrentDirectory(f);
 		

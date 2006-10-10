@@ -70,9 +70,9 @@ public class ClassAnalyzer {
 		 attribute_info attributes[attributes_count];
 		 }
 		 */
-		Vector referencedClasses = new Vector(); // <String>
+		Vector<String> referencedClasses = new Vector<String>(); 
 		String strings[];
-		Vector classNameIndexes = new Vector(); // <Integer>
+		Vector<Integer> classNameIndexes = new Vector<Integer>();
 
 		try {
 			DataInputStream in = new DataInputStream(new ByteArrayInputStream(classFile));
@@ -242,7 +242,7 @@ public class ClassAnalyzer {
 
 			if (className.indexOf("[") != 0) {
 				referencedClasses.add(className);
-			} // strings[((Integer)classNameIndexes.elementAt(i)).intValue()]);
+			}
 		}
 	
 		return referencedClasses;

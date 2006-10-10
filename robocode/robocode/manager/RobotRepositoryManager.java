@@ -39,7 +39,7 @@ public class RobotRepositoryManager {
 	private Repository repository;
 	private boolean cacheWarning;
 	private RobocodeManager manager;
-	private Vector updatedJarVector = new Vector(); // <FileSpecification>
+	private Vector<FileSpecification> updatedJarVector = new Vector<FileSpecification>();
 	private boolean write;
 
 	public RobotRepositoryManager(RobocodeManager manager) {
@@ -148,7 +148,7 @@ public class RobotRepositoryManager {
 			getSpecificationsInDirectory(f, f, "", false);
 		}
 
-		Vector fileSpecificationVector = getRobotDatabase().getFileSpecifications(); // <FileSpecification>
+		Vector<FileSpecification> fileSpecificationVector = getRobotDatabase().getFileSpecifications();
 
 		if (write) {
 			Utils.setStatus("Saving robot database");
@@ -215,7 +215,7 @@ public class RobotRepositoryManager {
 	}
 
 	private void cleanupDatabase() {
-		Vector externalDirectories = new Vector(); // <File>
+		Vector<File> externalDirectories = new Vector<File>();
 		String externalPath = manager.getProperties().getOptionsDevelopmentPath();
 		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
 
@@ -225,7 +225,7 @@ public class RobotRepositoryManager {
 			externalDirectories.add(f);
 		}
 
-		Vector fileSpecificationVector = getRobotDatabase().getFileSpecifications(); // <FileSpecification>
+		Vector<FileSpecification> fileSpecificationVector = getRobotDatabase().getFileSpecifications();
 
 		for (int i = 0; i < fileSpecificationVector.size(); i++) {
 			FileSpecification fs = (FileSpecification) fileSpecificationVector.elementAt(i);
@@ -269,9 +269,10 @@ public class RobotRepositoryManager {
 		repository = null;
 	}
 
-	private Vector getSpecificationsInDirectory(File rootDir, File dir, String prefix,
-			boolean isDevelopmentDirectory) { // <FileSpecification>
-		Vector robotList = new Vector(); // <FileSpecification>
+	private Vector<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
+
+		Vector<FileSpecification> robotList = new Vector<FileSpecification>();
+
 		// Order is important?
 		String fileTypes[] = {
 			".class", ".jar", ".team", ".jar.zip"
@@ -288,15 +289,14 @@ public class RobotRepositoryManager {
 					int jidx = files[i].getName().lastIndexOf(".jar_");
 
 					if (jidx > 0 && jidx == files[i].getName().length() - 5) {
-						robotList.add(getSpecificationsInDirectory(files[i], files[i], "", isDevelopmentDirectory));
+						robotList.addAll(getSpecificationsInDirectory(files[i], files[i], "", isDevelopmentDirectory));
 					} else {
 						jidx = files[i].getName().lastIndexOf(".zip_");
 						if (jidx > 0 && jidx == files[i].getName().length() - 5) {
-							robotList.add(getSpecificationsInDirectory(files[i], files[i], "", isDevelopmentDirectory));
+							robotList.addAll(getSpecificationsInDirectory(files[i], files[i], "", isDevelopmentDirectory));
 						} else {
-							robotList.add(
-									getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
-									isDevelopmentDirectory));
+							robotList.addAll(getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
+								isDevelopmentDirectory));
 						}
 					}
 				} else {
@@ -312,9 +312,8 @@ public class RobotRepositoryManager {
 					if (didx > 0 && didx == files[i].getName().length() - 5) {
 						continue;
 					} // Don't process .data dirs
-					robotList.add(
-							getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
-							isDevelopmentDirectory));
+					robotList.addAll(getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
+						isDevelopmentDirectory));
 				}
 			} else if (files[i].getName().indexOf("$") < 0 && files[i].getName().indexOf("robocode") != 0) {
 				FileSpecification cachedSpecification = getRobotDatabase().get(files[i].getPath());

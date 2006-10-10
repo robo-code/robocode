@@ -90,7 +90,7 @@ public class RobotMessageManager {
 		}
 	}
 	
-	public Vector getMessageEvents() {
+	public Vector<MessageEvent> getMessageEvents() {
 		return messageEvents;
 	}
 	

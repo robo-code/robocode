@@ -46,7 +46,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		Vector contestants = getContestants();
+		Vector<ContestantPeer> contestants = getContestants();
 
 		return (contestants != null) ? contestants.size() : 0;
 	}

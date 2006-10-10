@@ -149,7 +149,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		return rulesTab;
 	}
 
-	public Vector getSelectedRobots() { // <FileSpecification>
+	public Vector<robocode.repository.FileSpecification> getSelectedRobots() { 
 		return getRobotSelectionPanel().getSelectedRobots();
 	}
 

@@ -166,7 +166,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Extract");
-		Vector selectedRobots = getRobotSelectionPanel().getSelectedRobots(); // <FileSpecification>
+		Vector<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots(); 
 		FileSpecification spec = (FileSpecification) selectedRobots.elementAt(0);
 
 		try {

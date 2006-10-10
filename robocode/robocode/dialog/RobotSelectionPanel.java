@@ -272,12 +272,12 @@ public class RobotSelectionPanel extends WizardPanel {
 			if (i != 0) {
 				s += ",";
 			}
-			s += ((FileSpecification) selectedRobots.elementAt(i)).getNameManager().getUniqueFullClassNameWithVersion();
+			s += selectedRobots.elementAt(i).getNameManager().getUniqueFullClassNameWithVersion();
 		}
 		return s;
 	}
 
-	public Vector getSelectedRobots() {
+	public Vector<FileSpecification> getSelectedRobots() {
 		return selectedRobots;
 	}
 

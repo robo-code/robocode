@@ -819,10 +819,10 @@ public class Battle implements Runnable {
 				}
 
 				if (r.getMessageManager() != null) {
-					Vector messageEvents = r.getMessageManager().getMessageEvents();
+					Vector<MessageEvent> messageEvents = r.getMessageManager().getMessageEvents();
 
 					for (int j = 0; j < messageEvents.size(); j++) {
-						r.getEventManager().add((MessageEvent) messageEvents.elementAt(j));
+						r.getEventManager().add(messageEvents.elementAt(j));
 					}
 					messageEvents.clear();
 				}

@@ -70,7 +70,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			Vector selectedRobots; // <FileSpecification>
+			Vector<FileSpecification> selectedRobots; 
 
 			if (teamCreator != null) {
 				selectedRobots = teamCreator.getRobotSelectionPanel().getSelectedRobots();
@@ -79,7 +79,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 			}
 			
 			if (selectedRobots != null) {
-				FileSpecification robotSpecification = (FileSpecification) selectedRobots.elementAt(0);
+				FileSpecification robotSpecification = selectedRobots.elementAt(0);
 
 				getTeamNameLabel().setText("Please choose a name for your team: (Must be a valid Java classname)");
 				getTeamNameField().setText(robotSpecification.getNameManager().getShortClassName() + "Team");
