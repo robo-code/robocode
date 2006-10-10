@@ -436,7 +436,7 @@ public class BattleManager {
 	}
 
 	public void sendResultsToListener(Battle battle, robocode.control.RobocodeListener listener) {
-		Vector orderedRobots = new Vector(battle.getRobots()); // <RobotPeer>
+		Vector<RobotPeer> orderedRobots = new Vector<RobotPeer>(battle.getRobots());
 
 		Collections.sort(orderedRobots);
 
