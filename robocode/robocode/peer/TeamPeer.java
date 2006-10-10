@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Rewritten for Java 5
  *******************************************************************************/
 package robocode.peer;
 
@@ -17,33 +19,25 @@ import java.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
-public class TeamPeer implements ContestantPeer {
+@SuppressWarnings("serial")
+public class TeamPeer extends Vector<RobotPeer> implements ContestantPeer {
+
 	private String name;
-	private Vector peerVector = new Vector(); // <RobotPeer>
 	private RobotPeer teamLeader;
 	private TeamStatistics teamStatistics;
-		
+	
 	public TeamPeer(String name) {
 		this.name = name;
 		this.teamStatistics = new TeamStatistics(this);
 	}
-	
-	public int compareTo(Object o) {
-		if (!(o instanceof ContestantPeer)) {
-			return 0;
-		}
-		ContestantPeer r = (ContestantPeer) o;
 
-		if (r.getStatistics().getTotalScore() > getStatistics().getTotalScore()) {
-			return 1;
-		} else if (r.getStatistics().getTotalScore() < getStatistics().getTotalScore()) {
-			return -1;
-		} else {
-			return 0;
-		}
+	public int compareTo(ContestantPeer cp) {
+		return (int) (cp.getStatistics().getTotalScore() + cp.getStatistics().getCurrentScore() + 0.5) -
+			(int) (teamStatistics.getTotalScore() + teamStatistics.getCurrentScore() + 0.5);
 	}
-	
+
 	public ContestantStatistics getStatistics() {
 		return teamStatistics;
 	}
@@ -56,36 +50,22 @@ public class TeamPeer implements ContestantPeer {
 		return teamLeader;
 	}
 	
-	public void add(RobotPeer peer) {
-		if (!peerVector.contains(peer)) {
-			peerVector.add(peer);
-		}
+	public boolean add(RobotPeer r) {
 		if (teamLeader == null) {
-			teamLeader = peer;
+			teamLeader = r;
 		}
+		return super.add(r);
 	}
 	
 	public boolean contains(String s) {
 		if (s == null) {
 			return false;
 		}
-		for (int i = 0; i < size(); i++) {
-			if (s.equals(elementAt(i).getName())) {
+		for (RobotPeer r : this) {
+			if (s.equals(r.getName())) {
 				return true;
 			}
 		}
 		return false;
-	}
-	
-	public boolean contains(RobotPeer peer) {
-		return peerVector.contains(peer);
-	}
-	
-	public int size() {
-		return peerVector.size();
-	}
-	
-	public RobotPeer elementAt(int index) {
-		return (RobotPeer) peerVector.elementAt(index);
 	}
 }
