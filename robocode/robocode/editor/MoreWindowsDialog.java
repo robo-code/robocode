@@ -9,6 +9,7 @@
  *     Matthew Reeder
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Ported to Java 5
  *     - Optimizations
  *******************************************************************************/
 package robocode.editor;
@@ -30,11 +31,11 @@ public class MoreWindowsDialog extends JDialog implements ActionListener, MouseL
 	private JButton cancelButton;
 	private JButton closeButton;
 	private JList windowList;
-	private Vector windowListItems; // <WindowMenuItem>
+	private Vector<WindowMenuItem> windowListItems; 
 
 	public MoreWindowsDialog(RobocodeEditor window) {
 		super(window, "More Windows...", false);
-		windowListItems = new Vector(); // <WindowMenuItem>
+		windowListItems = new Vector<WindowMenuItem>();
 		JPanel listPanel = new JPanel(new GridLayout(1, 1));
 
 		listPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Open Windows"));
