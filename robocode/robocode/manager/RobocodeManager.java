@@ -94,7 +94,7 @@ public class RobocodeManager {
 	 */
 	public ThreadManager getThreadManager() {
 		if (threadManager == null) {
-			threadManager = new ThreadManager(this);
+			threadManager = new ThreadManager();
 		}
 		return threadManager;
 	}
