@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Ported to Java 5
  *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
@@ -26,7 +27,7 @@ import robocode.manager.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (current)
  */
-public abstract class FileSpecification implements Comparable, Serializable, Cloneable {
+public abstract class FileSpecification implements Comparable<FileSpecification>, Serializable, Cloneable {
 	
 	protected Properties props = new Properties();
 	
@@ -99,11 +100,9 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 
 		if (rootDir.getName().indexOf(".jar_") == rootDir.getName().length() - 5
 				|| rootDir.getName().indexOf(".zip_") == rootDir.getName().length() - 5) {
-			// log("getPackageFile: " + rootDir.getParentFile() + " ? " + robotCacheDir);
 			if (rootDir.getParentFile().equals(robotCacheDir)) {
 				src = new File(robotDir, rootDir.getName().substring(0, rootDir.getName().length() - 1));
 			} else if (rootDir.getParentFile().getParentFile().equals(robotCacheDir)) {
-				// src = new File(robotDir,rootDir.getParentFile().getName().substring(0,rootDir.getParentFile().getName().length()-1));
 				src = new File(rootDir.getParentFile(), rootDir.getName().substring(0, rootDir.getName().length() - 1));
 			}
 		}
@@ -113,8 +112,7 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 		this.packageFile = src;
 	}
 		
-	public File getJarFile() // File robotDir, File robotCacheDir)
-	{
+	public File getJarFile() {
 		return packageFile;
 	}
 	
@@ -126,15 +124,10 @@ public abstract class FileSpecification implements Comparable, Serializable, Clo
 		return developmentVersion;
 	}
 
-	public int compareTo(Object o) {
-		if (o instanceof FileSpecification) {
-			FileSpecification other = (FileSpecification) o;
-			
-			return Utils.compare(getNameManager().getFullPackage(), getNameManager().getFullClassName(),
-					getNameManager().getVersion(), other.getNameManager().getFullPackage(),
-					other.getNameManager().getFullClassName(), other.getNameManager().getVersion());
-		}
-		return 0;
+	public int compareTo(FileSpecification other) {
+		return Utils.compare(getNameManager().getFullPackage(), getNameManager().getFullClassName(),
+				getNameManager().getVersion(), other.getNameManager().getFullPackage(),
+				other.getNameManager().getFullClassName(), other.getNameManager().getVersion());
 	}
 
 	public boolean isSameFile(String filePath, long fileLength, long fileLastModified) {

@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - Ported to Java 5
  *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
@@ -23,7 +24,7 @@ import java.util.*;
  * @author Flemming N. Larsen (current)
  */
 public class Repository {
-	Vector fileSpecifications = new Vector(); // <FileSpecification>
+	Vector<FileSpecification> fileSpecifications = new Vector<FileSpecification>();
 
 	public void add(FileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);
@@ -31,10 +32,10 @@ public class Repository {
 	
 	public Vector getRobotSpecificationsVector(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) { // <FileSpecification>
-		Vector v = new Vector(); // <FileSpecification>
 
-		for (int i = 0; i < fileSpecifications.size(); i++) {
-			FileSpecification spec = (FileSpecification) fileSpecifications.elementAt(i);
+		Vector<FileSpecification> v = new Vector<FileSpecification>();
+
+		for (FileSpecification spec : fileSpecifications) {
 
 			if (spec.isDuplicate()) {
 				continue;
