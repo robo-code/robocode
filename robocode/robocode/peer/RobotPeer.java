@@ -190,16 +190,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public final void move(double distance) {
 		setMove(distance);
-		tick();
-		while (getDistanceRemaining() != 0) {
-			tick();
-		}
+		do {
+			tick(); // Always tick at least once
+		} while (getDistanceRemaining() != 0);
 	}
 
 	public void checkRobotCollision() {
-
-		double ramDamage = .6;
-
 		this.inCollision = false;
 		for (int i = 0; i < battle.getRobots().size(); i++) {
 			RobotPeer r = (RobotPeer) battle.getRobots().elementAt(i);
@@ -226,13 +222,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						if (distanceRemaining > 0) {
 							atFault = true;
 							distanceRemaining = 0;
-							statistics.scoreRammingDamage(i, ramDamage);
+							statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
 						} else {
-							statistics.damagedByRamming(ramDamage);
+							statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
 						}
-						this.setEnergy(energy - ramDamage);
-						r.setEnergy(r.energy - ramDamage);
-						r.statistics.damagedByRamming(ramDamage);
+						this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
+						r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
+						r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
 						this.inCollision = true;
 						x -= movedx;
 						y -= movedy;
@@ -248,13 +244,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						if (distanceRemaining < 0) {
 							atFault = true;
 							distanceRemaining = 0;
-							statistics.scoreRammingDamage(i, ramDamage);
+							statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
 						} else {
-							statistics.damagedByRamming(ramDamage);
+							statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
 						}
-						this.setEnergy(energy - ramDamage);
-						r.setEnergy(r.energy - ramDamage);
-						r.statistics.damagedByRamming(ramDamage);
+						this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
+						r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
+						r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
 						this.inCollision = true;
 						x -= movedx;
 						y -= movedy;
@@ -719,10 +715,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public final void turnGun(double radians) {
 		setTurnGun(radians);
-		tick();
-		while (getGunTurnRemaining() != 0) {
-			tick();
-		}
+		do {
+			tick(); // Always tick at least once
+		} while (getGunTurnRemaining() != 0);
 	}
 
 	public synchronized final void setTurnChassis(double radians) {
@@ -734,10 +729,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public final void turnChassis(double radians) {
 		setTurnChassis(radians);
-		tick(); // Always tick at least once
-		while (getTurnRemaining() != 0) {
-			tick();
-		}
+		do {
+			tick(); // Always tick at least once
+		} while (getTurnRemaining() != 0);
 	}
 
 	public synchronized final void setTurnRadar(double radians) {
@@ -746,10 +740,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public final void turnRadar(double radians) {
 		setTurnRadar(radians);
-		tick(); // Always tick at least once
-		while (getRadarTurnRemaining() != 0) {
-			tick();
-		}
+		do {
+			tick(); // Always tick at least once
+		} while (getRadarTurnRemaining() != 0);
 	}
 
 	public final synchronized void update() {
@@ -781,11 +774,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		// Scan false means robot did not call scan() manually.
 		// But if we're moving, scan
 		if (scan == false) {
-			if (lastHeading != heading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading || lastX != x
-					|| lastY != y || waitCondition != null) {
-				// if (noScan == false)
-				scan = true;
-			}
+			scan = (lastHeading != heading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading || lastX != x || lastY != y || waitCondition != null);
 		}
 	}
 
@@ -1228,10 +1217,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void waitFor(Condition condition) {
 		waitCondition = condition;
-		tick();
-		while (condition.test() == false) {
-			tick();
-		}
+		do {
+			tick();  // Always tick at least once
+		} while (!condition.test());
+
 		waitCondition = null;
 	}
 
