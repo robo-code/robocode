@@ -3,19 +3,21 @@
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.robocode.net/license/CPLv1.0.html
+ * http://www.net/license/CPLv1.0.html
  * 
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Updated for Java 5
+ *     - Optimized
  *     - Code cleanup
  *******************************************************************************/
 package robocode.peer.robot;
 
 
 import java.util.*;
-import robocode.Event;
+import robocode.*;
 
 
 /**
@@ -23,7 +25,7 @@ import robocode.Event;
  * @author Flemming N. Larsen (current)
  */
 @SuppressWarnings("serial")
-public class EventQueue extends Vector { // <Event>
+public class EventQueue extends Vector<Event> {
 	public EventManager eventManager;
 
 	public EventQueue(EventManager eventManager) {
@@ -40,16 +42,13 @@ public class EventQueue extends Vector { // <Event>
 	public void clear(boolean includingSystemEvents) {
 		if (includingSystemEvents) {
 			super.clear();
-			return;
-		}
-	
-		synchronized (this) {
-			for (int i = 0; i < size(); i++) {
-				if (elementAt(i) instanceof Event) {
-					if (!(elementAt(i) instanceof robocode.SkippedTurnEvent)
-							&& !(elementAt(i) instanceof robocode.DeathEvent) && !(elementAt(i) instanceof robocode.WinEvent)) {
-						removeElementAt(i);
-						i--;
+		} else {
+			synchronized (this) {
+				Event e;
+				for (int i = 0; i < size(); i++) {
+					e = elementAt(i);
+					if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+						removeElementAt(i--);
 					}
 				}
 			}
@@ -58,16 +57,11 @@ public class EventQueue extends Vector { // <Event>
 
 	public void clear(long clearTime) {
 		synchronized (this) {
+			Event e;
 			for (int i = 0; i < size(); i++) {
-				if (elementAt(i) instanceof Event) {
-					if (((Event) elementAt(i)).getTime() <= clearTime) {
-						if (!(elementAt(i) instanceof robocode.SkippedTurnEvent)
-								&& !(elementAt(i) instanceof robocode.DeathEvent)
-								&& !(elementAt(i) instanceof robocode.WinEvent)) {
-							removeElementAt(i);
-							i--;
-						}
-					}
+				e = elementAt(i);
+				if ((e.getTime() <= clearTime) && !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+					removeElementAt(i--);
 				}
 			}
 		}
@@ -75,7 +69,11 @@ public class EventQueue extends Vector { // <Event>
 
 	public void sort() {
 		synchronized (this) {
-			Collections.sort(this);
+			Collections.sort(this, new Comparator<Event>() {
+				public int compare(Event e1, Event e2) {
+					return e2.getPriority() - e1.getPriority();
+				}
+			});
 		}
 	}
 }
