@@ -19,6 +19,7 @@
  *     - Added bulletColor, scanColor, setBulletColor(), and setScanColor() and
  *       removed getColorIndex()
  *     - Integration with robocode.Rules
+ *     - Updated compareTo() to include current score during a battle
  *     - Optimizations
  *     - Code cleanup
  *     Luis Crespo
@@ -1059,19 +1060,15 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		halt = true;
 	}
 
-	public int compareTo(Object o) {
-		if (!(o instanceof ContestantPeer)) {
-			return 0;
-		}
-		ContestantPeer r = (ContestantPeer) o;
+	public int compareTo(ContestantPeer cp) {
+		double score1 = statistics.getTotalScore();
+		double score2 = cp.getStatistics().getTotalScore();
 
-		if (r.getStatistics().getTotalScore() > statistics.getTotalScore()) {
-			return 1;
-		} else if (r.getStatistics().getTotalScore() < statistics.getTotalScore()) {
-			return -1;
-		} else {
-			return 0;
+		if (battle.isRunning()) {
+			score1 += statistics.getCurrentScore();
+			score2 += cp.getStatistics().getCurrentScore();
 		}
+		return (int) (score2 + 0.5) - (int)(score1 + 0.5);
 	}
 
 	public Robot getRobot() {
