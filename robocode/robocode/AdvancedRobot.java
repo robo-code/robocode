@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated getXxxEvents() to Java 5 including new examples regarding loops
  *******************************************************************************/
 package robocode;
 
@@ -183,10 +185,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getAllEvents();
-	 *   Event e;
-	 *   for (int i = 0; i < v.size(); i++) {
-	 *      e = (Event)v.elementAt(i);
+	 *   for (Event e : getAllEvents()) {
 	 *      if (e instanceof HitRobotEvent)
 	 *        <i> (do something with e) </i>
 	 *      else if (e instanceof HitByBulletEvent)
@@ -210,7 +209,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.Event
 	 * @see java.util.Vector
 	 */
-	public Vector getAllEvents() {
+	public Vector<Event> getAllEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getAllEvents();
@@ -226,10 +225,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getBulletHitBulletEvents();
-	 *   BulletHitBulletEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (BulletHitBulletEvent)v.elementAt(i);
+	 *   for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
 	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
@@ -238,7 +234,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.BulletHitBulletEvent
 	 * @see java.util.Vector
 	 */
-	public Vector getBulletHitBulletEvents() {
+	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getBulletHitBulletEvents();
@@ -254,10 +250,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getBulletHitEvents();
-	 *   BulletHitEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (BulletHitEvent)v.elementAt(i);
+	 *   for (BulletHitEvent : getBulletHitEvents()) {
 	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
@@ -266,7 +259,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.BulletHitEvent
 	 * @see java.util.Vector
 	 */
-	public Vector getBulletHitEvents() {
+	public Vector<BulletHitEvent> getBulletHitEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getBulletHitEvents();
@@ -282,10 +275,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getBulletHitEvents();
-	 *   BulletMissedEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (BulletMissedEvent)v.elementAt(i);
+	 *   for (BulletMissedEvent e : getBulletHitEvents()) {
 	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
@@ -294,7 +284,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.BulletMissedEvent
 	 * @see java.util.Vector
 	 */
-	public Vector getBulletMissedEvents() {
+	public Vector<BulletMissedEvent> getBulletMissedEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getBulletMissedEvents();
@@ -391,10 +381,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getHitByBulletEvents();
-	 *   HitByBulletEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (HitByBulletEvent)v.elementAt(i);
+	 *   for (HitByBulletEvent e : getHitByBulletEvents()) {
 	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
@@ -403,7 +390,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.HitByBulletEvent
 	 * @see java.util.Vector
 	 */
-	public Vector getHitByBulletEvents() {
+	public Vector<HitByBulletEvent> getHitByBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getHitByBulletEvents();
@@ -419,10 +406,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getHitRobotEvents();
-	 *   HitRobotEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (HitRobotEvent)v.elementAt(i);
+	 *   for (HitRobotEvent e : getHitRobotEvents()) {
 	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
@@ -431,7 +415,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.HitRobotEvent
 	 * @see java.util.Vector
 	 */
-	public Vector getHitRobotEvents() {
+	public Vector<HitRobotEvent> getHitRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getHitRobotEvents();
@@ -447,10 +431,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getHitWallEvents();
-	 *   HitWallEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (HitWallEvent)v.elementAt(i);
+	 *   for (HitWallEvent e : getHitWallEvents()) {
 	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
@@ -459,7 +440,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.HitWallEvent
 	 * @see java.util.Vector
 	 */
-	public Vector getHitWallEvents() {
+	public Vector<HitWallEvent> getHitWallEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getHitWallEvents();
@@ -490,10 +471,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getRobotDeathEvents();
-	 *   RobotDeathEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (RobotDeathEvent)v.elementAt(i);
+	 *   for (RobotDeathEvent e : getRobotDeathEvents()) {
 	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
@@ -502,7 +480,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.RobotDeathEvent
 	 * @see java.util.Vector
 	 */
-	public Vector getRobotDeathEvents() {
+	public Vector<RobotDeathEvent> getRobotDeathEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getRobotDeathEvents();
@@ -518,10 +496,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *
 	 * <P>Example:
 	 * <pre>
-	 *   Vector v = getScannedRobotEvents();
-	 *   ScannedRobotEvent e;
-	 *   for (int i = 0; i < e.size(); i++) {
-	 *      e = (ScannedRobotEvent)v.elementAt(i);
+	 *   for (ScannedRobotEvent e : getScannedRobotEvents()) {
 	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
@@ -530,7 +505,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.ScannedRobotEvent
 	 * @see java.util.Vector
 	 */
-	public java.util.Vector getScannedRobotEvents() {
+	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getScannedRobotEvents();
