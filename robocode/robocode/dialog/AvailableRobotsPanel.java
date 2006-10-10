@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - Ported to Java 5
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -30,11 +31,11 @@ import robocode.repository.*;
 @SuppressWarnings("serial")
 public class AvailableRobotsPanel extends JPanel {
 
-	private Vector availableRobots = new Vector(); // <FileSpecification>
+	private Vector<FileSpecification> availableRobots = new Vector<FileSpecification>(); 
 
-	private Vector robotList = new Vector(); // <FileSpecification>
+	private Vector<FileSpecification> robotList = new Vector<FileSpecification>();
 
-	private Vector availablePackages = new Vector(); // <String>
+	private Vector<String> availablePackages = new Vector<String>();
 
 	private JScrollPane availableRobotsScrollPane;
 
@@ -100,17 +101,18 @@ public class AvailableRobotsPanel extends JPanel {
 		add(f5Label, BorderLayout.SOUTH);
 	}
 
-	public Vector getAvailableRobots() { // <FileSpecification>
+	public Vector<FileSpecification> getAvailableRobots() {
 		return availableRobots;
 	}
 
-	public Vector getRobotList() { // <FileSpecification>
+	public Vector<FileSpecification> getRobotList() {
 		return robotList;
 	}
 
-	public Vector getSelectedRobots() { // <FileSpecification>
+	public Vector<FileSpecification> getSelectedRobots() {
 		int sel[] = getAvailableRobotsList().getSelectedIndices();
-		Vector moves = new Vector(); // <FileSpecification>
+
+		Vector<FileSpecification> moves = new Vector<FileSpecification>();
 
 		for (int i = 0; i < sel.length; i++) {
 			moves.add(availableRobots.elementAt(sel[i]));
@@ -162,7 +164,7 @@ public class AvailableRobotsPanel extends JPanel {
 		return availableRobotsScrollPane;
 	}
 
-	public void setRobotList(Vector robotListVector) { // <FileSpecification>
+	public void setRobotList(Vector<FileSpecification> robotListVector) { 
 		AvailableRobotsPanel.this.robotList = robotListVector;
 		SwingUtilities.invokeLater(
 				new Runnable() {
@@ -171,7 +173,7 @@ public class AvailableRobotsPanel extends JPanel {
 				availableRobots.clear();
 
 				if (AvailableRobotsPanel.this.robotList == null) {
-					AvailableRobotsPanel.this.robotList = new Vector(); // <FileSpecification>
+					AvailableRobotsPanel.this.robotList = new Vector<FileSpecification>();
 					availablePackages.add("One moment please...");
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().clearSelection();
@@ -223,7 +225,7 @@ public class AvailableRobotsPanel extends JPanel {
 		}
 
 		for (int i = 0; i < sel.length; i++) {
-			String selectedPackage = (String) availablePackages.elementAt(sel[i]);
+			String selectedPackage = availablePackages.elementAt(sel[i]);
 
 			if (selectedPackage.equals("(All)")) {
 				robotNamesCellRenderer.setUseShortNames(false);
@@ -333,7 +335,7 @@ public class AvailableRobotsPanel extends JPanel {
 			return availablePackages.size();
 		}
 
-		public Object getElementAt(int which) {
+		public String getElementAt(int which) {
 			return availablePackages.elementAt(which);
 		}
 	}
