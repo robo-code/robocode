@@ -22,15 +22,14 @@ import java.util.Vector;
  * @author Mathew A. Nelson (original)
  */
 public class ThreadManager {
-	Vector groups = new Vector(); // <ThreadGroup>
-	Thread robotLoaderThread;
-	private RobotPeer loadingRobot;
-	Vector robots = new Vector(); // <RobotPeer>
-	RobocodeManager manager;
 
-	public ThreadManager(RobocodeManager manager) {
+	private Vector<ThreadGroup> groups = new Vector<ThreadGroup>();
+	private Thread robotLoaderThread;
+	private RobotPeer loadingRobot;
+	private Vector<RobotPeer> robots = new Vector<RobotPeer>(); 
+
+	public ThreadManager() {
 		super();
-		this.manager = manager;
 	}
 
 	public void addThreadGroup(ThreadGroup g, RobotPeer r) {
