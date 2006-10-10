@@ -30,8 +30,8 @@ public class Repository {
 		fileSpecifications.add(fileSpecification);
 	}
 	
-	public Vector getRobotSpecificationsVector(boolean onlyWithSource, boolean onlyWithPackage,
-			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) { // <FileSpecification>
+	public Vector<FileSpecification> getRobotSpecificationsVector(boolean onlyWithSource, boolean onlyWithPackage,
+			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
 
 		Vector<FileSpecification> v = new Vector<FileSpecification>();
 
