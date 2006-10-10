@@ -12,6 +12,7 @@
  *     - Added keyboard mnemonics to buttons
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - Ported to Java 5
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -67,7 +68,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
 	private RobotNameCellRenderer robotNamesCellRenderer;
-	private Vector selectedRobots = new Vector(); // <FileSpecification>
+	private Vector<FileSpecification> selectedRobots = new Vector<FileSpecification>();
 	private boolean showNumRoundsPanel;
 	private RobotRepositoryManager robotManager;
 	private boolean listBuilt;
@@ -132,7 +133,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private void addAllButtonActionPerformed() {
 		JList selectedList = getSelectedRobotsList();
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) selectedList.getModel();
-		Vector availableRobots = availableRobotsPanel.getAvailableRobots(); // <FileSpecification>
+		Vector<FileSpecification> availableRobots = availableRobotsPanel.getAvailableRobots();
 
 		for (int i = 0; i < availableRobots.size(); i++) {
 			selectedRobots.add(availableRobots.elementAt(i));
@@ -151,7 +152,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private void addButtonActionPerformed() {
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) getSelectedRobotsList().getModel();
-		Vector moves = availableRobotsPanel.getSelectedRobots(); // <FileSpecification>
+		Vector<FileSpecification> moves = availableRobotsPanel.getSelectedRobots();
 
 		for (int i = 0; i < moves.size(); i++) {
 			selectedRobots.add(moves.elementAt(i));
@@ -449,8 +450,8 @@ public class RobotSelectionPanel extends WizardPanel {
 	public void buildRobotList() {
 		new Thread(new Runnable() {
 			public void run() {
-				getAvailableRobotsPanel().setRobotList(null); // new Vector<FileSpecification>());
-				Vector v = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsVector(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots); // <FileSpecification>
+				getAvailableRobotsPanel().setRobotList(null);
+				Vector<FileSpecification> v = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsVector(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots); 
 
 				getAvailableRobotsPanel().setRobotList(v);
 				if (selectedRobots != null && !selectedRobots.equals("")) {
@@ -603,7 +604,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		getNumRoundsTextField().setText("" + numRounds);
 	}
 
-	private void setSelectedRobots(Vector robotList, String selectedRobotsString) { // <FileSpecification>
+	private void setSelectedRobots(Vector<FileSpecification> robotList, String selectedRobotsString) { 
 		if (selectedRobotsString != null) {
 			StringTokenizer tokenizer;
 
