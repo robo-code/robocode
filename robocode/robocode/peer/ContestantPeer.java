@@ -8,14 +8,17 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5
  *******************************************************************************/
 package robocode.peer;
 
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
-public interface ContestantPeer extends Comparable { // <Object>
+public interface ContestantPeer extends Comparable<ContestantPeer> {
 	public ContestantStatistics getStatistics();
 
 	public String getName();

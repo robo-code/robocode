@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced ContestantPeerVector with plain Vector
+ *     - Ported to Java 5
  *     - Code cleanup
  *******************************************************************************/
 package robocode.battle;
@@ -27,13 +28,13 @@ import robocode.util.*;
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
 	private Battle battle;
-	private Vector orderedContestants; // <ContestantPeer>
+	private Vector<ContestantPeer> orderedContestants;
 	private String title;
 	
 	public BattleResultsTableModel(Battle battle) {
 		super();
 		this.battle = battle;
-		orderedContestants = new Vector(battle.getContestants()); // <ContestantPeer>
+		orderedContestants = new Vector<ContestantPeer>(battle.getContestants()); 
 		Collections.sort(orderedContestants);
 	}
 
