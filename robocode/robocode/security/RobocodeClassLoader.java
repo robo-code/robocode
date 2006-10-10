@@ -146,7 +146,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		
 			dis.readFully(buff);
 			dis.close();
-			Vector v = ClassAnalyzer.getReferencedClasses(buff);
+			Vector<String> v = ClassAnalyzer.getReferencedClasses(buff);
 
 			robotClassManager.addReferencedClasses(v);
 			uid1 += v.size();

@@ -43,7 +43,7 @@ public class ClassAnalyzer {
 		super();
 	}
 
-	public static Vector getReferencedClasses(byte[] classFile) {
+	public static Vector<String> getReferencedClasses(byte[] classFile) {
 
 		/*
 		 http://java.sun.com/docs/books/vmspec/2nd-edition/html/ClassFile.doc.html
@@ -246,5 +246,5 @@ public class ClassAnalyzer {
 		}
 	
 		return referencedClasses;
-	}              
+	}
 }
