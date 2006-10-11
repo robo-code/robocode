@@ -67,7 +67,7 @@ public class ConsoleScrollPane extends JScrollPane {
 		initialize();
 	}
 
-	public synchronized void append(String text) {
+	public void append(String text) {
 		getTextPane().append(text);
 	}
 

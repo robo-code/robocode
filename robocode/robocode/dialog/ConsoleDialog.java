@@ -65,7 +65,7 @@ public class ConsoleDialog extends JDialog {
 		initialize();
 	}
 
-	public synchronized void append(String text) {
+	public void append(String text) {
 		getScrollPane().append(text);
 	}
 
