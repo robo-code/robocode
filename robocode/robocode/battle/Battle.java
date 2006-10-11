@@ -66,8 +66,8 @@ public class Battle implements Runnable {
 	private long inactivityTime;
 
 	// TPS and FPS related items
-	int desiredTPS = 30;
-	long startTimeThisSec = 0;
+	private int desiredTPS = 30;
+	private long startTimeThisSec = 0;
 
 	// Turn skip related items	
 	private int maxSkippedTurns = 30;
@@ -835,8 +835,7 @@ public class Battle implements Runnable {
 
 		// Check game over
 		if (oneTeamRemaining()) {
-			if (endTimer == 0) // 4 * 30)
-			{
+			if (endTimer == 0) {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
