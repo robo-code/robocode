@@ -224,7 +224,7 @@ public class BattleView extends Canvas {
 
 		// Scale font
 		smallFont = new Font("Dialog", Font.PLAIN, (int) (10 / scale));
-		smallFontMetrics = bufferStrategy.getDrawGraphics().getFontMetrics(smallFont);
+		smallFontMetrics = offscreenGfx.getFontMetrics(smallFont);
 
 		// Initialize ground image
 		if (drawGround) {
@@ -485,11 +485,9 @@ public class BattleView extends Canvas {
 		if (robotPeer.isSGPaintEnabled()) {
 			robotPeer.getRobot().onPaint(g);
 		} else {
-			synchronized (mirroredGraphics) {
-				mirroredGraphics.bind(g, battleField.getHeight());
-				robotPeer.getRobot().onPaint(mirroredGraphics);
-				mirroredGraphics.release();
-			}
+			mirroredGraphics.bind(g, battleField.getHeight());
+			robotPeer.getRobot().onPaint(mirroredGraphics);
+			mirroredGraphics.release();
 		}
 
 		// Restore the rendering attributes
