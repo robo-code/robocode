@@ -131,16 +131,12 @@ public class SplashScreen extends JWindow {
 		addWindowListener(eventHandler);
 	}
 
-	public synchronized boolean isPainted() {
+	public boolean isPainted() {
 		return painted;
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		setPainted(true);
-	}
-
-	public synchronized void setPainted(boolean newPainted) {
-		painted = newPainted;
+		painted = true;
 	}
 }
