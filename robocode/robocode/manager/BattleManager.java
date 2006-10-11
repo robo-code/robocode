@@ -214,7 +214,7 @@ public class BattleManager {
 			battle.stop();
 		}
 
-		BattleField battleField = new ShapesBattleField(battleProperties.getBattlefieldWidth(),
+		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight());
 
 		if (manager.isGUIEnabled()) {

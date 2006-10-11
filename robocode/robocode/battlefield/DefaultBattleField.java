@@ -6,21 +6,25 @@
  * http://www.robocode.net/license/CPLv1.0.html
  * 
  * Contributors:
- *     Mathew Nelson - initial API and implementation
+ *     Mathew Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Rewritten
  *******************************************************************************/
 package robocode.battlefield;
 
 
-import robocode.util.*;
+import java.awt.geom.Rectangle2D;
 
 
 /**
  * @author Mathew A. Nelson (original)
  */
 public class DefaultBattleField implements BattleField {
-	public int width;
-	public int height;
-	public BoundingRectangle boundingBox;
+
+	private int width;
+	private int height;
+	private Rectangle2D.Float boundingBox;
 
 	/**
 	 * BattleField constructor.
@@ -29,10 +33,10 @@ public class DefaultBattleField implements BattleField {
 		super();
 		this.width = width;
 		this.height = height;
-		this.boundingBox = new BoundingRectangle(0, 0, width, height);
+		this.boundingBox = new Rectangle2D.Float(0, 0, width, height);
 	}
 
-	public BoundingRectangle getBoundingBox() {
+	public Rectangle2D.Float getBoundingBox() {
 		return boundingBox;
 	}
 
@@ -46,9 +50,11 @@ public class DefaultBattleField implements BattleField {
 
 	public void setHeight(int newHeight) {
 		height = newHeight;
+		boundingBox.height = newHeight;
 	}
 
 	public void setWidth(int newWidth) {
 		width = newWidth;
+		boundingBox.width = newWidth;
 	}
 }

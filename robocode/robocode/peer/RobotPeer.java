@@ -76,7 +76,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	private BattleField battleField;
 
-	private BoundingRectangle boundingBox;
+	private Rectangle2D.Float boundingBox;
 	private Arc2D.Double scanArc;
 
 	private boolean adjustGunForBodyTurn;
@@ -381,7 +381,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return battle.getBattleField().getWidth();
 	}
 
-	public synchronized BoundingRectangle getBoundingBox() {
+	public synchronized Rectangle2D.Float getBoundingBox() {
 		return boundingBox;
 	}
 
@@ -1249,7 +1249,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		robotThreadManager = new RobotThreadManager(this);
 		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
 		eventManager = new EventManager(this);
-		boundingBox = new BoundingRectangle();
+		boundingBox = new Rectangle2D.Float();
 		scanArc = new Arc2D.Double();
 		this.teamPeer = robotClassManager.getTeamManager();
 
@@ -1493,7 +1493,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		this.getCallCount = getCallCount;
 	}
 
-	public boolean intersectsLine(BoundingRectangle r, double x1, double y1, double x2, double y2) {
+	public boolean intersectsLine(Rectangle2D.Float r, double x1, double y1, double x2, double y2) {
 		int out1, out2;
 
 		if ((out2 = r.outcode(x2, y2)) == 0) {
