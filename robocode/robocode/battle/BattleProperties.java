@@ -20,9 +20,14 @@ import java.io.*;
  * @author Mathew A. Nelson (original)
  */
 public class BattleProperties {
-	
-	private Properties props = new Properties();
-	
+
+	private final static String BATTLEFIELD_WIDTH = "robocode.battleField.width";
+	private final static String BATTLEFIELD_HEIGHT = "robocode.battleField.height";
+	private final static String BATTLE_NUMROUNDS = "robocode.battle.numRounds";
+	private final static String BATTLE_GUNCOOLINGRATE = "robocode.battle.gunCoolingRate";
+	private final static String BATTLE_RULES_INACTIVITYTIME = "robocode.battle.rules.inactivityTime";
+	private final static String BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots";
+
 	private int battlefieldWidth = 800;
 	private int battlefieldHeight = 600;
 	private int numRounds = 10;
@@ -30,12 +35,7 @@ public class BattleProperties {
 	private long inactivityTime = 450;
 	private String selectedRobots;
 	
-	public final static String BATTLEFIELD_WIDTH = "robocode.battleField.width";
-	public final static String BATTLEFIELD_HEIGHT = "robocode.battleField.height";
-	public final static String BATTLE_NUMROUNDS = "robocode.battle.numRounds";
-	public final static String BATTLE_GUNCOOLINGRATE = "robocode.battle.gunCoolingRate";
-	public final static String BATTLE_RULES_INACTIVITYTIME = "robocode.battle.rules.inactivityTime";
-	public final static String BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots";
+	private Properties props = new Properties();
 
 	/**
 	 * Gets the battlefieldWidth.
