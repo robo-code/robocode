@@ -30,9 +30,9 @@ import robocode.peer.RobotPeer;
  * 
  * @author Luis Crespo
  */
+@SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
-	private static final long serialVersionUID = 1L;
 	private RobocodeManager manager;
 	private Battle battle;
 
@@ -77,15 +77,8 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 		switch (col) {
 		case 0:
-			String name;
-			
-			if (cp instanceof RobotPeer) {
-				name = ((RobotPeer) cp).getVeryShortName(); 
-			} else {
-				name = cp.getName();
-			}
+			String name = (cp instanceof RobotPeer) ? ((RobotPeer) cp).getVeryShortName() : cp.getName(); 
 
-			// return Utils.getPlacementString(row+1) + ": " + name;	 --> Discarded: space is very limited
 			return "" + (row + 1) + ": " + name;
 
 		case 1:
