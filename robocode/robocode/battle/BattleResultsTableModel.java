@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Replaced ContestantPeerVector with plain Vector
  *     - Ported to Java 5
+ *     - Optimized
  *     - Code cleanup
  *******************************************************************************/
 package robocode.battle;
@@ -96,62 +97,59 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	public Object getValueAt(int row, int col) {
 		ContestantPeer r = (ContestantPeer) orderedContestants.elementAt(row);
 
+		ContestantStatistics statistics = r.getStatistics(); 
+		
 		switch (col) {
 		case 0: {
 			int place = row + 1;
-			int checkRow = row + 1;
 
-			while (checkRow < getRowCount()
-					&& r.getStatistics().getTotalScore()
-							== ((ContestantPeer) orderedContestants.elementAt(checkRow)).getStatistics().getTotalScore()) {
+			while (place < getRowCount() && statistics.getTotalScore()
+					== orderedContestants.elementAt(place).getStatistics().getTotalScore()) {
 				place++;
-				checkRow++;
 			}
-			if (r instanceof TeamPeer) {
-				return Utils.getPlacementString(place) + ": Team: " + r.getName();
-			} else {
-				return Utils.getPlacementString(place) + ": " + r.getName();
-			}
+			String seperator = (r instanceof TeamPeer) ? ": Team: " : ": ";
+
+			return Utils.getPlacementString(place) + seperator + r.getName();
 		}
 
 		case 1: {
-			return "" + (int) (r.getStatistics().getTotalScore());
+			return "" + (int) (statistics.getTotalScore());
 		}
 
 		case 2: {
-			return "" + (int) (r.getStatistics().getTotalSurvivalScore());
+			return "" + (int) (statistics.getTotalSurvivalScore());
 		}
 
 		case 3: {
-			return "" + (int) (r.getStatistics().getTotalWinnerScore());
+			return "" + (int) (statistics.getTotalWinnerScore());
 		}
 
 		case 4: {
-			return "" + (int) (r.getStatistics().getTotalBulletDamageScore());
+			return "" + (int) (statistics.getTotalBulletDamageScore());
 		}
 
 		case 5: {
-			return "" + (int) (r.getStatistics().getTotalKilledEnemyBulletScore());
+			return "" + (int) (statistics.getTotalKilledEnemyBulletScore());
 		}
 
 		case 6: {
-			return "" + (int) (r.getStatistics().getTotalRammingDamageScore());
+			return "" + (int) (statistics.getTotalRammingDamageScore());
 		}
 
 		case 7: {
-			return "" + (int) (r.getStatistics().getTotalKilledEnemyRammingScore());
+			return "" + (int) (statistics.getTotalKilledEnemyRammingScore());
 		}
 
 		case 8: {
-			return "" + (int) (r.getStatistics().getTotalFirsts());
+			return "" + (int) (statistics.getTotalFirsts());
 		}
 
 		case 9: {
-			return "" + (int) (r.getStatistics().getTotalSeconds());
+			return "" + (int) (statistics.getTotalSeconds());
 		}
 
 		case 10: {
-			return "" + (int) (r.getStatistics().getTotalThirds());
+			return "" + (int) (statistics.getTotalThirds());
 		}
 
 		default:
@@ -161,10 +159,13 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 	public void print(java.io.PrintStream out) {
 		out.println(getTitle());
+
 		for (int col = 0; col < getColumnCount(); col++) {
 			out.print(getColumnName(col) + "\t");
 		}
+
 		out.println();
+
 		for (int row = 0; row < getRowCount(); row++) {
 			for (int col = 0; col < getColumnCount(); col++) {
 				out.print(getValueAt(row, col) + "\t");
