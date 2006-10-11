@@ -557,7 +557,7 @@ public class EventManager {
 		Event currentEvent = null;
 
 		if (eventQueue.size() > 0) {
-			currentEvent = (Event) eventQueue.elementAt(0);
+			currentEvent = eventQueue.elementAt(0);
 		}
 		while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority) {
 			// robotPeer.out.println("processing event of priority: " + currentEvent.getPriority() + " in loop with ctep: " + currentTopEventPriority);
@@ -623,7 +623,7 @@ public class EventManager {
 
 			} catch (EventInterruptedException e) {
 				fireAssistValid = false;
-				currentEvent = (Event) eventQueue.elementAt(0);
+				currentEvent = eventQueue.elementAt(0);
 			} catch (RuntimeException e) {
 				currentTopEventPriority = oldTopEventPriority;
 				throw e;
@@ -633,7 +633,7 @@ public class EventManager {
 			}
 			currentTopEventPriority = oldTopEventPriority;
 			if (eventQueue.size() > 0) {
-				currentEvent = (Event) eventQueue.elementAt(0);
+				currentEvent = eventQueue.elementAt(0);
 			} else {
 				currentEvent = null;
 			}
