@@ -435,7 +435,7 @@ public class Battle implements Runnable {
 		return exitOnComplete;
 	}
 
-	public synchronized boolean isRobotsLoaded() {
+	public boolean isRobotsLoaded() {
 		return robotsLoaded;
 	}
 
@@ -1139,11 +1139,11 @@ public class Battle implements Runnable {
 	 * 
 	 * @return Returns a int
 	 */
-	public synchronized int getActiveRobots() {
+	public int getActiveRobots() {
 		return activeRobots;
 	}
 
-	private synchronized boolean oneTeamRemaining() {
+	private boolean oneTeamRemaining() {
 		if (getActiveRobots() <= 1) {
 			return true;
 		}
@@ -1201,7 +1201,7 @@ public class Battle implements Runnable {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public synchronized boolean isUnsafeLoaderThreadRunning() {
+	public boolean isUnsafeLoaderThreadRunning() {
 		return unsafeLoaderThreadRunning;
 	}
 
