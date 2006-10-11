@@ -27,14 +27,11 @@ public class BufferedPipedInputStream extends InputStream {
 		this.out = out;
 	}
 	
-	/*
-	 * @see InputStream#read()
-	 */
 	public int read() throws IOException {
 		return out.read();
 	}
-	
-	public synchronized int read(byte b[], int off, int len) throws IOException {
+
+	public int read(byte b[], int off, int len) throws IOException {
 		return out.read(b, off, len);
 	}
 	

@@ -130,7 +130,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 		return count;
 	}	
 	
-	protected synchronized int available() {
+	protected int available() {
 		if (writeIndex == readIndex) {
 			return 0;
 		} else if (writeIndex > readIndex) {
@@ -139,7 +139,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 			return buf.length - readIndex + writeIndex;
 		}
 	}
-	
+
 	public BufferedPipedInputStream getInputStream() {
 		if (in == null) {
 			in = new BufferedPipedInputStream(this);
@@ -148,7 +148,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 	}
 	
 	public synchronized void close() {
-		this.closed = true;
+		closed = true;
 		if (waiting) {
 			notify();
 		}
