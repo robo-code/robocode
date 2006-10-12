@@ -399,7 +399,7 @@ public class RobocodeFrame extends JFrame {
 	private void initialize() {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setTitle("Robocode");
-		setIconImage(ImageUtil.getImage(this, "/resources/icons/icon.jpg"));
+		setIconImage(ImageUtil.getImage(this, "/resources/icons/robocode-icon.png"));
 		setResizable(true);
 		
 		// FNL: Make sure that menus are heavy-weight components so that the menus are not painted

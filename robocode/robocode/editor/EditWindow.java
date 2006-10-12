@@ -114,7 +114,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 			setIconifiable(true);
 			setClosable(true);
 			setMaximum(false);
-			setFrameIcon(new ImageIcon(getClass().getResource("/resources/icons/icon.jpg")));
+			setFrameIcon(new ImageIcon(getClass().getResource("/resources/icons/robocode-icon.png")));
 			setSize(553, 441);
 			setMaximizable(true);
 			setTitle("Edit Window");

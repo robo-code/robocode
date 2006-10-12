@@ -554,7 +554,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			}
 		});
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		setIconImage(ImageUtil.getImage(this, "/resources/icons/icon.jpg"));
+		setIconImage(ImageUtil.getImage(this, "/resources/icons/robocode-icon.png"));
 		setTitle("Robot Editor");
 		setJMenuBar(getRobocodeEditorMenuBar());
 		setContentPane(getRobocodeEditorContentPane());
