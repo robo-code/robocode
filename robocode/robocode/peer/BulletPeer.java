@@ -19,6 +19,8 @@ package robocode.peer;
 
 
 import java.awt.geom.*;
+import java.util.Vector;
+
 import robocode.battle.*;
 import robocode.battlefield.*;
 import robocode.*;
@@ -100,61 +102,61 @@ public class BulletPeer {
 	}
 
 	public void checkBulletCollision() {
-		BulletPeer b = null;
-
-		for (int i = 0; b != this && i < battle.getBullets().size(); i++) {
-			b = (BulletPeer) battle.getBullets().elementAt(i);
-			if (b != null && b != this && b.isActive()) {
-				if (boundingLine.intersectsLine(b.getBoundingLine())
-						&& !boundingLine.getP1().equals(b.getBoundingLine().getP2())
-						&& !boundingLine.getP2().equals(b.getBoundingLine().getP1())) {
+		for (BulletPeer b : battle.getBullets()) {
+			if (!(b == null || b == this) && b.active && boundingLine.intersectsLine(b.boundingLine)) {
+				synchronized (this) {
 					bulletState = BULLET_STATE_HIT_BULLET;
 					active = false;
 					b.active = false;
 					hitBullet = true;
 					hitBulletTime = 0;
 					frame = 0;
-					setX(lastX);
-					setY(lastY);
-					owner.getEventManager().add(new BulletHitBulletEvent(getBullet(), b.getBullet()));
-					b.getOwner().getEventManager().add(new BulletHitBulletEvent(b.getBullet(), getBullet()));
-					break;
+					x = lastX;
+					y = lastY;
 				}
+				owner.getEventManager().add(new BulletHitBulletEvent(bullet, b.bullet));
+				b.owner.getEventManager().add(new BulletHitBulletEvent(bullet, bullet));
+				break;
 			}
 		}
 	}
 
 	public void checkRobotCollision() {
-		for (int i = 0; i < battle.getRobots().size(); i++) {
-			RobotPeer r = (RobotPeer) battle.getRobots().elementAt(i);
+		RobotPeer r;
+		Vector<RobotPeer> robots = battle.getRobots();
 
-			if (r != null && r != owner && !r.isDead()) {
-				if (r.getBoundingBox().intersectsLine(boundingLine)) {
-					double damage = Rules.getBulletDamage(power);
-					
-					double score = damage;
+		for (int i = 0; i < robots.size(); i++) {
+			r = robots.elementAt(i);
 
-					if (score > r.getEnergy()) {
-						score = r.getEnergy();
+			if (!(r == null || r == owner || r.isDead()) && r.getBoundingBox().intersectsLine(boundingLine)) {
+				double damage = Rules.getBulletDamage(power);
+
+				double score = damage;
+
+				if (score > r.getEnergy()) {
+					score = r.getEnergy();
+				}
+				r.setEnergy(r.getEnergy() - damage);
+
+				owner.getRobotStatistics().scoreBulletDamage(i, score);
+				r.getRobotStatistics().damagedByBullet(score);
+
+				if (r.getEnergy() <= 0) {
+					if (!r.isDead()) {
+						r.setDead(true);
+						owner.getRobotStatistics().scoreKilledEnemyBullet(i);
 					}
-					r.setEnergy(r.getEnergy() - damage);
+				}
+				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 
-					owner.getRobotStatistics().scoreBulletDamage(i, score);
-					r.getRobotStatistics().damagedByBullet(score);
+				r.getEventManager().add(
+						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
+						getBullet()));
 
-					if (r.getEnergy() <= 0) {
-						if (!r.isDead()) {
-							r.setDead(true);
-							owner.getRobotStatistics().scoreKilledEnemyBullet(i);
-						}
-					}
-					owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
+				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
 
-					r.getEventManager().add(
-							new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
-							getBullet()));
+				synchronized (this) {
 					bulletState = BULLET_STATE_HIT_VICTIM;
-					owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
 					active = false;
 					hitVictim = true;
 					hitVictimTime = 0;
@@ -162,102 +164,96 @@ public class BulletPeer {
 					victim = r;
 					deltaX = lastX - r.getX();
 					deltaY = lastY - r.getY();
-					double dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+					double dist = Math.hypot(deltaX, deltaY);
 
 					if (dist > 0) {
 						double mult = 10 / dist;
-
+	
 						deltaX *= mult;
 						deltaY *= mult;
 					}
 					setX(r.getX() + deltaX);
 					setY(r.getY() + deltaY);
-					break;
 				}
+				break;
 			}
 		}
 	}
 
 	public void checkWallCollision() {
-		boolean hitWall = false;
+		double widthDivide2 = width / 2;
 
-		if (x + getWidth() / 2 >= battleField.getWidth()) {
-			hitWall = true;
-		}
-		if (x - getWidth() / 2 <= 0) {
-			hitWall = true;
-		}
-		if (y + getWidth() / 2 >= battleField.getHeight()) {
-			hitWall = true;
-		}
-		if (y - getWidth() / 2 <= 0) {
-			hitWall = true;
-		}
-		if (hitWall) {
-			bulletState = BULLET_STATE_HIT_WALL;
+		if ((x - widthDivide2 <= 0) || (y - widthDivide2 <= 0) || (x + widthDivide2 >= battleField.getWidth()) || (y + widthDivide2 >= battleField.getHeight())) {
+			synchronized (this) {
+				bulletState = BULLET_STATE_HIT_WALL;
+				active = false;
+			}
 			owner.getEventManager().add(new BulletMissedEvent(bullet));
-			active = false;
 		}
 	}
 
-	public synchronized Battle getBattle() {
+	public Battle getBattle() {
 		return battle;
 	}
 
-	public synchronized BattleField getBattleField() {
+	public BattleField getBattleField() {
 		return battleField;
 	}
 
-	public synchronized java.awt.geom.Line2D getBoundingLine() {
+	public Line2D getBoundingLine() {
 		return boundingLine;
 	}
 
-	public synchronized robocode.Bullet getBullet() {
+	public robocode.Bullet getBullet() {
 		return bullet;
 	}
 
-	public synchronized int getFrame() {
+	public int getFrame() {
 		return frame;
 	}
 
-	public synchronized double getHeading() {
+	public double getHeading() {
 		return heading;
 	}
 
-	public synchronized int getHeight() {
+	public int getHeight() {
 		return height;
 	}
 
-	public synchronized RobotPeer getOwner() {
+	public RobotPeer getOwner() {
 		return owner;
 	}
 
-	public synchronized double getPower() {
+	public double getPower() {
 		return power;
 	}
 
-	public synchronized double getVelocity() {
+	public double getVelocity() {
 		return velocity;
 	}
 
-	public synchronized RobotPeer getVictim() {
+	public RobotPeer getVictim() {
 		return victim;
 	}
 
-	public synchronized int getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public synchronized double getX() {
+	public double getX() {
 		return x;
 	}
 
-	public synchronized double getY() {
+	public double getY() {
 		return y;
 	}
 
-	public synchronized boolean isActive() {
+	public boolean isActive() {
 		return active;
+	}
+
+	public int getBulletState() {
+		return oldBulletState;
 	}
 
 	public synchronized void setActive(boolean newActive) {
@@ -310,7 +306,7 @@ public class BulletPeer {
 		lastY = y;
 	}
 
-	public synchronized void update() {
+	public void update() {
 		if (active) {
 			updateMovement();
 
@@ -324,22 +320,26 @@ public class BulletPeer {
 		} else if (hitVictim) {
 			setX(victim.getX() + deltaX);
 			setY(victim.getY() + deltaY);
-			hitVictimTime++;
-			frame = hitVictimTime;
-			if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
-				hitVictim = false;
+			synchronized (this) {
+				hitVictimTime++;
+				frame = hitVictimTime;
+				if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+					hitVictim = false;
+				}
 			}
 		} else if (hitBullet) {
-			hitBulletTime++;
-			frame = hitBulletTime;
-			if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
-				hitBullet = false;
+			synchronized (this) {
+				hitBulletTime++;
+				frame = hitBulletTime;
+				if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+					hitBullet = false;
+				}
 			}
 		}
 		updateBulletState();
 	}
 	
-	protected void updateBulletState() {
+	protected synchronized void updateBulletState() {
 		oldBulletState = bulletState;
 		if (bulletState == BULLET_STATE_SHOT) {
 			bulletState = BULLET_STATE_MOVING;
@@ -349,11 +349,7 @@ public class BulletPeer {
 		}
 	}
 
-	public int getBulletState() {
-		return oldBulletState;
-	}
-
-	public void updateMovement() {
+	public synchronized void updateMovement() {
 		lastX = x;
 		lastY = y;
 
