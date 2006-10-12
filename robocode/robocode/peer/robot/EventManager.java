@@ -83,17 +83,15 @@ public class EventManager {
 		return false;
 	}
 
-	public synchronized void addCustomEvent(Condition condition) {
+	public void addCustomEvent(Condition condition) {
 		customEvents.addElement(condition);
 	}
 
-	public synchronized void clearAllEvents(boolean includingSystemEvents) {
-		// Fixed in 1.0.4
-		// currentTopEventPriority = Integer.MIN_VALUE;
+	public void clearAllEvents(boolean includingSystemEvents) {
 		eventQueue.clear(includingSystemEvents);
 	}
 
-	public synchronized void clear(long clearTime) {
+	public void clear(long clearTime) {
 		eventQueue.clear(clearTime);
 	}
 
@@ -129,7 +127,7 @@ public class EventManager {
 	 * @see robocode.Event
 	 * @see Vector
 	 */
-	public synchronized Vector<Event> getAllEvents() {
+	public Vector<Event> getAllEvents() {
 		Vector<Event> events = new Vector<Event>();
 
 		for (Object e : eventQueue) {
@@ -153,7 +151,7 @@ public class EventManager {
 	 * @see robocode.BulletHitBulletEvent
 	 * @see Vector
 	 */
-	public synchronized Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
+	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		Vector<BulletHitBulletEvent> events = new Vector<BulletHitBulletEvent>(); 
 
 		for (Object e : eventQueue) {
@@ -179,7 +177,7 @@ public class EventManager {
 	 * @see robocode.BulletHitEvent
 	 * @see Vector
 	 */
-	public synchronized Vector<BulletHitEvent> getBulletHitEvents() {
+	public Vector<BulletHitEvent> getBulletHitEvents() {
 		Vector<BulletHitEvent> events = new Vector<BulletHitEvent>();
 
 		for (Object e : eventQueue) {
@@ -205,7 +203,7 @@ public class EventManager {
 	 * @see robocode.BulletMissedEvent
 	 * @see Vector
 	 */
-	public synchronized Vector<BulletMissedEvent> getBulletMissedEvents() {
+	public Vector<BulletMissedEvent> getBulletMissedEvents() {
 		Vector<BulletMissedEvent> events = new Vector<BulletMissedEvent>();
 
 		for (Object e : eventQueue) {
@@ -307,7 +305,7 @@ public class EventManager {
 	 * @see robocode.HitByBulletEvent
 	 * @see Vector
 	 */
-	public synchronized Vector<HitByBulletEvent> getHitByBulletEvents() {
+	public Vector<HitByBulletEvent> getHitByBulletEvents() {
 		Vector<HitByBulletEvent> events = new Vector<HitByBulletEvent>();
 
 		for (Object e : eventQueue) {
@@ -333,7 +331,7 @@ public class EventManager {
 	 * @see robocode.HitRobotEvent
 	 * @see Vector
 	 */
-	public synchronized Vector<HitRobotEvent> getHitRobotEvents() {
+	public Vector<HitRobotEvent> getHitRobotEvents() {
 		Vector<HitRobotEvent> events = new Vector<HitRobotEvent>();
 
 		for (Object e : eventQueue) {
@@ -359,7 +357,7 @@ public class EventManager {
 	 * @see robocode.HitWallEvent
 	 * @see Vector
 	 */
-	public synchronized Vector<HitWallEvent> getHitWallEvents() {
+	public Vector<HitWallEvent> getHitWallEvents() {
 		Vector<HitWallEvent> events = new Vector<HitWallEvent>();
 
 		for (Object e : eventQueue) {
@@ -374,7 +372,7 @@ public class EventManager {
 		return this.interruptible[priority];
 	}
 
-	private synchronized Robot getRobot() {
+	private Robot getRobot() {
 		return robot;
 	}
 
@@ -400,7 +398,7 @@ public class EventManager {
 	 * @see robocode.RobotDeathEvent
 	 * @see Vector
 	 */
-	public synchronized Vector<RobotDeathEvent> getRobotDeathEvents() {
+	public Vector<RobotDeathEvent> getRobotDeathEvents() {
 		Vector<RobotDeathEvent> events = new Vector<RobotDeathEvent>();
 
 		for (Object e : eventQueue) {
@@ -430,7 +428,7 @@ public class EventManager {
 	 * @see robocode.ScannedRobotEvent
 	 * @see Vector
 	 */
-	public synchronized Vector<ScannedRobotEvent> getScannedRobotEvents() {
+	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
 		Vector<ScannedRobotEvent> events = new Vector<ScannedRobotEvent>();
 
 		for (Object e : eventQueue) {
@@ -441,10 +439,6 @@ public class EventManager {
 		return events;
 	}
 
-	// NOTE:
-	// Do not make this method synchronized as the processing of the hitWall
-	// event might cause a deadlock situation! Moreover, the getTime() on
-	// robotPeer is already synchronized, so it's not necessary anyways.
 	public long getTime() {
 		return robotPeer.getTime();
 	}
