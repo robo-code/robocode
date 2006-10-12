@@ -70,11 +70,9 @@ public class ThreadManager {
 		robots.clear();
 	}
 
-	public void setLoadingRobot(RobotPeer newLoadingRobot) {
+	public synchronized void setLoadingRobot(RobotPeer newLoadingRobot) {
 		if (robotLoaderThread != null && robotLoaderThread.equals(Thread.currentThread())) {
-			synchronized (loadingRobot) {
-				loadingRobot = newLoadingRobot;
-			}
+			loadingRobot = newLoadingRobot;
 		}
 	}
 
