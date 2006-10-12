@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Removed synchronization from getCount()
  *******************************************************************************/
 package robocode.io;
 
@@ -19,22 +21,22 @@ import java.io.*;
  * @author Mathew A. Nelson (original)
  */
 public class TeamMessageSizer extends OutputStream {
-	
+
 	private long count = 0;
 	private long MAX = 32768;
-	
+
 	public synchronized void write(int b) throws IOException {
 		count++;
 		if (count > MAX) {
 			throw new IOException("You have exceeded " + MAX + " bytes this turn.");
 		}
 	}
-	
+
 	public synchronized void resetCount() {
 		count = 0;
 	}
-	
-	public synchronized long getCount() {
+
+	public long getCount() {
 		return count;
 	}
 }
