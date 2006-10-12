@@ -1302,12 +1302,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return getBattle().getNumRounds();
 	}
 
-	public RobotOutputStream getOut() {
+	public synchronized RobotOutputStream getOut() {
 		if (out == null) {
 			if (battle != null) {
-				synchronized (out) {
-					out = new RobotOutputStream(battle.getBattleThread());
-				}
+				out = new RobotOutputStream(battle.getBattleThread());
 			}
 		}
 		return out;
