@@ -55,25 +55,21 @@ public class EventQueue extends Vector<Event> {
 		}
 	}
 
-	public void clear(long clearTime) {
-		synchronized (this) {
-			Event e;
-			for (int i = 0; i < size(); i++) {
-				e = elementAt(i);
-				if ((e.getTime() <= clearTime) && !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
-					removeElementAt(i--);
-				}
+	public synchronized void clear(long clearTime) {
+		Event e;
+		for (int i = 0; i < size(); i++) {
+			e = elementAt(i);
+			if ((e.getTime() <= clearTime) && !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+				removeElementAt(i--);
 			}
 		}
 	}
 
-	public void sort() {
-		synchronized (this) {
-			Collections.sort(this, new Comparator<Event>() {
-				public int compare(Event e1, Event e2) {
-					return e2.getPriority() - e1.getPriority();
-				}
-			});
-		}
+	public synchronized void sort() {
+		Collections.sort(this, new Comparator<Event>() {
+			public int compare(Event e1, Event e2) {
+				return e2.getPriority() - e1.getPriority();
+			}
+		});
 	}
 }

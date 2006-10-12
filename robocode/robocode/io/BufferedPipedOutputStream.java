@@ -43,25 +43,27 @@ public class BufferedPipedOutputStream extends OutputStream {
 	/*
 	 * @see OutputStream#write(int)
 	 */
-	public synchronized void write(int b) throws IOException {
+	public void write(int b) throws IOException {
 		if (closed) {
 			throw new IOException("Stream is closed.");
 		}
-			
-		buf[writeIndex++] = (byte) (b & 0xff);
-		if (writeIndex == buf.length) {
-			writeIndex = 0;
-		}
-		if (writeIndex == readIndex) {
-			// skipping a line!
-			if (skipLines) {
-				setReadIndexToNextLine();
-			} else {
-				throw new IOException("Buffer is full.");
+
+		synchronized (this) {
+			buf[writeIndex++] = (byte) (b & 0xff);
+			if (writeIndex == buf.length) {
+				writeIndex = 0;
 			}
-		}
-		if (waiting) {
-			notify();
+			if (writeIndex == readIndex) {
+				// skipping a line!
+				if (skipLines) {
+					setReadIndexToNextLine();
+				} else {
+					throw new IOException("Buffer is full.");
+				}
+			}
+			if (waiting) {
+				notify();
+			}
 		}
 	}
 	
@@ -104,7 +106,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 		return result;
 	}
 	
-	public synchronized int read(byte b[], int off, int len) throws IOException {
+	public int read(byte b[], int off, int len) throws IOException {
 		if (b == null) {
 			throw new NullPointerException();
 		} else if ((off < 0) || (off > b.length) || (len < 0) || ((off + len) > b.length) || ((off + len) < 0)) {
@@ -117,17 +119,20 @@ public class BufferedPipedOutputStream extends OutputStream {
 		if (first == -1) {
 			return -1;
 		}
-		b[off] = (byte) (first & 0xff);
-		int count = 1;
 		
-		for (int i = 1; readIndex != writeIndex && i < len; i++) {
-			b[off + i] = buf[readIndex++];
-			count++;
-			if (readIndex == buf.length) {
-				readIndex = 0;
+		synchronized (this) {
+			b[off] = (byte) (first & 0xff);
+			int count = 1;
+
+			for (int i = 1; readIndex != writeIndex && i < len; i++) {
+				b[off + i] = buf[readIndex++];
+				count++;
+				if (readIndex == buf.length) {
+					readIndex = 0;
+				}
 			}
+			return count;
 		}
-		return count;
 	}	
 	
 	protected int available() {

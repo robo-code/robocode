@@ -57,7 +57,7 @@ public class EventManager {
 	private int maxPriorities = 101;
 	private boolean interruptible[] = new boolean[maxPriorities];
 
-	private int MAXQUEUESIZE = 256;
+	private final static int MAX_QUEUE_SIZE = 256;
 
 	private Robot robot;
 
@@ -71,11 +71,11 @@ public class EventManager {
 		reset();
 	}
 
-	public synchronized boolean add(Event e) {
+	public boolean add(Event e) {
 		if (eventQueue != null) {
-			if (eventQueue.size() > MAXQUEUESIZE) {
+			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				System.out.println(
-						"Not adding to " + robotPeer.getName() + "'s queue, exceeded " + MAXQUEUESIZE + " events in queue.");
+						"Not adding to " + robotPeer.getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE + " events in queue.");
 				return false;
 			}
 			return eventQueue.add(e);

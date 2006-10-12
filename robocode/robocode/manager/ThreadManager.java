@@ -70,13 +70,15 @@ public class ThreadManager {
 		robots.clear();
 	}
 
-	public synchronized void setLoadingRobot(RobotPeer newLoadingRobot) {
+	public void setLoadingRobot(RobotPeer newLoadingRobot) {
 		if (robotLoaderThread != null && robotLoaderThread.equals(Thread.currentThread())) {
-			loadingRobot = newLoadingRobot;
+			synchronized (loadingRobot) {
+				loadingRobot = newLoadingRobot;
+			}
 		}
 	}
 
-	public void setRobotLoaderThread(Thread robotLoaderThread) {
+	public synchronized void setRobotLoaderThread(Thread robotLoaderThread) {
 		this.robotLoaderThread = robotLoaderThread;
 	}
 }

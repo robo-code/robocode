@@ -66,14 +66,11 @@ public class RobotMessageManager {
 					if (name == null && receiver == robotPeer) {
 						continue;
 					}
-					synchronized (receiver.getMessageManager().out) {
-						receiver.getMessageManager().out.writeObject(o);
-						try {} catch (Exception e) {
-							System.out.println(e);
-						}
+					RobotMessageManager robotMsgMan = receiver.getMessageManager();
+					synchronized (robotMsgMan.out) {
+						robotMsgMan.out.writeObject(o);
 						try {
-							receiver.getMessageManager().addMessage(robotPeer.getName(),
-									(Serializable) receiver.getMessageManager().in.readObject());
+							robotMsgMan.addMessage(robotPeer.getName(), (Serializable) robotMsgMan.in.readObject());
 						} catch (ClassNotFoundException e) {
 							System.out.println("Unable to send: " + e);
 						}
@@ -84,7 +81,7 @@ public class RobotMessageManager {
 		// Note:  Does nothing, simply throws IOException if too many bytes.
 	}
 	
-	public synchronized void addMessage(String sender, Serializable o) {
+	public void addMessage(String sender, Serializable o) {
 		if (!robotPeer.isDead()) {
 			messageEvents.add(new MessageEvent(sender, o));
 		}

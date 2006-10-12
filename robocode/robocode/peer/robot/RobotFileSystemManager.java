@@ -39,7 +39,7 @@ public class RobotFileSystemManager {
 		this.maxQuota = maxQuota;
 	}
 
-	public synchronized void addStream(RobocodeFileOutputStream s) throws IOException {
+	public void addStream(RobocodeFileOutputStream s) throws IOException {
 		if (s == null) {
 			throw new SecurityException("You may not add a null stream.");
 		}
@@ -47,8 +47,7 @@ public class RobotFileSystemManager {
 			if (streams.size() < 5) {
 				streams.add(s);
 			} else {
-				throw new IOException(
-						"You may only have 5 streams open at a time.\n Make sure you call close() on your streams when you are finished with them.");
+				throw new IOException("You may only have 5 streams open at a time.\n Make sure you call close() on your streams when you are finished with them.");
 			}
 		}
 	}
@@ -57,16 +56,16 @@ public class RobotFileSystemManager {
 		quotaUsed += len;
 	}
 
-	public synchronized void checkQuota() throws IOException {
+	public void checkQuota() throws IOException {
 		checkQuota(0);
 	}
 
-	public synchronized void checkQuota(long numBytes) throws IOException {
+	public void checkQuota(long numBytes) throws IOException {
 		if (numBytes < 0) {
 			throw new IndexOutOfBoundsException("checkQuota on negative numBytes!");
 		}
 		if (quotaUsed + numBytes <= maxQuota) {
-			quotaUsed += numBytes;
+			adjustQuota(numBytes);
 			return;
 		}
 		if (!quotaMessagePrinted) {
@@ -76,11 +75,11 @@ public class RobotFileSystemManager {
 		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");
 	}
 
-	public synchronized long getMaxQuota() {
+	public long getMaxQuota() {
 		return maxQuota;
 	}
 
-	public synchronized long getQuotaUsed() {
+	public long getQuotaUsed() {
 		return quotaUsed;
 	}
 
@@ -184,7 +183,7 @@ public class RobotFileSystemManager {
 		return false;
 	}
 
-	public synchronized void removeStream(RobocodeFileOutputStream s) {
+	public void removeStream(RobocodeFileOutputStream s) {
 		if (s == null) {
 			throw new SecurityException("You may not remove a null stream.");
 		}
