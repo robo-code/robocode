@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Removed synchronization from getCount()
+ *     - MAX was turned into a constant
  *******************************************************************************/
 package robocode.io;
 
@@ -22,8 +23,8 @@ import java.io.*;
  */
 public class TeamMessageSizer extends OutputStream {
 
+	private final static long MAX = 32768;
 	private long count = 0;
-	private long MAX = 32768;
 
 	public synchronized void write(int b) throws IOException {
 		count++;
