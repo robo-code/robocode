@@ -534,11 +534,13 @@ public class EventManager {
 	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
+			Condition c;
+			boolean conditionSatisfied;
 
-			for (Condition c : customEvents) {
+			for (int i = 0; i < customEvents.size(); i++) {
+				c = customEvents.elementAt(i);
 				robotPeer.setTestingCondition(true);
-				boolean conditionSatisfied = c.test();
-
+				conditionSatisfied = c.test();
 				robotPeer.setTestingCondition(false);
 				if (conditionSatisfied) {
 					eventQueue.add(new CustomEvent(c));
