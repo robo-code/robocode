@@ -127,11 +127,7 @@ public class Utils {
 	}
 
 	public static void centerShow(Window main, Window window) {
-
 		center(main, window);
-
-		window.setVisible(true);
-		// Second time to fix bug with menus in some jres
 		window.setVisible(true);
 	}
 
@@ -339,36 +335,22 @@ public class Utils {
 	public static void packCenterShow(Window main, Window window) {
 		// We don't want to receive the resize event for this pack!
 		window.removeComponentListener(windowPositionManager);
-		
 		window.pack();
-
 		center(main, window);
-
-		window.setVisible(true);
-		// Second time to fix bug with menus in some jres
 		window.setVisible(true);
 	}
 
 	public static void packCenterShow(Window main, Window window, boolean pack) {
 		// We don't want to receive the resize event for this pack!
 		window.removeComponentListener(windowPositionManager);
-		
 		window.pack();
-
 		center(main, window);
-
-		window.setVisible(true);
-		// Second time to fix bug with menus in some jres
 		window.setVisible(true);
 	}
 
 	public static void packPlaceShow(Window window) {
 		window.pack();
-
 		place(window);
-
-		window.setVisible(true);
-		// Second time to fix bug with menus in some jres
 		window.setVisible(true);
 	}
 
