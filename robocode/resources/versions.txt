@@ -1,3 +1,11 @@
+Version 1.1.4A
+(10/15/2006)
+o Bugfixes
+  -- The sounds were cut off after first round
+  -- The Ranking Panel position and size was not saved in the window.properties file
+  -- ConcurrentModificationException fixed in the robot event queue
+  -- Periodic NullPointerException removed from battle view
+
 Version 1.1.4
 (10/14/2006)
 o Bugfixes
