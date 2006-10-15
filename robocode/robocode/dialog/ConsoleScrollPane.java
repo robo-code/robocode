@@ -25,6 +25,7 @@ import java.io.*;
  */
 @SuppressWarnings("serial")
 public class ConsoleScrollPane extends JScrollPane {
+
 	private JTextArea textPane;
 	private Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);
 	
@@ -111,14 +112,12 @@ public class ConsoleScrollPane extends JScrollPane {
 		new StreamReader(in).start();
 	}
 
-	private class Scroller implements Runnable {
+	private Runnable scroller = new Runnable() {
 		public void run() {
 			getViewport().scrollRectToVisible(bottomRect);
 			getViewport().repaint();
 		}
-	}
-
-	private Scroller scroller = new Scroller();
+	};
 
 	public void scrollToBottom() {
 		SwingUtilities.invokeLater(scroller);
