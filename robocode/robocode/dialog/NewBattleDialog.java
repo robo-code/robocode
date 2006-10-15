@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Vector;
+
 import robocode.manager.*;
 import robocode.battle.BattleProperties;
 
@@ -32,6 +33,9 @@ import robocode.battle.BattleProperties;
 @SuppressWarnings("serial")
 public class NewBattleDialog extends JDialog implements WizardListener {
 
+	private final static int MAX_ROBOTS = 256; // 64;
+	private final static int MIN_ROBOTS = 1;
+
 	private EventHandler eventHandler = new EventHandler();
 	private JPanel newBattleDialogContentPane;
 	private WizardTabbedPane tabbedPane;
@@ -41,8 +45,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	private NewBattleRulesTab rulesTab;
 	private WizardController wizardController;
-	public int MAXROBOTS = 256; // 64;
-	public int MINROBOTS = 1;
 
 	private RobotSelectionPanel robotSelectionPanel;
 
@@ -202,7 +204,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			if (battleProperties != null) {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
-			robotSelectionPanel = new RobotSelectionPanel(manager.getRobotRepositoryManager(), MINROBOTS, MAXROBOTS,
+			robotSelectionPanel = new RobotSelectionPanel(manager.getRobotRepositoryManager(), MIN_ROBOTS, MAX_ROBOTS,
 					true, "Select robots for the battle", false, false, false, false, false,
 					!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}
