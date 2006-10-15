@@ -16,6 +16,7 @@
  *       from the RobocodeManager. In addition, the battleView is now allowed to
  *       be null, e.g. if no GUI is available
  *     - Ported to Java 5.0
+ *     - Bugfixed sounds that were cut off after first battle
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -160,6 +161,13 @@ public class Battle implements Runnable {
 		deterministic = true;
 		nonDeterministicRobots = null;
 
+		boolean soundInitialized = false;
+		
+		if (manager.isSoundEnabled()) {
+			soundManager.init();
+			soundInitialized = true;
+		}
+
 		setRoundNum(0);
 		while (!abortBattles && getRoundNum() < getNumRounds()) {
 			if (battleView != null) {
@@ -222,6 +230,10 @@ public class Battle implements Runnable {
 			if (manager.getListener() != null) {
 				manager.getListener().battleAborted(battleSpecification);
 			}
+		}
+
+		if (soundInitialized) {
+			soundManager.dispose();
 		}
 
 		running = false;
@@ -495,12 +507,6 @@ public class Battle implements Runnable {
 		
 		boolean resetThisSec = true;
 
-		boolean soundInitialized = false;
-		
-		if (manager.isSoundEnabled()) {
-			soundManager.init();
-			soundInitialized = true;
-		}
 		battleManager.startNewRound();
 
 		while (!battleOver) {
@@ -655,10 +661,6 @@ public class Battle implements Runnable {
 			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 		}
 		bullets.clear();
-
-		if (soundInitialized) {
-			soundManager.dispose();
-		}
 	}
 	
 	private boolean shouldPause() {
