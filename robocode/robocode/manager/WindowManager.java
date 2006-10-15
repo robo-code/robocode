@@ -175,8 +175,8 @@ public class WindowManager {
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(robocodeFrame, manager);
-			rankingDialog.setSize(200, 400);
-			// Utils.packCenterShow(robocodeFrame, rankingDialog);
+			rankingDialog.setSize(200, 300);
+			Utils.centerShow(robocodeFrame, rankingDialog);
 		}
 		rankingDialog.setVisible(visible);
 	}
