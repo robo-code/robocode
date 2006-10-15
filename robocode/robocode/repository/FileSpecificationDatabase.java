@@ -116,6 +116,7 @@ public class FileSpecificationDatabase implements Serializable {
 
 		for (String key : hash.keySet()) {
 			FileSpecification spec = hash.get(key);
+
 			if (spec instanceof JarSpecification) {
 				v.add((JarSpecification) spec);
 			}

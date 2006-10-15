@@ -67,6 +67,7 @@ public class RobotMessageManager {
 						continue;
 					}
 					RobotMessageManager robotMsgMan = receiver.getMessageManager();
+
 					synchronized (robotMsgMan.out) {
 						robotMsgMan.out.writeObject(o);
 						try {

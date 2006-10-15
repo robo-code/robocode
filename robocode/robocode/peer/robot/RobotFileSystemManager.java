@@ -47,7 +47,8 @@ public class RobotFileSystemManager {
 			if (streams.size() < 5) {
 				streams.add(s);
 			} else {
-				throw new IOException("You may only have 5 streams open at a time.\n Make sure you call close() on your streams when you are finished with them.");
+				throw new IOException(
+						"You may only have 5 streams open at a time.\n Make sure you call close() on your streams when you are finished with them.");
 			}
 		}
 	}

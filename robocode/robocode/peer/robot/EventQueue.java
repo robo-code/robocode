@@ -45,6 +45,7 @@ public class EventQueue extends Vector<Event> {
 		} else {
 			synchronized (this) {
 				Event e;
+
 				for (int i = 0; i < size(); i++) {
 					e = elementAt(i);
 					if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
@@ -57,9 +58,11 @@ public class EventQueue extends Vector<Event> {
 
 	public synchronized void clear(long clearTime) {
 		Event e;
+
 		for (int i = 0; i < size(); i++) {
 			e = elementAt(i);
-			if ((e.getTime() <= clearTime) && !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+			if ((e.getTime() <= clearTime)
+					&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
 				removeElementAt(i--);
 			}
 		}

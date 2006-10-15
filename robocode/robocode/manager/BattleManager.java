@@ -98,8 +98,7 @@ public class BattleManager {
 		this.battleProperties = battleProperties;
 
 		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
-				false,
-				false, false, false, false, false);
+				false, false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
 		StringTokenizer tokenizer;
@@ -162,8 +161,7 @@ public class BattleManager {
 	public void startNewBattle(robocode.control.BattleSpecification battleSpecification) {
 		this.battleProperties = battleSpecification.getBattleProperties();
 		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
-				false,
-				false, false, false, false, false);
+				false, false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
 		robocode.control.RobotSpecification[] robotSpecs = battleSpecification.getRobots();

@@ -222,7 +222,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getOptionsBattleAllowColorChangesCheckBox() {
 		if (optionsBattleAllowColorChangesCheckBox == null) {
-			optionsBattleAllowColorChangesCheckBox = new JCheckBox("Allow robots to change colors repeatedly (Slow, not recommended)");
+			optionsBattleAllowColorChangesCheckBox = new JCheckBox(
+					"Allow robots to change colors repeatedly (Slow, not recommended)");
 			optionsBattleAllowColorChangesCheckBox.setMnemonic('h');
 			optionsBattleAllowColorChangesCheckBox.setDisplayedMnemonicIndex(17);
 		}

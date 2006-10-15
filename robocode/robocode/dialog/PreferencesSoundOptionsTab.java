@@ -440,22 +440,22 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	private class MixerInfoCellRenderer extends javax.swing.plaf.basic.BasicComboBoxRenderer {
 
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-	         Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-	         Mixer.Info mi = (Mixer.Info) value;
+			Mixer.Info mi = (Mixer.Info) value;
 	    	 
-	    	 String text = mi.getName();
+			String text = mi.getName();
 
-	    	 if (!"Unknown Version".equals(mi.getVersion())) {
-	    		 text += ' ' + mi.getVersion();
-	    	 }
-	    	 if (!"Unknown Vendor".equals(mi.getVendor())) {
-	    		 text += " by " + mi.getVendor();
-	    	 }
+			if (!"Unknown Version".equals(mi.getVersion())) {
+				text += ' ' + mi.getVersion();
+			}
+			if (!"Unknown Vendor".equals(mi.getVendor())) {
+				text += " by " + mi.getVendor();
+			}
 
-	         setText(text);
+			setText(text);
 
-	         return component;
-	     }
-	 }
+			return component;
+		}
+	}
 }

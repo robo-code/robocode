@@ -79,8 +79,8 @@ public class FilenamePanel extends WizardPanel {
 			Vector<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null && selectedRobots.size() == 1) {
-				jarName = selectedRobots.elementAt(0).getFullClassName() + "_" +
-					robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
+				jarName = selectedRobots.elementAt(0).getFullClassName() + "_"
+						+ robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
 			}
 				 
 			getFilenameField().setText(fileName + jarName);

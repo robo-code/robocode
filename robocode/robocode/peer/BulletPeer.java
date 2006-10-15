@@ -183,7 +183,8 @@ public class BulletPeer {
 	public void checkWallCollision() {
 		double widthDivide2 = width / 2;
 
-		if ((x - widthDivide2 <= 0) || (y - widthDivide2 <= 0) || (x + widthDivide2 >= battleField.getWidth()) || (y + widthDivide2 >= battleField.getHeight())) {
+		if ((x - widthDivide2 <= 0) || (y - widthDivide2 <= 0) || (x + widthDivide2 >= battleField.getWidth())
+				|| (y + widthDivide2 >= battleField.getHeight())) {
 			synchronized (this) {
 				bulletState = BULLET_STATE_HIT_WALL;
 				active = false;

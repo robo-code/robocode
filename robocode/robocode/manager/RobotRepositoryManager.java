@@ -293,10 +293,12 @@ public class RobotRepositoryManager {
 					} else {
 						jidx = files[i].getName().lastIndexOf(".zip_");
 						if (jidx > 0 && jidx == files[i].getName().length() - 5) {
-							robotList.addAll(getSpecificationsInDirectory(files[i], files[i], "", isDevelopmentDirectory));
+							robotList.addAll(
+									getSpecificationsInDirectory(files[i], files[i], "", isDevelopmentDirectory));
 						} else {
-							robotList.addAll(getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
-								isDevelopmentDirectory));
+							robotList.addAll(
+									getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
+									isDevelopmentDirectory));
 						}
 					}
 				} else {
@@ -312,8 +314,9 @@ public class RobotRepositoryManager {
 					if (didx > 0 && didx == files[i].getName().length() - 5) {
 						continue;
 					} // Don't process .data dirs
-					robotList.addAll(getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
-						isDevelopmentDirectory));
+					robotList.addAll(
+							getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
+							isDevelopmentDirectory));
 				}
 			} else if (files[i].getName().indexOf("$") < 0 && files[i].getName().indexOf("robocode") != 0) {
 				FileSpecification cachedSpecification = getRobotDatabase().get(files[i].getPath());

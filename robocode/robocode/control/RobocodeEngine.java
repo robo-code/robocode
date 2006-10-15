@@ -138,7 +138,8 @@ public class RobocodeEngine {
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
-		Vector<FileSpecification> v = robotRepository.getRobotSpecificationsVector(false, false, true, false, false, true);
+		Vector<FileSpecification> v = robotRepository.getRobotSpecificationsVector(false, false, true, false, false,
+				true);
 		RobotSpecification robotSpecs[] = new RobotSpecification[v.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {

@@ -669,7 +669,8 @@ public class EventManager {
 		} else if (eventClass.equals("robocode.ScannedRobotEvent") || eventClass.equals("ScannedRobotEvent")) {
 			scannedRobotEventPriority = priority;
 		} else if (eventClass.equals("robocode.CustomEvent") || eventClass.equals("CustomEvent")) {
-			robotPeer.out.println("SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
+			robotPeer.out.println(
+					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.SkippedTurnEvent") || eventClass.equals("SkippedTurnEvent")) {
 			robotPeer.out.println("SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.WinEvent") || eventClass.equals("WinEvent")) {

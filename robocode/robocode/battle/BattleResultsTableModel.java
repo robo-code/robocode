@@ -103,8 +103,8 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		case 0: {
 			int place = row + 1;
 
-			while (place < getRowCount() && statistics.getTotalScore()
-					== orderedContestants.elementAt(place).getStatistics().getTotalScore()) {
+			while (place < getRowCount()
+					&& statistics.getTotalScore() == orderedContestants.elementAt(place).getStatistics().getTotalScore()) {
 				place++;
 			}
 			String seperator = (r instanceof TeamPeer) ? ": Team: " : ": ";

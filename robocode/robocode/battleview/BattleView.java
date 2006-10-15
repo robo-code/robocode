@@ -142,6 +142,7 @@ public class BattleView extends Canvas {
 				paintBattle(offscreenGfx);
 
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+
 				if (g != null) {
 					g.drawImage(offscreenImage, 0, 0, null);
 
@@ -164,7 +165,7 @@ public class BattleView extends Canvas {
 	public void paint(Graphics g) {
 		switch (paintMode) {
 		case PAINTROBOCODELOGO:
-			paintRobocodeLogo((Graphics2D)g);
+			paintRobocodeLogo((Graphics2D) g);
 			return;
 
 		case PAINTBATTLE: {
@@ -301,7 +302,7 @@ public class BattleView extends Canvas {
 		drawGround(g);
 
 		// Draw battlefield objects
-//		drawObjects(g);
+		// drawObjects(g);
 
 		// Draw scan arcs
 		drawScanArcs(g);
@@ -345,11 +346,12 @@ public class BattleView extends Canvas {
 			}
 		}
 	}
-/*
-	private void drawObjects(Graphics2D g) {
-		((ShapesBattleField) battleField).drawShapes(g);
-	}
-*/
+
+	/*
+	 private void drawObjects(Graphics2D g) {
+	 ((ShapesBattleField) battleField).drawShapes(g);
+	 }
+	 */
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
 			RobotPeer c;
@@ -523,6 +525,7 @@ public class BattleView extends Canvas {
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
 
 				Color bulletColor = bullet.getOwner().getBulletColor();
+
 				if (bulletColor == null) {
 					bulletColor = Color.WHITE;
 				}
@@ -614,6 +617,7 @@ public class BattleView extends Canvas {
 		scanArc.y = battle.getBattleField().getHeight() - robot.getY() - robocode.Rules.RADAR_SCAN_RADIUS;
 
 		Color scanColor = robot.getScanColor();
+
 		if (scanColor == null) {
 			scanColor = Color.BLUE;
 		}
