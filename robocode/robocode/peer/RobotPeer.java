@@ -88,7 +88,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean isDead;
 	private boolean isWinner;
 
-	public RobotOutputStream out;
+	private RobotOutputStream out;
 
 	private double lastGunHeading;
 	private double lastHeading;
@@ -249,9 +249,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						}
 					}
 					eventManager.add(
-							new HitRobotEvent(r.name, Utils.normalRelativeAngle(angle - heading), r.energy, atFault));
+							new HitRobotEvent(r.getName(), Utils.normalRelativeAngle(angle - heading), r.energy, atFault));
 					r.eventManager.add(
-							new HitRobotEvent(name, Utils.normalRelativeAngle(PI + angle - r.heading), energy, false));
+							new HitRobotEvent(getName(), Utils.normalRelativeAngle(PI + angle - r.heading), energy, false));
 
 				} // if hit
 			} // if robot active & not me
@@ -516,7 +516,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				double dist = Math.hypot(dx, dy);
 
 				eventManager.add(
-						new ScannedRobotEvent(r.name, r.energy, Utils.normalRelativeAngle(angle - heading), dist, r.heading,
+						new ScannedRobotEvent(r.getName(), r.energy, Utils.normalRelativeAngle(angle - heading), dist, r.heading,
 						r.velocity));
 			}
 		}
@@ -534,7 +534,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public final void setMove(double distance) {
-		if (getEnergy() == 0) {
+		if (energy == 0) {
 			return;
 		}
 		synchronized (this) {
@@ -551,11 +551,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void setBattle(Battle newBattle) {
+	public synchronized void setBattle(Battle newBattle) {
 		battle = newBattle;
 	}
 
-	public void setBattleField(BattleField newBattleField) {
+	public synchronized void setBattleField(BattleField newBattleField) {
 		battleField = newBattleField;
 	}
 
@@ -1425,11 +1425,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
 	}
 
-	public void setSkippedTurns(int newSkippedTurns) {
+	public synchronized void setSkippedTurns(int newSkippedTurns) {
 		skippedTurns = newSkippedTurns;
 	}
 
-	public void setStatistics(robocode.peer.robot.RobotStatistics newStatistics) {
+	public synchronized void setStatistics(robocode.peer.robot.RobotStatistics newStatistics) {
 		statistics = newStatistics;
 	}
 
@@ -1513,7 +1513,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return bodyColor;
 	}
 	
-	public void setBodyColor(Color color) {
+	public synchronized void setBodyColor(Color color) {
 		bodyColor = color;
 	}
 	
@@ -1521,7 +1521,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return radarColor;
 	}
 
-	public void setRadarColor(Color color) {
+	public synchronized void setRadarColor(Color color) {
 		radarColor = color;
 	}
 
@@ -1529,7 +1529,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return gunColor;
 	}
 
-	public void setGunColor(Color color) {
+	public synchronized void setGunColor(Color color) {
 		gunColor = color;
 	}
 
@@ -1537,7 +1537,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return bulletColor;
 	}
 
-	public void setBulletColor(Color color) {
+	public synchronized void setBulletColor(Color color) {
 		bulletColor = color;
 	}
 
@@ -1545,7 +1545,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return scanColor;
 	}
 
-	public void setScanColor(Color color) {
+	public synchronized void setScanColor(Color color) {
 		scanColor = color;
 	}
 
@@ -1553,7 +1553,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return messageManager;
 	}
 
-	public boolean say(String text) {
+	public synchronized boolean say(String text) {
 		if (sayTextPeer == null) {
 			sayTextPeer = new TextPeer();
 		}
@@ -1578,7 +1578,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void setPaintEnabled(boolean enabled) {
+	public synchronized void setPaintEnabled(boolean enabled) {
 		paintEnabled = enabled;
 	}
 
@@ -1586,7 +1586,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return paintEnabled;
 	}
 
-	public void setSGPaintEnabled(boolean enabled) {
+	public synchronized void setSGPaintEnabled(boolean enabled) {
 		sgPaintEnabled = enabled;
 	}
 
