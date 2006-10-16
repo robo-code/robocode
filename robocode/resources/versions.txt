@@ -1,3 +1,8 @@
+Version 1.1.4B
+(10/17/2006)
+o Bugfixes
+  -- The getName() on ScannedRobotEvent returned null
+
 Version 1.1.4A
 (10/15/2006)
 o Bugfixes
