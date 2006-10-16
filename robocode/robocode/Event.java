@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Optimized for Java 5
  *******************************************************************************/
 package robocode;
 
@@ -17,7 +19,7 @@ package robocode;
  *
  * @author Mathew A. Nelson
  */
-public class Event implements Comparable {
+public class Event implements Comparable<Event> {
 	private int priority = 0;
 	private long time = 0;
 
@@ -31,23 +33,23 @@ public class Event implements Comparable {
 	/**
 	 * Used for sorting events based on priority and time.
 	 */
-	public int compareTo(Object o) {
+	public int compareTo(Event event) {
 		int diff = 0;
 
 		try {
-			diff = ((Event) o).priority - priority;
+			diff = event.priority - priority;
 			if (diff != 0) {
 				return diff;
 			} else {
-				int timediff = (int) (((Event) o).time - time);
+				int timediff = (int) (event.time - time);
 
 				if (timediff != 0) {
 					return timediff;
-				} else if (o instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
-					return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) o).getDistance());
-				} else if (o instanceof HitRobotEvent && this instanceof HitRobotEvent) {
+				} else if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
+					return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
+				} else if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
 					int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
-					int compare2 = ((HitRobotEvent) o).isMyFault() ? -1 : 0;
+					int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
 
 					return compare1 - compare2;
 				} else {
