@@ -54,39 +54,42 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public static final int ROBOT_STATE_HIT_ROBOT = 2;
 	public static final int ROBOT_STATE_DEAD = 3;
 
+	private double energy;
 	private double velocity;
 	private double heading;
 	private double radarHeading;
 	private double gunHeading;
 	private double x;
 	private double y;
+	private int width;
+	private int height;
 
 	private double acceleration;
 	private double maxVelocity; // Can be changed by user
 	private double maxTurnRate; // Can be changed by user
-	private double angleToTurn;
-	private double radarAngleToTurn;
-	private double gunAngleToTurn;
 
-	private boolean sleeping;
+	private double turnRemaining;
+	private double radarTurnRemaining;
+	private double gunTurnRemaining;
+
+	private double distanceRemaining;
 
 	private Robot robot;
-	private int width;
-	private int height;
 
 	private BattleField battleField;
 
 	private Rectangle2D.Float boundingBox;
 	private Arc2D.Double scanArc;
 
-	private boolean adjustGunForBodyTurn;
-	private boolean adjustRadarForGunTurn;
+	private boolean isAdjustGunForBodyTurn;
+	private boolean isAdjustRadarForGunTurn;
 
 	private boolean isDroid;
 	private boolean isRunning;
 	private boolean isStopped;
 	private boolean isDead;
 	private boolean isWinner;
+	private boolean isSleeping;
 
 	private RobotOutputStream out;
 
@@ -103,7 +106,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean scan;
 
 	private Battle battle;
-	private double distanceRemaining;
 	private EventManager eventManager;
 
 	private Condition waitCondition;
@@ -111,7 +113,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean adjustRadarForBodyTurn;
 	private boolean adjustRadarForBodyTurnSet;
 	private boolean checkFileQuota;
-	private double energy;
 	private double gunHeat;
 	private boolean halt;
 	private boolean inCollision;
@@ -200,61 +201,58 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		for (int i = 0; i < battle.getRobots().size(); i++) {
 			RobotPeer r = (RobotPeer) battle.getRobots().elementAt(i);
 
-			if (r != null && r != this && !r.isDead) {
-				// If we hit
-				if (getBoundingBox().intersects(r.getBoundingBox())) {
-					// Bounce back
-					double angle = atan2(r.x - x, r.y - y);
+			if (!(r == null || r == this || r.isDead) && boundingBox.intersects(r.boundingBox)) {
+				// Bounce back
+				double angle = atan2(r.x - x, r.y - y);
 
-					double movedx = velocity * sin(heading);
-					double movedy = velocity * cos(heading);
+				double movedx = velocity * sin(heading);
+				double movedy = velocity * cos(heading);
 
-					boolean atFault = false;
-					double bearing = Utils.normalRelativeAngle(angle - heading);
+				boolean atFault = false;
+				double bearing = Utils.normalRelativeAngle(angle - heading);
 
-					synchronized (this) {
-						if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
-							inCollision = true;
-							if (distanceRemaining > 0) {
-								atFault = true;
-								distanceRemaining = 0;
-								statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-							} else {
-								statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-							}
-						} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
-							inCollision = true;
-							if (distanceRemaining < 0) {
-								atFault = true;
-								distanceRemaining = 0;
-								statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-							} else {
-								statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-							}
+				synchronized (this) {
+					if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
+						inCollision = true;
+						if (distanceRemaining > 0) {
+							atFault = true;
+							distanceRemaining = 0;
+							statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
+						} else {
+							statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
 						}
-						if (inCollision) {
-							velocity = 0;
-							setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-							x -= movedx;
-							y -= movedy;
-	
-							r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
-							r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-		
-							if (r.energy == 0 && !r.isDead) {
-								r.setDead(true);
-								statistics.scoreKilledEnemyRamming(i);
-							}
-							robotState = ROBOT_STATE_HIT_ROBOT;
+					} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
+						inCollision = true;
+						if (distanceRemaining < 0) {
+							atFault = true;
+							distanceRemaining = 0;
+							statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
+						} else {
+							statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
 						}
 					}
-					eventManager.add(
-							new HitRobotEvent(r.getName(), Utils.normalRelativeAngle(angle - heading), r.energy, atFault));
-					r.eventManager.add(
-							new HitRobotEvent(getName(), Utils.normalRelativeAngle(PI + angle - r.heading), energy, false));
+					if (inCollision) {
+						velocity = 0;
+						setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
+						x -= movedx;
+						y -= movedy;
 
-				} // if hit
-			} // if robot active & not me
+						r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
+						r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+	
+						if (r.energy == 0 && !r.isDead) {
+							r.setDead(true);
+							statistics.scoreKilledEnemyRamming(i);
+						}
+						robotState = ROBOT_STATE_HIT_ROBOT;
+					}
+				}
+				eventManager.add(
+						new HitRobotEvent(r.getName(), Utils.normalRelativeAngle(angle - heading), r.energy, atFault));
+				r.eventManager.add(
+						new HitRobotEvent(getName(), Utils.normalRelativeAngle(PI + angle - r.heading), energy, false));
+
+			} // if robot active & not me & hit
 		} // for robots
 	}
 
@@ -421,11 +419,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean isAdjustGunForBodyTurn() {
-		return adjustGunForBodyTurn;
+		return isAdjustGunForBodyTurn;
 	}
 
 	public boolean isAdjustRadarForGunTurn() {
-		return adjustRadarForGunTurn;
+		return isAdjustRadarForGunTurn;
 	}
 
 	public boolean isDead() {
@@ -509,25 +507,25 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		for (int i = 0; i < battle.getRobots().size(); i++) {
 			RobotPeer r = (RobotPeer) battle.getRobots().elementAt(i);
 
-			if (!(r == null || r == this || r.isDead) && intersects(scanArc, r.getBoundingBox())) {
+			if (!(r == null || r == this || r.isDead) && intersects(scanArc, r.boundingBox)) {
 				double dx = r.x - x;
 				double dy = r.y - y;
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 
 				eventManager.add(
-						new ScannedRobotEvent(r.getName(), r.energy, Utils.normalRelativeAngle(angle - heading), dist, r.heading,
-						r.velocity));
+						new ScannedRobotEvent(r.getName(), r.energy, Utils.normalRelativeAngle(angle - heading), dist,
+						r.heading, r.velocity));
 			}
 		}
 	}
 
 	public synchronized void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
-		adjustGunForBodyTurn = newAdjustGunForBodyTurn;
+		isAdjustGunForBodyTurn = newAdjustGunForBodyTurn;
 	}
 
 	public synchronized void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
-		adjustRadarForGunTurn = newAdjustRadarForGunTurn;
+		isAdjustRadarForGunTurn = newAdjustRadarForGunTurn;
 		if (!adjustRadarForBodyTurnSet) {
 			adjustRadarForBodyTurn = newAdjustRadarForGunTurn;
 		}
@@ -569,11 +567,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						RobotPeer teammate = teamPeer.elementAt(i);
 
 						if (!teammate.isDead && teammate != this) {
-							teammate.setEnergy(teammate.getEnergy() - 30);
+							teammate.energy -= 30;
 							BulletPeer sBullet = new BulletPeer(this, battle);
 
-							sBullet.setX(teammate.getX());
-							sBullet.setY(teammate.getY());
+							sBullet.setX(teammate.x);
+							sBullet.setY(teammate.y);
 							sBullet.setVictim(teammate);
 							sBullet.hitVictim = true;
 							sBullet.setPower(4);
@@ -664,7 +662,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			// This ends any pending wait() call in battle.runRound().
 			// Should not actually take place until we release the lock in wait(), below.
 			this.notify();
-			sleeping = true;
+			isSleeping = true;
 			// Notifying battle that we're asleep
 			// Sleeping and waiting for battle to wake us up.
 			try {
@@ -672,7 +670,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			} catch (InterruptedException e) {
 				Utils.log("Wait interrupted");
 			}
-			sleeping = false;
+			isSleeping = false;
 			// Notify battle thread, which is waiting in
 			// our wakeup() call, to return.
 			// It's quite possible, by the way, that we'll be back in sleep (above)
@@ -692,19 +690,19 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public synchronized final void setTurnGun(double radians) {
-		this.gunAngleToTurn = radians;
+		this.gunTurnRemaining = radians;
 	}
 
 	public final void turnGun(double radians) {
 		setTurnGun(radians);
 		do {
 			tick(); // Always tick at least once
-		} while (getGunTurnRemaining() != 0);
+		} while (turnRemaining != 0);
 	}
 
 	public synchronized final void setTurnChassis(double radians) {
 		if (energy != 0) {
-			angleToTurn = radians;
+			turnRemaining = radians;
 		}
 	}
 
@@ -712,18 +710,18 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setTurnChassis(radians);
 		do {
 			tick(); // Always tick at least once
-		} while (getTurnRemaining() != 0);
+		} while (turnRemaining != 0);
 	}
 
 	public synchronized final void setTurnRadar(double radians) {
-		this.radarAngleToTurn = radians;
+		this.radarTurnRemaining = radians;
 	}
 
 	public final void turnRadar(double radians) {
 		setTurnRadar(radians);
 		do {
 			tick(); // Always tick at least once
-		} while (getRadarTurnRemaining() != 0);
+		} while (radarTurnRemaining != 0);
 	}
 
 	public final synchronized void update() {
@@ -765,36 +763,36 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	private void updateGunHeading() {
-		if (gunAngleToTurn > 0) {
-			if (gunAngleToTurn < Rules.GUN_TURN_RATE_RADIANS) {
-				gunHeading += gunAngleToTurn;
-				radarHeading += gunAngleToTurn;
-				if (adjustRadarForGunTurn) {
-					radarAngleToTurn -= gunAngleToTurn;
+		if (gunTurnRemaining > 0) {
+			if (gunTurnRemaining < Rules.GUN_TURN_RATE_RADIANS) {
+				gunHeading += gunTurnRemaining;
+				radarHeading += gunTurnRemaining;
+				if (isAdjustRadarForGunTurn) {
+					radarTurnRemaining -= gunTurnRemaining;
 				}
-				gunAngleToTurn = 0;
+				gunTurnRemaining = 0;
 			} else {
 				gunHeading += Rules.GUN_TURN_RATE_RADIANS;
 				radarHeading += Rules.GUN_TURN_RATE_RADIANS;
-				gunAngleToTurn -= Rules.GUN_TURN_RATE_RADIANS;
-				if (adjustRadarForGunTurn) {
-					radarAngleToTurn -= Rules.GUN_TURN_RATE_RADIANS;
+				gunTurnRemaining -= Rules.GUN_TURN_RATE_RADIANS;
+				if (isAdjustRadarForGunTurn) {
+					radarTurnRemaining -= Rules.GUN_TURN_RATE_RADIANS;
 				}
 			}
-		} else if (gunAngleToTurn < 0) {
-			if (gunAngleToTurn > -Rules.GUN_TURN_RATE_RADIANS) {
-				gunHeading += gunAngleToTurn;
-				radarHeading += gunAngleToTurn;
-				if (adjustRadarForGunTurn) {
-					radarAngleToTurn -= gunAngleToTurn;
+		} else if (gunTurnRemaining < 0) {
+			if (gunTurnRemaining > -Rules.GUN_TURN_RATE_RADIANS) {
+				gunHeading += gunTurnRemaining;
+				radarHeading += gunTurnRemaining;
+				if (isAdjustRadarForGunTurn) {
+					radarTurnRemaining -= gunTurnRemaining;
 				}
-				gunAngleToTurn = 0;
+				gunTurnRemaining = 0;
 			} else {
 				gunHeading -= Rules.GUN_TURN_RATE_RADIANS;
 				radarHeading -= Rules.GUN_TURN_RATE_RADIANS;
-				gunAngleToTurn += Rules.GUN_TURN_RATE_RADIANS;
-				if (adjustRadarForGunTurn) {
-					radarAngleToTurn += Rules.GUN_TURN_RATE_RADIANS;
+				gunTurnRemaining += Rules.GUN_TURN_RATE_RADIANS;
+				if (isAdjustRadarForGunTurn) {
+					radarTurnRemaining += Rules.GUN_TURN_RATE_RADIANS;
 				}
 			}
 		}
@@ -807,52 +805,52 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		double turnRate = min(maxTurnRate,
 				(0.4 + 0.6 * (1 - (abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
 	
-		if (angleToTurn > 0) {
-			if (angleToTurn < turnRate) {
-				heading += angleToTurn;
-				gunHeading += angleToTurn;
-				radarHeading += angleToTurn;
-				if (adjustGunForBodyTurn) {
-					gunAngleToTurn -= angleToTurn;
+		if (turnRemaining > 0) {
+			if (turnRemaining < turnRate) {
+				heading += turnRemaining;
+				gunHeading += turnRemaining;
+				radarHeading += turnRemaining;
+				if (isAdjustGunForBodyTurn) {
+					gunTurnRemaining -= turnRemaining;
 				}
 				if (adjustRadarForBodyTurn) {
-					radarAngleToTurn -= angleToTurn;
+					radarTurnRemaining -= turnRemaining;
 				}
-				angleToTurn = 0;
+				turnRemaining = 0;
 			} else {
 				heading += turnRate;
 				gunHeading += turnRate;
 				radarHeading += turnRate;
-				angleToTurn -= turnRate;
-				if (adjustGunForBodyTurn) {
-					gunAngleToTurn -= turnRate;
+				turnRemaining -= turnRate;
+				if (isAdjustGunForBodyTurn) {
+					gunTurnRemaining -= turnRate;
 				}
 				if (adjustRadarForBodyTurn) {
-					radarAngleToTurn -= turnRate;
+					radarTurnRemaining -= turnRate;
 				}
 			}
-		} else if (angleToTurn < 0) {
-			if (angleToTurn > -turnRate) {
-				heading += angleToTurn;
-				gunHeading += angleToTurn;
-				radarHeading += angleToTurn;
-				if (adjustGunForBodyTurn) {
-					gunAngleToTurn -= angleToTurn;
+		} else if (turnRemaining < 0) {
+			if (turnRemaining > -turnRate) {
+				heading += turnRemaining;
+				gunHeading += turnRemaining;
+				radarHeading += turnRemaining;
+				if (isAdjustGunForBodyTurn) {
+					gunTurnRemaining -= turnRemaining;
 				}
 				if (adjustRadarForBodyTurn) {
-					radarAngleToTurn -= angleToTurn;
+					radarTurnRemaining -= turnRemaining;
 				}
-				angleToTurn = 0;
+				turnRemaining = 0;
 			} else {
 				heading -= turnRate;
 				gunHeading -= turnRate;
 				radarHeading -= turnRate;
-				angleToTurn += turnRate;
-				if (adjustGunForBodyTurn) {
-					gunAngleToTurn += turnRate;
+				turnRemaining += turnRate;
+				if (isAdjustGunForBodyTurn) {
+					gunTurnRemaining += turnRate;
 				}
 				if (adjustRadarForBodyTurn) {
-					radarAngleToTurn += turnRate;
+					radarTurnRemaining += turnRate;
 				}
 			}
 		} else {
@@ -860,7 +858,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 
 		if (normalizeHeading) {
-			if (angleToTurn == 0) {
+			if (turnRemaining == 0) {
 				heading = Utils.normalNearAbsoluteAngle(heading);
 			} else {
 				heading = Utils.normalAbsoluteAngle(heading);
@@ -996,21 +994,21 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	private void updateRadarHeading() {
-		if (radarAngleToTurn > 0) {
-			if (radarAngleToTurn < Rules.RADAR_TURN_RATE_RADIANS) {
-				radarHeading += radarAngleToTurn;
-				radarAngleToTurn = 0;
+		if (radarTurnRemaining > 0) {
+			if (radarTurnRemaining < Rules.RADAR_TURN_RATE_RADIANS) {
+				radarHeading += radarTurnRemaining;
+				radarTurnRemaining = 0;
 			} else {
 				radarHeading += Rules.RADAR_TURN_RATE_RADIANS;
-				radarAngleToTurn -= Rules.RADAR_TURN_RATE_RADIANS;
+				radarTurnRemaining -= Rules.RADAR_TURN_RATE_RADIANS;
 			}
-		} else if (radarAngleToTurn < 0) {
-			if (radarAngleToTurn > -Rules.RADAR_TURN_RATE_RADIANS) {
-				radarHeading += radarAngleToTurn;
-				radarAngleToTurn = 0;
+		} else if (radarTurnRemaining < 0) {
+			if (radarTurnRemaining > -Rules.RADAR_TURN_RATE_RADIANS) {
+				radarHeading += radarTurnRemaining;
+				radarTurnRemaining = 0;
 			} else {
 				radarHeading -= Rules.RADAR_TURN_RATE_RADIANS;
-				radarAngleToTurn += Rules.RADAR_TURN_RATE_RADIANS;
+				radarTurnRemaining += Rules.RADAR_TURN_RATE_RADIANS;
 			}
 		}
 
@@ -1018,7 +1016,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public synchronized void wakeup(Battle b) {
-		if (sleeping) {
+		if (isSleeping) {
 			// Wake up the thread
 			this.notify();
 			try {
@@ -1085,9 +1083,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		gunHeat = 3;
 		distanceRemaining = 0;
-		angleToTurn = 0;
-		gunAngleToTurn = 0;
-		radarAngleToTurn = 0;
+		turnRemaining = 0;
+		gunTurnRemaining = 0;
+		radarTurnRemaining = 0;
 	
 		isStopped = false;
 
@@ -1115,8 +1113,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		getRobotThreadManager().resetCpuTime();
 
-		adjustGunForBodyTurn = false;
-		adjustRadarForGunTurn = false;
+		isAdjustGunForBodyTurn = false;
+		isAdjustRadarForGunTurn = false;
 		adjustRadarForBodyTurn = false;
 		adjustRadarForBodyTurnSet = false;
 
@@ -1157,9 +1155,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		isStopped = false;
 		distanceRemaining = saveDistanceToGo;
-		angleToTurn = saveAngleToTurn;
-		gunAngleToTurn = saveGunAngleToTurn;
-		radarAngleToTurn = saveRadarAngleToTurn;
+		turnRemaining = saveAngleToTurn;
+		gunTurnRemaining = saveGunAngleToTurn;
+		radarTurnRemaining = saveRadarAngleToTurn;
 	}
 
 	public void setRobot(Robot newRobot) {
@@ -1173,16 +1171,16 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public final synchronized void setStop(boolean overwrite) {
 		if (!isStopped || overwrite == true) {
 			this.saveDistanceToGo = distanceRemaining;
-			this.saveAngleToTurn = angleToTurn;
-			this.saveGunAngleToTurn = gunAngleToTurn;
-			this.saveRadarAngleToTurn = radarAngleToTurn;
+			this.saveAngleToTurn = turnRemaining;
+			this.saveGunAngleToTurn = gunTurnRemaining;
+			this.saveRadarAngleToTurn = radarTurnRemaining;
 		}
 		isStopped = true;
 	
 		this.distanceRemaining = 0;
-		this.angleToTurn = 0;
-		this.gunAngleToTurn = 0;
-		this.radarAngleToTurn = 0;
+		this.turnRemaining = 0;
+		this.gunTurnRemaining = 0;
+		this.radarTurnRemaining = 0;
 	}
 
 	public synchronized void setVelocity(double newVelocity) {
@@ -1249,7 +1247,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			out.println("SYSTEM: You cannot call fire(NaN)");
 			return null;
 		}
-		if (gunHeat > 0 || getEnergy() == 0) {
+		if (gunHeat > 0 || energy == 0) {
 			return null;
 		}
 
@@ -1265,7 +1263,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (eventManager.isFireAssistValid()) {
 			bullet.setHeading(eventManager.getFireAssistAngle());
 		} else {
-			bullet.setHeading(getGunHeading());
+			bullet.setHeading(gunHeading);
 		}
 		bullet.setOwner(this);
 		bullet.setX(x);
@@ -1291,7 +1289,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public double getGunTurnRemaining() {
-		return gunAngleToTurn;
+		return gunTurnRemaining;
 	}
 
 	public double getMaxVelocity() {
@@ -1312,7 +1310,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public double getRadarTurnRemaining() {
-		return radarAngleToTurn;
+		return radarTurnRemaining;
 	}
 
 	public RobotClassManager getRobotClassManager() {
@@ -1352,7 +1350,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public double getTurnRemaining() {
-		return angleToTurn;
+		return turnRemaining;
 	}
 
 	public boolean isAdjustRadarForBodyTurn() {
@@ -1395,6 +1393,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized void setDuplicate(int count) {
 		duplicate = true;
+		
+		String countString = " (" + (count + 1) + ')';
+
+		name = getRobotClassManager().getClassNameManager().getFullClassNameWithVersion() + countString;
+		shortName = getRobotClassManager().getClassNameManager().getUniqueShortClassNameWithVersion() + countString;
+		nonVersionedName = getRobotClassManager().getClassNameManager().getFullClassName() + countString;
 	}
 
 	public boolean isDuplicate() {
@@ -1413,7 +1417,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (energy < .01) {
 			energy = 0;
 			distanceRemaining = 0;
-			angleToTurn = 0;
+			turnRemaining = 0;
 		}
 	}
 
@@ -1449,7 +1453,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (energy < 0.1) {
 			energy = 0;
 			distanceRemaining = 0;
-			angleToTurn = 0;
+			turnRemaining = 0;
 		}
 	}
 
@@ -1462,7 +1466,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean isSleeping() {
-		return sleeping;
+		return isSleeping;
 	}
 
 	public synchronized void setSetCallCount(int setCallCount) {
@@ -1485,22 +1489,22 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				return false;
 			}
 			if ((out1 & (Rectangle2D.OUT_LEFT | Rectangle2D.OUT_RIGHT)) != 0) {
-				double x = r.getX();
+				double x = r.x;
 
 				if ((out1 & Rectangle2D.OUT_RIGHT) != 0) {
 					Utils.log("adding r.getWidth");
-					x += r.getWidth();
+					x += r.width;
 					Utils.log("x is now: " + x);
 				}
 				y1 = y1 + (x - x1) * (y2 - y1) / (x2 - x1);
 				x1 = x;
 				Utils.log("x1 is now: " + x1);
 			} else {
-				double y = r.getY();
+				double y = r.y;
 
 				if ((out1 & Rectangle2D.OUT_BOTTOM) != 0) {
 					Utils.log("adding r.getHeight");
-					y += r.getHeight();
+					y += r.height;
 				}
 				x1 = x1 + (y - y1) * (x2 - x1) / (y2 - y1);
 				y1 = y;
