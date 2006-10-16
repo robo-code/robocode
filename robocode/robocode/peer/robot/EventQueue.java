@@ -26,7 +26,8 @@ import robocode.*;
  */
 @SuppressWarnings("serial")
 public class EventQueue extends Vector<Event> {
-	public EventManager eventManager;
+
+	private EventManager eventManager;
 
 	public EventQueue(EventManager eventManager) {
 		super();
@@ -42,37 +43,34 @@ public class EventQueue extends Vector<Event> {
 	public void clear(boolean includingSystemEvents) {
 		if (includingSystemEvents) {
 			super.clear();
-		} else {
-			synchronized (this) {
-				Event e;
-
-				for (int i = 0; i < size(); i++) {
-					e = elementAt(i);
-					if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
-						removeElementAt(i--);
-					}
+			return;
+		}
+	
+		synchronized (this) {
+			for (int i = 0; i < size(); i++) {
+				Event e = elementAt(i);
+				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+					removeElementAt(i--);
 				}
 			}
 		}
 	}
 
-	public synchronized void clear(long clearTime) {
-		Event e;
-
-		for (int i = 0; i < size(); i++) {
-			e = elementAt(i);
-			if ((e.getTime() <= clearTime)
-					&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
-				removeElementAt(i--);
+	public void clear(long clearTime) {
+		synchronized (this) {
+			for (int i = 0; i < size(); i++) {
+				Event e = elementAt(i);
+				if ((e.getTime() <= clearTime)
+						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+					removeElementAt(i--);
+				}
 			}
 		}
 	}
 
-	public synchronized void sort() {
-		Collections.sort(this, new Comparator<Event>() {
-			public int compare(Event e1, Event e2) {
-				return e2.getPriority() - e1.getPriority();
-			}
-		});
+	public void sort() {
+		synchronized (this) {
+			Collections.sort(this);
+		}
 	}
 }
