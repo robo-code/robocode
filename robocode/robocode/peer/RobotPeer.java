@@ -54,6 +54,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public static final int ROBOT_STATE_HIT_ROBOT = 2;
 	public static final int ROBOT_STATE_DEAD = 3;
 
+	public RobotOutputStream out;
+
 	private double energy;
 	private double velocity;
 	private double heading;
@@ -90,8 +92,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean isDead;
 	private boolean isWinner;
 	private boolean isSleeping;
-
-	private RobotOutputStream out;
 
 	private double lastGunHeading;
 	private double lastHeading;
