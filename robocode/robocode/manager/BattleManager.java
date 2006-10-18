@@ -9,14 +9,14 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Removed getBattleView().setDoubleBuffered(false) as RobocodeNG uses
- *       BufferStrategy
+ *     - Removed getBattleView().setDoubleBuffered(false) as BufferStrategy is
+ *       used now
  *     - Replaced FileSpecificationVector, RobotPeerVector, and
  *       RobotClassManagerVector with plain Vector
  *     - Added check for if GUI is enabled before using graphical components
  *     - Added restart() method
  *     - Ported to Java 5
- *     - Code cleanup
+ *     - Code cleanup & optimizations
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -395,20 +395,7 @@ public class BattleManager {
 	}
 
 	public void resumeBattle() {
-		// Resume is done after a short delay,
-		// so that a user switching from menu to menu won't cause
-		// a lot of flickering and/or "single frame" battle unpauses
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					Thread.sleep(300);
-				} catch (InterruptedException e) {}
-				pauseCount--;
-				if (pauseCount < 0) {
-					pauseCount = 0;
-				}
-			}
-		}).start();
+		Math.max(--pauseCount, 0);
 	}
 
 	public boolean isBattleRunning() {
@@ -439,10 +426,10 @@ public class BattleManager {
 		robocode.control.RobotResults results[] = new robocode.control.RobotResults[orderedRobots.size()];
 
 		for (int i = 0; i < results.length; i++) {
-			RobotStatistics stats = ((RobotPeer) orderedRobots.elementAt(i)).getRobotStatistics();
+			RobotStatistics stats = orderedRobots.elementAt(i).getRobotStatistics();
 
 			results[i] = new robocode.control.RobotResults(
-					((RobotPeer) orderedRobots.elementAt(i)).getRobotClassManager().getControlRobotSpecification(), (i + 1),
+					orderedRobots.elementAt(i).getRobotClassManager().getControlRobotSpecification(), (i + 1),
 					(int) stats.getTotalScore(), (int) stats.getTotalSurvivalScore(), (int) stats.getTotalWinnerScore(),
 					(int) stats.getTotalBulletDamageScore(), (int) stats.getTotalKilledEnemyBulletScore(),
 					(int) stats.getTotalRammingDamageScore(), (int) stats.getTotalKilledEnemyRammingScore(),
