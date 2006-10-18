@@ -9,19 +9,10 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Added setPaintEnabled() and isPaintEnabled()
- *     - Added setSGPaintEnabled() and isSGPaintEnabled()
  *     - Bugfix: updateMovement() checked for distanceRemaining > 1 instead of
- *       distanceRemaining > 0 if slowingDown and moveDirection == -1
- *     - Replaced the colorIndex with bodyColor, gunColor, and radarColor
- *     - Replaced the setColors() with setBodyColor(), setGunColor(), and
- *       setRadarColor()
- *     - Added bulletColor, scanColor, setBulletColor(), and setScanColor() and
- *       removed getColorIndex()
- *     - Integration with robocode.Rules
- *     - Updated compareTo() to include current score during a battle
- *     - Optimizations
- *     - Code cleanup
+ *     - Bugfix: Substituted wait(10000) with wait() in tick() method, so that
+ *       robots do not hang when game is paused
+ *     - Rewritten in order to cleanup code, optimize, and port to Java 5
  *     Luis Crespo
  *     - Added states
  *******************************************************************************/
@@ -38,7 +29,7 @@ import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.peer.robot.*;
 import robocode.manager.*;
-import robocode.util.*;
+import static robocode.util.Utils.*;
 
 
 /**
@@ -209,7 +200,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				double movedy = velocity * cos(heading);
 
 				boolean atFault = false;
-				double bearing = Utils.normalRelativeAngle(angle - heading);
+				double bearing = normalRelativeAngle(angle - heading);
 
 				synchronized (this) {
 					if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
@@ -247,10 +238,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						robotState = ROBOT_STATE_HIT_ROBOT;
 					}
 				}
-				eventManager.add(
-						new HitRobotEvent(r.getName(), Utils.normalRelativeAngle(angle - heading), r.energy, atFault));
+				eventManager.add(new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.energy, atFault));
 				r.eventManager.add(
-						new HitRobotEvent(getName(), Utils.normalRelativeAngle(PI + angle - r.heading), energy, false));
+						new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.heading), energy, false));
 
 			} // if robot active & not me & hit
 		} // for robots
@@ -266,23 +256,23 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			hitWall = true;
 			fixx = battleField.getBoundingBox().x + battleField.getBoundingBox().width - boundingBox.width
 					- boundingBox.x - .001;
-			angle = Utils.normalRelativeAngle(PI / 2 - heading);
+			angle = normalRelativeAngle(PI / 2 - heading);
 		}
 		if (boundingBox.x < battleField.getBoundingBox().x) {
 			hitWall = true;
 			fixx = battleField.getBoundingBox().x - boundingBox.x + .001;
-			angle = Utils.normalRelativeAngle(3 * PI / 2 - heading);
+			angle = normalRelativeAngle(3 * PI / 2 - heading);
 		}
 		if (boundingBox.y + boundingBox.height > battleField.getBoundingBox().y + battleField.getBoundingBox().height) {
 			hitWall = true;
 			fixy = battleField.getBoundingBox().y + battleField.getBoundingBox().height - getBoundingBox().height
 					- getBoundingBox().y - .001;
-			angle = Utils.normalRelativeAngle(-heading);
+			angle = normalRelativeAngle(-heading);
 		}
 		if (boundingBox.y < battleField.getBoundingBox().y) {
 			hitWall = true;
 			fixy = battleField.getBoundingBox().y - boundingBox.y + .001;
-			angle = Utils.normalRelativeAngle(PI - heading);
+			angle = normalRelativeAngle(PI - heading);
 		}
 
 		if (hitWall) {
@@ -462,7 +452,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				out.println(getName() + ": Throwable: " + t);
 				out.printStackTrace(t);
 			} else {
-				Utils.log(getName() + " stopped successfully.");
+				log(getName() + " stopped successfully.");
 			}
 		}
 		setRunning(false);
@@ -499,7 +489,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		// All we need to do is adjust our angle by -90 for this to work.
 		startAngle -= PI / 2;
 
-		startAngle = Utils.normalAbsoluteAngle(startAngle);
+		startAngle = normalAbsoluteAngle(startAngle);
 
 		scanArc.setArc(x - Rules.RADAR_SCAN_RADIUS, y - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
@@ -514,8 +504,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				double dist = Math.hypot(dx, dy);
 
 				eventManager.add(
-						new ScannedRobotEvent(r.getName(), r.energy, Utils.normalRelativeAngle(angle - heading), dist,
-						r.heading, r.velocity));
+						new ScannedRobotEvent(r.getName(), r.energy, normalRelativeAngle(angle - heading), dist, r.heading,
+						r.velocity));
 			}
 		}
 	}
@@ -635,7 +625,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (Thread.currentThread() != robotThreadManager.getRunThread()) {
 			throw new RobotException("You cannot take action in this thread!");
 		}
-		if (getTestingCondition()) {
+		if (testingCondition) {
 			throw new RobotException(
 					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
 		}
@@ -666,9 +656,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			// Notifying battle that we're asleep
 			// Sleeping and waiting for battle to wake us up.
 			try {
-				this.wait(10000); // attempt to catch bug.
+				this.wait();
 			} catch (InterruptedException e) {
-				Utils.log("Wait interrupted");
+				log("Wait interrupted");
 			}
 			isSleeping = false;
 			// Notify battle thread, which is waiting in
@@ -796,7 +786,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				}
 			}
 		}
-		gunHeading = Utils.normalAbsoluteAngle(gunHeading);
+		gunHeading = normalAbsoluteAngle(gunHeading);
 	}
 
 	private void updateHeading() {
@@ -859,9 +849,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		if (normalizeHeading) {
 			if (turnRemaining == 0) {
-				heading = Utils.normalNearAbsoluteAngle(heading);
+				heading = normalNearAbsoluteAngle(heading);
 			} else {
-				heading = Utils.normalAbsoluteAngle(heading);
+				heading = normalAbsoluteAngle(heading);
 			}
 		}
 		if (Double.isNaN(heading)) {
@@ -1012,7 +1002,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			}
 		}
 
-		radarHeading = Utils.normalAbsoluteAngle(radarHeading);
+		radarHeading = normalAbsoluteAngle(radarHeading);
 	}
 
 	public synchronized void wakeup(Battle b) {
@@ -1484,7 +1474,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			return true;
 		}
 		while ((out1 = r.outcode(x1, y1)) != 0) {
-			Utils.log("testing: " + x1 + "," + y1);
+			log("testing: " + x1 + "," + y1);
 			if ((out1 & out2) != 0) {
 				return false;
 			}
@@ -1492,18 +1482,18 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				double x = r.x;
 
 				if ((out1 & Rectangle2D.OUT_RIGHT) != 0) {
-					Utils.log("adding r.getWidth");
+					log("adding r.getWidth");
 					x += r.width;
-					Utils.log("x is now: " + x);
+					log("x is now: " + x);
 				}
 				y1 = y1 + (x - x1) * (y2 - y1) / (x2 - x1);
 				x1 = x;
-				Utils.log("x1 is now: " + x1);
+				log("x1 is now: " + x1);
 			} else {
 				double y = r.y;
 
 				if ((out1 & Rectangle2D.OUT_BOTTOM) != 0) {
-					Utils.log("adding r.getHeight");
+					log("adding r.getHeight");
 					y += r.height;
 				}
 				x1 = x1 + (y - y1) * (x2 - x1) / (y2 - y1);
