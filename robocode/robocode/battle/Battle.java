@@ -687,7 +687,6 @@ public class Battle implements Runnable {
 					battleView.setTitle("Robocode");
 				}
 			}
-			return false;
 		}
 		return false;
 	}
