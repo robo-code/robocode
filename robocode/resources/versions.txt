@@ -1,7 +1,11 @@
 Version 1.1.4B
-(10/17/2006)
+(10/19/2006)
 o Bugfixes
   -- The getName() on ScannedRobotEvent returned null
+  -- Fixed "Robot hangs" when running long battles and when pausing the game
+  -- Fixed the robocode.sh (Unix) file which contained a ^M (Microsoft DOS/Windows
+     character), which caused this file to be unusable for starting Robocode
+  -- Updated the Common Public License to the original version
 
 Version 1.1.4A
 (10/15/2006)
