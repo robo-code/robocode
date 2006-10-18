@@ -33,8 +33,6 @@ public class ScannedRobotEvent extends Event {
 		super();
 		this.name = name;
 		this.energy = energy;
-		// int t = (int)(10 * energy + .1);
-		// this.energy = (double)t / 10.0;
 		this.bearing = bearing;
 		this.distance = distance;
 		this.heading = heading;
