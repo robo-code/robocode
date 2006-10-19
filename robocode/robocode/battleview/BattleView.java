@@ -356,32 +356,28 @@ public class BattleView extends Canvas {
 	 */
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
-			RobotPeer c;
-
-			for (int i = 0; i < battle.getRobots().size(); i++) {
-				c = (RobotPeer) battle.getRobots().elementAt(i);
-				if (c.isDead()) {
-					continue;
+			for (RobotPeer r : battle.getRobots()) {
+				if (!r.isDead()) {
+					drawScanArc((Graphics2D) g, r); 
 				}
-				drawScanArc((Graphics2D) g, c); 
 			}
 		}
 	}
 
 	private void drawRobots(Graphics2D g) {
-		RobotPeer c;
+		double x, y;
+		AffineTransform at;
+		int battleFieldHeight = battle.getBattleField().getHeight();
 
 		if (drawGround) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
-			for (int i = 0; i < battle.getRobots().size(); i++) {
-				c = (RobotPeer) battle.getRobots().elementAt(i);
-	
-				if (c.isDead()) {
-					int x = (int) c.getX();
-					int y = battle.getBattleField().getHeight() - (int) c.getY();
+			for (RobotPeer r : battle.getRobots()) {
+				if (r.isDead()) {
+					x = r.getX();
+					y = battleFieldHeight - r.getY();
 
-					AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+					at = AffineTransform.getTranslateInstance(x, y);
 
 					explodeDebrise.setTransform(at);
 					explodeDebrise.paint(g);
@@ -389,35 +385,32 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		for (int i = 0; i < battle.getRobots().size(); i++) {
-			c = (RobotPeer) battle.getRobots().elementAt(i);
+		for (RobotPeer r : battle.getRobots()) {
+			if (!r.isDead()) {
+				x = r.getX();
+				y = battleFieldHeight - r.getY();
 
-			if (!c.isDead()) {
-				int x = (int) c.getX();
-				int y = battle.getBattleField().getHeight() - (int) c.getY();
+				at = AffineTransform.getTranslateInstance(x, y);
+				at.rotate(r.getHeading());
 
-				AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-
-				at.rotate(c.getHeading());
-
-				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(c.getBodyColor());
+				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
 	
 				robotRenderImage.setTransform(at);
 				robotRenderImage.paint(g);
 	
 				at = AffineTransform.getTranslateInstance(x, y);
-				at.rotate(c.getGunHeading());
+				at.rotate(r.getGunHeading());
 	
-				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(c.getGunColor());
+				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
 	
 				gunRenderImage.setTransform(at);
 				gunRenderImage.paint(g);
 	
-				if (!c.isDroid()) {
+				if (!r.isDroid()) {
 					at = AffineTransform.getTranslateInstance(x, y);
-					at.rotate(c.getRadarHeading());
+					at.rotate(r.getRadarHeading());
 	
-					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(c.getRadarColor());
+					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
 	
 					radarRenderImage.setTransform(at);
 					radarRenderImage.paint(g);
@@ -520,8 +513,8 @@ public class BattleView extends Canvas {
 			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
 			if (!bullet.hitVictim && !bullet.hitBullet) {
-				// scale = 2 * sqrt(r^2 / MIN_POWER * bulletPower) = 2 * sqrt(0.5^2 / 0.1 * bulletPower)
-				double scale = 2 * Math.sqrt(2.5 * bullet.getPower());
+
+				double scale = 2 * bullet.getRadius();
 
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
