@@ -8,18 +8,22 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
- *     Luis Crespo
- *     - Added states
  *     Flemming N. Larsen
  *     - Integration of robocode.Rules
+ *     - Replaced width and height with radius
+ *     - Improved checkBulletCollision() so that the radius of the bullet is
+ *       taken into account
  *     - Optimizations
  *     - Code cleanup
+ *     Luis Crespo
+ *     - Added states
  *******************************************************************************/
 package robocode.peer;
 
 
 import java.awt.geom.*;
 import java.util.Vector;
+import static java.lang.Math.*;
 
 import robocode.battle.*;
 import robocode.battlefield.*;
@@ -52,8 +56,7 @@ public class BulletPeer {
 	private double lastX;
 	private double lastY;
 
-	private int width = 3;
-	private int height = 3;
+	private double radius;
 
 	private RobotPeer owner;
 
@@ -103,7 +106,7 @@ public class BulletPeer {
 
 	public void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
-			if (!(b == null || b == this) && b.active && boundingLine.intersectsLine(b.boundingLine)) {
+			if (!(b == null || b == this) && active && b.active && intersects(b)) {
 				synchronized (this) {
 					bulletState = BULLET_STATE_HIT_BULLET;
 					active = false;
@@ -119,6 +122,33 @@ public class BulletPeer {
 				break;
 			}
 		}
+	}
+
+	private boolean intersects(BulletPeer bullet) {
+		if (boundingLine.intersectsLine(bullet.boundingLine)) {
+			return true;
+		}
+
+		double x1 = bullet.boundingLine.getX1();
+		double x2 = bullet.boundingLine.getX2();
+
+		if (min(x1, x2) > x || max(x1, x2) < x) {
+			return false;
+		}
+
+		double y1 = bullet.boundingLine.getY1();
+		double y2 = bullet.boundingLine.getY2();
+
+		if (min(y1, y2) > y || max(y1, y2) < y) {
+			return false;
+		}
+
+		x1 -= x;
+		x2 -= x;
+		y1 -= y;
+		y2 -= y;
+
+		return 0 < pow(radius * (pow(x2 - x1, 2) + pow(y2 - y1, 2)), 2) - pow(x1 * y2 - x2 * y1, 2);
 	}
 
 	public void checkRobotCollision() {
@@ -150,7 +180,7 @@ public class BulletPeer {
 				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 
 				r.getEventManager().add(
-						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
+						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + PI - r.getHeading()),
 						getBullet()));
 
 				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
@@ -164,7 +194,7 @@ public class BulletPeer {
 					victim = r;
 					deltaX = lastX - r.getX();
 					deltaY = lastY - r.getY();
-					double dist = Math.hypot(deltaX, deltaY);
+					double dist = hypot(deltaX, deltaY);
 
 					if (dist > 0) {
 						double mult = 10 / dist;
@@ -181,10 +211,8 @@ public class BulletPeer {
 	}
 
 	public void checkWallCollision() {
-		double widthDivide2 = width / 2;
-
-		if ((x - widthDivide2 <= 0) || (y - widthDivide2 <= 0) || (x + widthDivide2 >= battleField.getWidth())
-				|| (y + widthDivide2 >= battleField.getHeight())) {
+		if ((x - radius <= 0) || (y - radius <= 0) || (x + radius >= battleField.getWidth())
+				|| (y + radius >= battleField.getHeight())) {
 			synchronized (this) {
 				bulletState = BULLET_STATE_HIT_WALL;
 				active = false;
@@ -217,10 +245,6 @@ public class BulletPeer {
 		return heading;
 	}
 
-	public int getHeight() {
-		return height;
-	}
-
 	public RobotPeer getOwner() {
 		return owner;
 	}
@@ -237,16 +261,16 @@ public class BulletPeer {
 		return victim;
 	}
 
-	public int getWidth() {
-		return width;
-	}
-
 	public double getX() {
 		return x;
 	}
 
 	public double getY() {
 		return y;
+	}
+
+	public double getRadius() {
+		return radius;
 	}
 
 	public boolean isActive() {
@@ -273,16 +297,15 @@ public class BulletPeer {
 		heading = newHeading;
 	}
 
-	public synchronized void setHeight(int newHeight) {
-		height = newHeight;
-	}
-
 	public synchronized void setOwner(RobotPeer newOwner) {
 		owner = newOwner;
 	}
 
 	public synchronized void setPower(double newPower) {
 		power = newPower;
+
+		// sqrt(0.5^2 / 0.1 * power), where 0.5 is half pixel width and 0.1 is min. power
+		radius = sqrt(2.5 * power);
 	}
 
 	public synchronized void setVelocity(double newVelocity) {
@@ -293,18 +316,12 @@ public class BulletPeer {
 		victim = newVictim;
 	}
 
-	public synchronized void setWidth(int newWidth) {
-		width = newWidth;
-	}
-
 	public synchronized void setX(double newX) {
-		x = newX;
-		lastX = x;
+		x = lastX = newX;
 	}
 
 	public synchronized void setY(double newY) {
-		y = newY;
-		lastY = y;
+		y = lastY = newY;
 	}
 
 	public void update() {
@@ -354,8 +371,8 @@ public class BulletPeer {
 		lastX = x;
 		lastY = y;
 
-		x += velocity * Math.sin(heading);
-		y += velocity * Math.cos(heading);
+		x += velocity * sin(heading);
+		y += velocity * cos(heading);
 
 		boundingLine.setLine(lastX, lastY, x, y);
 	}
