@@ -1,8 +1,9 @@
-Version 1.1.4C
+Version 1.1.5
 (10/22/2006)
 o Bugfixes
   -- Fixed "Robot hangs" when running long battles
   -- Fixed BulletHitBulletEvents, where half of them refered to the wrong bullet
+o The Ranking Panel total score is now updated on the fly
 
 Version 1.1.4B
 (10/19/2006)
