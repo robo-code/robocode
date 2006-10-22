@@ -151,11 +151,10 @@ public class Robot extends _Robot implements Runnable {
 	public double getHeight() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getHeight();
 		} else {
 			uninitializedException("getHeight");
-			return 0; // never called
 		}
+		return robocode.peer.RobotPeer.HEIGHT;
 	}
 
 	/**
@@ -181,11 +180,10 @@ public class Robot extends _Robot implements Runnable {
 	public double getWidth() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getWidth();
 		} else {
 			uninitializedException("getWidth");
-			return 0; // never called
 		}
+		return robocode.peer.RobotPeer.WIDTH;
 	}
 
 	/**
