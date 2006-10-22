@@ -173,12 +173,8 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	}
 
 	private boolean isTeammate(int robot) {
-		if (teamPeer != null
-				&& teamPeer == ((RobotPeer) robotPeer.getBattle().getRobots().elementAt(robot)).getTeamPeer()) {
-			return true;
-		} else {
-			return false;
-		}
+		return (teamPeer != null
+				&& teamPeer == ((RobotPeer) robotPeer.getBattle().getRobots().elementAt(robot)).getTeamPeer());
 	}
 
 	public void scoreBulletDamage(int robot, double damage) {
