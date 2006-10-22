@@ -29,14 +29,11 @@ import robocode.util.*;
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
 	private Battle battle;
-	private Vector<ContestantPeer> orderedContestants;
 	private String title;
 	
 	public BattleResultsTableModel(Battle battle) {
 		super();
 		this.battle = battle;
-		orderedContestants = new Vector<ContestantPeer>(battle.getContestants()); 
-		Collections.sort(orderedContestants);
 	}
 
 	public int getColumnCount() {
@@ -84,7 +81,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public int getRowCount() {
-		return orderedContestants.size();
+		return battle.getContestants().size();
 	}
 
 	public String getTitle() {
@@ -95,7 +92,11 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public Object getValueAt(int row, int col) {
-		ContestantPeer r = (ContestantPeer) orderedContestants.elementAt(row);
+		Vector<ContestantPeer> orderedContestants = new Vector<ContestantPeer>(battle.getContestants()); 
+
+		Collections.sort(orderedContestants);
+
+		ContestantPeer r = orderedContestants.elementAt(row);
 
 		ContestantStatistics statistics = r.getStatistics(); 
 		
@@ -113,43 +114,43 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		}
 
 		case 1: {
-			return "" + (int) (statistics.getTotalScore());
+			return "" + (int) statistics.getTotalScore();
 		}
 
 		case 2: {
-			return "" + (int) (statistics.getTotalSurvivalScore());
+			return "" + (int) statistics.getTotalSurvivalScore();
 		}
 
 		case 3: {
-			return "" + (int) (statistics.getTotalWinnerScore());
+			return "" + (int) statistics.getTotalWinnerScore();
 		}
 
 		case 4: {
-			return "" + (int) (statistics.getTotalBulletDamageScore());
+			return "" + (int) statistics.getTotalBulletDamageScore();
 		}
 
 		case 5: {
-			return "" + (int) (statistics.getTotalKilledEnemyBulletScore());
+			return "" + (int) statistics.getTotalKilledEnemyBulletScore();
 		}
 
 		case 6: {
-			return "" + (int) (statistics.getTotalRammingDamageScore());
+			return "" + (int) statistics.getTotalRammingDamageScore();
 		}
 
 		case 7: {
-			return "" + (int) (statistics.getTotalKilledEnemyRammingScore());
+			return "" + (int) statistics.getTotalKilledEnemyRammingScore();
 		}
 
 		case 8: {
-			return "" + (int) (statistics.getTotalFirsts());
+			return "" + (int) statistics.getTotalFirsts();
 		}
 
 		case 9: {
-			return "" + (int) (statistics.getTotalSeconds());
+			return "" + (int) statistics.getTotalSeconds();
 		}
 
 		case 10: {
-			return "" + (int) (statistics.getTotalThirds());
+			return "" + (int) statistics.getTotalThirds();
 		}
 
 		default:
