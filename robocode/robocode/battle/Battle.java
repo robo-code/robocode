@@ -255,8 +255,6 @@ public class Battle implements Runnable {
 		} else {
 			addContestant(robotPeer);
 		}
-		robotPeer.setWidth(40);
-		robotPeer.setHeight(40);
 		robotPeer.setBattle(this);
 		robotPeer.setBattleField(battleField);
 		robotPeer.getOut();
@@ -420,8 +418,8 @@ public class Battle implements Runnable {
 				double x = 0, y = 0, heading = 0;
 
 				for (int j = 0; j < 1000; j++) {
-					x = r.getWidth() + random() * (battleField.getWidth() - 2 * r.getWidth());
-					y = r.getHeight() + random() * (battleField.getHeight() - 2 * r.getHeight());
+					x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
+					y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
 					heading = 2 * PI * random();
 					r.initialize(x, y, heading);
 					if (validSpot(r) == true) {
@@ -1105,8 +1103,8 @@ public class Battle implements Runnable {
 					double x = 0, y = 0, heading = 0;
 
 					for (int j = 0; j < 1000; j++) {
-						x = r.getWidth() + random() * (battleField.getWidth() - 2 * r.getWidth());
-						y = r.getHeight() + random() * (battleField.getHeight() - 2 * r.getHeight());
+						x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
+						y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
 						heading = 2 * PI * random();
 						r.initialize(x, y, heading);
 						if (validSpot(r) == true) {
