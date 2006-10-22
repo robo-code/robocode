@@ -45,6 +45,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public static final int ROBOT_STATE_HIT_ROBOT = 2;
 	public static final int ROBOT_STATE_DEAD = 3;
 
+	public static final int WIDTH = 40;
+	public static final int HEIGHT = 40;
+	
 	public RobotOutputStream out;
 
 	private double energy;
@@ -54,8 +57,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private double gunHeading;
 	private double x;
 	private double y;
-	private int width;
-	private int height;
 
 	private double acceleration;
 	private double maxVelocity; // Can be changed by user
@@ -248,30 +249,30 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void checkWallCollision() {
 		boolean hitWall = false;
-		double fixx = 0;
-		double fixy = 0;
-		double angle = 0;
+		double fixx = 0, fixy = 0, angle = 0;
 
-		if (boundingBox.x + boundingBox.width > battleField.getBoundingBox().x + battleField.getBoundingBox().width) {
+		if (boundingBox.getX() + boundingBox.width
+				> battleField.getBoundingBox().getX() + battleField.getBoundingBox().getWidth()) {
 			hitWall = true;
-			fixx = battleField.getBoundingBox().x + battleField.getBoundingBox().width - boundingBox.width
+			fixx = battleField.getBoundingBox().getX() + battleField.getBoundingBox().getWidth() - boundingBox.width
 					- boundingBox.x - .001;
 			angle = normalRelativeAngle(PI / 2 - heading);
 		}
-		if (boundingBox.x < battleField.getBoundingBox().x) {
+		if (boundingBox.x < battleField.getBoundingBox().getX()) {
 			hitWall = true;
-			fixx = battleField.getBoundingBox().x - boundingBox.x + .001;
+			fixx = battleField.getBoundingBox().getX() - boundingBox.x + .001;
 			angle = normalRelativeAngle(3 * PI / 2 - heading);
 		}
-		if (boundingBox.y + boundingBox.height > battleField.getBoundingBox().y + battleField.getBoundingBox().height) {
+		if (boundingBox.y + boundingBox.height
+				> battleField.getBoundingBox().getY() + battleField.getBoundingBox().getHeight()) {
 			hitWall = true;
-			fixy = battleField.getBoundingBox().y + battleField.getBoundingBox().height - getBoundingBox().height
-					- getBoundingBox().y - .001;
+			fixy = battleField.getBoundingBox().getY() + battleField.getBoundingBox().getHeight()
+					- getBoundingBox().height - getBoundingBox().y - .001;
 			angle = normalRelativeAngle(-heading);
 		}
-		if (boundingBox.y < battleField.getBoundingBox().y) {
+		if (boundingBox.y < battleField.getBoundingBox().getY()) {
 			hitWall = true;
-			fixy = battleField.getBoundingBox().y - boundingBox.y + .001;
+			fixy = battleField.getBoundingBox().getY() - boundingBox.y + .001;
 			angle = normalRelativeAngle(PI - heading);
 		}
 
@@ -362,10 +363,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return heading;
 	}
 
-	public int getHeight() {
-		return height;
-	}
-
 	public String getName() {
 		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
 	}
@@ -394,10 +391,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public double getRadarHeading() {
 		return radarHeading;
-	}
-
-	public int getWidth() {
-		return width;
 	}
 
 	public double getX() {
@@ -595,16 +588,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		this.heading = heading;
 	}
 
-	public synchronized void setHeight(int newHeight) {
-		height = newHeight;
-	}
-
 	public synchronized void setRadarHeading(double newRadarHeading) {
 		radarHeading = newRadarHeading;
-	}
-
-	public synchronized void setWidth(int newWidth) {
-		width = newWidth;
 	}
 
 	public synchronized void setX(double newX) {
@@ -749,7 +734,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public synchronized void updateBoundingBox() {
-		boundingBox.setRect(x - width / 2 + 2, y - height / 2 + 2, width - 4, height - 4);
+		boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
 	}
 
 	private void updateGunHeading() {
