@@ -1,8 +1,14 @@
+Version 1.1.4C
+(10/22/2006)
+o Bugfixes
+  -- Fixed "Robot hangs" when running long battles
+  -- Fixed BulletHitBulletEvents, where half of them refered to the wrong bullet
+
 Version 1.1.4B
 (10/19/2006)
 o Bugfixes
   -- The getName() on ScannedRobotEvent returned null
-  -- Fixed "Robot hangs" when running long battles and when pausing the game
+  -- Fixed "Robot hangs" pausing the game
   -- Fixed the robocode.sh (Unix) file which contained a ^M (Microsoft DOS/Windows
      character), which caused this file to be unusable for starting Robocode
   -- Updated the Common Public License to the original version
