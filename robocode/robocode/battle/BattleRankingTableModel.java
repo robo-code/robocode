@@ -68,8 +68,10 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int row, int col) {
-		Vector<ContestantPeer> contestants = getSortedContestants();
+		Vector<ContestantPeer> contestants = new Vector<ContestantPeer>(getContestants());
 
+		Collections.sort(contestants);
+		
 		if (contestants == null) {
 			return "";
 		}
@@ -82,7 +84,8 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			return "" + (row + 1) + ": " + name;
 
 		case 1:
-			return (int) cp.getStatistics().getTotalScore();
+			return (int) (cp.getStatistics().getTotalScore()
+					+ (battle.isRunning() ? cp.getStatistics().getCurrentScore() : 0));
 
 		case 2:
 			return battle.isRunning() ? (int) cp.getStatistics().getCurrentScore() : 0;
@@ -99,29 +102,5 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		battle = manager.getBattleManager().getBattle();
 		
 		return (battle != null) ? battle.getContestants() : null;
-	}
-
-	private Vector<ContestantPeer> getSortedContestants() {
-		Vector<ContestantPeer> contestants = getContestants();
-
-		if (contestants == null) {
-			return null;
-		}
-
-		Vector<ContestantPeer> sc = new Vector<ContestantPeer>(contestants);
-
-		Collections.sort(sc, new Comparator<ContestantPeer>() {
-			public int compare(ContestantPeer cp1, ContestantPeer cp2) {
-				double score1 = cp1.getStatistics().getTotalScore();
-				double score2 = cp2.getStatistics().getTotalScore();
-
-				if (battle.isRunning()) {
-					score1 += cp1.getStatistics().getCurrentScore();
-					score2 += cp2.getStatistics().getCurrentScore();
-				}
-				return (int) (score2 - score1);
-			}			
-		});
-		return sc;
 	}
 }
