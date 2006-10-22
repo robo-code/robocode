@@ -47,6 +47,8 @@ public class BulletPeer {
 
 	private static final int WHICH_EXPLOSION = 0;
 
+	private static final int RADIUS = 3;
+	
 	private double velocity;
 	private double heading;
 
@@ -55,8 +57,6 @@ public class BulletPeer {
 
 	private double lastX;
 	private double lastY;
-
-	private double radius;
 
 	private RobotPeer owner;
 
@@ -106,7 +106,9 @@ public class BulletPeer {
 
 	public void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
-			if (!(b == null || b == this) && active && b.active && intersects(b)) {
+			if (!(b == null || b == this) && b.active && boundingLine.intersectsLine(b.boundingLine)
+					&& !boundingLine.getP1().equals(b.getBoundingLine().getP2())
+					&& !boundingLine.getP2().equals(b.getBoundingLine().getP1())) {
 				synchronized (this) {
 					bulletState = BULLET_STATE_HIT_BULLET;
 					active = false;
@@ -118,37 +120,10 @@ public class BulletPeer {
 					y = lastY;
 				}
 				owner.getEventManager().add(new BulletHitBulletEvent(bullet, b.bullet));
-				b.owner.getEventManager().add(new BulletHitBulletEvent(bullet, bullet));
+				b.owner.getEventManager().add(new BulletHitBulletEvent(b.bullet, bullet));
 				break;
 			}
 		}
-	}
-
-	private boolean intersects(BulletPeer bullet) {
-		if (boundingLine.intersectsLine(bullet.boundingLine)) {
-			return true;
-		}
-
-		double x1 = bullet.boundingLine.getX1();
-		double x2 = bullet.boundingLine.getX2();
-
-		if (min(x1, x2) > x || max(x1, x2) < x) {
-			return false;
-		}
-
-		double y1 = bullet.boundingLine.getY1();
-		double y2 = bullet.boundingLine.getY2();
-
-		if (min(y1, y2) > y || max(y1, y2) < y) {
-			return false;
-		}
-
-		x1 -= x;
-		x2 -= x;
-		y1 -= y;
-		y2 -= y;
-
-		return 0 < pow(radius * (pow(x2 - x1, 2) + pow(y2 - y1, 2)), 2) - pow(x1 * y2 - x2 * y1, 2);
 	}
 
 	public void checkRobotCollision() {
@@ -211,8 +186,8 @@ public class BulletPeer {
 	}
 
 	public void checkWallCollision() {
-		if ((x - radius <= 0) || (y - radius <= 0) || (x + radius >= battleField.getWidth())
-				|| (y + radius >= battleField.getHeight())) {
+		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
+				|| (y + RADIUS >= battleField.getHeight())) {
 			synchronized (this) {
 				bulletState = BULLET_STATE_HIT_WALL;
 				active = false;
@@ -269,10 +244,6 @@ public class BulletPeer {
 		return y;
 	}
 
-	public double getRadius() {
-		return radius;
-	}
-
 	public boolean isActive() {
 		return active;
 	}
@@ -303,9 +274,6 @@ public class BulletPeer {
 
 	public synchronized void setPower(double newPower) {
 		power = newPower;
-
-		// sqrt(0.5^2 / 0.1 * power), where 0.5 is half pixel width and 0.1 is min. power
-		radius = sqrt(2.5 * power);
 	}
 
 	public synchronized void setVelocity(double newVelocity) {
