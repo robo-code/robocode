@@ -32,7 +32,16 @@ import robocode.battle.*;
 @SuppressWarnings("serial")
 public class ResultsDialog extends JDialog {
 
+	private JPanel buttonPanel;
+	private EventHandler eventHandler = new EventHandler();
+	private JButton okButton;
+	private JPanel resultsDialogContentPane;
+	private JScrollPane resultsScrollPane;
+	private JTable resultsTable;
+
 	private Battle battle;
+	private BattleResultsTableModel battleResultsTableModel;
+	private Dimension tableSize;
 
 	/**
 	 * Return the resultsTable.
@@ -59,13 +68,6 @@ public class ResultsDialog extends JDialog {
 		setTitle(getBattleResultsTableModel().getTitle());
 		setContentPane(getResultsDialogContentPane());
 	}
-
-	private JPanel buttonPanel;
-	private EventHandler eventHandler = new EventHandler();
-	private JButton okButton;
-	private JPanel resultsDialogContentPane;
-	private JScrollPane resultsScrollPane;
-	private JTable resultsTable;
 
 	class EventHandler implements ActionListener, ComponentListener {
 		public void actionPerformed(ActionEvent e) {
@@ -221,12 +223,7 @@ public class ResultsDialog extends JDialog {
 				maxScoreColWidth = width;
 			}
 		}
-
 	}
-
-	private robocode.battle.BattleResultsTableModel battleResultsTableModel;
-
-	private Dimension tableSize;
 
 	private BattleResultsTableModel getBattleResultsTableModel() {
 		if (battleResultsTableModel == null) {
