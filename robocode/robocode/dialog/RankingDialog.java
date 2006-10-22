@@ -33,9 +33,6 @@ import robocode.manager.RobocodeManager;
  * @author Luis Crespo & Flemming N. Larsen
  */
 public class RankingDialog extends JDialog {
-
-	private static final long serialVersionUID = 1L;
-
 	private JPanel rankingContentPane;
 	private JScrollPane resultsScrollPane;
 	private JTable resultsTable;
