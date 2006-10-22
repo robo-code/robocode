@@ -36,7 +36,7 @@ public class DefaultBattleField implements BattleField {
 		this.boundingBox = new Rectangle2D.Float(0, 0, width, height);
 	}
 
-	public Rectangle2D.Float getBoundingBox() {
+	public Rectangle2D getBoundingBox() {
 		return boundingBox;
 	}
 

@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Replaced BoundingRectangle with Rectangle2D.Double 
+ *     - Replaced BoundingRectangle with Rectangle2D 
  *******************************************************************************/
 package robocode.battlefield;
 
@@ -18,7 +18,7 @@ package robocode.battlefield;
  * @author Mathew A. Nelson (original)
  */
 public interface BattleField {
-	public java.awt.geom.Rectangle2D.Float getBoundingBox();
+	public java.awt.geom.Rectangle2D getBoundingBox();
 
 	public int getHeight();
 
