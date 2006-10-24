@@ -68,7 +68,7 @@ public class BulletPeer {
 
 	protected boolean active = true;
 
-	private Line2D boundingLine = new Line2D.Double();
+	private Line2D.Double boundingLine = new Line2D.Double();
 
 	public boolean hitVictim;
 	public boolean hitBullet;
@@ -106,9 +106,7 @@ public class BulletPeer {
 
 	public void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
-			if (!(b == null || b == this) && b.active && boundingLine.intersectsLine(b.boundingLine)
-					&& !boundingLine.getP1().equals(b.getBoundingLine().getP2())
-					&& !boundingLine.getP2().equals(b.getBoundingLine().getP1())) {
+			if (!(b == null || b == this) && b.active && intersect(b.boundingLine)) {
 				synchronized (this) {
 					bulletState = BULLET_STATE_HIT_BULLET;
 					active = false;
@@ -195,6 +193,32 @@ public class BulletPeer {
 			owner.getEventManager().add(new BulletMissedEvent(bullet));
 		}
 	}
+
+	// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6457965
+	private boolean intersect(Line2D.Double line) {
+		if (boundingLine.getP1().equals(line.getP2()) || boundingLine.getP2().equals(line.getP1())) {
+			return true;
+		}
+		if (boundingLine.intersectsLine(line)) {
+			double dx1 = boundingLine.x2 - boundingLine.x1;
+			double dy1 = boundingLine.y2 - boundingLine.y1;
+			double dx2 = line.x2 - line.x1;
+			double dy2 = line.y2 - line.y1;
+
+			double slope1 = (dx1 != 0) ? dy1 / dx1 : (dy1 >= 0) ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+			double slope2 = (dx2 != 0) ? dy2 / dx2 : (dy2 >= 0) ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+
+			if (slope1 == slope2) {
+				double line1MinX = Math.min(boundingLine.x1, boundingLine.x2);
+				double line1MaxX = Math.max(boundingLine.x1, boundingLine.x2);
+				double line2MinX = Math.min(line.x1, line.x2);
+				double line2MaxX = Math.max(line.x1, line.x2);
+
+				return (line1MaxX <= line2MaxX || line2MinX <= line2MinX) && !(line1MaxX < line2MinX || line2MaxX < line1MinX);
+			}
+		}
+		return false;
+	}	
 
 	public Battle getBattle() {
 		return battle;
