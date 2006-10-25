@@ -21,6 +21,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import robocode.battle.*;
+import robocode.util.Utils;
 
 
 /**
@@ -33,8 +34,9 @@ import robocode.battle.*;
 public class ResultsDialog extends JDialog {
 
 	private JPanel buttonPanel;
-	private EventHandler eventHandler = new EventHandler();
 	private JButton okButton;
+	private JButton saveButton;
+
 	private JPanel resultsDialogContentPane;
 	private JScrollPane resultsScrollPane;
 	private JTable resultsTable;
@@ -42,6 +44,8 @@ public class ResultsDialog extends JDialog {
 	private Battle battle;
 	private BattleResultsTableModel battleResultsTableModel;
 	private Dimension tableSize;
+
+	private EventHandler eventHandler = new EventHandler();
 
 	/**
 	 * Return the resultsTable.
@@ -71,8 +75,11 @@ public class ResultsDialog extends JDialog {
 
 	class EventHandler implements ActionListener, ComponentListener {
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == ResultsDialog.this.getOkButton()) {
+			Object source = e.getSource();
+			if (source == ResultsDialog.this.getOkButton()) {
 				okButtonActionPerformed();
+			} else if (source == ResultsDialog.this.getSaveButton()) {
+				saveButtonActionPerformed();
 			}
 		}
 
@@ -110,6 +117,7 @@ public class ResultsDialog extends JDialog {
 			buttonPanel = new JPanel();
 			buttonPanel.setLayout(new BorderLayout());
 			buttonPanel.add(getOkButton(), "East");
+			buttonPanel.add(getSaveButton(), "West");
 		}
 		return buttonPanel;
 	}
@@ -123,12 +131,25 @@ public class ResultsDialog extends JDialog {
 		if (okButton == null) {
 			okButton = new JButton();
 			okButton.setText("OK");
-			okButton.setPreferredSize(new Dimension(80, 25));
-			okButton.setMaximumSize(new Dimension(80, 25));
-			okButton.setMinimumSize(new Dimension(80, 25));
 			okButton.addActionListener(eventHandler);
+			Utils.setFixedSize(okButton, new Dimension(80, 25));
 		}
 		return okButton;
+	}
+
+	/**
+	 * Return the saveButton
+	 * 
+	 * @return JButton
+	 */
+	private JButton getSaveButton() {
+		if (saveButton == null) {
+			saveButton = new JButton();
+			saveButton.setText("Save");
+			saveButton.addActionListener(eventHandler);
+			Utils.setFixedSize(saveButton, new Dimension(80, 25));
+		}
+		return saveButton;
 	}
 
 	/**
@@ -174,6 +195,10 @@ public class ResultsDialog extends JDialog {
 		dispose();
 	}
 
+	private void saveButtonActionPerformed() {
+		battle.getManager().getWindowManager().showSaveResultsDialog();
+	}
+
 	private void resultsScrollPaneComponentResized(ComponentEvent componentEvent) {
 		// This code is not working...
 		Dimension scrollPaneExtent = getResultsScrollPane().getViewport().getExtentSize();
@@ -198,7 +223,7 @@ public class ResultsDialog extends JDialog {
 		int maxScoreColWidth = 0;
 
 		for (int x = 0; x < getBattleResultsTableModel().getColumnCount(); x++) {
-			if (x > 0) {
+			if (x != 1) {
 				getResultsTable().getColumnModel().getColumn(x).setCellRenderer(new ResultsTableCellRenderer(false));
 			}
 			TableColumn column = getResultsTable().getColumnModel().getColumn(x);
@@ -219,7 +244,7 @@ public class ResultsDialog extends JDialog {
 			getResultsTable().getColumnModel().getColumn(x).setPreferredWidth(width);
 			getResultsTable().getColumnModel().getColumn(x).setMinWidth(width);
 			getResultsTable().getColumnModel().getColumn(x).setWidth(width);
-			if (x >= 2 && width > maxScoreColWidth) {
+			if (x >= 3 && width > maxScoreColWidth) {
 				maxScoreColWidth = width;
 			}
 		}

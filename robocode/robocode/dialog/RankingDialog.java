@@ -57,8 +57,7 @@ public class RankingDialog extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getRankingContentPane());
 
-		addWindowListener(
-				new WindowAdapter() {
+		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
 						false);
@@ -134,7 +133,7 @@ public class RankingDialog extends JDialog {
 		// TODO: the "name" column is getting too much width compared with the two others
 		// ...Columns should get a fixed width instead
 		for (int x = 0; x < getBattleRankingTableModel().getColumnCount(); x++) {
-			if (x > 0) {
+			if (x != 1) {
 				getResultsTable().getColumnModel().getColumn(x).setCellRenderer(new ResultsTableCellRenderer(false));
 			}
 			TableColumn column = getResultsTable().getColumnModel().getColumn(x);

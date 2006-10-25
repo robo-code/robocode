@@ -20,6 +20,7 @@ package robocode.manager;
 
 import java.io.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 import robocode.dialog.*;
 import robocode.battle.*;
@@ -76,23 +77,20 @@ public class WindowManager {
 
 	public void showBattleOpenDialog() {
 		manager.getBattleManager().pauseBattle();
-		File f = new File(manager.getBattleManager().getBattlePath());
 
-		JFileChooser chooser;
-
-		chooser = new JFileChooser(f);
+		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 		
-		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+		chooser.setFileFilter(new FileFilter() {
 			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
 					return true;
 				}
-				String fn = pathname.getName();
-				int idx = fn.lastIndexOf('.');
-				String extension = "";
+				String filename = pathname.getName();
+				int idx = filename.lastIndexOf('.');
 
+				String extension = "";
 				if (idx >= 0) {
-					extension = fn.substring(idx);
+					extension = filename.substring(idx);
 				}
 				if (extension.equalsIgnoreCase(".battle")) {
 					return true;
@@ -103,18 +101,17 @@ public class WindowManager {
 			public String getDescription() {
 				return "Battles";
 			}
-		};
+		});
 
-		chooser.setFileFilter(filter);
-		int rv = chooser.showOpenDialog(robocodeFrame);
-
-		if (rv == JFileChooser.APPROVE_OPTION) {
-			manager.getBattleManager().setBattleFilename(chooser.getSelectedFile().getPath());
-			manager.getBattleManager().loadBattleProperties();
-			showNewBattleDialog(manager.getBattleManager().getBattleProperties());
+		BattleManager battleManager = manager.getBattleManager();
+		
+		if (chooser.showOpenDialog(robocodeFrame) == JFileChooser.APPROVE_OPTION) {
+			battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
+			battleManager.loadBattleProperties();
+			showNewBattleDialog(battleManager.getBattleProperties());
 		}
 
-		manager.getBattleManager().resumeBattle();	
+		battleManager.resumeBattle();	
 	}
 
 	public void showVersionsTxt() {
@@ -274,11 +271,9 @@ public class WindowManager {
 	}
 
 	public void showImportRobotDialog() {
-		JFileChooser chooser;
-
-		chooser = new JFileChooser();
+		JFileChooser chooser = new JFileChooser();
 		
-		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+		chooser.setFileFilter(new FileFilter() {
 			public boolean accept(File pathname) {
 				if (pathname.isHidden()) {
 					return false;
@@ -286,16 +281,15 @@ public class WindowManager {
 				if (pathname.isDirectory()) {
 					return true;
 				}
-				String fn = pathname.getName();
-
-				if (fn.equals("robocode.jar")) {
+				String filename = pathname.getName();
+				if (filename.equals("robocode.jar")) {
 					return false;
 				}
-				int idx = fn.lastIndexOf('.');
-				String extension = "";
+				int idx = filename.lastIndexOf('.');
 
+				String extension = "";
 				if (idx >= 0) {
-					extension = fn.substring(idx);
+					extension = filename.substring(idx);
 				}
 				if (extension.equalsIgnoreCase(".jar")) {
 					return true;
@@ -309,14 +303,12 @@ public class WindowManager {
 			public String getDescription() {
 				return "Jar Files";
 			}
-		};
+		});
 
-		chooser.setFileFilter(filter);
 		chooser.setDialogTitle(
 				"Select the robot .jar file to copy to " + manager.getRobotRepositoryManager().getRobotsDirectory());
-		int rv = chooser.showDialog(getRobocodeFrame(), "Import");
 
-		if (rv == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showDialog(getRobocodeFrame(), "Import") == JFileChooser.APPROVE_OPTION) {
 			File inputFile = chooser.getSelectedFile();
 			String fileName = chooser.getSelectedFile().getName();
 			int idx = fileName.lastIndexOf('.');
@@ -369,6 +361,44 @@ public class WindowManager {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(robocodeFrame, e.getMessage(), "Unable to open browser!",
 					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public void showSaveResultsDialog() {
+		JFileChooser chooser = new JFileChooser();
+		
+		chooser.setFileFilter(new FileFilter() {
+
+			public boolean accept(File pathname) {
+				if (pathname.isHidden()) {
+					return false;
+				}
+				if (pathname.isDirectory()) {
+					return true;
+				}
+				String filename = pathname.getName();
+				int idx = filename.lastIndexOf('.');
+
+				String extension = "";
+				if (idx >= 0) {
+					extension = filename.substring(idx);
+				}
+				if (extension.equalsIgnoreCase(".csv")) {
+					return true;
+				}
+				return false;
+			}
+
+			public String getDescription() {
+				return "Comma Separated Value (CSV) File Format";
+			}
+		});
+
+		chooser.setDialogTitle("Save battle results");
+		
+		if (chooser.showDialog(getRobocodeFrame(), "Save") == JFileChooser.APPROVE_OPTION) {
+			BattleResultsTableModel tableModel = new BattleResultsTableModel(manager.getBattleManager().getBattle());
+			tableModel.saveToFile(chooser.getSelectedFile().getPath());
 		}
 	}
 }

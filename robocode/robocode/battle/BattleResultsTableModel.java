@@ -17,6 +17,7 @@
 package robocode.battle;
 
 
+import java.io.*;
 import java.util.*;
 import robocode.peer.*;
 import robocode.util.*;
@@ -37,42 +38,45 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public int getColumnCount() {
-		return 11; 
+		return 12; 
 	}
 
 	public String getColumnName(int col) {
 		switch (col) {
 		case 0:
-			return "Robot Name";
+			return "Rank";
 
 		case 1:
-			return "Total Score";
+			return "Robot Name";
 
 		case 2:
-			return "Survival";
+			return "Total Score";
 
 		case 3:
-			return "Last Survivor Bonus";
+			return "Survival";
 
 		case 4:
-			return "Bullet Dmg";
+			return "Last Survivor Bonus";
 
 		case 5:
-			return "Bonus";
+			return "Bullet Dmg";
 
 		case 6:
-			return "Ram Dmg * 2";
-
-		case 7:
 			return "Bonus";
 
+		case 7:
+			return "Ram Dmg * 2";
+
 		case 8:
-			return "Survival 1sts";
+			return "Bonus";
 
 		case 9:
-			return "Survival 2nds";
+			return "Survival 1sts";
 
 		case 10:
+			return "Survival 2nds";
+
+		case 11:
 			return "Survival 3rds";
 
 		default:
@@ -101,77 +105,103 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		ContestantStatistics statistics = r.getStatistics(); 
 		
 		switch (col) {
-		case 0: {
+		case 0: { 
 			int place = row + 1;
 
 			while (place < getRowCount()
 					&& statistics.getTotalScore() == orderedContestants.elementAt(place).getStatistics().getTotalScore()) {
 				place++;
 			}
-			String seperator = (r instanceof TeamPeer) ? ": Team: " : ": ";
-
-			return Utils.getPlacementString(place) + seperator + r.getName();
+			return Utils.getPlacementString(place);
 		}
 
-		case 1: {
+		case 1:
+			return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
+
+		case 2:
 			return "" + (int) statistics.getTotalScore();
-		}
 
-		case 2: {
+		case 3:
 			return "" + (int) statistics.getTotalSurvivalScore();
-		}
 
-		case 3: {
+		case 4:
 			return "" + (int) statistics.getTotalWinnerScore();
-		}
 
-		case 4: {
+		case 5:
 			return "" + (int) statistics.getTotalBulletDamageScore();
-		}
 
-		case 5: {
+		case 6:
 			return "" + (int) statistics.getTotalKilledEnemyBulletScore();
-		}
 
-		case 6: {
+		case 7:
 			return "" + (int) statistics.getTotalRammingDamageScore();
-		}
 
-		case 7: {
+		case 8:
 			return "" + (int) statistics.getTotalKilledEnemyRammingScore();
-		}
 
-		case 8: {
+		case 9:
 			return "" + (int) statistics.getTotalFirsts();
-		}
 
-		case 9: {
+		case 10:
 			return "" + (int) statistics.getTotalSeconds();
-		}
 
-		case 10: {
+		case 11:
 			return "" + (int) statistics.getTotalThirds();
-		}
 
 		default:
 			return "";
 		}
 	}
 
-	public void print(java.io.PrintStream out) {
+	// Used for printing to the console only
+	public void print(PrintStream out) {
 		out.println(getTitle());
 
-		for (int col = 0; col < getColumnCount(); col++) {
+		for (int col = 1; col < getColumnCount(); col++) {
 			out.print(getColumnName(col) + "\t");
 		}
 
 		out.println();
 
 		for (int row = 0; row < getRowCount(); row++) {
-			for (int col = 0; col < getColumnCount(); col++) {
+			out.print(getValueAt(row, 0) + ": ");
+			for (int col = 1; col < getColumnCount(); col++) {
 				out.print(getValueAt(row, col) + "\t");
 			}
 			out.println();
+		}
+	}
+
+	public void saveToFile(String filename) {
+		try {
+			PrintStream out = new PrintStream(new FileOutputStream(filename));
+
+			out.println(getTitle());
+
+			for (int col = 0; col < getColumnCount(); col++) {
+				if (col > 0) {
+					out.print(',');
+				}
+				out.print(getColumnName(col));
+			}
+
+			out.println();
+
+			for (int row = 0; row < getRowCount(); row++) {
+				for (int col = 0; col < getColumnCount(); col++) {
+					if (col > 0) {
+						out.print(',');
+					}
+					out.print(getValueAt(row, col));
+				}
+				out.println();
+			}
+
+			out.close();
+
+		} catch (IOException e) {
+			Utils.log(e);
+			return;
 		}
 	}
 }

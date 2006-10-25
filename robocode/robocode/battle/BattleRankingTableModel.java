@@ -21,7 +21,10 @@ import javax.swing.table.AbstractTableModel;
 
 import robocode.manager.RobocodeManager;
 import robocode.peer.ContestantPeer;
+import robocode.peer.ContestantStatistics;
 import robocode.peer.RobotPeer;
+import robocode.peer.TeamPeer;
+import robocode.util.Utils;
 
 
 /**
@@ -42,7 +45,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return 3;
+		return 4;
 	}
 
 	public int getRowCount() {
@@ -54,12 +57,15 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	public String getColumnName(int col) {
 		switch (col) {
 		case 0:
-			return "Name";
+			return "Rank";
 
 		case 1:
-			return "Total";
+			return "Robot Name";
 
 		case 2:
+			return "Total";
+
+		case 3:
 			return "Current";
 
 		default:
@@ -75,20 +81,21 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		if (contestants == null) {
 			return "";
 		}
-		ContestantPeer cp = contestants.elementAt(row);
+		ContestantPeer r = contestants.elementAt(row);
 
 		switch (col) {
 		case 0:
-			String name = (cp instanceof RobotPeer) ? ((RobotPeer) cp).getVeryShortName() : cp.getName(); 
-
-			return "" + (row + 1) + ": " + name;
+			return Utils.getPlacementString(row + 1);
 
 		case 1:
-			return (int) (cp.getStatistics().getTotalScore()
-					+ (battle.isRunning() ? cp.getStatistics().getCurrentScore() : 0));
+			return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
 
 		case 2:
-			return battle.isRunning() ? (int) cp.getStatistics().getCurrentScore() : 0;
+			return (int) (r.getStatistics().getTotalScore()
+					+ (battle.isRunning() ? r.getStatistics().getCurrentScore() : 0));
+
+		case 3:
+			return battle.isRunning() ? (int) r.getStatistics().getCurrentScore() : 0;
 
 		default:
 			return "";
