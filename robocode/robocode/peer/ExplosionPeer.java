@@ -29,20 +29,19 @@ public class ExplosionPeer extends BulletPeer {
 
 	public ExplosionPeer(RobotPeer owner, Battle battle) {
 		super(owner, battle);
-		frame = 0;
-		hitVictim = true;
-		setVictim(owner);
-		hitVictimTime = 0;
-		setPower(1);
-		active = false;
-		bulletState = BULLET_STATE_EXPLODED;
-		oldBulletState = BULLET_STATE_EXPLODED;
+
+		this.hasHitVictim = true;
+		this.victim = owner;
+		this.power = 1;
+		this.isActive = false;
+		this.bulletState = BULLET_STATE_EXPLODED;
+		this.lastBulletState = BULLET_STATE_EXPLODED;
 	}
 
 	public final void update() {
 		setX(getOwner().getX());
 		setY(getOwner().getY());
-		frame++;
+		nextFrame();
 		if (frame >= getBattle().getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
 			battle.removeBullet(this);
 		}

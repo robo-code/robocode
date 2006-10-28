@@ -64,7 +64,7 @@ public class BulletPeer {
 
 	private BattleField battleField;
 
-	private double power;
+	protected double power;
 
 	protected boolean isActive = true;
 
@@ -77,7 +77,7 @@ public class BulletPeer {
 
 	private int hitBulletTime;
 
-	private RobotPeer victim;
+	protected RobotPeer victim;
 
 	private double deltaX;
 	private double deltaY;
@@ -99,9 +99,9 @@ public class BulletPeer {
 		this.owner = owner;
 		this.battle = battle;
 		this.battleField = battle.getBattleField();
-		bullet = new Bullet(this);
-		bulletState = BULLET_STATE_SHOT;
-		lastBulletState = BULLET_STATE_SHOT;
+		this.bullet = new Bullet(this);
+		this.bulletState = BULLET_STATE_SHOT;
+		this.lastBulletState = BULLET_STATE_SHOT;
 	}
 
 	public void checkBulletCollision() {
@@ -358,6 +358,10 @@ public class BulletPeer {
 		boundingLine.setLine(lastX, lastY, x, y);
 	}
 
+	public synchronized void nextFrame() {
+		frame++;
+	}
+	
 	public int getWhichExplosion() {
 		return WHICH_EXPLOSION;
 	}
