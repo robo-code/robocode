@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced ContestantPeerVector with plain Vector
+ *     - Added Rank column
  *     - Ported to Java 5
  *     - Optimized
  *     - Code cleanup
@@ -101,9 +102,8 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		Collections.sort(orderedContestants);
 
 		ContestantPeer r = orderedContestants.elementAt(row);
-
 		ContestantStatistics statistics = r.getStatistics(); 
-		
+
 		switch (col) {
 		case 0: { 
 			int place = row + 1;
