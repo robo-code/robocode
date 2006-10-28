@@ -9,8 +9,8 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - MAX was turned into a constant called MAX_SIZE
  *     - Removed synchronization from getCount()
- *     - MAX was turned into a constant
  *******************************************************************************/
 package robocode.io;
 
@@ -22,14 +22,14 @@ import java.io.*;
  * @author Mathew A. Nelson (original)
  */
 public class TeamMessageSizer extends OutputStream {
+	private final static long MAX_SIZE = 32768;
 
-	private final static long MAX = 32768;
 	private long count = 0;
 
 	public synchronized void write(int b) throws IOException {
 		count++;
-		if (count > MAX) {
-			throw new IOException("You have exceeded " + MAX + " bytes this turn.");
+		if (count > MAX_SIZE) {
+			throw new IOException("You have exceeded " + MAX_SIZE + " bytes this turn.");
 		}
 	}
 
