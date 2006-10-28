@@ -14,7 +14,7 @@
 package robocode.battlefield;
 
 
-import java.awt.geom.Rectangle2D;
+import robocode.util.BoundingRectangle;
 
 
 /**
@@ -22,39 +22,30 @@ import java.awt.geom.Rectangle2D;
  */
 public class DefaultBattleField implements BattleField {
 
-	private int width;
-	private int height;
-	private Rectangle2D.Float boundingBox;
+	private BoundingRectangle boundingBox;
 
-	/**
-	 * BattleField constructor.
-	 */
 	public DefaultBattleField(int width, int height) {
 		super();
-		this.width = width;
-		this.height = height;
-		this.boundingBox = new Rectangle2D.Float(0, 0, width, height);
+		this.boundingBox = new BoundingRectangle(0, 0, width, height);
 	}
 
-	public Rectangle2D getBoundingBox() {
+	public BoundingRectangle getBoundingBox() {
 		return boundingBox;
 	}
 
-	public int getHeight() {
-		return height;
-	}
-
 	public int getWidth() {
-		return width;
-	}
-
-	public void setHeight(int newHeight) {
-		height = newHeight;
-		boundingBox.height = newHeight;
+		return (int) boundingBox.width;
 	}
 
 	public void setWidth(int newWidth) {
-		width = newWidth;
 		boundingBox.width = newWidth;
+	}
+
+	public int getHeight() {
+		return (int) boundingBox.height;
+	}
+
+	public void setHeight(int newHeight) {
+		boundingBox.height = newHeight;
 	}
 }
