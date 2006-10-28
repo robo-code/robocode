@@ -9,10 +9,10 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Bugfix: checkBulletCollision() now uses a workaround for the Java 5 bug
+ *       #6457965 with Line2D.intersectsLine via intersect(Line2D.Double line)
  *     - Integration of robocode.Rules
  *     - Replaced width and height with radius
- *     - Improved checkBulletCollision() so that the radius of the bullet is
- *       taken into account
  *     - Optimizations
  *     - Code cleanup
  *     Luis Crespo
@@ -66,12 +66,12 @@ public class BulletPeer {
 
 	private double power;
 
-	protected boolean active = true;
+	protected boolean isActive = true;
 
 	private Line2D.Double boundingLine = new Line2D.Double();
 
-	public boolean hitVictim;
-	public boolean hitBullet;
+	public boolean hasHitVictim;
+	public boolean hasHitBullet;
 
 	protected int hitVictimTime;
 
@@ -88,7 +88,7 @@ public class BulletPeer {
 	
 	// Bullet states
 	protected int bulletState;
-	protected int oldBulletState;
+	protected int lastBulletState;
 
 	/**
 	 * BulletPeer constructor
@@ -101,96 +101,24 @@ public class BulletPeer {
 		this.battleField = battle.getBattleField();
 		bullet = new Bullet(this);
 		bulletState = BULLET_STATE_SHOT;
-		oldBulletState = BULLET_STATE_SHOT;
+		lastBulletState = BULLET_STATE_SHOT;
 	}
 
 	public void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
-			if (!(b == null || b == this) && b.active && intersect(b.boundingLine)) {
-				synchronized (this) {
-					bulletState = BULLET_STATE_HIT_BULLET;
-					active = false;
-					b.active = false;
-					hitBullet = true;
-					hitBulletTime = 0;
-					frame = 0;
-					x = lastX;
-					y = lastY;
-				}
+			if (!(b == null || b == this) && b.isActive && intersect(b.boundingLine)) {
+				bulletState = BULLET_STATE_HIT_BULLET;
+				isActive = false;
+				b.isActive = false;
+				hasHitBullet = true;
+				hitBulletTime = 0;
+				frame = 0;
+				x = lastX;
+				y = lastY;
 				owner.getEventManager().add(new BulletHitBulletEvent(bullet, b.bullet));
 				b.owner.getEventManager().add(new BulletHitBulletEvent(b.bullet, bullet));
 				break;
 			}
-		}
-	}
-
-	public void checkRobotCollision() {
-		RobotPeer r;
-		Vector<RobotPeer> robots = battle.getRobots();
-
-		for (int i = 0; i < robots.size(); i++) {
-			r = robots.elementAt(i);
-
-			if (!(r == null || r == owner || r.isDead()) && r.getBoundingBox().intersectsLine(boundingLine)) {
-				double damage = Rules.getBulletDamage(power);
-
-				double score = damage;
-
-				if (score > r.getEnergy()) {
-					score = r.getEnergy();
-				}
-				r.setEnergy(r.getEnergy() - damage);
-
-				owner.getRobotStatistics().scoreBulletDamage(i, score);
-				r.getRobotStatistics().damagedByBullet(score);
-
-				if (r.getEnergy() <= 0) {
-					if (!r.isDead()) {
-						r.setDead(true);
-						owner.getRobotStatistics().scoreKilledEnemyBullet(i);
-					}
-				}
-				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
-
-				r.getEventManager().add(
-						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + PI - r.getHeading()),
-						getBullet()));
-
-				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
-
-				synchronized (this) {
-					bulletState = BULLET_STATE_HIT_VICTIM;
-					active = false;
-					hitVictim = true;
-					hitVictimTime = 0;
-					frame = 0;
-					victim = r;
-					deltaX = lastX - r.getX();
-					deltaY = lastY - r.getY();
-					double dist = hypot(deltaX, deltaY);
-
-					if (dist > 0) {
-						double mult = 10 / dist;
-	
-						deltaX *= mult;
-						deltaY *= mult;
-					}
-					setX(r.getX() + deltaX);
-					setY(r.getY() + deltaY);
-				}
-				break;
-			}
-		}
-	}
-
-	public void checkWallCollision() {
-		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
-				|| (y + RADIUS >= battleField.getHeight())) {
-			synchronized (this) {
-				bulletState = BULLET_STATE_HIT_WALL;
-				active = false;
-			}
-			owner.getEventManager().add(new BulletMissedEvent(bullet));
 		}
 	}
 
@@ -214,11 +142,76 @@ public class BulletPeer {
 				double line2MinX = Math.min(line.x1, line.x2);
 				double line2MaxX = Math.max(line.x1, line.x2);
 
-				return (line1MaxX <= line2MaxX || line2MinX <= line2MinX) && !(line1MaxX < line2MinX || line2MaxX < line1MinX);
+				return (line1MaxX <= line2MaxX || line2MinX <= line2MinX)
+						&& !(line1MaxX < line2MinX || line2MaxX < line1MinX);
 			}
 		}
 		return false;
 	}	
+
+	public void checkRobotCollision() {
+		RobotPeer r;
+		Vector<RobotPeer> robots = battle.getRobots();
+
+		for (int i = 0; i < robots.size(); i++) {
+			r = robots.elementAt(i);
+
+			if (!(r == null || r == owner || r.isDead()) && r.getBoundingBox().intersectsLine(boundingLine)) {
+				double damage = Rules.getBulletDamage(power);
+				
+				double score = damage;
+
+				if (score > r.getEnergy()) {
+					score = r.getEnergy();
+				}
+				r.setEnergy(r.getEnergy() - damage);
+
+				owner.getRobotStatistics().scoreBulletDamage(i, score);
+				r.getRobotStatistics().damagedByBullet(score);
+
+				if (r.getEnergy() <= 0) {
+					if (!r.isDead()) {
+						r.setDead(true);
+						owner.getRobotStatistics().scoreKilledEnemyBullet(i);
+					}
+				}
+				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
+
+				r.getEventManager().add(
+						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
+						getBullet()));
+				bulletState = BULLET_STATE_HIT_VICTIM;
+				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
+				isActive = false;
+				hasHitVictim = true;
+				hitVictimTime = 0;
+				frame = 0;
+				victim = r;
+				deltaX = lastX - r.getX();
+				deltaY = lastY - r.getY();
+				double dist = hypot(deltaX, deltaY);
+
+				if (dist > 0) {
+					double mult = 10 / dist;
+
+					deltaX *= mult;
+					deltaY *= mult;
+				}
+				setX(r.getX() + deltaX);
+				setY(r.getY() + deltaY);
+				break;
+			}
+		}
+	}
+
+	public void checkWallCollision() {
+		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
+				|| (y + RADIUS >= battleField.getHeight())) {
+			bulletState = BULLET_STATE_HIT_WALL;
+			owner.getEventManager().add(new BulletMissedEvent(bullet));
+			isActive = false;
+		}
+	}
 
 	public Battle getBattle() {
 		return battle;
@@ -269,15 +262,15 @@ public class BulletPeer {
 	}
 
 	public boolean isActive() {
-		return active;
+		return isActive;
 	}
 
 	public int getBulletState() {
-		return oldBulletState;
+		return lastBulletState;
 	}
 
 	public synchronized void setActive(boolean newActive) {
-		active = newActive;
+		isActive = newActive;
 	}
 
 	public synchronized void setBattle(Battle newBattle) {
@@ -316,41 +309,37 @@ public class BulletPeer {
 		y = lastY = newY;
 	}
 
-	public void update() {
-		if (active) {
+	public synchronized void update() {
+		if (isActive) {
 			updateMovement();
 
 			checkBulletCollision();
-			if (active) {
+			if (isActive) {
 				checkRobotCollision();
 			}
-			if (active) {
+			if (isActive) {
 				checkWallCollision();
 			}
-		} else if (hitVictim) {
+		} else if (hasHitVictim) {
 			setX(victim.getX() + deltaX);
 			setY(victim.getY() + deltaY);
-			synchronized (this) {
-				hitVictimTime++;
-				frame = hitVictimTime;
-				if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
-					hitVictim = false;
-				}
+			hitVictimTime++;
+			frame = hitVictimTime;
+			if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+				hasHitVictim = false;
 			}
-		} else if (hitBullet) {
-			synchronized (this) {
-				hitBulletTime++;
-				frame = hitBulletTime;
-				if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
-					hitBullet = false;
-				}
+		} else if (hasHitBullet) {
+			hitBulletTime++;
+			frame = hitBulletTime;
+			if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+				hasHitBullet = false;
 			}
 		}
 		updateBulletState();
 	}
 	
 	protected synchronized void updateBulletState() {
-		oldBulletState = bulletState;
+		lastBulletState = bulletState;
 		if (bulletState == BULLET_STATE_SHOT) {
 			bulletState = BULLET_STATE_MOVING;
 		} else if (bulletState == BULLET_STATE_EXPLODED || bulletState == BULLET_STATE_HIT_BULLET
