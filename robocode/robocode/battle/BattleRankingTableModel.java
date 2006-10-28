@@ -9,8 +9,9 @@
  *     Luis Crespo
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Removed of the @SuppressWarnings in getSortedContestants()
+ *     - Added independent Rank column
  *     - Various optimizations
+ *     - Ported to Java 5
  *******************************************************************************/
 package robocode.battle;
 
@@ -20,10 +21,7 @@ import java.util.*;
 import javax.swing.table.AbstractTableModel;
 
 import robocode.manager.RobocodeManager;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
-import robocode.peer.RobotPeer;
-import robocode.peer.TeamPeer;
+import robocode.peer.*;
 import robocode.util.Utils;
 
 
@@ -101,13 +99,13 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			return "";
 		}
 	}
-	
+
 	private Vector<ContestantPeer> getContestants() {
 		if (manager == null) {
 			return null;
 		}
 		battle = manager.getBattleManager().getBattle();
-		
+
 		return (battle != null) ? battle.getContestants() : null;
 	}
 }
