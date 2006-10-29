@@ -714,7 +714,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				+ System.getProperty("file.separator") + "javadoc" + System.getProperty("file.separator") + "index.html";
 
 		try {
-			manager.getBrowserManager().openURL(helpurl);
+			BrowserManager.openURL(helpurl);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open browser!",
 					JOptionPane.INFORMATION_MESSAGE);

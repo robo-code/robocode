@@ -119,7 +119,7 @@ public class VersionManager {
 					"Version " + v + " available", JOptionPane.YES_NO_OPTION)
 					== JOptionPane.YES_OPTION) {
 				try {
-					manager.getBrowserManager().openURL(installurl);
+					BrowserManager.openURL(installurl);
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
 							"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);

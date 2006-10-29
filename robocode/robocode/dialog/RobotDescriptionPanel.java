@@ -23,6 +23,7 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import robocode.repository.*;
+import robocode.manager.BrowserManager;
 import robocode.manager.RobocodeManager;
 
 
@@ -57,7 +58,7 @@ public class RobotDescriptionPanel extends JPanel {
 
 					if (htmlFile != null && !htmlFile.equals("")) {
 						try {
-							manager.getBrowserManager().openURL(htmlFile.toString());
+							BrowserManager.openURL(htmlFile.toString());
 						} catch (IOException ex) {}
 					}
 				}

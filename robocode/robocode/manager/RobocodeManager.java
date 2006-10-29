@@ -33,7 +33,6 @@ public class RobocodeManager {
 	private ThreadManager threadManager;
 	private WindowManager windowManager;
 	private VersionManager versionManager;
-	private BrowserManager browserManager;
 	
 	private boolean slave;
 	
@@ -213,13 +212,6 @@ public class RobocodeManager {
 		});
 		getBattleManager().startNewBattle(getBattleManager().getBattleProperties(), false);
 		getBattleManager().clearBattleProperties();
-	}
-
-	public BrowserManager getBrowserManager() {
-		if (browserManager == null) {
-			browserManager = new BrowserManager(this);
-		}
-		return browserManager;
 	}
 
 	public boolean isGUIEnabled() {

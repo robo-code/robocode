@@ -89,6 +89,7 @@ public class WindowManager {
 				int idx = filename.lastIndexOf('.');
 
 				String extension = "";
+
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
@@ -115,17 +116,15 @@ public class WindowManager {
 	}
 
 	public void showVersionsTxt() {
-		String url = "file://" + new File(Constants.cwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
-				+ "versions.txt";
-		
-		showInBrowser(url);
+		showInBrowser(
+				"file://" + new File(Constants.cwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
+				+ "versions.txt");
 	}
 
 	public void showHelpApi() {
-		String url = "file://" + new File(Constants.cwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
-				+ "javadoc" + System.getProperty("file.separator") + "index.html";
-		
-		showInBrowser(url);
+		showInBrowser(
+				"file://" + new File(Constants.cwd(), "").getAbsoluteFile() + System.getProperty("file.separator") + "javadoc"
+				+ System.getProperty("file.separator") + "index.html");
 	}
 
 	public void showFaq() {
@@ -282,12 +281,14 @@ public class WindowManager {
 					return true;
 				}
 				String filename = pathname.getName();
+
 				if (filename.equals("robocode.jar")) {
 					return false;
 				}
 				int idx = filename.lastIndexOf('.');
 
 				String extension = "";
+
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
@@ -357,7 +358,7 @@ public class WindowManager {
 	 */
 	private void showInBrowser(String url) {
 		try {
-			manager.getBrowserManager().openURL(url);
+			BrowserManager.openURL(url);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(robocodeFrame, e.getMessage(), "Unable to open browser!",
 					JOptionPane.ERROR_MESSAGE);
@@ -366,7 +367,7 @@ public class WindowManager {
 
 	public void showSaveResultsDialog() {
 		JFileChooser chooser = new JFileChooser();
-		
+
 		chooser.setFileFilter(new FileFilter() {
 
 			public boolean accept(File pathname) {
@@ -380,6 +381,7 @@ public class WindowManager {
 				int idx = filename.lastIndexOf('.');
 
 				String extension = "";
+
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
@@ -395,9 +397,10 @@ public class WindowManager {
 		});
 
 		chooser.setDialogTitle("Save battle results");
-		
-		if (chooser.showDialog(getRobocodeFrame(), "Save") == JFileChooser.APPROVE_OPTION) {
+
+		if (chooser.showSaveDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
 			BattleResultsTableModel tableModel = new BattleResultsTableModel(manager.getBattleManager().getBattle());
+
 			tableModel.saveToFile(chooser.getSelectedFile().getPath());
 		}
 	}
