@@ -550,10 +550,13 @@ public class Utils {
 		return (locationFixer != null) ? new Point(p.x + locationFixer.x, p.y + locationFixer.y) : p;
 	}
 	
-	public static String quoteFileName(String fileName) {
-		if (fileName.matches(".*\\s+?.*")) {
-			return '"' + fileName + '"';
+	public static String quoteFileName(String filename) {
+		if (System.getProperty("os.name").toLowerCase().startsWith("windows") && filename.startsWith("file://")) {
+			filename = filename.substring(7);
+		}
+		if (filename.matches(".*\\s+?.*")) {
+			return '"' + filename + '"';
 		}	
-		return fileName;
+		return filename;
 	}
 }
