@@ -26,20 +26,23 @@ import robocode.util.Constants;
  * @author Flemming N. Larsen (current)
  */
 public class BrowserManager {
-	
-	RobocodeManager manager;
-	String browserCommand;
-	
-	public BrowserManager(RobocodeManager manager) {
-		this.manager = manager;
 
-		browserCommand = Utils.quoteFileName(
-				Constants.cwd() + File.separator + "browser." + (File.separatorChar == '/' ? "sh" : "bat"));
-	}
+	private static String browserCommand;
 	
-	public void openURL(String url) throws IOException {
+	static {
+		if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+			browserCommand = "rundll32 url.dll, FileProtocolHandler";
+		} else {
+			browserCommand = Utils.quoteFileName(Constants.cwd() + File.separator + "browser.sh");
+		}
+		System.out.println("browserCommand: " + browserCommand);
+	}
+
+	public static void openURL(String url) throws IOException {
 		url = Utils.quoteFileName(url);
-		
+
+		System.out.println("url: " + url);
+
 		Process p = Runtime.getRuntime().exec(browserCommand + " " + url);
 
 		try {
