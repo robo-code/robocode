@@ -284,13 +284,11 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 	}
 
 	public boolean fileSaveAs() {
-		String fileName; // = editWindow.getFileName();
 		String javaFileName = null;
-		String saveDir = null;
 		String packageTree = null;
 
-		fileName = robotsDirectory.getPath() + File.separatorChar;
-		saveDir = fileName;
+		String fileName = robotsDirectory.getPath() + File.separatorChar;
+		String saveDir = fileName;
 
 		try {
 			String text = getEditorPane().getText();
@@ -352,7 +350,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 
 		JFileChooser chooser;
 
-		chooser = new JFileChooser(f); // .getAbsoluteFile().toString());
+		chooser = new JFileChooser(f);
 		chooser.setCurrentDirectory(f);
 
 		FileFilter filter = new FileFilter() {
