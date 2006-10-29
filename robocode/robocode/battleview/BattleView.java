@@ -503,7 +503,7 @@ public class BattleView extends Canvas {
 
 		for (int i = 0; i < battle.getBullets().size(); i++) {
 			bullet = (BulletPeer) battle.getBullets().elementAt(i);
-			if (!bullet.isActive() && !bullet.hitVictim && !bullet.hitBullet) {
+			if (!bullet.isActive() && !bullet.hasHitVictim && !bullet.hasHitBullet) {
 				continue;
 			}
 
@@ -512,7 +512,7 @@ public class BattleView extends Canvas {
 
 			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
-			if (!bullet.hitVictim && !bullet.hitBullet) {
+			if (!bullet.hasHitVictim && !bullet.hasHitBullet) {
 
 				// radius = sqrt(0.5^2 / 0.1 * power), where 0.5 is half pixel width and 0.1 is min. power
 				double scale = 2 * Math.sqrt(2.5 * bullet.getPower());
