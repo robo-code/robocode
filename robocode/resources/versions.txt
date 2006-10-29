@@ -1,3 +1,13 @@
+Version 1.2 Beta
+(10/29/2006)
+o Results can now be saved in the Comma Separated Value (CSV) File Format
+  -- A "Save" button has been added to the battle results dialog
+o The rank and name of the robots in the battle results dialog and in ranking panel has been
+  splitted up into two independent colums, i.e "Rank" and "Name"
+  -- This was necessary in order to save the rank and name independently in a file
+o The default browser under Windows is now used when browsing e.g. the Online Help
+  -- The browser.bat file has been removed as there is no need for it anymore
+
 Version 1.1.5
 (10/22/2006)
 o Bugfixes
