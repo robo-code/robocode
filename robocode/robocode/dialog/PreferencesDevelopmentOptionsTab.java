@@ -127,7 +127,6 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	private JTextField getPathTextField() {
 		if (pathTextField == null) {
 			pathTextField = new JTextField("", 80);
-			pathTextField.setMaximumSize(pathTextField.getPreferredSize());
 		}
 		return pathTextField;
 	}

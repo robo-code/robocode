@@ -153,7 +153,6 @@ public class FilenamePanel extends WizardPanel {
 	public JTextField getFilenameField() {
 		if (filenameField == null) {
 			filenameField = new JTextField("(none selected)", 60);
-			filenameField.setMaximumSize(filenameField.getPreferredSize());
 			filenameField.getDocument().addDocumentListener(eventHandler);
 		}
 		return filenameField;

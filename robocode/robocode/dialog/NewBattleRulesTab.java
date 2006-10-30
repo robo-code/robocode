@@ -49,7 +49,6 @@ public class NewBattleRulesTab extends JPanel {
 	private JTextField getGunCoolingRateField() {
 		if (gunCoolingRateField == null) {
 			gunCoolingRateField = new JTextField();
-			gunCoolingRateField.setPreferredSize(new Dimension(50, 16));
 		}
 		return gunCoolingRateField;
 	}

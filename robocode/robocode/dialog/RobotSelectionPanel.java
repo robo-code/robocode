@@ -561,9 +561,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		if (numRoundsTextField == null) {
 			numRoundsTextField = new JTextField();
 			numRoundsTextField.setAutoscrolls(false);
-			numRoundsTextField.setPreferredSize(new Dimension(50, 16));
-			numRoundsTextField.setMaximumSize(new Dimension(50, 16));
-			numRoundsTextField.setMinimumSize(new Dimension(50, 16));
 			// Center in panel
 			numRoundsTextField.setAlignmentX((float) .5);
 			// Center text in textfield
