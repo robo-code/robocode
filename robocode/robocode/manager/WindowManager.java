@@ -401,7 +401,14 @@ public class WindowManager {
 		if (chooser.showSaveDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
 			BattleResultsTableModel tableModel = new BattleResultsTableModel(manager.getBattleManager().getBattle());
 
-			tableModel.saveToFile(chooser.getSelectedFile().getPath());
+			String filename = chooser.getSelectedFile().getPath();
+			if (!filename.endsWith(".csv")) {
+				filename += ".csv";
+			}
+
+			boolean append = manager.getProperties().getOptionsCommonAppendWhenSavingResults();
+
+			tableModel.saveToFile(filename, append);
 		}
 	}
 }
