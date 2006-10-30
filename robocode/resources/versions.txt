@@ -1,5 +1,9 @@
-Version 1.2 Beta
-(10/29/2006)
+Version 1.2 Beta 2
+(10/30/2006)
+o Bugfixes
+  -- Fixed "Robot hangs" when running long battles, which was not really fixed in 1.1.5
+  -- Some text fields in e.g. the "New Battle" were not tall enough to show their content
+     on for e.g. Gnome/Linux.
 o Results can now be saved in the Comma Separated Value (CSV) File Format
   -- A "Save" button has been added to the battle results dialog
 o The rank and name of the robots in the battle results dialog and in ranking panel has been
@@ -11,7 +15,6 @@ o The default browser under Windows is now used when browsing e.g. the Online He
 Version 1.1.5
 (10/22/2006)
 o Bugfixes
-  -- Fixed "Robot hangs" when running long battles
   -- Fixed BulletHitBulletEvents, where half of them refered to the wrong bullet
   -- The the battle results were not always ranked correctly
 o The Ranking Panel total score is now updated on the fly
