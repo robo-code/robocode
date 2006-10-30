@@ -27,6 +27,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	private JPanel optionsPanel;
 
 	private JCheckBox showResultsCheckBox;
+	private JCheckBox appendWhenSavingResultsCheckBox;
 
 	public RobocodeManager manager;
 	
@@ -56,6 +57,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 			optionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Common"));
 			optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 			optionsPanel.add(getShowResultsCheckBox());
+			optionsPanel.add(getAppendWhenSavingResultsCheckBox());
 		}
 		return optionsPanel;
 	}
@@ -74,12 +76,31 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		return showResultsCheckBox;
 	}
 
+	/**
+	 * Return the appendToSavedResultsCheckBox
+	 * 
+	 * @return JCheckBox
+	 */
+	private JCheckBox getAppendWhenSavingResultsCheckBox() {
+		if (appendWhenSavingResultsCheckBox == null) {
+			appendWhenSavingResultsCheckBox = new JCheckBox("Append when saving results");
+			appendWhenSavingResultsCheckBox.setMnemonic('A');
+			appendWhenSavingResultsCheckBox.setDisplayedMnemonicIndex(0);
+		}
+		return appendWhenSavingResultsCheckBox;
+	}
+
 	private void loadPreferences(RobocodeProperties robocodeProperties) {
 		getShowResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonShowResults());
+		getAppendWhenSavingResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonAppendWhenSavingResults());
 	}
 
 	public void storePreferences() {
-		manager.getProperties().setOptionsCommonShowResults(getShowResultsCheckBox().isSelected());
+		RobocodeProperties props = manager.getProperties();
+		
+		props.setOptionsCommonShowResults(getShowResultsCheckBox().isSelected());
+		props.setOptionsCommonAppendWhenSavingResults(getAppendWhenSavingResultsCheckBox().isSelected());
+
 		manager.saveProperties();
 	}
 
