@@ -14,6 +14,8 @@
  *     - Changed the FPS methods into TPS methods, but added the "Display FPS in
  *       titlebar" option
  *     - Added sound options
+ *     - Added common options for showing battle result and append when saving
+ *       results
  *******************************************************************************/
 package robocode.manager;
 
@@ -71,6 +73,7 @@ public class RobocodeProperties {
 
 	// Common Options
 	private boolean optionsCommonShowResults = true;
+	private boolean optionsCommonAppendWhenSavingResults = true; 
 
 	private boolean optionsTeamShowTeamRobots = false;
 	
@@ -82,41 +85,44 @@ public class RobocodeProperties {
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
 	
-	private final static String OPTIONS_VIEW_ROBOTNAMES = "robocode.options.view.robotNames";
-	private final static String OPTIONS_VIEW_SCANARCS = "robocode.options.view.scanArcs";
-	private final static String OPTIONS_VIEW_ROBOTENERGY = "robocode.options.view.robotEnergy";
-	private final static String OPTIONS_VIEW_GROUND = "robocode.options.view.ground";
-	private final static String OPTIONS_VIEW_TPS = "robocode.options.view.TPS";
-	private final static String OPTIONS_VIEW_FPS = "robocode.options.view.FPS";
-	private final static String OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions";
-	private final static String OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS";
-	private final static String OPTIONS_BATTLE_ALLOWCOLORCHANGES = "robocode.options.battle.allowColorChanges";
+	private final static String
+	
+			OPTIONS_VIEW_ROBOTNAMES = "robocode.options.view.robotNames",
+			OPTIONS_VIEW_SCANARCS = "robocode.options.view.scanArcs",
+			OPTIONS_VIEW_ROBOTENERGY = "robocode.options.view.robotEnergy",
+			OPTIONS_VIEW_GROUND = "robocode.options.view.ground",
+			OPTIONS_VIEW_TPS = "robocode.options.view.TPS",
+			OPTIONS_VIEW_FPS = "robocode.options.view.FPS",
+			OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions",
+			OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS",
+			OPTIONS_BATTLE_ALLOWCOLORCHANGES = "robocode.options.battle.allowColorChanges",
 
-	private final static String OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing";
-	private final static String OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing";
-	private final static String OPTIONS_RENDERING_METHOD = "robocode.options.rendering.method";
-	private final static String OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers";
+			OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing",
+			OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing",
+			OPTIONS_RENDERING_METHOD = "robocode.options.rendering.method",
+			OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers",
 
-	private final static String OPTIONS_SOUND_ENABLESOUND = "robocode.options.sound.enableSound";
-	private final static String OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunShot";
-	private final static String OPTIONS_SOUND_ENABLEBULLETHIT = "robocode.options.sound.enableBulletHit";
-	private final static String OPTIONS_SOUND_ENABLEROBOTDEATH = "robocode.options.sound.enableRobotDeath";
-	private final static String OPTIONS_SOUND_ENABLEWALLCOLLISION = "robocode.options.sound.enableWallCollision";
-	private final static String OPTIONS_SOUND_ENABLEROBOTCOLLISION = "robocode.options.sound.enableRobotCollision";
+			OPTIONS_SOUND_ENABLESOUND = "robocode.options.sound.enableSound",
+			OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunShot",
+			OPTIONS_SOUND_ENABLEBULLETHIT = "robocode.options.sound.enableBulletHit",
+			OPTIONS_SOUND_ENABLEROBOTDEATH = "robocode.options.sound.enableRobotDeath",
+			OPTIONS_SOUND_ENABLEWALLCOLLISION = "robocode.options.sound.enableWallCollision",
+			OPTIONS_SOUND_ENABLEROBOTCOLLISION = "robocode.options.sound.enableRobotCollision",
 
-	private final static String OPTIONS_SOUND_MIXER = "robocode.options.sound.mixer";
-	private final static String OPTIONS_SOUND_ENABLEMIXERVOLUME = "robocode.options.sound.enableMixerVolume";
-	private final static String OPTIONS_SOUND_ENABLEMIXERPAN = "robocode.options.sound.enableMixerPan";
+			OPTIONS_SOUND_MIXER = "robocode.options.sound.mixer",
+			OPTIONS_SOUND_ENABLEMIXERVOLUME = "robocode.options.sound.enableMixerVolume",
+			OPTIONS_SOUND_ENABLEMIXERPAN = "robocode.options.sound.enableMixerPan",
 
-	private final static String OPTIONS_COMMON_SHOW_RESULTS = "robocode.options.common.showResults";
+			OPTIONS_COMMON_SHOW_RESULTS = "robocode.options.common.showResults",
+			OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS = "robocode.options.common.appendWhenSavingResults",
 
-	private final static String OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots";
-	private final static String OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path";
-	private final static String VERSIONCHECKED = "robocode.versionchecked";
-	private final static String ROBOT_FILESYSTEM_QUOTA = "robocode.robot.filesystem.quota";
-	private final static String CONSOLE_QUOTA = "robocode.console.quota";
-	private final static String CPU_CONSTANT = "robocode.cpu.constant.1000";
-	private final static String LAST_RUN_VERSION = "robocode.version.lastrun";
+			OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots",
+			OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path",
+			VERSIONCHECKED = "robocode.versionchecked",
+			ROBOT_FILESYSTEM_QUOTA = "robocode.robot.filesystem.quota",
+			CONSOLE_QUOTA = "robocode.console.quota",
+			CPU_CONSTANT = "robocode.cpu.constant.1000",
+			LAST_RUN_VERSION = "robocode.version.lastrun";
 
 	private RobocodeManager manager;
 
@@ -715,6 +721,25 @@ public class RobocodeProperties {
 	}
 
 	/**
+	 * Sets the optionsCommonAppendWhenSavingResults.
+	 * 
+	 * @param optionsCommonAppendWhenSavingResults The optionsCommonAppendWhenSavingResults to set
+	 */
+	public void setOptionsCommonAppendWhenSavingResults(boolean optionsCommonAppendWhenSavingResults) {
+		this.optionsCommonAppendWhenSavingResults = optionsCommonAppendWhenSavingResults;
+		props.setProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "" + optionsCommonAppendWhenSavingResults);
+	}
+
+	/**
+	 * Gets the optionsCommonAppendWhenSavingResults
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsCommonAppendWhenSavingResults() {
+		return optionsCommonAppendWhenSavingResults;
+	}
+
+	/**
 	 * Sets the optionsCommonShowResults.
 	 * 
 	 * @param optionsCommonShowResults The optionsCommonShowResults to set
@@ -760,6 +785,7 @@ public class RobocodeProperties {
 		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
 
 		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true")).booleanValue();
+		optionsCommonAppendWhenSavingResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true")).booleanValue();
 
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
