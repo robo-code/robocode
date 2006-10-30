@@ -91,7 +91,11 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 	public String getTitle() {
 		if (title == null) {
-			title = "Results for " + battle.getRoundNum() + " rounds";
+			int round = battle.getRoundNum();
+			title = "Results for " + round + " round";
+			if (round > 1) {
+				title += 's';
+			}
 		}
 		return title;
 	}
@@ -172,10 +176,12 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		}
 	}
 
-	public void saveToFile(String filename) {
+	public void saveToFile(String filename, boolean append) {
 		try {
-			PrintStream out = new PrintStream(new FileOutputStream(filename));
+			PrintStream out = new PrintStream(new FileOutputStream(filename, append));
 
+			out.println(java.text.SimpleDateFormat.getDateTimeInstance().format(new Date()));
+			
 			out.println(getTitle());
 
 			for (int col = 0; col < getColumnCount(); col++) {
@@ -197,6 +203,8 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 				out.println();
 			}
 
+			out.println("$");
+			
 			out.close();
 
 		} catch (IOException e) {
