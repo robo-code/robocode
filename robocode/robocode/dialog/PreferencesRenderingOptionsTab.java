@@ -51,11 +51,10 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private void initialize() {
 		eventHandler = new EventHandler();
 
-		setLayout(new GridLayout(1, 3));
+		setLayout(new GridLayout(1, 2));
 
 		add(getSpecificSettingsPanel());
 		add(getPredefinedSettingsPanel());
-		add(new JPanel());
 
 		loadPreferences(manager.getProperties());
 	}
@@ -70,9 +69,9 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			GridBagConstraints c = new GridBagConstraints();
 
 			c.fill = GridBagConstraints.HORIZONTAL;
-			c.insets = new Insets(5, 5, 5, 5);
 			c.anchor = GridBagConstraints.PAGE_START;
-			c.weightx = 1;
+
+			c.weightx = 0;
 
 			c.gridwidth = 2;
 
@@ -83,19 +82,19 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			c.gridwidth = 1;
 
 			c.gridy = 1;
-			specificSettingsPanel.add(new JLabel("Antialiasing"), c);
+			specificSettingsPanel.add(new JLabel("Antialiasing", JLabel.RIGHT), c);
 			c.gridx = 1;
 			specificSettingsPanel.add(getOptionsRenderingAntialiasingComboBox(), c);
 
 			c.gridx = 0;
 			c.gridy = 2;
-			specificSettingsPanel.add(new JLabel("Text Antialiasing"), c);
+			specificSettingsPanel.add(new JLabel("Text Antialiasing", JLabel.RIGHT), c);
 			c.gridx = 1;
 			specificSettingsPanel.add(getOptionsRenderingTextAntialiasingComboBox(), c);
 
 			c.gridx = 0;
 			c.gridy = 3;
-			specificSettingsPanel.add(new JLabel("Rendering Method"), c);
+			specificSettingsPanel.add(new JLabel("Rendering Method", JLabel.RIGHT), c);
 			c.gridx = 1;
 			specificSettingsPanel.add(getOptionsRenderingMethodComboBox(), c);
 
@@ -105,7 +104,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 			c.gridx = 0;
 			c.gridy = 5;
-			specificSettingsPanel.add(new JLabel("Number of buffers"), c);
+			specificSettingsPanel.add(new JLabel("Number of buffers", JLabel.RIGHT), c);
 			c.gridx = 1;
 			specificSettingsPanel.add(getOptionsRenderingNoBuffersComboBox(), c);
 		}
