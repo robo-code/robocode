@@ -35,13 +35,10 @@ public class BrowserManager {
 		} else {
 			browserCommand = Utils.quoteFileName(Constants.cwd() + File.separator + "browser.sh");
 		}
-		System.out.println("browserCommand: " + browserCommand);
 	}
 
 	public static void openURL(String url) throws IOException {
 		url = Utils.quoteFileName(url);
-
-		System.out.println("url: " + url);
 
 		Process p = Runtime.getRuntime().exec(browserCommand + " " + url);
 
