@@ -43,9 +43,9 @@ public class RobocodeClassLoader extends ClassLoader {
 	private String classDirectory;
 	private ProtectionDomain protectionDomain;
 	
-	long uid1;
-	long uid2;
-	
+	private long uid1;
+	private long uid2;
+
 	public RobocodeClassLoader(ClassLoader parent, RobotClassManager robotClassManager) {
 		super(parent);
 		this.robotClassManager = robotClassManager;
@@ -70,16 +70,14 @@ public class RobocodeClassLoader extends ClassLoader {
 	}
 
 	public synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
-
 		if (className.indexOf(robotClassManager.getRootPackage() + ".") == 0) {
 			return loadRobotClass(className, false);
 		}
 		try {
-			Class c = super.loadClass(className, resolve);
-
-			return c;
-		} catch (ClassNotFoundException e) {}
-		return loadRobotClass(className, false);
+			return super.loadClass(className, resolve);
+		} catch (ClassNotFoundException e) {
+			return loadRobotClass(className, false);
+		}
 	}
 
 	public synchronized Class loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
@@ -154,6 +152,7 @@ public class RobocodeClassLoader extends ClassLoader {
 				uid2 += buff[i];
 			}
 			c = defineClass(name, buff, 0, buff.length, protectionDomain);
+
 			robotClassManager.addResolvedClass(name);
 			if (name.equals(robotClassManager.getFullClassName())) {
 				try {
