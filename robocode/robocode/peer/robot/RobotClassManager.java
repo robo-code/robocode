@@ -9,6 +9,9 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Added isSecurityOn()
+ *     - Changed loadUnresolvedClasses() to use loadClass() instead of
+ *       loadRobotClass() if security is turned off
  *     - Ported to Java 5.0
  *******************************************************************************/
 package robocode.peer.robot;
@@ -39,7 +42,7 @@ public class RobotClassManager {
 	private TeamPeer teamManager;
 	
 	private String uid = "";
-	
+
 	/**
 	 * RobotClassHandler constructor
 	 */
@@ -119,7 +122,12 @@ public class RobotClassManager {
 
 			if (referencedClasses.get(s).equals("false")) {
 				// resolve, then rebuild keys...
-				robotClassLoader.loadRobotClass(s, false);
+				if (isSecutityOn()) {
+					robotClassLoader.loadRobotClass(s, false);
+				} else {
+					robotClassLoader.loadClass(s, true);
+					addResolvedClass(s);
+				}
 				keys = referencedClasses.keys();
 			}
 		}
@@ -176,5 +184,12 @@ public class RobotClassManager {
 	 */
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+
+	/**
+	 * @return true if the security is enabled; false otherwise
+	 */
+	public static boolean isSecutityOn() {
+		return !System.getProperty("NOSECURITY", "false").equals("true");
 	}
 }
