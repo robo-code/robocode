@@ -17,6 +17,8 @@
  *       be null, e.g. if no GUI is available
  *     - Ported to Java 5.0
  *     - Bugfixed sounds that were cut off after first battle
+ *     - Changed initialize() to use loadClass() instead of loadRobotClass() if
+ *       security is turned off
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -37,6 +39,7 @@ import robocode.dialog.RobotButton;
 import robocode.manager.*;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
+import robocode.security.RobocodeClassLoader;
 import robocode.sound.SoundManager;
 import robocode.util.Utils;
 
@@ -402,10 +405,21 @@ public class Battle implements Runnable {
 		// in the safe robot loader the class is linked.
 		for (RobotPeer r : robots) {
 			try {
-				String className = r.getRobotClassManager().getFullClassName();
-				Class c = r.getRobotClassManager().getRobotClassLoader().loadRobotClass(className, true);
+				Class c;
 
-				r.getRobotClassManager().setRobotClass(c);
+				RobotClassManager classManager = r.getRobotClassManager(); 
+				String className = classManager.getFullClassName();
+				
+				RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
+
+				if (RobotClassManager.isSecutityOn()) {
+					c = classLoader.loadRobotClass(className, true);
+				} else {
+					c = classLoader.loadClass(className);
+				}
+
+				classManager.setRobotClass(c);
+
 				r.getRobotFileSystemManager().initializeQuota();
 
 				Class[] interfaces = c.getInterfaces();
