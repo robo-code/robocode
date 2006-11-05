@@ -56,9 +56,11 @@ public class BattleView extends Canvas {
 	public static final int PAINTROBOCODELOGO = 0;
 	public static final int PAINTBATTLE = 1;
 
-	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
+	private final static Color CANVAS_BG_COLOR = new Color(0x80, 0x80, 0x80);
 	
 	private final static Area BULLET_AREA = new Area(new Ellipse2D.Double(-0.5, -0.5, 1, 1));
+
+	private final static int ROBOT_TEXT_Y_OFFSET = 24; 
 	
 	private RobocodeFrame robocodeFrame;
 
@@ -349,11 +351,6 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	/*
-	 private void drawObjects(Graphics2D g) {
-	 ((ShapesBattleField) battleField).drawShapes(g);
-	 }
-	 */
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
 			for (RobotPeer r : battle.getRobots()) {
@@ -420,9 +417,6 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawText(Graphics2D g) {
-		// TODO: Should do it more cleanly
-		int imgHeight = 48;
-
 		RobotPeer c;
 
 		for (int i = 0; i < battle.getRobots().size(); i++) {
@@ -446,15 +440,15 @@ public class BattleView extends Canvas {
 				if (c.getEnergy() == 0 && !c.isDead()) {
 					energyString = "Disabled";
 				}
-				centerString(g, energyString, x, y - imgHeight / 2 - smallFontMetrics.getHeight() / 2, smallFont,
+				centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2, smallFont,
 						smallFontMetrics);
 			}
 			if (drawRobotName) {
 				if (!drawRobotEnergy) {
 					g.setColor(Color.white);
 				}
-				centerString(g, c.getVeryShortName(), x, y + imgHeight / 2 + smallFontMetrics.getHeight() / 2, smallFont,
-						smallFontMetrics);
+				centerString(g, c.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
+						smallFont, smallFontMetrics);
 			}
 			if (c.isPaintEnabled() && c.getRobot() != null) {
 				drawRobotPaint(g, c);
