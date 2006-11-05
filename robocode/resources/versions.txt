@@ -1,6 +1,7 @@
 Version 1.2
-(11/04/2006)
+(11/05/2006)
 o Bugfixes
+  -- Fixed a lot of bugs that was introduced with the 1.1.4 versions and version 1.1.5
   -- Fixed "Robot hangs" when running long battles, which was not really fixed in 1.1.5
   -- Some text fields in e.g. the "New Battle" were not tall enough to show their content
      on for e.g. Gnome/Linux.
