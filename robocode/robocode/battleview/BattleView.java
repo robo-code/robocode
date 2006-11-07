@@ -44,7 +44,7 @@ import robocode.battlefield.*;
 import robocode.battle.*;
 import robocode.util.*;
 import robocode.manager.*;
-import robocode.render.RenderImage;
+import robocode.render.*;
 
 
 /**
@@ -56,7 +56,7 @@ public class BattleView extends Canvas {
 	public static final int PAINTROBOCODELOGO = 0;
 	public static final int PAINTBATTLE = 1;
 
-	private final static Color CANVAS_BG_COLOR = new Color(0x80, 0x80, 0x80);
+	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
 	
 	private final static Area BULLET_AREA = new Area(new Ellipse2D.Double(-0.5, -0.5, 1, 1));
 
@@ -108,10 +108,12 @@ public class BattleView extends Canvas {
 	private Image offscreenImage;
 	private Graphics2D offscreenGfx;
 
-	private GeneralPath robocodeTextPath = new robocode.render.RobocodeLogo().getRobocodeText();
+	private GeneralPath robocodeTextPath = new RobocodeLogo().getRobocodeText();
 	
 	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
+	private GraphicsState graphicsState = new GraphicsState();
+	
 	/**
 	 * BattleView constructor.
 	 */
@@ -282,6 +284,9 @@ public class BattleView extends Canvas {
 	}
 
 	public void paintBattle(Graphics2D g) {
+		// Save the graphics state
+		graphicsState.save(g);
+
 		// Reset transform
 		g.setTransform(new AffineTransform());
 
@@ -319,6 +324,9 @@ public class BattleView extends Canvas {
 
 		// Draw all text
 		drawText(g);
+
+		// Restore the graphics state
+		graphicsState.restore(g);
 	}
 
 	private void drawGround(Graphics2D g) {
@@ -464,14 +472,6 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotPeer robotPeer) {
-		// Store rendering attributes
-		Paint origPaint = g.getPaint();
-		Font origFont = g.getFont();
-		Stroke origStroke = g.getStroke();
-		AffineTransform origTransform = g.getTransform();
-		Composite origComposite = g.getComposite();
-		Shape origClip = g.getClip();
-
 		// Do the painting
 		if (robotPeer.isSGPaintEnabled()) {
 			robotPeer.getRobot().onPaint(g);
@@ -480,14 +480,6 @@ public class BattleView extends Canvas {
 			robotPeer.getRobot().onPaint(mirroredGraphics);
 			mirroredGraphics.release();
 		}
-
-		// Restore the rendering attributes
-		g.setPaint(origPaint);
-		g.setFont(origFont);
-		g.setStroke(origStroke);
-		g.setTransform(origTransform);
-		g.setComposite(origComposite);
-		g.setClip(origClip);
 	}
 	
 	private void drawBullets(Graphics2D g) {
@@ -546,7 +538,7 @@ public class BattleView extends Canvas {
 		paintMode = newPaintMode;
 	}
 
-	public void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
+	private void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
 		g.setFont(font);
 		int left, top, descent;
 		int width, height;

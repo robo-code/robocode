@@ -21,6 +21,8 @@ import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
+import robocode.util.GraphicsState;
+
 
 /**
  * This class is a Graphics2D wrapper class used for mirroring graphics on
@@ -32,15 +34,18 @@ import java.util.Map;
  */
 public class MirroredGraphics extends Graphics2D {
 
-	// The wrapped Graphics2D object
+	// The wrapped Graphics object
 	private Graphics2D g;
 
+	// Save/restore of Graphics object
+	private GraphicsState graphicsState = new GraphicsState();
+	
 	// The original transform mirrored
 	private AffineTransform origTxMirrored = new AffineTransform();
 
 	// A transform used for temporary transform operations (is reused)
 	private AffineTransform tmpTx = new AffineTransform();
-	
+
 	/**
 	 * Binds a Graphics2D object to this wrapper object.
 	 * When painting using this wrapper has finnished the
@@ -53,6 +58,8 @@ public class MirroredGraphics extends Graphics2D {
 	 */
 	public void bind(Graphics2D g, int height) {
 		this.g = g;
+		
+		graphicsState.save(g);
 
 		origTxMirrored.setTransform(g.getTransform());
 		origTxMirrored.translate(0, height);
@@ -66,7 +73,8 @@ public class MirroredGraphics extends Graphics2D {
 	 * 
 	 * @see #bind(Graphics2D, int)
 	 */
-	public void release() {// Does nothing currently
+	public void release() {
+		graphicsState.restore(g);
 	}
 
 	public void setTransform(AffineTransform Tx) {
