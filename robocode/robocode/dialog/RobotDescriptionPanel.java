@@ -24,7 +24,6 @@ import java.io.*;
 import java.net.*;
 import robocode.repository.*;
 import robocode.manager.BrowserManager;
-import robocode.manager.RobocodeManager;
 
 
 /**
@@ -33,24 +32,18 @@ import robocode.manager.RobocodeManager;
  */
 @SuppressWarnings("serial")
 public class RobotDescriptionPanel extends JPanel {
-	JLabel robotNameLabel;
-	JLabel descriptionLabel[] = new JLabel[3];
-	JPanel descriptionPanel;
-	JButton detailsButton;
-	JLabel authorNameLabel;
-	JLabel authorEmailLabel;
-	JLabel authorWebsiteLabel;
-	JLabel javaSourceIncludedLabel;
-	JLabel robotVersionLabel;
-	JLabel robocodeVersionLabel;
-	JLabel filePathLabel;
-	String blankString;
+	private JLabel robotNameLabel;
+	private JLabel descriptionLabel[] = new JLabel[3];
+	private JPanel descriptionPanel;
+	private JButton detailsButton;
+	private JLabel robocodeVersionLabel;
+	private JLabel filePathLabel;
+	private String blankString;
 	public FileSpecification currentRobotSpecification;
-	private RobocodeManager manager;
 
-	EventManager eventManager = new EventManager();
+	private EventManager eventManager = new EventManager();
 
-	class EventManager implements ActionListener {
+	private class EventManager implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == getDetailsButton()) {
 				if (currentRobotSpecification != null) {
@@ -69,9 +62,8 @@ public class RobotDescriptionPanel extends JPanel {
 	/**
 	 * NewBattleRobotsTabDescriptionPanel constructor.
 	 */
-	public RobotDescriptionPanel(RobocodeManager manager) {
+	public RobotDescriptionPanel() {
 		super();
-		this.manager = manager;
 		initialize();
 		blankString = "";
 		for (int i = 0; i < 72; i++) {
@@ -79,35 +71,14 @@ public class RobotDescriptionPanel extends JPanel {
 		}
 	}
 
-	public JLabel getAuthorEmailLabel() {
-		if (authorEmailLabel == null) {
-			authorEmailLabel = new JLabel();
-		}
-		return authorEmailLabel;
-	}
-
-	public JLabel getFilePathLabel() {
+	private JLabel getFilePathLabel() {
 		if (filePathLabel == null) {
 			filePathLabel = new JLabel();
 		}
 		return filePathLabel;
 	}
 
-	public JLabel getAuthorNameLabel() {
-		if (authorNameLabel == null) {
-			authorNameLabel = new JLabel();
-		}
-		return authorNameLabel;
-	}
-
-	public JLabel getAuthorWebsiteLabel() {
-		if (authorWebsiteLabel == null) {
-			authorWebsiteLabel = new JLabel();
-		}
-		return authorWebsiteLabel;
-	}
-
-	public JLabel getDescriptionLabel(int index) {
+	private JLabel getDescriptionLabel(int index) {
 		if (descriptionLabel[index] == null) {
 			descriptionLabel[index] = new JLabel();
 			descriptionLabel[index].setFont(new Font("Monospaced", Font.PLAIN, 10));
@@ -117,7 +88,7 @@ public class RobotDescriptionPanel extends JPanel {
 		return descriptionLabel[index];
 	}
 
-	public JPanel getDescriptionPanel() {
+	private JPanel getDescriptionPanel() {
 		if (descriptionPanel == null) {
 			descriptionPanel = new JPanel();
 			descriptionPanel.setAlignmentY(JPanel.CENTER_ALIGNMENT);
@@ -130,7 +101,7 @@ public class RobotDescriptionPanel extends JPanel {
 		return descriptionPanel;
 	}
 
-	public JButton getDetailsButton() {
+	private JButton getDetailsButton() {
 		if (detailsButton == null) {
 			detailsButton = new JButton("Webpage");
 			detailsButton.setMnemonic('W');
@@ -142,33 +113,19 @@ public class RobotDescriptionPanel extends JPanel {
 		return detailsButton;
 	}
 
-	public JLabel getJavaSourceIncludedLabel() {
-		if (javaSourceIncludedLabel == null) {
-			javaSourceIncludedLabel = new JLabel();
-		}
-		return javaSourceIncludedLabel;
-	}
-
-	public JLabel getRobocodeVersionLabel() {
+	private JLabel getRobocodeVersionLabel() {
 		if (robocodeVersionLabel == null) {
 			robocodeVersionLabel = new JLabel();
 		}
 		return robocodeVersionLabel;
 	}
 
-	public JLabel getRobotNameLabel() {
+	private JLabel getRobotNameLabel() {
 		if (robotNameLabel == null) {
 			robotNameLabel = new JLabel();
 			robotNameLabel.setHorizontalAlignment(JLabel.CENTER);
 		}
 		return robotNameLabel;
-	}
-
-	public JLabel getRobotVersionLabel() {
-		if (robotVersionLabel == null) {
-			robotVersionLabel = new JLabel();
-		}
-		return robotVersionLabel;
 	}
 
 	/**
@@ -264,7 +221,6 @@ public class RobotDescriptionPanel extends JPanel {
 					}
 					count++;
 				}
-			} else {// descriptionPanel.setBorder(null);
 			}
 			for (int i = count; i < 3; i++) {
 				getDescriptionLabel(i).setText(blankString);
@@ -272,19 +228,11 @@ public class RobotDescriptionPanel extends JPanel {
 
 			URL u = robotSpecification.getWebpage();
 
-			if (u != null && !u.equals("")) {
-				getDetailsButton().setVisible(true);
-			} else {
-				getDetailsButton().setVisible(false);
-			}
+			getDetailsButton().setVisible(u != null && !u.equals(""));
 
 			String v = robotSpecification.getRobocodeVersion();
 
-			if (v == null) {
-				getRobocodeVersionLabel().setText("");
-			} else {
-				getRobocodeVersionLabel().setText("Built for " + v);
-			}
+			getRobocodeVersionLabel().setText(v == null ? "" : "Built for " + v);
 		}
 		getDescriptionPanel().setMaximumSize(getDescriptionPanel().getPreferredSize());
 	}
