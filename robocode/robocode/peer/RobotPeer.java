@@ -709,7 +709,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setTurnGun(radians);
 		do {
 			tick(); // Always tick at least once
-		} while (turnRemaining != 0);
+		} while (gunTurnRemaining != 0);
 	}
 
 	public synchronized final void setTurnChassis(double radians) {
