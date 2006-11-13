@@ -23,6 +23,7 @@ import robocode.peer.robot.*;
  */
 public class RobocodeDeprecated {
 
+	@SuppressWarnings("deprecation")
 	public static void stopThread(RobotThreadManager r, Thread t) {
 		// !!! Synchronizing this fixes the jvm hang bug sometimes
 		synchronized (t) {
