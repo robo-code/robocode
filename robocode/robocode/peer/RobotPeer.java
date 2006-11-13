@@ -283,49 +283,44 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void checkWallCollision() {
 		boolean hitWall = false;
-		double fixx = 0.0, fixy = 0.0;
-		double angle = 0.0;
+		double fixx = 0, fixy = 0;
+		double angle = 0;
 
-		if (boundingBox.x + boundingBox.width
-				> battleField.getBoundingBox().getX() + battleField.getBoundingBox().getWidth()) {
+		if (boundingBox.x + boundingBox.width > battleField.getBoundingBox().getWidth()) {
 			hitWall = true;
-			fixx = battleField.getBoundingBox().getX() + battleField.getBoundingBox().getWidth() - boundingBox.width
-					- boundingBox.x - .001;
+			fixx = battleField.getBoundingBox().getWidth() - boundingBox.width - boundingBox.x - .001;
 			angle = normalRelativeAngle(PI / 2 - heading);
-			eventManager.add(new HitWallEvent(angle));
 		}
 	
-		if (boundingBox.x < battleField.getBoundingBox().getX()) {
+		if (boundingBox.x < 0) {
 			hitWall = true;
-			fixx = battleField.getBoundingBox().getX() - boundingBox.x + .001;
+			fixx = -boundingBox.x + .001;
 			angle = normalRelativeAngle(3 * PI / 2 - heading);
-			eventManager.add(new HitWallEvent(angle));
 		}
-		if (boundingBox.y + boundingBox.height
-				> battleField.getBoundingBox().getY() + battleField.getBoundingBox().getHeight()) {
+
+		if (boundingBox.y + boundingBox.height > battleField.getBoundingBox().getHeight()) {
 			hitWall = true;
-			fixy = battleField.getBoundingBox().getY() + battleField.getBoundingBox().getHeight()
-					- getBoundingBox().height - getBoundingBox().y - .001;
+			fixy = battleField.getBoundingBox().getHeight() - getBoundingBox().height - getBoundingBox().y - .001;
 			angle = normalRelativeAngle(-heading);
-			eventManager.add(new HitWallEvent(angle));
 		}
-		if (boundingBox.y < battleField.getBoundingBox().getY()) {
+		if (boundingBox.y < 0) {
 			hitWall = true;
-			fixy = battleField.getBoundingBox().getY() - boundingBox.y + .001;
+			fixy = -boundingBox.y + .001;
 			angle = normalRelativeAngle(PI - heading);
-			eventManager.add(new HitWallEvent(angle));
 		}
 
 		if (hitWall) {
+			eventManager.add(new HitWallEvent(angle));
+
 			double velocity1 = 0, velocity2 = 0;
 
-			if (abs(sin(heading)) > .00001 && fixx != 0) {
+			if (abs(sin(heading)) > .00001) {
 				velocity1 = fixx / sin(heading);
 			} else {
 				velocity1 = 0;
 			}
 
-			if (abs(cos(heading)) > .00001 && fixy != 0) {
+			if (abs(cos(heading)) > .00001) {
 				velocity2 = fixy / cos(heading);
 			} else {
 				velocity2 = 0;
@@ -902,7 +897,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				} else {
 					moveDirection = 0;
 				}
-					
 			}
 		}
 
@@ -962,9 +956,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				perfectAccel = -Rules.DECELERATION;
 			}
 		
-			// log("perfect accel: " + perfectAccel);
 			acceleration = perfectAccel;
-		
 		}
 
 		// Calculate velocity
