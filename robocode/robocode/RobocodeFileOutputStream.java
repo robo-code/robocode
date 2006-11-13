@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -19,7 +20,6 @@ import robocode.peer.RobotPeer;
 import robocode.security.*;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.exception.*;
-import robocode.util.*;
 import robocode.manager.*;
 
 
@@ -28,11 +28,11 @@ import robocode.manager.*;
  * 
  * @see java.io.FileOutputStream
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobocodeFileOutputStream extends OutputStream {
-	private static ThreadManager threadManager;
-	private java.io.FileOutputStream out;
+	private FileOutputStream out;
 	private String name = null;
 	private RobotFileSystemManager fileSystemManager;
 
@@ -56,7 +56,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
 	 * @see java.io.FileOutputStream
 	 */
-	public RobocodeFileOutputStream(String name) throws java.io.IOException {
+	public RobocodeFileOutputStream(String name) throws IOException {
 		this(name, false);
 	}
 
@@ -64,14 +64,11 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
 	 * @see java.io.FileOutputStream
 	 */
-	public RobocodeFileOutputStream(String name, boolean append) throws java.io.IOException {
-		if (threadManager == null) {
-			Utils.log("RobocodeFileOutputStream.threadManager cannot be null!");
-		}
+	public RobocodeFileOutputStream(String name, boolean append) throws IOException {
 		Thread c = Thread.currentThread();
 
 		this.name = name;
-		RobotPeer r = threadManager.getRobotPeer(c);
+		RobotPeer r = ThreadManager.getRobotPeer(c);
 
 		if (!(r.getRobot() instanceof AdvancedRobot)) {
 			throw new RobotException("Only robots that extend AdvancedRobot may write to the filesystem.");
@@ -109,7 +106,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * 
 	 * @see java.io.FileOutputStream
 	 */
-	public final void close() throws java.io.IOException {
+	public final void close() throws IOException {
 		fileSystemManager.removeStream(this);
 		out.close();
 	}
@@ -119,7 +116,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * 
 	 * @see java.io.FileOutputStream
 	 */
-	public final void flush() throws java.io.IOException {
+	public final void flush() throws IOException {
 		out.flush();
 	}
 
@@ -138,19 +135,11 @@ public class RobocodeFileOutputStream extends OutputStream {
 	}
 
 	/**
-	 * The system calls this method, you should not call it.
-	 */
-	public final static void setThreadManager(ThreadManager threadManager) {
-		System.getSecurityManager().checkPermission(new RobocodePermission("setThreadManager"));
-		RobocodeFileOutputStream.threadManager = threadManager;
-	}
-
-	/**
 	 * See java.io.FileOutputStream
 	 * 
 	 * @see java.io.FileOutputStream
 	 */
-	public final void write(byte[] b) throws java.io.IOException {
+	public final void write(byte[] b) throws IOException {
 		try {
 			fileSystemManager.checkQuota(b.length);
 			out.write(b);
@@ -167,7 +156,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * 
 	 * @see java.io.FileOutputStream
 	 */
-	public final void write(byte[] b, int off, int len) throws java.io.IOException {
+	public final void write(byte[] b, int off, int len) throws IOException {
 		if (len < 0) {
 			throw new IndexOutOfBoundsException();
 		}
@@ -188,7 +177,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * 
 	 * @see java.io.FileOutputStream
 	 */
-	public final void write(int b) throws java.io.IOException {
+	public final void write(int b) throws IOException {
 		try {
 			fileSystemManager.checkQuota(1);
 			out.write(b);

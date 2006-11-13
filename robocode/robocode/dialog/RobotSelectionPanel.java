@@ -13,6 +13,7 @@
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
+ *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -26,7 +27,7 @@ import javax.swing.border.*;
 import java.util.*;
 
 import robocode.repository.*;
-import robocode.manager.RobotRepositoryManager;
+import robocode.manager.*;
 import robocode.util.Utils;
 
 
@@ -70,10 +71,9 @@ public class RobotSelectionPanel extends WizardPanel {
 	private RobotNameCellRenderer robotNamesCellRenderer;
 	private Vector<FileSpecification> selectedRobots = new Vector<FileSpecification>();
 	private boolean showNumRoundsPanel;
-	private RobotRepositoryManager robotManager;
 	private boolean listBuilt;
 
-	class EventHandler implements ActionListener, ListSelectionListener, HierarchyListener {
+	private class EventHandler implements ActionListener, ListSelectionListener, HierarchyListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == RobotSelectionPanel.this.getAddAllButton()) {
 				addAllButtonActionPerformed();
@@ -109,7 +109,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	/**
 	 * NewBattleRobotsTab constructor comment.
 	 */
-	public RobotSelectionPanel(RobotRepositoryManager robotManager, int minRobots, int maxRobots,
+	public RobotSelectionPanel(int minRobots, int maxRobots,
 			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
 			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
 			String preSelectedRobots) {
@@ -125,7 +125,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		this.onlyShowPackaged = onlyShowPackaged;
 		this.ignoreTeamRobots = ignoreTeamRobots;
 		this.preSelectedRobots = preSelectedRobots;
-		this.robotManager = robotManager;
 		initialize();
 		showInstructions();
 	}
@@ -451,7 +450,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		new Thread(new Runnable() {
 			public void run() {
 				getAvailableRobotsPanel().setRobotList(null);
-				Vector<FileSpecification> v = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsVector(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots); 
+				Vector<FileSpecification> v = RobotRepositoryManager.getRobotRepository().getRobotSpecificationsVector(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots); 
 
 				getAvailableRobotsPanel().setRobotList(v);
 				if (selectedRobots != null && !selectedRobots.equals("")) {
@@ -579,7 +578,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	public void refreshRobotList() {
 		getAvailableRobotsPanel().setRobotList(null);
-		RobotSelectionPanel.this.robotManager.clearRobotList();
+		RobotRepositoryManager.clearRobotList();
 		buildRobotList();
 	}
 

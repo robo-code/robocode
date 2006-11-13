@@ -14,6 +14,7 @@
  *       Panel in the Options Menu is set to unchecked
  *     - The table height in the scroll panel is now automatically resized when
  *       repainted in the repaint thread
+ *     - Access to managers is now static
  *******************************************************************************/
 package robocode.dialog;
 
@@ -24,7 +25,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import robocode.battle.*;
-import robocode.manager.RobocodeManager;
+import robocode.manager.WindowManager;
 
 
 /**
@@ -36,16 +37,14 @@ public class RankingDialog extends JDialog {
 	private JPanel rankingContentPane;
 	private JScrollPane resultsScrollPane;
 	private JTable resultsTable;
-	private RobocodeManager manager;
 	private BattleRankingTableModel rankingTableModel;
 	private Thread thread;
 		
 	/**
 	 * RankingDialog constructor
 	 */
-	public RankingDialog(Frame owner, RobocodeManager manager) {
+	public RankingDialog(Frame owner) {
 		super(owner);
-		this.manager = manager;
 		initialize();
 	}
 
@@ -57,9 +56,10 @@ public class RankingDialog extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getRankingContentPane());
 
-		addWindowListener(new WindowAdapter() {
+		addWindowListener(
+				new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
+				WindowManager.getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
 						false);
 			}
 		});
@@ -165,7 +165,7 @@ public class RankingDialog extends JDialog {
 
 	private BattleRankingTableModel getBattleRankingTableModel() {
 		if (rankingTableModel == null) {
-			rankingTableModel = new BattleRankingTableModel(manager);
+			rankingTableModel = new BattleRankingTableModel();
 		}
 		return rankingTableModel;
 	}

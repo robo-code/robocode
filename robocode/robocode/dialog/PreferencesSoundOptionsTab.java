@@ -27,8 +27,6 @@ import robocode.manager.*;
 @SuppressWarnings("serial")
 public class PreferencesSoundOptionsTab extends WizardPanel {
 
-	private RobocodeManager manager;
-
 	private EventHandler eventHandler = new EventHandler();
 
 	private JPanel soundOptionsPanel;
@@ -53,9 +51,8 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	/**
 	 * PreferencesSoundOptionsTab constructor
 	 */
-	public PreferencesSoundOptionsTab(RobocodeManager manager) {
+	public PreferencesSoundOptionsTab() {
 		super();
-		this.manager = manager;
 		initialize();
 	}
 
@@ -69,7 +66,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		add(getMixerOptionsPanel());
 		add(new JPanel());
 
-		loadPreferences(manager.getProperties());
+		loadPreferences();
 	}
 
 	/**
@@ -339,36 +336,34 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		return enableMixerPanCheckBox;
 	}
 
-	private void loadPreferences(RobocodeProperties robocodeProperties) {
-		getEnableSoundCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableSound());
-		getEnableGunShotCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableGunShot());
-		getEnableBulletHitCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableBulletHit());
-		getEnableRobotDeathCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableRobotDeath());
-		getEnableRobotCollisionCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableRobotCollision());
-		getEnableWallCollisionCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableWallCollision());
-		getEnableMixerVolumeCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableMixerVolume());
-		getEnableMixerPanCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableMixerPan());
+	private void loadPreferences() {
+		getEnableSoundCheckBox().setSelected(RobocodeProperties.getOptionsSoundEnableSound());
+		getEnableGunShotCheckBox().setSelected(RobocodeProperties.getOptionsSoundEnableGunShot());
+		getEnableBulletHitCheckBox().setSelected(RobocodeProperties.getOptionsSoundEnableBulletHit());
+		getEnableRobotDeathCheckBox().setSelected(RobocodeProperties.getOptionsSoundEnableRobotDeath());
+		getEnableRobotCollisionCheckBox().setSelected(RobocodeProperties.getOptionsSoundEnableRobotCollision());
+		getEnableWallCollisionCheckBox().setSelected(RobocodeProperties.getOptionsSoundEnableWallCollision());
+		getEnableMixerVolumeCheckBox().setSelected(RobocodeProperties.getOptionsSoundEnableMixerVolume());
+		getEnableMixerPanCheckBox().setSelected(RobocodeProperties.getOptionsSoundEnableMixerPan());
 
-		setMixerCompoBox(robocodeProperties.getOptionsSoundMixer());
+		setMixerCompoBox(RobocodeProperties.getOptionsSoundMixer());
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = manager.getProperties();
-
-		props.setOptionsSoundEnableSound(getEnableSoundCheckBox().isSelected());
-		props.setOptionsSoundEnableGunShot(getEnableGunShotCheckBox().isSelected());
-		props.setOptionsSoundEnableBulletHit(getEnableBulletHitCheckBox().isSelected());
-		props.setOptionsSoundEnableRobotDeath(getEnableRobotDeathCheckBox().isSelected());
-		props.setOptionsSoundEnableRobotCollision(getEnableRobotCollisionCheckBox().isSelected());
-		props.setOptionsSoundEnableWallCollision(getEnableWallCollisionCheckBox().isSelected());
-		props.setOptionsSoundEnableMixerVolume(getEnableMixerVolumeCheckBox().isSelected());
-		props.setOptionsSoundEnableMixerPan(getEnableMixerPanCheckBox().isSelected());
+		RobocodeProperties.setOptionsSoundEnableSound(getEnableSoundCheckBox().isSelected());
+		RobocodeProperties.setOptionsSoundEnableGunShot(getEnableGunShotCheckBox().isSelected());
+		RobocodeProperties.setOptionsSoundEnableBulletHit(getEnableBulletHitCheckBox().isSelected());
+		RobocodeProperties.setOptionsSoundEnableRobotDeath(getEnableRobotDeathCheckBox().isSelected());
+		RobocodeProperties.setOptionsSoundEnableRobotCollision(getEnableRobotCollisionCheckBox().isSelected());
+		RobocodeProperties.setOptionsSoundEnableWallCollision(getEnableWallCollisionCheckBox().isSelected());
+		RobocodeProperties.setOptionsSoundEnableMixerVolume(getEnableMixerVolumeCheckBox().isSelected());
+		RobocodeProperties.setOptionsSoundEnableMixerPan(getEnableMixerPanCheckBox().isSelected());
 
 		Mixer mixer = AudioSystem.getMixer((Mixer.Info) getMixerComboBox().getSelectedItem());
 
-		props.setOptionsSoundMixer(mixer.getClass().getSimpleName());
+		RobocodeProperties.setOptionsSoundMixer(mixer.getClass().getSimpleName());
 
-		manager.saveProperties();
+		RobocodeProperties.save();
 	}
 
 	public boolean isReady() {

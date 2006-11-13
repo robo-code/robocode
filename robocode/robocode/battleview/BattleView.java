@@ -9,27 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Modified to use BufferStrategy instead of SwingUtilities, hence this
- *       class is now extending Canvas instead of JPanel.
- *     - Integration of robocode.render.
- *     - Removed all code for handling dirty rectangles, which is not necessary
- *       anymore due to the new robocode.render.
- *     - Added drawRobotPaint() to support for painting the robots using their
- *       Robot.onPaint() method
- *       the painting.
- *     - Added the ability to enable and disable drawing the ground and
- *       explosions
- *     - Added support for Robocode SG painting
- *     - Added rendering hints
- *     - Bullets are now painted as filled circles with a size that matches the
- *       bullet energy. Explosions from bullet hits are also sized based on the
- *       bullet energy.
- *     - Bullets and scan arcs are now painted using the robot's bullet and scan
- *       color
- *     - Added the "Display TPS in titlebar" option
- *     - Renders the Robocode losing the RobocodeLogo class
- *     - Removed setBattlePaused
- *     - Code cleanup
+ *     - Totally rewritten
  *******************************************************************************/
 package robocode.battleview;
 
@@ -99,10 +79,6 @@ public class BattleView extends Canvas {
 	private Font smallFont;
 	private FontMetrics smallFontMetrics;
 	
-	private ImageManager imageManager;
-
-	private RobocodeManager manager;
-
 	private BufferStrategy bufferStrategy;
 
 	private Image offscreenImage;
@@ -117,13 +93,10 @@ public class BattleView extends Canvas {
 	/**
 	 * BattleView constructor.
 	 */
-	public BattleView(RobocodeManager manager, RobocodeFrame robocodeFrame, ImageManager imageManager) {
+	public BattleView(RobocodeFrame robocodeFrame) {
 		super();
 
-		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
-		this.imageManager = imageManager;
-		this.manager = manager;
 	}
 
 	/**
@@ -186,19 +159,17 @@ public class BattleView extends Canvas {
 	}
 
 	public void setDisplayOptions() {
-		RobocodeProperties props = manager.getProperties();
-		
-		displayTPS = props.getOptionsViewTPS();
-		displayFPS = props.getOptionsViewFPS();
-		drawRobotName = props.getOptionsViewRobotNames();
-		drawRobotEnergy = props.getOptionsViewRobotEnergy();
-		drawScanArcs = props.getOptionsViewScanArcs();
-		drawGround = props.getOptionsViewGround();
-		drawExplosions = props.getOptionsViewExplosions();
+		displayTPS = RobocodeProperties.getOptionsViewTPS();
+		displayFPS = RobocodeProperties.getOptionsViewFPS();
+		drawRobotName = RobocodeProperties.getOptionsViewRobotNames();
+		drawRobotEnergy = RobocodeProperties.getOptionsViewRobotEnergy();
+		drawScanArcs = RobocodeProperties.getOptionsViewScanArcs();
+		drawGround = RobocodeProperties.getOptionsViewGround();
+		drawExplosions = RobocodeProperties.getOptionsViewExplosions();
 
-		noBuffers = props.getOptionsRenderingNoBuffers();
+		noBuffers = RobocodeProperties.getOptionsRenderingNoBuffers();
 
-		renderingHints = props.getRenderingHints();
+		renderingHints = RobocodeProperties.getRenderingHints();
 	}
 
 	private void initialize() {
@@ -274,7 +245,7 @@ public class BattleView extends Canvas {
 	
 		for (int y = NUM_VERT_TILES - 1; y >= 0; y--) {
 			for (int x = NUM_HORZ_TILES - 1; x >= 0; x--) {
-				Image img = imageManager.getGroundTileImage(groundTiles[y][x]);
+				Image img = ImageManager.getGroundTileImage(groundTiles[y][x]);
 
 				if (img != null) {
 					groundGfx.drawImage(img, x * groundTileWidth, y * groundTileHeight, null);
@@ -289,6 +260,9 @@ public class BattleView extends Canvas {
 
 		// Reset transform
 		g.setTransform(new AffineTransform());
+
+		// Reset clip
+		g.setClip(null);
 
 		// Clear canvas
 		g.setColor(CANVAS_BG_COLOR);
@@ -375,7 +349,7 @@ public class BattleView extends Canvas {
 		int battleFieldHeight = battle.getBattleField().getHeight();
 
 		if (drawGround) {
-			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
+			RenderImage explodeDebrise = ImageManager.getExplosionDebriseRenderImage();
 
 			for (RobotPeer r : battle.getRobots()) {
 				if (r.isDead()) {
@@ -398,7 +372,7 @@ public class BattleView extends Canvas {
 				at = AffineTransform.getTranslateInstance(x, y);
 				at.rotate(r.getHeading());
 
-				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
+				RenderImage robotRenderImage = ImageManager.getColoredBodyRenderImage(r.getBodyColor());
 	
 				robotRenderImage.setTransform(at);
 				robotRenderImage.paint(g);
@@ -406,7 +380,7 @@ public class BattleView extends Canvas {
 				at = AffineTransform.getTranslateInstance(x, y);
 				at.rotate(r.getGunHeading());
 	
-				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
+				RenderImage gunRenderImage = ImageManager.getColoredGunRenderImage(r.getGunColor());
 	
 				gunRenderImage.setTransform(at);
 				gunRenderImage.paint(g);
@@ -415,7 +389,7 @@ public class BattleView extends Canvas {
 					at = AffineTransform.getTranslateInstance(x, y);
 					at.rotate(r.getRadarHeading());
 	
-					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
+					RenderImage radarRenderImage = ImageManager.getColoredRadarRenderImage(r.getRadarColor());
 	
 					radarRenderImage.setTransform(at);
 					radarRenderImage.paint(g);
@@ -521,7 +495,7 @@ public class BattleView extends Canvas {
 					at.scale(scale, scale);
 				}
 
-				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getWhichExplosion(),
+				RenderImage explosionRenderImage = ImageManager.getExplosionRenderImage(bullet.getWhichExplosion(),
 						bullet.getFrame());
 				
 				explosionRenderImage.setTransform(at);

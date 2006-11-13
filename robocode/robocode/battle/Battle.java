@@ -19,6 +19,7 @@
  *     - Bugfixed sounds that were cut off after first battle
  *     - Changed initialize() to use loadClass() instead of loadRobotClass() if
  *       security is turned off
+ *     - Access to managers is now static
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -53,8 +54,6 @@ public class Battle implements Runnable {
 	// Objects we use
 	private BattleView battleView;
 	private BattleField battleField;
-	private BattleManager battleManager;
-	private RobocodeManager manager;
 
 	// Battle items	
 	private Thread battleThread;
@@ -115,17 +114,15 @@ public class Battle implements Runnable {
 	/**
 	 * Battle constructor
 	 */
-	public Battle(BattleField battleField, RobocodeManager manager) {
+	public Battle(BattleField battleField) {
 		super();
 
-		if (manager.isGUIEnabled()) {
-			this.battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+		if (RobocodeManager.isGUIEnabled()) {
+			this.battleView = WindowManager.getRobocodeFrame().getBattleView();
 			this.battleView.setBattle(this);
 		}
 		this.battleField = battleField;
-		this.manager = manager;
-		this.battleManager = manager.getBattleManager();
-		this.soundManager = new SoundManager(manager.getProperties());
+		this.soundManager = new SoundManager();
 		this.robots = new Vector<RobotPeer>();
 		this.bullets = new Vector<BulletPeer>(); 
 		this.contestants = new Vector<ContestantPeer>();
@@ -166,7 +163,7 @@ public class Battle implements Runnable {
 
 		boolean soundInitialized = false;
 		
-		if (manager.isSoundEnabled()) {
+		if (RobocodeManager.isSoundEnabled()) {
 			soundManager.init();
 			soundInitialized = true;
 		}
@@ -178,12 +175,12 @@ public class Battle implements Runnable {
 			}
 			try {
 				setupRound();
-				battleManager.setBattleRunning(true);
+				BattleManager.setBattleRunning(true);
 				if (battleView != null) {
 					battleView.setTitle("Robocode: Round " + (roundNum + 1) + " of " + numRounds);
 				}
 				runRound();
-				battleManager.setBattleRunning(false);
+				BattleManager.setBattleRunning(false);
 				cleanupRound();
 			} catch (NullPointerException e) {
 				if (!abortBattles) {
@@ -207,15 +204,15 @@ public class Battle implements Runnable {
 		if (!abortBattles || showResultsDialog) {
 			showResultsDialog = false;
 			if (exitOnComplete) {
-				battleManager.printResultsData(this);
-			} else if (manager.getListener() != null) {
+				BattleManager.printResultsData(this);
+			} else if (RobocodeManager.getListener() != null) {
 				if (!abortBattles) {
-					battleManager.sendResultsToListener(this, manager.getListener());
+					BattleManager.sendResultsToListener(this, RobocodeManager.getListener());
 				} else {
-					manager.getListener().battleAborted(battleSpecification);
+					RobocodeManager.getListener().battleAborted(battleSpecification);
 				}
-			} else if (manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
-				manager.getWindowManager().showResultsDialog(this);
+			} else if (RobocodeManager.isGUIEnabled() && RobocodeProperties.getOptionsCommonShowResults()) {
+				WindowManager.showResultsDialog(this);
 			}
 			if (battleView != null) {
 				battleView.setTitle("Robocode");
@@ -230,8 +227,8 @@ public class Battle implements Runnable {
 			}
 		} else {
 			cleanup();
-			if (manager.getListener() != null) {
-				manager.getListener().battleAborted(battleSpecification);
+			if (RobocodeManager.getListener() != null) {
+				RobocodeManager.getListener().battleAborted(battleSpecification);
 			}
 		}
 
@@ -248,8 +245,7 @@ public class Battle implements Runnable {
 
 	public void addRobot(RobotClassManager robotClassManager) {
 
-		RobotPeer robotPeer = new RobotPeer(robotClassManager, battleManager.getManager().getRobotRepositoryManager(),
-				battleManager.getManager().getProperties().getRobotFilesystemQuota());
+		RobotPeer robotPeer = new RobotPeer(robotClassManager);
 		TeamPeer teamManager = robotClassManager.getTeamManager();
 
 		if (teamManager != null) {
@@ -354,7 +350,7 @@ public class Battle implements Runnable {
 	}
 
 	public void setOptions() {
-		setDesiredTPS(manager.getProperties().getOptionsBattleDesiredTPS());
+		setDesiredTPS(RobocodeProperties.getOptionsBattleDesiredTPS());
 		if (battleView != null) {
 			battleView.setDisplayOptions();
 		}
@@ -375,25 +371,24 @@ public class Battle implements Runnable {
 		unsafeLoadRobotsThread = new Thread(unsafeThreadGroup, this);
 		unsafeLoadRobotsThread.setName("Robot Loader");
 		unsafeLoadRobotsThread.setDaemon(true);
-		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
+		ThreadManager.setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
 		if (battleView != null) {
 			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 		}
-		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().clearRobotButtons();
+		if (RobocodeManager.isGUIEnabled()) {
+			WindowManager.getRobocodeFrame().clearRobotButtons();
 		}
 
 		for (RobotPeer r : robots) {
 			r.preInitialize();
-			if (manager.isGUIEnabled()) {
-				manager.getWindowManager().getRobocodeFrame().addRobotButton(
-						new RobotButton(manager.getRobotDialogManager(), r));
+			if (RobocodeManager.isGUIEnabled()) {
+				WindowManager.getRobocodeFrame().addRobotButton(new RobotButton(r));
 			}
 		}
-		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().validate();
+		if (RobocodeManager.isGUIEnabled()) {
+			WindowManager.getRobocodeFrame().validate();
 		}
 
 		if (battleView != null) {
@@ -405,7 +400,7 @@ public class Battle implements Runnable {
 		// in the safe robot loader the class is linked.
 		for (RobotPeer r : robots) {
 			try {
-				Class c;
+				Class<?> c;
 
 				RobotClassManager classManager = r.getRobotClassManager(); 
 				String className = classManager.getFullClassName();
@@ -422,9 +417,9 @@ public class Battle implements Runnable {
 
 				r.getRobotFileSystemManager().initializeQuota();
 
-				Class[] interfaces = c.getInterfaces();
+				Class<?>[] interfaces = c.getInterfaces();
 
-				for (Class i : interfaces) {
+				for (Class<?> i : interfaces) {
 					if (i.getName().equals("robocode.Droid")) {
 						r.setDroid(true);
 					}
@@ -519,10 +514,10 @@ public class Battle implements Runnable {
 		
 		boolean resetThisSec = true;
 
-		battleManager.startNewRound();
+		BattleManager.startNewRound();
 
 		while (!battleOver) {
-			if (shouldPause() && !battleManager.shouldStep()) {
+			if (shouldPause() && !BattleManager.shouldStep()) {
 				resetThisSec = true;
 				continue;
 			}
@@ -598,7 +593,7 @@ public class Battle implements Runnable {
 
 					framesThisSec++;
 				}
-				if (!manager.getWindowManager().getRobocodeFrame().isIconified()) {
+				if (!WindowManager.getRobocodeFrame().isIconified()) {
 					playSounds();
 				}
 			}
@@ -628,8 +623,8 @@ public class Battle implements Runnable {
 			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
 
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-			if (manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible()
-					&& !manager.getWindowManager().getRobocodeFrame().isIconified()) {
+			if (RobocodeManager.isGUIEnabled() && WindowManager.getRobocodeFrame().isVisible()
+					&& !WindowManager.getRobocodeFrame().isIconified()) {
 				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
 			} else {
 				delay = 0;
@@ -676,7 +671,7 @@ public class Battle implements Runnable {
 	}
 	
 	private boolean shouldPause() {
-		if (battleManager.isPaused() && abortBattles == false) {
+		if (BattleManager.isPaused() && abortBattles == false) {
 			if (!wasPaused) {
 				if (battleView != null) {
 					if (roundNum < numRounds) {
@@ -730,7 +725,7 @@ public class Battle implements Runnable {
 
 					if (!r.isSleeping()) {
 						try {
-							r.wait(manager.getCpuManager().getCpuConstant());
+							r.wait(CpuManager.getCpuConstant());
 						} catch (InterruptedException e) {
 							// ?
 							Utils.log("Wait for " + r + " interrupted.");
@@ -1018,12 +1013,13 @@ public class Battle implements Runnable {
 		}
 		
 		activeRobots = robots.size();
-		manager.getThreadManager().reset();
+		
+		ThreadManager.reset();
 
 		// Turning on robots
 		for (RobotPeer r : robots) {
-			manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
-			int waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000);
+			ThreadManager.addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
+			int waitTime = min(300 * CpuManager.getCpuConstant(), 10000);
 
 			synchronized (r) {
 				try {
@@ -1090,10 +1086,10 @@ public class Battle implements Runnable {
 			// Loading robots
 			for (RobotPeer r : robots) {
 				r.setRobot(null);
-				Class robotClass = null;
+				Class<?> robotClass = null;
 
 				try {
-					manager.getThreadManager().setLoadingRobot(r);
+					ThreadManager.setLoadingRobot(r);
 					robotClass = r.getRobotClassManager().getRobotClass();
 					if (robotClass == null) {
 						r.out.println("SYSTEM: Skipping robot: " + r.getName());
@@ -1130,7 +1126,7 @@ public class Battle implements Runnable {
 					}
 				}
 			} // for
-			manager.getThreadManager().setLoadingRobot(null);
+			ThreadManager.setLoadingRobot(null);
 			setRobotsLoaded(true);
 		}
 	}
@@ -1246,19 +1242,10 @@ public class Battle implements Runnable {
 	}
 
 	/**
-	 * Gets the manager.
-	 * 
-	 * @return Returns a RobocodeManager
-	 */
-	public RobocodeManager getManager() {
-		return manager;
-	}
-
-	/**
 	 * Plays sounds.
 	 */
 	private void playSounds() {
-		if (manager.isSoundEnabled()) {
+		if (RobocodeManager.isSoundEnabled()) {
 			int i;
 			BulletPeer bp;
 			RobotPeer rp;

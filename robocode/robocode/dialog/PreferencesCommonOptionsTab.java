@@ -29,21 +29,18 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	private JCheckBox showResultsCheckBox;
 	private JCheckBox appendWhenSavingResultsCheckBox;
 
-	public RobocodeManager manager;
-	
 	/**
 	 * PreferencesCommonOptionsTab constructor
 	 */
-	public PreferencesCommonOptionsTab(RobocodeManager manager) {
+	public PreferencesCommonOptionsTab() {
 		super();
-		this.manager = manager;
 		initialize();
 	}
 
 	private void initialize() {
 		setLayout(new GridLayout(1, 2));
 		add(getOptionsPanel());
-		loadPreferences(manager.getProperties());
+		loadPreferences();
 	}
 
 	/**
@@ -90,18 +87,16 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		return appendWhenSavingResultsCheckBox;
 	}
 
-	private void loadPreferences(RobocodeProperties robocodeProperties) {
-		getShowResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonShowResults());
-		getAppendWhenSavingResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonAppendWhenSavingResults());
+	private void loadPreferences() {
+		getShowResultsCheckBox().setSelected(RobocodeProperties.getOptionsCommonShowResults());
+		getAppendWhenSavingResultsCheckBox().setSelected(RobocodeProperties.getOptionsCommonAppendWhenSavingResults());
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = manager.getProperties();
-		
-		props.setOptionsCommonShowResults(getShowResultsCheckBox().isSelected());
-		props.setOptionsCommonAppendWhenSavingResults(getAppendWhenSavingResultsCheckBox().isSelected());
+		RobocodeProperties.setOptionsCommonShowResults(getShowResultsCheckBox().isSelected());
+		RobocodeProperties.setOptionsCommonAppendWhenSavingResults(getAppendWhenSavingResultsCheckBox().isSelected());
 
-		manager.saveProperties();
+		RobocodeProperties.save();
 	}
 
 	public boolean isReady() {

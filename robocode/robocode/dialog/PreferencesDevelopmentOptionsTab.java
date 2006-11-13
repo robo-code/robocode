@@ -33,8 +33,6 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	private JButton browseButton;
 	private JTextField pathTextField;
 
-	public RobocodeManager manager;
-	
 	private EventHandler eventHandler = new EventHandler();
 
 	private class EventHandler implements ActionListener {
@@ -54,16 +52,15 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	/**
 	 * PreferencesDialog constructor
 	 */
-	public PreferencesDevelopmentOptionsTab(RobocodeManager manager) {
+	public PreferencesDevelopmentOptionsTab() {
 		super();
-		this.manager = manager;
 		initialize();
 	}
 
 	private void initialize() {
 		setLayout(new GridLayout(1, 2));
 		add(getOptionsPanel());
-		loadPreferences(manager.getProperties());
+		loadPreferences();
 	}
 
 	private JPanel getOptionsPanel() {
@@ -126,18 +123,23 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 
 	private JTextField getPathTextField() {
 		if (pathTextField == null) {
-			pathTextField = new JTextField("", 80);
+			pathTextField = new JTextField("");
 		}
 		return pathTextField;
 	}
 
-	private void loadPreferences(RobocodeProperties robocodeProperties) {
-		getPathTextField().setText(robocodeProperties.getOptionsDevelopmentPath());
+	private void loadPreferences() {
+		getPathTextField().setText(RobocodeProperties.getOptionsDevelopmentPath());
 	}
 
 	public void storePreferences() {
-		manager.getProperties().setOptionsDevelopmentPath(getPathTextField().getText());
-		manager.saveProperties();
+		String devPath = getPathTextField().getText();
+		if (!devPath.equals(RobocodeProperties.getOptionsDevelopmentPath())) {
+			RobotRepositoryManager.clearRobotList();
+
+			RobocodeProperties.setOptionsDevelopmentPath(devPath);
+			RobocodeProperties.save();
+		}
 	}
 
 	public boolean isReady() {

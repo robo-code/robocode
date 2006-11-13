@@ -60,9 +60,6 @@ public class AboutBox extends JDialog {
 			+ "Ascander Jr (graphics for ground tiles),<br>" + "and Stefan Westen (onPaint() method from RobocodeSG)<br>"
 			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
-	// Robocode version
-	private String robocodeVersion;
-	
 	// Robocode icon URL
 	private java.net.URL iconURL;
 
@@ -89,11 +86,9 @@ public class AboutBox extends JDialog {
 	/**
 	 * AboutBox constructor
 	 */
-	public AboutBox(Frame owner, RobocodeManager manager) {
+	public AboutBox(Frame owner) {
 		super(owner);
 
-		robocodeVersion = manager.getVersionManager().getVersion();
-		
 		iconURL = getClass().getResource("/resources/icons/robocode-icon.png");	
 
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -167,7 +162,7 @@ public class AboutBox extends JDialog {
 	 */
 	private String getHtmlText() {
 		if (htmlText == null) {
-			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION, System.getProperty("java.version")).replaceAll(
+			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, VersionManager.getVersion()).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION, System.getProperty("java.version")).replaceAll(
 					TAG_JAVA_VENDOR, System.getProperty("java.vendor"));
 		}
 		return htmlText;
