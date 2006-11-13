@@ -72,7 +72,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	public abstract String getUid();	
 	
-	public static FileSpecification createSpecification(RobotRepositoryManager repositoryManager, File f, File rootDir, String prefix, boolean developmentVersion) {
+	public static FileSpecification createSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
 		String filename = f.getName();
 		String fileType = Utils.getFileType(filename);
 		
@@ -90,7 +90,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		}
 		newSpec.developmentVersion = developmentVersion;
 		newSpec.rootDir = rootDir;
-		newSpec.storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
+		newSpec.storeJarFile(RobotRepositoryManager.getRobotsDirectory(), RobotRepositoryManager.getRobotCache());
 		
 		return newSpec;
 	}

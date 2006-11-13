@@ -13,6 +13,7 @@
  *       #6457965 with Line2D.intersectsLine via intersect(Line2D.Double line)
  *     - Integration of robocode.Rules
  *     - Replaced width and height with radius
+ *     - Access to managers is now static
  *     - Optimizations
  *     - Code cleanup
  *     Luis Crespo
@@ -25,9 +26,10 @@ import java.awt.geom.*;
 import java.util.Vector;
 import static java.lang.Math.*;
 
+import robocode.*;
 import robocode.battle.*;
 import robocode.battlefield.*;
-import robocode.*;
+import robocode.manager.ImageManager;
 
 
 /**
@@ -325,13 +327,13 @@ public class BulletPeer {
 			setY(victim.getY() + deltaY);
 			hitVictimTime++;
 			frame = hitVictimTime;
-			if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+			if (hitVictimTime >= ImageManager.getExplosionFrames(WHICH_EXPLOSION)) {
 				hasHitVictim = false;
 			}
 		} else if (hasHitBullet) {
 			hitBulletTime++;
 			frame = hitBulletTime;
-			if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+			if (hitBulletTime >= ImageManager.getExplosionFrames(WHICH_EXPLOSION)) {
 				hasHitBullet = false;
 			}
 		}

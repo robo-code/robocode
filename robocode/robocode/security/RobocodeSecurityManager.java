@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
+ *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.security;
@@ -33,9 +34,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 	private Vector<Thread> safeThreads; 
 	private Vector<ThreadGroup> safeThreadGroups;
 	private Thread battleThread;
-	public String status;
+	private String status;
 
-	private ThreadManager threadManager;
 	private PrintStream syserr = System.err;
 	private Object safeSecurityContext;
 	private boolean enabled = true;
@@ -43,14 +43,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 	/**
 	 * RobocodeSecurityManager constructor
 	 */
-	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled) {
+	public RobocodeSecurityManager(Thread safeThread, boolean enabled) {
 		super();
-		safeThreads = new Vector<Thread>();
-		safeThreads.add(safeThread);
-		safeThreadGroups = new Vector<ThreadGroup>();
-		outputStreamThreads = new Hashtable<Thread, RobocodeFileOutputStream>(); 
-		this.threadManager = threadManager;
-		safeSecurityContext = getSecurityContext();
+		this.safeThreads = new Vector<Thread>();
+		this.safeThreads.add(safeThread);
+		this.safeThreadGroups = new Vector<ThreadGroup>();
+		this.outputStreamThreads = new Hashtable<Thread, RobocodeFileOutputStream>(); 
+		this.safeSecurityContext = getSecurityContext();
 		this.enabled = enabled;
 	}
 
@@ -76,10 +75,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
-		RobotPeer r = threadManager.getRobotPeer(c);
+		RobotPeer r = ThreadManager.getRobotPeer(c);
 
 		if (r == null) {
-			r = threadManager.getLoadingRobotPeer(c);
+			r = ThreadManager.getLoadingRobotPeer(c);
 			if (r != null) {
 				throw new java.security.AccessControlException(
 						"Preventing " + r.getName() + " from access to thread: " + t.getName());
@@ -131,10 +130,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
-		RobotPeer r = threadManager.getRobotPeer(c);
+		RobotPeer r = ThreadManager.getRobotPeer(c);
 
 		if (r == null) {
-			r = threadManager.getLoadingRobotPeer(c);
+			r = ThreadManager.getLoadingRobotPeer(c);
 			if (r != null) {
 				throw new java.security.AccessControlException(
 						"Preventing " + r.getName() + " from access to threadgroup: " + g.getName());
@@ -222,10 +221,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 	
 		// Ok, we need to figure out who our robot is.
-		RobotPeer r = threadManager.getRobotPeer(c);
+		RobotPeer r = ThreadManager.getRobotPeer(c);
 
 		if (r == null) {
-			r = threadManager.getLoadingRobotPeer(c);
+			r = ThreadManager.getLoadingRobotPeer(c);
 			// We don't know who this is, so deny permission.
 			if (r == null) {
 				if (perm instanceof RobocodePermission) {
@@ -405,7 +404,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			fos = new FileOutputStream(o.getName(), append);
 		} catch (FileNotFoundException e) {
 			Thread c = Thread.currentThread();
-			RobotPeer r = threadManager.getRobotPeer(c);
+			RobotPeer r = ThreadManager.getRobotPeer(c);
 			File dir = r.getRobotFileSystemManager().getWritableDirectory();
 
 			addRobocodeOutputStream(o); // it's gone already...
@@ -473,10 +472,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	public void threadOut(String s) {
 		Thread c = Thread.currentThread();
-		RobotPeer r = threadManager.getRobotPeer(c);
+		RobotPeer r = ThreadManager.getRobotPeer(c);
 
 		if (r == null) { 
-			r = threadManager.getLoadingRobotPeer(c);
+			r = ThreadManager.getLoadingRobotPeer(c);
 		}
 		if (r == null) {
 			throw new java.security.AccessControlException("Cannot call threadOut from unknown thread.");
@@ -496,15 +495,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return null;
 		}
 
-		if (threadManager == null) {
-			syserr.println("Null thread manager.");
-		}
-
 		try {
-			RobotPeer r = threadManager.getRobotPeer(c);
+			RobotPeer r = ThreadManager.getRobotPeer(c);
 
 			if (r == null) { 
-				r = threadManager.getLoadingRobotPeer(c);
+				r = ThreadManager.getLoadingRobotPeer(c);
 			}
 			if (r == null) {
 				return null;

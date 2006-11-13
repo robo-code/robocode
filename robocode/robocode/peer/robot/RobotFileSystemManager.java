@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
+ *     - Access to managers is now static
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -18,6 +19,7 @@ import java.io.*;
 import java.util.Vector;
 
 import robocode.peer.RobotPeer;
+import robocode.manager.RobocodeProperties;
 import robocode.RobocodeFileOutputStream;
 
 
@@ -25,18 +27,18 @@ import robocode.RobocodeFileOutputStream;
  * @author Mathew A. Nelson (original)
  */
 public class RobotFileSystemManager {
-	RobotPeer robotPeer;
-	public long quotaUsed = 0;
-	public boolean quotaMessagePrinted = false;
-	public Vector<RobocodeFileOutputStream> streams = new Vector<RobocodeFileOutputStream>(); 
-	long maxQuota = 0;
+	private RobotPeer robotPeer;
+	private long quotaUsed = 0;
+	private boolean quotaMessagePrinted = false;
+	private Vector<RobocodeFileOutputStream> streams = new Vector<RobocodeFileOutputStream>(); 
+	private long maxQuota = 0;
 
 	/**
 	 * RobotFileSystemHandler constructor comment.
 	 */
-	public RobotFileSystemManager(RobotPeer robotPeer, long maxQuota) {
+	public RobotFileSystemManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
-		this.maxQuota = maxQuota;
+		this.maxQuota = RobocodeProperties.getRobotFilesystemQuota();
 	}
 
 	public void addStream(RobocodeFileOutputStream s) throws IOException {

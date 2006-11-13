@@ -16,13 +16,14 @@
  *       not been intialized yet. Therefore a getSounds() factory methods has
  *       been added which allocated the SoundCache instance and initializes the
  *       SoundManager if the sounds field is null 
+ *     - Access to managers is now static
  *******************************************************************************/
 package robocode.sound;
 
 
 import javax.sound.sampled.*;
 
-import robocode.manager.RobocodeProperties;
+import robocode.manager.*;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
 
@@ -33,7 +34,7 @@ import robocode.peer.RobotPeer;
  * to make any noise.
  *  
  * @author Luis Crespo (original)
- * @author Flemming N. Larsen (integration)
+ * @author Flemming N. Larsen (current)
  */
 public class SoundManager {
 
@@ -44,22 +45,11 @@ public class SoundManager {
 	private boolean volSupported;
 	private Mixer theMixer;
 
-	private RobocodeProperties properties;
-
-	/**
-	 * Constructs a new SoundManager
-	 *
-	 * @param properties the Robocode properties
-	 */
-	public SoundManager(RobocodeProperties properties) {
-		this.properties = properties;
-	}
-
 	/**
 	 * Loads all required samples and performs all necessary setup
 	 */
 	public void init() {
-		theMixer = findMixer(properties.getOptionsSoundMixer());
+		theMixer = findMixer(RobocodeProperties.getOptionsSoundMixer());
 
 		panSupported = false;
 		volSupported = false;
@@ -159,7 +149,7 @@ public class SoundManager {
 		}
 		switch (bp.getBulletState()) {
 		case BulletPeer.BULLET_STATE_SHOT:
-			if (properties.getOptionsSoundEnableGunShot()) {
+			if (RobocodeProperties.getOptionsSoundEnableGunShot()) {
 				if (isVolumeEnabled()) {
 					vol = calcBulletVolume(bp);
 				}
@@ -168,7 +158,7 @@ public class SoundManager {
 			break;
 
 		case BulletPeer.BULLET_STATE_HIT_VICTIM:
-			if (properties.getOptionsSoundEnableBulletHit()) {
+			if (RobocodeProperties.getOptionsSoundEnableBulletHit()) {
 				playSound("hit", pan, vol);
 			}
 			break;
@@ -180,7 +170,7 @@ public class SoundManager {
 			break;
 
 		case BulletPeer.BULLET_STATE_EXPLODED:
-			if (properties.getOptionsSoundEnableRobotDeath()) {
+			if (RobocodeProperties.getOptionsSoundEnableRobotDeath()) {
 				playSound("death", pan, vol);
 			}
 			break;
@@ -200,13 +190,13 @@ public class SoundManager {
 		}
 		switch (rp.getRobotState()) {
 		case RobotPeer.ROBOT_STATE_HIT_ROBOT:
-			if (properties.getOptionsSoundEnableRobotCollision()) {
+			if (RobocodeProperties.getOptionsSoundEnableRobotCollision()) {
 				playSound("collision", pan, 1);
 			}
 			break;
 
 		case RobotPeer.ROBOT_STATE_HIT_WALL:
-			if (properties.getOptionsSoundEnableWallCollision()) {
+			if (RobocodeProperties.getOptionsSoundEnableWallCollision()) {
 				playSound("collision", pan, 1);
 			}
 			break;
@@ -243,7 +233,7 @@ public class SoundManager {
 	 * @return true if pan is enabled; false otherwise
 	 */
 	private boolean isPanEnabled() {
-		return panSupported && properties.getOptionsSoundEnableMixerPan();
+		return panSupported && RobocodeProperties.getOptionsSoundEnableMixerPan();
 	}
 
 	/**
@@ -253,6 +243,6 @@ public class SoundManager {
 	 * @return true if volume is enabled; false otherwise
 	 */
 	private boolean isVolumeEnabled() {
-		return volSupported && properties.getOptionsSoundEnableMixerVolume();
+		return volSupported && RobocodeProperties.getOptionsSoundEnableMixerVolume();
 	}
 }

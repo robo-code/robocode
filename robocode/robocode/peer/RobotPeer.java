@@ -21,6 +21,7 @@
  *     - Added bulletColor, scanColor, setBulletColor(), and setScanColor() and
  *       removed getColorIndex()
  *     - Optimizations
+ *     - Access to managers is now static
  *     - Code cleanup
  *     - Ported to Java 5
  *     Luis Crespo
@@ -214,65 +215,64 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			RobotPeer r = battle.getRobots().elementAt(i);
 
 			if (!(r == null || r == this || r.isDead) && boundingBox.intersects(r.boundingBox)) {
-					// Bounce back
-					double angle = atan2(r.x - x, r.y - y);
+				// Bounce back
+				double angle = atan2(r.x - x, r.y - y);
 
-					double movedx = velocity * sin(heading);
-					double movedy = velocity * cos(heading);
+				double movedx = velocity * sin(heading);
+				double movedy = velocity * cos(heading);
 
-					boolean atFault = false;
-					double bearing = normalRelativeAngle(angle - heading);
+				boolean atFault = false;
+				double bearing = normalRelativeAngle(angle - heading);
 
-					if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
-						velocity = 0;
-						if (distanceRemaining > 0) {
-							atFault = true;
-							distanceRemaining = 0;
-							statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-						} else {
-							statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-						}
-						this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-						r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
-						r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-						this.inCollision = true;
-						x -= movedx;
-						y -= movedy;
+				if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
+					velocity = 0;
+					if (distanceRemaining > 0) {
+						atFault = true;
+						distanceRemaining = 0;
+						statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
+					} else {
+						statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+					}
+					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
+					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
+					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+					this.inCollision = true;
+					x -= movedx;
+					y -= movedy;
 
-						if (r.energy == 0) {
-							if (!r.isDead) {
-								r.setDead(true);
-								statistics.scoreKilledEnemyRamming(i);
-							}
-						}
-					} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
-						velocity = 0;
-						if (distanceRemaining < 0) {
-							atFault = true;
-							distanceRemaining = 0;
-							statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-						} else {
-							statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-						}
-						this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-						r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
-						r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-						this.inCollision = true;
-						x -= movedx;
-						y -= movedy;
-
-						if (r.energy == 0) {
-							if (!r.isDead) {
-								r.setDead(true);
-								statistics.scoreKilledEnemyRamming(i);
-							}
+					if (r.energy == 0) {
+						if (!r.isDead) {
+							r.setDead(true);
+							statistics.scoreKilledEnemyRamming(i);
 						}
 					}
+				} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
+					velocity = 0;
+					if (distanceRemaining < 0) {
+						atFault = true;
+						distanceRemaining = 0;
+						statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
+					} else {
+						statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+					}
+					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
+					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
+					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+					this.inCollision = true;
+					x -= movedx;
+					y -= movedy;
 
-					eventManager.add(
-							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.energy, atFault));
-					r.eventManager.add(
-							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.heading), energy, false));
+					if (r.energy == 0) {
+						if (!r.isDead) {
+							r.setDead(true);
+							statistics.scoreKilledEnemyRamming(i);
+						}
+					}
+				}
+
+				eventManager.add(new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.energy, atFault));
+				r.eventManager.add(
+						new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.heading), energy, false));
 
 			} // if robot active & not me & hit
 		} // for robots
@@ -1227,11 +1227,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	/**
 	 * RobotPeer constructor
 	 */
-	public RobotPeer(RobotClassManager robotClassManager, RobotRepositoryManager robotManager, long fileSystemQuota) {
+	public RobotPeer(RobotClassManager robotClassManager) {
 		super();
 		this.robotClassManager = robotClassManager;
 		robotThreadManager = new RobotThreadManager(this);
-		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
+		robotFileSystemManager = new RobotFileSystemManager(this);
 		eventManager = new EventManager(this);
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
