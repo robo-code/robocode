@@ -3,9 +3,6 @@
 	<name>build</name>
 	<comment></comment>
 	<projects>
-		<project>autoextract</project>
-		<project>robocode</project>
-		<project>robocodeextract</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
