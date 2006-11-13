@@ -28,11 +28,11 @@ import robocode.peer.*;
  */
 public class RobotMessageManager {
 	
-	RobotPeer robotPeer;
-	Vector<MessageEvent> messageEvents = new Vector<MessageEvent>(); 
+	private RobotPeer robotPeer;
+	private Vector<MessageEvent> messageEvents = new Vector<MessageEvent>(); 
  	
-	ObjectOutputStream out;
-	ObjectInputStream in;
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
  	
 	public RobotMessageManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;

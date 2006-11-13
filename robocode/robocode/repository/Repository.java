@@ -24,7 +24,7 @@ import java.util.*;
  * @author Flemming N. Larsen (current)
  */
 public class Repository {
-	Vector<FileSpecification> fileSpecifications = new Vector<FileSpecification>();
+	private Vector<FileSpecification> fileSpecifications = new Vector<FileSpecification>();
 
 	public void add(FileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);

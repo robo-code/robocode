@@ -26,7 +26,7 @@ import robocode.peer.TeamPeer;
  * @author Luis Crespo, Flemming N. Larsen (current)
  */
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
-	boolean noScoring;
+	private boolean noScoring;
 	private double bulletDamageScore;
 	private double rammingDamageScore;
 	private double survivalScore;
