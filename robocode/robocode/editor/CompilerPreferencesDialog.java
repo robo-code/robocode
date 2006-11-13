@@ -30,17 +30,17 @@ import robocode.util.Utils;
 @SuppressWarnings("serial")
 public class CompilerPreferencesDialog extends JDialog {
 
-	JButton cancelButton;
-	JTextField compilerBinaryField;
-	JTextField compilerClasspathField;
-	JTextField compilerOptionsField;
-	JPanel compilerPreferencesContentPane;
-	CompilerProperties compilerProperties;
-	JButton okButton;
+	private JButton cancelButton;
+	private JTextField compilerBinaryField;
+	private JTextField compilerClasspathField;
+	private JTextField compilerOptionsField;
+	private JPanel compilerPreferencesContentPane;
+	private CompilerProperties compilerProperties;
+	private JButton okButton;
 
-	EventHandler eventHandler = new EventHandler();
+	private EventHandler eventHandler = new EventHandler();
 
-	class EventHandler implements ActionListener {
+	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(getOkButton())) {
 				if (compilerProperties == null) {

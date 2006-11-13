@@ -26,7 +26,7 @@ public class WizardTabbedPane extends JTabbedPane implements Wizard {
 	private WizardController wizardController;
 	private int currentIndex = 0;
 	private WizardListener listener;
-	EventHandler eventHandler = new EventHandler();
+	private EventHandler eventHandler = new EventHandler();
 
 	public class EventHandler implements ContainerListener, ChangeListener {
 		public void componentRemoved(ContainerEvent e) {}

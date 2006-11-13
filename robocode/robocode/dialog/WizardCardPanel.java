@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
 
@@ -26,9 +28,9 @@ import javax.swing.event.*;
 public class WizardCardPanel extends JPanel implements Wizard {
 	private WizardController wizardController;
 	private CardLayout cardLayout = null;
-	public int currentIndex = 0;
+	private int currentIndex = 0;
 	private WizardListener listener;
-	EventHandler eventHandler = new EventHandler();
+	private EventHandler eventHandler = new EventHandler();
 
 	public class EventHandler implements ContainerListener {
 		public void componentRemoved(ContainerEvent e) {}
@@ -57,7 +59,7 @@ public class WizardCardPanel extends JPanel implements Wizard {
 		getCardLayout().previous(this);
 	}
 
-	public java.awt.CardLayout getCardLayout() {
+	public CardLayout getCardLayout() {
 		if (cardLayout == null) {
 			cardLayout = new CardLayout();
 		}
