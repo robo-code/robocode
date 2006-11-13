@@ -27,15 +27,14 @@ import javax.imageio.ImageIO;
 public class ImageUtil {
 
 	/**
-	 * Returns an image resource that reside on disk archive.
+	 * Returns an image resource.
 	 *
-	 * @param obj an object used for loading the image thru it's classloader
 	 * @param filename the filename of the image to load
 	 * @return the loaded image
 	 */
-	public static Image getImage(Object obj, String filename) {
+	public static Image getImage(String filename) {
 
-		URL url = obj.getClass().getResource(filename);
+		URL url = ClassLoader.class.getResource(filename);
 
 		if (url == null) {
 			Utils.log("Could not load image because of invalid filename: " + filename);
