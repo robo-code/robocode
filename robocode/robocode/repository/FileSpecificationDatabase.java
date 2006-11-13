@@ -29,6 +29,7 @@ public class FileSpecificationDatabase implements Serializable {
 
 	private Hashtable<String, FileSpecification> hash = new Hashtable<String, FileSpecification>(); 
 	
+	@SuppressWarnings("unchecked")
 	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
 
@@ -43,7 +44,7 @@ public class FileSpecificationDatabase implements Serializable {
 	}
 	
 	public boolean contains(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Enumeration e = hash.elements();
+		Enumeration<FileSpecification> e = hash.elements();
 
 		while (e.hasMoreElements()) {
 			Object o = e.nextElement();
@@ -73,7 +74,7 @@ public class FileSpecificationDatabase implements Serializable {
 	}
 
 	public FileSpecification get(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Enumeration e = hash.elements();
+		Enumeration<FileSpecification> e = hash.elements();
 
 		while (e.hasMoreElements()) {
 			Object o = e.nextElement();
@@ -163,7 +164,7 @@ public class FileSpecificationDatabase implements Serializable {
 		String fullClassName = removedSpecification.getFullClassName();
 		String version = removedSpecification.getVersion();
 		
-		Enumeration e = hash.elements();
+		Enumeration<FileSpecification> e = hash.elements();
 
 		while (e.hasMoreElements()) {
 			Object o = e.nextElement();

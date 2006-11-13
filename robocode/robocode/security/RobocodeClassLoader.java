@@ -34,7 +34,7 @@ import robocode.util.Utils;
  */
 public class RobocodeClassLoader extends ClassLoader {
 
-	private Hashtable<String, Class> cachedClasses = new Hashtable<String, Class>(); 
+	private Hashtable<String, Class<?>> cachedClasses = new Hashtable<String, Class<?>>(); 
 	
 	private RobotSpecification robotSpecification;
 	private robocode.peer.robot.RobotClassManager robotClassManager;
@@ -80,12 +80,12 @@ public class RobocodeClassLoader extends ClassLoader {
 		}
 	}
 
-	public synchronized Class loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
+	public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
 		if (cachedClasses.containsKey(name)) {
 			return cachedClasses.get(name);
 		}
 
-		Class c = null;
+		Class<?> c = null;
 		File f = null;
 
 		if (toplevel) {

@@ -32,7 +32,7 @@ import robocode.util.Utils;
  */
 public class RobotClassManager {
 	private RobotSpecification robotSpecification;
-	private Class robotClass;
+	private Class<?> robotClass;
 	private Hashtable<String, String> referencedClasses = new Hashtable<String, String>();
 	private RobocodeClassLoader robotClassLoader = null;
 	// only used if we're being controlled by RobocodeEngine:
@@ -95,11 +95,11 @@ public class RobotClassManager {
 		return fullClassName;
 	}
 
-	public Enumeration getReferencedClasses() {
+	public Enumeration<String> getReferencedClasses() {
 		return referencedClasses.keys();
 	}
 
-	public Class getRobotClass() {
+	public Class<?> getRobotClass() {
 		return robotClass;
 	}
 
@@ -115,10 +115,10 @@ public class RobotClassManager {
 	}
 
 	public void loadUnresolvedClasses() throws ClassNotFoundException {
-		Enumeration keys = referencedClasses.keys();
+		Enumeration<String> keys = referencedClasses.keys();
 
 		while (keys.hasMoreElements()) {
-			String s = (String) keys.nextElement();
+			String s = keys.nextElement();
 
 			if (referencedClasses.get(s).equals("false")) {
 				// resolve, then rebuild keys...
@@ -133,7 +133,7 @@ public class RobotClassManager {
 		}
 	}
 
-	public void setRobotClass(Class newRobotClass) {
+	public void setRobotClass(Class<?> newRobotClass) {
 		robotClass = newRobotClass;
 	}
 
