@@ -1,7 +1,9 @@
 Version 1.2.1 Beta
-(11/08/2006)
+(11/14/2006)
 o Bugfixes
   -- The turnGun(double) method returned before the gun rotation had returned
+  -- Teleportation when hitting wall and abs(sin(heading)) > 0.00001 or
+     abs(cos(heading)) > 0.00001
 
 Version 1.2
 (11/05/2006)
