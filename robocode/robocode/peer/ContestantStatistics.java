@@ -18,34 +18,19 @@ package robocode.peer;
  * @author Mathew A. Nelson (original)
  */
 public interface ContestantStatistics {
-
 	public double getTotalBulletDamageDealt();
-
 	public double getTotalBulletDamageReceived();
-
 	public double getTotalBulletDamageScore();
-
-	public int getTotalFirsts();
-
 	public double getTotalKilledEnemyBulletScore();
-
 	public double getTotalKilledEnemyRammingScore();
-
 	public double getTotalRammingDamageDealt();
-
 	public double getTotalRammingDamageReceived();
-
 	public double getTotalRammingDamageScore();
-
 	public double getTotalScore();
-
+	public int getTotalFirsts();
 	public int getTotalSeconds();
-
-	public double getTotalSurvivalScore();
-
 	public int getTotalThirds();
-
+	public double getTotalSurvivalScore();
 	public double getTotalWinnerScore();
-
 	public double getCurrentScore();
 }
