@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Removed from the robocode.dialog.ResultsDialog into a file of it's own
+ *     - Cleanup
  *******************************************************************************/
 package robocode.dialog;
 
@@ -25,32 +26,35 @@ import javax.swing.table.TableCellRenderer;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 @SuppressWarnings("serial")
 public class ResultsTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
-	boolean isBordered;
+
+	private boolean isBordered;
 
 	public ResultsTableCellRenderer(boolean isBordered) {
 		super();
-		this.setHorizontalAlignment(JLabel.CENTER);
 		this.isBordered = isBordered;
-		this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));	    
+		setHorizontalAlignment(JLabel.CENTER);
+		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));	    
 	}
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 			boolean hasFocus, int row, int column) {
 		if (isBordered) {
-			this.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-			this.setBackground(SystemColor.menu);
-			this.setForeground(SystemColor.menuText);
+			setBorder(new EtchedBorder(EtchedBorder.RAISED));
+			setBackground(SystemColor.menu);
+			setForeground(SystemColor.menuText);
 		} else if (isSelected) {
-			this.setBackground(SystemColor.textHighlight);
-			this.setForeground(SystemColor.textHighlightText);
+			setBackground(SystemColor.textHighlight);
+			setForeground(SystemColor.textHighlightText);
 		} else {
-			this.setBackground(SystemColor.text);
-			this.setForeground(SystemColor.textText);
+			setBackground(SystemColor.text);
+			setForeground(SystemColor.textText);
 		}
-		this.setText(value.toString());
+		setText(value.toString());
+
 		return this;
 	}
 }
