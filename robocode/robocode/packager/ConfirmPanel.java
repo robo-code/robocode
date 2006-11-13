@@ -30,11 +30,13 @@ import robocode.repository.*;
  */
 @SuppressWarnings("serial")
 public class ConfirmPanel extends WizardPanel {
-	RobotPackager robotPackager = null;
+	private RobotPackager robotPackager;
+	private EventHandler eventHandler = new EventHandler();
+	private boolean visible;
+	private JPanel robotListPanel;
 
-	EventHandler eventHandler = new EventHandler();
-	
-	class EventHandler implements ComponentListener {
+
+	private class EventHandler implements ComponentListener {
 		public void componentMoved(ComponentEvent e) {}
 
 		public void componentResized(ComponentEvent e) {}
@@ -56,8 +58,6 @@ public class ConfirmPanel extends WizardPanel {
 			repaint();
 		}
 	}
-
-	public JPanel robotListPanel = null;
 
 	/**
 	 * PackagerOptionsPanel constructor comment.
@@ -111,8 +111,6 @@ public class ConfirmPanel extends WizardPanel {
 
 		validate();
 	}
-
-	private boolean visible = false;
 
 	public void updateFields() {
 		removeAll();

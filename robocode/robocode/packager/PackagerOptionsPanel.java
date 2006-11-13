@@ -34,22 +34,22 @@ import robocode.repository.*;
  */
 @SuppressWarnings("serial")
 public class PackagerOptionsPanel extends WizardPanel {
-	RobotPackager robotPackager;
-	JCheckBox includeSource;
-	EventHandler eventHandler = new EventHandler();
+	private RobotPackager robotPackager;
+	private JCheckBox includeSource;
+	private EventHandler eventHandler = new EventHandler();
 
-	JLabel authorLabel;
-	JTextField authorField;
-	JLabel descriptionLabel;
-	JTextArea descriptionArea;
-	JLabel versionLabel;
-	JTextField versionField;
-	JLabel versionHelpLabel;
-	JLabel webpageLabel;
-	JTextField webpageField;
-	JLabel webpageHelpLabel;
+	private JLabel authorLabel;
+	private JTextField authorField;
+	private JLabel descriptionLabel;
+	private JTextArea descriptionArea;
+	private JLabel versionLabel;
+	private JTextField versionField;
+	private JLabel versionHelpLabel;
+	private JLabel webpageLabel;
+	private JTextField webpageField;
+	private JLabel webpageHelpLabel;
 
-	class EventHandler implements ComponentListener, KeyListener, DocumentListener {
+	private class EventHandler implements ComponentListener, KeyListener, DocumentListener {
 		int count = 0;
 
 		public void insertUpdate(DocumentEvent e) {
