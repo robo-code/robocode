@@ -185,11 +185,11 @@ public class MirroredGraphics extends Graphics2D {
 		return g.getRenderingHint(arg0);
 	}
 
-	public void setRenderingHints(Map arg0) {
+	public void setRenderingHints(Map<?, ?> arg0) {
 		g.setRenderingHints(arg0);
 	}
 
-	public void addRenderingHints(Map arg0) {
+	public void addRenderingHints(Map<?, ?> arg0) {
 		g.addRenderingHints(arg0);
 	}
 
