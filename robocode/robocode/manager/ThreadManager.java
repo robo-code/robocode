@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Changed to have static access for all methods
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -20,30 +21,27 @@ import java.util.Vector;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class ThreadManager {
+	
+	private static Vector<ThreadGroup> groups = new Vector<ThreadGroup>();
+	private static Thread robotLoaderThread;
+	private static RobotPeer loadingRobot;
+	private static Vector<RobotPeer> robots = new Vector<RobotPeer>(); 
 
-	private Vector<ThreadGroup> groups = new Vector<ThreadGroup>();
-	private Thread robotLoaderThread;
-	private RobotPeer loadingRobot;
-	private Vector<RobotPeer> robots = new Vector<RobotPeer>(); 
-
-	public ThreadManager() {
-		super();
-	}
-
-	public void addThreadGroup(ThreadGroup g, RobotPeer r) {
+	public static void addThreadGroup(ThreadGroup g, RobotPeer r) {
 		if (!groups.contains(g)) {
 			groups.add(g);
 			robots.add(r);
 		}
 	}
 
-	public RobotPeer getLoadingRobot() {
+	public static RobotPeer getLoadingRobot() {
 		return loadingRobot;
 	}
 
-	public RobotPeer getLoadingRobotPeer(Thread t) {
+	public static RobotPeer getLoadingRobotPeer(Thread t) {
 		if (robotLoaderThread != null
 				&& (t.equals(robotLoaderThread) || t.getThreadGroup().equals(robotLoaderThread.getThreadGroup()))) {
 			return loadingRobot;
@@ -51,7 +49,7 @@ public class ThreadManager {
 		return null;
 	}
 
-	public RobotPeer getRobotPeer(Thread t) {
+	public static RobotPeer getRobotPeer(Thread t) {
 		ThreadGroup g = t.getThreadGroup();
 
 		if (g == null) {
@@ -62,21 +60,21 @@ public class ThreadManager {
 		if (index == -1) {
 			return null;
 		}
-		return (RobotPeer) robots.elementAt(index);
+		return robots.elementAt(index);
 	}
 
-	public void reset() {
+	public static void reset() {
 		groups.clear();
 		robots.clear();
 	}
 
-	public synchronized void setLoadingRobot(RobotPeer newLoadingRobot) {
+	public static synchronized void setLoadingRobot(RobotPeer newLoadingRobot) {
 		if (robotLoaderThread != null && robotLoaderThread.equals(Thread.currentThread())) {
 			loadingRobot = newLoadingRobot;
 		}
 	}
 
-	public synchronized void setRobotLoaderThread(Thread robotLoaderThread) {
-		this.robotLoaderThread = robotLoaderThread;
+	public static synchronized void setRobotLoaderThread(Thread thread) {
+		robotLoaderThread = thread;
 	}
 }

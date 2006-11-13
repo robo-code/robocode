@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Rewritten to support new rendering engine and to use dynamic coloring
  *       instead of static color index
+ *     - Changed to have static access for all methods
  *******************************************************************************/
 package robocode.manager;
 
@@ -30,53 +31,49 @@ import robocode.util.*;
  * @author Flemming N. Larsen (current)
  */
 public class ImageManager {
-	private Image[] groundImages = new Image[5];
+	
+	private final static int MAX_NUM_COLORS = 256;
 
-	private RenderImage[][] explosionRenderImages;
-	private RenderImage debriseRenderImage;
+	private static Image[] groundImages = new Image[5];
 
-	private Image bodyImage;
-	private Image gunImage;
-	private Image radarImage;
+	private static RenderImage[][] explosionRenderImages;
+	private static RenderImage debriseRenderImage;
 
-	private RenderImage bodyRenderImage;
-	private RenderImage gunRenderImage;
-	private RenderImage radarRenderImage;
+	private static Image bodyImage;
+	private static Image gunImage;
+	private static Image radarImage;
 
-	private final int MAX_NUM_COLORS = 256;
+	private static RenderImage bodyRenderImage;
+	private static RenderImage gunRenderImage;
+	private static RenderImage radarRenderImage;
 
-	private HashMap<Color, RenderImage> coloredBodyRenderImageMap = new HashMap<Color, RenderImage>();
-	private HashMap<Color, RenderImage> coloredGunRenderImageMap = new HashMap<Color, RenderImage>();
-	private HashMap<Color, RenderImage> coloredRadarRenderImageMap = new HashMap<Color, RenderImage>();
+	private static HashMap<Color, RenderImage> coloredBodyRenderImageMap = new HashMap<Color, RenderImage>();
+	private static HashMap<Color, RenderImage> coloredGunRenderImageMap = new HashMap<Color, RenderImage>();
+	private static HashMap<Color, RenderImage> coloredRadarRenderImageMap = new HashMap<Color, RenderImage>();
 
-	public ImageManager() {
-		initialize();
-	}	
-
-	public void initialize() {
+	static {
 		getBodyImage();
 		getGunImage();
 		getRadarImage();
 		getExplosionRenderImage(0, 0);
 	}
 
-	public Image getGroundTileImage(int index) {
+	public static Image getGroundTileImage(int index) {
 		if (groundImages[index] == null) {
-			groundImages[index] = ImageUtil.getImage(this,
-					"/resources/images/ground/blue_metal/blue_metal_" + index + ".png");
+			groundImages[index] = ImageUtil.getImage("/resources/images/ground/blue_metal/blue_metal_" + index + ".png");
 		}		
 		return groundImages[index];
 	}
 	
-	public int getNumExplosions() {
+	public static int getNumExplosions() {
 		return explosionRenderImages.length;
 	}
 
-	public int getExplosionFrames(int which) {
+	public static int getExplosionFrames(int which) {
 		return explosionRenderImages[which].length;
 	}
 
-	public RenderImage getExplosionRenderImage(int which, int frame) {
+	public static RenderImage getExplosionRenderImage(int which, int frame) {
 		if (explosionRenderImages == null) {
 
 			boolean done = false;
@@ -93,7 +90,7 @@ public class ImageManager {
 
 					filename.append(numExplosion).append('-').append(numFrame).append(".png");
 
-					URL url = getClass().getResource(filename.toString());
+					URL url = ClassLoader.class.getResource(filename.toString());
 
 					if (url == null) {
 						if (numFrame == 1) {
@@ -123,9 +120,9 @@ public class ImageManager {
 		return explosionRenderImages[which][frame];
 	}
 
-	public RenderImage getExplosionDebriseRenderImage() {
+	public static RenderImage getExplosionDebriseRenderImage() {
 		if (debriseRenderImage == null) {
-			debriseRenderImage = new RenderImage(ImageUtil.getImage(this, "/resources/images/ground/explode_debris.png"));
+			debriseRenderImage = new RenderImage(ImageUtil.getImage("/resources/images/ground/explode_debris.png"));
 		}
 		return debriseRenderImage;
 	}
@@ -135,9 +132,9 @@ public class ImageManager {
 	 * Loads from disk if necessary.
 	 * @return the body image
 	 */
-	private Image getBodyImage() {
+	private static Image getBodyImage() {
 		if (bodyImage == null) {
-			bodyImage = ImageUtil.getImage(this, "/resources/images/body.png");	
+			bodyImage = ImageUtil.getImage("/resources/images/body.png");	
 		}
 		return bodyImage;
 	}
@@ -147,9 +144,9 @@ public class ImageManager {
 	 * Loads from disk if necessary.
 	 * @return the gun image
 	 */
-	private Image getGunImage() {
+	private static Image getGunImage() {
 		if (gunImage == null) {
-			gunImage = ImageUtil.getImage(this, "/resources/images/turret.png");
+			gunImage = ImageUtil.getImage("/resources/images/turret.png");
 		}
 		return gunImage;
 	}
@@ -159,14 +156,14 @@ public class ImageManager {
 	 * Loads from disk if necessary.
 	 * @return the radar image
 	 */
-	private Image getRadarImage() {
+	private static Image getRadarImage() {
 		if (radarImage == null) {
-			radarImage = ImageUtil.getImage(this, "/resources/images/radar.png");
+			radarImage = ImageUtil.getImage("/resources/images/radar.png");
 		}
 		return radarImage;
 	}	
 	
-	public RenderImage getColoredBodyRenderImage(Color color) {
+	public static RenderImage getColoredBodyRenderImage(Color color) {
 		RenderImage img = coloredBodyRenderImageMap.get(color);
 
 		if (img == null) {
@@ -180,7 +177,7 @@ public class ImageManager {
 		return img;
 	}
 
-	public RenderImage getColoredGunRenderImage(Color color) {
+	public static RenderImage getColoredGunRenderImage(Color color) {
 		RenderImage img = coloredGunRenderImageMap.get(color);
 
 		if (img == null) {
@@ -194,7 +191,7 @@ public class ImageManager {
 		return img;
 	}
 
-	public RenderImage getColoredRadarRenderImage(Color color) {
+	public static RenderImage getColoredRadarRenderImage(Color color) {
 		RenderImage img = coloredRadarRenderImageMap.get(color);
 
 		if (img == null) {
@@ -208,21 +205,21 @@ public class ImageManager {
 		return img;
 	}
 
-	private RenderImage getBodyRenderImage() {
+	private static RenderImage getBodyRenderImage() {
 		if (bodyRenderImage == null) {
 			bodyRenderImage = new RenderImage(getBodyImage());
 		}
 		return bodyRenderImage;
 	}
 
-	private RenderImage getGunRenderImage() {
+	private static RenderImage getGunRenderImage() {
 		if (gunRenderImage == null) {
 			gunRenderImage = new RenderImage(getGunImage());
 		}
 		return gunRenderImage;
 	}
 
-	private RenderImage getRadarRenderImage() {
+	private static RenderImage getRadarRenderImage() {
 		if (radarRenderImage == null) {
 			radarRenderImage = new RenderImage(getRadarImage());
 		}

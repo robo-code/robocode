@@ -11,7 +11,8 @@
  *     Flemming N. Larsen
  *     - Changed to accept 50000 cycles instead of 1000 (introduced in v1.07),
  *       which caused too many skipped turns on existing bots that ran just fine
- *       under v1.06.
+ *       under v1.06
+ *     - Changed to have static access for all methods
  *******************************************************************************/
 package robocode.manager;
 
@@ -23,20 +24,15 @@ import robocode.util.Utils;
  * @author Mathew A. Nelson (original)
  */
 public class CpuManager {
-	private int cpuConstant = -1;
-	private RobocodeManager manager;
-	
-	public CpuManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
+	private static int cpuConstant = -1;
 
-	public int getCpuConstant() {
+	public static int getCpuConstant() {
 		final int APPROXIMATE_CYCLES_ALLOWED = 50000;
-		
+
 		final int TEST_PERIOD_MILLIS = 5000;
-		
+
 		if (cpuConstant == -1) {
-			cpuConstant = manager.getProperties().getCpuConstant();
+			cpuConstant = RobocodeProperties.getCpuConstant();
 			if (cpuConstant == -1) {
 				Utils.setStatus("Estimating CPU speed, please wait...");
 
@@ -48,7 +44,7 @@ public class CpuManager {
 					d = Math.random() * Math.random();
 					count++;
 				}
-				
+
 				double cyclesPerMS = count / TEST_PERIOD_MILLIS;
 
 				double msPerCycle = 1 / cyclesPerMS;
@@ -61,15 +57,9 @@ public class CpuManager {
 
 				Utils.log(
 						"Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
-				manager.getProperties().setCpuConstant(cpuConstant);
-				manager.saveProperties();
+				RobocodeProperties.setCpuConstant(cpuConstant);
+				RobocodeProperties.save();
 			}
-
-			/*
-			 17 MFlops:  32 ms 
-			 35 MFlops:  16 ms
-			 70 MFlops:  8 ms
-			 */
 		}
 		return cpuConstant;
 	}

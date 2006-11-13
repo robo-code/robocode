@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - Changed to have static access for all methods
  *******************************************************************************/
 package robocode.manager;
 
@@ -29,28 +30,19 @@ import robocode.repository.*;
  * @author Flemming N. Larsen (current)
  */
 public class RobotRepositoryManager {
-	boolean alwaysYes, alwaysNo;
+	
+	private static FileSpecificationDatabase robotDatabase;
 
-	private FileSpecificationDatabase robotDatabase;
+	private static File robotsDirectory;
+	private static File robotCache;
 
-	private File robotsDirectory;
-	private File robotCache;
+	private static Repository repository;
+	private static boolean cacheWarning;
 
-	private Repository repository;
-	private boolean cacheWarning;
-	private RobocodeManager manager;
-	private Vector<FileSpecification> updatedJarVector = new Vector<FileSpecification>();
-	private boolean write;
+	private static Vector<FileSpecification> updatedJarVector = new Vector<FileSpecification>();
+	private static boolean write;
 
-	public RobotRepositoryManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
-
-	public ImageManager getImageManager() {
-		return manager.getImageManager();
-	}
-
-	public File getRobotCache() {
+	public static File getRobotCache() {
 		if (robotCache == null) {
 			// Doesn't work with my cwd(), File does not resolve absolute path correctly
 			// (as far as I can see from the Javadocs for this constructor)
@@ -68,7 +60,7 @@ public class RobotRepositoryManager {
 		return robotCache;
 	}
 
-	private FileSpecificationDatabase getRobotDatabase() {
+	private static FileSpecificationDatabase getRobotDatabase() {
 		if (robotDatabase == null) {
 			Utils.setStatus("Reading robot database");
 			robotDatabase = new FileSpecificationDatabase();
@@ -85,7 +77,7 @@ public class RobotRepositoryManager {
 		return robotDatabase;
 	}
 
-	public Repository getRobotRepository() {
+	public static Repository getRobotRepository() {
 		// Don't reload the repository
 		// If we want to do that, set repository to null by calling clearRobotList().
 		if (repository != null) {
@@ -94,15 +86,10 @@ public class RobotRepositoryManager {
 
 		Utils.setStatus("Refreshing robot database");
 
-		alwaysYes = false;
-		alwaysNo = false;
-
 		updatedJarVector.clear();
 
-		// jarUpdated = false;
 		cacheWarning = false;
-		// boolean changed = false;
-		this.write = false;
+		write = false;
 
 		// Future...
 		// Remove any deleted jars from robotcache
@@ -114,7 +101,7 @@ public class RobotRepositoryManager {
 		Utils.setStatus("Cleaning up robot database");
 		cleanupDatabase();
 
-		String externalRobotsPath = manager.getProperties().getOptionsDevelopmentPath(); {
+		String externalRobotsPath = RobocodeProperties.getOptionsDevelopmentPath(); {
 			StringTokenizer tokenizer = new StringTokenizer(externalRobotsPath, File.pathSeparator);
 
 			while (tokenizer.hasMoreTokens()) {
@@ -187,7 +174,7 @@ public class RobotRepositoryManager {
 		return repository;
 	}
 
-	private void cleanupCache() {
+	private static void cleanupCache() {
 		File dir = getRobotCache();
 		File files[] = dir.listFiles();
 
@@ -214,9 +201,9 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	private void cleanupDatabase() {
+	private static void cleanupDatabase() {
 		Vector<File> externalDirectories = new Vector<File>();
-		String externalPath = manager.getProperties().getOptionsDevelopmentPath();
+		String externalPath = RobocodeProperties.getOptionsDevelopmentPath();
 		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
 
 		while (tokenizer.hasMoreTokens()) {
@@ -258,18 +245,18 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	public File getRobotsDirectory() {
+	public static File getRobotsDirectory() {
 		if (robotsDirectory == null) {
 			robotsDirectory = new File(Constants.cwd(), "robots");
 		}
 		return robotsDirectory;
 	}
 
-	public void clearRobotList() {
+	public static void clearRobotList() {
 		repository = null;
 	}
 
-	private Vector<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
+	private static Vector<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
 
 		Vector<FileSpecification> robotList = new Vector<FileSpecification>();
 
@@ -328,7 +315,7 @@ public class RobotRepositoryManager {
 					// this file is unchanged
 					fileSpecification = cachedSpecification;
 				} else {
-					fileSpecification = FileSpecification.createSpecification(this, files[i], rootDir, prefix,
+					fileSpecification = FileSpecification.createSpecification(files[i], rootDir, prefix,
 							isDevelopmentDirectory);
 					updateRobotDatabase(fileSpecification);
 					write = true;
@@ -345,7 +332,7 @@ public class RobotRepositoryManager {
 		return robotList;
 	}
 
-	private void saveRobotDatabase() {
+	private static void saveRobotDatabase() {
 		if (robotDatabase == null) {
 			Utils.log("Cannot save a null robot database.");
 			return;
@@ -357,7 +344,7 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	private void updateRobotDatabase(FileSpecification fileSpecification) {
+	private static void updateRobotDatabase(FileSpecification fileSpecification) {
 		String key = fileSpecification.getFilePath();
 		boolean updated = false;
 
@@ -367,12 +354,12 @@ public class RobotRepositoryManager {
 
 			try {
 				RobotClassManager robotClassManager = new RobotClassManager(robotSpecification);
-				Class robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(
+				Class<?> robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(
 						robotClassManager.getFullClassName(), true);
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
-				Class[] interfaces = robotClass.getInterfaces();
+				Class<?>[] interfaces = robotClass.getInterfaces();
 
 				for (int j = 0; j < interfaces.length; j++) {
 					if (interfaces[j].getName().equals("robocode.Droid")) {
@@ -380,7 +367,7 @@ public class RobotRepositoryManager {
 					}
 				}
 
-				Class superClass = robotClass.getSuperclass();
+				Class<?> superClass = robotClass.getSuperclass();
 
 				if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 					superClass = null;
@@ -427,7 +414,7 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	private void updateNoDuplicates(FileSpecification spec) {
+	private static void updateNoDuplicates(FileSpecification spec) {
 		String key = spec.getFilePath();
 
 		Utils.setStatus("Updating database: " + spec.getName());
@@ -473,7 +460,7 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	private void conflictLog(String s) {
+	private static void conflictLog(String s) {
 		Utils.log(s);
 		try {
 			File f = new File(Constants.cwd(), "conflict.log");
@@ -486,7 +473,7 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	private void processJar(JarSpecification jarSpecification) {
+	private static void processJar(JarSpecification jarSpecification) {
 		String key = jarSpecification.getFilePath();
 		File cache = getRobotCache();
 
@@ -526,7 +513,7 @@ public class RobotRepositoryManager {
 		getRobotDatabase().put(key, jarSpecification);
 	}
 
-	public int extractJar(File f, File dest, String statusPrefix, boolean extractJars, boolean close,
+	public static int extractJar(File f, File dest, String statusPrefix, boolean extractJars, boolean close,
 			boolean alwaysReplace) {
 		try {
 			JarInputStream jarIS = new JarInputStream(new FileInputStream(f));
@@ -538,7 +525,7 @@ public class RobotRepositoryManager {
 		return 16;
 	}
 
-	public int extractJar(JarInputStream jarIS, File dest, String statusPrefix, boolean extractJars, boolean close,
+	public static int extractJar(JarInputStream jarIS, File dest, String statusPrefix, boolean extractJars, boolean close,
 			boolean alwaysReplace) {
 		int rc = 0;
 		boolean always = alwaysReplace;
@@ -595,8 +582,8 @@ public class RobotRepositoryManager {
 					}
 
 					if (entry.getName().indexOf("/") < 0 && Utils.getFileType(entry.getName()).equals(".jar")) {
-						FileSpecification fileSpecification = FileSpecification.createSpecification(this, out,
-								parentDirectory, "", false);
+						FileSpecification fileSpecification = FileSpecification.createSpecification(out, parentDirectory,
+								"", false);
 
 						updatedJarVector.add(fileSpecification);
 					}
@@ -613,7 +600,7 @@ public class RobotRepositoryManager {
 	}
 
 	// TODO: Needs to be updated?
-	public boolean cleanupOldSampleRobots(boolean delete) {
+	public static boolean cleanupOldSampleRobots(boolean delete) {
 		String oldSampleList[] = {
 			"Corners.java", "Crazy.java", "Fire.java", "MyFirstRobot.java", "RamFire.java", "SittingDuck.java",
 			"SpinBot.java", "Target.java", "Tracker.java", "TrackFire.java", "Walls.java", "Corners.class",
@@ -645,7 +632,7 @@ public class RobotRepositoryManager {
 		return false;
 	}
 
-	private void renameOldDataDir(File dir, File f) {
+	private static void renameOldDataDir(File dir, File f) {
 		String name = f.getName();
 		String botName = name.substring(name.indexOf(".") + 1);
 		File newFile = new File(dir, botName + ".data");
@@ -659,7 +646,7 @@ public class RobotRepositoryManager {
 	}
 
 	// TODO: Needs to be updated?
-	public boolean verifyRootPackage(String robotName) {
+	public static boolean verifyRootPackage(String robotName) {
 		int lIndex = robotName.indexOf(".");
 
 		if (lIndex > 0) {
@@ -707,14 +694,5 @@ public class RobotRepositoryManager {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Gets the manager.
-	 * 
-	 * @return Returns a RobocodeManager
-	 */
-	public RobocodeManager getManager() {
-		return manager;
 	}
 }
