@@ -4,6 +4,9 @@ o Bugfixes
   -- The turnGun(double) method returned before the gun rotation had returned
   -- Teleportation when hitting wall and abs(sin(heading)) > 0.00001 or
      abs(cos(heading)) > 0.00001
+  -- HitRobotEvent.isMyFault() returned false despite the fact that the robot was moving
+     toward the robot it collided with. This was the case when distanceRemaining == 0
+     even though this could occur on purpose if the move was set to distanceRemaining
 
 Version 1.2
 (11/05/2006)
