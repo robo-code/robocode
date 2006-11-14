@@ -22,8 +22,11 @@
  *       removed getColorIndex()
  *     - Optimizations
  *     - Access to managers is now static
- *     - Code cleanup
  *     - Ported to Java 5
+ *     - Bugfix: HitRobotEvent.isMyFault() returned false despite the fact that
+ *       the robot was moving toward the robot it collides with. This was the
+ *       case when distanceRemaining == 0
+ *     - Code cleanup
  *     Luis Crespo
  *     - Added states
  *******************************************************************************/
@@ -226,17 +229,17 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 				if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
 					velocity = 0;
-					if (distanceRemaining > 0) {
+//					if (distanceRemaining > 0) {
 						atFault = true;
 						distanceRemaining = 0;
 						statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-					} else {
-						statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-					}
+//					} else {
+//						statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+//					}
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
 					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-					this.inCollision = true;
+					inCollision = true;
 					x -= movedx;
 					y -= movedy;
 
@@ -248,17 +251,17 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					}
 				} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
 					velocity = 0;
-					if (distanceRemaining < 0) {
+//					if (distanceRemaining < 0) {
 						atFault = true;
 						distanceRemaining = 0;
 						statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-					} else {
-						statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-					}
+//					} else {
+//						statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+//					}
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
 					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-					this.inCollision = true;
+					inCollision = true;
 					x -= movedx;
 					y -= movedy;
 
