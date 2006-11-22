@@ -7,6 +7,8 @@ o Bugfixes
   -- HitRobotEvent.isMyFault() returned false despite the fact that the robot was moving
      toward the robot it collided with. This was the case when distanceRemaining == 0
      even though this could occur on purpose if the move was set to distanceRemaining
+  -- Bad bullet collision detection algorithm. This has been replaced with Paul Bourke's
+     2D line intersection algorithm
 
 Version 1.2
 (11/05/2006)
