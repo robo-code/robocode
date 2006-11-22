@@ -126,30 +126,19 @@ public class BulletPeer {
 
 	// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6457965
 	private boolean intersect(Line2D.Double line) {
-		if (boundingLine.getP1().equals(line.getP2()) || boundingLine.getP2().equals(line.getP1())) {
-			return true;
-		}
-		if (boundingLine.intersectsLine(line)) {
-			double dx1 = boundingLine.x2 - boundingLine.x1;
-			double dy1 = boundingLine.y2 - boundingLine.y1;
-			double dx2 = line.x2 - line.x1;
-			double dy2 = line.y2 - line.y1;
+		double x1 = line.x1, x2 = line.x2, x3 = boundingLine.x1, x4 = boundingLine.x2;
+		double y1 = line.y1, y2 = line.y2, y3 = boundingLine.y1, y4 = boundingLine.y2;
 
-			double slope1 = (dx1 != 0) ? dy1 / dx1 : (dy1 >= 0) ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
-			double slope2 = (dx2 != 0) ? dy2 / dx2 : (dy2 >= 0) ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+		double dx13 = (x1 - x3), dx21 = (x2 - x1), dx43 = (x4 - x3);
+		double dy13 = (y1 - y3), dy21 = (y2 - y1), dy43 = (y4 - y3);
 
-			if (slope1 == slope2) {
-				double line1MinX = Math.min(boundingLine.x1, boundingLine.x2);
-				double line1MaxX = Math.max(boundingLine.x1, boundingLine.x2);
-				double line2MinX = Math.min(line.x1, line.x2);
-				double line2MaxX = Math.max(line.x1, line.x2);
+		double dn = dy43 * dx21 - dx43 * dy21;
 
-				return (line1MaxX <= line2MaxX || line2MinX <= line2MinX)
-						&& !(line1MaxX < line2MinX || line2MaxX < line1MinX);
-			}
-		}
-		return false;
-	}	
+		double ua = (dx43 * dy13 - dy43 * dx13) / dn;
+		double ub = (dx21 * dy13 - dy21 * dx13) / dn;
+		
+		return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1);
+	}
 
 	public void checkRobotCollision() {
 		RobotPeer r;
