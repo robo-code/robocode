@@ -39,6 +39,8 @@ public class NameManager implements Serializable {
 	private String uniqueVeryShortClassNameWithVersion;
 	private String uniqueShortClassNameWithVersion;
 
+	private NameManager() {}
+	
 	public NameManager(String className, String version, boolean developmentVersion, boolean isTeam) {
 		if (className == null) {
 			throw new NullPointerException("className cannot be null.");

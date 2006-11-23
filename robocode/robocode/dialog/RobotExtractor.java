@@ -12,7 +12,6 @@
  *     - Added keyboard mnemonics to buttons
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
- *     - Access to managers is now static
  *     - Ported to Java 5
  *******************************************************************************/
 package robocode.dialog;
@@ -49,6 +48,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	
 	public byte buf[] = new byte[4096];
 	private StringWriter output;
+	private RobotRepositoryManager robotManager;
 
 	private EventHandler eventHandler = new EventHandler();
 
@@ -63,8 +63,9 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	/**
 	 * Packager constructor comment.
 	 */
-	public RobotExtractor(JFrame owner) {
+	public RobotExtractor(JFrame owner, RobotRepositoryManager robotManager) {
 		super(owner);
+		this.robotManager = robotManager;
 		initialize();
 	}
 
@@ -78,7 +79,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		int rc = extractRobot();
 		ConsoleDialog d;
 
-		d = new ConsoleDialog(WindowManager.getRobocodeFrame(), "Extract results", false);
+		d = new ConsoleDialog(robotManager.getManager().getWindowManager().getRobocodeFrame(), "Extract results", false);
 		d.setText(output.toString());
 		d.pack();
 		d.pack();
@@ -132,7 +133,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(robotManager, minRobots, maxRobots, false,
 					"Select the robot you would like to extract to the robots directory.  Robots not shown do not include source.",
 					true, true, true, false, true, true, null);
 		}
@@ -159,7 +160,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	}
 
 	private int extractRobot() {
-		RobotRepositoryManager.clearRobotList();
+		robotManager.clearRobotList();
 		int rv = 0;
 
 		output = new StringWriter();
@@ -171,8 +172,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 		try {
 			Utils.setStatusWriter(out);
-			rv = RobotRepositoryManager.extractJar(spec.getJarFile(), RobotRepositoryManager.getRobotsDirectory(),
-					"Extracting to " + RobotRepositoryManager.getRobotsDirectory(), false, true, false);
+			rv = robotManager.extractJar(spec.getJarFile(), robotManager.getRobotsDirectory(),
+					"Extracting to " + robotManager.getRobotsDirectory(), false, true, false);
 			Utils.setStatusWriter(null);
 			Utils.setStatus("");
 			if (rv == 0) {

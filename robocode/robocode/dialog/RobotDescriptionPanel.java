@@ -24,6 +24,7 @@ import java.io.*;
 import java.net.*;
 import robocode.repository.*;
 import robocode.manager.BrowserManager;
+import robocode.manager.RobocodeManager;
 
 
 /**
@@ -40,6 +41,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JLabel filePathLabel;
 	private String blankString;
 	public FileSpecification currentRobotSpecification;
+	private RobocodeManager manager;
 
 	private EventManager eventManager = new EventManager();
 
@@ -62,8 +64,9 @@ public class RobotDescriptionPanel extends JPanel {
 	/**
 	 * NewBattleRobotsTabDescriptionPanel constructor.
 	 */
-	public RobotDescriptionPanel() {
+	public RobotDescriptionPanel(RobocodeManager manager) {
 		super();
+		this.manager = manager;
 		initialize();
 		blankString = "";
 		for (int i = 0; i < 72; i++) {

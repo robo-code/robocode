@@ -10,7 +10,6 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Corrected table cell heights when rendering
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -22,7 +21,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import robocode.battle.*;
-import robocode.manager.WindowManager;
 import robocode.util.Utils;
 
 
@@ -78,7 +76,6 @@ public class ResultsDialog extends JDialog {
 	class EventHandler implements ActionListener, ComponentListener {
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
-
 			if (source == ResultsDialog.this.getOkButton()) {
 				okButtonActionPerformed();
 			} else if (source == ResultsDialog.this.getSaveButton()) {
@@ -199,7 +196,7 @@ public class ResultsDialog extends JDialog {
 	}
 
 	private void saveButtonActionPerformed() {
-		WindowManager.showSaveResultsDialog();
+		battle.getManager().getWindowManager().showSaveResultsDialog();
 	}
 
 	private void resultsScrollPaneComponentResized(ComponentEvent componentEvent) {

@@ -10,7 +10,6 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Added setPaintEnabled() and setSGPaintEnabled() in constructor
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -30,17 +29,18 @@ import robocode.util.Utils;
  */
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
-
 	private RobotPeer robotPeer;
 	private RobotDialog robotDialog;
+	private RobotDialogManager robotDialogManager;
 
 	/**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotPeer robotPeer) {
+	public RobotButton(RobotDialogManager robotDialogManager, RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
+		this.robotDialogManager = robotDialogManager;
 		initialize();
-		robotDialog = RobotDialogManager.getRobotDialog(robotPeer.getName(), false);
+		robotDialog = robotDialogManager.getRobotDialog(robotPeer.getName(), false);
 		if (robotDialog != null) {
 			robotDialog.setRobotPeer(robotPeer);
 			robotPeer.setPaintEnabled(robotDialog.isPaintEnabled());
@@ -50,7 +50,7 @@ public class RobotButton extends JButton implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (robotDialog == null) {
-			robotDialog = RobotDialogManager.getRobotDialog(robotPeer.getName(), true);
+			robotDialog = robotDialogManager.getRobotDialog(robotPeer.getName(), true);
 			robotDialog.setTitle(robotPeer.getName());
 			robotDialog.setRobotPeer(robotPeer);
 			if (robotDialog.isVisible() && robotDialog.getState() == JFrame.NORMAL) {

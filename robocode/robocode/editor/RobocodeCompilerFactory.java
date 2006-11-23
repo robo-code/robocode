@@ -22,10 +22,9 @@ import javax.swing.*;
 import java.io.*;
 import java.util.jar.*;
 
-import robocode.dialog.*;
-import robocode.manager.*;
 import robocode.util.Constants;
 import robocode.util.Utils;
+import robocode.dialog.*;
 
 
 /**
@@ -223,7 +222,7 @@ public class RobocodeCompilerFactory {
 		String jikesBinary = "";
 		boolean noExtract = false;
 
-		compilerProperties.setRobocodeVersion(VersionManager.getVersion());
+		compilerProperties.setRobocodeVersion(editor.getManager().getVersionManager().getVersion());
 
 		if (osName.indexOf("Windows") == 0) {
 			jikesJar = "compilers/jikes-1.22.win.jar";

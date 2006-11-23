@@ -14,7 +14,6 @@
  *       give warning if the user rejects downloading a new version, if the new
  *       version is not an alfa or beta version
  *     - Changed the checkdate time interval from 10 days to 5 days
- *     - Changed to have static access for all methods
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -34,18 +33,22 @@ import robocode.util.Utils;
  * @author Flemming N. Larsen (current)
  */
 public class VersionManager {
+	private String version;
+	private RobocodeManager manager;
+	
+	public VersionManager(RobocodeManager manager) {
+		this.manager = manager;
+	}
 
-	private static String version;
-
-	public static void checkUpdateCheck() {
-		Date lastCheckedDate = RobocodeProperties.getVersionChecked();
+	public void checkUpdateCheck() {
+		Date lastCheckedDate = manager.getProperties().getVersionChecked();
 
 		Date today = new Date();
 
 		if (lastCheckedDate == null) {
 			lastCheckedDate = today;
-			RobocodeProperties.setVersionChecked(lastCheckedDate);
-			RobocodeProperties.save();
+			manager.getProperties().setVersionChecked(lastCheckedDate);
+			manager.saveProperties();
 		}
 		Calendar checkDate = Calendar.getInstance();
 
@@ -54,13 +57,13 @@ public class VersionManager {
 
 		if (checkDate.getTime().before(today)) {
 			if (checkForNewVersion(false)) {
-				RobocodeProperties.setVersionChecked(today);
-				RobocodeProperties.save();
+				manager.getProperties().setVersionChecked(today);
+				manager.saveProperties();
 			}
 		}
 	}
 	
-	public static boolean checkForNewVersion(boolean notifyNoUpdate) {
+	public boolean checkForNewVersion(boolean notifyNoUpdate) {
 		URL u = null;
 
 		try {
@@ -110,28 +113,26 @@ public class VersionManager {
 	
 		String installurl = "http://robocode.sourceforge.net/installer";
 
-		robocode.dialog.RobocodeFrame frame = WindowManager.getRobocodeFrame();
-		
 		if (v.compareToIgnoreCase(getVersion()) > 0) {
-			if (JOptionPane.showConfirmDialog(frame,
+			if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
 					"Version " + v + " of Robocode is now available.  Would you like to download it?",
 					"Version " + v + " available", JOptionPane.YES_NO_OPTION)
 					== JOptionPane.YES_OPTION) {
 				try {
 					BrowserManager.openURL(installurl);
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(frame, e.getMessage(), "Unable to open browser!",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
+							"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else if (!v.matches(".*([Aa][Ll][Ff]|[Bb][Ee][Tt])[Aa].*")) {
-				JOptionPane.showMessageDialog(frame,
+				JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
 						"It is highly recommended that you always download the latest version.  You may get it at "
 						+ installurl,
 						"Update when you can!",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		} else if (notifyNoUpdate) {
-			JOptionPane.showMessageDialog(frame,
+			JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
 					"You have version " + version + ".  This is the latest version of Robocode.", "No update available",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -139,18 +140,18 @@ public class VersionManager {
 		return true;
 	}
 	
-	public static String getVersion() {
+	public String getVersion() {
 		if (version == null) {
 			version = getVersionFromJar();
 		}
 		return version;
 	}
 	
-	private static String getVersionFromJar() {
+	private String getVersionFromJar() {
 		String versionString = null;
 
 		try {
-			URL versionsUrl = ClassLoader.class.getResource("/resources/versions.txt");
+			URL versionsUrl = getClass().getResource("/resources/versions.txt");
 
 			if (versionsUrl == null) {
 				Utils.log("no url");
@@ -187,7 +188,7 @@ public class VersionManager {
 		return version;
 	}
 
-	private static String getVersionFromFile() {
+	private String getVersionFromFile() {
 		String versionString = null;
 
 		try {

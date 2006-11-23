@@ -16,7 +16,6 @@
  *     - Added check for if GUI is enabled before using graphical components
  *     - Added restart() method
  *     - Ported to Java 5
- *     - Changed to have static access for all methods
  *     - Code cleanup & optimizations
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
@@ -25,20 +24,18 @@
 package robocode.manager;
 
 
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 
 import robocode.util.*;
 import robocode.battle.*;
 import robocode.battlefield.*;
-import robocode.manager.RobotRepositoryManager;
 import robocode.repository.*;
-import robocode.peer.*;
+import robocode.peer.RobotPeer;
 import robocode.peer.robot.*;
 import robocode.security.RobocodeSecurityManager;
+import robocode.peer.*;
 
 
 /**
@@ -46,20 +43,20 @@ import robocode.security.RobocodeSecurityManager;
  * @author Flemming N. Larsen (current)
  */
 public class BattleManager {
-	
-	private static BattleProperties battleProperties = new BattleProperties();
-	private static String battleFilename;
-	private static String battlePath;
-	private static Battle battle;
-	private static boolean battleRunning;
-	private static int pauseCount;
-	private static String resultsFile;
-	private static int stepTurn;
-	
+	private BattleProperties battleProperties = new BattleProperties();
+	private String battleFilename;
+	private String battlePath;
+	private Battle battle;
+	private boolean battleRunning;
+	private int pauseCount;
+	private String resultsFile;
+	private RobocodeManager manager;
+	private int stepTurn;
+
 	/**
 	 * Steps for a single turn, then goes back to paused
 	 */
-	public static void nextTurn() {
+	public void nextTurn() {
 		if (battleRunning) {
 			stepTurn = battle.getCurrentTime() + 1;
 		}
@@ -70,7 +67,7 @@ public class BattleManager {
 	 *
 	 * @return true if the battle should perform one turn, false otherwise
 	 */
-	public static boolean shouldStep() {
+	public boolean shouldStep() {
 		// This code assumes it is called only if the battle is paused.
 		return stepTurn > battle.getCurrentTime();
 	}
@@ -78,25 +75,29 @@ public class BattleManager {
 	/**
 	 * This method should be called to inform the battle manager that a new round is starting
 	 */
-	public static void startNewRound() {
+	public void startNewRound() {
 		stepTurn = 0;
 	}
 
-	public static void stop(boolean showResultsDialog) {
+	public BattleManager(RobocodeManager manager) {
+		this.manager = manager;
+	}
+
+	public void stop(boolean showResultsDialog) {
 		if (getBattle() != null) {
 			getBattle().stop(showResultsDialog);
 		}
 	}
 
-	public static void restart() {
+	public void restart() {
 		stop(false);
 		startNewBattle(battleProperties, false);
 	}
 	
-	public static void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete) {
-		BattleManager.battleProperties = battleProperties;
+	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete) {
+		this.battleProperties = battleProperties;
 
-		Vector<FileSpecification> robotSpecificationsVector = RobotRepositoryManager.getRobotRepository().getRobotSpecificationsVector(
+		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
 				false, false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
@@ -157,9 +158,9 @@ public class BattleManager {
 		startNewBattle(battlingRobotsVector, exitOnComplete, null);
 	}
 
-	public static void startNewBattle(robocode.control.BattleSpecification battleSpecification) {
-		BattleManager.battleProperties = battleSpecification.getBattleProperties();
-		Vector<FileSpecification> robotSpecificationsVector = RobotRepositoryManager.getRobotRepository().getRobotSpecificationsVector(
+	public void startNewBattle(robocode.control.BattleSpecification battleSpecification) {
+		this.battleProperties = battleSpecification.getBattleProperties();
+		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
 				false, false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
@@ -194,8 +195,8 @@ public class BattleManager {
 			}
 			if (!found) {
 				Utils.log("Aborting battle, could not find robot: " + bot);
-				if (RobocodeManager.getListener() != null) {
-					RobocodeManager.getListener().battleAborted(battleSpecification);
+				if (manager.getListener() != null) {
+					manager.getListener().battleAborted(battleSpecification);
 				}
 				return;
 			}
@@ -203,7 +204,7 @@ public class BattleManager {
 		startNewBattle(battlingRobotsVector, false, battleSpecification);
 	}
 
-	private static void startNewBattle(Vector<RobotClassManager> battlingRobotsVector, boolean exitOnComplete,
+	private void startNewBattle(Vector<RobotClassManager> battlingRobotsVector, boolean exitOnComplete,
 			robocode.control.BattleSpecification battleSpecification) { 
 
 		Utils.log("Preparing battle...");
@@ -214,10 +215,10 @@ public class BattleManager {
 		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight());
 
-		if (RobocodeManager.isGUIEnabled()) {
-			WindowManager.getRobocodeFrame().getBattleView().setBattleField(battleField);			
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);			
 		}
-		battle = new Battle(battleField);
+		battle = new Battle(battleField, manager);
 		battle.setExitOnComplete(exitOnComplete);
 
 		// Only used when controlled by RobocodeEngine
@@ -237,45 +238,45 @@ public class BattleManager {
 			((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
 		}
 
-		if (RobocodeManager.isGUIEnabled()) {
-			WindowManager.getRobocodeFrame().getBattleView().setVisible(true);
-			WindowManager.getRobocodeFrame().getBattleView().setInitialized(false);
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().getBattleView().setVisible(true);
+			manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
 		}
 
 		for (int i = 0; i < battlingRobotsVector.size(); i++) {
 			battle.addRobot((RobotClassManager) battlingRobotsVector.elementAt(i));
 		}
 
-		if (RobocodeManager.isGUIEnabled()) {
-			WindowManager.getRobocodeFrame().getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
-			WindowManager.getRobocodeFrame().getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
+			manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 	
-			if (WindowManager.getRobocodeFrame().getPauseResumeButton().getText().equals("Resume")) {
-				WindowManager.getRobocodeFrame().pauseResumeButtonActionPerformed();
+			if (manager.getWindowManager().getRobocodeFrame().getPauseResumeButton().getText().equals("Resume")) {
+				manager.getWindowManager().getRobocodeFrame().pauseResumeButtonActionPerformed();
 			}
 
-			RobotDialogManager.setActiveBattle(battle);
+			manager.getRobotDialogManager().setActiveBattle(battle);
 		}
 		battleThread.start();
 	}
 	
-	public static String getBattleFilename() {
+	public String getBattleFilename() {
 		return battleFilename;
 	}
 
-	public static void setBattleFilename(String newBattleFilename) {
+	public void setBattleFilename(String newBattleFilename) {
 		battleFilename = newBattleFilename;
 	}
 
-	public static boolean isPaused() {
+	public boolean isPaused() {
 		return (pauseCount != 0);
 	}
 
-	public static void pauseBattle() {
+	public void pauseBattle() {
 		pauseCount++;
 	}
 
-	public static String getBattlePath() {
+	public String getBattlePath() {
 		if (battlePath == null) {
 			battlePath = System.getProperty("BATTLEPATH");
 			if (battlePath == null) {
@@ -286,19 +287,21 @@ public class BattleManager {
 		return battlePath;
 	}
 
-	public static void saveBattle() {
+	public void saveBattle() {
 		pauseBattle();
 		saveBattleProperties();
 		resumeBattle();
 	}
 
-	public static void saveBattleAs() {
+	public void saveBattleAs() {
 		pauseBattle();
 		File f = new File(getBattlePath());
 
-		JFileChooser chooser = new JFileChooser(f);
+		JFileChooser chooser;
+
+		chooser = new JFileChooser(f);
 		
-		FileFilter filter = new FileFilter() {
+		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
 			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
 					return false;
@@ -322,7 +325,7 @@ public class BattleManager {
 		};
 
 		chooser.setFileFilter(filter);
-		int rv = chooser.showSaveDialog(WindowManager.getRobocodeFrame());
+		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
 
 		if (rv == JFileChooser.APPROVE_OPTION) {
 			battleFilename = chooser.getSelectedFile().getPath();
@@ -340,7 +343,7 @@ public class BattleManager {
 		resumeBattle();
 	}
 
-	public static void saveBattleProperties() {
+	public void saveBattleProperties() {
 		if (battleProperties == null) {
 			Utils.log("Cannot save null battle properties");
 			return;
@@ -358,7 +361,7 @@ public class BattleManager {
 		}
 	}
 
-	public static void loadBattleProperties() {
+	public void loadBattleProperties() {
 		try {
 			FileInputStream in = new FileInputStream(battleFilename);
 
@@ -370,52 +373,52 @@ public class BattleManager {
 		}
 	}
 
-	public static Battle getBattle() {
+	public Battle getBattle() {
 		return battle;
 	}
 
-	public static void setOptions() {
+	public void setOptions() {
 		if (battle != null) {
 			battle.setOptions();
 		}
 	}
 
-	public static BattleProperties getBattleProperties() {
+	public BattleProperties getBattleProperties() {
 		if (battleProperties == null) {
 			battleProperties = new BattleProperties();
 		}
 		return battleProperties;
 	}
 
-	public static void clearBattleProperties() {
+	public void clearBattleProperties() {
 		battleProperties = null;
 	}
 
-	public static void resumeBattle() {
+	public void resumeBattle() {
 		Math.max(--pauseCount, 0);
 	}
 
-	public static boolean isBattleRunning() {
+	public boolean isBattleRunning() {
 		return battleRunning;
 	}
 
-	public static void setBattle(Battle newBattle) {
+	public void setBattle(Battle newBattle) {
 		battle = newBattle;
 	}
 
-	public static void setBattleRunning(boolean newBattleRunning) {
+	public void setBattleRunning(boolean newBattleRunning) {
 		battleRunning = newBattleRunning;
 	}
 
-	public static void setResultsFile(String newResultsFile) {
+	public void setResultsFile(String newResultsFile) {
 		resultsFile = newResultsFile;
 	}
 
-	public static String getResultsFile() {
+	public String getResultsFile() {
 		return resultsFile;
 	}
 
-	public static void sendResultsToListener(Battle battle, robocode.control.RobocodeListener listener) {
+	public void sendResultsToListener(Battle battle, robocode.control.RobocodeListener listener) {
 		Vector<RobotPeer> orderedRobots = new Vector<RobotPeer>(battle.getRobots());
 
 		Collections.sort(orderedRobots);
@@ -435,7 +438,7 @@ public class BattleManager {
 		listener.battleComplete(battle.getBattleSpecification(), results);
 	}
 
-	public static void printResultsData(Battle battle) {
+	public void printResultsData(Battle battle) {
 		PrintStream out;
 		boolean close = false;
 
@@ -459,5 +462,14 @@ public class BattleManager {
 		if (close) {
 			out.close();
 		}
+	}
+
+	/**
+	 * Gets the manager.
+	 * 
+	 * @return Returns a RobocodeManager
+	 */
+	public RobocodeManager getManager() {
+		return manager;
 	}
 }

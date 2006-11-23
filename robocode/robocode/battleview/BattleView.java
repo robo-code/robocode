@@ -79,6 +79,10 @@ public class BattleView extends Canvas {
 	private Font smallFont;
 	private FontMetrics smallFontMetrics;
 	
+	private ImageManager imageManager;
+
+	private RobocodeManager manager;
+
 	private BufferStrategy bufferStrategy;
 
 	private Image offscreenImage;
@@ -93,10 +97,13 @@ public class BattleView extends Canvas {
 	/**
 	 * BattleView constructor.
 	 */
-	public BattleView(RobocodeFrame robocodeFrame) {
+	public BattleView(RobocodeManager manager, RobocodeFrame robocodeFrame, ImageManager imageManager) {
 		super();
 
+		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
+		this.imageManager = imageManager;
+		this.manager = manager;
 	}
 
 	/**
@@ -159,17 +166,19 @@ public class BattleView extends Canvas {
 	}
 
 	public void setDisplayOptions() {
-		displayTPS = RobocodeProperties.getOptionsViewTPS();
-		displayFPS = RobocodeProperties.getOptionsViewFPS();
-		drawRobotName = RobocodeProperties.getOptionsViewRobotNames();
-		drawRobotEnergy = RobocodeProperties.getOptionsViewRobotEnergy();
-		drawScanArcs = RobocodeProperties.getOptionsViewScanArcs();
-		drawGround = RobocodeProperties.getOptionsViewGround();
-		drawExplosions = RobocodeProperties.getOptionsViewExplosions();
+		RobocodeProperties props = manager.getProperties();
+		
+		displayTPS = props.getOptionsViewTPS();
+		displayFPS = props.getOptionsViewFPS();
+		drawRobotName = props.getOptionsViewRobotNames();
+		drawRobotEnergy = props.getOptionsViewRobotEnergy();
+		drawScanArcs = props.getOptionsViewScanArcs();
+		drawGround = props.getOptionsViewGround();
+		drawExplosions = props.getOptionsViewExplosions();
 
-		noBuffers = RobocodeProperties.getOptionsRenderingNoBuffers();
+		noBuffers = props.getOptionsRenderingNoBuffers();
 
-		renderingHints = RobocodeProperties.getRenderingHints();
+		renderingHints = props.getRenderingHints();
 	}
 
 	private void initialize() {
@@ -245,7 +254,7 @@ public class BattleView extends Canvas {
 	
 		for (int y = NUM_VERT_TILES - 1; y >= 0; y--) {
 			for (int x = NUM_HORZ_TILES - 1; x >= 0; x--) {
-				Image img = ImageManager.getGroundTileImage(groundTiles[y][x]);
+				Image img = imageManager.getGroundTileImage(groundTiles[y][x]);
 
 				if (img != null) {
 					groundGfx.drawImage(img, x * groundTileWidth, y * groundTileHeight, null);
@@ -349,7 +358,7 @@ public class BattleView extends Canvas {
 		int battleFieldHeight = battle.getBattleField().getHeight();
 
 		if (drawGround) {
-			RenderImage explodeDebrise = ImageManager.getExplosionDebriseRenderImage();
+			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
 			for (RobotPeer r : battle.getRobots()) {
 				if (r.isDead()) {
@@ -372,7 +381,7 @@ public class BattleView extends Canvas {
 				at = AffineTransform.getTranslateInstance(x, y);
 				at.rotate(r.getHeading());
 
-				RenderImage robotRenderImage = ImageManager.getColoredBodyRenderImage(r.getBodyColor());
+				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
 	
 				robotRenderImage.setTransform(at);
 				robotRenderImage.paint(g);
@@ -380,7 +389,7 @@ public class BattleView extends Canvas {
 				at = AffineTransform.getTranslateInstance(x, y);
 				at.rotate(r.getGunHeading());
 	
-				RenderImage gunRenderImage = ImageManager.getColoredGunRenderImage(r.getGunColor());
+				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
 	
 				gunRenderImage.setTransform(at);
 				gunRenderImage.paint(g);
@@ -389,7 +398,7 @@ public class BattleView extends Canvas {
 					at = AffineTransform.getTranslateInstance(x, y);
 					at.rotate(r.getRadarHeading());
 	
-					RenderImage radarRenderImage = ImageManager.getColoredRadarRenderImage(r.getRadarColor());
+					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
 	
 					radarRenderImage.setTransform(at);
 					radarRenderImage.paint(g);
@@ -446,6 +455,14 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotPeer robotPeer) {
+		// Store rendering attributes
+		Paint origPaint = g.getPaint();
+		Font origFont = g.getFont();
+		Stroke origStroke = g.getStroke();
+		AffineTransform origTransform = g.getTransform();
+		Composite origComposite = g.getComposite();
+		Shape origClip = g.getClip();
+
 		// Do the painting
 		if (robotPeer.isSGPaintEnabled()) {
 			robotPeer.getRobot().onPaint(g);
@@ -454,6 +471,14 @@ public class BattleView extends Canvas {
 			robotPeer.getRobot().onPaint(mirroredGraphics);
 			mirroredGraphics.release();
 		}
+
+		// Restore the rendering attributes
+		g.setPaint(origPaint);
+		g.setFont(origFont);
+		g.setStroke(origStroke);
+		g.setTransform(origTransform);
+		g.setComposite(origComposite);
+		g.setClip(origClip);
 	}
 	
 	private void drawBullets(Graphics2D g) {
@@ -495,7 +520,7 @@ public class BattleView extends Canvas {
 					at.scale(scale, scale);
 				}
 
-				RenderImage explosionRenderImage = ImageManager.getExplosionRenderImage(bullet.getWhichExplosion(),
+				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getWhichExplosion(),
 						bullet.getFrame());
 				
 				explosionRenderImage.setTransform(at);
@@ -512,7 +537,7 @@ public class BattleView extends Canvas {
 		paintMode = newPaintMode;
 	}
 
-	private void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
+	public void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
 		g.setFont(font);
 		int left, top, descent;
 		int width, height;

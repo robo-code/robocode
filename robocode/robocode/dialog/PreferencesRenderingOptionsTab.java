@@ -25,6 +25,8 @@ import robocode.manager.*;
 @SuppressWarnings("serial")
 public class PreferencesRenderingOptionsTab extends WizardPanel {
 
+	private RobocodeManager manager;
+
 	private JPanel specificSettingsPanel;
 	private JPanel predefinedSettingsPanel;
 
@@ -40,8 +42,9 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 	private EventHandler eventHandler;
 
-	public PreferencesRenderingOptionsTab() {
+	public PreferencesRenderingOptionsTab(RobocodeManager manager) {
 		super();
+		this.manager = manager;
 		initialize();
 	}
 
@@ -53,7 +56,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		add(getSpecificSettingsPanel());
 		add(getPredefinedSettingsPanel());
 
-		loadPreferences();
+		loadPreferences(manager.getProperties());
 	}
 
 	private JPanel getSpecificSettingsPanel() {
@@ -66,7 +69,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			GridBagConstraints c = new GridBagConstraints();
 
 			c.fill = GridBagConstraints.HORIZONTAL;
-			c.insets = new Insets(5, 5, 5, 5);
 			c.anchor = GridBagConstraints.PAGE_START;
 
 			c.weightx = 0;
@@ -202,22 +204,21 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return predefinedQualityButton;
 	}
 
-	private void loadPreferences() {
-		getOptionsRenderingAntialiasingComboBox().setSelectedIndex(RobocodeProperties.getOptionsRenderingAntialiasing());
+	private void loadPreferences(RobocodeProperties robocodeProperties) {
+		getOptionsRenderingAntialiasingComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingAntialiasing());
 		getOptionsRenderingTextAntialiasingComboBox().setSelectedIndex(
-				RobocodeProperties.getOptionsRenderingTextAntialiasing());
-		getOptionsRenderingMethodComboBox().setSelectedIndex(RobocodeProperties.getOptionsRenderingMethod());
-		getOptionsRenderingNoBuffersComboBox().setSelectedIndex(RobocodeProperties.getOptionsRenderingNoBuffers() - 1);
+				robocodeProperties.getOptionsRenderingTextAntialiasing());
+		getOptionsRenderingMethodComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingMethod());
+		getOptionsRenderingNoBuffersComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingNoBuffers() - 1);
 	}
 
 	public void storePreferences() {
-		RobocodeProperties.setOptionsRenderingAntialiasing(optionsRenderingAntialiasingComboBox.getSelectedIndex());
-		RobocodeProperties.setOptionsRenderingTextAntialiasing(
+		manager.getProperties().setOptionsRenderingAntialiasing(optionsRenderingAntialiasingComboBox.getSelectedIndex());
+		manager.getProperties().setOptionsRenderingTextAntialiasing(
 				optionsRenderingTextAntialiasingComboBox.getSelectedIndex());
-		RobocodeProperties.setOptionsRenderingMethod(optionsRenderingMethodComboBox.getSelectedIndex());
-		RobocodeProperties.setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
-
-		RobocodeProperties.save();
+		manager.getProperties().setOptionsRenderingMethod(optionsRenderingMethodComboBox.getSelectedIndex());
+		manager.getProperties().setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
+		manager.saveProperties();
 	}
 	
 	public boolean isReady() {
@@ -242,7 +243,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			} else if (src == predefinedSpeedButton) {
 				setPredefinedSettings(2);
 			}
-			WindowManager.getRobocodeFrame().getBattleView().setInitialized(false);
+			manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
 		}
 	}
 }

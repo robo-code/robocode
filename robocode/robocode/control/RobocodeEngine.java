@@ -13,7 +13,6 @@
  *     - GUI is disabled per default. If the setVisible() is called, the GUI will
  *       be enabled. The close() method is only calling dispose() on the
  *       RobocodeFrame if the GUI is enabled
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.control;
@@ -23,6 +22,7 @@ import java.io.*;
 import java.security.*;
 import java.util.Vector;
 
+import robocode.*;
 import robocode.manager.*;
 import robocode.repository.*;
 import robocode.security.*;
@@ -39,6 +39,9 @@ import robocode.util.*;
  */
 public class RobocodeEngine {
 	private RobocodeListener listener;
+	private RobocodeManager manager;
+	
+	private RobocodeEngine() {}
 	
 	/**
 	 * Creates a new RobocodeEngine
@@ -67,10 +70,9 @@ public class RobocodeEngine {
 	
 	private void init(File robocodeHome, RobocodeListener listener) {
 		this.listener = listener;
-
-		RobocodeManager.setSlave(true);
-		RobocodeManager.setListener(listener);
-
+		manager = new RobocodeManager(true, listener);
+		manager.setEnableGUI(false);
+		
 		try {
 			Constants.setWorkingDirectory(robocodeHome);
 		} catch (IOException e) {
@@ -81,7 +83,8 @@ public class RobocodeEngine {
 		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
 		Policy.setPolicy(securityPolicy);
-		System.setSecurityManager(new RobocodeSecurityManager(Thread.currentThread(), true));
+		System.setSecurityManager(new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true));
+		RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
 
 		ThreadGroup tg = Thread.currentThread().getThreadGroup();
 
@@ -106,8 +109,8 @@ public class RobocodeEngine {
 	 * This method disposes the Robocode window
 	 */
 	public void close() {
-		if (RobocodeManager.isGUIEnabled()) {
-			WindowManager.getRobocodeFrame().dispose();
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().dispose();
 		}
 	}
 	
@@ -117,15 +120,15 @@ public class RobocodeEngine {
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
-		return VersionManager.getVersion();
+		return manager.getVersionManager().getVersion();
 	}
 
 	/**
 	 * Shows or hides the Robocode window.
 	 */
 	public void setVisible(boolean visible) {
-		RobocodeManager.setEnableGUI(true);
-		WindowManager.getRobocodeFrame().setVisible(visible);
+		manager.setEnableGUI(true);
+		manager.getWindowManager().getRobocodeFrame().setVisible(visible);
 	}
 		
 	/**
@@ -134,8 +137,9 @@ public class RobocodeEngine {
 	 * @return An array of all available robots.
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		Vector<FileSpecification> v = RobotRepositoryManager.getRobotRepository().getRobotSpecificationsVector(false,
-				false, true, false, false, true);
+		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
+		Vector<FileSpecification> v = robotRepository.getRobotSpecificationsVector(false, false, true, false, false,
+				true);
 		RobotSpecification robotSpecs[] = new RobotSpecification[v.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
@@ -149,13 +153,13 @@ public class RobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battle) {
 		Utils.setLogListener(listener);
-		BattleManager.startNewBattle(battle);
+		manager.getBattleManager().startNewBattle(battle);
 	}
 
 	/**
 	 * Asks a battle to abort.
 	 */
 	public void abortCurrentBattle() {
-		BattleManager.stop(false);
+		manager.getBattleManager().stop(false);
 	}
 }

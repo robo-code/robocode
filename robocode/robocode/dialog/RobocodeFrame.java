@@ -14,7 +14,6 @@
  *     - Added JPopupMenu.setDefaultLightWeightPopupEnabled(false), i.e. enabling
  *       heavy-weight components in order to prevent battleview to hide menus
  *     - Changed so BattleView handles resizing instead of the RobocodeFrame
- *     - Access to managers is now static
  *     - Code cleanup
  *     Luis Crespo
  *     - Added debug step feature by adding a "Next Turn" button, and changing
@@ -38,7 +37,7 @@ import robocode.util.*;
  */
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
-	private EventHandler eventHandler = new EventHandler();
+	EventHandler eventHandler = new EventHandler();
 
 	private RobocodeMenuBar robocodeMenuBar;
 	
@@ -58,9 +57,10 @@ public class RobocodeFrame extends JFrame {
 	private JButton stopButton;
 	private JButton restartButton;
 	private boolean iconified;
+	private RobocodeManager manager;
 	private boolean exitOnClose;
 	
-	private class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ComponentListener, ContainerListener, WindowListener {
+	class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ComponentListener, ContainerListener, WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == RobocodeFrame.this.getPauseResumeButton()) {
@@ -116,12 +116,12 @@ public class RobocodeFrame extends JFrame {
 
 		public void windowClosing(WindowEvent e) {
 			exitOnClose = true;
-			if (RobocodeManager.getListener() != null) {
+			if (manager.getListener() != null) {
 				Utils.message("If you wish to exit Robocode, please exit the program controlling it.");
 				exitOnClose = false;
 				return;
 			}
-			if (WindowManager.closeRobocodeEditor()) {
+			if (windowManager.closeRobocodeEditor()) {
 				Utils.saveWindowPositions();
 				dispose();
 			}
@@ -140,11 +140,15 @@ public class RobocodeFrame extends JFrame {
 		public void windowOpened(WindowEvent e) {}
 	}
 
+	private WindowManager windowManager;
+
 	/**
 	 * RobocodeFrame constructor
 	 */
-	public RobocodeFrame() {
+	public RobocodeFrame(RobocodeManager manager) {
 		super();
+		this.windowManager = manager.getWindowManager();
+		this.manager = manager;
 		initialize();
 	}
 
@@ -186,7 +190,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public BattleView getBattleView() {
 		if (battleView == null) {
-			battleView = new BattleView(this);
+			battleView = new BattleView(manager, this, manager.getImageManager());
 			battleView.addComponentListener(eventHandler);
 		}
 		return battleView;
@@ -247,7 +251,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public RobocodeMenuBar getRobocodeMenuBar() {
 		if (robocodeMenuBar == null) {
-			robocodeMenuBar = new RobocodeMenuBar(this);
+			robocodeMenuBar = new RobocodeMenuBar(manager, this);
 		}
 		return robocodeMenuBar;
 	}
@@ -408,7 +412,7 @@ public class RobocodeFrame extends JFrame {
 		addKeyListener(eventHandler);
 		addWindowListener(eventHandler);
 		setVisible(false);
-		if (RobocodeManager.isSlave()) {
+		if (manager.isSlave()) {
 			getRobocodeMenuBar().getBattleMenu().setEnabled(false);
 			getRobocodeMenuBar().getRobotMenu().setEnabled(false);
 			getStopButton().setEnabled(false);
@@ -451,7 +455,7 @@ public class RobocodeFrame extends JFrame {
 
 			getNextTurnButton().setVisible(true);
 
-			BattleManager.pauseBattle();
+			manager.getBattleManager().pauseBattle();
 
 		} else if (getPauseResumeButton().getText().equals("Resume")) {
 			getPauseResumeButton().setText("Pause/Debug");
@@ -460,20 +464,20 @@ public class RobocodeFrame extends JFrame {
 
 			getNextTurnButton().setVisible(false);
 
-			BattleManager.resumeBattle();
+			manager.getBattleManager().resumeBattle();
 		}
 	}
 
 	private void nextTurnButtonActionPerformed() {
-		BattleManager.nextTurn(); 
+		windowManager.getManager().getBattleManager().nextTurn(); 
 	}
 
 	private void stopButtonActionPerformed() {
-		BattleManager.stop(true);
+		windowManager.getManager().getBattleManager().stop(true);
 	}
 
 	private void restartButtonActionPerformed() {
-		BattleManager.restart(); 
+		windowManager.getManager().getBattleManager().restart(); 
 	}
 
 	/**

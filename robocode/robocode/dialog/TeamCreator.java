@@ -11,7 +11,6 @@
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons
  *     Flemming N. Larsen
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -29,7 +28,7 @@ import robocode.repository.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen, Matthew Reeder (current)
+ * @author Matthew Reeder, Flemming N. Larsen (current)
  */
 @SuppressWarnings("serial")
 public class TeamCreator extends JDialog implements WizardListener {
@@ -44,10 +43,13 @@ public class TeamCreator extends JDialog implements WizardListener {
 
 	private int minRobots = 2;
 	private int maxRobots = 10;
-
+	
+	private RobotRepositoryManager robotRepositoryManager;
+	private RobocodeManager manager;
+	
 	private EventHandler eventHandler = new EventHandler();
 
-	private class EventHandler implements ActionListener {
+	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
 				getRobotSelectionPanel().refreshRobotList();
@@ -55,8 +57,10 @@ public class TeamCreator extends JDialog implements WizardListener {
 		}
 	}
 	
-	public TeamCreator() {
-		super(WindowManager.getRobocodeFrame());
+	public TeamCreator(RobotRepositoryManager robotRepositoryManager) {
+		super(robotRepositoryManager.getManager().getWindowManager().getRobocodeFrame());
+		this.robotRepositoryManager = robotRepositoryManager;
+		this.manager = robotRepositoryManager.getManager();
 		initialize();
 	}
 
@@ -89,7 +93,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 	 */
 	protected RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(robotRepositoryManager, minRobots, maxRobots, false,
 					"Select the robots for this team.", false, true, true, false, false, false, null);
 		}
 		return robotSelectionPanel;
@@ -144,7 +148,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 	}
 
 	public int createTeam() throws IOException {
-		File f = new File(RobotRepositoryManager.getRobotsDirectory(),
+		File f = new File(robotRepositoryManager.getRobotsDirectory(),
 				teamCreatorOptionsPanel.getTeamPackage().replace('.', File.separatorChar)
 				+ teamCreatorOptionsPanel.getTeamNameField().getText() + ".team");
 
@@ -185,14 +189,14 @@ public class TeamCreator extends JDialog implements WizardListener {
 		teamSpec.setTeamDescription(teamCreatorOptionsPanel.getDescriptionArea().getText());
 		teamSpec.setTeamAuthorName(teamCreatorOptionsPanel.getAuthorField().getText());
 		teamSpec.setMembers(robotSelectionPanel.getSelectedRobotsAsString());
-		teamSpec.setRobocodeVersion(VersionManager.getVersion());
+		teamSpec.setRobocodeVersion(manager.getVersionManager().getVersion());
 
 		FileOutputStream out = new FileOutputStream(f);
 
 		teamSpec.store(out, "Robocode robot team");
 		out.close();
 
-		RobotRepositoryManager.clearRobotList();
+		robotRepositoryManager.clearRobotList();
 
 		return 0;
 	}

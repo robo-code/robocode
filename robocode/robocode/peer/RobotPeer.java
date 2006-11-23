@@ -21,7 +21,6 @@
  *     - Added bulletColor, scanColor, setBulletColor(), and setScanColor() and
  *       removed getColorIndex()
  *     - Optimizations
- *     - Access to managers is now static
  *     - Ported to Java 5
  *     - Bugfix: HitRobotEvent.isMyFault() returned false despite the fact that
  *       the robot was moving toward the robot it collides with. This was the
@@ -1205,11 +1204,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	/**
 	 * RobotPeer constructor
 	 */
-	public RobotPeer(RobotClassManager robotClassManager) {
+	public RobotPeer(RobotClassManager robotClassManager, RobotRepositoryManager robotManager, long fileSystemQuota) {
 		super();
 		this.robotClassManager = robotClassManager;
 		robotThreadManager = new RobotThreadManager(this);
-		robotFileSystemManager = new RobotFileSystemManager(this);
+		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
 		eventManager = new EventManager(this);
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();

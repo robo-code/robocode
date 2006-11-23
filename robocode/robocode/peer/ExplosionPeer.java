@@ -11,14 +11,12 @@
  *     Luis Crespo
  *     - Added states
  *     Flemming N. Larsen
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.peer;
 
 
 import robocode.battle.*;
-import robocode.manager.ImageManager;
 
 
 /**
@@ -44,7 +42,7 @@ public class ExplosionPeer extends BulletPeer {
 		setX(getOwner().getX());
 		setY(getOwner().getY());
 		nextFrame();
-		if (frame >= ImageManager.getExplosionFrames(WHICH_EXPLOSION)) {
+		if (frame >= getBattle().getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
 			battle.removeBullet(this);
 		}
 		updateBulletState();

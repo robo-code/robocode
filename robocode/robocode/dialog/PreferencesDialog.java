@@ -12,7 +12,6 @@
  *     - Added Rendering Options tab
  *     - Added Sound Options tab
  *     - Added Common Options tab
- *     - Access to managers is now static
  *     - Code cleanup
  *     Matthew Reeder
  *     - Added keyboard mnemonics to View Options and Development Options tabs
@@ -44,10 +43,12 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
 	private PreferencesCommonOptionsTab commonOptionsTab;
 
+	private RobocodeManager manager;
+
 	private WindowAdapter eventHandler = new WindowAdapter() {
 		public void windowClosing(WindowEvent e) {
 			if (e.getSource() == PreferencesDialog.this) {
-				BattleManager.resumeBattle();
+				manager.getBattleManager().resumeBattle();
 			}
 		}
 	};
@@ -55,8 +56,9 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	/**
 	 * PreferencesDialog constructor
 	 */
-	public PreferencesDialog() {
-		super(WindowManager.getRobocodeFrame());
+	public PreferencesDialog(RobocodeManager manager) {
+		super(manager.getWindowManager().getRobocodeFrame());
+		this.manager = manager;
 		initialize();
 	}
 
@@ -136,35 +138,35 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	private JPanel getViewOptionsTab() {
 		if (viewOptionsTab == null) {
-			viewOptionsTab = new PreferencesViewOptionsTab();
+			viewOptionsTab = new PreferencesViewOptionsTab(manager);
 		}
 		return viewOptionsTab;
 	}
 
 	private JPanel getRenderingOptionsTab() {
 		if (renderingOptionsTab == null) {
-			renderingOptionsTab = new PreferencesRenderingOptionsTab();
+			renderingOptionsTab = new PreferencesRenderingOptionsTab(manager);
 		}
 		return renderingOptionsTab;
 	}
 
 	private JPanel getSoundOptionsTab() {
 		if (soundOptionsTab == null) {
-			soundOptionsTab = new PreferencesSoundOptionsTab();
+			soundOptionsTab = new PreferencesSoundOptionsTab(manager);
 		}
 		return soundOptionsTab;
 	}
 
 	private JPanel getDevelopmentOptionsTab() {
 		if (developmentOptionsTab == null) {
-			developmentOptionsTab = new PreferencesDevelopmentOptionsTab();
+			developmentOptionsTab = new PreferencesDevelopmentOptionsTab(manager);
 		}
 		return developmentOptionsTab;
 	}
 
 	private JPanel getCommonOptionsTab() {
 		if (commonOptionsTab == null) {
-			commonOptionsTab = new PreferencesCommonOptionsTab();
+			commonOptionsTab = new PreferencesCommonOptionsTab(manager);
 		}
 		return commonOptionsTab;
 	}

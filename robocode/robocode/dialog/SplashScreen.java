@@ -10,7 +10,6 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Changed to render the Robocode logo instead of using a bitmap image
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -41,6 +40,7 @@ public class SplashScreen extends JWindow {
 	private JPanel splashScreenContentPane;
 	private Image splashImage;
 	private boolean painted;
+	private String version;
 
 	private WindowListener eventHandler = new WindowAdapter() {
 
@@ -54,8 +54,9 @@ public class SplashScreen extends JWindow {
 	/**
 	 * SplashScreen constructor
 	 */
-	public SplashScreen() {
+	public SplashScreen(RobocodeManager manager) {
 		super();
+		this.version = manager.getVersionManager().getVersion();
 		initialize();
 	}
 
@@ -89,8 +90,6 @@ public class SplashScreen extends JWindow {
 					g.setFont(new Font("Arial", 1, 12));
 					FontMetrics fm = g.getFontMetrics();
 
-					String version = VersionManager.getVersion();
-					
 					g.drawString("Version: " + version,
 							splashImage.getWidth(null) - fm.stringWidth("Version: " + version),
 							splashImage.getHeight(null) - 4);

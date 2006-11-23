@@ -15,7 +15,6 @@
  *     - Changed some keyboard mnemonics
  *     - Changed from using FPS into using TPS (Turns per Second), but added a
  *       "Display FPS in titlebar" option
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -63,6 +62,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton fastTpsButton;
 	private JButton maxTpsButton;
 
+	private RobocodeManager manager;
+	
 	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == PreferencesViewOptionsTab.this.getDefaultsButton()) {
@@ -98,8 +99,9 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	/**
 	 * PreferencesDialog constructor
 	 */
-	public PreferencesViewOptionsTab() {
+	public PreferencesViewOptionsTab(RobocodeManager manager) {
 		super();
+		this.manager = manager;
 		initialize();
 	}
 
@@ -446,33 +448,34 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		setLayout(new GridLayout(1, 2));
 		add(getVisibleOptionsPanel());
 		add(getTpsOptionsPanel());
-		loadPreferences();
+		loadPreferences(manager.getProperties());
 	}
 
-	private void loadPreferences() {
-		getDisplayFpsCheckBox().setSelected(RobocodeProperties.getOptionsViewFPS());
-		getDisplayTpsCheckBox().setSelected(RobocodeProperties.getOptionsViewTPS());
-		getVisibleRobotNameCheckBox().setSelected(RobocodeProperties.getOptionsViewRobotNames());
-		getVisibleRobotEnergyCheckBox().setSelected(RobocodeProperties.getOptionsViewRobotEnergy());
-		getVisibleScanArcsCheckBox().setSelected(RobocodeProperties.getOptionsViewScanArcs());
-		getVisibleExplosionsCheckBox().setSelected(RobocodeProperties.getOptionsViewExplosions());
-		getVisibleGroundCheckBox().setSelected(RobocodeProperties.getOptionsViewGround());
-		getDesiredTpsTextField().setText("" + RobocodeProperties.getOptionsBattleDesiredTPS());
-		getOptionsBattleAllowColorChangesCheckBox().setSelected(RobocodeProperties.getOptionsBattleAllowColorChanges());
+	private void loadPreferences(RobocodeProperties robocodeProperties) {
+		getDisplayFpsCheckBox().setSelected(robocodeProperties.getOptionsViewFPS());
+		getDisplayTpsCheckBox().setSelected(robocodeProperties.getOptionsViewTPS());
+		getVisibleRobotNameCheckBox().setSelected(robocodeProperties.getOptionsViewRobotNames());
+		getVisibleRobotEnergyCheckBox().setSelected(robocodeProperties.getOptionsViewRobotEnergy());
+		getVisibleScanArcsCheckBox().setSelected(robocodeProperties.getOptionsViewScanArcs());
+		getVisibleExplosionsCheckBox().setSelected(robocodeProperties.getOptionsViewExplosions());
+		getVisibleGroundCheckBox().setSelected(robocodeProperties.getOptionsViewGround());
+		getDesiredTpsTextField().setText("" + robocodeProperties.getOptionsBattleDesiredTPS());
+		getOptionsBattleAllowColorChangesCheckBox().setSelected(robocodeProperties.getOptionsBattleAllowColorChanges());
 	}
 
 	public void storePreferences() {
-		RobocodeProperties.setOptionsViewFPS(getDisplayFpsCheckBox().isSelected());
-		RobocodeProperties.setOptionsViewTPS(getDisplayTpsCheckBox().isSelected());
-		RobocodeProperties.setOptionsViewRobotNames(getVisibleRobotNameCheckBox().isSelected());
-		RobocodeProperties.setOptionsViewRobotEnergy(getVisibleRobotEnergyCheckBox().isSelected());
-		RobocodeProperties.setOptionsViewScanArcs(getVisibleScanArcsCheckBox().isSelected());
-		RobocodeProperties.setOptionsViewExplosions(getVisibleExplosionsCheckBox().isSelected());
-		RobocodeProperties.setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
-		RobocodeProperties.setOptionsBattleDesiredTPS(Integer.parseInt(getDesiredTpsTextField().getText()));
-		RobocodeProperties.setOptionsBattleAllowColorChanges(getOptionsBattleAllowColorChangesCheckBox().isSelected());
-		
-		RobocodeProperties.save();
+		RobocodeProperties props = manager.getProperties();
+
+		props.setOptionsViewFPS(getDisplayFpsCheckBox().isSelected());
+		props.setOptionsViewTPS(getDisplayTpsCheckBox().isSelected());
+		props.setOptionsViewRobotNames(getVisibleRobotNameCheckBox().isSelected());
+		props.setOptionsViewRobotEnergy(getVisibleRobotEnergyCheckBox().isSelected());
+		props.setOptionsViewScanArcs(getVisibleScanArcsCheckBox().isSelected());
+		props.setOptionsViewExplosions(getVisibleExplosionsCheckBox().isSelected());
+		props.setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
+		props.setOptionsBattleDesiredTPS(Integer.parseInt(getDesiredTpsTextField().getText()));
+		props.setOptionsBattleAllowColorChanges(getOptionsBattleAllowColorChangesCheckBox().isSelected());
+		manager.saveProperties();
 	}
 
 	public boolean isReady() {

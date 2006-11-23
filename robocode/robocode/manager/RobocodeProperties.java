@@ -16,7 +16,6 @@
  *     - Added sound options
  *     - Added common options for showing battle result and append when saving
  *       results
- *     - Changed to have static access for all methods
  *******************************************************************************/
 package robocode.manager;
 
@@ -26,7 +25,6 @@ import java.util.*;
 import java.text.*;
 import java.awt.RenderingHints;
 
-import robocode.util.Constants;
 import robocode.util.Utils;
 
 
@@ -35,57 +33,57 @@ import robocode.util.Utils;
  * @author Flemming N. Larsen (current)
  */
 public class RobocodeProperties {
-
-	private static Properties instance = new Properties();
+	
+	private Properties props = new Properties();
 	
 	// View Options (Arena)
-	private static boolean optionsViewRobotEnergy = true;
-	private static boolean optionsViewRobotNames = true;
-	private static boolean optionsViewScanArcs = false;
-	private static boolean optionsViewExplosions = true;
-	private static boolean optionsViewGround = true;
-	private static boolean optionsBattleAllowColorChanges = false;
+	private boolean optionsViewRobotEnergy = true;
+	private boolean optionsViewRobotNames = true;
+	private boolean optionsViewScanArcs = false;
+	private boolean optionsViewExplosions = true;
+	private boolean optionsViewGround = true;
+	private boolean optionsBattleAllowColorChanges = false;
 
 	// View Options (Turns Per Second)
-	private static boolean optionsViewTPS = true;
-	private static boolean optionsViewFPS = true;
+	private boolean optionsViewTPS = true;
+	private boolean optionsViewFPS = true;
 
 	// Rendering Options
-	private static int optionsRenderingAntialiasing = 0; // 0 = default, 1 = on, 2 = off 
-	private static int optionsRenderingTextAntialiasing = 0; // 0 = default, 1 = on, 2 = off
-	private static int optionsRenderingMethod = 0; // 0 = default, 1 = speed, 2 = quality
-	private static int optionsRenderingNoBuffers = 2; // 1 = single buffering, 2 = double buffering, 3 = tripple buffering 
-	private static int optionsBattleDesiredTPS = 30;
+	private int optionsRenderingAntialiasing = 0; // 0 = default, 1 = on, 2 = off 
+	private int optionsRenderingTextAntialiasing = 0; // 0 = default, 1 = on, 2 = off
+	private int optionsRenderingMethod = 0; // 0 = default, 1 = speed, 2 = quality
+	private int optionsRenderingNoBuffers = 2; // 1 = single buffering, 2 = double buffering, 3 = tripple buffering 
+	private int optionsBattleDesiredTPS = 30;
 
 	// Sound Options (Sound Effects)
-	private static boolean optionsSoundEnableSound = false;
-	private static boolean optionsSoundEnableGunShot = true;
-	private static boolean optionsSoundEnableBulletHit = true;
-	private static boolean optionsSoundEnableRobotDeath = true;
-	private static boolean optionsSoundEnableWallCollision = true;
-	private static boolean optionsSoundEnableRobotCollision = true;
+	private boolean optionsSoundEnableSound = false;
+	private boolean optionsSoundEnableGunShot = true;
+	private boolean optionsSoundEnableBulletHit = true;
+	private boolean optionsSoundEnableRobotDeath = true;
+	private boolean optionsSoundEnableWallCollision = true;
+	private boolean optionsSoundEnableRobotCollision = true;
 
 	// Sound Options (Mixer)
-	private static String optionsSoundMixer = "DirectAudioDevice";
-	private static boolean optionsSoundEnableMixerVolume = true;
-	private static boolean optionsSoundEnableMixerPan = true;
+	private String optionsSoundMixer = "DirectAudioDevice";
+	private boolean optionsSoundEnableMixerVolume = true;
+	private boolean optionsSoundEnableMixerPan = true;
 	
 	// Development Options
-	private static String optionsDevelopmentPath = "";
+	private String optionsDevelopmentPath = "";
 
 	// Common Options
-	private static boolean optionsCommonShowResults = true;
-	private static boolean optionsCommonAppendWhenSavingResults = true; 
+	private boolean optionsCommonShowResults = true;
+	private boolean optionsCommonAppendWhenSavingResults = true; 
 
-	private static boolean optionsTeamShowTeamRobots = false;
+	private boolean optionsTeamShowTeamRobots = false;
 	
-	private static String lastRunVersion = "";
-	private static Date versionChecked;
-	private static long robotFilesystemQuota = 200000;
-	private static long consoleQuota = 8192;
-	private static int cpuConstant = 200;
+	private String lastRunVersion = "";
+	private Date versionChecked;
+	private long robotFilesystemQuota = 200000;
+	private long consoleQuota = 8192;
+	private int cpuConstant = 200;
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
 	
 	private final static String
 	
@@ -126,24 +124,20 @@ public class RobocodeProperties {
 			CPU_CONSTANT = "robocode.cpu.constant.1000",
 			LAST_RUN_VERSION = "robocode.version.lastrun";
 
-	private static RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
+	private RobocodeManager manager;
 
-	static {
-		try {
-			load();
-		} catch (FileNotFoundException e) {
-			Utils.log("No robocode.properties file, using defaults");
-		} catch (IOException e) {
-			Utils.log("IO Exception reading robocode.properties: " + e);
-		}
+	private RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
+
+	public RobocodeProperties(RobocodeManager manager) {
+		this.manager = manager;
 	}
-
+	
 	/**
 	 * Gets the optionsViewRobotNames.
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsViewRobotNames() {
+	public boolean getOptionsViewRobotNames() {
 		return optionsViewRobotNames;
 	}
 
@@ -152,9 +146,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsViewRobotNames The optionsViewRobotNames to set
 	 */
-	public static void setOptionsViewRobotNames(boolean optionsViewRobotNames) {
-		RobocodeProperties.optionsViewRobotNames = optionsViewRobotNames;
-		instance.setProperty(OPTIONS_VIEW_ROBOTNAMES, "" + optionsViewRobotNames);
+	public void setOptionsViewRobotNames(boolean optionsViewRobotNames) {
+		this.optionsViewRobotNames = optionsViewRobotNames;
+		props.setProperty(OPTIONS_VIEW_ROBOTNAMES, "" + optionsViewRobotNames);
 	}
 
 	/**
@@ -162,7 +156,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsViewScanArcs() {
+	public boolean getOptionsViewScanArcs() {
 		return optionsViewScanArcs;
 	}
 
@@ -171,9 +165,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsViewScanArcs The optionsViewScanArcs to set
 	 */
-	public static void setOptionsViewScanArcs(boolean optionsViewScanArcs) {
-		RobocodeProperties.optionsViewScanArcs = optionsViewScanArcs;
-		instance.setProperty(OPTIONS_VIEW_SCANARCS, "" + optionsViewScanArcs);
+	public void setOptionsViewScanArcs(boolean optionsViewScanArcs) {
+		this.optionsViewScanArcs = optionsViewScanArcs;
+		props.setProperty(OPTIONS_VIEW_SCANARCS, "" + optionsViewScanArcs);
 	}
 
 	/**
@@ -181,7 +175,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsViewRobotEnergy() {
+	public boolean getOptionsViewRobotEnergy() {
 		return optionsViewRobotEnergy;
 	}
 
@@ -190,9 +184,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsViewRobotEnergy The optionsViewRobotEnergy to set
 	 */
-	public static void setOptionsViewRobotEnergy(boolean optionsViewRobotEnergy) {
-		RobocodeProperties.optionsViewRobotEnergy = optionsViewRobotEnergy;
-		instance.setProperty(OPTIONS_VIEW_ROBOTENERGY, "" + optionsViewRobotEnergy);
+	public void setOptionsViewRobotEnergy(boolean optionsViewRobotEnergy) {
+		this.optionsViewRobotEnergy = optionsViewRobotEnergy;
+		props.setProperty(OPTIONS_VIEW_ROBOTENERGY, "" + optionsViewRobotEnergy);
 	}
 
 	/**
@@ -200,7 +194,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsViewGround() {
+	public boolean getOptionsViewGround() {
 		return optionsViewGround;
 	}
 
@@ -209,9 +203,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsViewGround The optionsViewGround to set
 	 */
-	public static void setOptionsViewGround(boolean optionsViewGround) {
-		RobocodeProperties.optionsViewGround = optionsViewGround;
-		instance.setProperty(OPTIONS_VIEW_GROUND, "" + optionsViewGround);
+	public void setOptionsViewGround(boolean optionsViewGround) {
+		this.optionsViewGround = optionsViewGround;
+		props.setProperty(OPTIONS_VIEW_GROUND, "" + optionsViewGround);
 	}
 
 	/**
@@ -219,7 +213,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsViewTPS() {
+	public boolean getOptionsViewTPS() {
 		return optionsViewTPS;
 	}
 
@@ -228,9 +222,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsViewTPS The optionsViewTPS to set
 	 */
-	public static void setOptionsViewTPS(boolean optionsViewTPS) {
-		RobocodeProperties.optionsViewTPS = optionsViewTPS;
-		instance.setProperty(OPTIONS_VIEW_TPS, "" + optionsViewTPS);
+	public void setOptionsViewTPS(boolean optionsViewTPS) {
+		this.optionsViewTPS = optionsViewTPS;
+		props.setProperty(OPTIONS_VIEW_TPS, "" + optionsViewTPS);
 	}
 
 	/**
@@ -238,7 +232,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsViewFPS() {
+	public boolean getOptionsViewFPS() {
 		return optionsViewFPS;
 	}
 
@@ -247,9 +241,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsViewFPS The optionsViewFPS to set
 	 */
-	public static void setOptionsViewFPS(boolean optionsViewFPS) {
-		RobocodeProperties.optionsViewFPS = optionsViewFPS;
-		instance.setProperty(OPTIONS_VIEW_FPS, "" + optionsViewFPS);
+	public void setOptionsViewFPS(boolean optionsViewFPS) {
+		this.optionsViewFPS = optionsViewFPS;
+		props.setProperty(OPTIONS_VIEW_FPS, "" + optionsViewFPS);
 	}
 
 	/**
@@ -257,7 +251,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsViewExplosions() {
+	public boolean getOptionsViewExplosions() {
 		return optionsViewExplosions;
 	}
 
@@ -266,9 +260,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsViewExplosions The optionsViewExplosions to set
 	 */
-	public static void setOptionsViewExplosions(boolean optionsViewExplosions) {
-		RobocodeProperties.optionsViewExplosions = optionsViewExplosions;
-		instance.setProperty(OPTIONS_VIEW_EXPLOSIONS, "" + optionsViewExplosions);
+	public void setOptionsViewExplosions(boolean optionsViewExplosions) {
+		this.optionsViewExplosions = optionsViewExplosions;
+		props.setProperty(OPTIONS_VIEW_EXPLOSIONS, "" + optionsViewExplosions);
 	}
 
 	/**
@@ -276,7 +270,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns an int
 	 */
-	public static int getOptionsRenderingAntialiasing() {
+	public int getOptionsRenderingAntialiasing() {
 		return optionsRenderingAntialiasing;
 	}
 
@@ -285,9 +279,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsRenderingAntialiasing The optionsRenderingAntialiasing to set
 	 */
-	public static void setOptionsRenderingAntialiasing(int optionsRenderingAntialiasing) {
-		RobocodeProperties.optionsRenderingAntialiasing = optionsRenderingAntialiasing;
-		instance.setProperty(OPTIONS_RENDERING_ANTIALIASING, "" + optionsRenderingAntialiasing);
+	public void setOptionsRenderingAntialiasing(int optionsRenderingAntialiasing) {
+		this.optionsRenderingAntialiasing = optionsRenderingAntialiasing;
+		props.setProperty(OPTIONS_RENDERING_ANTIALIASING, "" + optionsRenderingAntialiasing);
 
 		Object value;
 
@@ -312,7 +306,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns an int
 	 */
-	public static int getOptionsRenderingTextAntialiasing() {
+	public int getOptionsRenderingTextAntialiasing() {
 		return optionsRenderingTextAntialiasing;
 	}
 
@@ -321,9 +315,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsRenderingTextAntialiasing The optionsRenderingTextAntialiasing to set
 	 */
-	public static void setOptionsRenderingTextAntialiasing(int optionsRenderingTextAntialiasing) {
-		RobocodeProperties.optionsRenderingTextAntialiasing = optionsRenderingTextAntialiasing;
-		instance.setProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "" + optionsRenderingTextAntialiasing);
+	public void setOptionsRenderingTextAntialiasing(int optionsRenderingTextAntialiasing) {
+		this.optionsRenderingTextAntialiasing = optionsRenderingTextAntialiasing;
+		props.setProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "" + optionsRenderingTextAntialiasing);
 
 		Object value;
 
@@ -348,7 +342,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns an int
 	 */
-	public static int getOptionsRenderingMethod() {
+	public int getOptionsRenderingMethod() {
 		return optionsRenderingMethod;
 	}
 
@@ -357,9 +351,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsRenderingMethod The optionsRenderingMethod to set
 	 */
-	public static void setOptionsRenderingMethod(int optionsRenderingMethod) {
-		RobocodeProperties.optionsRenderingMethod = optionsRenderingMethod;
-		instance.setProperty(OPTIONS_RENDERING_METHOD, "" + optionsRenderingMethod);
+	public void setOptionsRenderingMethod(int optionsRenderingMethod) {
+		this.optionsRenderingMethod = optionsRenderingMethod;
+		props.setProperty(OPTIONS_RENDERING_METHOD, "" + optionsRenderingMethod);
 
 		Object value;
 
@@ -384,7 +378,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns an RenderingHints value
 	 */
-	public static RenderingHints getRenderingHints() {
+	public RenderingHints getRenderingHints() {
 		return renderingHints;
 	}
 
@@ -393,7 +387,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns an int
 	 */
-	public static int getOptionsRenderingNoBuffers() {
+	public int getOptionsRenderingNoBuffers() {
 		return optionsRenderingNoBuffers;
 	}
 
@@ -402,9 +396,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsRenderingNoBuffers The optionsRenderingNoBuffers to set
 	 */
-	public static void setOptionsRenderingNoBuffers(int optionsRenderingNoBuffers) {
-		RobocodeProperties.optionsRenderingNoBuffers = optionsRenderingNoBuffers;
-		instance.setProperty(OPTIONS_RENDERING_NO_BUFFERS, "" + optionsRenderingNoBuffers);
+	public void setOptionsRenderingNoBuffers(int optionsRenderingNoBuffers) {
+		this.optionsRenderingNoBuffers = optionsRenderingNoBuffers;
+		props.setProperty(OPTIONS_RENDERING_NO_BUFFERS, "" + optionsRenderingNoBuffers);
 	}
 
 	/**
@@ -412,7 +406,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a int
 	 */
-	public static int getOptionsBattleDesiredTPS() {
+	public int getOptionsBattleDesiredTPS() {
 		return optionsBattleDesiredTPS;
 	}
 
@@ -421,18 +415,18 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsBattleDesiredTPS The optionsBattleDesiredTPS to set
 	 */
-	public static void setOptionsBattleDesiredTPS(int optionsBattleDesiredTPS) {
-		RobocodeProperties.optionsBattleDesiredTPS = optionsBattleDesiredTPS;
-		instance.setProperty(OPTIONS_BATTLE_DESIREDTPS, "" + optionsBattleDesiredTPS);
+	public void setOptionsBattleDesiredTPS(int optionsBattleDesiredTPS) {
+		this.optionsBattleDesiredTPS = optionsBattleDesiredTPS;
+		props.setProperty(OPTIONS_BATTLE_DESIREDTPS, "" + optionsBattleDesiredTPS);
 	}
 
-	public static boolean getOptionsBattleAllowColorChanges() {
+	public boolean getOptionsBattleAllowColorChanges() {
 		return optionsBattleAllowColorChanges;
 	}
 	
-	public static void setOptionsBattleAllowColorChanges(boolean optionsBattleAllowColorChanges) {
-		RobocodeProperties.optionsBattleAllowColorChanges = optionsBattleAllowColorChanges;
-		instance.setProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "" + optionsBattleAllowColorChanges);
+	public void setOptionsBattleAllowColorChanges(boolean optionsBattleAllowColorChanges) {
+		this.optionsBattleAllowColorChanges = optionsBattleAllowColorChanges;
+		props.setProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "" + optionsBattleAllowColorChanges);
 	}
 	
 	/**
@@ -440,7 +434,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsSoundEnableSound() {
+	public boolean getOptionsSoundEnableSound() {
 		return optionsSoundEnableSound;
 	}
 
@@ -449,9 +443,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundEnableSound The optionsSoundEnableSound to set
 	 */
-	public static void setOptionsSoundEnableSound(boolean optionsSoundEnableSound) {
-		RobocodeProperties.optionsSoundEnableSound = optionsSoundEnableSound;
-		instance.setProperty(OPTIONS_SOUND_ENABLESOUND, "" + optionsSoundEnableSound);
+	public void setOptionsSoundEnableSound(boolean optionsSoundEnableSound) {
+		this.optionsSoundEnableSound = optionsSoundEnableSound;
+		props.setProperty(OPTIONS_SOUND_ENABLESOUND, "" + optionsSoundEnableSound);
 	}
 
 	/**
@@ -459,7 +453,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsSoundEnableGunShot() {
+	public boolean getOptionsSoundEnableGunShot() {
 		return optionsSoundEnableGunShot;
 	}
 
@@ -468,9 +462,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundEnableGunShot The optionsSoundEnableGunShot to set
 	 */
-	public static void setOptionsSoundEnableGunShot(boolean optionsSoundEnableGunShot) {
-		RobocodeProperties.optionsSoundEnableGunShot = optionsSoundEnableGunShot;
-		instance.setProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "" + optionsSoundEnableGunShot);
+	public void setOptionsSoundEnableGunShot(boolean optionsSoundEnableGunShot) {
+		this.optionsSoundEnableGunShot = optionsSoundEnableGunShot;
+		props.setProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "" + optionsSoundEnableGunShot);
 	}
 
 	/**
@@ -478,7 +472,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsSoundEnableBulletHit() {
+	public boolean getOptionsSoundEnableBulletHit() {
 		return optionsSoundEnableBulletHit;
 	}
 
@@ -487,9 +481,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundEnableBulletHit The optionsSoundEnableBulletHit to set
 	 */
-	public static void setOptionsSoundEnableBulletHit(boolean optionsSoundEnableBulletHit) {
-		RobocodeProperties.optionsSoundEnableBulletHit = optionsSoundEnableBulletHit;
-		instance.setProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "" + optionsSoundEnableBulletHit);
+	public void setOptionsSoundEnableBulletHit(boolean optionsSoundEnableBulletHit) {
+		this.optionsSoundEnableBulletHit = optionsSoundEnableBulletHit;
+		props.setProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "" + optionsSoundEnableBulletHit);
 	}
 
 	/**
@@ -497,7 +491,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsSoundEnableRobotDeath() {
+	public boolean getOptionsSoundEnableRobotDeath() {
 		return optionsSoundEnableRobotDeath;
 	}
 
@@ -506,9 +500,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundEnableRobotDeath The optionsSoundEnableRobotDeath to set
 	 */
-	public static void setOptionsSoundEnableRobotDeath(boolean optionsSoundEnableRobotDeath) {
-		RobocodeProperties.optionsSoundEnableRobotDeath = optionsSoundEnableRobotDeath;
-		instance.setProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "" + optionsSoundEnableRobotDeath);
+	public void setOptionsSoundEnableRobotDeath(boolean optionsSoundEnableRobotDeath) {
+		this.optionsSoundEnableRobotDeath = optionsSoundEnableRobotDeath;
+		props.setProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "" + optionsSoundEnableRobotDeath);
 	}
 
 	/**
@@ -516,7 +510,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsSoundEnableWallCollision() {
+	public boolean getOptionsSoundEnableWallCollision() {
 		return optionsSoundEnableWallCollision;
 	}
 
@@ -525,9 +519,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundEnableWallCollision The optionsSoundEnableWallCollision to set
 	 */
-	public static void setOptionsSoundEnableWallCollision(boolean optionsSoundEnableWallCollision) {
-		RobocodeProperties.optionsSoundEnableWallCollision = optionsSoundEnableWallCollision;
-		instance.setProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "" + optionsSoundEnableWallCollision);
+	public void setOptionsSoundEnableWallCollision(boolean optionsSoundEnableWallCollision) {
+		this.optionsSoundEnableWallCollision = optionsSoundEnableWallCollision;
+		props.setProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "" + optionsSoundEnableWallCollision);
 	}
 
 	/**
@@ -535,7 +529,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsSoundEnableRobotCollision() {
+	public boolean getOptionsSoundEnableRobotCollision() {
 		return optionsSoundEnableRobotCollision;
 	}
 
@@ -544,9 +538,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundEnableRobotCollision The optionsSoundEnableRobotCollision to set
 	 */
-	public static void setOptionsSoundEnableRobotCollision(boolean optionsSoundEnableRobotCollision) {
-		RobocodeProperties.optionsSoundEnableRobotCollision = optionsSoundEnableRobotCollision;
-		instance.setProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "" + optionsSoundEnableRobotCollision);
+	public void setOptionsSoundEnableRobotCollision(boolean optionsSoundEnableRobotCollision) {
+		this.optionsSoundEnableRobotCollision = optionsSoundEnableRobotCollision;
+		props.setProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "" + optionsSoundEnableRobotCollision);
 	}
 
 	/**
@@ -554,7 +548,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsSoundEnableMixerVolume() {
+	public boolean getOptionsSoundEnableMixerVolume() {
 		return optionsSoundEnableMixerVolume;
 	}
 
@@ -563,9 +557,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundMixer The optionsSoundMixer to set
 	 */
-	public static void setOptionsSoundMixer(String optionsSoundMixer) {
-		RobocodeProperties.optionsSoundMixer = optionsSoundMixer;
-		instance.setProperty(OPTIONS_SOUND_MIXER, optionsSoundMixer);
+	public void setOptionsSoundMixer(String optionsSoundMixer) {
+		this.optionsSoundMixer = optionsSoundMixer;
+		props.setProperty(OPTIONS_SOUND_MIXER, optionsSoundMixer);
 	}
 
 	/**
@@ -573,7 +567,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a String
 	 */
-	public static String getOptionsSoundMixer() {
+	public String getOptionsSoundMixer() {
 		return optionsSoundMixer;
 	}
 
@@ -582,9 +576,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundEnableMixerVolume The optionsSoundEnableMixerVolume to set
 	 */
-	public static void setOptionsSoundEnableMixerVolume(boolean optionsSoundEnableMixerVolume) {
-		RobocodeProperties.optionsSoundEnableMixerVolume = optionsSoundEnableMixerVolume;
-		instance.setProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "" + optionsSoundEnableMixerVolume);
+	public void setOptionsSoundEnableMixerVolume(boolean optionsSoundEnableMixerVolume) {
+		this.optionsSoundEnableMixerVolume = optionsSoundEnableMixerVolume;
+		props.setProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "" + optionsSoundEnableMixerVolume);
 	}
 
 	/**
@@ -592,7 +586,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsSoundEnableMixerPan() {
+	public boolean getOptionsSoundEnableMixerPan() {
 		return optionsSoundEnableMixerPan;
 	}
 
@@ -601,18 +595,18 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsSoundEnableMixerPan The optionsSoundEnableMixerPan to set
 	 */
-	public static void setOptionsSoundEnableMixerPan(boolean optionsSoundEnableMixerPan) {
-		RobocodeProperties.optionsSoundEnableMixerPan = optionsSoundEnableMixerPan;
-		instance.setProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "" + optionsSoundEnableMixerPan);
+	public void setOptionsSoundEnableMixerPan(boolean optionsSoundEnableMixerPan) {
+		this.optionsSoundEnableMixerPan = optionsSoundEnableMixerPan;
+		props.setProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "" + optionsSoundEnableMixerPan);
 	}
 
-	public static boolean getOptionsTeamShowTeamRobots() {
+	public boolean getOptionsTeamShowTeamRobots() {
 		return optionsTeamShowTeamRobots;
 	}
 	
-	public static void setOptionsTeamShowTeamRobots(boolean optionsTeamShowTeamRobots) {
-		RobocodeProperties.optionsTeamShowTeamRobots = optionsTeamShowTeamRobots;
-		instance.setProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "" + optionsTeamShowTeamRobots);
+	public void setOptionsTeamShowTeamRobots(boolean optionsTeamShowTeamRobots) {
+		this.optionsTeamShowTeamRobots = optionsTeamShowTeamRobots;
+		props.setProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "" + optionsTeamShowTeamRobots);
 	}
 	
 	/**
@@ -620,7 +614,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a String
 	 */
-	public static Date getVersionChecked() {
+	public Date getVersionChecked() {
 		return versionChecked;
 	}
 
@@ -629,9 +623,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param versionChecked The versionChecked to set
 	 */
-	public static void setVersionChecked(Date versionChecked) {
-		RobocodeProperties.versionChecked = versionChecked;
-		instance.setProperty(VERSIONCHECKED, DATE_FORMAT.format(new Date()));
+	public void setVersionChecked(Date versionChecked) {
+		this.versionChecked = versionChecked;
+		props.setProperty(VERSIONCHECKED, dateFormat.format(new Date()));
 	}
 
 	/**
@@ -639,7 +633,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a long
 	 */
-	public static long getRobotFilesystemQuota() {
+	public long getRobotFilesystemQuota() {
 		return robotFilesystemQuota;
 	}
 
@@ -648,9 +642,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param robotFilesystemQuota The robotFilesystemQuota to set
 	 */
-	public static void setRobotFilesystemQuota(long robotFilesystemQuota) {
-		RobocodeProperties.robotFilesystemQuota = robotFilesystemQuota;
-		instance.setProperty(ROBOT_FILESYSTEM_QUOTA, "" + robotFilesystemQuota);
+	public void setRobotFilesystemQuota(long robotFilesystemQuota) {
+		this.robotFilesystemQuota = robotFilesystemQuota;
+		props.setProperty(ROBOT_FILESYSTEM_QUOTA, "" + robotFilesystemQuota);
 	}
 
 	/**
@@ -658,7 +652,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a long
 	 */
-	public static long getConsoleQuota() {
+	public long getConsoleQuota() {
 		return consoleQuota;
 	}
 
@@ -667,9 +661,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param consoleQuota The consoleQuota to set
 	 */
-	public static void setConsoleQuota(long consoleQuota) {
-		RobocodeProperties.consoleQuota = consoleQuota;
-		instance.setProperty(CONSOLE_QUOTA, "" + consoleQuota);
+	public void setConsoleQuota(long consoleQuota) {
+		this.consoleQuota = consoleQuota;
+		props.setProperty(CONSOLE_QUOTA, "" + consoleQuota);
 	}
 
 	/**
@@ -677,7 +671,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a int
 	 */
-	public static int getCpuConstant() {
+	public int getCpuConstant() {
 		return cpuConstant;
 	}
 
@@ -686,9 +680,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param cpuConstant The cpuConstant to set
 	 */
-	public static void setCpuConstant(int cpuConstant) {
-		RobocodeProperties.cpuConstant = cpuConstant;
-		instance.setProperty(CPU_CONSTANT, "" + cpuConstant);
+	public void setCpuConstant(int cpuConstant) {
+		this.cpuConstant = cpuConstant;
+		props.setProperty(CPU_CONSTANT, "" + cpuConstant);
 	}
 
 	/**
@@ -696,7 +690,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a String
 	 */
-	public static String getOptionsDevelopmentPath() {
+	public String getOptionsDevelopmentPath() {
 		return optionsDevelopmentPath;
 	}
 
@@ -705,9 +699,16 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsDevelopmentPath The optionsDevelopmentPath to set
 	 */
-	public static void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
-		RobocodeProperties.optionsDevelopmentPath = optionsDevelopmentPath;
-		instance.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);
+	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
+		try {
+			if (!optionsDevelopmentPath.equals(this.optionsDevelopmentPath)) {
+				manager.getRobotRepositoryManager().clearRobotList();
+			}
+		} catch (NullPointerException e) { // Just to be safe
+			manager.getRobotRepositoryManager().clearRobotList();
+		}
+		this.optionsDevelopmentPath = optionsDevelopmentPath;
+		props.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);
 	}
 
 	/**
@@ -715,7 +716,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsCommonShowResults() {
+	public boolean getOptionsCommonShowResults() {
 		return optionsCommonShowResults;
 	}
 
@@ -724,9 +725,9 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsCommonAppendWhenSavingResults The optionsCommonAppendWhenSavingResults to set
 	 */
-	public static void setOptionsCommonAppendWhenSavingResults(boolean optionsCommonAppendWhenSavingResults) {
-		RobocodeProperties.optionsCommonAppendWhenSavingResults = optionsCommonAppendWhenSavingResults;
-		instance.setProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "" + optionsCommonAppendWhenSavingResults);
+	public void setOptionsCommonAppendWhenSavingResults(boolean optionsCommonAppendWhenSavingResults) {
+		this.optionsCommonAppendWhenSavingResults = optionsCommonAppendWhenSavingResults;
+		props.setProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "" + optionsCommonAppendWhenSavingResults);
 	}
 
 	/**
@@ -734,7 +735,7 @@ public class RobocodeProperties {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public static boolean getOptionsCommonAppendWhenSavingResults() {
+	public boolean getOptionsCommonAppendWhenSavingResults() {
 		return optionsCommonAppendWhenSavingResults;
 	}
 
@@ -743,77 +744,69 @@ public class RobocodeProperties {
 	 * 
 	 * @param optionsCommonShowResults The optionsCommonShowResults to set
 	 */
-	public static void setOptionsCommonShowResults(boolean optionsCommonShowResults) {
-		RobocodeProperties.optionsCommonShowResults = optionsCommonShowResults;
-		instance.setProperty(OPTIONS_COMMON_SHOW_RESULTS, "" + optionsCommonShowResults);
+	public void setOptionsCommonShowResults(boolean optionsCommonShowResults) {
+		this.optionsCommonShowResults = optionsCommonShowResults;
+		props.setProperty(OPTIONS_COMMON_SHOW_RESULTS, "" + optionsCommonShowResults);
 	}
 
-	public static void store(FileOutputStream out, String desc) throws IOException {
-		instance.store(out, desc);
+	public void store(FileOutputStream out, String desc) throws IOException {
+		props.store(out, desc);
 	}
+	
+	public void load(FileInputStream in) throws IOException {
+		props.load(in);
 
-	public static void save() {
-		BattleManager.setOptions();
-		try {
-			FileOutputStream out = new FileOutputStream(new File(Constants.cwd(), "robocode.properties"));
+		optionsViewRobotNames = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTNAMES, "true")).booleanValue();
+		optionsViewScanArcs = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SCANARCS, "false")).booleanValue();
+		optionsViewRobotEnergy = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true")).booleanValue();
+		optionsViewGround = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_GROUND, "true")).booleanValue();
+		optionsViewTPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_TPS, "true")).booleanValue();
+		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
+		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
+		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
+		optionsBattleAllowColorChanges = Boolean.valueOf(props.getProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "false")).booleanValue();
 
-			instance.store(out, "Robocode Properties");
-		} catch (IOException e) {
-			Utils.log(e);
-		}
-	}
+		optionsRenderingAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0"));
+		optionsRenderingTextAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0"));
+		optionsRenderingMethod = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0"));
+		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
 
-	private static void load() throws IOException {
-		instance.load(new FileInputStream(new File(Constants.cwd(), "robocode.properties")));
+		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false")).booleanValue();
+		optionsSoundEnableGunShot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true")).booleanValue();
+		optionsSoundEnableBulletHit = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "true")).booleanValue();
+		optionsSoundEnableRobotDeath = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "true")).booleanValue();
+		optionsSoundEnableRobotCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "true")).booleanValue();
+		optionsSoundEnableWallCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "true")).booleanValue();
 
-		optionsViewRobotNames = Boolean.valueOf(instance.getProperty(OPTIONS_VIEW_ROBOTNAMES, "true")).booleanValue();
-		optionsViewScanArcs = Boolean.valueOf(instance.getProperty(OPTIONS_VIEW_SCANARCS, "false")).booleanValue();
-		optionsViewRobotEnergy = Boolean.valueOf(instance.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true")).booleanValue();
-		optionsViewGround = Boolean.valueOf(instance.getProperty(OPTIONS_VIEW_GROUND, "true")).booleanValue();
-		optionsViewTPS = Boolean.valueOf(instance.getProperty(OPTIONS_VIEW_TPS, "true")).booleanValue();
-		optionsViewFPS = Boolean.valueOf(instance.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
-		optionsViewExplosions = Boolean.valueOf(instance.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
-		optionsBattleDesiredTPS = Integer.parseInt(instance.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
-		optionsBattleAllowColorChanges = Boolean.valueOf(instance.getProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "false")).booleanValue();
+		optionsSoundMixer = props.getProperty(OPTIONS_SOUND_MIXER, "DirectAudioDevice");
+		optionsSoundEnableMixerVolume = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "true")).booleanValue();
+		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true")).booleanValue();
 
-		optionsRenderingAntialiasing = Integer.parseInt(instance.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0"));
-		optionsRenderingTextAntialiasing = Integer.parseInt(
-				instance.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0"));
-		optionsRenderingMethod = Integer.parseInt(instance.getProperty(OPTIONS_RENDERING_METHOD, "0"));
-		optionsRenderingNoBuffers = Integer.parseInt(instance.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
+		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
 
-		optionsSoundEnableSound = Boolean.valueOf(instance.getProperty(OPTIONS_SOUND_ENABLESOUND, "false")).booleanValue();
-		optionsSoundEnableGunShot = Boolean.valueOf(instance.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true")).booleanValue();
-		optionsSoundEnableBulletHit = Boolean.valueOf(instance.getProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "true")).booleanValue();
-		optionsSoundEnableRobotDeath = Boolean.valueOf(instance.getProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "true")).booleanValue();
-		optionsSoundEnableRobotCollision = Boolean.valueOf(instance.getProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "true")).booleanValue();
-		optionsSoundEnableWallCollision = Boolean.valueOf(instance.getProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "true")).booleanValue();
+		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true")).booleanValue();
+		optionsCommonAppendWhenSavingResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true")).booleanValue();
 
-		optionsSoundMixer = instance.getProperty(OPTIONS_SOUND_MIXER, "DirectAudioDevice");
-		optionsSoundEnableMixerVolume = Boolean.valueOf(instance.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "true")).booleanValue();
-		optionsSoundEnableMixerPan = Boolean.valueOf(instance.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true")).booleanValue();
-
-		optionsDevelopmentPath = instance.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
-
-		optionsCommonShowResults = Boolean.valueOf(instance.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true")).booleanValue();
-		optionsCommonAppendWhenSavingResults = Boolean.valueOf(instance.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true")).booleanValue();
-
-		optionsTeamShowTeamRobots = Boolean.valueOf(instance.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
-		lastRunVersion = instance.getProperty(LAST_RUN_VERSION, "");
+		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
+		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
 		
 		try {
-			versionChecked = DATE_FORMAT.parse(instance.getProperty(VERSIONCHECKED));
+			props.remove("robocode.cpu.constant");
+		} catch (Exception e) {}
+		
+		try {
+			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
 		} catch (Exception e) {
-			Utils.log("Initializing version check date to current time");
-			versionChecked = new Date();
+			Utils.log("Initializing version check date.");
+			setVersionChecked(new Date());
 		}
-
-		robotFilesystemQuota = Long.parseLong(instance.getProperty(ROBOT_FILESYSTEM_QUOTA, "" + 200000));
-		consoleQuota = Long.parseLong(instance.getProperty(CONSOLE_QUOTA, "8192"));
-		cpuConstant = Integer.parseInt(instance.getProperty(CPU_CONSTANT, "-1"));
+		
+		robotFilesystemQuota = Long.parseLong(props.getProperty(ROBOT_FILESYSTEM_QUOTA, "" + 200000));
+		consoleQuota = Long.parseLong(props.getProperty(CONSOLE_QUOTA, "8192"));
+		cpuConstant = Integer.parseInt(props.getProperty(CPU_CONSTANT, "-1"));
 	}
 
-	public static String getLastRunVersion() {
+	public String getLastRunVersion() {
 		return lastRunVersion;
 	}
 
@@ -822,8 +815,8 @@ public class RobocodeProperties {
 	 * 
 	 * @param cpuConstant The cpuConstant to set
 	 */
-	public static void setLastRunVersion(String lastRunVersion) {
-		RobocodeProperties.lastRunVersion = lastRunVersion;
-		instance.setProperty(LAST_RUN_VERSION, "" + lastRunVersion);
+	public void setLastRunVersion(String lastRunVersion) {
+		this.lastRunVersion = lastRunVersion;
+		props.setProperty(LAST_RUN_VERSION, "" + lastRunVersion);
 	}
 }

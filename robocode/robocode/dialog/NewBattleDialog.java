@@ -12,7 +12,6 @@
  *     - Added keyboard mnemonics to buttons and tabs
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -49,10 +48,12 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	private RobotSelectionPanel robotSelectionPanel;
 
-	private class EventHandler extends WindowAdapter implements ActionListener {
+	private RobocodeManager manager;
+
+	class EventHandler extends WindowAdapter implements ActionListener {
 		public void windowClosing(WindowEvent e) {
 			if (e.getSource() == NewBattleDialog.this) { 
-				BattleManager.resumeBattle();
+				manager.getBattleManager().resumeBattle();
 			}
 		}
 
@@ -103,7 +104,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		battleProperties.setInactivityTime(getRulesTab().getInactivityTime());
 		new Thread(new Runnable() {
 			public void run() {
-				BattleManager.startNewBattle(battleProperties, false);
+				manager.getBattleManager().startNewBattle(battleProperties, false);
 			}
 		}).start();
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -169,8 +170,9 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	 * 
 	 * @param owner Frame
 	 */
-	public NewBattleDialog(BattleProperties battleProperties) {
-		super(WindowManager.getRobocodeFrame());
+	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
+		super(manager.getWindowManager().getRobocodeFrame());
+		this.manager = manager;
 		this.battleProperties = battleProperties;
 		initialize();
 		processBattleProperties();
@@ -202,8 +204,9 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			if (battleProperties != null) {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
-			robotSelectionPanel = new RobotSelectionPanel(MIN_ROBOTS, MAX_ROBOTS, true, "Select robots for the battle",
-					false, false, false, false, false, !RobocodeProperties.getOptionsTeamShowTeamRobots(), selectedRobots);
+			robotSelectionPanel = new RobotSelectionPanel(manager.getRobotRepositoryManager(), MIN_ROBOTS, MAX_ROBOTS,
+					true, "Select robots for the battle", false, false, false, false, false,
+					!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}
 		return robotSelectionPanel;
 	}

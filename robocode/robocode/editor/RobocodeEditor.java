@@ -13,8 +13,6 @@
  *     Flemming N. Larsen
  *     - Bugfixed the removeFromWindowMenu() method which did not remove the
  *       correct item, and did not break out of the loop when it was found.
- *     - Removed getRobocodeProperties(), which is handled by RobocodeProperties
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
@@ -32,7 +30,7 @@ import robocode.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen, Matthew Reeder (current)
+ * @author Matthew Reeder, Flemming N. Larsen (current)
  */
 @SuppressWarnings("serial")
 public class RobocodeEditor extends JFrame implements Runnable {
@@ -49,13 +47,14 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	private RobocodeProperties robocodeProperties;
 	private File editorDirectory;
+	private RobocodeManager manager;
 
 	private FindReplaceDialog findReplaceDialog;
 	private ReplaceAction replaceAction;
 
-	private EventHandler eventHandler = new EventHandler();
+	EventHandler eventHandler = new EventHandler();
 
-	private class EventHandler implements ComponentListener {
+	class EventHandler implements ComponentListener {
 		public void componentMoved(ComponentEvent e) {}
 
 		public void componentHidden(ComponentEvent e) {}
@@ -86,9 +85,14 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	/**
 	 * RoboCodeEditor constructor
 	 */
-	public RobocodeEditor() {
+	public RobocodeEditor(RobocodeManager manager) {
 		super();
-		robotsDirectory = RobotRepositoryManager.getRobotsDirectory();
+		this.manager = manager;
+		if (manager != null) {
+			robotsDirectory = manager.getRobotRepositoryManager().getRobotsDirectory();
+		} else {
+			robotsDirectory = new File(Constants.cwd(), "robots");
+		}
 		initialize();
 	}
 
@@ -160,7 +164,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			packageName = "mypackage";
 		}
 	
-		EditWindow editWindow = new EditWindow(this);
+		EditWindow editWindow = new EditWindow(this, robotsDirectory);
 
 		editWindow.setModified(false);
 	
@@ -306,15 +310,15 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				message = "Please use all lowercase letters here.";
 				done = false;
 			}
-			if (done) {
-				done = RobotRepositoryManager.verifyRootPackage(packageName + "." + name);
+			if (done && manager != null) {
+				done = manager.getRobotRepositoryManager().verifyRootPackage(packageName + "." + name);
 				if (!done) {
 					message = "This package is reserved.  Please select a different package.";
 				}
 			}
 		}
 
-		EditWindow editWindow = new EditWindow(this);
+		EditWindow editWindow = new EditWindow(this, robotsDirectory);
 
 		editWindow.setRobotName(name);
 		editWindow.setModified(false);
@@ -366,7 +370,9 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			((JavaDocument) d).setEditing(true);
 		}
 		addPlaceShowFocus(editWindow);
-		RobotRepositoryManager.clearRobotList();
+		if (manager != null) {
+			manager.getRobotRepositoryManager().clearRobotList();
+		}
 	}
 
 	public void findDialog() {
@@ -454,6 +460,22 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			robocodeEditorMenuBar = new RobocodeEditorMenuBar(this);
 		}
 		return robocodeEditorMenuBar;
+	}
+
+	public RobocodeProperties getRobocodeProperties() {
+		if (robocodeProperties == null) {
+			robocodeProperties = new RobocodeProperties(manager);
+			try {
+				FileInputStream in = new FileInputStream(new File(Constants.cwd(), "robocode.properties"));
+
+				robocodeProperties.load(in);
+			} catch (FileNotFoundException e) {
+				Utils.log("No robocode.properties file, using defaults.");
+			} catch (IOException e) {
+				Utils.log("IO Exception reading robocode.properties" + e);
+			}
+		}
+		return robocodeProperties;
 	}
 
 	/**
@@ -551,7 +573,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			RobocodeEditor robocodeEditor;
 
-			robocodeEditor = new RobocodeEditor();
+			robocodeEditor = new RobocodeEditor(null);
 			robocodeEditor.isApplication = true; // used for close
 			robocodeEditor.pack();
 			// Center robocodeEditor
@@ -614,7 +636,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 			editorDirectory = chooser.getSelectedFile().getParentFile();
 			try {
-				EditWindow editWindow = new EditWindow(this);
+				EditWindow editWindow = new EditWindow(this, robotsDirectory);
 
 				editWindow.getEditorPane().read(new FileReader(robotFilename), new File(robotFilename));
 				editWindow.getEditorPane().setCaretPosition(0);
@@ -634,7 +656,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public void extractRobot() {
-		WindowManager.showRobotExtractor(this);
+		manager.getWindowManager().showRobotExtractor(this);
 	}
 
 	public void run() {
@@ -657,7 +679,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		try {
 			FileOutputStream out = new FileOutputStream(new File(Constants.cwd(), "robocode.properties"));
 
-			RobocodeProperties.store(out, "Robocode Properties");
+			robocodeProperties.store(out, "Robocode Properties");
 		} catch (IOException e) {
 			Utils.log(e);
 		}
@@ -697,5 +719,14 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open browser!",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
+	}
+
+	/**
+	 * Gets the manager.
+	 * 
+	 * @return Returns a RobocodeManager
+	 */
+	public RobocodeManager getManager() {
+		return manager;
 	}
 }

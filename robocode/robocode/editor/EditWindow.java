@@ -14,7 +14,6 @@
  *     - Window menu
  *     - Launching the Replace dialog using ctrl+H
  *     Flemming N. Larsen
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
@@ -28,8 +27,6 @@ import javax.swing.filechooser.FileFilter;
 import java.io.*;
 import java.util.*;
 import java.beans.*;
-
-import robocode.manager.*;
 import robocode.util.Utils;
 
 
@@ -158,10 +155,10 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 		robotName = newRobotName;
 	}
 
-	public EditWindow(RobocodeEditor editor) {
+	public EditWindow(RobocodeEditor editor, File robotsDirectory) {
 		super();
 		this.editor = editor;
-		this.robotsDirectory = RobotRepositoryManager.getRobotsDirectory();
+		this.robotsDirectory = robotsDirectory;
 		initialize();
 	}
 
@@ -261,7 +258,9 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 						return false;
 					}
 					if (ok == JOptionPane.YES_OPTION) {
-						RobotRepositoryManager.clearRobotList();
+						if (editor.getManager() != null) {
+							editor.getManager().getRobotRepositoryManager().clearRobotList();
+						}
 						return fileSaveAs();
 					}
 				}

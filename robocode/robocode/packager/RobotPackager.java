@@ -13,7 +13,6 @@
  *     Flemming N. Larsen
  *     - Renamed 'enum' variables to allow compiling with Java 1.5
  *     - Replaced FileSpecificationVector with plain Vector
- *     - Access to managers is now static
  *     - Code cleanup
  *******************************************************************************/
 package robocode.packager;
@@ -55,6 +54,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	
 	public byte buf[] = new byte[4096];
 	private StringWriter output;
+	private RobotRepositoryManager robotManager;
 
 	private EventHandler eventHandler = new EventHandler();
 
@@ -69,8 +69,9 @@ public class RobotPackager extends JDialog implements WizardListener {
 	/**
 	 * Packager constructor comment.
 	 */
-	public RobotPackager(boolean isTeamPackager) {
-		super(WindowManager.getRobocodeFrame());
+	public RobotPackager(RobotRepositoryManager robotManager, boolean isTeamPackager) {
+		super(robotManager.getManager().getWindowManager().getRobocodeFrame());
+		this.robotManager = robotManager;
 		initialize();
 	}
 
@@ -94,7 +95,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 		int rc = packageRobots();
 		ConsoleDialog d;
 
-		d = new ConsoleDialog(WindowManager.getRobocodeFrame(), "Packaging results", false);
+		d = new ConsoleDialog(robotManager.getManager().getWindowManager().getRobocodeFrame(), "Packaging results",
+				false);
 		if (rc == 0) {
 			resultsString = "Robots Packaged Successfully.\n" + output.toString();
 		} else if (rc == 4) {
@@ -125,7 +127,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		return buttonsPanel;
 	}
 
-	public Enumeration<?> getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
+	public Enumeration getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
 		robotClassManager.getRobotClassLoader().loadRobotClass(robotClassManager.getFullClassName(), true);
 		return robotClassManager.getReferencedClasses();
 	}
@@ -193,7 +195,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(robotManager, minRobots, maxRobots, false,
 					"Select the robot or team you would like to package.", /* true */false, false, false/* true */, true,
 					false, true, null);
 		}
@@ -223,15 +225,14 @@ public class RobotPackager extends JDialog implements WizardListener {
 	}
 
 	private int packageRobots() {
-		RobotRepositoryManager.clearRobotList();
-		
+		robotManager.clearRobotList();
 		int rv = 0;
 
 		output = new StringWriter();
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Packager");
-		Vector<FileSpecification> robotSpecificationsVector = RobotRepositoryManager.getRobotRepository().getRobotSpecificationsVector(
+		Vector<FileSpecification> robotSpecificationsVector = robotManager.getRobotRepository().getRobotSpecificationsVector(
 				false, false, false, false, false, false);
 		String jarFilename = getFilenamePanel().getFilenameField().getText();
 		File f = new File(jarFilename);
@@ -271,7 +272,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		try {
 			out.println("Creating Jar file: " + f.getName());
 			jarout = new NoDuplicateJarOutputStream(new FileOutputStream(f));
-			jarout.setComment(VersionManager.getVersion() + " - Robocode version");
+			jarout.setComment(robotManager.getManager().getVersionManager().getVersion() + " - Robocode version");
 		} catch (Exception e) {
 			out.println(e);
 			return 8;
@@ -305,7 +306,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 						}
 					}
 					robotSpecification.setRobotWebpage(u);
-					robotSpecification.setRobocodeVersion(VersionManager.getVersion());
+					robotSpecification.setRobocodeVersion(robotManager.getManager().getVersionManager().getVersion());
 					try {
 						robotSpecification.store(new FileOutputStream(new File(robotSpecification.getThisFileName())),
 								"Robot Properties");
@@ -343,7 +344,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				teamSpecification.setTeamWebpage(u);
 				teamSpecification.setTeamDescription(getPackagerOptionsPanel().getDescriptionArea().getText());
 				teamSpecification.setTeamAuthorName(getPackagerOptionsPanel().getAuthorField().getText());
-				teamSpecification.setRobocodeVersion(VersionManager.getVersion());
+				teamSpecification.setRobocodeVersion(robotManager.getManager().getVersionManager().getVersion());
 				try {
 					teamSpecification.store(new FileOutputStream(new File(teamSpecification.getThisFileName())),
 							"Team Properties");
@@ -422,7 +423,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			out.println(e);
 			return 8;
 		}
-		RobotRepositoryManager.clearRobotList();
+		robotManager.clearRobotList();
 		out.println("Packaging complete.");
 		return rv;
 	}
@@ -471,7 +472,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		RobotClassManager classManager = new RobotClassManager((RobotSpecification) robotSpecification);
 
 		try {
-			Enumeration<?> classes = getClasses(classManager);
+			Enumeration classes = getClasses(classManager);
 			String rootDirectory = classManager.getRobotClassLoader().getRootDirectory();
 
 			// Save props:

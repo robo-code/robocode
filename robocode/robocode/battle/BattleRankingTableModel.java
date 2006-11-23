@@ -12,7 +12,6 @@
  *     - Added independent Rank column
  *     - Various optimizations
  *     - Ported to Java 5
- *     - Access to managers is now static
  *******************************************************************************/
 package robocode.battle;
 
@@ -21,7 +20,7 @@ import java.util.*;
 
 import javax.swing.table.AbstractTableModel;
 
-import robocode.manager.BattleManager;
+import robocode.manager.RobocodeManager;
 import robocode.peer.*;
 import robocode.util.Utils;
 
@@ -36,7 +35,13 @@ import robocode.util.Utils;
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
+	private RobocodeManager manager;
 	private Battle battle;
+
+	public BattleRankingTableModel(RobocodeManager manager) {
+		super();
+		this.manager = manager;
+	}
 
 	public int getColumnCount() {
 		return 4;
@@ -97,7 +102,10 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	private Vector<ContestantPeer> getContestants() {
-		battle = BattleManager.getBattle();
+		if (manager == null) {
+			return null;
+		}
+		battle = manager.getBattleManager().getBattle();
 
 		return (battle != null) ? battle.getContestants() : null;
 	}
