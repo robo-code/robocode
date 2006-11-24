@@ -228,13 +228,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 				if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
 					velocity = 0;
-//					if (distanceRemaining > 0) {
-						atFault = true;
-						distanceRemaining = 0;
-						statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-//					} else {
-//						statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-//					}
+					// if (distanceRemaining > 0) {
+					atFault = true;
+					distanceRemaining = 0;
+					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
+					// } else {
+					// statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+					// }
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
 					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
@@ -250,13 +250,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					}
 				} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
 					velocity = 0;
-//					if (distanceRemaining < 0) {
-						atFault = true;
-						distanceRemaining = 0;
-						statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-//					} else {
-//						statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-//					}
+					// if (distanceRemaining < 0) {
+					atFault = true;
+					distanceRemaining = 0;
+					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
+					// } else {
+					// statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
+					// }
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
 					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
@@ -302,7 +302,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		if (boundingBox.y + boundingBox.height > battleField.getBoundingBox().getHeight()) {
 			hitWall = true;
-			fixy = battleField.getBoundingBox().getHeight() - getBoundingBox().height - getBoundingBox().y;
+			fixy = battleField.getBoundingBox().getHeight() - boundingBox.height - getBoundingBox().y;
 			angle = normalRelativeAngle(-heading);
 		}
 		if (boundingBox.y < 0) {
@@ -314,11 +314,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (hitWall) {
 			eventManager.add(new HitWallEvent(angle));
 
-			double velocity1 = fixx / sin(heading);
-			double velocity2 = fixy / cos(heading);
-
-			double fixv = (max(abs(velocity1), abs(velocity2)) == abs(velocity1)) ? velocity1 : velocity2;
-
+			double fixv = hypot(fixx, fixy);
+			
 			double dx = fixv * sin(heading);
 			double dy = fixv * cos(heading);
  		
