@@ -13,6 +13,8 @@
  *       distanceRemaining > 0 if slowingDown and moveDirection == -1
  *     - Bugfix: Substituted wait(10000) with wait() in tick() method, so that
  *       robots do not hang when game is paused
+ *     - Bugfix: Teleportation when turning the robot to 0 degrees while forcing
+ *       the robot towards the bottom
  *     - Added setPaintEnabled() and isPaintEnabled()
  *     - Added setSGPaintEnabled() and isSGPaintEnabled()
  *     - Replaced the colorIndex with bodyColor, gunColor, and radarColor
@@ -28,6 +30,8 @@
  *     - Code cleanup
  *     Luis Crespo
  *     - Added states
+ *     Titus Chen
+ *     - Bugfix: Hit wall and teleporting problems with checkWallCollision()
  *******************************************************************************/
 package robocode.peer;
 
@@ -63,6 +67,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public static final int WIDTH = 40;
 	public static final int HEIGHT = 40;
 
+	private static final int HALF_WIDTH_OFFSET = (WIDTH / 2 - 2);
+	private static final int HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
+	
 	private static final long MAX_SET_CALL_COUNT = 10000;
 	private static final long MAX_GET_CALL_COUNT = 10000;
 
@@ -288,47 +295,52 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		double fixx = 0, fixy = 0;
 		double angle = 0;
 
-		if (boundingBox.x + boundingBox.width > battleField.getBoundingBox().getWidth()) {
+		if (x > getBattleFieldWidth() - HALF_WIDTH_OFFSET) {
 			hitWall = true;
-			fixx = battleField.getBoundingBox().getWidth() - boundingBox.width - boundingBox.x;
+			fixx = getBattleFieldWidth() - HALF_WIDTH_OFFSET - x;
 			angle = normalRelativeAngle(PI / 2 - heading);
 		}
 	
-		if (boundingBox.x < 0) {
+		if (x < HALF_WIDTH_OFFSET) {
 			hitWall = true;
-			fixx = -boundingBox.x;
+			fixx = HALF_WIDTH_OFFSET - x;
 			angle = normalRelativeAngle(3 * PI / 2 - heading);
 		}
 
-		if (boundingBox.y + boundingBox.height > battleField.getBoundingBox().getHeight()) {
+		if (y > getBattleFieldHeight() - HALF_HEIGHT_OFFSET) {
 			hitWall = true;
-			fixy = battleField.getBoundingBox().getHeight() - boundingBox.height - getBoundingBox().y;
+			fixy = getBattleFieldHeight() - HALF_HEIGHT_OFFSET - y;
 			angle = normalRelativeAngle(-heading);
 		}
-		if (boundingBox.y < 0) {
+
+		if (y < HALF_HEIGHT_OFFSET) {
 			hitWall = true;
-			fixy = -boundingBox.y;
+			fixy = HALF_HEIGHT_OFFSET - y;
 			angle = normalRelativeAngle(PI - heading);
 		}
 
 		if (hitWall) {
 			eventManager.add(new HitWallEvent(angle));
 
-			double fixv = hypot(fixx, fixy);
-			
-			double dx = fixv * sin(heading);
-			double dy = fixv * cos(heading);
- 		
-			// Sanity
-			if (abs(dx) < abs(fixx)) {
-				dx = fixx;
+			// only fix both x and y values if hitting wall at an angle
+			if ((heading % (Math.PI / 2)) != 0) {
+				double tanHeading = tan(heading);
+				
+				// if it hits bottom or top wall
+				if (fixx == 0) {
+					fixx = fixy * tanHeading;
+				} // if it hits a side wall
+				else if (fixy == 0) {
+					fixy = fixx / tanHeading;
+				} // if the robot hits 2 walls at the same time (rare, but just in case)
+				else if (abs(fixx / tanHeading) > abs(fixy)) {
+					fixy = fixx / tanHeading;
+				} else if (abs(fixy * tanHeading) > abs(fixx)) {
+					fixx = fixy * tanHeading;
+				}
 			}
-			if (abs(dy) < abs(fixy)) {
-				dy = fixy;
-			}
- 	  
-			x += dx;
-			y += dy;
+			x += fixx;
+			y += fixy;
 
 			// Update energy, but do not reset inactiveTurnCount
 			if (robot instanceof robocode.AdvancedRobot) {
