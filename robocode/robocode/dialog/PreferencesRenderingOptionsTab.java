@@ -69,6 +69,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			GridBagConstraints c = new GridBagConstraints();
 
 			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets = new Insets(5, 5, 5, 5);
 			c.anchor = GridBagConstraints.PAGE_START;
 
 			c.weightx = 0;
