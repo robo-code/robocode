@@ -412,15 +412,20 @@ public class RobocodeFrame extends JFrame {
 	public JSlider getTpsSlider() {
 		if (tpsSlider == null) {
 			RobocodeProperties props = manager.getProperties();
-			
-			tpsSlider = new JSlider(0, 200, props.getOptionsBattleDesiredTPS());
+
+			int tps = Math.max(props.getOptionsBattleDesiredTPS(), 1);
+
+			if (tps > 200) {
+				tps = 201;
+			}
+
+			tpsSlider = new JSlider(1, 201, tps);
 			tpsSlider.addChangeListener(eventHandler);
 
 			props.addPropertyListener(props.new PropertyListener() {
 				public void desiredTpsChanged(int tps) {
 					tpsSlider.setValue(tps);
 				}
-				;
 			});
 		}
 		return tpsSlider;
@@ -433,7 +438,12 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public JLabel getTpsLabel() {
 		if (tpsLabel == null) {
-			tpsLabel = new JLabel("" + getTpsSlider().getValue());
+			int tps = getTpsSlider().getValue();
+
+			if (tps > 200) {
+				tps = 10000;
+			}
+			tpsLabel = new JLabel("" + tps);
 		}
 		return tpsLabel;
 	}
@@ -512,7 +522,7 @@ public class RobocodeFrame extends JFrame {
 		}
 	}
 
-	public void pauseResumeButtonActionPerformed() {
+	private void pauseResumeButtonActionPerformed() {
 		if (getPauseResumeButton().getText().equals("Pause/Debug")) {
 			getPauseResumeButton().setText("Resume");
 			getPauseResumeButton().setMnemonic('e');
