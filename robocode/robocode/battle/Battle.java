@@ -591,8 +591,7 @@ public class Battle implements Runnable {
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
 
-			if (battleView != null) {
-				
+			if (!(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
 				if ((totalFrameMillisThisSec == 0)
@@ -601,9 +600,8 @@ public class Battle implements Runnable {
 
 					framesThisSec++;
 				}
-				if (!manager.getWindowManager().getRobocodeFrame().isIconified()) {
-					playSounds();
-				}
+
+				playSounds();
 			}
 
 			// Calculate the time spend on the frame update
