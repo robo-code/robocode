@@ -19,6 +19,7 @@
  *     - Bugfixed sounds that were cut off after first battle
  *     - Changed initialize() to use loadClass() instead of loadRobotClass() if
  *       security is turned off
+ *     - Changed the way the TPS is loaded and updated
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -353,19 +354,20 @@ public class Battle implements Runnable {
 		return null;
 	}
 
-	public void setOptions() {
-		setDesiredTPS(manager.getProperties().getOptionsBattleDesiredTPS());
-		if (battleView != null) {
-			battleView.setDisplayOptions();
-		}
-	}
-
 	public void setDesiredTPS(int desiredTPS) {
 		this.desiredTPS = desiredTPS;
 	}
 
 	public void initialize() {
-		setOptions();
+		RobocodeProperties props = manager.getProperties();
+
+		desiredTPS = props.getOptionsBattleDesiredTPS();
+
+		props.addPropertyListener(props.new PropertyListener() {
+			public void desiredTpsChanged(int tps) {
+				desiredTPS = tps;
+			}
+		});
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
@@ -380,6 +382,7 @@ public class Battle implements Runnable {
 
 		if (battleView != null) {
 			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+			battleView.setDisplayOptions();
 		}
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().clearRobotButtons();
@@ -405,7 +408,7 @@ public class Battle implements Runnable {
 		// in the safe robot loader the class is linked.
 		for (RobotPeer r : robots) {
 			try {
-				Class c;
+				Class<?> c;
 
 				RobotClassManager classManager = r.getRobotClassManager(); 
 				String className = classManager.getFullClassName();
@@ -422,9 +425,9 @@ public class Battle implements Runnable {
 
 				r.getRobotFileSystemManager().initializeQuota();
 
-				Class[] interfaces = c.getInterfaces();
+				Class<?>[] interfaces = c.getInterfaces();
 
-				for (Class i : interfaces) {
+				for (Class<?> i : interfaces) {
 					if (i.getName().equals("robocode.Droid")) {
 						r.setDroid(true);
 					}
@@ -1090,7 +1093,7 @@ public class Battle implements Runnable {
 			// Loading robots
 			for (RobotPeer r : robots) {
 				r.setRobot(null);
-				Class robotClass = null;
+				Class<?> robotClass = null;
 
 				try {
 					manager.getThreadManager().setLoadingRobot(r);
