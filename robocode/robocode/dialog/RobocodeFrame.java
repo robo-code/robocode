@@ -14,6 +14,7 @@
  *     - Added JPopupMenu.setDefaultLightWeightPopupEnabled(false), i.e. enabling
  *       heavy-weight components in order to prevent battleview to hide menus
  *     - Changed so BattleView handles resizing instead of the RobocodeFrame
+ *     - Added TPS slider + label
  *     - Code cleanup
  *     Luis Crespo
  *     - Added debug step feature by adding a "Next Turn" button, and changing
@@ -25,6 +26,9 @@ package robocode.dialog;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.io.*;
 import robocode.battleview.*;
 import robocode.manager.*;
@@ -37,30 +41,43 @@ import robocode.util.*;
  */
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
-	EventHandler eventHandler = new EventHandler();
+	private EventHandler eventHandler = new EventHandler();
 
 	private RobocodeMenuBar robocodeMenuBar;
 	
 	private JPanel robocodeContentPane;
 	private JLabel statusLabel;
+
 	private BattleView battleView;
+
 	public String version;
+
 	public Thread appThread;
+
 	private JScrollPane robotButtonsScrollPane;
+
 	private JPanel mainPanel;
 	private JPanel battleViewPanel;
-	private String battleFilename;
 	private JPanel robotButtonsPanel;
+
+	private String battleFilename;
+	
 	private JToolBar toolBar;
+
 	private JButton pauseResumeButton;
 	private JButton nextTurnButton;
 	private JButton stopButton;
 	private JButton restartButton;
-	private boolean iconified;
-	private RobocodeManager manager;
-	private boolean exitOnClose;
 	
-	class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ComponentListener, ContainerListener, WindowListener {
+	private JSlider tpsSlider;
+	private JLabel tpsLabel;
+	
+	private boolean iconified;
+	private boolean exitOnClose;
+
+	private RobocodeManager manager;
+	
+	private class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ComponentListener, ContainerListener, WindowListener, ChangeListener {
 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == RobocodeFrame.this.getPauseResumeButton()) {
@@ -125,6 +142,7 @@ public class RobocodeFrame extends JFrame {
 				Utils.saveWindowPositions();
 				dispose();
 			}
+			manager.saveProperties();
 		}
 
 		public void windowDeactivated(WindowEvent e) {}
@@ -138,6 +156,18 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		public void windowOpened(WindowEvent e) {}
+
+		public void stateChanged(ChangeEvent e) {
+			if (e.getSource() == getTpsSlider()) {
+				int tps = tpsSlider.getValue();
+
+				if (tps == tpsSlider.getMaximum()) {
+					tps = 10000;
+				}
+				manager.getProperties().setOptionsBattleDesiredTPS(tps);
+				tpsLabel.setText("  " + tps);
+			}
+		}
 	}
 
 	private WindowManager windowManager;
@@ -206,8 +236,8 @@ public class RobocodeFrame extends JFrame {
 		if (mainPanel == null) {
 			mainPanel = new JPanel();
 			mainPanel.setLayout(new BorderLayout());
-			mainPanel.add(getRobotButtonsScrollPane(), "East");
-			mainPanel.add(getBattleViewPanel(), "Center");
+			mainPanel.add(getRobotButtonsScrollPane(), BorderLayout.EAST);
+			mainPanel.add(getBattleViewPanel());
 		}
 		return mainPanel;
 	}
@@ -375,6 +405,40 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	/**
+	 * Return the tpsSlider
+	 * 
+	 * @return JSlider
+	 */
+	public JSlider getTpsSlider() {
+		if (tpsSlider == null) {
+			RobocodeProperties props = manager.getProperties();
+			
+			tpsSlider = new JSlider(0, 200, props.getOptionsBattleDesiredTPS());
+			tpsSlider.addChangeListener(eventHandler);
+
+			props.addPropertyListener(props.new PropertyListener() {
+				public void desiredTpsChanged(int tps) {
+					tpsSlider.setValue(tps);
+				}
+				;
+			});
+		}
+		return tpsSlider;
+	}
+
+	/**
+	 * Return the tpsLabel
+	 * 
+	 * @return JLabel
+	 */
+	public JLabel getTpsLabel() {
+		if (tpsLabel == null) {
+			tpsLabel = new JLabel("" + getTpsSlider().getValue());
+		}
+		return tpsLabel;
+	}
+
+	/**
 	 * Return the toolBar.
 	 * 
 	 * @return JToolBar
@@ -386,7 +450,8 @@ public class RobocodeFrame extends JFrame {
 			toolBar.add(getNextTurnButton());
 			toolBar.add(getStopButton());
 			toolBar.add(getRestartButton());
-			toolBar.add(new JLabel(" "));
+			toolBar.add(getTpsSlider());
+			toolBar.add(getTpsLabel());
 			toolBar.add(getStatusLabel());
 			Utils.setDefaultStatusLabel(getStatusLabel());
 		}
