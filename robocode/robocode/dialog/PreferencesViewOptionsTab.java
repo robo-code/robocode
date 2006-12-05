@@ -15,6 +15,7 @@
  *     - Changed some keyboard mnemonics
  *     - Changed from using FPS into using TPS (Turns per Second), but added a
  *       "Display FPS in titlebar" option
+ *     - Added propery listener for getting TPS updated from TPS slider
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -448,7 +449,16 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		setLayout(new GridLayout(1, 2));
 		add(getVisibleOptionsPanel());
 		add(getTpsOptionsPanel());
-		loadPreferences(manager.getProperties());
+		
+		RobocodeProperties props = manager.getProperties();
+		
+		loadPreferences(props);
+		
+		props.addPropertyListener(props.new PropertyListener() {
+			public void desiredTpsChanged(int tps) {
+				PreferencesViewOptionsTab.this.desiredTpsTextField.setText("" + tps);
+			};
+		});
 	}
 
 	private void loadPreferences(RobocodeProperties robocodeProperties) {
