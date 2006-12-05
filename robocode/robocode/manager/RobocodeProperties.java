@@ -128,6 +128,8 @@ public class RobocodeProperties {
 
 	private RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
 
+	private List<PropertyListener> listeners = new ArrayList<PropertyListener>();
+
 	public RobocodeProperties(RobocodeManager manager) {
 		this.manager = manager;
 	}
@@ -418,6 +420,8 @@ public class RobocodeProperties {
 	public void setOptionsBattleDesiredTPS(int optionsBattleDesiredTPS) {
 		this.optionsBattleDesiredTPS = optionsBattleDesiredTPS;
 		props.setProperty(OPTIONS_BATTLE_DESIREDTPS, "" + optionsBattleDesiredTPS);
+		
+		notifyDesiredTpsChanged();
 	}
 
 	public boolean getOptionsBattleAllowColorChanges() {
@@ -818,5 +822,25 @@ public class RobocodeProperties {
 	public void setLastRunVersion(String lastRunVersion) {
 		this.lastRunVersion = lastRunVersion;
 		props.setProperty(LAST_RUN_VERSION, "" + lastRunVersion);
+	}
+
+	public void addPropertyListener(PropertyListener listener) {
+		listeners.add(listener);
+	}
+
+	private void notifyDesiredTpsChanged() {
+		for (PropertyListener listener : listeners) {
+			listener.desiredTpsChanged(optionsBattleDesiredTPS);
+		}
+	}
+
+	/**
+	 * Property listener.
+	 *
+	 * @author Flemming N. Larsen
+	 */
+	public class PropertyListener {
+		
+		public void desiredTpsChanged(int tps) {}
 	}
 }
