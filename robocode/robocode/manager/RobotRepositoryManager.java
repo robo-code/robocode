@@ -369,12 +369,12 @@ public class RobotRepositoryManager {
 
 			try {
 				RobotClassManager robotClassManager = new RobotClassManager(robotSpecification);
-				Class robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(
+				Class<?> robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(
 						robotClassManager.getFullClassName(), true);
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
-				Class[] interfaces = robotClass.getInterfaces();
+				Class<?>[] interfaces = robotClass.getInterfaces();
 
 				for (int j = 0; j < interfaces.length; j++) {
 					if (interfaces[j].getName().equals("robocode.Droid")) {
@@ -382,7 +382,7 @@ public class RobotRepositoryManager {
 					}
 				}
 
-				Class superClass = robotClass.getSuperclass();
+				Class<?> superClass = robotClass.getSuperclass();
 
 				if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 					superClass = null;
