@@ -460,8 +460,14 @@ public class RobocodeFrame extends JFrame {
 			toolBar.add(getNextTurnButton());
 			toolBar.add(getStopButton());
 			toolBar.add(getRestartButton());
+
+			toolBar.addSeparator();
+
 			toolBar.add(getTpsSlider());
 			toolBar.add(getTpsLabel());
+
+			toolBar.addSeparator();
+
 			toolBar.add(getStatusLabel());
 			Utils.setDefaultStatusLabel(getStatusLabel());
 		}
