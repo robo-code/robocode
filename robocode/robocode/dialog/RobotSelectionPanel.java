@@ -75,13 +75,13 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private class EventHandler implements ActionListener, ListSelectionListener, HierarchyListener {
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == RobotSelectionPanel.this.getAddAllButton()) {
+			if (e.getSource() == getAddAllButton()) {
 				addAllButtonActionPerformed();
-			} else if (e.getSource() == RobotSelectionPanel.this.getAddButton()) {
+			} else if (e.getSource() == getAddButton()) {
 				addButtonActionPerformed();
-			} else if (e.getSource() == RobotSelectionPanel.this.getRemoveAllButton()) {
+			} else if (e.getSource() == getRemoveAllButton()) {
 				removeAllButtonActionPerformed();
-			} else if (e.getSource() == RobotSelectionPanel.this.getRemoveButton()) {
+			} else if (e.getSource() == getRemoveButton()) {
 				removeButtonActionPerformed();
 			}
 		}
@@ -432,7 +432,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
-
 	class SelectedRobotsModel extends AbstractListModel {
 		public void changed() {
 			fireContentsChanged(this, 0, getSize());
@@ -579,7 +578,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	public void refreshRobotList() {
 		getAvailableRobotsPanel().setRobotList(null);
-		RobotSelectionPanel.this.robotManager.clearRobotList();
+		robotManager.clearRobotList();
 		buildRobotList();
 	}
 
