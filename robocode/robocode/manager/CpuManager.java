@@ -63,6 +63,8 @@ public class CpuManager {
 						"Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
 				manager.getProperties().setCpuConstant(cpuConstant);
 				manager.saveProperties();
+
+				Utils.setStatus("");
 			}
 
 			/*
