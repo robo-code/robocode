@@ -522,7 +522,7 @@ public class RobocodeFrame extends JFrame {
 		}
 	}
 
-	private void pauseResumeButtonActionPerformed() {
+	public void pauseResumeButtonActionPerformed() {
 		if (getPauseResumeButton().getText().equals("Pause/Debug")) {
 			getPauseResumeButton().setText("Resume");
 			getPauseResumeButton().setMnemonic('e');
