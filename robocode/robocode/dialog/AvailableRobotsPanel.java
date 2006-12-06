@@ -32,19 +32,15 @@ import robocode.repository.*;
 public class AvailableRobotsPanel extends JPanel {
 
 	private Vector<FileSpecification> availableRobots = new Vector<FileSpecification>(); 
-
 	private Vector<FileSpecification> robotList = new Vector<FileSpecification>();
-
 	private Vector<String> availablePackages = new Vector<String>();
 
 	private JScrollPane availableRobotsScrollPane;
-
 	private JList availableRobotsList;
 
 	private JButton actionButton;
 
 	private JList actionList;
-
 	private JList availablePackagesList;
 
 	private JScrollPane availablePackagesScrollPane;
@@ -164,7 +160,7 @@ public class AvailableRobotsPanel extends JPanel {
 		return availableRobotsScrollPane;
 	}
 
-	public void setRobotList(Vector<FileSpecification> robotListVector) { 
+	public void setRobotList(Vector<FileSpecification> robotListVector) {
 		AvailableRobotsPanel.this.robotList = robotListVector;
 		SwingUtilities.invokeLater(
 				new Runnable() {
@@ -183,7 +179,7 @@ public class AvailableRobotsPanel extends JPanel {
 					String packageName = null;
 
 					for (int i = 0; i < robotList.size(); i++) {
-						FileSpecification robotSpecification = (FileSpecification) robotList.elementAt(i);
+						FileSpecification robotSpecification = robotList.elementAt(i);
 
 						if (packageName != null && robotSpecification.getFullPackage() != null
 								&& !packageName.equals(robotSpecification.getFullPackage())) {
@@ -215,7 +211,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 	private void availablePackagesListSelectionChanged() {
 		int sel[] = getAvailablePackagesList().getSelectedIndices();
-
+		
 		availableRobots.clear();
 		if (sel.length == 1) {
 			robotNamesCellRenderer.setUseShortNames(true);
@@ -234,8 +230,8 @@ public class AvailableRobotsPanel extends JPanel {
 					availableRobots.add(robotList.elementAt(j));
 				}
 				break;
-			} // else single package.
-			else {
+			} else {
+				// Single package.
 				for (int j = 0; j < robotList.size(); j++) {
 					FileSpecification robotSpecification = (FileSpecification) robotList.elementAt(j);
 
@@ -243,10 +239,8 @@ public class AvailableRobotsPanel extends JPanel {
 						if (selectedPackage.equals("(No package)")) {
 							availableRobots.add(robotSpecification);
 						}
-					} else {
-						if (robotSpecification.getFullPackage().equals(selectedPackage)) {
-							availableRobots.add(robotSpecification);
-						}
+					} else if (robotSpecification.getFullPackage().equals(selectedPackage)) {
+						availableRobots.add(robotSpecification);
 					}
 				}
 			}
@@ -351,12 +345,12 @@ public class AvailableRobotsPanel extends JPanel {
 			return availableRobots.size();
 		}
 
-		public Object getElementAt(int which) {
+		public FileSpecification getElementAt(int which) {
 			try {
 				return availableRobots.elementAt(which);
 			} catch (ArrayIndexOutOfBoundsException e) {
 				// If the view updates while we're updating...
-				return "";
+				return null;
 			}
 		}
 	}
