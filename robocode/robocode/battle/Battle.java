@@ -74,7 +74,7 @@ public class Battle implements Runnable {
 	private int desiredTPS = 30;
 	private long startTimeThisSec = 0;
 
-	// Turn skip related items	
+	// Turn skip related items
 	private int maxSkippedTurns = 30;
 	private int maxSkippedTurnsWithIO = 240;
 	private String nonDeterministicRobots;
@@ -354,11 +354,20 @@ public class Battle implements Runnable {
 		return null;
 	}
 
+	public void setOptions() {
+		setDesiredTPS(manager.getProperties().getOptionsBattleDesiredTPS());
+		if (battleView != null) {
+			battleView.setDisplayOptions();
+		}
+	}
+
 	public void setDesiredTPS(int desiredTPS) {
 		this.desiredTPS = desiredTPS;
 	}
 
 	public void initialize() {
+		setOptions();
+
 		RobocodeProperties props = manager.getProperties();
 
 		desiredTPS = props.getOptionsBattleDesiredTPS();
@@ -382,7 +391,6 @@ public class Battle implements Runnable {
 
 		if (battleView != null) {
 			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-			battleView.setDisplayOptions();
 		}
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().clearRobotButtons();

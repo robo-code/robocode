@@ -17,7 +17,6 @@
  *     - Added restart() method
  *     - Ported to Java 5
  *     - Code cleanup & optimizations
- *     - Removed setOptions()
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -376,6 +375,12 @@ public class BattleManager {
 
 	public Battle getBattle() {
 		return battle;
+	}
+
+	public void setOptions() {
+		if (battle != null) {
+			battle.setOptions();
+		}
 	}
 
 	public BattleProperties getBattleProperties() {

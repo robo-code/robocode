@@ -127,6 +127,7 @@ public class RobocodeManager {
 	}
 
 	public void saveProperties() {
+		getBattleManager().setOptions();
 		if (properties == null) {
 			Utils.log("Cannot save null robocode properties");
 			return;
