@@ -15,6 +15,7 @@
  *       heavy-weight components in order to prevent battleview to hide menus
  *     - Changed so BattleView handles resizing instead of the RobocodeFrame
  *     - Added TPS slider + label
+ *     - Removed the status label
  *     - Code cleanup
  *     Luis Crespo
  *     - Added debug step feature by adding a "Next Turn" button, and changing
@@ -46,7 +47,6 @@ public class RobocodeFrame extends JFrame {
 	private RobocodeMenuBar robocodeMenuBar;
 	
 	private JPanel robocodeContentPane;
-	private JLabel statusLabel;
 
 	private BattleView battleView;
 
@@ -322,19 +322,6 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	/**
-	 * Return the StatusMsg1 property value.
-	 * 
-	 * @return JLabel
-	 */
-	public JLabel getStatusLabel() {
-		if (statusLabel == null) {
-			statusLabel = new JLabel();
-			statusLabel.setText("");
-		}
-		return statusLabel;
-	}
-
-	/**
 	 * Return the pauseResumeButton
 	 * 
 	 * @return JButton
@@ -465,11 +452,6 @@ public class RobocodeFrame extends JFrame {
 
 			toolBar.add(getTpsSlider());
 			toolBar.add(getTpsLabel());
-
-			toolBar.addSeparator();
-
-			toolBar.add(getStatusLabel());
-			Utils.setDefaultStatusLabel(getStatusLabel());
 		}
 		return toolBar;
 	}
