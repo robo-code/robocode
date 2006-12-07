@@ -123,7 +123,7 @@ public class BattleView extends Canvas {
 				offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 				offscreenGfx.setRenderingHints(renderingHints);
 
-				paintBattle(offscreenGfx);
+				drawBattle(offscreenGfx);
 
 				if (bufferStrategy != null) {
 					Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
@@ -263,7 +263,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	public void paintBattle(Graphics2D g) {
+	public void drawBattle(Graphics2D g) {
 		// Save the graphics state
 		graphicsState.save(g);
 
@@ -586,30 +586,23 @@ public class BattleView extends Canvas {
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
 
 		Arc2D.Double scanArc = (Arc2D.Double) robot.getScanArc().clone();
-		double aStart = scanArc.getAngleStart();
-		double aExtent = scanArc.getAngleExtent();
 
-		aStart = 360 - aStart;
-		aStart -= aExtent;
-		if (aStart < 0) {
-			aStart += 360;
-		}
-		scanArc.setAngleStart(aStart);
+		scanArc.setAngleStart((360 - scanArc.getAngleStart() - scanArc.getAngleExtent()) % 360);
 		scanArc.y = battle.getBattleField().getHeight() - robot.getY() - robocode.Rules.RADAR_SCAN_RADIUS;
 
 		Color scanColor = robot.getScanColor();
-
 		if (scanColor == null) {
 			scanColor = Color.BLUE;
 		}
 		g.setColor(scanColor);
 
-		if (aExtent >= .5) {
+		if (Math.abs(scanArc.getAngleExtent()) >= .5) {
 			g.fill(scanArc);
 		} else {
 			g.draw(scanArc);
 		}
 		g.setComposite(AlphaComposite.SrcOver);
+
 		return scanArc.getBounds();
 	}
 
