@@ -499,8 +499,8 @@ public class BattleView extends Canvas {
 
 			if (!bullet.hasHitVictim && !bullet.hasHitBullet) {
 
-				// radius = sqrt(0.5^2 / 0.1 * power), where 0.5 is half pixel width and 0.1 is min. power
-				double scale = 2 * Math.sqrt(2.5 * bullet.getPower());
+				// radius = sqrt(1.0^2 / 0.1 * power), where 1.0 is the width of 1 pixel for a minimum 0.1 bullet
+				double scale = 2 * Math.sqrt(10 * bullet.getPower());
 
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
