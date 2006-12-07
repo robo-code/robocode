@@ -1,6 +1,11 @@
 Version 1.2.2 Beta
-(12/05/2006)
-  -- Added TPS slider to the toolbar on the battle window so the TPS can be changed quickly
+(12/07/2006)
+o Bugfixes
+  -- The radar scan arc was not painted correctly if the radar was moving towards left
+  -- Minor bugfix: Sometimes ArrayIndexOutOfBoundsExceptions occured when adding and/or
+     removing robots in the robots folder
+o Added TPS slider to the toolbar on the battle window so the TPS can be changed quickly
+o Bullet sizes have been increased as very small bullets were hard to spot
 
 Version 1.2.1A
 (11/26/2006)
