@@ -432,6 +432,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
+
 	class SelectedRobotsModel extends AbstractListModel {
 		public void changed() {
 			fireContentsChanged(this, 0, getSize());
@@ -471,7 +472,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private RobotDescriptionPanel getDescriptionPanel() {
 		if (descriptionPanel == null) {
-			descriptionPanel = new RobotDescriptionPanel(robotManager.getManager());
+			descriptionPanel = new RobotDescriptionPanel();
 			descriptionPanel.setBorder(BorderFactory.createEmptyBorder(1, 10, 1, 10));
 		}
 		return descriptionPanel;
