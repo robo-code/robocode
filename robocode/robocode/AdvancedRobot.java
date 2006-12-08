@@ -113,8 +113,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Fires a bullet.  This call is exactly like setFire(double),
-	 * but returns the Bullet object you fired.
-	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
+	 * but returns the Bullet object you fired or null if the bullet was
+	 * not fired.
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
 	 *
 	 * @see robocode.Robot#fire
 	 * @see robocode.Robot#fireBullet
