@@ -127,7 +127,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		return buttonsPanel;
 	}
 
-	public Enumeration getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
+	public Enumeration<String> getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
 		robotClassManager.getRobotClassLoader().loadRobotClass(robotClassManager.getFullClassName(), true);
 		return robotClassManager.getReferencedClasses();
 	}
@@ -472,7 +472,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		RobotClassManager classManager = new RobotClassManager((RobotSpecification) robotSpecification);
 
 		try {
-			Enumeration classes = getClasses(classManager);
+			Enumeration<String> classes = getClasses(classManager);
 			String rootDirectory = classManager.getRobotClassLoader().getRootDirectory();
 
 			// Save props:
