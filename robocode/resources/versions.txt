@@ -1,6 +1,7 @@
 Version 1.2.2 Beta
-(12/07/2006)
+(12/08/2006)
 o Bugfixes
+  -- Extra hit wall events was occuring. This has been corrected by Titus Chen
   -- The radar scan arc was not painted correctly if the radar was moving towards left
   -- Minor bugfix: Sometimes ArrayIndexOutOfBoundsExceptions occured when adding and/or
      removing robots in the robots folder
