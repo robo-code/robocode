@@ -38,52 +38,46 @@ public class RobotDialogManager {
 	}
 
 	public void setActiveBattle(Battle b) {
-		Vector<RobotPeer> v = b.getRobots();
-		Enumeration keys = robotDialogHashtable.keys();
+		Vector<RobotPeer> robots = b.getRobots();
 
-		while (keys.hasMoreElements()) {
-			String name = (String) keys.nextElement();
+		for (String name : robotDialogHashtable.keySet()) {
 			boolean found = false;
 
-			for (RobotPeer r : v) {
+			for (RobotPeer r : robots) {
 				if (r.getName().equals(name)) {
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-				RobotDialog o = (RobotDialog) robotDialogHashtable.get(name);
-
-				robotDialogHashtable.remove(o);
-				o.dispose();
+				RobotDialog dialog = robotDialogHashtable.get(name);
+				robotDialogHashtable.remove(dialog);
+				dialog.dispose();
 			}
 		}
 	}
 
 	public void reset() {
-		Enumeration keys = robotDialogHashtable.keys();
+		for (String name : robotDialogHashtable.keySet()) {
+			RobotDialog dialog = robotDialogHashtable.get(name);
 
-		while (keys.hasMoreElements()) {
-			String name = (String) keys.nextElement();
-			RobotDialog o = (RobotDialog) robotDialogHashtable.get(name);
-
-			if (!o.isVisible()) {
-				robotDialogHashtable.remove(o);
-				o.dispose();
+			if (!dialog.isVisible()) {
+				robotDialogHashtable.remove(dialog);
+				dialog.dispose();
 			}
 		}
 	}
 
 	public RobotDialog getRobotDialog(String robotName, boolean create) {
-		RobotDialog d = (RobotDialog) robotDialogHashtable.get(robotName);
+		RobotDialog dialog = robotDialogHashtable.get(robotName);
 
-		if (d == null && create == true) {
+		if (create && dialog == null) {
 			if (robotDialogHashtable.size() > 10) {
 				reset();
 			}
-			d = new RobotDialog(manager.isSlave());
-			robotDialogHashtable.put(robotName, d);
+			dialog = new RobotDialog(manager.isSlave());
+			robotDialogHashtable.put(robotName, dialog);
 		}
-		return d;
+		return dialog;
 	}
 }
