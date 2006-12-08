@@ -342,6 +342,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			x += fixx;
 			y += fixy;
 
+			x = (HALF_WIDTH_OFFSET >= x)
+					? HALF_WIDTH_OFFSET
+					: ((getBattleFieldWidth() - HALF_WIDTH_OFFSET < x) ? getBattleFieldWidth() - HALF_WIDTH_OFFSET : x);
+			y = (HALF_HEIGHT_OFFSET >= y)
+					? HALF_HEIGHT_OFFSET
+					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y); 
+
 			// Update energy, but do not reset inactiveTurnCount
 			if (robot instanceof robocode.AdvancedRobot) {
 				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
