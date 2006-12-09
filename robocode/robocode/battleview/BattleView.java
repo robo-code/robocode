@@ -393,7 +393,7 @@ public class BattleView extends Canvas {
 	
 				gunRenderImage.setTransform(at);
 				gunRenderImage.paint(g);
-	
+
 				if (!r.isDroid()) {
 					at = AffineTransform.getTranslateInstance(x, y);
 					at.rotate(r.getRadarHeading());
@@ -499,8 +499,8 @@ public class BattleView extends Canvas {
 
 			if (!bullet.hasHitVictim && !bullet.hasHitBullet) {
 
-				// radius = sqrt(1.0^2 / 0.1 * power), where 1.0 is the width of 1 pixel for a minimum 0.1 bullet
-				double scale = 2 * Math.sqrt(10 * bullet.getPower());
+				// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
+				double scale = Math.max(2 * Math.sqrt(2.5 * bullet.getPower()), 2 / this.scale);
 
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
