@@ -1,12 +1,13 @@
-Version 1.2.2 Beta
-(12/08/2006)
+Version 1.2.2
+(12/09/2006)
 o Bugfixes
   -- Extra hit wall events were occuring. This has been corrected by Titus Chen
   -- The radar scan arc was not painted correctly if the radar was moving towards left
   -- Minor bugfix: Sometimes ArrayIndexOutOfBoundsExceptions occured when adding and/or
      removing robots in the robots folder
 o Added TPS slider to the toolbar on the battle window so the TPS can be changed quickly
-o Bullet sizes have been increased as very small bullets were hard to spot
+o Bullet sizes has been improved, so very small bullets will always be visible, even on
+  large 5000x5000 battle fields
 
 Version 1.2.1A
 (11/26/2006)
