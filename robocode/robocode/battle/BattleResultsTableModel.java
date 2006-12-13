@@ -92,6 +92,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	public String getTitle() {
 		if (title == null) {
 			int round = battle.getRoundNum();
+
 			title = "Results for " + round + " round";
 			if (round > 1) {
 				title += 's';
@@ -123,34 +124,34 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
 
 		case 2:
-			return "" + (int) statistics.getTotalScore();
+			return "" + (int) (statistics.getTotalScore() + 0.5);
 
 		case 3:
-			return "" + (int) statistics.getTotalSurvivalScore();
+			return "" + (int) (statistics.getTotalSurvivalScore() + 0.5);
 
 		case 4:
-			return "" + (int) statistics.getTotalWinnerScore();
+			return "" + (int) (statistics.getTotalWinnerScore() + 0.5);
 
 		case 5:
-			return "" + (int) statistics.getTotalBulletDamageScore();
+			return "" + (int) (statistics.getTotalBulletDamageScore() + 0.5);
 
 		case 6:
-			return "" + (int) statistics.getTotalKilledEnemyBulletScore();
+			return "" + (int) (statistics.getTotalKilledEnemyBulletScore() + 0.5);
 
 		case 7:
-			return "" + (int) statistics.getTotalRammingDamageScore();
+			return "" + (int) (statistics.getTotalRammingDamageScore() + 0.5);
 
 		case 8:
-			return "" + (int) statistics.getTotalKilledEnemyRammingScore();
+			return "" + (int) (statistics.getTotalKilledEnemyRammingScore() + 0.5);
 
 		case 9:
-			return "" + (int) statistics.getTotalFirsts();
+			return "" + (int) (statistics.getTotalFirsts() + 0.5);
 
 		case 10:
-			return "" + (int) statistics.getTotalSeconds();
+			return "" + (int) (statistics.getTotalSeconds() + 0.5);
 
 		case 11:
-			return "" + (int) statistics.getTotalThirds();
+			return "" + (int) (statistics.getTotalThirds() + 0.5);
 
 		default:
 			return "";

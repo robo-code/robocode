@@ -91,10 +91,10 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 		case 2:
 			return (int) (r.getStatistics().getTotalScore()
-					+ (battle.isRunning() ? r.getStatistics().getCurrentScore() : 0));
+					+ (battle.isRunning() ? r.getStatistics().getCurrentScore() : 0) + 0.5);
 
 		case 3:
-			return battle.isRunning() ? (int) r.getStatistics().getCurrentScore() : 0;
+			return battle.isRunning() ? (int) (r.getStatistics().getCurrentScore() + 0.5) : 0;
 
 		default:
 			return "";

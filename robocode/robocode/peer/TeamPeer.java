@@ -34,8 +34,14 @@ public class TeamPeer extends Vector<RobotPeer> implements ContestantPeer {
 	}
 
 	public int compareTo(ContestantPeer cp) {
-		return (int) (cp.getStatistics().getTotalScore() + cp.getStatistics().getCurrentScore() + 0.5)
-				- (int) (teamStatistics.getTotalScore() + teamStatistics.getCurrentScore() + 0.5);
+		double score1 = teamStatistics.getTotalScore();
+		double score2 = cp.getStatistics().getTotalScore();
+
+		if (teamLeader.getBattle().isRunning()) {
+			score1 += teamStatistics.getCurrentScore();
+			score2 += cp.getStatistics().getCurrentScore();
+		}
+		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
 	}
 
 	public ContestantStatistics getStatistics() {
