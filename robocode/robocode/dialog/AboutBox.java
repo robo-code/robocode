@@ -57,7 +57,7 @@ public class AboutBox extends JDialog {
 			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (main developer/administrator),<br>"
 			+ "Luis Crespo (Sound engine, single-step debugging, Ranking panel),<br>"
 			+ "Matthew Reeder (Editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
-			+ "Titus Chen (bugfixes regarding robot teleportation and bad wall collision detection),<br>"
+			+ "Titus Chen (bugfixes regarding robot teleportation, bad wall collision detection, and team ranking),<br>"
 			+ "Ascander Jr (graphics for ground tiles),<br>" + "and Stefan Westen (onPaint() method from RobocodeSG)<br>"
 			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
