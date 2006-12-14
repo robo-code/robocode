@@ -2,8 +2,9 @@ Version 1.2.2
 (12/14/2006)
 o Bugfixes
   -- Extra hit wall events were occuring. This has been corrected by Titus Chen
-  -- Teams were not always ranked correctly, and the ranking versus final scores were
-     some times inconsistent. This was corrected by Titus Chen
+  -- Teams were not always ranked correctly. This was corrected by Titus Chen
+     -- In addition, the ranking scores and final battle results have been made
+        consistent. 
   -- The radar scan arc was not painted correctly if the radar was moving towards left
   -- Minor bugfix: Sometimes ArrayIndexOutOfBoundsExceptions occured when adding and/or
      removing robots in the robots folder
