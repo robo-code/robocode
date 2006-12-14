@@ -11,6 +11,9 @@ o Bugfixes
 o Added TPS slider to the toolbar on the battle window so the TPS can be changed quickly
 o Bullet sizes has been improved, so very small bullets will always be visible, even on
   large 5000x5000 battle fields
+o Removed the "Allow robots to change colors repeatedly" from the View Options in the
+  Preferences as this option did not have any affect as the current rendering engine
+  always allows robots to change colors repeatedly
 
 Version 1.2.1A
 (11/26/2006)

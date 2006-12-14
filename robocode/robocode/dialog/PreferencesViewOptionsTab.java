@@ -16,6 +16,8 @@
  *     - Changed from using FPS into using TPS (Turns per Second), but added a
  *       "Display FPS in titlebar" option
  *     - Added propery listener for getting TPS updated from TPS slider
+ *     - Removed "Allow color changes" as this is always possible with the
+ *       current rendering engine
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -53,7 +55,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton defaultsButton;
 	private JCheckBox displayFpsCheckBox;
 	private JCheckBox displayTpsCheckBox;
-	private JCheckBox optionsBattleAllowColorChangesCheckBox;
 	
 	private JPanel visibleOptionsPanel;
 	private JPanel tpsOptionsPanel;
@@ -217,21 +218,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	/**
-	 * Return the optionsBattleAllowColorChangesCheckBox
-	 * 
-	 * @return JCheckBox
-	 */
-	private JCheckBox getOptionsBattleAllowColorChangesCheckBox() {
-		if (optionsBattleAllowColorChangesCheckBox == null) {
-			optionsBattleAllowColorChangesCheckBox = new JCheckBox(
-					"Allow robots to change colors repeatedly (Slow, not recommended)");
-			optionsBattleAllowColorChangesCheckBox.setMnemonic('h');
-			optionsBattleAllowColorChangesCheckBox.setDisplayedMnemonicIndex(17);
-		}
-		return optionsBattleAllowColorChangesCheckBox;
-	}
-
-	/**
 	 * Return the maxTpsButton
 	 * 
 	 * @return JButton
@@ -365,7 +351,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			visibleOptionsPanel.add(getVisibleScanArcsCheckBox());
 			visibleOptionsPanel.add(getVisibleExplosionsCheckBox());
 			visibleOptionsPanel.add(getVisibleGroundCheckBox());
-			visibleOptionsPanel.add(getOptionsBattleAllowColorChangesCheckBox());
 			visibleOptionsPanel.add(new JLabel(" "));
 			visibleOptionsPanel.add(getDefaultsButton());
 		}
@@ -470,7 +455,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getVisibleExplosionsCheckBox().setSelected(robocodeProperties.getOptionsViewExplosions());
 		getVisibleGroundCheckBox().setSelected(robocodeProperties.getOptionsViewGround());
 		getDesiredTpsTextField().setText("" + robocodeProperties.getOptionsBattleDesiredTPS());
-		getOptionsBattleAllowColorChangesCheckBox().setSelected(robocodeProperties.getOptionsBattleAllowColorChanges());
 	}
 
 	public void storePreferences() {
@@ -484,7 +468,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		props.setOptionsViewExplosions(getVisibleExplosionsCheckBox().isSelected());
 		props.setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
 		props.setOptionsBattleDesiredTPS(Integer.parseInt(getDesiredTpsTextField().getText()));
-		props.setOptionsBattleAllowColorChanges(getOptionsBattleAllowColorChangesCheckBox().isSelected());
 		manager.saveProperties();
 	}
 

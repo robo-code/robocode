@@ -16,6 +16,8 @@
  *     - Added sound options
  *     - Added common options for showing battle result and append when saving
  *       results
+ *     - Removed "Allow color changes" option as this is always possible with
+ *       the current rendering engine
  *******************************************************************************/
 package robocode.manager;
 
@@ -42,7 +44,6 @@ public class RobocodeProperties {
 	private boolean optionsViewScanArcs = false;
 	private boolean optionsViewExplosions = true;
 	private boolean optionsViewGround = true;
-	private boolean optionsBattleAllowColorChanges = false;
 
 	// View Options (Turns Per Second)
 	private boolean optionsViewTPS = true;
@@ -95,7 +96,6 @@ public class RobocodeProperties {
 			OPTIONS_VIEW_FPS = "robocode.options.view.FPS",
 			OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions",
 			OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS",
-			OPTIONS_BATTLE_ALLOWCOLORCHANGES = "robocode.options.battle.allowColorChanges",
 
 			OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing",
 			OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing",
@@ -424,15 +424,6 @@ public class RobocodeProperties {
 		notifyDesiredTpsChanged();
 	}
 
-	public boolean getOptionsBattleAllowColorChanges() {
-		return optionsBattleAllowColorChanges;
-	}
-	
-	public void setOptionsBattleAllowColorChanges(boolean optionsBattleAllowColorChanges) {
-		this.optionsBattleAllowColorChanges = optionsBattleAllowColorChanges;
-		props.setProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "" + optionsBattleAllowColorChanges);
-	}
-	
 	/**
 	 * Gets the optionsSoundEnableSound
 	 * 
@@ -768,7 +759,6 @@ public class RobocodeProperties {
 		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
 		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
-		optionsBattleAllowColorChanges = Boolean.valueOf(props.getProperty(OPTIONS_BATTLE_ALLOWCOLORCHANGES, "false")).booleanValue();
 
 		optionsRenderingAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0"));
 		optionsRenderingTextAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0"));
