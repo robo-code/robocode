@@ -564,18 +564,6 @@ public class BattleView extends Canvas {
 		g.drawString(s, left, (top + height - descent));
 	}
 
-	public void saveFrame(String fileName) {
-		try {
-			java.io.FileOutputStream o = new java.io.FileOutputStream(fileName);
-			com.sun.image.codec.jpeg.JPEGImageEncoder encoder = com.sun.image.codec.jpeg.JPEGCodec.createJPEGEncoder(o);
-
-			encoder.encode((BufferedImage) offscreenImage);
-			o.close();
-		} catch (Exception e) {
-			Utils.log("Could not save frame: " + e);
-		}
-	}
-
 	public void setTitle(String s) {
 		if (robocodeFrame != null) {
 			robocodeFrame.setTitle(s);
