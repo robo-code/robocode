@@ -1,3 +1,10 @@
+Version 1.2.3 Beta
+(12/16/2006)
+o Improved the security manager
+  -- Robot are not allowed to access any internal Robocode packages anymore,
+     except for the robocode.util package in order to let legacy robots access
+     robocode.util.Utils, e.g. for the normalRelativeAngle() etc.
+
 Version 1.2.2
 (12/14/2006)
 o Bugfixes
@@ -9,11 +16,11 @@ o Bugfixes
   -- Minor bugfix: Sometimes ArrayIndexOutOfBoundsExceptions occured when adding and/or
      removing robots in the robots folder
 o Added TPS slider to the toolbar on the battle window so the TPS can be changed quickly
-o Bullet sizes has been improved, so very small bullets will always be visible, even on
-  large 5000x5000 battle fields
-o Removed the "Allow robots to change colors repeatedly" from the View Options in the
-  Preferences as this option did not have any affect as the current rendering engine
-  always allows robots to change colors repeatedly
+o Bullet sizes has been improved
+  -- Very small bullets will always be visible, even on large 5000x5000 battle fields
+o Removed the "Allow robots to change colors repeatedly" from the View Options
+  -- This option did not have any affect as the current rendering engine always allows
+     robots to change colors repeatedly
 
 Version 1.2.1A
 (11/26/2006)
