@@ -26,10 +26,10 @@ import java.net.*;
  * @author Flemming N. Larsen (current)
  */
 public class RobocodeSecurityPolicy extends Policy {
-	Policy parentPolicy;
-	PermissionCollection permissionCollection;
-	Vector<URL> trustedCodeUrls; 
-	
+	private Policy parentPolicy;
+	private PermissionCollection permissionCollection;
+	private Vector<URL> trustedCodeUrls; 
+
 	public RobocodeSecurityPolicy(Policy parentPolicy) {
 		this.parentPolicy = parentPolicy;
 		this.permissionCollection = new Permissions();
