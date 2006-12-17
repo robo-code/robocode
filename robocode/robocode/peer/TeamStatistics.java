@@ -10,12 +10,15 @@
  *     - Initial API and implementation
  *     Luis Crespo
  *     - Added getCurrentScore()
+ *     Flemming N. Larsen
+ *     - Ported to Java 5
  *******************************************************************************/
 package robocode.peer;
 
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Luis Crespo, Flemming N. Larsen (current)
  */
 public class TeamStatistics implements ContestantStatistics {
 
@@ -31,8 +34,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalBulletDamageDealt() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalBulletDamageDealt();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalBulletDamageDealt();
 		}
 		return d;
 	}
@@ -43,8 +46,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalBulletDamageReceived() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalBulletDamageReceived();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalBulletDamageReceived();
 		}
 		return d;
 	}
@@ -55,8 +58,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalBulletDamageScore() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalBulletDamageScore();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalBulletDamageScore();
 		}
 		return d;
 	}
@@ -67,8 +70,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public int getTotalFirsts() {
 		int d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalFirsts();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalFirsts();
 		}
 		return d;
 	}
@@ -79,8 +82,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalKilledEnemyBulletScore() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalKilledEnemyBulletScore();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalKilledEnemyBulletScore();
 		}
 		return d;
 	}
@@ -91,8 +94,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalKilledEnemyRammingScore() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalKilledEnemyRammingScore();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalKilledEnemyRammingScore();
 		}
 		return d;
 	}
@@ -103,8 +106,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalRammingDamageDealt() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalRammingDamageDealt();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalRammingDamageDealt();
 		}
 		return d;
 	}
@@ -115,8 +118,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalRammingDamageReceived() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalRammingDamageReceived();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalRammingDamageReceived();
 		}
 		return d;
 	}
@@ -127,8 +130,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalRammingDamageScore() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalRammingDamageScore();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalRammingDamageScore();
 		}
 		return d;
 	}
@@ -139,8 +142,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalScore() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalScore();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalScore();
 		}
 		return d;
 	}
@@ -151,8 +154,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public int getTotalSeconds() {
 		int d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalSeconds();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalSeconds();
 		}
 		return d;
 	}
@@ -163,8 +166,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalSurvivalScore() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalSurvivalScore();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalSurvivalScore();
 		}
 		return d;
 	}
@@ -175,8 +178,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public int getTotalThirds() {
 		int d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalThirds();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalThirds();
 		}
 		return d;
 	}
@@ -187,8 +190,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getTotalWinnerScore() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getTotalWinnerScore();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalWinnerScore();
 		}
 		return d;
 	}
@@ -199,8 +202,8 @@ public class TeamStatistics implements ContestantStatistics {
 	public double getCurrentScore() {
 		double d = 0;
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			d += teamPeer.elementAt(i).getRobotStatistics().getCurrentScore();
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getCurrentScore();
 		}
 		return d;
 	}
