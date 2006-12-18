@@ -73,10 +73,10 @@ public class LimitedDocument extends PlainDocument {
 			// Increment for last line...
 			int currentLen;
 
-			if (lineStart > 0 && done == false) {
+			if (!done && lineStart > 0) {
 				currentLen = 0;
 			} else {
-				if (lineStart > 0 && done == true) {
+				if (done && lineStart > 0) {
 					lineIndex++;
 				}
 				Element currentLine = rootElement.getElement(lineIndex);

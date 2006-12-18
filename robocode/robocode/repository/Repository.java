@@ -44,26 +44,26 @@ public class Repository {
 				if (onlyRobots) {
 					continue;
 				}
-				if (onlyDevelopment == true && spec.getFullPackage() != null
+				if (onlyDevelopment && spec.getFullPackage() != null
 						&& (spec.getFullPackage().equals("sample") || spec.getFullPackage().equals("sampleteam"))) {
 					continue;
 				}
-				if (onlyDevelopment == true && spec.isDevelopmentVersion() == false) {
+				if (onlyDevelopment && !spec.isDevelopmentVersion()) {
 					continue;
 				}
 			} else {
 				RobotSpecification robotSpec = (RobotSpecification) spec;
 
-				if (onlyWithSource && robotSpec.getRobotJavaSourceIncluded() == false) {
+				if (onlyWithSource && !robotSpec.getRobotJavaSourceIncluded()) {
 					continue;
 				}
 				if (onlyWithPackage && robotSpec.getFullPackage() == null) {
 					continue;
 				}
-				if (onlyDevelopment && robotSpec.isDevelopmentVersion() == false) {
+				if (onlyDevelopment && !robotSpec.isDevelopmentVersion()) {
 					continue;
 				}
-				if (onlyNotDevelopment && robotSpec.isDevelopmentVersion() == true) {
+				if (onlyNotDevelopment && robotSpec.isDevelopmentVersion()) {
 					continue;
 				}
 				if (onlyDevelopment && robotSpec.getFullPackage() != null

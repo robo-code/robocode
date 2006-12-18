@@ -137,32 +137,31 @@ public class Utils {
 		component.setMaximumSize(size);
 	}
 
-	public static boolean deleteDir(File f) {
-		if (!f.isDirectory()) {
+	public static boolean deleteDir(File dir) {
+		if (!dir.isDirectory()) {
 			return false;
 		}
 
-		File files[] = f.listFiles();
-
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].isDirectory()) {
+		for (File file : dir.listFiles()) {
+			if (file.isDirectory()) {
 				try {
 					// Test for symlink and ignore.
 					// Robocode won't create one, but just in case a user does...
-					if (files[i].getCanonicalFile().getParentFile().equals(f.getCanonicalFile())) {
-						deleteDir(files[i]);
-						files[i].delete();
+					if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
+						deleteDir(file);
+						file.delete();
 					} else {
-						System.out.println("Warning: " + files[i] + " may be a symlink.  Ignoring.");
+						System.out.println("Warning: " + file + " may be a symlink.  Ignoring.");
 					}
 				} catch (IOException e) {
-					System.out.println("Warning: Cannot determine canonical file for " + files[i] + " - ignoring.");
+					System.out.println("Warning: Cannot determine canonical file for " + file + " - ignoring.");
 				}
 			} else {
-				files[i].delete();
+				file.delete();
 			}
 		}
-		f.delete();
+		dir.delete();
+
 		return true;
 	}
 

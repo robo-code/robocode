@@ -8,12 +8,15 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5
  *******************************************************************************/
 package robocode.util;
 
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobocodeFileFilter implements java.io.FileFilter {
 	String fileTypes[] = null;
@@ -39,9 +42,11 @@ public class RobocodeFileFilter implements java.io.FileFilter {
 			return true;
 		}
 
-		for (int i = 0; i < fileTypes.length; i++) {
-			if (file.getName().length() > fileTypes[i].length()) {
-				if (file.getName().substring(file.getName().length() - fileTypes[i].length()).equals(fileTypes[i])) {
+		String filename = file.getName();
+
+		for (String fileType : fileTypes) {
+			if (filename.length() > fileType.length()) {
+				if (filename.substring(filename.length() - fileType.length()).equals(fileType)) {
 					return true;
 				}
 			}
