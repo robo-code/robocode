@@ -521,9 +521,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		scanArc.setArc(x - Rules.RADAR_SCAN_RADIUS, y - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
-		for (int i = 0; i < battle.getRobots().size(); i++) {
-			RobotPeer r = battle.getRobots().elementAt(i);
-
+		for (RobotPeer r : battle.getRobots()) {
 			if (!(r == null || r == this || r.isDead) && intersects(scanArc, r.boundingBox)) {
 				double dx = r.x - x;
 				double dy = r.y - y;
@@ -579,10 +577,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			if (!this.isDead) {
 				eventManager.add(new DeathEvent());
 				if (this.isTeamLeader()) {
-					for (int i = 0; i < teamPeer.size(); i++) {
-						RobotPeer teammate = teamPeer.elementAt(i);
-
-						if (!teammate.isDead && teammate != this) {
+					for (RobotPeer teammate : teamPeer) {
+						if (!(teammate.isDead || teammate == this)) {
 							teammate.setEnergy(teammate.energy - 30);
 							BulletPeer sBullet = new BulletPeer(this, battle);
 
@@ -652,7 +648,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setGetCallCount(0);
 	
 		// This stops autoscan from scanning...
-		if (waitCondition != null && waitCondition.test() == true) {
+		if (waitCondition != null && waitCondition.test()) {
 			waitCondition = null;
 		}
 		
@@ -760,7 +756,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		// Scan false means robot did not call scan() manually.
 		// But if we're moving, scan
-		if (scan == false) {
+		if (!scan) {
 			scan = (lastHeading != heading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
 					|| lastX != x || lastY != y || waitCondition != null);
 		}
@@ -1161,7 +1157,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public final synchronized void setStop(boolean overwrite) {
-		if (!isStopped || overwrite == true) {
+		if (!isStopped || overwrite) {
 			this.saveDistanceToGo = distanceRemaining;
 			this.saveAngleToTurn = turnRemaining;
 			this.saveGunAngleToTurn = gunTurnRemaining;

@@ -131,14 +131,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	public boolean close() {
 		JInternalFrame[] frames = getDesktopPane().getAllFrames();
-		EditWindow editWindow = null;
 
 		if (frames != null) {
-			for (int i = 0; i < frames.length; i++) {
-				editWindow = (EditWindow) frames[i];
-				if (editWindow != null) {
-					editWindow.moveToFront();
-					if (editWindow.fileSave(true) == false) {
+			for (JInternalFrame frame : frames) {
+				if (frame != null) {
+					frame.moveToFront();
+					if ((frame instanceof EditWindow) && !((EditWindow)frame).fileSave(true)) {
 						return false;
 					}
 				}
@@ -149,7 +147,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			System.exit(0);
 		} else {
 			dispose();
-			return true;
 		}
 		return true;
 	}
@@ -388,10 +385,10 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		EditWindow editWindow = null;
 
 		if (frames != null) {
-			for (int i = 0; i < frames.length; i++) {
-				if (frames[i].isSelected()) {
-					if (frames[i] instanceof EditWindow) {
-						editWindow = (EditWindow) frames[i];
+			for (JInternalFrame frame : frames) {
+				if (frame.isSelected()) {
+					if (frame instanceof EditWindow) {
+						editWindow = (EditWindow) frame;
 					}
 					break;
 				}
@@ -529,11 +526,9 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	 * Adds the given window to the Window menu.
 	 */
 	public void removeFromWindowMenu(EditWindow window) {
-		Component[] components = getRobocodeEditorMenuBar().getWindowMenu().getMenuComponents();
-
-		for (int i = 0; i < components.length; i++) {
-			if (components[i] instanceof WindowMenuItem) {
-				WindowMenuItem item = (WindowMenuItem) components[i];
+		for (Component c : getRobocodeEditorMenuBar().getWindowMenu().getMenuComponents()) {
+			if (c instanceof WindowMenuItem) {
+				WindowMenuItem item = (WindowMenuItem) c;
 
 				if (item.getEditWindow() == window) {
 					getRobocodeEditorMenuBar().getWindowMenu().remove(item);

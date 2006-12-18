@@ -105,8 +105,8 @@ public class WizardCardPanel extends JPanel implements Wizard {
 	}
 
 	public boolean isReady() {
-		for (int i = 0; i < getComponentCount(); i++) {
-			if (!((WizardPanel) getComponent(i)).isReady()) {
+		for (Component c : getComponents()) {
+			if (!((WizardPanel) c).isReady()) {
 				return false;
 			}
 		}

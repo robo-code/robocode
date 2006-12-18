@@ -101,47 +101,37 @@ public class BattleManager {
 				false, false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
-		StringTokenizer tokenizer;
-
 		if (battleProperties.getSelectedRobots() != null) {
-			tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
+			StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
+
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				for (int i = 0; i < robotSpecificationsVector.size(); i++) {
-					FileSpecification currentFileSpecification = (FileSpecification) robotSpecificationsVector.elementAt(
-							i);
-
-					if (currentFileSpecification.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-						if (currentFileSpecification instanceof RobotSpecification) {
-							RobotSpecification current = (RobotSpecification) currentFileSpecification;
-
-							battlingRobotsVector.add(new RobotClassManager(current));
+				for (FileSpecification fileSpec : robotSpecificationsVector) {
+					if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+						if (fileSpec instanceof RobotSpecification) {
+							battlingRobotsVector.add(new RobotClassManager((RobotSpecification) fileSpec));
 							break;
-						} else if (currentFileSpecification instanceof TeamSpecification) {
-							TeamSpecification currentTeam = (TeamSpecification) currentFileSpecification;
+						} else if (fileSpec instanceof TeamSpecification) {
+							TeamSpecification currentTeam = (TeamSpecification) fileSpec;
 							TeamPeer teamManager = new TeamPeer(currentTeam.getName());
-							StringTokenizer teamTokenizer;
 
-							teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+							StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+
 							while (teamTokenizer.hasMoreTokens()) {
 								bot = teamTokenizer.nextToken();
 								RobotSpecification match = null;
 
-								for (int j = 0; j < robotSpecificationsVector.size(); j++) {
-									currentFileSpecification = (FileSpecification) robotSpecificationsVector.elementAt(j);
-
+								for (FileSpecification teamFileSpec : robotSpecificationsVector) {
 									// Teams cannot include teams
-									if (currentFileSpecification instanceof TeamSpecification) {
+									if (teamFileSpec instanceof TeamSpecification) {
 										continue;
 									}
-									if (currentFileSpecification.getNameManager().getUniqueFullClassNameWithVersion().equals(
-											bot)) {
+									if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
 										// Found team member
-										match = (RobotSpecification) currentFileSpecification;
-										if (currentTeam.getRootDir().equals(currentFileSpecification.getRootDir())
-												|| currentTeam.getRootDir().equals(
-														currentFileSpecification.getRootDir().getParentFile())) {
+										match = (RobotSpecification) teamFileSpec;
+										if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
+												|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
 											break;
 										}
 										// else, still looking
@@ -164,30 +154,24 @@ public class BattleManager {
 				false, false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
-		robocode.control.RobotSpecification[] robotSpecs = battleSpecification.getRobots();
-
-		for (int i = 0; i < robotSpecs.length; i++) {
-			if (robotSpecs[i] == null) {
+		for (robocode.control.RobotSpecification battleRobotSpec : battleSpecification.getRobots()) {
+			if (battleRobotSpec == null) {
 				break;
 			}
-			
-			String bot;
 
-			if (robotSpecs[i].getVersion() != null && !robotSpecs[i].getVersion().equals("")) {
-				bot = robotSpecs[i].getClassName() + " " + robotSpecs[i].getVersion();
-			} else {
-				bot = robotSpecs[i].getClassName();
+			String bot = battleRobotSpec.getClassName();
+
+			if (!(battleRobotSpec.getVersion() == null || battleRobotSpec.getVersion().length() == 0)) {
+				bot += ' ' + battleRobotSpec.getVersion();
 			}
-		
+
 			boolean found = false;
 
-			for (int j = 0; j < robotSpecificationsVector.size(); j++) {
-				if (((FileSpecification) robotSpecificationsVector.elementAt(j)).getNameManager().getUniqueFullClassNameWithVersion().equals(
-						bot)) {
-					RobotSpecification robotSpec = (RobotSpecification) robotSpecificationsVector.elementAt(j);
-					RobotClassManager rcm = new RobotClassManager(robotSpec);
+			for (FileSpecification fileSpec : robotSpecificationsVector) {
+				if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+					RobotClassManager rcm = new RobotClassManager((RobotSpecification) fileSpec);
 
-					rcm.setControlRobotSpecification(robotSpecs[i]);
+					rcm.setControlRobotSpecification(battleRobotSpec);
 					battlingRobotsVector.add(rcm);
 					found = true;
 					break;
@@ -243,8 +227,8 @@ public class BattleManager {
 			manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
 		}
 
-		for (int i = 0; i < battlingRobotsVector.size(); i++) {
-			battle.addRobot((RobotClassManager) battlingRobotsVector.elementAt(i));
+		for (RobotClassManager robotClassMgr : battlingRobotsVector) {
+			battle.addRobot(robotClassMgr);
 		}
 
 		if (manager.isGUIEnabled()) {

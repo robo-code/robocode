@@ -130,7 +130,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 	}
 
 	public void setModified(boolean modified) {
-		if (this.modified == false && modified == true) {
+		if (modified && !this.modified) {
 			this.modified = true;
 			if (fileName != null) {
 				setTitle("Editing - " + fileName + " *");
@@ -139,7 +139,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 			} else {
 				setTitle("Editing - *");
 			}
-		} else if (modified == false) {
+		} else if (!modified) {
 			this.modified = false;
 			if (fileName != null) {
 				setTitle("Editing - " + fileName);

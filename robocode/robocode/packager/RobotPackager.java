@@ -277,9 +277,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 			out.println(e);
 			return 8;
 		}
-		for (int i = 0; i < selectedRobots.size(); i++) {
-			FileSpecification fileSpecification = (FileSpecification) selectedRobots.elementAt(i);
-
+		
+		for (FileSpecification fileSpecification : selectedRobots) {
 			if (fileSpecification instanceof RobotSpecification) {
 				RobotSpecification robotSpecification = (RobotSpecification) fileSpecification;
 
@@ -357,11 +356,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 				teamSpecification = (TeamSpecification) teamSpecification.clone();
 				teamSpecification.setTeamVersion(getPackagerOptionsPanel().getVersionField().getText());
 
-				StringTokenizer teamTokenizer;
+				StringTokenizer teamTokenizer = new StringTokenizer(teamSpecification.getMembers(), ",");
 				String bot;
-				FileSpecification currentFileSpecification;
-
-				teamTokenizer = new StringTokenizer(teamSpecification.getMembers(), ",");
 				String newMembers = "";
 
 				while (teamTokenizer.hasMoreTokens()) {
@@ -369,8 +365,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 						newMembers += ",";
 					}
 					bot = teamTokenizer.nextToken();
-					for (int j = 0; j < robotSpecificationsVector.size(); j++) {
-						currentFileSpecification = (FileSpecification) robotSpecificationsVector.elementAt(j);
+					for (FileSpecification currentFileSpecification : robotSpecificationsVector) {
 						// Teams cannot include teams
 						if (currentFileSpecification instanceof TeamSpecification) {
 							continue;
@@ -562,13 +557,13 @@ public class RobotPackager extends JDialog implements WizardListener {
 			if (dataDirectory.exists()) {
 				File files[] = dataDirectory.listFiles();
 
-				for (int j = 0; j < files.length; j++) {
+				for (File file : files) {
 					try {
 						JarEntry entry = new JarEntry(
-								classManager.getFullClassName().replace('.', '/') + ".data/" + files[j].getName());
+								classManager.getFullClassName().replace('.', '/') + ".data/" + file.getName());
 
 						jarout.putNextEntry(entry);
-						FileInputStream input = new FileInputStream(files[j]);
+						FileInputStream input = new FileInputStream(file);
 
 						copy(input, jarout);
 						jarout.closeEntry();

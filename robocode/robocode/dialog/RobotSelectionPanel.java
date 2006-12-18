@@ -87,7 +87,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 
 		public void valueChanged(ListSelectionEvent e) {
-			if (e.getValueIsAdjusting() == true) {
+			if (e.getValueIsAdjusting()) {
 				return;
 			}
 			if (e.getSource() == getSelectedRobotsList()) {
@@ -97,7 +97,6 @@ public class RobotSelectionPanel extends WizardPanel {
 
 		public void hierarchyChanged(HierarchyEvent e) {
 			if (!listBuilt && isShowing()) {
-				// log("Building robot list.");
 				listBuilt = true;
 				buildRobotList();
 			}
@@ -133,11 +132,11 @@ public class RobotSelectionPanel extends WizardPanel {
 	private void addAllButtonActionPerformed() {
 		JList selectedList = getSelectedRobotsList();
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) selectedList.getModel();
-		Vector<FileSpecification> availableRobots = availableRobotsPanel.getAvailableRobots();
 
-		for (int i = 0; i < availableRobots.size(); i++) {
-			selectedRobots.add(availableRobots.elementAt(i));
+		for (FileSpecification selected : availableRobotsPanel.getAvailableRobots()) {
+			selectedRobots.add(selected);
 		}
+
 		availableRobotsPanel.clearSelection();
 
 		selectedList.clearSelection();
@@ -154,8 +153,8 @@ public class RobotSelectionPanel extends WizardPanel {
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) getSelectedRobotsList().getModel();
 		Vector<FileSpecification> moves = availableRobotsPanel.getSelectedRobots();
 
-		for (int i = 0; i < moves.size(); i++) {
-			selectedRobots.add(moves.elementAt(i));
+		for (FileSpecification move : moves) {
+			selectedRobots.add(move);
 		}
 		availableRobotsPanel.clearSelection();
 		selectedModel.changed();
@@ -266,15 +265,15 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	public String getSelectedRobotsAsString() {
-		String s = "";
+		StringBuffer sb = new StringBuffer();
 
 		for (int i = 0; i < selectedRobots.size(); i++) {
 			if (i != 0) {
-				s += ",";
+				sb.append(',');
 			}
-			s += selectedRobots.elementAt(i).getNameManager().getUniqueFullClassNameWithVersion();
+			sb.append(selectedRobots.elementAt(i).getNameManager().getUniqueFullClassNameWithVersion());
 		}
-		return s;
+		return sb.toString();
 	}
 
 	public Vector<FileSpecification> getSelectedRobots() {
@@ -614,10 +613,9 @@ public class RobotSelectionPanel extends WizardPanel {
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				for (int i = 0; i < robotList.size(); i++) {
-					if (((FileSpecification) robotList.elementAt(i)).getNameManager().getUniqueFullClassNameWithVersion().equals(
-							bot)) {
-						this.selectedRobots.add(robotList.elementAt(i));
+				for (FileSpecification selected : robotList) {
+					if (selected.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+						this.selectedRobots.add(selected);
 						break;
 					}
 				}

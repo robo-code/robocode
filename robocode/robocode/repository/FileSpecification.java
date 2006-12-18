@@ -84,7 +84,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 			newSpec = new JarSpecification(f, rootDir, prefix, developmentVersion);
 		} else {
 			newSpec = new RobotSpecification(f, rootDir, prefix, developmentVersion);
-			if (!developmentVersion && newSpec.getValid() == false) {
+			if (!(developmentVersion || newSpec.getValid())) {
 				newSpec = new ClassSpecification((RobotSpecification) newSpec);
 			}
 		}

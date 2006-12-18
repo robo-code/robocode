@@ -237,9 +237,8 @@ public class ClassAnalyzer {
 			return null;
 		}
 
-		for (int i = 0; i < classNameIndexes.size(); i++) {
-			String className = strings[((Integer) classNameIndexes.elementAt(i)).intValue()];
-
+		for (Integer classNameIndex : classNameIndexes) {
+			String className = strings[classNameIndex.intValue()];
 			if (className.indexOf("[") != 0) {
 				referencedClasses.add(className);
 			}

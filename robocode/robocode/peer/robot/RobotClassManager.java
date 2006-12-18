@@ -64,14 +64,14 @@ public class RobotClassManager {
 		return robotSpecification.getNameManager();
 	}
 
-	public void addReferencedClasses(Vector<String> v) {
-		if (v == null) {
+	public void addReferencedClasses(Vector<String> refClasses) {
+		if (refClasses == null) {
 			return;
 		}
-		for (int i = 0; i < v.size(); i++) {
-			String className = v.elementAt(i).replace('/', '.');
+		for (String refClass : refClasses) {
+			String className = refClass.replace('/', '.');
 
-			if (getRootPackage() == null || (className.indexOf("java") != 0 && className.indexOf("robocode") != 0)) {
+			if (getRootPackage() == null || !(className.startsWith("java") || className.startsWith("robocode"))) {
 				if (getRootPackage() == null && !className.equals(fullClassName)) {
 					continue;
 				}

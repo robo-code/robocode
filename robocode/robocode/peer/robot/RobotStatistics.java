@@ -92,9 +92,6 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	private double[] getRobotDamage() {
 		if (robotDamage == null) {
 			robotDamage = new double[robotPeer.getBattle().getRobots().size()];
-			for (int i = 0; i < robotPeer.getBattle().getRobots().size(); i++) {
-				robotDamage[i] = 0.0;
-			}
 		}
 		return robotDamage;
 	}
@@ -210,8 +207,8 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 			if (teamPeer == null) {
 				bonus = getRobotDamage()[robot] * .2;
 			} else {
-				for (int i = 0; i < teamPeer.size(); i++) {
-					bonus += teamPeer.elementAt(i).getRobotStatistics().getRobotDamage()[robot] * .2;
+				for (RobotPeer teammate : teamPeer) {
+					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .2;
 				}
 			}
 				
@@ -232,8 +229,8 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 			if (teamPeer == null) {
 				bonus = getRobotDamage()[robot] * .3;
 			} else {
-				for (int i = 0; i < teamPeer.size(); i++) {
-					bonus += teamPeer.elementAt(i).getRobotStatistics().getRobotDamage()[robot] * .3;
+				for (RobotPeer teammate : teamPeer) {
+					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .3;
 				}
 			}
 			robotPeer.out.println(

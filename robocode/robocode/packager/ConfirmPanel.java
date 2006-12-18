@@ -100,10 +100,9 @@ public class ConfirmPanel extends WizardPanel {
 			getRobotListPanel().add(new JLabel("You have selected " + robotName + " for packaging."));
 		} else {
 			getRobotListPanel().add(new JLabel("You have selected the following robots for packaging:"));
-			for (int i = 0; i < selectedRobots.size(); i++) {
-				String robotName = ((FileSpecification) selectedRobots.elementAt(i)).getFullClassName();
-
-				getRobotListPanel().add(new JLabel(robotName));
+			
+			for (FileSpecification selected : selectedRobots) {
+				getRobotListPanel().add(new JLabel(selected.getFullClassName()));
 			}
 		}
 		getRobotListPanel().add(new JLabel(""));
@@ -117,7 +116,7 @@ public class ConfirmPanel extends WizardPanel {
 		setSelectedRobots(robotPackager.getRobotSelectionPanel().getSelectedRobots());
 		add(getRobotListPanel());
 		add(Box.createVerticalStrut(20));
-		if (robotPackager.getPackagerOptionsPanel().getIncludeSource().isSelected() == true) {
+		if (robotPackager.getPackagerOptionsPanel().getIncludeSource().isSelected()) {
 			add(new JLabel("Java source files will be included."));
 		} else {
 			add(new JLabel("Only .class files will be included."));

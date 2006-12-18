@@ -278,8 +278,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		JInternalFrame[] frames = editor.getDesktopPane().getAllFrames();
 
 		if (frames != null) {
-			for (int i = 0; i < frames.length; i++) {
-				frames[i].doDefaultCloseAction();
+			for (JInternalFrame frame : frames) {
+				frame.doDefaultCloseAction();
 			}
 		}
 	}

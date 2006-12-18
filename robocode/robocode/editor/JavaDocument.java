@@ -109,8 +109,8 @@ public class JavaDocument extends PlainDocument {
 			if (changedElements == null || changedElements.length == 0) {
 				Utils.log("Unknown insert even, 0 children added.");
 			}
-			for (int i = 0; i < changedElements.length; i++) {
-				processMultilineComments(changedElements[i], true);
+			for (Element element : changedElements) {
+				processMultilineComments(element, true);
 			}
 		}
 	}
@@ -200,7 +200,7 @@ public class JavaDocument extends PlainDocument {
 			endsComment = false;
 		}
 		// Following lines should be comments.	
-		if (followingLineComment == true) {
+		if (followingLineComment) {
 			// We started the comment
 			if (startsComment) {
 				if (!a.isDefined("startsComment")) {

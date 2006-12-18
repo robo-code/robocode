@@ -37,10 +37,10 @@ public class Keywords {
 	public static boolean isKeyword(Segment seg) {
 		boolean match = false;
 
-		for (int i = 0; match == false && i < keywords.length; i++) {
+		for (int i = 0; !match && i < keywords.length; i++) {
 			if (seg.count == keywords[i].length()) {
 				match = true;
-				for (int j = 0; match == true && j < seg.count; j++) {
+				for (int j = 0; match && j < seg.count; j++) {
 					if (seg.array[seg.offset + j] != keywords[i].charAt(j)) {
 						match = false;
 					}

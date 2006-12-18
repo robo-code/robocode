@@ -136,9 +136,10 @@ public class RobotRepositoryManager {
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", true);
 		}
-		for (int i = 0; i < updatedJarVector.size(); i++) {
-			processJar((JarSpecification) updatedJarVector.elementAt(i));
-			updateRobotDatabase((JarSpecification) updatedJarVector.elementAt(i));
+		
+		for (FileSpecification fileSpec : updatedJarVector) {
+			processJar((JarSpecification) fileSpec);
+			updateRobotDatabase((JarSpecification) fileSpec);
 			write = true;
 		}
 		updatedJarVector.clear();
@@ -158,9 +159,7 @@ public class RobotRepositoryManager {
 
 		Utils.setStatus("Adding robots to repository");
 
-		for (int i = 0; i < fileSpecificationVector.size(); i++) {
-			FileSpecification fs = (FileSpecification) fileSpecificationVector.elementAt(i);
-
+		for (FileSpecification fs : fileSpecificationVector) {
 			if (fs instanceof TeamSpecification) {
 				repository.add(fs);
 				continue;
@@ -193,22 +192,19 @@ public class RobotRepositoryManager {
 		File files[] = dir.listFiles();
 
 		if (files != null) {
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory() && files[i].getName().lastIndexOf(".jar_") == files[i].getName().length() - 5
-						|| files[i].isDirectory()
-								&& files[i].getName().lastIndexOf(".zip_") == files[i].getName().length() - 5
-								|| files[i].isDirectory()
-										&& files[i].getName().lastIndexOf(".jar") == files[i].getName().length() - 4) {
-					File f = new File(getRobotsDirectory(),
-							files[i].getName().substring(0, files[i].getName().length() - 1));
+			for (File file : files) {
+				if (file.isDirectory() && file.getName().lastIndexOf(".jar_") == file.getName().length() - 5
+						|| file.isDirectory() && file.getName().lastIndexOf(".zip_") == file.getName().length() - 5
+						|| file.isDirectory() && file.getName().lastIndexOf(".jar") == file.getName().length() - 4) {
+					File f = new File(getRobotsDirectory(), file.getName().substring(0, file.getName().length() - 1));
 
 					// startsWith robocode added in 0.99.5 to fix bug with people
 					// downloading robocode-setup.jar to the robots dir
 					if (f.exists() && !f.getName().startsWith("robocode")) {
 						continue;
 					} else {
-						Utils.setStatus("Cleaning up cache: Removing " + files[i]);
-						Utils.deleteDir(files[i]);
+						Utils.setStatus("Cleaning up cache: Removing " + file);
+						Utils.deleteDir(file);
 						Utils.setStatus("");
 					}
 				}
@@ -229,9 +225,7 @@ public class RobotRepositoryManager {
 
 		Vector<FileSpecification> fileSpecificationVector = getRobotDatabase().getFileSpecifications();
 
-		for (int i = 0; i < fileSpecificationVector.size(); i++) {
-			FileSpecification fs = (FileSpecification) fileSpecificationVector.elementAt(i);
-
+		for (FileSpecification fs : fileSpecificationVector) {
 			if (fs.exists()) {
 				File rootDir = fs.getRootDir();
 
@@ -285,52 +279,53 @@ public class RobotRepositoryManager {
 			Utils.log("Warning:  Unable to read directory " + dir);
 			return robotList;
 		}
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].isDirectory()) {
-				if (prefix.equals("")) {
-					int jidx = files[i].getName().lastIndexOf(".jar_");
 
-					if (jidx > 0 && jidx == files[i].getName().length() - 5) {
-						robotList.addAll(getSpecificationsInDirectory(files[i], files[i], "", isDevelopmentDirectory));
+		for (File file : files) {
+			String fileName = file.getName();
+
+			if (file.isDirectory()) {
+				if (prefix.equals("")) {
+					int jidx = fileName.lastIndexOf(".jar_");
+
+					if (jidx > 0 && jidx == fileName.length() - 5) {
+						robotList.addAll(getSpecificationsInDirectory(file, file, "", isDevelopmentDirectory));
 					} else {
-						jidx = files[i].getName().lastIndexOf(".zip_");
-						if (jidx > 0 && jidx == files[i].getName().length() - 5) {
-							robotList.addAll(
-									getSpecificationsInDirectory(files[i], files[i], "", isDevelopmentDirectory));
+						jidx = fileName.lastIndexOf(".zip_");
+						if (jidx > 0 && jidx == fileName.length() - 5) {
+							robotList.addAll(getSpecificationsInDirectory(file, file, "", isDevelopmentDirectory));
 						} else {
 							robotList.addAll(
-									getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
+									getSpecificationsInDirectory(rootDir, file, prefix + fileName + ".",
 									isDevelopmentDirectory));
 						}
 					}
 				} else {
-					int odidx = files[i].getName().indexOf("data.");
+					int odidx = fileName.indexOf("data.");
 
 					if (odidx == 0) {
-						renameOldDataDir(dir, files[i]);
+						renameOldDataDir(dir, file);
 						continue;
 					}
 
-					int didx = files[i].getName().lastIndexOf(".data");
+					int didx = fileName.lastIndexOf(".data");
 
-					if (didx > 0 && didx == files[i].getName().length() - 5) {
+					if (didx > 0 && didx == fileName.length() - 5) {
 						continue;
 					} // Don't process .data dirs
 					robotList.addAll(
-							getSpecificationsInDirectory(rootDir, files[i], prefix + files[i].getName() + ".",
-							isDevelopmentDirectory));
+							getSpecificationsInDirectory(rootDir, file, prefix + fileName + ".", isDevelopmentDirectory));
 				}
-			} else if (files[i].getName().indexOf("$") < 0 && files[i].getName().indexOf("robocode") != 0) {
-				FileSpecification cachedSpecification = getRobotDatabase().get(files[i].getPath());
+			} else if (fileName.indexOf("$") < 0 && fileName.indexOf("robocode") != 0) {
+				FileSpecification cachedSpecification = getRobotDatabase().get(file.getPath());
 				FileSpecification fileSpecification = null;
 
 				// if cachedSpecification is null, then this is a new file
 				if (cachedSpecification != null
-						&& cachedSpecification.isSameFile(files[i].getPath(), files[i].length(), files[i].lastModified())) {
+						&& cachedSpecification.isSameFile(file.getPath(), file.length(), file.lastModified())) {
 					// this file is unchanged
 					fileSpecification = cachedSpecification;
 				} else {
-					fileSpecification = FileSpecification.createSpecification(this, files[i], rootDir, prefix,
+					fileSpecification = FileSpecification.createSpecification(this, file, rootDir, prefix,
 							isDevelopmentDirectory);
 					updateRobotDatabase(fileSpecification);
 					write = true;
@@ -376,9 +371,10 @@ public class RobotRepositoryManager {
 
 				Class<?>[] interfaces = robotClass.getInterfaces();
 
-				for (int j = 0; j < interfaces.length; j++) {
-					if (interfaces[j].getName().equals("robocode.Droid")) {
+				for (Class<?> itf : interfaces) {
+					if (itf.getName().equals("robocode.Droid")) {
 						robotSpecification.setDroid(true);
+						break;
 					}
 				}
 
@@ -628,19 +624,16 @@ public class RobotRepositoryManager {
 			"Target.class", "Target$1.class", "Tracker.class", "TrackFire.class", "Walls.class"
 		};
 	  
-		File f = getRobotsDirectory();
+		File robotDir = getRobotsDirectory();
 
-		if (f.isDirectory()) // it better be!
-		{
-			File[] sampleBots = f.listFiles();
-
-			for (int i = 0; i < sampleBots.length; i++) {
-				if (!sampleBots[i].isDirectory()) {
-					for (int j = 0; j < oldSampleList.length; j++) {
-						if (sampleBots[i].getName().equals(oldSampleList[j])) {
-							Utils.log("Deleting old sample file: " + sampleBots[i].getName());
+		if (robotDir.isDirectory()) {
+			for (File sampleBot : robotDir.listFiles()) {
+				if (!sampleBot.isDirectory()) {
+					for (String oldSampleBot : oldSampleList) {
+						if (sampleBot.getName().equals(oldSampleBot)) {
+							Utils.log("Deleting old sample file: " + sampleBot.getName());
 							if (delete) {
-								sampleBots[i].delete();
+								sampleBot.delete();
 							} else {
 								return true;
 							}
