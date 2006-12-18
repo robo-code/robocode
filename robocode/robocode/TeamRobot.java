@@ -77,17 +77,13 @@ public class TeamRobot extends AdvancedRobot {
 			if (teamPeer == null) {
 				return null;
 			}
-			String s[] = new String[teamPeer.size() - 1 ];
-			int j = 0;
+			String s[] = new String[teamPeer.size() - 1];
 
-			for (int i = 0; i < teamPeer.size(); i++) {
-				RobotPeer teammate = teamPeer.elementAt(i);
-
+			int index = 0;
+			for (RobotPeer teammate : teamPeer) {
 				if (teammate != peer) {
-					s[j] = teamPeer.elementAt(i).getName();
-					j++;
+					s[index++] = teammate.getName();
 				}
-				// UniqueFullClassNameWithVersion();
 			}
 			return s;
 		} else {
