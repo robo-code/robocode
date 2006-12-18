@@ -78,9 +78,9 @@ public class NewBattleBattleFieldTab extends JPanel {
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Default Sizes"));
 
 		panel.setLayout(new GridLayout(sizeButtons.length, 1));
-			
-		for (int i = 0; i < sizeButtons.length; i++) {
-			panel.add(sizeButtons[i]);
+
+		for (SizeButton button : sizeButtons) {
+			panel.add(button);
 		}
 
 		return panel;
