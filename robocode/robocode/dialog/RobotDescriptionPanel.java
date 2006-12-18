@@ -38,8 +38,9 @@ public class RobotDescriptionPanel extends JPanel {
 	private JButton detailsButton;
 	private JLabel robocodeVersionLabel;
 	private JLabel filePathLabel;
-	private String blankString;
 	private FileSpecification currentRobotSpecification;
+
+	private final static String BLANK_STRING = "                                                                        ";
 
 	private EventManager eventManager = new EventManager();
 
@@ -65,10 +66,6 @@ public class RobotDescriptionPanel extends JPanel {
 	public RobotDescriptionPanel() {
 		super();
 		initialize();
-		blankString = "";
-		for (int i = 0; i < 72; i++) {
-			blankString += " ";
-		}
 	}
 
 	private JLabel getFilePathLabel() {
@@ -83,7 +80,7 @@ public class RobotDescriptionPanel extends JPanel {
 			descriptionLabel[index] = new JLabel();
 			descriptionLabel[index].setFont(new Font("Monospaced", Font.PLAIN, 10));
 			descriptionLabel[index].setHorizontalAlignment(JLabel.LEFT);
-			descriptionLabel[index].setText(blankString);
+			descriptionLabel[index].setText(BLANK_STRING);
 		}
 		return descriptionLabel[index];
 	}
@@ -177,7 +174,7 @@ public class RobotDescriptionPanel extends JPanel {
 		if (robotSpecification == null) {
 			getRobotNameLabel().setText(" ");
 			for (int i = 0; i < 3; i++) {
-				getDescriptionLabel(i).setText(blankString);
+				getDescriptionLabel(i).setText(BLANK_STRING);
 			}
 			getDetailsButton().setVisible(false);
 			getRobocodeVersionLabel().setText("");
@@ -211,10 +208,10 @@ public class RobotDescriptionPanel extends JPanel {
 					String line = tok.nextToken();
 
 					if (line != null) {
-						if (line.length() > 72) {
-							line = line.substring(0, 72);
+						if (line.length() > BLANK_STRING.length()) {
+							line = line.substring(0, BLANK_STRING.length());
 						}
-						for (int i = line.length(); i < 72; i++) {
+						for (int i = line.length(); i < BLANK_STRING.length(); i++) {
 							line += " ";
 						}
 						getDescriptionLabel(count).setText(line);
@@ -223,7 +220,7 @@ public class RobotDescriptionPanel extends JPanel {
 				}
 			}
 			for (int i = count; i < 3; i++) {
-				getDescriptionLabel(i).setText(blankString);
+				getDescriptionLabel(i).setText(BLANK_STRING);
 			}
 
 			URL u = robotSpecification.getWebpage();
