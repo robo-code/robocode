@@ -52,16 +52,20 @@ public class BattleSpecification {
 		battleProperties.setBattlefieldWidth(battlefield.getWidth());
 		battleProperties.setBattlefieldHeight(battlefield.getHeight());
 		String robotString = "";
+		RobotSpecification robot;
 
 		for (int i = 0; i < robots.length; i++) {
-			if (robots[i] == null) {
+			robot = robots[i];
+			if (robot == null) {
 				break;
 			}
-			if (robots[i].getVersion() != null && !robots[i].getVersion().equals("")) {
-				robotString += robots[i].getClassName() + " " + robots[i].getVersion();
-			} else {
-				robotString += robots[i].getClassName();
+
+			robotString += robot.getClassName();
+
+			if (!(robot.getVersion() == null || robot.getVersion().length() == 0)) {
+				robotString += " " + robot.getVersion();
 			}
+
 			if (i < robots.length - 1) {
 				robotString += ",";
 			}

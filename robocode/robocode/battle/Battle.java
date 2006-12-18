@@ -447,7 +447,7 @@ public class Battle implements Runnable {
 					y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
 					heading = 2 * PI * random();
 					r.initialize(x, y, heading);
-					if (validSpot(r) == true) {
+					if (validSpot(r)) {
 						break;
 					}
 				}
@@ -478,10 +478,11 @@ public class Battle implements Runnable {
 		Thread systemThreads[] = new Thread[256];
 
 		battleThread.getThreadGroup().enumerate(systemThreads, false);
+
 		Utils.log("Threads: ------------------------");
-		for (int i = 0; i < systemThreads.length; i++) {
-			if (systemThreads[i] != null) {
-				Utils.log(systemThreads[i].getName());
+		for (Thread thread : systemThreads) {
+			if (thread != null) {
+				Utils.log(thread.getName());
 			}
 		}
 	}
@@ -685,7 +686,7 @@ public class Battle implements Runnable {
 	}
 	
 	private boolean shouldPause() {
-		if (battleManager.isPaused() && abortBattles == false) {
+		if (battleManager.isPaused() && !abortBattles) {
 			if (!wasPaused) {
 				if (battleView != null) {
 					if (roundNum < numRounds) {
@@ -785,10 +786,10 @@ public class Battle implements Runnable {
 	private void moveBullets() {
 		// Move all bullets
 		for (int i = 0; i < bullets.size(); i++) {
-			int osize = bullets.size();
+			int numBullets = bullets.size();
 
-			((BulletPeer) bullets.elementAt(i)).update();
-			if (bullets.size() < osize) {
+			bullets.elementAt(i).update();
+			if (bullets.size() < numBullets) {
 				i--;
 			}
 		}
@@ -831,7 +832,7 @@ public class Battle implements Runnable {
 		// Perform scans, handle messages
 		for (RobotPeer r : robots) {
 			if (!r.isDead()) {
-				if (r.getScan() == true) {
+				if (r.getScan()) {
 					// Enter scan
 					System.err.flush();
 
@@ -843,8 +844,8 @@ public class Battle implements Runnable {
 				if (r.getMessageManager() != null) {
 					Vector<MessageEvent> messageEvents = r.getMessageManager().getMessageEvents();
 
-					for (int j = 0; j < messageEvents.size(); j++) {
-						r.getEventManager().add(messageEvents.elementAt(j));
+					for (MessageEvent me : messageEvents) {
+						r.getEventManager().add(me);
 					}
 					messageEvents.clear();
 				}
@@ -909,10 +910,8 @@ public class Battle implements Runnable {
 			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
 				count++;
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
-				TeamPeer t = (TeamPeer) c;
-
-				for (int j = 0; j < t.size(); j++) {
-					if (!t.elementAt(j).isDead()) {
+				for (RobotPeer r : (TeamPeer) c) {
+					if (!r.isDead()) {
 						count++;
 						break;
 					}
@@ -1060,7 +1059,7 @@ public class Battle implements Runnable {
 	}
 
 	public void stop(boolean showResultsDialog) {
-		if (running == false) {
+		if (!running) {
 			cleanup();
 		} else {
 			this.showResultsDialog = showResultsDialog;
@@ -1068,7 +1067,7 @@ public class Battle implements Runnable {
 			abortBattles = true;
 
 			if (!showResultsDialog) {
-				for (int i = 0; running == true && i < 40; i++) {
+				for (int i = 0; running && i < 40; i++) {
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {}
@@ -1092,7 +1091,7 @@ public class Battle implements Runnable {
 				} catch (InterruptedException e) {}
 			}
 			// Loader awake
-			if (getRoundNum() >= getNumRounds() || abortBattles == true) {
+			if (getRoundNum() >= getNumRounds() || abortBattles) {
 				// Robot loader thread terminating
 				return;
 			}
@@ -1130,7 +1129,7 @@ public class Battle implements Runnable {
 						y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
 						heading = 2 * PI * random();
 						r.initialize(x, y, heading);
-						if (validSpot(r) == true) {
+						if (validSpot(r)) {
 							break;
 						}
 					}

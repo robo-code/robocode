@@ -307,7 +307,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 	private class EventHandler implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
-			if (e.getValueIsAdjusting() == true) {
+			if (e.getValueIsAdjusting()) {
 				return;
 			}
 			if (e.getSource() == getAvailableRobotsList()) {
