@@ -89,7 +89,8 @@ public class HitRobotEvent extends Event {
 	 * If isMyFault() is true, then your robot's movement (including turning)
 	 * will have stopped and been marked complete.
 	 * Note:  If two robots are moving toward each other and collide,
-	 * they will each receive two HitRobotEvents.  The first will be the one with isMyFault() == true.
+	 * they will each receive two HitRobotEvents.  The first will be the one if isMyFault()
+	 * returns true.
 	 * 
 	 * @return whether or not you were moving toward the other robot.
 	 */
