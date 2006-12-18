@@ -54,9 +54,7 @@ public class RobotMessageManager {
 		
 		TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
 
-		for (int i = 0; i < teamPeer.size(); i++) {
-			RobotPeer receiver = teamPeer.elementAt(i);
-
+		for (RobotPeer receiver : teamPeer) {
 			if (!receiver.isDead()) {
 				if (name == null
 						|| (receiver.getName().length() >= name.length()

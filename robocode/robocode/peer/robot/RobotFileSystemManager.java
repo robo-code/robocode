@@ -123,8 +123,8 @@ public class RobotFileSystemManager {
 		File[] dataFiles = dataDirectory.listFiles();
 
 		quotaUsed = 0;
-		for (int i = 0; i < dataFiles.length; i++) {
-			quotaUsed += dataFiles[i].length();
+		for (File file : dataFiles) {
+			quotaUsed += file.length();
 		}
 	}
 
