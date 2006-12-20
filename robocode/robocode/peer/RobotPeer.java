@@ -27,6 +27,8 @@
  *     - Bugfix: HitRobotEvent.isMyFault() returned false despite the fact that
  *       the robot was moving toward the robot it collides with. This was the
  *       case when distanceRemaining == 0
+ *     - Removed isDead field as the robot state is used as replacement
+ *     - Added isAlive() method
  *     - Code cleanup
  *     Luis Crespo
  *     - Added states
@@ -59,7 +61,7 @@ import static robocode.util.Utils.*;
 public class RobotPeer implements Runnable, ContestantPeer {
 
 	// Robot States: all states last one turn, except ALIVE and DEAD
-	public static final int ROBOT_STATE_ALIVE = 0;
+	public static final int ROBOT_STATE_ACTIVE = 0;
 	public static final int ROBOT_STATE_HIT_WALL = 1;
 	public static final int ROBOT_STATE_HIT_ROBOT = 2;
 	public static final int ROBOT_STATE_DEAD = 3;
@@ -108,7 +110,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean isRunning;
 	private boolean isStopped;
 	private boolean isSleeping;
-	private boolean isDead;
 	private boolean isWinner;
 
 	private double lastGunHeading;
@@ -178,9 +179,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
 
-	// Robot state
-	protected int robotState;
-	protected int oldRobotState;
+	protected int state;
+
 
 	public TextPeer getSayTextPeer() {
 		return sayTextPeer;
@@ -223,7 +223,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		for (int i = 0; i < battle.getRobots().size(); i++) {
 			RobotPeer r = battle.getRobots().elementAt(i);
 
-			if (!(r == null || r == this || r.isDead) && boundingBox.intersects(r.boundingBox)) {
+			if (!(r == null || r == this || r.isDead()) && boundingBox.intersects(r.boundingBox)) {
 				// Bounce back
 				double angle = atan2(r.x - x, r.y - y);
 
@@ -250,7 +250,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					y -= movedy;
 
 					if (r.energy == 0) {
-						if (!r.isDead) {
+						if (r.isAlive()) {
 							r.kill();
 							statistics.scoreKilledEnemyRamming(i);
 						}
@@ -272,7 +272,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					y -= movedy;
 
 					if (r.energy == 0) {
-						if (!r.isDead) {
+						if (r.isAlive()) {
 							r.kill();
 							statistics.scoreKilledEnemyRamming(i);
 						}
@@ -286,7 +286,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			} // if robot active & not me & hit
 		} // for robots
 		if (inCollision) {
-			robotState = ROBOT_STATE_HIT_ROBOT;
+			state = ROBOT_STATE_HIT_ROBOT;
 		}
 	}
 
@@ -361,7 +361,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			acceleration = 0;
 		}
 		if (hitWall) {
-			robotState = ROBOT_STATE_HIT_WALL;
+			state = ROBOT_STATE_HIT_WALL;
 		}
 	}
 
@@ -420,7 +420,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public int getOthers() {
-		return battle.getActiveRobots() - (isDead ? 0 : 1);
+		return battle.getActiveRobots() - (isAlive() ? 1 : 0);
 	}
 
 	public double getRadarHeading() {
@@ -444,9 +444,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean isDead() {
-		return isDead;
+		return state == ROBOT_STATE_DEAD;
 	}
 
+	public boolean isAlive() {
+		return state != ROBOT_STATE_DEAD;
+	}
+	
 	public void run() {
 		setRunning(true);
 
@@ -522,7 +526,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
 		for (RobotPeer r : battle.getRobots()) {
-			if (!(r == null || r == this || r.isDead) && intersects(scanArc, r.boundingBox)) {
+			if (!(r == null || r == this || r.isDead()) && intersects(scanArc, r.boundingBox)) {
 				double dx = r.x - x;
 				double dy = r.y - y;
 				double angle = atan2(dx, dy);
@@ -573,11 +577,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized void kill() {
 		battle.resetInactiveTurnCount(10.0);
-		if (!this.isDead) {
+		if (isAlive()) {
 			eventManager.add(new DeathEvent());
-			if (this.isTeamLeader()) {
+			if (isTeamLeader()) {
 				for (RobotPeer teammate : teamPeer) {
-					if (!(teammate.isDead || teammate == this)) {
+					if (!(teammate.isDead() || teammate == this)) {
 						teammate.setEnergy(teammate.energy - 30);
 						BulletPeer sBullet = new BulletPeer(this, battle);
 
@@ -599,13 +603,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			sBullet.setY(y);
 			battle.addBullet(sBullet);
 		}
-		this.setEnergy(0.0);
+		setEnergy(0);
 		
-		isDead = true;
+		state = ROBOT_STATE_DEAD;
 	}
 
 	public synchronized void preInitialize() {
-		this.isDead = true;
+		state = ROBOT_STATE_DEAD;
 	}
 
 	public synchronized void setGunHeading(double newGunHeading) {
@@ -653,7 +657,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (halt) {
-			if (isDead) {
+			if (isDead()) {
 				death();
 			} else if (isWinner) {
 				throw new WinException();
@@ -683,7 +687,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		eventManager.setFireAssistValid(false);
 
-		if (isDead) {
+		if (isDead()) {
 			halt();
 		}
 	
@@ -728,8 +732,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public final synchronized void update() {
-		oldRobotState = robotState;
-		robotState = isDead ? ROBOT_STATE_DEAD : ROBOT_STATE_ALIVE;
+		// Reset robot state to active if it is not dead
+		if (isAlive()) {
+			state = ROBOT_STATE_ACTIVE;
+		}
+
 		updateGunHeat();
 
 		lastHeading = heading;
@@ -1062,7 +1069,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void initialize(double x, double y, double heading) {
-		isDead = false;
+		state = ROBOT_STATE_ACTIVE;
+
 		isWinner = false;
 		this.x = lastX = x;
 		this.y = lastY = y;
@@ -1106,8 +1114,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		isAdjustGunForBodyTurn = isAdjustRadarForGunTurn = isAdjustRadarForBodyTurn = isAdjustRadarForBodyTurnSet = false;
 	
 		newBullet = null;
-
-		robotState = oldRobotState = ROBOT_STATE_ALIVE;
 	}
 
 	public boolean isWinner() {
@@ -1588,6 +1594,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 	
 	public int getRobotState() {
-		return isDead ? ROBOT_STATE_DEAD : (oldRobotState == robotState) ? ROBOT_STATE_ALIVE : oldRobotState;
+		return state;
 	}
 }
