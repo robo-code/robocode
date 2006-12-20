@@ -159,7 +159,7 @@ public class BulletPeer {
 				r.getRobotStatistics().damagedByBullet(score);
 
 				if (r.getEnergy() <= 0) {
-					if (!r.isDead()) {
+					if (r.isAlive()) {
 						r.kill();
 						owner.getRobotStatistics().scoreKilledEnemyBullet(i);
 					}

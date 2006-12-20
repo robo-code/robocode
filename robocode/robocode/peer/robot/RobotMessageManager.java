@@ -55,7 +55,7 @@ public class RobotMessageManager {
 		TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
 
 		for (RobotPeer receiver : teamPeer) {
-			if (!receiver.isDead()) {
+			if (receiver.isAlive()) {
 				if (name == null
 						|| (receiver.getName().length() >= name.length()
 								&& receiver.getName().substring(0, name.length()).equals(name))
@@ -81,7 +81,7 @@ public class RobotMessageManager {
 	}
 	
 	public void addMessage(String sender, Serializable o) {
-		if (!robotPeer.isDead()) {
+		if (robotPeer.isAlive()) {
 			messageEvents.add(new MessageEvent(sender, o));
 		}
 	}

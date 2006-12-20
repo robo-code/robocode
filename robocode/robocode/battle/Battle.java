@@ -569,11 +569,11 @@ public class Battle implements Runnable {
 			for (RobotPeer r : robots) {
 				r.updateSayText();
 
-				if (!r.isDead()) {
+				if (r.isAlive()) {
 					// setWinner was here
 					r.update();
 				}
-				if ((zap || abortBattles) && !r.isDead()) {
+				if ((zap || abortBattles) && r.isAlive()) {
 					if (abortBattles) {
 						r.zap(5);
 					} else {
@@ -721,7 +721,7 @@ public class Battle implements Runnable {
 
 		// Compute active robots
 		for (RobotPeer r : robots) {
-			if (!r.isDead()) {
+			if (r.isAlive()) {
 				ar++;
 			}
 		}
@@ -801,7 +801,7 @@ public class Battle implements Runnable {
 	private void handleDeathEvents() {
 		if (deathEvents.size() > 0) {
 			for (RobotPeer r : robots) {
-				if (!r.isDead()) {
+				if (r.isAlive()) {
 					for (RobotPeer de : deathEvents) {
 						r.getEventManager().add(new RobotDeathEvent(de.getName()));
 						if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
@@ -819,7 +819,7 @@ public class Battle implements Runnable {
 				boolean teammatesalive = false;
 
 				for (RobotPeer tm : robots) {
-					if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
+					if (tm.getTeamPeer() == r.getTeamPeer() && tm.isAlive()) {
 						teammatesalive = true;
 						break;
 					}
@@ -834,7 +834,7 @@ public class Battle implements Runnable {
 	private void performScans() {
 		// Perform scans, handle messages
 		for (RobotPeer r : robots) {
-			if (!r.isDead()) {
+			if (r.isAlive()) {
 				if (r.getScan()) {
 					// Enter scan
 					System.err.flush();
@@ -866,7 +866,7 @@ public class Battle implements Runnable {
 				TeamPeer winningTeam = null;
 
 				for (RobotPeer r : robots) {
-					if (!r.isDead()) {
+					if (r.isAlive()) {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreWinner();
 							r.setWinner(true);
@@ -887,7 +887,7 @@ public class Battle implements Runnable {
 
 			if (endTimer == 4 * 30) {
 				for (RobotPeer r : robots) {
-					if (!r.isDead()) {
+					if (r.isAlive()) {
 						r.halt();
 					}
 				}
@@ -910,11 +910,11 @@ public class Battle implements Runnable {
 		int count = 0;
 
 		for (ContestantPeer c : contestants) {
-			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
+			if (c instanceof RobotPeer && ((RobotPeer) c).isAlive()) {
 				count++;
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
 				for (RobotPeer r : (TeamPeer) c) {
-					if (!r.isDead()) {
+					if (r.isAlive()) {
 						count++;
 						break;
 					}
@@ -1177,7 +1177,7 @@ public class Battle implements Runnable {
 		TeamPeer currentTeam = null;
 
 		for (RobotPeer currentRobot : robots) {
-			if (!currentRobot.isDead()) {
+			if (currentRobot.isAlive()) {
 				if (!found) {
 					found = true;
 					currentTeam = currentRobot.getRobotClassManager().getTeamManager();

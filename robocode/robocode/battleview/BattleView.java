@@ -346,7 +346,7 @@ public class BattleView extends Canvas {
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
 			for (RobotPeer r : battle.getRobots()) {
-				if (!r.isDead()) {
+				if (r.isAlive()) {
 					drawScanArc((Graphics2D) g, r); 
 				}
 			}
@@ -375,7 +375,7 @@ public class BattleView extends Canvas {
 		}
 
 		for (RobotPeer r : battle.getRobots()) {
-			if (!r.isDead()) {
+			if (r.isAlive()) {
 				x = r.getX();
 				y = battleFieldHeight - r.getY();
 
@@ -426,7 +426,7 @@ public class BattleView extends Canvas {
 				}
 				String energyString = ll + "." + rl;
 
-				if (r.getEnergy() == 0 && !r.isDead()) {
+				if (r.getEnergy() == 0 && r.isAlive()) {
 					energyString = "Disabled";
 				}
 				centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2, smallFont,
