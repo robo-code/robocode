@@ -120,16 +120,17 @@ public class Battle implements Runnable {
 		super();
 
 		if (manager.isGUIEnabled()) {
-			this.battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-			this.battleView.setBattle(this);
+			battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			battleView.setBattle(this);
 		}
 		this.battleField = battleField;
 		this.manager = manager;
-		this.battleManager = manager.getBattleManager();
-		this.soundManager = new SoundManager(manager.getProperties());
-		this.robots = new Vector<RobotPeer>();
-		this.bullets = new Vector<BulletPeer>(); 
-		this.contestants = new Vector<ContestantPeer>();
+
+		battleManager = manager.getBattleManager();
+		soundManager = new SoundManager(manager.getProperties());
+		robots = new Vector<RobotPeer>();
+		bullets = new Vector<BulletPeer>(); 
+		contestants = new Vector<ContestantPeer>();
 	}
 
 	/**
@@ -539,6 +540,8 @@ public class Battle implements Runnable {
 				continue;
 			}
 
+			// Next turn is starting
+
 			long turnStartTime = System.currentTimeMillis();
 			
 			if (resetThisSec) {
@@ -595,7 +598,7 @@ public class Battle implements Runnable {
 
 			computeActiveRobots();
 
-			// Repaint frame
+			// Paint current battle frame
 
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
@@ -1051,6 +1054,7 @@ public class Battle implements Runnable {
 				Utils.log("\n" + r.getName() + " still has not started after " + waitTime + " ms... giving up.");
 			}
 		}
+
 		Utils.log("");
 	}
 
@@ -1267,17 +1271,11 @@ public class Battle implements Runnable {
 	 */
 	private void playSounds() {
 		if (manager.isSoundEnabled()) {
-			int i;
-			BulletPeer bp;
-			RobotPeer rp;
-
-			for (i = 0; i < getBullets().size(); i++) {
-				bp = (BulletPeer) getBullets().get(i);
+			for (BulletPeer bp : getBullets()) {
 				soundManager.playBulletSound(bp);
 			}
-			for (i = 0; i < getRobots().size(); i++) {
-				rp = (RobotPeer) getRobots().get(i);
-				// Robot-hit-robot events play twice: once for each robot.
+			for (RobotPeer rp : getRobots()) {
+				// TODO: Robot-hit-robot events play twice: once for each robot.
 				// The code could be improved in order to play only once.
 				soundManager.playRobotSound(rp);
 			}
