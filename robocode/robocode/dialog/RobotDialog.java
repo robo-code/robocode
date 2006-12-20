@@ -265,7 +265,7 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Kill button has been activated
 	 */
 	private void killButtonActionPerformed() {
-		robotPeer.setDead(true);
+		robotPeer.kill();
 	}
 
 	/**

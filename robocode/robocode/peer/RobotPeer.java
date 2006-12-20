@@ -251,7 +251,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 					if (r.energy == 0) {
 						if (!r.isDead) {
-							r.setDead(true);
+							r.kill();
 							statistics.scoreKilledEnemyRamming(i);
 						}
 					}
@@ -273,7 +273,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 					if (r.energy == 0) {
 						if (!r.isDead) {
-							r.setDead(true);
+							r.kill();
 							statistics.scoreKilledEnemyRamming(i);
 						}
 					}
@@ -571,38 +571,37 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		battleField = newBattleField;
 	}
 
-	public synchronized void setDead(boolean dead) {
-		if (dead) {
-			battle.resetInactiveTurnCount(10.0);
-			if (!this.isDead) {
-				eventManager.add(new DeathEvent());
-				if (this.isTeamLeader()) {
-					for (RobotPeer teammate : teamPeer) {
-						if (!(teammate.isDead || teammate == this)) {
-							teammate.setEnergy(teammate.energy - 30);
-							BulletPeer sBullet = new BulletPeer(this, battle);
+	public synchronized void kill() {
+		battle.resetInactiveTurnCount(10.0);
+		if (!this.isDead) {
+			eventManager.add(new DeathEvent());
+			if (this.isTeamLeader()) {
+				for (RobotPeer teammate : teamPeer) {
+					if (!(teammate.isDead || teammate == this)) {
+						teammate.setEnergy(teammate.energy - 30);
+						BulletPeer sBullet = new BulletPeer(this, battle);
 
-							sBullet.setX(teammate.x);
-							sBullet.setY(teammate.y);
-							sBullet.setVictim(teammate);
-							sBullet.hasHitVictim = true;
-							sBullet.setPower(4);
-							sBullet.setActive(false);
-							battle.addBullet(sBullet);
-						}
+						sBullet.setX(teammate.x);
+						sBullet.setY(teammate.y);
+						sBullet.setVictim(teammate);
+						sBullet.hasHitVictim = true;
+						sBullet.setPower(4);
+						sBullet.setActive(false);
+						battle.addBullet(sBullet);
 					}
 				}
-				battle.generateDeathEvents(this);
-				// 'fake' bullet for explosion on self
-				BulletPeer sBullet = new ExplosionPeer(this, battle);
-
-				sBullet.setX(x);
-				sBullet.setY(y);
-				battle.addBullet(sBullet);
 			}
-			this.setEnergy(0.0);
+			battle.generateDeathEvents(this);
+			// 'fake' bullet for explosion on self
+			BulletPeer sBullet = new ExplosionPeer(this, battle);
+
+			sBullet.setX(x);
+			sBullet.setY(y);
+			battle.addBullet(sBullet);
 		}
-		this.isDead = dead;
+		this.setEnergy(0.0);
+		
+		isDead = true;
 	}
 
 	public synchronized void preInitialize() {
@@ -1436,7 +1435,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized void zap(double zapAmount) {
 		if (energy == 0) {
-			setDead(true);
+			kill();
 			return;
 		}
 		energy -= abs(zapAmount);
