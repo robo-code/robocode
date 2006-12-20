@@ -45,7 +45,7 @@ public class BulletPeer {
 	public static final int BULLET_STATE_EXPLODED = 5;
 	public static final int BULLET_STATE_DONE = 6;
 
-	private static final int WHICH_EXPLOSION = 0;
+	private int explosionImageIndex = 0;
 
 	private static final int RADIUS = 3;
 	
@@ -160,7 +160,7 @@ public class BulletPeer {
 
 				if (r.getEnergy() <= 0) {
 					if (!r.isDead()) {
-						r.setDead(true);
+						r.kill();
 						owner.getRobotStatistics().scoreKilledEnemyBullet(i);
 					}
 				}
@@ -314,13 +314,13 @@ public class BulletPeer {
 			setY(victim.getY() + deltaY);
 			hitVictimTime++;
 			frame = hitVictimTime;
-			if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+			if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
 				hasHitVictim = false;
 			}
 		} else if (hasHitBullet) {
 			hitBulletTime++;
 			frame = hitBulletTime;
-			if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+			if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
 				hasHitBullet = false;
 			}
 		}
@@ -351,7 +351,7 @@ public class BulletPeer {
 		frame++;
 	}
 	
-	public int getWhichExplosion() {
-		return WHICH_EXPLOSION;
+	public int getExplosionImageIndex() {
+		return explosionImageIndex;
 	}
 }
