@@ -25,7 +25,7 @@ import robocode.battle.*;
  * @author Flemming N. Larsen (current)
  */
 public class ExplosionPeer extends BulletPeer {
-	private int WHICH_EXPLOSION = 1;
+	private int explosionImageIndex = 1;
 
 	public ExplosionPeer(RobotPeer owner, Battle battle) {
 		super(owner, battle);
@@ -42,13 +42,13 @@ public class ExplosionPeer extends BulletPeer {
 		setX(getOwner().getX());
 		setY(getOwner().getY());
 		nextFrame();
-		if (frame >= getBattle().getManager().getImageManager().getExplosionFrames(WHICH_EXPLOSION)) {
+		if (frame >= getBattle().getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
 			battle.removeBullet(this);
 		}
 		updateBulletState();
 	}
 
-	public int getWhichExplosion() {
-		return WHICH_EXPLOSION;
+	public int getExplosionImageIndex() {
+		return explosionImageIndex;
 	}
 }

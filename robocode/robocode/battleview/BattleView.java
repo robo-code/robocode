@@ -507,7 +507,7 @@ public class BattleView extends Canvas {
 					at.scale(scale, scale);
 				}
 
-				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getWhichExplosion(),
+				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getExplosionImageIndex(),
 						bullet.getFrame());
 				
 				explosionRenderImage.setTransform(at);
