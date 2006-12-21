@@ -34,8 +34,8 @@ public class ExplosionPeer extends BulletPeer {
 		this.victim = owner;
 		this.power = 1;
 		this.isActive = false;
-		this.bulletState = BULLET_STATE_EXPLODED;
-		this.lastBulletState = BULLET_STATE_EXPLODED;
+		this.state = BULLET_STATE_EXPLODED;
+		this.lastState = BULLET_STATE_EXPLODED;
 	}
 
 	public final void update() {

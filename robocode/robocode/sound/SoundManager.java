@@ -157,7 +157,7 @@ public class SoundManager {
 		if (isPanEnabled()) {
 			pan = calcPan((float) bp.getX(), bp.getBattle().getBattleField().getWidth());
 		}
-		switch (bp.getBulletState()) {
+		switch (bp.getState()) {
 		case BulletPeer.BULLET_STATE_SHOT:
 			if (properties.getOptionsSoundEnableGunShot()) {
 				if (isVolumeEnabled()) {
@@ -198,7 +198,7 @@ public class SoundManager {
 		if (isPanEnabled()) {
 			pan = calcPan((float) rp.getX(), rp.getBattle().getBattleField().getWidth());
 		}
-		switch (rp.getRobotState()) {
+		switch (rp.getState()) {
 		case RobotPeer.ROBOT_STATE_HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
 				playSound("collision", pan, 1);

@@ -87,8 +87,8 @@ public class BulletPeer {
 	private Bullet bullet;
 	
 	// Bullet states
-	protected int bulletState;
-	protected int lastBulletState;
+	protected int state;
+	protected int lastState;
 
 	/**
 	 * BulletPeer constructor
@@ -100,14 +100,14 @@ public class BulletPeer {
 		this.battle = battle;
 		this.battleField = battle.getBattleField();
 		this.bullet = new Bullet(this);
-		this.bulletState = BULLET_STATE_SHOT;
-		this.lastBulletState = BULLET_STATE_SHOT;
+		this.state = BULLET_STATE_SHOT;
+		this.lastState = BULLET_STATE_SHOT;
 	}
 
 	public void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
 			if (!(b == null || b == this) && b.isActive && intersect(b.boundingLine)) {
-				bulletState = BULLET_STATE_HIT_BULLET;
+				state = BULLET_STATE_HIT_BULLET;
 				isActive = false;
 				b.isActive = false;
 				hasHitBullet = true;
@@ -169,7 +169,7 @@ public class BulletPeer {
 				r.getEventManager().add(
 						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
 						getBullet()));
-				bulletState = BULLET_STATE_HIT_VICTIM;
+				state = BULLET_STATE_HIT_VICTIM;
 				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
 				isActive = false;
 				hasHitVictim = true;
@@ -196,7 +196,7 @@ public class BulletPeer {
 	public void checkWallCollision() {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
 				|| (y + RADIUS >= battleField.getHeight())) {
-			bulletState = BULLET_STATE_HIT_WALL;
+			state = BULLET_STATE_HIT_WALL;
 			owner.getEventManager().add(new BulletMissedEvent(bullet));
 			isActive = false;
 		}
@@ -254,8 +254,8 @@ public class BulletPeer {
 		return isActive;
 	}
 
-	public int getBulletState() {
-		return lastBulletState;
+	public int getState() {
+		return lastState;
 	}
 
 	public synchronized void setActive(boolean newActive) {
@@ -328,12 +328,12 @@ public class BulletPeer {
 	}
 	
 	protected synchronized void updateBulletState() {
-		lastBulletState = bulletState;
-		if (bulletState == BULLET_STATE_SHOT) {
-			bulletState = BULLET_STATE_MOVING;
-		} else if (bulletState == BULLET_STATE_EXPLODED || bulletState == BULLET_STATE_HIT_BULLET
-				|| bulletState == BULLET_STATE_HIT_VICTIM || bulletState == BULLET_STATE_HIT_WALL) {
-			bulletState = BULLET_STATE_DONE;
+		lastState = state;
+		if (state == BULLET_STATE_SHOT) {
+			state = BULLET_STATE_MOVING;
+		} else if (state == BULLET_STATE_EXPLODED || state == BULLET_STATE_HIT_BULLET
+				|| state == BULLET_STATE_HIT_VICTIM || state == BULLET_STATE_HIT_WALL) {
+			state = BULLET_STATE_DONE;
 		}
 	}
 
