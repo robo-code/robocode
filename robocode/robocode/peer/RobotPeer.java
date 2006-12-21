@@ -1593,7 +1593,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return sgPaintEnabled;
 	}
 	
-	public int getRobotState() {
+	public int getState() {
 		return state;
 	}
 }
