@@ -72,9 +72,7 @@ public class BulletPeer {
 	public boolean hasHitVictim;
 	public boolean hasHitBullet;
 
-	protected int hitVictimTime;
-
-	private int hitBulletTime;
+	private int hitTime;
 
 	protected RobotPeer victim;
 
@@ -108,8 +106,7 @@ public class BulletPeer {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
 				state = STATE_HIT_BULLET;
 				hasHitBullet = true;
-				hitBulletTime = 0;
-				frame = 0;
+				hitTime = frame = 0;
 				x = lastX;
 				y = lastY;
 				owner.getEventManager().add(new BulletHitBulletEvent(bullet, b.bullet));
@@ -169,8 +166,7 @@ public class BulletPeer {
 				state = STATE_HIT_VICTIM;
 				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
 				hasHitVictim = true;
-				hitVictimTime = 0;
-				frame = 0;
+				hitTime = frame = 0;
 				victim = r;
 				deltaX = lastX - r.getX();
 				deltaY = lastY - r.getY();
@@ -308,15 +304,15 @@ public class BulletPeer {
 		} else if (hasHitVictim) {
 			setX(victim.getX() + deltaX);
 			setY(victim.getY() + deltaY);
-			hitVictimTime++;
-			frame = hitVictimTime;
-			if (hitVictimTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
+			hitTime++;
+			frame = hitTime;
+			if (hitTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
 				hasHitVictim = false;
 			}
 		} else if (hasHitBullet) {
-			hitBulletTime++;
-			frame = hitBulletTime;
-			if (hitBulletTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
+			hitTime++;
+			frame = hitTime;
+			if (hitTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
 				hasHitBullet = false;
 			}
 		}
