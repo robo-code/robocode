@@ -61,19 +61,23 @@ import static robocode.util.Utils.*;
 public class RobotPeer implements Runnable, ContestantPeer {
 
 	// Robot States: all states last one turn, except ALIVE and DEAD
-	public static final int ROBOT_STATE_ACTIVE = 0;
-	public static final int ROBOT_STATE_HIT_WALL = 1;
-	public static final int ROBOT_STATE_HIT_ROBOT = 2;
-	public static final int ROBOT_STATE_DEAD = 3;
+	public static final int
+			STATE_ACTIVE = 0,
+			STATE_HIT_WALL = 1,
+			STATE_HIT_ROBOT = 2,
+			STATE_DEAD = 3;
 
-	public static final int WIDTH = 40;
-	public static final int HEIGHT = 40;
+	public static final int
+			WIDTH = 40,
+			HEIGHT = 40;
 
-	private static final int HALF_WIDTH_OFFSET = (WIDTH / 2 - 2);
-	private static final int HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
+	private static final int
+			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
+			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
 	
-	private static final long MAX_SET_CALL_COUNT = 10000;
-	private static final long MAX_GET_CALL_COUNT = 10000;
+	private static final long
+			MAX_SET_CALL_COUNT = 10000,
+			MAX_GET_CALL_COUNT = 10000;
 
 	public RobotOutputStream out;
 
@@ -181,7 +185,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	protected int state;
 
-
 	public TextPeer getSayTextPeer() {
 		return sayTextPeer;
 	}
@@ -286,7 +289,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			} // if robot active & not me & hit
 		} // for robots
 		if (inCollision) {
-			state = ROBOT_STATE_HIT_ROBOT;
+			state = STATE_HIT_ROBOT;
 		}
 	}
 
@@ -361,7 +364,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			acceleration = 0;
 		}
 		if (hitWall) {
-			state = ROBOT_STATE_HIT_WALL;
+			state = STATE_HIT_WALL;
 		}
 	}
 
@@ -444,11 +447,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean isDead() {
-		return state == ROBOT_STATE_DEAD;
+		return state == STATE_DEAD;
 	}
 
 	public boolean isAlive() {
-		return state != ROBOT_STATE_DEAD;
+		return state != STATE_DEAD;
 	}
 	
 	public void run() {
@@ -585,12 +588,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						teammate.setEnergy(teammate.energy - 30);
 						BulletPeer sBullet = new BulletPeer(this, battle);
 
+						sBullet.setState(BulletPeer.STATE_HIT_VICTIM);
 						sBullet.setX(teammate.x);
 						sBullet.setY(teammate.y);
 						sBullet.setVictim(teammate);
 						sBullet.hasHitVictim = true;
 						sBullet.setPower(4);
-						sBullet.setActive(false);
 						battle.addBullet(sBullet);
 					}
 				}
@@ -605,11 +608,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 		setEnergy(0);
 		
-		state = ROBOT_STATE_DEAD;
+		state = STATE_DEAD;
 	}
 
 	public synchronized void preInitialize() {
-		state = ROBOT_STATE_DEAD;
+		state = STATE_DEAD;
 	}
 
 	public synchronized void setGunHeading(double newGunHeading) {
@@ -734,7 +737,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public final synchronized void update() {
 		// Reset robot state to active if it is not dead
 		if (isAlive()) {
-			state = ROBOT_STATE_ACTIVE;
+			state = STATE_ACTIVE;
 		}
 
 		updateGunHeat();
@@ -1069,7 +1072,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void initialize(double x, double y, double heading) {
-		state = ROBOT_STATE_ACTIVE;
+		state = STATE_ACTIVE;
 
 		isWinner = false;
 		this.x = lastX = x;
