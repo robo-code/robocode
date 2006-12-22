@@ -37,13 +37,14 @@ import robocode.*;
  */
 public class BulletPeer {
 	// Bullet states: all states last one turn, except MOVING and DONE
-	public static final int BULLET_STATE_SHOT = 0;
-	public static final int BULLET_STATE_MOVING = 1;
-	public static final int BULLET_STATE_HIT_VICTIM = 2;
-	public static final int BULLET_STATE_HIT_BULLET = 3;
-	public static final int BULLET_STATE_HIT_WALL = 4;
-	public static final int BULLET_STATE_EXPLODED = 5;
-	public static final int BULLET_STATE_DONE = 6;
+	public static final int
+			STATE_SHOT = 0,
+			STATE_MOVING = 1,
+			STATE_HIT_VICTIM = 2,
+			STATE_HIT_BULLET = 3,
+			STATE_HIT_WALL = 4,
+			STATE_EXPLODED = 5,
+			STATE_INACTIVE = 6;
 
 	private int explosionImageIndex = 0;
 
@@ -65,8 +66,6 @@ public class BulletPeer {
 	private BattleField battleField;
 
 	protected double power;
-
-	protected boolean isActive = true;
 
 	private Line2D.Double boundingLine = new Line2D.Double();
 
@@ -100,16 +99,14 @@ public class BulletPeer {
 		this.battle = battle;
 		this.battleField = battle.getBattleField();
 		this.bullet = new Bullet(this);
-		this.state = BULLET_STATE_SHOT;
-		this.lastState = BULLET_STATE_SHOT;
+		this.state = STATE_SHOT;
+		this.lastState = STATE_SHOT;
 	}
 
 	public void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
-			if (!(b == null || b == this) && b.isActive && intersect(b.boundingLine)) {
-				state = BULLET_STATE_HIT_BULLET;
-				isActive = false;
-				b.isActive = false;
+			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
+				state = STATE_HIT_BULLET;
 				hasHitBullet = true;
 				hitBulletTime = 0;
 				frame = 0;
@@ -169,9 +166,8 @@ public class BulletPeer {
 				r.getEventManager().add(
 						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
 						getBullet()));
-				state = BULLET_STATE_HIT_VICTIM;
+				state = STATE_HIT_VICTIM;
 				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
-				isActive = false;
 				hasHitVictim = true;
 				hitVictimTime = 0;
 				frame = 0;
@@ -196,9 +192,8 @@ public class BulletPeer {
 	public void checkWallCollision() {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
 				|| (y + RADIUS >= battleField.getHeight())) {
-			state = BULLET_STATE_HIT_WALL;
+			state = STATE_HIT_WALL;
 			owner.getEventManager().add(new BulletMissedEvent(bullet));
-			isActive = false;
 		}
 	}
 
@@ -251,15 +246,11 @@ public class BulletPeer {
 	}
 
 	public boolean isActive() {
-		return isActive;
+		return state <= STATE_MOVING;
 	}
 
 	public int getState() {
 		return lastState;
-	}
-
-	public synchronized void setActive(boolean newActive) {
-		isActive = newActive;
 	}
 
 	public synchronized void setBattle(Battle newBattle) {
@@ -298,15 +289,20 @@ public class BulletPeer {
 		y = lastY = newY;
 	}
 
+	public synchronized void setState(int newState) {
+		lastState = state;
+		state = newState;
+	}
+
 	public synchronized void update() {
-		if (isActive) {
+		if (isActive()) {
 			updateMovement();
 
 			checkBulletCollision();
-			if (isActive) {
+			if (isActive()) {
 				checkRobotCollision();
 			}
-			if (isActive) {
+			if (isActive()) {
 				checkWallCollision();
 			}
 		} else if (hasHitVictim) {
@@ -329,11 +325,11 @@ public class BulletPeer {
 	
 	protected synchronized void updateBulletState() {
 		lastState = state;
-		if (state == BULLET_STATE_SHOT) {
-			state = BULLET_STATE_MOVING;
-		} else if (state == BULLET_STATE_EXPLODED || state == BULLET_STATE_HIT_BULLET
-				|| state == BULLET_STATE_HIT_VICTIM || state == BULLET_STATE_HIT_WALL) {
-			state = BULLET_STATE_DONE;
+		if (state == STATE_SHOT) {
+			state = STATE_MOVING;
+		} else if (state == STATE_EXPLODED || state == STATE_HIT_BULLET || state == STATE_HIT_VICTIM
+				|| state == STATE_HIT_WALL) {
+			state = STATE_INACTIVE;
 		}
 	}
 
