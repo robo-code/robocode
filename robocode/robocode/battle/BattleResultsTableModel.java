@@ -145,13 +145,13 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return "" + (int) (statistics.getTotalKilledEnemyRammingScore() + 0.5);
 
 		case 9:
-			return "" + (int) (statistics.getTotalFirsts() + 0.5);
+			return "" + statistics.getTotalFirsts();
 
 		case 10:
-			return "" + (int) (statistics.getTotalSeconds() + 0.5);
+			return "" + statistics.getTotalSeconds();
 
 		case 11:
-			return "" + (int) (statistics.getTotalThirds() + 0.5);
+			return "" + statistics.getTotalThirds();
 
 		default:
 			return "";
