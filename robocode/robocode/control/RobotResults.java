@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Changed to be consistent with the battle results and ranking scores
  *******************************************************************************/
 package robocode.control;
 
@@ -17,17 +19,18 @@ package robocode.control;
  * This class is returned from {@link RobocodeListener#battleComplete(robocode.control.BattleSpecification, robocode.control.RobotResults[])}
  *
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class RobotResults {
 	private RobotSpecification robot;
 	private int rank;
-	private int score;
-	private int survival;
-	private int lastSurvivorBonus;
-	private int bulletDamage;
-	private int bulletDamageBonus;
-	private int ramDamage;
-	private int ramDamageBonus;
+	private double score;
+	private double survival;
+	private double lastSurvivorBonus;
+	private double bulletDamage;
+	private double bulletDamageBonus;
+	private double ramDamage;
+	private double ramDamageBonus;
 	private int firsts;
 	private int seconds;
 	private int thirds;
@@ -35,13 +38,13 @@ public class RobotResults {
 	public RobotResults(
 			RobotSpecification robot,
 			int rank,
-			int score,
-			int survival,
-			int lastSurvivorBonus,
-			int bulletDamage,
-			int bulletDamageBonus,
-			int ramDamage,
-			int ramDamageBonus,
+			double score,
+			double survival,
+			double lastSurvivorBonus,
+			double bulletDamage,
+			double bulletDamageBonus,
+			double ramDamage,
+			double ramDamageBonus,
 			int firsts,
 			int seconds,
 			int thirds
@@ -84,7 +87,7 @@ public class RobotResults {
 	 * @return the total score of this robot.
 	 */
 	public int getScore() {
-		return score;
+		return (int) (score + 0.5);
 	}
 
 	/**
@@ -93,7 +96,7 @@ public class RobotResults {
 	 * @return the survival score of this robot.
 	 */
 	public int getSurvival() {
-		return survival;
+		return (int) (survival + 0.5);
 	}
 
 	/**
@@ -102,7 +105,7 @@ public class RobotResults {
 	 * @return the last survivor bonus of this robot.
 	 */
 	public int getLastSurvivorBonus() {
-		return lastSurvivorBonus;
+		return (int) (lastSurvivorBonus + 0.5);
 	}
 
 	/**
@@ -111,7 +114,7 @@ public class RobotResults {
 	 * @return the bullet damage score of this robot.
 	 */
 	public int getBulletDamage() {
-		return bulletDamage;
+		return (int) (bulletDamage + 0.5);
 	}
 
 	/**
@@ -120,7 +123,7 @@ public class RobotResults {
 	 * @return the bullet damage bonus of this robot.
 	 */
 	public int getBulletDamageBonus() {
-		return bulletDamageBonus;
+		return (int) (bulletDamageBonus + 0.5);
 	}
 
 	/**
@@ -129,7 +132,7 @@ public class RobotResults {
 	 * @return the ram damage score of this robot.
 	 */
 	public int getRamDamage() {
-		return ramDamage;
+		return (int) (ramDamage + 0.5);
 	}
 
 	/**
@@ -137,8 +140,8 @@ public class RobotResults {
 	 * 
 	 * @return the ram damage bonus of this robot.
 	 */
-	public int getRamDamageBonus() {
-		return ramDamageBonus;
+	public double getRamDamageBonus() {
+		return (int) (ramDamageBonus + 0.5);
 	}
 
 	/**

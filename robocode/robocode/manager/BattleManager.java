@@ -414,10 +414,10 @@ public class BattleManager {
 
 			results[i] = new robocode.control.RobotResults(
 					orderedRobots.elementAt(i).getRobotClassManager().getControlRobotSpecification(), (i + 1),
-					(int) stats.getTotalScore(), (int) stats.getTotalSurvivalScore(), (int) stats.getTotalWinnerScore(),
-					(int) stats.getTotalBulletDamageScore(), (int) stats.getTotalKilledEnemyBulletScore(),
-					(int) stats.getTotalRammingDamageScore(), (int) stats.getTotalKilledEnemyRammingScore(),
-					stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
+					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalWinnerScore(),
+					stats.getTotalBulletDamageScore(), stats.getTotalKilledEnemyBulletScore(),
+					stats.getTotalRammingDamageScore(), stats.getTotalKilledEnemyRammingScore(), stats.getTotalFirsts(),
+					stats.getTotalSeconds(), stats.getTotalThirds());
 		}
 		listener.battleComplete(battle.getBattleSpecification(), results);
 	}
