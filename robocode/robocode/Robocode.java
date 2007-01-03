@@ -152,7 +152,7 @@ public class Robocode {
 				}
 				manager.getBattleManager().setBattleFilename(battleFilename);
 				manager.getBattleManager().loadBattleProperties();
-				manager.getBattleManager().startNewBattle(manager.getBattleManager().getBattleProperties(), true);
+				manager.getBattleManager().startNewBattle(manager.getBattleManager().getBattleProperties(), true, false);
 				manager.getBattleManager().getBattle().setDesiredTPS(tps);
 			}
 			if (!manager.isGUIEnabled()) {

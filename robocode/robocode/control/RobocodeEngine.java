@@ -153,7 +153,7 @@ public class RobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battle) {
 		Utils.setLogListener(listener);
-		manager.getBattleManager().startNewBattle(battle);
+		manager.getBattleManager().startNewBattle(battle, false);
 	}
 
 	/**
