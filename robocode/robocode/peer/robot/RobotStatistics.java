@@ -13,9 +13,15 @@
  *     Flemming N. Larsen
  *     - Bugfix: scoreDeath() incremented totalFirsts even if the robot was
  *       already a winner, where scoreWinner() has already been called previously
+ *     - Added constructor that takes an additonal RobotResults that must be
+ *       copied into this object and added the getResults() in order to support
+ *       the replay feature
+ *     - Changed the survivalScore and totalSurvivalScore fields to be integers
  *******************************************************************************/
 package robocode.peer.robot;
 
+
+import robocode.control.RobotResults;
 
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
@@ -29,7 +35,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	private boolean noScoring;
 	private double bulletDamageScore;
 	private double rammingDamageScore;
-	private double survivalScore;
+	private int survivalScore;
 	private double winnerScore;
 	private double totalWinnerScore;
 	private double killedEnemyRammingScore;
@@ -39,7 +45,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	private double totalBulletDamageDealt;
 	private double totalBulletDamageReceived;
 	private double totalRammingDamageScore;
-	private double totalSurvivalScore;
+	private int totalSurvivalScore;
 	private double totalKilledEnemyRammingScore;
 	private double totalKilledEnemyBulletScore;
 	private RobotPeer robotPeer;
@@ -57,13 +63,25 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 	private double robotDamage[] = null;
 
-	/**
-	 * RobotStatistics constructor comment.
-	 */
 	public RobotStatistics(RobotPeer robotPeer) {
 		super();
 		this.robotPeer = robotPeer;
 		this.teamPeer = robotPeer.getTeamPeer();
+	}
+
+	public RobotStatistics(RobotPeer robotPeer, RobotResults results) {
+		this(robotPeer);
+
+		totalScore = results.getScore();
+		totalSurvivalScore = results.getSurvival();
+		totalWinnerScore = results.getLastSurvivorBonus();
+		totalBulletDamageScore = results.getBulletDamage();
+		totalKilledEnemyBulletScore = results.getBulletDamageBonus();
+		totalRammingDamageScore = results.getRamDamage();
+		totalKilledEnemyRammingScore = results.getRamDamageBonus();
+		totalFirsts = results.getFirsts();
+		totalSeconds = results.getSeconds();
+		totalThirds = results.getThirds();
 	}
 
 	public void damagedByBullet(double damage) {
@@ -89,6 +107,21 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 				+ totalKilledEnemyRammingScore + totalKilledEnemyBulletScore + totalWinnerScore;
 	}
 
+	public RobotResults getResults(int rank) {
+		return new RobotResults(null, rank,
+				bulletDamageScore + rammingDamageScore + survivalScore + killedEnemyRammingScore + killedEnemyBulletScore
+				+ winnerScore,
+				survivalScore,
+				winnerScore,
+				bulletDamageScore,
+				killedEnemyBulletScore,
+				rammingDamageScore,
+				killedEnemyRammingScore,
+				totalFirsts,
+				totalSeconds,
+				totalThirds);
+	}
+	
 	private double[] getRobotDamage() {
 		if (robotDamage == null) {
 			robotDamage = new double[robotPeer.getBattle().getRobots().size()];
