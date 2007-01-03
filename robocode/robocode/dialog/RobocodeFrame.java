@@ -15,6 +15,7 @@
  *       heavy-weight components in order to prevent battleview to hide menus
  *     - Changed so BattleView handles resizing instead of the RobocodeFrame
  *     - Added TPS slider + label
+ *     - Added "Replay" button in order to activate the replay feature
  *     - Code cleanup
  *     Luis Crespo
  *     - Added debug step feature by adding a "Next Turn" button, and changing
@@ -37,7 +38,7 @@ import robocode.util.*;
 
 /**
  * @author Mathew Nelson (original)
- * @author Flemming N. Larsen, Matthew Reeder (current)
+ * @author Flemming N. Larsen, Matthew Reeder, Luis Crespo (current)
  */
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
@@ -68,7 +69,8 @@ public class RobocodeFrame extends JFrame {
 	private JButton nextTurnButton;
 	private JButton stopButton;
 	private JButton restartButton;
-	
+	private JButton replayButton;
+
 	private JSlider tpsSlider;
 	private JLabel tpsLabel;
 	
@@ -88,6 +90,8 @@ public class RobocodeFrame extends JFrame {
 				stopButtonActionPerformed();
 			} else if (e.getSource() == RobocodeFrame.this.getRestartButton()) {
 				restartButtonActionPerformed();
+			} else if (e.getSource() == RobocodeFrame.this.getReplayButton()) {
+				replayButtonActionPerformed();
 			}
 		}
 
@@ -322,7 +326,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	/**
-	 * Return the StatusMsg1 property value.
+	 * Return the statusLabel
 	 * 
 	 * @return JLabel
 	 */
@@ -405,6 +409,24 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	/**
+	 * Return the replayButton
+	 * 
+	 * @return JButton
+	 */
+	public JButton getReplayButton() {
+		if (replayButton == null) {
+			replayButton = new JButton("Replay");
+			replayButton.setEnabled(false);
+			replayButton.setMnemonic('y');
+			replayButton.setDisplayedMnemonicIndex(5);
+			replayButton.setHorizontalTextPosition(SwingConstants.CENTER);
+			replayButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+			replayButton.addActionListener(eventHandler);
+		}
+		return replayButton;
+	}
+
+	/**
 	 * Return the tpsSlider
 	 * 
 	 * @return JSlider
@@ -462,6 +484,7 @@ public class RobocodeFrame extends JFrame {
 			toolBar.add(getNextTurnButton());
 			toolBar.add(getStopButton());
 			toolBar.add(getRestartButton());
+			toolBar.add(getReplayButton());
 
 			toolBar.addSeparator();
 
@@ -498,8 +521,9 @@ public class RobocodeFrame extends JFrame {
 		if (manager.isSlave()) {
 			getRobocodeMenuBar().getBattleMenu().setEnabled(false);
 			getRobocodeMenuBar().getRobotMenu().setEnabled(false);
-			getStopButton().setEnabled(false);
 			getPauseResumeButton().setEnabled(false);
+			getStopButton().setEnabled(false);
+			getRestartButton().setEnabled(false);
 		}
 	}
 
@@ -563,6 +587,10 @@ public class RobocodeFrame extends JFrame {
 		windowManager.getManager().getBattleManager().restart(); 
 	}
 
+	private void replayButtonActionPerformed() {
+		windowManager.getManager().getBattleManager().replay(); 
+	}
+
 	/**
 	 * Gets the iconified.
 	 * 
@@ -580,5 +608,9 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public void setIconified(boolean iconified) {
 		this.iconified = iconified;
+	}
+
+	public void setReplay(boolean enable) {
+		getReplayButton().setEnabled(enable);
 	}
 }
