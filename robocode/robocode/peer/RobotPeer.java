@@ -29,6 +29,9 @@
  *       case when distanceRemaining == 0
  *     - Removed isDead field as the robot state is used as replacement
  *     - Added isAlive() method
+ *     - Added constructor for creating a new robot with a name only
+ *     - Added the set() that copies a RobotRecord into this robot in order to
+ *       support the replay feature
  *     - Code cleanup
  *     Luis Crespo
  *     - Added states
@@ -45,6 +48,7 @@ import static java.lang.Math.*;
 import robocode.*;
 import robocode.exception.*;
 import robocode.battle.Battle;
+import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
 import robocode.util.*;
 import robocode.peer.BulletPeer;
@@ -185,6 +189,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	protected int state;
 
+
+	public RobotPeer(String name) {
+		this.name = name;
+	}
+
 	public TextPeer getSayTextPeer() {
 		return sayTextPeer;
 	}
@@ -238,13 +247,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 				if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
 					velocity = 0;
-					// if (distanceRemaining > 0) {
 					atFault = true;
 					distanceRemaining = 0;
 					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-					// } else {
-					// statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-					// }
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
 					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
@@ -260,13 +265,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					}
 				} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
 					velocity = 0;
-					// if (distanceRemaining < 0) {
 					atFault = true;
 					distanceRemaining = 0;
 					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-					// } else {
-					// statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
-					// }
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
 					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
@@ -1598,5 +1599,24 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	
 	public int getState() {
 		return state;
+	}
+
+	public synchronized void setState(int newState) {
+		state = newState;
+	}
+
+	public void set(RobotRecord rr) {
+		x = rr.x;
+		y = rr.y;
+		energy = (double)rr.energy / 10;
+		heading = Math.PI * (double)rr.heading / 32768;
+		radarHeading = Math.PI * (double)rr.radarHeading / 32768;
+		gunHeading = Math.PI * (double)rr.gunHeading / 32768;
+		state = rr.state;
+		bodyColor = rr.bodyColor;
+		gunColor = rr.gunColor;
+		radarColor = rr.radarColor;
+		bulletColor = rr.bulletColor;
+		scanColor = rr.scanColor;
 	}
 }
