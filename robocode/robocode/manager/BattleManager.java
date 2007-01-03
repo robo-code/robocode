@@ -16,6 +16,8 @@
  *     - Added check for if GUI is enabled before using graphical components
  *     - Added restart() method
  *     - Ported to Java 5
+ *     - Added support for the replay feature
+ *     - Removed the clearBattleProperties()
  *     - Code cleanup & optimizations
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
@@ -91,10 +93,14 @@ public class BattleManager {
 
 	public void restart() {
 		stop(false);
-		startNewBattle(battleProperties, false);
+		startNewBattle(battleProperties, false, false);
 	}
-	
-	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete) {
+
+	public void replay() {
+		startNewBattle(battleProperties, false, true);
+	}
+
+	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete, boolean replay) {
 		this.battleProperties = battleProperties;
 
 		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
@@ -145,10 +151,10 @@ public class BattleManager {
 				}
 			}
 		}
-		startNewBattle(battlingRobotsVector, exitOnComplete, null);
+		startNewBattle(battlingRobotsVector, exitOnComplete, replay, null);
 	}
 
-	public void startNewBattle(robocode.control.BattleSpecification battleSpecification) {
+	public void startNewBattle(robocode.control.BattleSpecification battleSpecification, boolean replay) {
 		this.battleProperties = battleSpecification.getBattleProperties();
 		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
 				false, false, false, false, false, false);
@@ -185,10 +191,10 @@ public class BattleManager {
 				return;
 			}
 		}
-		startNewBattle(battlingRobotsVector, false, battleSpecification);
+		startNewBattle(battlingRobotsVector, false, replay, battleSpecification);
 	}
 
-	private void startNewBattle(Vector<RobotClassManager> battlingRobotsVector, boolean exitOnComplete,
+	private void startNewBattle(Vector<RobotClassManager> battlingRobotsVector, boolean exitOnComplete, boolean replay,
 			robocode.control.BattleSpecification battleSpecification) { 
 
 		Utils.log("Preparing battle...");
@@ -216,6 +222,7 @@ public class BattleManager {
 		battleThread.setPriority(Thread.NORM_PRIORITY);
 		battleThread.setName("Battle Thread");
 		battle.setBattleThread(battleThread);
+		battle.setReplay(replay);
 
 		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
 			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
@@ -223,8 +230,10 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().getBattleView().setVisible(true);
-			manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
+			robocode.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+
+			battleView.setVisible(true);
+			battleView.setInitialized(false);
 		}
 
 		for (RobotClassManager robotClassMgr : battlingRobotsVector) {
@@ -232,11 +241,13 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
-			manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+			robocode.dialog.RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
+
+			frame.getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
+			frame.getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 	
-			if (manager.getWindowManager().getRobocodeFrame().getPauseResumeButton().getText().equals("Resume")) {
-				manager.getWindowManager().getRobocodeFrame().pauseResumeButtonActionPerformed();
+			if (frame.getPauseResumeButton().getText().equals("Resume")) {
+				frame.pauseResumeButtonActionPerformed();
 			}
 
 			manager.getRobotDialogManager().setActiveBattle(battle);
@@ -372,10 +383,6 @@ public class BattleManager {
 			battleProperties = new BattleProperties();
 		}
 		return battleProperties;
-	}
-
-	public void clearBattleProperties() {
-		battleProperties = null;
 	}
 
 	public void resumeBattle() {
