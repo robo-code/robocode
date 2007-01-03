@@ -11,12 +11,14 @@
  *     Luis Crespo
  *     - Added states
  *     Flemming N. Larsen
+ *     - Added constructor for the BulletPeer in order to support replay feature
  *     - Code cleanup
  *******************************************************************************/
 package robocode.peer;
 
 
 import robocode.battle.*;
+import robocode.battle.record.BulletRecord;
 
 
 /**
@@ -35,6 +37,10 @@ public class ExplosionPeer extends BulletPeer {
 		this.power = 1;
 		this.state = STATE_EXPLODED;
 		this.lastState = STATE_EXPLODED;
+	}
+
+	public ExplosionPeer(RobotPeer owner, BulletRecord br) {
+		super(owner, br);
 	}
 
 	public final void update() {
