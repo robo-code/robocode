@@ -1,9 +1,15 @@
 Version 1.2.3 Beta
-(12/16/2006)
+(01/04/2007)
+o Bugfix
+  -- Removed NullPointerException when trying to restart the initial intro battle
+o Added replay feature
+  -- A new "Replay" button has been added to the toolbar at the buttom of the battle
+     screen. The replay feature makes it possible to replay a battle
+  -- In a comming version of Robocode, it will be possible to load and save replays
 o Improved the security manager
-  -- Robot are not allowed to access any internal Robocode packages anymore,
+  -- Robots are not allowed to access any internal Robocode packages anymore,
      except for the robocode.util package in order to let legacy robots access
-     robocode.util.Utils, e.g. for the normalRelativeAngle() etc.
+     the robocode.util.Utils class, e.g. for calling normalRelativeAngle() etc.
 
 Version 1.2.2
 (12/14/2006)
