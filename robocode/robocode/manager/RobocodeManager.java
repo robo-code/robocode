@@ -210,8 +210,7 @@ public class RobocodeManager {
 				getWindowManager().getRobocodeFrame().clearRobotButtons();
 			}
 		});
-		getBattleManager().startNewBattle(getBattleManager().getBattleProperties(), false);
-		getBattleManager().clearBattleProperties();
+		getBattleManager().startNewBattle(getBattleManager().getBattleProperties(), false, false);
 	}
 
 	public boolean isGUIEnabled() {
