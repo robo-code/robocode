@@ -13,8 +13,8 @@
  *       #6457965 with Line2D.intersectsLine via intersect(Line2D.Double line)
  *     - Integration of robocode.Rules
  *     - Replaced width and height with radius
- *     - Optimizations
- *     - Code cleanup
+ *     - Added constructor for the BulletRecord to support the replay feature
+ *     - Code cleanup & optimizations
  *     Luis Crespo
  *     - Added states
  *******************************************************************************/
@@ -27,6 +27,7 @@ import static java.lang.Math.*;
 
 import robocode.battle.*;
 import robocode.battlefield.*;
+import robocode.battle.record.BulletRecord;
 import robocode.*;
 
 
@@ -46,10 +47,15 @@ public class BulletPeer {
 			STATE_EXPLODED = 5,
 			STATE_INACTIVE = 6;
 
-	private int explosionImageIndex = 0;
-
 	private static final int RADIUS = 3;
-	
+
+	private RobotPeer owner;
+	private Bullet bullet;
+	protected RobotPeer victim;
+
+	protected int state;
+	protected int lastState;
+
 	private double velocity;
 	private double heading;
 
@@ -59,33 +65,25 @@ public class BulletPeer {
 	private double lastX;
 	private double lastY;
 
-	private RobotPeer owner;
-
 	protected Battle battle;
 
 	private BattleField battleField;
 
 	protected double power;
 
-	private Line2D.Double boundingLine = new Line2D.Double();
-
 	public boolean hasHitVictim;
 	public boolean hasHitBullet;
 
-	private int hitTime;
+	public int hitTime;
 
-	protected RobotPeer victim;
+	public double deltaX;
+	public double deltaY;
 
-	private double deltaX;
-	private double deltaY;
+	private Line2D.Double boundingLine = new Line2D.Double();
 
 	protected int frame;
+	private int explosionImageIndex = 0;
 
-	private Bullet bullet;
-	
-	// Bullet states
-	protected int state;
-	protected int lastState;
 
 	/**
 	 * BulletPeer constructor
@@ -99,6 +97,23 @@ public class BulletPeer {
 		this.bullet = new Bullet(this);
 		this.state = STATE_SHOT;
 		this.lastState = STATE_SHOT;
+	}
+
+	public BulletPeer(RobotPeer owner, BulletRecord br) {
+		super();
+
+		this.owner = owner;
+		state = br.state;
+		lastState = state;
+		x = br.x;
+		y = br.y;
+		power = ((double)br.power) / 10;
+		frame = br.frame;
+		explosionImageIndex = br.isExplosion ? 1 : 0;
+		deltaX = br.deltaX;
+		deltaY = br.deltaY;
+		hasHitVictim = br.hasHitVictim;
+		hasHitBullet = br.hasHitBullet;
 	}
 
 	public void checkBulletCollision() {
@@ -289,7 +304,7 @@ public class BulletPeer {
 		lastState = state;
 		state = newState;
 	}
-
+	
 	public synchronized void update() {
 		if (isActive()) {
 			updateMovement();
@@ -345,5 +360,9 @@ public class BulletPeer {
 	
 	public int getExplosionImageIndex() {
 		return explosionImageIndex;
+	}
+
+	public synchronized void setExplosionImageIndex(int index) {
+		explosionImageIndex = index;
 	}
 }
