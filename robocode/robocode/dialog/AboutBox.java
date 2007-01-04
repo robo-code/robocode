@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.robocode.net/license/CPLv1.0.html
+ * http://robocode.sourceforge.net/license/cpl-v10.html
  * 
  * Contributors:
  *     Mathew A. Nelson
@@ -16,7 +16,10 @@ package robocode.dialog;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.*;
+import javax.swing.event.*;
 import robocode.manager.*;
 
 
@@ -49,16 +52,16 @@ public class AboutBox extends JDialog {
 	private final static String HTML_TEMPLATE = "<head><style type=\"text/css\">p, td {font-family: sans-serif;"
 			+ "font-size: 10px}</style></head>" + "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT
 			+ "\"><table><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
-			+ "\"></td><td><table width=\"100%\"><tr><td><b>Robocode</b><br><br>"
-			+ "&copy;&nbsp;Copyright 2001-2005 Mathew A. Nelson<br>&copy;&nbsp;Copyright 2006 Robocode contributors</td>"
-			+ "<td><b>Version: " + TAG_ROBOCODE_VERSION
-			+ "</b><br><br>robocode.sourceforge.net<br>&nbsp;</td></tr></table><center><br>"
+			+ "\"></td><td><table width=\"100%\"><tr><td width=\"100%\"><b>Robocode</b><br><br>"
+			+ "&copy;&nbsp;Copyright 2001, 2007<br>Mathew A. Nelson and Robocode contributors</td>" + "<td><b>Version: "
+			+ TAG_ROBOCODE_VERSION
+			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">robocode.sourceforge.net</a><br>&nbsp;</td></tr></table><center><br>"
 			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan"
-			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (main developer/administrator),<br>"
+			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (main developer and administrator),<br>"
 			+ "Luis Crespo (Sound engine, single-step debugging, Ranking panel),<br>"
 			+ "Matthew Reeder (Editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
 			+ "Titus Chen (bugfixes regarding robot teleportation, bad wall collision detection, and team ranking),<br>"
-			+ "Ascander Jr (graphics for ground tiles),<br>" + "and Stefan Westen (onPaint() method from RobocodeSG)<br>"
+			+ "Ascander Jr (graphics for ground tiles),<br>" + "and Stefan Westen (onPaint method from RobocodeSG)<br>"
 			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
 	// Robocode version
@@ -87,6 +90,19 @@ public class AboutBox extends JDialog {
 		}
 	};
 
+	// Hyperlink event handler
+	private HyperlinkListener hyperlinkHandler = new HyperlinkListener() {
+		public void hyperlinkUpdate(HyperlinkEvent event) {
+			if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+				try {
+					robocode.manager.BrowserManager.openURL(event.getURL().toExternalForm());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	};
+	
 	/**
 	 * AboutBox constructor
 	 */
@@ -128,6 +144,7 @@ public class AboutBox extends JDialog {
 			mainPanel = new JEditorPane("text/html", getHtmlText());
 			mainPanel.setBackground(BG_COLOR);
 			mainPanel.setEditable(false);
+			mainPanel.addHyperlinkListener(hyperlinkHandler);
 		}
 		return mainPanel;
 	}
