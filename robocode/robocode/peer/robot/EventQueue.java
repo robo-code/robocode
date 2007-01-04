@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,6 +49,7 @@ public class EventQueue extends Vector<Event> {
 		synchronized (this) {
 			for (int i = 0; i < size(); i++) {
 				Event e = elementAt(i);
+
 				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
 					removeElementAt(i--);
 				}
@@ -60,6 +61,7 @@ public class EventQueue extends Vector<Event> {
 		synchronized (this) {
 			for (int i = 0; i < size(); i++) {
 				Event e = elementAt(i);
+
 				if ((e.getTime() <= clearTime)
 						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
 					removeElementAt(i--);

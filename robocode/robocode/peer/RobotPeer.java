@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.robocode.net/license/CPLv1.0.html
+ * http://robocode.sourceforge.net/license/cpl-v10.html
  * 
  * Contributors:
  *     Mathew A. Nelson
@@ -188,7 +188,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean sgPaintEnabled;
 
 	protected int state;
-
 
 	public RobotPeer(String name) {
 		this.name = name;
@@ -1608,10 +1607,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public void set(RobotRecord rr) {
 		x = rr.x;
 		y = rr.y;
-		energy = (double)rr.energy / 10;
-		heading = Math.PI * (double)rr.heading / 32768;
-		radarHeading = Math.PI * (double)rr.radarHeading / 32768;
-		gunHeading = Math.PI * (double)rr.gunHeading / 32768;
+		energy = (double) rr.energy / 10;
+		heading = Math.PI * (double) rr.heading / 32768;
+		radarHeading = Math.PI * (double) rr.radarHeading / 32768;
+		gunHeading = Math.PI * (double) rr.gunHeading / 32768;
 		state = rr.state;
 		bodyColor = rr.bodyColor;
 		gunColor = rr.gunColor;

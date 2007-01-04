@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2006 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.robocode.net/license/CPLv1.0.html
+ * http://robocode.sourceforge.net/license/cpl-v10.html
  * 
  * Contributors:
  *     Mathew A. Nelson
@@ -80,6 +80,7 @@ public class TeamRobot extends AdvancedRobot {
 			String s[] = new String[teamPeer.size() - 1];
 
 			int index = 0;
+
 			for (RobotPeer teammate : teamPeer) {
 				if (teammate != peer) {
 					s[index++] = teammate.getName();
