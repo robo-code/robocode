@@ -17,6 +17,9 @@
  *       copied into this object and added the getResults() in order to support
  *       the replay feature
  *     - Changed the survivalScore and totalSurvivalScore fields to be integers
+ *     Titus Chen
+ *     - Bugfix: Initial getResults() method only factored in the most recent
+ *       round
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -108,17 +111,14 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	}
 
 	public RobotResults getResults(int rank) {
-		return new RobotResults(null, rank,
-				bulletDamageScore + rammingDamageScore + survivalScore + killedEnemyRammingScore + killedEnemyBulletScore
-				+ winnerScore,
-				survivalScore,
-				winnerScore,
-				bulletDamageScore,
-				killedEnemyBulletScore,
-				rammingDamageScore,
-				killedEnemyRammingScore,
-				totalFirsts,
-				totalSeconds,
+		if (robotPeer.getBattle().isRunning()) {
+			return new RobotResults(null, rank, totalScore + getCurrentScore(), totalSurvivalScore + survivalScore,
+					totalWinnerScore + winnerScore, totalBulletDamageScore + bulletDamageScore,
+					totalKilledEnemyBulletScore + killedEnemyBulletScore, totalRammingDamageScore + rammingDamageScore,
+					totalKilledEnemyRammingScore + killedEnemyRammingScore, totalFirsts, totalSeconds, totalThirds);
+		}
+		return new RobotResults(null, rank, totalScore, totalSurvivalScore, totalWinnerScore, totalBulletDamageScore,
+				totalKilledEnemyBulletScore, totalRammingDamageScore, totalKilledEnemyRammingScore, totalFirsts, totalSeconds,
 				totalThirds);
 	}
 	
