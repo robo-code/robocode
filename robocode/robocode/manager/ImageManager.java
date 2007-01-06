@@ -11,6 +11,10 @@
  *     Flemming N. Larsen
  *     - Rewritten to support new rendering engine and to use dynamic coloring
  *       instead of static color index
+ *     Titus Chen
+ *     - Added and integrated RenderCache which removes the eldest image from the
+ *       cache of rendered robot images when max. capacity (MAX_NUM_COLORS) of
+ *       images has been reached
  *******************************************************************************/
 package robocode.manager;
 
@@ -39,15 +43,11 @@ public class ImageManager {
 	private Image gunImage;
 	private Image radarImage;
 
-	private RenderImage bodyRenderImage;
-	private RenderImage gunRenderImage;
-	private RenderImage radarRenderImage;
+	private static final int MAX_NUM_COLORS = 256;
 
-	private final int MAX_NUM_COLORS = 256;
-
-	private HashMap<Color, RenderImage> coloredBodyRenderImageMap = new HashMap<Color, RenderImage>();
-	private HashMap<Color, RenderImage> coloredGunRenderImageMap = new HashMap<Color, RenderImage>();
-	private HashMap<Color, RenderImage> coloredRadarRenderImageMap = new HashMap<Color, RenderImage>();
+	private HashMap<Color, RenderImage> robotBodyImageCache = new RenderCache<Color, RenderImage>();
+	private HashMap<Color, RenderImage> robotGunImageCache = new RenderCache<Color, RenderImage>();
+	private HashMap<Color, RenderImage> robotRadarImageCache = new RenderCache<Color, RenderImage>();
 
 	public ImageManager() {
 		initialize();
@@ -166,65 +166,69 @@ public class ImageManager {
 	}	
 	
 	public RenderImage getColoredBodyRenderImage(Color color) {
-		RenderImage img = coloredBodyRenderImageMap.get(color);
+		RenderImage img = robotBodyImageCache.get(color);
 
 		if (img == null) {
-			if (coloredBodyRenderImageMap.size() < MAX_NUM_COLORS) {
-				img = new RenderImage(ImageUtil.createColouredRobotImage(getBodyImage(), color));
-				coloredBodyRenderImageMap.put(color, img);
-			} else {
-				img = getBodyRenderImage();
-			}
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getBodyImage(), color));
+			robotBodyImageCache.put(color, img);
 		}
 		return img;
 	}
 
 	public RenderImage getColoredGunRenderImage(Color color) {
-		RenderImage img = coloredGunRenderImageMap.get(color);
+		RenderImage img = robotGunImageCache.get(color);
 
 		if (img == null) {
-			if (coloredGunRenderImageMap.size() < MAX_NUM_COLORS) {
-				img = new RenderImage(ImageUtil.createColouredRobotImage(getGunImage(), color));
-				coloredGunRenderImageMap.put(color, img);
-			} else {
-				img = getGunRenderImage();
-			}
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getGunImage(), color));
+			robotGunImageCache.put(color, img);
 		}
 		return img;
 	}
 
 	public RenderImage getColoredRadarRenderImage(Color color) {
-		RenderImage img = coloredRadarRenderImageMap.get(color);
+		RenderImage img = robotRadarImageCache.get(color);
 
 		if (img == null) {
-			if (coloredRadarRenderImageMap.size() < MAX_NUM_COLORS) {
-				img = new RenderImage(ImageUtil.createColouredRobotImage(getRadarImage(), color));
-				coloredRadarRenderImageMap.put(color, img);
-			} else {
-				img = getRadarRenderImage();
-			}
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getRadarImage(), color));
+			robotRadarImageCache.put(color, img);
 		}
 		return img;
 	}
 
-	private RenderImage getBodyRenderImage() {
-		if (bodyRenderImage == null) {
-			bodyRenderImage = new RenderImage(getBodyImage());
-		}
-		return bodyRenderImage;
-	}
+	/**
+	 * Class used for caching rendered robot parts in various colors.
+	 * 
+	 * @author Titus Chen
+	 */
+	@SuppressWarnings("serial")
+	private class RenderCache<K, V> extends LinkedHashMap<K, V> {
+		
+		/* Note about initial capacity:
+		 * To avoid rehashing (inefficient though probably unavoidable), initial
+		 * capacity must be at least 1 greater than the maximum capacity.
+		 * However, initial capacities are set to the smallest power of 2 greater
+		 * than or equal to the passed argument, resulting in 512 with this code.
+		 * I was not aware of this before, but notice: the current implementation
+		 * behaves similarly.  The simple solution would be to set maximum capacity
+		 * to 255, but the problem with doing so is that in a battle of 256 robots
+		 * of different colors, the net result would end up being real-time
+		 * rendering due to the nature of access ordering.  However, 256 robot
+		 * battles are rarely fought.
+		 */
+		private static final int INITIAL_CAPACITY = MAX_NUM_COLORS + 1;
 
-	private RenderImage getGunRenderImage() {
-		if (gunRenderImage == null) {
-			gunRenderImage = new RenderImage(getGunImage());
-		}
-		return gunRenderImage;
-	}
+		private static final float LOAD_FACTOR = 1;
 
-	private RenderImage getRadarRenderImage() {
-		if (radarRenderImage == null) {
-			radarRenderImage = new RenderImage(getRadarImage());
+
+		public RenderCache() {
+			/* The "true" parameter needed for access-order:
+			 * when cache fills, the least recently accessed entry is removed
+			 */
+			super(INITIAL_CAPACITY, LOAD_FACTOR, true);
 		}
-		return radarRenderImage;
+		
+		protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+			return size() > MAX_NUM_COLORS;
+		}
 	}
 }
