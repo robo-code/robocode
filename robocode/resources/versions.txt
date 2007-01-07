@@ -8,6 +8,9 @@ o Added replay feature
   -- A new "Replay" button has been added to the toolbar at the buttom of the battle
      screen. The replay feature makes it possible to replay a battle
   -- In a comming version of Robocode, it will be possible to load and save replays
+  -- Added "Enable replay recording" option to the Common Options for enabling and
+     disabling replay recording as replay recording eats memory. When the replay
+     recording is disabled, the "Replay" button will not be available
   -- Bugfix done by Titus Chen for the Beta version where robot scores were incorrect
 o Improved the security manager
   -- Robots are not allowed to access any internal Robocode packages anymore,
