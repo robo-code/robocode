@@ -1,11 +1,14 @@
-Version 1.2.3 Beta
-(01/04/2007)
-o Bugfix
+Version 1.2.3
+(01/07/2007)
+o Bugfixes
   -- Removed NullPointerException when trying to restart the initial intro battle
+  -- Titus Chen made a fix for the "robot color flickering" bug, when the max. amount
+     of robot colors (i.e. 256) has been exceeded
 o Added replay feature
   -- A new "Replay" button has been added to the toolbar at the buttom of the battle
      screen. The replay feature makes it possible to replay a battle
   -- In a comming version of Robocode, it will be possible to load and save replays
+  -- Bugfix done by Titus Chen for the Beta version where robot scores were incorrect
 o Improved the security manager
   -- Robots are not allowed to access any internal Robocode packages anymore,
      except for the robocode.util package in order to let legacy robots access
