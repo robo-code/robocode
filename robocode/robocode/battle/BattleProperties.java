@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Added setSelectedRobots(RobotSpecification[])
  *******************************************************************************/
 package robocode.battle;
 
@@ -15,9 +17,12 @@ package robocode.battle;
 import java.util.Properties;
 import java.io.*;
 
+import robocode.control.RobotSpecification;
+
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class BattleProperties {
 
@@ -150,7 +155,35 @@ public class BattleProperties {
 		this.selectedRobots = selectedRobots;
 		props.setProperty(BATTLE_SELECTEDROBOTS, "" + selectedRobots);
 	}
+
+	/**
+	 * Sets the selectedRobots.
+	 * 
+	 * @param robots The robots to set
+	 */
+	public void setSelectedRobots(RobotSpecification[] robots) {
+		String robotString = "";
+		RobotSpecification robot;
+
+		for (int i = 0; i < robots.length; i++) {
+			robot = robots[i];
+			if (robot == null) {
+				continue;
+			}
 	
+			robotString += robot.getClassName();
+	
+			if (!(robot.getVersion() == null || robot.getVersion().length() == 0)) {
+				robotString += " " + robot.getVersion();
+			}
+	
+			if (i < robots.length - 1) {
+				robotString += ",";
+			}
+		}
+		setSelectedRobots(robotString);
+	}
+
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
