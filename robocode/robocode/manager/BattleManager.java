@@ -33,6 +33,9 @@ import java.util.*;
 import robocode.util.*;
 import robocode.battle.*;
 import robocode.battlefield.*;
+import robocode.control.BattleSpecification;
+import robocode.control.RobocodeListener;
+import robocode.control.RobotResults;
 import robocode.repository.*;
 import robocode.peer.RobotPeer;
 import robocode.peer.robot.*;
@@ -154,13 +157,20 @@ public class BattleManager {
 		startNewBattle(battlingRobotsVector, exitOnComplete, replay, null);
 	}
 
-	public void startNewBattle(robocode.control.BattleSpecification battleSpecification, boolean replay) {
-		this.battleProperties = battleSpecification.getBattleProperties();
+	public void startNewBattle(BattleSpecification spec, boolean replay) {
+		battleProperties = new BattleProperties();
+		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
+		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
+		battleProperties.setGunCoolingRate(spec.getGunCoolingRate());
+		battleProperties.setInactivityTime(spec.getInactivityTime());
+		battleProperties.setNumRounds(spec.getNumRounds());
+		battleProperties.setSelectedRobots(spec.getRobots());
+
 		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
 				false, false, false, false, false, false);
 		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
 
-		for (robocode.control.RobotSpecification battleRobotSpec : battleSpecification.getRobots()) {
+		for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
 			if (battleRobotSpec == null) {
 				break;
 			}
@@ -186,16 +196,16 @@ public class BattleManager {
 			if (!found) {
 				Utils.log("Aborting battle, could not find robot: " + bot);
 				if (manager.getListener() != null) {
-					manager.getListener().battleAborted(battleSpecification);
+					manager.getListener().battleAborted(spec);
 				}
 				return;
 			}
 		}
-		startNewBattle(battlingRobotsVector, false, replay, battleSpecification);
+		startNewBattle(battlingRobotsVector, false, replay, spec);
 	}
 
 	private void startNewBattle(Vector<RobotClassManager> battlingRobotsVector, boolean exitOnComplete, boolean replay,
-			robocode.control.BattleSpecification battleSpecification) { 
+			BattleSpecification battleSpecification) { 
 
 		Utils.log("Preparing battle...");
 		if (battle != null) {
@@ -409,17 +419,17 @@ public class BattleManager {
 		return resultsFile;
 	}
 
-	public void sendResultsToListener(Battle battle, robocode.control.RobocodeListener listener) {
+	public void sendResultsToListener(Battle battle, RobocodeListener listener) {
 		Vector<RobotPeer> orderedRobots = new Vector<RobotPeer>(battle.getRobots());
 
 		Collections.sort(orderedRobots);
 
-		robocode.control.RobotResults results[] = new robocode.control.RobotResults[orderedRobots.size()];
+		RobotResults results[] = new RobotResults[orderedRobots.size()];
 
 		for (int i = 0; i < results.length; i++) {
 			RobotStatistics stats = orderedRobots.elementAt(i).getRobotStatistics();
 
-			results[i] = new robocode.control.RobotResults(
+			results[i] = new RobotResults(
 					orderedRobots.elementAt(i).getRobotClassManager().getControlRobotSpecification(), (i + 1),
 					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalWinnerScore(),
 					stats.getTotalBulletDamageScore(), stats.getTotalKilledEnemyBulletScore(),
