@@ -18,6 +18,8 @@ import robocode.peer.RobotPeer;
 
 /**
  * Robot record used for replaying battles containing a snapshot of a robot state.
+ * Note that this class contains fields that are bytes and shorts
+ * etc. in order to keep memory footprint as small as possible.
  *
  * @author Flemming N. Larsen
  */
