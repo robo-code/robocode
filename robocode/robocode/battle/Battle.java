@@ -763,9 +763,11 @@ public class Battle implements Runnable {
 			battleRecord.rounds.add(currentRoundRecord);
 
 			Vector<RobotPeer> orderedRobots = new Vector<RobotPeer>(robots);
+
 			Collections.sort(orderedRobots);
 
 			RobotResults results[] = new RobotResults[robots.size()];
+
 			currentRoundRecord.results = results;
 
 			int rank;
@@ -1497,10 +1499,19 @@ public class Battle implements Runnable {
 			for (BulletPeer bp : getBullets()) {
 				soundManager.playBulletSound(bp);
 			}
+			
+			boolean playedRobotHitRobot = false;
+			
 			for (RobotPeer rp : getRobots()) {
-				// TODO: Robot-hit-robot events play twice: once for each robot.
-				// The code could be improved in order to play only once.
-				soundManager.playRobotSound(rp);
+				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
+				if (rp.getState() == RobotPeer.STATE_HIT_ROBOT) {
+					if (playedRobotHitRobot) {
+						continue;
+					}
+					playedRobotHitRobot = true;
+				}
+
+				soundManager.playRobotSound(rp);					
 			}
 		}
 	}
