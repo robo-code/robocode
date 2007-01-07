@@ -102,17 +102,18 @@ public class BulletPeer {
 		super();
 
 		this.owner = owner;
-		state = br.state;
-		lastState = state;
 		x = br.x;
 		y = br.y;
 		power = ((double) br.power) / 10;
 		frame = br.frame;
-		explosionImageIndex = br.isExplosion ? 1 : 0;
 		deltaX = br.deltaX;
 		deltaY = br.deltaY;
-		hasHitVictim = br.hasHitVictim;
-		hasHitBullet = br.hasHitBullet;
+
+		state = (br.state & 0x07);
+		lastState = state;
+		explosionImageIndex = (br.state & 0x20) == 0x20 ? 1 : 0;
+		hasHitVictim = (br.state & 0x40) == 0x40;
+		hasHitBullet = (br.state & 0x80) == 0x80;
 	}
 
 	public void checkBulletCollision() {
