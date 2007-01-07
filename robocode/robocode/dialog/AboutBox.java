@@ -57,10 +57,11 @@ public class AboutBox extends JDialog {
 			+ TAG_ROBOCODE_VERSION
 			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">robocode.sourceforge.net</a><br>&nbsp;</td></tr></table><center><br>"
 			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan"
-			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (main developer and administrator),<br>"
+			+ "<br><br><b>Contributors:</b><br><br>Flemming N. Larsen (main developer, integrator and admin),<br>"
 			+ "Luis Crespo (Sound engine, single-step debugging, Ranking panel),<br>"
 			+ "Matthew Reeder (Editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
-			+ "Titus Chen (bugfixes regarding robot teleportation, bad wall collision detection, and team ranking),<br>"
+			+ "Titus Chen (bugfixes for robot teleportation, bad wall collision detection, team ranking,<br>"
+			+ "replay scores and robot color flickering),<br>"
 			+ "Ascander Jr (graphics for ground tiles),<br>" + "and Stefan Westen (onPaint method from RobocodeSG)<br>"
 			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
