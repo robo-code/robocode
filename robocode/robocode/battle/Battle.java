@@ -853,7 +853,6 @@ public class Battle implements Runnable {
 			for (RobotRecord rr : turnRecord.robotStates) {
 				robot = robots.get((int) rr.index);
 				robot.set(rr);
-				robot.setState(RobotPeer.STATE_ACTIVE);
 			}
 
 			bullets.clear();
