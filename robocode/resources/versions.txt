@@ -16,6 +16,9 @@ o Improved the security manager
   -- Robots are not allowed to access any internal Robocode packages anymore,
      except for the robocode.util package in order to let legacy robots access
      the robocode.util.Utils class, e.g. for calling normalRelativeAngle() etc.
+o Hotkey added for exiting Robocode quickly
+  -- It is now possible to exit from Robocode by pressing Alt+F4 in the main window
+     of Robocode. Note that the main window must be active
 
 Version 1.2.2
 (12/14/2006)
