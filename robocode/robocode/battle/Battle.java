@@ -119,6 +119,7 @@ public class Battle implements Runnable {
 
 	// Replay related items
 	private boolean replay;
+	private boolean isRecordingEnabled;
 	private static BattleRecord battleRecord;
 	private RoundRecord currentRoundRecord;
 	private TurnRecord currentTurnRecord;
@@ -189,12 +190,11 @@ public class Battle implements Runnable {
 
 		roundNum = 0;
 
-		// System.out.println("Used mem (start): " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-
 		manager.getWindowManager().getRobocodeFrame().setReplay(false);
+		isRecordingEnabled = manager.getProperties().getOptionsCommonEnableReplayRecording();
 
 		if (!replay) {
-			battleRecord = new BattleRecord(battleField, robots);
+			battleRecord = isRecordingEnabled ? new BattleRecord(battleField, robots) : null;
 		}
 
 		while (!abortBattles && roundNum < numRounds) {
@@ -206,7 +206,7 @@ public class Battle implements Runnable {
 
 				updateTitle();
 				
-				if (replay) {
+				if (replay && battleRecord != null) {
 					if (battleRecord.rounds.size() >= roundNum) {
 						runReplay();
 					}
@@ -301,9 +301,6 @@ public class Battle implements Runnable {
 		if (soundInitialized) {
 			soundManager.dispose();
 		}
-
-		// System.out.println(battleRecord);
-		// System.out.println("Used mem (end): " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 
 		manager.getWindowManager().getRobocodeFrame().setReplay(true);
 	}
@@ -595,7 +592,9 @@ public class Battle implements Runnable {
 		
 		boolean resetThisSec = true;
 
-		currentRoundRecord = new RoundRecord();
+		if (isRecordingEnabled) {
+			currentRoundRecord = new RoundRecord();
+		}
 
 		battleManager.startNewRound();
 
@@ -663,33 +662,35 @@ public class Battle implements Runnable {
 
 			computeActiveRobots();
 
-			currentTurnRecord = new TurnRecord();
-			currentRoundRecord.turns.add(currentTurnRecord);
-
-			currentTurnRecord.robotStates = new ArrayList<RobotRecord>();
-
-			Vector<RobotPeer> robots = getRobots();
-			RobotPeer rp;
-
-			for (int i = 0; i < robots.size(); i++) {
-				rp = robots.get(i); 
-				if (!rp.isDead()) {
-					RobotRecord rr = new RobotRecord(i, rp);
-
-					currentTurnRecord.robotStates.add(rr);
-				}
-			}
-			
-			currentTurnRecord.bulletStates = new ArrayList<BulletRecord>();
-			for (BulletPeer bp : getBullets()) {
-				RobotPeer owner = bp.getOwner();
-
+			if (isRecordingEnabled) {
+				currentTurnRecord = new TurnRecord();
+				currentRoundRecord.turns.add(currentTurnRecord);
+	
+				currentTurnRecord.robotStates = new ArrayList<RobotRecord>();
+	
+				Vector<RobotPeer> robots = getRobots();
+				RobotPeer rp;
+	
 				for (int i = 0; i < robots.size(); i++) {
-					if (robots.get(i) == owner) {
-						BulletRecord br = new BulletRecord(i, bp);
-
-						currentTurnRecord.bulletStates.add(br);
-						break;
+					rp = robots.get(i); 
+					if (!rp.isDead()) {
+						RobotRecord rr = new RobotRecord(i, rp);
+	
+						currentTurnRecord.robotStates.add(rr);
+					}
+				}
+				
+				currentTurnRecord.bulletStates = new ArrayList<BulletRecord>();
+				for (BulletPeer bp : getBullets()) {
+					RobotPeer owner = bp.getOwner();
+	
+					for (int i = 0; i < robots.size(); i++) {
+						if (robots.get(i) == owner) {
+							BulletRecord br = new BulletRecord(i, bp);
+	
+							currentTurnRecord.bulletStates.add(br);
+							break;
+						}
 					}
 				}
 			}
@@ -758,27 +759,27 @@ public class Battle implements Runnable {
 			}
 		}
 
-		battleRecord.rounds.add(currentRoundRecord);
+		if (isRecordingEnabled) {
+			battleRecord.rounds.add(currentRoundRecord);
 
-		Vector<RobotPeer> orderedRobots = new Vector<RobotPeer>(robots);
+			Vector<RobotPeer> orderedRobots = new Vector<RobotPeer>(robots);
+			Collections.sort(orderedRobots);
 
-		Collections.sort(orderedRobots);
-
-		RobotResults results[] = new RobotResults[robots.size()];
-
-		currentRoundRecord.results = results;
-
-		for (int i = 0; i < robots.size(); i++) {
-			RobotPeer r = orderedRobots.elementAt(i);
+			RobotResults results[] = new RobotResults[robots.size()];
+			currentRoundRecord.results = results;
 
 			int rank;
 
-			for (rank = 0; rank < robots.size(); rank++) {
-				if (robots.elementAt(rank) == r) {
-					break;
+			for (int i = 0; i < robots.size(); i++) {
+				RobotPeer r = orderedRobots.elementAt(i);
+
+				for (rank = 0; rank < robots.size(); rank++) {
+					if (robots.elementAt(rank) == r) {
+						break;
+					}
 				}
+				results[rank] = r.getRobotStatistics().getResults(i + 1);
 			}
-			results[rank] = r.getRobotStatistics().getResults(i + 1);
 		}
 
 		if (battleView != null) {
@@ -815,8 +816,6 @@ public class Battle implements Runnable {
 		int delay = 0;
 		
 		boolean resetThisSec = true;
-
-		currentRoundRecord = new RoundRecord();
 
 		battleManager.startNewRound();
 
