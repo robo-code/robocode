@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Added setPaintEnabled() and setSGPaintEnabled() in constructor
+ *     - Removed cleanup(), which did not do anything
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -62,9 +63,6 @@ public class RobotButton extends JButton implements ActionListener {
 			robotDialog.setVisible(true);
 		}
 	}
-
-	// TODO: FNL: Remove?
-	public void cleanup() {}
 
 	public RobotDialog getRobotDialog() {
 		return robotDialog;
