@@ -121,8 +121,9 @@ public class RobocodeFrame extends JFrame {
 		public void componentAdded(ContainerEvent e) {}
 
 		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_F4 && e.getModifiers() == KeyEvent.ALT_MASK) {}
-			// TODO: Mathew Nelson: close?;
+			if (e.getKeyCode() == KeyEvent.VK_F4 && e.getModifiers() == KeyEvent.ALT_MASK) {
+				System.exit(0);
+			}
 		}
 
 		public void keyReleased(KeyEvent e) {}
