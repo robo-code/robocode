@@ -78,7 +78,9 @@ public class RobocodeFrame extends JFrame {
 	private boolean exitOnClose;
 
 	private RobocodeManager manager;
-	
+
+	private WindowManager windowManager;
+
 	private class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ComponentListener, ContainerListener, WindowListener, ChangeListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -173,8 +175,6 @@ public class RobocodeFrame extends JFrame {
 			}
 		}
 	}
-
-	private WindowManager windowManager;
 
 	/**
 	 * RobocodeFrame constructor
@@ -422,6 +422,18 @@ public class RobocodeFrame extends JFrame {
 			replayButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			replayButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			replayButton.addActionListener(eventHandler);
+
+			RobocodeProperties props = manager.getProperties();
+
+			replayButton.setVisible(props.getOptionsCommonEnableReplayRecording());
+
+			props.addPropertyListener(
+					props.new PropertyListener() {
+				public void enableReplayRecordingChanged(boolean enabled) {
+					replayButton.setVisible(
+							RobocodeFrame.this.manager.getProperties().getOptionsCommonEnableReplayRecording());					
+				}
+			});
 		}
 		return replayButton;
 	}
