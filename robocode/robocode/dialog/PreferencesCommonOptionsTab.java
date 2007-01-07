@@ -28,8 +28,9 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 
 	private JCheckBox showResultsCheckBox;
 	private JCheckBox appendWhenSavingResultsCheckBox;
+	private JCheckBox enableReplayRecordingCheckBox;
 
-	public RobocodeManager manager;
+	private RobocodeManager manager;
 	
 	/**
 	 * PreferencesCommonOptionsTab constructor
@@ -58,6 +59,8 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 			optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 			optionsPanel.add(getShowResultsCheckBox());
 			optionsPanel.add(getAppendWhenSavingResultsCheckBox());
+			optionsPanel.add(new JLabel(" "));
+			optionsPanel.add(getEnableReplayRecordingCheckBox());
 		}
 		return optionsPanel;
 	}
@@ -90,9 +93,24 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		return appendWhenSavingResultsCheckBox;
 	}
 
+	/**
+	 * Return the enableReplayRecordingCheckBox
+	 * 
+	 * @return JCheckBox
+	 */
+	private JCheckBox getEnableReplayRecordingCheckBox() {
+		if (enableReplayRecordingCheckBox == null) {
+			enableReplayRecordingCheckBox = new JCheckBox("Enable replay recording (uses memory)");
+			enableReplayRecordingCheckBox.setMnemonic('E');
+			enableReplayRecordingCheckBox.setDisplayedMnemonicIndex(0);
+		}
+		return enableReplayRecordingCheckBox;
+	}
+
 	private void loadPreferences(RobocodeProperties robocodeProperties) {
 		getShowResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonShowResults());
 		getAppendWhenSavingResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonAppendWhenSavingResults());
+		getEnableReplayRecordingCheckBox().setSelected(robocodeProperties.getOptionsCommonEnableReplayRecording());
 	}
 
 	public void storePreferences() {
@@ -100,6 +118,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		
 		props.setOptionsCommonShowResults(getShowResultsCheckBox().isSelected());
 		props.setOptionsCommonAppendWhenSavingResults(getAppendWhenSavingResultsCheckBox().isSelected());
+		props.setOptionsCommonEnableReplayRecording(getEnableReplayRecordingCheckBox().isSelected());
 
 		manager.saveProperties();
 	}
