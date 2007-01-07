@@ -32,6 +32,7 @@ import robocode.manager.RobocodeManager;
  * 
  * @author Luis Crespo & Flemming N. Larsen
  */
+@SuppressWarnings("serial")
 public class RankingDialog extends JDialog {
 	private JPanel rankingContentPane;
 	private JScrollPane resultsScrollPane;
