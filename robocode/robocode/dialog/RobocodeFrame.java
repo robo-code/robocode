@@ -112,11 +112,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void componentShown(ComponentEvent e) {}
 
-		public void componentRemoved(ContainerEvent e) {
-			if (e.getChild() instanceof RobotButton) {
-				((RobotButton) e.getChild()).cleanup();
-			}
-		}
+		public void componentRemoved(ContainerEvent e) {}
 
 		public void componentAdded(ContainerEvent e) {}
 
