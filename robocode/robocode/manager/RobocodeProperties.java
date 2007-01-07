@@ -16,8 +16,11 @@
  *     - Added sound options
  *     - Added common options for showing battle result and append when saving
  *       results
+ *     - Added PropertyListener allowing listeners to retrieve events when a
+ *       property is changed
  *     - Removed "Allow color changes" option as this is always possible with
  *       the current rendering engine
+ *     - Added common option for enabling replay recording
  *******************************************************************************/
 package robocode.manager;
 
@@ -75,6 +78,7 @@ public class RobocodeProperties {
 	// Common Options
 	private boolean optionsCommonShowResults = true;
 	private boolean optionsCommonAppendWhenSavingResults = true; 
+	private boolean optionsCommonEnableReplayRecording = true;
 
 	private boolean optionsTeamShowTeamRobots = false;
 	
@@ -115,6 +119,7 @@ public class RobocodeProperties {
 
 			OPTIONS_COMMON_SHOW_RESULTS = "robocode.options.common.showResults",
 			OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS = "robocode.options.common.appendWhenSavingResults",
+			OPTIONS_COMMON_ENABLE_REPLAY_RECORDING = "robocode.options.common.enableReplayRecording",
 
 			OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots",
 			OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path",
@@ -718,11 +723,11 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsCommonAppendWhenSavingResults.
 	 * 
-	 * @param optionsCommonAppendWhenSavingResults The optionsCommonAppendWhenSavingResults to set
+	 * @param enable The optionsCommonAppendWhenSavingResults to set
 	 */
-	public void setOptionsCommonAppendWhenSavingResults(boolean optionsCommonAppendWhenSavingResults) {
-		this.optionsCommonAppendWhenSavingResults = optionsCommonAppendWhenSavingResults;
-		props.setProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "" + optionsCommonAppendWhenSavingResults);
+	public void setOptionsCommonAppendWhenSavingResults(boolean enable) {
+		this.optionsCommonAppendWhenSavingResults = enable;
+		props.setProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "" + enable);
 	}
 
 	/**
@@ -737,11 +742,32 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsCommonShowResults.
 	 * 
-	 * @param optionsCommonShowResults The optionsCommonShowResults to set
+	 * @param enable The optionsCommonShowResults to set
 	 */
-	public void setOptionsCommonShowResults(boolean optionsCommonShowResults) {
-		this.optionsCommonShowResults = optionsCommonShowResults;
-		props.setProperty(OPTIONS_COMMON_SHOW_RESULTS, "" + optionsCommonShowResults);
+	public void setOptionsCommonShowResults(boolean enable) {
+		this.optionsCommonShowResults = enable;
+		props.setProperty(OPTIONS_COMMON_SHOW_RESULTS, "" + enable);
+	}
+
+	/**
+	 * Gets the optionsCommonEnableReplayRecording
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsCommonEnableReplayRecording() {
+		return optionsCommonEnableReplayRecording;
+	}
+
+	/**
+	 * Sets the optionsCommonEnableReplayRecording.
+	 * 
+	 * @param enable The optionsCommonEnableReplayRecording to set
+	 */
+	public void setOptionsCommonEnableReplayRecording(boolean enable) {
+		this.optionsCommonEnableReplayRecording = enable;
+		props.setProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "" + enable);
+
+		notifyReplayRecordingChanged();
 	}
 
 	public void store(FileOutputStream out, String desc) throws IOException {
@@ -780,6 +806,7 @@ public class RobocodeProperties {
 
 		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true")).booleanValue();
 		optionsCommonAppendWhenSavingResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true")).booleanValue();
+		optionsCommonEnableReplayRecording = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "true")).booleanValue();
 
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
@@ -824,13 +851,20 @@ public class RobocodeProperties {
 		}
 	}
 
+	private void notifyReplayRecordingChanged() {
+		for (PropertyListener listener : listeners) {
+			listener.enableReplayRecordingChanged(optionsCommonEnableReplayRecording);
+		}
+	}
+
 	/**
 	 * Property listener.
 	 *
 	 * @author Flemming N. Larsen
 	 */
 	public class PropertyListener {
-		
 		public void desiredTpsChanged(int tps) {}
+		
+		public void enableReplayRecordingChanged(boolean enabled) {}
 	}
 }
