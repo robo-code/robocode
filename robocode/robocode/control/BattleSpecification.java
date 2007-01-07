@@ -8,6 +8,9 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Removed the battlefield field, which can be created when calling
+ *       getBattlefield() and optimized constructor
  *******************************************************************************/
 package robocode.control;
 
@@ -19,9 +22,10 @@ import robocode.battle.*;
  * Defines a battle
  * 
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (current)
  */
 public class BattleSpecification {
-	private BattlefieldSpecification battlefield;
+
 	private RobotSpecification robots[];
 	private BattleProperties battleProperties;
 	
@@ -44,33 +48,14 @@ public class BattleSpecification {
 	 * @param battlefieldSpecification The battlefield
 	 * @param robotSpecifications Robots in this battle
 	 */
-	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefield, RobotSpecification robots[]) {
+	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefield, RobotSpecification[] robots) {
 		battleProperties = new BattleProperties();
 		battleProperties.setNumRounds(numRounds);
 		battleProperties.setInactivityTime(inactivityTime);
 		battleProperties.setGunCoolingRate(gunCoolingRate);
 		battleProperties.setBattlefieldWidth(battlefield.getWidth());
 		battleProperties.setBattlefieldHeight(battlefield.getHeight());
-		String robotString = "";
-		RobotSpecification robot;
-
-		for (int i = 0; i < robots.length; i++) {
-			robot = robots[i];
-			if (robot == null) {
-				break;
-			}
-
-			robotString += robot.getClassName();
-
-			if (!(robot.getVersion() == null || robot.getVersion().length() == 0)) {
-				robotString += " " + robot.getVersion();
-			}
-
-			if (i < robots.length - 1) {
-				robotString += ",";
-			}
-		}
-		battleProperties.setSelectedRobots(robotString);
+		battleProperties.setSelectedRobots(robots);
 
 		this.robots = robots;	
 	}
@@ -99,7 +84,7 @@ public class BattleSpecification {
 	 * @return the battleField for this battle
 	 */
 	public BattlefieldSpecification getBattlefield() {
-		return battlefield;
+		return new BattlefieldSpecification(battleProperties.getBattlefieldWidth(), battleProperties.getBattlefieldHeight());
 	}
 	
 	/**
