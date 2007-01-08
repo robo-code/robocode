@@ -81,7 +81,6 @@ public class RobotRepositoryManager {
 			} catch (ClassNotFoundException e) {
 				Utils.log("Rebuilding robot database.");
 			}
-			Utils.setStatus("");
 		}
 		return robotDatabase;
 	}
@@ -205,7 +204,6 @@ public class RobotRepositoryManager {
 					} else {
 						Utils.setStatus("Cleaning up cache: Removing " + file);
 						Utils.deleteDir(file);
-						Utils.setStatus("");
 					}
 				}
 			}
@@ -469,7 +467,6 @@ public class RobotRepositoryManager {
 		} else {
 			getRobotDatabase().put(key, spec);
 		}
-		Utils.setStatus("");
 	}
 
 	private void conflictLog(String s) {
@@ -523,8 +520,6 @@ public class RobotRepositoryManager {
 
 		extractJar(f, dest, "Extracting .jar: " + jarSpecification.getFileName(), true, true, true);
 		getRobotDatabase().put(key, jarSpecification);
-		
-		Utils.setStatus("");
 	}
 
 	public int extractJar(File f, File dest, String statusPrefix, boolean extractJars, boolean close,
@@ -603,8 +598,6 @@ public class RobotRepositoryManager {
 					}
 				}
 				entry = jarIS.getNextJarEntry();
-
-				Utils.setStatus("");
 			}
 			if (close) {
 				jarIS.close();
