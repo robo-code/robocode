@@ -521,8 +521,12 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return false;
 		}
 	}
-	
+
 	public void checkPackageAccess(String pkg) {
+		if (pkg.equals("java.lang")) {
+			return;
+		}
+
 		super.checkPackageAccess(pkg);
 
 		// Accept if running in Robocode's security context
@@ -532,16 +536,20 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		// Access to robocode sub package?
 		if (pkg.startsWith("robocode.")) {
+		
 			String subPkg = pkg.substring(9);
 
 			// Only access to robocode.util is allowed
 			if (!(subPkg.equals("util"))) {
 				RobotPeer r = threadManager.getRobotPeer(Thread.currentThread());
 
-				r.setEnergy(0);
-				throw new AccessControlException(
-						"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "
-						+ pkg);
+				if (r != null) {
+					r.setEnergy(0);
+
+					throw new AccessControlException(
+							"Preventing " + Thread.currentThread().getName()
+							+ " from access to the internal Robocode pakage: " + pkg);
+				}
 			}
 		}
 	}
