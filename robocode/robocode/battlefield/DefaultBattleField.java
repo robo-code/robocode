@@ -19,9 +19,9 @@ import robocode.util.BoundingRectangle;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class DefaultBattleField implements BattleField {
-
 	private BoundingRectangle boundingBox;
 
 	public DefaultBattleField(int width, int height) {

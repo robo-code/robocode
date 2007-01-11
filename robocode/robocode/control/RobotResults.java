@@ -19,7 +19,7 @@ package robocode.control;
  * This class is returned from {@link RobocodeListener#battleComplete(robocode.control.BattleSpecification, robocode.control.RobotResults[])}
  *
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RobotResults {
 	private RobotSpecification robot;

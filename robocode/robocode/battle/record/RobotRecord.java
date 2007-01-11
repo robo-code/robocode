@@ -21,7 +21,7 @@ import robocode.peer.RobotPeer;
  * Note that this class contains fields that are bytes and shorts
  * etc. in order to keep memory footprint as small as possible.
  *
- * @author Flemming N. Larsen
+ * @author Flemming N. Larsen (original)
  */
 public class RobotRecord {
 

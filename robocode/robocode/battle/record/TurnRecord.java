@@ -19,7 +19,7 @@ import java.util.List;
  * Round record used for replaying battles containing the current state of all
  * robots and bullets, i.e. a snapshot of a turn.
  *
- * @author Flemming N. Larsen
+ * @author Flemming N. Larsen (original)
  */
 public class TurnRecord {
 

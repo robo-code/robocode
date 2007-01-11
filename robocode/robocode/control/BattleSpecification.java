@@ -22,10 +22,9 @@ import robocode.battle.*;
  * Defines a battle
  * 
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class BattleSpecification {
-
 	private RobotSpecification robots[];
 	private BattleProperties battleProperties;
 	

@@ -22,7 +22,7 @@ import robocode.control.RobotResults;
  * Round record used for replaying battles containing a list of all turn, which
  * includes robot and bullet states, and the final battle results of the round.
  *
- * @author Flemming N. Larsen
+ * @author Flemming N. Larsen (original)
  */
 public class RoundRecord {
 

@@ -22,7 +22,7 @@ import java.io.*;
  * This class is returned from {@link RobocodeEngine#getLocalRepository()}
  * 
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RobotSpecification {
 

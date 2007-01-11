@@ -16,6 +16,7 @@ package robocode.battlefield;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public interface BattleField {
 	public java.awt.geom.Rectangle2D getBoundingBox();
