@@ -33,7 +33,7 @@ import robocode.peer.RobotPeer;
  * to make any noise.
  *  
  * @author Luis Crespo (original)
- * @author Flemming N. Larsen (integration)
+ * @author Flemming N. Larsen (contributor)
  */
 public class SoundManager {
 

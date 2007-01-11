@@ -31,7 +31,8 @@ import robocode.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Titus Chen (contributor)
  */
 public class ImageManager {
 	private Image[] groundImages = new Image[5];

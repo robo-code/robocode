@@ -31,7 +31,8 @@ import robocode.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen, Luis Crespo (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Luis Crespo (contributor)
  */
 public class WindowManager {
 	

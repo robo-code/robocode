@@ -22,6 +22,7 @@ import java.io.OutputStream;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class BufferedPipedOutputStream extends OutputStream {
 

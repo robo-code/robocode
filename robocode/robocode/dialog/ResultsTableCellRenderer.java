@@ -26,7 +26,7 @@ import javax.swing.table.TableCellRenderer;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class ResultsTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {

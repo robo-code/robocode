@@ -12,7 +12,7 @@
  *     - Changed to give notification only if the available version number is
  *       greater than the version retrieved from the robocode.jar file, and only
  *       give warning if the user rejects downloading a new version, if the new
- *       version is not an alfa or beta version
+ *       version is not an alpha or beta version
  *     - Changed the checkdate time interval from 10 days to 5 days
  *     - Code cleanup
  *******************************************************************************/
@@ -30,7 +30,7 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class VersionManager {
 	private String version;

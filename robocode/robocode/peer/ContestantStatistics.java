@@ -16,6 +16,7 @@ package robocode.peer;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Luis Crespo (contributor)
  */
 public interface ContestantStatistics {
 	public double getTotalBulletDamageDealt();

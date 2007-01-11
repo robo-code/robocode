@@ -28,7 +28,7 @@ import robocode.util.Utils;
  * Dialog to display results (scores) of a battle.
  * 
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class ResultsDialog extends JDialog {

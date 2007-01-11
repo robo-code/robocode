@@ -22,7 +22,7 @@ import java.util.regex.*;
 
 /**
  * @author Matthew Reeder (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class FindReplaceDialog extends JDialog implements ActionListener {

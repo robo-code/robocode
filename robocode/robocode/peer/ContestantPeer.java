@@ -16,7 +16,7 @@ package robocode.peer;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public interface ContestantPeer extends Comparable<ContestantPeer> {
 	public ContestantStatistics getStatistics();

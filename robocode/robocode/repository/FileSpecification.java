@@ -25,7 +25,7 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public abstract class FileSpecification implements Comparable<FileSpecification>, Serializable, Cloneable {
 	

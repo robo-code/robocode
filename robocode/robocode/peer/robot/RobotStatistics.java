@@ -35,8 +35,8 @@ import robocode.peer.TeamPeer;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Luis Crespo (contributor)
  * @author Flemming N. Larsen (contributor)
+ * @author Luis Crespo (contributor)
  * @author Titus Chen (contributor)
  * @author Robert D. Maupin (contributor)
  */

@@ -29,7 +29,7 @@ import robocode.render.RobocodeLogo;
  * The splash screen.
  *
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class SplashScreen extends JWindow {

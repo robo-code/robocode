@@ -18,7 +18,8 @@ package robocode.peer;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Luis Crespo, Flemming N. Larsen (current)
+ * @author Luis Crespo (contributor)
+ * @author Flemming N. Larsen (contributor)
  */
 public class TeamStatistics implements ContestantStatistics {
 

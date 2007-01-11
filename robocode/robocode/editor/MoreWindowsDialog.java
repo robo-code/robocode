@@ -23,7 +23,7 @@ import javax.swing.*;
 
 /**
  * @author Matthew Reeder (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class MoreWindowsDialog extends JDialog implements ActionListener, MouseListener {

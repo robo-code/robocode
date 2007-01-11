@@ -27,8 +27,8 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
- * @author Matthew Reeder (keyboard mnemonics)
+ * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
  */
 @SuppressWarnings("serial")
 public class PreferencesDialog extends JDialog implements WizardListener {

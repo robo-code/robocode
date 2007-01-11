@@ -8,13 +8,13 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
- *     Matthew Reeder
- *     - Added keyboard mnemonics and a few accelerators to all menus and menu
- *       items
  *     Flemming N. Larsen
  *     - Added menu items for Robocode API, Robo Wiki, Yahoo Group Robocode,
  *       and Robocode Repository
  *     - Code cleanup
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics and a few accelerators to all menus and menu
+ *       items
  *     Luis Crespo & Flemming N. Larsen
  *     - Added check box menu item for "Show Rankings"
  *******************************************************************************/
@@ -34,7 +34,9 @@ import robocode.util.Utils;
  * Handles menu display and interaction for Robocode.
  * 
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen, Matthew Reeder, Luis Crespo (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
+ * @author Luis Crespo (contributor)
  */
 @SuppressWarnings("serial")
 public class RobocodeMenuBar extends JMenuBar {

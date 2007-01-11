@@ -21,6 +21,7 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class CpuManager {
 	private int cpuConstant = -1;

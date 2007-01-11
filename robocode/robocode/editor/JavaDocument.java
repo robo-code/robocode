@@ -23,6 +23,7 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class JavaDocument extends PlainDocument {

@@ -19,7 +19,7 @@ import javax.swing.event.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public abstract class WizardPanel extends javax.swing.JPanel {
 	private WizardController wizardController;

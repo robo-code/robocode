@@ -8,8 +8,6 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
- *     Matthew Reeder
- *     - Added keyboard mnemonics to buttons and other controls
  *     Flemming N. Larsen
  *     - Added visible ground and visible explosions option
  *     - Changed some keyboard mnemonics
@@ -19,6 +17,8 @@
  *     - Removed "Allow color changes" as this is always possible with the
  *       current rendering engine
  *     - Code cleanup
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics to buttons and other controls
  *******************************************************************************/
 package robocode.dialog;
 
@@ -32,7 +32,8 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
  */
 @SuppressWarnings("serial")
 public class PreferencesViewOptionsTab extends WizardPanel {

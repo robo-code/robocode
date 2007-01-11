@@ -20,6 +20,7 @@ import java.io.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class TeamMessageSizer extends OutputStream {
 	private final static long MAX_SIZE = 32768;

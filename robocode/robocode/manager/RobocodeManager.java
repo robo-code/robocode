@@ -22,7 +22,7 @@ import robocode.control.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeManager {
 	private BattleManager battleManager;

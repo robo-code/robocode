@@ -19,7 +19,7 @@ import java.io.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class ClassSpecification extends FileSpecification implements Serializable {

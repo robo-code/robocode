@@ -21,7 +21,7 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RobotThreadManager {
 	private RobotPeer robotPeer;

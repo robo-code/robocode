@@ -20,7 +20,7 @@ import javax.swing.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class NewBattleRulesTab extends JPanel {

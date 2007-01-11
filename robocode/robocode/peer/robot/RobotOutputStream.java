@@ -20,6 +20,7 @@ import robocode.io.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RobotOutputStream extends java.io.PrintStream {
 

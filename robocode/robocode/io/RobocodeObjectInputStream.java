@@ -19,8 +19,9 @@ import java.io.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
-public class RobocodeObjectInputStream extends java.io.ObjectInputStream {
+public class RobocodeObjectInputStream extends ObjectInputStream {
 	
 	private ClassLoader classLoader;
 

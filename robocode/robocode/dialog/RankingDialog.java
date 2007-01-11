@@ -30,7 +30,8 @@ import robocode.manager.RobocodeManager;
 /**
  * Dialog to display the running ranking of a battle
  * 
- * @author Luis Crespo & Flemming N. Larsen
+ * @author Luis Crespo (original)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class RankingDialog extends JDialog {

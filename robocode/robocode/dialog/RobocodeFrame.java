@@ -8,8 +8,6 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
- *     Matthew Reeder
- *     - Added keyboard mnemonics to buttons
  *     Flemming N. Larsen
  *     - Added JPopupMenu.setDefaultLightWeightPopupEnabled(false), i.e. enabling
  *       heavy-weight components in order to prevent battleview to hide menus
@@ -17,6 +15,8 @@
  *     - Added TPS slider + label
  *     - Added "Replay" button in order to activate the replay feature
  *     - Code cleanup
+ *     Matthew Reeder
+ *     - Added keyboard mnemonics to buttons
  *     Luis Crespo
  *     - Added debug step feature by adding a "Next Turn" button, and changing
  *       the "Pause" button into a "Pause/Debug" button
@@ -38,7 +38,9 @@ import robocode.util.*;
 
 /**
  * @author Mathew Nelson (original)
- * @author Flemming N. Larsen, Matthew Reeder, Luis Crespo (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
+ * @author Luis Crespo (contributor)
  */
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
