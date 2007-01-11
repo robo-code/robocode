@@ -84,7 +84,8 @@ public class BattleSpecification {
 	 * @return the battleField for this battle
 	 */
 	public BattlefieldSpecification getBattlefield() {
-		return new BattlefieldSpecification(battleProperties.getBattlefieldWidth(), battleProperties.getBattlefieldHeight());
+		return new BattlefieldSpecification(battleProperties.getBattlefieldWidth(),
+				battleProperties.getBattlefieldHeight());
 	}
 	
 	/**
