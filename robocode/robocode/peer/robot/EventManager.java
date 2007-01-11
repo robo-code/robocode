@@ -15,6 +15,9 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -28,7 +31,9 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder, Flemming N. Larsen (current)
+ * @author Matthew Reeder (contributor)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class EventManager {
 	private RobotPeer robotPeer = null;
@@ -47,7 +52,7 @@ public class EventManager {
 
 	private int currentTopEventPriority;
 
-	private Vector<Condition> customEvents = new Vector<Condition>();
+	private List<Condition> customEvents = Collections.synchronizedList(new ArrayList<Condition>());
 	private EventQueue eventQueue;
 
 	private double fireAssistAngle;
@@ -84,7 +89,7 @@ public class EventManager {
 	}
 
 	public void addCustomEvent(Condition condition) {
-		customEvents.addElement(condition);
+		customEvents.add(condition);
 	}
 
 	public void clearAllEvents(boolean includingSystemEvents) {
@@ -96,7 +101,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all events currently in the robot's queue.
+	 * Returns a list containing all events currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -125,10 +130,10 @@ public class EventManager {
 	 * @see robocode.HitWallEvent
 	 * @see robocode.SkippedTurnEvent
 	 * @see robocode.Event
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<Event> getAllEvents() {
-		Vector<Event> events = new Vector<Event>();
+	public List<Event> getAllEvents() {
+		List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
 
 		for (Object e : eventQueue) {
 			events.add((Event) e);
@@ -137,7 +142,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all BulletHitBulletEvents currently in the robot's queue.
+	 * Returns a list containing all BulletHitBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -149,10 +154,10 @@ public class EventManager {
 	 * 
 	 * @see #onBulletHitBullet
 	 * @see robocode.BulletHitBulletEvent
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
-		Vector<BulletHitBulletEvent> events = new Vector<BulletHitBulletEvent>(); 
+	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
+		List<BulletHitBulletEvent> events = Collections.synchronizedList(new ArrayList<BulletHitBulletEvent>()); 
 
 		for (Object e : eventQueue) {
 			if (e instanceof BulletHitBulletEvent) {
@@ -163,7 +168,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all BulletHitEvents currently in the robot's queue.
+	 * Returns a list containing all BulletHitEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -175,10 +180,10 @@ public class EventManager {
 	 * 
 	 * @see #onBulletHit
 	 * @see robocode.BulletHitEvent
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<BulletHitEvent> getBulletHitEvents() {
-		Vector<BulletHitEvent> events = new Vector<BulletHitEvent>();
+	public List<BulletHitEvent> getBulletHitEvents() {
+		List<BulletHitEvent> events = Collections.synchronizedList(new ArrayList<BulletHitEvent>());
 
 		for (Object e : eventQueue) {
 			if (e instanceof BulletHitEvent) {
@@ -189,7 +194,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all BulletMissedEvents currently in the robot's queue.
+	 * Returns a list containing all BulletMissedEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -201,10 +206,10 @@ public class EventManager {
 	 * 
 	 * @see #onBulletMissed
 	 * @see robocode.BulletMissedEvent
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<BulletMissedEvent> getBulletMissedEvents() {
-		Vector<BulletMissedEvent> events = new Vector<BulletMissedEvent>();
+	public List<BulletMissedEvent> getBulletMissedEvents() {
+		List<BulletMissedEvent> events = Collections.synchronizedList(new ArrayList<BulletMissedEvent>());
 
 		for (Object e : eventQueue) {
 			if (e instanceof BulletMissedEvent) {
@@ -291,7 +296,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all HitByBulletEvents currently in the robot's queue.
+	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -303,10 +308,10 @@ public class EventManager {
 	 * 
 	 * @see #onHitByBullet
 	 * @see robocode.HitByBulletEvent
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<HitByBulletEvent> getHitByBulletEvents() {
-		Vector<HitByBulletEvent> events = new Vector<HitByBulletEvent>();
+	public List<HitByBulletEvent> getHitByBulletEvents() {
+		List<HitByBulletEvent> events = Collections.synchronizedList(new ArrayList<HitByBulletEvent>());
 
 		for (Object e : eventQueue) {
 			if (e instanceof HitByBulletEvent) {
@@ -317,7 +322,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all HitRobotEvents currently in the robot's queue.
+	 * Returns a list containing all HitRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -329,10 +334,10 @@ public class EventManager {
 	 * 
 	 * @see #onHitRobot
 	 * @see robocode.HitRobotEvent
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<HitRobotEvent> getHitRobotEvents() {
-		Vector<HitRobotEvent> events = new Vector<HitRobotEvent>();
+	public List<HitRobotEvent> getHitRobotEvents() {
+		List<HitRobotEvent> events = Collections.synchronizedList(new ArrayList<HitRobotEvent>());
 
 		for (Object e : eventQueue) {
 			if (e instanceof HitRobotEvent) {
@@ -343,7 +348,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all HitWallEvents currently in the robot's queue.
+	 * Returns a list containing all HitWallEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -355,10 +360,10 @@ public class EventManager {
 	 * 
 	 * @see #onHitWall
 	 * @see robocode.HitWallEvent
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<HitWallEvent> getHitWallEvents() {
-		Vector<HitWallEvent> events = new Vector<HitWallEvent>();
+	public List<HitWallEvent> getHitWallEvents() {
+		List<HitWallEvent> events = Collections.synchronizedList(new ArrayList<HitWallEvent>());
 
 		for (Object e : eventQueue) {
 			if (e instanceof HitWallEvent) {
@@ -384,7 +389,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all RobotDeathEvents currently in the robot's queue.
+	 * Returns a list containing all RobotDeathEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -396,10 +401,10 @@ public class EventManager {
 	 * 
 	 * @see #onRobotDeath
 	 * @see robocode.RobotDeathEvent
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<RobotDeathEvent> getRobotDeathEvents() {
-		Vector<RobotDeathEvent> events = new Vector<RobotDeathEvent>();
+	public List<RobotDeathEvent> getRobotDeathEvents() {
+		List<RobotDeathEvent> events = Collections.synchronizedList(new ArrayList<RobotDeathEvent>());
 
 		for (Object e : eventQueue) {
 			if (e instanceof RobotDeathEvent) {
@@ -414,7 +419,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Returns a vector containing all ScannedRobotEvents currently in the robot's queue.
+	 * Returns a list containing all ScannedRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
 	 * 
 	 * <P>Example:
@@ -426,10 +431,10 @@ public class EventManager {
 	 * 
 	 * @see #onScannedRobot
 	 * @see robocode.ScannedRobotEvent
-	 * @see Vector
+	 * @see List
 	 */
-	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
-		Vector<ScannedRobotEvent> events = new Vector<ScannedRobotEvent>();
+	public List<ScannedRobotEvent> getScannedRobotEvents() {
+		List<ScannedRobotEvent> events = Collections.synchronizedList(new ArrayList<ScannedRobotEvent>());
 
 		for (Object e : eventQueue) {
 			if (e instanceof ScannedRobotEvent) {
@@ -551,7 +556,7 @@ public class EventManager {
 		Event currentEvent = null;
 
 		if (eventQueue.size() > 0) {
-			currentEvent = eventQueue.elementAt(0);
+			currentEvent = eventQueue.get(0);
 		}
 		while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority) {
 			// robotPeer.out.println("processing event of priority: " + currentEvent.getPriority() + " in loop with ctep: " + currentTopEventPriority);
@@ -617,7 +622,7 @@ public class EventManager {
 
 			} catch (EventInterruptedException e) {
 				fireAssistValid = false;
-				currentEvent = eventQueue.elementAt(0);
+				currentEvent = eventQueue.get(0);
 			} catch (RuntimeException e) {
 				currentTopEventPriority = oldTopEventPriority;
 				throw e;
@@ -627,7 +632,7 @@ public class EventManager {
 			}
 			currentTopEventPriority = oldTopEventPriority;
 			if (eventQueue.size() > 0) {
-				currentEvent = eventQueue.elementAt(0);
+				currentEvent = eventQueue.get(0);
 			} else {
 				currentEvent = null;
 			}

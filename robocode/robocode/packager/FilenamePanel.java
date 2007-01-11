@@ -12,6 +12,9 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Replaced deprecated show() method with setVisible(true)
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.packager;
 
@@ -22,7 +25,7 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Vector;
+import java.util.List;
 
 import robocode.dialog.*;
 import robocode.repository.*;
@@ -31,7 +34,8 @@ import robocode.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class FilenamePanel extends WizardPanel {
@@ -76,10 +80,10 @@ public class FilenamePanel extends WizardPanel {
 				outgoingFile.mkdirs();
 			}
 			String jarName = "myrobots.jar";
-			Vector<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null && selectedRobots.size() == 1) {
-				jarName = selectedRobots.elementAt(0).getFullClassName() + "_"
+				jarName = selectedRobots.get(0).getFullClassName() + "_"
 						+ robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
 			}
 				 

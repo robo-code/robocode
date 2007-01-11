@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.packager;
 
@@ -21,7 +24,8 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class ClassAnalyzer {
 	private final static byte CONSTANT_Class = 7;
@@ -43,7 +47,7 @@ public class ClassAnalyzer {
 		super();
 	}
 
-	public static Vector<String> getReferencedClasses(byte[] classFile) {
+	public static List<String> getReferencedClasses(byte[] classFile) {
 
 		/*
 		 http://java.sun.com/docs/books/vmspec/2nd-edition/html/ClassFile.doc.html
@@ -70,9 +74,9 @@ public class ClassAnalyzer {
 		 attribute_info attributes[attributes_count];
 		 }
 		 */
-		Vector<String> referencedClasses = new Vector<String>(); 
+		List<String> referencedClasses = new ArrayList<String>(); 
 		String strings[];
-		Vector<Integer> classNameIndexes = new Vector<Integer>();
+		List<Integer> classNameIndexes = new ArrayList<Integer>();
 
 		try {
 			DataInputStream in = new DataInputStream(new ByteArrayInputStream(classFile));

@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.manager;
 
@@ -26,7 +29,8 @@ import robocode.repository.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobotRepositoryManager {
 	boolean alwaysYes, alwaysNo;
@@ -39,7 +43,8 @@ public class RobotRepositoryManager {
 	private Repository repository;
 	private boolean cacheWarning;
 	private RobocodeManager manager;
-	private Vector<FileSpecification> updatedJarVector = new Vector<FileSpecification>();
+
+	private List<FileSpecification> updatedJarList = Collections.synchronizedList(new ArrayList<FileSpecification>());
 	private boolean write;
 
 	public RobotRepositoryManager(RobocodeManager manager) {
@@ -97,7 +102,7 @@ public class RobotRepositoryManager {
 		alwaysYes = false;
 		alwaysNo = false;
 
-		updatedJarVector.clear();
+		updatedJarList.clear();
 
 		// jarUpdated = false;
 		cacheWarning = false;
@@ -127,7 +132,7 @@ public class RobotRepositoryManager {
 				}
 			}
 		}
-		updatedJarVector.clear();
+		updatedJarList.clear();
 
 		File f = getRobotsDirectory();
 
@@ -136,12 +141,12 @@ public class RobotRepositoryManager {
 			getSpecificationsInDirectory(f, f, "", true);
 		}
 		
-		for (FileSpecification fileSpec : updatedJarVector) {
+		for (FileSpecification fileSpec : updatedJarList) {
 			processJar((JarSpecification) fileSpec);
 			updateRobotDatabase((JarSpecification) fileSpec);
 			write = true;
 		}
-		updatedJarVector.clear();
+		updatedJarList.clear();
 
 		f = getRobotCache();
 		Utils.setStatus("Reading: " + getRobotCache());
@@ -149,7 +154,7 @@ public class RobotRepositoryManager {
 			getSpecificationsInDirectory(f, f, "", false);
 		}
 
-		Vector<FileSpecification> fileSpecificationVector = getRobotDatabase().getFileSpecifications();
+		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
 		if (write) {
 			Utils.setStatus("Saving robot database");
@@ -158,7 +163,7 @@ public class RobotRepositoryManager {
 
 		Utils.setStatus("Adding robots to repository");
 
-		for (FileSpecification fs : fileSpecificationVector) {
+		for (FileSpecification fs : fileSpecificationList) {
 			if (fs instanceof TeamSpecification) {
 				repository.add(fs);
 				continue;
@@ -211,7 +216,7 @@ public class RobotRepositoryManager {
 	}
 
 	private void cleanupDatabase() {
-		Vector<File> externalDirectories = new Vector<File>();
+		List<File> externalDirectories = Collections.synchronizedList(new ArrayList<File>());
 		String externalPath = manager.getProperties().getOptionsDevelopmentPath();
 		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
 
@@ -221,9 +226,9 @@ public class RobotRepositoryManager {
 			externalDirectories.add(f);
 		}
 
-		Vector<FileSpecification> fileSpecificationVector = getRobotDatabase().getFileSpecifications();
+		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
-		for (FileSpecification fs : fileSpecificationVector) {
+		for (FileSpecification fs : fileSpecificationList) {
 			if (fs.exists()) {
 				File rootDir = fs.getRootDir();
 
@@ -263,9 +268,8 @@ public class RobotRepositoryManager {
 		repository = null;
 	}
 
-	private Vector<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
-
-		Vector<FileSpecification> robotList = new Vector<FileSpecification>();
+	private List<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
+		List<FileSpecification> robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
 
 		// Order is important?
 		String fileTypes[] = {
@@ -329,7 +333,7 @@ public class RobotRepositoryManager {
 					write = true;
 					if (fileSpecification instanceof JarSpecification) {
 						// this file is changed
-						updatedJarVector.add(fileSpecification);
+						updatedJarList.add(fileSpecification);
 					}
 				}
 				if (fileSpecification.getValid()) {
@@ -594,7 +598,7 @@ public class RobotRepositoryManager {
 						FileSpecification fileSpecification = FileSpecification.createSpecification(this, out,
 								parentDirectory, "", false);
 
-						updatedJarVector.add(fileSpecification);
+						updatedJarList.add(fileSpecification);
 					}
 				}
 				entry = jarIS.getNextJarEntry();

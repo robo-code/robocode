@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.util;
 
@@ -22,11 +25,12 @@ import java.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class NoDuplicateJarOutputStream extends JarOutputStream {
+	private Map<String, String> entries = new HashMap<String, String>();
 
-	private Hashtable<String, String> entries = new Hashtable<String, String>();
-	
 	public NoDuplicateJarOutputStream(OutputStream out) throws IOException {
 		super(out);
 	}

@@ -22,6 +22,9 @@
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.manager;
 
@@ -45,7 +48,9 @@ import robocode.peer.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Luis Crespo (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class BattleManager {
 	private BattleProperties battleProperties = new BattleProperties();
@@ -106,9 +111,10 @@ public class BattleManager {
 	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete, boolean replay) {
 		this.battleProperties = battleProperties;
 
-		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
+		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
 				false, false, false, false, false, false);
-		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
+		
+		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>()); 
 
 		if (battleProperties.getSelectedRobots() != null) {
 			StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
@@ -116,10 +122,10 @@ public class BattleManager {
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				for (FileSpecification fileSpec : robotSpecificationsVector) {
+				for (FileSpecification fileSpec : robotSpecificationsList) {
 					if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
 						if (fileSpec instanceof RobotSpecification) {
-							battlingRobotsVector.add(new RobotClassManager((RobotSpecification) fileSpec));
+							battlingRobotsList.add(new RobotClassManager((RobotSpecification) fileSpec));
 							break;
 						} else if (fileSpec instanceof TeamSpecification) {
 							TeamSpecification currentTeam = (TeamSpecification) fileSpec;
@@ -131,7 +137,7 @@ public class BattleManager {
 								bot = teamTokenizer.nextToken();
 								RobotSpecification match = null;
 
-								for (FileSpecification teamFileSpec : robotSpecificationsVector) {
+								for (FileSpecification teamFileSpec : robotSpecificationsList) {
 									// Teams cannot include teams
 									if (teamFileSpec instanceof TeamSpecification) {
 										continue;
@@ -146,7 +152,7 @@ public class BattleManager {
 										// else, still looking
 									}
 								}
-								battlingRobotsVector.add(new RobotClassManager(match, teamManager));
+								battlingRobotsList.add(new RobotClassManager(match, teamManager));
 							}
 							break;
 						}
@@ -154,7 +160,7 @@ public class BattleManager {
 				}
 			}
 		}
-		startNewBattle(battlingRobotsVector, exitOnComplete, replay, null);
+		startNewBattle(battlingRobotsList, exitOnComplete, replay, null);
 	}
 
 	public void startNewBattle(BattleSpecification spec, boolean replay) {
@@ -166,9 +172,9 @@ public class BattleManager {
 		battleProperties.setNumRounds(spec.getNumRounds());
 		battleProperties.setSelectedRobots(spec.getRobots());
 
-		Vector<FileSpecification> robotSpecificationsVector = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsVector(
+		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
 				false, false, false, false, false, false);
-		Vector<RobotClassManager> battlingRobotsVector = new Vector<RobotClassManager>(); 
+		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>()); 
 
 		for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
 			if (battleRobotSpec == null) {
@@ -183,12 +189,12 @@ public class BattleManager {
 
 			boolean found = false;
 
-			for (FileSpecification fileSpec : robotSpecificationsVector) {
+			for (FileSpecification fileSpec : robotSpecificationsList) {
 				if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
 					RobotClassManager rcm = new RobotClassManager((RobotSpecification) fileSpec);
 
 					rcm.setControlRobotSpecification(battleRobotSpec);
-					battlingRobotsVector.add(rcm);
+					battlingRobotsList.add(rcm);
 					found = true;
 					break;
 				}
@@ -201,10 +207,10 @@ public class BattleManager {
 				return;
 			}
 		}
-		startNewBattle(battlingRobotsVector, false, replay, spec);
+		startNewBattle(battlingRobotsList, false, replay, spec);
 	}
 
-	private void startNewBattle(Vector<RobotClassManager> battlingRobotsVector, boolean exitOnComplete, boolean replay,
+	private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
 			BattleSpecification battleSpecification) { 
 
 		Utils.log("Preparing battle...");
@@ -246,7 +252,7 @@ public class BattleManager {
 			battleView.setInitialized(false);
 		}
 
-		for (RobotClassManager robotClassMgr : battlingRobotsVector) {
+		for (RobotClassManager robotClassMgr : battlingRobotsList) {
 			battle.addRobot(robotClassMgr);
 		}
 
@@ -420,18 +426,17 @@ public class BattleManager {
 	}
 
 	public void sendResultsToListener(Battle battle, RobocodeListener listener) {
-		Vector<RobotPeer> orderedRobots = new Vector<RobotPeer>(battle.getRobots());
+		List<RobotPeer> orderedRobots = Collections.synchronizedList(new ArrayList<RobotPeer>(battle.getRobots()));
 
 		Collections.sort(orderedRobots);
 
 		RobotResults results[] = new RobotResults[orderedRobots.size()];
 
 		for (int i = 0; i < results.length; i++) {
-			RobotStatistics stats = orderedRobots.elementAt(i).getRobotStatistics();
+			RobotStatistics stats = orderedRobots.get(i).getRobotStatistics();
 
-			results[i] = new RobotResults(
-					orderedRobots.elementAt(i).getRobotClassManager().getControlRobotSpecification(), (i + 1),
-					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalWinnerScore(),
+			results[i] = new RobotResults(orderedRobots.get(i).getRobotClassManager().getControlRobotSpecification(),
+					(i + 1), stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalWinnerScore(),
 					stats.getTotalBulletDamageScore(), stats.getTotalKilledEnemyBulletScore(),
 					stats.getTotalRammingDamageScore(), stats.getTotalKilledEnemyRammingScore(), stats.getTotalFirsts(),
 					stats.getTotalSeconds(), stats.getTotalThirds());

@@ -12,6 +12,9 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Replaced deprecated show() method with setVisible(true)
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.packager;
 
@@ -21,7 +24,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.net.URL;
-import java.util.Vector;
+import java.util.List;
 import robocode.dialog.*;
 
 import robocode.util.*;
@@ -30,7 +33,8 @@ import robocode.repository.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class PackagerOptionsPanel extends WizardPanel {
@@ -69,10 +73,10 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			Vector<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots(); 
+			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots(); 
 
 			if (selectedRobots != null && (selectedRobots.size() == 1)) {
-				FileSpecification fileSpecification = (FileSpecification) selectedRobots.elementAt(0);
+				FileSpecification fileSpecification = (FileSpecification) selectedRobots.get(0);
 				String v = fileSpecification.getVersion();
 
 				if (v == null || v.equals("")) {

@@ -8,11 +8,14 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
- *     Matthew Reeder
- *     - Fixed compiler problem with protectionDomain
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
  *     - Code cleanup
+ *     Matthew Reeder
+ *     - Fixed compiler problem with protectionDomain
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.security;
 
@@ -30,11 +33,12 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder, Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobocodeClassLoader extends ClassLoader {
-
-	private Hashtable<String, Class<?>> cachedClasses = new Hashtable<String, Class<?>>(); 
+	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
 	
 	private RobotSpecification robotSpecification;
 	private robocode.peer.robot.RobotClassManager robotClassManager;
@@ -144,7 +148,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		
 			dis.readFully(buff);
 			dis.close();
-			Vector<String> v = ClassAnalyzer.getReferencedClasses(buff);
+			List<String> v = ClassAnalyzer.getReferencedClasses(buff);
 
 			robotClassManager.addReferencedClasses(v);
 			uid1 += v.size();

@@ -13,15 +13,19 @@
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.dialog;
 
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import java.io.*;
+import javax.swing.*;
 
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
@@ -31,7 +35,9 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen, Matthew Reeder (current)
+ * @author Matthew Reeder (contributor)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class RobotExtractor extends JDialog implements WizardListener {
@@ -101,7 +107,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		return buttonsPanel;
 	}
 
-	public Enumeration<?> getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
+	public Set<?> getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
 		robotClassManager.getRobotClassLoader().loadRobotClass(robotClassManager.getFullClassName(), true);
 		return robotClassManager.getReferencedClasses();
 	}
@@ -167,8 +173,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Extract");
-		Vector<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots(); 
-		FileSpecification spec = (FileSpecification) selectedRobots.elementAt(0);
+		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots(); 
+		FileSpecification spec = (FileSpecification) selectedRobots.get(0);
 
 		try {
 			Utils.setStatusWriter(out);

@@ -12,6 +12,9 @@
  *     - Added independent Rank column
  *     - Various optimizations
  *     - Ported to Java 5
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.battle;
 
@@ -30,7 +33,8 @@ import robocode.util.Utils;
  * in order to be displayed by the RankingDialog.
  * 
  * @author Luis Crespo (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
@@ -48,7 +52,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		Vector<ContestantPeer> contestants = getContestants();
+		List<ContestantPeer> contestants = getContestants();
 
 		return (contestants != null) ? contestants.size() : 0;
 	}
@@ -73,14 +77,14 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int row, int col) {
-		Vector<ContestantPeer> contestants = new Vector<ContestantPeer>(getContestants());
+		List<ContestantPeer> contestants = new ArrayList<ContestantPeer>(getContestants());
 
 		Collections.sort(contestants);
 		
 		if (contestants == null) {
 			return "";
 		}
-		ContestantPeer r = contestants.elementAt(row);
+		ContestantPeer r = contestants.get(row);
 
 		switch (col) {
 		case 0:
@@ -101,7 +105,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		}
 	}
 
-	private Vector<ContestantPeer> getContestants() {
+	private List<ContestantPeer> getContestants() {
 		if (manager == null) {
 			return null;
 		}

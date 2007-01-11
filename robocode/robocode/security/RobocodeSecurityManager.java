@@ -13,6 +13,9 @@
  *       package only
  *     - Ported to Java 5.0
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.security;
 
@@ -29,12 +32,13 @@ import robocode.manager.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobocodeSecurityManager extends SecurityManager {
-	private Hashtable<Thread, RobocodeFileOutputStream> outputStreamThreads; 
-	private Vector<Thread> safeThreads; 
-	private Vector<ThreadGroup> safeThreadGroups;
+	private Map<Thread, RobocodeFileOutputStream> outputStreamThreads;
+	private List<Thread> safeThreads; 
+	private List<ThreadGroup> safeThreadGroups;
 	private Thread battleThread;
 	public String status;
 
@@ -48,10 +52,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 	 */
 	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled) {
 		super();
-		safeThreads = new Vector<Thread>();
+		safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
 		safeThreads.add(safeThread);
-		safeThreadGroups = new Vector<ThreadGroup>();
-		outputStreamThreads = new Hashtable<Thread, RobocodeFileOutputStream>(); 
+		safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
+		outputStreamThreads = new HashMap<Thread, RobocodeFileOutputStream>(); 
 		this.threadManager = threadManager;
 		safeSecurityContext = getSecurityContext();
 		this.enabled = enabled;

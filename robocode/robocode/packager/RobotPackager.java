@@ -14,17 +14,21 @@
  *     - Renamed 'enum' variables to allow compiling with Java 1.5
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.packager;
 
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 import java.util.*;
+import java.util.List;
 import java.util.jar.*;
 import java.io.*;
 import java.net.*;
+import javax.swing.*;
 
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
@@ -36,7 +40,9 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder, Flemming N. Larsen (current)
+ * @author Matthew Reeder (contributor)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class RobotPackager extends JDialog implements WizardListener {
@@ -127,7 +133,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		return buttonsPanel;
 	}
 
-	public Enumeration<String> getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
+	public Set<String> getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
 		robotClassManager.getRobotClassLoader().loadRobotClass(robotClassManager.getFullClassName(), true);
 		return robotClassManager.getReferencedClasses();
 	}
@@ -232,7 +238,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Packager");
-		Vector<FileSpecification> robotSpecificationsVector = robotManager.getRobotRepository().getRobotSpecificationsVector(
+		List<FileSpecification> robotSpecificationsList = robotManager.getRobotRepository().getRobotSpecificationsList(
 				false, false, false, false, false, false);
 		String jarFilename = getFilenamePanel().getFilenameField().getText();
 		File f = new File(jarFilename);
@@ -252,7 +258,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 			out.println("Overwriting " + jarFilename);
 		}
-		Vector<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots(); 
+		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots(); 
 
 		// Create the jar file
 		Manifest manifest = new Manifest();
@@ -261,7 +267,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		String robots = "";
 
 		for (int i = 0; i < selectedRobots.size(); i++) {
-			robots += ((FileSpecification) selectedRobots.elementAt(i)).getFullClassName();
+			robots += ((FileSpecification) selectedRobots.get(i)).getFullClassName();
 			if (i < selectedRobots.size() - 1) {
 				robots += ",";
 			}
@@ -365,7 +371,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 						newMembers += ",";
 					}
 					bot = teamTokenizer.nextToken();
-					for (FileSpecification currentFileSpecification : robotSpecificationsVector) {
+					for (FileSpecification currentFileSpecification : robotSpecificationsList) {
 						// Teams cannot include teams
 						if (currentFileSpecification instanceof TeamSpecification) {
 							continue;
@@ -467,7 +473,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		RobotClassManager classManager = new RobotClassManager((RobotSpecification) robotSpecification);
 
 		try {
-			Enumeration<String> classes = getClasses(classManager);
+			Iterator<String> classes = getClasses(classManager).iterator();
 			String rootDirectory = classManager.getRobotClassLoader().getRootDirectory();
 
 			// Save props:
@@ -504,8 +510,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 					// ignore duplicate entry, fine, it's already there.
 				}
 			}
-			while (classes.hasMoreElements()) {
-				String className = (String) classes.nextElement();
+			while (classes.hasNext()) {
+				String className = (String) classes.next();
 
 				// Add source file if selected (not inner classes of course)
 				if (getPackagerOptionsPanel().getIncludeSource().isSelected()) {

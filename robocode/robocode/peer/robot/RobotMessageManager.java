@@ -11,6 +11,9 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -24,12 +27,13 @@ import robocode.peer.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobotMessageManager {
 	
 	private RobotPeer robotPeer;
-	private Vector<MessageEvent> messageEvents = new Vector<MessageEvent>(); 
+	private List<MessageEvent> messageEvents = Collections.synchronizedList(new ArrayList<MessageEvent>()); 
  	
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
@@ -86,7 +90,7 @@ public class RobotMessageManager {
 		}
 	}
 	
-	public Vector<MessageEvent> getMessageEvents() {
+	public List<MessageEvent> getMessageEvents() {
 		return messageEvents;
 	}
 	

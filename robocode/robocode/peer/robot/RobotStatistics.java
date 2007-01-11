@@ -20,6 +20,9 @@
  *     Titus Chen
  *     - Bugfix: Initial getResults() method only factored in the most recent
  *       round
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -32,7 +35,10 @@ import robocode.peer.TeamPeer;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Luis Crespo, Flemming N. Larsen (current)
+ * @author Luis Crespo (contributor)
+ * @author Flemming N. Larsen (contributor)
+ * @author Titus Chen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	private boolean noScoring;
@@ -203,8 +209,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	}
 
 	private boolean isTeammate(int robot) {
-		return (teamPeer != null
-				&& teamPeer == ((RobotPeer) robotPeer.getBattle().getRobots().elementAt(robot)).getTeamPeer());
+		return (teamPeer != null && teamPeer == ((RobotPeer) robotPeer.getBattle().getRobots().get(robot)).getTeamPeer());
 	}
 
 	public void scoreBulletDamage(int robot, double damage) {
@@ -246,8 +251,8 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 			}
 				
 			robotPeer.out.println(
-					"SYSTEM: Bonus for killing " + ((RobotPeer) robotPeer.getBattle().getRobots().elementAt(robot)).getName()
-					+ ": " + (int) (bonus + .5));
+					"SYSTEM: Bonus for killing " + ((RobotPeer) robotPeer.getBattle().getRobots().get(robot)).getName() + ": "
+					+ (int) (bonus + .5));
 			killedEnemyBulletScore += bonus;
 		}
 	}
@@ -267,8 +272,8 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 				}
 			}
 			robotPeer.out.println(
-					"SYSTEM: Ram bonus for killing "
-							+ ((RobotPeer) robotPeer.getBattle().getRobots().elementAt(robot)).getName() + ": " + (int) (bonus + .5));
+					"SYSTEM: Ram bonus for killing " + ((RobotPeer) robotPeer.getBattle().getRobots().get(robot)).getName()
+					+ ": " + (int) (bonus + .5));
 			killedEnemyRammingScore += bonus;
 		}
 	}

@@ -10,12 +10,15 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
 
 import java.io.*;
-import java.util.Vector;
+import java.util.*;
 
 import robocode.peer.RobotPeer;
 import robocode.RobocodeFileOutputStream;
@@ -23,12 +26,14 @@ import robocode.RobocodeFileOutputStream;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobotFileSystemManager {
 	private RobotPeer robotPeer;
 	private long quotaUsed = 0;
 	private boolean quotaMessagePrinted = false;
-	private Vector<RobocodeFileOutputStream> streams = new Vector<RobocodeFileOutputStream>(); 
+	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>(); 
 	private long maxQuota = 0;
 
 	/**

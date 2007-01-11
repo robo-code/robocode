@@ -12,6 +12,9 @@
  *     - Updated for Java 5
  *     - Optimized
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -22,10 +25,11 @@ import robocode.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
-public class EventQueue extends Vector<Event> {
+public class EventQueue extends ArrayList<Event> {
 
 	private EventManager eventManager;
 
@@ -48,10 +52,10 @@ public class EventQueue extends Vector<Event> {
 	
 		synchronized (this) {
 			for (int i = 0; i < size(); i++) {
-				Event e = elementAt(i);
+				Event e = get(i);
 
 				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
-					removeElementAt(i--);
+					remove(i--);
 				}
 			}
 		}
@@ -60,11 +64,11 @@ public class EventQueue extends Vector<Event> {
 	public void clear(long clearTime) {
 		synchronized (this) {
 			for (int i = 0; i < size(); i++) {
-				Event e = elementAt(i);
+				Event e = get(i);
 
 				if ((e.getTime() <= clearTime)
 						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
-					removeElementAt(i--);
+					remove(i--);
 				}
 			}
 		}

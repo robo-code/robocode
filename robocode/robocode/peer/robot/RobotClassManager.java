@@ -13,6 +13,9 @@
  *     - Changed loadUnresolvedClasses() to use loadClass() instead of
  *       loadRobotClass() if security is turned off
  *     - Ported to Java 5.0
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -28,12 +31,14 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobotClassManager {
 	private RobotSpecification robotSpecification;
 	private Class<?> robotClass;
-	private Hashtable<String, String> referencedClasses = new Hashtable<String, String>();
+	private Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
+	
 	private RobocodeClassLoader robotClassLoader = null;
 	// only used if we're being controlled by RobocodeEngine:
 	private robocode.control.RobotSpecification controlRobotSpecification;
@@ -64,7 +69,7 @@ public class RobotClassManager {
 		return robotSpecification.getNameManager();
 	}
 
-	public void addReferencedClasses(Vector<String> refClasses) {
+	public void addReferencedClasses(List<String> refClasses) {
 		if (refClasses == null) {
 			return;
 		}
@@ -95,8 +100,8 @@ public class RobotClassManager {
 		return fullClassName;
 	}
 
-	public Enumeration<String> getReferencedClasses() {
-		return referencedClasses.keys();
+	public Set<String> getReferencedClasses() {
+		return referencedClasses.keySet();
 	}
 
 	public Class<?> getRobotClass() {
@@ -115,10 +120,10 @@ public class RobotClassManager {
 	}
 
 	public void loadUnresolvedClasses() throws ClassNotFoundException {
-		Enumeration<String> keys = referencedClasses.keys();
+		Iterator<String> keys = referencedClasses.keySet().iterator();
 
-		while (keys.hasMoreElements()) {
-			String s = keys.nextElement();
+		while (keys.hasNext()) {
+			String s = keys.next();
 
 			if (referencedClasses.get(s).equals("false")) {
 				// resolve, then rebuild keys...
@@ -128,7 +133,7 @@ public class RobotClassManager {
 					robotClassLoader.loadClass(s, true);
 					addResolvedClass(s);
 				}
-				keys = referencedClasses.keys();
+				keys = referencedClasses.keySet().iterator();
 			}
 		}
 	}

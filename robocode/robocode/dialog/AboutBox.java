@@ -27,7 +27,7 @@ import robocode.manager.*;
  * The AboutBox
  *
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
 public class AboutBox extends JDialog {
@@ -62,6 +62,7 @@ public class AboutBox extends JDialog {
 			+ "Matthew Reeder (Editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
 			+ "Titus Chen (bugfixes for robot teleportation, bad wall collision detection, team ranking,<br>"
 			+ "replay scores and robot color flickering),<br>"
+			+ "Robert D. Maupin (code optimizations regarding newer Java collections),<br>"
 			+ "Ascander Jr (graphics for ground tiles),<br>" + "and Stefan Westen (onPaint method from RobocodeSG)<br>"
 			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 

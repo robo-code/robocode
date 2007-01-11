@@ -9,7 +9,10 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated getXxxEvents() to Java 5 including new examples regarding loops
+ *     - Ported to Java 5
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode;
 
@@ -24,7 +27,9 @@ import java.util.Vector;
  *
  * @see robocode.Robot
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class AdvancedRobot extends _AdvancedRadiansRobot {
 
@@ -214,7 +219,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<Event> getAllEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getAllEvents();
+			return new Vector<Event>(peer.getEventManager().getAllEvents());
 		} else {
 			uninitializedException("getAllEvents");
 			return null; // never called
@@ -239,7 +244,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getBulletHitBulletEvents();
+			return new Vector<BulletHitBulletEvent>(peer.getEventManager().getBulletHitBulletEvents());
 		} else {
 			uninitializedException("getBulletHitBulletEvents");
 			return null; // never called
@@ -264,7 +269,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<BulletHitEvent> getBulletHitEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getBulletHitEvents();
+			return new Vector<BulletHitEvent>(peer.getEventManager().getBulletHitEvents());
 		} else {
 			uninitializedException("getBulletHitEvents");
 			return null; // never called
@@ -289,7 +294,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<BulletMissedEvent> getBulletMissedEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getBulletMissedEvents();
+			return new Vector<BulletMissedEvent>(peer.getEventManager().getBulletMissedEvents());
 		} else {
 			uninitializedException("getBulletMissedEvents");
 			return null; // never called
@@ -395,7 +400,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<HitByBulletEvent> getHitByBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getHitByBulletEvents();
+			return new Vector<HitByBulletEvent>(peer.getEventManager().getHitByBulletEvents());
 		} else {
 			uninitializedException("getHitByBulletEvents");
 			return null; // never called
@@ -420,7 +425,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<HitRobotEvent> getHitRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getHitRobotEvents();
+			return new Vector<HitRobotEvent>(peer.getEventManager().getHitRobotEvents());
 		} else {
 			uninitializedException("getHitRobotEvents");
 			return null; // never called
@@ -445,7 +450,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<HitWallEvent> getHitWallEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getHitWallEvents();
+			return new Vector<HitWallEvent>(peer.getEventManager().getHitWallEvents());
 		} else {
 			uninitializedException("getHitWallEvents");
 			return null; // never called
@@ -485,7 +490,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<RobotDeathEvent> getRobotDeathEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getRobotDeathEvents();
+			return new Vector<RobotDeathEvent>(peer.getEventManager().getRobotDeathEvents());
 		} else {
 			uninitializedException("getRobotDeathEvents");
 			return null; // never called
@@ -510,7 +515,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getScannedRobotEvents();
+			return new Vector<ScannedRobotEvent>(peer.getEventManager().getScannedRobotEvents());
 		} else {
 			uninitializedException("getScannedRobotEvents");
 			return null; // never called

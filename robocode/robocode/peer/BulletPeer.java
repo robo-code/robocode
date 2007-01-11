@@ -17,12 +17,15 @@
  *     - Code cleanup & optimizations
  *     Luis Crespo
  *     - Added states
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer;
 
 
 import java.awt.geom.*;
-import java.util.Vector;
+import java.util.List;
 import static java.lang.Math.*;
 
 import robocode.battle.*;
@@ -33,8 +36,9 @@ import robocode.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
- * @author Luis Crespo (added states)
+ * @author Flemming N. Larsen (contributor)
+ * @author Luis Crespo (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class BulletPeer {
 	// Bullet states: all states last one turn, except MOVING and DONE
@@ -149,10 +153,10 @@ public class BulletPeer {
 
 	public void checkRobotCollision() {
 		RobotPeer r;
-		Vector<RobotPeer> robots = battle.getRobots();
+		List<RobotPeer> robots = battle.getRobots();
 
 		for (int i = 0; i < robots.size(); i++) {
-			r = robots.elementAt(i);
+			r = robots.get(i);
 
 			if (!(r == null || r == owner || r.isDead()) && r.getBoundingBox().intersectsLine(boundingLine)) {
 				double damage = Rules.getBulletDamage(power);

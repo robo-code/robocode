@@ -10,23 +10,28 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.manager;
 
 
 import robocode.peer.RobotPeer;
-import java.util.Vector;
+import java.util.*;
 
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class ThreadManager {
 
-	private Vector<ThreadGroup> groups = new Vector<ThreadGroup>();
+	private List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private Thread robotLoaderThread;
 	private RobotPeer loadingRobot;
-	private Vector<RobotPeer> robots = new Vector<RobotPeer>(); 
+	private List<RobotPeer> robots = Collections.synchronizedList(new ArrayList<RobotPeer>()); 
 
 	public ThreadManager() {
 		super();
@@ -62,7 +67,7 @@ public class ThreadManager {
 		if (index == -1) {
 			return null;
 		}
-		return (RobotPeer) robots.elementAt(index);
+		return (RobotPeer) robots.get(index);
 	}
 
 	public void reset() {

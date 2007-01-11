@@ -13,6 +13,9 @@
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.dialog;
 
@@ -20,7 +23,7 @@ package robocode.dialog;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.Vector;
+import java.util.List;
 
 import robocode.manager.*;
 import robocode.battle.BattleProperties;
@@ -28,7 +31,9 @@ import robocode.battle.BattleProperties;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder, Flemming N. Larsen (current)
+ * @author Matthew Reeder (contributor)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class NewBattleDialog extends JDialog implements WizardListener {
@@ -151,7 +156,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		return rulesTab;
 	}
 
-	public Vector<robocode.repository.FileSpecification> getSelectedRobots() { 
+	public List<robocode.repository.FileSpecification> getSelectedRobots() { 
 		return getRobotSelectionPanel().getSelectedRobots();
 	}
 

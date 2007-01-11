@@ -28,6 +28,9 @@
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
  *     - Added isRunning()
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.battle;
 
@@ -52,7 +55,9 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Luis Crespo (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class Battle implements Runnable {
 
@@ -94,12 +99,14 @@ public class Battle implements Runnable {
 	private int endTimer;
 	private int stopTime;
 	private int activeRobots;
-	private Vector<RobotPeer> deathEvents = new Vector<RobotPeer>();
+
+	// Death events
+	private List<RobotPeer> deathEvents = Collections.synchronizedList(new ArrayList<RobotPeer>());
 
 	// Objects in the battle
-	private Vector<RobotPeer> robots; 
-	private Vector<ContestantPeer> contestants;
-	private Vector<BulletPeer> bullets; 
+	private List<RobotPeer> robots; 
+	private List<ContestantPeer> contestants;
+	private List<BulletPeer> bullets; 
 
 	// Results related items
 	private boolean exitOnComplete;
@@ -139,9 +146,9 @@ public class Battle implements Runnable {
 
 		battleManager = manager.getBattleManager();
 		soundManager = new SoundManager(manager.getProperties());
-		robots = new Vector<RobotPeer>();
-		bullets = new Vector<BulletPeer>(); 
-		contestants = new Vector<ContestantPeer>();
+		robots = Collections.synchronizedList(new ArrayList<RobotPeer>());
+		bullets = Collections.synchronizedList(new ArrayList<BulletPeer>()); 
+		contestants = Collections.synchronizedList(new ArrayList<ContestantPeer>());
 	}
 
 	public void setReplay(boolean replay) {
@@ -276,7 +283,7 @@ public class Battle implements Runnable {
 					RobotResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
 
 					for (int i = 0; i < robots.size(); i++) {
-						RobotPeer robot = robots.elementAt(i);
+						RobotPeer robot = robots.get(i);
 						
 						RobotStatistics stats = new RobotStatistics(robot, results[i]);
 
@@ -350,7 +357,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public Vector<ContestantPeer> getContestants() {
+	public List<ContestantPeer> getContestants() {
 		return contestants;
 	}
 
@@ -381,7 +388,7 @@ public class Battle implements Runnable {
 		return battleThread;
 	}
 
-	public Vector<BulletPeer> getBullets() { 
+	public List<BulletPeer> getBullets() { 
 		return bullets;
 	}
 
@@ -405,7 +412,7 @@ public class Battle implements Runnable {
 		return numRounds;
 	}
 
-	public Vector<RobotPeer> getRobots() {
+	public List<RobotPeer> getRobots() {
 		return robots;
 	}
 
@@ -668,7 +675,7 @@ public class Battle implements Runnable {
 	
 				currentTurnRecord.robotStates = new ArrayList<RobotRecord>();
 	
-				Vector<RobotPeer> robots = getRobots();
+				List<RobotPeer> robots = getRobots();
 				RobotPeer rp;
 	
 				for (int i = 0; i < robots.size(); i++) {
@@ -762,7 +769,7 @@ public class Battle implements Runnable {
 		if (isRecordingEnabled) {
 			battleRecord.rounds.add(currentRoundRecord);
 
-			Vector<RobotPeer> orderedRobots = new Vector<RobotPeer>(robots);
+			List<RobotPeer> orderedRobots = Collections.synchronizedList(new ArrayList<RobotPeer>(robots));
 
 			Collections.sort(orderedRobots);
 
@@ -773,10 +780,10 @@ public class Battle implements Runnable {
 			int rank;
 
 			for (int i = 0; i < robots.size(); i++) {
-				RobotPeer r = orderedRobots.elementAt(i);
+				RobotPeer r = orderedRobots.get(i);
 
 				for (rank = 0; rank < robots.size(); rank++) {
-					if (robots.elementAt(rank) == r) {
+					if (robots.get(rank) == r) {
 						break;
 					}
 				}
@@ -1028,7 +1035,7 @@ public class Battle implements Runnable {
 		for (int i = 0; i < bullets.size(); i++) {
 			int numBullets = bullets.size();
 
-			bullets.elementAt(i).update();
+			bullets.get(i).update();
 			if (bullets.size() < numBullets) {
 				i--;
 			}
@@ -1082,7 +1089,7 @@ public class Battle implements Runnable {
 				}
 
 				if (r.getMessageManager() != null) {
-					Vector<MessageEvent> messageEvents = r.getMessageManager().getMessageEvents();
+					List<MessageEvent> messageEvents = r.getMessageManager().getMessageEvents();
 
 					for (MessageEvent me : messageEvents) {
 						r.getEventManager().add(me);

@@ -14,13 +14,16 @@
  *       be enabled. The close() method is only calling dispose() on the
  *       RobocodeFrame if the GUI is enabled
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.control;
 
 
 import java.io.*;
 import java.security.*;
-import java.util.Vector;
+import java.util.List;
 
 import robocode.*;
 import robocode.manager.*;
@@ -35,7 +38,8 @@ import robocode.util.*;
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  *
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobocodeEngine {
 	private RobocodeListener listener;
@@ -138,12 +142,11 @@ public class RobocodeEngine {
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
-		Vector<FileSpecification> v = robotRepository.getRobotSpecificationsVector(false, false, true, false, false,
-				true);
-		RobotSpecification robotSpecs[] = new RobotSpecification[v.size()];
+		List<FileSpecification> l = robotRepository.getRobotSpecificationsList(false, false, true, false, false, true);
+		RobotSpecification robotSpecs[] = new RobotSpecification[l.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
-			robotSpecs[i] = new RobotSpecification((robocode.repository.RobotSpecification) v.elementAt(i));
+			robotSpecs[i] = new RobotSpecification((robocode.repository.RobotSpecification) l.get(i));
 		}
 		return robotSpecs;
 	}

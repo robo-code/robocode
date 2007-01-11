@@ -8,6 +8,9 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.battle.record;
 
@@ -23,7 +26,8 @@ import robocode.peer.RobotPeer;
  * names of the participating robots, and all the record of all round including
  * the result of each round.
  *
- * @author Flemming N. Larsen
+ * @author Flemming N. Larsen (original)
+ * @author Robert D. Maupin (contributor)
  */
 public class BattleRecord {
 
@@ -43,7 +47,7 @@ public class BattleRecord {
 	 * @param battleField size of battle field
 	 * @param robots robots participating in the battle
 	 */
-	public BattleRecord(BattleField battleField, Vector<RobotPeer> robots) {
+	public BattleRecord(BattleField battleField, List<RobotPeer> robots) {
 		battleFieldWidth = battleField.getWidth();
 		battleFieldHeight = battleField.getHeight();
 		

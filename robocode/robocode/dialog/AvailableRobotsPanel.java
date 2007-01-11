@@ -12,28 +12,34 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.dialog;
 
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.util.Vector;
+
 import robocode.repository.*;
 
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class AvailableRobotsPanel extends JPanel {
 
-	private Vector<FileSpecification> availableRobots = new Vector<FileSpecification>(); 
-	private Vector<FileSpecification> robotList = new Vector<FileSpecification>();
-	private Vector<String> availablePackages = new Vector<String>();
+	private List<FileSpecification> availableRobots = Collections.synchronizedList(new ArrayList<FileSpecification>()); 
+	private List<FileSpecification> robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
+	private List<String> availablePackages = Collections.synchronizedList(new ArrayList<String>());
 
 	private JScrollPane availableRobotsScrollPane;
 	private JList availableRobotsList;
@@ -97,21 +103,21 @@ public class AvailableRobotsPanel extends JPanel {
 		add(f5Label, BorderLayout.SOUTH);
 	}
 
-	public Vector<FileSpecification> getAvailableRobots() {
+	public List<FileSpecification> getAvailableRobots() {
 		return availableRobots;
 	}
 
-	public Vector<FileSpecification> getRobotList() {
+	public List<FileSpecification> getRobotList() {
 		return robotList;
 	}
 
-	public Vector<FileSpecification> getSelectedRobots() {
+	public List<FileSpecification> getSelectedRobots() {
 		int sel[] = getAvailableRobotsList().getSelectedIndices();
 
-		Vector<FileSpecification> moves = new Vector<FileSpecification>();
+		List<FileSpecification> moves = Collections.synchronizedList(new ArrayList<FileSpecification>());
 
 		for (int i = 0; i < sel.length; i++) {
-			moves.add(availableRobots.elementAt(sel[i]));
+			moves.add(availableRobots.get(sel[i]));
 		}
 		return moves;
 	}
@@ -160,8 +166,8 @@ public class AvailableRobotsPanel extends JPanel {
 		return availableRobotsScrollPane;
 	}
 
-	public void setRobotList(Vector<FileSpecification> robotListVector) {
-		AvailableRobotsPanel.this.robotList = robotListVector;
+	public void setRobotList(List<FileSpecification> robotListList) {
+		AvailableRobotsPanel.this.robotList = robotListList;
 		SwingUtilities.invokeLater(
 				new Runnable() {
 			public void run() {
@@ -169,7 +175,8 @@ public class AvailableRobotsPanel extends JPanel {
 				availableRobots.clear();
 
 				if (AvailableRobotsPanel.this.robotList == null) {
-					AvailableRobotsPanel.this.robotList = new Vector<FileSpecification>();
+					AvailableRobotsPanel.this.robotList = Collections.synchronizedList(
+							new ArrayList<FileSpecification>());
 					availablePackages.add("One moment please...");
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().clearSelection();
@@ -179,7 +186,7 @@ public class AvailableRobotsPanel extends JPanel {
 					String packageName = null;
 
 					for (int i = 0; i < robotList.size(); i++) {
-						FileSpecification robotSpecification = robotList.elementAt(i);
+						FileSpecification robotSpecification = robotList.get(i);
 
 						if (packageName != null && robotSpecification.getFullPackage() != null
 								&& !packageName.equals(robotSpecification.getFullPackage())) {
@@ -198,7 +205,7 @@ public class AvailableRobotsPanel extends JPanel {
 					availablePackages.add("(No package)");
 
 					for (int i = 0; i < robotList.size(); i++) {
-						availableRobots.add(robotList.elementAt(i));
+						availableRobots.add(robotList.get(i));
 					}
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().setSelectedIndex(0);
@@ -221,19 +228,19 @@ public class AvailableRobotsPanel extends JPanel {
 		}
 
 		for (int i = 0; i < sel.length; i++) {
-			String selectedPackage = availablePackages.elementAt(sel[i]);
+			String selectedPackage = availablePackages.get(sel[i]);
 
 			if (selectedPackage.equals("(All)")) {
 				robotNamesCellRenderer.setUseShortNames(false);
 				availableRobots.clear();
 				for (int j = 0; j < robotList.size(); j++) {
-					availableRobots.add(robotList.elementAt(j));
+					availableRobots.add(robotList.get(j));
 				}
 				break;
 			} else {
 				// Single package.
 				for (int j = 0; j < robotList.size(); j++) {
-					FileSpecification robotSpecification = (FileSpecification) robotList.elementAt(j);
+					FileSpecification robotSpecification = (FileSpecification) robotList.get(j);
 
 					if (robotSpecification.getFullPackage() == null) {
 						if (selectedPackage.equals("(No package)")) {
@@ -330,7 +337,7 @@ public class AvailableRobotsPanel extends JPanel {
 		}
 
 		public String getElementAt(int which) {
-			return availablePackages.elementAt(which);
+			return availablePackages.get(which);
 		}
 	}
 
@@ -347,7 +354,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 		public FileSpecification getElementAt(int which) {
 			try {
-				return availableRobots.elementAt(which);
+				return availableRobots.get(which);
 			} catch (ArrayIndexOutOfBoundsException e) {
 				// If the view updates while we're updating...
 				return null;

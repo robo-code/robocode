@@ -11,13 +11,16 @@
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.packager;
 
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Vector;
+import java.util.List;
 import javax.swing.*;
 
 import robocode.dialog.*;
@@ -26,7 +29,8 @@ import robocode.repository.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class ConfirmPanel extends WizardPanel {
@@ -87,14 +91,14 @@ public class ConfirmPanel extends WizardPanel {
 		return visible;
 	}
 
-	public void setSelectedRobots(Vector<FileSpecification> selectedRobots) {
+	public void setSelectedRobots(List<FileSpecification> selectedRobots) {
 		getRobotListPanel().removeAll();
 
 		if (selectedRobots == null || selectedRobots.size() == 0) {
 			getRobotListPanel().add(new JLabel("You have not yet selected any robots."));
 		}
 		if (selectedRobots.size() == 1) {
-			String robotName = ((FileSpecification) selectedRobots.elementAt(0)).getFullClassName();
+			String robotName = ((FileSpecification) selectedRobots.get(0)).getFullClassName();
 
 			getRobotListPanel().add(new JLabel("You have selected " + robotName + " for packaging."));
 		} else {

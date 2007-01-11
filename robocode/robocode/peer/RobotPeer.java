@@ -37,6 +37,9 @@
  *     - Added states
  *     Titus Chen
  *     - Bugfix: Hit wall and teleporting problems with checkWallCollision()
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer;
 
@@ -59,8 +62,10 @@ import static robocode.util.Utils.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Luis Crespo (added states)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Luis Crespo (contributor)
+ * @author Titus Chen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobotPeer implements Runnable, ContestantPeer {
 
@@ -232,7 +237,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		inCollision = false;
 
 		for (int i = 0; i < battle.getRobots().size(); i++) {
-			RobotPeer r = battle.getRobots().elementAt(i);
+			RobotPeer r = battle.getRobots().get(i);
 
 			if (!(r == null || r == this || r.isDead()) && boundingBox.intersects(r.boundingBox)) {
 				// Bounce back

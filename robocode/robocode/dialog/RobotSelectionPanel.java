@@ -14,16 +14,20 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.dialog;
 
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
-import java.util.*;
 
 import robocode.repository.*;
 import robocode.manager.RobotRepositoryManager;
@@ -32,7 +36,9 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder, Flemming N. Larsen  (current)
+ * @author Matthew Reeder (contributor)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class RobotSelectionPanel extends WizardPanel {
@@ -68,7 +74,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
 	private RobotNameCellRenderer robotNamesCellRenderer;
-	private Vector<FileSpecification> selectedRobots = new Vector<FileSpecification>();
+	private List<FileSpecification> selectedRobots = Collections.synchronizedList(new ArrayList<FileSpecification>());
 	private boolean showNumRoundsPanel;
 	private RobotRepositoryManager robotManager;
 	private boolean listBuilt;
@@ -151,7 +157,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private void addButtonActionPerformed() {
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) getSelectedRobotsList().getModel();
-		Vector<FileSpecification> moves = availableRobotsPanel.getSelectedRobots();
+		List<FileSpecification> moves = availableRobotsPanel.getSelectedRobots();
 
 		for (FileSpecification move : moves) {
 			selectedRobots.add(move);
@@ -271,12 +277,12 @@ public class RobotSelectionPanel extends WizardPanel {
 			if (i != 0) {
 				sb.append(',');
 			}
-			sb.append(selectedRobots.elementAt(i).getNameManager().getUniqueFullClassNameWithVersion());
+			sb.append(selectedRobots.get(i).getNameManager().getUniqueFullClassNameWithVersion());
 		}
 		return sb.toString();
 	}
 
-	public Vector<FileSpecification> getSelectedRobots() {
+	public List<FileSpecification> getSelectedRobots() {
 		return selectedRobots;
 	}
 
@@ -442,7 +448,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 
 		public Object getElementAt(int which) {
-			return selectedRobots.elementAt(which);
+			return selectedRobots.get(which);
 		}
 	}
 
@@ -450,9 +456,9 @@ public class RobotSelectionPanel extends WizardPanel {
 		new Thread(new Runnable() {
 			public void run() {
 				getAvailableRobotsPanel().setRobotList(null);
-				Vector<FileSpecification> v = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsVector(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots); 
+				List<FileSpecification> l = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots); 
 
-				getAvailableRobotsPanel().setRobotList(v);
+				getAvailableRobotsPanel().setRobotList(l);
 				if (selectedRobots != null && !selectedRobots.equals("")) {
 					setSelectedRobots(getAvailableRobotsPanel().getRobotList(), preSelectedRobots);
 					preSelectedRobots = null;
@@ -600,7 +606,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		getNumRoundsTextField().setText("" + numRounds);
 	}
 
-	private void setSelectedRobots(Vector<FileSpecification> robotList, String selectedRobotsString) { 
+	private void setSelectedRobots(List<FileSpecification> robotList, String selectedRobotsString) { 
 		if (selectedRobotsString != null) {
 			StringTokenizer tokenizer;
 

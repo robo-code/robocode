@@ -12,6 +12,9 @@
  *     - Renamed 'enum' variables to allow compiling with Java 1.5
  *     - Replaced RobotPeerVector with plain Vector
  *     - Ported to Java 5.0
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.manager;
 
@@ -25,11 +28,12 @@ import robocode.dialog.*;
 
 /**
  * @author Mathew A. Nelson (orinal)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobotDialogManager {
 
-	private Hashtable<String, RobotDialog> robotDialogHashtable = new Hashtable<String, RobotDialog>(); 
+	private Map<String, RobotDialog> robotDialogHashMap = new HashMap<String, RobotDialog>(); 
 	private RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {
@@ -38,9 +42,9 @@ public class RobotDialogManager {
 	}
 
 	public void setActiveBattle(Battle b) {
-		Vector<RobotPeer> robots = b.getRobots();
+		List<RobotPeer> robots = b.getRobots();
 
-		for (String name : robotDialogHashtable.keySet()) {
+		for (String name : robotDialogHashMap.keySet()) {
 			boolean found = false;
 
 			for (RobotPeer r : robots) {
@@ -50,34 +54,34 @@ public class RobotDialogManager {
 				}
 			}
 			if (!found) {
-				RobotDialog dialog = robotDialogHashtable.get(name);
+				RobotDialog dialog = robotDialogHashMap.get(name);
 
-				robotDialogHashtable.remove(dialog);
+				robotDialogHashMap.remove(dialog);
 				dialog.dispose();
 			}
 		}
 	}
 
 	public void reset() {
-		for (String name : robotDialogHashtable.keySet()) {
-			RobotDialog dialog = robotDialogHashtable.get(name);
+		for (String name : robotDialogHashMap.keySet()) {
+			RobotDialog dialog = robotDialogHashMap.get(name);
 
 			if (!dialog.isVisible()) {
-				robotDialogHashtable.remove(dialog);
+				robotDialogHashMap.remove(dialog);
 				dialog.dispose();
 			}
 		}
 	}
 
 	public RobotDialog getRobotDialog(String robotName, boolean create) {
-		RobotDialog dialog = robotDialogHashtable.get(robotName);
+		RobotDialog dialog = robotDialogHashMap.get(robotName);
 
 		if (create && dialog == null) {
-			if (robotDialogHashtable.size() > 10) {
+			if (robotDialogHashMap.size() > 10) {
 				reset();
 			}
 			dialog = new RobotDialog(manager.isSlave());
-			robotDialogHashtable.put(robotName, dialog);
+			robotDialogHashMap.put(robotName, dialog);
 		}
 		return dialog;
 	}

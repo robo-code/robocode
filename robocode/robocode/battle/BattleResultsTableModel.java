@@ -14,6 +14,9 @@
  *     - Ported to Java 5
  *     - Optimized
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.battle;
 
@@ -26,7 +29,8 @@ import robocode.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
@@ -102,11 +106,11 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public Object getValueAt(int row, int col) {
-		Vector<ContestantPeer> orderedContestants = new Vector<ContestantPeer>(battle.getContestants()); 
+		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(battle.getContestants()); 
 
 		Collections.sort(orderedContestants);
 
-		ContestantPeer r = orderedContestants.elementAt(row);
+		ContestantPeer r = orderedContestants.get(row);
 		ContestantStatistics statistics = r.getStatistics(); 
 
 		switch (col) {
@@ -114,7 +118,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			int place = row + 1;
 
 			while (place < getRowCount()
-					&& statistics.getTotalScore() == orderedContestants.elementAt(place).getStatistics().getTotalScore()) {
+					&& statistics.getTotalScore() == orderedContestants.get(place).getStatistics().getTotalScore()) {
 				place++;
 			}
 			return Utils.getPlacementString(place);

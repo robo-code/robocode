@@ -12,6 +12,9 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5.0
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.repository;
 
@@ -22,18 +25,19 @@ import java.io.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class FileSpecificationDatabase implements Serializable {
 
-	private Hashtable<String, FileSpecification> hash = new Hashtable<String, FileSpecification>(); 
+	private Map<String, FileSpecification> hash = new HashMap<String, FileSpecification>(); 
 	
 	@SuppressWarnings("unchecked")
 	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
 
-		hash = (Hashtable<String, FileSpecification>) in.readObject();
+		hash = (HashMap<String, FileSpecification>) in.readObject();
 	}
 	
 	public void store(File f) throws IOException, FileNotFoundException {
@@ -44,10 +48,10 @@ public class FileSpecificationDatabase implements Serializable {
 	}
 	
 	public boolean contains(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Enumeration<FileSpecification> e = hash.elements();
+		Iterator<FileSpecification> i = hash.values().iterator();
 
-		while (e.hasMoreElements()) {
-			Object o = e.nextElement();
+		while (i.hasNext()) {
+			Object o = i.next();
 
 			if (o instanceof RobotSpecification || o instanceof TeamSpecification) {
 				FileSpecification spec = (FileSpecification) o;
@@ -74,10 +78,10 @@ public class FileSpecificationDatabase implements Serializable {
 	}
 
 	public FileSpecification get(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Enumeration<FileSpecification> e = hash.elements();
+		Iterator<FileSpecification> i = hash.values().iterator();
 
-		while (e.hasMoreElements()) {
-			Object o = e.nextElement();
+		while (i.hasNext()) {
+			Object o = i.next();
 
 			if (o instanceof RobotSpecification || o instanceof TeamSpecification) {
 				FileSpecification spec = (FileSpecification) o;
@@ -103,8 +107,8 @@ public class FileSpecificationDatabase implements Serializable {
 		return null;
 	}
 	
-	public Vector<FileSpecification> getFileSpecifications() {
-		Vector<FileSpecification> v = new Vector<FileSpecification>();
+	public List<FileSpecification> getFileSpecifications() {
+		List<FileSpecification> v = new ArrayList<FileSpecification>();
 
 		for (String key : hash.keySet()) {
 			v.add(hash.get(key));
@@ -112,8 +116,8 @@ public class FileSpecificationDatabase implements Serializable {
 		return v;
 	}
 	
-	public Vector<JarSpecification> getJarSpecifications() {
-		Vector<JarSpecification> v = new Vector<JarSpecification>();
+	public List<JarSpecification> getJarSpecifications() {
+		List<JarSpecification> v = new ArrayList<JarSpecification>();
 
 		for (String key : hash.keySet()) {
 			FileSpecification spec = hash.get(key);
@@ -164,10 +168,10 @@ public class FileSpecificationDatabase implements Serializable {
 		String fullClassName = removedSpecification.getFullClassName();
 		String version = removedSpecification.getVersion();
 		
-		Enumeration<FileSpecification> e = hash.elements();
+		Iterator<FileSpecification> i = hash.values().iterator();
 
-		while (e.hasMoreElements()) {
-			Object o = e.nextElement();
+		while (i.hasNext()) {
+			Object o = i.next();
 
 			if (o instanceof RobotSpecification) {
 				RobotSpecification spec = (RobotSpecification) o;

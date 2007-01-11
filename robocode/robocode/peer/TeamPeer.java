@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Rewritten for Java 5
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer;
 
@@ -19,10 +22,11 @@ import java.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
-public class TeamPeer extends Vector<RobotPeer> implements ContestantPeer {
+public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
 	private String name;
 	private RobotPeer teamLeader;

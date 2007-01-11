@@ -11,6 +11,9 @@
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.dialog;
 
@@ -20,7 +23,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.net.URL;
-import java.util.Vector;
+import java.util.List;
 
 import robocode.util.*;
 import robocode.repository.*;
@@ -28,7 +31,8 @@ import robocode.repository.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
 public class TeamCreatorOptionsPanel extends WizardPanel {
@@ -70,7 +74,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			Vector<FileSpecification> selectedRobots; 
+			List<FileSpecification> selectedRobots; 
 
 			if (teamCreator != null) {
 				selectedRobots = teamCreator.getRobotSelectionPanel().getSelectedRobots();
@@ -79,7 +83,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 			}
 			
 			if (selectedRobots != null) {
-				FileSpecification robotSpecification = selectedRobots.elementAt(0);
+				FileSpecification robotSpecification = selectedRobots.get(0);
 
 				getTeamNameLabel().setText("Please choose a name for your team: (Must be a valid Java classname)");
 				getTeamNameField().setText(robotSpecification.getNameManager().getShortClassName() + "Team");

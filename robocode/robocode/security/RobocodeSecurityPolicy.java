@@ -11,6 +11,9 @@
  *     Flemming N. Larsen
  *     - Ported for Java 5.0
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.security;
 
@@ -23,18 +26,19 @@ import java.net.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class RobocodeSecurityPolicy extends Policy {
 	private Policy parentPolicy;
 	private PermissionCollection permissionCollection;
-	private Vector<URL> trustedCodeUrls; 
+	private List<URL> trustedCodeUrls; 
 
 	public RobocodeSecurityPolicy(Policy parentPolicy) {
 		this.parentPolicy = parentPolicy;
 		this.permissionCollection = new Permissions();
 		this.permissionCollection.add(new AllPermission());
-		trustedCodeUrls = new Vector<URL>();
+		trustedCodeUrls = new ArrayList<URL>();
 		trustedCodeUrls.add(getClass().getProtectionDomain().getCodeSource().getLocation());
 
 		String classPath = System.getProperty("java.class.path");

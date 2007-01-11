@@ -12,6 +12,9 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
  *     - Code cleanup
+ *     Robert D. Maupin
+ *     - Replaced old collection types like Vector and Hashtable with
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.repository;
 
@@ -21,19 +24,20 @@ import java.util.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class Repository {
-	private Vector<FileSpecification> fileSpecifications = new Vector<FileSpecification>();
+	private List<FileSpecification> fileSpecifications = Collections.synchronizedList(new ArrayList<FileSpecification>());
 
 	public void add(FileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);
 	}
 	
-	public Vector<FileSpecification> getRobotSpecificationsVector(boolean onlyWithSource, boolean onlyWithPackage,
+	public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
 
-		Vector<FileSpecification> v = new Vector<FileSpecification>();
+		List<FileSpecification> v = Collections.synchronizedList(new ArrayList<FileSpecification>());
 
 		for (FileSpecification spec : fileSpecifications) {
 
