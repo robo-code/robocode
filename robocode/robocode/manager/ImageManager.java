@@ -219,8 +219,8 @@ public class ImageManager {
 
 		private static final float LOAD_FACTOR = 1;
 
-
 		public RenderCache() {
+
 			/* The "true" parameter needed for access-order:
 			 * when cache fills, the least recently accessed entry is removed
 			 */
