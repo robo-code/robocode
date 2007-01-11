@@ -19,6 +19,7 @@ import javax.swing.text.Segment;
  * @author Mathew A. Nelson (original)
  */
 public class Keywords {
+	// TODO: Must be updated for Java 5?
 	public final static String keywords[] = {
 		"abstract", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue", "default", "do",
 		"double", "else", "extends", "final", "finally", "float", "for", "goto", "if", "implements", "import",
