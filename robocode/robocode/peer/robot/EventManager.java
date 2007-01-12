@@ -539,9 +539,13 @@ public class EventManager {
 	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
+			Condition c;
 			boolean conditionSatisfied;
 
-			for (Condition c : customEvents) {
+			// Do not turn this into a "for each" loop as this will cause a
+			// ConcurrentModificationException!
+			for (int i = 0; i < customEvents.size(); i++) {
+				c = customEvents.get(i);
 				robotPeer.setTestingCondition(true);
 				conditionSatisfied = c.test();
 				robotPeer.setTestingCondition(false);
