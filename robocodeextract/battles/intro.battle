@@ -1,8 +1,0 @@
-#Battle Properties
-#Sun Mar 24 17:45:55 EST 2002
-robocode.battle.numRounds=1
-robocode.battle.gunCoolingRate=0.1
-robocode.battleField.width=800
-robocode.battle.rules.inactivityTime=450
-robocode.battle.selectedRobots=sample.Tracker,sample.SittingDuck
-robocode.battleField.height=600
