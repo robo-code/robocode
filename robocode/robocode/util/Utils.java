@@ -29,7 +29,7 @@ import robocode.security.*;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class Utils {
 	private static Point origin = new Point(0, 0);

@@ -16,7 +16,7 @@ package robocode.util;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeFileFilter implements java.io.FileFilter {
 	String fileTypes[] = null;

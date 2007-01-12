@@ -23,6 +23,7 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class WindowPositionManager implements ComponentListener {
 	private Properties windowPositions = null;
