@@ -16,7 +16,7 @@ package robocode;
  * This event is sent to {@link robocode.Robot#onBulletHit onBulletHit}
  * when one of your bullets hits another robot.
  * 
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class BulletHitEvent extends Event {
 	private String name;

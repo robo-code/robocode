@@ -16,7 +16,7 @@ package robocode;
  * This event is sent to {@link robocode.Robot#onDeath onDeath}
  * when your robot dies.
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class DeathEvent extends Event {
 

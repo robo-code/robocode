@@ -16,7 +16,7 @@ package robocode;
  * A prebuilt condition you can use that indicates your robot has finished rotating.
  * @see robocode.Condition
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class TurnCompleteCondition extends Condition {
 	private AdvancedRobot robot = null;

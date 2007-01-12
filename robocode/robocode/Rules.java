@@ -21,7 +21,8 @@ import static java.lang.Math.*;
  * Methods are provided for rules that can be changed between battles or which depends
  * on some other factor. 
  *
- * @author Flemming N. Larsen & Luis Crespo 
+ * @author Luis Crespo (original) 
+ * @author Flemming N. Larsen (original)
  *
  * @since 1.1.4
  */

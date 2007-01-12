@@ -17,7 +17,7 @@ package robocode;
  *
  * @see robocode.Condition
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class MoveCompleteCondition extends Condition {
 	private AdvancedRobot robot = null;

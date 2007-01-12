@@ -16,7 +16,7 @@ package robocode;
  * A ScannedRobotEvent is sent to {@link robocode.Robot#onScannedRobot} when you scan a robot.
  * You can use the information contained in this event to determine what to do.
  * 
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class ScannedRobotEvent extends Event {
 	private String name;

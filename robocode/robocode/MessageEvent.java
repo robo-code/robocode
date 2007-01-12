@@ -19,7 +19,7 @@ import java.io.*;
  * A MessageEvent is sent to {@link robocode.TeamRobot#onMessageReceived} when a teammate sends you a message.
  * You can use the information contained in this event to determine what to do.
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class MessageEvent extends Event {
 	private String sender;

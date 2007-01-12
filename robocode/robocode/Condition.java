@@ -38,7 +38,8 @@ import robocode.security.RobocodeSecurityManager;
  * @see robocode.AdvancedRobot#removeCustomEvent
  * @see robocode.AdvancedRobot#onCustomEvent
  * 
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public abstract class Condition {
 

@@ -16,7 +16,7 @@ package robocode;
  * This event is sent to {@link robocode.Robot#onBulletMissed onBulletMissed}
  * when one of your bullets has misses.
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class BulletMissedEvent extends Event {
 	private Bullet bullet;

@@ -32,7 +32,7 @@ package robocode;
  *
  * @see robocode.AdvancedRobot#onSkippedTurn
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class SkippedTurnEvent extends Event {
 

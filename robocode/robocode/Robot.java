@@ -8,15 +8,15 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
- *     Matthew Reeder
- *     - Fix for HyperThreading hang issue
- *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
- *     - Added onPaint() method for painting the robot
  *     Flemming N. Larsen
  *     - Fixed Javadoc documentation
  *     - Added setColors(Color, Color, Color, Color, Color), setAllColors(),
  *       setBodyColor(), setGunColor(), setRadarColor(), setBulletColor(), and
  *       setScanColor()
+ *     Matthew Reeder
+ *     - Fix for HyperThreading hang issue
+ *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
+ *     - Added onPaint() method for painting the robot
  *******************************************************************************/
 package robocode;
 
@@ -41,7 +41,9 @@ import java.awt.*;
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">Building your first robot<a>
  *
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder, Stefan Westen, Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
+ * @author Stefan Westen (contributor)
  */
 public class Robot extends _Robot implements Runnable {
 

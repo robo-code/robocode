@@ -17,7 +17,8 @@ package robocode;
 /**
  * The basic superclass of all Robocode events
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class Event implements Comparable<Event> {
 	private int priority = 0;

@@ -21,7 +21,7 @@ package robocode;
  *
  * @see robocode.AdvancedRobot
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	

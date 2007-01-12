@@ -16,7 +16,7 @@ package robocode;
  * This event is sent to {@link robocode.Robot#onRobotDeath onRobotDeath}
  * when another robot (not you) dies.
  * 
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class RobotDeathEvent extends Event {
 	private String robotName;

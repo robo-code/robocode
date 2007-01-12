@@ -23,10 +23,10 @@ import robocode.peer.BulletPeer;
  * @see robocode.BulletHitEvent
  * @see robocode.BulletMissedEvent
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class Bullet {
-	private robocode.peer.BulletPeer peer = null;
+	private BulletPeer peer = null;
 
 	/**
 	 * Called by the game to create a Bullet object

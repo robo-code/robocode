@@ -19,7 +19,7 @@ package robocode;
  *
  * @see #getCondition
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class CustomEvent extends Event {
 	private Condition condition;

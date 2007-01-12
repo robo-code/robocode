@@ -16,7 +16,7 @@ package robocode;
  * This event is sent to {@link robocode.Robot#onWin onWin}
  * when your robot wins the round.
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class WinEvent extends Event {
 

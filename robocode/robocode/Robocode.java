@@ -35,7 +35,7 @@ import robocode.security.*;
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  *
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class Robocode {
 

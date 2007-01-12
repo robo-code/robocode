@@ -22,7 +22,7 @@ import robocode.peer.RobotPeer;
  *
  * @see robocode.Robot
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class TeamRobot extends AdvancedRobot {
 	

@@ -20,7 +20,7 @@ import java.io.*;
  * 
  * @see java.io.FileWriter
  * 
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
  */
 public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 

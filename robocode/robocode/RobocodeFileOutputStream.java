@@ -28,7 +28,8 @@ import robocode.manager.*;
  * 
  * @see java.io.FileOutputStream
  *
- * @author Mathew A. Nelson
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeFileOutputStream extends OutputStream {
 	private static ThreadManager threadManager;
