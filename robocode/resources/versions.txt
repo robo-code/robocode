@@ -1,3 +1,13 @@
+Version 1.2.3A
+(01/12/2007)
+o Bugfix
+  -- Removed a ConcurrentModificationException that occured when processing robot events
+o Internal Robocde improvements
+  -- Robert D. Maupin (aka Chase-san) replaced all old type Java containers like Vector
+     Hashtable, Enumeration with the newer and faster types like ArrayList, HashMap, and
+     set
+  -- This improves the performance a bit, especially when running in "minimized" mode
+
 Version 1.2.3
 (01/10/2007)
 o Bugfixes
