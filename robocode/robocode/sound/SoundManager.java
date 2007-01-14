@@ -15,7 +15,9 @@
  *       the PlaySound caused a NullPointerException because the sounds field had
  *       not been intialized yet. Therefore a getSounds() factory methods has
  *       been added which allocated the SoundCache instance and initializes the
- *       SoundManager if the sounds field is null 
+ *       SoundManager if the sounds field is null
+ *     Titus Chen:
+ *     - Slight optimization with pan calculation in playBulletSound()
  *******************************************************************************/
 package robocode.sound;
 
@@ -34,6 +36,7 @@ import robocode.peer.RobotPeer;
  *  
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Titus Chen (contributor)
  */
 public class SoundManager {
 
@@ -155,7 +158,7 @@ public class SoundManager {
 		float pan = 0, vol = 1;
 
 		if (isPanEnabled()) {
-			pan = calcPan((float) bp.getX(), bp.getBattle().getBattleField().getWidth());
+			pan = calcPan((float) bp.getX(), bp.getBattleField().getWidth());
 		}
 		switch (bp.getState()) {
 		case BulletPeer.STATE_SHOT:
