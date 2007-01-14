@@ -13,6 +13,10 @@
  *     Flemming N. Larsen
  *     - Added constructor for the BulletPeer in order to support replay feature
  *     - Code cleanup
+ *     Titus Chen
+ *     - Bugfix: Added Battle parameter to the constructor that takes a
+ *       BulletRecord as parameter due to a NullPointerException that was raised
+ *       as the battleField variable was not intialized
  *******************************************************************************/
 package robocode.peer;
 
@@ -23,8 +27,9 @@ import robocode.battle.record.BulletRecord;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Luis Crespo (added states)
- * @author Flemming N. Larsen (current)
+ * @author Luis Crespo (contributor)
+ * @author Flemming N. Larsen (contributor)
+ * @author Titus Chen (contributor)
  */
 public class ExplosionPeer extends BulletPeer {
 	private int explosionImageIndex = 1;
@@ -39,8 +44,8 @@ public class ExplosionPeer extends BulletPeer {
 		this.lastState = STATE_EXPLODED;
 	}
 
-	public ExplosionPeer(RobotPeer owner, BulletRecord br) {
-		super(owner, br);
+	public ExplosionPeer(RobotPeer owner, Battle battle, BulletRecord br) {
+		super(owner, battle, br);
 	}
 
 	public final void update() {

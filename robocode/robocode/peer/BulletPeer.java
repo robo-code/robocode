@@ -20,6 +20,10 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Titus Chen
+ *     - Bugfix: Added Battle parameter to the constructor that takes a
+ *       BulletRecord as parameter due to a NullPointerException that was raised
+ *       as the battleField variable was not intialized
  *******************************************************************************/
 package robocode.peer;
 
@@ -39,6 +43,7 @@ import robocode.*;
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Titus Chen (constributor)
  */
 public class BulletPeer {
 	// Bullet states: all states last one turn, except MOVING and DONE
@@ -102,10 +107,12 @@ public class BulletPeer {
 		this.lastState = STATE_SHOT;
 	}
 
-	public BulletPeer(RobotPeer owner, BulletRecord br) {
+	public BulletPeer(RobotPeer owner, Battle battle, BulletRecord br) {
 		super();
 
 		this.owner = owner;
+		this.battle = battle;
+		this.battleField = battle.getBattleField();
 		x = br.x;
 		y = br.y;
 		power = ((double) br.power) / 10;

@@ -31,6 +31,10 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Titus Chen
+ *     - Bugfix: Added Battle parameter to the constructor that takes a
+ *       BulletRecord as parameter due to a NullPointerException that was raised
+ *       as the battleField variable was not intialized
  *******************************************************************************/
 package robocode.battle;
 
@@ -58,6 +62,7 @@ import robocode.util.Utils;
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Titus Chen (contributor)
  */
 public class Battle implements Runnable {
 
@@ -869,9 +874,9 @@ public class Battle implements Runnable {
 			for (BulletRecord br : turnRecord.bulletStates) {
 				robot = robots.get(br.owner);
 				if ((br.state & 0x20) == 0x20) {
-					bullet = new ExplosionPeer(robot, br);
+					bullet = new ExplosionPeer(robot, this, br);
 				} else {
-					bullet = new BulletPeer(robot, br);
+					bullet = new BulletPeer(robot, this, br);
 				}
 				bullets.add(bullet);
 			}
