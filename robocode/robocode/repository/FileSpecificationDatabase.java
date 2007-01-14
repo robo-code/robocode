@@ -37,7 +37,16 @@ public class FileSpecificationDatabase implements Serializable {
 	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
 
-		hash = (HashMap<String, FileSpecification>) in.readObject();
+		Object obj = in.readObject();
+
+		if (obj instanceof Hashtable) {
+			// The following provides backward compability for versions before 1.2.3A
+			Hashtable<String, FileSpecification> hashtable = (Hashtable<String, FileSpecification>) obj;
+			hash = new HashMap<String, FileSpecification>(hashtable);
+		} else {
+			// Using new container type for version 1.2.3B and followers
+			hash = (HashMap<String, FileSpecification>) obj;
+		}
 	}
 	
 	public void store(File f) throws IOException, FileNotFoundException {
