@@ -1,8 +1,9 @@
 Version 1.2.4 Alpha
 (01/14/2007)
 o Bugfix
-  -- When the "Pan" is enabled for the mixer in the Sound Options during a replay a
-     NullPointerException caused the replay to stop.
+  -- Titus Chen made a fix for a NullPointerException that caused a replay to stop.
+     This occured when "Pan" was enabled for the mixer in the Sound Options during a
+     replay 
 
 Version 1.2.3A
 (01/12/2007)
