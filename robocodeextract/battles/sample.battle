@@ -1,8 +1,0 @@
-#Battle Properties
-#Mon Oct 09 14:53:36 CEST 2006
-robocode.battle.numRounds=10
-robocode.battle.gunCoolingRate=0.1
-robocode.battleField.width=800
-robocode.battle.rules.inactivityTime=450
-robocode.battle.selectedRobots=sample.Corners,sample.Fire,sample.MyFirstRobot,sample.SittingDuck,sample.Walls
-robocode.battleField.height=600
