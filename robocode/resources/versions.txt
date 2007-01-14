@@ -1,9 +1,12 @@
-Version 1.2.4 Alpha
+Version 1.2.3B
 (01/14/2007)
-o Bugfix
+o Bugfixes
   -- Titus Chen made a fix for a NullPointerException that caused a replay to stop.
      This occured when "Pan" was enabled for the mixer in the Sound Options during a
-     replay 
+     replay
+  -- When using robocode databases ("robot.database") created with version 1.2.3 and
+     earlier version in version 1.2.3A, Robocode crashed in the startup with a
+     ClassCastException 
 
 Version 1.2.3A
 (01/12/2007)
