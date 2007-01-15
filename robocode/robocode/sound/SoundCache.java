@@ -8,6 +8,9 @@
  * Contributors:
  *     Luis Crespo
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.sound;
 
@@ -19,7 +22,7 @@ import java.util.Map;
 
 import javax.sound.sampled.*;
 
-import robocode.util.Utils;
+import robocode.io.Logger;
 
 
 /**
@@ -28,6 +31,7 @@ import robocode.util.Utils;
  * symultaneously.  
  * 
  * @author Luis Crespo (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class SoundCache {
 
@@ -131,7 +135,7 @@ public class SoundCache {
 			clones = new ClipClones(data, numClones);
 			soundTable.put(key, clones);
 		} catch (LineUnavailableException e) {
-			Utils.log("Error while trying to create clips: " + resourceName, e);
+			Logger.log("Error while trying to create clips: " + resourceName, e);
 		}
 	}
 
@@ -146,7 +150,7 @@ public class SoundCache {
 		URL url = this.getClass().getResource(resourceName);
 
 		if (url == null) {
-			Utils.log("Could not load sound because of invalid resource name: " + resourceName);
+			Logger.log("Could not load sound because of invalid resource name: " + resourceName);
 			return null;
 		}
 		try {
@@ -154,7 +158,7 @@ public class SoundCache {
 
 			data = new SoundData(ais);
 		} catch (Exception e) {
-			Utils.log("Error while reading sound from resource: " + resourceName, e);
+			Logger.log("Error while reading sound from resource: " + resourceName, e);
 			data = null;
 		}
 		return data;

@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *     Matthew Reeder
  *     - Fixed compiler problem with protectionDomain
@@ -28,7 +30,7 @@ import java.security.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.packager.*;
 import robocode.repository.*;
-import robocode.util.Utils;
+import static robocode.io.Logger.log;
 
 
 /**
@@ -61,7 +63,7 @@ public class RobocodeClassLoader extends ClassLoader {
 	}
 
 	public InputStream getResourceAsStream(String resource) {
-		Utils.log("Classloader:  getResourceAsStream: " + resource);
+		log("Classloader:  getResourceAsStream: " + resource);
 		return super.getResourceAsStream(resource);
 	}
 
@@ -99,10 +101,10 @@ public class RobocodeClassLoader extends ClassLoader {
 
 		if (!name.equals(robotClassManager.getFullClassName())) {
 			if (robotClassManager.getRootPackage() == null) {
-				Utils.log(
+				log(
 						robotClassManager.getFullClassName() + " is not in a package, but is trying to reference class "
 						+ name);
-				Utils.log("To do this in Robocode, you must put your robot into a package.");
+				log("To do this in Robocode, you must put your robot into a package.");
 				throw new ClassNotFoundException(
 						robotClassManager.getFullClassName() + "is not in a package, but is trying to reference class " + name);
 			}
@@ -171,7 +173,7 @@ public class RobocodeClassLoader extends ClassLoader {
 					}
 				} catch (Exception e) {
 					rootPackageDirectory = new File(classPath + File.separator + robotClassManager.getRootPackage() + File.separator).getAbsolutePath();
-					Utils.log("Unexpected error:  Cannot build canonical path for " + rootPackageDirectory);
+					log("Unexpected error:  Cannot build canonical path for " + rootPackageDirectory);
 				}
 			}
 			if (toplevel) {
