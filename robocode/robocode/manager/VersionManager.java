@@ -14,6 +14,8 @@
  *       give warning if the user rejects downloading a new version, if the new
  *       version is not an alpha or beta version
  *     - Changed the checkdate time interval from 10 days to 5 days
+ *     - Updated to use methods from WindowUtil, FileUtil, Logger, which replaces
+ *       methods that have been (re)moved from the Utils and Constants class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -24,8 +26,9 @@ import java.net.*;
 import javax.swing.*;
 import java.util.*;
 
-import robocode.util.Constants;
-import robocode.util.Utils;
+import robocode.dialog.WindowUtil;
+import robocode.io.FileUtil;
+import static robocode.io.Logger.log;
 
 
 /**
@@ -69,9 +72,9 @@ public class VersionManager {
 		try {
 			u = new URL("http://robocode.sourceforge.net/version/version.html");
 		} catch (MalformedURLException e) {
-			Utils.log("Unable to check for new version: " + e);
+			log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
-				Utils.messageError("Unable to check for new version: " + e);
+				WindowUtil.messageError("Unable to check for new version: " + e);
 			}
 			return false;
 		}
@@ -82,19 +85,19 @@ public class VersionManager {
 			URLConnection urlConnection = u.openConnection();
 
 			if (urlConnection instanceof HttpURLConnection) {
-				Utils.log("Update checking with http.");
+				log("Update checking with http.");
 				HttpURLConnection h = (HttpURLConnection) urlConnection;
 
 				if (h.usingProxy()) {
-					Utils.log("http using proxy.");
+					log("http using proxy.");
 				}
 			}
 			
 			reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 		} catch (IOException e) {
-			Utils.log("Unable to check for new version: " + e);
+			log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
-				Utils.messageError("Unable to check for new version: " + e);
+				WindowUtil.messageError("Unable to check for new version: " + e);
 			}
 			return false;
 		}
@@ -104,9 +107,9 @@ public class VersionManager {
 		try {
 			v = reader.readLine();
 		} catch (IOException e) {
-			Utils.log("Unable to check for new version: " + e);
+			log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
-				Utils.messageError("Unable to check for new version: " + e);
+				WindowUtil.messageError("Unable to check for new version: " + e);
 			}
 			return false;
 		}
@@ -154,7 +157,7 @@ public class VersionManager {
 			URL versionsUrl = getClass().getResource("/resources/versions.txt");
 
 			if (versionsUrl == null) {
-				Utils.log("no url");
+				log("no url");
 			}
 				
 			BufferedReader in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
@@ -165,10 +168,10 @@ public class VersionManager {
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
-			Utils.log("No versions.txt file in robocode.jar.");
+			log("No versions.txt file in robocode.jar.");
 			versionString = "unknown";
 		} catch (IOException e) {
-			Utils.log("IO Exception reading versions.txt from robocode.jar" + e);
+			log("IO Exception reading versions.txt from robocode.jar" + e);
 			versionString = "unknown";
 		}
 	
@@ -182,7 +185,7 @@ public class VersionManager {
 			}
 		}
 		if (version.equals("unknown")) {
-			Utils.log("Warning:  Getting version from file.");
+			log("Warning:  Getting version from file.");
 			return getVersionFromFile();
 		}
 		return version;
@@ -192,18 +195,18 @@ public class VersionManager {
 		String versionString = null;
 
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(new File(Constants.cwd(), "versions.txt")));
+			BufferedReader in = new BufferedReader(new FileReader(new File(FileUtil.getCwd(), "versions.txt")));
 
 			versionString = in.readLine();
 			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
 				versionString = in.readLine();
 			}
 		} catch (FileNotFoundException e) {
-			Utils.log("No versions.txt file.");
+			log("No versions.txt file.");
 			versionString = "unknown";
 	
 		} catch (IOException e) {
-			Utils.log("IO Exception reading versions.txt" + e);
+			log("IO Exception reading versions.txt" + e);
 			versionString = "unknown";
 		}
 	
