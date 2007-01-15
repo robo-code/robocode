@@ -21,6 +21,8 @@
  *     - Removed "Allow color changes" option as this is always possible with
  *       the current rendering engine
  *     - Added common option for enabling replay recording
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.manager;
 
@@ -30,7 +32,7 @@ import java.util.*;
 import java.text.*;
 import java.awt.RenderingHints;
 
-import robocode.util.Utils;
+import robocode.io.Logger;
 
 
 /**
@@ -818,7 +820,7 @@ public class RobocodeProperties {
 		try {
 			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
 		} catch (Exception e) {
-			Utils.log("Initializing version check date.");
+			Logger.log("Initializing version check date.");
 			setVersionChecked(new Date());
 		}
 		

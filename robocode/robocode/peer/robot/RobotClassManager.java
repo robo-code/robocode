@@ -13,6 +13,8 @@
  *     - Changed loadUnresolvedClasses() to use loadClass() instead of
  *       loadRobotClass() if security is turned off
  *     - Ported to Java 5.0
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -24,9 +26,9 @@ import java.util.*;
 
 import robocode.security.RobocodeClassLoader;
 import robocode.repository.*;
+import robocode.io.Logger;
 import robocode.manager.*;
 import robocode.peer.*;
-import robocode.util.Utils;
 
 
 /**
@@ -89,7 +91,7 @@ public class RobotClassManager {
 
 	public void addResolvedClass(String className) {
 		if (!referencedClasses.containsKey(className)) {
-			Utils.log(fullClassName + ": Cannot set " + className + " to resolved, did not know it was referenced.");
+			Logger.log(fullClassName + ": Cannot set " + className + " to resolved, did not know it was referenced.");
 			return;
 		}
 		referencedClasses.put(className, "true");

@@ -9,6 +9,8 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
@@ -19,7 +21,8 @@ package robocode.packager;
 
 import java.io.*;
 import java.util.*;
-import robocode.util.Utils;
+
+import robocode.io.Logger;
 
 
 /**
@@ -83,7 +86,7 @@ public class ClassAnalyzer {
 			long magic = in.readInt();
 
 			if (magic != 0xCAFEBABE) {
-				Utils.log("Not a class file!");
+				Logger.log("Not a class file!");
 				return null;
 			}
 			in.readUnsignedShort(); // minor version

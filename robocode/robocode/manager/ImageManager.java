@@ -25,8 +25,8 @@ import java.net.URL;
 import java.util.*;
 import javax.imageio.ImageIO;
 
+import robocode.io.Logger;
 import robocode.render.*;
-import robocode.util.*;
 
 
 /**
@@ -107,7 +107,7 @@ public class ImageManager {
 					try {
 						frames.add(new RenderImage(ImageIO.read(url)));
 					} catch (Exception e) {
-						Utils.log("Could not load image: " + filename);
+						Logger.log("Could not load image: " + filename);
 						break;
 					}		
 				}
