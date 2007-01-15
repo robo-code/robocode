@@ -13,6 +13,8 @@
  *     - GUI is disabled per default. If the setVisible() is called, the GUI will
  *       be enabled. The close() method is only calling dispose() on the
  *       RobocodeFrame if the GUI is enabled
+ *     - Updated to use methods from FileUtil and Logger, which replaces
+ *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
@@ -26,10 +28,11 @@ import java.security.*;
 import java.util.List;
 
 import robocode.*;
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 import robocode.manager.*;
 import robocode.repository.*;
 import robocode.security.*;
-import robocode.util.*;
 
 
 /**
@@ -78,7 +81,7 @@ public class RobocodeEngine {
 		manager.setEnableGUI(false);
 		
 		try {
-			Constants.setWorkingDirectory(robocodeHome);
+			FileUtil.setCwd(robocodeHome);
 		} catch (IOException e) {
 			System.err.println(e);
 			return;
@@ -155,7 +158,7 @@ public class RobocodeEngine {
 	 * Runs a battle
 	 */
 	public void runBattle(BattleSpecification battle) {
-		Utils.setLogListener(listener);
+		Logger.setLogListener(listener);
 		manager.getBattleManager().startNewBattle(battle, false);
 	}
 
