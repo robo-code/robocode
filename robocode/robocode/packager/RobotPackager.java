@@ -13,6 +13,9 @@
  *     Flemming N. Larsen
  *     - Renamed 'enum' variables to allow compiling with Java 1.5
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
+ *     - Moved the NoDuplicateJarOutputStream into the robocode.io package
  *     - Code cleanup
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
@@ -33,9 +36,9 @@ import javax.swing.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
 import robocode.dialog.*;
-import robocode.util.NoDuplicateJarOutputStream;
+import robocode.io.Logger;
+import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.*;
-import robocode.util.Utils;
 
 
 /**
@@ -115,7 +118,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		d.setText(resultsString);
 		d.pack();
 		d.pack();
-		Utils.packCenterShow(this, d);
+		WindowUtil.packCenterShow(this, d);
 		if (rc < 8) {
 			this.dispose();
 		}
@@ -454,7 +457,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 			} catch (Throwable e) {
 				rv = 8;
-				Utils.log(e);
+				Logger.log(e);
 				out.println(e);
 			}
 		} else {
