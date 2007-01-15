@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
+ *     - Updated to use methods from FileUtil and Logger, which replaces methods
+ *       that have been (re)moved from the robocode.util.Utils class
+ *     - Moved the compare() method from robocode.util.Utils into this class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
@@ -19,7 +22,8 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 
-import robocode.util.*;
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 import robocode.manager.*;
 
 
@@ -63,7 +67,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
-			Utils.log("Clone not supported!");
+			Logger.log("Clone not supported!");
 			return null;
 		}
 	}
@@ -74,7 +78,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	
 	public static FileSpecification createSpecification(RobotRepositoryManager repositoryManager, File f, File rootDir, String prefix, boolean developmentVersion) {
 		String filename = f.getName();
-		String fileType = Utils.getFileType(filename);
+		String fileType = FileUtil.getFileType(filename);
 		
 		FileSpecification newSpec = null;
 		
@@ -125,7 +129,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public int compareTo(FileSpecification other) {
-		return Utils.compare(getNameManager().getFullPackage(), getNameManager().getFullClassName(),
+		return FileSpecification.compare(getNameManager().getFullPackage(), getNameManager().getFullClassName(),
 				getNameManager().getVersion(), other.getNameManager().getFullPackage(),
 				other.getNameManager().getFullClassName(), other.getNameManager().getVersion());
 	}
@@ -470,5 +474,82 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	 */
 	public File getRootDir() {
 		return rootDir;
+	}
+
+	public static int compare(String p1, String c1, String v1, String p2, String c2, String v2) {
+		if (p1 == null && p2 != null) {
+			return 1;
+		}
+		if (p2 == null && p1 != null) {
+			return -1;
+		}
+		
+		if (p1 != null) // then p2 isn't either
+		{
+			// If packages are different, return
+			int pc = p1.compareToIgnoreCase(p2);
+	
+			if (pc != 0) {
+				return pc;
+			}
+		}
+	
+		// Ok, same package... compare class:
+		int cc = c1.compareToIgnoreCase(c2);
+	
+		if (cc != 0) {
+			// Different classes, return
+			return cc;
+		}
+	
+		// Ok, same robot... compare version
+		if (v1 == null && v2 == null) {
+			return 0;
+		}
+		if (v1 == null) {
+			return 1;
+		}
+		if (v2 == null) {
+			return -1;
+		}
+	
+		if (v1.equals(v2)) {
+			return 0;
+		}
+	
+		if (v1.indexOf(".") < 0 || v2.indexOf(".") < 0) {
+			return v1.compareToIgnoreCase(v2);
+		}
+	
+		// Dot separated versions.
+		StringTokenizer s1 = new StringTokenizer(v1, ".");
+		StringTokenizer s2 = new StringTokenizer(v2, ".");
+	
+		while (s1.hasMoreTokens() && s2.hasMoreTokens()) {
+			String tok1 = s1.nextToken();
+			String tok2 = s2.nextToken();
+	
+			try {
+				int i1 = Integer.parseInt(tok1);
+				int i2 = Integer.parseInt(tok2);
+	
+				if (i1 != i2) {
+					return i1 - i2;
+				}
+			} catch (NumberFormatException e) {
+				int tc = tok1.compareToIgnoreCase(tok2);
+	
+				if (tc != 0) {
+					return tc;
+				}
+			}
+		}
+		if (s1.hasMoreTokens()) {
+			return 1;
+		}
+		if (s2.hasMoreTokens()) {
+			return -1;
+		}
+		return 0;
 	}
 }
