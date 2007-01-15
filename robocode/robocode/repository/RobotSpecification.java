@@ -9,6 +9,8 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Updated to use methods from FileUtil and Logger, which replaces methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
@@ -16,7 +18,9 @@ package robocode.repository;
 
 import java.io.*;
 import java.net.*;
-import robocode.util.Utils;
+
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 
 
 /**
@@ -47,7 +51,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 		valid = true;
 		String filename = f.getName();
 		String filepath = f.getPath();
-		String fileType = Utils.getFileType(filename);
+		String fileType = FileUtil.getFileType(filename);
 
 		this.developmentVersion = developmentVersion;
 		if (prefix.equals("") && fileType.equals(".jar")) {
@@ -56,11 +60,11 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
 		} else if (fileType.equals(".java")) {
 			loadProperties(filepath);
-			setName(prefix + Utils.getClassName(filename));
+			setName(prefix + FileUtil.getClassName(filename));
 			setRobotClassPath(rootDir.getPath());
 		} else if (fileType.equals(".class")) {
 			loadProperties(filepath);
-			setName(prefix + Utils.getClassName(filename));
+			setName(prefix + FileUtil.getClassName(filename));
 			setRobotClassPath(rootDir.getPath());
 			if (isDevelopmentVersion()) {
 				String jfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".java";
@@ -72,7 +76,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 			}
 		} else if (fileType.equals(".properties")) {
 			loadProperties(filepath);
-			setName(prefix + Utils.getClassName(filename));
+			setName(prefix + FileUtil.getClassName(filename));
 			setRobotClassPath(rootDir.getPath());
 		}
 	}
@@ -100,7 +104,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 			}
 		} catch (IOException e) {
 			// Oh well.
-			Utils.log("Warning:  Could not load properties file: " + pfn);
+			Logger.log("Warning:  Could not load properties file: " + pfn);
 		}
 		setThisFileName(pfn);
 		String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
@@ -122,7 +126,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 			try {
 				setFilePath(classFile.getCanonicalPath());
 			} catch (IOException e) {
-				Utils.log("Warning:  Unable to determine canonical path for " + classFile.getPath());
+				Logger.log("Warning:  Unable to determine canonical path for " + classFile.getPath());
 				setFilePath(classFile.getPath());
 			}
 			setFileName(classFile.getName());

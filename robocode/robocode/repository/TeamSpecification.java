@@ -9,6 +9,8 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Updated to use methods from FileUtil and Logger, which replaces methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
@@ -16,7 +18,9 @@ package robocode.repository;
 
 import java.io.*;
 import java.net.*;
-import robocode.util.*;
+
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 
 
 /**
@@ -45,7 +49,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 		this.rootDir = rootDir;
 		valid = true;
 		String filename = f.getName();
-		String fileType = Utils.getFileType(filename);
+		String fileType = FileUtil.getFileType(filename);
 
 		if (fileType.equals(".team")) {
 			try {
@@ -53,12 +57,12 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 				load(in);
 			} catch (IOException e) {
-				Utils.log("Warning:  Could not load team: " + f);
+				Logger.log("Warning:  Could not load team: " + f);
 			}
 			if (filename.indexOf(" ") >= 0) {
-				setName(prefix + Utils.getClassName(filename.substring(0, filename.indexOf(" "))));
+				setName(prefix + FileUtil.getClassName(filename.substring(0, filename.indexOf(" "))));
 			} else {
-				setName(prefix + Utils.getClassName(filename));
+				setName(prefix + FileUtil.getClassName(filename));
 			}
 			setFileLastModified(f.lastModified());
 			setFileLength(f.length());
@@ -66,7 +70,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 			try {
 				setFilePath(f.getCanonicalPath());
 			} catch (IOException e) {
-				Utils.log("Warning:  Unable to determine canonical path for " + f.getPath());
+				Logger.log("Warning:  Unable to determine canonical path for " + f.getPath());
 				setFilePath(f.getPath());
 			}
 			setThisFileName(f.getPath());
