@@ -14,6 +14,8 @@
  *     - Ported to Java 5
  *     - Optimized
  *     - Code cleanup
+ *     - Updated to use methods from the Logger and StringUtil, which
+ *       replaces methods that have been (re)moved from the robocode.util.Utils
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -23,8 +25,10 @@ package robocode.battle;
 
 import java.io.*;
 import java.util.*;
+
+import robocode.io.Logger;
 import robocode.peer.*;
-import robocode.util.*;
+import robocode.text.StringUtil;
 
 
 /**
@@ -121,7 +125,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 					&& statistics.getTotalScore() == orderedContestants.get(place).getStatistics().getTotalScore()) {
 				place++;
 			}
-			return Utils.getPlacementString(place);
+			return StringUtil.getPlacementString(place);
 		}
 
 		case 1:
@@ -213,7 +217,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			out.close();
 
 		} catch (IOException e) {
-			Utils.log(e);
+			Logger.log(e);
 			return;
 		}
 	}
