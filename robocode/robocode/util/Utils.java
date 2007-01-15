@@ -15,7 +15,6 @@
  *       - normalAbsoluteAngle()
  *       - normalNearAbsoluteAngle()
  *       - normalRelativeAngle()
- *       - printRunningThreads()
  *******************************************************************************/
 package robocode.util;
 
@@ -87,38 +86,5 @@ public class Utils {
 			return true;
 		}
 		return false;
-	}
-
-	public static void printRunningThreads() {
-		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
-
-		while (currentGroup.getParent() != null) {
-			currentGroup = currentGroup.getParent();
-		}
-	
-		ThreadGroup groups[] = new ThreadGroup[256];
-		Thread threads[] = new Thread[256];
-		int numGroups = currentGroup.enumerate(groups, true);
-
-		for (int i = 0; i < numGroups; i++) {
-			currentGroup = groups[i];
-			if (currentGroup.isDaemon()) {
-				System.out.print("  ");
-			} else {
-				System.out.print("* ");
-			}
-			System.out.println("In group: " + currentGroup.getName());
-			int numThreads = currentGroup.enumerate(threads);
-
-			for (int j = 0; j < numThreads; j++) {
-				if (threads[j].isDaemon()) {
-					System.out.print("  ");
-				} else {
-					System.out.print("* ");
-				}
-				System.out.println(threads[j].getName());
-			}
-			System.out.println("---------------");
-		}
 	}
 }
