@@ -14,6 +14,8 @@
  *     - Changed so BattleView handles resizing instead of the RobocodeFrame
  *     - Added TPS slider + label
  *     - Added "Replay" button in order to activate the replay feature
+ *     - Updated to use methods from ImageUtil, FileUtil, Logger, which replaces
+ *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons
@@ -32,8 +34,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import robocode.battleview.*;
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 import robocode.manager.*;
-import robocode.util.*;
+import robocode.render.ImageUtil;
 
 
 /**
@@ -139,12 +143,12 @@ public class RobocodeFrame extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			exitOnClose = true;
 			if (manager.getListener() != null) {
-				Utils.message("If you wish to exit Robocode, please exit the program controlling it.");
+				WindowUtil.message("If you wish to exit Robocode, please exit the program controlling it.");
 				exitOnClose = false;
 				return;
 			}
 			if (windowManager.closeRobocodeEditor()) {
-				Utils.saveWindowPositions();
+				WindowUtil.saveWindowPositions();
 				dispose();
 			}
 			manager.saveProperties();
@@ -455,7 +459,7 @@ public class RobocodeFrame extends JFrame {
 			tpsSlider = new JSlider(1, 201, tps);
 			tpsSlider.addChangeListener(eventHandler);
 
-			Utils.setFixedSize(tpsSlider, new Dimension(300, 20));
+			WindowUtil.setFixedSize(tpsSlider, new Dimension(300, 20));
 
 			props.addPropertyListener(props.new PropertyListener() {
 				public void desiredTpsChanged(int tps) {
@@ -505,7 +509,7 @@ public class RobocodeFrame extends JFrame {
 			toolBar.addSeparator();
 
 			toolBar.add(getStatusLabel());
-			Utils.setDefaultStatusLabel(getStatusLabel());
+			WindowUtil.setDefaultStatusLabel(getStatusLabel());
 		}
 		return toolBar;
 	}
@@ -542,17 +546,17 @@ public class RobocodeFrame extends JFrame {
 		String versionString = null;
 
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(new File(Constants.cwd(), "versions.txt")));
+			BufferedReader in = new BufferedReader(new FileReader(new File(FileUtil.getCwd(), "versions.txt")));
 
 			versionString = in.readLine();
 			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
 				versionString = in.readLine();
 			}
 		} catch (FileNotFoundException e) {
-			Utils.log("No version.txt file.");
+			Logger.log("No version.txt file.");
 			versionString = "unknown";
 		} catch (IOException e) {
-			Utils.log("IO Exception reading version.txt" + e);
+			Logger.log("IO Exception reading version.txt" + e);
 			versionString = "unknown";
 		}
 		this.version = "";
