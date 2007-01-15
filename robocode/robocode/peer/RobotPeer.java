@@ -57,6 +57,7 @@ import robocode.util.*;
 import robocode.peer.BulletPeer;
 import robocode.peer.robot.*;
 import robocode.manager.*;
+import static robocode.io.Logger.log;
 import static robocode.util.Utils.*;
 
 
