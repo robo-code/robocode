@@ -16,6 +16,8 @@
  *     - Added -nosound option and disables sound i the -nogui is specified
  *     - Updated to use methods from WindowUtil, FileUtil, Logger, which replaces
  *       methods that has been (re)moved from the robocode.util.Utils class
+ *     - Moved the printRunningThreads() from robocode.util.Utils into this class
+ *       and added javadoc for it
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -190,5 +192,41 @@ public class Robocode {
 	private void printUsage() {
 		System.out.println(
 				"Usage: robocode [-cwd directory] [-battle filename [-results filename] [-tps tps] [-minimize]]");
+	}
+
+	/**
+	 * Prints out all running thread to the standard system out (console)
+	 */
+	public static void printRunningThreads() {
+		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+	
+		while (currentGroup.getParent() != null) {
+			currentGroup = currentGroup.getParent();
+		}
+	
+		ThreadGroup groups[] = new ThreadGroup[256];
+		Thread threads[] = new Thread[256];
+		int numGroups = currentGroup.enumerate(groups, true);
+	
+		for (int i = 0; i < numGroups; i++) {
+			currentGroup = groups[i];
+			if (currentGroup.isDaemon()) {
+				System.out.print("  ");
+			} else {
+				System.out.print("* ");
+			}
+			System.out.println("In group: " + currentGroup.getName());
+			int numThreads = currentGroup.enumerate(threads);
+	
+			for (int j = 0; j < numThreads; j++) {
+				if (threads[j].isDaemon()) {
+					System.out.print("  ");
+				} else {
+					System.out.print("* ");
+				}
+				System.out.println(threads[j].getName());
+			}
+			System.out.println("---------------");
+		}
 	}
 }
