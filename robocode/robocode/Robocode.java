@@ -14,6 +14,8 @@
  *     - Replaced the noDisplay with manager.setEnableGUI() and isGUIEnabled()
  *     - Replaced the -fps option with the -tps option
  *     - Added -nosound option and disables sound i the -nogui is specified
+ *     - Updated to use methods from WindowUtil, FileUtil, Logger, which replaces
+ *       methods that has been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -23,7 +25,9 @@ import javax.swing.*;
 import java.io.*;
 import java.security.*;
 
-import robocode.util.*;
+import robocode.dialog.WindowUtil;
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 import robocode.manager.*;
 import robocode.security.*;
 
@@ -62,7 +66,7 @@ public class Robocode {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			if (System.getProperty("WORKINGDIRECTORY") != null) {
-				Constants.setWorkingDirectory(new File(System.getProperty("WORKINGDIRECTORY")));
+				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
 			}
 		
 			Thread.currentThread().setName("Application Thread");
@@ -75,7 +79,7 @@ public class Robocode {
 			boolean securityOn = true;
 
 			if (System.getProperty("NOSECURITY", "false").equals("true")) {
-				Utils.messageWarning(
+				WindowUtil.messageWarning(
 						"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
 						+ "You should only run robots which you trust!");
 				securityOn = false;
@@ -111,7 +115,7 @@ public class Robocode {
 
 			for (int i = 0; i < args.length; i++) {
 				if (args[i].equals("-cwd") && (i < args.length + 1)) {
-					Constants.setWorkingDirectory(new File(args[i + 1]));
+					FileUtil.setCwd(new File(args[i + 1]));
 					i++;
 				} else if (args[i].equals("-battle") && (i < args.length + 1)) {
 					battleFilename = args[i + 1];
@@ -138,11 +142,11 @@ public class Robocode {
 					System.exit(8);
 				}
 			}
-			File robots = new File(Constants.cwd(), "robots");
+			File robots = new File(FileUtil.getCwd(), "robots");
 
 			if (!robots.exists() || !robots.isDirectory()) {
 				System.err.println(
-						new File(Constants.cwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
+						new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
 				System.exit(8);
 			}
 
@@ -178,7 +182,7 @@ public class Robocode {
 			
 			return true;
 		} catch (Throwable e) {
-			Utils.log(e);
+			Logger.log(e);
 			return false;
 		}
 	}
