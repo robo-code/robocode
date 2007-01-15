@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.List;
 import robocode.dialog.*;
 
-import robocode.util.*;
+import robocode.text.LimitedDocument;
 import robocode.repository.*;
 
 
