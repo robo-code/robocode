@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Added setPaintEnabled() and setSGPaintEnabled() in constructor
  *     - Removed cleanup(), which did not do anything
+ *     - Updated to use methods from the WindowUtil, which replaces window methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -21,7 +23,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import robocode.peer.*;
 import robocode.manager.*;
-import robocode.util.Utils;
 
 
 /**
@@ -57,7 +58,7 @@ public class RobotButton extends JButton implements ActionListener {
 			if (robotDialog.isVisible() && robotDialog.getState() == JFrame.NORMAL) {
 				;
 			} else {
-				Utils.packPlaceShow(robotDialog);
+				WindowUtil.packPlaceShow(robotDialog);
 			}
 		} else {
 			robotDialog.setVisible(true);

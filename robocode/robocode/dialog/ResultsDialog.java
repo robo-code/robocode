@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Corrected table cell heights when rendering
+ *     - Updated to use methods from the WindowUtil, which replaces window methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
@@ -21,7 +23,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import robocode.battle.*;
-import robocode.util.Utils;
 
 
 /**
@@ -133,7 +134,7 @@ public class ResultsDialog extends JDialog {
 			okButton = new JButton();
 			okButton.setText("OK");
 			okButton.addActionListener(eventHandler);
-			Utils.setFixedSize(okButton, new Dimension(80, 25));
+			WindowUtil.setFixedSize(okButton, new Dimension(80, 25));
 		}
 		return okButton;
 	}
@@ -148,7 +149,7 @@ public class ResultsDialog extends JDialog {
 			saveButton = new JButton();
 			saveButton.setText("Save");
 			saveButton.addActionListener(eventHandler);
-			Utils.setFixedSize(saveButton, new Dimension(80, 25));
+			WindowUtil.setFixedSize(saveButton, new Dimension(80, 25));
 		}
 		return saveButton;
 	}

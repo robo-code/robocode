@@ -13,6 +13,8 @@
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
+ *     - Updated to use methods from the WindowUtil, which replaces window methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -29,7 +31,6 @@ import javax.swing.*;
 
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
-import robocode.util.*;
 import robocode.manager.*;
 
 
@@ -89,7 +90,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		d.setText(output.toString());
 		d.pack();
 		d.pack();
-		Utils.packCenterShow(this, d);
+		WindowUtil.packCenterShow(this, d);
 		if (rc < 8) {
 			this.dispose();
 		}
@@ -177,11 +178,11 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		FileSpecification spec = (FileSpecification) selectedRobots.get(0);
 
 		try {
-			Utils.setStatusWriter(out);
+			WindowUtil.setStatusWriter(out);
 			rv = robotManager.extractJar(spec.getJarFile(), robotManager.getRobotsDirectory(),
 					"Extracting to " + robotManager.getRobotsDirectory(), false, true, false);
-			Utils.setStatusWriter(null);
-			Utils.setStatus("");
+			WindowUtil.setStatusWriter(null);
+			WindowUtil.setStatus("");
 			if (rv == 0) {
 				out.println("Robot extracted successfully.");
 			} else if (rv == -1) {

@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Added menu items for Robocode API, Robo Wiki, Yahoo Group Robocode,
  *       and Robocode Repository
+ *     - Updated to use methods from the WindowUtil, which replaces window methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *     Matthew Reeder
  *     - Added keyboard mnemonics and a few accelerators to all menus and menu
@@ -27,7 +29,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import robocode.manager.*;
-import robocode.util.Utils;
 
 
 /**
@@ -704,7 +705,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void optionsFitWindowActionPerformed() {
-		Utils.fitWindow(manager.getWindowManager().getRobocodeFrame());
+		WindowUtil.fitWindow(manager.getWindowManager().getRobocodeFrame());
 	}
 
 	private void optionsShowRankingActionPerformed() {

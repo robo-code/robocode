@@ -14,6 +14,8 @@
  *     - Added "Paint" button and isPaintEnabled()
  *     - Added "Robocode SG" check box and isSGPaintEnabled() for enabling Robocode SG
  *       compatibility
+ *     - Updated to use methods from the WindowUtil, which replaces window methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.dialog;
 
@@ -22,7 +24,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import robocode.peer.*;
-import robocode.util.Utils;
 
 
 /**
@@ -214,7 +215,7 @@ public class RobotDialog extends JFrame {
 	private JToggleButton getPaintButton() {
 		if (paintButton == null) {
 			paintButton = new JToggleButton("Paint");
-			Utils.setFixedSize(paintButton, BUTTON_SIZE);
+			WindowUtil.setFixedSize(paintButton, BUTTON_SIZE);
 			paintButton.addActionListener(eventHandler);
 		}
 		return paintButton;
@@ -242,7 +243,7 @@ public class RobotDialog extends JFrame {
 	private JButton getNewButton(String text) {
 		JButton button = new JButton(text);
 
-		Utils.setFixedSize(button, BUTTON_SIZE);
+		WindowUtil.setFixedSize(button, BUTTON_SIZE);
 		button.addActionListener(eventHandler);
 		return button;
 	}
