@@ -17,8 +17,7 @@ package robocode.manager;
 import java.io.IOException;
 import java.io.File;
 
-import robocode.util.Utils;
-import robocode.util.Constants;
+import robocode.io.FileUtil;
 
 
 /**
@@ -33,12 +32,12 @@ public class BrowserManager {
 		if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
 			browserCommand = "rundll32 url.dll, FileProtocolHandler";
 		} else {
-			browserCommand = Utils.quoteFileName(Constants.cwd() + File.separator + "browser.sh");
+			browserCommand = FileUtil.quoteFileName(FileUtil.getCwd() + File.separator + "browser.sh");
 		}
 	}
 
 	public static void openURL(String url) throws IOException {
-		url = Utils.quoteFileName(url);
+		url = FileUtil.quoteFileName(url);
 
 		Process p = Runtime.getRuntime().exec(browserCommand + " " + url);
 
