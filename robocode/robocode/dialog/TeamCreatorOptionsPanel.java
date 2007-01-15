@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - LimitedClassnameDocument and LimitedDocument was moved to the
+ *       robocode.text package
  *     - Code cleanup
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
@@ -20,12 +22,13 @@ package robocode.dialog;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
 import java.net.URL;
 import java.util.List;
+import javax.swing.*;
+import javax.swing.event.*;
 
-import robocode.util.*;
+import robocode.text.LimitedClassnameDocument;
+import robocode.text.LimitedDocument;
 import robocode.repository.*;
 
 
