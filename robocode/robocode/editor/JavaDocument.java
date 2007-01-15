@@ -12,13 +12,16 @@
  *     - Bugfix: Tabs were sometimes added at the end of the document when
  *       strings are inserted. Bug fixed with the insertString() method, were the
  *       tabCount is now decremented when a '}' is found in the current element
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.editor;
 
 
 import javax.swing.text.*;
 import javax.swing.event.*;
-import robocode.util.Utils;
+
+import robocode.io.Logger;
 
 
 /**
@@ -108,7 +111,7 @@ public class JavaDocument extends PlainDocument {
 			Element changedElements[] = deltas.getChildrenAdded();
 
 			if (changedElements == null || changedElements.length == 0) {
-				Utils.log("Unknown insert even, 0 children added.");
+				Logger.log("Unknown insert even, 0 children added.");
 			}
 			for (Element element : changedElements) {
 				processMultilineComments(element, true);
@@ -150,7 +153,7 @@ public class JavaDocument extends PlainDocument {
 		try {
 			elementText = getText(startOffset, endOffset - startOffset);
 		} catch (BadLocationException e) {
-			Utils.log("Error processing updates: " + e);
+			Logger.log("Error processing updates: " + e);
 		}
 		boolean followingLineComment = false,
 				previousLineComment = false, 

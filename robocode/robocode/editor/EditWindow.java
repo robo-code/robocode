@@ -15,6 +15,8 @@
  *     - Launching the Replace dialog using ctrl+H
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.editor;
 
@@ -27,7 +29,8 @@ import javax.swing.filechooser.FileFilter;
 import java.io.*;
 import java.util.*;
 import java.beans.*;
-import robocode.util.Utils;
+
+import robocode.io.Logger;
 
 
 /**
@@ -122,7 +125,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 			setContentPane(getEditWindowContentPane());
 			editor.addToWindowMenu(this);
 		} catch (Throwable e) {
-			Utils.log(e);
+			Logger.log(e);
 		}
 	}
 
@@ -266,7 +269,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 					}
 				}
 			} catch (Exception e) {
-				Utils.log("Unable to check reasonable filename: " + e);
+				Logger.log("Unable to check reasonable filename: " + e);
 			}
 		}
 		File f = new File(fileName);

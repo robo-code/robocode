@@ -14,6 +14,8 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
  *     - Code cleanup
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -30,8 +32,8 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 
 import robocode.repository.*;
+import robocode.io.Logger;
 import robocode.manager.RobotRepositoryManager;
-import robocode.util.Utils;
 
 
 /**
@@ -612,7 +614,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 			tokenizer = new StringTokenizer(selectedRobotsString, ",");
 			if (robotList == null) {
-				Utils.log(new RuntimeException("Cannot add robots to a null robots list!"));
+				Logger.log(new RuntimeException("Cannot add robots to a null robots list!"));
 				return;
 			}
 			this.selectedRobots.clear();
