@@ -13,6 +13,8 @@
  *     - Changed deprecated method calls
  *     - File names are being quoted
  *     - Code cleanup
+ *     - Updated to use methods from FileUtil and Logger, which replaces methods
+ *       that have been (re)moved from the robocode.util.Utils and Constants
  *******************************************************************************/
 package robocode.editor;
 
@@ -22,9 +24,9 @@ import javax.swing.*;
 import java.io.*;
 import java.util.jar.*;
 
-import robocode.util.Constants;
-import robocode.util.Utils;
 import robocode.dialog.*;
+import robocode.io.FileUtil;
+import static robocode.io.Logger.log;
 
 
 /**
@@ -58,7 +60,7 @@ public class RobocodeCompilerFactory {
 				return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
 						getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
 			} else {
-				Utils.log("Unable to create compiler.");
+				log("Unable to create compiler.");
 				return null;
 			}
 		} else {
@@ -142,7 +144,7 @@ public class RobocodeCompilerFactory {
 			return true;
 		} catch (IOException e) {
 			statusDialog.dispose();
-			Utils.error(null, e.toString());
+			WindowUtil.error(null, e.toString());
 			return false;
 		}
 	}
@@ -151,17 +153,17 @@ public class RobocodeCompilerFactory {
 		if (compilerProperties == null) {
 			compilerProperties = new CompilerProperties();
 			try {
-				FileInputStream in = new FileInputStream(new File(Constants.cwd(), "compiler.properties"));
+				FileInputStream in = new FileInputStream(new File(FileUtil.getCwd(), "compiler.properties"));
 
 				compilerProperties.load(in);
 				if (compilerProperties.getRobocodeVersion() == null) {
-					Utils.log("Setting up new compiler");
+					log("Setting up new compiler");
 					compilerProperties.setCompilerBinary("");
 				}
 			} catch (FileNotFoundException e) {
-				Utils.log("Setting up compiler.");
+				log("Setting up compiler.");
 			} catch (IOException e) {
-				Utils.log("IO Exception reading compiler.properties" + e);
+				log("IO Exception reading compiler.properties" + e);
 			}
 		}
 		return compilerProperties;
@@ -178,7 +180,7 @@ public class RobocodeCompilerFactory {
 			javalib = javahome + "/lib/rt.jar";
 		}
 		
-		return Utils.quoteFileName(javalib);
+		return FileUtil.quoteFileName(javalib);
 	}
 	
 	private static String getRobotPath() {
@@ -186,7 +188,7 @@ public class RobocodeCompilerFactory {
 			robotPath = System.getProperty("ROBOTPATH", "robots");
 		}
 
-		return Utils.quoteFileName(robotPath);
+		return FileUtil.quoteFileName(robotPath);
 	}
 
 	public static boolean installCompiler(RobocodeEditor editor) {
@@ -209,7 +211,7 @@ public class RobocodeCompilerFactory {
 		console.setSize(500, 400);
 		console.getOkButton().setEnabled(false);
 		console.setText("Please wait while Robocode sets up a compiler for you...\n\n");
-		Utils.centerShow(editor, console);
+		WindowUtil.centerShow(editor, console);
 
 		console.append("Setting up compiler for " + osName + "\n");
 		console.append("Java home is " + System.getProperty("java.home") + "\n\n");
@@ -286,7 +288,7 @@ public class RobocodeCompilerFactory {
 		}
 		if (!javacOk && !jikesOk) {
 			console.append("\nExtracting Jikes...\n");
-			if (noExtract || extract(new File(Constants.cwd(), jikesJar), new File("."))) {
+			if (noExtract || extract(new File(FileUtil.getCwd(), jikesJar), new File("."))) {
 				if (!noExtract) {
 					console.append("Jikes extracted successfully.\n");
 				}
@@ -375,8 +377,8 @@ public class RobocodeCompilerFactory {
 		try {
 			String command = "./compilers/buildJikes.sh";
 
-			Utils.log(command);
-			Process p = Runtime.getRuntime().exec(command, null, Constants.cwd());
+			log(command);
+			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
 			console.processStream(p.getInputStream());
 			console.processStream(p.getErrorStream());
@@ -406,15 +408,15 @@ public class RobocodeCompilerFactory {
 
 	public static void saveCompilerProperties() {
 		if (compilerProperties == null) {
-			Utils.log("Cannot save null compiler properties");
+			log("Cannot save null compiler properties");
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(new File(Constants.cwd(), "compiler.properties"));
+			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "compiler.properties"));
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
-			Utils.log(e);
+			log(e);
 		}
 	}
 
@@ -423,7 +425,7 @@ public class RobocodeCompilerFactory {
 		boolean javacOk = false;
 
 		try {
-			Process p = Runtime.getRuntime().exec("javac compilers/CompilerTest.java", null, Constants.cwd());
+			Process p = Runtime.getRuntime().exec("javac compilers/CompilerTest.java", null, FileUtil.getCwd());
 
 			console.processStream(p.getInputStream());
 			console.processStream(p.getErrorStream());
@@ -445,7 +447,7 @@ public class RobocodeCompilerFactory {
 		boolean jikesOk = false;
 
 		try {
-			Process p = Runtime.getRuntime().exec(jikesBinary + " compilers/CompilerTest.java", null, Constants.cwd());
+			Process p = Runtime.getRuntime().exec(jikesBinary + " compilers/CompilerTest.java", null, FileUtil.getCwd());
 
 			console.processStream(p.getInputStream());
 			console.processStream(p.getErrorStream());

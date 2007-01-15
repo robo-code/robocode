@@ -11,6 +11,8 @@
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons
  *     Flemming N. Larsen
+ *     - Updated to use methods from FileUtil and Logger, which replaces methods
+ *       that have been (re)moved from the Utils and Constants class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
@@ -19,8 +21,9 @@ package robocode.editor;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
-import robocode.util.Constants;
-import robocode.util.Utils;
+
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 
 
 /**
@@ -158,15 +161,15 @@ public class CompilerPreferencesDialog extends JDialog {
 
 	public void saveCompilerProperties() {
 		if (compilerProperties == null) {
-			Utils.log("Cannot save null compiler properties");
+			Logger.log("Cannot save null compiler properties");
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(new File(Constants.cwd(), "compiler.properties"));
+			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "compiler.properties"));
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
-			Utils.log(e);
+			Logger.log(e);
 		}
 	}
 }

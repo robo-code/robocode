@@ -11,13 +11,17 @@
  *     Flemming N. Larsen
  *     - File name is being quoted
  *     - Code cleanup
+ *     - Updated to use methods from FileUtil and Logger, which replaces methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.editor;
 
 
 import java.io.*;
-import robocode.util.*;
+
 import robocode.dialog.*;
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 
 
 /**
@@ -43,7 +47,7 @@ public class RobocodeCompiler {
 	}
 
 	public void compile(String fileName) {
-		fileName = Utils.quoteFileName(fileName);
+		fileName = FileUtil.quoteFileName(fileName);
 
 		ConsoleDialog console;
 
@@ -54,12 +58,12 @@ public class RobocodeCompiler {
 		}
 		console.setSize(500, 400);
 		console.setText("Compiling...\n");
-		Utils.centerShow(editor, console);
+		WindowUtil.centerShow(editor, console);
 		try {
 			String command = compilerBinary + " " + compilerOptions + " " + compilerClassPath + " " + fileName;
 
-			Utils.log("Compile command: " + command);
-			Process p = Runtime.getRuntime().exec(command, null, Constants.cwd());
+			Logger.log("Compile command: " + command);
+			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
 			console.processStream(p.getInputStream());
 			console.processStream(p.getErrorStream());
