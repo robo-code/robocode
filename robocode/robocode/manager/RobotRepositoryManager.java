@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
+ *     - Updated to use methods from WindowUtil, FileTypeFilter, FileUtil, Logger,
+ *       which replaces methods that have been (re)moved from the Utils class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -22,9 +24,12 @@ import java.util.*;
 import java.util.jar.*;
 import javax.swing.*;
 
+import robocode.dialog.WindowUtil;
+import robocode.io.FileTypeFilter;
+import robocode.io.FileUtil;
 import robocode.peer.robot.*;
-import robocode.util.*;
 import robocode.repository.*;
+import static robocode.io.Logger.log;
 
 
 /**
@@ -62,29 +67,29 @@ public class RobotRepositoryManager {
 			// ---> robotCache = System.getProperty("ROBOTCACHE");
 		
 		
-			File oldRobotCache = new File(Constants.cwd(), "robotcache");
+			File oldRobotCache = new File(FileUtil.getCwd(), "robotcache");
 
 			if (oldRobotCache.exists()) {
-				oldRobotCache.renameTo(new File(Constants.cwd(), ".robotcache"));
+				oldRobotCache.renameTo(new File(FileUtil.getCwd(), ".robotcache"));
 			}
 		
-			robotCache = new File(Constants.cwd(), ".robotcache");
+			robotCache = new File(FileUtil.getCwd(), ".robotcache");
 		}
 		return robotCache;
 	}
 
 	private FileSpecificationDatabase getRobotDatabase() {
 		if (robotDatabase == null) {
-			Utils.setStatus("Reading robot database");
+			WindowUtil.setStatus("Reading robot database");
 			robotDatabase = new FileSpecificationDatabase();
 			try {
-				robotDatabase.load(new File(Constants.cwd(), "robot.database"));
+				robotDatabase.load(new File(FileUtil.getCwd(), "robot.database"));
 			} catch (FileNotFoundException e) {
-				Utils.log("Building robot database.");
+				log("Building robot database.");
 			} catch (IOException e) {
-				Utils.log("Rebuilding robot database.");
+				log("Rebuilding robot database.");
 			} catch (ClassNotFoundException e) {
-				Utils.log("Rebuilding robot database.");
+				log("Rebuilding robot database.");
 			}
 		}
 		return robotDatabase;
@@ -97,7 +102,7 @@ public class RobotRepositoryManager {
 			return repository;
 		}
 
-		Utils.setStatus("Refreshing robot database");
+		WindowUtil.setStatus("Refreshing robot database");
 
 		alwaysYes = false;
 		alwaysNo = false;
@@ -116,7 +121,7 @@ public class RobotRepositoryManager {
 
 		// Clean up cache -- delete nonexistent jar directories
 		cleanupCache();
-		Utils.setStatus("Cleaning up robot database");
+		WindowUtil.setStatus("Cleaning up robot database");
 		cleanupDatabase();
 
 		String externalRobotsPath = manager.getProperties().getOptionsDevelopmentPath(); {
@@ -136,7 +141,7 @@ public class RobotRepositoryManager {
 
 		File f = getRobotsDirectory();
 
-		Utils.setStatus("Reading: " + f.getName());
+		WindowUtil.setStatus("Reading: " + f.getName());
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", true);
 		}
@@ -149,7 +154,7 @@ public class RobotRepositoryManager {
 		updatedJarList.clear();
 
 		f = getRobotCache();
-		Utils.setStatus("Reading: " + getRobotCache());
+		WindowUtil.setStatus("Reading: " + getRobotCache());
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", false);
 		}
@@ -157,11 +162,11 @@ public class RobotRepositoryManager {
 		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
 		if (write) {
-			Utils.setStatus("Saving robot database");
+			WindowUtil.setStatus("Saving robot database");
 			saveRobotDatabase();
 		}
 
-		Utils.setStatus("Adding robots to repository");
+		WindowUtil.setStatus("Adding robots to repository");
 
 		for (FileSpecification fs : fileSpecificationList) {
 			if (fs instanceof TeamSpecification) {
@@ -184,9 +189,9 @@ public class RobotRepositoryManager {
 					"Unexpected robotcache update",
 					JOptionPane.OK_OPTION);
 		}
-		Utils.setStatus("Sorting repository");
+		WindowUtil.setStatus("Sorting repository");
 		repository.sortRobotSpecifications();
-		Utils.setStatus("");
+		WindowUtil.setStatus("");
 
 		return repository;
 	}
@@ -207,8 +212,8 @@ public class RobotRepositoryManager {
 					if (f.exists() && !f.getName().startsWith("robocode")) {
 						continue;
 					} else {
-						Utils.setStatus("Cleaning up cache: Removing " + file);
-						Utils.deleteDir(file);
+						WindowUtil.setStatus("Cleaning up cache: Removing " + file);
+						FileUtil.deleteDir(file);
 					}
 				}
 			}
@@ -233,7 +238,7 @@ public class RobotRepositoryManager {
 				File rootDir = fs.getRootDir();
 
 				if (rootDir == null) {
-					Utils.log("Warning, null root directory: " + fs.getFilePath());
+					log("Warning, null root directory: " + fs.getFilePath());
 					continue;
 				}
 
@@ -259,7 +264,7 @@ public class RobotRepositoryManager {
 
 	public File getRobotsDirectory() {
 		if (robotsDirectory == null) {
-			robotsDirectory = new File(Constants.cwd(), "robots");
+			robotsDirectory = new File(FileUtil.getCwd(), "robots");
 		}
 		return robotsDirectory;
 	}
@@ -275,10 +280,10 @@ public class RobotRepositoryManager {
 		String fileTypes[] = {
 			".class", ".jar", ".team", ".jar.zip"
 		};
-		File files[] = dir.listFiles(new RobocodeFileFilter(fileTypes));
+		File files[] = dir.listFiles(new FileTypeFilter(fileTypes));
 
 		if (files == null) {
-			Utils.log("Warning:  Unable to read directory " + dir);
+			log("Warning:  Unable to read directory " + dir);
 			return robotList;
 		}
 
@@ -346,13 +351,13 @@ public class RobotRepositoryManager {
 
 	private void saveRobotDatabase() {
 		if (robotDatabase == null) {
-			Utils.log("Cannot save a null robot database.");
+			log("Cannot save a null robot database.");
 			return;
 		}
 		try {
-			robotDatabase.store(new File(Constants.cwd(), "robot.database"));
+			robotDatabase.store(new File(FileUtil.getCwd(), "robot.database"));
 		} catch (IOException e) {
-			Utils.log("IO Exception writing robot database: " + e);
+			log("IO Exception writing robot database: " + e);
 		}
 	}
 
@@ -405,16 +410,16 @@ public class RobotRepositoryManager {
 			} catch (ClassCastException e) {
 				// Should not happen here.
 				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-				Utils.log(name + " is not a robot.");
+				log(name + " is not a robot.");
 			} catch (ClassFormatError e) {
 				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-				Utils.log(name + " is not a valid .class file: " + e);
+				log(name + " is not a valid .class file: " + e);
 			} catch (Exception e) {
 				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-				Utils.log(name + " :  Something is wrong with this class: " + e);
+				log(name + " :  Something is wrong with this class: " + e);
 			} catch (Error e) {
 				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-				Utils.log(name + " : Something is wrong with this class: " + e);
+				log(name + " : Something is wrong with this class: " + e);
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
@@ -430,7 +435,7 @@ public class RobotRepositoryManager {
 	private void updateNoDuplicates(FileSpecification spec) {
 		String key = spec.getFilePath();
 
-		Utils.setStatus("Updating database: " + spec.getName());
+		WindowUtil.setStatus("Updating database: " + spec.getName());
 		if (!spec.isDevelopmentVersion()
 				&& getRobotDatabase().contains(spec.getFullClassName(), spec.getVersion(), false)) {
 			FileSpecification existingSpec = getRobotDatabase().get(spec.getFullClassName(), spec.getVersion(), false);
@@ -474,15 +479,15 @@ public class RobotRepositoryManager {
 	}
 
 	private void conflictLog(String s) {
-		Utils.log(s);
+		log(s);
 		try {
-			File f = new File(Constants.cwd(), "conflict.log");
+			File f = new File(FileUtil.getCwd(), "conflict.log");
 			BufferedWriter out = new BufferedWriter(new FileWriter(f.getPath(), true));
 
 			out.write(s + "\n");
 			out.close();
 		} catch (Exception e) {
-			Utils.log("Warning:  Could not write to conflict.log");
+			log("Warning:  Could not write to conflict.log");
 		}
 	}
 
@@ -506,7 +511,7 @@ public class RobotRepositoryManager {
 				out.close();
 			} catch (IOException e) {}
 		}
-		Utils.setStatus("Extracting .jar: " + jarSpecification.getFileName());
+		WindowUtil.setStatus("Extracting .jar: " + jarSpecification.getFileName());
 
 		File dest;
 
@@ -516,7 +521,7 @@ public class RobotRepositoryManager {
 			dest = new File(jarSpecification.getRootDir(), jarSpecification.getFileName() + "_");
 		}
 		if (dest.exists()) {
-			Utils.deleteDir(dest);
+			FileUtil.deleteDir(dest);
 		}
 		dest.mkdirs();
 
@@ -533,7 +538,7 @@ public class RobotRepositoryManager {
 
 			return extractJar(jarIS, dest, statusPrefix, extractJars, close, alwaysReplace);
 		} catch (Exception e) {
-			Utils.log("Exception reading " + f + ": " + e);
+			log("Exception reading " + f + ": " + e);
 		}
 		return 16;
 	}
@@ -548,7 +553,7 @@ public class RobotRepositoryManager {
 			JarEntry entry = jarIS.getNextJarEntry();
 
 			while (entry != null) {
-				Utils.setStatus(statusPrefix + " (" + entry.getName() + ")");
+				WindowUtil.setStatus(statusPrefix + " (" + entry.getName() + ")");
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
@@ -566,7 +571,7 @@ public class RobotRepositoryManager {
 						if (r == 0) {
 							always = true;
 						} else if (r == 2) {
-							Utils.setStatus(entry.getName() + " skipped.");
+							WindowUtil.setStatus(entry.getName() + " skipped.");
 							entry = jarIS.getNextJarEntry();
 							continue;
 						} else if (r == 3) {
@@ -594,7 +599,7 @@ public class RobotRepositoryManager {
 						out.setLastModified(entry.getTime());
 					}
 
-					if (entry.getName().indexOf("/") < 0 && Utils.getFileType(entry.getName()).equals(".jar")) {
+					if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
 						FileSpecification fileSpecification = FileSpecification.createSpecification(this, out,
 								parentDirectory, "", false);
 
@@ -607,7 +612,7 @@ public class RobotRepositoryManager {
 				jarIS.close();
 			}
 		} catch (Exception e) {
-			Utils.log("Exception " + statusPrefix + ": " + e);
+			log("Exception " + statusPrefix + ": " + e);
 		}
 		return rc;
 	}
@@ -628,7 +633,7 @@ public class RobotRepositoryManager {
 				if (!sampleBot.isDirectory()) {
 					for (String oldSampleBot : oldSampleList) {
 						if (sampleBot.getName().equals(oldSampleBot)) {
-							Utils.log("Deleting old sample file: " + sampleBot.getName());
+							log("Deleting old sample file: " + sampleBot.getName());
 							if (delete) {
 								sampleBot.delete();
 							} else {
@@ -650,7 +655,7 @@ public class RobotRepositoryManager {
 		if (!newFile.exists()) {
 			File oldFile = new File(dir, name);
 
-			Utils.log("Renaming " + oldFile.getName() + " to " + newFile.getName());
+			log("Renaming " + oldFile.getName() + " to " + newFile.getName());
 			oldFile.renameTo(newFile);
 		}
 	}
@@ -663,7 +668,7 @@ public class RobotRepositoryManager {
 			String rootPackage = robotName.substring(0, lIndex);
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
-				Utils.log("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
+				log("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
 				return false;
 			}
 			if (rootPackage.equalsIgnoreCase("sample")) {
