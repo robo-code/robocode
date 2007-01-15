@@ -9,6 +9,8 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that has been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -19,7 +21,7 @@ import robocode.peer.RobotPeer;
 import robocode.security.*;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.exception.*;
-import robocode.util.*;
+import robocode.io.Logger;
 import robocode.manager.*;
 
 
@@ -67,7 +69,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 */
 	public RobocodeFileOutputStream(String name, boolean append) throws java.io.IOException {
 		if (threadManager == null) {
-			Utils.log("RobocodeFileOutputStream.threadManager cannot be null!");
+			Logger.log("RobocodeFileOutputStream.threadManager cannot be null!");
 		}
 		Thread c = Thread.currentThread();
 

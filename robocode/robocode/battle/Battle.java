@@ -23,6 +23,8 @@
  *     - Added updateTitle() in order to manage and update the title on the
  *       RobocodeFrame
  *     - Added replay feature
+ *     - Updated to use methods from the Logger, which replaces logger methods
+ *       that has been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -39,8 +41,8 @@
 package robocode.battle;
 
 
-import java.util.*;
 import static java.lang.Math.*;
+import java.util.*;
 
 import robocode.*;
 import robocode.battle.record.*;
@@ -54,7 +56,7 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.security.RobocodeClassLoader;
 import robocode.sound.SoundManager;
-import robocode.util.Utils;
+import static robocode.io.Logger.log;
 
 
 /**
@@ -184,7 +186,7 @@ public class Battle implements Runnable {
 			initialize();
 		} catch (NullPointerException e) {
 			if (!abortBattles) {
-				Utils.log("Null pointer exception in battle.initialize");
+				log("Null pointer exception in battle.initialize");
 				e.printStackTrace(System.err);
 				throw e;
 			}
@@ -231,13 +233,13 @@ public class Battle implements Runnable {
 				cleanupRound();
 			} catch (NullPointerException e) {
 				if (!abortBattles) {
-					Utils.log("Null pointer exception running a battle");
+					log("Null pointer exception running a battle");
 					throw e;
 				} else {
-					Utils.log("Warning:  Null pointer exception while aborting battle.");
+					log("Warning:  Null pointer exception while aborting battle.");
 				}
 			} catch (Exception e) {
-				Utils.log("Exception running a battle: " + e);
+				log("Exception running a battle: " + e);
 			}
 
 			roundNum++;
@@ -372,7 +374,7 @@ public class Battle implements Runnable {
 
 	private void cleanupRound() {
 		if (!replay) {
-			Utils.log("Round " + (roundNum + 1) + " cleaning up.");
+			log("Round " + (roundNum + 1) + " cleaning up.");
 	
 			for (RobotPeer r : robots) {
 				r.getRobotThreadManager().waitForStop();
@@ -551,10 +553,10 @@ public class Battle implements Runnable {
 
 		battleThread.getThreadGroup().enumerate(systemThreads, false);
 
-		Utils.log("Threads: ------------------------");
+		log("Threads: ------------------------");
 		for (Thread thread : systemThreads) {
 			if (thread != null) {
-				Utils.log(thread.getName());
+				log(thread.getName());
 			}
 		}
 	}
@@ -575,7 +577,7 @@ public class Battle implements Runnable {
 	}
 
 	public void runRound() {
-		Utils.log("Let the games begin!");
+		log("Let the games begin!");
 
 		boolean battleOver = false;
 
@@ -803,7 +805,7 @@ public class Battle implements Runnable {
 	}
 
 	public void runReplay() {
-		Utils.log("Replay started");
+		log("Replay started");
 
 		boolean replayOver = false;
 
@@ -995,7 +997,7 @@ public class Battle implements Runnable {
 							r.wait(manager.getCpuManager().getCpuConstant());
 						} catch (InterruptedException e) {
 							// ?
-							Utils.log("Wait for " + r + " interrupted.");
+							log("Wait for " + r + " interrupted.");
 						}
 					}
 				}
@@ -1211,7 +1213,7 @@ public class Battle implements Runnable {
 			setGunCoolingRate(battleProperties.getGunCoolingRate());
 			setInactivityTime(battleProperties.getInactivityTime());
 		} catch (Exception e) {
-			Utils.log("Exception setting battle properties", e);
+			log("Exception setting battle properties", e);
 		}
 	}
 
@@ -1220,8 +1222,8 @@ public class Battle implements Runnable {
 	}
 
 	public void setupRound() {
-		Utils.log("----------------------");
-		Utils.log("Round " + (roundNum + 1) + " initializing..", false);
+		log("----------------------");
+		log("Round " + (roundNum + 1) + " initializing..", false);
 		currentTime = 0;
 
 		setRobotsLoaded(false);
@@ -1278,22 +1280,22 @@ public class Battle implements Runnable {
 	
 				synchronized (r) {
 					try {
-						Utils.log(".", false);
+						log(".", false);
 						r.getRobotThreadManager().start();
 						// Wait for the robot to go to sleep (take action)
 						r.wait(waitTime);
 	
 					} catch (InterruptedException e) {
-						Utils.log("Wait for " + r + " interrupted.");
+						log("Wait for " + r + " interrupted.");
 					}
 				}
 				if (!r.isSleeping()) {
-					Utils.log("\n" + r.getName() + " still has not started after " + waitTime + " ms... giving up.");
+					log("\n" + r.getName() + " still has not started after " + waitTime + " ms... giving up.");
 				}
 			}
 		}
 
-		Utils.log("");
+		log("");
 	}
 
 	public void stop() {

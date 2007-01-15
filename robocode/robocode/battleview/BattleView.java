@@ -25,6 +25,7 @@ import robocode.peer.*;
 import robocode.battlefield.*;
 import robocode.battle.*;
 import robocode.util.*;
+import robocode.io.Logger;
 import robocode.manager.*;
 import robocode.render.*;
 
@@ -145,7 +146,7 @@ public class BattleView extends Canvas {
 				}
 			}
 		} catch (Exception e) {
-			Utils.log("Could not draw: " + e);
+			Logger.log("Could not draw: ", e);
 			e.printStackTrace(System.err);
 		}
 	}
