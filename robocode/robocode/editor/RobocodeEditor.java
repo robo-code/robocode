@@ -14,6 +14,8 @@
  *     - Bugfixed the removeFromWindowMenu() method which did not remove the
  *       correct item, and did not break out of the loop when it was found.
  *     - Code cleanup
+ *     - Updated to use methods from ImageUtil, FileUtil, Logger, which replaces
+ *       methods that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.editor;
 
@@ -24,8 +26,11 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.filechooser.FileFilter;
 import java.io.*;
+
+import robocode.io.FileUtil;
 import robocode.manager.*;
-import robocode.util.*;
+import robocode.render.ImageUtil;
+import static robocode.io.Logger.log;
 
 
 /**
@@ -92,7 +97,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		if (manager != null) {
 			robotsDirectory = manager.getRobotRepositoryManager().getRobotsDirectory();
 		} else {
-			robotsDirectory = new File(Constants.cwd(), "robots");
+			robotsDirectory = new File(FileUtil.getCwd(), "robots");
 		}
 		initialize();
 	}
@@ -173,7 +178,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		File f = null;
 
 		try {
-			f = new File(Constants.cwd(), templateName);
+			f = new File(FileUtil.getCwd(), templateName);
 			int size = (int) (f.length());
 			byte buff[] = new byte[size];
 			FileInputStream fis = new FileInputStream(f);
@@ -328,7 +333,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		File f = null;
 
 		try {
-			f = new File(Constants.cwd(), templateName);
+			f = new File(FileUtil.getCwd(), templateName);
 			int size = (int) (f.length());
 			byte buff[] = new byte[size];
 			FileInputStream fis = new FileInputStream(f);
@@ -464,13 +469,13 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		if (robocodeProperties == null) {
 			robocodeProperties = new RobocodeProperties(manager);
 			try {
-				FileInputStream in = new FileInputStream(new File(Constants.cwd(), "robocode.properties"));
+				FileInputStream in = new FileInputStream(new File(FileUtil.getCwd(), "robocode.properties"));
 
 				robocodeProperties.load(in);
 			} catch (FileNotFoundException e) {
-				Utils.log("No robocode.properties file, using defaults.");
+				log("No robocode.properties file, using defaults.");
 			} catch (IOException e) {
-				Utils.log("IO Exception reading robocode.properties" + e);
+				log("IO Exception reading robocode.properties" + e);
 			}
 		}
 		return robocodeProperties;
@@ -587,7 +592,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			// 2nd time for bug in some JREs
 			robocodeEditor.setVisible(true);
 		} catch (Throwable e) {
-			Utils.log("Exception in RoboCodeEditor.main", e);
+			log("Exception in RoboCodeEditor.main", e);
 		}
 	}
 
@@ -646,7 +651,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				addPlaceShowFocus(editWindow);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, e.toString());
-				Utils.log(e);
+				log(e);
 			}
 		}
 	}
@@ -669,15 +674,15 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	public void saveRobocodeProperties() {
 		if (robocodeProperties == null) {
-			Utils.log("Cannot save null robocode properties");
+			log("Cannot save null robocode properties");
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(new File(Constants.cwd(), "robocode.properties"));
+			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "robocode.properties"));
 
 			robocodeProperties.store(out, "Robocode Properties");
 		} catch (IOException e) {
-			Utils.log(e);
+			log(e);
 		}
 	}
 
@@ -706,7 +711,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public void showHelpApi() {
-		String helpurl = "file:" + new File(Constants.cwd(), "").getAbsoluteFile() // System.getProperty("user.dir")
+		String helpurl = "file:" + new File(FileUtil.getCwd(), "").getAbsoluteFile() // System.getProperty("user.dir")
 				+ System.getProperty("file.separator") + "javadoc" + System.getProperty("file.separator") + "index.html";
 
 		try {
