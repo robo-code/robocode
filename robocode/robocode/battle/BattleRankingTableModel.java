@@ -12,6 +12,8 @@
  *     - Added independent Rank column
  *     - Various optimizations
  *     - Ported to Java 5
+ *     - Updated to use the getPlacementString() methods from the StringUtil,
+ *       which replaces the same method from robocode.util.Utils
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -25,7 +27,7 @@ import javax.swing.table.AbstractTableModel;
 
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
-import robocode.util.Utils;
+import robocode.text.StringUtil;
 
 
 /**
@@ -88,7 +90,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 		switch (col) {
 		case 0:
-			return Utils.getPlacementString(row + 1);
+			return StringUtil.getPlacementString(row + 1);
 
 		case 1:
 			return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
