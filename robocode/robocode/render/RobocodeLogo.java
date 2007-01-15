@@ -15,7 +15,6 @@ package robocode.render;
 import java.awt.*;
 import java.awt.geom.*;
 
-import robocode.util.ImageUtil;
 import robocode.render.RenderImage;
 
 
