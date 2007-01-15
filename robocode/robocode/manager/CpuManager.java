@@ -12,11 +12,14 @@
  *     - Changed to accept 50000 cycles instead of 1000 (introduced in v1.07),
  *       which caused too many skipped turns on existing bots that ran just fine
  *       under v1.06.
+ *     - Updated to use methods from WindowUtil and Logger, which replaces
+ *       methods that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.manager;
 
 
-import robocode.util.Utils;
+import robocode.dialog.WindowUtil;
+import robocode.io.Logger;
 
 
 /**
@@ -39,7 +42,7 @@ public class CpuManager {
 		if (cpuConstant == -1) {
 			cpuConstant = manager.getProperties().getCpuConstant();
 			if (cpuConstant == -1) {
-				Utils.setStatus("Estimating CPU speed, please wait...");
+				WindowUtil.setStatus("Estimating CPU speed, please wait...");
 
 				long start = System.currentTimeMillis();
 				long count = 0;
@@ -60,12 +63,12 @@ public class CpuManager {
 					cpuConstant = 1;
 				}
 
-				Utils.log(
+				Logger.log(
 						"Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
 				manager.getProperties().setCpuConstant(cpuConstant);
 				manager.saveProperties();
 
-				Utils.setStatus("");
+				WindowUtil.setStatus("");
 			}
 
 			/*
