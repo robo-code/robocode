@@ -13,6 +13,8 @@
  *     - Added keyboard mnemonics to all menus and menu items
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     - Updated to use methods from the WindowUtil, which replaces window methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
 package robocode.editor;
 
@@ -21,7 +23,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import robocode.util.Utils;
+import robocode.dialog.WindowUtil;
 
 
 /**
@@ -173,7 +175,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	public void compilerOptionsPreferencesActionPerformed() {
 		CompilerPreferencesDialog d = new CompilerPreferencesDialog(editor);
 
-		Utils.packCenterShow(editor, d);
+		WindowUtil.packCenterShow(editor, d);
 	}
 
 	private void compilerOptionsResetCompilerActionPerformed() {
