@@ -18,6 +18,8 @@
  *     - Ported to Java 5
  *     - Added support for the replay feature
  *     - Removed the clearBattleProperties()
+ *     - Updated to use methods from FileUtil and Logger, which replaces methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup & optimizations
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
@@ -33,17 +35,18 @@ import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
-import robocode.util.*;
 import robocode.battle.*;
 import robocode.battlefield.*;
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
+import robocode.io.FileUtil;
 import robocode.repository.*;
 import robocode.peer.RobotPeer;
 import robocode.peer.robot.*;
 import robocode.security.RobocodeSecurityManager;
 import robocode.peer.*;
+import static robocode.io.Logger.log;
 
 
 /**
@@ -200,7 +203,7 @@ public class BattleManager {
 				}
 			}
 			if (!found) {
-				Utils.log("Aborting battle, could not find robot: " + bot);
+				log("Aborting battle, could not find robot: " + bot);
 				if (manager.getListener() != null) {
 					manager.getListener().battleAborted(spec);
 				}
@@ -213,7 +216,7 @@ public class BattleManager {
 	private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
 			BattleSpecification battleSpecification) { 
 
-		Utils.log("Preparing battle...");
+		log("Preparing battle...");
 		if (battle != null) {
 			battle.stop();
 		}
@@ -293,7 +296,7 @@ public class BattleManager {
 			if (battlePath == null) {
 				battlePath = "battles";
 			}
-			battlePath = new File(Constants.cwd(), battlePath).getAbsolutePath();
+			battlePath = new File(FileUtil.getCwd(), battlePath).getAbsolutePath();
 		}
 		return battlePath;
 	}
@@ -356,7 +359,7 @@ public class BattleManager {
 
 	public void saveBattleProperties() {
 		if (battleProperties == null) {
-			Utils.log("Cannot save null battle properties");
+			log("Cannot save null battle properties");
 			return;
 		}
 		if (battleFilename == null) {
@@ -368,7 +371,7 @@ public class BattleManager {
 
 			battleProperties.store(out, "Battle Properties");
 		} catch (IOException e) {
-			Utils.log("IO Exception saving battle properties: " + e);
+			log("IO Exception saving battle properties: " + e);
 		}
 	}
 
@@ -378,9 +381,9 @@ public class BattleManager {
 
 			getBattleProperties().load(in);
 		} catch (FileNotFoundException e) {
-			Utils.log("No file " + battleFilename + " found, using defaults.");
+			log("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {
-			Utils.log("IO Exception reading " + battleFilename + ": " + e);
+			log("IO Exception reading " + battleFilename + ": " + e);
 		}
 	}
 
@@ -457,7 +460,7 @@ public class BattleManager {
 				out = new PrintStream(new FileOutputStream(f));
 				close = true;
 			} catch (IOException e) {
-				Utils.log(e);
+				log(e);
 				return;
 			}
 		}

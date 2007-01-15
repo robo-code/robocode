@@ -10,14 +10,18 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Added setEnableGUI() and isGUIEnabled()
+ *     - Updated to use methods from FileUtil and Logger, which replaces methods
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
 
 
 import java.io.*;
-import robocode.util.*;
+
 import robocode.control.*;
+import robocode.io.FileUtil;
+import static robocode.io.Logger.log;
 
 
 /**
@@ -114,13 +118,13 @@ public class RobocodeManager {
 		if (properties == null) {
 			properties = new RobocodeProperties(this);
 			try {
-				FileInputStream in = new FileInputStream(new File(Constants.cwd(), "robocode.properties"));
+				FileInputStream in = new FileInputStream(new File(FileUtil.getCwd(), "robocode.properties"));
 
 				properties.load(in);
 			} catch (FileNotFoundException e) {
-				Utils.log("No robocode.properties file, using defaults.");
+				log("No robocode.properties file, using defaults.");
 			} catch (IOException e) {
-				Utils.log("IO Exception reading robocode.properties" + e);
+				log("IO Exception reading robocode.properties" + e);
 			}
 		}
 		return properties;
@@ -129,15 +133,15 @@ public class RobocodeManager {
 	public void saveProperties() {
 		getBattleManager().setOptions();
 		if (properties == null) {
-			Utils.log("Cannot save null robocode properties");
+			log("Cannot save null robocode properties");
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(new File(Constants.cwd(), "robocode.properties"));
+			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "robocode.properties"));
 
 			properties.store(out, "Robocode Properties");
 		} catch (IOException e) {
-			Utils.log(e);
+			log(e);
 		}
 	}
 
@@ -195,7 +199,7 @@ public class RobocodeManager {
 	}
 
 	public void runIntroBattle() {
-		getBattleManager().setBattleFilename(new File(Constants.cwd(), "battles/intro.battle").getPath());
+		getBattleManager().setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());
 		getBattleManager().loadBattleProperties();
 		setListener(new RobocodeListener() {
 			public void battleMessage(String s) {}
