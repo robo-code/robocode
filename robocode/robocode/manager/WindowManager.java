@@ -12,6 +12,8 @@
  *     - Added showInBrowser() for displaying content from an URL
  *     - Added showRoboWiki(), showYahooGroupRobocode(), showRobocodeRepository()
  *     - Removed the Thread.sleep(diff) from showSplashScreen()
+ *     - Updated to use methods from the FileUtil, which replaces file operations
+ *       that have been (re)moved from the robocode.util.Utils class
  *     Luis Crespo & Flemming N. Larsen
  *     - Added showRankingDialog()
  *******************************************************************************/
@@ -25,8 +27,8 @@ import javax.swing.filechooser.FileFilter;
 import robocode.dialog.*;
 import robocode.battle.*;
 import robocode.editor.*;
+import robocode.io.FileUtil;
 import robocode.packager.*;
-import robocode.util.*;
 
 
 /**
@@ -62,18 +64,18 @@ public class WindowManager {
 
 	public void showRobocodeFrame() {
 		// Pack frame to size all components
-		Utils.packCenterShow(getRobocodeFrame());
+		WindowUtil.packCenterShow(getRobocodeFrame());
 	
 		// Do it yet again to fix a bug in some JREs
 		robocodeFrame.setVisible(true);
 
-		Utils.setStatusLabel(getRobocodeFrame().getStatusLabel());
+		WindowUtil.setStatusLabel(getRobocodeFrame().getStatusLabel());
 	}
 
 	public void showAboutBox() {
 		AboutBox aboutBox = new AboutBox(robocodeFrame, manager);
 
-		Utils.packCenterShow(robocodeFrame, aboutBox);
+		WindowUtil.packCenterShow(robocodeFrame, aboutBox);
 	}
 
 	public void showBattleOpenDialog() {
@@ -118,14 +120,14 @@ public class WindowManager {
 
 	public void showVersionsTxt() {
 		showInBrowser(
-				"file://" + new File(Constants.cwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
+				"file://" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
 				+ "versions.txt");
 	}
 
 	public void showHelpApi() {
 		showInBrowser(
-				"file://" + new File(Constants.cwd(), "").getAbsoluteFile() + System.getProperty("file.separator") + "javadoc"
-				+ System.getProperty("file.separator") + "index.html");
+				"file://" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
+				+ "javadoc" + System.getProperty("file.separator") + "index.html");
 	}
 
 	public void showFaq() {
@@ -159,21 +161,21 @@ public class WindowManager {
 		PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
 
 		// Show it
-		Utils.packCenterShow(robocodeFrame, preferencesDialog);
+		WindowUtil.packCenterShow(robocodeFrame, preferencesDialog);
 	}
 
 	public void showResultsDialog(Battle battle) {
 		ResultsDialog resultsDialog = new ResultsDialog(robocodeFrame, battle);
 
 		resultsDialog.setSize(0, 0);
-		Utils.packCenterShow(robocodeFrame, resultsDialog);
+		WindowUtil.packCenterShow(robocodeFrame, resultsDialog);
 	}
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(robocodeFrame, manager);
 			rankingDialog.setSize(200, 300);
-			Utils.centerShow(robocodeFrame, rankingDialog);
+			WindowUtil.centerShow(robocodeFrame, rankingDialog);
 		}
 		rankingDialog.setVisible(visible);
 	}
@@ -182,7 +184,7 @@ public class WindowManager {
 		if (robocodeEditor == null) {
 			robocodeEditor = new robocode.editor.RobocodeEditor(manager);
 			// Pack, center, and show it
-			Utils.packCenterShow(robocodeEditor);
+			WindowUtil.packCenterShow(robocodeEditor);
 		} else {
 			robocodeEditor.setVisible(true);
 		}
@@ -196,7 +198,7 @@ public class WindowManager {
 		
 		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager(), false);
 		// Pack, center, and show it
-		Utils.packCenterShow(robotPackager);
+		WindowUtil.packCenterShow(robotPackager);
 	}
 
 	public void showRobotExtractor(JFrame owner) {
@@ -207,7 +209,7 @@ public class WindowManager {
 		
 		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
 		// Pack, center, and show it
-		Utils.packCenterShow(robotExtractor);
+		WindowUtil.packCenterShow(robotExtractor);
 	}
 
 	public void showSplashScreen() {
@@ -215,22 +217,22 @@ public class WindowManager {
 		SplashScreen splashScreen = new SplashScreen(manager);
 
 		// Pack, center, and show it
-		Utils.packCenterShow(splashScreen);
+		WindowUtil.packCenterShow(splashScreen);
 		for (int i = 0; i < 5 * 20 && !splashScreen.isPainted(); i++) {
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException ie) {}
 		}
-		Utils.setStatusLabel(splashScreen.getSplashLabel());
+		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
 		manager.getRobotRepositoryManager().getRobotRepository();
 
-		Utils.setStatusLabel(splashScreen.getSplashLabel());
+		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 		manager.getImageManager();
 		manager.getCpuManager().getCpuConstant();
 
-		Utils.setStatus("");
-		Utils.setStatusLabel(null);
+		WindowUtil.setStatus("");
+		WindowUtil.setStatusLabel(null);
 
 		splashScreen.dispose();
 	}
@@ -241,7 +243,7 @@ public class WindowManager {
 		NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
 
 		// Pack, center, and show it
-		Utils.packCenterShow(robocodeFrame, newBattleDialog);
+		WindowUtil.packCenterShow(robocodeFrame, newBattleDialog);
 	}
 
 	public boolean closeRobocodeEditor() {
@@ -267,7 +269,7 @@ public class WindowManager {
 
 	public void showCreateTeamDialog() {
 		teamCreator = new robocode.dialog.TeamCreator(manager.getRobotRepositoryManager());
-		Utils.packCenterShow(teamCreator);
+		WindowUtil.packCenterShow(teamCreator);
 	}
 
 	public void showImportRobotDialog() {
@@ -341,7 +343,7 @@ public class WindowManager {
 					JOptionPane.OK_CANCEL_OPTION)
 					== JOptionPane.OK_OPTION) {
 				try {
-					Utils.copy(inputFile, outputFile);
+					FileUtil.copy(inputFile, outputFile);
 					manager.getRobotRepositoryManager().clearRobotList();
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Robot imported successfully.");
 				} catch (IOException e) {

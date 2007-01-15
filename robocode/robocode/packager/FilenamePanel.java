@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Replaced deprecated show() method with setVisible(true)
+ *     - Updated to use methods from the FileUtil, which replaces file operations
+ *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
@@ -28,8 +30,8 @@ import java.io.*;
 import java.util.List;
 
 import robocode.dialog.*;
+import robocode.io.FileUtil;
 import robocode.repository.*;
-import robocode.util.*;
 
 
 /**
@@ -73,7 +75,7 @@ public class FilenamePanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			String fileName = new File(Constants.cwd(), "robots").getAbsolutePath() + File.separator;
+			String fileName = new File(FileUtil.getCwd(), "robots").getAbsolutePath() + File.separator;
 			File outgoingFile = new File(fileName);
 
 			if (!outgoingFile.exists()) {
