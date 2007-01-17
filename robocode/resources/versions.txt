@@ -1,3 +1,9 @@
+Version 1.2.4 Alpha
+(01/17/2007)
+o Javadoc provided for:
+  -- The robocode.util.Utils class providing angle normalizing methods
+  -- The whole robocode.control package used for controlling Robocode externally
+
 Version 1.2.3B
 (01/14/2007)
 o Bugfixes
