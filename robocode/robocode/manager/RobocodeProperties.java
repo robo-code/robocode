@@ -80,7 +80,7 @@ public class RobocodeProperties {
 	// Common Options
 	private boolean optionsCommonShowResults = true;
 	private boolean optionsCommonAppendWhenSavingResults = true; 
-	private boolean optionsCommonEnableReplayRecording = true;
+	private boolean optionsCommonEnableReplayRecording = false;
 
 	private boolean optionsTeamShowTeamRobots = false;
 	
