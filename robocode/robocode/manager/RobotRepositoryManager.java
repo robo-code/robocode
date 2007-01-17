@@ -145,10 +145,14 @@ public class RobotRepositoryManager {
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", true);
 		}
-		
-		for (FileSpecification fileSpec : updatedJarList) {
-			processJar((JarSpecification) fileSpec);
-			updateRobotDatabase((JarSpecification) fileSpec);
+	
+		// This loop should not be changed to an for-each loop as the updated jar list
+		// gets updated (jars are added) by the methods called in this loop, which can
+		// cause a ConcurrentModificationException!
+		for (int i = 0; i < updatedJarList.size(); i++) {
+			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
+			processJar(updatedJar);
+			updateRobotDatabase(updatedJar);
 			write = true;
 		}
 		updatedJarList.clear();
