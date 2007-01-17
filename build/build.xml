@@ -227,8 +227,14 @@
     <javadoc
         destdir="${build}/javadoc"
         sourcepath="${src.robocode}"
-        packagenames="robocode"
-        windowtitle="Robocode ${version} API"/>
+        packagenames="robocode, robocode.util, robocode.control"
+        windowtitle="Robocode ${version} API">
+      <fileset dir="${src.robocode}">
+        <include name="robocode/*.java"/>
+      	<include name="robocode/util/Utils.java"/>
+      	<include name="robocode/control/*.java"/>
+      </fileset>
+    </javadoc>
     
     <!-- Flag that javadoc has been built -->
     <touch file="${build}/.javadoc_build"/>
