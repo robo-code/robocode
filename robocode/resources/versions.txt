@@ -5,6 +5,9 @@ o Bugfixes
      missing completely in Robocode?!
   -- ConcurrentModificationException sometimes occured when robots were imported,
      e.g. when Robocode was starting up
+o The common options for enabling replay recording has been changed to disabled per default
+  -- When running lots of battles in a row with replay recording enabled, Robocode runs out
+     of memory, which causes problems when running tournaments
 o Javadoc provided for:
   -- The robocode.util.Utils class providing angle normalizing methods
   -- The whole robocode.control package used for controlling Robocode externally
