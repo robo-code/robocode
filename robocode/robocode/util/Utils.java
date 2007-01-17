@@ -15,14 +15,18 @@
  *       - normalAbsoluteAngle()
  *       - normalNearAbsoluteAngle()
  *       - normalRelativeAngle()
+ *     - The isNear() was made public
+ *     - Optimized and provided javadocs for all methods
  *******************************************************************************/
 package robocode.util;
 
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
 
 
 /**
+ * Utility class that provide methods for normalizing angles.
+ * 
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -32,59 +36,81 @@ public class Utils {
 	private final static double THREE_PI_OVER_TWO = 3 * PI / 2;
 	private final static double PI_OVER_TWO = PI / 2;
 
+	// Hide the default constructor as this class only provides static method
+	private Utils() {}
+
+	/**
+	 * Normalizes an angle to an absolute angle.
+	 * The normalized angle will be in the range from 0 to 2*PI, where 2*PI
+	 * itself is not included.
+	 * 
+	 * @param angle the angle to normalize
+	 * @return the normalized angle that will be in the range of [0,2*PI[
+	 */
 	public static double normalAbsoluteAngle(double angle) {
-		if (angle >= 0 && angle < 2.0 * PI) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle < 0) {
-			fixedAngle += 2 * PI;
-		}
-		while (fixedAngle >= 2 * PI) {
-			fixedAngle -= 2 * PI;
-		}
-	
-		return fixedAngle;
+		return (angle %= TWO_PI) >= 0 ? angle : (angle + TWO_PI);
 	}
 
-	public static double normalNearAbsoluteAngle(double angle) {
-		double fixedAngle = normalAbsoluteAngle(angle);
-
-		if (isNear(fixedAngle, 0)) {
-			fixedAngle = 0;
-		} else if (isNear(fixedAngle, PI_OVER_TWO)) {
-			fixedAngle = PI_OVER_TWO;
-		} else if (isNear(fixedAngle, PI)) {
-			fixedAngle = PI;
-		} else if (isNear(fixedAngle, THREE_PI_OVER_TWO)) {
-			fixedAngle = THREE_PI_OVER_TWO;
-		} else if (isNear(fixedAngle, TWO_PI)) {
-			fixedAngle = 0;
-		}
-	
-		return fixedAngle;
-	}
-
+	/**
+	 * Normalizes an angle to a relative angle.
+	 * The normalized angle will be in the range from -PI to PI, where PI
+	 * itself is not included.
+	 * 
+	 * @param angle the angle to normalize
+	 * @return the normalized angle that will be in the range of [-PI,PI[
+	 */
 	public static double normalRelativeAngle(double angle) {
-		if (angle > -PI && angle <= PI) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle <= -PI) {
-			fixedAngle += 2 * PI;
-		}
-		while (fixedAngle > PI) {
-			fixedAngle -= 2 * PI;
-		}
-		return fixedAngle;
+		return (angle %= TWO_PI) >= 0 ? (angle < PI) ? angle : angle - TWO_PI : (angle >= -PI) ? angle : angle + TWO_PI;
 	}
 
-	private static boolean isNear(double angle1, double angle2) {
-		if (abs(angle1 - angle2) < .00001) {
-			return true;
+	/**
+	 * Normalizes an angle to be near an absolute angle.
+	 * The normalized angle will be in the range from 0 to 2*PI, where 2*PI
+	 * itself is not included.
+	 * If the normalized angle is near to 0, PI/2, PI, 3*PI/2 or 2*PI, that
+	 * angle will be returned. The {@link #isNear(double, double) isNear}
+	 * method is used for defining when the angle is near one of angles listed
+	 * above.
+	 *
+	 * @param angle the angle to normalize
+	 * @return the normalized angle that will be in the range of [0,2*PI[
+	 * 
+	 * @see #normalAbsoluteAngle(double)
+	 * @see #isNear(double, double)
+	 */
+	public static double normalNearAbsoluteAngle(double angle) {
+		angle = (angle %= TWO_PI) >= 0 ? angle : (angle + TWO_PI);
+
+		if (isNear(angle, PI)) {
+			return PI;
+		} else if (angle < PI) {
+			if (isNear(angle, 0)) {
+				return 0;
+			} else if (isNear(angle, PI_OVER_TWO)) {
+				return PI_OVER_TWO;
+			}
+		} else {
+			if (isNear(angle, THREE_PI_OVER_TWO)) {
+				return THREE_PI_OVER_TWO;
+			} else if (isNear(angle, TWO_PI)) {
+				return 0;
+			}
 		}
-		return false;
+		return angle;
+	}
+
+	/**
+	 * Tests if the two specified angles are near to each other.
+	 * Whether or not the specified angles are near t each other is defined by
+	 * the following expression:
+	 * <code>(Math.abs(angle1 - angle2) < .00001)</code>
+	 * 
+	 * @param angle1 the first angle
+	 * @param angle2 the second angle
+	 * @return <code>true</code> if the two angles are near to each other;
+	 *    <code>false</code> otherwise.
+	 */
+	public static boolean isNear(double angle1, double angle2) {
+		return (Math.abs(angle1 - angle2) < .00001);
 	}
 }
