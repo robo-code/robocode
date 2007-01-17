@@ -14,6 +14,7 @@
  *       code processing the hitWall event.
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
+ *     - Bugfix: Added setting and getting the priority of BulletHitBulletEvent
  *     - Code cleanup
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
@@ -43,6 +44,7 @@ public class EventManager {
 	private int hitWallEventPriority = 30;
 	private int hitRobotEventPriority = 40;
 	private int bulletHitEventPriority = 50;
+	private int bulletHitBulletEventPriority = 50;
 	private int bulletMissedEventPriority = 60;
 	private int robotDeathEventPriority = 70;
 	private int messageEventPriority = 80;
@@ -246,6 +248,8 @@ public class EventManager {
 			return skippedTurnEventPriority;
 		} else if (eventClass.equals("robocode.WinEvent") || eventClass.equals("WinEvent")) {
 			return winEventPriority;
+		} else if (eventClass.equals("robocode.BulletHitBulletEvent") || eventClass.equals("BulletHitBulletEvent")) {
+			return bulletHitBulletEventPriority;
 		} else {
 			return -1;
 		}
@@ -665,6 +669,8 @@ public class EventManager {
 		}
 		if (eventClass.equals("robocode.BulletHitEvent") || eventClass.equals("BulletHitEvent")) {
 			bulletHitEventPriority = priority;
+		} else if (eventClass.equals("robocode.BulletHitBulletEvent") || eventClass.equals("BulletHitBulletEvent")) {
+			bulletHitBulletEventPriority = priority;
 		} else if (eventClass.equals("robocode.BulletMissedEvent") || eventClass.equals("BulletMissedEvent")) {
 			bulletMissedEventPriority = priority;
 		} else if (eventClass.equals("robocode.HitByBulletEvent") || eventClass.equals("HitByBulletEvent")) {
