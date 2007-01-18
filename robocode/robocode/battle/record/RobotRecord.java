@@ -12,7 +12,6 @@
 package robocode.battle.record;
 
 
-import java.awt.Color;
 import robocode.peer.RobotPeer;
 
 
@@ -39,28 +38,28 @@ public class RobotRecord {
 	public short energy;
 
 	// Body heading (using fixed point precision)
-	public short heading; // 2 pi maps to 0 - 65535 (range of short type)
+	public byte heading; // 2 pi maps to 0 - 255
 
 	// Radar heading (using fixed point precision)
-	public short radarHeading; // 2 pi maps to 0 - 65535 (range of short type)
+	public byte radarHeading; // 2 pi maps to 0 - 255
 
 	// Gun heading (using fixed point precision)
-	public short gunHeading; // 2 pi maps to 0 - 65535 (range of short type)
+	public byte gunHeading; // 2 pi maps to 0 - 255
 
-	// Body color
-	public Color bodyColor;
+	// Body color packed as RGB 565, where 0 means null
+	public short bodyColor;
 
-	// Gun color
-	public Color gunColor;
+	// Gun color packed as RGB 565, where 0 means null
+	public short gunColor;
 
-	// Radar color
-	public Color radarColor;
+	// Radar color packed as RGB 565, where 0 means null
+	public short radarColor;
 
-	// Bullet color
-	public Color bulletColor;
+	// Bullet color packed as RGB 565, where 0 means null
+	public short bulletColor;
 
-	// Scan arc color
-	public Color scanColor;
+	// Scan color packed as RGB 565, where 0 means null
+	public short scanColor;
 
 	/**
 	 * Constructs a new robot record.
@@ -73,14 +72,31 @@ public class RobotRecord {
 		x = (short) (robot.getX() + 0.5);
 		y = (short) (robot.getY() + 0.5);
 		energy = (short) (robot.getEnergy() * 10);
-		heading = (short) (32768 * robot.getHeading() / Math.PI);
-		radarHeading = (short) (32768 * robot.getRadarHeading() / Math.PI);
-		gunHeading = (short) (32768 * robot.getGunHeading() / Math.PI);
+		heading = (byte) (128 * robot.getHeading() / Math.PI);
+		radarHeading = (byte) (128 * robot.getRadarHeading() / Math.PI);
+		gunHeading = (byte) (128 * robot.getGunHeading() / Math.PI);
 		state = (byte) robot.getState();
-		bodyColor = robot.getBodyColor();
-		gunColor = robot.getGunColor();
-		radarColor = robot.getRadarColor();
-		bulletColor = robot.getBulletColor();
-		scanColor = robot.getScanColor();
+		bodyColor = toRGB565(robot.getBodyColor());
+		gunColor = toRGB565(robot.getGunColor());
+		radarColor = toRGB565(robot.getRadarColor());
+		bulletColor = toRGB565(robot.getBulletColor());
+		scanColor = toRGB565(robot.getScanColor());
+	}
+	
+	private static short toRGB565(java.awt.Color c) {
+		if (c == null) {
+			return 0;
+		}
+		short rgb = (short)(((c.getRed() & 0xf8) << 8) | ((c.getGreen() & 0xfc) << 3) | (c.getBlue() >> 3));
+
+		// 0 is reserved for null -> set green (has highest resolution) to 1
+		if (rgb == 0) {
+			return 0x20;
+		}
+		// If the color actually was 0x20 then set it to 0x40 (to the nearest green) 
+		if (rgb == 0x20) {
+			return 0x40;
+		}
+		return rgb;
 	}
 }

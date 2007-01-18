@@ -1614,14 +1614,24 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		x = rr.x;
 		y = rr.y;
 		energy = (double) rr.energy / 10;
-		heading = Math.PI * (double) rr.heading / 32768;
-		radarHeading = Math.PI * (double) rr.radarHeading / 32768;
-		gunHeading = Math.PI * (double) rr.gunHeading / 32768;
+		heading = Math.PI * (double) rr.heading / 128;
+		radarHeading = Math.PI * (double) rr.radarHeading / 128;
+		gunHeading = Math.PI * (double) rr.gunHeading / 128;
 		state = rr.state;
-		bodyColor = rr.bodyColor;
-		gunColor = rr.gunColor;
-		radarColor = rr.radarColor;
-		bulletColor = rr.bulletColor;
-		scanColor = rr.scanColor;
+		bodyColor = toColor(rr.bodyColor);
+		gunColor = toColor(rr.gunColor);
+		radarColor = toColor(rr.radarColor);
+		bulletColor = toColor(rr.bulletColor);
+		scanColor = toColor(rr.scanColor);
+	}
+	
+	private static Color toColor(short rgb565) {
+		if (rgb565 == 0) {
+			return null;
+		}
+		if (rgb565 == 0x20) {
+			return Color.BLACK;
+		}
+		return new Color(255 * ((rgb565 & 0xF800) >> 11) / 31, 255 * ((rgb565 & 0x07e0) >> 5) / 63, 255 * (rgb565 & 0x001f) / 31);
 	}
 }
