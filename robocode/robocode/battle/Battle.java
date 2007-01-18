@@ -25,6 +25,7 @@
  *     - Added replay feature
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that has been (re)moved from the robocode.util.Utils class
+ *     - Changed so robots die faster when the battles are over
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -104,7 +105,6 @@ public class Battle implements Runnable {
 	private int framesThisSec;
 	private int currentTime;
 	private int endTimer;
-	private int stopTime;
 	private int activeRobots;
 
 	// Death events
@@ -582,7 +582,6 @@ public class Battle implements Runnable {
 		boolean battleOver = false;
 
 		endTimer = 0;
-		stopTime = 0;
 
 		currentTime = 0;
 		inactiveTurnCount = 0;
@@ -665,10 +664,6 @@ public class Battle implements Runnable {
 			performScans();
 
 			deathEvents.clear();
-
-			if (abortBattles && getActiveRobots() > 0) {
-				stopTime = endTimer;
-			}
 
 			battleOver = checkBattleOver();
 
@@ -773,6 +768,10 @@ public class Battle implements Runnable {
 			}
 		}
 
+		if (battleView != null) {
+			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+		}
+
 		if (isRecordingEnabled) {
 			battleRecord.rounds.add(currentRoundRecord);
 
@@ -798,9 +797,6 @@ public class Battle implements Runnable {
 			}
 		}
 
-		if (battleView != null) {
-			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-		}
 		bullets.clear();
 	}
 
@@ -810,7 +806,6 @@ public class Battle implements Runnable {
 		boolean replayOver = false;
 
 		endTimer = 0;
-		stopTime = 0;
 
 		currentTime = 0;
 
@@ -1111,7 +1106,7 @@ public class Battle implements Runnable {
 		boolean battleOver = false;
 
 		// Check game over
-		if (oneTeamRemaining()) {
+		if (oneTeamRemaining() || abortBattles) {
 			if (endTimer == 0) {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
@@ -1136,7 +1131,7 @@ public class Battle implements Runnable {
 				}
 			}
 
-			if (endTimer == 4 * 30) {
+			if (abortBattles || endTimer > 0) {
 				for (RobotPeer r : robots) {
 					if (!r.isDead()) {
 						r.halt();
@@ -1144,14 +1139,8 @@ public class Battle implements Runnable {
 				}
 			}
 
-			endTimer++;
-			if (endTimer > 5 * 30) {
+			if (++endTimer > 35) {
 				battleOver = true;
-			}
-			if (abortBattles) {
-				if (endTimer - stopTime > 30) {
-					battleOver = true;
-				}
 			}
 		}
 		return battleOver;
