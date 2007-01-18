@@ -25,7 +25,7 @@
  *     - Added replay feature
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that has been (re)moved from the robocode.util.Utils class
- *     - Changed so robots die faster when the battles are over
+ *     - Changed so robots die faster graphically when the battles are over
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -69,6 +69,9 @@ import static robocode.io.Logger.log;
  */
 public class Battle implements Runnable {
 
+	// Maximum turns to display the battle when battle ended
+	private final static int TURNS_DISPLAYED_AFTER_ENDING = 35;
+
 	// Objects we use
 	private BattleView battleView;
 	private BattleField battleField;
@@ -105,6 +108,7 @@ public class Battle implements Runnable {
 	private int framesThisSec;
 	private int currentTime;
 	private int endTimer;
+	private int stopTime;
 	private int activeRobots;
 
 	// Death events
@@ -221,7 +225,7 @@ public class Battle implements Runnable {
 				updateTitle();
 				
 				if (replay && battleRecord != null) {
-					if (battleRecord.rounds.size() >= roundNum) {
+					if (battleRecord.rounds.size() > roundNum) {
 						runReplay();
 					}
 				} else {
@@ -582,6 +586,7 @@ public class Battle implements Runnable {
 		boolean battleOver = false;
 
 		endTimer = 0;
+		stopTime = 0;
 
 		currentTime = 0;
 		inactiveTurnCount = 0;
@@ -665,13 +670,17 @@ public class Battle implements Runnable {
 
 			deathEvents.clear();
 
+			if (abortBattles && getActiveRobots() > 0) {
+				stopTime = endTimer;
+			}
+
 			battleOver = checkBattleOver();
 
 			inactiveTurnCount++;
 
 			computeActiveRobots();
 
-			if (isRecordingEnabled) {
+			if (isRecordingEnabled && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
 				currentTurnRecord = new TurnRecord();
 				currentRoundRecord.turns.add(currentTurnRecord);
 	
@@ -709,7 +718,7 @@ public class Battle implements Runnable {
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
 
-			if (!(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
+			if (endTimer < TURNS_DISPLAYED_AFTER_ENDING && !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
 				if ((totalFrameMillisThisSec == 0)
@@ -747,7 +756,7 @@ public class Battle implements Runnable {
 			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
 
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-			if (manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible()
+			if (endTimer < TURNS_DISPLAYED_AFTER_ENDING && manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible()
 					&& !manager.getWindowManager().getRobocodeFrame().isIconified()) {
 				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
 			} else {
@@ -806,6 +815,7 @@ public class Battle implements Runnable {
 		boolean replayOver = false;
 
 		endTimer = 0;
+		stopTime = 0;
 
 		currentTime = 0;
 
@@ -1131,7 +1141,7 @@ public class Battle implements Runnable {
 				}
 			}
 
-			if (abortBattles || endTimer > 0) {
+			if (endTimer > 4 * 30) {
 				for (RobotPeer r : robots) {
 					if (!r.isDead()) {
 						r.halt();
@@ -1139,8 +1149,14 @@ public class Battle implements Runnable {
 				}
 			}
 
-			if (++endTimer > 35) {
+			endTimer++;
+			if (endTimer > 5 * 30) {
 				battleOver = true;
+			}
+			if (abortBattles) {
+				if (endTimer - stopTime > 30) {
+					battleOver = true;
+				}
 			}
 		}
 		return battleOver;
