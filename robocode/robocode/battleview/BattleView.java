@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Totally rewritten
+ *     - Rewritten
  *******************************************************************************/
 package robocode.battleview;
 
@@ -70,8 +70,8 @@ public class BattleView extends Canvas {
 	private boolean drawExplosions;
 	private boolean drawGround;
 
-	private int noBuffers;
-	
+	private int numBuffers;
+
 	private RenderingHints renderingHints;
 
 	// TPS and FPS
@@ -179,7 +179,7 @@ public class BattleView extends Canvas {
 		drawGround = props.getOptionsViewGround();
 		drawExplosions = props.getOptionsViewExplosions();
 
-		noBuffers = props.getOptionsRenderingNoBuffers();
+		numBuffers = props.getOptionsRenderingNoBuffers();
 
 		renderingHints = props.getRenderingHints();
 	}
@@ -194,7 +194,7 @@ public class BattleView extends Canvas {
 		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 
 		if (bufferStrategy == null) {
-			createBufferStrategy(noBuffers);
+			createBufferStrategy(numBuffers);
 			bufferStrategy = getBufferStrategy();
 		}
 
@@ -295,9 +295,6 @@ public class BattleView extends Canvas {
 		// Draw ground
 		drawGround(g);
 
-		// Draw battlefield objects
-		// drawObjects(g);
-
 		// Draw scan arcs
 		drawScanArcs(g);
 
@@ -309,7 +306,7 @@ public class BattleView extends Canvas {
 
 		// Draw all text
 		drawText(g);
-
+		
 		// Restore the graphics state
 		graphicsState.restore(g);
 	}
@@ -359,7 +356,7 @@ public class BattleView extends Canvas {
 		AffineTransform at;
 		int battleFieldHeight = battle.getBattleField().getHeight();
 
-		if (drawGround) {
+		if (drawGround && battle.isRobotsLoaded()) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
 			for (RobotPeer r : battle.getRobots()) {
