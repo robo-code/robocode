@@ -1,10 +1,16 @@
 Version 1.2.4 Alpha
-(01/17/2007)
+(01/18/2007)
 o Bugfixes
   -- Added setting and getting the priority of BulletHitBulletEvent, which was
      missing completely in Robocode?!
   -- ConcurrentModificationException sometimes occured when robots were imported,
      e.g. when Robocode was starting up
+  -- Removed IndexOutOfBoundsException when replaying battles
+o Robots die faster graphically
+  -- Robocode stops painting the battlefield and playing sounds when a battle is ended
+     after 35 turns.
+  -- However, the robots still have 120 turns until they are really killed like Robocode
+     is used to, but the battle continues like if it was running in minimized mode (fast)  
 o The common options for enabling replay recording has been changed to disabled per default
   -- When running lots of battles in a row with replay recording enabled, Robocode runs out
      of memory, which causes problems when running tournaments
