@@ -1,11 +1,13 @@
-Version 1.2.4 Alpha
+Version 1.2.4 Beta
 (01/18/2007)
 o Bugfixes
-  -- Added setting and getting the priority of BulletHitBulletEvent, which was
-     missing completely in Robocode?!
   -- ConcurrentModificationException sometimes occured when robots were imported,
      e.g. when Robocode was starting up
+  -- Added setting and getting the priority of BulletHitBulletEvent, which was
+     missing completely in Robocode?!
   -- Removed IndexOutOfBoundsException when replaying battles
+  -- Explosion debrise was shown in the lower left corner (0, 0) when starting
+     battles and battle ground is set to visible
 o Robots die faster graphically
   -- Robocode stops painting the battlefield and playing sounds when a battle is ended
      after 35 turns.
