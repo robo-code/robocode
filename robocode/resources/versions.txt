@@ -8,14 +8,18 @@ o Bugfixes
   -- Removed IndexOutOfBoundsException when replaying battles
   -- Explosion debrise was shown in the lower left corner (0, 0) when starting
      battles and battle ground is set to visible
+  -- Robocode could hang when checking for a new version via Internet when no Internet
+     connection was available. Now a 5 second timeout has been added to prevent
+     Robocode from hanging
 o Robots die faster graphically
   -- Robocode stops painting the battlefield and playing sounds when a battle is ended
      after 35 turns.
-  -- However, the robots still have 120 turns until they are really killed like Robocode
-     is used to, but the battle continues like if it was running in minimized mode (fast)  
+  -- However, the robots still have 120 turns until they are really killed like
+     Robocode is used to, but the battle continues like if it was running in minimized
+     mode (fast)  
 o The common options for enabling replay recording has been changed to disabled per default
-  -- When running lots of battles in a row with replay recording enabled, Robocode runs out
-     of memory, which causes problems when running tournaments
+  -- When running lots of battles in a row with replay recording enabled, Robocode
+     runs out of memory, which causes problems when running tournaments
 o Javadoc provided for:
   -- The robocode.util.Utils class providing angle normalizing methods
   -- The whole robocode.control package used for controlling Robocode externally
