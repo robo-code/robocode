@@ -15,6 +15,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     - Changed so that the robot repository only adds .jar files from the root
+ *       of the robots folder and not from sub folders of the robots folder
  *******************************************************************************/
 package robocode.manager;
 
@@ -151,6 +153,7 @@ public class RobotRepositoryManager {
 		// cause a ConcurrentModificationException!
 		for (int i = 0; i < updatedJarList.size(); i++) {
 			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
+
 			processJar(updatedJar);
 			updateRobotDatabase(updatedJar);
 			write = true;
@@ -341,8 +344,15 @@ public class RobotRepositoryManager {
 					updateRobotDatabase(fileSpecification);
 					write = true;
 					if (fileSpecification instanceof JarSpecification) {
-						// this file is changed
-						updatedJarList.add(fileSpecification);
+						String path = fileSpecification.getFilePath();
+
+						path = path.substring(0, path.lastIndexOf(File.separatorChar));
+						path = path.substring(path.lastIndexOf(File.separatorChar) + 1);
+
+						if (path.equalsIgnoreCase("robots")) {
+							// this file is changed
+							updatedJarList.add(fileSpecification);
+						}
 					}
 				}
 				if (fileSpecification.getValid()) {
