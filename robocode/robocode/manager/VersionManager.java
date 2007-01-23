@@ -16,6 +16,7 @@
  *     - Changed the checkdate time interval from 10 days to 5 days
  *     - Updated to use methods from WindowUtil, FileUtil, Logger, which replaces
  *       methods that have been (re)moved from the Utils and Constants class
+ *     - Added a connect timeout of 5 seconds when checking for a new version
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -58,11 +59,9 @@ public class VersionManager {
 		checkDate.setTime(lastCheckedDate);
 		checkDate.add(Calendar.DATE, 5);
 
-		if (checkDate.getTime().before(today)) {
-			if (checkForNewVersion(false)) {
-				manager.getProperties().setVersionChecked(today);
-				manager.saveProperties();
-			}
+		if (checkDate.getTime().before(today) && checkForNewVersion(false)) {
+			manager.getProperties().setVersionChecked(today);
+			manager.saveProperties();
 		}
 	}
 	
@@ -84,6 +83,8 @@ public class VersionManager {
 		try {
 			URLConnection urlConnection = u.openConnection();
 
+			urlConnection.setConnectTimeout(5000);
+
 			if (urlConnection instanceof HttpURLConnection) {
 				log("Update checking with http.");
 				HttpURLConnection h = (HttpURLConnection) urlConnection;
@@ -92,7 +93,6 @@ public class VersionManager {
 					log("http using proxy.");
 				}
 			}
-			
 			reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 		} catch (IOException e) {
 			log("Unable to check for new version: " + e);
@@ -127,7 +127,7 @@ public class VersionManager {
 					JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
 							"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
 				}
-			} else if (!v.matches(".*([Aa][Ll][Ff]|[Bb][Ee][Tt])[Aa].*")) {
+			} else if (!v.matches(".*([Aa][Ll][Pp][Hh]|[Bb][Ee][Tt])[Aa].*")) {
 				JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
 						"It is highly recommended that you always download the latest version.  You may get it at "
 						+ installurl,
