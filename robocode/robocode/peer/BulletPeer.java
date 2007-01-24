@@ -91,7 +91,8 @@ public class BulletPeer {
 	private Line2D.Double boundingLine = new Line2D.Double();
 
 	protected int frame;
-	private int explosionImageIndex = 0;
+
+	protected int explosionImageIndex;
 
 	/**
 	 * BulletPeer constructor
@@ -368,7 +369,7 @@ public class BulletPeer {
 	public synchronized void nextFrame() {
 		frame++;
 	}
-	
+
 	public int getExplosionImageIndex() {
 		return explosionImageIndex;
 	}
