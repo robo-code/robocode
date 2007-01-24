@@ -1,5 +1,5 @@
 Version 1.2.4
-(01/23/2007)
+(01/25/2007)
 o Bugfixes
   -- ConcurrentModificationException sometimes occured when robots were imported,
      e.g. when Robocode was starting up
@@ -20,16 +20,20 @@ o Robots die faster graphically
 o The common options for enabling replay recording has been changed to disabled per default
   -- When running lots of battles in a row with replay recording enabled, Robocode
      runs out of memory, which causes problems when running tournaments
+o Added "View Explosion Debris" option in the View Options
+  -- Explosion debris is diabled per default as this feature can slow down the game
+     with 25% - 50% when viewing battles 
 o Javadoc provided for:
   -- The robocode.util.Utils class providing angle normalizing methods
   -- The whole robocode.control package used for controlling Robocode externally
-o Robot packages (.jar files) is now only extracted from the root of the robots folder
-  -- Fixed by Robert D. Maupin
+o Fixed incosistency with .jar files located in the robot folder
+  -- Robot packages (.jar files) is now only extracted from the root of the robots folder
   -- In previous Robocode versions when starting up Robocode without a robot.database
      file and .robotcache directory, Robocode would extract Robot packages from the
      root of the robot folder, and also the sub folders. When running Robocode the
      first time without these files, Robots from the sub folders were shown
      (if available), but not the following times when Robocode was started up.
+  -- This fix was done by Robert D. Maupin (aka Chase-san)
 
 Version 1.2.3B
 (01/14/2007)
