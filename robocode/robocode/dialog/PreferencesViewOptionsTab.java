@@ -9,7 +9,8 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Added visible ground and visible explosions option
+ *     - Added visible ground, visible explosions, and visible explosion debris
+ *       option
  *     - Changed some keyboard mnemonics
  *     - Changed from using FPS into using TPS (Turns per Second), but added a
  *       "Display FPS in titlebar" option
@@ -50,6 +51,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JCheckBox visibleScanArcsCheckBox;
 	private JCheckBox visibleExplosionsCheckBox;
 	private JCheckBox visibleGroundCheckBox;
+	private JCheckBox visibleExplosionDebrisCheckBox;
 
 	private JTextField desiredTpsTextField;
 	private JLabel desiredTpsLabel;
@@ -352,6 +354,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			visibleOptionsPanel.add(getVisibleScanArcsCheckBox());
 			visibleOptionsPanel.add(getVisibleExplosionsCheckBox());
 			visibleOptionsPanel.add(getVisibleGroundCheckBox());
+			visibleOptionsPanel.add(getVisibleExplosionDebrisCheckBox());
 			visibleOptionsPanel.add(new JLabel(" "));
 			visibleOptionsPanel.add(getDefaultsButton());
 		}
@@ -366,8 +369,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JCheckBox getVisibleRobotEnergyCheckBox() {
 		if (visibleRobotEnergyCheckBox == null) {
 			visibleRobotEnergyCheckBox = new JCheckBox("Visible Robot Energy");
-			visibleRobotEnergyCheckBox.setMnemonic('E');
-			visibleRobotEnergyCheckBox.setDisplayedMnemonicIndex(14);
+			visibleRobotEnergyCheckBox.setMnemonic('y');
+			visibleRobotEnergyCheckBox.setDisplayedMnemonicIndex(19);
 		}
 		return visibleRobotEnergyCheckBox;
 	}
@@ -380,8 +383,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JCheckBox getVisibleRobotNameCheckBox() {
 		if (visibleRobotNameCheckBox == null) {
 			visibleRobotNameCheckBox = new JCheckBox("Visible Robot Name");
-			visibleRobotNameCheckBox.setMnemonic('o');
-			visibleRobotNameCheckBox.setDisplayedMnemonicIndex(9);
+			visibleRobotNameCheckBox.setMnemonic('V');
+			visibleRobotNameCheckBox.setDisplayedMnemonicIndex(0);
 		}
 		return visibleRobotNameCheckBox;
 	}
@@ -393,7 +396,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getVisibleScanArcsCheckBox() {
 		if (visibleScanArcsCheckBox == null) {
-			visibleScanArcsCheckBox = new JCheckBox("Visible Scan Arcs (Cool, but may slow down game)");
+			visibleScanArcsCheckBox = new JCheckBox("Visible Scan Arcs");
 			visibleScanArcsCheckBox.setMnemonic('b');
 			visibleScanArcsCheckBox.setDisplayedMnemonicIndex(4);
 		}
@@ -429,6 +432,20 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	/**
+	 * Return the visibleExplosionDebrisCheckBox
+	 * 
+	 * @return JCheckBox
+	 */
+	private JCheckBox getVisibleExplosionDebrisCheckBox() {
+		if (visibleExplosionDebrisCheckBox == null) {
+			visibleExplosionDebrisCheckBox = new JCheckBox("Visible Explosion Debris");
+			visibleExplosionDebrisCheckBox.setMnemonic('E');
+			visibleExplosionDebrisCheckBox.setDisplayedMnemonicIndex(8);
+		}
+		return visibleExplosionDebrisCheckBox;
+	}
+
+	/**
 	 * Initialize the class.
 	 */
 	private void initialize() {
@@ -456,6 +473,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getVisibleScanArcsCheckBox().setSelected(robocodeProperties.getOptionsViewScanArcs());
 		getVisibleExplosionsCheckBox().setSelected(robocodeProperties.getOptionsViewExplosions());
 		getVisibleGroundCheckBox().setSelected(robocodeProperties.getOptionsViewGround());
+		getVisibleExplosionDebrisCheckBox().setSelected(robocodeProperties.getOptionsViewExplosionDebris());
 		getDesiredTpsTextField().setText("" + robocodeProperties.getOptionsBattleDesiredTPS());
 	}
 
@@ -469,6 +487,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		props.setOptionsViewScanArcs(getVisibleScanArcsCheckBox().isSelected());
 		props.setOptionsViewExplosions(getVisibleExplosionsCheckBox().isSelected());
 		props.setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
+		props.setOptionsViewExplosionDebris(getVisibleExplosionDebrisCheckBox().isSelected());
 		props.setOptionsBattleDesiredTPS(Integer.parseInt(getDesiredTpsTextField().getText()));
 		manager.saveProperties();
 	}

@@ -69,6 +69,7 @@ public class BattleView extends Canvas {
 	private boolean drawScanArcs;
 	private boolean drawExplosions;
 	private boolean drawGround;
+	private boolean drawExplosionDebris;
 
 	private int numBuffers;
 
@@ -178,6 +179,7 @@ public class BattleView extends Canvas {
 		drawScanArcs = props.getOptionsViewScanArcs();
 		drawGround = props.getOptionsViewGround();
 		drawExplosions = props.getOptionsViewExplosions();
+		drawExplosionDebris = props.getOptionsViewExplosionDebris();
 
 		numBuffers = props.getOptionsRenderingNoBuffers();
 
@@ -356,7 +358,7 @@ public class BattleView extends Canvas {
 		AffineTransform at;
 		int battleFieldHeight = battle.getBattleField().getHeight();
 
-		if (drawGround && battle.isRobotsLoaded()) {
+		if (drawGround && drawExplosionDebris && battle.isRobotsLoaded()) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
 			for (RobotPeer r : battle.getRobots()) {
