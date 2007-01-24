@@ -21,11 +21,8 @@ package robocode.manager;
 
 import java.awt.Image;
 import java.awt.Color;
-import java.net.URL;
 import java.util.*;
-import javax.imageio.ImageIO;
 
-import robocode.io.Logger;
 import robocode.render.*;
 
 
@@ -78,24 +75,20 @@ public class ImageManager {
 
 	public RenderImage getExplosionRenderImage(int which, int frame) {
 		if (explosionRenderImages == null) {
+			int numExplosion, numFrame;
+			String filename;
+			
+			List<List<RenderImage>> explosions = new ArrayList<List<RenderImage>>();
 
 			boolean done = false;
-
-			int numExplosion, numFrame;
-
-			List<List<RenderImage>> explosions = new ArrayList<List<RenderImage>>();
 
 			for (numExplosion = 1; !done; numExplosion++) {
 				List<RenderImage> frames = new ArrayList<RenderImage>();
 
 				for (numFrame = 1;; numFrame++) {
-					StringBuffer filename = new StringBuffer("/resources/images/explosion/explosion");
+					filename = "/resources/images/explosion/explosion" + numExplosion + '-' + numFrame + ".png";
 
-					filename.append(numExplosion).append('-').append(numFrame).append(".png");
-
-					URL url = getClass().getResource(filename.toString());
-
-					if (url == null) {
+					if (getClass().getResource(filename) == null) {
 						if (numFrame == 1) {
 							done = true;
 						} else {
@@ -104,12 +97,7 @@ public class ImageManager {
 						break;
 					}
 
-					try {
-						frames.add(new RenderImage(ImageIO.read(url)));
-					} catch (Exception e) {
-						Logger.log("Could not load image: " + filename);
-						break;
-					}		
+					frames.add(new RenderImage(ImageUtil.getImage(filename)));
 				}
 			}
 			
