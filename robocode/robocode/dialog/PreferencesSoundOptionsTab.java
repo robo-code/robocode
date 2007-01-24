@@ -176,8 +176,8 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	private JCheckBox getEnableRobotCollisionCheckBox() {
 		if (enableRobotCollisionCheckBox == null) {
 			enableRobotCollisionCheckBox = new JCheckBox("Robot Collisions");
-			enableRobotCollisionCheckBox.setMnemonic('o');
-			enableRobotCollisionCheckBox.setDisplayedMnemonicIndex(7);
+			enableRobotCollisionCheckBox.setMnemonic('t');
+			enableRobotCollisionCheckBox.setDisplayedMnemonicIndex(4);
 		}
 		return enableRobotCollisionCheckBox;
 	}
@@ -190,8 +190,8 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	private JCheckBox getEnableWallCollisionCheckBox() {
 		if (enableWallCollisionCheckBox == null) {
 			enableWallCollisionCheckBox = new JCheckBox("Wall Collisions");
-			enableWallCollisionCheckBox.setMnemonic('W');
-			enableWallCollisionCheckBox.setDisplayedMnemonicIndex(0);
+			enableWallCollisionCheckBox.setMnemonic('l');
+			enableWallCollisionCheckBox.setDisplayedMnemonicIndex(2);
 		}
 		return enableWallCollisionCheckBox;
 	}
@@ -317,8 +317,8 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	private JCheckBox getEnableMixerVolumeCheckBox() {
 		if (enableMixerVolumeCheckBox == null) {
 			enableMixerVolumeCheckBox = new JCheckBox("Volume");
-			enableMixerVolumeCheckBox.setMnemonic('l');
-			enableMixerVolumeCheckBox.setDisplayedMnemonicIndex(2);
+			enableMixerVolumeCheckBox.setMnemonic('V');
+			enableMixerVolumeCheckBox.setDisplayedMnemonicIndex(0);
 			enableMixerVolumeCheckBox.addActionListener(eventHandler);
 		}
 		return enableMixerVolumeCheckBox;
