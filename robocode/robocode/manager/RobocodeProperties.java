@@ -9,8 +9,9 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Added option for viewing ground, antialiasing, text antialiasing,
- *       rendering method, and method for getting the combined rendering hints
+ *     - Added option for visible ground, visible explosions, visible explosion
+ *       debris, antialiasing, text antialiasing, rendering method, and method
+ *       for getting the combined rendering hints
  *     - Changed the FPS methods into TPS methods, but added the "Display FPS in
  *       titlebar" option
  *     - Added sound options
@@ -49,6 +50,7 @@ public class RobocodeProperties {
 	private boolean optionsViewScanArcs = false;
 	private boolean optionsViewExplosions = true;
 	private boolean optionsViewGround = true;
+	private boolean optionsViewExplosionDebris = false;
 
 	// View Options (Turns Per Second)
 	private boolean optionsViewTPS = true;
@@ -101,6 +103,8 @@ public class RobocodeProperties {
 			OPTIONS_VIEW_TPS = "robocode.options.view.TPS",
 			OPTIONS_VIEW_FPS = "robocode.options.view.FPS",
 			OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions",
+			OPTIONS_VIEW_EXPLOSION_DEBRIS = "robocode.options.view.explosionDebris",
+
 			OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS",
 
 			OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing",
@@ -272,6 +276,25 @@ public class RobocodeProperties {
 	public void setOptionsViewExplosions(boolean optionsViewExplosions) {
 		this.optionsViewExplosions = optionsViewExplosions;
 		props.setProperty(OPTIONS_VIEW_EXPLOSIONS, "" + optionsViewExplosions);
+	}
+
+	/**
+	 * Gets the optionsViewExplosionDebris.
+	 * 
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsViewExplosionDebris() {
+		return optionsViewExplosionDebris;
+	}
+
+	/**
+	 * Sets the optionsViewExplosionDebris.
+	 * 
+	 * @param optionsViewExplosionDebris The optionsViewExplosionDebris to set
+	 */
+	public void setOptionsViewExplosionDebris(boolean optionsViewExplosionDebris) {
+		this.optionsViewExplosionDebris = optionsViewExplosionDebris;
+		props.setProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "" + optionsViewExplosionDebris);
 	}
 
 	/**
@@ -786,6 +809,8 @@ public class RobocodeProperties {
 		optionsViewTPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_TPS, "true")).booleanValue();
 		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
+		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "false")).booleanValue();
+
 		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
 
 		optionsRenderingAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0"));
