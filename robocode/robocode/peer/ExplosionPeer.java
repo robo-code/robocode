@@ -32,7 +32,6 @@ import robocode.battle.record.BulletRecord;
  * @author Titus Chen (contributor)
  */
 public class ExplosionPeer extends BulletPeer {
-	private int explosionImageIndex = 1;
 
 	public ExplosionPeer(RobotPeer owner, Battle battle) {
 		super(owner, battle);
@@ -42,6 +41,8 @@ public class ExplosionPeer extends BulletPeer {
 		this.power = 1;
 		this.state = STATE_EXPLODED;
 		this.lastState = STATE_EXPLODED;
+		
+		explosionImageIndex = 1;
 	}
 
 	public ExplosionPeer(RobotPeer owner, Battle battle, BulletRecord br) {
@@ -56,9 +57,5 @@ public class ExplosionPeer extends BulletPeer {
 			battle.removeBullet(this);
 		}
 		updateBulletState();
-	}
-
-	public int getExplosionImageIndex() {
-		return explosionImageIndex;
 	}
 }
