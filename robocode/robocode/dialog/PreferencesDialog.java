@@ -114,8 +114,8 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 			tabbedPane = new WizardTabbedPane(this);
 
 			tabbedPane.insertTab("View Options", null, getViewOptionsTab(), null, 0);
-			tabbedPane.setMnemonicAt(0, KeyEvent.VK_V);
-			tabbedPane.setDisplayedMnemonicIndexAt(0, 0);
+			tabbedPane.setMnemonicAt(0, KeyEvent.VK_W);
+			tabbedPane.setDisplayedMnemonicIndexAt(0, 3);
 
 			tabbedPane.insertTab("Rendering Options", null, getRenderingOptionsTab(), null, 1);
 			tabbedPane.setMnemonicAt(1, KeyEvent.VK_R);
