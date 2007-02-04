@@ -1,3 +1,8 @@
+Version 1.2.5 Alpha
+(02/04/2007)
+o Bugfixes
+  -- When two bullets collided, the one of the bullets was not destroyed, but continued
+
 Version 1.2.4
 (01/25/2007)
 o Bugfixes
