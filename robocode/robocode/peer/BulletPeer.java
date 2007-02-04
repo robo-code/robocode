@@ -131,7 +131,7 @@ public class BulletPeer {
 	public void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
-				state = STATE_HIT_BULLET;
+				b.state = state = STATE_HIT_BULLET;
 				hasHitBullet = true;
 				hitTime = frame = 0;
 				x = lastX;
