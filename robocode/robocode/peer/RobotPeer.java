@@ -32,6 +32,7 @@
  *     - Added constructor for creating a new robot with a name only
  *     - Added the set() that copies a RobotRecord into this robot in order to
  *       support the replay feature
+ *     - Added cleanupStaticFields() in order to cleanup static fields on a robot
  *     - Code cleanup
  *     Luis Crespo
  *     - Added states
@@ -44,8 +45,9 @@
 package robocode.peer;
 
 
-import java.awt.geom.*;
 import java.awt.Color;
+import java.awt.geom.*;
+import java.lang.reflect.*;
 import static java.lang.Math.*;
 
 import robocode.*;
@@ -1632,6 +1634,28 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (rgb565 == 0x20) {
 			return Color.BLACK;
 		}
-		return new Color(255 * ((rgb565 & 0xF800) >> 11) / 31, 255 * ((rgb565 & 0x07e0) >> 5) / 63, 255 * (rgb565 & 0x001f) / 31);
+		return new Color(255 * ((rgb565 & 0xF800) >> 11) / 31, 255 * ((rgb565 & 0x07e0) >> 5) / 63,
+				255 * (rgb565 & 0x001f) / 31);
+	}
+
+	public void cleanupStaticFields() {
+		if (robot == null) {
+			return;
+		}
+		
+		Field[] fields = robot.getClass().getDeclaredFields();
+
+		for (Field f : fields) {
+			int m = f.getModifiers();
+
+			if (Modifier.isStatic(m) && !(Modifier.isFinal(m) || f.getType().isPrimitive())) {
+				try {
+					f.setAccessible(true);
+					f.set(robot, null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
