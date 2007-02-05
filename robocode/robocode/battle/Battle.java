@@ -26,6 +26,8 @@
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that has been (re)moved from the robocode.util.Utils class
  *     - Changed so robots die faster graphically when the battles are over
+ *     - Extended cleanup to clean static fields on all robots to prevent memory
+ *       leaks
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -279,11 +281,11 @@ public class Battle implements Runnable {
 					System.exit(0);
 				}
 			} else {
-				cleanup();
 				if (manager.getListener() != null) {
 					manager.getListener().battleAborted(battleSpecification);
 				}
 			}
+			cleanup();
 		} else {
 			// Replay
 			
@@ -373,6 +375,11 @@ public class Battle implements Runnable {
 	}
 
 	public void cleanup() {
+		if (!replay) {
+			for (RobotPeer r : robots) {
+				r.cleanupStaticFields();
+			}
+		}
 		robots.clear();
 	}
 
@@ -718,7 +725,8 @@ public class Battle implements Runnable {
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
 
-			if (endTimer < TURNS_DISPLAYED_AFTER_ENDING && !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
+			if (endTimer < TURNS_DISPLAYED_AFTER_ENDING
+					&& !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
 				if ((totalFrameMillisThisSec == 0)
@@ -756,7 +764,8 @@ public class Battle implements Runnable {
 			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
 
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-			if (endTimer < TURNS_DISPLAYED_AFTER_ENDING && manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible()
+			if (endTimer < TURNS_DISPLAYED_AFTER_ENDING && manager.isGUIEnabled()
+					&& manager.getWindowManager().getRobocodeFrame().isVisible()
 					&& !manager.getWindowManager().getRobocodeFrame().isIconified()) {
 				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
 			} else {
@@ -1325,6 +1334,10 @@ public class Battle implements Runnable {
 					battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 					battleView.repaint();
 				}
+			}
+			cleanup();
+			if (abortBattles && manager.getListener() != null) {
+				manager.getListener().battleAborted(battleSpecification);
 			}
 		}
 	}
