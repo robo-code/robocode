@@ -1,7 +1,10 @@
-Version 1.2.5 Alpha
-(02/04/2007)
+Version 1.2.5 Beta
+(02/0462007)
 o Bugfixes
   -- When two bullets collided, the one of the bullets was not destroyed, but continued
+  -- Memory leak could occur on robots using large objects on static fields
+     -- Robocode now clean all static object fields that are not final after each battle,
+        but not between rounds
 
 Version 1.2.4
 (01/25/2007)
