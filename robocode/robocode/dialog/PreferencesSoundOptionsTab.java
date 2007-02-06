@@ -35,7 +35,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	private JPanel mixerOptionsPanel;
 
 	private JCheckBox enableSoundCheckBox;
-	private JCheckBox enableGunShotCheckBox;
+	private JCheckBox enableGunshotCheckBox;
 	private JCheckBox enableBulletHitCheckBox;
 	private JCheckBox enableRobotDeathCheckBox;
 	private JCheckBox enableWallCollisionCheckBox;
@@ -92,7 +92,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			soundOptionsPanel.add(getEnableSoundCheckBox(), c);
-			soundOptionsPanel.add(getEnableGunShotCheckBox(), c);
+			soundOptionsPanel.add(getEnableGunshotCheckBox(), c);
 			soundOptionsPanel.add(getEnableBulletHitCheckBox(), c);
 			soundOptionsPanel.add(getEnableRobotDeathCheckBox(), c);
 			soundOptionsPanel.add(getEnableWallCollisionCheckBox(), c);
@@ -127,17 +127,17 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	}
 
 	/**
-	 * Return the enalbeGunShotCheckBox
+	 * Return the enalbeGunshotCheckBox
 	 * 
 	 * @return JCheckBox
 	 */
-	private JCheckBox getEnableGunShotCheckBox() {
-		if (enableGunShotCheckBox == null) {
-			enableGunShotCheckBox = new JCheckBox("Gun Shots");
-			enableGunShotCheckBox.setMnemonic('G');
-			enableGunShotCheckBox.setDisplayedMnemonicIndex(0);
+	private JCheckBox getEnableGunshotCheckBox() {
+		if (enableGunshotCheckBox == null) {
+			enableGunshotCheckBox = new JCheckBox("Gun Shots");
+			enableGunshotCheckBox.setMnemonic('G');
+			enableGunshotCheckBox.setDisplayedMnemonicIndex(0);
 		}
-		return enableGunShotCheckBox;
+		return enableGunshotCheckBox;
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	private void loadPreferences(RobocodeProperties robocodeProperties) {
 		getEnableSoundCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableSound());
-		getEnableGunShotCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableGunShot());
+		getEnableGunshotCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableGunshot());
 		getEnableBulletHitCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableBulletHit());
 		getEnableRobotDeathCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableRobotDeath());
 		getEnableRobotCollisionCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableRobotCollision());
@@ -356,7 +356,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		RobocodeProperties props = manager.getProperties();
 
 		props.setOptionsSoundEnableSound(getEnableSoundCheckBox().isSelected());
-		props.setOptionsSoundEnableGunShot(getEnableGunShotCheckBox().isSelected());
+		props.setOptionsSoundEnableGunshot(getEnableGunshotCheckBox().isSelected());
 		props.setOptionsSoundEnableBulletHit(getEnableBulletHitCheckBox().isSelected());
 		props.setOptionsSoundEnableRobotDeath(getEnableRobotDeathCheckBox().isSelected());
 		props.setOptionsSoundEnableRobotCollision(getEnableRobotCollisionCheckBox().isSelected());
@@ -402,7 +402,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	private void enableAllSoundsButtonActionPerformed() {
 		enableSoundCheckBox.setSelected(true);
-		enableGunShotCheckBox.setSelected(true);
+		enableGunshotCheckBox.setSelected(true);
 		enableBulletHitCheckBox.setSelected(true);
 		enableRobotDeathCheckBox.setSelected(true);
 		enableWallCollisionCheckBox.setSelected(true);
@@ -411,7 +411,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	
 	private void disableAllSoundsButtonActionPerformed() {
 		enableSoundCheckBox.setSelected(false);
-		enableGunShotCheckBox.setSelected(false);
+		enableGunshotCheckBox.setSelected(false);
 		enableBulletHitCheckBox.setSelected(false);
 		enableRobotDeathCheckBox.setSelected(false);
 		enableWallCollisionCheckBox.setSelected(false);
