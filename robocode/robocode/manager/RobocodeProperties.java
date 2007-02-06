@@ -24,6 +24,10 @@
  *     - Added common option for enabling replay recording
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - Added file paths to theme, background, and end-of-battle music +
+ *       file path for sound effects like gunshot, robot death etc. 
+ *     - Added SortedProperties class in order to sort the keys/fields of the
+ *       Robocode properties file
  *******************************************************************************/
 package robocode.manager;
 
@@ -41,9 +45,8 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeProperties {
-	
-	private Properties props = new Properties();
-	
+	private Properties props = new SortedProperties(); 
+
 	// View Options (Arena)
 	private boolean optionsViewRobotEnergy = true;
 	private boolean optionsViewRobotNames = true;
@@ -65,7 +68,7 @@ public class RobocodeProperties {
 
 	// Sound Options (Sound Effects)
 	private boolean optionsSoundEnableSound = false;
-	private boolean optionsSoundEnableGunShot = true;
+	private boolean optionsSoundEnableGunshot = true;
 	private boolean optionsSoundEnableBulletHit = true;
 	private boolean optionsSoundEnableRobotDeath = true;
 	private boolean optionsSoundEnableWallCollision = true;
@@ -84,8 +87,23 @@ public class RobocodeProperties {
 	private boolean optionsCommonAppendWhenSavingResults = true; 
 	private boolean optionsCommonEnableReplayRecording = false;
 
+	// Team Options
 	private boolean optionsTeamShowTeamRobots = false;
-	
+
+	// Music files
+	private String fileThemeMusic = "";
+	private String fileBackgroundMusic = "";
+	private String fileEndOfBattleMusic = "";
+
+	// SFX files
+	private String fileGunshotSfx = "/resources/sounds/zap.wav";
+	private String fileRobotCollisionSfx = "/resources/sounds/13831_adcbicycle_22.wav";
+	private String fileWallCollisionSfx = fileRobotCollisionSfx;
+	private String fileRobotDeathSfx = "/resources/sounds/explode.wav";
+	private String fileBulletHitsRobotSfx = "/resources/sounds/shellhit.wav";
+	private String fileBulletHitsBulletSfx = fileRobotCollisionSfx;
+
+	// Robocode internals
 	private String lastRunVersion = "";
 	private Date versionChecked;
 	private long robotFilesystemQuota = 200000;
@@ -113,7 +131,7 @@ public class RobocodeProperties {
 			OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers",
 
 			OPTIONS_SOUND_ENABLESOUND = "robocode.options.sound.enableSound",
-			OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunShot",
+			OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunshot",
 			OPTIONS_SOUND_ENABLEBULLETHIT = "robocode.options.sound.enableBulletHit",
 			OPTIONS_SOUND_ENABLEROBOTDEATH = "robocode.options.sound.enableRobotDeath",
 			OPTIONS_SOUND_ENABLEWALLCOLLISION = "robocode.options.sound.enableWallCollision",
@@ -128,6 +146,18 @@ public class RobocodeProperties {
 			OPTIONS_COMMON_ENABLE_REPLAY_RECORDING = "robocode.options.common.enableReplayRecording",
 
 			OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots",
+
+			FILE_THEME_MUSIC = "robocode.file.music.theme",
+			FILE_BACKGROUND_MUSIC = "robocode.file.music.background",
+			FILE_END_OF_BATTLE_MUSIC = "robocode.file.music.endOfBattle",
+
+			FILE_GUNSHOT_SFX = "robocode.file.sfx.gunshot",
+			FILE_ROBOT_COLLISION_SFX = "robocode.file.sfx.robotCollision",
+			FILE_WALL_COLLISION_SFX = "robocode.file.sfx.wallCollision",
+			FILE_ROBOT_DEATH_SFX = "robocode.file.sfx.robotDeath",
+			FILE_BULLET_HITS_ROBOT_SFX = "robocode.file.sfx.bulletHitsRobot",
+			FILE_BULLET_HITS_BULLET_SFX = "robocode.file.sfx.bulletHitsBullet",
+
 			OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path",
 			VERSIONCHECKED = "robocode.versionchecked",
 			ROBOT_FILESYSTEM_QUOTA = "robocode.robot.filesystem.quota",
@@ -474,22 +504,22 @@ public class RobocodeProperties {
 	}
 
 	/**
-	 * Gets the optionsSoundEnableGunShot
+	 * Gets the optionsSoundEnableGunshot
 	 * 
 	 * @return Returns a boolean
 	 */
-	public boolean getOptionsSoundEnableGunShot() {
-		return optionsSoundEnableGunShot;
+	public boolean getOptionsSoundEnableGunshot() {
+		return optionsSoundEnableGunshot;
 	}
 
 	/**
-	 * Sets the optionsSoundEnableGunShot.
+	 * Sets the optionsSoundEnableGunshot.
 	 * 
-	 * @param optionsSoundEnableGunShot The optionsSoundEnableGunShot to set
+	 * @param optionsSoundEnableGunshot The optionsSoundEnableGunshot to set
 	 */
-	public void setOptionsSoundEnableGunShot(boolean optionsSoundEnableGunShot) {
-		this.optionsSoundEnableGunShot = optionsSoundEnableGunShot;
-		props.setProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "" + optionsSoundEnableGunShot);
+	public void setOptionsSoundEnableGunshot(boolean optionsSoundEnableGunshot) {
+		this.optionsSoundEnableGunshot = optionsSoundEnableGunshot;
+		props.setProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "" + optionsSoundEnableGunshot);
 	}
 
 	/**
@@ -633,7 +663,43 @@ public class RobocodeProperties {
 		this.optionsTeamShowTeamRobots = optionsTeamShowTeamRobots;
 		props.setProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "" + optionsTeamShowTeamRobots);
 	}
-	
+
+	public String getFileThemeMusic() {
+		return fileThemeMusic;
+	}
+
+	public String getFileBackgroundMusic() {
+		return fileBackgroundMusic;
+	}
+
+	public String getFileEndOfBattleMusic() {
+		return fileEndOfBattleMusic;
+	}
+
+	public String getFileGunshotSfx() {
+		return fileGunshotSfx;
+	}
+
+	public String getBulletHitsRobotSfx() {
+		return fileBulletHitsRobotSfx;
+	}
+
+	public String getBulletHitsBulletSfx() {
+		return fileBulletHitsBulletSfx;
+	}
+
+	public String getRobotDeathSfx() {
+		return fileRobotDeathSfx;
+	}
+
+	public String getRobotCollisionSfx() {
+		return fileRobotCollisionSfx;
+	}
+
+	public String getWallCollisionSfx() {
+		return fileWallCollisionSfx;
+	}
+
 	/**
 	 * Gets the versionChecked.
 	 * 
@@ -796,6 +862,13 @@ public class RobocodeProperties {
 	}
 
 	public void store(FileOutputStream out, String desc) throws IOException {
+		props.setProperty(FILE_GUNSHOT_SFX, fileGunshotSfx);
+		props.setProperty(FILE_ROBOT_COLLISION_SFX, fileRobotCollisionSfx);
+		props.setProperty(FILE_WALL_COLLISION_SFX, fileWallCollisionSfx);
+		props.setProperty(FILE_ROBOT_DEATH_SFX, fileRobotDeathSfx);
+		props.setProperty(FILE_BULLET_HITS_ROBOT_SFX, fileBulletHitsRobotSfx);
+		props.setProperty(FILE_BULLET_HITS_BULLET_SFX, fileBulletHitsBulletSfx);
+		
 		props.store(out, desc);
 	}
 	
@@ -819,7 +892,7 @@ public class RobocodeProperties {
 		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
 
 		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false")).booleanValue();
-		optionsSoundEnableGunShot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true")).booleanValue();
+		optionsSoundEnableGunshot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true")).booleanValue();
 		optionsSoundEnableBulletHit = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "true")).booleanValue();
 		optionsSoundEnableRobotDeath = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "true")).booleanValue();
 		optionsSoundEnableRobotCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "true")).booleanValue();
@@ -836,6 +909,18 @@ public class RobocodeProperties {
 		optionsCommonEnableReplayRecording = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "true")).booleanValue();
 
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
+
+		fileThemeMusic = props.getProperty(FILE_THEME_MUSIC);
+		fileBackgroundMusic = props.getProperty(FILE_BACKGROUND_MUSIC);
+		fileEndOfBattleMusic = props.getProperty(FILE_END_OF_BATTLE_MUSIC);
+
+		fileGunshotSfx = props.getProperty(FILE_GUNSHOT_SFX);
+		fileRobotCollisionSfx = props.getProperty(FILE_ROBOT_COLLISION_SFX);
+		fileWallCollisionSfx = props.getProperty(FILE_WALL_COLLISION_SFX);
+		fileRobotDeathSfx = props.getProperty(FILE_ROBOT_DEATH_SFX);
+		fileBulletHitsRobotSfx = props.getProperty(FILE_BULLET_HITS_ROBOT_SFX);
+		fileBulletHitsBulletSfx = props.getProperty(FILE_BULLET_HITS_BULLET_SFX);
+
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
 		
 		try {
@@ -881,6 +966,29 @@ public class RobocodeProperties {
 	private void notifyReplayRecordingChanged() {
 		for (PropertyListener listener : listeners) {
 			listener.enableReplayRecordingChanged(optionsCommonEnableReplayRecording);
+		}
+	}
+
+	/**
+	 * Sorted properties used for sorting the keys for the properties file.
+	 * 
+	 * @author Flemming N. Larsen
+	 */
+	@SuppressWarnings("serial")
+	private class SortedProperties extends Properties {
+		@SuppressWarnings("unchecked")
+		public synchronized Enumeration keys() {
+			Enumeration<Object> keysEnum = super.keys();
+
+			Vector<String> keyList = new Vector<String>();
+
+			while (keysEnum.hasMoreElements()) {
+				keyList.add((String)keysEnum.nextElement());
+			}
+			
+			Collections.sort(keyList);
+
+			return keyList.elements();
 		}
 	}
 
