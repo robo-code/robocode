@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - The addSound() will now give a warning if the specified resource name
+ *       is null or empty
  *******************************************************************************/
 package robocode.sound;
 
@@ -124,6 +126,11 @@ public class SoundCache {
 	 * @param numClones the number of copies of the clip to be created
 	 */
 	public void addSound(Object key, String resourceName, int numClones) {
+		if (resourceName == null || (resourceName.trim().length() == 0)) {
+			Logger.log("Warning: The sound resource for '" + key + "' is missing");
+			return;
+		}
+
 		SoundData data = createSoundData(resourceName);
 
 		if (data == null) {
@@ -135,7 +142,7 @@ public class SoundCache {
 			clones = new ClipClones(data, numClones);
 			soundTable.put(key, clones);
 		} catch (LineUnavailableException e) {
-			Logger.log("Error while trying to create clips: " + resourceName, e);
+			Logger.log("Error while trying to create sound clips: " + resourceName, e);
 		}
 	}
 
