@@ -1,10 +1,15 @@
 Version 1.2.5 Beta
-(02/0462007)
+(02/07/2007)
 o Bugfixes
   -- When two bullets collided, the one of the bullets was not destroyed, but continued
   -- Memory leak could occur on robots using large objects on static fields
      -- Robocode now clean all static object fields that are not final after each battle,
-        but not between rounds
+        but not between rounds. That is, the static fields are now garbage collected
+o The sound effects in Robocode can now be changed
+  -- This is done by specifying the file for each sound effect using the file.xxxSfx keys,
+     e.g. the fileRobotDeathSfx or fileWallCollisionSfx keys
+o Keys in the robocode.properties file (the configuration file) are now sorted
+  -- Previously the keys were put in random order each time the property file was saved
 
 Version 1.2.4
 (01/25/2007)
