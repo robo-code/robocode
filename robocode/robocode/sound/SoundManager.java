@@ -16,6 +16,8 @@
  *       not been intialized yet. Therefore a getSounds() factory methods has
  *       been added which allocated the SoundCache instance and initializes the
  *       SoundManager if the sounds field is null
+ *     - The resources for the sound effects are now loaded from the properties
+ *       file
  *     Titus Chen:
  *     - Slight optimization with pan calculation in playBulletSound()
  *******************************************************************************/
@@ -87,10 +89,12 @@ public class SoundManager {
 			init();
 			
 			sounds = new SoundCache(theMixer);
-			sounds.addSound("death", "/resources/sounds/explode.wav", 3);
-			sounds.addSound("gun", "/resources/sounds/zap.wav", 5);
-			sounds.addSound("hit", "/resources/sounds/shellhit.wav", 3);
-			sounds.addSound("collision", "/resources/sounds/13831_adcbicycle_22.wav", 2);
+			sounds.addSound("gunshot", properties.getFileGunshotSfx(), 5);
+			sounds.addSound("robot death", properties.getRobotDeathSfx(), 3);
+			sounds.addSound("bullet hits robot", properties.getBulletHitsRobotSfx(), 3);
+			sounds.addSound("bullet hits bullet", properties.getBulletHitsBulletSfx(), 2);
+			sounds.addSound("robot collision", properties.getRobotCollisionSfx(), 2);
+			sounds.addSound("wall collision", properties.getWallCollisionSfx(), 2);
 		}
 		return sounds;
 	}
@@ -162,29 +166,33 @@ public class SoundManager {
 		}
 		switch (bp.getState()) {
 		case BulletPeer.STATE_SHOT:
-			if (properties.getOptionsSoundEnableGunShot()) {
+			if (properties.getOptionsSoundEnableGunshot()) {
 				if (isVolumeEnabled()) {
 					vol = calcBulletVolume(bp);
 				}
-				playSound("gun", pan, vol);
+				playSound("gunshot", pan, vol);
 			}
 			break;
 
 		case BulletPeer.STATE_HIT_VICTIM:
 			if (properties.getOptionsSoundEnableBulletHit()) {
-				playSound("hit", pan, vol);
+				playSound("bullet hits robot", pan, vol);
 			}
 			break;
 
 		case BulletPeer.STATE_HIT_BULLET:
+			if (properties.getOptionsSoundEnableBulletHit()) {
+				playSound("bullet hits bullet", pan, vol);
+			}
 			break;
 
 		case BulletPeer.STATE_HIT_WALL:
+			// Currently, no sound
 			break;
 
 		case BulletPeer.STATE_EXPLODED:
 			if (properties.getOptionsSoundEnableRobotDeath()) {
-				playSound("death", pan, vol);
+				playSound("robot death", pan, vol);
 			}
 			break;
 		}
@@ -204,13 +212,13 @@ public class SoundManager {
 		switch (rp.getState()) {
 		case RobotPeer.STATE_HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
-				playSound("collision", pan, 1);
+				playSound("robot collision", pan, 1);
 			}
 			break;
 
 		case RobotPeer.STATE_HIT_WALL:
 			if (properties.getOptionsSoundEnableWallCollision()) {
-				playSound("collision", pan, 1);
+				playSound("wall collision", pan, 1);
 			}
 			break;
 		}
