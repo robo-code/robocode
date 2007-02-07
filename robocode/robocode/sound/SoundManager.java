@@ -42,8 +42,6 @@ import robocode.peer.RobotPeer;
  */
 public class SoundManager {
 
-	private static final float MAX_BULLET_POWER = 3;
-
 	private SoundCache sounds;
 	private boolean panSupported;
 	private boolean volSupported;
@@ -244,7 +242,7 @@ public class SoundManager {
 	 * @return the volume value, ranging from 0 to 1
 	 */
 	private float calcBulletVolume(BulletPeer bp) {
-		return (float) bp.getPower() / MAX_BULLET_POWER;
+		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
 	}
 
 	/**
