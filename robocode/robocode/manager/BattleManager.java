@@ -98,6 +98,10 @@ public class BattleManager {
 
 	public void stop(boolean showResultsDialog) {
 		if (getBattle() != null) {
+			if (manager.isSoundEnabled()) {
+				manager.getSoundManager().stopBackgroundMusic();
+			}
+
 			getBattle().stop(showResultsDialog);
 		}
 	}
