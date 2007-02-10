@@ -1,4 +1,4 @@
-#Sun Feb 11 00:30:10 CET 2007
+#Sun Feb 11 00:32:15 CET 2007
 cleanup.add_default_serial_version_id=true
 cleanup.add_generated_serial_version_id=false
 cleanup.add_missing_annotations=true
@@ -48,3 +48,8 @@ cleanup.use_this_for_non_static_method_access_only_if_necessary=true
 cleanup_profile=_Robocode
 cleanup_settings_version=2
 eclipse.preferences.version=1
+org.eclipse.jdt.ui.ignorelowercasenames=true
+org.eclipse.jdt.ui.importorder=java;javax;org;com;
+org.eclipse.jdt.ui.ondemandthreshold=5
+org.eclipse.jdt.ui.staticondemandthreshold=5
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8"?><templates/>
