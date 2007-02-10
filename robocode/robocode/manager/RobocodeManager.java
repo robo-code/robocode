@@ -12,6 +12,7 @@
  *     - Added setEnableGUI() and isGUIEnabled()
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - Added access for the SoundManager
  *     - Code cleanup
  *******************************************************************************/
 package robocode.manager;
@@ -21,6 +22,7 @@ import java.io.*;
 
 import robocode.control.*;
 import robocode.io.FileUtil;
+import robocode.sound.SoundManager;
 import static robocode.io.Logger.log;
 
 
@@ -37,6 +39,7 @@ public class RobocodeManager {
 	private ThreadManager threadManager;
 	private WindowManager windowManager;
 	private VersionManager versionManager;
+	private SoundManager soundManager;
 	
 	private boolean slave;
 	
@@ -179,6 +182,18 @@ public class RobocodeManager {
 			cpuManager = new CpuManager(this);
 		}
 		return cpuManager;
+	}
+
+	/**
+	 * Gets the Sound Manager.
+	 * 
+	 * @return Returns a SoundManager
+	 */
+	public SoundManager getSoundManager() {
+		if (soundManager == null) {
+			soundManager = new SoundManager(this);
+		}
+		return soundManager;
 	}
 
 	/**
