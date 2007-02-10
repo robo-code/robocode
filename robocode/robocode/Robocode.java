@@ -18,6 +18,7 @@
  *       methods that has been (re)moved from the robocode.util.Utils class
  *     - Moved the printRunningThreads() from robocode.util.Utils into this class
  *       and added javadoc for it
+ *     - Added playing theme music at the startup, if music is provided
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -166,6 +167,8 @@ public class Robocode {
 			}
 
 			if (!minimize && battleFilename == null) {
+				manager.getSoundManager().playThemeMusic();
+
 				manager.getWindowManager().showSplashScreen();
 			}
 			manager.getWindowManager().showRobocodeFrame();
