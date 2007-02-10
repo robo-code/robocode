@@ -1,4 +1,4 @@
-#Sun Feb 11 00:32:15 CET 2007
+#Sun Feb 11 00:41:01 CET 2007
 cleanup.add_default_serial_version_id=true
 cleanup.add_generated_serial_version_id=false
 cleanup.add_missing_annotations=true
@@ -18,7 +18,7 @@ cleanup.make_private_fields_final=true
 cleanup.make_variable_declarations_final=false
 cleanup.never_use_blocks=false
 cleanup.never_use_parentheses_in_expressions=true
-cleanup.organize_imports=false
+cleanup.organize_imports=true
 cleanup.qualify_static_field_accesses_with_declaring_class=false
 cleanup.qualify_static_member_accesses_through_instances_with_declaring_class=true
 cleanup.qualify_static_member_accesses_through_subtypes_with_declaring_class=true
