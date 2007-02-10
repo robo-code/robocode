@@ -18,6 +18,10 @@
  *       SoundManager if the sounds field is null
  *     - The resources for the sound effects are now loaded from the properties
  *       file
+ *     - Added support for playing and stopping music
+ *     - The init() method was replaced by a getMixer() factory method
+ *     - Extended playSound() to handle loops, and also checking if volume and/or
+ *       panning are supported before adjusting these
  *     Titus Chen:
  *     - Slight optimization with pan calculation in playBulletSound()
  *******************************************************************************/
@@ -26,6 +30,7 @@ package robocode.sound;
 
 import javax.sound.sampled.*;
 
+import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
@@ -42,57 +47,51 @@ import robocode.peer.RobotPeer;
  */
 public class SoundManager {
 
+	// Cache containing sound clips
 	private SoundCache sounds;
-	private boolean panSupported;
-	private boolean volSupported;
-	private Mixer theMixer;
 
+	// Access to properties
 	private RobocodeProperties properties;
 
 	/**
-	 * Constructs a new SoundManager
+	 * Constructs a new sound manager.
 	 *
-	 * @param properties the Robocode properties
+	 * @param manager the Robocode manager
 	 */
-	public SoundManager(RobocodeProperties properties) {
-		this.properties = properties;
+	public SoundManager(RobocodeManager manager) {
+		properties = manager.getProperties();
 	}
 
 	/**
-	 * Loads all required samples and performs all necessary setup
+	 * Returns the current mixer selected from the Robocode properties.
+	 *
+	 * @return the current Mixer instance
 	 */
-	public void init() {
-		theMixer = findMixer(properties.getOptionsSoundMixer());
-
-		panSupported = false;
-		volSupported = false;
-
-		Line.Info lineInfo = theMixer.getSourceLineInfo(new Line.Info(Clip.class))[0];
-
-		try {
-			Line line = theMixer.getLine(lineInfo);
-
-			volSupported = line.isControlSupported(FloatControl.Type.MASTER_GAIN);
-			panSupported = line.isControlSupported(FloatControl.Type.PAN);
-		} catch (LineUnavailableException e) {}
+	public Mixer getMixer() {
+		return findMixer(properties.getOptionsSoundMixer());
 	}
 
 	/**
-	 * Gets the sounds cache containing the sound clips.
+	 * Returns the cache containing sound clips.
 	 * 
 	 * @return a SoundCache instance
 	 */
 	private SoundCache getSounds() {
 		if (sounds == null) {
-			init();
-			
-			sounds = new SoundCache(theMixer);
+			sounds = new SoundCache(getMixer());
+
+			// Sound effects
 			sounds.addSound("gunshot", properties.getFileGunshotSfx(), 5);
 			sounds.addSound("robot death", properties.getRobotDeathSfx(), 3);
 			sounds.addSound("bullet hits robot", properties.getBulletHitsRobotSfx(), 3);
 			sounds.addSound("bullet hits bullet", properties.getBulletHitsBulletSfx(), 2);
 			sounds.addSound("robot collision", properties.getRobotCollisionSfx(), 2);
 			sounds.addSound("wall collision", properties.getWallCollisionSfx(), 2);
+
+			// Music
+			sounds.addSound("theme", properties.getFileThemeMusic(), 1);
+			sounds.addSound("background", properties.getFileBackgroundMusic(), 1);
+			sounds.addSound("endOfBattle", properties.getFileEndOfBattleMusic(), 1);
 		}
 		return sounds;
 	}
@@ -123,64 +122,83 @@ public class SoundManager {
 	}
 	
 	/**
-	 * Plays a specific sound, at a given volume and panning 
+	 * Plays a specific sound at a given volume, panning and loop count 
 	 * 
 	 * @param key the sound name, as stored in the sound table
 	 * @param pan panning to be used (-1=left, 0=middle, +1=right)
 	 * @param volume volume to be used, from 0 to 1
+	 * @param loop the number of times to loop the sound
 	 */
-	private void playSound(Object key, float pan, float volume) {
+	private void playSound(Object key, float pan, float volume, int loop) {
 		Clip c = getSounds().getSound(key);
-
 		if (c == null) {
 			return;
 		}
-		if (isPanEnabled()) {
-			FloatControl panCtrl = (FloatControl) c.getControl(FloatControl.Type.PAN);
 
+		if (properties.getOptionsSoundEnableMixerPan() && c.isControlSupported(FloatControl.Type.PAN)) {
+			FloatControl panCtrl = (FloatControl) c.getControl(FloatControl.Type.PAN);
 			panCtrl.setValue(pan);
 		}
-		if (isVolumeEnabled()) {
+		if (properties.getOptionsSoundEnableMixerVolume() && c.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
 			FloatControl volCtrl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
+
 			float min = volCtrl.getMinimum() / 4;
 
 			if (volume != 1) {
 				volCtrl.setValue(min * (1 - volume));
 			}
 		}
-		c.start();
+		c.loop(loop);
 	}
 
 	/**
-	 * Plays a sound depending on the bullet's state
+	 * Plays a specific sound at a given panning with max. volume and without looping. 
+	 * 
+	 * @param key the sound name, as stored in the sound table
+	 * @param pan panning to be used (-1=left, 0=middle, +1=right)
+	 */
+	private void playSound(Object key, float pan) {
+		playSound(key, pan, 1, 0);
+	}
+
+	/**
+	 * Plays a specific piece of music with a given loop count with no panning and
+	 * max. volume. 
+	 * 
+	 * @param key the sound name, as stored in the sound table
+	 * @param loop the number of times to loop the music
+	 */
+	private void playMusic(Object key, int loop) {
+		playSound(key, 0, 1, loop);
+	}
+
+	/**
+	 * Plays a bullet sound depending on the bullet's state
 	 * 
 	 * @param bp the bullet peer
 	 */
 	public void playBulletSound(BulletPeer bp) {
-		float pan = 0, vol = 1;
+		float pan = 0;
 
-		if (isPanEnabled()) {
+		if (properties.getOptionsSoundEnableMixerPan()) {
 			pan = calcPan((float) bp.getX(), bp.getBattleField().getWidth());
 		}
 		switch (bp.getState()) {
 		case BulletPeer.STATE_SHOT:
 			if (properties.getOptionsSoundEnableGunshot()) {
-				if (isVolumeEnabled()) {
-					vol = calcBulletVolume(bp);
-				}
-				playSound("gunshot", pan, vol);
+				playSound("gunshot", pan, calcBulletVolume(bp), 0);
 			}
 			break;
 
 		case BulletPeer.STATE_HIT_VICTIM:
 			if (properties.getOptionsSoundEnableBulletHit()) {
-				playSound("bullet hits robot", pan, vol);
+				playSound("bullet hits robot", pan);
 			}
 			break;
 
 		case BulletPeer.STATE_HIT_BULLET:
 			if (properties.getOptionsSoundEnableBulletHit()) {
-				playSound("bullet hits bullet", pan, vol);
+				playSound("bullet hits bullet", pan);
 			}
 			break;
 
@@ -190,36 +208,67 @@ public class SoundManager {
 
 		case BulletPeer.STATE_EXPLODED:
 			if (properties.getOptionsSoundEnableRobotDeath()) {
-				playSound("robot death", pan, vol);
+				playSound("robot death", pan);
 			}
 			break;
 		}
 	}
 
 	/**
-	 * Plays a sound depending on the robot's state
+	 * Plays a robot sound depending on the robot's state
 	 * 
 	 * @param rp the robot peer
 	 */
 	public void playRobotSound(RobotPeer rp) {
 		float pan = 0;
 
-		if (isPanEnabled()) {
+		if (properties.getOptionsSoundEnableMixerPan()) {
 			pan = calcPan((float) rp.getX(), rp.getBattle().getBattleField().getWidth());
 		}
 		switch (rp.getState()) {
 		case RobotPeer.STATE_HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
-				playSound("robot collision", pan, 1);
+				playSound("robot collision", pan);
 			}
 			break;
 
 		case RobotPeer.STATE_HIT_WALL:
 			if (properties.getOptionsSoundEnableWallCollision()) {
-				playSound("wall collision", pan, 1);
+				playSound("wall collision", pan);
 			}
 			break;
 		}
+	}
+
+	/**
+	 * Plays the theme music once.
+	 */
+	public void playThemeMusic() {
+		playMusic("theme", 0);
+	}
+
+	/**
+	 * Plays the background music, which is looping forever until stopped.
+	 */
+	public void playBackgroundMusic() {
+		playMusic("background", -1);
+	}
+
+	/**
+	 * Stops the background music.
+	 */
+	public void stopBackgroundMusic() {
+		Clip c = getSounds().getSound("background");
+		if (c != null) {
+			c.stop();
+		}
+	}
+
+	/**
+	 * Plays the end of battle music once.
+	 */
+	public void playEndOfBattleMusic() {
+		playMusic("endOfBattle", 0);
 	}
 
 	/**
@@ -243,25 +292,5 @@ public class SoundManager {
 	 */
 	private float calcBulletVolume(BulletPeer bp) {
 		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
-	}
-
-	/**
-	 * Returns true if pan is enabled, i.e is supported by the mixer
-	 * and enabled from the Sound Options
-	 * 
-	 * @return true if pan is enabled; false otherwise
-	 */
-	private boolean isPanEnabled() {
-		return panSupported && properties.getOptionsSoundEnableMixerPan();
-	}
-
-	/**
-	 * Returns true if volume is enabled, i.e is supported by the mixer
-	 * and enabled from the Sound Options
-	 * 
-	 * @return true if volume is enabled; false otherwise
-	 */
-	private boolean isVolumeEnabled() {
-		return volSupported && properties.getOptionsSoundEnableMixerVolume();
 	}
 }
