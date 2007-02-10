@@ -112,14 +112,12 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 	public List<FileSpecification> getSelectedRobots() {
-		int sel[] = getAvailableRobotsList().getSelectedIndices();
+		List<FileSpecification> selected = new ArrayList<FileSpecification>();
 
-		List<FileSpecification> moves = Collections.synchronizedList(new ArrayList<FileSpecification>());
-
-		for (int i = 0; i < sel.length; i++) {
-			moves.add(availableRobots.get(sel[i]));
+		for (int i : getAvailableRobotsList().getSelectedIndices()) {
+			selected.add(availableRobots.get(i));
 		}
-		return moves;
+		return selected;
 	}
 
 	/**
@@ -185,27 +183,25 @@ public class AvailableRobotsPanel extends JPanel {
 					availablePackages.add("(All)");
 					String packageName = null;
 
-					for (int i = 0; i < robotList.size(); i++) {
-						FileSpecification robotSpecification = robotList.get(i);
-
-						if (packageName != null && robotSpecification.getFullPackage() != null
-								&& !packageName.equals(robotSpecification.getFullPackage())) {
-							packageName = robotSpecification.getFullPackage();
-							if (!availablePackages.contains(robotSpecification.getFullPackage())) {
-								availablePackages.add(robotSpecification.getFullPackage());
+					for (FileSpecification robotSpec : robotList) {
+						if (packageName != null && robotSpec.getFullPackage() != null
+								&& !packageName.equals(robotSpec.getFullPackage())) {
+							packageName = robotSpec.getFullPackage();
+							if (!availablePackages.contains(robotSpec.getFullPackage())) {
+								availablePackages.add(robotSpec.getFullPackage());
 							}
-						} else if (robotSpecification.getFullPackage() != null
-								&& !robotSpecification.getFullPackage().equals(packageName)) {
-							packageName = robotSpecification.getFullPackage();
-							if (!availablePackages.contains(robotSpecification.getFullPackage())) {
-								availablePackages.add(robotSpecification.getFullPackage());
+						} else if (robotSpec.getFullPackage() != null
+								&& !robotSpec.getFullPackage().equals(packageName)) {
+							packageName = robotSpec.getFullPackage();
+							if (!availablePackages.contains(robotSpec.getFullPackage())) {
+								availablePackages.add(robotSpec.getFullPackage());
 							}
 						}
 					}
 					availablePackages.add("(No package)");
 
-					for (int i = 0; i < robotList.size(); i++) {
-						availableRobots.add(robotList.get(i));
+					for (FileSpecification robotSpec : robotList) {
+						availableRobots.add(robotSpec);
 					}
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().setSelectedIndex(0);
