@@ -28,6 +28,7 @@
  *     - Changed so robots die faster graphically when the battles are over
  *     - Extended cleanup to clean static fields on all robots to prevent memory
  *       leaks
+ *     - Added support for playing background music when the battle is ongoing
  *     - Code cleanup
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
@@ -158,7 +159,7 @@ public class Battle implements Runnable {
 		this.manager = manager;
 
 		battleManager = manager.getBattleManager();
-		soundManager = new SoundManager(manager.getProperties());
+		soundManager = manager.getSoundManager();
 		robots = Collections.synchronizedList(new ArrayList<RobotPeer>());
 		bullets = Collections.synchronizedList(new ArrayList<BulletPeer>()); 
 		contestants = Collections.synchronizedList(new ArrayList<ContestantPeer>());
@@ -182,6 +183,10 @@ public class Battle implements Runnable {
 	public void run() {
 		running = true;
 
+		if (manager.isSoundEnabled()) {
+			manager.getSoundManager().playBackgroundMusic();
+		}
+
 		if (unsafeLoadRobotsThread != null && Thread.currentThread() == unsafeLoadRobotsThread) {
 			unsafeLoadRobots();
 			return;
@@ -204,7 +209,6 @@ public class Battle implements Runnable {
 		boolean soundInitialized = false;
 		
 		if (manager.isSoundEnabled()) {
-			soundManager.init();
 			soundInitialized = true;
 		}
 
@@ -319,7 +323,8 @@ public class Battle implements Runnable {
 		updateTitle();
 
 		if (soundInitialized) {
-			soundManager.dispose();
+			manager.getSoundManager().stopBackgroundMusic();
+			manager.getSoundManager().playEndOfBattleMusic();
 		}
 
 		manager.getWindowManager().getRobocodeFrame().setReplay(true);
