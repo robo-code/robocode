@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -93,7 +93,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Get height of the current battlefield.
-	 * 
+	 *
 	 * @return The height of the battlefield.
 	 */
 	public double getBattleFieldHeight() {
@@ -108,7 +108,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Get width of the current battlefield.
-	 * 
+	 *
 	 * @return The width of the battlefield.
 	 */
 	public double getBattleFieldWidth() {
@@ -122,9 +122,9 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the direction the robot is facing, in degrees.  
+	 * Returns the direction the robot is facing, in degrees.
 	 *  The value returned will be between 0 and 360.
-	 * 
+	 *
 	 * @return the direction the robot is facing, in degrees.
 	 */
 	public double getHeading() {
@@ -147,7 +147,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the height of the robot
-	 * 
+	 *
 	 * @return the height of the robot
 	 */
 	public double getHeight() {
@@ -161,7 +161,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the robot's name
-	 * 
+	 *
 	 * @return the robot's name
 	 */
 	public String getName() {
@@ -176,7 +176,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the width of the robot
-	 * 
+	 *
 	 * @return the width of the robot
 	 */
 	public double getWidth() {
@@ -190,7 +190,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the X position of the robot.  (0,0) is at the bottom left of the battlefield.
-	 * 
+	 *
 	 * @return the X position of the robot
 	 */
 	public double getX() {
@@ -205,7 +205,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the Y position of the robot.  (0,0) is at the bottom left of the battlefield.
-	 * 
+	 *
 	 * @return the Y position of the robot
 	 */
 	public double getY() {
@@ -278,12 +278,12 @@ public class Robot extends _Robot implements Runnable {
 	 * public void onHitRobot(HitRobotEvent e) {
 	 *    out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
 	 * }
-	 * 
+	 *
 	 * System.out will also print to this.
 	 */
 	public java.io.PrintStream out = null;
 
-	public Robot() {}            
+	public Robot() {}
 
 	/**
 	 * Do nothing this turn.
@@ -301,6 +301,7 @@ public class Robot extends _Robot implements Runnable {
 	 * Called by the system to 'clean up' after your robot.
 	 * You may not override this method.
 	 */
+	@Override
 	public final void finalize() {}
 
 	/**
@@ -350,7 +351,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the rate at which the gun will cool down.
-	 * 
+	 *
 	 * @see #getGunHeat
 	 * @return the gun cooling rate
 	 */
@@ -366,7 +367,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns gun heading in degrees.  This is a value from 0 to 360, where 0 points to the top of the screen.
-	 * 
+	 *
 	 * @return gun heading
 	 */
 	public double getGunHeading() {
@@ -382,7 +383,7 @@ public class Robot extends _Robot implements Runnable {
 	/**
 	 * Returns the current heat of the gun.  You cannot fire unless this is 0.
 	 * (Calls to fire will succeed, but will not actually fire unless getGunHeat() == 0
-	 * 
+	 *
 	 * @return the current gun heat
 	 */
 	public double getGunHeat() {
@@ -397,7 +398,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the number of rounds in the current battle
-	 * 
+	 *
 	 * @return the number of rounds in the current battle
 	 */
 	public int getNumRounds() {
@@ -411,8 +412,8 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns how many opponents are left 
-	 * 
+	 * Returns how many opponents are left
+	 *
 	 * @return how many opponents are left
 	 */
 	public int getOthers() {
@@ -435,7 +436,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns radar heading in degrees.  This is a value from 0 to 360, where 0 points to the top of the screen.
-	 * 
+	 *
 	 * @return radar heading
 	 */
 	public double getRadarHeading() {
@@ -450,7 +451,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the number of the current round (0 to getNumRounds()-1) in the battle
-	 * 
+	 *
 	 * @return the number of the current round in the battle
 	 */
 	public int getRoundNum() {
@@ -468,7 +469,7 @@ public class Robot extends _Robot implements Runnable {
 	 * Note:  1 battle consists of multiple rounds
 	 * Time is reset to 0 at the beginning of every round.
 	 * getTime() is equivalent to the number of frames displayed this round.
-	 * 
+	 *
 	 * @return the current game time
 	 */
 	public long getTime() {
@@ -483,7 +484,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the velocity of the robot.
-	 * 
+	 *
 	 * @return the velocity of the robot
 	 */
 	public double getVelocity() {
@@ -506,7 +507,7 @@ public class Robot extends _Robot implements Runnable {
 	 *     out.println("I hit " + event.getName() + "!");
 	 *   }
 	 * </PRE>
-	 *   
+	 *
 	 * @param event The event set by the game
 	 * @see robocode.BulletHitEvent
 	 * @see robocode.Event
@@ -523,7 +524,7 @@ public class Robot extends _Robot implements Runnable {
 	 *     out.println("I hit a bullet fired by " + event.getBullet().getName() + "!");
 	 *   }
 	 * </PRE>
-	 *   
+	 *
 	 * @param event The event set by the game
 	 * @see robocode.BulletHitBulletEvent
 	 * @see robocode.Event
@@ -540,7 +541,7 @@ public class Robot extends _Robot implements Runnable {
 	 *     out.println("Drat, I missed.");
 	 *   }
 	 * </PRE>
-	 *   
+	 *
 	 * @param event The event set by the game
 	 * @see robocode.BulletMissedEvent
 	 * @see robocode.Event
@@ -569,7 +570,7 @@ public class Robot extends _Robot implements Runnable {
 	 *     out.println(event.getRobotName() + " hit me!");
 	 *   }
 	 * </PRE>
-	 *   
+	 *
 	 * @param event The event set by the game
 	 * @see robocode.HitByBulletEvent
 	 * @see robocode.Event
@@ -647,7 +648,7 @@ public class Robot extends _Robot implements Runnable {
 	 * You should override it in your robot if you want to be informed of this event.
 	 *  (Almost all robots should override this!)
 	 * This event will be called automatically if there is a robot in range of your radar.
-	 * 
+	 *
 	 * <P>The bearing is relative to your robot's heading.
 	 *
 	 * <P>Example
@@ -713,7 +714,7 @@ public class Robot extends _Robot implements Runnable {
 	 *     This is more likely.  If you are in onScannedRobot, and call scan(), and you still see a robot,
 	 *     then the system will interrupt your onScannedRobot event immediately and start it from the top.
 	 * This call executes immediately.
-	 * 
+	 *
 	 * Scan will cause {@link #onScannedRobot} to be called if you see a robot.
 	 * @see #onScannedRobot
 	 * @see robocode.ScannedRobotEvent
@@ -743,7 +744,7 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Sets the gun to automatically turn the opposite way when the robot turns.  
+	 * Sets the gun to automatically turn the opposite way when the robot turns.
 	 *
 	 * Ok, so this needs some explanation:
 	 *  The gun is mounted on the robot.  So, normally, if the robot turns 90 degrees to the right,
@@ -786,12 +787,12 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Sets the radar to automatically turn the opposite way when the gun turns.  
+	 * Sets the radar to automatically turn the opposite way when the gun turns.
 	 *
 	 * Make sure you understand how {@link #setAdjustGunForRobotTurn} works before reading on...
 	 *
 	 * <P>Ok, so now you understand {@link #setAdjustGunForRobotTurn} right?
-	 * 
+	 *
 	 *  <P>Just like the gun is mounted on the robot, the radar is mounted on the gun.
 	 *  So, normally, if the gun turns 90 degrees to the right,
 	 *  then the radar will turn with it.
@@ -835,17 +836,17 @@ public class Robot extends _Robot implements Runnable {
 	 * Call this method to set the color of your robot's body, gun, and radar.
 	 * You may only call this method one time per battle.
 	 * A null indicates the default (blue-ish) color.
-	 * 
+	 *
 	 * <PRE>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
-	 * 
+	 *
 	 *   public void run() {
 	 *     setColors(Color.black,Color.red,new Color(150,0,150));
 	 *   }
 	 * </PRE>
-	 * 
+	 *
 	 * @param robotColor Your robot's color
 	 * @param gunColor Your robot's gun color
 	 * @param radarColor Your robot's radar color
@@ -867,17 +868,17 @@ public class Robot extends _Robot implements Runnable {
 	 * bullet, and scan arc.
 	 * You may only call this method one time per battle.
 	 * A null indicates the default (blue-ish) color.
-	 * 
+	 *
 	 * <PRE>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
-	 * 
+	 *
 	 *   public void run() {
 	 *     setColors(Color.black,Color.red,Color.green,Color.blue,Color.white);
 	 *   }
 	 * </PRE>
-	 * 
+	 *
 	 * @param robotColor Your robot's color
 	 * @param gunColor Your robot's gun color
 	 * @param radarColor Your robot's radar color
@@ -904,17 +905,17 @@ public class Robot extends _Robot implements Runnable {
 	 * Call this method to set all your robot's colors to the same color,
 	 * i.e. the color of the body, gun, radar, bullet, and scan arc.
 	 * A null indicates the default (blue-ish) color.
-	 * 
+	 *
 	 * <PRE>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
-	 * 
+	 *
 	 *   public void run() {
 	 *     setAllColors(Color.red);
 	 *   }
 	 * </PRE>
-	 * 
+	 *
 	 * @param color Your robot's new color
 	 * @see java.awt.Color
 	 *
@@ -936,17 +937,17 @@ public class Robot extends _Robot implements Runnable {
 	/**
 	 * Call this method to set your robot's body color.
 	 * A null indicates the default (blue-ish) color.
-	 * 
+	 *
 	 * <PRE>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
-	 * 
+	 *
 	 *   public void run() {
 	 *     setBodyColor(Color.black));
 	 *   }
 	 * </PRE>
-	 * 
+	 *
 	 * @param color Your robot's new body color
 	 * @see java.awt.Color
 	 *
@@ -964,12 +965,12 @@ public class Robot extends _Robot implements Runnable {
 	/**
 	 * Call this method to set your robot's gun color.
 	 * A null indicates the default (blue-ish) color.
-	 * 
+	 *
 	 * <PRE>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
-	 * 
+	 *
 	 *   public void run() {
 	 *     setGunColor(Color.red));
 	 *   }
@@ -992,12 +993,12 @@ public class Robot extends _Robot implements Runnable {
 	/**
 	 * Call this method to set your robot's radar color.
 	 * A null indicates the default (blue-ish) color.
-	 * 
+	 *
 	 * <PRE>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
-	 * 
+	 *
 	 *   public void run() {
 	 *     setRadarColor(Color.yellow));
 	 *   }
@@ -1020,12 +1021,12 @@ public class Robot extends _Robot implements Runnable {
 	/**
 	 * Call this method to set your robot's bullet color.
 	 * A null indicates the default white color.
-	 * 
+	 *
 	 * <PRE>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
-	 * 
+	 *
 	 *   public void run() {
 	 *     setBulletColor(Color.green));
 	 *   }
@@ -1048,12 +1049,12 @@ public class Robot extends _Robot implements Runnable {
 	/**
 	 * Call this method to set your robot's scan color.
 	 * A null indicates the default (blue-ish) color.
-	 * 
+	 *
 	 * <PRE>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
-	 * 
+	 *
 	 *   public void run() {
 	 *     setScanColor(Color.orange));
 	 *   }
@@ -1088,7 +1089,7 @@ public class Robot extends _Robot implements Runnable {
 	/**
 	 * Stops all movement, and saves it for a call to resume().
 	 * If there is already movement saved from a previous stop, you can overwrite it
-	 * by calling stop(true).  
+	 * by calling stop(true).
 	 * This call executes immediately.
 	 * @see #resume
 	 * @see #stop
@@ -1179,7 +1180,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the robot's current energy
-	 * 
+	 *
 	 * @return the robot's energy
 	 */
 	public double getEnergy() {
@@ -1193,7 +1194,7 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Sets the radar to automatically turn the opposite way when the robot turns.  
+	 * Sets the radar to automatically turn the opposite way when the robot turns.
 	 *
 	 *  <P>The radar is mounted on the gun, which is mounted on the robot.
 	 *  So, normally, if the robot turns 90 degrees to the right, the gun turns, as does the radar.0
@@ -1235,9 +1236,9 @@ public class Robot extends _Robot implements Runnable {
 	 * painting feature is enabled on your robot. You should override this
 	 * method if you want to draw items on the battle field. This method is
 	 * very useful when debugging your robot.
-	 * 
+	 *
 	 * @param g The graphics context to use for painting
-	 * 
+	 *
 	 * @since 1.1
 	 */
 	public void onPaint(Graphics2D g) {}

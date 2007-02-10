@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -51,7 +51,7 @@ public class RobocodeFrame extends JFrame {
 	private EventHandler eventHandler = new EventHandler();
 
 	private RobocodeMenuBar robocodeMenuBar;
-	
+
 	private JPanel robocodeContentPane;
 	private JLabel statusLabel;
 
@@ -68,7 +68,7 @@ public class RobocodeFrame extends JFrame {
 	private JPanel robotButtonsPanel;
 
 	private String battleFilename;
-	
+
 	private JToolBar toolBar;
 
 	private JButton pauseResumeButton;
@@ -79,7 +79,7 @@ public class RobocodeFrame extends JFrame {
 
 	private JSlider tpsSlider;
 	private JLabel tpsLabel;
-	
+
 	private boolean iconified;
 	private boolean exitOnClose;
 
@@ -103,10 +103,13 @@ public class RobocodeFrame extends JFrame {
 			}
 		}
 
+		@Override
 		public void componentHidden(ComponentEvent e) {}
 
+		@Override
 		public void componentMoved(ComponentEvent e) {}
 
+		@Override
 		public void componentResized(ComponentEvent e) {
 			if (e.getSource() == RobocodeFrame.this.getBattleView()) {
 				RobocodeFrame.this.battleViewResized();
@@ -116,6 +119,7 @@ public class RobocodeFrame extends JFrame {
 			}
 		}
 
+		@Override
 		public void componentShown(ComponentEvent e) {}
 
 		public void componentRemoved(ContainerEvent e) {}
@@ -123,7 +127,7 @@ public class RobocodeFrame extends JFrame {
 		public void componentAdded(ContainerEvent e) {}
 
 		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_F4 && e.getModifiers() == KeyEvent.ALT_MASK) {
+			if (e.getKeyCode() == KeyEvent.VK_F4 && e.getModifiers() == InputEvent.ALT_MASK) {
 				System.exit(0);
 			}
 		}
@@ -222,7 +226,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the BattleView.
-	 * 
+	 *
 	 * @return robocode.BattleView
 	 */
 	public BattleView getBattleView() {
@@ -236,7 +240,7 @@ public class RobocodeFrame extends JFrame {
 	/**
 	 * Return the MainPanel (which contains the BattleView and the robot
 	 * buttons)
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getMainPanel() {
@@ -252,7 +256,7 @@ public class RobocodeFrame extends JFrame {
 	/**
 	 * Return the BattleViewMainPanel (which contains the BattleView and a
 	 * spacer)
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getBattleViewPanel() {
@@ -268,7 +272,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the JFrameContentPane.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	public JPanel getRobocodeContentPane() {
@@ -283,7 +287,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the menu bar.
-	 * 
+	 *
 	 * @return JMenuBar
 	 */
 	public RobocodeMenuBar getRobocodeMenuBar() {
@@ -295,7 +299,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the robotButtons panel.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getRobotButtonsPanel() {
@@ -309,15 +313,15 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the robotButtonsScrollPane
-	 * 
+	 *
 	 * @return JScrollPane
 	 */
 	private JScrollPane getRobotButtonsScrollPane() {
 		if (robotButtonsScrollPane == null) {
 			robotButtonsScrollPane = new JScrollPane();
 			robotButtonsScrollPane.setAutoscrolls(false);
-			robotButtonsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			robotButtonsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			robotButtonsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			robotButtonsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			robotButtonsScrollPane.setAlignmentY(Component.TOP_ALIGNMENT);
 			robotButtonsScrollPane.setMaximumSize(new Dimension(113, 32767));
 			robotButtonsScrollPane.setPreferredSize(new Dimension(113, 28));
@@ -330,7 +334,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the statusLabel
-	 * 
+	 *
 	 * @return JLabel
 	 */
 	public JLabel getStatusLabel() {
@@ -343,7 +347,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the pauseResumeButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	public JButton getPauseResumeButton() {
@@ -360,7 +364,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the nextTurnButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private Component getNextTurnButton() {
@@ -379,7 +383,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the stopButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	public JButton getStopButton() {
@@ -396,7 +400,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the restartButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	public JButton getRestartButton() {
@@ -413,7 +417,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the replayButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	public JButton getReplayButton() {
@@ -432,9 +436,10 @@ public class RobocodeFrame extends JFrame {
 
 			props.addPropertyListener(
 					props.new PropertyListener() {
+				@Override
 				public void enableReplayRecordingChanged(boolean enabled) {
 					replayButton.setVisible(
-							RobocodeFrame.this.manager.getProperties().getOptionsCommonEnableReplayRecording());					
+							RobocodeFrame.this.manager.getProperties().getOptionsCommonEnableReplayRecording());
 				}
 			});
 		}
@@ -443,7 +448,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the tpsSlider
-	 * 
+	 *
 	 * @return JSlider
 	 */
 	public JSlider getTpsSlider() {
@@ -462,6 +467,7 @@ public class RobocodeFrame extends JFrame {
 			WindowUtil.setFixedSize(tpsSlider, new Dimension(300, 20));
 
 			props.addPropertyListener(props.new PropertyListener() {
+				@Override
 				public void desiredTpsChanged(int tps) {
 					tpsSlider.setValue(tps);
 				}
@@ -472,7 +478,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the tpsLabel
-	 * 
+	 *
 	 * @return JLabel
 	 */
 	public JLabel getTpsLabel() {
@@ -489,7 +495,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Return the toolBar.
-	 * 
+	 *
 	 * @return JToolBar
 	 */
 	private JToolBar getToolBar() {
@@ -522,7 +528,7 @@ public class RobocodeFrame extends JFrame {
 		setTitle("Robocode");
 		setIconImage(ImageUtil.getImage("/resources/icons/robocode-icon.png"));
 		setResizable(true);
-		
+
 		// FNL: Make sure that menus are heavy-weight components so that the menus are not painted
 		// behind the BattleView which is a heavy-weight component. This must be done before
 		// adding any menu to the menubar.
@@ -591,7 +597,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private void nextTurnButtonActionPerformed() {
-		windowManager.getManager().getBattleManager().nextTurn(); 
+		windowManager.getManager().getBattleManager().nextTurn();
 	}
 
 	private void stopButtonActionPerformed() {
@@ -599,16 +605,16 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private void restartButtonActionPerformed() {
-		windowManager.getManager().getBattleManager().restart(); 
+		windowManager.getManager().getBattleManager().restart();
 	}
 
 	private void replayButtonActionPerformed() {
-		windowManager.getManager().getBattleManager().replay(); 
+		windowManager.getManager().getBattleManager().replay();
 	}
 
 	/**
 	 * Gets the iconified.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean isIconified() {
@@ -617,7 +623,7 @@ public class RobocodeFrame extends JFrame {
 
 	/**
 	 * Sets the iconified.
-	 * 
+	 *
 	 * @param iconified
 	 *        The iconified to set
 	 */

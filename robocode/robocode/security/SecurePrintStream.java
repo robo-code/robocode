@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -31,6 +31,7 @@ public class SecurePrintStream extends PrintStream {
 		super(out, autoFlush);
 	}
 
+	@Override
 	public final boolean checkError() {
 		PrintStream out = checkAccess();
 
@@ -41,6 +42,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void close() {
 		PrintStream out = checkAccess();
 
@@ -51,6 +53,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void flush() {
 		PrintStream out = checkAccess();
 
@@ -61,6 +64,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(char[] s) {
 		PrintStream out = checkAccess();
 
@@ -71,6 +75,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(char c) {
 		PrintStream out = checkAccess();
 
@@ -81,6 +86,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(double d) {
 		PrintStream out = checkAccess();
 
@@ -91,6 +97,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(float f) {
 		PrintStream out = checkAccess();
 
@@ -101,6 +108,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(int i) {
 		PrintStream out = checkAccess();
 
@@ -111,6 +119,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(long l) {
 		PrintStream out = checkAccess();
 
@@ -121,6 +130,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(Object obj) {
 		PrintStream out = checkAccess();
 
@@ -131,6 +141,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(String s) {
 		PrintStream out = checkAccess();
 
@@ -141,6 +152,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void print(boolean b) {
 		PrintStream out = checkAccess();
 
@@ -151,6 +163,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println() {
 		PrintStream out = checkAccess();
 
@@ -161,6 +174,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(char[] x) {
 		PrintStream out = checkAccess();
 
@@ -171,6 +185,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(char x) {
 		PrintStream out = checkAccess();
 
@@ -181,6 +196,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(double x) {
 		PrintStream out = checkAccess();
 
@@ -191,6 +207,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(float x) {
 		PrintStream out = checkAccess();
 
@@ -201,6 +218,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(int x) {
 		PrintStream out = checkAccess();
 
@@ -211,6 +229,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(long x) {
 		PrintStream out = checkAccess();
 
@@ -221,6 +240,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(Object x) {
 		PrintStream out = checkAccess();
 
@@ -231,6 +251,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(String x) {
 		PrintStream out = checkAccess();
 
@@ -241,6 +262,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void println(boolean x) {
 		PrintStream out = checkAccess();
 
@@ -251,6 +273,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void write(byte[] buf, int off, int len) {
 		PrintStream out = checkAccess();
 
@@ -261,6 +284,7 @@ public class SecurePrintStream extends PrintStream {
 		}
 	}
 
+	@Override
 	public final void write(int b) {
 		PrintStream out = checkAccess();
 

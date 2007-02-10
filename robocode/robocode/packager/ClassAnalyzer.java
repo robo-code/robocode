@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -33,14 +33,14 @@ import robocode.io.Logger;
 public class ClassAnalyzer {
 	private final static byte CONSTANT_Class = 7;
 	private final static byte CONSTANT_Fieldref = 9;
-	private final static byte CONSTANT_Methodref = 10; 
+	private final static byte CONSTANT_Methodref = 10;
 	private final static byte CONSTANT_InterfaceMethodref = 11;
 	private final static byte CONSTANT_String = 8;
-	private final static byte CONSTANT_Integer = 3; 
+	private final static byte CONSTANT_Integer = 3;
 	private final static byte CONSTANT_Float = 4;
 	private final static byte CONSTANT_Long = 5;
 	private final static byte CONSTANT_Double = 6;
-	private final static byte CONSTANT_NameAndType = 12;  
+	private final static byte CONSTANT_NameAndType = 12;
 	private final static byte CONSTANT_Utf8 = 1;
 
 	/**
@@ -56,7 +56,7 @@ public class ClassAnalyzer {
 		 http://java.sun.com/docs/books/vmspec/2nd-edition/html/ClassFile.doc.html
 
 		 4.1 The ClassFile Structure
-		 A class file consists of a single ClassFile structure: 
+		 A class file consists of a single ClassFile structure:
 
 		 ClassFile {
 		 u4 magic;
@@ -77,7 +77,7 @@ public class ClassAnalyzer {
 		 attribute_info attributes[attributes_count];
 		 }
 		 */
-		List<String> referencedClasses = new ArrayList<String>(); 
+		List<String> referencedClasses = new ArrayList<String>();
 		String strings[];
 		List<Integer> classNameIndexes = new ArrayList<Integer>();
 
@@ -105,20 +105,20 @@ public class ClassAnalyzer {
 			 u1 info[];
 			 }
 
-			 Constant Type  Value  
-			 CONSTANT_Class  7  
-			 CONSTANT_Fieldref  9  
-			 CONSTANT_Methodref  10  
-			 CONSTANT_InterfaceMethodref  11  
-			 CONSTANT_String  8  
-			 CONSTANT_Integer  3  
-			 CONSTANT_Float  4  
-			 CONSTANT_Long  5  
-			 CONSTANT_Double  6  
-			 CONSTANT_NameAndType  12  
+			 Constant Type  Value
+			 CONSTANT_Class  7
+			 CONSTANT_Fieldref  9
+			 CONSTANT_Methodref  10
+			 CONSTANT_InterfaceMethodref  11
+			 CONSTANT_String  8
+			 CONSTANT_Integer  3
+			 CONSTANT_Float  4
+			 CONSTANT_Long  5
+			 CONSTANT_Double  6
+			 CONSTANT_NameAndType  12
 			 CONSTANT_Utf8  1
 			 */
-	
+
 
 			for (int i = 1; i < constant_pool_count; i++) {
 				byte tag = in.readByte();
@@ -204,7 +204,7 @@ public class ClassAnalyzer {
 				 All 8-byte constants take up two entries in the constant_pool table of the class file. If a CONSTANT_Long_info or CONSTANT_Double_info structure is the item in the constant_pool table at index n, then the next usable item in the pool is located at index n+2. The constant_pool index n+1 must be valid but is considered unusable.2
 				 */
 
-				case CONSTANT_Long:  
+				case CONSTANT_Long:
 				case CONSTANT_Double: {
 						in.readInt(); // high bytes
 						in.readInt(); // low bytes
@@ -251,7 +251,7 @@ public class ClassAnalyzer {
 				referencedClasses.add(className);
 			}
 		}
-	
+
 		return referencedClasses;
 	}
 }

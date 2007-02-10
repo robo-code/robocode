@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Luis Crespo
  *     - Initial API and implementation
@@ -29,8 +29,8 @@ import robocode.io.Logger;
 /**
  * SoundCache maintains a table of sound clips. More than one instance of the same
  * sample can be stored, so a given sound effect can be played more than once
- * symultaneously.  
- * 
+ * symultaneously.
+ *
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -41,10 +41,10 @@ public class SoundCache {
 
 	/** Mixer used for creating clip instances */
 	private Mixer mixer;
-	
+
 	/**
 	 * Holds data, length and format for a given sound effect, which can be used to create
-	 * multiple instances of the same clip. 
+	 * multiple instances of the same clip.
 	 */
 	private class SoundData {
 		private AudioFormat format;
@@ -70,6 +70,7 @@ public class SoundCache {
 		}
 	}
 
+
 	/**
 	 * Holds an array of clips from the same sample stream, and takes care of
 	 * returning the next available clip. If all clips are active, the least
@@ -78,18 +79,18 @@ public class SoundCache {
 	private class ClipClones {
 		private Clip[] clips;
 		private int idx;
-		
+
 		private ClipClones(SoundData soundData, int size) throws LineUnavailableException {
 			idx = 0;
 			clips = new Clip[size];
 			DataLine.Info info = new DataLine.Info(Clip.class, soundData.format);
 
 			for (int i = 0; i < size; i++) {
-				clips[i] = (Clip) mixer.getLine(info); 
+				clips[i] = (Clip) mixer.getLine(info);
 				clips[i].open(soundData.format, soundData.byteData, 0, soundData.length);
 			}
 		}
-		
+
 		private void dispose() {
 			for (Clip c : clips) {
 				c.close();
@@ -109,7 +110,7 @@ public class SoundCache {
 	/**
 	 * Constructs a sound cache to hold sound clips that is created based on the
 	 * specified mixer.
-	 * 
+	 *
 	 * @param mixer the mixer to be used for creating the clip instances
 	 */
 	public SoundCache(Mixer mixer) {
@@ -121,7 +122,7 @@ public class SoundCache {
 	 * Adds a number of clip clones for a given resource holding the audio data.
 	 * If there is any error, the method returns silently, and clip instances will
 	 * not be found later for the provided key.
-	 * 
+	 *
 	 * @param key the key to be used for later retrieval of the sound
 	 * @param resourceName the resource holding the audio data
 	 * @param numClones the number of copies of the clip to be created
@@ -132,11 +133,13 @@ public class SoundCache {
 		}
 
 		SoundData data = createSoundData(resourceName);
+
 		if (data == null) {
 			return;
 		}
 
 		ClipClones clones;
+
 		try {
 			clones = new ClipClones(data, numClones);
 			soundTable.put(key, clones);
@@ -147,7 +150,7 @@ public class SoundCache {
 
 	/**
 	 * Creates an instance of SoundData, to be used later for creating the clip clones.
-	 * 
+	 *
 	 * @param resourceName the name of the resource holding the audio data
 	 * @return the newly created sound data
 	 */
@@ -173,8 +176,8 @@ public class SoundCache {
 	/**
 	 * Gets the next available clip instance of a given sound. If all clips for that
 	 * sound are active (playing), the least recently used will be returned.
-	 * 
-	 * @param key the key that was used when adding the sound 
+	 *
+	 * @param key the key that was used when adding the sound
 	 * @return a clip instance ready to be played through Clip.start()
 	 */
 	public Clip getSound(Object key) {
@@ -188,7 +191,7 @@ public class SoundCache {
 
 	/**
 	 * Removes all clip copies of a given sound, closing all its dependent resources
-	 * 
+	 *
 	 * @param key the key that was used when adding the sound
 	 */
 	public void removeSound(Object key) {
@@ -204,7 +207,7 @@ public class SoundCache {
 
 	/**
 	 * Empties all clips from the sound cache
-	 */ 
+	 */
 	public void clear() {
 		for (ClipClones clones : soundTable.values()) {
 			clones.dispose();

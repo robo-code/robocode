@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -50,7 +50,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private JPanel selectedRobotsPanel;
 	private JScrollPane selectedRobotsScrollPane;
 	private JList selectedRobotsList;
-	
+
 	private JPanel buttonsPanel;
 	private JPanel addButtonsPanel;
 	private JPanel removeButtonsPanel;
@@ -110,8 +110,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			}
 		}
 	}
-
-	private RobotSelectionPanel() {}
 
 	/**
 	 * NewBattleRobotsTab constructor comment.
@@ -176,7 +174,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the addAllButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getAddAllButton() {
@@ -192,7 +190,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the addButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getAddButton() {
@@ -232,7 +230,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the removeAllButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getRemoveAllButton() {
@@ -248,7 +246,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the removeButton property value.
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getRemoveButton() {
@@ -290,7 +288,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the selectedRobotsList.
-	 * 
+	 *
 	 * @return JList
 	 */
 	private JList getSelectedRobotsList() {
@@ -301,11 +299,12 @@ public class RobotSelectionPanel extends WizardPanel {
 			robotNamesCellRenderer = new RobotNameCellRenderer();
 			selectedRobotsList.setCellRenderer(robotNamesCellRenderer);
 			MouseListener mouseListener = new MouseAdapter() {
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() == 2) {
 						removeButtonActionPerformed();
 					}
-					if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+					if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
 						contextMenuActionPerformed();
 					}
 				}
@@ -331,7 +330,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the selectedRobotsScrollPane property value.
-	 * 
+	 *
 	 * @return JScrollPane
 	 */
 	private JScrollPane getSelectedRobotsScrollPane() {
@@ -344,7 +343,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the Page property value.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private void initialize() {
@@ -458,7 +457,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		new Thread(new Runnable() {
 			public void run() {
 				getAvailableRobotsPanel().setRobotList(null);
-				List<FileSpecification> l = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots); 
+				List<FileSpecification> l = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
 
 				getAvailableRobotsPanel().setRobotList(l);
 				if (selectedRobots != null && !selectedRobots.equals("")) {
@@ -561,7 +560,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	/**
 	 * Return the numRoundsTextField
-	 * 
+	 *
 	 * @return JTextField
 	 */
 	private JTextField getNumRoundsTextField() {
@@ -571,7 +570,7 @@ public class RobotSelectionPanel extends WizardPanel {
 			// Center in panel
 			numRoundsTextField.setAlignmentX((float) .5);
 			// Center text in textfield
-			numRoundsTextField.setHorizontalAlignment(JTextField.CENTER);
+			numRoundsTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return numRoundsTextField;
 	}
@@ -580,6 +579,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		return selectedRobots.size();
 	}
 
+	@Override
 	public boolean isReady() {
 		return (getSelectedRobotsCount() >= minRobots && getSelectedRobotsCount() <= maxRobots);
 	}
@@ -608,7 +608,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		getNumRoundsTextField().setText("" + numRounds);
 	}
 
-	private void setSelectedRobots(List<FileSpecification> robotList, String selectedRobotsString) { 
+	private void setSelectedRobots(List<FileSpecification> robotList, String selectedRobotsString) {
 		if (selectedRobotsString != null) {
 			StringTokenizer tokenizer;
 

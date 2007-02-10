@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001-2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
@@ -82,18 +82,18 @@ public class RobotRecord {
 		bulletColor = toRGB565(robot.getBulletColor());
 		scanColor = toRGB565(robot.getScanColor());
 	}
-	
+
 	private static short toRGB565(java.awt.Color c) {
 		if (c == null) {
 			return 0;
 		}
-		short rgb = (short)(((c.getRed() & 0xf8) << 8) | ((c.getGreen() & 0xfc) << 3) | (c.getBlue() >> 3));
+		short rgb = (short) (((c.getRed() & 0xf8) << 8) | ((c.getGreen() & 0xfc) << 3) | (c.getBlue() >> 3));
 
 		// 0 is reserved for null -> set green (has highest resolution) to 1
 		if (rgb == 0) {
 			return 0x20;
 		}
-		// If the color actually was 0x20 then set it to 0x40 (to the nearest green) 
+		// If the color actually was 0x20 then set it to 0x40 (to the nearest green)
 		if (rgb == 0x20) {
 			return 0x40;
 		}

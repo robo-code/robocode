@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -24,11 +24,11 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class _AdvancedRadiansRobot extends _AdvancedRobot {
-	
+
 	protected _AdvancedRadiansRobot() {}
-	
+
 	/**
-	 * Returns the direction the robot is facing, in radians.  
+	 * Returns the direction the robot is facing, in radians.
 	 *  The value returned will be between 0 and 2 * PI.
 	 * @return the direction the robot is facing, in radians.
 	 */
@@ -256,7 +256,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Gets angle remaining in the gun's turn, in radians
-	 * 
+	 *
 	 * @return angle remaining in the gun's turn, in radians
 	 */
 	public double getGunTurnRemainingRadians() {
@@ -271,7 +271,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Gets angle remaining in the radar's turn, in radians
-	 * 
+	 *
 	 * @return angle remaining in the radar's turn, in radians
 	 */
 	public double getRadarTurnRemainingRadians() {
@@ -286,7 +286,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Gets angle remaining in the robot's turn, in radians.
-	 * 
+	 *
 	 * @return angle remaining in the robot's turn, in radians
 	 */
 	public double getTurnRemainingRadians() {

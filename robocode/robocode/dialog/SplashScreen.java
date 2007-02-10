@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -44,6 +44,7 @@ public class SplashScreen extends JWindow {
 
 	private WindowListener eventHandler = new WindowAdapter() {
 
+		@Override
 		public void windowClosing(WindowEvent e) {
 			if (e.getSource() == SplashScreen.this) {
 				SplashScreen.this.dispose();
@@ -62,7 +63,7 @@ public class SplashScreen extends JWindow {
 
 	/**
 	 * Returns the splash label
-	 * 
+	 *
 	 * @return the splash label
 	 */
 	public JLabel getSplashLabel() {
@@ -77,13 +78,14 @@ public class SplashScreen extends JWindow {
 
 	/**
 	 * Return the splash panel
-	 * 
+	 *
 	 * @return the splash panel
 	 */
 	@SuppressWarnings("serial")
 	private JPanel getSplashPanel() {
 		if (splashPanel == null) {
 			splashPanel = new JPanel() {
+				@Override
 				public void paintComponent(Graphics g) {
 					g.drawImage(splashImage, 0, 0, null);
 					g.setColor(LABEL_COLOR);
@@ -95,6 +97,7 @@ public class SplashScreen extends JWindow {
 							splashImage.getHeight(null) - 4);
 				}
 
+				@Override
 				public Dimension getPreferredSize() {
 					return new Dimension(splashImage.getWidth(null), splashImage.getHeight(null));
 				}
@@ -107,7 +110,7 @@ public class SplashScreen extends JWindow {
 
 	/**
 	 * Return the splash screen's content pane
-	 * 
+	 *
 	 * @return the splash screen's content pane
 	 */
 	private JPanel getSplashScreenContentPane() {
@@ -126,7 +129,7 @@ public class SplashScreen extends JWindow {
 	private void initialize() {
 		splashImage = new BufferedImage(RobocodeLogo.WIDTH, RobocodeLogo.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		new RobocodeLogo().paintLogoWithTanks(splashImage.getGraphics());
-		
+
 		setContentPane(getSplashScreenContentPane());
 		addWindowListener(eventHandler);
 	}
@@ -135,6 +138,7 @@ public class SplashScreen extends JWindow {
 		return painted;
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		painted = true;

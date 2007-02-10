@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -32,9 +32,9 @@ import robocode.manager.*;
  * @author Flemming N. Larsen (contributor)
  */
 public abstract class FileSpecification implements Comparable<FileSpecification>, Serializable, Cloneable {
-	
+
 	protected Properties props = new Properties();
-	
+
 	private final static String ROBOCODE_VERSION = "robocode.version";
 	private final static String LIBRARY_DESCRIPTION = "library.description";
 
@@ -51,7 +51,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	protected String libraryDescription;
 	protected File rootDir;
 	private File packageFile;
-	
+
 	private String filePath;
 	private String fileName;
 	private String propertiesFileName;
@@ -63,6 +63,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	private boolean duplicate;
 
+	@Override
 	public Object clone() {
 		try {
 			return super.clone();
@@ -71,17 +72,17 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 			return null;
 		}
 	}
-		
+
 	protected FileSpecification() {}
 
-	public abstract String getUid();	
-	
+	public abstract String getUid();
+
 	public static FileSpecification createSpecification(RobotRepositoryManager repositoryManager, File f, File rootDir, String prefix, boolean developmentVersion) {
 		String filename = f.getName();
 		String fileType = FileUtil.getFileType(filename);
-		
+
 		FileSpecification newSpec = null;
-		
+
 		if (fileType.equals(".team")) {
 			newSpec = new TeamSpecification(f, rootDir, prefix, developmentVersion);
 		} else if (fileType.equals(".jar") || fileType.equals(".zip")) {
@@ -95,7 +96,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		newSpec.developmentVersion = developmentVersion;
 		newSpec.rootDir = rootDir;
 		newSpec.storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
-		
+
 		return newSpec;
 	}
 
@@ -115,15 +116,16 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		}
 		this.packageFile = src;
 	}
-		
+
 	public File getJarFile() {
 		return packageFile;
 	}
-	
+
+	@Override
 	public String toString() {
 		return getFileName() + ": length " + getFileLength() + " modified " + getFileLastModified();
 	}
-	
+
 	public boolean isDevelopmentVersion() {
 		return developmentVersion;
 	}
@@ -160,6 +162,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		return true;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o == null) {
 			return false;
@@ -201,7 +204,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the robotName.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getName() {
@@ -210,7 +213,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the robotDescription.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getDescription() {
@@ -219,7 +222,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the robotAuthorName.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getAuthorName() {
@@ -228,7 +231,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the robotAuthorEmail.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getAuthorEmail() {
@@ -237,7 +240,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the robotAuthorWebsite.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getAuthorWebsite() {
@@ -246,7 +249,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the robotVersion.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getVersion() {
@@ -255,7 +258,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the robocodeVersion
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getRobocodeVersion() {
@@ -264,7 +267,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Sets the robocodeVersion
-	 * 
+	 *
 	 * @param robocodeVersion to set
 	 */
 	public void setRobocodeVersion(String robocodeVersion) {
@@ -283,7 +286,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the thisFilename.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getThisFileName() {
@@ -292,7 +295,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Sets the thisFilename.
-	 * 
+	 *
 	 * @param thisFilename The thisFilename to set
 	 */
 	public void setThisFileName(String thisFileName) {
@@ -301,7 +304,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the filePath.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getFilePath() {
@@ -310,7 +313,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Sets the filePath.
-	 * 
+	 *
 	 * @param filePath The filePath to set
 	 */
 	public void setFilePath(String filePath) {
@@ -319,7 +322,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the propertiesFilename.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getPropertiesFileName() {
@@ -328,7 +331,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Sets the propertiesFilename.
-	 * 
+	 *
 	 * @param propertiesFilename The propertiesFilename to set
 	 */
 	public void setPropertiesFileName(String propertiesFileName) {
@@ -337,7 +340,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the filename.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getFileName() {
@@ -346,7 +349,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Sets the filename.
-	 * 
+	 *
 	 * @param filename The filename to set
 	 */
 	public void setFileName(String fileName) {
@@ -355,7 +358,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the fileType.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getFileType() {
@@ -364,7 +367,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Sets the fileType.
-	 * 
+	 *
 	 * @param fileType The fileType to set
 	 */
 	public void setFileType(String fileType) {
@@ -373,7 +376,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the robotWebpage.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public URL getWebpage() {
@@ -382,7 +385,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the fileLastModified.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public long getFileLastModified() {
@@ -391,7 +394,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Sets the fileLastModified.
-	 * 
+	 *
 	 * @param fileLastModified The fileLastModified to set
 	 */
 	public void setFileLastModified(long fileLastModified) {
@@ -400,7 +403,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the fileLength.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public long getFileLength() {
@@ -409,7 +412,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Sets the fileLength.
-	 * 
+	 *
 	 * @param fileLength The fileLength to set
 	 */
 	public void setFileLength(long fileLength) {
@@ -469,7 +472,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the rootDir.
-	 * 
+	 *
 	 * @return Returns a File
 	 */
 	public File getRootDir() {
@@ -483,25 +486,25 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		if (p2 == null && p1 != null) {
 			return -1;
 		}
-		
+
 		if (p1 != null) // then p2 isn't either
 		{
 			// If packages are different, return
 			int pc = p1.compareToIgnoreCase(p2);
-	
+
 			if (pc != 0) {
 				return pc;
 			}
 		}
-	
+
 		// Ok, same package... compare class:
 		int cc = c1.compareToIgnoreCase(c2);
-	
+
 		if (cc != 0) {
 			// Different classes, return
 			return cc;
 		}
-	
+
 		// Ok, same robot... compare version
 		if (v1 == null && v2 == null) {
 			return 0;
@@ -512,33 +515,33 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		if (v2 == null) {
 			return -1;
 		}
-	
+
 		if (v1.equals(v2)) {
 			return 0;
 		}
-	
+
 		if (v1.indexOf(".") < 0 || v2.indexOf(".") < 0) {
 			return v1.compareToIgnoreCase(v2);
 		}
-	
+
 		// Dot separated versions.
 		StringTokenizer s1 = new StringTokenizer(v1, ".");
 		StringTokenizer s2 = new StringTokenizer(v2, ".");
-	
+
 		while (s1.hasMoreTokens() && s2.hasMoreTokens()) {
 			String tok1 = s1.nextToken();
 			String tok2 = s2.nextToken();
-	
+
 			try {
 				int i1 = Integer.parseInt(tok1);
 				int i2 = Integer.parseInt(tok2);
-	
+
 				if (i1 != i2) {
 					return i1 - i2;
 				}
 			} catch (NumberFormatException e) {
 				int tc = tok1.compareToIgnoreCase(tok2);
-	
+
 				if (tc != 0) {
 					return tc;
 				}

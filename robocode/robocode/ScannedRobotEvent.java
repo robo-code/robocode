@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -15,7 +15,7 @@ package robocode;
 /**
  * A ScannedRobotEvent is sent to {@link robocode.Robot#onScannedRobot} when you scan a robot.
  * You can use the information contained in this event to determine what to do.
- * 
+ *
  * @author Mathew A. Nelson (original)
  */
 public class ScannedRobotEvent extends Event {
@@ -41,7 +41,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the angle to the robot, relative to your robot's heading, in degrees.  -180 < getRobotBearing() <= 180
-	 * 
+	 *
 	 * @return the angle to the robot
 	 */
 	public double getBearing() {
@@ -50,7 +50,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the angle to the robot, relative to your robot's heading, in radians.  -PI < getRobotBearingRadians() <= PI
-	 * 
+	 *
 	 * @return the angle to the robot
 	 */
 	public double getBearingRadians() {
@@ -59,7 +59,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the distance to the robot you scanned (your center to his center).
-	 * 
+	 *
 	 * @return the distance to the robot you scanned.
 	 */
 	public double getDistance() {
@@ -68,7 +68,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the energy of the robot
-	 * 
+	 *
 	 * @return the energy of the robot
 	 */
 	public double getEnergy() {
@@ -77,7 +77,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the direction the robot is facing, in degrees.  0 <= getRobotHeading() < 360
-	 * 
+	 *
 	 * @return the direction the robot is facing
 	 */
 	public double getHeading() {
@@ -86,7 +86,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Returns the direction the robot is facing, in radians.  0 <= getRobotHeading() < 2*PI
-	 * 
+	 *
 	 * @return the direction the robot is facing
 	 */
 	public double getHeadingRadians() {
@@ -96,13 +96,14 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getEnergy()
 	 */
+	@Deprecated
 	public double getLife() {
 		return energy;
 	}
 
 	/**
 	 * Returns the name of the robot
-	 * 
+	 *
 	 * @return the name of the robot
 	 */
 	public String getName() {
@@ -112,6 +113,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getBearing()
 	 */
+	@Deprecated
 	public double getRobotBearing() {
 		return getBearing();
 	}
@@ -119,6 +121,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getBearing()
 	 */
+	@Deprecated
 	public double getRobotBearingDegrees() {
 		return getBearing();
 	}
@@ -126,6 +129,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getBearingRadians()
 	 */
+	@Deprecated
 	public double getRobotBearingRadians() {
 		return getBearingRadians();
 	}
@@ -133,6 +137,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getDistance()
 	 */
+	@Deprecated
 	public double getRobotDistance() {
 		return getDistance();
 	}
@@ -140,6 +145,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getHeading()
 	 */
+	@Deprecated
 	public double getRobotHeading() {
 		return getHeading();
 	}
@@ -147,6 +153,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getHeading()
 	 */
+	@Deprecated
 	public double getRobotHeadingDegrees() {
 		return getHeading();
 	}
@@ -154,6 +161,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getHeadingRadians()
 	 */
+	@Deprecated
 	public double getRobotHeadingRadians() {
 		return getHeadingRadians();
 	}
@@ -161,6 +169,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getEnergy()
 	 */
+	@Deprecated
 	public double getRobotLife() {
 		return getEnergy();
 	}
@@ -168,6 +177,7 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getName()
 	 */
+	@Deprecated
 	public String getRobotName() {
 		return getName();
 	}
@@ -175,13 +185,14 @@ public class ScannedRobotEvent extends Event {
 	/**
 	 * @deprecated use getVelocity()
 	 */
+	@Deprecated
 	public double getRobotVelocity() {
 		return getVelocity();
 	}
 
 	/**
 	 * Returns the velocity of the robot
-	 * 
+	 *
 	 * @return the velocity of the robot
 	 */
 	public double getVelocity() {

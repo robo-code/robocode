@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -57,7 +57,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 
 	/**
 	 * Return the editorPane property value.
-	 * 
+	 *
 	 * @return JEditorPane
 	 */
 	public JEditorPane getEditorPane() {
@@ -96,6 +96,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 	private void initialize() {
 		try {
 			this.addInternalFrameListener(new InternalFrameAdapter() {
+				@Override
 				public void internalFrameClosing(InternalFrameEvent e) {
 					if (!modified || fileSave(true)) {
 						editor.setLineStatus(-1);
@@ -105,10 +106,12 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 					return;
 				}
 
+				@Override
 				public void internalFrameDeactivated(InternalFrameEvent e) {
 					editor.setLineStatus(-1);
 				}
 
+				@Override
 				public void internalFrameIconified(InternalFrameEvent e) {
 					editor.setLineStatus(-1);
 				}
@@ -174,7 +177,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 
 	/**
 	 * Event handler for PropertyChangeListener
-	 * 
+	 *
 	 * If the Document changes, adds clears out our UndoManager and attaches it
 	 * to the new document.
 	 */
@@ -358,6 +361,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 		chooser.setCurrentDirectory(f);
 
 		FileFilter filter = new FileFilter() {
+			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
 					return true;
@@ -375,6 +379,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 				return false;
 			}
 
+			@Override
 			public String getDescription() {
 				return "Robots";
 			}
@@ -500,7 +505,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 
 	/**
 	 * Return the scrollPane
-	 * 
+	 *
 	 * @return JScrollPane
 	 */
 	private JScrollPane getScrollPane() {

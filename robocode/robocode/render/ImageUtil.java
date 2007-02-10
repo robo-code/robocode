@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
@@ -79,6 +79,7 @@ public class ImageUtil {
 			hsl = RGBtoHSL(color.getRed(), color.getGreen(), color.getBlue());
 		}
 
+		@Override
 		public int filterRGB(int x, int y, int argb) {
 			int r = (argb >> 16) & 0xff;
 			int g = (argb >> 8) & 0xff;
@@ -87,7 +88,7 @@ public class ImageUtil {
 			float[] HSL = RGBtoHSL(r, g, b);
 
 			if (HSL[1] > 0) {
-				float L = Math.min(1, (hsl[2] + HSL[2]) / 2 + hsl[2] / 7);				
+				float L = Math.min(1, (hsl[2] + HSL[2]) / 2 + hsl[2] / 7);
 
 				return argb & 0xff000000 | HSLtoRGB(hsl[0], hsl[1], L);
 			}
@@ -99,7 +100,7 @@ public class ImageUtil {
 		float R = (float) r / 255;
 		float G = (float) g / 255;
 		float B = (float) b / 255;
-		
+
 		float min = Math.min(Math.min(R, G), B); // Min. value of RGB
 		float max = Math.max(Math.max(R, G), B); // Max. value of RGB
 		float delta = max - min; // Delta RGB value
@@ -107,7 +108,7 @@ public class ImageUtil {
 		float L = (max + min) / 2;
 
 		float H, S;
-		
+
 		if (delta == 0) { // This is a gray, no chroma...
 			H = 0;
 			S = 0;
@@ -139,7 +140,7 @@ public class ImageUtil {
 		}
 		return new float[] { H, S, L };
 	}
-	
+
 	private static int HSLtoRGB(float h, float s, float l) {
 		float m2 = (l <= 0.5f) ? (l * (s + 1)) : (l + s - l * s);
 		float m1 = 2 * l - m2;

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -54,9 +54,9 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 	JLabel teamNameLabel;
 	JLabel teamPackageLabel;
 	JTextField teamNameField;
-	
+
 	private String teamPackage;
-	
+
 	class EventHandler implements ComponentListener, DocumentListener {
 		int count = 0;
 
@@ -77,14 +77,14 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			List<FileSpecification> selectedRobots; 
+			List<FileSpecification> selectedRobots;
 
 			if (teamCreator != null) {
 				selectedRobots = teamCreator.getRobotSelectionPanel().getSelectedRobots();
 			} else {
 				selectedRobots = teamPackager.getRobotSelectionPanel().getSelectedRobots();
 			}
-			
+
 			if (selectedRobots != null) {
 				FileSpecification robotSpecification = selectedRobots.get(0);
 
@@ -95,7 +95,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 				if (teamPackage != null) {
 					teamPackage += ".";
 				}
-			
+
 				String d = robotSpecification.getDescription();
 
 				if (d == null) {
@@ -115,7 +115,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 				} else {
 					getWebpageField().setText(u.toString());
 				}
-				
+
 				getAuthorLabel().setVisible(true);
 				getAuthorField().setVisible(true);
 				getWebpageLabel().setVisible(true);
@@ -146,13 +146,13 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 	private void initialize() {
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		getTeamNameLabel().setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		getTeamNameLabel().setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(getTeamNameLabel());
 		JPanel p = new JPanel();
 
 		p.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		p.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-		getTeamNameField().setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		p.setAlignmentX(Component.LEFT_ALIGNMENT);
+		getTeamNameField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getTeamNameField().setMaximumSize(getTeamNameField().getPreferredSize());
 		// getVersionField().setMaximumSize(getVersionField().getPreferredSize());
 		p.setMaximumSize(new Dimension(Integer.MAX_VALUE, getTeamNameField().getPreferredSize().height));
@@ -162,44 +162,45 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 
 		JLabel label = new JLabel(" ");
 
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 		label = new JLabel(" ");
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 
 		add(getDescriptionLabel());
 
-		JScrollPane scrollPane = new JScrollPane(getDescriptionArea(), JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		JScrollPane scrollPane = new JScrollPane(getDescriptionArea(), ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		scrollPane.setMaximumSize(scrollPane.getPreferredSize());
 		scrollPane.setMinimumSize(new Dimension(100, scrollPane.getPreferredSize().height));
-		scrollPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(scrollPane);
 		label = new JLabel(" ");
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 		add(getAuthorLabel());
-		getAuthorField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
+		getAuthorField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getAuthorField().setMaximumSize(getAuthorField().getPreferredSize());
 		add(getAuthorField());
 		label = new JLabel(" ");
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 		add(getWebpageLabel());
-		getWebpageField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
+		getWebpageField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getWebpageField().setMaximumSize(getWebpageField().getPreferredSize());
 		add(getWebpageField());
-		getWebpageHelpLabel().setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		getWebpageHelpLabel().setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(getWebpageHelpLabel());
 		JPanel panel = new JPanel();
 
-		panel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(panel);
 		addComponentListener(eventHandler);
 	}
 
+	@Override
 	public boolean isReady() {
 		if (getTeamNameField().getText().equals("")) {
 			return false;
@@ -213,7 +214,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 	private JLabel getAuthorLabel() {
 		if (authorLabel == null) {
 			authorLabel = new JLabel("Please enter your name. (optional)");
-			authorLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			authorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return authorLabel;
 	}
@@ -228,7 +229,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 	public JLabel getDescriptionLabel() {
 		if (descriptionLabel == null) {
 			descriptionLabel = new JLabel("");
-			descriptionLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			descriptionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return descriptionLabel;
 	}
@@ -249,7 +250,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 	public JLabel getWebpageLabel() {
 		if (webpageLabel == null) {
 			webpageLabel = new JLabel("Please enter a URL for your team's webpage (optional)");
-			webpageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			webpageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return webpageLabel;
 	}
@@ -294,7 +295,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 
 	/**
 	 * Gets the teamPackage.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getTeamPackage() {

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -33,7 +33,7 @@ import robocode.manager.*;
 
 /**
  * Handles menu display and interaction for Robocode.
- * 
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Matthew Reeder (contributor)
@@ -59,7 +59,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	// Team menu
 	private JMenu teamMenu;
 	private JMenuItem teamCreateTeamMenuItem;
-	
+
 	// Options menu
 	private JMenu optionsMenu;
 	private JMenuItem optionsPreferencesMenuItem;
@@ -195,7 +195,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the battleExitMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getBattleExitMenuItem() {
@@ -211,7 +211,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Battle Menu
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	public JMenu getBattleMenu() {
@@ -233,7 +233,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the battleNewMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getBattleNewMenuItem() {
@@ -250,7 +250,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the battleOpenMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getBattleOpenMenuItem() {
@@ -267,7 +267,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the battleSaveAsMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	public JMenuItem getBattleSaveAsMenuItem() {
@@ -286,7 +286,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the battleSaveMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	public JMenuItem getBattleSaveMenuItem() {
@@ -304,7 +304,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpAboutMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpAboutMenuItem() {
@@ -320,7 +320,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpCheckForNewVersion menu item.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpCheckForNewVersionMenuItem() {
@@ -336,9 +336,10 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Help Menu.
-	 * 
+	 *
 	 * @return JMenu
 	 */
+	@Override
 	public JMenu getHelpMenu() {
 		if (helpMenu == null) {
 			helpMenu = new JMenu();
@@ -365,7 +366,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpOnlineHelpMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpFaqMenuItem() {
@@ -381,7 +382,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpOnlineHelpMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpOnlineHelpMenuItem() {
@@ -397,7 +398,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpVersionsTxtMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpVersionsTxtMenuItem() {
@@ -413,7 +414,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpRobocodeApiMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpRobocodeApiMenuItem() {
@@ -429,7 +430,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpRoboWikiMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpRobocodeMenuItem() {
@@ -445,7 +446,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpRoboWikiMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpRoboWikiMenuItem() {
@@ -461,7 +462,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpYahooGroupRobocodeMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpYahooGroupRobocodeMenuItem() {
@@ -477,7 +478,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpRobocodeRepositoryMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpRobocodeRepositoryMenuItem() {
@@ -493,7 +494,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the optionsPreferencesMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getOptionsFitWindowMenuItem() {
@@ -509,7 +510,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the optionsShowRankingCheckBoxMenuItem.
-	 * 
+	 *
 	 * @return JCheckBoxMenuItem
 	 */
 	public JCheckBoxMenuItem getOptionsShowRankingCheckBoxMenuItem() {
@@ -525,7 +526,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Options Menu.
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	private JMenu getOptionsMenu() {
@@ -544,7 +545,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the optionsPreferencesMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getOptionsPreferencesMenuItem() {
@@ -560,7 +561,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the robotEditorMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getRobotEditorMenuItem() {
@@ -577,7 +578,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the robotImportMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getRobotImportMenuItem() {
@@ -593,7 +594,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Robot Menu.
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	public JMenu getRobotMenu() {
@@ -613,7 +614,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the robotPackagerMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getRobotPackagerMenuItem() {
@@ -629,7 +630,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Team Menu.
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	private JMenu getTeamMenu() {
@@ -646,7 +647,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	/**
 	 * Return the teamCreateTeamMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getTeamCreateTeamMenuItem() {

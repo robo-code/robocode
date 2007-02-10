@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -21,7 +21,7 @@ import java.io.*;
 
 /**
  * This is a class for file utilization.
- * 
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -96,7 +96,7 @@ public class FileUtil {
 		}
 		if (filename.matches(".*\\s+?.*")) {
 			return '"' + filename + '"';
-		}	
+		}
 		return filename;
 	}
 
@@ -114,10 +114,10 @@ public class FileUtil {
 		byte buf[] = new byte[4096];
 		FileInputStream in = new FileInputStream(srcFile);
 		FileOutputStream out = new FileOutputStream(destFile);
-	
+
 		while (in.available() > 0) {
 			int count = in.read(buf, 0, 4096);
-	
+
 			out.write(buf, 0, count);
 		}
 	}
@@ -133,7 +133,7 @@ public class FileUtil {
 		if (!dir.isDirectory()) {
 			return false;
 		}
-	
+
 		for (File file : dir.listFiles()) {
 			if (file.isDirectory()) {
 				try {
@@ -153,13 +153,13 @@ public class FileUtil {
 			}
 		}
 		dir.delete();
-	
+
 		return true;
 	}
 
 	public static String getClassName(String fileName) {
 		int lastdot = fileName.lastIndexOf('.');
-	
+
 		if (lastdot < 0) {
 			return fileName;
 		}

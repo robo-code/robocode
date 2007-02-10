@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Reeder
  *     - Initial API and implementation
@@ -396,7 +396,7 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 		JEditorPane editorPane = currentWindow.getEditorPane();
 		String text = editorPane.getText();
 
-		String replacement = getReplaceField().getText(); 
+		String replacement = getReplaceField().getText();
 
 		editorPane.setText(getCurrentPattern().matcher(text).replaceAll(replacement));
 	}

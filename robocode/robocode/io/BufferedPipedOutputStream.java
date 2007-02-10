@@ -1,17 +1,17 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Bugfix: Changed the if-statement of "if (readIndex == writeIndex)" in
  *       the read() method to a while-statement in order to correct text-output
- *       bug, where old text or odd characters were printed out 
+ *       bug, where old text or odd characters were printed out
  *******************************************************************************/
 package robocode.io;
 
@@ -33,9 +33,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 	private BufferedPipedInputStream in;
 	private boolean closed;
 	private boolean skipLines;
-	
-	private BufferedPipedOutputStream() {}
-	
+
 	public BufferedPipedOutputStream(int bufferSize, boolean skipLines, boolean blocking) {
 		this.buf = new byte[bufferSize];
 		this.skipLines = skipLines;
@@ -44,6 +42,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 	/*
 	 * @see OutputStream#write(int)
 	 */
+	@Override
 	public void write(int b) throws IOException {
 		if (closed) {
 			throw new IOException("Stream is closed.");
@@ -67,7 +66,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 			}
 		}
 	}
-	
+
 	private void setReadIndexToNextLine() {
 		while (buf[readIndex] != '\n') {
 			readIndex++;
@@ -83,7 +82,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 			readIndex = 0;
 		}
 	}
-	
+
 	protected synchronized int read() throws IOException {
 		while (readIndex == writeIndex) {
 			waiting = true;
@@ -98,15 +97,15 @@ public class BufferedPipedOutputStream extends OutputStream {
 				throw new IOException("read interrupted");
 			}
 		}
-		int result = (int) buf[readIndex++];
+		int result = buf[readIndex++];
 
 		if (readIndex == buf.length) {
 			readIndex = 0;
 		}
-		
+
 		return result;
 	}
-	
+
 	public int read(byte b[], int off, int len) throws IOException {
 		if (b == null) {
 			throw new NullPointerException();
@@ -120,7 +119,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 		if (first == -1) {
 			return -1;
 		}
-		
+
 		synchronized (this) {
 			b[off] = (byte) (first & 0xff);
 			int count = 1;
@@ -134,8 +133,8 @@ public class BufferedPipedOutputStream extends OutputStream {
 			}
 			return count;
 		}
-	}	
-	
+	}
+
 	protected int available() {
 		if (writeIndex == readIndex) {
 			return 0;
@@ -152,7 +151,8 @@ public class BufferedPipedOutputStream extends OutputStream {
 		}
 		return in;
 	}
-	
+
+	@Override
 	public synchronized void close() {
 		closed = true;
 		if (waiting) {

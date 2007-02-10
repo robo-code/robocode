@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -31,6 +31,7 @@ public class SecureInputStream extends java.io.InputStream {
 		this.inputPermission = new RobocodePermission(accessString);
 	}
 
+	@Override
 	public final int available() throws IOException {
 		checkAccess();
 		return in.available();
@@ -44,16 +45,19 @@ public class SecureInputStream extends java.io.InputStream {
 		}
 	}
 
+	@Override
 	public final void close() throws IOException {
 		checkAccess();
 		in.close();
 	}
 
+	@Override
 	public final void mark(int readlimit) {
 		checkAccess();
 		in.mark(readlimit);
 	}
 
+	@Override
 	public final boolean markSupported() {
 		checkAccess();
 		return in.markSupported();
@@ -73,26 +77,31 @@ public class SecureInputStream extends java.io.InputStream {
 	 *             stream is reached.
 	 * @exception  IOException  if an I/O error occurs.
 	 */
+	@Override
 	public final int read() throws java.io.IOException {
 		checkAccess();
 		return in.read();
 	}
 
+	@Override
 	public final int read(byte[] b) throws IOException {
 		checkAccess();
 		return in.read(b);
 	}
 
+	@Override
 	public final int read(byte[] b, int off, int len) throws IOException {
 		checkAccess();
 		return in.read(b, off, len);
 	}
 
+	@Override
 	public final void reset() throws IOException {
 		checkAccess();
 		in.reset();
 	}
 
+	@Override
 	public final long skip(long n) throws IOException {
 		checkAccess();
 		return in.skip(n);

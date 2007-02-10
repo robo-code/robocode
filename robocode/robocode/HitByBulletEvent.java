@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -15,7 +15,7 @@ package robocode;
 /**
  * A HitByBulletEvent is sent to {@link robocode.Robot#onHitByBullet} when you are hit by a bullet.
  * You can use the information contained in this event to determine what to do.
- * 
+ *
  * @author Mathew A. Nelson (original)
  */
 public class HitByBulletEvent extends Event {
@@ -59,7 +59,7 @@ public class HitByBulletEvent extends Event {
 
 	/**
 	 * Returns the Bullet that hit you.
-	 * 
+	 *
 	 * @return Bullet
 	 */
 	public Bullet getBullet() {
@@ -80,6 +80,7 @@ public class HitByBulletEvent extends Event {
 	/**
 	 * @deprecated use getHeading
 	 */
+	@Deprecated
 	public double getHeadingDegrees() {
 		return getHeading();
 	}
@@ -88,7 +89,7 @@ public class HitByBulletEvent extends Event {
 	 * Returns the direction the bullet was heading when it hit you, in radians (0 <= getHeading() < 2 * PI)
 	 * This is not relative to the direction you are facing.
 	 * The robot that fired this bullet was in the opposite direction of getHeading() when it fired this bullet.
-	 * 
+	 *
 	 * @return direction the bullet was heading.
 	 */
 	public double getHeadingRadians() {
@@ -97,7 +98,7 @@ public class HitByBulletEvent extends Event {
 
 	/**
 	 * Returns the name of the robot that fired this bullet
-	 * 
+	 *
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getName() {
@@ -108,7 +109,7 @@ public class HitByBulletEvent extends Event {
 	 * Returns the power of this bullet.
 	 * The damage you take (in fact, already took) is 4 * power, plus 2 * (power-1) if power > 1.
 	 * The robot that fired the bullet receives 3 * power back.
-	 * 
+	 *
 	 * @return power of the bullet.
 	 */
 	public double getPower() {
@@ -118,7 +119,7 @@ public class HitByBulletEvent extends Event {
 	/**
 	 * Returns the velocity of this bullet.
 	 * Currently, this is a constant.
-	 * 
+	 *
 	 * @return velocity of the bullet that hit you
 	 */
 	public double getVelocity() {

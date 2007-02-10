@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -55,7 +55,7 @@ public class Bullet {
 
 	/**
 	 * Returns the name of the robot that fired this bullet
-	 * 
+	 *
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getName() {
@@ -64,11 +64,11 @@ public class Bullet {
 
 	/**
 	 * Returns the power of this bullet.
-	 * 
+	 *
 	 * The bullet will do (4 * power) damage if it hits another robot.
 	 * If power is greater than 1, it will do an additional 2 * (power - 1) damage.
 	 * You will get (3 * power) back if you hit the other robot.
-	 * 
+	 *
 	 * @return power of the bullet.
 	 */
 	public double getPower() {
@@ -87,20 +87,20 @@ public class Bullet {
 
 	/**
 	 * Returns the name of the robot that this bullet hit, or null.
-	 * 
+	 *
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getVictim() {
 		if (peer.getVictim() == null) {
 			return null;
-		} else { 
+		} else {
 			return peer.getVictim().getName();
 		}
 	}
 
 	/**
 	 * Returns the x position of the bullet.
-	 * 
+	 *
 	 * @return the x position of the bullet.
 	 */
 	public double getX() {
@@ -109,7 +109,7 @@ public class Bullet {
 
 	/**
 	 * Returns the y position of the bullet.
-	 * 
+	 *
 	 * @return the y position of the bullet.
 	 */
 	public double getY() {

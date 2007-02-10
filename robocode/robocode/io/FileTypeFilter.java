@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -21,7 +21,7 @@ import java.io.FileFilter;
 
 /**
  * A filter for filtering out files in a file list based on file extensions.
- * 
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -32,7 +32,7 @@ public class FileTypeFilter implements FileFilter {
 
 	/**
 	 * Creates a new file type filter.
-	 * 
+	 *
 	 * @param fileType an array of file extensions that is accepted for this
 	 *    file filter, e.g. ".class", ".jar", ".zip" etc.
 	 */

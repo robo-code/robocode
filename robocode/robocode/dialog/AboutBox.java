@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001 Mathew A. Nelson
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -32,7 +32,7 @@ import robocode.manager.*;
 @SuppressWarnings("serial")
 public class AboutBox extends JDialog {
 	private final static Color BG_COLOR = SystemColor.controlHighlight;
-	
+
 	// Tag used for Robocode version replacement
 	private final static String TAG_ROBOCODE_VERSION = "<robocode:version>";
 
@@ -68,7 +68,7 @@ public class AboutBox extends JDialog {
 
 	// Robocode version
 	private String robocodeVersion;
-	
+
 	// Robocode icon URL
 	private java.net.URL iconURL;
 
@@ -104,7 +104,7 @@ public class AboutBox extends JDialog {
 			}
 		}
 	};
-	
+
 	/**
 	 * AboutBox constructor
 	 */
@@ -112,8 +112,8 @@ public class AboutBox extends JDialog {
 		super(owner);
 
 		robocodeVersion = manager.getVersionManager().getVersion();
-		
-		iconURL = getClass().getResource("/resources/icons/robocode-icon.png");	
+
+		iconURL = getClass().getResource("/resources/icons/robocode-icon.png");
 
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("About Robocode");
@@ -123,7 +123,7 @@ public class AboutBox extends JDialog {
 
 	/**
 	 * Returns the content pane
-	 * 
+	 *
 	 * @return the content pane
 	 */
 	private JPanel getAboutBoxContentPane() {
@@ -137,8 +137,8 @@ public class AboutBox extends JDialog {
 	}
 
 	/**
-	 * Returns the main panel 
-	 * 
+	 * Returns the main panel
+	 *
 	 * @return the main panel
 	 */
 	private JEditorPane getMainPanel() {
@@ -152,8 +152,8 @@ public class AboutBox extends JDialog {
 	}
 
 	/**
-	 * Returns the button panel 
-	 * 
+	 * Returns the button panel
+	 *
 	 * @return the button panel
 	 */
 	private JPanel getButtonPanel() {
@@ -168,7 +168,7 @@ public class AboutBox extends JDialog {
 
 	/**
 	 * Returns the OK button
-	 * 
+	 *
 	 * @return the OK button
 	 */
 	private JButton getOkButton() {
@@ -194,20 +194,20 @@ public class AboutBox extends JDialog {
 	}
 
 	private static String toHtmlColor(Color color) {
-		return "#" + toHexDigits(color.getRed()) + toHexDigits(color.getGreen()) + toHexDigits(color.getBlue()); 
+		return "#" + toHexDigits(color.getRed()) + toHexDigits(color.getGreen()) + toHexDigits(color.getBlue());
 	}
 
 	private static String toHexDigits(int value) {
-		return "" + toHexDigit(value >> 4) + toHexDigit(value & 0x0f); 
+		return "" + toHexDigit(value >> 4) + toHexDigit(value & 0x0f);
 	}
 
 	private static char toHexDigit(int value) {
-		int v = (value & 0xf);		
+		int v = (value & 0xf);
 
 		if (v < 10) {
-			return (char) ((int) '0' + v);
+			return (char) ('0' + v);
 		} else {
-			return (char) ((int) 'A' + (v - 10));
+			return (char) ('A' + (v - 10));
 		}
 	}
 }

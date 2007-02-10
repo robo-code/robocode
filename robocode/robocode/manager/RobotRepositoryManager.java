@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -67,14 +67,14 @@ public class RobotRepositoryManager {
 			// Doesn't work with my cwd(), File does not resolve absolute path correctly
 			// (as far as I can see from the Javadocs for this constructor)
 			// ---> robotCache = System.getProperty("ROBOTCACHE");
-		
-		
+
+
 			File oldRobotCache = new File(FileUtil.getCwd(), "robotcache");
 
 			if (oldRobotCache.exists()) {
 				oldRobotCache.renameTo(new File(FileUtil.getCwd(), ".robotcache"));
 			}
-		
+
 			robotCache = new File(FileUtil.getCwd(), ".robotcache");
 		}
 		return robotCache;
@@ -147,7 +147,7 @@ public class RobotRepositoryManager {
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", true);
 		}
-	
+
 		// This loop should not be changed to an for-each loop as the updated jar list
 		// gets updated (jars are added) by the methods called in this loop, which can
 		// cause a ConcurrentModificationException!
@@ -258,7 +258,7 @@ public class RobotRepositoryManager {
 				if (externalDirectories.contains(rootDir)) {
 					continue;
 				}
-				
+
 				// This one is from the developmentPath; make sure that path still exists.
 				getRobotDatabase().remove(fs.getFilePath());
 				write = true;
@@ -639,7 +639,7 @@ public class RobotRepositoryManager {
 			"Crazy.class", "Fire.class", "MyFirstRobot.class", "RamFire.class", "SittingDuck.class", "SpinBot.class",
 			"Target.class", "Target$1.class", "Tracker.class", "TrackFire.class", "Walls.class"
 		};
-	  
+
 		File robotDir = getRobotsDirectory();
 
 		if (robotDir.isDirectory()) {
@@ -727,7 +727,7 @@ public class RobotRepositoryManager {
 
 	/**
 	 * Gets the manager.
-	 * 
+	 *
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {

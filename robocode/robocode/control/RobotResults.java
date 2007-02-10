@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -34,7 +34,7 @@ public class RobotResults {
 	private int firsts;
 	private int seconds;
 	private int thirds;
-	
+
 	public RobotResults(
 			RobotSpecification robot,
 			int rank,
@@ -62,19 +62,19 @@ public class RobotResults {
 		this.seconds = seconds;
 		this.thirds = thirds;
 	}
-	
+
 	/**
 	 * Gets the robot these results are for.
-	 * 
+	 *
 	 * @return the robot these results are for.
 	 */
 	public RobotSpecification getRobot() {
 		return robot;
 	}
-	
+
 	/**
 	 * Gets the rank of this robot in the results.
-	 * 
+	 *
 	 * @return the rank of this robot in the results.
 	 */
 	public int getRank() {
@@ -83,7 +83,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the total score of this robot.
-	 * 
+	 *
 	 * @return the total score of this robot.
 	 */
 	public int getScore() {
@@ -92,7 +92,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the survival score of this robot.
-	 * 
+	 *
 	 * @return the survival score of this robot.
 	 */
 	public int getSurvival() {
@@ -101,7 +101,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the last survivor bonus of this robot.
-	 * 
+	 *
 	 * @return the last survivor bonus of this robot.
 	 */
 	public int getLastSurvivorBonus() {
@@ -110,7 +110,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the bullet damage score of this robot.
-	 * 
+	 *
 	 * @return the bullet damage score of this robot.
 	 */
 	public int getBulletDamage() {
@@ -119,7 +119,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the bullet damage bonus of this robot.
-	 * 
+	 *
 	 * @return the bullet damage bonus of this robot.
 	 */
 	public int getBulletDamageBonus() {
@@ -128,7 +128,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the ram damage score of this robot.
-	 * 
+	 *
 	 * @return the ram damage score of this robot.
 	 */
 	public int getRamDamage() {
@@ -137,7 +137,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the ram damage bonus of this robot.
-	 * 
+	 *
 	 * @return the ram damage bonus of this robot.
 	 */
 	public double getRamDamageBonus() {
@@ -146,7 +146,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the number of times this robot placed first.
-	 * 
+	 *
 	 * @return the number of times this robot placed first.
 	 */
 	public int getFirsts() {
@@ -155,7 +155,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the number of times this robot placed second.
-	 * 
+	 *
 	 * @return the number of times this robot placed second.
 	 */
 	public int getSeconds() {
@@ -164,7 +164,7 @@ public class RobotResults {
 
 	/**
 	 * Gets the number of times this robot placed third.
-	 * 
+	 *
 	 * @return the number of times this robot placed third.
 	 */
 	public int getThirds() {

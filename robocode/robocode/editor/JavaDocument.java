@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -46,6 +46,7 @@ public class JavaDocument extends PlainDocument {
 		return editWindow;
 	}
 
+	@Override
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 		if (!editing) {
 			super.insertString(offs, str, a);
@@ -89,12 +90,13 @@ public class JavaDocument extends PlainDocument {
 		}
 	}
 
+	@Override
 	protected void insertUpdate(DefaultDocumentEvent event, AttributeSet attributeSet) {
 		if (editWindow != null) {
 			editWindow.setModified(true);
 		}
 		int orgChangedIndex = getDefaultRootElement().getElementIndex(event.getOffset());
-	
+
 		super.insertUpdate(event, attributeSet);
 
 		// Get the root element
@@ -123,6 +125,7 @@ public class JavaDocument extends PlainDocument {
 		return needsRedraw;
 	}
 
+	@Override
 	protected void postRemoveUpdate(DefaultDocumentEvent event) {
 		if (editWindow != null) {
 			editWindow.setModified(true);
@@ -145,7 +148,7 @@ public class JavaDocument extends PlainDocument {
 
 	public void processMultilineComments(Element element, boolean isDeltas) {
 		int elementIndex = getDefaultRootElement().getElementIndex(element.getStartOffset());
-	
+
 		int startOffset = element.getStartOffset();
 		int endOffset = element.getEndOffset();
 		String elementText = null;
@@ -156,7 +159,7 @@ public class JavaDocument extends PlainDocument {
 			Logger.log("Error processing updates: " + e);
 		}
 		boolean followingLineComment = false,
-				previousLineComment = false, 
+				previousLineComment = false,
 				startsComment = false,
 				endsComment = false;
 
@@ -203,7 +206,7 @@ public class JavaDocument extends PlainDocument {
 			startsComment = true;
 			endsComment = false;
 		}
-		// Following lines should be comments.	
+		// Following lines should be comments.
 		if (followingLineComment) {
 			// We started the comment
 			if (startsComment) {
@@ -221,7 +224,7 @@ public class JavaDocument extends PlainDocument {
 				// unmark line as endsComment
 				a.removeAttribute("endsComment");
 				// make sure next line(s) are marked inComment, until a endsComment line
-			
+
 				setFollowingLinesCommentFlag(startOffset, true);
 			} // For cut & paste we need to check anyway.
 			else if (isDeltas) {

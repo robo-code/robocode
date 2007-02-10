@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -46,6 +46,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private RobocodeManager manager;
 
 	private WindowAdapter eventHandler = new WindowAdapter() {
+		@Override
 		public void windowClosing(WindowEvent e) {
 			if (e.getSource() == PreferencesDialog.this) {
 				manager.getBattleManager().resumeBattle();
@@ -78,7 +79,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the buttonsPanel
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private WizardController getButtonsPanel() {
@@ -90,7 +91,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the preferencesDialogContentPane
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getPreferencesDialogContentPane() {
@@ -106,7 +107,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the tabbedPane
-	 * 
+	 *
 	 * @return JTabbedPane
 	 */
 	private WizardTabbedPane getTabbedPane() {

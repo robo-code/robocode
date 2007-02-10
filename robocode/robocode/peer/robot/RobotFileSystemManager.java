@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -33,7 +33,7 @@ public class RobotFileSystemManager {
 	private RobotPeer robotPeer;
 	private long quotaUsed = 0;
 	private boolean quotaMessagePrinted = false;
-	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>(); 
+	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
 	private long maxQuota = 0;
 
 	/**
@@ -163,7 +163,7 @@ public class RobotFileSystemManager {
 			}
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -185,7 +185,7 @@ public class RobotFileSystemManager {
 		if (attemptedFile.getParentFile().equals(allowedDirectory)) {
 			return true;
 		}
-	
+
 		return false;
 	}
 

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -49,7 +49,7 @@ public class ImageManager {
 
 	public ImageManager() {
 		initialize();
-	}	
+	}
 
 	public void initialize() {
 		getBodyImage();
@@ -61,10 +61,10 @@ public class ImageManager {
 	public Image getGroundTileImage(int index) {
 		if (groundImages[index] == null) {
 			groundImages[index] = ImageUtil.getImage("/resources/images/ground/blue_metal/blue_metal_" + index + ".png");
-		}		
+		}
 		return groundImages[index];
 	}
-	
+
 	public int getNumExplosions() {
 		return explosionRenderImages.length;
 	}
@@ -77,7 +77,7 @@ public class ImageManager {
 		if (explosionRenderImages == null) {
 			int numExplosion, numFrame;
 			String filename;
-			
+
 			List<List<RenderImage>> explosions = new ArrayList<List<RenderImage>>();
 
 			boolean done = false;
@@ -100,7 +100,7 @@ public class ImageManager {
 					frames.add(new RenderImage(ImageUtil.getImage(filename)));
 				}
 			}
-			
+
 			numExplosion = explosions.size();
 			explosionRenderImages = new RenderImage[numExplosion][];
 
@@ -117,7 +117,7 @@ public class ImageManager {
 		}
 		return debriseRenderImage;
 	}
-	
+
 	/**
 	 * Gets the body image
 	 * Loads from disk if necessary.
@@ -125,11 +125,11 @@ public class ImageManager {
 	 */
 	private Image getBodyImage() {
 		if (bodyImage == null) {
-			bodyImage = ImageUtil.getImage("/resources/images/body.png");	
+			bodyImage = ImageUtil.getImage("/resources/images/body.png");
 		}
 		return bodyImage;
 	}
-	
+
 	/**
 	 * Gets the gun image
 	 * Loads from disk if necessary.
@@ -141,7 +141,7 @@ public class ImageManager {
 		}
 		return gunImage;
 	}
-	
+
 	/**
 	 * Gets the radar image
 	 * Loads from disk if necessary.
@@ -152,8 +152,8 @@ public class ImageManager {
 			radarImage = ImageUtil.getImage("/resources/images/radar.png");
 		}
 		return radarImage;
-	}	
-	
+	}
+
 	public RenderImage getColoredBodyRenderImage(Color color) {
 		RenderImage img = robotBodyImageCache.get(color);
 
@@ -186,12 +186,12 @@ public class ImageManager {
 
 	/**
 	 * Class used for caching rendered robot parts in various colors.
-	 * 
+	 *
 	 * @author Titus Chen
 	 */
 	@SuppressWarnings("serial")
 	private class RenderCache<K, V> extends LinkedHashMap<K, V> {
-		
+
 		/* Note about initial capacity:
 		 * To avoid rehashing (inefficient though probably unavoidable), initial
 		 * capacity must be at least 1 greater than the maximum capacity.
@@ -215,7 +215,8 @@ public class ImageManager {
 			 */
 			super(INITIAL_CAPACITY, LOAD_FACTOR, true);
 		}
-		
+
+		@Override
 		protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
 			return size() > MAX_NUM_COLORS;
 		}

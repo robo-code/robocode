@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -75,7 +75,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Action that launches the Replace dialog.
-	 * 
+	 *
 	 * The reason this is needed (and the menubar isn't sufficient) is that
 	 * ctrl+H is bound in JTextComponents at a lower level to backspace and in
 	 * order to override this, I need to rebind it to an Action when the
@@ -104,7 +104,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	public void addPlaceShowFocus(JInternalFrame internalFrame) {
 		getDesktopPane().add(internalFrame);
-	
+
 		// Center a window
 		Dimension screenSize = getDesktopPane().getSize();
 		Dimension size = internalFrame.getSize();
@@ -166,11 +166,11 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		if (packageName == null) {
 			packageName = "mypackage";
 		}
-	
+
 		EditWindow editWindow = new EditWindow(this, robotsDirectory);
 
 		editWindow.setModified(false);
-	
+
 		String templateName = "templates" + File.separatorChar + "newjavafile.tpt";
 
 		String template = "";
@@ -196,7 +196,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 
 		String name = "MyClass";
-	
+
 		int index = template.indexOf("$");
 
 		while (index >= 0) {
@@ -210,8 +210,8 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				index++;
 			}
 			index = template.indexOf("$", index);
-		}	
-	
+		}
+
 		editWindow.getEditorPane().setText(template);
 		editWindow.getEditorPane().setCaretPosition(0);
 		Document d = editWindow.getEditorPane().getDocument();
@@ -251,12 +251,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 					message = "Your name contains an invalid character.\nPlease use only letters and/or digits.";
 					done = false;
 				}
-			
+
 			}
 			if (!done) {
 				continue;
 			}
-			
+
 			if (!Character.isUpperCase(firstLetter)) // popup
 			{
 				message = "The first character should be uppercase,\nas should the first letter of all words in the name.\nExample: MyFirstRobot";
@@ -325,7 +325,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 		editWindow.setRobotName(name);
 		editWindow.setModified(false);
-	
+
 		String templateName = "templates" + File.separatorChar + "newrobot.tpt";
 
 		String template = "";
@@ -363,8 +363,8 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				index++;
 			}
 			index = template.indexOf("$", index);
-		}	
-	
+		}
+
 		editWindow.getEditorPane().setText(template);
 		editWindow.getEditorPane().setCaretPosition(0);
 		Document d = editWindow.getEditorPane().getDocument();
@@ -414,7 +414,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the desktopPane
-	 * 
+	 *
 	 * @return JDesktopPane
 	 */
 	public JDesktopPane getDesktopPane() {
@@ -428,7 +428,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the line label.
-	 * 
+	 *
 	 * @return JLabel
 	 */
 	private JLabel getLineLabel() {
@@ -440,7 +440,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the robocodeEditorContentPane
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getRobocodeEditorContentPane() {
@@ -455,7 +455,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the robocodeEditorMenuBar property value.
-	 * 
+	 *
 	 * @return robocode.editor.RobocodeEditorMenuBar
 	 */
 	private RobocodeEditorMenuBar getRobocodeEditorMenuBar() {
@@ -483,7 +483,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the toolBar.
-	 * 
+	 *
 	 * @return JToolBar
 	 */
 	private JToolBar getStatusBar() {
@@ -497,7 +497,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the findReplaceDialog
-	 * 
+	 *
 	 * @return robocode.editor.FindReplaceDialog
 	 */
 	public FindReplaceDialog getFindReplaceDialog() {
@@ -509,7 +509,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Return the replaceAction
-	 * 
+	 *
 	 * @return Action
 	 */
 	public Action getReplaceAction() {
@@ -550,6 +550,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	 */
 	private void initialize() {
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				close();
 			}
@@ -564,7 +565,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * main entrypoint - starts the part when it is run as an application
-	 * 
+	 *
 	 * @param args the arguments for the application
 	 */
 	public static void main(String[] args) {
@@ -604,6 +605,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 		chooser = new JFileChooser(editorDirectory);
 		FileFilter filter = new FileFilter() {
+			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isHidden()) {
 					return false;
@@ -624,6 +626,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				return false;
 			}
 
+			@Override
 			public String getDescription() {
 				return "Robots";
 			}
@@ -724,7 +727,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Gets the manager.
-	 * 
+	 *
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -37,7 +37,7 @@ import robocode.packager.*;
  * @author Luis Crespo (contributor)
  */
 public class WindowManager {
-	
+
 	private RobocodeEditor robocodeEditor;
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
@@ -49,7 +49,7 @@ public class WindowManager {
 	public WindowManager(RobocodeManager manager) {
 		this.manager = manager;
 	}
-	
+
 	public void setRobocodeFrame(RobocodeFrame newRobocodeFrame) {
 		robocodeFrame = newRobocodeFrame;
 	}
@@ -65,7 +65,7 @@ public class WindowManager {
 	public void showRobocodeFrame() {
 		// Pack frame to size all components
 		WindowUtil.packCenterShow(getRobocodeFrame());
-	
+
 		// Do it yet again to fix a bug in some JREs
 		robocodeFrame.setVisible(true);
 
@@ -82,8 +82,9 @@ public class WindowManager {
 		manager.getBattleManager().pauseBattle();
 
 		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
-		
+
 		chooser.setFileFilter(new FileFilter() {
+			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
 					return true;
@@ -102,20 +103,21 @@ public class WindowManager {
 				return false;
 			}
 
+			@Override
 			public String getDescription() {
 				return "Battles";
 			}
 		});
 
 		BattleManager battleManager = manager.getBattleManager();
-		
+
 		if (chooser.showOpenDialog(robocodeFrame) == JFileChooser.APPROVE_OPTION) {
 			battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
 			battleManager.loadBattleProperties();
 			showNewBattleDialog(battleManager.getBattleProperties());
 		}
 
-		battleManager.resumeBattle();	
+		battleManager.resumeBattle();
 	}
 
 	public void showVersionsTxt() {
@@ -156,7 +158,7 @@ public class WindowManager {
 
 	public void showOptionsPreferences() {
 		manager.getBattleManager().pauseBattle();
-	
+
 		// Create the preferencesDialog
 		PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
 
@@ -195,7 +197,7 @@ public class WindowManager {
 			robotPackager.dispose();
 			robotPackager = null;
 		}
-		
+
 		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager(), false);
 		// Pack, center, and show it
 		WindowUtil.packCenterShow(robotPackager);
@@ -206,14 +208,14 @@ public class WindowManager {
 			robotExtractor.dispose();
 			robotExtractor = null;
 		}
-		
+
 		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
 		// Pack, center, and show it
 		WindowUtil.packCenterShow(robotExtractor);
 	}
 
 	public void showSplashScreen() {
-		// Create the splash screen 
+		// Create the splash screen
 		SplashScreen splashScreen = new SplashScreen(manager);
 
 		// Pack, center, and show it
@@ -239,7 +241,7 @@ public class WindowManager {
 
 	public void showNewBattleDialog(BattleProperties battleProperties) {
 		manager.getBattleManager().pauseBattle();
-	
+
 		NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
 
 		// Pack, center, and show it
@@ -260,7 +262,7 @@ public class WindowManager {
 
 	/**
 	 * Gets the manager.
-	 * 
+	 *
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {
@@ -274,8 +276,9 @@ public class WindowManager {
 
 	public void showImportRobotDialog() {
 		JFileChooser chooser = new JFileChooser();
-		
+
 		chooser.setFileFilter(new FileFilter() {
+			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isHidden()) {
 					return false;
@@ -304,6 +307,7 @@ public class WindowManager {
 				return false;
 			}
 
+			@Override
 			public String getDescription() {
 				return "Jar Files";
 			}
@@ -355,7 +359,7 @@ public class WindowManager {
 
 	/**
 	 * Shows a web page using the browser manager.
-	 * 
+	 *
 	 * @param url
 	 *        The URL of the web page
 	 */
@@ -373,6 +377,7 @@ public class WindowManager {
 
 		chooser.setFileFilter(new FileFilter() {
 
+			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isHidden()) {
 					return false;
@@ -394,6 +399,7 @@ public class WindowManager {
 				return false;
 			}
 
+			@Override
 			public String getDescription() {
 				return "Comma Separated Value (CSV) File Format";
 			}

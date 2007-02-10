@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -293,7 +293,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Compile property value.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getCompilerCompileMenuItem() {
@@ -310,7 +310,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the compileMenu
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	private JMenu getCompilerMenu() {
@@ -327,7 +327,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the compileMenu
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	private JMenu getCompilerOptionsMenu() {
@@ -344,7 +344,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the compilerOptionsPreferencesMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getCompilerOptionsPreferencesMenuItem() {
@@ -360,7 +360,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the compilerOptionsResetCompilerMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getCompilerOptionsResetCompilerMenuItem() {
@@ -376,7 +376,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the fileExitMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getFileExitMenuItem() {
@@ -392,7 +392,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the fileMenu
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	private JMenu getFileMenu() {
@@ -414,7 +414,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the fileNewMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getFileNewJavaFileMenuItem() {
@@ -432,7 +432,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the fileNewMenu
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	private JMenu getFileNewMenu() {
@@ -449,7 +449,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the fileNewMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getFileNewRobotMenuItem() {
@@ -466,7 +466,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the fileOpenMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getFileOpenMenuItem() {
@@ -494,7 +494,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the fileSaveAsMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getFileSaveAsMenuItem() {
@@ -511,7 +511,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the fileSaveMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getFileSaveMenuItem() {
@@ -528,7 +528,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the functionsComingSoonMenuItem
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getFunctionsComingSoonMenuItem() {
@@ -543,7 +543,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the functionsMenu
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	private JMenu getFunctionsMenu() {
@@ -557,9 +557,10 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Help Menu.
-	 * 
+	 *
 	 * @return JMenu
 	 */
+	@Override
 	public JMenu getHelpMenu() {
 		if (helpMenu == null) {
 			helpMenu = new JMenu();
@@ -573,7 +574,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the helpRobocodeApiMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getHelpRobocodeApiMenuItem() {
@@ -589,7 +590,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Edit Menu.
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	public JMenu getEditMenu() {
@@ -617,7 +618,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editUndoMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditUndoMenuItem() {
@@ -634,7 +635,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editRedoMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditRedoMenuItem() {
@@ -651,7 +652,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editCutMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditCutMenuItem() {
@@ -668,7 +669,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editCopyMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditCopyMenuItem() {
@@ -685,7 +686,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editPasteMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditPasteMenuItem() {
@@ -702,7 +703,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editDeleteMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditDeleteMenuItem() {
@@ -719,7 +720,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editFindMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditFindMenuItem() {
@@ -736,7 +737,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editFindNextMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditFindNextMenuItem() {
@@ -753,7 +754,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editReplaceMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditReplaceMenuItem() {
@@ -770,7 +771,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the editSelectAllMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getEditSelectAllMenuItem() {
@@ -787,7 +788,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the Window Menu.
-	 * 
+	 *
 	 * @return JMenu
 	 */
 	public JMenu getWindowMenu() {
@@ -810,7 +811,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the windowCloseMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getWindowCloseMenuItem() {
@@ -826,7 +827,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the windowCloseAllMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getWindowCloseAllMenuItem() {
@@ -842,7 +843,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the windowWindowsMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	private JMenuItem getWindowWindowsDialogMenuItem() {
@@ -855,7 +856,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	/**
 	 * Return the windowWindowsMenuItem.
-	 * 
+	 *
 	 * @return JMenuItem
 	 */
 	public MoreWindowsDialog getMoreWindowsDialog() {

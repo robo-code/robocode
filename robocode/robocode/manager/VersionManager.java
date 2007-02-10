@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -39,7 +39,7 @@ import static robocode.io.Logger.log;
 public class VersionManager {
 	private String version;
 	private RobocodeManager manager;
-	
+
 	public VersionManager(RobocodeManager manager) {
 		this.manager = manager;
 	}
@@ -64,7 +64,7 @@ public class VersionManager {
 			manager.saveProperties();
 		}
 	}
-	
+
 	public boolean checkForNewVersion(boolean notifyNoUpdate) {
 		URL u = null;
 
@@ -77,7 +77,7 @@ public class VersionManager {
 			}
 			return false;
 		}
-	
+
 		BufferedReader reader;
 
 		try {
@@ -101,7 +101,7 @@ public class VersionManager {
 			}
 			return false;
 		}
-	
+
 		String v = null;
 
 		try {
@@ -113,7 +113,7 @@ public class VersionManager {
 			}
 			return false;
 		}
-	
+
 		String installurl = "http://robocode.sourceforge.net/installer";
 
 		if (v.compareToIgnoreCase(getVersion()) > 0) {
@@ -139,17 +139,17 @@ public class VersionManager {
 					"You have version " + version + ".  This is the latest version of Robocode.", "No update available",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-	
+
 		return true;
 	}
-	
+
 	public String getVersion() {
 		if (version == null) {
 			version = getVersionFromJar();
 		}
 		return version;
 	}
-	
+
 	private String getVersionFromJar() {
 		String versionString = null;
 
@@ -159,7 +159,7 @@ public class VersionManager {
 			if (versionsUrl == null) {
 				log("no url");
 			}
-				
+
 			BufferedReader in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
 
 			versionString = in.readLine();
@@ -174,7 +174,7 @@ public class VersionManager {
 			log("IO Exception reading versions.txt from robocode.jar" + e);
 			versionString = "unknown";
 		}
-	
+
 		String version = "unknown";
 
 		if (versionString != null) {
@@ -204,12 +204,12 @@ public class VersionManager {
 		} catch (FileNotFoundException e) {
 			log("No versions.txt file.");
 			versionString = "unknown";
-	
+
 		} catch (IOException e) {
 			log("IO Exception reading versions.txt" + e);
 			versionString = "unknown";
 		}
-	
+
 		String version = "unknown";
 
 		if (versionString != null) {

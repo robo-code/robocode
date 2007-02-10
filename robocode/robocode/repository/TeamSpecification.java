@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -42,7 +42,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	private String members = "";
 	private String uid = "";
-	
+
 	// Used in FileSpecification
 	protected TeamSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
 		this.developmentVersion = developmentVersion;
@@ -81,24 +81,27 @@ public class TeamSpecification extends FileSpecification implements Serializable
 		byte mb[] = getMembers().getBytes();
 		long uid1 = 0;
 
-		for (int i = 0; i < mb.length; i++) {
-			uid1 += mb[i];
+		for (byte element : mb) {
+			uid1 += element;
 		}
 		long uid2 = mb.length;
 
 		uid = uid1 + "" + uid2;
 	}
-	
+
+	@Override
 	public Object clone() {
 		return super.clone();
 	}
-	
+
+	@Override
 	public String getUid() {
 		return uid;
 	}
-	
+
 	public TeamSpecification() {}
 
+	@Override
 	public void load(FileInputStream in) throws IOException {
 		super.load(in);
 		authorEmail = props.getProperty(TEAM_AUTHOR_EMAIL);
@@ -115,7 +118,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotName.
-	 * 
+	 *
 	 * @param robotName The robotName to set
 	 */
 	public void setName(String name) {
@@ -124,7 +127,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotDescription.
-	 * 
+	 *
 	 * @param robotDescription The robotDescription to set
 	 */
 	public void setTeamDescription(String teamDescription) {
@@ -134,7 +137,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotAuthorName.
-	 * 
+	 *
 	 * @param robotAuthorName The robotAuthorName to set
 	 */
 	public void setTeamAuthorName(String teamAuthorName) {
@@ -144,7 +147,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotAuthorEmail.
-	 * 
+	 *
 	 * @param robotAuthorEmail The robotAuthorEmail to set
 	 */
 	public void setTeamAuthorEmail(String teamAuthorEmail) {
@@ -154,7 +157,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotAuthorWebsite.
-	 * 
+	 *
 	 * @param robotAuthorWebsite The robotAuthorWebsite to set
 	 */
 	public void setTeamAuthorWebsite(String teamAuthorWebsite) {
@@ -164,7 +167,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotVersion.
-	 * 
+	 *
 	 * @param robotVersion The robotVersion to set
 	 */
 	public void setTeamVersion(String teamVersion) {
@@ -174,7 +177,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the robotWebpage.
-	 * 
+	 *
 	 * @param robotWebpage The robotWebpage to set
 	 */
 	public void setTeamWebpage(URL teamWebpage) {
@@ -188,7 +191,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Gets the members.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getMembers() {
@@ -197,7 +200,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the members.
-	 * 
+	 *
 	 * @param members The members to set
 	 */
 	public void setMembers(String members) {
@@ -216,7 +219,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Gets the teamJavaSourceIncluded.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getTeamJavaSourceIncluded() {
@@ -225,7 +228,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 
 	/**
 	 * Sets the teamJavaSourceIncluded.
-	 * 
+	 *
 	 * @param teamJavaSourceIncluded The teamJavaSourceIncluded to set
 	 */
 	public void setTeamJavaSourceIncluded(boolean teamJavaSourceIncluded) {

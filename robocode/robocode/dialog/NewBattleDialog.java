@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -56,8 +56,9 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private RobocodeManager manager;
 
 	class EventHandler extends WindowAdapter implements ActionListener {
+		@Override
 		public void windowClosing(WindowEvent e) {
-			if (e.getSource() == NewBattleDialog.this) { 
+			if (e.getSource() == NewBattleDialog.this) {
 				manager.getBattleManager().resumeBattle();
 			}
 		}
@@ -117,7 +118,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the battleFieldTab
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private NewBattleBattleFieldTab getBattleFieldTab() {
@@ -129,7 +130,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the newBattleDialogContentPane
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getNewBattleDialogContentPane() {
@@ -146,7 +147,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the rulesTab property value.
-	 * 
+	 *
 	 * @return robocode.dialog.NewBattleRulesTab
 	 */
 	private NewBattleRulesTab getRulesTab() {
@@ -156,7 +157,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		return rulesTab;
 	}
 
-	public List<robocode.repository.FileSpecification> getSelectedRobots() { 
+	public List<robocode.repository.FileSpecification> getSelectedRobots() {
 		return getRobotSelectionPanel().getSelectedRobots();
 	}
 
@@ -172,7 +173,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * NewBattleDialog constructor comment.
-	 * 
+	 *
 	 * @param owner Frame
 	 */
 	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
@@ -185,7 +186,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the wizardController
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private WizardController getWizardController() {
@@ -199,7 +200,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the Page property value.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private RobotSelectionPanel getRobotSelectionPanel() {
@@ -218,7 +219,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * Return the tabbedPane.
-	 * 
+	 *
 	 * @return JTabbedPane
 	 */
 	private WizardTabbedPane getTabbedPane() {

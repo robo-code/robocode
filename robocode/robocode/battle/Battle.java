@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -81,7 +81,7 @@ public class Battle implements Runnable {
 	private BattleManager battleManager;
 	private RobocodeManager manager;
 
-	// Battle items	
+	// Battle items
 	private Thread battleThread;
 	private boolean running;
 	private boolean abortBattles;
@@ -118,9 +118,9 @@ public class Battle implements Runnable {
 	private List<RobotPeer> deathEvents = Collections.synchronizedList(new ArrayList<RobotPeer>());
 
 	// Objects in the battle
-	private List<RobotPeer> robots; 
+	private List<RobotPeer> robots;
 	private List<ContestantPeer> contestants;
-	private List<BulletPeer> bullets; 
+	private List<BulletPeer> bullets;
 
 	// Results related items
 	private boolean exitOnComplete;
@@ -161,21 +161,21 @@ public class Battle implements Runnable {
 		battleManager = manager.getBattleManager();
 		soundManager = manager.getSoundManager();
 		robots = Collections.synchronizedList(new ArrayList<RobotPeer>());
-		bullets = Collections.synchronizedList(new ArrayList<BulletPeer>()); 
+		bullets = Collections.synchronizedList(new ArrayList<BulletPeer>());
 		contestants = Collections.synchronizedList(new ArrayList<ContestantPeer>());
 	}
 
 	public void setReplay(boolean replay) {
 		this.replay = replay;
 	}
-	
+
 	/**
-	 * When an object implementing interface <code>Runnable</code> is used 
-	 * to create a thread, starting the thread causes the object's 
-	 * <code>run</code> method to be called in that separately executing 
-	 * thread. 
+	 * When an object implementing interface <code>Runnable</code> is used
+	 * to create a thread, starting the thread causes the object's
+	 * <code>run</code> method to be called in that separately executing
+	 * thread.
 	 * <p>
-	 * The general contract of the method <code>run</code> is that it may 
+	 * The general contract of the method <code>run</code> is that it may
 	 * take any action whatsoever.
 	 *
 	 * @see     java.lang.Thread#run()
@@ -207,7 +207,7 @@ public class Battle implements Runnable {
 		nonDeterministicRobots = null;
 
 		boolean soundInitialized = false;
-		
+
 		if (manager.isSoundEnabled()) {
 			soundInitialized = true;
 		}
@@ -229,7 +229,7 @@ public class Battle implements Runnable {
 				battleManager.setBattleRunning(true);
 
 				updateTitle();
-				
+
 				if (replay && battleRecord != null) {
 					if (battleRecord.rounds.size() > roundNum) {
 						runReplay();
@@ -292,7 +292,7 @@ public class Battle implements Runnable {
 			cleanup();
 		} else {
 			// Replay
-			
+
 			if (!abortBattles || showResultsDialog) {
 				showResultsDialog = false;
 
@@ -301,12 +301,12 @@ public class Battle implements Runnable {
 
 					for (int i = 0; i < robots.size(); i++) {
 						RobotPeer robot = robots.get(i);
-						
+
 						RobotStatistics stats = new RobotStatistics(robot, results[i]);
 
 						robot.setStatistics(stats);
 					}
-					
+
 					manager.getWindowManager().showResultsDialog(this);
 				}
 			}
@@ -391,7 +391,7 @@ public class Battle implements Runnable {
 	private void cleanupRound() {
 		if (!replay) {
 			log("Round " + (roundNum + 1) + " cleaning up.");
-	
+
 			for (RobotPeer r : robots) {
 				r.getRobotThreadManager().waitForStop();
 				r.getRobotStatistics().generateTotals();
@@ -411,7 +411,7 @@ public class Battle implements Runnable {
 		return battleThread;
 	}
 
-	public List<BulletPeer> getBullets() { 
+	public List<BulletPeer> getBullets() {
 		return bullets;
 	}
 
@@ -467,6 +467,7 @@ public class Battle implements Runnable {
 		desiredTPS = props.getOptionsBattleDesiredTPS();
 
 		props.addPropertyListener(props.new PropertyListener() {
+			@Override
 			public void desiredTpsChanged(int tps) {
 				desiredTPS = tps;
 			}
@@ -508,9 +509,9 @@ public class Battle implements Runnable {
 			try {
 				Class<?> c;
 
-				RobotClassManager classManager = r.getRobotClassManager(); 
+				RobotClassManager classManager = r.getRobotClassManager();
 				String className = classManager.getFullClassName();
-				
+
 				RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
 
 				if (RobotClassManager.isSecutityOn()) {
@@ -619,7 +620,7 @@ public class Battle implements Runnable {
 		int estimatedTurnMillisThisSec;
 
 		int delay = 0;
-		
+
 		boolean resetThisSec = true;
 
 		if (isRecordingEnabled) {
@@ -637,7 +638,7 @@ public class Battle implements Runnable {
 			// Next turn is starting
 
 			long turnStartTime = System.currentTimeMillis();
-			
+
 			if (resetThisSec) {
 				resetThisSec = false;
 
@@ -695,29 +696,29 @@ public class Battle implements Runnable {
 			if (isRecordingEnabled && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
 				currentTurnRecord = new TurnRecord();
 				currentRoundRecord.turns.add(currentTurnRecord);
-	
+
 				currentTurnRecord.robotStates = new ArrayList<RobotRecord>();
-	
+
 				List<RobotPeer> robots = getRobots();
 				RobotPeer rp;
-	
+
 				for (int i = 0; i < robots.size(); i++) {
-					rp = robots.get(i); 
+					rp = robots.get(i);
 					if (!rp.isDead()) {
 						RobotRecord rr = new RobotRecord(i, rp);
-	
+
 						currentTurnRecord.robotStates.add(rr);
 					}
 				}
-				
+
 				currentTurnRecord.bulletStates = new ArrayList<BulletRecord>();
 				for (BulletPeer bp : getBullets()) {
 					RobotPeer owner = bp.getOwner();
-	
+
 					for (int i = 0; i < robots.size(); i++) {
 						if (robots.get(i) == owner) {
 							BulletRecord br = new BulletRecord(i, bp);
-	
+
 							currentTurnRecord.bulletStates.add(br);
 							break;
 						}
@@ -762,7 +763,7 @@ public class Battle implements Runnable {
 			// Estimate the time remaining this second to spend on frame updates
 			estFrameTimeThisSec = max(0, 1000f - desiredTPS * (float) totalTurnMillisThisSec / turnsThisSec);
 
-			// Estimate the possible FPS based on the estimated frame time 
+			// Estimate the possible FPS based on the estimated frame time
 			estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
 
 			// Estimate the time that will be used on the total turn this second
@@ -849,7 +850,7 @@ public class Battle implements Runnable {
 		int estimatedTurnMillisThisSec;
 
 		int delay = 0;
-		
+
 		boolean resetThisSec = true;
 
 		battleManager.startNewRound();
@@ -866,7 +867,7 @@ public class Battle implements Runnable {
 			// Next turn is starting
 
 			long turnStartTime = System.currentTimeMillis();
-			
+
 			if (resetThisSec) {
 				resetThisSec = false;
 
@@ -886,7 +887,7 @@ public class Battle implements Runnable {
 				rp.setState(RobotPeer.STATE_DEAD);
 			}
 			for (RobotRecord rr : turnRecord.robotStates) {
-				robot = robots.get((int) rr.index);
+				robot = robots.get(rr.index);
 				robot.set(rr);
 			}
 
@@ -940,7 +941,7 @@ public class Battle implements Runnable {
 			// Estimate the time remaining this second to spend on frame updates
 			estFrameTimeThisSec = max(0, 1000f - desiredTPS * (float) totalTurnMillisThisSec / turnsThisSec);
 
-			// Estimate the possible FPS based on the estimated frame time 
+			// Estimate the possible FPS based on the estimated frame time
 			estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
 
 			// Estimate the time that will be used on the total turn this second
@@ -985,7 +986,7 @@ public class Battle implements Runnable {
 		}
 		return false;
 	}
-	
+
 	private void computeActiveRobots() {
 		int ar = 0;
 
@@ -1286,24 +1287,24 @@ public class Battle implements Runnable {
 				r.setEnergy(0);
 			}
 		}
-		
+
 		activeRobots = robots.size();
-		
+
 		if (!replay) {
 			manager.getThreadManager().reset();
-	
+
 			// Turning on robots
 			for (RobotPeer r : robots) {
 				manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
 				int waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000);
-	
+
 				synchronized (r) {
 					try {
 						log(".", false);
 						r.getRobotThreadManager().start();
 						// Wait for the robot to go to sleep (take action)
 						r.wait(waitTime);
-	
+
 					} catch (InterruptedException e) {
 						log("Wait for " + r + " interrupted.");
 					}
@@ -1423,7 +1424,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the activeRobots.
-	 * 
+	 *
 	 * @return Returns a int
 	 */
 	public int getActiveRobots() {
@@ -1458,7 +1459,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the activeRobots.
-	 * 
+	 *
 	 * @param activeRobots The activeRobots to set
 	 */
 	private synchronized void setActiveRobots(int activeRobots) {
@@ -1467,7 +1468,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the roundNum.
-	 * 
+	 *
 	 * @return Returns a int
 	 */
 	public int getRoundNum() {
@@ -1476,7 +1477,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the roundNum.
-	 * 
+	 *
 	 * @param roundNum The roundNum to set
 	 */
 	public void setRoundNum(int roundNum) {
@@ -1485,7 +1486,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the unsafeLoaderThreadRunning.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean isUnsafeLoaderThreadRunning() {
@@ -1494,7 +1495,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the unsafeLoaderThreadRunning.
-	 * 
+	 *
 	 * @param unsafeLoaderThreadRunning The unsafeLoaderThreadRunning to set
 	 */
 	public synchronized void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
@@ -1503,7 +1504,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the battleSpecification.
-	 * 
+	 *
 	 * @return Returns a BattleSpecification
 	 */
 	public BattleSpecification getBattleSpecification() {
@@ -1512,7 +1513,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the battleSpecification.
-	 * 
+	 *
 	 * @param battleSpecification The battleSpecification to set
 	 */
 	public void setBattleSpecification(BattleSpecification battleSpecification) {
@@ -1521,7 +1522,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the manager.
-	 * 
+	 *
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {
@@ -1536,9 +1537,9 @@ public class Battle implements Runnable {
 			for (BulletPeer bp : getBullets()) {
 				soundManager.playBulletSound(bp);
 			}
-			
+
 			boolean playedRobotHitRobot = false;
-			
+
 			for (RobotPeer rp : getRobots()) {
 				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
 				if (rp.getState() == RobotPeer.STATE_HIT_ROBOT) {
@@ -1548,20 +1549,20 @@ public class Battle implements Runnable {
 					playedRobotHitRobot = true;
 				}
 
-				soundManager.playRobotSound(rp);					
+				soundManager.playRobotSound(rp);
 			}
 		}
 	}
 
 	/**
 	 * Informs on whether the battle is running or not.
-	 * 
+	 *
 	 * @return true if the battle is running, false otherwise
 	 */
 	public boolean isRunning() {
 		return running;
 	}
-	
+
 	private void updateTitle() {
 		if (battleView == null) {
 			return;
@@ -1571,7 +1572,7 @@ public class Battle implements Runnable {
 
 		if (running) {
 			title.append(": ");
-			
+
 			if (currentTime == 0) {
 				title.append("Starting round");
 			} else {
@@ -1581,10 +1582,10 @@ public class Battle implements Runnable {
 				if (!battleManager.isPaused()) {
 					boolean dispTps = battleView.isDisplayTPS();
 					boolean dispFps = battleView.isDisplayFPS();
-		
+
 					if (dispTps | dispFps) {
 						title.append(" (");
-						
+
 						if (dispTps) {
 							title.append(turnsThisSec).append(" TPS");
 						}

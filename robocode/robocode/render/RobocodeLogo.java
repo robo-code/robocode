@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
@@ -19,7 +19,7 @@ import robocode.render.RenderImage;
 
 
 /**
- * This class is used for rendering the Robocode logo. 
+ * This class is used for rendering the Robocode logo.
  *
  * @author Flemming N. Larsen (original)
  */
@@ -38,7 +38,7 @@ public class RobocodeLogo {
 	private final static Color GREEN_ALPHA_40 = new Color(0x00, 0xff, 0x00, 0x40);
 	private final static Color GREEN_ALPHA_48 = new Color(0x00, 0xff, 0x00, 0x48);
 	private final static Color GREEN_ALPHA_80 = new Color(0x00, 0xff, 0x00, 0x80);
-	
+
 	private final static Shape I_SHAPE = new Rectangle2D.Float(0, 0, 13, 46);
 
 	private final static Stroke THIN_STROKE = new BasicStroke(1.5f);
@@ -46,7 +46,7 @@ public class RobocodeLogo {
 	public void paintLogoWithTanks(Graphics graphics) {
 		Graphics2D g = (Graphics2D) graphics;
 		AffineTransform origTransform = g.getTransform();
-		
+
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
@@ -60,7 +60,7 @@ public class RobocodeLogo {
 		drawInnerDecoration(g);
 		drawInnerSubDecoration(g);
 		drawRobocodeText(g);
-		
+
 		g.setTransform(origTransform);
 	}
 
@@ -68,11 +68,11 @@ public class RobocodeLogo {
 		AffineTransform at = new AffineTransform();
 
 		if (tx != null) {
-			at.concatenate(tx);			
+			at.concatenate(tx);
 		}
 		g.setTransform(at);
 	}
-	
+
 	private void drawTanks(Graphics2D g) {
 		AffineTransform origTransform = g.getTransform();
 
@@ -80,7 +80,7 @@ public class RobocodeLogo {
 		drawRobot(g, 22, 92, (float) Math.PI / 2, (float) Math.PI, (float) Math.PI, new Color(0x16, 0x00, 0x2c, 0xff));
 
 		drawRobot(g, 212, 173, 0.75f, 0.75f, 0.75f, new Color(0x02, 0x01, 0x00, 0xff));
-		
+
 		drawRobot(g, 455, 50, 2.4f, 2f, 2f, new Color(0x02, 0x00, 0x01, 0xff));
 		drawRobot(g, 492, 82, -0.3f, -0.27f, -0.27f, new Color(0x00, 0x00, 0x01, 0xff));
 
@@ -137,7 +137,7 @@ public class RobocodeLogo {
 		radarRenderImage.setTransform(AffineTransform.getRotateInstance(radarAngle));
 		radarRenderImage.paint(g);
 	}
-	
+
 	private void drawOuterDecoration(Graphics2D g) {
 		Shape shape = getOuterDecoration();
 
@@ -149,7 +149,7 @@ public class RobocodeLogo {
 		g.setStroke(THIN_STROKE);
 		g.drawOval(16, 5, 490, 163);
 	}
-	
+
 	private void drawMiddleEllipse(Graphics2D g) {
 		transform(g, null);
 
@@ -165,12 +165,12 @@ public class RobocodeLogo {
 
 	private void drawMiddleDecoration(Graphics2D g) {
 		Shape shape = getMiddleDecoration();
-		
+
 		transform(g, AffineTransform.getTranslateInstance(77, 41));
 
 		g.setColor(GREEN_ALPHA_20);
 		g.fill(shape);
-		
+
 		g.setStroke(THIN_STROKE);
 		g.setColor(GREEN_ALPHA_48);
 		g.draw(shape);
@@ -178,7 +178,7 @@ public class RobocodeLogo {
 
 	private void drawInnerDecoration(Graphics2D g) {
 		Shape shape = getInnerDecoration();
-		
+
 		transform(g, AffineTransform.getTranslateInstance(103, 52));
 
 		g.setColor(DARK_GREEN_ALPHA_80);
@@ -221,38 +221,38 @@ public class RobocodeLogo {
 		if (outerDecoration == null) {
 			float W = 523;
 			float H = 174;
-	
+
 			outerDecoration = new Area(new Ellipse2D.Float(0, 0, W, H));
 			outerDecoration.subtract(new Area(new Ellipse2D.Float(16, 5, W - 2 * 16, H - 2 * 5)));
-	
+
 			outerDecoration.subtract(new Area(new Rectangle2D.Float(W / 2, 0, W / 2, H / 2)));
 			outerDecoration.subtract(new Area(new Rectangle2D.Float(0, H / 2, W / 2, H / 2)));
 		}
 		return outerDecoration;
 	}
-	
+
 	private Area middleDecoration;
 
 	private Shape getMiddleDecoration() {
 		if (middleDecoration == null) {
 			middleDecoration = new Area(new Ellipse2D.Float(0, 0, 420, 140));
-	
+
 			Rectangle2D.Float rect = new Rectangle2D.Float(180, 69, 500, 3);
-	
+
 			for (float deg = 120; deg <= 335; deg += 4.8f) {
 				Area rectArea = new Area(rect);
 
 				rectArea.transform(AffineTransform.getRotateInstance(Math.toRadians(deg), 151, 72));
 				middleDecoration.subtract(rectArea);
 			}
-	
+
 			middleDecoration.subtract(new Area(new Ellipse2D.Float(18, 2, 408, 144)));
 		}
 		return middleDecoration;
 	}
 
 	private Area innerSubDecoration;
-	
+
 	private Shape getInnerSubDecoration() {
 		if (innerSubDecoration == null) {
 			innerSubDecoration = new Area(new Ellipse2D.Float(0, 0, 356, 114));
@@ -266,7 +266,7 @@ public class RobocodeLogo {
 	}
 
 	private Area innerDecoration;
-	
+
 	private Shape getInnerDecoration() {
 		if (innerDecoration == null) {
 			innerDecoration = new Area(new Ellipse2D.Float(0, 0, 368, 120));
@@ -277,38 +277,38 @@ public class RobocodeLogo {
 	}
 
 	private GeneralPath robocodeTextPath;
-	
+
 	public GeneralPath getRobocodeText() {
 		if (robocodeTextPath == null) {
 			robocodeTextPath = new GeneralPath();
-	
+
 			GeneralPath R = getPathR();
 			GeneralPath o = getPathO();
 			GeneralPath b = getPathB();
 			GeneralPath c = getPathC();
 			GeneralPath d = getPathD();
 			GeneralPath e = getPathE();
-	
+
 			robocodeTextPath.append(R, false);
-	
+
 			o.transform(AffineTransform.getTranslateInstance(42, 16));
 			robocodeTextPath.append(o, false);
-			
+
 			b.transform(AffineTransform.getTranslateInstance(84, 0));
 			robocodeTextPath.append(b, false);
-	
+
 			o.transform(AffineTransform.getTranslateInstance(127 - 42, 0));
 			robocodeTextPath.append(o, false);
-	
+
 			c.transform(AffineTransform.getTranslateInstance(170, 16));
 			robocodeTextPath.append(c, false);
-	
+
 			o.transform(AffineTransform.getTranslateInstance(204 - 127, 0));
 			robocodeTextPath.append(o, false);
-	
+
 			d.transform(AffineTransform.getTranslateInstance(246, 0));
 			robocodeTextPath.append(d, false);
-	
+
 			e.transform(AffineTransform.getTranslateInstance(290, 16));
 			robocodeTextPath.append(e, false);
 		}
@@ -322,7 +322,7 @@ public class RobocodeLogo {
 
 		bow.transform(AffineTransform.getTranslateInstance(15, 0));
 		path.append(bow, false);
-		
+
 		path.moveTo(21, 29);
 		path.lineTo(31, 46);
 		path.lineTo(44.5f, 46);
@@ -386,7 +386,7 @@ public class RobocodeLogo {
 
 	private GeneralPath getPathE() {
 		GeneralPath path = new GeneralPath();
-		
+
 		path.moveTo(0, 14.5f);
 		path.lineTo(31, 14.5f);
 		path.curveTo(31, -4.5f, 0, -4.5f, 0, 14.5f);
@@ -394,7 +394,7 @@ public class RobocodeLogo {
 
 		path.moveTo(12, 11);
 		path.lineTo(20, 11);
-		path.curveTo(20, 8, 12, 8, 12, 11);		
+		path.curveTo(20, 8, 12, 8, 12, 11);
 		path.closePath();
 
 		GeneralPath bow2 = getPathCBow();

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -23,7 +23,7 @@ import robocode.security.RobocodeSecurityManager;
  * the sample robot named Target.  See Target.java for details.
  *  <PRE>
  *	  addCustomEvent(
- *			new Condition("triggerhit") { 
+ *			new Condition("triggerhit") {
  *			  public boolean test() {
  *				  return (getEnergy() <= trigger);
  *				};
@@ -37,7 +37,7 @@ import robocode.security.RobocodeSecurityManager;
  * @see robocode.AdvancedRobot#addCustomEvent
  * @see robocode.AdvancedRobot#removeCustomEvent
  * @see robocode.AdvancedRobot#onCustomEvent
- * 
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -132,10 +132,10 @@ public abstract class Condition {
 	 * Overriding the test() method is the point of a Condition.  The game will call your
 	 * test() function, and take action if it returns true.  This is valid for both
 	 * {@link robocode.AdvancedRobot#waitFor waitFor} and {@link robocode.AdvancedRobot#addCustomEvent addCustomEvent}.
-	 * 
+	 *
 	 * <P>You may not take any actions inside of test().
-	 * 
+	 *
 	 * @return true if the condition has been met, false otherwise.
 	 */
-	public abstract boolean test();         
+	public abstract boolean test();
 }

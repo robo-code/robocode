@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -19,6 +19,7 @@ import java.awt.*;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -36,10 +37,11 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer implement
 	public ResultsTableCellRenderer(boolean isBordered) {
 		super();
 		this.isBordered = isBordered;
-		setHorizontalAlignment(JLabel.CENTER);
-		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));	    
+		setHorizontalAlignment(SwingConstants.CENTER);
+		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 	}
 
+	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 			boolean hasFocus, int row, int column) {
 		if (isBordered) {

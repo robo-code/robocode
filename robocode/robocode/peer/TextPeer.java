@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -32,10 +32,10 @@ public class TextPeer {
 	private long visibleTime;
 
 	private boolean ready = true;
-	
+
 	/**
 	 * Gets the text.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getText() {
@@ -44,7 +44,7 @@ public class TextPeer {
 
 	/**
 	 * Sets the text.
-	 * 
+	 *
 	 * @param text The text to set
 	 */
 	public void setText(String text) {
@@ -55,7 +55,7 @@ public class TextPeer {
 
 	/**
 	 * Gets the x.
-	 * 
+	 *
 	 * @return Returns a int
 	 */
 	public int getX() {
@@ -64,7 +64,7 @@ public class TextPeer {
 
 	/**
 	 * Sets the x.
-	 * 
+	 *
 	 * @param x The x to set
 	 */
 	public void setX(int x) {
@@ -73,7 +73,7 @@ public class TextPeer {
 
 	/**
 	 * Gets the y.
-	 * 
+	 *
 	 * @return Returns a int
 	 */
 	public int getY() {
@@ -82,7 +82,7 @@ public class TextPeer {
 
 	/**
 	 * Sets the y.
-	 * 
+	 *
 	 * @param y The y to set
 	 */
 	public void setY(int y) {
@@ -91,18 +91,18 @@ public class TextPeer {
 
 	/**
 	 * Sets the clearTime.
-	 * 
+	 *
 	 * @param clearTime The clearTime to set
 	 */
 	public void setDuration(long duration) {
 		this.duration = duration;
 	}
-	
+
 	public void tick() {
 		if (text == null) {
 			return;
 		}
-			
+
 		visibleTime++;
 		if (visibleTime > duration) {
 			setText(null);
@@ -124,7 +124,7 @@ public class TextPeer {
 
 	/**
 	 * Gets the ready.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean isReady() {
@@ -133,7 +133,7 @@ public class TextPeer {
 
 	/**
 	 * Sets the ready.
-	 * 
+	 *
 	 * @param ready The ready to set
 	 */
 	public void setReady(boolean ready) {

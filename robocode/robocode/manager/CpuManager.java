@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -29,16 +29,16 @@ import robocode.io.Logger;
 public class CpuManager {
 	private int cpuConstant = -1;
 	private RobocodeManager manager;
-	
+
 	public CpuManager(RobocodeManager manager) {
 		this.manager = manager;
 	}
 
 	public int getCpuConstant() {
 		final int APPROXIMATE_CYCLES_ALLOWED = 50000;
-		
+
 		final int TEST_PERIOD_MILLIS = 5000;
-		
+
 		if (cpuConstant == -1) {
 			cpuConstant = manager.getProperties().getCpuConstant();
 			if (cpuConstant == -1) {
@@ -52,7 +52,7 @@ public class CpuManager {
 					d = Math.random() * Math.random();
 					count++;
 				}
-				
+
 				double cyclesPerMS = count / TEST_PERIOD_MILLIS;
 
 				double msPerCycle = 1 / cyclesPerMS;
@@ -72,7 +72,7 @@ public class CpuManager {
 			}
 
 			/*
-			 17 MFlops:  32 ms 
+			 17 MFlops:  32 ms
 			 35 MFlops:  16 ms
 			 70 MFlops:  8 ms
 			 */

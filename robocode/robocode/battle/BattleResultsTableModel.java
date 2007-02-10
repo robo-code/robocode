@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -24,6 +24,7 @@ package robocode.battle;
 
 
 import java.io.*;
+import java.text.DateFormat;
 import java.util.*;
 
 import robocode.io.Logger;
@@ -40,16 +41,17 @@ import robocode.text.StringUtil;
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
 	private Battle battle;
 	private String title;
-	
+
 	public BattleResultsTableModel(Battle battle) {
 		super();
 		this.battle = battle;
 	}
 
 	public int getColumnCount() {
-		return 12; 
+		return 12;
 	}
 
+	@Override
 	public String getColumnName(int col) {
 		switch (col) {
 		case 0:
@@ -110,15 +112,15 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public Object getValueAt(int row, int col) {
-		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(battle.getContestants()); 
+		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(battle.getContestants());
 
 		Collections.sort(orderedContestants);
 
 		ContestantPeer r = orderedContestants.get(row);
-		ContestantStatistics statistics = r.getStatistics(); 
+		ContestantStatistics statistics = r.getStatistics();
 
 		switch (col) {
-		case 0: { 
+		case 0: {
 			int place = row + 1;
 
 			while (place < getRowCount()
@@ -189,8 +191,8 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		try {
 			PrintStream out = new PrintStream(new FileOutputStream(filename, append));
 
-			out.println(java.text.SimpleDateFormat.getDateTimeInstance().format(new Date()));
-			
+			out.println(DateFormat.getDateTimeInstance().format(new Date()));
+
 			out.println(getTitle());
 
 			for (int col = 0; col < getColumnCount(); col++) {
@@ -213,7 +215,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			}
 
 			out.println("$");
-			
+
 			out.close();
 
 		} catch (IOException e) {

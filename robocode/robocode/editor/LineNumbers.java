@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Reeder
  *     - Initial API and implementation
@@ -23,7 +23,7 @@ import static java.lang.Math.*;
 /**
  * Custom widget for line numbers, meant to be the row header for a JScrollPane
  * that scrolls a JEditorPane.
- * 
+ *
  * @author Matthew Reeder (original)
  */
 @SuppressWarnings("serial")
@@ -53,7 +53,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 
 	/**
 	 * Listens for changes on the Document in its associated text pane.
-	 * 
+	 *
 	 * If the number of lines has changed, it updates its view.
 	 */
 	public void changedUpdate(DocumentEvent e) {
@@ -65,7 +65,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 
 	/**
 	 * Listens for changes on the Document in its associated text pane.
-	 * 
+	 *
 	 * If the number of lines has changed, it updates its view.
 	 */
 	public void insertUpdate(DocumentEvent e) {
@@ -77,7 +77,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 
 	/**
 	 * Listens for changes on the Document in its associated text pane.
-	 * 
+	 *
 	 * If the number of lines has changed, it updates its view.
 	 */
 	public void removeUpdate(DocumentEvent e) {
@@ -108,6 +108,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 	/**
 	 * Draws the line numbers.
 	 */
+	@Override
 	public void paint(Graphics g) {
 		checkLines(editorPane.getText());
 		g.setFont(editorPane.getFont());
@@ -260,7 +261,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 
 	/**
 	 * Listens for changes in caret position on the text pane.
-	 * 
+	 *
 	 * Updates the code block display and stuff
 	 */
 	public void caretUpdate(CaretEvent e) {

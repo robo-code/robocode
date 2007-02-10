@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -25,10 +25,10 @@ import robocode.peer.RobotPeer;
  * @author Mathew A. Nelson (original)
  */
 public class TeamRobot extends AdvancedRobot {
-	
+
 	/**
 	 * Checks if a given robot name is one of your teammates.
-	 * 
+	 *
 	 * <P>Example
 	 * <PRE>
 	 *   public void onScannedRobot(ScannedRobotEvent e)
@@ -53,10 +53,10 @@ public class TeamRobot extends AdvancedRobot {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Returns an array of your teammates names
-	 * 
+	 *
 	 * <P>Example
 	 * <PRE>
 	 *   public void run()
@@ -66,7 +66,7 @@ public class TeamRobot extends AdvancedRobot {
 	 *           System.out.println(teammates[i]);
 	 *   }
 	 * </PRE>
-	 * 
+	 *
 	 * @return String array containing teammate names
 	 */
 	public String[] getTeammates() {
@@ -92,10 +92,10 @@ public class TeamRobot extends AdvancedRobot {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Broadcasts a message to all teammates
-	 * 
+	 *
 	 * <P>Example
 	 * <PRE>
 	 *   public void run()
@@ -103,7 +103,7 @@ public class TeamRobot extends AdvancedRobot {
 	 *       broadcastMessage("I'm here!");
 	 *   }
 	 * </PRE>
-	 * 
+	 *
 	 * @param message The message to broadcast
 	 */
 	public void broadcastMessage(Serializable message) throws IOException {
@@ -117,10 +117,10 @@ public class TeamRobot extends AdvancedRobot {
 			uninitializedException("broadcastMessage");
 		}
 	}
-	
+
 	/**
 	 * Sends a message to one (or more) teammates
-	 * 
+	 *
 	 * <P>Example
 	 * <PRE>
 	 *   public void run()
@@ -153,7 +153,7 @@ public class TeamRobot extends AdvancedRobot {
 	 *     out.println(event.getSender() + " sent me: " + event.getMessage());
 	 *   }
 	 * </PRE>
-	 *   
+	 *
 	 * @param event The event set by the game
 	 * @see robocode.MessageEvent
 	 * @see robocode.Event

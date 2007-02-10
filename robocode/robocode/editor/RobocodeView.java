@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -35,6 +35,7 @@ public class RobocodeView extends javax.swing.text.PlainView {
 		super(elem);
 	}
 
+	@Override
 	public void changedUpdate(DocumentEvent e, Shape a, ViewFactory f) {
 		super.changedUpdate(e, a, f);
 		JavaDocument d = (JavaDocument) e.getDocument();
@@ -45,6 +46,7 @@ public class RobocodeView extends javax.swing.text.PlainView {
 		}
 	}
 
+	@Override
 	protected int drawUnselectedText(java.awt.Graphics g, int x, int y, int p0, int p1) throws javax.swing.text.BadLocationException {
 		Document doc = getDocument();
 		Segment segment = new Segment();
@@ -64,7 +66,7 @@ public class RobocodeView extends javax.swing.text.PlainView {
 		if (lineAttributes.isDefined("inComment")) {
 			state = MULTILINECOMMENT;
 		}
-	
+
 		for (int i = 0; i < count; i++) {
 			// Starting in default text state.
 			if (state == TEXT) {
@@ -95,7 +97,7 @@ public class RobocodeView extends javax.swing.text.PlainView {
 					}
 				}
 			} else if (state == KEYWORD) {
-				// Still 
+				// Still
 				if (Character.isLetter(segment.array[i + segment.offset])) {// && Character.isLowerCase(segment.array[i+segment.offset]))
 					;
 				} else {
@@ -166,10 +168,12 @@ public class RobocodeView extends javax.swing.text.PlainView {
 		return x;
 	}
 
+	@Override
 	protected int getTabSize() {
 		return 4;
 	}
 
+	@Override
 	public void insertUpdate(DocumentEvent e, Shape a, ViewFactory f) {
 		super.insertUpdate(e, a, f);
 		JavaDocument d = (JavaDocument) e.getDocument();
@@ -180,6 +184,7 @@ public class RobocodeView extends javax.swing.text.PlainView {
 		}
 	}
 
+	@Override
 	public void removeUpdate(DocumentEvent e, Shape a, ViewFactory f) {
 		super.removeUpdate(e, a, f);
 		JavaDocument d = (JavaDocument) e.getDocument();

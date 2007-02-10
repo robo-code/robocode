@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -31,13 +31,13 @@ import robocode.peer.*;
  * @author Robert D. Maupin (contributor)
  */
 public class RobotMessageManager {
-	
+
 	private RobotPeer robotPeer;
-	private List<MessageEvent> messageEvents = Collections.synchronizedList(new ArrayList<MessageEvent>()); 
- 	
+	private List<MessageEvent> messageEvents = Collections.synchronizedList(new ArrayList<MessageEvent>());
+
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
- 	
+
 	public RobotMessageManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
 		try {
@@ -50,12 +50,12 @@ public class RobotMessageManager {
 			robotPeer.out.println("Unable to initialize team message service.");
 		}
 	}
-	
+
 	public void sendMessage(String name, Serializable o) throws IOException {
 		if (robotPeer.getRobotClassManager().getTeamManager() == null) {
 			throw new IOException("Unable to send message, you are not on a team.");
 		}
-		
+
 		TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
 
 		for (RobotPeer receiver : teamPeer) {
@@ -83,17 +83,17 @@ public class RobotMessageManager {
 		}
 		// Note:  Does nothing, simply throws IOException if too many bytes.
 	}
-	
+
 	public void addMessage(String sender, Serializable o) {
 		if (robotPeer.isAlive()) {
 			messageEvents.add(new MessageEvent(sender, o));
 		}
 	}
-	
+
 	public List<MessageEvent> getMessageEvents() {
 		return messageEvents;
 	}
-	
+
 	public void clearMessageEvents() {
 		messageEvents.clear();
 	}

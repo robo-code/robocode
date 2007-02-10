@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -60,7 +60,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	private ConfirmPanel confirmPanel;
 	private RobotSelectionPanel robotSelectionPanel;
 	private PackagerOptionsPanel packagerOptionsPanel;
-	
+
 	public byte buf[] = new byte[4096];
 	private StringWriter output;
 	private RobotRepositoryManager robotManager;
@@ -97,10 +97,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 			out.write(buf, 0, count);
 		}
 	}
-		
+
 	public void finishButtonActionPerformed() {
 		String resultsString;
-	
+
 		int rc = packageRobots();
 		ConsoleDialog d;
 
@@ -126,7 +126,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	/**
 	 * Return the buttonsPanel
-	 * 
+	 *
 	 * @return javax.swing.JButton
 	 */
 	private WizardController getButtonsPanel() {
@@ -143,7 +143,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	/**
 	 * Return the buttonsPanel
-	 * 
+	 *
 	 * @return javax.swing.JButton
 	 */
 	private ConfirmPanel getConfirmPanel() {
@@ -155,7 +155,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	/**
 	 * Return the optionsPanel
-	 * 
+	 *
 	 * @return robocode.packager.PackagerOptionsPanel
 	 */
 	protected FilenamePanel getFilenamePanel() {
@@ -167,7 +167,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	/**
 	 * Return the optionsPanel
-	 * 
+	 *
 	 * @return robocode.packager.PackagerOptionsPanel
 	 */
 	protected PackagerOptionsPanel getPackagerOptionsPanel() {
@@ -179,7 +179,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	/**
 	 * Return the newBattleDialogContentPane
-	 * 
+	 *
 	 * @return javax.swing.JPanel
 	 */
 	private javax.swing.JPanel getRobotPackagerContentPane() {
@@ -199,7 +199,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	/**
 	 * Return the Page property value.
-	 * 
+	 *
 	 * @return javax.swing.JPanel
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
@@ -213,7 +213,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	/**
 	 * Return the tabbedPane.
-	 * 
+	 *
 	 * @return javax.swing.JTabbedPane
 	 */
 	private WizardCardPanel getWizardPanel() {
@@ -261,7 +261,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 			out.println("Overwriting " + jarFilename);
 		}
-		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots(); 
+		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
 
 		// Create the jar file
 		Manifest manifest = new Manifest();
@@ -270,7 +270,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		String robots = "";
 
 		for (int i = 0; i < selectedRobots.size(); i++) {
-			robots += ((FileSpecification) selectedRobots.get(i)).getFullClassName();
+			robots += (selectedRobots.get(i)).getFullClassName();
 			if (i < selectedRobots.size() - 1) {
 				robots += ",";
 			}
@@ -286,7 +286,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			out.println(e);
 			return 8;
 		}
-		
+
 		for (FileSpecification fileSpecification : selectedRobots) {
 			if (fileSpecification instanceof RobotSpecification) {
 				RobotSpecification robotSpecification = (RobotSpecification) fileSpecification;
@@ -361,7 +361,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 					out.println("Unable to save .team file: " + e);
 					out.println("Attempting to continue...");
 				}
-			
+
 				teamSpecification = (TeamSpecification) teamSpecification.clone();
 				teamSpecification.setTeamVersion(getPackagerOptionsPanel().getVersionField().getText());
 
@@ -473,7 +473,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	public int addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, RobotSpecification robotSpecification) {
 		int rv = 0;
-		RobotClassManager classManager = new RobotClassManager((RobotSpecification) robotSpecification);
+		RobotClassManager classManager = new RobotClassManager(robotSpecification);
 
 		try {
 			Iterator<String> classes = getClasses(classManager).iterator();
@@ -493,7 +493,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 				// ignore duplicate entry, fine, it's already there.
 			}
-		
+
 			File html = new File(rootDirectory, classManager.getFullClassName().replace('.', '/') + ".html");
 
 			if (html.exists()) {
@@ -514,7 +514,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 			}
 			while (classes.hasNext()) {
-				String className = (String) classes.next();
+				String className = classes.next();
 
 				// Add source file if selected (not inner classes of course)
 				if (getPackagerOptionsPanel().getIncludeSource().isSelected()) {
@@ -560,7 +560,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 					// ignore duplicate entry, fine, it's already there.
 				}
 			}
-	
+
 			File dataDirectory = new File(rootDirectory, classManager.getFullClassName().replace('.', '/') + ".data");
 
 			if (dataDirectory.exists()) {

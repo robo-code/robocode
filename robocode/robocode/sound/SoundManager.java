@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Luis Crespo
  *     - Initial API and implementation
@@ -40,7 +40,7 @@ import robocode.peer.RobotPeer;
  * The sound manager is responsible of keeping a table of sound effects and
  * play the appropriate sound for each bullet or robot event that is supposed
  * to make any noise.
- *  
+ *
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
  * @author Titus Chen (contributor)
@@ -73,7 +73,7 @@ public class SoundManager {
 
 	/**
 	 * Returns the cache containing sound clips.
-	 * 
+	 *
 	 * @return a SoundCache instance
 	 */
 	private SoundCache getSounds() {
@@ -95,11 +95,11 @@ public class SoundManager {
 		}
 		return sounds;
 	}
-	
+
 	/**
 	 * Iterates over the available mixers, looking for the one that matches a given
 	 * class name.
-	 * 
+	 *
 	 * @param mixerClassName the class name of the mixer to be used.
 	 * @return the requested mixer, if found. Otherwise, it returns null.
 	 */
@@ -120,10 +120,10 @@ public class SoundManager {
 	public void dispose() {
 		getSounds().clear();
 	}
-	
+
 	/**
-	 * Plays a specific sound at a given volume, panning and loop count 
-	 * 
+	 * Plays a specific sound at a given volume, panning and loop count
+	 *
 	 * @param key the sound name, as stored in the sound table
 	 * @param pan panning to be used (-1=left, 0=middle, +1=right)
 	 * @param volume volume to be used, from 0 to 1
@@ -131,12 +131,14 @@ public class SoundManager {
 	 */
 	private void playSound(Object key, float pan, float volume, int loop) {
 		Clip c = getSounds().getSound(key);
+
 		if (c == null) {
 			return;
 		}
 
 		if (properties.getOptionsSoundEnableMixerPan() && c.isControlSupported(FloatControl.Type.PAN)) {
 			FloatControl panCtrl = (FloatControl) c.getControl(FloatControl.Type.PAN);
+
 			panCtrl.setValue(pan);
 		}
 		if (properties.getOptionsSoundEnableMixerVolume() && c.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
@@ -152,8 +154,8 @@ public class SoundManager {
 	}
 
 	/**
-	 * Plays a specific sound at a given panning with max. volume and without looping. 
-	 * 
+	 * Plays a specific sound at a given panning with max. volume and without looping.
+	 *
 	 * @param key the sound name, as stored in the sound table
 	 * @param pan panning to be used (-1=left, 0=middle, +1=right)
 	 */
@@ -163,8 +165,8 @@ public class SoundManager {
 
 	/**
 	 * Plays a specific piece of music with a given loop count with no panning and
-	 * max. volume. 
-	 * 
+	 * max. volume.
+	 *
 	 * @param key the sound name, as stored in the sound table
 	 * @param loop the number of times to loop the music
 	 */
@@ -174,7 +176,7 @@ public class SoundManager {
 
 	/**
 	 * Plays a bullet sound depending on the bullet's state
-	 * 
+	 *
 	 * @param bp the bullet peer
 	 */
 	public void playBulletSound(BulletPeer bp) {
@@ -216,7 +218,7 @@ public class SoundManager {
 
 	/**
 	 * Plays a robot sound depending on the robot's state
-	 * 
+	 *
 	 * @param rp the robot peer
 	 */
 	public void playRobotSound(RobotPeer rp) {
@@ -259,6 +261,7 @@ public class SoundManager {
 	 */
 	public void stopBackgroundMusic() {
 		Clip c = getSounds().getSound("background");
+
 		if (c != null) {
 			c.stop();
 		}
@@ -273,7 +276,7 @@ public class SoundManager {
 
 	/**
 	 * Determines pan based on the relative position to the battlefield's width
-	 * 
+	 *
 	 * @param x the bullet or robot position
 	 * @param width the battlefield's width
 	 * @return the panning value, ranging from -1 to +1
@@ -283,10 +286,10 @@ public class SoundManager {
 
 		return (x - semiWidth) / semiWidth;
 	}
-	
+
 	/**
 	 * Determines volume based on the bullets's energy
-	 * 
+	 *
 	 * @param bp the bullet peer
 	 * @return the volume value, ranging from 0 to 1
 	 */

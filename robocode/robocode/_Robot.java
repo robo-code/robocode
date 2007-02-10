@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -35,7 +35,7 @@ public class _Robot {
 	private String robotImageName;
 	private String gunImageName;
 	private String radarImageName;
-	
+
 	protected _Robot() {}
 
 	/**
@@ -45,7 +45,7 @@ public class _Robot {
 	 */
 	public final void setPeer(RobotPeer peer) {
 		this.peer = peer;
-	}	
+	}
 
 	/**
 	 * Insert the method's description here.
@@ -61,6 +61,7 @@ public class _Robot {
 	/**
 	 * @deprecated use getGunHeat()
 	 */
+	@Deprecated
 	public double getGunCharge() {
 		if (peer != null) {
 			return 5 - peer.getGunHeat();
@@ -73,6 +74,7 @@ public class _Robot {
 	/**
 	 * @deprecated Use getEnergy()
 	 */
+	@Deprecated
 	public double getLife() {
 		if (peer != null) {
 			return peer.getEnergy();
@@ -85,6 +87,7 @@ public class _Robot {
 	/**
 	 * @deprecated use getNumRounds() instead
 	 */
+	@Deprecated
 	public int getNumBattles() {
 		if (peer != null) {
 			peer.getCall();
@@ -98,6 +101,7 @@ public class _Robot {
 	/**
 	 * @deprecated use getRoundNum() instead.
 	 */
+	@Deprecated
 	public int getBattleNum() {
 		if (peer != null) {
 			peer.getCall();
@@ -112,11 +116,13 @@ public class _Robot {
 	 * @deprecated This call has moved to AdvancedRobot,
 	 * and will no longer function in the Robot class.
 	 */
+	@Deprecated
 	public void setInterruptible(boolean interruptible) {}
 
 	/**
 	 * @deprecated This call is not used.
 	 */
+	@Deprecated
 	public String getGunImageName() {
 		return gunImageName;
 	}
@@ -124,6 +130,7 @@ public class _Robot {
 	/**
 	 * @deprecated This call is not used.
 	 */
+	@Deprecated
 	public void setGunImageName(String newGunImageName) {
 		gunImageName = newGunImageName;
 	}
@@ -131,6 +138,7 @@ public class _Robot {
 	/**
 	 * @deprecated This call is not used.
 	 */
+	@Deprecated
 	public void setRadarImageName(String newRadarImageName) {
 		radarImageName = newRadarImageName;
 	}
@@ -138,6 +146,7 @@ public class _Robot {
 	/**
 	 * @deprecated This call is not used.
 	 */
+	@Deprecated
 	public void setRobotImageName(String newRobotImageName) {
 		robotImageName = newRobotImageName;
 	}
@@ -145,6 +154,7 @@ public class _Robot {
 	/**
 	 * @deprecated This call is not used.
 	 */
+	@Deprecated
 	public String getRadarImageName() {
 		return radarImageName;
 	}
@@ -152,6 +162,7 @@ public class _Robot {
 	/**
 	 * @deprecated This call is not used.
 	 */
+	@Deprecated
 	public String getRobotImageName() {
 		return robotImageName;
 	}

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
- *     Flemming N. Larsen & Luis Crespo 
+ *     Flemming N. Larsen & Luis Crespo
  *     - Initial API and implementation
  *******************************************************************************/
 package robocode;
@@ -19,9 +19,9 @@ import static java.lang.Math.*;
  * Constants and methods for getting the rules of Robocode.
  * Constants are defined for rules that will not change.
  * Methods are provided for rules that can be changed between battles or which depends
- * on some other factor. 
+ * on some other factor.
  *
- * @author Luis Crespo (original) 
+ * @author Luis Crespo (original)
  * @author Flemming N. Larsen (original)
  *
  * @since 1.1.4
@@ -68,7 +68,7 @@ public final class Rules {
 	 *
 	 * @see #MAX_TURN_RATE_RADIANS
 	 * @see #getTurnRate
-	 * @see #getTurnRateRadians 
+	 * @see #getTurnRateRadians
 	 */
 	public static final double MAX_TURN_RATE = 10;
 
@@ -77,7 +77,7 @@ public final class Rules {
 	 *
 	 * @see #MAX_TURN_RATE
 	 * @see #getTurnRate
-	 * @see #getTurnRateRadians 
+	 * @see #getTurnRateRadians
 	 */
 	public static final double MAX_TURN_RATE_RADIANS = toRadians(MAX_TURN_RATE);
 
@@ -87,18 +87,18 @@ public final class Rules {
 	 * In this case the gun moves relatively to the screen. If setAdjustGunForRobotTurn(false) has been called or
 	 * setAdjustGunForRobotTurn() has not been called at all (this is the default), then the gun turn is dependent on
 	 * the robot turn, and in this case the gun moves relatively to the robot body.
-	 * 
+	 *
 	 * @see #GUN_TURN_RATE_RADIANS
 	 */
 	public static final double GUN_TURN_RATE = 20;
 
 	/**
 	 * The turning rate of the gun measured in radians instead of degrees.
-	 * 
+	 *
 	 * @see #GUN_TURN_RATE
 	 */
 	public static final double GUN_TURN_RATE_RADIANS = toRadians(GUN_TURN_RATE);
-	
+
 	/**
 	 * The turning rate of the radar measured in degrees, which is 45 degrees/turn.
 	 * Note, that if setAdjustRadarForRobotTurn(true) and/or setAdjustRadarForGunTurn(true) has been called, the
@@ -142,7 +142,7 @@ public final class Rules {
 	}
 
 	/**
-	 * Returns the turn rate of a robot given a specific velocity measured in radians/turn. 
+	 * Returns the turn rate of a robot given a specific velocity measured in radians/turn.
 	 *
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in radians/turn.

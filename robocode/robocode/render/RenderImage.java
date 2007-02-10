@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
@@ -70,14 +70,17 @@ public class RenderImage extends RenderObject {
 		boundArea = new Area(ri.boundArea);
 	}
 
+	@Override
 	public void paint(Graphics2D g) {
 		g.drawImage(image, transform, null);
 	}
 
+	@Override
 	public Rectangle getBounds() {
 		return boundArea.createTransformedArea(transform).getBounds();
 	}
 
+	@Override
 	public RenderObject copy() {
 		return new RenderImage(this);
 	}

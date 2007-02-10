@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -41,14 +41,14 @@ import static robocode.io.Logger.log;
  */
 public class RobocodeClassLoader extends ClassLoader {
 	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
-	
+
 	private RobotSpecification robotSpecification;
 	private robocode.peer.robot.RobotClassManager robotClassManager;
 	private String rootPackageDirectory;
 	private String rootDirectory;
 	private String classDirectory;
 	private ProtectionDomain protectionDomain;
-	
+
 	private long uid1;
 	private long uid2;
 
@@ -62,6 +62,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		return classDirectory;
 	}
 
+	@Override
 	public InputStream getResourceAsStream(String resource) {
 		log("Classloader:  getResourceAsStream: " + resource);
 		return super.getResourceAsStream(resource);
@@ -75,6 +76,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		return rootPackageDirectory;
 	}
 
+	@Override
 	public synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
 		if (className.indexOf(robotClassManager.getRootPackage() + ".") == 0) {
 			return loadRobotClass(className, false);
@@ -109,7 +111,7 @@ public class RobocodeClassLoader extends ClassLoader {
 						robotClassManager.getFullClassName() + "is not in a package, but is trying to reference class " + name);
 			}
 		}
-	
+
 		String filename = name.replace('.', File.separatorChar) + ".class";
 
 		String classPath = robotSpecification.getRobotClassPath();
@@ -129,7 +131,7 @@ public class RobocodeClassLoader extends ClassLoader {
 
 				// But it's easier to use the statically-linked version, to simply say
 				// that this class is not allowed to do anything.
-				// Note that we only create one protection domain for this classloader, so the 
+				// Note that we only create one protection domain for this classloader, so the
 				// "code source" is simply the robot itself.
 				Permissions p = new Permissions();
 
@@ -147,15 +149,15 @@ public class RobocodeClassLoader extends ClassLoader {
 		try {
 			FileInputStream fis = new FileInputStream(f);
 			DataInputStream dis = new DataInputStream(fis);
-		
+
 			dis.readFully(buff);
 			dis.close();
 			List<String> v = ClassAnalyzer.getReferencedClasses(buff);
 
 			robotClassManager.addReferencedClasses(v);
 			uid1 += v.size();
-			for (int i = 0; i < buff.length; i++) {
-				uid2 += buff[i];
+			for (byte element : buff) {
+				uid2 += element;
 			}
 			c = defineClass(name, buff, 0, buff.length, protectionDomain);
 
@@ -178,9 +180,9 @@ public class RobocodeClassLoader extends ClassLoader {
 			}
 			if (toplevel) {
 				robotClassManager.loadUnresolvedClasses();
-				robotClassManager.setUid(uid1 + "" + uid2);		
+				robotClassManager.setUid(uid1 + "" + uid2);
 			}
-		
+
 			cachedClasses.put(name, c);
 			return c;
 		} catch (FileNotFoundException e) {

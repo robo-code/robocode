@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -40,30 +40,30 @@ public class BattleView extends Canvas {
 	public static final int PAINTBATTLE = 1;
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
-	
+
 	private final static Area BULLET_AREA = new Area(new Ellipse2D.Double(-0.5, -0.5, 1, 1));
 
-	private final static int ROBOT_TEXT_Y_OFFSET = 24; 
-	
+	private final static int ROBOT_TEXT_Y_OFFSET = 24;
+
 	private RobocodeFrame robocodeFrame;
 
-	// The battle and battlefield, 
+	// The battle and battlefield,
 	private Battle battle;
 	private BattleField battleField;
 
 	private boolean initialized;
 	private double scale = 1.0;
 	private int paintMode = PAINTROBOCODELOGO;
-	
+
 	// Ground
 	private int[][] groundTiles;
 
 	private int groundTileWidth = 64;
 	private int groundTileHeight = 64;
-	
+
 	private Image groundImage;
 
-	// Draw option related things	
+	// Draw option related things
 	private boolean drawRobotName;
 	private boolean drawRobotEnergy;
 	private boolean drawScanArcs;
@@ -82,7 +82,7 @@ public class BattleView extends Canvas {
 	// Fonts and the like
 	private Font smallFont;
 	private FontMetrics smallFontMetrics;
-	
+
 	private ImageManager imageManager;
 
 	private RobocodeManager manager;
@@ -93,11 +93,11 @@ public class BattleView extends Canvas {
 	private Graphics2D offscreenGfx;
 
 	private GeneralPath robocodeTextPath = new RobocodeLogo().getRobocodeText();
-	
+
 	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
 	private GraphicsState graphicsState = new GraphicsState();
-	
+
 	/**
 	 * BattleView constructor.
 	 */
@@ -131,17 +131,17 @@ public class BattleView extends Canvas {
 
 				if (bufferStrategy != null) {
 					Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-	
+
 					if (g != null) {
 						g.drawImage(offscreenImage, 0, 0, null);
-	
+
 						// Flush the buffer to the main graphics
 						if (getGraphics() != null) {
 							// FNL: The above check to prevents internal NullPointerException in
-							// Component.BltBufferStrategy.show()	
+							// Component.BltBufferStrategy.show()
 							bufferStrategy.show();
 						}
-	
+
 						g.dispose();
 					}
 				}
@@ -152,6 +152,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		switch (paintMode) {
 		case PAINTROBOCODELOGO:
@@ -171,7 +172,7 @@ public class BattleView extends Canvas {
 
 	public void setDisplayOptions() {
 		RobocodeProperties props = manager.getProperties();
-		
+
 		displayTPS = props.getOptionsViewTPS();
 		displayFPS = props.getOptionsViewFPS();
 		drawRobotName = props.getOptionsViewRobotNames();
@@ -205,7 +206,7 @@ public class BattleView extends Canvas {
 			// Use the smaller scale.
 			// Actually we don't need this, since
 			// the RobocodeFrame keeps our aspect ratio intact.
-			
+
 			scale = min((double) getWidth() / battleField.getWidth(), (double) getHeight() / battleField.getHeight());
 
 			offscreenGfx.scale(scale, scale);
@@ -247,7 +248,7 @@ public class BattleView extends Canvas {
 
 		int groundWidth = (int) (battleField.getWidth() * scale);
 		int groundHeight = (int) (battleField.getHeight() * scale);
-	
+
 		groundImage = new BufferedImage(groundWidth, groundHeight, BufferedImage.TYPE_INT_RGB);
 
 		Graphics2D groundGfx = (Graphics2D) groundImage.getGraphics();
@@ -255,7 +256,7 @@ public class BattleView extends Canvas {
 		groundGfx.setRenderingHints(renderingHints);
 
 		groundGfx.setTransform(AffineTransform.getScaleInstance(scale, scale));
-	
+
 		for (int y = NUM_VERT_TILES - 1; y >= 0; y--) {
 			for (int x = NUM_HORZ_TILES - 1; x >= 0; x--) {
 				Image img = imageManager.getGroundTileImage(groundTiles[y][x]);
@@ -308,7 +309,7 @@ public class BattleView extends Canvas {
 
 		// Draw all text
 		drawText(g);
-		
+
 		// Restore the graphics state
 		graphicsState.restore(g);
 	}
@@ -347,7 +348,7 @@ public class BattleView extends Canvas {
 		if (drawScanArcs) {
 			for (RobotPeer r : battle.getRobots()) {
 				if (r.isAlive()) {
-					drawScanArc((Graphics2D) g, r); 
+					drawScanArc(g, r);
 				}
 			}
 		}
@@ -383,24 +384,24 @@ public class BattleView extends Canvas {
 				at.rotate(r.getHeading());
 
 				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
-	
+
 				robotRenderImage.setTransform(at);
 				robotRenderImage.paint(g);
-	
+
 				at = AffineTransform.getTranslateInstance(x, y);
 				at.rotate(r.getGunHeading());
-	
+
 				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
-	
+
 				gunRenderImage.setTransform(at);
 				gunRenderImage.paint(g);
 
 				if (!r.isDroid()) {
 					at = AffineTransform.getTranslateInstance(x, y);
 					at.rotate(r.getRadarHeading());
-	
+
 					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
-	
+
 					radarRenderImage.setTransform(at);
 					radarRenderImage.paint(g);
 				}
@@ -470,7 +471,7 @@ public class BattleView extends Canvas {
 		// Restore the graphics state
 		gfxState.restore(g);
 	}
-	
+
 	private void drawBullets(Graphics2D g) {
 		double x, y;
 
@@ -500,7 +501,7 @@ public class BattleView extends Canvas {
 				g.setColor(bulletColor);
 				g.fill(bulletArea);
 
-			} else if (drawExplosions) {	
+			} else if (drawExplosions) {
 				if (!(bullet instanceof ExplosionPeer)) {
 					double scale = sqrt(1000 * bullet.getPower()) / 128;
 
@@ -509,7 +510,7 @@ public class BattleView extends Canvas {
 
 				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getExplosionImageIndex(),
 						bullet.getFrame());
-				
+
 				explosionRenderImage.setTransform(at);
 				explosionRenderImage.paint(g);
 			}
@@ -594,7 +595,7 @@ public class BattleView extends Canvas {
 		g.clearRect(0, 0, getWidth(), getHeight());
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2, (getHeight() - 46) / 2));
 		g.setColor(Color.DARK_GRAY);
 		g.fill(robocodeTextPath);

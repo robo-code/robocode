@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -85,7 +85,7 @@ public class WindowPositionManager implements ComponentListener {
 
 	public Rectangle getWindowRect(Window window) {
 		window.addComponentListener(this);
-		
+
 		String rString = (String) getWindowPositions().get(window.getClass().getName());
 
 		if (rString == null) {
@@ -96,7 +96,7 @@ public class WindowPositionManager implements ComponentListener {
 			int y = Integer.parseInt(tokenizer.nextToken());
 			int width = Integer.parseInt(tokenizer.nextToken());
 			int height = Integer.parseInt(tokenizer.nextToken());
-		
+
 			return new Rectangle(x, y, width, height);
 		}
 	}

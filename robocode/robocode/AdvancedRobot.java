@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -336,7 +336,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Returns the quota available in your data directory, in bytes.
-	 * 
+	 *
 	 * @see #getDataDirectory
 	 */
 	public long getDataQuotaAvailable() {
@@ -370,7 +370,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Gets angle remaining in the gun's turn, in degrees
-	 * 
+	 *
 	 * @return angle remaining in the gun's turn, in degrees
 	 */
 	public double getGunTurnRemaining() {
@@ -459,7 +459,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Gets angle remaining in the radar's turn, in degrees.
-	 * 
+	 *
 	 * @return angle remaining in the radar's turn
 	 */
 	public double getRadarTurnRemaining() {
@@ -524,7 +524,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Gets angle remaining in the robot's turn, in degrees.
-	 * 
+	 *
 	 * @return angle remaining in the robot's turn, in degrees
 	 */
 	public double getTurnRemaining() {
@@ -539,7 +539,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Checks if the gun is set to adjust for the robot turning.
-	 * 
+	 *
 	 * @see #setAdjustGunForRobotTurn
 	 * @return if the gun is set to adjust for the robot turning.
 	 */
@@ -555,7 +555,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Checks if the radar is set to adjust for the gun turning.
-	 * 
+	 *
 	 * @see #setAdjustRadarForGunTurn
 	 * @return if the radar is set to adjust for the gun turning.
 	 */
@@ -654,6 +654,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * </PRE>
 	 * @param interruptible Whether this event handler should be interrupted on new events of same priority.
 	 */
+	@Override
 	public void setInterruptible(boolean interruptible) {
 		if (peer != null) {
 			peer.setCall();
@@ -705,7 +706,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * This call is identical to {@link robocode.Robot#stop stop()}, 
+	 * This call is identical to {@link robocode.Robot#stop stop()},
 	 * but returns immediately, and will not execute until you call execute() or take an action that executes.
 	 * If there is already movement saved from a previous stop, this will have no effect.
 	 * This call is equivalent to calling setStop(false);
@@ -722,7 +723,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * This call is identical to {@link robocode.Robot#stop(boolean) stop(boolean)},
 	 * but returns immediately, and will not execute until you call execute() or take an action that executes.
 	 * If there is already movement saved from a previous stop, you can overwrite it
-	 * by calling setStop(true).  
+	 * by calling setStop(true).
 	 * @see #setStop()
 	 * @see #setResume
 	 * @see robocode.Robot#stop()
@@ -804,7 +805,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Checks if the radar is set to adjust for the robot turning.
-	 * 
+	 *
 	 * @see #setAdjustRadarForRobotTurn
 	 * @return if the radar is set to adjust for the robot turning.
 	 */
@@ -828,6 +829,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see robocode.DeathEvent
 	 * @see robocode.Event
 	 */
+	@Override
 	public void onDeath(DeathEvent event) {}
 
 	/**

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -155,7 +155,7 @@ public class BulletPeer {
 
 		double ua = (dx43 * dy13 - dy43 * dx13) / dn;
 		double ub = (dx21 * dy13 - dy21 * dx13) / dn;
-		
+
 		return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1);
 	}
 
@@ -168,7 +168,7 @@ public class BulletPeer {
 
 			if (!(r == null || r == owner || r.isDead()) && r.getBoundingBox().intersectsLine(boundingLine)) {
 				double damage = Rules.getBulletDamage(power);
-				
+
 				double score = damage;
 
 				if (score > r.getEnergy()) {
@@ -316,7 +316,7 @@ public class BulletPeer {
 		lastState = state;
 		state = newState;
 	}
-	
+
 	public synchronized void update() {
 		if (isActive()) {
 			updateMovement();
@@ -345,7 +345,7 @@ public class BulletPeer {
 		}
 		updateBulletState();
 	}
-	
+
 	protected synchronized void updateBulletState() {
 		lastState = state;
 		if (state == STATE_SHOT) {

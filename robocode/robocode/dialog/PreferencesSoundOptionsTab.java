@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial API and implementation
@@ -46,7 +46,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	private JComboBox mixerComboBox;
 	private JButton mixerDefaultButton;
-	
+
 	private JCheckBox enableMixerVolumeCheckBox;
 	private JCheckBox enableMixerPanCheckBox;
 
@@ -74,7 +74,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the soundOptionsPanel
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getSoundOptionsPanel() {
@@ -114,7 +114,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enableSoundCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getEnableSoundCheckBox() {
@@ -128,7 +128,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enalbeGunshotCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getEnableGunshotCheckBox() {
@@ -142,7 +142,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enableBulletHitCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getEnableBulletHitCheckBox() {
@@ -156,7 +156,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enableRobotDeathCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getEnableRobotDeathCheckBox() {
@@ -170,7 +170,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enableRobotCollisionCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getEnableRobotCollisionCheckBox() {
@@ -184,7 +184,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enableWallCollisionCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getEnableWallCollisionCheckBox() {
@@ -198,7 +198,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enableAllSoundsButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getEnableAllSoundsButton() {
@@ -213,7 +213,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the disableAllSoundsButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getDisableAllSoundsButton() {
@@ -228,7 +228,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the mixerOptionsPanel
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getMixerOptionsPanel() {
@@ -245,7 +245,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 			c.insets = new Insets(3, 3, 3, 3);
 			mixerOptionsPanel.add(new JLabel("Select mixer:"), c);
-			
+
 			c.gridy = 1;
 			mixerOptionsPanel.add(getMixerComboBox(), c);
 
@@ -270,7 +270,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the mixerComboBox
-	 * 
+	 *
 	 * @return JComboBox
 	 */
 	private JComboBox getMixerComboBox() {
@@ -296,7 +296,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the mixerDefaultButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getMixerDefaultButton() {
@@ -311,7 +311,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enableMixerVolumeCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getEnableMixerVolumeCheckBox() {
@@ -326,7 +326,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the enableMixerPanCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getEnableMixerPanCheckBox() {
@@ -371,6 +371,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		manager.saveProperties();
 	}
 
+	@Override
 	public boolean isReady() {
 		return true;
 	}
@@ -383,12 +384,12 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 			}
 		}
 	}
-	
+
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
 
-			if (src == enableAllSoundsButton) {				
+			if (src == enableAllSoundsButton) {
 				enableAllSoundsButtonActionPerformed();
 			} else if (src == disableAllSoundsButton) {
 				disableAllSoundsButtonActionPerformed();
@@ -408,7 +409,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		enableWallCollisionCheckBox.setSelected(true);
 		enableRobotCollisionCheckBox.setSelected(true);
 	}
-	
+
 	private void disableAllSoundsButtonActionPerformed() {
 		enableSoundCheckBox.setSelected(false);
 		enableGunshotCheckBox.setSelected(false);
@@ -417,7 +418,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		enableWallCollisionCheckBox.setSelected(false);
 		enableRobotCollisionCheckBox.setSelected(false);
 	}
-	
+
 	private void mixerComboBoxActionPerformed() {
 		Mixer mixer = AudioSystem.getMixer((Mixer.Info) mixerComboBox.getSelectedItem());
 
@@ -439,11 +440,12 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	@SuppressWarnings("serial")
 	private class MixerInfoCellRenderer extends javax.swing.plaf.basic.BasicComboBoxRenderer {
 
+		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
 			Mixer.Info mi = (Mixer.Info) value;
-	    	 
+
 			String text = mi.getName();
 
 			if (!"Unknown Version".equals(mi.getVersion())) {

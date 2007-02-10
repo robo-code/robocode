@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -25,6 +25,8 @@ package robocode;
 
 
 import javax.swing.*;
+
+import java.awt.Frame;
 import java.io.*;
 import java.security.*;
 
@@ -55,7 +57,7 @@ public class Robocode {
 	 */
 	public static void main(String[] args) {
 		Robocode robocode = new Robocode();
-	
+
 		robocode.initialize(args);
 	}
 
@@ -64,20 +66,20 @@ public class Robocode {
 	private boolean initialize(String args[]) {
 		try {
 			manager = new RobocodeManager(false, null);
-		
+
 			// Set native look and feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			if (System.getProperty("WORKINGDIRECTORY") != null) {
 				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
 			}
-		
+
 			Thread.currentThread().setName("Application Thread");
-		
+
 			RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
 			Policy.setPolicy(securityPolicy);
-		
+
 			// For John Burkey at Apple
 			boolean securityOn = true;
 
@@ -110,7 +112,7 @@ public class Robocode {
 				System.setErr(syserr);
 			}
 			System.setIn(sysin);
-			
+
 			boolean minimize = false;
 			String battleFilename = null;
 			String resultsFilename = null;
@@ -176,7 +178,7 @@ public class Robocode {
 				manager.getVersionManager().checkUpdateCheck();
 			}
 			if (minimize) {
-				manager.getWindowManager().getRobocodeFrame().setState(JFrame.ICONIFIED);
+				manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
 			}
 
 			if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
@@ -184,7 +186,7 @@ public class Robocode {
 				manager.saveProperties();
 				manager.runIntroBattle();
 			}
-			
+
 			return true;
 		} catch (Throwable e) {
 			Logger.log(e);
@@ -202,15 +204,15 @@ public class Robocode {
 	 */
 	public static void printRunningThreads() {
 		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
-	
+
 		while (currentGroup.getParent() != null) {
 			currentGroup = currentGroup.getParent();
 		}
-	
+
 		ThreadGroup groups[] = new ThreadGroup[256];
 		Thread threads[] = new Thread[256];
 		int numGroups = currentGroup.enumerate(groups, true);
-	
+
 		for (int i = 0; i < numGroups; i++) {
 			currentGroup = groups[i];
 			if (currentGroup.isDaemon()) {
@@ -220,7 +222,7 @@ public class Robocode {
 			}
 			System.out.println("In group: " + currentGroup.getName());
 			int numThreads = currentGroup.enumerate(threads);
-	
+
 			for (int j = 0; j < numThreads; j++) {
 				if (threads[j].isDaemon()) {
 					System.out.print("  ");

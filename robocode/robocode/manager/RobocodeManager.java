@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -40,26 +40,23 @@ public class RobocodeManager {
 	private WindowManager windowManager;
 	private VersionManager versionManager;
 	private SoundManager soundManager;
-	
+
 	private boolean slave;
-	
+
 	private RobocodeProperties properties;
 	private RobocodeListener listener;
 
 	private boolean isGUIEnabled = true;
 	private boolean isSoundEnabled = true;
 
-	// Must use slave constructor
-	private RobocodeManager() {}
-	
 	public RobocodeManager(boolean slave, RobocodeListener listener) {
 		this.slave = slave;
 		this.listener = listener;
 	}
-		
+
 	/**
 	 * Gets the battleManager.
-	 * 
+	 *
 	 * @return Returns a BattleManager
 	 */
 	public BattleManager getBattleManager() {
@@ -71,7 +68,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the robotManager.
-	 * 
+	 *
 	 * @return Returns a RobotListManager
 	 */
 	public RobotRepositoryManager getRobotRepositoryManager() {
@@ -83,7 +80,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the windowManager.
-	 * 
+	 *
 	 * @return Returns a WindowManager
 	 */
 	public WindowManager getWindowManager() {
@@ -95,7 +92,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the threadManager.
-	 * 
+	 *
 	 * @return Returns a ThreadManager
 	 */
 	public ThreadManager getThreadManager() {
@@ -107,7 +104,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the robotDialogManager.
-	 * 
+	 *
 	 * @return Returns a RobotDialogManager
 	 */
 	public RobotDialogManager getRobotDialogManager() {
@@ -150,7 +147,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the imageManager.
-	 * 
+	 *
 	 * @return Returns a ImageManager
 	 */
 	public ImageManager getImageManager() {
@@ -162,7 +159,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the versionManager.
-	 * 
+	 *
 	 * @return Returns a VersionManager
 	 */
 	public VersionManager getVersionManager() {
@@ -174,7 +171,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the cpuManager.
-	 * 
+	 *
 	 * @return Returns a CpuManager
 	 */
 	public CpuManager getCpuManager() {
@@ -186,7 +183,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the Sound Manager.
-	 * 
+	 *
 	 * @return Returns a SoundManager
 	 */
 	public SoundManager getSoundManager() {
@@ -198,7 +195,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the slave.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean isSlave() {

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -19,6 +19,8 @@ package robocode.editor;
 
 
 import javax.swing.*;
+
+import java.awt.Component;
 import java.awt.event.*;
 import java.io.*;
 
@@ -117,31 +119,31 @@ public class CompilerPreferencesDialog extends JDialog {
 			compilerPreferencesContentPane.setLayout(new BoxLayout(compilerPreferencesContentPane, BoxLayout.Y_AXIS));
 			JLabel label = new JLabel("Compiler Binary:");
 
-			label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			label.setAlignmentX(Component.LEFT_ALIGNMENT);
 			compilerPreferencesContentPane.add(label);
 
-			getCompilerBinaryField().setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			getCompilerBinaryField().setAlignmentX(Component.LEFT_ALIGNMENT);
 			compilerPreferencesContentPane.add(getCompilerBinaryField());
 
 			label = new JLabel(" ");
-			label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			label.setAlignmentX(Component.LEFT_ALIGNMENT);
 			compilerPreferencesContentPane.add(label);
 			label = new JLabel("Compiler Options:");
-			label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			label.setAlignmentX(Component.LEFT_ALIGNMENT);
 			compilerPreferencesContentPane.add(label);
-			getCompilerOptionsField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
+			getCompilerOptionsField().setAlignmentX(Component.LEFT_ALIGNMENT);
 			compilerPreferencesContentPane.add(getCompilerOptionsField());
 			label = new JLabel(" ");
-			label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			label.setAlignmentX(Component.LEFT_ALIGNMENT);
 			compilerPreferencesContentPane.add(label);
 			label = new JLabel("Compiler Classpath:");
-			label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			label.setAlignmentX(Component.LEFT_ALIGNMENT);
 			compilerPreferencesContentPane.add(label);
-			getCompilerClasspathField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
+			getCompilerClasspathField().setAlignmentX(Component.LEFT_ALIGNMENT);
 			compilerPreferencesContentPane.add(getCompilerClasspathField());
 			JPanel panel = new JPanel();
 
-			panel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 			panel.add(getOkButton());
 			panel.add(getCancelButton());
 			compilerPreferencesContentPane.add(panel);

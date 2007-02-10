@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial API and implementation
@@ -83,19 +83,19 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			c.gridwidth = 1;
 
 			c.gridy = 1;
-			specificSettingsPanel.add(new JLabel("Antialiasing", JLabel.RIGHT), c);
+			specificSettingsPanel.add(new JLabel("Antialiasing", SwingConstants.RIGHT), c);
 			c.gridx = 1;
 			specificSettingsPanel.add(getOptionsRenderingAntialiasingComboBox(), c);
 
 			c.gridx = 0;
 			c.gridy = 2;
-			specificSettingsPanel.add(new JLabel("Text Antialiasing", JLabel.RIGHT), c);
+			specificSettingsPanel.add(new JLabel("Text Antialiasing", SwingConstants.RIGHT), c);
 			c.gridx = 1;
 			specificSettingsPanel.add(getOptionsRenderingTextAntialiasingComboBox(), c);
 
 			c.gridx = 0;
 			c.gridy = 3;
-			specificSettingsPanel.add(new JLabel("Rendering Method", JLabel.RIGHT), c);
+			specificSettingsPanel.add(new JLabel("Rendering Method", SwingConstants.RIGHT), c);
 			c.gridx = 1;
 			specificSettingsPanel.add(getOptionsRenderingMethodComboBox(), c);
 
@@ -105,7 +105,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 			c.gridx = 0;
 			c.gridy = 5;
-			specificSettingsPanel.add(new JLabel("Number of buffers", JLabel.RIGHT), c);
+			specificSettingsPanel.add(new JLabel("Number of buffers", SwingConstants.RIGHT), c);
 			c.gridx = 1;
 			specificSettingsPanel.add(getOptionsRenderingNoBuffersComboBox(), c);
 		}
@@ -141,7 +141,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		}
 		return predefinedSettingsPanel;
 	}
-	
+
 	private JComboBox getOptionsRenderingAntialiasingComboBox() {
 		if (optionsRenderingAntialiasingComboBox == null) {
 			optionsRenderingAntialiasingComboBox = new JComboBox(new String[] { "Default", "On", "Off" });
@@ -221,7 +221,8 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		manager.getProperties().setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
 		manager.saveProperties();
 	}
-	
+
+	@Override
 	public boolean isReady() {
 		return true;
 	}
@@ -231,11 +232,11 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		optionsRenderingTextAntialiasingComboBox.setSelectedIndex(index);
 		optionsRenderingMethodComboBox.setSelectedIndex(index);
 	}
-	
+
 	private class EventHandler implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			Object src = e.getSource();			
+			Object src = e.getSource();
 
 			if (src == predefinedPlaformDefaultButton) {
 				setPredefinedSettings(0);

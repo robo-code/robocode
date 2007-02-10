@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -31,8 +31,8 @@ import java.io.*;
 @SuppressWarnings("serial")
 public class FileSpecificationDatabase implements Serializable {
 
-	private Map<String, FileSpecification> hash = new HashMap<String, FileSpecification>(); 
-	
+	private Map<String, FileSpecification> hash = new HashMap<String, FileSpecification>();
+
 	@SuppressWarnings("unchecked")
 	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
@@ -42,20 +42,21 @@ public class FileSpecificationDatabase implements Serializable {
 		if (obj instanceof Hashtable) {
 			// The following provides backward compability for versions before 1.2.3A
 			Hashtable<String, FileSpecification> hashtable = (Hashtable<String, FileSpecification>) obj;
+
 			hash = new HashMap<String, FileSpecification>(hashtable);
 		} else {
 			// Using new container type for version 1.2.3B and followers
 			hash = (HashMap<String, FileSpecification>) obj;
 		}
 	}
-	
+
 	public void store(File f) throws IOException, FileNotFoundException {
 		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
 
 		out.writeObject(hash);
 		out.close();
 	}
-	
+
 	public boolean contains(String fullClassName, String version, boolean isDevelopmentVersion) {
 		Iterator<FileSpecification> i = hash.values().iterator();
 
@@ -115,7 +116,7 @@ public class FileSpecificationDatabase implements Serializable {
 		}
 		return null;
 	}
-	
+
 	public List<FileSpecification> getFileSpecifications() {
 		List<FileSpecification> v = new ArrayList<FileSpecification>();
 
@@ -124,7 +125,7 @@ public class FileSpecificationDatabase implements Serializable {
 		}
 		return v;
 	}
-	
+
 	public List<JarSpecification> getJarSpecifications() {
 		List<JarSpecification> v = new ArrayList<JarSpecification>();
 
@@ -137,7 +138,7 @@ public class FileSpecificationDatabase implements Serializable {
 		}
 		return v;
 	}
-	
+
 	public FileSpecification get(String key) {
 		Object o = hash.get(key);
 
@@ -149,17 +150,17 @@ public class FileSpecificationDatabase implements Serializable {
 		}
 		return (FileSpecification) o;
 	}
-	
+
 	public void remove(String key) {
-		FileSpecification removedSpecification = (FileSpecification) hash.get(key);
+		FileSpecification removedSpecification = hash.get(key);
 
 		if (removedSpecification == null) {
 			return;
 		}
-			
+
 		hash.remove(key);
 
-		// No concept of duplicates for classes		
+		// No concept of duplicates for classes
 		if (!(removedSpecification instanceof RobotSpecification)) {
 			return;
 		}
@@ -171,12 +172,12 @@ public class FileSpecificationDatabase implements Serializable {
 		if (removedSpecification.isDevelopmentVersion()) {
 			return;
 		}
-			
+
 		// If there were any duplicates, we need to set one to not-duplicate
 		FileSpecification unduplicatedSpec = null;
 		String fullClassName = removedSpecification.getFullClassName();
 		String version = removedSpecification.getVersion();
-		
+
 		Iterator<FileSpecification> i = hash.values().iterator();
 
 		while (i.hasNext()) {
@@ -206,7 +207,7 @@ public class FileSpecificationDatabase implements Serializable {
 			}
 		}
 	}
-	
+
 	public void put(String key, FileSpecification spec) {
 		hash.put(key, spec);
 	}

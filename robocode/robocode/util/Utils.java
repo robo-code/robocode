@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -26,7 +26,7 @@ import static java.lang.Math.PI;
 
 /**
  * Utility class that provide methods for normalizing angles.
- * 
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -43,7 +43,7 @@ public class Utils {
 	 * Normalizes an angle to an absolute angle.
 	 * The normalized angle will be in the range from 0 to 2*PI, where 2*PI
 	 * itself is not included.
-	 * 
+	 *
 	 * @param angle the angle to normalize
 	 * @return the normalized angle that will be in the range of [0,2*PI[
 	 */
@@ -55,7 +55,7 @@ public class Utils {
 	 * Normalizes an angle to a relative angle.
 	 * The normalized angle will be in the range from -PI to PI, where PI
 	 * itself is not included.
-	 * 
+	 *
 	 * @param angle the angle to normalize
 	 * @return the normalized angle that will be in the range of [-PI,PI[
 	 */
@@ -74,7 +74,7 @@ public class Utils {
 	 *
 	 * @param angle the angle to normalize
 	 * @return the normalized angle that will be in the range of [0,2*PI[
-	 * 
+	 *
 	 * @see #normalAbsoluteAngle(double)
 	 * @see #isNear(double, double)
 	 */
@@ -104,7 +104,7 @@ public class Utils {
 	 * Whether or not the specified angles are near t each other is defined by
 	 * the following expression:
 	 * <code>(Math.abs(angle1 - angle2) < .00001)</code>
-	 * 
+	 *
 	 * @param angle1 the first angle
 	 * @param angle2 the second angle
 	 * @return <code>true</code> if the two angles are near to each other;

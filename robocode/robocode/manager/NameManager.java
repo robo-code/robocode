@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -23,11 +23,11 @@ import java.io.*;
  */
 @SuppressWarnings("serial")
 public class NameManager implements Serializable {
-	
+
 	private String fullClassName;
 	private String version;
 	private boolean developmentVersion;
-	
+
 	private String fullClassNameWithVersion;
 	private String uniqueFullClassNameWithVersion;
 	private String fullPackage;
@@ -39,13 +39,11 @@ public class NameManager implements Serializable {
 	private String uniqueVeryShortClassNameWithVersion;
 	private String uniqueShortClassNameWithVersion;
 
-	private NameManager() {}
-	
 	public NameManager(String className, String version, boolean developmentVersion, boolean isTeam) {
 		if (className == null) {
 			throw new NullPointerException("className cannot be null.");
 		}
-			
+
 		this.fullClassName = className;
 		if (version != null) {
 			if (version.length() > 10) {
@@ -55,7 +53,7 @@ public class NameManager implements Serializable {
 		this.version = version;
 		this.developmentVersion = developmentVersion;
 	}
-	
+
 	public String getFullClassName() {
 		return fullClassName;
 	}

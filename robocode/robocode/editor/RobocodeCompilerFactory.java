@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -36,7 +36,7 @@ import static robocode.io.Logger.log;
 public class RobocodeCompilerFactory {
 	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "robocode.jar"
 			+ File.pathSeparator + getRobotPath();
-	
+
 	private static CompilerProperties compilerProperties;
 	private static String robotPath;
 	private static boolean compilerInstalling;
@@ -44,7 +44,7 @@ public class RobocodeCompilerFactory {
 	private static final char SPINNER[] = {
 		'-', '\\', '|', '/'
 	};
-	
+
 	/**
 	 * RobocodeCompiler constructor comment.
 	 */
@@ -173,16 +173,16 @@ public class RobocodeCompilerFactory {
 		String javahome = System.getProperty("java.home");
 
 		String javalib = "";
-		
+
 		if (System.getProperty("os.name").indexOf("Mac") == 0) {
 			javalib = new File(javahome).getParentFile().getPath() + "/Classes/classes.jar";
 		} else {
 			javalib = javahome + "/lib/rt.jar";
 		}
-		
+
 		return FileUtil.quoteFileName(javalib);
 	}
-	
+
 	private static String getRobotPath() {
 		if (robotPath == null) {
 			robotPath = System.getProperty("ROBOTPATH", "robots");

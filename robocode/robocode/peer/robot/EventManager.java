@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -105,7 +105,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all events currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (Event e : getAllEvents()) {
@@ -115,7 +115,7 @@ public class EventManager {
 	 *        <i> (so something else with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onBulletHit
 	 * @see #onBulletHitBullet
 	 * @see #onBulletMissed
@@ -146,20 +146,20 @@ public class EventManager {
 	/**
 	 * Returns a list containing all BulletHitBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onBulletHitBullet
 	 * @see robocode.BulletHitBulletEvent
 	 * @see List
 	 */
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
-		List<BulletHitBulletEvent> events = Collections.synchronizedList(new ArrayList<BulletHitBulletEvent>()); 
+		List<BulletHitBulletEvent> events = Collections.synchronizedList(new ArrayList<BulletHitBulletEvent>());
 
 		for (Object e : eventQueue) {
 			if (e instanceof BulletHitBulletEvent) {
@@ -172,14 +172,14 @@ public class EventManager {
 	/**
 	 * Returns a list containing all BulletHitEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletHitEvent e : getBulletHitEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onBulletHit
 	 * @see robocode.BulletHitEvent
 	 * @see List
@@ -198,14 +198,14 @@ public class EventManager {
 	/**
 	 * Returns a list containing all BulletMissedEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletMissedEvent e : getBulletMissedEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onBulletMissed
 	 * @see robocode.BulletMissedEvent
 	 * @see List
@@ -302,14 +302,14 @@ public class EventManager {
 	/**
 	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitByBulletEvent e : getHitByBulletEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onHitByBullet
 	 * @see robocode.HitByBulletEvent
 	 * @see List
@@ -328,14 +328,14 @@ public class EventManager {
 	/**
 	 * Returns a list containing all HitRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitRobotEvent e : getHitRobotEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onHitRobot
 	 * @see robocode.HitRobotEvent
 	 * @see List
@@ -354,14 +354,14 @@ public class EventManager {
 	/**
 	 * Returns a list containing all HitWallEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitWallEvent e : getHitWallEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onHitWall
 	 * @see robocode.HitWallEvent
 	 * @see List
@@ -395,14 +395,14 @@ public class EventManager {
 	/**
 	 * Returns a list containing all RobotDeathEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (RobotDeathEvent e : getRobotDeathEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onRobotDeath
 	 * @see robocode.RobotDeathEvent
 	 * @see List
@@ -425,14 +425,14 @@ public class EventManager {
 	/**
 	 * Returns a list containing all ScannedRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * 
+	 *
 	 * <P>Example:
 	 * <pre>
 	 *    for (ScannedRobotEvent e : getScannedRobotEvents()) {
 	 *      <i> (do something with e) </i>
 	 *    }
 	 * </pre>
-	 * 
+	 *
 	 * @see #onScannedRobot
 	 * @see robocode.ScannedRobotEvent
 	 * @see List

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -52,7 +52,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	private WizardCardPanel wizardPanel;
 	private WizardController buttonsPanel;
 	private RobotSelectionPanel robotSelectionPanel;
-	
+
 	public byte buf[] = new byte[4096];
 	private StringWriter output;
 	private RobotRepositoryManager robotManager;
@@ -98,7 +98,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	/**
 	 * Return the buttonsPanel
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private WizardController getButtonsPanel() {
@@ -115,7 +115,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	/**
 	 * Return the newBattleDialogContentPane
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getRobotImporterContentPane() {
@@ -135,7 +135,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	/**
 	 * Return the Page property value.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
@@ -149,7 +149,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	/**
 	 * Return the tabbedPane.
-	 * 
+	 *
 	 * @return JTabbedPane
 	 */
 	private WizardCardPanel getWizardPanel() {
@@ -174,8 +174,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Extract");
-		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots(); 
-		FileSpecification spec = (FileSpecification) selectedRobots.get(0);
+		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
+		FileSpecification spec = selectedRobots.get(0);
 
 		try {
 			WindowUtil.setStatusWriter(out);

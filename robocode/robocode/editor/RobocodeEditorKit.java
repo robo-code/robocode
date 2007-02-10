@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -40,6 +40,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 *
 	 * @return the copy
 	 */
+	@Override
 	public Object clone() {
 		return super.clone();
 	}
@@ -50,6 +51,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 *
 	 * @return the caret
 	 */
+	@Override
 	public javax.swing.text.Caret createCaret() {
 		return super.createCaret();
 	}
@@ -60,6 +62,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 *
 	 * @return the model
 	 */
+	@Override
 	public javax.swing.text.Document createDefaultDocument() {
 
 		JavaDocument doc = new JavaDocument();
@@ -75,6 +78,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 *
 	 * @return the set of actions
 	 */
+	@Override
 	public Action[] getActions() {
 		return super.getActions();
 	}
@@ -85,6 +89,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 *
 	 * @return the type
 	 */
+	@Override
 	public String getContentType() {
 		return "text/java";
 	}
@@ -99,21 +104,22 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	}
 
 	/**
-	 * Fetches a factory that is suitable for producing 
+	 * Fetches a factory that is suitable for producing
 	 * views of any models that are produced by this
-	 * kit.  
+	 * kit.
 	 *
 	 * @return the factory
 	 */
+	@Override
 	public ViewFactory getViewFactory() {
 		return new RobocodeViewFactory();
 	}
 
 	/**
-	 * Inserts content from the given stream which is expected 
+	 * Inserts content from the given stream which is expected
 	 * to be in a format appropriate for this kind of content
 	 * handler.
-	 * 
+	 *
 	 * @param in  The stream to read from
 	 * @param doc The destination for the insertion.
 	 * @param pos The location in the document to place the
@@ -122,20 +128,21 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @exception BadLocationException if pos represents an invalid
 	 *   location within the document.
 	 */
+	@Override
 	public void read(InputStream in, Document doc, int pos) throws IOException, BadLocationException {
 		super.read(in, doc, pos);
 	}
 
 	/**
-	 * Inserts content from the given stream which is expected 
+	 * Inserts content from the given stream which is expected
 	 * to be in a format appropriate for this kind of content
 	 * handler.
 	 * <p>
-	 * Since actual text editing is unicode based, this would 
-	 * generally be the preferred way to read in the data.  
+	 * Since actual text editing is unicode based, this would
+	 * generally be the preferred way to read in the data.
 	 * Some types of content are stored in an 8-bit form however,
 	 * and will favor the InputStream.
-	 * 
+	 *
 	 * @param in  The stream to read from
 	 * @param doc The destination for the insertion.
 	 * @param pos The location in the document to place the
@@ -144,6 +151,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @exception BadLocationException if pos represents an invalid
 	 *   location within the document.
 	 */
+	@Override
 	public void read(Reader in, Document doc, int pos) throws IOException, BadLocationException {
 		super.read(in, doc, pos);
 	}
@@ -155,7 +163,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	/**
 	 * Writes content from a document to the given stream
 	 * in a format appropriate for this kind of content handler.
-	 * 
+	 *
 	 * @param out  The stream to write to
 	 * @param doc The source for the write.
 	 * @param pos The location in the document to fetch the
@@ -165,6 +173,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @exception BadLocationException if pos represents an invalid
 	 *   location within the document.
 	 */
+	@Override
 	public void write(java.io.OutputStream out, javax.swing.text.Document doc, int pos, int len) throws java.io.IOException, javax.swing.text.BadLocationException {
 		super.write(out, doc, pos, len);
 	}
@@ -173,11 +182,11 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * Writes content from a document to the given stream
 	 * in a format appropriate for this kind of content handler.
 	 * <p>
-	 * Since actual text editing is unicode based, this would 
-	 * generally be the preferred way to write the data.  
+	 * Since actual text editing is unicode based, this would
+	 * generally be the preferred way to write the data.
 	 * Some types of content are stored in an 8-bit form however,
 	 * and will favor the OutputStream.
-	 * 
+	 *
 	 * @param out  The stream to write to
 	 * @param doc The source for the write.
 	 * @param pos The location in the document to fetch the
@@ -187,6 +196,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @exception BadLocationException if pos represents an invalid
 	 *   location within the document.
 	 */
+	@Override
 	public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
 		super.write(out, doc, pos, len);
 	}

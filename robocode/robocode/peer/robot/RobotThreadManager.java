@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -68,7 +68,7 @@ public class RobotThreadManager {
 		if (numThreads == 1 && threads[0] == runThread) {
 			return;
 		}
-		
+
 		if (numThreads != 0) {
 			robotPeer.getRobotStatistics().setNoScoring(true);
 			robotPeer.out.println(
@@ -84,7 +84,7 @@ public class RobotThreadManager {
 			try {
 				thread.join(1000);
 			} catch (InterruptedException e) {
-				robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " join interrupted."); 
+				robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
 				log("Thread: " + thread.getName() + " join interrupted.");
 			} catch (Exception e) {}
 			if (thread.isAlive()) {
@@ -155,7 +155,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Gets the runThread.
-	 * 
+	 *
 	 * @return Returns a Thread
 	 */
 	public Thread getRunThread() {
@@ -164,7 +164,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Gets the disabled.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getDisabled() {
@@ -173,7 +173,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Sets the disabled.
-	 * 
+	 *
 	 * @param disabled The disabled to set
 	 */
 	public void setDisabled(boolean disabled) {
@@ -182,7 +182,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Gets the cpuTime.
-	 * 
+	 *
 	 * @return Returns a double
 	 */
 	public long getCpuTime() {
@@ -191,7 +191,7 @@ public class RobotThreadManager {
 
 	/**
 	 * Sets the cpuTime.
-	 * 
+	 *
 	 * @param cpuTime The cpuTime to set
 	 */
 	public void addCpuTime(long cpuTime) {
@@ -200,13 +200,13 @@ public class RobotThreadManager {
 
 	/**
 	 * Sets the cpuTime.
-	 * 
+	 *
 	 * @param cpuTime The cpuTime to set
 	 */
 	public void resetCpuTime() {
 		this.cpuTime = 0;
 	}
-	
+
 	private void stopThread(Thread t) {
 		synchronized (runThread) {
 			t.stop();

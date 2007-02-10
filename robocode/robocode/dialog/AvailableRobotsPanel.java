@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -37,7 +37,7 @@ import robocode.repository.*;
 @SuppressWarnings("serial")
 public class AvailableRobotsPanel extends JPanel {
 
-	private List<FileSpecification> availableRobots = Collections.synchronizedList(new ArrayList<FileSpecification>()); 
+	private List<FileSpecification> availableRobots = Collections.synchronizedList(new ArrayList<FileSpecification>());
 	private List<FileSpecification> robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
 	private List<String> availablePackages = Collections.synchronizedList(new ArrayList<String>());
 
@@ -71,7 +71,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 	/**
 	 * Return the Page property value.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private void initialize() {
@@ -99,7 +99,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 		JLabel f5Label = new JLabel("Press F5 to refresh");
 
-		f5Label.setHorizontalAlignment(JLabel.CENTER);
+		f5Label.setHorizontalAlignment(SwingConstants.CENTER);
 		add(f5Label, BorderLayout.SOUTH);
 	}
 
@@ -122,7 +122,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 	/**
 	 * Return the availableRobotsList.
-	 * 
+	 *
 	 * @return JList
 	 */
 	private JList getAvailableRobotsList() {
@@ -133,6 +133,7 @@ public class AvailableRobotsPanel extends JPanel {
 			robotNamesCellRenderer = new RobotNameCellRenderer();
 			availableRobotsList.setCellRenderer(robotNamesCellRenderer);
 			MouseListener mouseListener = new MouseAdapter() {
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					// This does not work in Linux under IBM JRE 1.3.0...
 					if (e.getClickCount() >= 2) {
@@ -153,7 +154,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 	/**
 	 * Return the JScrollPane1 property value.
-	 * 
+	 *
 	 * @return JScrollPane
 	 */
 	private JScrollPane getAvailableRobotsScrollPane() {
@@ -190,8 +191,7 @@ public class AvailableRobotsPanel extends JPanel {
 							if (!availablePackages.contains(robotSpec.getFullPackage())) {
 								availablePackages.add(robotSpec.getFullPackage());
 							}
-						} else if (robotSpec.getFullPackage() != null
-								&& !robotSpec.getFullPackage().equals(packageName)) {
+						} else if (robotSpec.getFullPackage() != null && !robotSpec.getFullPackage().equals(packageName)) {
 							packageName = robotSpec.getFullPackage();
 							if (!availablePackages.contains(robotSpec.getFullPackage())) {
 								availablePackages.add(robotSpec.getFullPackage());
@@ -214,7 +214,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 	private void availablePackagesListSelectionChanged() {
 		int sel[] = getAvailablePackagesList().getSelectedIndices();
-		
+
 		availableRobots.clear();
 		if (sel.length == 1) {
 			robotNamesCellRenderer.setUseShortNames(true);
@@ -223,8 +223,8 @@ public class AvailableRobotsPanel extends JPanel {
 			robotNamesCellRenderer.setUseShortNames(false);
 		}
 
-		for (int i = 0; i < sel.length; i++) {
-			String selectedPackage = availablePackages.get(sel[i]);
+		for (int element : sel) {
+			String selectedPackage = availablePackages.get(element);
 
 			if (selectedPackage.equals("(All)")) {
 				robotNamesCellRenderer.setUseShortNames(false);
@@ -236,7 +236,7 @@ public class AvailableRobotsPanel extends JPanel {
 			} else {
 				// Single package.
 				for (int j = 0; j < robotList.size(); j++) {
-					FileSpecification robotSpecification = (FileSpecification) robotList.get(j);
+					FileSpecification robotSpecification = robotList.get(j);
 
 					if (robotSpecification.getFullPackage() == null) {
 						if (selectedPackage.equals("(No package)")) {
@@ -282,7 +282,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 	/**
 	 * Return the availableRobotsList.
-	 * 
+	 *
 	 * @return JList
 	 */
 	private JList getAvailablePackagesList() {
@@ -297,7 +297,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 	/**
 	 * Return the availablePackagesScrollPane
-	 * 
+	 *
 	 * @return JScrollPane
 	 */
 	private JScrollPane getAvailablePackagesScrollPane() {

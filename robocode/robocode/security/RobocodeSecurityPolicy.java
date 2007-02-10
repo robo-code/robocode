@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -32,7 +32,7 @@ import java.net.*;
 public class RobocodeSecurityPolicy extends Policy {
 	private Policy parentPolicy;
 	private PermissionCollection permissionCollection;
-	private List<URL> trustedCodeUrls; 
+	private List<URL> trustedCodeUrls;
 
 	public RobocodeSecurityPolicy(Policy parentPolicy) {
 		this.parentPolicy = parentPolicy;
@@ -54,23 +54,27 @@ public class RobocodeSecurityPolicy extends Policy {
 			} catch (Exception e) {}
 		}
 	}
-	
+
+	@Override
 	public PermissionCollection getPermissions(ProtectionDomain domain) {
 		return getPermissions(domain.getCodeSource());
 	}
-	
+
+	@Override
 	public PermissionCollection getPermissions(CodeSource codeSource) {
 		// Trust everyone on the classpath
 		return (trustedCodeUrls.contains(codeSource.getLocation()))
 				? permissionCollection
 				: parentPolicy.getPermissions(codeSource);
 	}
-	
+
+	@Override
 	public boolean implies(ProtectionDomain domain, Permission permission) {
 		// Trust everyone on the classpath
 		return (trustedCodeUrls.contains(domain.getCodeSource().getLocation()));
 	}
 
+	@Override
 	public void refresh() {
 		parentPolicy.refresh();
 	}

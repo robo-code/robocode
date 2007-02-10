@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -38,16 +38,16 @@ public class TeamCreator extends JDialog implements WizardListener {
 
 	private WizardCardPanel wizardPanel;
 	private WizardController wizardController;
-	
+
 	private RobotSelectionPanel robotSelectionPanel;
 	private TeamCreatorOptionsPanel teamCreatorOptionsPanel;
 
 	private int minRobots = 2;
 	private int maxRobots = 10;
-	
+
 	private RobotRepositoryManager robotRepositoryManager;
 	private RobocodeManager manager;
-	
+
 	private EventHandler eventHandler = new EventHandler();
 
 	class EventHandler implements ActionListener {
@@ -57,7 +57,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			}
 		}
 	}
-	
+
 	public TeamCreator(RobotRepositoryManager robotRepositoryManager) {
 		super(robotRepositoryManager.getManager().getWindowManager().getRobocodeFrame());
 		this.robotRepositoryManager = robotRepositoryManager;
@@ -89,7 +89,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 
 	/**
 	 * Return the Page property value.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	protected RobotSelectionPanel getRobotSelectionPanel() {
@@ -102,7 +102,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 
 	/**
 	 * Return the tabbedPane.
-	 * 
+	 *
 	 * @return JTabbedPane
 	 */
 	private WizardCardPanel getWizardPanel() {

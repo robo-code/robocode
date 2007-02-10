@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -27,7 +27,7 @@ import robocode.battle.*;
 
 /**
  * Dialog to display results (scores) of a battle.
- * 
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -50,7 +50,7 @@ public class ResultsDialog extends JDialog {
 
 	/**
 	 * Return the resultsTable.
-	 * 
+	 *
 	 * @return JTable
 	 */
 	private JTable getResultsTable() {
@@ -100,7 +100,7 @@ public class ResultsDialog extends JDialog {
 
 	/**
 	 * ResultsDialog constructor comment.
-	 * 
+	 *
 	 * @param owner Frame
 	 */
 	public ResultsDialog(Frame owner, Battle battle) {
@@ -111,7 +111,7 @@ public class ResultsDialog extends JDialog {
 
 	/**
 	 * Return the buttonPanel.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getButtonPanel() {
@@ -126,7 +126,7 @@ public class ResultsDialog extends JDialog {
 
 	/**
 	 * Return the okButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getOkButton() {
@@ -141,7 +141,7 @@ public class ResultsDialog extends JDialog {
 
 	/**
 	 * Return the saveButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getSaveButton() {
@@ -156,7 +156,7 @@ public class ResultsDialog extends JDialog {
 
 	/**
 	 * Return the JDialogContentPane property value.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getResultsDialogContentPane() {
@@ -171,14 +171,14 @@ public class ResultsDialog extends JDialog {
 
 	/**
 	 * Return the resultsScrollPane
-	 * 
+	 *
 	 * @return JScrollPane
 	 */
 	private JScrollPane getResultsScrollPane() {
 		if (resultsScrollPane == null) {
 			resultsScrollPane = new JScrollPane();
-			resultsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			resultsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			resultsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			resultsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			resultsScrollPane.setViewportView(getResultsTable());
 			resultsScrollPane.setColumnHeaderView(resultsTable.getTableHeader());
 			resultsScrollPane.getViewport().setScrollMode(JViewport.BLIT_SCROLL_MODE);

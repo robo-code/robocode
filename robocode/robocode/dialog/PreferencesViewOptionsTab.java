@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -42,7 +42,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private static final int MIN_TPS = 1;
 	private static final int DEFAULT_TPS = 30;
 	private static final int FAST_TPS = 45;
-	private static final int MAX_TPS = 10000;	
+	private static final int MAX_TPS = 10000;
 
 	private EventHandler eventHandler = new EventHandler();
 
@@ -58,7 +58,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton defaultsButton;
 	private JCheckBox displayFpsCheckBox;
 	private JCheckBox displayTpsCheckBox;
-	
+
 	private JPanel visibleOptionsPanel;
 	private JPanel tpsOptionsPanel;
 
@@ -68,7 +68,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton maxTpsButton;
 
 	private RobocodeManager manager;
-	
+
 	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == PreferencesViewOptionsTab.this.getDefaultsButton()) {
@@ -153,7 +153,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the defaultsButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getDefaultsButton() {
@@ -168,7 +168,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the desiredTpsLabel property value.
-	 * 
+	 *
 	 * @return JLabel
 	 */
 	private JLabel getDesiredTpsLabel() {
@@ -180,7 +180,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the desiredTpsTextField property value.
-	 * 
+	 *
 	 * @return JTextField
 	 */
 	private JTextField getDesiredTpsTextField() {
@@ -194,7 +194,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the displayFpsCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getDisplayFpsCheckBox() {
@@ -208,7 +208,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the displayTpsCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getDisplayTpsCheckBox() {
@@ -222,7 +222,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the maxTpsButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getMaxTpsButton() {
@@ -237,7 +237,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the defaultTpsButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getDefaultTpsButton() {
@@ -252,7 +252,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the minTpsButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getMinTpsButton() {
@@ -267,7 +267,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the fastTpsButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getFastTpsButton() {
@@ -282,7 +282,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the tpsOptionsPanel
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getTpsOptionsPanel() {
@@ -307,7 +307,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			tpsOptionsPanel.add(label, c);
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			tpsOptionsPanel.add(getDesiredTpsLabel(), c);
-			getDesiredTpsLabel().setHorizontalAlignment(JLabel.CENTER);
+			getDesiredTpsLabel().setHorizontalAlignment(SwingConstants.CENTER);
 
 			JPanel p = new JPanel();
 			JPanel q = new JPanel();
@@ -341,7 +341,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the displayOptionsPanel
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getVisibleOptionsPanel() {
@@ -363,7 +363,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the visibleRobotEnergyCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getVisibleRobotEnergyCheckBox() {
@@ -377,7 +377,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the visibleRobotNameCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getVisibleRobotNameCheckBox() {
@@ -391,7 +391,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the visibleScanArcsCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getVisibleScanArcsCheckBox() {
@@ -405,7 +405,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the visibleExplosionsCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getVisibleExplosionsCheckBox() {
@@ -419,7 +419,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the visibleGroundCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getVisibleGroundCheckBox() {
@@ -433,7 +433,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	/**
 	 * Return the visibleExplosionDebrisCheckBox
-	 * 
+	 *
 	 * @return JCheckBox
 	 */
 	private JCheckBox getVisibleExplosionDebrisCheckBox() {
@@ -452,12 +452,13 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		setLayout(new GridLayout(1, 2));
 		add(getVisibleOptionsPanel());
 		add(getTpsOptionsPanel());
-		
+
 		RobocodeProperties props = manager.getProperties();
-		
+
 		loadPreferences(props);
-		
+
 		props.addPropertyListener(props.new PropertyListener() {
+			@Override
 			public void desiredTpsChanged(int tps) {
 				PreferencesViewOptionsTab.this.desiredTpsTextField.setText("" + tps);
 			}
@@ -492,6 +493,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		manager.saveProperties();
 	}
 
+	@Override
 	public boolean isReady() {
 		try {
 			int tps = Integer.parseInt(getDesiredTpsTextField().getText());

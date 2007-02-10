@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -37,7 +37,7 @@ import robocode.security.*;
 
 /**
  * RobocodeEngine - Class for controlling Robocode.
- * 
+ *
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  *
  * @author Mathew A. Nelson (original)
@@ -47,12 +47,10 @@ import robocode.security.*;
 public class RobocodeEngine {
 	private RobocodeListener listener;
 	private RobocodeManager manager;
-	
-	private RobocodeEngine() {}
-	
+
 	/**
 	 * Creates a new RobocodeEngine
-	 * 
+	 *
 	 * @param robocodeHome should be the root robocode directory (i.e. c:\robocode)
 	 * @param listener Your listener
 	 */
@@ -74,12 +72,12 @@ public class RobocodeEngine {
 			throw new RuntimeException("File not found: " + robotsDir);
 		}
 	}
-	
+
 	private void init(File robocodeHome, RobocodeListener listener) {
 		this.listener = listener;
 		manager = new RobocodeManager(true, listener);
 		manager.setEnableGUI(false);
-		
+
 		try {
 			FileUtil.setCwd(robocodeHome);
 		} catch (IOException e) {
@@ -110,7 +108,7 @@ public class RobocodeEngine {
 		}
 		System.setIn(sysin);
 	}
-	
+
 	/**
 	 * Call this when you are finished with this RobocodeEngine.
 	 * This method disposes the Robocode window
@@ -120,10 +118,10 @@ public class RobocodeEngine {
 			manager.getWindowManager().getRobocodeFrame().dispose();
 		}
 	}
-	
+
 	/**
 	 * Returns the installed version of Robocode.
-	 * 
+	 *
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
@@ -137,10 +135,10 @@ public class RobocodeEngine {
 		manager.setEnableGUI(true);
 		manager.getWindowManager().getRobocodeFrame().setVisible(visible);
 	}
-		
+
 	/**
 	 * Gets a list of robots available for battle.
-	 * 
+	 *
 	 * @return An array of all available robots.
 	 */
 	public RobotSpecification[] getLocalRepository() {

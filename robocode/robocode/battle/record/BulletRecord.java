@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001-2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
@@ -23,13 +23,13 @@ import robocode.peer.BulletPeer;
  * @author Flemming N. Larsen (original)
  */
 public class BulletRecord {
-	
+
 	// Index of the robot that fired the bullet
 	public byte owner;
 
 	// State of the bullet, where
 	// bit 0-2 is the robot state
-	// bit 5 is specifying if the bullet is an explosion peer 
+	// bit 5 is specifying if the bullet is an explosion peer
 	// bit 6 is specifying if the bullet has hit a victim
 	// bit 7 is specifying if the bullet has hit another bullet
 	public byte state;
@@ -62,7 +62,7 @@ public class BulletRecord {
 		frame = (byte) bullet.getFrame();
 		deltaX = (byte) (bullet.deltaX + 0.5);
 		deltaY = (byte) (bullet.deltaY + 0.5);
-		
+
 		state = (byte) bullet.getState();
 		if (bullet.getExplosionImageIndex() == 1) {
 			state |= 0x20; // set bit 5;

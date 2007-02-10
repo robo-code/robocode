@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -98,6 +98,7 @@ public class RobotDialog extends JFrame {
 	 * after that, we need a null preferred size so the scrollpane will scroll.
 	 * (preferred size should be based on the text inside)
 	 */
+	@Override
 	public void pack() {
 		getConsoleScrollPane().setPreferredSize(new Dimension(426, 200));
 		super.pack();
@@ -124,7 +125,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * Returns the dialog's content pane
-	 * 
+	 *
 	 * @return the dialog's content pane
 	 */
 	private JPanel getRobotDialogContentPane() {
@@ -139,7 +140,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * Returns the console scroll pane
-	 * 
+	 *
 	 * @return the console scroll pane
 	 */
 	private ConsoleScrollPane getConsoleScrollPane() {
@@ -155,7 +156,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * Returns the button panel
-	 * 
+	 *
 	 * @return the button panel
 	 */
 	private JPanel getButtonPanel() {
@@ -173,7 +174,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * Returns the OK button
-	 * 
+	 *
 	 * @return the OK button
 	 */
 	private JButton getOkButton() {
@@ -185,7 +186,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * Returns the Clear button
-	 * 
+	 *
 	 * @return the Clear button
 	 */
 	private JButton getClearButton() {
@@ -197,7 +198,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * Returns the Kill button.
-	 * 
+	 *
 	 * @return the Kill button
 	 */
 	private JButton getKillButton() {
@@ -209,7 +210,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * Returns the Paint button.
-	 * 
+	 *
 	 * @return the Paint button
 	 */
 	private JToggleButton getPaintButton() {
@@ -223,7 +224,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * Returns the SG checkbox.
-	 * 
+	 *
 	 * @return the SG checkbox
 	 */
 	private JCheckBox getSGCheckBox() {

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -25,7 +25,7 @@
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Added file paths to theme, background, and end-of-battle music +
- *       file path for sound effects like gunshot, robot death etc. 
+ *       file path for sound effects like gunshot, robot death etc.
  *     - Added SortedProperties class in order to sort the keys/fields of the
  *       Robocode properties file
  *******************************************************************************/
@@ -45,7 +45,7 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeProperties {
-	private Properties props = new SortedProperties(); 
+	private Properties props = new SortedProperties();
 
 	// View Options (Arena)
 	private boolean optionsViewRobotEnergy = true;
@@ -60,10 +60,10 @@ public class RobocodeProperties {
 	private boolean optionsViewFPS = true;
 
 	// Rendering Options
-	private int optionsRenderingAntialiasing = 0; // 0 = default, 1 = on, 2 = off 
+	private int optionsRenderingAntialiasing = 0; // 0 = default, 1 = on, 2 = off
 	private int optionsRenderingTextAntialiasing = 0; // 0 = default, 1 = on, 2 = off
 	private int optionsRenderingMethod = 0; // 0 = default, 1 = speed, 2 = quality
-	private int optionsRenderingNoBuffers = 2; // 1 = single buffering, 2 = double buffering, 3 = tripple buffering 
+	private int optionsRenderingNoBuffers = 2; // 1 = single buffering, 2 = double buffering, 3 = tripple buffering
 	private int optionsBattleDesiredTPS = 30;
 
 	// Sound Options (Sound Effects)
@@ -78,13 +78,13 @@ public class RobocodeProperties {
 	private String optionsSoundMixer = "DirectAudioDevice";
 	private boolean optionsSoundEnableMixerVolume = true;
 	private boolean optionsSoundEnableMixerPan = true;
-	
+
 	// Development Options
 	private String optionsDevelopmentPath = "";
 
 	// Common Options
 	private boolean optionsCommonShowResults = true;
-	private boolean optionsCommonAppendWhenSavingResults = true; 
+	private boolean optionsCommonAppendWhenSavingResults = true;
 	private boolean optionsCommonEnableReplayRecording = false;
 
 	// Team Options
@@ -111,9 +111,9 @@ public class RobocodeProperties {
 	private int cpuConstant = 200;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
-	
+
 	private final static String
-	
+
 			OPTIONS_VIEW_ROBOTNAMES = "robocode.options.view.robotNames",
 			OPTIONS_VIEW_SCANARCS = "robocode.options.view.scanArcs",
 			OPTIONS_VIEW_ROBOTENERGY = "robocode.options.view.robotEnergy",
@@ -174,10 +174,10 @@ public class RobocodeProperties {
 	public RobocodeProperties(RobocodeManager manager) {
 		this.manager = manager;
 	}
-	
+
 	/**
 	 * Gets the optionsViewRobotNames.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewRobotNames() {
@@ -186,7 +186,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewRobotNames.
-	 * 
+	 *
 	 * @param optionsViewRobotNames The optionsViewRobotNames to set
 	 */
 	public void setOptionsViewRobotNames(boolean optionsViewRobotNames) {
@@ -196,7 +196,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewScanArcs.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewScanArcs() {
@@ -205,7 +205,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewScanArcs.
-	 * 
+	 *
 	 * @param optionsViewScanArcs The optionsViewScanArcs to set
 	 */
 	public void setOptionsViewScanArcs(boolean optionsViewScanArcs) {
@@ -215,7 +215,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewRobotEnergy.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewRobotEnergy() {
@@ -224,7 +224,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewRobotEnergy.
-	 * 
+	 *
 	 * @param optionsViewRobotEnergy The optionsViewRobotEnergy to set
 	 */
 	public void setOptionsViewRobotEnergy(boolean optionsViewRobotEnergy) {
@@ -234,7 +234,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewGround.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewGround() {
@@ -243,7 +243,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewGround.
-	 * 
+	 *
 	 * @param optionsViewGround The optionsViewGround to set
 	 */
 	public void setOptionsViewGround(boolean optionsViewGround) {
@@ -253,7 +253,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewTPS.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewTPS() {
@@ -262,7 +262,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewTPS.
-	 * 
+	 *
 	 * @param optionsViewTPS The optionsViewTPS to set
 	 */
 	public void setOptionsViewTPS(boolean optionsViewTPS) {
@@ -272,7 +272,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewFPS.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewFPS() {
@@ -281,7 +281,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewFPS.
-	 * 
+	 *
 	 * @param optionsViewFPS The optionsViewFPS to set
 	 */
 	public void setOptionsViewFPS(boolean optionsViewFPS) {
@@ -291,7 +291,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewExplosions.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewExplosions() {
@@ -300,7 +300,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewExplosions.
-	 * 
+	 *
 	 * @param optionsViewExplosions The optionsViewExplosions to set
 	 */
 	public void setOptionsViewExplosions(boolean optionsViewExplosions) {
@@ -310,7 +310,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsViewExplosionDebris.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsViewExplosionDebris() {
@@ -319,7 +319,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsViewExplosionDebris.
-	 * 
+	 *
 	 * @param optionsViewExplosionDebris The optionsViewExplosionDebris to set
 	 */
 	public void setOptionsViewExplosionDebris(boolean optionsViewExplosionDebris) {
@@ -329,7 +329,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsRenderingAntialiasing.
-	 * 
+	 *
 	 * @return Returns an int
 	 */
 	public int getOptionsRenderingAntialiasing() {
@@ -338,7 +338,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsRenderingAntialiasing.
-	 * 
+	 *
 	 * @param optionsRenderingAntialiasing The optionsRenderingAntialiasing to set
 	 */
 	public void setOptionsRenderingAntialiasing(int optionsRenderingAntialiasing) {
@@ -354,7 +354,7 @@ public class RobocodeProperties {
 
 		case 2:
 			value = RenderingHints.VALUE_ANTIALIAS_OFF;
-			break;		
+			break;
 
 		case 0:
 		default:
@@ -365,7 +365,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsRenderingTextAntialiasing.
-	 * 
+	 *
 	 * @return Returns an int
 	 */
 	public int getOptionsRenderingTextAntialiasing() {
@@ -374,7 +374,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsRenderingTextAntialiasing.
-	 * 
+	 *
 	 * @param optionsRenderingTextAntialiasing The optionsRenderingTextAntialiasing to set
 	 */
 	public void setOptionsRenderingTextAntialiasing(int optionsRenderingTextAntialiasing) {
@@ -390,7 +390,7 @@ public class RobocodeProperties {
 
 		case 2:
 			value = RenderingHints.VALUE_TEXT_ANTIALIAS_OFF;
-			break;		
+			break;
 
 		case 0:
 		default:
@@ -401,7 +401,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsRenderingMethod.
-	 * 
+	 *
 	 * @return Returns an int
 	 */
 	public int getOptionsRenderingMethod() {
@@ -410,7 +410,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsRenderingMethod.
-	 * 
+	 *
 	 * @param optionsRenderingMethod The optionsRenderingMethod to set
 	 */
 	public void setOptionsRenderingMethod(int optionsRenderingMethod) {
@@ -426,7 +426,7 @@ public class RobocodeProperties {
 
 		case 2:
 			value = RenderingHints.VALUE_RENDER_SPEED;
-			break;		
+			break;
 
 		case 0:
 		default:
@@ -437,7 +437,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the combined rendering options as RenderingHints.
-	 * 
+	 *
 	 * @return Returns an RenderingHints value
 	 */
 	public RenderingHints getRenderingHints() {
@@ -446,7 +446,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsRenderingNoBuffers
-	 * 
+	 *
 	 * @return Returns an int
 	 */
 	public int getOptionsRenderingNoBuffers() {
@@ -455,7 +455,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsRenderingNoBuffers.
-	 * 
+	 *
 	 * @param optionsRenderingNoBuffers The optionsRenderingNoBuffers to set
 	 */
 	public void setOptionsRenderingNoBuffers(int optionsRenderingNoBuffers) {
@@ -465,7 +465,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsBattleDesiredTPS.
-	 * 
+	 *
 	 * @return Returns a int
 	 */
 	public int getOptionsBattleDesiredTPS() {
@@ -474,19 +474,19 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsBattleDesiredTPS.
-	 * 
+	 *
 	 * @param optionsBattleDesiredTPS The optionsBattleDesiredTPS to set
 	 */
 	public void setOptionsBattleDesiredTPS(int optionsBattleDesiredTPS) {
 		this.optionsBattleDesiredTPS = optionsBattleDesiredTPS;
 		props.setProperty(OPTIONS_BATTLE_DESIREDTPS, "" + optionsBattleDesiredTPS);
-		
+
 		notifyDesiredTpsChanged();
 	}
 
 	/**
 	 * Gets the optionsSoundEnableSound
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsSoundEnableSound() {
@@ -495,7 +495,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundEnableSound.
-	 * 
+	 *
 	 * @param optionsSoundEnableSound The optionsSoundEnableSound to set
 	 */
 	public void setOptionsSoundEnableSound(boolean optionsSoundEnableSound) {
@@ -505,7 +505,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsSoundEnableGunshot
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsSoundEnableGunshot() {
@@ -514,7 +514,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundEnableGunshot.
-	 * 
+	 *
 	 * @param optionsSoundEnableGunshot The optionsSoundEnableGunshot to set
 	 */
 	public void setOptionsSoundEnableGunshot(boolean optionsSoundEnableGunshot) {
@@ -524,7 +524,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsSoundEnableBulletHit
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsSoundEnableBulletHit() {
@@ -533,7 +533,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundEnableBulletHit.
-	 * 
+	 *
 	 * @param optionsSoundEnableBulletHit The optionsSoundEnableBulletHit to set
 	 */
 	public void setOptionsSoundEnableBulletHit(boolean optionsSoundEnableBulletHit) {
@@ -543,7 +543,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsSoundEnableRobotDeath
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsSoundEnableRobotDeath() {
@@ -552,7 +552,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundEnableRobotDeath.
-	 * 
+	 *
 	 * @param optionsSoundEnableRobotDeath The optionsSoundEnableRobotDeath to set
 	 */
 	public void setOptionsSoundEnableRobotDeath(boolean optionsSoundEnableRobotDeath) {
@@ -562,7 +562,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsSoundEnableWallCollision
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsSoundEnableWallCollision() {
@@ -571,7 +571,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundEnableWallCollision.
-	 * 
+	 *
 	 * @param optionsSoundEnableWallCollision The optionsSoundEnableWallCollision to set
 	 */
 	public void setOptionsSoundEnableWallCollision(boolean optionsSoundEnableWallCollision) {
@@ -581,7 +581,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsSoundEnableRobotCollision
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsSoundEnableRobotCollision() {
@@ -590,7 +590,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundEnableRobotCollision.
-	 * 
+	 *
 	 * @param optionsSoundEnableRobotCollision The optionsSoundEnableRobotCollision to set
 	 */
 	public void setOptionsSoundEnableRobotCollision(boolean optionsSoundEnableRobotCollision) {
@@ -600,7 +600,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsSoundEnableMixerVolume
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsSoundEnableMixerVolume() {
@@ -609,7 +609,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundMixer
-	 * 
+	 *
 	 * @param optionsSoundMixer The optionsSoundMixer to set
 	 */
 	public void setOptionsSoundMixer(String optionsSoundMixer) {
@@ -619,7 +619,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsSoundMixer
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getOptionsSoundMixer() {
@@ -628,7 +628,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundEnableMixerVolume.
-	 * 
+	 *
 	 * @param optionsSoundEnableMixerVolume The optionsSoundEnableMixerVolume to set
 	 */
 	public void setOptionsSoundEnableMixerVolume(boolean optionsSoundEnableMixerVolume) {
@@ -638,7 +638,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsSoundEnableMixerPan
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsSoundEnableMixerPan() {
@@ -647,7 +647,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsSoundEnableMixerPan.
-	 * 
+	 *
 	 * @param optionsSoundEnableMixerPan The optionsSoundEnableMixerPan to set
 	 */
 	public void setOptionsSoundEnableMixerPan(boolean optionsSoundEnableMixerPan) {
@@ -658,7 +658,7 @@ public class RobocodeProperties {
 	public boolean getOptionsTeamShowTeamRobots() {
 		return optionsTeamShowTeamRobots;
 	}
-	
+
 	public void setOptionsTeamShowTeamRobots(boolean optionsTeamShowTeamRobots) {
 		this.optionsTeamShowTeamRobots = optionsTeamShowTeamRobots;
 		props.setProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "" + optionsTeamShowTeamRobots);
@@ -702,7 +702,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the versionChecked.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public Date getVersionChecked() {
@@ -711,7 +711,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the versionChecked.
-	 * 
+	 *
 	 * @param versionChecked The versionChecked to set
 	 */
 	public void setVersionChecked(Date versionChecked) {
@@ -721,7 +721,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the robotFilesystemQuota.
-	 * 
+	 *
 	 * @return Returns a long
 	 */
 	public long getRobotFilesystemQuota() {
@@ -730,7 +730,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the robotFilesystemQuota.
-	 * 
+	 *
 	 * @param robotFilesystemQuota The robotFilesystemQuota to set
 	 */
 	public void setRobotFilesystemQuota(long robotFilesystemQuota) {
@@ -740,7 +740,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the consoleQuota.
-	 * 
+	 *
 	 * @return Returns a long
 	 */
 	public long getConsoleQuota() {
@@ -749,7 +749,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the consoleQuota.
-	 * 
+	 *
 	 * @param consoleQuota The consoleQuota to set
 	 */
 	public void setConsoleQuota(long consoleQuota) {
@@ -759,7 +759,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the cpuConstant.
-	 * 
+	 *
 	 * @return Returns a int
 	 */
 	public int getCpuConstant() {
@@ -768,7 +768,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the cpuConstant.
-	 * 
+	 *
 	 * @param cpuConstant The cpuConstant to set
 	 */
 	public void setCpuConstant(int cpuConstant) {
@@ -778,7 +778,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsDevelopmentPath
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getOptionsDevelopmentPath() {
@@ -787,7 +787,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsDevelopmentPath.
-	 * 
+	 *
 	 * @param optionsDevelopmentPath The optionsDevelopmentPath to set
 	 */
 	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
@@ -804,7 +804,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsCommonShowResults
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsCommonShowResults() {
@@ -813,7 +813,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsCommonAppendWhenSavingResults.
-	 * 
+	 *
 	 * @param enable The optionsCommonAppendWhenSavingResults to set
 	 */
 	public void setOptionsCommonAppendWhenSavingResults(boolean enable) {
@@ -823,7 +823,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsCommonAppendWhenSavingResults
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsCommonAppendWhenSavingResults() {
@@ -832,7 +832,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsCommonShowResults.
-	 * 
+	 *
 	 * @param enable The optionsCommonShowResults to set
 	 */
 	public void setOptionsCommonShowResults(boolean enable) {
@@ -842,7 +842,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Gets the optionsCommonEnableReplayRecording
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean getOptionsCommonEnableReplayRecording() {
@@ -851,7 +851,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the optionsCommonEnableReplayRecording.
-	 * 
+	 *
 	 * @param enable The optionsCommonEnableReplayRecording to set
 	 */
 	public void setOptionsCommonEnableReplayRecording(boolean enable) {
@@ -868,10 +868,10 @@ public class RobocodeProperties {
 		props.setProperty(FILE_ROBOT_DEATH_SFX, fileRobotDeathSfx);
 		props.setProperty(FILE_BULLET_HITS_ROBOT_SFX, fileBulletHitsRobotSfx);
 		props.setProperty(FILE_BULLET_HITS_BULLET_SFX, fileBulletHitsBulletSfx);
-		
+
 		props.store(out, desc);
 	}
-	
+
 	public void load(FileInputStream in) throws IOException {
 		props.load(in);
 
@@ -922,18 +922,18 @@ public class RobocodeProperties {
 		fileBulletHitsBulletSfx = props.getProperty(FILE_BULLET_HITS_BULLET_SFX);
 
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
-		
+
 		try {
 			props.remove("robocode.cpu.constant");
 		} catch (Exception e) {}
-		
+
 		try {
 			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
 		} catch (Exception e) {
 			Logger.log("Initializing version check date.");
 			setVersionChecked(new Date());
 		}
-		
+
 		robotFilesystemQuota = Long.parseLong(props.getProperty(ROBOT_FILESYSTEM_QUOTA, "" + 200000));
 		consoleQuota = Long.parseLong(props.getProperty(CONSOLE_QUOTA, "8192"));
 		cpuConstant = Integer.parseInt(props.getProperty(CPU_CONSTANT, "-1"));
@@ -945,7 +945,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sets the cpuConstant.
-	 * 
+	 *
 	 * @param cpuConstant The cpuConstant to set
 	 */
 	public void setLastRunVersion(String lastRunVersion) {
@@ -971,7 +971,7 @@ public class RobocodeProperties {
 
 	/**
 	 * Sorted properties used for sorting the keys for the properties file.
-	 * 
+	 *
 	 * @author Flemming N. Larsen
 	 */
 	@SuppressWarnings("serial")
@@ -983,14 +983,15 @@ public class RobocodeProperties {
 			Vector<String> keyList = new Vector<String>();
 
 			while (keysEnum.hasMoreElements()) {
-				keyList.add((String)keysEnum.nextElement());
+				keyList.add((String) keysEnum.nextElement());
 			}
-			
+
 			Collections.sort(keyList);
 
 			return keyList.elements();
 		}
 	}
+
 
 	/**
 	 * Property listener.
@@ -999,7 +1000,7 @@ public class RobocodeProperties {
 	 */
 	public class PropertyListener {
 		public void desiredTpsChanged(int tps) {}
-		
+
 		public void enableReplayRecordingChanged(boolean enabled) {}
 	}
 }

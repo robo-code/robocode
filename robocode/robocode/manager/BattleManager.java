@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -74,7 +74,7 @@ public class BattleManager {
 			stepTurn = battle.getCurrentTime() + 1;
 		}
 	}
-	
+
 	/**
 	 * If the battle is paused, this method determines if it should perform one turn and then stop again.
 	 *
@@ -120,8 +120,8 @@ public class BattleManager {
 
 		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
 				false, false, false, false, false, false);
-		
-		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>()); 
+
+		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
 
 		if (battleProperties.getSelectedRobots() != null) {
 			StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
@@ -181,7 +181,7 @@ public class BattleManager {
 
 		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
 				false, false, false, false, false, false);
-		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>()); 
+		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
 
 		for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
 			if (battleRobotSpec == null) {
@@ -218,7 +218,7 @@ public class BattleManager {
 	}
 
 	private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
-			BattleSpecification battleSpecification) { 
+			BattleSpecification battleSpecification) {
 
 		log("Preparing battle...");
 		if (battle != null) {
@@ -229,7 +229,7 @@ public class BattleManager {
 				battleProperties.getBattlefieldHeight());
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);			
+			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);
 		}
 		battle = new Battle(battleField, manager);
 		battle.setExitOnComplete(exitOnComplete);
@@ -268,7 +268,7 @@ public class BattleManager {
 
 			frame.getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
 			frame.getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
-	
+
 			if (frame.getPauseResumeButton().getText().equals("Resume")) {
 				frame.pauseResumeButtonActionPerformed();
 			}
@@ -277,7 +277,7 @@ public class BattleManager {
 		}
 		battleThread.start();
 	}
-	
+
 	public String getBattleFilename() {
 		return battleFilename;
 	}
@@ -318,8 +318,9 @@ public class BattleManager {
 		JFileChooser chooser;
 
 		chooser = new JFileChooser(f);
-		
+
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
 					return false;
@@ -337,6 +338,7 @@ public class BattleManager {
 				return false;
 			}
 
+			@Override
 			public String getDescription() {
 				return "Battles";
 			}
@@ -479,7 +481,7 @@ public class BattleManager {
 
 	/**
 	 * Gets the manager.
-	 * 
+	 *
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -75,7 +75,7 @@ public class ConfirmPanel extends WizardPanel {
 		if (robotListPanel == null) {
 			robotListPanel = new JPanel();
 			robotListPanel.setLayout(new BoxLayout(robotListPanel, BoxLayout.Y_AXIS));
-			robotListPanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+			robotListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return robotListPanel;
 	}
@@ -87,6 +87,7 @@ public class ConfirmPanel extends WizardPanel {
 		add(new JPanel());
 	}
 
+	@Override
 	public boolean isReady() {
 		return visible;
 	}
@@ -98,12 +99,12 @@ public class ConfirmPanel extends WizardPanel {
 			getRobotListPanel().add(new JLabel("You have not yet selected any robots."));
 		}
 		if (selectedRobots.size() == 1) {
-			String robotName = ((FileSpecification) selectedRobots.get(0)).getFullClassName();
+			String robotName = (selectedRobots.get(0)).getFullClassName();
 
 			getRobotListPanel().add(new JLabel("You have selected " + robotName + " for packaging."));
 		} else {
 			getRobotListPanel().add(new JLabel("You have selected the following robots for packaging:"));
-			
+
 			for (FileSpecification selected : selectedRobots) {
 				getRobotListPanel().add(new JLabel(selected.getFullClassName()));
 			}

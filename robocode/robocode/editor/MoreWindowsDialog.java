@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Reeder
  *     - Initial API and implementation
@@ -31,7 +31,7 @@ public class MoreWindowsDialog extends JDialog implements ActionListener, MouseL
 	private JButton cancelButton;
 	private JButton closeButton;
 	private JList windowList;
-	private Vector<WindowMenuItem> windowListItems; 
+	private Vector<WindowMenuItem> windowListItems;
 
 	public MoreWindowsDialog(RobocodeEditor window) {
 		super(window, "More Windows...", false);
@@ -126,7 +126,7 @@ public class MoreWindowsDialog extends JDialog implements ActionListener, MouseL
 
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == getWindowList() && e.getClickCount() == 2) {
-			WindowMenuItem item = (WindowMenuItem) windowListItems.get(windowList.locationToIndex(e.getPoint()));
+			WindowMenuItem item = windowListItems.get(windowList.locationToIndex(e.getPoint()));
 
 			item.actionPerformed(null); // Good thing WindowMenuItem doesn't
 			// reference the ActionEvent?

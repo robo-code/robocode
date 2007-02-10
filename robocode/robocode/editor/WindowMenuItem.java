@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Reeder
  *     - Initial API and implementation
@@ -21,7 +21,7 @@ import java.io.File;
 /**
  * Customized JMenuItem where each item is bound to a specific JInternalFrame,
  * so we can have a dynamic menu of open windows.
- * 
+ *
  * @author Matthew Reeder (original)
  */
 @SuppressWarnings("serial")
@@ -49,7 +49,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * WindowMenuItem Constructor
-	 * 
+	 *
 	 * Initializes the WindowMenuItem and adds it to the parentMenu.
 	 */
 	public WindowMenuItem(EditWindow window, JMenu parentMenu) {
@@ -70,10 +70,10 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Event handler for the menu item
-	 * 
+	 *
 	 * Brings the window to the front. This should be called for the "More
 	 * Windows..." Item, because it doesn't make itself its own ActionListener.
-	 * 
+	 *
 	 * Note that e can be null, and this menu item might not be showing (if this
 	 * is called from the "More Windows" dialog).
 	 */
@@ -97,6 +97,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 * Returns the label that should be used. If the menu item is supposed to be
 	 * hidden, this may not be a real valid label.
 	 */
+	@Override
 	public String getText() {
 		if (type == SPECIAL_MORE) {
 			Container parent = getParent();
@@ -127,7 +128,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Gets the name of the file represented by this item.
-	 * 
+	 *
 	 * Creates a unique filler filename if the window is nameless. May shorten
 	 * the filename if the name is long.
 	 */
@@ -191,7 +192,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	/**
 	 * Figures out what index (from 0 to WINDOW_MENU_MAX_SIZE-1) this item is in
 	 * the window menu.
-	 * 
+	 *
 	 * Returns -1 if this item isn't showing.
 	 */
 	protected int getIndex() {
@@ -207,6 +208,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	/**
 	 * Returns the index of the character in the label that should be underlined
 	 */
+	@Override
 	public int getDisplayedMnemonicIndex() {
 		if (type == SPECIAL_MORE) {
 			return 11;
@@ -219,6 +221,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 * Returns the keyboard mnemonic for this item, which is the virtual key
 	 * code for its 1-based index.
 	 */
+	@Override
 	public int getMnemonic() {
 		if (type == SPECIAL_MORE) {
 			return KeyEvent.VK_S;
@@ -229,10 +232,11 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Returns true if this item should be showing.
-	 * 
+	 *
 	 * Returns false if there are more than WINDOW_MENU_MAX_SIZE items before it
 	 * in the menu.
 	 */
+	@Override
 	public boolean isVisible() {
 		if (type == SPECIAL_MORE) {
 			Container parent = getParent();
@@ -252,9 +256,10 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Returns true if this item should be enabled (selectable).
-	 * 
+	 *
 	 * Returns false if it is a More Windows... item and there are no windows.
 	 */
+	@Override
 	public boolean isEnabled() {
 		if (type == SPECIAL_MORE) {
 			Container parent = getParent();
@@ -272,9 +277,10 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Determines if this menu item should currently show as "selected".
-	 * 
+	 *
 	 * The item should be seleced if the window it's tied to has focus.
 	 */
+	@Override
 	public boolean isSelected() {
 		if (type == SPECIAL_MORE) {
 			return false;
@@ -301,9 +307,10 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Creates a string representation of this object.
-	 * 
+	 *
 	 * Handy for repurposing the menu items as list items :-)
 	 */
+	@Override
 	public String toString() {
 		if (type == SPECIAL_MORE) {
 			return "";

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -19,6 +19,7 @@ package robocode.dialog;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import java.util.*;
 import java.io.*;
 import java.net.*;
@@ -80,7 +81,7 @@ public class RobotDescriptionPanel extends JPanel {
 		if (descriptionLabel[index] == null) {
 			descriptionLabel[index] = new JLabel();
 			descriptionLabel[index].setFont(new Font("Monospaced", Font.PLAIN, 10));
-			descriptionLabel[index].setHorizontalAlignment(JLabel.LEFT);
+			descriptionLabel[index].setHorizontalAlignment(SwingConstants.LEFT);
 			descriptionLabel[index].setText(BLANK_STRING);
 		}
 		return descriptionLabel[index];
@@ -89,7 +90,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JPanel getDescriptionPanel() {
 		if (descriptionPanel == null) {
 			descriptionPanel = new JPanel();
-			descriptionPanel.setAlignmentY(JPanel.CENTER_ALIGNMENT);
+			descriptionPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 			descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.Y_AXIS));
 			descriptionPanel.setBorder(BorderFactory.createEtchedBorder());
 			for (int i = 0; i < 3; i++) {
@@ -105,7 +106,7 @@ public class RobotDescriptionPanel extends JPanel {
 			detailsButton.setMnemonic('W');
 			detailsButton.setDisplayedMnemonicIndex(0);
 			detailsButton.setVisible(false);
-			detailsButton.setAlignmentY(JButton.CENTER_ALIGNMENT);
+			detailsButton.setAlignmentY(Component.CENTER_ALIGNMENT);
 			detailsButton.addActionListener(eventManager);
 		}
 		return detailsButton;
@@ -121,14 +122,14 @@ public class RobotDescriptionPanel extends JPanel {
 	private JLabel getRobotNameLabel() {
 		if (robotNameLabel == null) {
 			robotNameLabel = new JLabel();
-			robotNameLabel.setHorizontalAlignment(JLabel.CENTER);
+			robotNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return robotNameLabel;
 	}
 
 	/**
 	 * Return the Page property value.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private void initialize() {

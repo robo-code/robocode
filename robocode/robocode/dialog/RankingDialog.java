@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Luis Crespo
  *     - Initial API and implementation
@@ -29,7 +29,7 @@ import robocode.manager.RobocodeManager;
 
 /**
  * Dialog to display the running ranking of a battle
- * 
+ *
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -41,7 +41,7 @@ public class RankingDialog extends JDialog {
 	private RobocodeManager manager;
 	private BattleRankingTableModel rankingTableModel;
 	private Thread thread;
-		
+
 	/**
 	 * RankingDialog constructor
 	 */
@@ -61,6 +61,7 @@ public class RankingDialog extends JDialog {
 
 		addWindowListener(
 				new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
 						false);
@@ -68,12 +69,14 @@ public class RankingDialog extends JDialog {
 		});
 
 		addComponentListener(new ComponentAdapter() {
+			@Override
 			public void componentShown(ComponentEvent e) {
 				if (e.getSource() == RankingDialog.this) {
 					startRepaintThread();
 				}
 			}
 
+			@Override
 			public void componentHidden(ComponentEvent e) {
 				if (e.getSource() == RankingDialog.this) {
 					stopRepaintThread();
@@ -84,7 +87,7 @@ public class RankingDialog extends JDialog {
 
 	/**
 	 * Return the resultsTable.
-	 * 
+	 *
 	 * @return JTable
 	 */
 	private JTable getResultsTable() {
@@ -100,7 +103,7 @@ public class RankingDialog extends JDialog {
 
 	/**
 	 * Return the JDialogContentPane property value.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getRankingContentPane() {
@@ -114,14 +117,14 @@ public class RankingDialog extends JDialog {
 
 	/**
 	 * Return the rankingScrollPane
-	 * 
+	 *
 	 * @return JScrollPane
 	 */
 	private JScrollPane getRankingScrollPane() {
 		if (resultsScrollPane == null) {
 			resultsScrollPane = new JScrollPane();
-			resultsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			resultsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			resultsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			resultsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			resultsScrollPane.getViewport().setScrollMode(JViewport.BLIT_SCROLL_MODE);
 			resultsScrollPane.setViewportView(getResultsTable());
 			resultsScrollPane.setColumnHeaderView(resultsTable.getTableHeader());
@@ -176,6 +179,7 @@ public class RankingDialog extends JDialog {
 	private void startRepaintThread() {
 		if (thread == null) {
 			thread = new Thread() {
+				@Override
 				public void run() {
 					while (thread == Thread.currentThread()) {
 						try {
@@ -192,7 +196,7 @@ public class RankingDialog extends JDialog {
 			thread.start();
 		}
 	}
-	
+
 	private void stopRepaintThread() {
 		thread = null;
 	}

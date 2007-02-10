@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -73,10 +73,10 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots(); 
+			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null && (selectedRobots.size() == 1)) {
-				FileSpecification fileSpecification = (FileSpecification) selectedRobots.get(0);
+				FileSpecification fileSpecification = selectedRobots.get(0);
 				String v = fileSpecification.getVersion();
 
 				if (v == null || v.equals("")) {
@@ -120,7 +120,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 				} else {
 					getWebpageHelpLabel().setText("");
 				}
-				
+
 				getVersionLabel().setVisible(true);
 				getVersionField().setVisible(true);
 				getAuthorLabel().setVisible(true);
@@ -176,19 +176,19 @@ public class PackagerOptionsPanel extends WizardPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JLabel label = new JLabel("It is up to you whether or not to include the source when you distribute your robot.");
 
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
-	
+
 		label = new JLabel(
 				"If you include the source, other people will be able to look at your code and learn from it.");
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
-	
-		getIncludeSource().setAlignmentX(JLabel.LEFT_ALIGNMENT);
+
+		getIncludeSource().setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(getIncludeSource());
-	
+
 		label = new JLabel(" ");
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 
 		add(getVersionLabel());
@@ -196,58 +196,59 @@ public class PackagerOptionsPanel extends WizardPanel {
 		JPanel p = new JPanel();
 
 		p.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		p.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-		getVersionField().setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		p.setAlignmentX(Component.LEFT_ALIGNMENT);
+		getVersionField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getVersionField().setMaximumSize(getVersionField().getPreferredSize());
 		p.setMaximumSize(new Dimension(Integer.MAX_VALUE, getVersionField().getPreferredSize().height));
 		p.add(getVersionField());
 		p.add(getVersionHelpLabel());
 		add(p);
-	
+
 		label = new JLabel(" ");
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
-	
+
 		add(getDescriptionLabel());
-	
-		JScrollPane scrollPane = new JScrollPane(getDescriptionArea(), JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+		JScrollPane scrollPane = new JScrollPane(getDescriptionArea(), ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		scrollPane.setMaximumSize(scrollPane.getPreferredSize());
 		scrollPane.setMinimumSize(new Dimension(100, scrollPane.getPreferredSize().height));
-		scrollPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(scrollPane);
 
 		label = new JLabel(" ");
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 
 		add(getAuthorLabel());
 
-		getAuthorField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
+		getAuthorField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getAuthorField().setMaximumSize(getAuthorField().getPreferredSize());
 		add(getAuthorField());
 
 		label = new JLabel(" ");
-		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 
 		add(getWebpageLabel());
 
-		getWebpageField().setAlignmentX(JTextField.LEFT_ALIGNMENT);
+		getWebpageField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getWebpageField().setMaximumSize(getWebpageField().getPreferredSize());
 		add(getWebpageField());
 
-		getWebpageHelpLabel().setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		getWebpageHelpLabel().setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(getWebpageHelpLabel());
 
 		JPanel panel = new JPanel();
 
-		panel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(panel);
 		addComponentListener(eventHandler);
 	}
 
+	@Override
 	public boolean isReady() {
 		if (getVersionLabel().isVisible()) {
 			if (getVersionField().getText().equals("")) {
@@ -295,10 +296,12 @@ public class PackagerOptionsPanel extends WizardPanel {
 		frame.pack();
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				e.getWindow().dispose();
 			}
 
+			@Override
 			public void windowClosed(WindowEvent e) {
 				System.exit(0);
 			}
@@ -308,7 +311,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 	private JLabel getAuthorLabel() {
 		if (authorLabel == null) {
 			authorLabel = new JLabel("Please enter your name. (optional)");
-			authorLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			authorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return authorLabel;
 	}
@@ -323,7 +326,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 	public JLabel getDescriptionLabel() {
 		if (descriptionLabel == null) {
 			descriptionLabel = new JLabel("");
-			descriptionLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			descriptionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return descriptionLabel;
 	}
@@ -342,7 +345,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 		if (versionLabel == null) {
 			versionLabel = new JLabel(
 					"Please enter a version number for this robot (up to 10 chars, no spaces,commas,asterisks, or brackets).");
-			versionLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			versionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return versionLabel;
 	}
@@ -367,7 +370,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 	public JLabel getWebpageLabel() {
 		if (webpageLabel == null) {
 			webpageLabel = new JLabel("Please enter a URL for your robot's webpage. (optional)");
-			webpageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			webpageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return webpageLabel;
 	}

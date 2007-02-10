@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Luis Crespo
  *     - Initial API and implementation
@@ -33,7 +33,7 @@ import robocode.text.StringUtil;
 /**
  * This table model extracts the robot ranking from the current battle,
  * in order to be displayed by the RankingDialog.
- * 
+ *
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
@@ -59,6 +59,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		return (contestants != null) ? contestants.size() : 0;
 	}
 
+	@Override
 	public String getColumnName(int col) {
 		switch (col) {
 		case 0:
@@ -82,7 +83,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		List<ContestantPeer> contestants = new ArrayList<ContestantPeer>(getContestants());
 
 		Collections.sort(contestants);
-		
+
 		if (contestants == null) {
 			return "";
 		}

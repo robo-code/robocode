@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
@@ -49,9 +49,9 @@ public class WindowUtil {
 	public static void center(Window main, Window w, boolean move) {
 		Point location = null;
 		Dimension size = null;
-	
+
 		Rectangle windowPosition = windowPositionManager.getWindowRect(w);
-	
+
 		if (windowPosition != null) {
 			location = new Point(windowPosition.x, windowPosition.y);
 			size = new Dimension(windowPosition.width, windowPosition.height);
@@ -62,7 +62,7 @@ public class WindowUtil {
 		if (location == null || size == null) {
 			// Center a window
 			Dimension screenSize;
-	
+
 			if (main != null) {
 				screenSize = main.getSize();
 			} else {
@@ -73,11 +73,11 @@ public class WindowUtil {
 				// Keep aspect ratio for the robocode frame.
 				if (w.getName().equals("RobocodeFrame")) {
 					int shrink = size.width - screenSize.width + 20;
-	
+
 					if (size.height - screenSize.height + 20 > shrink) {
 						shrink = size.height - screenSize.height + 20;
-					}	
-	
+					}
+
 					size.width -= shrink;
 					size.height -= shrink;
 				} else {
@@ -97,7 +97,7 @@ public class WindowUtil {
 				location = new Point((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 2);
 			}
 		}
-	
+
 		w.setSize(size);
 		if (move) {
 			w.setLocation(fixLocation(w, location));
@@ -117,7 +117,7 @@ public class WindowUtil {
 
 	public static void error(JFrame frame, String msg) {
 		Object[] options = { "OK" };
-	
+
 		JOptionPane.showOptionDialog(frame, msg, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,
 				options, options[0]);
 	}
@@ -127,7 +127,7 @@ public class WindowUtil {
 		// ... yes we do!
 		// w.removeComponentListener(windowPositionManager);
 		w.pack();
-		
+
 		center(null, w, false);
 	}
 
@@ -165,14 +165,14 @@ public class WindowUtil {
 		// Center a window
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension size = w.getSize();
-	
+
 		if (size.height > screenSize.height) {
 			size.height = screenSize.height;
 		}
 		if (size.width > screenSize.width) {
 			size.width = screenSize.width;
 		}
-	
+
 		if (origin.x + size.width > screenSize.width) {
 			origin.x = 0;
 		}
