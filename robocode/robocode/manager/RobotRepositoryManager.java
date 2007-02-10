@@ -21,17 +21,23 @@
 package robocode.manager;
 
 
+import static robocode.io.Logger.log;
+
 import java.io.*;
-import java.util.*;
-import java.util.jar.*;
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+
+import javax.swing.JOptionPane;
 
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
-import robocode.peer.robot.*;
+import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
-import static robocode.io.Logger.log;
 
 
 /**

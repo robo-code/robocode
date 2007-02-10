@@ -15,7 +15,7 @@
 package robocode.control;
 
 
-import robocode.battle.*;
+import robocode.battle.BattleProperties;
 
 
 /**

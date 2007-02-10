@@ -14,7 +14,8 @@
 package robocode.security;
 
 
-import java.io.*;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 
 /**

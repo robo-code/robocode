@@ -22,15 +22,20 @@
 package robocode.security;
 
 
+import static robocode.io.Logger.log;
+
 import java.io.*;
 import java.net.MalformedURLException;
-import java.util.*;
-import java.security.*;
+import java.security.CodeSource;
+import java.security.Permissions;
+import java.security.ProtectionDomain;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import robocode.packager.ClassAnalyzer;
 import robocode.peer.robot.RobotClassManager;
-import robocode.packager.*;
-import robocode.repository.*;
-import static robocode.io.Logger.log;
+import robocode.repository.RobotSpecification;
 
 
 /**

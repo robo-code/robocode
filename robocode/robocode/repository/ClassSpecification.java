@@ -14,7 +14,7 @@
 package robocode.repository;
 
 
-import java.io.*;
+import java.io.Serializable;
 
 
 /**

@@ -17,7 +17,7 @@
 package robocode.peer;
 
 
-import java.util.*;
+import java.util.ArrayList;
 
 
 /**

@@ -23,16 +23,21 @@
 package robocode.control;
 
 
-import java.io.*;
-import java.security.*;
+import java.io.File;
+import java.io.IOException;
+import java.security.Policy;
 import java.util.List;
 
-import robocode.*;
+import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
-import robocode.manager.*;
-import robocode.repository.*;
-import robocode.security.*;
+import robocode.manager.RobocodeManager;
+import robocode.repository.FileSpecification;
+import robocode.repository.Repository;
+import robocode.security.RobocodeSecurityManager;
+import robocode.security.RobocodeSecurityPolicy;
+import robocode.security.SecureInputStream;
+import robocode.security.SecurePrintStream;
 
 
 /**

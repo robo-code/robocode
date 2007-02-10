@@ -21,7 +21,8 @@
 package robocode;
 
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 
 /**

@@ -20,17 +20,21 @@
 package robocode.editor;
 
 
+import static robocode.io.Logger.log;
+
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.filechooser.FileFilter;
 import java.io.*;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.text.Document;
+
 import robocode.io.FileUtil;
-import robocode.manager.*;
+import robocode.manager.BrowserManager;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 import robocode.render.ImageUtil;
-import static robocode.io.Logger.log;
 
 
 /**

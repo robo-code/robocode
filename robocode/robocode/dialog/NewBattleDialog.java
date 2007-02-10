@@ -20,13 +20,14 @@
 package robocode.dialog;
 
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.*;
-import javax.swing.*;
 import java.util.List;
 
-import robocode.manager.*;
+import javax.swing.*;
+
 import robocode.battle.BattleProperties;
+import robocode.manager.RobocodeManager;
 
 
 /**

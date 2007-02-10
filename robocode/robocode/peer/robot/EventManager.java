@@ -23,10 +23,13 @@
 package robocode.peer.robot;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import robocode.*;
+import robocode.exception.EventInterruptedException;
 import robocode.peer.RobotPeer;
-import robocode.exception.*;
 import robocode.util.Utils;
 
 

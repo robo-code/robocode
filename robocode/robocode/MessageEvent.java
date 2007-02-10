@@ -12,7 +12,7 @@
 package robocode;
 
 
-import java.io.*;
+import java.io.Serializable;
 
 
 /**

@@ -21,7 +21,7 @@
 package robocode.peer;
 
 
-import robocode.battle.*;
+import robocode.battle.Battle;
 import robocode.battle.record.BulletRecord;
 
 

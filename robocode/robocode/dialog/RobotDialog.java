@@ -20,10 +20,16 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
-import robocode.peer.*;
+
+import robocode.peer.RobotPeer;
 
 
 /**

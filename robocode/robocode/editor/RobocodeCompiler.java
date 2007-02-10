@@ -17,9 +17,10 @@
 package robocode.editor;
 
 
-import java.io.*;
+import java.io.IOException;
 
-import robocode.dialog.*;
+import robocode.dialog.ConsoleDialog;
+import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 

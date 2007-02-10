@@ -28,14 +28,17 @@
 package robocode.peer;
 
 
-import java.awt.geom.*;
-import java.util.List;
-import static java.lang.Math.*;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.sin;
 
-import robocode.battle.*;
-import robocode.battlefield.*;
-import robocode.battle.record.BulletRecord;
+import java.awt.geom.Line2D;
+import java.util.List;
+
 import robocode.*;
+import robocode.battle.Battle;
+import robocode.battle.record.BulletRecord;
+import robocode.battlefield.BattleField;
 
 
 /**

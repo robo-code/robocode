@@ -21,14 +21,23 @@
 package robocode.editor;
 
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.undo.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileFilter;
-import java.io.*;
-import java.util.*;
-import java.beans.*;
+import javax.swing.undo.UndoManager;
 
 import robocode.io.Logger;
 

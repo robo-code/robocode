@@ -19,8 +19,10 @@
 package robocode.editor;
 
 
-import java.awt.*;
+import java.awt.AWTEvent;
+import java.awt.Event;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 import robocode.dialog.WindowUtil;

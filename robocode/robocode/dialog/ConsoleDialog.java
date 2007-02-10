@@ -15,8 +15,12 @@ package robocode.dialog;
 
 
 import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.event.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+
 import javax.swing.*;
 
 

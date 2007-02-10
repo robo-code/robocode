@@ -13,12 +13,15 @@ package robocode.dialog;
 
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.sound.sampled.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
 
-import robocode.manager.*;
+import javax.sound.sampled.*;
+import javax.swing.*;
+
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 
 
 /**

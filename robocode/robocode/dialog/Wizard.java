@@ -12,7 +12,7 @@
 package robocode.dialog;
 
 
-import java.awt.*;
+import java.awt.Component;
 
 
 /**

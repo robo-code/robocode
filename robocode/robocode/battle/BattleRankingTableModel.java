@@ -21,12 +21,15 @@
 package robocode.battle;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import robocode.manager.RobocodeManager;
-import robocode.peer.*;
+import robocode.peer.ContestantPeer;
+import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
 
 

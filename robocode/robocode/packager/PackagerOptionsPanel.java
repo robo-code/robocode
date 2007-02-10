@@ -19,16 +19,20 @@
 package robocode.packager;
 
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
 import java.net.URL;
 import java.util.List;
-import robocode.dialog.*;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import robocode.dialog.WizardPanel;
+import robocode.repository.FileSpecification;
 import robocode.text.LimitedDocument;
-import robocode.repository.*;
 
 
 /**

@@ -19,11 +19,13 @@
 package robocode.manager;
 
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import robocode.battle.*;
+import robocode.battle.Battle;
+import robocode.dialog.RobotDialog;
 import robocode.peer.RobotPeer;
-import robocode.dialog.*;
 
 
 /**

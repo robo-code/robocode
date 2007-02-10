@@ -18,13 +18,15 @@
 package robocode.repository;
 
 
-import java.util.*;
 import java.io.*;
-import java.net.*;
+import java.net.URL;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 import robocode.io.FileUtil;
 import robocode.io.Logger;
-import robocode.manager.*;
+import robocode.manager.NameManager;
+import robocode.manager.RobotRepositoryManager;
 
 
 /**

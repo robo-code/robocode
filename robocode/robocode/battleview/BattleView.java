@@ -14,20 +14,26 @@
 package robocode.battleview;
 
 
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.geom.*;
-
 import static java.lang.Math.*;
 
+import java.awt.*;
+import java.awt.geom.*;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+
+import robocode.battle.Battle;
+import robocode.battlefield.BattleField;
 import robocode.dialog.RobocodeFrame;
-import robocode.peer.*;
-import robocode.battlefield.*;
-import robocode.battle.*;
-import robocode.util.*;
 import robocode.io.Logger;
-import robocode.manager.*;
-import robocode.render.*;
+import robocode.manager.ImageManager;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
+import robocode.peer.BulletPeer;
+import robocode.peer.ExplosionPeer;
+import robocode.peer.RobotPeer;
+import robocode.render.RenderImage;
+import robocode.render.RobocodeLogo;
+import robocode.util.GraphicsState;
 
 
 /**

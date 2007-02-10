@@ -18,11 +18,14 @@
 package robocode.editor;
 
 
-import javax.swing.*;
-
 import java.awt.Component;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.swing.*;
 
 import robocode.io.FileUtil;
 import robocode.io.Logger;

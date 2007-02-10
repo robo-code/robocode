@@ -15,8 +15,6 @@ package robocode.render;
 import java.awt.*;
 import java.awt.geom.*;
 
-import robocode.render.RenderImage;
-
 
 /**
  * This class is used for rendering the Robocode logo.

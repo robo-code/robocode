@@ -17,11 +17,13 @@
 package robocode.peer.robot;
 
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import robocode.peer.RobotPeer;
 import robocode.RobocodeFileOutputStream;
+import robocode.peer.RobotPeer;
 
 
 /**

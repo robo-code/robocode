@@ -24,17 +24,20 @@
 package robocode;
 
 
-import javax.swing.*;
-
 import java.awt.Frame;
-import java.io.*;
-import java.security.*;
+import java.io.File;
+import java.security.Policy;
+
+import javax.swing.UIManager;
 
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
-import robocode.manager.*;
-import robocode.security.*;
+import robocode.manager.RobocodeManager;
+import robocode.security.RobocodeSecurityManager;
+import robocode.security.RobocodeSecurityPolicy;
+import robocode.security.SecureInputStream;
+import robocode.security.SecurePrintStream;
 
 
 /**

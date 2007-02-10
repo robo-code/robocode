@@ -23,12 +23,19 @@
 package robocode.battle;
 
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.text.DateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import robocode.io.Logger;
-import robocode.peer.*;
+import robocode.peer.ContestantPeer;
+import robocode.peer.ContestantStatistics;
+import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
 
 

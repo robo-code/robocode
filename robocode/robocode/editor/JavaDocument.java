@@ -18,8 +18,8 @@
 package robocode.editor;
 
 
+import javax.swing.event.DocumentEvent;
 import javax.swing.text.*;
-import javax.swing.event.*;
 
 import robocode.io.Logger;
 

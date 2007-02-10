@@ -26,9 +26,10 @@ package robocode.dialog;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
-import robocode.manager.*;
+import robocode.manager.RobocodeManager;
 
 
 /**

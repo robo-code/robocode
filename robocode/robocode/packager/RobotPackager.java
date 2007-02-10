@@ -24,21 +24,33 @@
 package robocode.packager;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.util.List;
-import java.util.jar.*;
+import java.awt.AWTEvent;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.*;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.Manifest;
+
 import javax.swing.*;
 
-import robocode.peer.robot.RobotClassManager;
-import robocode.repository.*;
 import robocode.dialog.*;
 import robocode.io.Logger;
 import robocode.io.NoDuplicateJarOutputStream;
-import robocode.manager.*;
+import robocode.manager.RobotRepositoryManager;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.FileSpecification;
+import robocode.repository.RobotSpecification;
+import robocode.repository.TeamSpecification;
 
 
 /**

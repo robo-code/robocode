@@ -18,12 +18,15 @@
 package robocode.manager;
 
 
+import static robocode.io.Logger.log;
+
 import java.io.*;
 
-import robocode.control.*;
+import robocode.control.BattleSpecification;
+import robocode.control.RobocodeListener;
+import robocode.control.RobotResults;
 import robocode.io.FileUtil;
 import robocode.sound.SoundManager;
-import static robocode.io.Logger.log;
 
 
 /**

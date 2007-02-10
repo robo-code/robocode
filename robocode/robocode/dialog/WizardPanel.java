@@ -14,7 +14,7 @@
 package robocode.dialog;
 
 
-import javax.swing.event.*;
+import javax.swing.event.ChangeEvent;
 
 
 /**

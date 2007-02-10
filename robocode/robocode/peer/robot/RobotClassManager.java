@@ -24,11 +24,11 @@ package robocode.peer.robot;
 
 import java.util.*;
 
-import robocode.security.RobocodeClassLoader;
-import robocode.repository.*;
 import robocode.io.Logger;
-import robocode.manager.*;
-import robocode.peer.*;
+import robocode.manager.NameManager;
+import robocode.peer.TeamPeer;
+import robocode.repository.RobotSpecification;
+import robocode.security.RobocodeClassLoader;
 
 
 /**

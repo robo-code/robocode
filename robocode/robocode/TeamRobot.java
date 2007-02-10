@@ -12,7 +12,9 @@
 package robocode;
 
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
+
 import robocode.peer.RobotPeer;
 
 

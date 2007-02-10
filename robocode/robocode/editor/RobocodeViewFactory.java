@@ -11,6 +11,8 @@
  *******************************************************************************/
 package robocode.editor;
 
+import javax.swing.text.View;
+
 
 /**
  * @author Mathew A. Nelson (original)

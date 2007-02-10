@@ -18,8 +18,8 @@
 package robocode.peer.robot;
 
 
-import robocode.peer.RobotPeer;
 import static robocode.io.Logger.log;
+import robocode.peer.RobotPeer;
 
 
 /**

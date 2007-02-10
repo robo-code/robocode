@@ -12,11 +12,17 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
-import robocode.manager.*;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 
 
 /**

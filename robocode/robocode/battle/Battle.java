@@ -45,22 +45,34 @@
 package robocode.battle;
 
 
-import static java.lang.Math.*;
-import java.util.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.random;
+import static robocode.io.Logger.log;
 
-import robocode.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import robocode.MessageEvent;
+import robocode.Robot;
+import robocode.RobotDeathEvent;
+import robocode.SkippedTurnEvent;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
-import robocode.control.*;
+import robocode.control.BattleSpecification;
+import robocode.control.RobotResults;
 import robocode.dialog.RobotButton;
-import robocode.manager.*;
+import robocode.manager.BattleManager;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.security.RobocodeClassLoader;
 import robocode.sound.SoundManager;
-import static robocode.io.Logger.log;
 
 
 /**

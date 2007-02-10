@@ -18,11 +18,19 @@
 package robocode.peer.robot;
 
 
-import java.io.*;
-import java.util.*;
-import robocode.*;
-import robocode.io.*;
-import robocode.peer.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import robocode.MessageEvent;
+import robocode.io.BufferedPipedOutputStream;
+import robocode.io.RobocodeObjectInputStream;
+import robocode.peer.RobotPeer;
+import robocode.peer.TeamPeer;
 
 
 /**

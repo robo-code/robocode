@@ -18,11 +18,17 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import robocode.peer.*;
-import robocode.manager.*;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+
+import robocode.manager.RobotDialogManager;
+import robocode.peer.RobotPeer;
 
 
 /**

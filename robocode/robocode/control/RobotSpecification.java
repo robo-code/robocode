@@ -14,7 +14,7 @@
 package robocode.control;
 
 
-import java.io.*;
+import java.io.File;
 
 
 /**

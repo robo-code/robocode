@@ -45,22 +45,30 @@
 package robocode.peer;
 
 
-import java.awt.Color;
-import java.awt.geom.*;
-import java.lang.reflect.*;
 import static java.lang.Math.*;
+import static robocode.io.Logger.log;
+import static robocode.util.Utils.normalAbsoluteAngle;
+import static robocode.util.Utils.normalNearAbsoluteAngle;
+import static robocode.util.Utils.normalRelativeAngle;
+
+import java.awt.Color;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import robocode.*;
-import robocode.exception.*;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
-import robocode.util.*;
-import robocode.peer.BulletPeer;
+import robocode.exception.DeathException;
+import robocode.exception.DisabledException;
+import robocode.exception.RobotException;
+import robocode.exception.WinException;
+import robocode.manager.NameManager;
+import robocode.manager.RobotRepositoryManager;
 import robocode.peer.robot.*;
-import robocode.manager.*;
-import static robocode.io.Logger.log;
-import static robocode.util.Utils.*;
+import robocode.util.BoundingRectangle;
 
 
 /**

@@ -16,14 +16,22 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
-import java.net.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import robocode.manager.*;
-import robocode.repository.*;
+import javax.swing.*;
+
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobotRepositoryManager;
+import robocode.repository.TeamSpecification;
 
 
 /**

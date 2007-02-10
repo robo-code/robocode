@@ -31,22 +31,33 @@
 package robocode.manager;
 
 
-import javax.swing.*;
-import java.io.*;
-import java.util.*;
+import static robocode.io.Logger.log;
 
-import robocode.battle.*;
-import robocode.battlefield.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.swing.JFileChooser;
+
+import robocode.battle.Battle;
+import robocode.battle.BattleProperties;
+import robocode.battle.BattleResultsTableModel;
+import robocode.battlefield.BattleField;
+import robocode.battlefield.DefaultBattleField;
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
-import robocode.repository.*;
 import robocode.peer.RobotPeer;
-import robocode.peer.robot.*;
+import robocode.peer.TeamPeer;
+import robocode.peer.robot.RobotClassManager;
+import robocode.peer.robot.RobotStatistics;
+import robocode.repository.FileSpecification;
+import robocode.repository.RobotSpecification;
+import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
-import robocode.peer.*;
-import static robocode.io.Logger.log;
 
 
 /**

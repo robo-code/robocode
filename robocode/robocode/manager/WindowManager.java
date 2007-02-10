@@ -20,15 +20,21 @@
 package robocode.manager;
 
 
-import java.io.*;
-import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import robocode.battle.Battle;
+import robocode.battle.BattleProperties;
+import robocode.battle.BattleResultsTableModel;
 import robocode.dialog.*;
-import robocode.battle.*;
-import robocode.editor.*;
+import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
-import robocode.packager.*;
+import robocode.packager.RobotPackager;
 
 
 /**

@@ -16,8 +16,12 @@
 package robocode.repository;
 
 
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import robocode.io.FileUtil;
 import robocode.io.Logger;

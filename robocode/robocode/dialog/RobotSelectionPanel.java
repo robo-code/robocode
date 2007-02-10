@@ -25,15 +25,20 @@ package robocode.dialog;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.*;
+import java.util.StringTokenizer;
 
-import robocode.repository.*;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import robocode.io.Logger;
 import robocode.manager.RobotRepositoryManager;
+import robocode.repository.FileSpecification;
+import robocode.repository.TeamSpecification;
 
 
 /**

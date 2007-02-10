@@ -14,8 +14,10 @@
 package robocode.peer.robot;
 
 
-import java.io.*;
-import robocode.io.*;
+import java.io.PrintStream;
+
+import robocode.io.BufferedPipedInputStream;
+import robocode.io.BufferedPipedOutputStream;
 
 
 /**

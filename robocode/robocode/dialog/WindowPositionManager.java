@@ -16,10 +16,14 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.*;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 import robocode.io.FileUtil;
 import robocode.io.Logger;

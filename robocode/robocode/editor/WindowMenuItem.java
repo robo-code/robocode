@@ -12,10 +12,14 @@
 package robocode.editor;
 
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
+
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
 
 
 /**

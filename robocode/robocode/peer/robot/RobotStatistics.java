@@ -28,7 +28,6 @@ package robocode.peer.robot;
 
 
 import robocode.control.RobotResults;
-
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 

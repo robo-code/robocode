@@ -12,8 +12,12 @@
 package robocode.text;
 
 
-import java.awt.*;
-import javax.swing.text.*;
+import java.awt.Toolkit;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.PlainDocument;
 
 
 /**

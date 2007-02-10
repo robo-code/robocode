@@ -19,11 +19,12 @@
 package robocode.manager;
 
 
-import java.awt.Image;
 import java.awt.Color;
+import java.awt.Image;
 import java.util.*;
 
-import robocode.render.*;
+import robocode.render.ImageUtil;
+import robocode.render.RenderImage;
 
 
 /**

@@ -21,13 +21,14 @@ package robocode.security;
 
 
 import java.io.*;
-import java.security.*;
+import java.security.AccessControlException;
+import java.security.Permission;
 import java.util.*;
 
 import robocode.RobocodeFileOutputStream;
+import robocode.manager.ThreadManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
-import robocode.manager.*;
 
 
 /**

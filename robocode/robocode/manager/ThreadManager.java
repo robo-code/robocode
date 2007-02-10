@@ -17,8 +17,11 @@
 package robocode.manager;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import robocode.peer.RobotPeer;
-import java.util.*;
 
 
 /**

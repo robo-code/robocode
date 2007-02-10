@@ -19,14 +19,22 @@
 package robocode.editor;
 
 
-import java.awt.*;
-import javax.swing.*;
-import java.io.*;
-import java.util.jar.*;
-
-import robocode.dialog.*;
-import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import robocode.dialog.ConsoleDialog;
+import robocode.dialog.WindowUtil;
+import robocode.io.FileUtil;
 
 
 /**

@@ -17,12 +17,14 @@ package robocode;
 
 
 import java.io.*;
-import robocode.peer.RobotPeer;
-import robocode.security.*;
-import robocode.peer.robot.RobotFileSystemManager;
-import robocode.exception.*;
+
+import robocode.exception.RobotException;
 import robocode.io.Logger;
-import robocode.manager.*;
+import robocode.manager.ThreadManager;
+import robocode.peer.RobotPeer;
+import robocode.peer.robot.RobotFileSystemManager;
+import robocode.security.RobocodePermission;
+import robocode.security.RobocodeSecurityManager;
 
 
 /**

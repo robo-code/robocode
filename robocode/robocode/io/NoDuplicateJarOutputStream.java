@@ -19,10 +19,14 @@
 package robocode.io;
 
 
-import java.io.*;
-import java.util.jar.*;
-import java.util.zip.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 
 
 /**

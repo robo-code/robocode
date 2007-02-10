@@ -16,8 +16,8 @@
 package robocode;
 
 
+import robocode.exception.RobotException;
 import robocode.peer.RobotPeer;
-import robocode.exception.*;
 
 
 /**

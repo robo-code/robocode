@@ -19,10 +19,16 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import robocode.manager.*;
+import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
+import robocode.manager.RobocodeManager;
 
 
 /**

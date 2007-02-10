@@ -12,10 +12,12 @@
 package robocode.dialog;
 
 
-import java.awt.*;
+import java.awt.GridLayout;
+
 import javax.swing.*;
 
-import robocode.manager.*;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 
 
 /**

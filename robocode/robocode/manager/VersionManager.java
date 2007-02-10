@@ -22,14 +22,20 @@
 package robocode.manager;
 
 
+import static robocode.io.Logger.log;
+
 import java.io.*;
-import java.net.*;
-import javax.swing.*;
-import java.util.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
-import static robocode.io.Logger.log;
 
 
 /**

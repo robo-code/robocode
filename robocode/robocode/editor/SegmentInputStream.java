@@ -12,7 +12,9 @@
 package robocode.editor;
 
 
-import javax.swing.text.*;
+import java.io.IOException;
+
+import javax.swing.text.Segment;
 
 
 /**

@@ -14,8 +14,8 @@
 package robocode.manager;
 
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 
 import robocode.io.FileUtil;
 

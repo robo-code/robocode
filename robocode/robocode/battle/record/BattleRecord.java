@@ -15,7 +15,8 @@
 package robocode.battle.record;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import robocode.battlefield.BattleField;
 import robocode.peer.RobotPeer;

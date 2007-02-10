@@ -28,7 +28,10 @@
 package robocode.sound;
 
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.Mixer;
 
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;

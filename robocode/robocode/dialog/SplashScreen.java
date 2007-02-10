@@ -16,12 +16,17 @@ package robocode.dialog;
 
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import javax.swing.*;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
 
-import robocode.manager.*;
+import robocode.manager.RobocodeManager;
 import robocode.render.RobocodeLogo;
 
 

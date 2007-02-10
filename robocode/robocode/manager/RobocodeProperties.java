@@ -32,10 +32,12 @@
 package robocode.manager;
 
 
-import java.io.*;
-import java.util.*;
-import java.text.*;
 import java.awt.RenderingHints;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import robocode.io.Logger;
 

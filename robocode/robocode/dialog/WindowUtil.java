@@ -14,9 +14,13 @@
 package robocode.dialog;
 
 
-import java.io.PrintWriter;
 import java.awt.*;
-import javax.swing.*;
+import java.io.PrintWriter;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
 /**

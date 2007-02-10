@@ -26,17 +26,22 @@
 package robocode.dialog;
 
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.*;
 import java.io.*;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import robocode.battleview.*;
+import robocode.battleview.BattleView;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
-import robocode.manager.*;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
+import robocode.manager.WindowManager;
 import robocode.render.ImageUtil;
 
 

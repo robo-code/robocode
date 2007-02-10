@@ -18,12 +18,18 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import robocode.battle.*;
+import javax.swing.*;
+import javax.swing.table.TableColumn;
+
+import robocode.battle.BattleRankingTableModel;
 import robocode.manager.RobocodeManager;
 
 

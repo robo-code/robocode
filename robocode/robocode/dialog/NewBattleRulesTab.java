@@ -14,7 +14,9 @@
 package robocode.dialog;
 
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.GridLayout;
+
 import javax.swing.*;
 
 

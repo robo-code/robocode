@@ -14,7 +14,7 @@
 package robocode.manager;
 
 
-import java.io.*;
+import java.io.Serializable;
 
 
 /**
