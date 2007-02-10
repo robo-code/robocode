@@ -11,8 +11,7 @@
  *     Flemming N. Larsen
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
- *     - The addSound() will now give a warning if the specified resource name
- *       is null or empty
+ *     - The addSound() will now return if the resource name is not specified
  *******************************************************************************/
 package robocode.sound;
 
@@ -37,14 +36,14 @@ import robocode.io.Logger;
  */
 public class SoundCache {
 
-	/** The table that holds all sound clips */
+	/** Table containing all sound clips */
 	private Map<Object, ClipClones> soundTable;
 
-	/** The mixer to be used to create clip instances */
-	private Mixer theMixer;
+	/** Mixer used for creating clip instances */
+	private Mixer mixer;
 	
 	/**
-	 * Holds data and format for a given sound effect, which can be used to create
+	 * Holds data, length and format for a given sound effect, which can be used to create
 	 * multiple instances of the same clip. 
 	 */
 	private class SoundData {
@@ -59,16 +58,17 @@ public class SoundCache {
 			length = (int) (ais.getFrameLength() * format.getFrameSize());
 			byteData = new byte[length];
 			pos = 0;
+
 			do {
 				bytesRead = ais.read(byteData, pos, length - pos);
 				if (bytesRead > 0) {
 					pos += bytesRead;
 				}
 			} while (bytesRead > 0 && pos < length);
+
 			ais.close();
 		}
 	}
-
 
 	/**
 	 * Holds an array of clips from the same sample stream, and takes care of
@@ -79,14 +79,14 @@ public class SoundCache {
 		private Clip[] clips;
 		private int idx;
 		
-		private ClipClones(SoundData sData, int size) throws LineUnavailableException {
+		private ClipClones(SoundData soundData, int size) throws LineUnavailableException {
 			idx = 0;
 			clips = new Clip[size];
-			DataLine.Info info = new DataLine.Info(Clip.class, sData.format);
+			DataLine.Info info = new DataLine.Info(Clip.class, soundData.format);
 
 			for (int i = 0; i < size; i++) {
-				clips[i] = (Clip) theMixer.getLine(info); 
-				clips[i].open(sData.format, sData.byteData, 0, sData.length);
+				clips[i] = (Clip) mixer.getLine(info); 
+				clips[i].open(soundData.format, soundData.byteData, 0, soundData.length);
 			}
 		}
 		
@@ -95,7 +95,7 @@ public class SoundCache {
 				c.close();
 			}
 		}
-		
+
 		private Clip next() {
 			Clip c = clips[idx];
 
@@ -107,12 +107,13 @@ public class SoundCache {
 	}
 
 	/**
-	 * The constructor initializes the internal clip table
+	 * Constructs a sound cache to hold sound clips that is created based on the
+	 * specified mixer.
 	 * 
-	 * @param theMixer the mixer to be used for creating the clip instances
+	 * @param mixer the mixer to be used for creating the clip instances
 	 */
-	public SoundCache(Mixer theMixer) {
-		this.theMixer = theMixer;
+	public SoundCache(Mixer mixer) {
+		this.mixer = mixer;
 		soundTable = new HashMap<Object, ClipClones>();
 	}
 
@@ -127,17 +128,15 @@ public class SoundCache {
 	 */
 	public void addSound(Object key, String resourceName, int numClones) {
 		if (resourceName == null || (resourceName.trim().length() == 0)) {
-			Logger.log("Warning: The sound resource for '" + key + "' is missing");
 			return;
 		}
 
 		SoundData data = createSoundData(resourceName);
-
 		if (data == null) {
 			return;
 		}
-		ClipClones clones;
 
+		ClipClones clones;
 		try {
 			clones = new ClipClones(data, numClones);
 			soundTable.put(key, clones);
@@ -199,6 +198,7 @@ public class SoundCache {
 			return;
 		}
 		clones.dispose();
+
 		soundTable.remove(key);
 	}
 
