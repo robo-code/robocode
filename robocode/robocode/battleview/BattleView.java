@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
@@ -381,79 +382,87 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		for (RobotPeer r : battle.getRobots()) {
-			if (r.isAlive()) {
-				x = r.getX();
-				y = battleFieldHeight - r.getY();
+		List<RobotPeer> robots = battle.getRobots();
 
-				at = AffineTransform.getTranslateInstance(x, y);
-				at.rotate(r.getHeading());
+		synchronized (robots) {
+			for (RobotPeer r : robots) {
+				if (r.isAlive()) {
+					x = r.getX();
+					y = battleFieldHeight - r.getY();
 
-				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
-
-				robotRenderImage.setTransform(at);
-				robotRenderImage.paint(g);
-
-				at = AffineTransform.getTranslateInstance(x, y);
-				at.rotate(r.getGunHeading());
-
-				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
-
-				gunRenderImage.setTransform(at);
-				gunRenderImage.paint(g);
-
-				if (!r.isDroid()) {
 					at = AffineTransform.getTranslateInstance(x, y);
-					at.rotate(r.getRadarHeading());
+					at.rotate(r.getHeading());
 
-					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
+					RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
 
-					radarRenderImage.setTransform(at);
-					radarRenderImage.paint(g);
+					robotRenderImage.setTransform(at);
+					robotRenderImage.paint(g);
+
+					at = AffineTransform.getTranslateInstance(x, y);
+					at.rotate(r.getGunHeading());
+
+					RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
+
+					gunRenderImage.setTransform(at);
+					gunRenderImage.paint(g);
+
+					if (!r.isDroid()) {
+						at = AffineTransform.getTranslateInstance(x, y);
+						at.rotate(r.getRadarHeading());
+
+						RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
+
+						radarRenderImage.setTransform(at);
+						radarRenderImage.paint(g);
+					}
 				}
 			}
 		}
 	}
 
 	private void drawText(Graphics2D g) {
-		for (RobotPeer r : battle.getRobots()) {
-			if (r.isDead()) {
-				continue;
-			}
-			int x = (int) r.getX();
-			int y = battle.getBattleField().getHeight() - (int) r.getY();
+		List<RobotPeer> robots = battle.getRobots();
 
-			if (drawRobotEnergy && r.getRobot() != null) {
-				g.setColor(Color.white);
-				int ll = (int) r.getEnergy();
-				int rl = (int) ((r.getEnergy() - ll + .001) * 10.0);
-
-				if (rl == 10) {
-					rl = 9;
+		synchronized (robots) {
+			for (RobotPeer r : robots) {
+				if (r.isDead()) {
+					continue;
 				}
-				String energyString = ll + "." + rl;
+				int x = (int) r.getX();
+				int y = battle.getBattleField().getHeight() - (int) r.getY();
 
-				if (r.getEnergy() == 0 && r.isAlive()) {
-					energyString = "Disabled";
-				}
-				centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2, smallFont,
-						smallFontMetrics);
-			}
-			if (drawRobotName) {
-				if (!drawRobotEnergy) {
+				if (drawRobotEnergy && r.getRobot() != null) {
 					g.setColor(Color.white);
+					int ll = (int) r.getEnergy();
+					int rl = (int) ((r.getEnergy() - ll + .001) * 10.0);
+
+					if (rl == 10) {
+						rl = 9;
+					}
+					String energyString = ll + "." + rl;
+
+					if (r.getEnergy() == 0 && r.isAlive()) {
+						energyString = "Disabled";
+					}
+					centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2,
+							smallFont, smallFontMetrics);
 				}
-				centerString(g, r.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
-						smallFont, smallFontMetrics);
-			}
-			if (r.isPaintEnabled() && r.getRobot() != null) {
-				drawRobotPaint(g, r);
-			}
-			if (r.getSayTextPeer() != null) {
-				if (r.getSayTextPeer().getText() != null) {
-					g.setColor(r.getSayTextPeer().getColor());
-					centerString(g, r.getSayTextPeer().getText(), r.getSayTextPeer().getX(),
-							battle.getBattleField().getHeight() - r.getSayTextPeer().getY(), smallFont, smallFontMetrics);
+				if (drawRobotName) {
+					if (!drawRobotEnergy) {
+						g.setColor(Color.white);
+					}
+					centerString(g, r.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
+							smallFont, smallFontMetrics);
+				}
+				if (r.isPaintEnabled() && r.getRobot() != null) {
+					drawRobotPaint(g, r);
+				}
+				if (r.getSayTextPeer() != null) {
+					if (r.getSayTextPeer().getText() != null) {
+						g.setColor(r.getSayTextPeer().getColor());
+						centerString(g, r.getSayTextPeer().getText(), r.getSayTextPeer().getX(),
+								battle.getBattleField().getHeight() - r.getSayTextPeer().getY(), smallFont, smallFontMetrics);
+					}
 				}
 			}
 		}
