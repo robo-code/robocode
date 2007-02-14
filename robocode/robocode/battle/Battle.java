@@ -517,49 +517,51 @@ public class Battle implements Runnable {
 		// Pre-load robot classes without security...
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 		// in the safe robot loader the class is linked.
-		for (RobotPeer r : robots) {
-			try {
-				Class<?> c;
+		synchronized (robots) {
+			for (RobotPeer r : robots) {
+				try {
+					Class<?> c;
 
-				RobotClassManager classManager = r.getRobotClassManager();
-				String className = classManager.getFullClassName();
+					RobotClassManager classManager = r.getRobotClassManager();
+					String className = classManager.getFullClassName();
 
-				RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
+					RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
 
-				if (RobotClassManager.isSecutityOn()) {
-					c = classLoader.loadRobotClass(className, true);
-				} else {
-					c = classLoader.loadClass(className);
-				}
-
-				classManager.setRobotClass(c);
-
-				r.getRobotFileSystemManager().initializeQuota();
-
-				Class<?>[] interfaces = c.getInterfaces();
-
-				for (Class<?> i : interfaces) {
-					if (i.getName().equals("robocode.Droid")) {
-						r.setDroid(true);
+					if (RobotClassManager.isSecutityOn()) {
+						c = classLoader.loadRobotClass(className, true);
+					} else {
+						c = classLoader.loadClass(className);
 					}
-				}
-				double x = 0, y = 0, heading = 0;
 
-				for (int j = 0; j < 1000; j++) {
-					x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
-					y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
-					heading = 2 * PI * random();
-					r.initialize(x, y, heading);
-					if (validSpot(r)) {
-						break;
+					classManager.setRobotClass(c);
+
+					r.getRobotFileSystemManager().initializeQuota();
+
+					Class<?>[] interfaces = c.getInterfaces();
+
+					for (Class<?> i : interfaces) {
+						if (i.getName().equals("robocode.Droid")) {
+							r.setDroid(true);
+						}
 					}
+					double x = 0, y = 0, heading = 0;
+
+					for (int j = 0; j < 1000; j++) {
+						x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
+						y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
+						heading = 2 * PI * random();
+						r.initialize(x, y, heading);
+						if (validSpot(r)) {
+							break;
+						}
+					}
+					if (!(battleView == null || replay)) {
+						battleView.update();
+					}
+				} catch (Throwable e) {
+					r.out.println("SYSTEM: Could not load " + r.getName() + " : " + e);
+					e.printStackTrace(r.out);
 				}
-				if (!(battleView == null || replay)) {
-					battleView.update();
-				}
-			} catch (Throwable e) {
-				r.out.println("SYSTEM: Could not load " + r.getName() + " : " + e);
-				e.printStackTrace(r.out);
 			}
 		}
 		abortBattles = false;
@@ -1013,52 +1015,55 @@ public class Battle implements Runnable {
 
 	private void wakeupRobots() {
 		// Wake up all robot threads
-		for (RobotPeer r : robots) {
-			if (r.isRunning()) {
-				synchronized (r) {
-					// This call blocks until the
-					// robot's thread actually wakes up.
-					r.wakeup(this);
+		synchronized (robots) {
+			for (RobotPeer r : robots) {
+				if (r.isRunning()) {
+					synchronized (r) {
+						// This call blocks until the
+						// robot's thread actually wakes up.
+						r.wakeup(this);
 
-					// It's quite possible for simple robots to
-					// complete their processing before we get here,
-					// so we test if the robot is already asleep.
+						// It's quite possible for simple robots to
+						// complete their processing before we get here,
+						// so we test if the robot is already asleep.
 
-					if (!r.isSleeping()) {
-						try {
-							r.wait(manager.getCpuManager().getCpuConstant());
-						} catch (InterruptedException e) {
-							// ?
-							log("Wait for " + r + " interrupted.");
+						if (!r.isSleeping()) {
+							try {
+								r.wait(manager.getCpuManager().getCpuConstant());
+							} catch (InterruptedException e) {
+								// ?
+								log("Wait for " + r + " interrupted.");
+							}
 						}
 					}
-				}
-				if (r.isSleeping() || !r.isRunning()) {
-					r.setSkippedTurns(0);
-				} else {
-					r.setSkippedTurns(r.getSkippedTurns() + 1);
+					if (r.isSleeping() || !r.isRunning()) {
+						r.setSkippedTurns(0);
+					} else {
+						r.setSkippedTurns(r.getSkippedTurns() + 1);
 
-					r.getEventManager().add(new SkippedTurnEvent());
+						r.getEventManager().add(new SkippedTurnEvent());
 
-					// Actually, Robocode is never deterministic due to Robots
-					// using calls to Math.random()... but the point is,
-					// at least one robot skipped a turn.
-					deterministic = false;
-					if (nonDeterministicRobots == null) {
-						nonDeterministicRobots = r.getName();
-					} else if (nonDeterministicRobots.indexOf(r.getName()) == -1) {
-						nonDeterministicRobots += "," + r.getName();
+						// Actually, Robocode is never deterministic due to Robots
+						// using calls to Math.random()... but the point is,
+						// at least one robot skipped a turn.
+						deterministic = false;
+						if (nonDeterministicRobots == null) {
+							nonDeterministicRobots = r.getName();
+						} else if (nonDeterministicRobots.indexOf(r.getName()) == -1) {
+							nonDeterministicRobots += "," + r.getName();
+						}
+						if ((!r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurns))
+								|| (r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurnsWithIO))) {
+							r.out.println(
+									"SYSTEM: " + r.getName()
+									+ " has not performed any actions in a reasonable amount of time.");
+							r.out.println("SYSTEM: No score will be generated.");
+							r.getRobotStatistics().setInactive();
+							r.getRobotThreadManager().forceStop();
+						}
 					}
-					if ((!r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurns))
-							|| (r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurnsWithIO))) {
-						r.out.println(
-								"SYSTEM: " + r.getName() + " has not performed any actions in a reasonable amount of time.");
-						r.out.println("SYSTEM: No score will be generated.");
-						r.getRobotStatistics().setNoScoring(true);
-						r.getRobotThreadManager().forceStop();
-					}
-				}
-			} // if isRunning
+				} // if isRunning
+			}
 		}
 	}
 
@@ -1097,7 +1102,7 @@ public class Battle implements Runnable {
 		// Compute scores for dead robots
 		for (RobotPeer r : deathEvents) {
 			if (r.getTeamPeer() == null) {
-				r.getRobotStatistics().scoreDeath(getActiveContestantCount(r));
+				r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
 			} else {
 				boolean teammatesalive = false;
 
@@ -1108,7 +1113,7 @@ public class Battle implements Runnable {
 					}
 				}
 				if (!teammatesalive) {
-					r.getRobotStatistics().scoreDeath(getActiveContestantCount(r));
+					r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
 				}
 			}
 		}
@@ -1151,7 +1156,7 @@ public class Battle implements Runnable {
 				for (RobotPeer r : robots) {
 					if (!r.isDead()) {
 						if (!r.isWinner()) {
-							r.getRobotStatistics().scoreWinner();
+							r.getRobotStatistics().scoreLastSurvivor();
 							r.setWinner(true);
 							if (r.getTeamPeer() != null) {
 								if (r.isTeamLeader()) {
