@@ -11,7 +11,9 @@
  *******************************************************************************/
 package robocode.editor;
 
+
 import javax.swing.text.View;
+import javax.swing.text.Element;
 
 
 /**
@@ -27,7 +29,7 @@ public class RobocodeViewFactory implements javax.swing.text.ViewFactory {
 	 * @return the view
 	 * @see View
 	 */
-	public javax.swing.text.View create(javax.swing.text.Element elem) {
+	public View create(Element elem) {
 		return new RobocodeView(elem);
 	}
 }
