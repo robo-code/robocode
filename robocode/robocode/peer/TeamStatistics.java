@@ -12,6 +12,8 @@
  *     - Added getCurrentScore()
  *     Flemming N. Larsen
  *     - Ported to Java 5
+ *     - Renamed method names and removed unused methods
+ *     - Ordered all methods more naturally
  *******************************************************************************/
 package robocode.peer;
 
@@ -30,114 +32,6 @@ public class TeamStatistics implements ContestantStatistics {
 	}
 
 	/*
-	 * @see ContestantStatistics#getTotalBulletDamageDealt()
-	 */
-	public double getTotalBulletDamageDealt() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalBulletDamageDealt();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalBulletDamageReceived()
-	 */
-	public double getTotalBulletDamageReceived() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalBulletDamageReceived();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalBulletDamageScore()
-	 */
-	public double getTotalBulletDamageScore() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalBulletDamageScore();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalFirsts()
-	 */
-	public int getTotalFirsts() {
-		int d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalFirsts();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalKilledEnemyBulletScore()
-	 */
-	public double getTotalKilledEnemyBulletScore() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalKilledEnemyBulletScore();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalKilledEnemyRammingScore()
-	 */
-	public double getTotalKilledEnemyRammingScore() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalKilledEnemyRammingScore();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalRammingDamageDealt()
-	 */
-	public double getTotalRammingDamageDealt() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalRammingDamageDealt();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalRammingDamageReceived()
-	 */
-	public double getTotalRammingDamageReceived() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalRammingDamageReceived();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalRammingDamageScore()
-	 */
-	public double getTotalRammingDamageScore() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalRammingDamageScore();
-		}
-		return d;
-	}
-
-	/*
 	 * @see ContestantStatistics#getTotalScore()
 	 */
 	public double getTotalScore() {
@@ -145,18 +39,6 @@ public class TeamStatistics implements ContestantStatistics {
 
 		for (RobotPeer teammate : teamPeer) {
 			d += teammate.getRobotStatistics().getTotalScore();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalSeconds()
-	 */
-	public int getTotalSeconds() {
-		int d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalSeconds();
 		}
 		return d;
 	}
@@ -174,6 +56,90 @@ public class TeamStatistics implements ContestantStatistics {
 	}
 
 	/*
+	 * @see ContestantStatistics#getTotalLastSurvivalBonus()
+	 */
+	public double getTotalLastSurvivalBonus() {
+		double d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalLastSurvivalBonus();
+		}
+		return d;
+	}
+
+	/*
+	 * @see ContestantStatistics#getTotalBulletDamageScore()
+	 */
+	public double getTotalBulletDamageScore() {
+		double d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalBulletDamageScore();
+		}
+		return d;
+	}
+
+	/*
+	 * @see ContestantStatistics#getTotalBulletKillBonus()
+	 */
+	public double getTotalBulletKillBonus() {
+		double d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalBulletKillBonus();
+		}
+		return d;
+	}
+
+	/*
+	 * @see ContestantStatistics#getTotalRammingDamageScore()
+	 */
+	public double getTotalRammingDamageScore() {
+		double d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalRammingDamageScore();
+		}
+		return d;
+	}
+
+	/*
+	 * @see ContestantStatistics#getTotalRammingKillBonus()
+	 */
+	public double getTotalRammingKillBonus() {
+		double d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalRammingKillBonus();
+		}
+		return d;
+	}
+
+	/*
+	 * @see ContestantStatistics#getTotalFirsts()
+	 */
+	public int getTotalFirsts() {
+		int d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalFirsts();
+		}
+		return d;
+	}
+
+	/*
+	 * @see ContestantStatistics#getTotalSeconds()
+	 */
+	public int getTotalSeconds() {
+		int d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getTotalSeconds();
+		}
+		return d;
+	}
+
+	/*
 	 * @see ContestantStatistics#getTotalThirds()
 	 */
 	public int getTotalThirds() {
@@ -181,18 +147,6 @@ public class TeamStatistics implements ContestantStatistics {
 
 		for (RobotPeer teammate : teamPeer) {
 			d += teammate.getRobotStatistics().getTotalThirds();
-		}
-		return d;
-	}
-
-	/*
-	 * @see ContestantStatistics#getTotalWinnerScore()
-	 */
-	public double getTotalWinnerScore() {
-		double d = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalWinnerScore();
 		}
 		return d;
 	}
