@@ -180,12 +180,11 @@ public class BulletPeer {
 				r.setEnergy(r.getEnergy() - damage);
 
 				owner.getRobotStatistics().scoreBulletDamage(i, score);
-				r.getRobotStatistics().damagedByBullet(score);
 
 				if (r.getEnergy() <= 0) {
 					if (r.isAlive()) {
 						r.kill();
-						owner.getRobotStatistics().scoreKilledEnemyBullet(i);
+						owner.getRobotStatistics().scoreBulletKill(i);
 					}
 				}
 				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));

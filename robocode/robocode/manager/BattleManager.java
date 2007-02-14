@@ -456,10 +456,9 @@ public class BattleManager {
 			RobotStatistics stats = orderedRobots.get(i).getRobotStatistics();
 
 			results[i] = new RobotResults(orderedRobots.get(i).getRobotClassManager().getControlRobotSpecification(),
-					(i + 1), stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalWinnerScore(),
-					stats.getTotalBulletDamageScore(), stats.getTotalKilledEnemyBulletScore(),
-					stats.getTotalRammingDamageScore(), stats.getTotalKilledEnemyRammingScore(), stats.getTotalFirsts(),
-					stats.getTotalSeconds(), stats.getTotalThirds());
+					(i + 1), stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivalBonus(),
+					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
+					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
 		}
 		listener.battleComplete(battle.getBattleSpecification(), results);
 	}

@@ -267,7 +267,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
-					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
 					inCollision = true;
 					x -= movedx;
 					y -= movedy;
@@ -275,7 +274,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					if (r.energy == 0) {
 						if (r.isAlive()) {
 							r.kill();
-							statistics.scoreKilledEnemyRamming(i);
+							statistics.scoreRammingKill(i);
 						}
 					}
 				} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
@@ -285,7 +284,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
-					r.statistics.damagedByRamming(Rules.ROBOT_HIT_DAMAGE);
 					inCollision = true;
 					x -= movedx;
 					y -= movedy;
@@ -293,7 +291,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					if (r.energy == 0) {
 						if (r.isAlive()) {
 							r.kill();
-							statistics.scoreKilledEnemyRamming(i);
+							statistics.scoreRammingKill(i);
 						}
 					}
 				}
@@ -1122,7 +1120,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setMaxVelocity(999);
 		setMaxTurnRate(999);
 
-		statistics.initializeRound();
+		statistics.initialize();
 
 		out.resetCounter();
 

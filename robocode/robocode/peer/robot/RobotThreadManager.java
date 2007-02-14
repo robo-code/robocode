@@ -47,7 +47,7 @@ public class RobotThreadManager {
 				runThread.join(5000);
 			} catch (Exception e) {}
 			robotPeer.setRunning(false);
-			robotPeer.getRobotStatistics().setNoScoring(true);
+			robotPeer.getRobotStatistics().setInactive();
 			if (runThread.isAlive()) {
 				stopThread(runThread);
 			}
@@ -70,7 +70,7 @@ public class RobotThreadManager {
 		}
 
 		if (numThreads != 0) {
-			robotPeer.getRobotStatistics().setNoScoring(true);
+			robotPeer.getRobotStatistics().setInactive();
 			robotPeer.out.println(
 					"SYSTEM:  You still have " + numThreads + " running threads.  No score will be generated.");
 		}
