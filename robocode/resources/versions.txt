@@ -1,10 +1,11 @@
-Version 1.2.5 Beta
-(02/10/2007)
+Version 1.2.5
+(02/14/2007)
 o Bugfixes
   -- When two bullets collided, the one of the bullets was not destroyed, but continued
   -- Memory leak could occur on robots using large objects on static fields
      -- Robocode now clean all static object fields that are not final after each battle,
         but not between rounds. That is, the static fields are now garbage collected
+  -- 3 ConcurrentModificationException issues were removed
 o The sound effects in Robocode can now be changed
   -- This is done by specifying the file for each sound effect using the file.sfx.xxx
      keys in the robocode.properties file, e.g. the file.sfx.gunshot for setting the
@@ -18,6 +19,7 @@ o Robocode now supports music
      "end of battle" music when the battle is over 
   -- The supported music formats can be found here:
      http://java.sun.com/j2se/1.5.0/docs/guide/sound/
+o The column names in the Battle Results window has been improved
 o Keys in the robocode.properties file (the configuration file) are now sorted
   -- Previously the keys were put in random order each time the property file was saved
 
