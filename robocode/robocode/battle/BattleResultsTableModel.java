@@ -16,6 +16,7 @@
  *     - Code cleanup
  *     - Updated to use methods from the Logger and StringUtil, which
  *       replaces methods that have been (re)moved from the robocode.util.Utils
+ *     - Changed the column names to be more informative and equal in width
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -74,28 +75,28 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return "Survival";
 
 		case 4:
-			return "Last Survivor Bonus";
+			return "Last Surv Bonus";
 
 		case 5:
 			return "Bullet Dmg";
 
 		case 6:
-			return "Bonus";
+			return "Bullet Bonus";
 
 		case 7:
 			return "Ram Dmg * 2";
 
 		case 8:
-			return "Bonus";
+			return "Ram Bonus";
 
 		case 9:
-			return "Survival 1sts";
+			return "Surv 1sts";
 
 		case 10:
-			return "Survival 2nds";
+			return "Surv 2nds";
 
 		case 11:
-			return "Survival 3rds";
+			return "Surv 3rds";
 
 		default:
 			return "";
@@ -147,19 +148,19 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return "" + (int) (statistics.getTotalSurvivalScore() + 0.5);
 
 		case 4:
-			return "" + (int) (statistics.getTotalWinnerScore() + 0.5);
+			return "" + (int) (statistics.getTotalLastSurvivalBonus() + 0.5);
 
 		case 5:
 			return "" + (int) (statistics.getTotalBulletDamageScore() + 0.5);
 
 		case 6:
-			return "" + (int) (statistics.getTotalKilledEnemyBulletScore() + 0.5);
+			return "" + (int) (statistics.getTotalBulletKillBonus() + 0.5);
 
 		case 7:
 			return "" + (int) (statistics.getTotalRammingDamageScore() + 0.5);
 
 		case 8:
-			return "" + (int) (statistics.getTotalKilledEnemyRammingScore() + 0.5);
+			return "" + (int) (statistics.getTotalRammingKillBonus() + 0.5);
 
 		case 9:
 			return "" + statistics.getTotalFirsts();
