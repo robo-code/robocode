@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Luis Crespo
  *     - Added getCurrentScore()
+ *     Flemming N. Larsen
+ *     - Renamed method names and removed unused methods
  *******************************************************************************/
 package robocode.peer;
 
@@ -17,21 +19,19 @@ package robocode.peer;
 /**
  * @author Mathew A. Nelson (original)
  * @author Luis Crespo (contributor)
+ * @author Flemming N. Larsen (contributor)
  */
 public interface ContestantStatistics {
-	public double getTotalBulletDamageDealt();
-	public double getTotalBulletDamageReceived();
-	public double getTotalBulletDamageScore();
-	public double getTotalKilledEnemyBulletScore();
-	public double getTotalKilledEnemyRammingScore();
-	public double getTotalRammingDamageDealt();
-	public double getTotalRammingDamageReceived();
-	public double getTotalRammingDamageScore();
 	public double getTotalScore();
+	public double getTotalSurvivalScore();
+	public double getTotalLastSurvivalBonus();
+	public double getTotalBulletDamageScore();
+	public double getTotalBulletKillBonus();
+	public double getTotalRammingDamageScore();
+	public double getTotalRammingKillBonus();
 	public int getTotalFirsts();
 	public int getTotalSeconds();
 	public int getTotalThirds();
-	public double getTotalSurvivalScore();
-	public double getTotalWinnerScore();
+
 	public double getCurrentScore();
 }
