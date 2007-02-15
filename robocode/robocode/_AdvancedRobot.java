@@ -8,25 +8,30 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Added a peer.getCall() to getWaitCount()
+ *     - Fixed wrong names used in uninitializedException() calls
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
  * This class is used by the system as a placeholder for all deprecated calls.
- * <P>You should create a {@link robocode.AdvancedRobot AdvancedRobot} instead.
+ * <P>You should create a {@link AdvancedRobot} instead.
  * <P>There is no guarantee that this class will exist in future versions of Robocode.
  *
- * @see robocode.AdvancedRobot
+ * @see AdvancedRobot
  *
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class _AdvancedRobot extends Robot {
 
 	protected _AdvancedRobot() {}
 
 	/**
-	 * @deprecated use #setTurnGunLeft
+	 * @deprecated Use {@link AdvancedRobot#setTurnGunLeft} instead.
 	 */
 	@Deprecated
 	public void setTurnGunLeftDegrees(double degrees) {
@@ -34,12 +39,12 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnGun(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnGunLeft");
+			uninitializedException("setTurnGunLeftDegrees");
 		}
 	}
 
 	/**
-	 * @deprecated use #setTurnGunRight
+	 * @deprecated Use {@link AdvancedRobot#setTurnGunRight} instead.
 	 */
 	@Deprecated
 	public void setTurnGunRightDegrees(double degrees) {
@@ -47,12 +52,12 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnGun(Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnGunRight");
+			uninitializedException("setTurnGunRightDegrees");
 		}
 	}
 
 	/**
-	 * @deprecated use robocode.Robot#turnRadarRight
+	 * @deprecated Use {@link Robot#turnRadarRight} instead.
 	 */
 	@Deprecated
 	public void turnRadarRightDegrees(double degrees) {
@@ -60,7 +65,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated use #setTurnRight
+	 * @deprecated Use {@link AdvancedRobot#setTurnRight} instead.
 	 */
 	@Deprecated
 	public void setTurnRightDegrees(double degrees) {
@@ -68,12 +73,12 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnChassis(Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnRight");
+			uninitializedException("setTurnRightDegrees");
 		}
 	}
 
 	/**
-	 * @deprecated use #setTurnRadarLeft
+	 * @deprecated Use {@link AdvancedRobot#setTurnRadarLeft} instead.
 	 */
 	@Deprecated
 	public void setTurnRadarLeftDegrees(double degrees) {
@@ -81,12 +86,12 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnChassis(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnLeft");
+			uninitializedException("setTurnRadarLeftDegrees");
 		}
 	}
 
 	/**
-	 * @deprecated use #setTurnLeft
+	 * @deprecated Use {@link AdvancedRobot#setTurnLeft} instead.
 	 */
 	@Deprecated
 	public void setTurnLeftDegrees(double degrees) {
@@ -94,12 +99,12 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnChassis(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnLeft");
+			uninitializedException("setTurnLeftDegrees");
 		}
 	}
 
 	/**
-	 * @deprecated use getHeading
+	 * @deprecated Use {@link Robot#getHeading} instead.
 	 */
 	@Deprecated
 	public double getHeadingDegrees() {
@@ -107,7 +112,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated use robocode.Robot#turnLeft
+	 * @deprecated Use {@link Robot#turnLeft} instead.
 	 */
 	@Deprecated
 	public void turnLeftDegrees(double degrees) {
@@ -115,7 +120,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated use robocode.Robot#turnRight
+	 * @deprecated Use {@link Robot#turnRight} instead.
 	 */
 	@Deprecated
 	public void turnRightDegrees(double degrees) {
@@ -123,19 +128,19 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated use execute() instead.
+	 * @deprecated Use {@link AdvancedRobot#execute} instead.
 	 */
 	@Deprecated
 	public void endTurn() {
 		if (peer != null) {
 			peer.tick();
 		} else {
-			uninitializedException("execute");
+			uninitializedException("endTurn");
 		}
 	}
 
 	/**
-	 * @deprecated use getGunHeading
+	 * @deprecated Use {@link Robot#getGunHeading} instead.
 	 */
 	@Deprecated
 	public double getGunHeadingDegrees() {
@@ -143,7 +148,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated use getRadarHeading
+	 * @deprecated Use {@link Robot#getRadarHeading} instead.
 	 */
 	@Deprecated
 	public double getRadarHeadingDegrees() {
@@ -151,15 +156,19 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Override onSkippedTurn instead.
+	 * @deprecated This method is no longer functional.
+	 * Use {@link AdvancedRobot#onSkippedTurn} instead.
 	 */
 	@Deprecated
 	public int getWaitCount() {
+		if (peer != null) {
+			peer.getCall();
+		}
 		return 0;
 	}
 
 	/**
-	 * @deprecated use #setTurnRadarRight
+	 * @deprecated Use {@link AdvancedRobot#setTurnRadarRight} instead.
 	 */
 	@Deprecated
 	public void setTurnRadarRightDegrees(double degrees) {
@@ -167,12 +176,12 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnRadar(Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnRadarRight");
+			uninitializedException("setTurnRadarRightDegrees");
 		}
 	}
 
 	/**
-	 * @deprecated use robocode.Robot#turnGunLeft
+	 * @deprecated Use {@link Robot#turnGunLeft} instead.
 	 */
 	@Deprecated
 	public void turnGunLeftDegrees(double degrees) {
@@ -180,7 +189,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated use robocode.Robot#turnGunRight
+	 * @deprecated Use {@link Robot#turnGunRight} instead.
 	 */
 	@Deprecated
 	public void turnGunRightDegrees(double degrees) {
@@ -188,7 +197,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated use robocode.Robot#turnRadarLeft
+	 * @deprecated Use {@link Robot#turnRadarLeft} instead.
 	 */
 	@Deprecated
 	public void turnRadarLeftDegrees(double degrees) {
@@ -197,7 +206,7 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated This method is no longer functional.
-	 * @see #getWaitCount
+	 * Use {@link AdvancedRobot#onSkippedTurn} instead.
 	 */
 	@Deprecated
 	public int getMaxWaitCount() {
