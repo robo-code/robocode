@@ -864,13 +864,6 @@ public class RobocodeProperties {
 	}
 
 	public void store(FileOutputStream out, String desc) throws IOException {
-		props.setProperty(FILE_GUNSHOT_SFX, fileGunshotSfx);
-		props.setProperty(FILE_ROBOT_COLLISION_SFX, fileRobotCollisionSfx);
-		props.setProperty(FILE_WALL_COLLISION_SFX, fileWallCollisionSfx);
-		props.setProperty(FILE_ROBOT_DEATH_SFX, fileRobotDeathSfx);
-		props.setProperty(FILE_BULLET_HITS_ROBOT_SFX, fileBulletHitsRobotSfx);
-		props.setProperty(FILE_BULLET_HITS_BULLET_SFX, fileBulletHitsBulletSfx);
-
 		props.store(out, desc);
 	}
 
