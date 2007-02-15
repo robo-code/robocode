@@ -10,8 +10,6 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Rewritten for Java 5
- *     - Bugfix: getTeammates() returned null instead of an empty array when no
- *       teammates exists
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
