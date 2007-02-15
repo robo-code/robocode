@@ -9,8 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Deprecation of setColors(), where setBodyColor(), setGunColor(), and
- *       setRadarColor() must be used instead
+ *     - Updated Javadoc
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -21,14 +20,16 @@ import robocode.peer.RobotPeer;
 
 
 /**
- * This class is used by the system, as well as being a placeholder for all all deprecated (meaning, you should not use them) calls.
- * <P>You should create a {@link robocode.Robot Robot} instead.
- * <P>There is no guarantee that this class will exist in future versions of Robocode.
+ * This class is used by the system, as well as being a placeholder for all deprecated
+ * (meaning, you should not use them) calls for {@link Robot}.
+ * <P>
+ * You should create a {@link Robot} instead.
+ * <P>
+ * There is no guarantee that this class will exist in future versions of Robocode.
  *
- * @see robocode.Robot
+ * @see Robot
  *
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
  */
 public class _Robot {
 	RobotPeer peer;
@@ -48,18 +49,19 @@ public class _Robot {
 	}
 
 	/**
-	 * Insert the method's description here.
-	 * Creation date: (8/27/2001 1:36:54 PM)
-	 * @param s String
+	 * Throws a RobotException. This method should be called when the robot's peer
+	 * is uninitialized.
+	 * 
+	 * @param methodName the name of the method that failed
 	 */
-	protected void uninitializedException(String s) {
+	protected void uninitializedException(String methodName) {
 		throw new RobotException(
-				"You cannot call the " + s
+				"You cannot call the " + methodName
 				+ "() method before your run() method is called, or you are using a Robot object that the game doesn't know about.");
 	}
 
 	/**
-	 * @deprecated use getGunHeat()
+	 * @deprecated Use {@link Robot#getGunHeat} instead.
 	 */
 	@Deprecated
 	public double getGunCharge() {
@@ -72,7 +74,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use getEnergy()
+	 * @deprecated Use {@link Robot#getEnergy} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -85,7 +87,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated use getNumRounds() instead
+	 * @deprecated Use {@link Robot#getNumRounds} instead.
 	 */
 	@Deprecated
 	public int getNumBattles() {
@@ -99,7 +101,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated use getRoundNum() instead.
+	 * @deprecated Use {@link Robot#getRoundNum} instead.
 	 */
 	@Deprecated
 	public int getBattleNum() {
@@ -113,7 +115,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated This call has moved to AdvancedRobot,
+	 * @deprecated This call has moved to {@link AdvancedRobot},
 	 * and will no longer function in the Robot class.
 	 */
 	@Deprecated
