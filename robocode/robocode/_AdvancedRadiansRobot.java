@@ -8,18 +8,23 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This class is used by the system as a placeholder for all *Radians calls in AdvancedRobot.
- * You may refer to it for documentation.
- * <P>You should create a {@link robocode.AdvancedRobot AdvancedRobot} instead.
- * <P>There is no guarantee that this class will exist in future versions of Robocode.
- * <P>(The Radians methods themselves will continue work, however).
+ * This class is used by the system as a placeholder for all *Radians calls in
+ * {@link AdvancedRobot}. You may refer to this class for documentation only.
+ * <P>
+ * You should create a {@link AdvancedRobot} instead.
+ * <P>
+ * There is no guarantee that this class will exist in future versions of Robocode.
+ * <P>
+ * (The Radians methods themselves will continue work, however).
  *
- * @see robocode.AdvancedRobot
+ * @see AdvancedRobot
  *
  * @author Mathew A. Nelson (original)
  */
@@ -28,9 +33,12 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	protected _AdvancedRadiansRobot() {}
 
 	/**
-	 * Returns the direction the robot is facing, in radians.
-	 *  The value returned will be between 0 and 2 * PI.
-	 * @return the direction the robot is facing, in radians.
+	 * Returns the direction that the robot's body is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 *
+	 * @return the direction that the robot's body is facing, in radians.
 	 */
 	public double getHeadingRadians() {
 		if (peer != null) {
@@ -43,8 +51,16 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the robot to turn left by radians.
-	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
+	 * Sets the robot's body to turn left by radians for the next execution.
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 *
+	 * <P>Example:
+	 * <PRE>
+	 *   setTurnLeftRadians(Math.PI / 2);
+	 * </PRE>
+	 *
+	 * @param radians the amount of radians to turn the robot's body to the left
 	 */
 	public void setTurnLeftRadians(double radians) {
 		if (peer != null) {
@@ -56,8 +72,16 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the robot to turn right by radians.
-	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
+	 * Sets the robot's to turn right by radians for the next execution.
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 *
+	 * <P>Example:
+	 * <PRE>
+	 *   setTurnRightRadians(Math.PI / 2);
+	 * </PRE>
+	 *
+	 * @param radians the amount of radians to turn the robot's body to the right
 	 */
 	public void setTurnRightRadians(double radians) {
 		if (peer != null) {
@@ -69,14 +93,16 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Rotates your robot.
-	 * This call executes immediately, and does not return until it is complete.
+	 * Immediately turns the robot's body to the left by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the robot's turn is 0.
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   turnLeftRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param radians How many radians to rotate left.
+	 *
+	 * @param radians the amount of radians to turn the robot's body to the left
 	 */
 	public void turnLeftRadians(double radians) {
 		if (peer != null) {
@@ -87,14 +113,16 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Rotates your robot.
-	 * This call executes immediately, and does not return until it is complete.
+	 * Immediately turns the robot's body to the right by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the radar's turn is 0.
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   turnRightRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param radians How many radians to rotate right.
+	 *
+	 * @param radians the amount of radians to turn the robot's body to the right
 	 */
 	public void turnRightRadians(double radians) {
 		if (peer != null) {
@@ -105,8 +133,12 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Returns gun heading in radians.  This is a value from 0 to 2*Pi, where 0 points to the top of the screen.
-	 * @return gun heading
+	 * Returns the direction that the robot's gun is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 *
+	 * @return the direction that the robot's gun is facing, in radians.
 	 */
 	public double getGunHeadingRadians() {
 		if (peer != null) {
@@ -118,8 +150,12 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Returns radar heading in radians.  This is a value from 0 to 2*Pi, where 0 points to the top of the screen.
-	 * @return radar heading
+	 * Returns the direction that the robot's radar is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 *
+	 * @return the direction that the robot's radar is facing, in radians.
 	 */
 	public double getRadarHeadingRadians() {
 		if (peer != null) {
@@ -131,8 +167,18 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the gun to turn left by radians.
-	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
+	 * Sets the robot's gun to turn left by radians for the next execution.
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 *
+	 * <P>Example:
+	 * <PRE>
+	 *   setTurnGunLeftRadians(Math.PI / 2);
+	 * </PRE>
+	 *
+	 * @param radians the amount of radians to turn the robot's gun to the left
+	 *
+	 * @see Robot#setAdjustGunForRobotTurn
 	 */
 	public void setTurnGunLeftRadians(double radians) {
 		if (peer != null) {
@@ -144,8 +190,18 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the gun to turn right by radians.
-	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
+	 * Sets the robot's gun to turn right by radians for the next execution.
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 *
+	 * <P>Example:
+	 * <PRE>
+	 *   setTurnGunRightRadians(Math.PI / 2);
+	 * </PRE>
+	 *
+	 * @param radians the amount of radians to turn the robot's gun to the right
+	 *
+	 * @see Robot#setAdjustGunForRobotTurn
 	 */
 	public void setTurnGunRightRadians(double radians) {
 		if (peer != null) {
@@ -157,8 +213,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the radar to turn left by radians.
-	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
+	 * Sets the robot's radar to turn left by radians for the next execution.
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 *
+	 * <P>Example:
+	 * <PRE>
+	 *   setTurnRadarLeftRadians(Math.PI / 2);
+	 * </PRE>
+	 *
+	 * @param radians the amount of radians to turn the robot's radar to the left
+	 *
+	 * @see Robot#setAdjustRadarForRobotTurn
+	 * @see Robot#setAdjustRadarForGunTurn
 	 */
 	public void setTurnRadarLeftRadians(double radians) {
 		if (peer != null) {
@@ -170,8 +237,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the radar to turn right by radians.
-	 * This call returns immediately, and will not execute until you call execute() or take an action that executes.
+	 * Sets the robot's radar to turn right by radians for the next execution.
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 *
+	 * <P>Example:
+	 * <PRE>
+	 *   setTurnRadarRightRadians(Math.PI / 2);
+	 * </PRE>
+	 *
+	 * @param radians the amount of radians to turn the robot's radar to the right
+	 *
+	 * @see Robot#setAdjustRadarForRobotTurn
+	 * @see Robot#setAdjustRadarForGunTurn
 	 */
 	public void setTurnRadarRightRadians(double radians) {
 		if (peer != null) {
@@ -183,14 +261,18 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Rotates your robot's gun.
-	 * This call executes immediately, and does not return until it is complete.
+	 * Immediately turns the robot's gun to the left by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the gun's turn is 0.
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
-	 *   turnGunLeftRadians(Math.PI /2);
+	 *   turnGunLeftRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param radians How many radians to rotate the gun left.
+	 *
+	 * @param radians the amount of radians to turn the robot's gun to the left
+	 *
+	 * @see Robot#setAdjustGunForRobotTurn
 	 */
 	public void turnGunLeftRadians(double radians) {
 		if (peer != null) {
@@ -201,14 +283,18 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Rotates your robot's gun.
-	 * This call executes immediately, and does not return until it is complete.
+	 * Immediately turns the robot's gun to the right by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the gun's turn is 0.
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   turnGunRightRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param radians How many radians to rotate the gun right.
+	 *
+	 * @param radians the amount of radians to turn the robot's gun to the right
+	 *
+	 * @see Robot#setAdjustGunForRobotTurn
 	 */
 	public void turnGunRightRadians(double radians) {
 		if (peer != null) {
@@ -219,14 +305,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Rotates your robot's radar.
-	 * This call executes immediately, and does not return until it is complete.
+	 * Immediately turns the robot's radar to the left by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the radars's turn is 0.
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   turnRadarLeftRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param radians How many radians to rotate the radar left.
+	 *
+	 * @param radians the amount of radians to turn the robot's radar to the left
+	 *
+	 * @see Robot#setAdjustRadarForRobotTurn
+	 * @see Robot#setAdjustRadarForGunTurn
 	 */
 	public void turnRadarLeftRadians(double radians) {
 		if (peer != null) {
@@ -237,14 +328,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Rotates your robot's radar.
-	 * This call executes immediately, and does not return until it is complete.
+	 * Immediately turns the robot's radar to the right by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the radar's turn is 0.
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   turnRadarRightRadians(Math.PI / 2);
 	 * </PRE>
-	 * @param radians How many radians to rotate the radar right.
+	 *
+	 * @param radians the amount of radians to turn the robot's radar to the right
+	 *
+	 * @see Robot#setAdjustRadarForRobotTurn
+	 * @see Robot#setAdjustRadarForGunTurn
 	 */
 	public void turnRadarRightRadians(double radians) {
 		if (peer != null) {
@@ -255,9 +351,9 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Gets angle remaining in the gun's turn, in radians
+	 * Returns the angle remaining in the gun's turn, in radians.
 	 *
-	 * @return angle remaining in the gun's turn, in radians
+	 * @return the angle remaining in the gun's turn, in radians
 	 */
 	public double getGunTurnRemainingRadians() {
 		if (peer != null) {
@@ -270,9 +366,9 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Gets angle remaining in the radar's turn, in radians
+	 * Returns the angle remaining in the radar's turn, in radians.
 	 *
-	 * @return angle remaining in the radar's turn, in radians
+	 * @return the angle remaining in the radar's turn, in radians
 	 */
 	public double getRadarTurnRemainingRadians() {
 		if (peer != null) {
@@ -285,9 +381,9 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Gets angle remaining in the robot's turn, in radians.
+	 * Returns the angle remaining in the robot's turn, in radians.
 	 *
-	 * @return angle remaining in the robot's turn, in radians
+	 * @return the angle remaining in the robot's turn, in radians
 	 */
 	public double getTurnRemainingRadians() {
 		if (peer != null) {
