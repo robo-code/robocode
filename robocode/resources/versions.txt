@@ -1,7 +1,9 @@
 Version 1.2.5
-(02/14/2007)
+(02/15/2007)
 o Bugfixes
   -- When two bullets collided, the one of the bullets was not destroyed, but continued
+  -- TeamRobot.getTeammates returned null instead of an empty array when no teammated are
+     available
   -- Memory leak could occur on robots using large objects on static fields
      -- Robocode now clean all static object fields that are not final after each battle,
         but not between rounds. That is, the static fields are now garbage collected
