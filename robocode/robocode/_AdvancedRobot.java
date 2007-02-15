@@ -17,9 +17,12 @@ package robocode;
 
 
 /**
- * This class is used by the system as a placeholder for all deprecated calls.
- * <P>You should create a {@link AdvancedRobot} instead.
- * <P>There is no guarantee that this class will exist in future versions of Robocode.
+ * This class is used by the system, as well as being a placeholder for all deprecated
+ * (meaning, you should not use them) calls for {@link AdvancedRobot}.
+ * <P>
+ * You should create a {@link AdvancedRobot} instead.
+ * <P>
+ * There is no guarantee that this class will exist in future versions of Robocode.
  *
  * @see AdvancedRobot
  *
