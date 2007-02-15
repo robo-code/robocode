@@ -8,6 +8,9 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Bugfix: getTeammates() returned null instead of an empty array when no
+ *       teammates exists
  *******************************************************************************/
 package robocode;
 
@@ -25,13 +28,14 @@ import robocode.peer.RobotPeer;
  * @see robocode.Robot
  *
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class TeamRobot extends AdvancedRobot {
 
 	/**
 	 * Checks if a given robot name is one of your teammates.
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   public void onScannedRobot(ScannedRobotEvent e)
 	 *   {
@@ -59,7 +63,7 @@ public class TeamRobot extends AdvancedRobot {
 	/**
 	 * Returns an array of your teammates names
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   public void run()
 	 *   {
@@ -77,7 +81,7 @@ public class TeamRobot extends AdvancedRobot {
 			robocode.peer.TeamPeer teamPeer = peer.getTeamPeer();
 
 			if (teamPeer == null) {
-				return null;
+				return new String[0];
 			}
 			String s[] = new String[teamPeer.size() - 1];
 
@@ -98,7 +102,7 @@ public class TeamRobot extends AdvancedRobot {
 	/**
 	 * Broadcasts a message to all teammates
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   public void run()
 	 *   {
@@ -123,7 +127,7 @@ public class TeamRobot extends AdvancedRobot {
 	/**
 	 * Sends a message to one (or more) teammates
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   public void run()
 	 *   {
@@ -149,7 +153,7 @@ public class TeamRobot extends AdvancedRobot {
 	 * This method will be called when your robot receives a message from a teammate.
 	 * You should override it in your robot if you want to be informed of this event.
 	 *
-	 * <P>Example
+	 * <P>Example:
 	 * <PRE>
 	 *   public void onMessageReceived(MessageEvent event) {
 	 *     out.println(event.getSender() + " sent me: " + event.getMessage());
