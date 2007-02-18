@@ -128,7 +128,7 @@ public class SoundCache {
 	 * @param numClones the number of copies of the clip to be created
 	 */
 	public void addSound(Object key, String resourceName, int numClones) {
-		if (resourceName == null || (resourceName.trim().length() == 0)) {
+		if (mixer == null || resourceName == null || (resourceName.trim().length() == 0)) {
 			return;
 		}
 
