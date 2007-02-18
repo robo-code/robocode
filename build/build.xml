@@ -227,7 +227,6 @@
     <javadoc
         destdir="${build}/javadoc"
         sourcepath="${src.robocode}"
-        packagenames="robocode, robocode.control"
         windowtitle="Robocode ${version} API">
       <fileset dir="${src.robocode}">
         <include name="robocode/*.java"/>
