@@ -121,7 +121,9 @@ public class SoundManager {
 	 * Performs shutdown, by liberating the sound table
 	 */
 	public void dispose() {
-		getSounds().clear();
+		if (sounds != null) { // Do not call getSounds()!
+			sounds.clear();
+		}
 	}
 
 	/**

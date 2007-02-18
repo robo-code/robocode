@@ -172,8 +172,9 @@ public class Robocode {
 			}
 
 			if (!minimize && battleFilename == null) {
-				manager.getSoundManager().playThemeMusic();
-
+				if (manager.isSoundEnabled()) {
+					manager.getSoundManager().playThemeMusic();
+				}
 				manager.getWindowManager().showSplashScreen();
 			}
 			manager.getWindowManager().showRobocodeFrame();
