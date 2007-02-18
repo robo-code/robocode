@@ -1,3 +1,8 @@
+Version 1.2.5A
+(02/19/2007)
+o Bugfix: On some systems Robocode could not start up caused by a NullPointerException
+  in the internal sound manager/cache
+
 Version 1.2.5
 (02/18/2007)
 o Bugfixes
