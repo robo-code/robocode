@@ -1,9 +1,9 @@
 Version 1.2.5
-(02/15/2007)
+(02/18/2007)
 o Bugfixes
   -- When two bullets collided, the one of the bullets was not destroyed, but continued
-  -- TeamRobot.getTeammates returned null instead of an empty array when no teammated are
-     available
+  -- TeamRobot.getTeammates() returned null instead of an empty array when no teammated
+     are available
   -- Memory leak could occur on robots using large objects on static fields
      -- Robocode now clean all static object fields that are not final after each battle,
         but not between rounds. That is, the static fields are now garbage collected
@@ -21,7 +21,7 @@ o Robocode now supports music
      "end of battle" music when the battle is over 
   -- The supported music formats can be found here:
      http://java.sun.com/j2se/1.5.0/docs/guide/sound/
-o The column names in the Battle Results window has been improved
+o The column names in the Battle Results window have been improved
 o Keys in the robocode.properties file (the configuration file) are now sorted
   -- Previously the keys were put in random order each time the property file was saved
 
