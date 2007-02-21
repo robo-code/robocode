@@ -21,10 +21,10 @@ import robocode.peer.RobotPeer;
 
 /**
  * This class is used by the system, as well as being a placeholder for all deprecated
- * (meaning, you should not use them) calls for {@link Robot}.
- * <P>
+ * (meaning, you should not use them) calls for Robot.
+ * <p>
  * You should create a {@link Robot} instead.
- * <P>
+ * <p>
  * There is no guarantee that this class will exist in future versions of Robocode.
  *
  * @see Robot
@@ -40,9 +40,9 @@ public class _Robot {
 	protected _Robot() {}
 
 	/**
-	 * This method is called by the game.  RobotPeer is the object that deals with
+	 * This method is called by the game. RobotPeer is the object that deals with
 	 * game mechanics and rules, and makes sure your robot abides by them.
-	 * Do not call this method... your robot will simply stop interacting with the game.
+	 * Do not call this method! Your robot will simply stop interacting with the game.
 	 */
 	public final void setPeer(RobotPeer peer) {
 		this.peer = peer;

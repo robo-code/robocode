@@ -16,12 +16,12 @@ package robocode;
 
 /**
  * This class is used by the system as a placeholder for all *Radians calls in
- * {@link AdvancedRobot}. You may refer to this class for documentation only.
- * <P>
+ * AdvancedRobot. You may refer to this class for documentation only.
+ * <p>
  * You should create a {@link AdvancedRobot} instead.
- * <P>
+ * <p>
  * There is no guarantee that this class will exist in future versions of Robocode.
- * <P>
+ * <p>
  * (The Radians methods themselves will continue work, however).
  *
  * @see AdvancedRobot
@@ -35,6 +35,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	/**
 	 * Returns the direction that the robot's body is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
@@ -51,14 +52,29 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the robot's body to turn left by radians for the next execution.
+	 * Sets the robot's body to turn left by radians when the next execution
+	 * takes place.
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Set the robot to turn 180 degrees to the left
 	 *   setTurnLeftRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Set the robot to turn 90 degrees to the right instead of left
+	 *   // (overrides the previous order)
+	 *   setTurnLeftRadians(-Math.PI / 4);
+	 *
+	 *   ...
+	 *   // Executes the last setTurnLeftRadians()
+	 *   execute();
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the left
 	 */
@@ -72,14 +88,29 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the robot's to turn right by radians for the next execution.
+	 * Sets the robot's body to turn right by radians when the next execution
+	 * takes place.
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Set the robot to turn 180 degrees to the right
 	 *   setTurnRightRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Set the robot to turn 90 degrees to the left instead of right
+	 *   // (overrides the previous order)
+	 *   setTurnRightRadians(-Math.PI / 4);
+	 *
+	 *   ...
+	 *   // Executes the last setTurnRightRadians()
+	 *   execute();
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the right
 	 */
@@ -94,13 +125,22 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Immediately turns the robot's body to the left by radians.
+	 * <p>
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the angle remaining in the robot's turn is 0.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot 180 degrees to the left
 	 *   turnLeftRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Afterwards, turn the robot 90 degrees to the right
+	 *   turnLeftRadians(-Math.PI / 4);
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the left
 	 */
@@ -116,11 +156,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Immediately turns the robot's body to the right by radians.
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the angle remaining in the radar's turn is 0.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot 180 degrees to the right
 	 *   turnRightRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Afterwards, turn the robot 90 degrees to the left
+	 *   turnRightRadians(-Math.PI / 4);
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the right
 	 */
@@ -135,6 +183,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	/**
 	 * Returns the direction that the robot's gun is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
@@ -152,6 +201,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	/**
 	 * Returns the direction that the robot's radar is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
@@ -167,14 +217,29 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the robot's gun to turn left by radians for the next execution.
+	 * Sets the robot's gun to turn left by radians when the next execution
+	 * takes place.
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Set the gun to turn 180 degrees to the left
 	 *   setTurnGunLeftRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Set the gun to turn 90 degrees to the right instead of left
+	 *   // (overrides the previous order)
+	 *   setTurnGunLeftRadians(-Math.PI / 4);
+	 *
+	 *   ...
+	 *   // Executes the last setTurnGunLeftRadians()
+	 *   execute();
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the left
 	 *
@@ -190,14 +255,29 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the robot's gun to turn right by radians for the next execution.
+	 * Sets the robot's gun to turn right by radians when the next execution
+	 * takes place.
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Set the gun to turn 180 degrees to the right
 	 *   setTurnGunRightRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Set the gun to turn 90 degrees to the left instead of right
+	 *   // (overrides the previous order)
+	 *   setTurnGunRightRadians(-Math.PI / 4);
+	 *
+	 *   ...
+	 *   // Executes the last setTurnGunRightRadians()
+	 *   execute();
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the right
 	 *
@@ -213,14 +293,29 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the robot's radar to turn left by radians for the next execution.
+	 * Sets the robot's radar to turn left by radians when the next execution
+	 * takes place.
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Set the radar to turn 180 degrees to the left
 	 *   setTurnRadarLeftRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Set the radar to turn 90 degrees to the right instead of left
+	 *   // (overrides the previous order)
+	 *   setTurnRadarLeftRadians(-Math.PI / 4);
+	 *
+	 *   ...
+	 *   // Executes the last setTurnRadarLeftRadians()
+	 *   execute();
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the left
 	 *
@@ -237,14 +332,29 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	}
 
 	/**
-	 * Sets the robot's radar to turn right by radians for the next execution.
+	 * Sets the robot's radar to turn right by radians when the next execution
+	 * takes place.
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Set the radar to turn 180 degrees to the right
 	 *   setTurnRadarRightRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Set the radar to turn 90 degrees to the right instead of right
+	 *   // (overrides the previous order)
+	 *   setTurnRadarRightRadians(-Math.PI / 4);
+	 *
+	 *   ...
+	 *   // Executes the last setTurnRadarRightRadians()
+	 *   execute();
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the right
 	 *
@@ -262,13 +372,22 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Immediately turns the robot's gun to the left by radians.
+	 * <p>
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the angle remaining in the gun's turn is 0.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's gun 180 degrees to the left
 	 *   turnGunLeftRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Afterwards, turn the robot's gun 90 degrees to the right
+	 *   turnGunLeftRadians(-Math.PI / 4);
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the left
 	 *
@@ -286,11 +405,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Immediately turns the robot's gun to the right by radians.
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the angle remaining in the gun's turn is 0.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's gun 180 degrees to the right
 	 *   turnGunRightRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Afterwards, turn the robot's gun 90 degrees to the left
+	 *   turnGunRightRadians(-Math.PI / 4);
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the right
 	 *
@@ -306,13 +433,22 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Immediately turns the robot's radar to the left by radians.
+	 * <p>
 	 * This call executes immediately, and does not return until it is complete,
-	 * i.e. when the angle remaining in the radars's turn is 0.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * i.e. when the angle remaining in the radar's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's radar 180 degrees to the left
 	 *   turnRadarLeftRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Afterwards, turn the robot's radar 90 degrees to the right
+	 *   turnRadarLeftRadians(-Math.PI / 4);
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the left
 	 *
@@ -331,11 +467,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Immediately turns the robot's radar to the right by radians.
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the angle remaining in the radar's turn is 0.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's radar 180 degrees to the right
 	 *   turnRadarRightRadians(Math.PI / 2);
-	 * </PRE>
+	 *
+	 *   // Afterwards, turn the robot's radar 90 degrees to the left
+	 *   turnRadarRightRadians(-Math.PI / 4);
+	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the right
 	 *
@@ -352,6 +496,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Returns the angle remaining in the gun's turn, in radians.
+	 * <p>
+	 * This call can return both positive and negative values. Positive values
+	 * means that the gun is currently turning to the right. Negative values
+	 * means that the gun is currently turning to the left.
 	 *
 	 * @return the angle remaining in the gun's turn, in radians
 	 */
@@ -367,6 +515,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Returns the angle remaining in the radar's turn, in radians.
+	 * <p>
+	 * This call can return both positive and negative values. Positive values
+	 * means that the radar is currently turning to the right. Negative values
+	 * means that the radar is currently turning to the left.
 	 *
 	 * @return the angle remaining in the radar's turn, in radians
 	 */
@@ -382,6 +534,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	/**
 	 * Returns the angle remaining in the robot's turn, in radians.
+	 * <p>
+	 * This call can return both positive and negative values. Positive values
+	 * means that the robot is currently turning to the right. Negative values
+	 * means that the robot is currently turning to the left.
 	 *
 	 * @return the angle remaining in the robot's turn, in radians
 	 */
