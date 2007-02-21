@@ -77,6 +77,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the left
+	 *    If this value is negative, the robot's body is set to turn to the right
 	 */
 	public void setTurnLeftRadians(double radians) {
 		if (peer != null) {
@@ -113,6 +114,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the right
+	 *    If this value is negative, the robot's body is set to turn to the left
 	 */
 	public void setTurnRightRadians(double radians) {
 		if (peer != null) {
@@ -143,6 +145,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the left
+	 *    If this value is negative, the robot's body is set to turn to the right
 	 */
 	public void turnLeftRadians(double radians) {
 		if (peer != null) {
@@ -171,6 +174,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the right
+	 *    If this value is negative, the robot's body is set to turn to the left
 	 */
 	public void turnRightRadians(double radians) {
 		if (peer != null) {
@@ -242,6 +246,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the left
+	 *    If this value is negative, the robot's gun is set to turn to the right
 	 *
 	 * @see Robot#setAdjustGunForRobotTurn
 	 */
@@ -280,6 +285,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the right
+	 *    If this value is negative, the robot's gun is set to turn to the left
 	 *
 	 * @see Robot#setAdjustGunForRobotTurn
 	 */
@@ -318,6 +324,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the left
+	 *    If this value is negative, the robot's radar is set to turn to the right
 	 *
 	 * @see Robot#setAdjustRadarForRobotTurn
 	 * @see Robot#setAdjustRadarForGunTurn
@@ -357,6 +364,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the right
+	 *    If this value is negative, the robot's radar is set to turn to the left
 	 *
 	 * @see Robot#setAdjustRadarForRobotTurn
 	 * @see Robot#setAdjustRadarForGunTurn
@@ -390,6 +398,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the left
+	 *    If this value is negative, the robot's gun is set to turn to the right
 	 *
 	 * @see Robot#setAdjustGunForRobotTurn
 	 */
@@ -420,6 +429,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the right
+	 *    If this value is negative, the robot's gun is set to turn to the left
 	 *
 	 * @see Robot#setAdjustGunForRobotTurn
 	 */
@@ -451,6 +461,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the left
+	 *    If this value is negative, the robot's radar is set to turn to the right
 	 *
 	 * @see Robot#setAdjustRadarForRobotTurn
 	 * @see Robot#setAdjustRadarForGunTurn
@@ -482,6 +493,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the right
+	 *    If this value is negative, the robot's radar is set to turn to the left
 	 *
 	 * @see Robot#setAdjustRadarForRobotTurn
 	 * @see Robot#setAdjustRadarForGunTurn
@@ -497,7 +509,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	/**
 	 * Returns the angle remaining in the gun's turn, in radians.
 	 * <p>
-	 * This call can return both positive and negative values. Positive values
+	 * This call returns both positive and negative values. Positive values
 	 * means that the gun is currently turning to the right. Negative values
 	 * means that the gun is currently turning to the left.
 	 *
@@ -516,7 +528,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	/**
 	 * Returns the angle remaining in the radar's turn, in radians.
 	 * <p>
-	 * This call can return both positive and negative values. Positive values
+	 * This call returns both positive and negative values. Positive values
 	 * means that the radar is currently turning to the right. Negative values
 	 * means that the radar is currently turning to the left.
 	 *
@@ -535,7 +547,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	/**
 	 * Returns the angle remaining in the robot's turn, in radians.
 	 * <p>
-	 * This call can return both positive and negative values. Positive values
+	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently turning to the right. Negative values
 	 * means that the robot is currently turning to the left.
 	 *
