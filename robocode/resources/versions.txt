@@ -8,6 +8,7 @@ o The Ranking Panel has been enhanced
   -- Now the Ranking Panel contains the same columns as the Battle Results
   -- Both the current scores and total scores are shown together where it makes sense
 o The documentation of the Robocode API (Javadoc) has been improved a lot
+o The column names of both the Ranking Panel and Battle Results have been improved
 
 Version 1.2.5A
 (02/19/2007)
