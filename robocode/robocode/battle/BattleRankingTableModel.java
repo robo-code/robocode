@@ -14,6 +14,10 @@
  *     - Ported to Java 5
  *     - Updated to use the getPlacementString() methods from the StringUtil,
  *       which replaces the same method from robocode.util.Utils
+ *     - Added additional scores, so that the rankings are similar to the battle
+ *       results
+ *     - Updated to contain both current and total scores in the columns where it
+ *       makes sense
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -29,6 +33,7 @@ import javax.swing.table.AbstractTableModel;
 
 import robocode.manager.RobocodeManager;
 import robocode.peer.ContestantPeer;
+import robocode.peer.ContestantStatistics;
 import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
 
@@ -53,7 +58,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return 4;
+		return 12;
 	}
 
 	public int getRowCount() {
@@ -72,10 +77,34 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			return "Robot Name";
 
 		case 2:
-			return "Total";
+			return "    Total Score    ";
 
 		case 3:
-			return "Current";
+			return "     Survival     ";
+
+		case 4:
+			return "Surv Bonus";
+
+		case 5:
+			return "    Bullet Dmg    ";
+
+		case 6:
+			return " Bullet Bonus ";
+
+		case 7:
+			return "Ram Dmg * 2";
+
+		case 8:
+			return "Ram Bonus";
+
+		case 9:
+			return " 1sts ";
+
+		case 10:
+			return " 2nds ";
+
+		case 11:
+			return " 3rds ";
 
 		default:
 			return "";
@@ -91,6 +120,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			return "";
 		}
 		ContestantPeer r = contestants.get(row);
+		ContestantStatistics statistics = r.getStatistics();
 
 		switch (col) {
 		case 0:
@@ -99,12 +129,47 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		case 1:
 			return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
 
-		case 2:
-			return (int) (r.getStatistics().getTotalScore()
-					+ (battle.isRunning() ? r.getStatistics().getCurrentScore() : 0) + 0.5);
+		case 2: {
+			double current = battle.isRunning() ? statistics.getCurrentScore() : 0;
 
-		case 3:
-			return battle.isRunning() ? (int) (r.getStatistics().getCurrentScore() + 0.5) : 0;
+			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalScore() + current + 0.5);
+		}
+		case 3: {
+			double current = battle.isRunning() ? statistics.getCurrentSurvivalScore() : 0;
+
+			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalSurvivalScore() + current + 0.5);
+		}
+		case 4:
+			return (int) (statistics.getTotalLastSurvivalBonus() + 0.5);
+
+		case 5: {
+			double current = battle.isRunning() ? statistics.getCurrentBulletDamageScore() : 0;
+
+			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletDamageScore() + current + 0.5);
+		}
+		case 6: {
+			double current = battle.isRunning() ? statistics.getCurrentBulletKillBonus() : 0;
+
+			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletKillBonus() + current + 0.5);
+		}
+		case 7: {
+			double current = battle.isRunning() ? statistics.getCurrentRammingDamageScore() : 0;
+
+			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingDamageScore() + current + 0.5);
+		}
+		case 8: {
+			double current = battle.isRunning() ? statistics.getCurrentRammingKillBonus() : 0;
+
+			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingKillBonus() + current + 0.5);
+		}
+		case 9:
+			return "" + statistics.getTotalFirsts();
+
+		case 10:
+			return "" + statistics.getTotalSeconds();
+
+		case 11:
+			return "" + statistics.getTotalThirds();
 
 		default:
 			return "";
