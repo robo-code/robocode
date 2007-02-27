@@ -27,8 +27,8 @@ import static java.lang.Math.PI;
 
 import java.io.IOException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+
+import robocode.io.FileUtil;
 
 
 /**
@@ -131,18 +131,7 @@ public class Utils {
 	 * @throws IOException
 	 */
 	public static boolean copy(File inFile, File outFile) throws IOException {
-		if (inFile.equals(outFile)) {
-			throw new IOException("You cannot copy a file onto itself");
-		}
-		byte buf[] = new byte[4096];
-		FileInputStream in = new FileInputStream(inFile);
-		FileOutputStream out = new FileOutputStream(outFile);
-
-		while (in.available() > 0) {
-			int count = in.read(buf, 0, 4096);
-
-			out.write(buf, 0, count);
-		}
+		FileUtil.copy(inFile, outFile);
 		return true;
 	}
 }
