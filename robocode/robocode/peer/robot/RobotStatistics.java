@@ -19,6 +19,7 @@
  *     - Changed the survivalScore and totalSurvivalScore fields to be integers
  *     - Renamed method names and removed unused methods
  *     - Ordered all methods more naturally
+ *     - Added methods for getting current scores
  *     - Optimizations
  *     Titus Chen
  *     - Bugfix: Initial getResults() method only factored in the most recent
@@ -169,6 +170,26 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	public double getCurrentScore() {
 		return bulletDamageScore + rammingDamageScore + survivalScore + rammingKillBonus + bulletKillBonus
 				+ lastSurvivorBonus;
+	}
+
+	public double getCurrentSurvivalScore() {
+		return survivalScore;
+	}
+
+	public double getCurrentBulletDamageScore() {
+		return bulletDamageScore;
+	}
+
+	public double getCurrentBulletKillBonus() {
+		return bulletKillBonus;
+	}
+
+	public double getCurrentRammingDamageScore() {
+		return rammingDamageScore;
+	}
+
+	public double getCurrentRammingKillBonus() {
+		return rammingKillBonus;
 	}
 
 	public void scoreSurvival() {

@@ -12,6 +12,7 @@
  *     - Added getCurrentScore()
  *     Flemming N. Larsen
  *     - Renamed method names and removed unused methods
+ *     - Added methods for getting current scores
  *******************************************************************************/
 package robocode.peer;
 
@@ -29,9 +30,15 @@ public interface ContestantStatistics {
 	public double getTotalBulletKillBonus();
 	public double getTotalRammingDamageScore();
 	public double getTotalRammingKillBonus();
+
 	public int getTotalFirsts();
 	public int getTotalSeconds();
 	public int getTotalThirds();
 
 	public double getCurrentScore();
+	public double getCurrentSurvivalScore();
+	public double getCurrentBulletDamageScore();
+	public double getCurrentBulletKillBonus();
+	public double getCurrentRammingDamageScore();
+	public double getCurrentRammingKillBonus();
 }
