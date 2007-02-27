@@ -75,7 +75,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return "Survival";
 
 		case 4:
-			return "Last Surv Bonus";
+			return "Surv Bonus";
 
 		case 5:
 			return "Bullet Dmg";
@@ -90,13 +90,13 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return "Ram Bonus";
 
 		case 9:
-			return "Surv 1sts";
+			return " 1sts ";
 
 		case 10:
-			return "Surv 2nds";
+			return " 2nds ";
 
 		case 11:
-			return "Surv 3rds";
+			return " 3rds ";
 
 		default:
 			return "";
