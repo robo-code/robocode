@@ -173,7 +173,7 @@ public class WindowManager {
 	}
 
 	public void showResultsDialog(Battle battle) {
-		ResultsDialog resultsDialog = new ResultsDialog(robocodeFrame, battle);
+		ResultsDialog resultsDialog = new ResultsDialog(robocodeFrame, manager);
 
 		resultsDialog.setSize(0, 0);
 		WindowUtil.packCenterShow(robocodeFrame, resultsDialog);
@@ -181,9 +181,9 @@ public class WindowManager {
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
-			rankingDialog = new RankingDialog(robocodeFrame, manager);
-			rankingDialog.setSize(200, 300);
-			WindowUtil.centerShow(robocodeFrame, rankingDialog);
+			rankingDialog = new RankingDialog(robocodeFrame, manager, true);
+			rankingDialog.setSize(0, 0);
+			WindowUtil.packCenterShow(robocodeFrame, rankingDialog);
 		}
 		rankingDialog.setVisible(visible);
 	}
