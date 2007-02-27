@@ -104,10 +104,12 @@ public class FileUtil {
 	}
 
 	/**
-	 * Copies a file.
-	 *
-	 * @param srcFile the source file
-	 * @param destFile the destination file
+	 * Copies a file into another file.
+	 * 
+	 * @param inFile the input file to copy
+	 * @param outFile the output file to copy to
+	 * @return {@code true} if the file was copies succesfully; {@code false}
+	 *    otherwise.
 	 * @throws IOException
 	 */
 	public static void copy(File srcFile, File destFile) throws IOException {
