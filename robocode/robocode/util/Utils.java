@@ -17,11 +17,18 @@
  *       - normalRelativeAngle()
  *     - The isNear() was made public
  *     - Optimized and provided javadocs for all methods
+ *     - Restored the copy() method for keeping backwards compability with
+ *       RoboRumble@Home
  *******************************************************************************/
 package robocode.util;
 
 
 import static java.lang.Math.PI;
+
+import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 
 /**
@@ -112,5 +119,30 @@ public class Utils {
 	 */
 	public static boolean isNear(double angle1, double angle2) {
 		return (Math.abs(angle1 - angle2) < .00001);
+	}
+
+	/**
+	 * Copies a file into another file.
+	 * 
+	 * @param inFile the input file to copy
+	 * @param outFile the output file to copy to
+	 * @return {@code true} if the file was copies succesfully; {@code false}
+	 *    otherwise.
+	 * @throws IOException
+	 */
+	public static boolean copy(File inFile, File outFile) throws IOException {
+		if (inFile.equals(outFile)) {
+			throw new IOException("You cannot copy a file onto itself");
+		}
+		byte buf[] = new byte[4096];
+		FileInputStream in = new FileInputStream(inFile);
+		FileOutputStream out = new FileOutputStream(outFile);
+
+		while (in.available() > 0) {
+			int count = in.read(buf, 0, 4096);
+
+			out.write(buf, 0, count);
+		}
+		return true;
 	}
 }
