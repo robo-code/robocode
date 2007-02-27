@@ -1,10 +1,23 @@
+Version 1.2.6 Beta
+(02/27/2007)
+-------------
+o Bugfix
+  -- With some robots, a java.lang.NoClassDefFoundError occured when Robocode tried to
+     cleanup the static fields occupied by the robot when the battles are over
+o The Ranking Panel has been enhanced
+  -- Now the Ranking Panel contains the same columns as the Battle Results
+  -- Both the current scores and total scores are shown together where it makes sense
+o The documentation of the Robocode API (Javadoc) has been improved a lot
+
 Version 1.2.5A
 (02/19/2007)
+-------------
 o Bugfix: On some systems Robocode could not start up caused by a NullPointerException
   in the internal sound manager/cache
 
 Version 1.2.5
 (02/18/2007)
+-------------
 o Bugfixes
   -- When two bullets collided, the one of the bullets was not destroyed, but continued
   -- TeamRobot.getTeammates() returned null instead of an empty array when no teammated
@@ -32,6 +45,7 @@ o Keys in the robocode.properties file (the configuration file) are now sorted
 
 Version 1.2.4
 (01/25/2007)
+-------------
 o Bugfixes
   -- ConcurrentModificationException sometimes occured when robots were imported,
      e.g. when Robocode was starting up
@@ -69,6 +83,7 @@ o Fixed incosistency with .jar files located in the robot folder
 
 Version 1.2.3B
 (01/14/2007)
+-------------
 o Bugfixes
   -- Titus Chen made a fix for a NullPointerException that caused a replay to stop.
      This occured when "Pan" was enabled for the mixer in the Sound Options during a
@@ -79,6 +94,7 @@ o Bugfixes
 
 Version 1.2.3A
 (01/12/2007)
+-------------
 o Bugfix
   -- Removed a ConcurrentModificationException that occured when processing robot events
 o Internal Robocde improvements
@@ -89,6 +105,7 @@ o Internal Robocde improvements
 
 Version 1.2.3
 (01/10/2007)
+-------------
 o Bugfixes
   -- Removed NullPointerException when trying to restart the initial intro battle
   -- Titus Chen made a fix for the "robot color flickering" bug, when the max. amount
@@ -113,6 +130,7 @@ o Hotkey added for exiting Robocode quickly
 
 Version 1.2.2
 (12/14/2006)
+-------------
 o Bugfixes
   -- Extra hit wall events were occuring. This has been corrected by Titus Chen
   -- Teams were not always ranked correctly. This was corrected by Titus Chen
@@ -130,6 +148,7 @@ o Removed the "Allow robots to change colors repeatedly" from the View Options
 
 Version 1.2.1A
 (11/26/2006)
+-------------
 o Bugfixes
   -- Hitting wall with an exact angle of 0, 90, 180 or 270 degrees caused a robot to
      disappear from the battlefield (could be seen with the sample robots Corner and Wall)
@@ -139,6 +158,7 @@ o Bugfixes
 
 Version 1.2.1
 (11/24/2006)
+-------------
 o Bugfixes
   -- The turnGun(double) method returned before the gun rotation had returned
   -- Teleportation when hitting wall and abs(sin(heading)) > 0.00001 or
@@ -151,6 +171,7 @@ o Bugfixes
 
 Version 1.2
 (11/05/2006)
+-------------
 o Bugfixes
   -- Fixed a lot of bugs that was introduced with the 1.1.4 versions and version 1.1.5
   -- Fixed "Robot hangs" when running long battles, which was not really fixed in 1.1.5
@@ -172,6 +193,7 @@ o The default browser under Windows is now used when browsing e.g. the Online He
 
 Version 1.1.5
 (10/22/2006)
+-------------
 o Bugfixes
   -- Fixed BulletHitBulletEvents, where half of them refered to the wrong bullet
   -- The the battle results were not always ranked correctly
@@ -179,6 +201,7 @@ o The Ranking Panel total score is now updated on the fly
 
 Version 1.1.4B
 (10/19/2006)
+-------------
 o Bugfixes
   -- The getName() on ScannedRobotEvent returned null
   -- Fixed "Robot hangs" pausing the game
@@ -188,6 +211,7 @@ o Bugfixes
 
 Version 1.1.4A
 (10/15/2006)
+-------------
 o Bugfixes
   -- The sounds were cut off after first round
   -- The Ranking Panel position and size was not saved in the window.properties file
@@ -196,6 +220,7 @@ o Bugfixes
 
 Version 1.1.4
 (10/14/2006)
+-------------
 o Bugfixes
   -- The BattleView was not updated on the primary monitor display on a dual monitor system
   -- Sounds: When enabling sounds on-the-fly when it was originally disabled, Robocode
