@@ -1649,7 +1649,15 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			return;
 		}
 
-		Field[] fields = robot.getClass().getDeclaredFields();
+		Field[] fields = new Field[0];
+		
+		// This try-catch-throwable must be here, as it is not always possible to get the
+		// declared fields without getting a Throwable like java.lang.NoClassDefFoundError.
+		try {
+			fields = robot.getClass().getDeclaredFields();
+		} catch (Throwable t) {
+			// Do nothing
+		}
 
 		for (Field f : fields) {
 			int m = f.getModifiers();
