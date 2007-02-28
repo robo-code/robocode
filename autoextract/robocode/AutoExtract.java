@@ -1,15 +1,20 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Replaced deprecated methods
+ *     - Added check for the Java version that the user has installed. If the
+ *       Java version is not 5.0, an error dialog will be display and the
+ *       installation will terminate
+ *     - Changed the information message for how to run robocode.sh, where the
+ *       user does not have to change the directory before calling robocode.sh
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -23,25 +28,28 @@ import java.awt.event.*;
 
 
 /**
+ * Installer for Robocode.
+ * 
  * @author Mathew A. Nelsen (original)
- * @author Flemming N. Larsen (current)
+ * @author Flemming N. Larsen (contributor)
  */
 public class AutoExtract implements ActionListener {
-	public javax.swing.JDialog licenseDialog = null;
-	public boolean accepted = false;
+	public JDialog licenseDialog;
+	public boolean accepted;
 	public String spinner[] = { "-", "\\", "|", "/"};
 	public String message = "";
 	public static String osName = System.getProperty("os.name");
 	public static double osVersion = doubleValue(System.getProperty("os.version"));
+	public static String javaVersion = System.getProperty("java.version");
 	
 	/**
-	 * AutoExtract constructor comment.
+	 * AutoExtract constructor.
 	 */
 	public AutoExtract() {
 		super();
 	}
 
-	public static double doubleValue(String s) {
+	private static double doubleValue(String s) {
 		int p = s.indexOf(".");
 
 		if (p >= 0) {
@@ -50,7 +58,7 @@ public class AutoExtract implements ActionListener {
 		if (p >= 0) {
 			s = s.substring(0, p);
 		}
-	
+
 		double d = 0.0;
 
 		try {
@@ -60,15 +68,15 @@ public class AutoExtract implements ActionListener {
 		return d;
 	}
 
-	public boolean acceptLicense(String licenseFile) {
+	private boolean acceptLicense(String licenseFile) {
 		String licenseText = "";
-	
+
 		InputStream is = getClass().getClassLoader().getResourceAsStream(licenseFile);
 
 		if (is == null) { // no license
 			return true;
 		}
-		
+
 		BufferedReader r = new BufferedReader(new InputStreamReader(is));
 
 		try {
@@ -79,16 +87,16 @@ public class AutoExtract implements ActionListener {
 				line = r.readLine();
 			}
 			return acceptReject(licenseText);
-		
+
 		} catch (IOException e) {
 			System.err.println("Could not read line from license file: " + e);
 		}
 		return true;
 	}
 
-	public boolean acceptReject(String text) {
+	private boolean acceptReject(String text) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	
+
 		licenseDialog = new JDialog();
 		licenseDialog.setTitle("License Agreement");
 		licenseDialog.setModal(true);
@@ -119,9 +127,9 @@ public class AutoExtract implements ActionListener {
 
 		b1.addActionListener(this);
 		b2.addActionListener(this);
-	
+
 		licenseDialog.getContentPane().add(p, BorderLayout.SOUTH);
-	
+
 		licenseDialog.setVisible(true);
 
 		return accepted;
@@ -133,7 +141,7 @@ public class AutoExtract implements ActionListener {
 		licenseDialog = null;
 	}
 
-	public boolean extract(String src, File dest) {
+	private boolean extract(String src, File dest) {
 		JDialog statusDialog = new JDialog();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -142,7 +150,7 @@ public class AutoExtract implements ActionListener {
 		if (File.separatorChar == '/') {
 			height = 100;
 		}
-	
+
 		statusDialog.setTitle("Installing");
 		statusDialog.setLocation((screenSize.width - 500) / 2, (screenSize.height - height) / 2);
 		statusDialog.setSize(500, height);
@@ -152,7 +160,7 @@ public class AutoExtract implements ActionListener {
 		statusDialog.getContentPane().add(status, BorderLayout.CENTER);
 
 		statusDialog.setVisible(true);
-	
+
 		FileOutputStream fos = null;
 		String entryName = "";
 
@@ -195,7 +203,7 @@ public class AutoExtract implements ActionListener {
 
 						parentDirectory.mkdirs();
 						fos = new FileOutputStream(out);
-					
+
 						int index = 0;
 						int num = 0;
 						int count = 0;
@@ -219,7 +227,7 @@ public class AutoExtract implements ActionListener {
 								Runtime.getRuntime().exec("chmod 755 " + out.toString());
 							}
 						}
-					
+
 						status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
 					}
 				}
@@ -235,11 +243,22 @@ public class AutoExtract implements ActionListener {
 	}
 
 	public static void main(String argv[]) {
+		// Verify that the Java version is version 5 (1.5.0) or newer
+		if (javaVersion.startsWith("1.") && javaVersion.charAt(2) < '5') {
+			JOptionPane.showMessageDialog(null,
+					"Robocode requires Java 5.0 (1.5.0) or newer.\n" + "Your system is currently running Java " + javaVersion
+					+ ".\n" + "If you have not installed (or activated) at least\n" + "JRE 5.0 or JDK 5.0, please do so.",
+					"Error",
+					JOptionPane.ERROR_MESSAGE);
+
+			System.exit(0);
+		}
+		
 		// Set native look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {}
-		
+
 		File installDir = null;
 		File suggestedDir = null;
 
@@ -303,9 +322,9 @@ public class AutoExtract implements ActionListener {
 		}
 		System.exit(0);
 	}
-	
-	public void createShortcuts(File installDir, String runnable, String folder, String name) {
-		
+
+	private void createShortcuts(File installDir, String runnable, String folder, String name) {
+
 		if (osName.toLowerCase().indexOf("win") == 0) {
 			if (createWindowsShortcuts(installDir, runnable, folder, name)) {} else {
 				JOptionPane.showMessageDialog(null,
@@ -318,17 +337,17 @@ public class AutoExtract implements ActionListener {
 						message + "\n" + "To start Robocode, browse to " + installDir + " then double-click robocode.jar\n");
 			} else {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
-						+ installDir.getAbsolutePath() + "\n" + "./robocode.sh");
+						message + "\n" + "To start Robocode, enter the following at a command prompt:\n"
+						+ installDir.getAbsolutePath() + "/robocode.sh");
 			}
 		} else {
 			JOptionPane.showMessageDialog(null,
-					message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
-					+ installDir.getAbsolutePath() + "\n" + "./robocode.sh");
+					message + "\n" + "To start Robocode, enter the following at a command prompt:\n"
+					+ installDir.getAbsolutePath() + "/robocode.sh");
 		}
 	}
-	
-	public boolean createWindowsShortcuts(File installDir, String runnable, String folder, String name) {
+
+	private boolean createWindowsShortcuts(File installDir, String runnable, String folder, String name) {
 		int rc = JOptionPane.showConfirmDialog(null,
 				"Would you like to install a shortcut to Robocode in the Start menu? (Recommended)", "Create Shortcuts",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -403,7 +422,7 @@ public class AutoExtract implements ActionListener {
 		}
 	}
 
-	public String escaped(String s) {
+	private String escaped(String s) {
 		String r = "";
 
 		for (int i = 0; i < s.length(); i++) {
