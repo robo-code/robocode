@@ -1,14 +1,22 @@
 Version 1.2.6 Beta
-(02/27/2007)
+(02/28/2007)
 -------------
-o Bugfix
+o Bugfixes
   -- With some robots, a java.lang.NoClassDefFoundError occured when Robocode tried to
      cleanup the static fields occupied by the robot when the battles are over
+  -- Newer versions of Robocode (1.2.x) could not run under RoboRumble@Home
 o The Ranking Panel has been enhanced
   -- Now the Ranking Panel contains the same columns as the Battle Results
   -- Both the current scores and total scores are shown together where it makes sense
 o The documentation of the Robocode API (Javadoc) has been improved a lot
 o The column names of both the Ranking Panel and Battle Results have been improved
+o The Installer is now checking is the user is running Java 5.0 or newer
+  -- If the Java version is older than 5.0, then an error message will display
+     telling the user to install at least JRE 5.0 or JDK 5.0, and the installation
+     is terminated
+o robocode.sh has been updated
+  -- Armin Voetter has contributed with an improved version of robocode.sh so that the
+     script resolves the path to Robocode by itself
 
 Version 1.2.5A
 (02/19/2007)
