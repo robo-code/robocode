@@ -1,2 +1,8 @@
 #!/bin/sh
-java -Xmx512M -Dsun.io.useCanonCaches=false -jar robocode.jar
+olddir=`pwd` 
+robohome=`dirname $0` 
+echo "Using robohome $robohome" 
+cd "$robohome" 
+java -Xmx512M -Dsun.io.useCanonCaches=false -jar robocode.jar 
+echo "Goodbye!" 
+cd "$olddir"
