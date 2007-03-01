@@ -47,10 +47,11 @@ public class EventManager {
 	private int hitWallEventPriority = 30;
 	private int hitRobotEventPriority = 40;
 	private int bulletHitEventPriority = 50;
-	private int bulletHitBulletEventPriority = 50;
+	private int bulletHitBulletEventPriority = 55;
 	private int bulletMissedEventPriority = 60;
 	private int robotDeathEventPriority = 70;
-	private int messageEventPriority = 80;
+	private int messageEventPriority = 75;
+	// custom events defaults to 80
 	private int skippedTurnEventPriority = 100;
 	private int winEventPriority = 100;
 	private int deathEventPriority = 100;
@@ -686,6 +687,8 @@ public class EventManager {
 			robotDeathEventPriority = priority;
 		} else if (eventClass.equals("robocode.ScannedRobotEvent") || eventClass.equals("ScannedRobotEvent")) {
 			scannedRobotEventPriority = priority;
+		} else if (eventClass.equals("robocode.MessageEvent") || eventClass.equals("MessageEvent")) {
+			messageEventPriority = priority;
 		} else if (eventClass.equals("robocode.CustomEvent") || eventClass.equals("CustomEvent")) {
 			robotPeer.out.println(
 					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
