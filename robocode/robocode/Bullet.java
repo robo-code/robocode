@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
@@ -16,17 +18,19 @@ import robocode.peer.BulletPeer;
 
 
 /**
- * Represents a bullet.  This is returned from fireBullet(), and all the bullet-related events.
+ * Represents a bullet. This is returned from fireBullet() and setFireBullet(),
+ * and all the bullet-related events.
  *
- * @see robocode.Robot#fireBullet
- * @see robocode.BulletHitBulletEvent
- * @see robocode.BulletHitEvent
- * @see robocode.BulletMissedEvent
+ * @see Robot#fireBullet
+ * @see AdvancedRobot#setFireBullet
+ * @see BulletHitEvent
+ * @see BulletMissedEvent
+ * @see BulletHitBulletEvent
  *
  * @author Mathew A. Nelson (original)
  */
 public class Bullet {
-	private BulletPeer peer = null;
+	private BulletPeer peer;
 
 	/**
 	 * Called by the game to create a Bullet object
@@ -36,25 +40,29 @@ public class Bullet {
 	}
 
 	/**
-	 * Returns the direction the bullet is/was heading, in degrees (0 <= getHeading() < 360)
-	 * This is not relative to the direction you are facing.
-	 * @return direction the bullet is/was heading.
+	 * Returns the direction the bullet is/was heading, in degrees
+	 * (0 <= getHeading() < 360). This is not relative to the direction you are
+	 * facing.
+	 *
+	 * @return the direction the bullet is/was heading, in degrees
 	 */
 	public double getHeading() {
 		return Math.toDegrees(peer.getHeading());
 	}
 
 	/**
-	 * Returns the direction the bullet is/was heading, in radians (0 <= getHeadingRadians() < 2 * Math.PI)
-	 * This is not relative to the direction you are facing.
-	 * @return direction the bullet is/was heading.
+	 * Returns the direction the bullet is/was heading, in radians
+	 * (0 <= getHeadingRadians() < 2 * Math.PI). This is not relative to the
+	 * direction you are facing.
+	 *
+	 * @return the direction the bullet is/was heading, in radians
 	 */
 	public double getHeadingRadians() {
 		return peer.getHeading();
 	}
 
 	/**
-	 * Returns the name of the robot that fired this bullet
+	 * Returns the name of the robot that fired this bullet.
 	 *
 	 * @return the name of the robot that fired this bullet
 	 */
@@ -64,31 +72,33 @@ public class Bullet {
 
 	/**
 	 * Returns the power of this bullet.
-	 *
+	 * <p>
 	 * The bullet will do (4 * power) damage if it hits another robot.
-	 * If power is greater than 1, it will do an additional 2 * (power - 1) damage.
-	 * You will get (3 * power) back if you hit the other robot.
+	 * If power is greater than 1, it will do an additional 2 * (power - 1)
+	 * damage. You will get (3 * power) back if you hit the other robot.
 	 *
-	 * @return power of the bullet.
+	 * @return the power of the bullet
 	 */
 	public double getPower() {
 		return peer.getPower();
 	}
 
 	/**
-	 * Returns the velocity of this bullet.
-	 * Currently, this is a constant.
+	 * Returns the velocity of this bullet. The velocity of the bullet is
+	 * constant once it has been fired.
 	 *
-	 * @return velocity of the bullet that hit you
+	 * @return the velocity of the bullet
 	 */
 	public double getVelocity() {
 		return peer.getVelocity();
 	}
 
 	/**
-	 * Returns the name of the robot that this bullet hit, or null.
+	 * Returns the name of the robot that this bullet hit, or {@code null} if
+	 * the bullet has not hit a robot.
 	 *
-	 * @return the name of the robot that fired this bullet
+	 * @return the name of the robot that this bullet hit, or {@code null} if
+	 *    the bullet has not hit a robot.
 	 */
 	public String getVictim() {
 		if (peer.getVictim() == null) {
@@ -99,26 +109,28 @@ public class Bullet {
 	}
 
 	/**
-	 * Returns the x position of the bullet.
+	 * Returns the X position of the bullet.
 	 *
-	 * @return the x position of the bullet.
+	 * @return the X position of the bullet
 	 */
 	public double getX() {
 		return peer.getX();
 	}
 
 	/**
-	 * Returns the y position of the bullet.
+	 * Returns the Y position of the bullet.
 	 *
-	 * @return the y position of the bullet.
+	 * @return the Y position of the bullet
 	 */
 	public double getY() {
 		return peer.getY();
 	}
 
 	/**
-	 * Returns true if the bullet is still on the battlefield, false otherwise.
-	 * @return true if the bullet is still on the battlefield.
+	 * Checks if this bullet is still active on the battlefield.
+	 *
+	 * @return {@code true} if the bullet is still active on the battlefield;
+	 *    {@code false} otherwise
 	 */
 	public boolean isActive() {
 		return peer.isActive();

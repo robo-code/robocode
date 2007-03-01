@@ -18,8 +18,8 @@ import static java.lang.Math.toRadians;
 
 
 /**
- * Constants and methods for getting the rules of Robocode.
- * Constants are defined for rules that will not change.
+ * Constants and methods that defines the rules of Robocode.
+ * Constants are used for rules that will not change.
  * Methods are provided for rules that can be changed between battles or which depends
  * on some other factor.
  *
@@ -31,14 +31,14 @@ import static java.lang.Math.toRadians;
 public final class Rules {
 
 	/**
-	 * The acceleration of a robot, i.e. the increase of velocity when the robot moves forward,
-	 * which is 1 pixel/turn.
+	 * The acceleration of a robot, i.e. the increase of velocity when the
+	 * robot moves forward, which is 1 pixel/turn.
 	 */
 	public static final double ACCELERATION = 1;
 
 	/**
-	 * The deceleration of a robot, i.e. the decrease of velocity when the robot moves backwards (or brakes),
-	 * which is 2 pixels/turn.
+	 * The deceleration of a robot, i.e. the decrease of velocity when the
+	 * robot moves backwards (or brakes), which is 2 pixels/turn.
 	 */
 	public static final double DECELERATION = 2;
 
@@ -54,18 +54,20 @@ public final class Rules {
 	public static final double RADAR_SCAN_RADIUS = 1200;
 
 	/**
-	 * The minimum bullet power, i.e the amount of energy required for firing a bullet, which is 0.1 energy points.
+	 * The minimum bullet power, i.e the amount of energy required for firing a
+	 * bullet, which is 0.1 energy points.
 	 */
 	public static final double MIN_BULLET_POWER = 0.1;
 
 	/**
-	 * The maximum bullet power, i.e. the maximum amount of energy that can be transferred to a bullet when it is fired,
-	 * which is 3 energy points.
+	 * The maximum bullet power, i.e. the maximum amount of energy that can be
+	 * transferred to a bullet when it is fired, which is 3 energy points.
 	 */
 	public static final double MAX_BULLET_POWER = 3;
 
 	/**
-	 * The maximum turning rate of the robot, which is 10 degress/turn.
+	 * The maximum turning rate of the robot, in degrees, which is
+	 * 10 degress/turn.
 	 * Note, that the turn rate of the robot depends on it's velocity.
 	 *
 	 * @see #MAX_TURN_RATE_RADIANS
@@ -75,7 +77,8 @@ public final class Rules {
 	public static final double MAX_TURN_RATE = 10;
 
 	/**
-	 * The maximum turning rate of the robot measured in radians instead of degrees.
+	 * The maximum turning rate of the robot measured in radians instead of
+	 * degrees.
 	 *
 	 * @see #MAX_TURN_RATE
 	 * @see #getTurnRate
@@ -84,13 +87,18 @@ public final class Rules {
 	public static final double MAX_TURN_RATE_RADIANS = toRadians(MAX_TURN_RATE);
 
 	/**
-	 * The turning rate of the gun measured in degrees, which is 20 degrees/turn.
-	 * Note, that if setAdjustGunForRobotTurn(true) has been called, the gun turn is independent of the robot turn.
-	 * In this case the gun moves relatively to the screen. If setAdjustGunForRobotTurn(false) has been called or
-	 * setAdjustGunForRobotTurn() has not been called at all (this is the default), then the gun turn is dependent on
-	 * the robot turn, and in this case the gun moves relatively to the robot body.
+	 * The turning rate of the gun measured in degrees, which is
+	 * 20 degrees/turn.
+	 * Note, that if setAdjustGunForRobotTurn(true) has been called, the gun
+	 * turn is independent of the robot turn.
+	 * In this case the gun moves relatively to the screen. If
+	 * setAdjustGunForRobotTurn(false) has been called or
+	 * setAdjustGunForRobotTurn() has not been called at all (this is the
+	 * default), then the gun turn is dependent on the robot turn, and in this
+	 * case the gun moves relatively to the robot body.
 	 *
 	 * @see #GUN_TURN_RATE_RADIANS
+	 * @see Robot#setAdjustGunForRobotTurn
 	 */
 	public static final double GUN_TURN_RATE = 20;
 
@@ -102,14 +110,20 @@ public final class Rules {
 	public static final double GUN_TURN_RATE_RADIANS = toRadians(GUN_TURN_RATE);
 
 	/**
-	 * The turning rate of the radar measured in degrees, which is 45 degrees/turn.
-	 * Note, that if setAdjustRadarForRobotTurn(true) and/or setAdjustRadarForGunTurn(true) has been called, the
-	 * radar turn is independent of the robot and/or gun turn. If both methods has been set to true, the radar moves
-	 * relatively to the screen. If setAdjustRadarForRobotTurn(false) and/or setAdjustRadarForGunTurn(false) has been
-	 * called or not called at all (this is the default), then the radar turn is dependent on the robot and/or gun
-	 * turn, and in this case the radar moves relatively to the gun and/or robot body.
+	 * The turning rate of the radar measured in degrees, which is
+	 * 45 degrees/turn.
+	 * Note, that if setAdjustRadarForRobotTurn(true) and/or
+	 * setAdjustRadarForGunTurn(true) has been called, the radar turn is
+	 * independent of the robot and/or gun turn. If both methods has been set to
+	 * true, the radar moves relatively to the screen.
+	 * If setAdjustRadarForRobotTurn(false) and/or setAdjustRadarForGunTurn(false)
+	 * has been called or not called at all (this is the default), then the
+	 * radar turn is dependent on the robot and/or gun turn, and in this case
+	 * the radar moves relatively to the gun and/or robot body.
 	 *
 	 * @see #RADAR_TURN_RATE_RADIANS
+	 * @see Robot#setAdjustGunForRobotTurn
+	 * @see Robot#setAdjustRadarForGunTurn
 	 */
 	public static final double RADAR_TURN_RATE = 45;
 
@@ -121,18 +135,20 @@ public final class Rules {
 	public static final double RADAR_TURN_RATE_RADIANS = toRadians(RADAR_TURN_RATE);
 
 	/**
-	 * The amount of damage taken when a robot hits or is hit by another robot, which is 0.6 energy points.
+	 * The amount of damage taken when a robot hits or is hit by another robot,
+	 * which is 0.6 energy points.
 	 */
 	public static final double ROBOT_HIT_DAMAGE = 0.6;
 
 	/**
-	 * The amount of bonus given when a robot moving forward hits an opponent robot (ramming),
-	 * which is 1.2 energy points.
+	 * The amount of bonus given when a robot moving forward hits an opponent
+	 * robot (ramming), which is 1.2 energy points.
 	 */
 	public static final double ROBOT_HIT_BONUS = 1.2;
 
 	/**
-	 * Returns the turn rate of a robot given a specific velocity measured in degrees/turn.
+	 * Returns the turn rate of a robot given a specific velocity measured in
+	 * degrees/turn.
 	 *
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in degrees/turn.
@@ -144,7 +160,8 @@ public final class Rules {
 	}
 
 	/**
-	 * Returns the turn rate of a robot given a specific velocity measured in radians/turn.
+	 * Returns the turn rate of a robot given a specific velocity measured in
+	 * radians/turn.
 	 *
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in radians/turn.
@@ -156,7 +173,8 @@ public final class Rules {
 	}
 
 	/**
-	 * Returns the amount of damage taken when an {@link AdvancedRobot} hits a wall a specific velocity.
+	 * Returns the amount of damage taken when robot hits a wall with a
+	 * specific velocity.
 	 *
 	 * @param velocity the velocity of the robot.
 	 * @return wall hit damage in energy points.
@@ -181,7 +199,8 @@ public final class Rules {
 	}
 
 	/**
-	 * Returns the amount of bonus given when a robot's bullet hits an opponent robot given a specific bullet power.
+	 * Returns the amount of bonus given when a robot's bullet hits an opponent
+	 * robot given a specific bullet power.
 	 *
 	 * @param bulletPower the energy power of the bullet.
 	 * @return bullet hit bonus in energy points.
@@ -191,7 +210,8 @@ public final class Rules {
 	}
 
 	/**
-	 * Returns the speed of a bullet given a specific bullet power measured in pixels/turn
+	 * Returns the speed of a bullet given a specific bullet power measured in
+	 * pixels/turn
 	 *
 	 * @param bulletPower the energy power of the bullet.
 	 * @return bullet speed in pixels/turn
@@ -201,7 +221,8 @@ public final class Rules {
 	}
 
 	/**
-	 * Returns the heat produced by firing the gun given a specific bullet power.
+	 * Returns the heat produced by firing the gun given a specific bullet
+	 * power.
 	 *
 	 * @param bulletPower the energy power of the bullet.
 	 * @return gun heat

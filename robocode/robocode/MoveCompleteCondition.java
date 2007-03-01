@@ -8,22 +8,26 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * A prebuilt condition you can use that indicates your robot has finished moving.
+ * A prebuilt condition you can use that indicates your robot has finished
+ * moving.
  *
- * @see robocode.Condition
+ * @see Condition
  *
  * @author Mathew A. Nelson (original)
  */
 public class MoveCompleteCondition extends Condition {
-	private AdvancedRobot robot = null;
+	private AdvancedRobot robot;
 
 	/**
 	 * Creates a new MoveCompleteCondition with default priority.
+	 * The default priority is 80.
 	 */
 	public MoveCompleteCondition(AdvancedRobot r) {
 		super();
@@ -32,15 +36,25 @@ public class MoveCompleteCondition extends Condition {
 
 	/**
 	 * Creates a new MoveCompleteCondition with the specified priority.
+	 * A condition priority is a value from 0 - 99. The higher value, the
+	 * higher priority. The default priority is 80.
+	 *
+	 * @param robot your robot, which must be a {@link AdvancedRobot}
+	 * @param priority the priority of this condition
+	 * 
+	 * @see Condition#setPriority
 	 */
-	public MoveCompleteCondition(AdvancedRobot r, int priority) {
+	public MoveCompleteCondition(AdvancedRobot robot, int priority) {
 		super();
-		this.robot = r;
+		this.robot = robot;
 		this.priority = priority;
 	}
 
 	/**
 	 * Tests if the robot has stopped moving.
+	 *
+	 * @return {@code true} if the robot has stopped moving; {@code false}
+	 *    otherwise
 	 */
 	@Override
 	public boolean test() {

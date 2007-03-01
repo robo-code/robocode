@@ -8,12 +8,15 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * A ScannedRobotEvent is sent to {@link robocode.Robot#onScannedRobot} when you scan a robot.
+ * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot} when you scan a
+ * robot.
  * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)
@@ -28,6 +31,13 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Called by the game to create a new ScannedRobotEvent.
+	 * 
+	 * @param name the name of the scanned robot
+	 * @param energy the energy of the scanned robot
+	 * @param bearing the bearing of the scanned robot, in radians
+	 * @param distance the distance from your robot to the scanned robot
+	 * @param heading the heading of the scanned robot
+	 * @param velocity the velocity of the scanned robot
 	 */
 	public ScannedRobotEvent(String name, double energy, double bearing, double distance, double heading, double velocity) {
 		super();
@@ -40,34 +50,36 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * Returns the angle to the robot, relative to your robot's heading, in degrees.  -180 < getRobotBearing() <= 180
+	 * Returns the bearing to the robot you scanned, relative to your robot's
+	 * heading, in degrees (-180 <= getBearing() < 180)
 	 *
-	 * @return the angle to the robot
+	 * @return the bearing to the robot you scanned, in degrees
 	 */
 	public double getBearing() {
 		return bearing * 180.0 / Math.PI;
 	}
 
 	/**
-	 * Returns the angle to the robot, relative to your robot's heading, in radians.  -PI < getRobotBearingRadians() <= PI
+	 * Returns the bearing to the robot you scanned, relative to your robot's
+	 * heading, in radians (-PI <= getBearingRadians() < PI)
 	 *
-	 * @return the angle to the robot
+	 * @return the bearing to the robot you scanned, in radians
 	 */
 	public double getBearingRadians() {
 		return bearing;
 	}
 
 	/**
-	 * Returns the distance to the robot you scanned (your center to his center).
+	 * Returns the distance to the robot (your center to his center).
 	 *
-	 * @return the distance to the robot you scanned.
+	 * @return the distance to the robot.
 	 */
 	public double getDistance() {
 		return distance;
 	}
 
 	/**
-	 * Returns the energy of the robot
+	 * Returns the energy of the robot.
 	 *
 	 * @return the energy of the robot
 	 */
@@ -76,25 +88,25 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * Returns the direction the robot is facing, in degrees.  0 <= getRobotHeading() < 360
+	 * Returns the heading of the robot, in degrees (0 <= getHeading() < 360)
 	 *
-	 * @return the direction the robot is facing
+	 * @return the heading of the robot, in degrees
 	 */
 	public double getHeading() {
 		return heading * 180.0 / Math.PI;
 	}
 
 	/**
-	 * Returns the direction the robot is facing, in radians.  0 <= getRobotHeading() < 2*PI
+	 * Returns the heading of the robot, in radians (0 <= getHeading() < 2 * PI)
 	 *
-	 * @return the direction the robot is facing
+	 * @return the heading of the robot, in radians
 	 */
 	public double getHeadingRadians() {
 		return heading;
 	}
 
 	/**
-	 * @deprecated use getEnergy()
+	 * @deprecated Use {@link #getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -102,7 +114,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * Returns the name of the robot
+	 * Returns the name of the robot.
 	 *
 	 * @return the name of the robot
 	 */
@@ -111,7 +123,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getBearing()
+	 * @deprecated Use {@link #getBearing()} instead.
 	 */
 	@Deprecated
 	public double getRobotBearing() {
@@ -119,7 +131,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getBearing()
+	 * @deprecated Use {@link #getBearing()} instead.
 	 */
 	@Deprecated
 	public double getRobotBearingDegrees() {
@@ -127,7 +139,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getBearingRadians()
+	 * @deprecated Use {@link #getBearingRadians()} instead.
 	 */
 	@Deprecated
 	public double getRobotBearingRadians() {
@@ -135,7 +147,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getDistance()
+	 * @deprecated Use {@link #getDistance()} instead.
 	 */
 	@Deprecated
 	public double getRobotDistance() {
@@ -143,7 +155,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getHeading()
+	 * @deprecated Use {@link #getHeading()} instead.
 	 */
 	@Deprecated
 	public double getRobotHeading() {
@@ -151,7 +163,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getHeading()
+	 * @deprecated Use {@link #getHeading()} instead.
 	 */
 	@Deprecated
 	public double getRobotHeadingDegrees() {
@@ -159,7 +171,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getHeadingRadians()
+	 * @deprecated Use {@link #getHeadingRadians()} instead.
 	 */
 	@Deprecated
 	public double getRobotHeadingRadians() {
@@ -167,7 +179,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getEnergy()
+	 * @deprecated Use {@link #getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getRobotLife() {
@@ -175,7 +187,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getName()
+	 * @deprecated Use {@link #getName()} instead.
 	 */
 	@Deprecated
 	public String getRobotName() {
@@ -183,7 +195,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getVelocity()
+	 * @deprecated Use {@link #getVelocity()} instead.
 	 */
 	@Deprecated
 	public double getRobotVelocity() {
@@ -191,7 +203,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * Returns the velocity of the robot
+	 * Returns the velocity of the robot.
 	 *
 	 * @return the velocity of the robot
 	 */

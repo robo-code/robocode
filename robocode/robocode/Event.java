@@ -10,12 +10,13 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Optimized for Java 5
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * The basic superclass of all Robocode events
+ * The superclass of all Robocode events.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -32,7 +33,16 @@ public class Event implements Comparable<Event> {
 	}
 
 	/**
-	 * Used for sorting events based on priority and time.
+	 * Compares this event with another event, but only based on the priority
+	 * and time of the two events.
+	 * <p>
+	 * This call is called by the game in order to sort events based on the
+	 * priority and time.
+	 * 
+	 * @param event the event to compare to this event
+	 * @return a negative integer, zero, or a positive integer as this event has
+	 *    a lower priority, same priority, or greater priority than the
+	 *    specified event
 	 */
 	public int compareTo(Event event) {
 		int diff = 0;
@@ -63,34 +73,44 @@ public class Event implements Comparable<Event> {
 	}
 
 	/**
-	 * Returns the priority of the event.
+	 * Returns the priority of this event.
+	 * An event priority is a value from 0 - 99. The higher value, the higher
+	 * priority. The default priority is 80.
 	 *
-	 * @return the priority of the event.
+	 * @return the priority of this event
 	 */
 	public int getPriority() {
 		return priority;
 	}
 
 	/**
-	 * Returns the time the event occurred.
+	 * Returns the time this event occurred.
 	 *
-	 * @return the time the event occurred.
+	 * @return the time this event occurred
 	 */
 	public long getTime() {
 		return time;
 	}
 
 	/**
-	 * Called by the game to set the priority of an event to the priority your robot
-	 * specified for this type of event (or the default priority)
-	 * @see robocode.AdvancedRobot#setEventPriority
+	 * Called by the game to set the priority of an event to the priority your
+	 * robot specified for this type of event (or the default priority).
+	 * <p>
+	 * An event priority is a value from 0 - 99. The higher value, the higher
+	 * priority. The default priority is 80.
+	 *
+	 * @param newPriority the new priority of this event
+	 *
+	 * @see AdvancedRobot#setEventPriority
 	 */
 	public void setPriority(int newPriority) {
 		priority = newPriority;
 	}
 
 	/**
-	 * Called by the game to set the time an event occurred.
+	 * Called by the game to set the time this event occurred.
+	 * 
+	 * @param newTime the time this event occured
 	 */
 	public void setTime(long newTime) {
 		time = newTime;

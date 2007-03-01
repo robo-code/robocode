@@ -8,13 +8,15 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link robocode.Robot#onRobotDeath onRobotDeath}
- * when another robot (not you) dies.
+ * This event is sent to {@link Robot#onRobotDeath} when another robot (not your
+ * robot) dies.
  *
  * @author Mathew A. Nelson (original)
  */
@@ -23,6 +25,8 @@ public class RobotDeathEvent extends Event {
 
 	/**
 	 * Called by the game to create a new RobotDeathEvent.
+	 * 
+	 * @param robotName the name of the robot that died
 	 */
 	public RobotDeathEvent(String robotName) {
 		super();
@@ -32,14 +36,14 @@ public class RobotDeathEvent extends Event {
 	/**
 	 * Returns the name of the robot that died.
 	 *
-	 * @return the name of the robot that died.
+	 * @return the name of the robot that died
 	 */
 	public String getName() {
 		return robotName;
 	}
 
 	/**
-	 * @deprecated use getName
+	 * @deprecated Use {@link #getName()} instead.
 	 */
 	@Deprecated
 	public String getRobotName() {

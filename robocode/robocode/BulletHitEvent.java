@@ -8,13 +8,15 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link robocode.Robot#onBulletHit onBulletHit}
- * when one of your bullets hits another robot.
+ * This event is sent to {@link Robot#onBulletHit(BulletHitEvent)} when one of
+ * your bullets has hit another robot.
  *
  * @author Mathew A. Nelson (original)
  */
@@ -34,24 +36,26 @@ public class BulletHitEvent extends Event {
 	}
 
 	/**
-	 * Returns the Bullet that hit.
+	 * Returns the bullet of yours that hit the robot.
 	 *
-	 * @return Bullet
+	 * @return the bullet that hit the robot
 	 */
 	public Bullet getBullet() {
 		return bullet;
 	}
 
 	/**
-	 * Returns the remaining energy of the robot you hit (after the damage done by your bullet).
-	 * @return energy of the robot you hit
+	 * Returns the remaining energy of the robot your bullet has hit (after the
+	 * damage done by your bullet).
+	 *
+	 * @return energy the remaining energy of the robot that your bullet has hit
 	 */
 	public double getEnergy() {
 		return energy;
 	}
 
 	/**
-	 * @deprecated use getEnergy()
+	 * @deprecated Use {@link #getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -59,16 +63,16 @@ public class BulletHitEvent extends Event {
 	}
 
 	/**
-	 * Returns the name of the robot you hit.
+	 * Returns the name of the robot your bullet hit.
 	 *
-	 * @return the name of the robot you hit.
+	 * @return the name of the robot your bullet hit.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @deprecated use getEnergy()
+	 * @deprecated Use {@link #getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getRobotLife() {
@@ -76,7 +80,7 @@ public class BulletHitEvent extends Event {
 	}
 
 	/**
-	 * @deprecated use getName()
+	 * @deprecated Use {@link #getName()} instead.
 	 */
 	@Deprecated
 	public String getRobotName() {

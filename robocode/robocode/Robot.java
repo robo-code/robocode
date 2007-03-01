@@ -9,10 +9,10 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Fixed Javadoc documentation
  *     - Added setColors(Color, Color, Color, Color, Color), setAllColors(),
  *       setBodyColor(), setGunColor(), setRadarColor(), setBulletColor(), and
  *       setScanColor()
+ *     - Updated Javadoc
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue
  *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
@@ -26,20 +26,23 @@ import java.awt.Graphics2D;
 
 
 /**
- * The basic robot class that you will extend to create your own
- * robots.
+ * The basic robot class that you will extend to create your own robots.
  *
- * <P>Please note the following standards will be used:
- * <BR> heading - absolute angle in degrees with 0 facing up the screen, positive clockwise.  0 <= heading < 360.
- * <BR> bearing - relative angle to some object from your robot's heading, positive clockwise.  -180 < bearing <= 180
- * <BR> All coordinates are expressed as (x,y).
- * <BR> All coordinates are positive.
- * <BR> The origin (0,0) is at the bottom left of the screen.
- * <BR> Positive x is right.
- * <BR> Positive y is up.
+ * <p>Please note the following standards will be used:
+ * <br> heading - absolute angle in degrees with 0 facing up the screen,
+ * positive clockwise. 0 <= heading < 360.
+ * <br> bearing - relative angle to some object from your robot's heading,
+ * positive clockwise. -180 < bearing <= 180
+ * <br> All coordinates are expressed as (x,y).
+ * <br> All coordinates are positive.
+ * <br> The origin (0,0) is at the bottom left of the screen.
+ * <br> Positive x is right.
+ * <br> Positive y is up.
  *
- * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
- * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">Building your first robot<a>
+ * @see <a target="_top" href="http://robocode.sourceforge.net">
+ * robocode.sourceforge.net</a>
+ * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
+ * Building your first robot<a>
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -49,18 +52,56 @@ import java.awt.Graphics2D;
 public class Robot extends _Robot implements Runnable {
 
 	/**
-	 * Moves your robot forward.
-	 * This call executes immediately, and does not return until it is complete.
-	 * If the robot collides with a wall, the move is complete.
-	 * If the robot collides with another robot, the move is complete if you are heading toward the other robt.
+	 * The output stream your robot should use to print.
+	 * <p>
+	 * You can view the print-outs by clicking the button for your robot in the
+	 * right side of the battle window.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Print out a line each time my robot hits another robot
+	 *   public void onHitRobot(HitRobotEvent e) {
+	 *       out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
+	 *   }
+	 * </pre>
+	 */
+	public java.io.PrintStream out;
+
+	/**
+	 * Constructs a new robot.
+	 */
+	public Robot() {}
+
+	/**
+	 * Immediately moves your robot ahead (forward) by distance measured in
+	 * pixels.
+	 * <p>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the remaining distance to move is 0.
+	 * <p>
+	 * If the robot collides with a wall, the move is complete, meaning that the
+	 * robot will not move any further. If the robot collides with another
+	 * robot, the move is complete if you are heading toward the other robot.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot is set to move backward
+	 * instead of forward.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Move the robot 100 pixels forward
+	 *   ahead(100);
 	 *
-	 * <P>Example
-	 * <PRE>
-	 *   ahead(50);
-	 * </PRE>
-	 * @param distance The distance to move forward
-	 * @see robocode.Robot#onHitWall
-	 * @see robocode.Robot#onHitRobot
+	 *   // Afterwards, move the robot 50 pixels backward
+	 *   ahead(-50);
+	 * </pre>
+	 *
+	 * @param distance the distance to move ahead measured in pixels.
+	 *    If this value is negative, the robot will move back instead of ahead.
+	 *
+	 * @see #back
+	 * @see #onHitWall
+	 * @see #onHitRobot
 	 */
 	public void ahead(double distance) {
 		if (peer != null) {
@@ -71,18 +112,34 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Moves your robot backward.
-	 * This call executes immediately, and does not return until it is complete.
-	 * If the robot collides with a wall, the move is complete.
-	 * If the robot collides with another robot, the move is complete if you are heading toward the other robt.
+	 * Immediately moves your robot backward by distance measured in pixels.
+	 * <p>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the remaining distance to move is 0.
+	 * <p>
+	 * If the robot collides with a wall, the move is complete, meaning that the
+	 * robot will not move any further. If the robot collides with another
+	 * robot, the move is complete if you are heading toward the other robot.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot is set to move forward instead
+	 * of backward.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Move the robot 100 pixels backward
+	 *   back(100);
 	 *
-	 * <P>Example
-	 * <PRE>
-	 *   back(150);
-	 * </PRE>
-	 * @param distance The distance to backward
-	 * @see robocode.Robot#onHitWall
-	 * @see robocode.Robot#onHitRobot
+	 *   // Afterwards, move the robot 50 pixels forward
+	 *   back(-50);
+	 * </pre>
+	 *
+	 * @param distance the distance to move back measured in pixels.
+	 *    If this value is negative, the robot will move ahead instead of back.
+	 *
+	 * @see #ahead
+	 * @see #onHitWall
+	 * @see #onHitRobot
 	 */
 	public void back(double distance) {
 		if (peer != null) {
@@ -93,9 +150,9 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Get height of the current battlefield.
+	 * Returns the height of the current battlefield measured in pixels.
 	 *
-	 * @return The height of the battlefield.
+	 * @return the height of the current battlefield measured in pixels.
 	 */
 	public double getBattleFieldHeight() {
 		if (peer != null) {
@@ -108,9 +165,9 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Get width of the current battlefield.
+	 * Returns the width of the current battlefield measured in pixels.
 	 *
-	 * @return The width of the battlefield.
+	 * @return the width of the current battlefield measured in pixels.
 	 */
 	public double getBattleFieldWidth() {
 		if (peer != null) {
@@ -123,10 +180,13 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the direction the robot is facing, in degrees.
-	 *  The value returned will be between 0 and 360.
+	 * Returns the direction that the robot's body is facing, in degrees.
+	 * The value returned will be between 0 and 360 (is excluded).
+	 * <p>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * 90 means East, 180 means South, and 270 means West.
 	 *
-	 * @return the direction the robot is facing, in degrees.
+	 * @return the direction that the robot's body is facing, in degrees.
 	 */
 	public double getHeading() {
 		if (peer != null) {
@@ -147,9 +207,11 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the height of the robot
+	 * Returns the height of the robot measured in pixels.
 	 *
-	 * @return the height of the robot
+	 * @return the height of the robot measured in pixels.
+	 *
+	 * @see #getWidth
 	 */
 	public double getHeight() {
 		if (peer != null) {
@@ -158,6 +220,22 @@ public class Robot extends _Robot implements Runnable {
 			uninitializedException("getHeight");
 		}
 		return robocode.peer.RobotPeer.HEIGHT;
+	}
+
+	/**
+	 * Returns the width of the robot measured in pixels.
+	 *
+	 * @return the width of the robot measured in pixels.
+	 *
+	 * @see #getHeight
+	 */
+	public double getWidth() {
+		if (peer != null) {
+			peer.getCall();
+		} else {
+			uninitializedException("getWidth");
+		}
+		return robocode.peer.RobotPeer.WIDTH;
 	}
 
 	/**
@@ -176,23 +254,12 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the width of the robot
-	 *
-	 * @return the width of the robot
-	 */
-	public double getWidth() {
-		if (peer != null) {
-			peer.getCall();
-		} else {
-			uninitializedException("getWidth");
-		}
-		return robocode.peer.RobotPeer.WIDTH;
-	}
-
-	/**
-	 * Returns the X position of the robot.  (0,0) is at the bottom left of the battlefield.
+	 * Returns the X position of the robot. (0,0) is at the bottom left of the
+	 * battlefield.
 	 *
 	 * @return the X position of the robot
+	 *
+	 * @see #getY
 	 */
 	public double getX() {
 		if (peer != null) {
@@ -205,9 +272,12 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the Y position of the robot.  (0,0) is at the bottom left of the battlefield.
+	 * Returns the Y position of the robot. (0,0) is at the bottom left of the
+	 * battlefield.
 	 *
 	 * @return the Y position of the robot
+	 *
+	 * @see #getX
 	 */
 	public double getY() {
 		if (peer != null) {
@@ -220,30 +290,43 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * The main method in every robot.  Override this to set up your robot's basic behavior.
-	 *
-	 * <P>Example
-	 * <PRE>
-	 * // A basic robot that moves around in a square
-	 * public void run() {
-	 *   while (true) {
-	 *      ahead(100);
-	 *      turnRight(90);
+	 * The main method in every robot. You must override this to set up your
+	 * robot's basic behavior.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // A basic robot that moves around in a square
+	 *   public void run() {
+	 *       while (true) {
+	 *           ahead(100);
+	 *           turnRight(90);
+	 *       }
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 */
 	public void run() {}
 
 	/**
-	 * Rotates your robot.
-	 * This call executes immediately, and does not return until it is complete.
-	 * Note that the gun and radar will rotate the same amount, as they are attached to the robot.
+	 * Immediately turns the robot's body to the left by degrees.
+	 * <p>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the robot's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot 180 degrees to the left
+	 *   turnLeft(180);
 	 *
-	 * <P>Example
-	 * <PRE>
-	 *   turnLeft(90);
-	 * </PRE>
-	 * @param degrees How many degrees to rotate left.
+	 *   // Afterwards, turn the robot 90 degrees to the right
+	 *   turnLeft(-90);
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the left
+	 *    If this value is negative, the robot's body is set to turn to the right
 	 */
 	public void turnLeft(double degrees) {
 		if (peer != null) {
@@ -254,15 +337,25 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Rotates your robot.
-	 * This call executes immediately, and does not return until it is complete.
-	 * Note that the gun and radar will rotate the same amount, as they are attached to the robot.
+	 * Immediately turns the robot's body to the right by degrees.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the radar's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot 180 degrees to the right
+	 *   turnRight(180);
 	 *
-	 * <P>Example
-	 * <PRE>
-	 *   turnRight(90);
-	 * </PRE>
-	 * @param degrees How many degrees to rotate right.
+	 *   // Afterwards, turn the robot 90 degrees to the left
+	 *   turnRight(-90);
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the right
+	 *    If this value is negative, the robot's body is set to turn to the left
 	 */
 	public void turnRight(double degrees) {
 		if (peer != null) {
@@ -273,22 +366,10 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * The output stream your robot should use to print.  You can view it by clicking the buttons on the right side of the battle.
-	 *
-	 * <P>Example
-	 * public void onHitRobot(HitRobotEvent e) {
-	 *    out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
-	 * }
-	 *
-	 * System.out will also print to this.
-	 */
-	public java.io.PrintStream out = null;
-
-	public Robot() {}
-
-	/**
-	 * Do nothing this turn.
-	 * This call executes immediately.
+	 * Do nothing this turn, meaning that the robot will skip it's turn.
+	 * <p>
+	 * This call executes immediately, and does not return until the turn is
+	 * over.
 	 */
 	public void doNothing() {
 		if (peer != null) {
@@ -306,21 +387,45 @@ public class Robot extends _Robot implements Runnable {
 	public final void finalize() {}
 
 	/**
-	 * Fires a bullet.  The valid range for power is .1 to 3.
-	 * The bullet will travel in the direction the gun is pointing.
-	 * The bullet will do (4 * power) damage if it hits another robot.
-	 * If power is greater than 1, it will do an additional 2 * (power - 1) damage.
-	 * You will get (3 * power) back if you hit the other robot.
+	 * Immediately fires a bullet. The bullet will travel in the direction the
+	 * gun is pointing.
+	 * <p>
+	 * The specified bullet power is an amount of energy that will be taken from
+	 * the robot's energy. Hence, the more power you want to spend on the
+	 * bullet, the more energy is taken from your robot.
+	 * <p>
+	 * The bullet will do (4 * power) damage if it hits another robot. If power
+	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
+	 * You will get (3 * power) back if you hit the other robot. You can call
+	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
+	 * bullet with a specific bullet power will do.
+	 * <p>
+	 * The specified bullet power should be between
+	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+	 * <p>
+	 * Note that the gun cannot fire if the gun is overheated, meaning that
+	 * {@link #getGunHeat()} returns a value > 0.
+	 * <p>
+	 * An event is generated when the bullet hits a robot, wall, or another
+	 * bullet.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Fire a bullet with maximum power if the gun is ready
+	 *   if (getGunHeat() == 0) {
+	 *       fire(Rules.MAX_BULLET_POWER);
+	 *   }
+	 * </pre>
 	 *
-	 * An event will be generated when the bullet hits a robot, wall, or other bullet.
+	 * @param power the amount of energy given to the bullet, and subtracted
+	 *     from the robot's energy.
 	 *
-	 * This call executes immediately.
-	 *
-	 * @param power The energy given to the bullet, and subtracted from your energy.
-	 * @see robocode.Robot#fireBullet
-	 * @see robocode.Robot#onBulletHit
-	 * @see robocode.Robot#onBulletHitBullet
-	 * @see robocode.Robot#onBulletMissed
+	 * @see #fireBullet
+	 * @see #getGunHeat
+	 * @see #getGunCoolingRate
+	 * @see #onBulletHit
+	 * @see #onBulletHitBullet
+	 * @see #onBulletMissed
 	 */
 	public void fire(double power) {
 		if (peer != null) {
@@ -332,11 +437,52 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Fires a bullet.  This call is exactly like fire(double),
-	 * but returns the Bullet object you fired.
-	 * This call executes immediately.
+	 * Immediately fires a bullet. The bullet will travel in the direction the
+	 * gun is pointing.
+	 * <p>
+	 * The specified bullet power is an amount of energy that will be taken from
+	 * the robot's energy. Hence, the more power you want to spend on the
+	 * bullet, the more energy is taken from your robot.
+	 * <p>
+	 * The bullet will do (4 * power) damage if it hits another robot. If power
+	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
+	 * You will get (3 * power) back if you hit the other robot. You can call
+	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
+	 * bullet with a specific bullet power will do.
+	 * <p>
+	 * The specified bullet power should be between
+	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+	 * <p>
+	 * Note that the gun cannot fire if the gun is overheated, meaning that
+	 * {@link #getGunHeat()} returns a value > 0.
+	 * <p>
+	 * An event is generated when the bullet hits a robot, wall, or another
+	 * bullet.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Fire a bullet with maximum power if the gun is ready
+	 *   if (getGunHeat() == 0) {
+	 *       Bullet bullet = fireBullet(Rules.MAX_BULLET_POWER);
+	 *
+	 *       // Get the velocity of the bullet
+	 *       double bulletVelocity = bullet.getVelocity();
+	 *   }
+	 * </pre>
+	 *
+	 * @param power the amount of energy given to the bullet, and subtracted
+	 *     from the robot's energy.
+	 * @return a {@link Bullet} that contains information about the bullet if it
+	 *    was actually fired, which can be used for tracking the bullet after it
+	 *    has been fired. If the bullet was not fired, {@code null} is returned.
 	 *
 	 * @see #fire
+	 * @see Bullet
+	 * @see #getGunHeat
+	 * @see #getGunCoolingRate
+	 * @see #onBulletHit
+	 * @see #onBulletHitBullet
+	 * @see #onBulletMissed
 	 */
 	public Bullet fireBullet(double power) {
 		if (peer != null) {
@@ -351,10 +497,17 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the rate at which the gun will cool down.
+	 * Returns the rate at which the gun will cool down, i.e. the amount of heat
+	 * the gun heat will drop per turn.
+	 * <p>
+	 * The gun cooling rate is default 0.1 / turn, but can be changed by the
+	 * battle setup. So don't count on the cooling rate being 0.1!
 	 *
-	 * @see #getGunHeat
 	 * @return the gun cooling rate
+     *
+	 * @see #getGunHeat
+	 * @see #fire
+	 * @see #fireBullet
 	 */
 	public double getGunCoolingRate() {
 		if (peer != null) {
@@ -367,9 +520,13 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns gun heading in degrees.  This is a value from 0 to 360, where 0 points to the top of the screen.
+	 * Returns the direction that the robot's gun is facing, in degrees.
+	 * The value returned will be between 0 and 360 (is excluded).
+	 * <p>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * 90 means East, 180 means South, and 270 means West.
 	 *
-	 * @return gun heading
+	 * @return the direction that the robot's gun is facing, in degrees.
 	 */
 	public double getGunHeading() {
 		if (peer != null) {
@@ -382,10 +539,22 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the current heat of the gun.  You cannot fire unless this is 0.
-	 * (Calls to fire will succeed, but will not actually fire unless getGunHeat() == 0
+	 * Returns the current heat of the gun. The gun cannot fire unless this is
+	 * 0. (Calls to fire will succeed, but will not actually fire unless
+	 * getGunHeat() == 0).
+	 * <p>
+	 * The amount of gun heat generated when the gun is fired is
+	 * 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
+	 * by {@link #getGunCoolingRate()}, which is a battle setup.
+	 * <p>
+	 * Note that all guns are "hot" at the start of each round, where the gun
+	 * heat is 3.
 	 *
 	 * @return the current gun heat
+	 *
+	 * @see #getGunCoolingRate
+	 * @see #fire
+	 * @see #fireBullet
 	 */
 	public double getGunHeat() {
 		if (peer != null) {
@@ -398,7 +567,7 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the number of rounds in the current battle
+	 * Returns the number of rounds in the current battle.
 	 *
 	 * @return the number of rounds in the current battle
 	 */
@@ -413,9 +582,9 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns how many opponents are left
+	 * Returns how many opponents are left in the current round.
 	 *
-	 * @return how many opponents are left
+	 * @return how many opponents are left in the current round.
 	 */
 	public int getOthers() {
 		if (peer != null) {
@@ -436,9 +605,13 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns radar heading in degrees.  This is a value from 0 to 360, where 0 points to the top of the screen.
+	 * Returns the direction that the robot's radar is facing, in degrees.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * <p>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * 90 means East, 180 means South, and 270 means West.
 	 *
-	 * @return radar heading
+	 * @return the direction that the robot's radar is facing, in degrees.
 	 */
 	public double getRadarHeading() {
 		if (peer != null) {
@@ -451,9 +624,12 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the number of the current round (0 to getNumRounds()-1) in the battle
+	 * Returns the number of the current round (0 to {@link #getNumRounds()} - 1)
+	 * in the battle.
 	 *
 	 * @return the number of the current round in the battle
+	 *
+	 * @see #getNumRounds
 	 */
 	public int getRoundNum() {
 		if (peer != null) {
@@ -466,12 +642,14 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the current game time
-	 * Note:  1 battle consists of multiple rounds
+	 * Returns the game time of the current round, where the time is equal to
+	 * the current turn in the round.
+	 * <p>
+	 * A battle consists of multiple rounds.
+	 * <p>
 	 * Time is reset to 0 at the beginning of every round.
-	 * getTime() is equivalent to the number of frames displayed this round.
 	 *
-	 * @return the current game time
+	 * @return the game time/turn of the current round
 	 */
 	public long getTime() {
 		if (peer != null) {
@@ -484,9 +662,14 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the velocity of the robot.
+	 * Returns the velocity of the robot measured in pixels/turn.
+	 * <p>
+	 * The maximum velocity of a robot is defined by {@link Rules#MAX_VELOCITY}
+	 * (8 pixels / turn).
 	 *
-	 * @return the velocity of the robot
+	 * @return the velocity of the robot measured in pixels/turn
+	 *
+	 * @see Rules#MAX_VELOCITY
 	 */
 	public double getVelocity() {
 		if (peer != null) {
@@ -499,169 +682,193 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * This method will be called when one of your bullets hits another robot.
-	 * You should override it in your robot if you want to be informed of this event.
-	 *
-	 * <P>Example
-	 * <PRE>
+	 * This method is called when one of your bullets hits another robot.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 * <p>
+	 * Example:
+	 * <pre>
 	 *   public void onBulletHit(BulletHitEvent event) {
-	 *     out.println("I hit " + event.getName() + "!");
+	 *       out.println("I hit " + event.getName() + "!");
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.BulletHitEvent
-	 * @see robocode.Event
+	 * @param event the bullet-hit event set by the game
+	 * @see BulletHitEvent
+	 * @see Event
 	 */
 	public void onBulletHit(BulletHitEvent event) {}
 
 	/**
-	 * This method will be called when one of your bullets hits another bullet.
-	 * You should override it in your robot if you want to be informed of this event.
-	 *
-	 * <P>Example
-	 * <PRE>
+	 * This method is called when one of your bullets hits another bullet.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 * <p>
+	 * Example:
+	 * <pre>
 	 *   public void onBulletHitBullet(BulletHitBulletEvent event) {
-	 *     out.println("I hit a bullet fired by " + event.getBullet().getName() + "!");
+	 *       out.println("I hit a bullet fired by " + event.getBullet().getName() + "!");
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.BulletHitBulletEvent
-	 * @see robocode.Event
+	 * @param event the bullet-hit-bullet event set by the game
+	 * @see BulletHitBulletEvent
+	 * @see Event
 	 */
 	public void onBulletHitBullet(BulletHitBulletEvent event) {}
 
 	/**
-	 * This method will be called when one of your bullets misses (hits a wall).
-	 * You should override it in your robot if you want to be informed of this event.
-	 *
-	 * <P>Example
-	 * <PRE>
+	 * This method is called when one of your bullets misses, i.e. hits a wall.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 * <p>
+	 * Example:
+	 * <pre>
 	 *   public void onBulletHit(BulletMissedEvent event) {
-	 *     out.println("Drat, I missed.");
+	 *       out.println("Drat, I missed.");
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.BulletMissedEvent
-	 * @see robocode.Event
+	 * @param event the bullet-missed event set by the game
+	 * @see BulletMissedEvent
+	 * @see Event
 	 */
 	public void onBulletMissed(BulletMissedEvent event) {}
 
 	/**
-	 * This method will be called if your robot dies
-	 * You should override it in your robot if you want to be informed of this event.
-	 * Actions will have no effect if called from this section.
-	 * The intent is to allow you to perform calculations or print something out when you lose.
+	 * This method is called if your robot dies.
+	 * <p>
+	 * You should override it in your robot if you want to be informed of this
+	 * event. Actions will have no effect if called from this section. The
+	 * intent is to allow you to perform calculations or print something out
+	 * when the robot is killed.
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.DeathEvent
-	 * @see robocode.Event
+	 * @param event the death event set by the game
+	 *
+	 * @see DeathEvent
+	 * @see Event
 	 */
 	public void onDeath(DeathEvent event) {}
 
 	/**
-	 * This method will be called when your robot is hit by a bullet.
-	 * You should override it in your robot if you want to be informed of this event.
-	 *
-	 * <P>Example
-	 * <PRE>
+	 * This method is called when your robot is hit by a bullet.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 * <p>
+	 * Example:
+	 * <pre>
 	 *   public void onHitByBullet(HitByBulletEvent event) {
-	 *     out.println(event.getRobotName() + " hit me!");
+	 *       out.println(event.getRobotName() + " hit me!");
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.HitByBulletEvent
-	 * @see robocode.Event
+	 * @param event the hit-by-bullet event set by the game
+	 * @see HitByBulletEvent
+	 * @see Event
 	 */
 	public void onHitByBullet(HitByBulletEvent event) {}
 
 	/**
-	 * This method will be called when your robot collides with another robot.
-	 * You should override it in your robot if you want to be informed of this event.
-	 *
-	 * <P>Example
-	 * <PRE>
+	 * This method is called when your robot collides with another robot.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 * <p>
+	 * Example:
+	 * <pre>
 	 *   public void onHitRobot(HitRobotEvent event) {
-	 *     if (event.getBearing() > -90 && event.getBearing() <= 90)
-	 *       back(100);
-	 *     else
-	 *       ahead(100);
+	 *       if (event.getBearing() > -90 && event.getBearing() <= 90) {
+	 *           back(100);
+	 *       } else {
+	 *           ahead(100);
+	 *       }
 	 *   }
 	 *
 	 *   -- or perhaps, for a more advanced robot --
 	 *
 	 *   public void onHitRobot(HitRobotEvent event) {
-	 *     if (event.getBearing() > -90 && event.getBearing() <= 90)
-	 *       setBack(100);
-	 *     else
-	 *       setAhead(100);
+	 *       if (event.getBearing() > -90 && event.getBearing() <= 90) {
+	 *           setBack(100);
+	 *       } else {
+	 *           setAhead(100);
+	 *       }
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * <P>
-	 * The angle is relative to your robot's facing... so 0 is straight ahead of you.
-	 * <P>
-	 * This event can be generated if another robot hits you, in which case event.isMyFault() will return false.
-	 * In this case, you will not be automatically stopped by the game -- but if you continue moving toward the robot you
-	 * will hit it (and generate another event).  If you are moving away, then you won't hit it.
+	 * The angle is relative to your robot's facing. So 0 is straight ahead of
+	 * you.
+	 * <p>
+	 * This event can be generated if another robot hits you, in which case
+	 * {@link HitRobotEvent#isMyFault() event.isMyFault()} will return
+	 * {@code false}. In this case, you will not be automatically stopped by the
+	 * game -- but if you continue moving toward the robot you will hit it (and
+	 * generate another event). If you are moving away, then you won't hit it.
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.HitRobotEvent
-	 * @see robocode.Event
+	 * @param event the hit-robot event set by the game
+	 * @see HitRobotEvent
+	 * @see Event
 	 */
 	public void onHitRobot(HitRobotEvent event) {}
 
 	/**
-	 * This method will be called when your robot collides with a wall.
-	 * You should override it in your robot if you want to be informed of this event.
-	 * Note:  The wall at the top of the screen is 0 degrees, right is 90 degrees, bottom is 180 degrees, left is 270 degrees.
-	 *  -- but this event is relative to your heading, so:
-	 * The bearing is such that turnRight(e.getBearing()) will point you perpendicular to the wall.
-	 *
-	 * <P>Example
-	 * <PRE>
+	 * This method is called when your robot collides with a wall.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 * <p>
+	 * The wall at the top of the screen is 0 degrees, right is 90 degrees,
+	 * bottom is 180 degrees, left is 270 degrees. But this event is relative to
+	 * your heading, so: The bearing is such that turnRight(e.getBearing()) will
+	 * point you perpendicular to the wall.
+	 * <p>
+	 * Example:
+	 * <pre>
 	 *   public void onHitWall(HitWallEvent event) {
-	 *     out.println("Ouch, I hit a wall bearing " + event.getBearing() + " degrees.");
+	 *       out.println("Ouch, I hit a wall bearing " + event.getBearing() + " degrees.");
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.HitWallEvent
-	 * @see robocode.Event
+	 * @param event the hit-wall event set by the game
+	 * @see HitWallEvent
+	 * @see Event
 	 */
 	public void onHitWall(HitWallEvent event) {}
 
 	/**
-	 * This method will be called if another robot dies
-	 * You should override it in your robot if you want to be informed of this event.
+	 * This method is called when another robot dies.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.RobotDeathEvent
-	 * @see robocode.Event
+	 * @param event The robot-death event set by the game
+	 * @see RobotDeathEvent
+	 * @see Event
 	 */
 	public void onRobotDeath(RobotDeathEvent event) {}
 
 	/**
-	 * This method will be called when your robot sees another robot.
-	 * You should override it in your robot if you want to be informed of this event.
-	 *  (Almost all robots should override this!)
-	 * This event will be called automatically if there is a robot in range of your radar.
-	 *
-	 * <P>The bearing is relative to your robot's heading.
-	 *
-	 * <P>Example
-	 * <PRE>
+	 * This method is called when your robot sees another robot, i.e. when the
+	 * robot's radar scan "hits" another robot.
+	 * You should override it in your robot if you want to be informed of this
+	 * event. (Almost all robots should override this!)
+	 * <p>
+	 * This event is automatically called if there is a robot in range of your
+	 * radar.
+	 * <p>
+	 * Note that the robot's radar can only see robot within the range defined
+	 * by {@link Rules#equals(Object)} (1200 pixels).
+	 * <p>
+	 * Also not that the bearing of the scanned robot is relative to your
+	 * robot's heading.
+	 * <p>
+	 * Example:
+	 * <pre>
 	 *   public void onScannedRobot(ScannedRobotEvent event) {
-	 *   	// Assuming radar and gun are aligned...
-	 *   	if (event.getDistance() < 100)
-	 *   		fire(3);
-	 *   	else
-	 *   		fire(1);
+	 *       // Assuming radar and gun are aligned...
+	 *       if (event.getDistance() < 100) {
+	 *           fire(3);
+	 *       } else {
+	 *           fire(1);
+	 *       }
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
 	 * Note:
 	 *  The game assists Robots in firing, as follows:
@@ -669,31 +876,40 @@ public class Robot extends _Robot implements Runnable {
 	 *    and the event is current,
 	 *    and you call fire() before taking any other actions,
 	 *    fire() will fire directly at the robot.
-	 *  In essence, this means that if you can see a robot, and it doesn't move, then fire will hit it.
+	 *  In essence, this means that if you can see a robot, and it doesn't move,
+	 *  then fire will hit it.
+	 *  <br>
+	 *  AdvancedRobots will NOT be assisted in this manner, and are expected to
+	 *  examine the event to determine if fire() would hit. (i.e. you are
+	 *  spinning your gun around, but by the time you get the event, your gun is
+	 *  5 degrees past the robot).
 	 *
-	 *  AdvancedRobots will NOT be assisted in this manner, and are expected to examine the event
-	 *  to determine if fire() would hit.  (i.e. you are spinning your gun around, but by the time
-	 *  you get the event, your gun is 5 degrees past the robot)
+	 * @param event the scanned-robot event set by the game
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.ScannedRobotEvent
-	 * @see robocode.Event
+	 * @see #scan
+	 * @see ScannedRobotEvent
+	 * @see Event
+	 * @see #turnRadarLeft
+	 * @see #turnRadarRight
 	 */
 	public void onScannedRobot(ScannedRobotEvent event) {}
 
 	/**
-	 * This method will be called if your robot wins a battle.
-	 * You can do a victory dance here.
+	 * This method is called if your robot wins a battle.
+	 * <p>
+	 * Your robot could perform a victory dance here! :-)
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.WinEvent
-	 * @see robocode.Event
+	 * @param event the win event set by the game
+	 * @see WinEvent
+	 * @see Event
 	 */
 	public void onWin(WinEvent event) {}
 
 	/**
-	 * Resume the movement you stopped in stop(), if any.
+	 * Immediately resumes the movement you stopped by stop(), if any.
+	 * <p>
 	 * This call executes immediately, and does not return until it is complete.
+	 *
 	 * @see #stop
 	 */
 	public void resume() {
@@ -705,20 +921,24 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Look for other robots.
-	 * This method is called automatically by the game,
-	 * as long as you are moving, turning, turning your gun, or turning your radar.
-	 *
+	 * Scans for other robots. This method is called automatically by the game,
+	 * as long as you are moving, turning, turning your gun, or turning your
+	 * radar.
+	 * <p>
+	 * Scan will cause {@link #onScannedRobot(ScannedRobotEvent)} to be called
+	 * if you see a robot.
+	 * <p>
 	 * There are 2 reasons to call scan() manually:
-	 * 1 - You want to scan after you stop moving
+	 * 1 - You want to scan after you stop moving.
 	 * 2 - You want to interrupt the onScannedRobot event.
-	 *     This is more likely.  If you are in onScannedRobot, and call scan(), and you still see a robot,
-	 *     then the system will interrupt your onScannedRobot event immediately and start it from the top.
+	 *     This is more likely. If you are in onScannedRobot, and call scan(),
+	 *     and you still see a robot, then the system will interrupt your
+	 *     onScannedRobot event immediately and start it from the top.
+	 * <p>
 	 * This call executes immediately.
 	 *
-	 * Scan will cause {@link #onScannedRobot} to be called if you see a robot.
 	 * @see #onScannedRobot
-	 * @see robocode.ScannedRobotEvent
+	 * @see ScannedRobotEvent
 	 */
 	public void scan() {
 		if (peer != null) {
@@ -745,118 +965,130 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Sets the gun to automatically turn the opposite way when the robot turns.
-	 *
-	 * Ok, so this needs some explanation:
-	 *  The gun is mounted on the robot.  So, normally, if the robot turns 90 degrees to the right,
-	 *  then the gun will turn with it.
-	 *
-	 *  <P>To compensate for this, you can call setAdjustGunForRobotTurn(true).  When this is set,
-	 *  the gun will automatically turn in the opposite direction, so that it "stays still" when
-	 *  the robot turns.
-	 *
-	 * <P>Example, assuming both the robot and gun start out facing up (0 degrees):
-	 * <PRE>
+	 * Sets the gun to turn independent from the robot's turn.
+	 * <p>
+	 * Ok, so this needs some explanation: The gun is mounted on the robot's
+	 * body. So, normally, if the robot turns 90 degrees to the right, then the
+	 * gun will turn with it as it is mounted on top of the robot's body. To
+	 * compensate for this, you can call setAdjustGunForRobotTurn(true). When
+	 * this is set, the gun will turn independent from the robot's turn, i.e.
+	 * the gun will compensate for the robot's body turn.
+	 * <p>
+	 * Example, assuming both the robot and gun start out facing up (0 degrees):
+	 * <pre>
+	 *   // Set gun to turn with the robot's turn
 	 *   setAdjustGunForRobotTurn(false); // This is the default
 	 *   turnRight(90);
-	 *   // At this point, both the robot and gun are facing right (90 degrees);
+	 *   // At this point, both the robot and gun are facing right (90 degrees)
 	 *   turnLeft(90);
 	 *   // Both are back to 0 degrees
 	 *
 	 *   -- or --
 	 *
+	 *   // Set gun to turn independent from the robot's turn
 	 *   setAdjustGunForRobotTurn(true);
 	 *   turnRight(90);
 	 *   // At this point, the robot is facting right (90 degrees), but the gun is still facing up.
 	 *   turnLeft(90);
 	 *   // Both are back to 0 degrees.
-	 *  </PRE>
+	 * </pre>
 	 *
-	 * <P>Note:  The gun compensating this way does count as "turning the gun".  See {@link #setAdjustRadarForGunTurn} for details.
+	 * Note: The gun compensating this way does count as "turning the gun".
+	 * See {@link #setAdjustRadarForGunTurn(boolean)} for details.
 	 *
-	 * @param newAdjustGunForRobotTurn <CODE>true</CODE> if the gun must move independent of the robot's turn;
-	 *        <CODE>false</code> if the gun must move dependent/relative to of the robot's turn
+	 * @param independent @{code true} if the gun must turn independent from the
+	 *    robot's turn; {@code false} if the gun must turn with the robot's turn.
+	 *
 	 * @see #setAdjustRadarForGunTurn
 	 */
-	public void setAdjustGunForRobotTurn(boolean newAdjustGunForRobotTurn) {
+	public void setAdjustGunForRobotTurn(boolean independent) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setAdjustGunForBodyTurn(newAdjustGunForRobotTurn);
+			peer.setAdjustGunForBodyTurn(independent);
 		} else {
 			uninitializedException("setAdjustGunForRobotTurn");
 		}
 	}
 
 	/**
-	 * Sets the radar to automatically turn the opposite way when the gun turns.
-	 *
-	 * Make sure you understand how {@link #setAdjustGunForRobotTurn} works before reading on...
-	 *
-	 * <P>Ok, so now you understand {@link #setAdjustGunForRobotTurn} right?
-	 *
-	 *  <P>Just like the gun is mounted on the robot, the radar is mounted on the gun.
-	 *  So, normally, if the gun turns 90 degrees to the right,
-	 *  then the radar will turn with it.
-	 *
-	 *  <P>To compensate for this (if you like), you can call setAdjustRadarForGunTurn(true).  When this is set,
-	 *  the radar will automatically turn in the opposite direction, so that it "stays still" when
-	 *  the gun turns (in relation to the body, as of 0.97).
-	 *
-	 * <P>Example, assuming both the radar and gun start out facing up (0 degrees):
-	 * <PRE>
+	 * Sets the radar to turn independent from the gun's turn.
+	 * <p>
+	 * Ok, so this needs some explanation: The radar is mounted on the robot's
+	 * gun. So, normally, if the gun turns 90 degrees to the right, then the radar
+	 * will turn with it as it is mounted on top of the gun. To compensate for
+	 * this, you can call setAdjustRadarForGunTurn(true). When this is set, the
+	 * radar will turn independent from the robot's turn, i.e. the radar will
+	 * compensate for the gun's turn.
+	 * <p>
+	 * Example, assuming both the gun and radar start out facing up (0 degrees):
+	 * <pre>
+	 *   // Set radar to turn with the gun's turn
 	 *   setAdjustRadarForGunTurn(false); // This is the default
 	 *   turnGunRight(90);
 	 *   // At this point, both the radar and gun are facing right (90 degrees);
 	 *
 	 *   -- or --
 	 *
+	 *   // Set radar to turn independent from the gun's turn
 	 *   setAdjustRadarForGunTurn(true);
 	 *   turnGunRight(90);
 	 *   // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
+	 * </pre>
+	 * Note: Calling setAdjustRadarForGunTurn will automatically call
+	 * {@link #setAdjustRadarForRobotTurn(boolean)} with the same value, unless
+	 * you have already called it earlier. This behavior is primarily for
+	 * backward compatibility with older Robocode robots.
 	 *
-	 * </PRE>
-	 * <P>Note: Calling setAdjustRadarForGunTurn will automatically call setAdjustRadarForRobotTurn
-	 * with the same value, unless you have already called it yourself.  This
-	 * behavior is primarily for backward compatibility with older Robocode robots.
+	 * @param independent @{code true} if the radar must turn independent from
+	 *    the gun's turn; {@code false} if the radar must turn with the gun's
+	 *    turn.
 	 *
-	 * @param newAdjustRadarForGunTurn <CODE>true</CODE> if the radar must move independent of the gun's turn;
-	 *        <CODE>false</code> if the radar must move dependent/relative to of the gun's turn
 	 * @see #setAdjustRadarForRobotTurn
 	 * @see #setAdjustGunForRobotTurn
 	 */
-	public void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
+	public void setAdjustRadarForGunTurn(boolean independent) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
+			peer.setAdjustRadarForGunTurn(independent);
 		} else {
 			uninitializedException("setAdjustRadarForGunTurn");
 		}
 	}
 
 	/**
-	 * Call this method to set the color of your robot's body, gun, and radar.
-	 * You may only call this method one time per battle.
-	 * A null indicates the default (blue-ish) color.
-	 *
-	 * <PRE>
+	 * Sets the color of the robot's body, gun, and radar in the same time.
+	 * <p>
+	 * You may only call this method one time per battle. A {@code null}
+	 * indicates the default (blue-ish) color.
+	 * <p>
 	 * Example:
+	 * <pre>
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
+	 *   ...
 	 *
 	 *   public void run() {
-	 *     setColors(Color.black,Color.red,new Color(150,0,150));
+	 *       setColors(null, Color.RED, new Color(150, 0, 150));
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param robotColor Your robot's color
-	 * @param gunColor Your robot's gun color
-	 * @param radarColor Your robot's radar color
+	 * @param bodyColor the new body color
+	 * @param gunColor the new gun color
+	 * @param radarColor the new radar color
+	 *
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setAllColors
+	 * @see #setBodyColor
+	 * @see #setGunColor
+	 * @see #setRadarColor
+	 * @see #setBulletColor
+	 * @see #setScanColor
 	 * @see java.awt.Color
 	 */
-	public void setColors(Color robotColor, Color gunColor, Color radarColor) {
+	public void setColors(Color bodyColor, Color gunColor, Color radarColor) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setBodyColor(robotColor);
+			peer.setBodyColor(bodyColor);
 			peer.setGunColor(gunColor);
 			peer.setRadarColor(radarColor);
 		} else {
@@ -865,34 +1097,45 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Call this method to set the color of your robot's body, gun, radar,
-	 * bullet, and scan arc.
-	 * You may only call this method one time per battle.
-	 * A null indicates the default (blue-ish) color.
-	 *
-	 * <PRE>
+	 * Sets the color of the robot's body, gun, radar, bullet, and scan arc in
+	 * the same time.
+	 * <p>
+	 * You may only call this method one time per battle. A {@code null}
+	 * indicates the default (blue-ish) color for the body, gun, radar, and scan
+	 * arc, but white for the bullet color.
+	 * <p>
 	 * Example:
+	 * <pre>
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
+	 *   ...
 	 *
 	 *   public void run() {
-	 *     setColors(Color.black,Color.red,Color.green,Color.blue,Color.white);
+	 *       setColors(null, Color.RED, Color.GREEN, null, new Color(150, 0, 150));
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param robotColor Your robot's color
-	 * @param gunColor Your robot's gun color
-	 * @param radarColor Your robot's radar color
-	 * @param bulletColor Your robot's bullet color
-	 * @param scanColor Your robot's scan arc color
+	 * @param bodyColor the new body color
+	 * @param gunColor the new gun color
+	 * @param radarColor the new radar color
+	 * @param bulletColor the new bullet color
+	 * @param scanColor the new scan color
+	 *
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setAllColors
+	 * @see #setBodyColor
+	 * @see #setGunColor
+	 * @see #setRadarColor
+	 * @see #setBulletColor
+	 * @see #setScanColor
 	 * @see java.awt.Color
 	 *
 	 * @since 1.1.3
 	 */
-	public void setColors(Color robotColor, Color gunColor, Color radarColor, Color bulletColor, Color scanColor) {
+	public void setColors(Color bodyColor, Color gunColor, Color radarColor, Color bulletColor, Color scanColor) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setBodyColor(robotColor);
+			peer.setBodyColor(bodyColor);
 			peer.setGunColor(gunColor);
 			peer.setRadarColor(radarColor);
 			peer.setBulletColor(bulletColor);
@@ -903,21 +1146,33 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Call this method to set all your robot's colors to the same color,
-	 * i.e. the color of the body, gun, radar, bullet, and scan arc.
-	 * A null indicates the default (blue-ish) color.
+	 * Sets all the robot's color to the same color in the same time, i.e. the
+	 * color of the body, gun, radar, bullet, and scan arc.
+	 * <p>
+	 * You may only call this method one time per battle. A {@code null}
+	 * indicates the default (blue-ish) color for the body, gun, radar, and scan
+	 * arc, but white for the bullet color.
 	 *
-	 * <PRE>
+	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
+	 *   ...
 	 *
 	 *   public void run() {
-	 *     setAllColors(Color.red);
+	 *       setAllColors(Color.RED);
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param color Your robot's new color
+	 * @param color the new color for all the colors of the robot
+	 *
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setBodyColor
+	 * @see #setGunColor
+	 * @see #setRadarColor
+	 * @see #setBulletColor
+	 * @see #setScanColor
 	 * @see java.awt.Color
 	 *
 	 * @since 1.1.3
@@ -936,20 +1191,30 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Call this method to set your robot's body color.
-	 * A null indicates the default (blue-ish) color.
+	 * Sets the color of the robot's body.
+	 * <p>
+	 * A {@code null} indicates the default (blue-ish) color.
 	 *
-	 * <PRE>
+	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
+	 *   ...
 	 *
 	 *   public void run() {
-	 *     setBodyColor(Color.black));
+	 *       setBodyColor(Color.BLACK);
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param color Your robot's new body color
+	 * @param color the new body color
+	 *
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setAllColors
+	 * @see #setGunColor
+	 * @see #setRadarColor
+	 * @see #setBulletColor
+	 * @see #setScanColor
 	 * @see java.awt.Color
 	 *
 	 * @since 1.1.2
@@ -964,20 +1229,30 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Call this method to set your robot's gun color.
-	 * A null indicates the default (blue-ish) color.
+	 * Sets the color of the robot's gun.
+	 * <p>
+	 * A {@code null} indicates the default (blue-ish) color.
 	 *
-	 * <PRE>
+	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
+	 *   ...
 	 *
 	 *   public void run() {
-	 *     setGunColor(Color.red));
+	 *       setGunColor(Color.RED);
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param color Your robot's new gun color
+	 * @param color the new gun color
+	 *
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setAllColors
+	 * @see #setBodyColor
+	 * @see #setRadarColor
+	 * @see #setBulletColor
+	 * @see #setScanColor
 	 * @see java.awt.Color
 	 *
 	 * @since 1.1.2
@@ -992,20 +1267,30 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Call this method to set your robot's radar color.
-	 * A null indicates the default (blue-ish) color.
+	 * Sets the color of the robot's radar.
+	 * <p>
+	 * A {@code null} indicates the default (blue-ish) color.
 	 *
-	 * <PRE>
+	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
+	 *   ...
 	 *
 	 *   public void run() {
-	 *     setRadarColor(Color.yellow));
+	 *       setRadarColor(Color.YELLOW);
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param color Your robot's new radar color
+	 * @param color the new radar color
+	 *
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setAllColors
+	 * @see #setBodyColor
+	 * @see #setGunColor
+	 * @see #setBulletColor
+	 * @see #setScanColor
 	 * @see java.awt.Color
 	 *
 	 * @since 1.1.2
@@ -1020,20 +1305,30 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Call this method to set your robot's bullet color.
-	 * A null indicates the default white color.
+	 * Sets the color of the robot's bullets.
+	 * <p>
+	 * A {@code null} indicates the default white color.
 	 *
-	 * <PRE>
+	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
+	 *   ...
 	 *
 	 *   public void run() {
-	 *     setBulletColor(Color.green));
+	 *       setBulletColor(Color.GREEN);
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param color Your robot's new bullet color
+	 * @param color the new bullet color
+	 *
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setAllColors
+	 * @see #setBodyColor
+	 * @see #setGunColor
+	 * @see #setRadarColor
+	 * @see #setScanColor
 	 * @see java.awt.Color
 	 *
 	 * @since 1.1.2
@@ -1048,20 +1343,30 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Call this method to set your robot's scan color.
-	 * A null indicates the default (blue-ish) color.
+	 * Sets the color of the robot's scan arc.
+	 * <p>
+	 * A {@code null} indicates the default (blue-ish) color.
 	 *
-	 * <PRE>
+	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
+	 *   ...
 	 *
 	 *   public void run() {
-	 *     setScanColor(Color.orange));
+	 *       setScanColor(Color.WHITE);
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param color Your robot's new scane color
+	 * @param color the new scan arc color
+	 *
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setAllColors
+	 * @see #setBodyColor
+	 * @see #setGunColor
+	 * @see #setRadarColor
+	 * @see #setBulletColor
 	 * @see java.awt.Color
 	 *
 	 * @since 1.1.2
@@ -1076,22 +1381,24 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Stops all movement, and saves it for a call to resume().
-	 * If there is already movement saved from a previous stop, this will have no effect.
-	 * This method is equivalent to stop(false);
-	 * This call executes immediately.
-	 * @see #stop(boolean)
+	 * Immediately stops all movement, and saves it for a call to resume(). If
+	 * there is already movement saved from a previous stop, this will have no
+	 * effect.
+	 * <p>
+	 * This method is equivalent to stop(false).
+	 *
 	 * @see #resume
+	 * @see #stop(boolean)
 	 */
 	public void stop() {
 		stop(false);
 	}
 
 	/**
-	 * Stops all movement, and saves it for a call to resume().
-	 * If there is already movement saved from a previous stop, you can overwrite it
-	 * by calling stop(true).
-	 * This call executes immediately.
+	 * Immediately stops all movement, and saves it for a call to resume(). If
+	 * there is already movement saved from a previous stop, you can overwrite
+	 * it by calling stop(true).
+	 *
 	 * @see #resume
 	 * @see #stop
 	 */
@@ -1104,14 +1411,28 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Rotates your robot's gun.
-	 * This call executes immediately, and does not return until it is complete.
+	 * Immediately turns the robot's gun to the left by degrees.
+	 * <p>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the gun's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's gun 180 degrees to the left
+	 *   turnGunLeft(180);
 	 *
-	 * <P>Example
-	 * <PRE>
-	 *   turnGunLeft(90);
-	 * </PRE>
-	 * @param degrees How many degrees to rotate the gun left.
+	 *   // Afterwards, turn the robot's gun 90 degrees to the right
+	 *   turnGunLeft(-90);
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's gun to the left
+	 *    If this value is negative, the robot's gun is set to turn to the right
+	 *
+	 * @see #setAdjustGunForRobotTurn
 	 */
 	public void turnGunLeft(double degrees) {
 		if (peer != null) {
@@ -1122,14 +1443,27 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Rotates your robot's gun.
-	 * This call executes immediately, and does not return until it is complete.
+	 * Immediately turns the robot's gun to the right by degrees.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the gun's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's gun 180 degrees to the right
+	 *   turnGunRight(180);
 	 *
-	 * <P>Example
-	 * <PRE>
-	 *   turnGunRight(90);
-	 * </PRE>
-	 * @param degrees How many degrees to rotate the gun right.
+	 *   // Afterwards, turn the robot's gun 90 degrees to the left
+	 *   turnGunRight(-90);
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's gun to the right
+	 *    If this value is negative, the robot's gun is set to turn to the left
+	 *
+	 * @see #setAdjustGunForRobotTurn
 	 */
 	public void turnGunRight(double degrees) {
 		if (peer != null) {
@@ -1140,16 +1474,29 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Rotates your robot's radar.
-	 * This call executes immediately, and does not return until it is complete.
-	 * Many robots will use the turnGun functions instead... the radar will rotate when the gun rotates, and
-	 * you will probably want your gun facing in the same direction anyway.
+	 * Immediately turns the robot's radar to the left by degrees.
+	 * <p>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the radar's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn right
+	 * instead of left.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's radar 180 degrees to the left
+	 *   turnRadarLeft(180);
 	 *
-	 * <P>Example
-	 * <PRE>
-	 *   turnRadarLeft(90);
-	 * </PRE>
-	 * @param degrees How many degrees to rotate the radar left.
+	 *   // Afterwards, turn the robot's radar 90 degrees to the right
+	 *   turnRadarLeft(-90);
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's radar to the left
+	 *    If this value is negative, the robot's radar is set to turn to the right
+	 *
+	 * @see #setAdjustRadarForRobotTurn
+	 * @see #setAdjustRadarForGunTurn
 	 */
 	public void turnRadarLeft(double degrees) {
 		if (peer != null) {
@@ -1160,16 +1507,28 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Rotates your robot's radar.
-	 * This call executes immediately, and does not return until it is complete.
-	 * Many robots will use the turnGun functions instead... the radar will rotate when the gun rotates, and
-	 * you will probably want your gun facing in the same direction anyway.
+	 * Immediately turns the robot's radar to the right by degrees.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the radar's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn left
+	 * instead of right.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's radar 180 degrees to the right
+	 *   turnRadarRight(180);
 	 *
-	 * <P>Example
-	 * <PRE>
-	 *   turnRadarRight(90);
-	 * </PRE>
-	 * @param degrees How many degrees to rotate the radar right.
+	 *   // Afterwards, turn the robot's radar 90 degrees to the left
+	 *   turnRadarRight(-90);
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's radar to the right
+	 *    If this value is negative, the robot's radar is set to turn to the left
+	 *
+	 * @see #setAdjustRadarForRobotTurn
+	 * @see #setAdjustRadarForGunTurn
 	 */
 	public void turnRadarRight(double degrees) {
 		if (peer != null) {
@@ -1180,9 +1539,9 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Returns the robot's current energy
+	 * Returns the robot's current energy.
 	 *
-	 * @return the robot's energy
+	 * @return the robot's current energy
 	 */
 	public double getEnergy() {
 		if (peer != null) {
@@ -1195,50 +1554,69 @@ public class Robot extends _Robot implements Runnable {
 	}
 
 	/**
-	 * Sets the radar to automatically turn the opposite way when the robot turns.
-	 *
-	 *  <P>The radar is mounted on the gun, which is mounted on the robot.
-	 *  So, normally, if the robot turns 90 degrees to the right, the gun turns, as does the radar.0
-	 *
-	 *  <P>To compensate for this (if you like), you can call setAdjustRadarForRobotTurn(true).  When this is set,
-	 *  the radar will automatically turn in the opposite direction, so that it "stays still" when
-	 *  the body turns.
-	 *
-	 * <P>Example, assuming the robot, gun, and radar all start out facing up (0 degrees):
-	 * <PRE>
+	 * Sets the radar to turn independent from the robot's turn.
+	 * <p>
+	 * Ok, so this needs some explanation: The radar is mounted on the gun, and
+	 * the gun is mounted on the robot's body. So, normally, if the robot turns
+	 * 90 degrees to the right, the gun turns, as does the radar. Hence, if the
+	 * robot turns 90 degrees to the right, then the gun and radar will turn with
+	 * it as the radar is mounted on top of the gun. To compensate for this, you
+	 * can call setAdjustRadarForRobotTurn(true). When this is set, the radar will
+	 * turn independent from the robot's turn, i.e. the radar will compensate for
+	 * the robot's turn.
+	 * <p>
+	 * Example, assuming the robot, gun, and radar all start out facing up (0
+	 * degrees):
+	 * <pre>
+	 *   // Set radar to turn with the robots's turn
 	 *   setAdjustRadarForRobotTurn(false); // This is the default
 	 *   turnRight(90);
-	 *   // At this point, all three are facing right (90 degrees);
+	 *   // At this point, the body, gun, and radar are all facing right (90 degrees);
 	 *
 	 *   -- or --
 	 *
+	 *   // Set radar to turn independent from the robot's turn
 	 *   setAdjustRadarForRobotTurn(true);
 	 *   turnRight(90);
 	 *   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
+	 * </pre>
 	 *
-	 * </PRE>
+	 * @param independent @{code true} if the radar must turn independent from
+	 *    the robots's turn; {@code false} if the radar must turn with the robot's
+	 *    turn.
 	 *
-	 * @param newAdjustRadarForRobotTurn <CODE>true</CODE> if the radar must move independent of the robots's turn;
-	 *        <CODE>false</code> if the radar must move dependent/relative to of the robots's turn
 	 * @see #setAdjustGunForRobotTurn
 	 * @see #setAdjustRadarForGunTurn
 	 */
-	public void setAdjustRadarForRobotTurn(boolean newAdjustRadarForRobotTurn) {
+	public void setAdjustRadarForRobotTurn(boolean independent) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setAdjustRadarForBodyTurn(newAdjustRadarForRobotTurn);
+			peer.setAdjustRadarForBodyTurn(independent);
 		} else {
 			uninitializedException("setAdjustRadarForRobotTurn");
 		}
 	}
 
 	/**
-	 * This method is called every time the robot is painted if the robot
-	 * painting feature is enabled on your robot. You should override this
-	 * method if you want to draw items on the battle field. This method is
-	 * very useful when debugging your robot.
+	 * This method is called every time the robot is painted. You should
+	 * override this method if you want to draw items for your robot on the
+	 * battle field, e.g. targets, virtual bullets etc.
+	 * <p>
+	 * This method is very useful for debugging your robot.
+	 * <p>
+	 * Note that the robot will only be painted if the "Paint" is enabled on the
+	 * robot's console window; otherwise the robot will never get painted (the
+	 * reason being that all robots might have graphical items that must be
+	 * painted, and then you might not be able to tell what graphical items that
+	 * have been painted for your robot).
+	 * <p>
+	 * Also note that the coordinate system for the graphical context where you
+	 * paint items fits for the Robocode coordinate system where (0, 0) is at
+	 * the buttom left corner of the battlefield, where X is towards right and Y
+	 * is upwards.
 	 *
-	 * @param g The graphics context to use for painting
+	 * @param g the graphics context to use for painting graphical items for the
+	 *    robot
 	 *
 	 * @since 1.1
 	 */

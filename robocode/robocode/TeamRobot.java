@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Bugfix: getTeammates() returned null instead of an empty array when no
  *       teammates exists
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
@@ -23,9 +24,10 @@ import robocode.peer.RobotPeer;
 
 /**
  * An advanced type of robot that supports messages between teammates.
- * <P>If you have not already, you should create a {@link robocode.Robot Robot} first.
+ * <p>
+ * If you have not already, you should create a {@link Robot} first.
  *
- * @see robocode.Robot
+ * @see Robot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -33,19 +35,19 @@ import robocode.peer.RobotPeer;
 public class TeamRobot extends AdvancedRobot {
 
 	/**
-	 * Checks if a given robot name is one of your teammates.
-	 *
-	 * <P>Example:
-	 * <PRE>
-	 *   public void onScannedRobot(ScannedRobotEvent e)
-	 *   {
-	 *       if (isTeammate(e.getName())
+	 * Checks if a given robot name is the name of one of your teammates.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   public void onScannedRobot(ScannedRobotEvent e) {
+	 *       if (isTeammate(e.getName()) {
 	 *           return;
-	 *       else
+	 *       } else {
 	 *           fire(1);
+	 *       }
 	 *   }
-	 * </PRE>
-	 * @param name The name to check
+	 * </pre>
+	 * @param name the robot name to check
 	 */
 	public boolean isTeammate(String name) {
 		if (peer != null) {
@@ -61,19 +63,20 @@ public class TeamRobot extends AdvancedRobot {
 	}
 
 	/**
-	 * Returns an array of your teammates names
-	 *
-	 * <P>Example:
-	 * <PRE>
-	 *   public void run()
-	 *   {
-	 *       String[] teammates = getTeammates();
-	 *       for (int i = 0; i < teammates.length; i++)
-	 *           System.out.println(teammates[i]);
+	 * Returns the names of all your teammates.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   public void run() {
+	 *       // Prints out all teammates
+	 *       for (String teammate : getTeammates()) {
+	 *           System.out.println(teammate);
+	 *       }
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @return String array containing teammate names
+	 * @return an array containing the names of all your teammates.
+	 *     The length of the array is equal to the number of teammates
 	 */
 	public String[] getTeammates() {
 		if (peer != null) {
@@ -100,17 +103,16 @@ public class TeamRobot extends AdvancedRobot {
 	}
 
 	/**
-	 * Broadcasts a message to all teammates
-	 *
-	 * <P>Example:
-	 * <PRE>
-	 *   public void run()
-	 *   {
+	 * Broadcasts a message to all teammates.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   public void run() {
 	 *       broadcastMessage("I'm here!");
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param message The message to broadcast
+	 * @param message the message to broadcast to all teammates
 	 */
 	public void broadcastMessage(Serializable message) throws IOException {
 		if (peer != null) {
@@ -125,17 +127,17 @@ public class TeamRobot extends AdvancedRobot {
 	}
 
 	/**
-	 * Sends a message to one (or more) teammates
-	 *
-	 * <P>Example:
-	 * <PRE>
-	 *   public void run()
-	 *   {
-	 *       sendMessage("sample.DroidBot","I'm here!");
+	 * Sends a message to one (or more) teammates.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   public void run() {
+	 *       sendMessage("sample.DroidBot", "I'm here!");
 	 *   }
-	 * </PRE>
-	 * @param name The intended recipient of the message
-	 * @param message The message to broadcast
+	 * </pre>
+	 *
+	 * @param name the name of the intended recipient of the message
+	 * @param message the message to send
 	 */
 	public void sendMessage(String name, Serializable message) throws IOException {
 		if (peer != null) {
@@ -150,19 +152,21 @@ public class TeamRobot extends AdvancedRobot {
 	}
 
 	/**
-	 * This method will be called when your robot receives a message from a teammate.
-	 * You should override it in your robot if you want to be informed of this event.
-	 *
-	 * <P>Example:
-	 * <PRE>
+	 * This method is called when your robot receives a message from a teammate.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 * <p>
+	 * Example:
+	 * <pre>
 	 *   public void onMessageReceived(MessageEvent event) {
-	 *     out.println(event.getSender() + " sent me: " + event.getMessage());
+	 *       out.println(event.getSender() + " sent me: " + event.getMessage());
 	 *   }
-	 * </PRE>
+	 * </pre>
 	 *
-	 * @param event The event set by the game
-	 * @see robocode.MessageEvent
-	 * @see robocode.Event
+	 * @param event the event sent by the game
+	 *
+	 * @see MessageEvent
+	 * @see Event
 	 */
 	public void onMessageReceived(MessageEvent event) {}
 }

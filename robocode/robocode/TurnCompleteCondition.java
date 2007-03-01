@@ -8,38 +8,55 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * A prebuilt condition you can use that indicates your robot has finished rotating.
- * @see robocode.Condition
+ * A prebuilt condition you can use that indicates your robot has finished
+ * turning.
+ *
+ * @see Condition
  *
  * @author Mathew A. Nelson (original)
  */
 public class TurnCompleteCondition extends Condition {
-	private AdvancedRobot robot = null;
+	private AdvancedRobot robot;
 
 	/**
 	 * Creates a new TurnCompleteCondition with default priority.
+	 * The default priority is 80.
+	 *
+	 * @param robot your robot, which must be a {@link AdvancedRobot}
 	 */
-	public TurnCompleteCondition(AdvancedRobot r) {
+	public TurnCompleteCondition(AdvancedRobot robot) {
 		super();
-		this.robot = r;
+		this.robot = robot;
 	}
 
 	/**
 	 * Creates a new TurnCompleteCondition with the specified priority.
+	 * A condition priority is a value from 0 - 99. The higher value, the
+	 * higher priority. The default priority is 80.
+	 *
+	 * @param robot your robot, which must be a {@link AdvancedRobot}
+	 * @param priority the priority of this condition
+	 * 
+	 * @see Condition#setPriority
 	 */
-	public TurnCompleteCondition(AdvancedRobot r, int priority) {
+	public TurnCompleteCondition(AdvancedRobot robot, int priority) {
 		super();
-		this.robot = r;
+		this.robot = robot;
 		this.priority = priority;
 	}
 
 	/**
 	 * Tests if the robot has finished turning.
+	 *
+	 * @return {@code true} if the robot has stopped turning; {@code false}
+	 *    otherwise
 	 */
 	@Override
 	public boolean test() {

@@ -23,7 +23,7 @@ import java.util.Vector;
 
 
 /**
- * A more advanced type of robot than {@link Robot} that allows non-blocking calls,
+ * A more advanced type of robot than Robot that allows non-blocking calls,
  * custom events, and writes to the filesystem.
  * <p>
  * If you have not already, you should create a {@link Robot} first.
@@ -58,8 +58,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * Sets the robot to move ahead by distance measured in pixels when the next
-	 * execution takes place.
+	 * Sets the robot to move ahead (forward) by distance measured in pixels
+	 * when the next execution takes place.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
@@ -207,31 +207,51 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Sets the gun to fire a bullet when the next execution takes place.
+	 * The bullet will travel in the direction the gun is pointing.
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
 	 * <p>
+	 * The specified bullet power is an amount of energy that will be taken from
+	 * the robot's energy. Hence, the more power you want to spend on the
+	 * bullet, the more energy is taken from your robot.
+	 * <p>
+	 * The bullet will do (4 * power) damage if it hits another robot. If power
+	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
+	 * You will get (3 * power) back if you hit the other robot. You can call
+	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
+	 * bullet with a specific bullet power will do.
+	 * <p>
+	 * The specified bullet power should be between
+	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link Robot#getGunHeat()} returns a value > 0.
+	 * <p>
+	 * An event is generated when the bullet hits a robot, wall, or another
+	 * bullet.
 	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
-	 *   	setFire(Rules.MAX_BULLET_POWER);
+	 *       setFire(Rules.MAX_BULLET_POWER);
 	 *   }
 	 *   ...
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param power the amount of energy to spend on the bullet power.
-	 *    This value should be between {@link Rules#MIN_BULLET_POWER} and
-	 *    {@link Rules#MAX_BULLET_POWER}. The amount of energy spend on the
-	 *    bullet is subtracted from the robot's energy.
+	 * @param power the amount of energy given to the bullet, and subtracted
+	 *     from the robot's energy.
 	 *
+	 * @see #setFireBullet
 	 * @see Robot#fire
 	 * @see Robot#fireBullet
-	 * @see #setFireBullet
 	 * @see Robot#getGunHeat
+	 * @see Robot#getGunCoolingRate
+	 * @see Robot#onBulletHit
+	 * @see Robot#onBulletHitBullet
+	 * @see Robot#onBulletMissed
 	 */
 	public void setFire(double power) {
 		if (peer != null) {
@@ -244,17 +264,35 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 
 	/**
 	 * Sets the gun to fire a bullet when the next execution takes place.
+	 * The bullet will travel in the direction the gun is pointing.
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
 	 * <p>
+	 * The specified bullet power is an amount of energy that will be taken from
+	 * the robot's energy. Hence, the more power you want to spend on the
+	 * bullet, the more energy is taken from your robot.
+	 * <p>
+	 * The bullet will do (4 * power) damage if it hits another robot. If power
+	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
+	 * You will get (3 * power) back if you hit the other robot. You can call
+	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
+	 * bullet with a specific bullet power will do.
+	 * <p>
+	 * The specified bullet power should be between
+	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link Robot#getGunHeat()} returns a value > 0.
+	 * <p>
+	 * An event is generated when the bullet hits a robot, wall, or another
+	 * bullet.
 	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
-	 *   	Bullet bullet = setFireBullet(Rules.MAX_BULLET_POWER);
+	 *       Bullet bullet = setFireBullet(Rules.MAX_BULLET_POWER);
 	 *   }
 	 *   ...
 	 *   execute();
@@ -263,20 +301,21 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *   double bulletVelocity = bullet.getVelocity();
 	 * </pre>
 	 *
-	 * @param power the amount of energy to spend on the bullet power.
-	 *    This value should be between {@link Rules#MIN_BULLET_POWER} and
-	 *    {@link Rules#MAX_BULLET_POWER}. The amount of energy spend on the
-	 *    bullet is subtracted from the robot's energy.
-	 * @return a {@link Bullet} that contains information about the bullet
-	 *    if it was actually fired, which can be used for tracking the
-	 *    bullet after it has been fired. If the bullet was not fired,
-	 *    {@code null} is returned.
+	 * @param power the amount of energy given to the bullet, and subtracted
+	 *     from the robot's energy.
+	 * @return a {@link Bullet} that contains information about the bullet if it
+	 *    was actually fired, which can be used for tracking the bullet after it
+	 *    has been fired. If the bullet was not fired, {@code null} is returned.
 	 *
+	 * @see #setFire
+	 * @see Bullet
 	 * @see Robot#fire
 	 * @see Robot#fireBullet
-	 * @see #setFire
 	 * @see Robot#getGunHeat
-	 * @see Bullet
+	 * @see Robot#getGunCoolingRate
+	 * @see Robot#onBulletHit
+	 * @see Robot#onBulletHitBullet
+	 * @see Robot#onBulletMissed
 	 */
 	public Bullet setFireBullet(double power) {
 		if (peer != null) {
@@ -303,7 +342,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * </pre>
 	 *
 	 * @param condition The condition that must be met.
-	 * 
+	 *
 	 * @see Condition
 	 */
 	public void addCustomEvent(Condition condition) {
@@ -332,9 +371,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * in process. This call returns after the actions have been started.
 	 * <p>
 	 * Note that Advanced robots <em>must</em> call this function in order to
-	 * execute pending set<em>XXX</em> calls like e.g. {@link #setAhead},
-	 * {@link #setFire}, {@link #setTurnLeft} etc. Otherwise, these calls will
-	 * never get executed.
+	 * execute pending set<em>XXX</em> calls like e.g.
+	 * {@link #setAhead(double)}, {@link #setFire(double)},
+	 * {@link #setTurnLeft(double)} etc. Otherwise, these calls will never get
+	 * executed.
 	 * <p>
 	 * In this example the robot will move while turning:
 	 * <pre>
@@ -563,7 +603,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	/**
 	 * Returns the current priority of a class of events.
 	 * An event priority is a value from 0 - 99. The higher value, the higher
-	 * priority.
+	 * priority. The default priority is 80.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -779,16 +819,16 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * Checks if the gun is set to adjust for the robot turning.
+	 * Checks if the gun is set to adjust for the robot turning, i.e. to turn
+	 * independent from the robot's body turn.
 	 * <p>
-	 * This call returns <code>false</code> if the gun is set to move
-	 * independent of the turn of the robot's body. Otherwise, <code>true</code>
-	 * is returned, meaning that the gun is set to move relative to the heading
-	 * of the robot's body.
+	 * This call returns {@code true} if the gun is set to turn independent of
+	 * the turn of the robot's body. Otherwise, {@code false} is returned,
+	 * meaning that the gun is set to turn with the robot's body turn.
 	 *
-	 * @return <code>false</code> if the gun is set to move independent of the
-	 *    robot turning; <code>true</code> if the gun is set to adjust for the
-	 *    robot turning
+	 * @return {@code true} if the gun is set to turn independent of the robot
+	 *    turning; {@code false} if the gun is set to turn with the robot
+	 *    turning
 	 *
 	 * @see #setAdjustGunForRobotTurn
 	 */
@@ -803,16 +843,16 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * Checks if the radar is set to adjust for the gun turning.
+	 * Checks if the radar is set to adjust for the gun turning, i.e. to turn
+	 * independent from the gun's turn.
 	 * <p>
-	 * This call returns <code>false</code> if the radar is set to move
-	 * independent of the turn of the robot's gun. Otherwise, <code>true</code>
-	 * is returned, meaning that the radar is set to move relative to the heading
-	 * of the robot's gun.
+	 * This call returns {@code true} if the radar is set to turn independent of
+	 * the turn of the gun. Otherwise, {@code false} is returned, meaning that
+	 * the radar is set to turn with the gun's turn.
 	 *
-	 * @return <code>false</code> if the radar is set to move independent of the
-	 *    gun turning; <code>true</code> if the radar is set to adjust for the
-	 *    gun turning
+	 * @return {@code true} if the radar is set to turn independent of the gun
+	 *    turning; {@code false} if the radar is set to turn with the gun
+	 *    turning
 	 *
 	 * @see #setAdjustRadarForGunTurn
 	 */
@@ -863,7 +903,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * Events are sent to the onXXX handlers in order of priority.
 	 * Higher priority events can interrupt lower priority events.
 	 * For events with the same priority, newer events are always sent first.
-	 * Valid priorities are 0 - 99, where 100 is reserved.
+	 * Valid priorities are 0 - 99, where 100 is reserved and 80 is the default
+	 * priority.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -877,14 +918,20 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *	 {@link HitWallEvent}:          30
 	 *	 {@link HitByBulletEvent}:      40
 	 *	 {@link BulletHitEvent}:        50
-	 *	 {@link BulletHitBulletEvent}:  50
+	 *	 {@link BulletHitBulletEvent}:  55
 	 *	 {@link BulletMissedEvent}:     60
 	 *	 {@link RobotDeathEvent}:       70
+	 *	 {@link MessageEvent}:          75
 	 *	 {@link CustomEvent}:           80
-	 *	 {@link SkippedTurnEvent}:     100
-	 *	 {@link WinEvent}:             100
-	 *	 {@link DeathEvent}:           100
+	 *	 {@link SkippedTurnEvent}:     100 (reserved)
+	 *	 {@link WinEvent}:             100 (reserved)
+	 *	 {@link DeathEvent}:           100 (reserved)
 	 * </pre>
+	 *
+	 * Note that you cannot change the priority for events with the special
+	 * priority value 100 (reserved) as these event are system events. Also note
+	 * that you cannot change the priority of CustomEvent. Instead you must
+	 * change the priority of the condition(s) for your custom event(s). 
 	 *
 	 * @param eventClass the name of the event class (string) to set the
 	 *    priority for
@@ -919,9 +966,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *   }
 	 * </pre>
 	 *
-	 * @param interruptible <code>true</code> if the event handler should be
-	 *    interrupted if new events of the same priority occurs;
-	 *    <code>false</code> otherwise
+	 * @param interruptible {@code true} if the event handler should be
+	 *    interrupted if new events of the same priority occurs; {@code false}
+	 *    otherwise
 	 */
 	@Override
 	public void setInterruptible(boolean interruptible) {
@@ -966,7 +1013,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * Sets the robot to resume the movement stopped by stop() or setStop().
+	 * Sets the robot to resume the movement stopped by stop() or setStop(),
+	 * if any.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
@@ -1009,9 +1057,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * <p>
 	 * If there is already movement saved from a previous stop, you can
 	 * overwrite it by calling setStop(true).
-	 * 
-	 * @param overwrite <code>true</code> if the movement saved from a previous
-	 *    stop should be owerwritten; <code>false</code> otherwise
+	 *
+	 * @param overwrite {@code true} if the movement saved from a previous stop
+	 *    should be owerwritten; {@code false} otherwise
 	 *
 	 * @see #setStop()
 	 * @see #setResume
@@ -1186,8 +1234,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * Does not return until a {@link Condition#test()} returns
-	 * <code>true</code>.
+	 * Does not return until a {@link Condition#test()} returns {@code true}.
 	 * <p>
 	 * This call executes immediately.
 	 * <p>
@@ -1204,16 +1251,16 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * Checks if the radar is set to adjust for the robot turning.
+	 * Checks if the radar is set to adjust for the robot turning, i.e. to turn
+	 * independent from the robot's body turn.
 	 * <p>
-	 * This call returns <code>false</code> if the radar is set to move
-	 * independent of the turn of the robot's body. Otherwise, <code>true</code>
-	 * is returned, meaning that the radar is set to move relative to the heading
-	 * of the robot's body.
+	 * This call returns {@code true} if the radar is set to turn independent of
+	 * the turn of the robot. Otherwise, {@code false} is returned, meaning that
+	 * the radar is set to turn with the robot's turn.
 	 *
-	 * @return <code>false</code> if the radar is set to move independent of the
-	 *    robot turning; <code>true</code> if the radar is set to adjust for the
-	 *    robot turning
+	 * @return {@code true} if the radar is set to turn independent of the robot
+	 *    turning; {@code false} if the radar is set to turn with the robot
+	 *    turning
 	 *
 	 * @see #setAdjustRadarForRobotTurn
 	 */

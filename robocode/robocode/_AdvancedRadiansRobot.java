@@ -65,11 +65,11 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to turn 180 degrees to the left
-	 *   setTurnLeftRadians(Math.PI / 2);
+	 *   setTurnLeftRadians(Math.PI);
 	 *
 	 *   // Set the robot to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
-	 *   setTurnLeftRadians(-Math.PI / 4);
+	 *   setTurnLeftRadians(-Math.PI / 2);
 	 *
 	 *   ...
 	 *   // Executes the last setTurnLeftRadians()
@@ -102,11 +102,11 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to turn 180 degrees to the right
-	 *   setTurnRightRadians(Math.PI / 2);
+	 *   setTurnRightRadians(Math.PI);
 	 *
 	 *   // Set the robot to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
-	 *   setTurnRightRadians(-Math.PI / 4);
+	 *   setTurnRightRadians(-Math.PI / 2);
 	 *
 	 *   ...
 	 *   // Executes the last setTurnRightRadians()
@@ -138,10 +138,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot 180 degrees to the left
-	 *   turnLeftRadians(Math.PI / 2);
+	 *   turnLeftRadians(Math.PI);
 	 *
 	 *   // Afterwards, turn the robot 90 degrees to the right
-	 *   turnLeftRadians(-Math.PI / 4);
+	 *   turnLeftRadians(-Math.PI / 2);
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the left
@@ -167,10 +167,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot 180 degrees to the right
-	 *   turnRightRadians(Math.PI / 2);
+	 *   turnRightRadians(Math.PI);
 	 *
 	 *   // Afterwards, turn the robot 90 degrees to the left
-	 *   turnRightRadians(-Math.PI / 4);
+	 *   turnRightRadians(-Math.PI / 2);
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the right
@@ -234,11 +234,11 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Set the gun to turn 180 degrees to the left
-	 *   setTurnGunLeftRadians(Math.PI / 2);
+	 *   setTurnGunLeftRadians(Math.PI);
 	 *
 	 *   // Set the gun to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
-	 *   setTurnGunLeftRadians(-Math.PI / 4);
+	 *   setTurnGunLeftRadians(-Math.PI / 2);
 	 *
 	 *   ...
 	 *   // Executes the last setTurnGunLeftRadians()
@@ -273,11 +273,11 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Set the gun to turn 180 degrees to the right
-	 *   setTurnGunRightRadians(Math.PI / 2);
+	 *   setTurnGunRightRadians(Math.PI);
 	 *
 	 *   // Set the gun to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
-	 *   setTurnGunRightRadians(-Math.PI / 4);
+	 *   setTurnGunRightRadians(-Math.PI / 2);
 	 *
 	 *   ...
 	 *   // Executes the last setTurnGunRightRadians()
@@ -312,11 +312,11 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Set the radar to turn 180 degrees to the left
-	 *   setTurnRadarLeftRadians(Math.PI / 2);
+	 *   setTurnRadarLeftRadians(Math.PI);
 	 *
 	 *   // Set the radar to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
-	 *   setTurnRadarLeftRadians(-Math.PI / 4);
+	 *   setTurnRadarLeftRadians(-Math.PI / 2);
 	 *
 	 *   ...
 	 *   // Executes the last setTurnRadarLeftRadians()
@@ -352,11 +352,11 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Set the radar to turn 180 degrees to the right
-	 *   setTurnRadarRightRadians(Math.PI / 2);
+	 *   setTurnRadarRightRadians(Math.PI);
 	 *
 	 *   // Set the radar to turn 90 degrees to the right instead of right
 	 *   // (overrides the previous order)
-	 *   setTurnRadarRightRadians(-Math.PI / 4);
+	 *   setTurnRadarRightRadians(-Math.PI / 2);
 	 *
 	 *   ...
 	 *   // Executes the last setTurnRadarRightRadians()
@@ -391,10 +391,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot's gun 180 degrees to the left
-	 *   turnGunLeftRadians(Math.PI / 2);
+	 *   turnGunLeftRadians(Math.PI);
 	 *
 	 *   // Afterwards, turn the robot's gun 90 degrees to the right
-	 *   turnGunLeftRadians(-Math.PI / 4);
+	 *   turnGunLeftRadians(-Math.PI / 2);
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the left
@@ -422,10 +422,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot's gun 180 degrees to the right
-	 *   turnGunRightRadians(Math.PI / 2);
+	 *   turnGunRightRadians(Math.PI);
 	 *
 	 *   // Afterwards, turn the robot's gun 90 degrees to the left
-	 *   turnGunRightRadians(-Math.PI / 4);
+	 *   turnGunRightRadians(-Math.PI / 2);
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the right
@@ -454,10 +454,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot's radar 180 degrees to the left
-	 *   turnRadarLeftRadians(Math.PI / 2);
+	 *   turnRadarLeftRadians(Math.PI);
 	 *
 	 *   // Afterwards, turn the robot's radar 90 degrees to the right
-	 *   turnRadarLeftRadians(-Math.PI / 4);
+	 *   turnRadarLeftRadians(-Math.PI / 2);
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the left
@@ -486,10 +486,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot's radar 180 degrees to the right
-	 *   turnRadarRightRadians(Math.PI / 2);
+	 *   turnRadarRightRadians(Math.PI);
 	 *
 	 *   // Afterwards, turn the robot's radar 90 degrees to the left
-	 *   turnRadarRightRadians(-Math.PI / 4);
+	 *   turnRadarRightRadians(-Math.PI / 2);
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the right

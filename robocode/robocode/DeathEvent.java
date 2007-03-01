@@ -8,13 +8,14 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link robocode.Robot#onDeath onDeath}
- * when your robot dies.
+ * This event is sent to {@link Robot#onDeath onDeath} when your robot dies.
  *
  * @author Mathew A. Nelson (original)
  */

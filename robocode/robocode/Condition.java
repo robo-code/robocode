@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
@@ -18,25 +19,26 @@ import robocode.security.RobocodeSecurityManager;
 
 
 /**
- * Condition is used to define custom {@link robocode.AdvancedRobot#waitFor waitFor} and
- * custom events for a {@link robocode.AdvancedRobot}.  The code below is taken from
- * the sample robot named Target.  See Target.java for details.
- *  <PRE>
- *	  addCustomEvent(
- *			new Condition("triggerhit") {
- *			  public boolean test() {
- *				  return (getEnergy() <= trigger);
- *				};
- *			}
- *		);
- *  </PRE>
- * You should note that by extending Condition, you are actually creating an inner class -- so
- * if you distribute your robot, there will be multiple class files.  (i.e. Target$1.class)
+ * Condition is used to define custom {@link AdvancedRobot#waitFor waitFor} and
+ * custom events for a {@link AdvancedRobot}. The code below is taken from the
+ * sample robot named Target. See Target.java for details.
+ * <pre>
+ *   addCustomEvent(
+ *       new Condition("triggerhit") {
+ *           public boolean test() {
+ *               return (getEnergy() <= trigger);
+ *           };
+ *	     }
+ *  );
+ *  </pre>
+ * You should note that by extending Condition this way, you are actually
+ * creating an inner class -- so if you distribute your robot, there will be
+ * multiple class files.  (i.e. Target$1.class)
  *
- * @see robocode.AdvancedRobot#waitFor
- * @see robocode.AdvancedRobot#addCustomEvent
- * @see robocode.AdvancedRobot#removeCustomEvent
- * @see robocode.AdvancedRobot#onCustomEvent
+ * @see AdvancedRobot#waitFor
+ * @see AdvancedRobot#addCustomEvent
+ * @see AdvancedRobot#removeCustomEvent
+ * @see AdvancedRobot#onCustomEvent
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -44,22 +46,25 @@ import robocode.security.RobocodeSecurityManager;
 public abstract class Condition {
 
 	/**
-	 * The priority of this condition.  Defaults to 80.
+	 * The priority of this condition. Defaults to 80.
 	 */
 	public int priority = 80;
 
 	/**
-	 * The name of this condition
+	 * The name of this condition.
 	 */
 	public String name;
 
 	/**
-	 * Creates a new, unnamed Condition with the default priority.
+	 * Creates a new, unnamed Condition with the default priority, which is 80.
 	 */
 	public Condition() {}
 
 	/**
-	 * Creates a new Condition with the specified name, and default priority.
+	 * Creates a new Condition with the specified name, and default priority,
+	 * which is 80.
+	 * 
+	 * @param name the name for the new Condition
 	 */
 	public Condition(String name) {
 		this.name = name;
@@ -67,6 +72,11 @@ public abstract class Condition {
 
 	/**
 	 * Creates a new Condition with the specified name and priority.
+	 * A condition priority is a value from 0 - 99. The higher value, the
+	 * higher priority. The default priority is 80.
+     *
+	 * @param name the name for the new condition
+	 * @param priority the priority of the new condition
 	 */
 	public Condition(String name, int priority) {
 		this.name = name;
@@ -95,17 +105,19 @@ public abstract class Condition {
 	}
 
 	/**
+	 * Returns the name of this condition.
+	 * 
 	 * @return the name of this condition
 	 */
 	public String getName() {
-		if (name != null) {
-			return name;
-		} else {
-			return getClass().getName();
-		}
+		return (name != null) ? name : getClass().getName();
 	}
 
 	/**
+	 * Returns the priority of this condition.
+	 * A condition priority is a value from 0 - 99. The higher value, the
+	 * higher priority. The default priority is 80.
+	 *
 	 * @return the priority of this condition
 	 */
 	public int getPriority() {
@@ -113,29 +125,35 @@ public abstract class Condition {
 	}
 
 	/**
-	 * Sets the name of this condition
-	 * @param newName String
+	 * Sets the name of this condition.
+	 *
+	 * @param newName the new name of this condition
 	 */
 	public void setName(String newName) {
 		name = newName;
 	}
 
 	/**
-	 * Sets the priority of this condition
-	 * @param newPriority int
+	 * Sets the priority of this condition.
+	 * A condition priority is a value from 0 - 99. The higher value, the
+	 * higher priority. The default priority is 80.
+	 *
+	 * @param newPriority the new priority of this condition.
 	 */
 	public void setPriority(int newPriority) {
 		priority = newPriority;
 	}
 
 	/**
-	 * Overriding the test() method is the point of a Condition.  The game will call your
-	 * test() function, and take action if it returns true.  This is valid for both
-	 * {@link robocode.AdvancedRobot#waitFor waitFor} and {@link robocode.AdvancedRobot#addCustomEvent addCustomEvent}.
+	 * Overriding the test() method is the point of a Condition.
+	 * The game will call your test() function, and take action if it returns
+	 * {@code true}. This is valid for both {@link AdvancedRobot#waitFor} and
+	 * {@link AdvancedRobot#addCustomEvent}.
+	 * <p>
+	 * You may not take any actions inside of test().
 	 *
-	 * <P>You may not take any actions inside of test().
-	 *
-	 * @return true if the condition has been met, false otherwise.
+	 * @return {@code true} if the condition has been met, {@code false}
+	 *    otherwise.
 	 */
 	public abstract boolean test();
 }

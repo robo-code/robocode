@@ -8,13 +8,16 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link robocode.Robot#onBulletMissed onBulletMissed}
- * when one of your bullets has misses.
+ * This event is sent to {@link Robot#onBulletMissed(BulletMissedEvent)} when
+ * one of your bullets has missed, i.e. when the bullet has reached the border
+ * of the battlefield.
  *
  * @author Mathew A. Nelson (original)
  */
@@ -29,9 +32,9 @@ public class BulletMissedEvent extends Event {
 	}
 
 	/**
-	 * Returns the Bullet that missed.
+	 * Returns the bullet that missed.
 	 *
-	 * @return Bullet
+	 * @return the bullet that missed
 	 */
 	public Bullet getBullet() {
 		return bullet;

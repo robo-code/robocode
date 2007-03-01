@@ -8,14 +8,16 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link robocode.AdvancedRobot#onCustomEvent onCustomEvent}
- * when a custom condition is met.  Be sure to reset or remove the custom condition
- * to avoid having it fire repeatedly.
+ * This event is sent to {@link AdvancedRobot#onCustomEvent} when a custom
+ * condition is met. Be sure to reset or remove the custom condition to avoid
+ * having it reoccuring repeatedly.
  *
  * @see #getCondition
  *
@@ -26,6 +28,8 @@ public class CustomEvent extends Event {
 
 	/**
 	 * Called by the game to create a new CustomEvent when a condition is met.
+	 * 
+	 * @param condition the condition that must be met
 	 */
 	public CustomEvent(Condition condition) {
 		this.condition = condition;
@@ -34,7 +38,14 @@ public class CustomEvent extends Event {
 	/**
 	 * Called by the game to create a new CustomEvent when a condition is met.
 	 * The event will have the given priority.
-	 * This is equivalent to calling setPriority() on the Condition.
+	 * An event priority is a value from 0 - 99. The higher value, the higher
+	 * priority. The default priority is 80.
+	 * <p>
+	 * This is equivalent to calling {@link Condition#setPriority(int)} on the
+	 * Condition.
+	 *
+	 * @param condition the condition that must be met
+	 * @param priority the priority of the condition
 	 */
 	public CustomEvent(Condition condition, int priority) {
 		this.condition = condition;
@@ -45,16 +56,18 @@ public class CustomEvent extends Event {
 
 	/**
 	 * Returns the condition that fired, causing this event to be generated.
-	 * Use this to determine which condition fired, and to remove the custom event.
-	 * <PRE>
+	 * Use this to determine which condition fired, and to remove the custom
+	 * event.
+	 * <pre>
 	 *   public void onCustomEvent(CustomEvent event) {
-	 *        if (event.getCondition().getName().equals("mycondition")) {
-	 *            removeCustomEvent(event.getCondition());
-	 *            doSomethingElse();
-	 *        }
+	 *       if (event.getCondition().getName().equals("mycondition")) {
+	 *           removeCustomEvent(event.getCondition());
+	 *           doSomethingElse();
+	 *       }
 	 *   }
-	 * </PRE>
-	 * @return the condition that fired, causing this event to be generated.
+	 * </pre>
+	 *
+	 * @return the condition that fired, causing this event to be generated
 	 */
 	public Condition getCondition() {
 		return condition;

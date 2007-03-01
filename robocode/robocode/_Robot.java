@@ -51,7 +51,7 @@ public class _Robot {
 	/**
 	 * Throws a RobotException. This method should be called when the robot's peer
 	 * is uninitialized.
-	 * 
+	 *
 	 * @param methodName the name of the method that failed
 	 */
 	protected void uninitializedException(String methodName) {
@@ -61,7 +61,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getGunHeat} instead.
+	 * @deprecated Use {@link Robot#getGunHeat()} instead.
 	 */
 	@Deprecated
 	public double getGunCharge() {
@@ -74,7 +74,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getEnergy} instead.
+	 * @deprecated Use {@link Robot#getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -87,7 +87,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getNumRounds} instead.
+	 * @deprecated Use {@link Robot#getNumRounds()} instead.
 	 */
 	@Deprecated
 	public int getNumBattles() {
@@ -101,7 +101,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getRoundNum} instead.
+	 * @deprecated Use {@link Robot#getRoundNum()} instead.
 	 */
 	@Deprecated
 	public int getBattleNum() {

@@ -8,13 +8,15 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link robocode.Robot#onBulletHitBullet onBulletHitBullet}
- * when one of your bullets hits another bullet.
+ * This event is sent to {@link Robot#onBulletHitBullet(BulletHitBulletEvent)}
+ * when one of your bullets has hit another bullet.
  *
  * @author Mathew A. Nelson (original)
  */
@@ -32,18 +34,18 @@ public class BulletHitBulletEvent extends Event {
 	}
 
 	/**
-	 * Returns the Bullet.
+	 * Returns your bullet that hit another bullet.
 	 *
-	 * @return Bullet
+	 * @return your bullet
 	 */
 	public Bullet getBullet() {
 		return bullet;
 	}
 
 	/**
-	 * Returns the Bullet that was hit.
+	 * Returns the bullet that was hit by your bullet.
 	 *
-	 * @return Bullet
+	 * @return the bullet that was hit
 	 */
 	public Bullet getHitBullet() {
 		return hitBullet;
