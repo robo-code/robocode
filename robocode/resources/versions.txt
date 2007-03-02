@@ -1,10 +1,11 @@
 Version 1.2.6 Beta
-(02/28/2007)
+(02/29/2007)
 -------------
 o Bugfixes
   -- With some robots, a java.lang.NoClassDefFoundError occured when Robocode tried to
      cleanup the static fields occupied by the robot when the battles are over
-  -- Newer versions of Robocode (1.2.x) could not run under RoboRumble@Home
+  -- AdvancedRobot.setEventPriority() did not support MessageEvent
+o Added missing getMessageEvents() on the TeamRobot
 o The Ranking Panel has been enhanced
   -- Now the Ranking Panel contains the same columns as the Battle Results
   -- Both the current scores and total scores are shown together where it makes sense
@@ -17,6 +18,15 @@ o The Installer is now checking is the user is running Java 5.0 or newer
 o robocode.sh has been updated
   -- Armin Voetter has contributed with an improved version of robocode.sh so that the
      script resolves the path to Robocode by itself
+o Minor adjustments of default event priorities
+  -- The changes were made as some events "shared" the same default priority, making it
+     hard to tell which event would occur before the other
+  -- BulletHitBulletEvent priority was changed from 50 to 55. Previously, both
+     BulletHitEvents and BulletHitBulletEvents used priority = 50
+  -- MessageEvent priority was changed from 80 to 75. Previously, both CustomEvents and
+     MessageEvents used priority = 80
+
+- Changed the default priority of bullet-hit-bullet event priority from 50 to 55 and message event priority from 80 to 75
 
 Version 1.2.5A
 (02/19/2007)
