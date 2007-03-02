@@ -15,6 +15,7 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
  *     - Bugfix: Added setting and getting the priority of BulletHitBulletEvent
+ *     - Added missing getMessageEvents()
  *     - Code cleanup
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
@@ -141,7 +142,7 @@ public class EventManager {
 	public List<Event> getAllEvents() {
 		List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			events.add((Event) e);
 		}
 		return events;
@@ -165,7 +166,7 @@ public class EventManager {
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		List<BulletHitBulletEvent> events = Collections.synchronizedList(new ArrayList<BulletHitBulletEvent>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			if (e instanceof BulletHitBulletEvent) {
 				events.add((BulletHitBulletEvent) e);
 			}
@@ -191,7 +192,7 @@ public class EventManager {
 	public List<BulletHitEvent> getBulletHitEvents() {
 		List<BulletHitEvent> events = Collections.synchronizedList(new ArrayList<BulletHitEvent>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			if (e instanceof BulletHitEvent) {
 				events.add((BulletHitEvent) e);
 			}
@@ -217,7 +218,7 @@ public class EventManager {
 	public List<BulletMissedEvent> getBulletMissedEvents() {
 		List<BulletMissedEvent> events = Collections.synchronizedList(new ArrayList<BulletMissedEvent>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			if (e instanceof BulletMissedEvent) {
 				events.add((BulletMissedEvent) e);
 			}
@@ -321,7 +322,7 @@ public class EventManager {
 	public List<HitByBulletEvent> getHitByBulletEvents() {
 		List<HitByBulletEvent> events = Collections.synchronizedList(new ArrayList<HitByBulletEvent>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			if (e instanceof HitByBulletEvent) {
 				events.add((HitByBulletEvent) e);
 			}
@@ -347,7 +348,7 @@ public class EventManager {
 	public List<HitRobotEvent> getHitRobotEvents() {
 		List<HitRobotEvent> events = Collections.synchronizedList(new ArrayList<HitRobotEvent>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			if (e instanceof HitRobotEvent) {
 				events.add((HitRobotEvent) e);
 			}
@@ -373,7 +374,7 @@ public class EventManager {
 	public List<HitWallEvent> getHitWallEvents() {
 		List<HitWallEvent> events = Collections.synchronizedList(new ArrayList<HitWallEvent>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			if (e instanceof HitWallEvent) {
 				events.add((HitWallEvent) e);
 			}
@@ -414,7 +415,7 @@ public class EventManager {
 	public List<RobotDeathEvent> getRobotDeathEvents() {
 		List<RobotDeathEvent> events = Collections.synchronizedList(new ArrayList<RobotDeathEvent>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			if (e instanceof RobotDeathEvent) {
 				events.add((RobotDeathEvent) e);
 			}
@@ -444,7 +445,7 @@ public class EventManager {
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		List<ScannedRobotEvent> events = Collections.synchronizedList(new ArrayList<ScannedRobotEvent>());
 
-		for (Object e : eventQueue) {
+		for (Event e : eventQueue) {
 			if (e instanceof ScannedRobotEvent) {
 				events.add((ScannedRobotEvent) e);
 			}
@@ -712,5 +713,35 @@ public class EventManager {
 			return;
 		}
 		this.interruptible[priority] = interruptable;
+	}
+
+	/**
+	 * Returns a vector containing all MessageEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   for (MessageEvent e : getMessageEvents()) {
+	 *      // do something with e
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all MessageEvents currently in the robot's
+	 *    queue
+	 *
+	 * @see #onMessageReceived
+	 * @see MessageEvent
+	 * 
+	 * @since 1.2.6
+	 */
+	public List<MessageEvent> getMessageEvents() {
+		List<MessageEvent> events = Collections.synchronizedList(new ArrayList<MessageEvent>());
+
+		for (Event e : eventQueue) {
+			if (e instanceof MessageEvent) {
+				events.add((MessageEvent) e);
+			}
+		}
+		return events;
 	}
 }

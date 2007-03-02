@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Bugfix: getTeammates() returned null instead of an empty array when no
  *       teammates exists
+ *     - Added missing getMessageEvents()
  *     - Updated Javadoc
  *******************************************************************************/
 package robocode;
@@ -18,6 +19,7 @@ package robocode;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Vector;
 
 import robocode.peer.RobotPeer;
 
@@ -148,6 +150,35 @@ public class TeamRobot extends AdvancedRobot {
 			peer.getMessageManager().sendMessage(name, message);
 		} else {
 			uninitializedException("sendMessage");
+		}
+	}
+
+	/**
+	 * Returns a vector containing all MessageEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   for (MessageEvent e : getMessageEvents()) {
+	 *      // do something with e
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all MessageEvents currently in the robot's
+	 *    queue
+	 *
+	 * @see #onMessageReceived
+	 * @see MessageEvent
+	 * 
+	 * @since 1.2.6
+	 */
+	public Vector<MessageEvent> getMessageEvents() {
+		if (peer != null) {
+			peer.getCall();
+			return new Vector<MessageEvent>(peer.getEventManager().getMessageEvents());
+		} else {
+			uninitializedException("getMessageEvents");
+			return null; // never called
 		}
 	}
 
