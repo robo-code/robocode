@@ -143,7 +143,7 @@ public class EventManager {
 		List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
 
 		for (Event e : eventQueue) {
-			events.add((Event) e);
+			events.add(e);
 		}
 		return events;
 	}
@@ -731,7 +731,7 @@ public class EventManager {
 	 *
 	 * @see #onMessageReceived
 	 * @see MessageEvent
-	 * 
+	 *
 	 * @since 1.2.6
 	 */
 	public List<MessageEvent> getMessageEvents() {
