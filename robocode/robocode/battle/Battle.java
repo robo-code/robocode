@@ -392,12 +392,9 @@ public class Battle implements Runnable {
 	}
 
 	public void cleanup() {
-		if (!replay) {
-			for (RobotPeer r : robots) {
-				r.cleanupStaticFields();
-			}
+		for (RobotPeer r : robots) {
+			r.setRobot(null);
 		}
-		robots.clear();
 	}
 
 	private void cleanupRound() {
@@ -713,7 +710,6 @@ public class Battle implements Runnable {
 
 				currentTurnRecord.robotStates = new ArrayList<RobotRecord>();
 
-				List<RobotPeer> robots = getRobots();
 				RobotPeer rp;
 
 				for (int i = 0; i < robots.size(); i++) {
@@ -811,15 +807,11 @@ public class Battle implements Runnable {
 		}
 
 		if (isRecordingEnabled) {
-			battleRecord.rounds.add(currentRoundRecord);
-
 			List<RobotPeer> orderedRobots = Collections.synchronizedList(new ArrayList<RobotPeer>(robots));
 
 			Collections.sort(orderedRobots);
 
 			RobotResults results[] = new RobotResults[robots.size()];
-
-			currentRoundRecord.results = results;
 
 			int rank;
 
@@ -833,6 +825,9 @@ public class Battle implements Runnable {
 				}
 				results[rank] = r.getRobotStatistics().getResults(i + 1);
 			}
+
+			currentRoundRecord.results = results;
+			battleRecord.rounds.add(currentRoundRecord);
 		}
 
 		bullets.clear();
@@ -1557,7 +1552,7 @@ public class Battle implements Runnable {
 
 			boolean playedRobotHitRobot = false;
 
-			for (RobotPeer rp : getRobots()) {
+			for (RobotPeer rp : robots) {
 				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
 				if (rp.getState() == RobotPeer.STATE_HIT_ROBOT) {
 					if (playedRobotHitRobot) {
