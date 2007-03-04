@@ -490,44 +490,48 @@ public class BattleView extends Canvas {
 	private void drawBullets(Graphics2D g) {
 		double x, y;
 
-		for (BulletPeer bullet : battle.getBullets()) {
-			if (!(bullet.isActive() || bullet.hasHitVictim || bullet.hasHitBullet)) {
-				continue;
-			}
-
-			x = bullet.getX();
-			y = battle.getBattleField().getHeight() - bullet.getY();
-
-			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-
-			if (!(bullet.hasHitVictim || bullet.hasHitBullet)) {
-
-				// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
-				double scale = max(2 * sqrt(2.5 * bullet.getPower()), 2 / this.scale);
-
-				at.scale(scale, scale);
-				Area bulletArea = BULLET_AREA.createTransformedArea(at);
-
-				Color bulletColor = bullet.getOwner().getBulletColor();
-
-				if (bulletColor == null) {
-					bulletColor = Color.WHITE;
+		List<BulletPeer> bullets = battle.getBullets();
+		
+		synchronized (bullets) {	
+			for (BulletPeer bullet : bullets) {
+				if (!(bullet.isActive() || bullet.hasHitVictim || bullet.hasHitBullet)) {
+					continue;
 				}
-				g.setColor(bulletColor);
-				g.fill(bulletArea);
-
-			} else if (drawExplosions) {
-				if (!(bullet instanceof ExplosionPeer)) {
-					double scale = sqrt(1000 * bullet.getPower()) / 128;
-
+	
+				x = bullet.getX();
+				y = battle.getBattleField().getHeight() - bullet.getY();
+	
+				AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+	
+				if (!(bullet.hasHitVictim || bullet.hasHitBullet)) {
+	
+					// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
+					double scale = max(2 * sqrt(2.5 * bullet.getPower()), 2 / this.scale);
+	
 					at.scale(scale, scale);
+					Area bulletArea = BULLET_AREA.createTransformedArea(at);
+	
+					Color bulletColor = bullet.getOwner().getBulletColor();
+	
+					if (bulletColor == null) {
+						bulletColor = Color.WHITE;
+					}
+					g.setColor(bulletColor);
+					g.fill(bulletArea);
+	
+				} else if (drawExplosions) {
+					if (!(bullet instanceof ExplosionPeer)) {
+						double scale = sqrt(1000 * bullet.getPower()) / 128;
+	
+						at.scale(scale, scale);
+					}
+	
+					RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getExplosionImageIndex(),
+							bullet.getFrame());
+	
+					explosionRenderImage.setTransform(at);
+					explosionRenderImage.paint(g);
 				}
-
-				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getExplosionImageIndex(),
-						bullet.getFrame());
-
-				explosionRenderImage.setTransform(at);
-				explosionRenderImage.paint(g);
 			}
 		}
 	}
