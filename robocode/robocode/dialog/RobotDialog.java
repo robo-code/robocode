@@ -11,11 +11,12 @@
  *     Flemming N. Larsen
  *     - Rewritten to compact code
  *     - Added Javadoc comments
- *     - Added "Paint" button and isPaintEnabled()
- *     - Added "Robocode SG" check box and isSGPaintEnabled() for enabling Robocode SG
- *       compatibility
+ *     - Added Paint button and isPaintEnabled()
+ *     - Added Robocode SG check box and isSGPaintEnabled() for enabling Robocode
+ *       SG compatibility
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - Added Pause button
  *******************************************************************************/
 package robocode.dialog;
 
@@ -29,6 +30,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import robocode.manager.BattleManager;
+import robocode.manager.RobocodeManager;
 import robocode.peer.RobotPeer;
 
 
@@ -38,9 +41,8 @@ import robocode.peer.RobotPeer;
  */
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
-	public final static Dimension BUTTON_SIZE = new Dimension(80, 25);
+	private RobocodeManager manager;
 	private RobotPeer robotPeer;
-	private boolean slave;
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
@@ -49,6 +51,7 @@ public class RobotDialog extends JFrame {
 	private JButton killButton;
 	private JToggleButton paintButton;
 	private JCheckBox sgCheckBox;
+	private JToggleButton pauseButton;
 
 	private ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -64,16 +67,28 @@ public class RobotDialog extends JFrame {
 				paintButtonActionPerformed();
 			} else if (src == RobotDialog.this.getSGCheckBox()) {
 				sgCheckBoxActionPerformed();
+			} else if (src == RobotDialog.this.getPauseButton()) {
+				pauseResumeButtonActionPerformed();
 			}
+		}
+	};
+
+	private BattleManager.PauseResumeListener pauseResumeHandler = new BattleManager.PauseResumeListener() {
+		public void battlePaused() {
+			getPauseButton().setSelected(true);
+		}
+
+		public void battleResumed() {
+			getPauseButton().setSelected(false);
 		}
 	};
 
 	/**
 	 * RobotDialog constructor
 	 */
-	public RobotDialog(boolean slave) {
+	public RobotDialog(RobocodeManager manager) {
 		super();
-		this.slave = slave;
+		this.manager = manager;
 		initialize();
 	}
 
@@ -83,9 +98,16 @@ public class RobotDialog extends JFrame {
 	private void initialize() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getRobotDialogContentPane());
-		if (slave) {
+		if (manager.isSlave()) {
 			getKillButton().setEnabled(false);
 		}
+
+		manager.getBattleManager().addListener(pauseResumeHandler);
+	}
+
+	@Override
+	public void finalize() {
+		manager.getBattleManager().removeListener(pauseResumeHandler);
 	}
 
 	/**
@@ -168,12 +190,13 @@ public class RobotDialog extends JFrame {
 	private JPanel getButtonPanel() {
 		if (buttonPanel == null) {
 			buttonPanel = new JPanel();
-			buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 			buttonPanel.add(getOkButton());
 			buttonPanel.add(getClearButton());
 			buttonPanel.add(getKillButton());
 			buttonPanel.add(getPaintButton());
 			buttonPanel.add(getSGCheckBox());
+			buttonPanel.add(getPauseButton());
 		}
 		return buttonPanel;
 	}
@@ -222,7 +245,6 @@ public class RobotDialog extends JFrame {
 	private JToggleButton getPaintButton() {
 		if (paintButton == null) {
 			paintButton = new JToggleButton("Paint");
-			WindowUtil.setFixedSize(paintButton, BUTTON_SIZE);
 			paintButton.addActionListener(eventHandler);
 		}
 		return paintButton;
@@ -242,6 +264,19 @@ public class RobotDialog extends JFrame {
 	}
 
 	/**
+	 * Returns the Pause button.
+	 *
+	 * @return the Pause button
+	 */
+	private JToggleButton getPauseButton() {
+		if (pauseButton == null) {
+			pauseButton = new JToggleButton("Pause/Debug");
+			pauseButton.addActionListener(eventHandler);
+		}
+		return pauseButton;
+	}
+
+	/**
 	 * Returns a new button with event handler and with the specified text
 	 *
 	 * @param text The text of the button
@@ -249,8 +284,6 @@ public class RobotDialog extends JFrame {
 	 */
 	private JButton getNewButton(String text) {
 		JButton button = new JButton(text);
-
-		WindowUtil.setFixedSize(button, BUTTON_SIZE);
 		button.addActionListener(eventHandler);
 		return button;
 	}
@@ -288,5 +321,17 @@ public class RobotDialog extends JFrame {
 	 */
 	private void sgCheckBoxActionPerformed() {
 		robotPeer.setSGPaintEnabled(getSGCheckBox().isSelected());
+	}
+
+	/**
+	 * Is called when the Pause/Resume button has been activated
+	 */
+	private void pauseResumeButtonActionPerformed() {
+		BattleManager battleManager = manager.getBattleManager();
+		if (battleManager.isPaused()) {
+			battleManager.resumeBattle();
+		} else {
+			battleManager.pauseBattle();
+		}
 	}
 }
