@@ -32,7 +32,6 @@
  *     - Added constructor for creating a new robot with a name only
  *     - Added the set() that copies a RobotRecord into this robot in order to
  *       support the replay feature
- *     - Added cleanupStaticFields() in order to cleanup static fields on a robot
  *     - Code cleanup
  *     Luis Crespo
  *     - Added states
@@ -54,8 +53,6 @@ import static robocode.util.Utils.normalRelativeAngle;
 import java.awt.Color;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 import robocode.*;
 import robocode.battle.Battle;
@@ -1172,10 +1169,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void setRobot(Robot newRobot) {
 		robot = newRobot;
-		if (robot instanceof robocode.TeamRobot) {
-			messageManager = new RobotMessageManager(this);
+		if (robot != null) {
+			if (robot instanceof robocode.TeamRobot) {
+				messageManager = new RobotMessageManager(this);
+			}
+			eventManager.setRobot(newRobot);
 		}
-		eventManager.setRobot(newRobot);
 	}
 
 	public final synchronized void setStop(boolean overwrite) {
@@ -1642,34 +1641,5 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 		return new Color(255 * ((rgb565 & 0xF800) >> 11) / 31, 255 * ((rgb565 & 0x07e0) >> 5) / 63,
 				255 * (rgb565 & 0x001f) / 31);
-	}
-
-	public void cleanupStaticFields() {
-		if (robot == null) {
-			return;
-		}
-
-		Field[] fields = new Field[0];
-		
-		// This try-catch-throwable must be here, as it is not always possible to get the
-		// declared fields without getting a Throwable like java.lang.NoClassDefFoundError.
-		try {
-			fields = robot.getClass().getDeclaredFields();
-		} catch (Throwable t) {
-			// Do nothing
-		}
-
-		for (Field f : fields) {
-			int m = f.getModifiers();
-
-			if (Modifier.isStatic(m) && !(Modifier.isFinal(m) || f.getType().isPrimitive())) {
-				try {
-					f.setAccessible(true);
-					f.set(robot, null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 }
