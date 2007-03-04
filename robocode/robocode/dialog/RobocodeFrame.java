@@ -39,6 +39,7 @@ import javax.swing.event.ChangeListener;
 import robocode.battleview.BattleView;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
+import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
@@ -54,6 +55,7 @@ import robocode.render.ImageUtil;
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
 	private EventHandler eventHandler = new EventHandler();
+	private PauseResumeHandler pauseResumeHandler = new PauseResumeHandler();
 
 	private RobocodeMenuBar robocodeMenuBar;
 
@@ -76,7 +78,7 @@ public class RobocodeFrame extends JFrame {
 
 	private JToolBar toolBar;
 
-	private JButton pauseResumeButton;
+	private JToggleButton pauseButton;
 	private JButton nextTurnButton;
 	private JButton stopButton;
 	private JButton restartButton;
@@ -95,7 +97,7 @@ public class RobocodeFrame extends JFrame {
 	private class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ComponentListener, ContainerListener, WindowListener, ChangeListener {
 
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == RobocodeFrame.this.getPauseResumeButton()) {
+			if (e.getSource() == RobocodeFrame.this.getPauseButton()) {
 				pauseResumeButtonActionPerformed();
 			} else if (e.getSource() == RobocodeFrame.this.getNextTurnButton()) {
 				nextTurnButtonActionPerformed();
@@ -185,6 +187,19 @@ public class RobocodeFrame extends JFrame {
 				manager.getProperties().setOptionsBattleDesiredTPS(tps);
 				tpsLabel.setText("  " + tps);
 			}
+		}
+	}
+
+	private class PauseResumeHandler implements BattleManager.PauseResumeListener {
+
+		public void battlePaused() {
+			getPauseButton().setSelected(true);
+			getNextTurnButton().setEnabled(true);
+		}
+
+		public void battleResumed() {
+			getPauseButton().setSelected(false);
+			getNextTurnButton().setEnabled(false);
 		}
 	}
 
@@ -351,20 +366,20 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	/**
-	 * Return the pauseResumeButton
+	 * Return the pauseButton
 	 *
-	 * @return JButton
+	 * @return JToggleButton
 	 */
-	public JButton getPauseResumeButton() {
-		if (pauseResumeButton == null) {
-			pauseResumeButton = new JButton("Pause/Debug");
-			pauseResumeButton.setMnemonic('P');
-			pauseResumeButton.setDisplayedMnemonicIndex(0);
-			pauseResumeButton.setHorizontalTextPosition(SwingConstants.CENTER);
-			pauseResumeButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-			pauseResumeButton.addActionListener(eventHandler);
+	public JToggleButton getPauseButton() {
+		if (pauseButton == null) {
+			pauseButton = new JToggleButton("Pause/Debug");
+			pauseButton.setMnemonic('P');
+			pauseButton.setDisplayedMnemonicIndex(0);
+			pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
+			pauseButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+			pauseButton.addActionListener(eventHandler);
 		}
-		return pauseResumeButton;
+		return pauseButton;
 	}
 
 	/**
@@ -381,7 +396,7 @@ public class RobocodeFrame extends JFrame {
 			nextTurnButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			nextTurnButton.addActionListener(eventHandler);
 
-			nextTurnButton.setVisible(false);
+			nextTurnButton.setEnabled(false);
 		}
 		return nextTurnButton;
 	}
@@ -506,7 +521,7 @@ public class RobocodeFrame extends JFrame {
 	private JToolBar getToolBar() {
 		if (toolBar == null) {
 			toolBar = new JToolBar();
-			toolBar.add(getPauseResumeButton());
+			toolBar.add(getPauseButton());
 			toolBar.add(getNextTurnButton());
 			toolBar.add(getStopButton());
 			toolBar.add(getRestartButton());
@@ -541,13 +556,17 @@ public class RobocodeFrame extends JFrame {
 
 		setContentPane(getRobocodeContentPane());
 		setJMenuBar(getRobocodeMenuBar());
+
+		manager.getBattleManager().addListener(pauseResumeHandler);
+
 		addKeyListener(eventHandler);
 		addWindowListener(eventHandler);
+
 		setVisible(false);
 		if (manager.isSlave()) {
 			getRobocodeMenuBar().getBattleMenu().setEnabled(false);
 			getRobocodeMenuBar().getRobotMenu().setEnabled(false);
-			getPauseResumeButton().setEnabled(false);
+			getPauseButton().setEnabled(false);
 			getStopButton().setEnabled(false);
 			getRestartButton().setEnabled(false);
 		}
@@ -581,40 +600,28 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	public void pauseResumeButtonActionPerformed() {
-		if (getPauseResumeButton().getText().equals("Pause/Debug")) {
-			getPauseResumeButton().setText("Resume");
-			getPauseResumeButton().setMnemonic('e');
-			getPauseResumeButton().setDisplayedMnemonicIndex(1);
-
-			getNextTurnButton().setVisible(true);
-
-			manager.getBattleManager().pauseBattle();
-
-		} else if (getPauseResumeButton().getText().equals("Resume")) {
-			getPauseResumeButton().setText("Pause/Debug");
-			getPauseResumeButton().setMnemonic('P');
-			getPauseResumeButton().setDisplayedMnemonicIndex(0);
-
-			getNextTurnButton().setVisible(false);
-
-			manager.getBattleManager().resumeBattle();
+		BattleManager battleManager = manager.getBattleManager();
+		if (battleManager.isPaused()) {
+			battleManager.resumeBattle();
+		} else {
+			battleManager.pauseBattle();
 		}
 	}
 
 	private void nextTurnButtonActionPerformed() {
-		windowManager.getManager().getBattleManager().nextTurn();
+		manager.getBattleManager().nextTurn();
 	}
 
 	private void stopButtonActionPerformed() {
-		windowManager.getManager().getBattleManager().stop(true);
+		manager.getBattleManager().stop(true);
 	}
 
 	private void restartButtonActionPerformed() {
-		windowManager.getManager().getBattleManager().restart();
+		manager.getBattleManager().restart();
 	}
 
 	private void replayButtonActionPerformed() {
-		windowManager.getManager().getBattleManager().replay();
+		manager.getBattleManager().replay();
 	}
 
 	/**
