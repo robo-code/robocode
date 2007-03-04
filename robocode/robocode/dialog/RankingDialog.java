@@ -15,7 +15,10 @@
 package robocode.dialog;
 
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.*;
 
 import javax.swing.*;
