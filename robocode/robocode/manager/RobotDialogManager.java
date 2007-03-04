@@ -82,7 +82,7 @@ public class RobotDialogManager {
 			if (robotDialogHashMap.size() > 10) {
 				reset();
 			}
-			dialog = new RobotDialog(manager.isSlave());
+			dialog = new RobotDialog(manager);
 			robotDialogHashMap.put(robotName, dialog);
 		}
 		return dialog;
