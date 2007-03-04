@@ -20,6 +20,9 @@
  *     - Removed the clearBattleProperties()
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - Added PauseResumeListener interface, addListener(), removeListener(),
+ *       notifyBattlePaused(), notifyBattleResumed() for letting listeners
+ *       receive notifications when the game is paused or resumed
  *     - Code cleanup & optimizations
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
@@ -76,6 +79,13 @@ public class BattleManager {
 	private String resultsFile;
 	private RobocodeManager manager;
 	private int stepTurn;
+
+	private List<PauseResumeListener> pauseResumeListeners;
+
+	public interface PauseResumeListener {
+		public void battlePaused();
+		public void battleResumed();
+	}
 
 	/**
 	 * Steps for a single turn, then goes back to paused
@@ -280,7 +290,7 @@ public class BattleManager {
 			frame.getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
 			frame.getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 
-			if (frame.getPauseResumeButton().getText().equals("Resume")) {
+			if (frame.getPauseButton().getText().equals("Resume")) {
 				frame.pauseResumeButtonActionPerformed();
 			}
 
@@ -301,8 +311,12 @@ public class BattleManager {
 		return (pauseCount != 0);
 	}
 
-	public void pauseBattle() {
+	public synchronized void pauseBattle() {
 		pauseCount++;
+
+		if (pauseCount == 1) {
+			notifyBattlePaused();
+		}
 	}
 
 	public String getBattlePath() {
@@ -421,8 +435,14 @@ public class BattleManager {
 		return battleProperties;
 	}
 
-	public void resumeBattle() {
-		Math.max(--pauseCount, 0);
+	public synchronized void resumeBattle() {
+		int oldPauseCount = pauseCount;
+
+		pauseCount = Math.max(--pauseCount, 0);
+
+		if (oldPauseCount == 1) {
+			notifyBattleResumed();
+		}
 	}
 
 	public boolean isBattleRunning() {
@@ -496,5 +516,28 @@ public class BattleManager {
 	 */
 	public RobocodeManager getManager() {
 		return manager;
+	}
+
+	public void addListener(PauseResumeListener listener) {
+		if (pauseResumeListeners == null) {
+			pauseResumeListeners = new ArrayList<PauseResumeListener>();
+		}
+		pauseResumeListeners.add(listener);
+	}
+
+	public void removeListener(PauseResumeListener listener) {
+		pauseResumeListeners.remove(listener);
+	}
+
+	private void notifyBattlePaused() {
+		for (PauseResumeListener l : pauseResumeListeners) {
+			l.battlePaused();
+		}
+	}
+
+	private void notifyBattleResumed() {
+		for (PauseResumeListener l : pauseResumeListeners) {
+			l.battleResumed();
+		}
 	}
 }
