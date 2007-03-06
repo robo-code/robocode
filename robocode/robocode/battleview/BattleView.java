@@ -148,6 +148,10 @@ public class BattleView extends Canvas {
 					}
 				}
 			}
+		} catch (NullPointerException e) {
+			// Sometimes caused by:
+			// java.awt.Component$BltBufferStrategy.revalidate()
+			;
 		} catch (Throwable t) {
 			Logger.log("Could not draw: ", t);
 			t.printStackTrace(System.err);

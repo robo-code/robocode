@@ -220,9 +220,10 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	/**
-	 * Comment
+	 * Called when the battle view is resized
 	 */
 	private void battleViewResized() {
+		battleView.validate();
 		battleView.setInitialized(false);
 	}
 
