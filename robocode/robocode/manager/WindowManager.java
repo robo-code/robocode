@@ -14,6 +14,7 @@
  *     - Removed the Thread.sleep(diff) from showSplashScreen()
  *     - Updated to use methods from the FileUtil, which replaces file operations
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - Changed showRobocodeFrame() to take a visible parameter
  *     Luis Crespo & Flemming N. Larsen
  *     - Added showRankingDialog()
  *******************************************************************************/
@@ -68,14 +69,17 @@ public class WindowManager {
 		return robocodeFrame;
 	}
 
-	public void showRobocodeFrame() {
-		// Pack frame to size all components
-		WindowUtil.packCenterShow(getRobocodeFrame());
+	public void showRobocodeFrame(boolean visible) {
+		RobocodeFrame frame = getRobocodeFrame();
+		
+		if (visible) {
+			// Pack frame to size all components
+			WindowUtil.packCenterShow(frame);
 
-		// Do it yet again to fix a bug in some JREs
-		robocodeFrame.setVisible(true);
-
-		WindowUtil.setStatusLabel(getRobocodeFrame().getStatusLabel());
+			WindowUtil.setStatusLabel(frame.getStatusLabel());
+		} else {
+			frame.setVisible(false);
+		}
 	}
 
 	public void showAboutBox() {

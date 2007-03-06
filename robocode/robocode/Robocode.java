@@ -177,7 +177,7 @@ public class Robocode {
 				}
 				manager.getWindowManager().showSplashScreen();
 			}
-			manager.getWindowManager().showRobocodeFrame();
+			manager.getWindowManager().showRobocodeFrame(true);
 			if (!minimize) {
 				manager.getVersionManager().checkUpdateCheck();
 			}
