@@ -28,8 +28,15 @@ import robocode.security.RobocodeSecurityManager;
 
 
 /**
- * RobocodeFileOutputStream
+ * RobocodeFileOutputStream is used for streaming/writing data out to a file,
+ * which you got by calling {@link AdvancedRobot#getDataFile(String)}.
+ * <p>
+ * You should read java.io.FileOutputStream for documentation of this class.
+ * <p>
+ * Please notice that the max. size of your data file is set to 200000
+ * (~195 KB).
  *
+ * @see AdvancedRobot#getDataFile(String)
  * @see java.io.FileOutputStream
  *
  * @author Mathew A. Nelson (original)

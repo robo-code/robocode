@@ -562,6 +562,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * The system will automatically create the directory for you, so you do not
 	 * need to create it by yourself.
 	 * <p>
+	 * Please notice that the max. size of your data file is set to 200000
+	 * (~195 KB).
+	 * <p>
 	 * See the sample robots for examples.
 	 *
 	 * @param filename the file name of the data file
