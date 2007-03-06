@@ -34,7 +34,8 @@ public class _AdvancedRobot extends Robot {
 	protected _AdvancedRobot() {}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#setTurnGunLeft(double)} instead.
+	 * @deprecated Use {@link AdvancedRobot#setTurnGunLeft(double)
+	 *    setTurnGunLeft} instead.
 	 */
 	@Deprecated
 	public void setTurnGunLeftDegrees(double degrees) {
@@ -47,7 +48,8 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#setTurnGunRight(double)} instead.
+	 * @deprecated Use {@link AdvancedRobot#setTurnGunRight(double)
+	 *    setTurnGunRight} instead.
 	 */
 	@Deprecated
 	public void setTurnGunRightDegrees(double degrees) {
@@ -60,7 +62,8 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#turnRadarRight(double)} instead.
+	 * @deprecated Use {@link Robot#turnRadarRight(double) turnRadarRight}
+	 *    instead.
 	 */
 	@Deprecated
 	public void turnRadarRightDegrees(double degrees) {
@@ -68,7 +71,8 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#setTurnRight(double)} instead.
+	 * @deprecated Use {@link AdvancedRobot#setTurnRight(double) setTurnRight}
+	 *    instead.
 	 */
 	@Deprecated
 	public void setTurnRightDegrees(double degrees) {
@@ -81,7 +85,8 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#setTurnRadarLeft(double)} instead.
+	 * @deprecated Use {@link AdvancedRobot#setTurnRadarLeft(double)
+	 *    setTurnRadarLeft} instead.
 	 */
 	@Deprecated
 	public void setTurnRadarLeftDegrees(double degrees) {
@@ -94,7 +99,8 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#setTurnLeft(double)} instead.
+	 * @deprecated Use {@link AdvancedRobot#setTurnLeft(double) setTurnLeft}
+	 *    instead.
 	 */
 	@Deprecated
 	public void setTurnLeftDegrees(double degrees) {
@@ -107,7 +113,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getHeading()} instead.
+	 * @deprecated Use {@link Robot#getHeading() getHeading} instead.
 	 */
 	@Deprecated
 	public double getHeadingDegrees() {
@@ -115,7 +121,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#turnLeft(double)} instead.
+	 * @deprecated Use {@link Robot#turnLeft(double) turnLeft} instead.
 	 */
 	@Deprecated
 	public void turnLeftDegrees(double degrees) {
@@ -123,7 +129,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#turnRight(double)} instead.
+	 * @deprecated Use {@link Robot#turnRight(double) turnRight} instead.
 	 */
 	@Deprecated
 	public void turnRightDegrees(double degrees) {
@@ -131,7 +137,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#execute()} instead.
+	 * @deprecated Use {@link AdvancedRobot#execute() execute} instead.
 	 */
 	@Deprecated
 	public void endTurn() {
@@ -143,7 +149,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getGunHeading()} instead.
+	 * @deprecated Use {@link Robot#getGunHeading() getGunHeading} instead.
 	 */
 	@Deprecated
 	public double getGunHeadingDegrees() {
@@ -151,7 +157,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getRadarHeading()} instead.
+	 * @deprecated Use {@link Robot#getRadarHeading() getRadarHeading} instead.
 	 */
 	@Deprecated
 	public double getRadarHeadingDegrees() {
@@ -171,7 +177,8 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#setTurnRadarRight(double)} instead.
+	 * @deprecated Use {@link AdvancedRobot#setTurnRadarRight(double)
+	 *    setTurnRadarRight} instead.
 	 */
 	@Deprecated
 	public void setTurnRadarRightDegrees(double degrees) {
@@ -184,7 +191,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#turnGunLeft(double)} instead.
+	 * @deprecated Use {@link Robot#turnGunLeft(double) turnGunLeft} instead.
 	 */
 	@Deprecated
 	public void turnGunLeftDegrees(double degrees) {
@@ -192,7 +199,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#turnGunRight(double)} instead.
+	 * @deprecated Use {@link Robot#turnGunRight(double) turnGunRight} instead.
 	 */
 	@Deprecated
 	public void turnGunRightDegrees(double degrees) {
@@ -200,7 +207,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#turnRadarLeft(double)} instead.
+	 * @deprecated Use {@link Robot#turnRadarLeft(double) turnRadarLeft} instead.
 	 */
 	@Deprecated
 	public void turnRadarLeftDegrees(double degrees) {

@@ -15,8 +15,8 @@ package robocode;
 
 
 /**
- * A SkippedTurnEvent is sent to {@link AdvancedRobot#onSkippedTurn} when your
- * robot is forced to skipping a turn.
+ * A SkippedTurnEvent is sent to {@link AdvancedRobot#onSkippedTurn
+ * onSkippedTurn} when your robot is forced to skipping a turn.
  * You must take an action every turn in order to participate in the game.
  * For example,
  * <pre>

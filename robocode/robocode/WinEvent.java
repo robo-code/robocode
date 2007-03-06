@@ -13,7 +13,8 @@ package robocode;
 
 
 /**
- * This event is sent to {@link Robot#onWin} when your robot wins the round.
+ * This event is sent to {@link Robot#onWin onWin} when your robot wins the
+ * round.
  *
  * @author Mathew A. Nelson (original)
  */

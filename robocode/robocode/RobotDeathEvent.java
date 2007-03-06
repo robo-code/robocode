@@ -15,8 +15,8 @@ package robocode;
 
 
 /**
- * This event is sent to {@link Robot#onRobotDeath} when another robot (not your
- * robot) dies.
+ * This event is sent to {@link Robot#onRobotDeath onRobotDeath} when another
+ * robot (not your robot) dies.
  *
  * @author Mathew A. Nelson (original)
  */

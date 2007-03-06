@@ -15,9 +15,9 @@ package robocode;
 
 
 /**
- * This event is sent to {@link AdvancedRobot#onCustomEvent} when a custom
- * condition is met. Be sure to reset or remove the custom condition to avoid
- * having it reoccuring repeatedly.
+ * This event is sent to {@link AdvancedRobot#onCustomEvent onCustomEvent} when
+ * a custom condition is met. Be sure to reset or remove the custom condition to
+ * avoid having it reoccuring repeatedly.
  *
  * @see #getCondition
  *

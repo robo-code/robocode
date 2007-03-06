@@ -15,8 +15,8 @@ package robocode;
 
 
 /**
- * This event is sent to {@link Robot#onBulletHit(BulletHitEvent)} when one of
- * your bullets has hit another robot.
+ * This event is sent to {@link Robot#onBulletHit(BulletHitEvent) onBulletHit}
+ * when one of your bullets has hit another robot.
  *
  * @author Mathew A. Nelson (original)
  */

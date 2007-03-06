@@ -61,7 +61,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getGunHeat()} instead.
+	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat} instead.
 	 */
 	@Deprecated
 	public double getGunCharge() {
@@ -74,7 +74,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getEnergy()} instead.
+	 * @deprecated Use {@link Robot#getEnergy() getEnergy} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -87,7 +87,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getNumRounds()} instead.
+	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds} instead.
 	 */
 	@Deprecated
 	public int getNumBattles() {
@@ -101,7 +101,7 @@ public class _Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getRoundNum()} instead.
+	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum} instead.
 	 */
 	@Deprecated
 	public int getBattleNum() {

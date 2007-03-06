@@ -15,9 +15,9 @@ package robocode;
 
 
 /**
- * This event is sent to {@link Robot#onBulletMissed(BulletMissedEvent)} when
- * one of your bullets has missed, i.e. when the bullet has reached the border
- * of the battlefield.
+ * This event is sent to {@link Robot#onBulletMissed(BulletMissedEvent)
+ * onBulletMissed} when one of your bullets has missed, i.e. when the bullet has
+ * reached the border of the battlefield.
  *
  * @author Mathew A. Nelson (original)
  */

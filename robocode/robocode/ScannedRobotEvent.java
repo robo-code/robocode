@@ -15,9 +15,9 @@ package robocode;
 
 
 /**
- * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot} when you scan a
- * robot.
- * You can use the information contained in this event to determine what to do.
+ * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot onScannedRobot}
+ * when you scan a robot. You can use the information contained in this event to
+ * determine what to do.
  *
  * @author Mathew A. Nelson (original)
  */

@@ -219,7 +219,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * The bullet will do (4 * power) damage if it hits another robot. If power
 	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
 	 * You will get (3 * power) back if you hit the other robot. You can call
-	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
+	 * Rules#getBulletDamage(double)} for getting the damage that a
 	 * bullet with a specific bullet power will do.
 	 * <p>
 	 * The specified bullet power should be between

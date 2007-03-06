@@ -18,8 +18,8 @@ import java.io.Serializable;
 
 
 /**
- * A MessageEvent is sent to {@link TeamRobot#onMessageReceived} when a teammate
- * sends a message to your robot.
+ * A MessageEvent is sent to {@link TeamRobot#onMessageReceived(MessageEvent)
+ * onMessageReceived} when a teammate sends a message to your robot.
  * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)

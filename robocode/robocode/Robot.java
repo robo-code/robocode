@@ -925,8 +925,8 @@ public class Robot extends _Robot implements Runnable {
 	 * as long as you are moving, turning, turning your gun, or turning your
 	 * radar.
 	 * <p>
-	 * Scan will cause {@link #onScannedRobot(ScannedRobotEvent)} to be called
-	 * if you see a robot.
+	 * Scan will cause {@link #onScannedRobot(ScannedRobotEvent) onScannedRobot}
+	 * to be called if you see a robot.
 	 * <p>
 	 * There are 2 reasons to call scan() manually:
 	 * 1 - You want to scan after you stop moving.

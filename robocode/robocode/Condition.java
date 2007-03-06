@@ -19,7 +19,7 @@ import robocode.security.RobocodeSecurityManager;
 
 
 /**
- * Condition is used to define custom {@link AdvancedRobot#waitFor waitFor} and
+ * Condition is used to define custom  AdvancedRobot#waitFor waitFor} and
  * custom events for a {@link AdvancedRobot}. The code below is taken from the
  * sample robot named Target. See Target.java for details.
  * <pre>
