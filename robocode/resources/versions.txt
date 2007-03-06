@@ -5,8 +5,9 @@ o Bugfixes
   -- With some robots, a java.lang.NoClassDefFoundError occured when Robocode tried to
      cleanup the static fields occupied by the robot when the battles are over
   -- AdvancedRobot.setEventPriority() did not support MessageEvent
-  -- Bugfix: The rendering options was not set correctly when loading these between
-     battle sessions
+  -- The rendering options was not set correctly when loading these between battle sessions
+  -- When using the RobocodeEngine.setVisible(true) the Robocode window was shown with the
+     wrong size and without the native Look & Feel 
 o Added missing getMessageEvents() on the TeamRobot
 o Adjustments of default event priorities
   -- The changes were made as some events "shared" the same default priority, making it
