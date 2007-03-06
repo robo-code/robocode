@@ -881,9 +881,11 @@ public class RobocodeProperties {
 
 		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
 
-		optionsRenderingAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0"));
-		optionsRenderingTextAntialiasing = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0"));
-		optionsRenderingMethod = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0"));
+		// set methods are used here in order to set the rendering hints, which must be rebuild
+		setOptionsRenderingAntialiasing(Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0")));
+		setOptionsRenderingTextAntialiasing(
+				Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0")));
+		setOptionsRenderingMethod(Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0")));
 		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
 
 		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false")).booleanValue();
