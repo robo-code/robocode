@@ -78,7 +78,7 @@ public class BattleView extends Canvas {
 	private boolean drawGround;
 	private boolean drawExplosionDebris;
 
-	private int numBuffers;
+	private int numBuffers = 2; // defaults to double buffering
 
 	private RenderingHints renderingHints;
 
@@ -130,7 +130,7 @@ public class BattleView extends Canvas {
 				initialize();
 			}
 
-			if (offscreenImage != null) {
+			if (offscreenImage != null && isDisplayable()) {
 				offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 				offscreenGfx.setRenderingHints(renderingHints);
 
@@ -142,20 +142,15 @@ public class BattleView extends Canvas {
 					if (g != null) {
 						g.drawImage(offscreenImage, 0, 0, null);
 
-						// Flush the buffer to the main graphics
-						if (getGraphics() != null) {
-							// FNL: The above check to prevents internal NullPointerException in
-							// Component.BltBufferStrategy.show()
-							bufferStrategy.show();
-						}
+						bufferStrategy.show();
 
 						g.dispose();
 					}
 				}
 			}
-		} catch (Exception e) {
-			Logger.log("Could not draw: ", e);
-			e.printStackTrace(System.err);
+		} catch (Throwable t) {
+			Logger.log("Could not draw: ", t);
+			t.printStackTrace(System.err);
 		}
 	}
 
@@ -202,7 +197,7 @@ public class BattleView extends Canvas {
 		offscreenImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
 		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 
-		if (bufferStrategy == null) {
+		if (bufferStrategy == null && isDisplayable()) {
 			createBufferStrategy(numBuffers);
 			bufferStrategy = getBufferStrategy();
 		}
@@ -447,9 +442,7 @@ public class BattleView extends Canvas {
 							smallFont, smallFontMetrics);
 				}
 				if (drawRobotName) {
-					if (!drawRobotEnergy) {
-						g.setColor(Color.white);
-					}
+					g.setColor(Color.white);
 					centerString(g, r.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
 							smallFont, smallFontMetrics);
 				}
@@ -525,8 +518,8 @@ public class BattleView extends Canvas {
 						at.scale(scale, scale);
 					}
 	
-					RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getExplosionImageIndex(),
-							bullet.getFrame());
+					RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(
+							bullet.getExplosionImageIndex(), bullet.getFrame());
 	
 					explosionRenderImage.setTransform(at);
 					explosionRenderImage.paint(g);
