@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.security.Policy;
 import java.util.List;
 
+import javax.swing.UIManager;
+
 import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -137,8 +139,18 @@ public class RobocodeEngine {
 	 * Shows or hides the Robocode window.
 	 */
 	public void setVisible(boolean visible) {
-		manager.setEnableGUI(true);
-		manager.getWindowManager().getRobocodeFrame().setVisible(visible);
+		if (visible) {
+			// The GUI must be enabled in order to show the window
+			manager.setEnableGUI(true);
+		}
+		if (manager.isGUIEnabled()) {
+			// Set native look and feel
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {}
+	
+			manager.getWindowManager().showRobocodeFrame(visible);
+		}
 	}
 
 	/**
