@@ -193,6 +193,8 @@ public class Battle implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
+		battleView.setPaintMode(BattleView.PAINTBATTLE);
+
 		running = true;
 
 		if (manager.isSoundEnabled()) {
@@ -286,13 +288,7 @@ public class Battle implements Runnable {
 				} else if (manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
 					manager.getWindowManager().showResultsDialog(this);
 				}
-				if (battleView != null) {
-					battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-					battleView.repaint();
-				}
-				System.gc();
-				System.gc();
-				System.gc();
+
 				if (exitOnComplete) {
 					System.exit(0);
 				}
@@ -301,7 +297,6 @@ public class Battle implements Runnable {
 					manager.getListener().battleAborted(battleSpecification);
 				}
 			}
-			cleanup();
 		} else {
 			// Replay
 
@@ -322,24 +317,27 @@ public class Battle implements Runnable {
 					manager.getWindowManager().showResultsDialog(this);
 				}
 			}
-			if (battleView != null) {
-				battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-				battleView.repaint();
-			}
+		}
 
-			cleanup();
+		if (battleView != null) {
+			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+			battleView.repaint();
 		}
 
 		running = false;
 
 		updateTitle();
 
+		cleanup();
+		
 		if (soundInitialized) {
 			manager.getSoundManager().stopBackgroundMusic();
 			manager.getSoundManager().playEndOfBattleMusic();
 		}
 
 		manager.getWindowManager().getRobocodeFrame().setReplay(true);
+
+		System.gc();
 	}
 
 	public void addBullet(BulletPeer bullet) {
@@ -802,10 +800,6 @@ public class Battle implements Runnable {
 			}
 		}
 
-		if (battleView != null) {
-			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-		}
-
 		if (isRecordingEnabled) {
 			List<RobotPeer> orderedRobots = Collections.synchronizedList(new ArrayList<RobotPeer>(robots));
 
@@ -976,10 +970,6 @@ public class Battle implements Runnable {
 			if (resetThisSec) {
 				updateTitle();
 			}
-		}
-
-		if (battleView != null) {
-			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 		}
 
 		bullets.clear();
