@@ -220,11 +220,12 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		manager.getProperties().setOptionsRenderingAntialiasing(optionsRenderingAntialiasingComboBox.getSelectedIndex());
-		manager.getProperties().setOptionsRenderingTextAntialiasing(
-				optionsRenderingTextAntialiasingComboBox.getSelectedIndex());
-		manager.getProperties().setOptionsRenderingMethod(optionsRenderingMethodComboBox.getSelectedIndex());
-		manager.getProperties().setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
+		RobocodeProperties props = manager.getProperties(); 
+
+		props.setOptionsRenderingAntialiasing(optionsRenderingAntialiasingComboBox.getSelectedIndex());
+		props.setOptionsRenderingTextAntialiasing(optionsRenderingTextAntialiasingComboBox.getSelectedIndex());
+		props.setOptionsRenderingMethod(optionsRenderingMethodComboBox.getSelectedIndex());
+		props.setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
 		manager.saveProperties();
 	}
 
