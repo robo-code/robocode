@@ -189,9 +189,8 @@ public class BattleView extends Canvas {
 		drawExplosions = props.getOptionsViewExplosions();
 		drawExplosionDebris = props.getOptionsViewExplosionDebris();
 
-		numBuffers = props.getOptionsRenderingNoBuffers();
-
 		renderingHints = props.getRenderingHints();
+		numBuffers = props.getOptionsRenderingNoBuffers();
 	}
 
 	private void initialize() {
