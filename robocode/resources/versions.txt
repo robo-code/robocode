@@ -1,3 +1,9 @@
+Version 1.2.6A
+(03/11/2007)
+-------------
+o Bugfixes
+  -- A NullPointerException occured if the battle view was not initialized
+
 Version 1.2.6
 (03/06/2007)
 -------------
