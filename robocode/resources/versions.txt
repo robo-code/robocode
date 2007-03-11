@@ -3,6 +3,8 @@ Version 1.2.6A
 -------------
 o Bugfixes
   -- A NullPointerException occured if the battle view was not initialized
+     -- This bug made it impossible to control Robocode via the robocode.control package
+        when attempting to show the battle window
 o The Ranking Panel and Battle Results are now windows instead of dialoges
   -- This means that the Ranking Panel and Battle Results will still be visible when the
      game is running in minimized mode
