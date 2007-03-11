@@ -26,8 +26,8 @@
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that has been (re)moved from the robocode.util.Utils class
  *     - Changed so robots die faster graphically when the battles are over
- *     - Extended cleanup to clean static fields on all robots to prevent memory
- *       leaks
+ *     - Changed cleanup to only remove the robot in the robot peers, as the
+ *       robot peers themselves are used for replay recording
  *     - Added support for playing background music when the battle is ongoing
  *     - Code cleanup
  *     Luis Crespo
@@ -288,7 +288,7 @@ public class Battle implements Runnable {
 						manager.getListener().battleAborted(battleSpecification);
 					}
 				} else if (manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
-					manager.getWindowManager().showResultsDialog(this);
+					manager.getWindowManager().showResultsDialog();
 				}
 
 				if (exitOnComplete) {
@@ -316,7 +316,7 @@ public class Battle implements Runnable {
 						robot.setStatistics(stats);
 					}
 
-					manager.getWindowManager().showResultsDialog(this);
+					manager.getWindowManager().showResultsDialog();
 				}
 			}
 		}

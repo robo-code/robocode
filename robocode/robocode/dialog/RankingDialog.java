@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Totally rewritten to contain the functionality for both the
  *       RankingDialog and ResultsDialog (code reuse)
+ *     - Changed to be a independent frame instead of a dialog
  *******************************************************************************/
 package robocode.dialog;
 
@@ -18,7 +19,6 @@ package robocode.dialog;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -31,14 +31,14 @@ import robocode.manager.RobocodeManager;
 
 
 /**
- * Dialog to display the battle results or ranking during battles.
+ * Frame to display the battle results or ranking during battles.
  *
  * @author Mathew A. Nelson (original)
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class RankingDialog extends JDialog {
+public class RankingDialog extends JFrame {
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -62,15 +62,15 @@ public class RankingDialog extends JDialog {
 	/**
 	 * RankingDialog constructor
 	 */
-	public RankingDialog(Frame owner, RobocodeManager manager, boolean isCurrentRankings) {
-		super(owner);
+	public RankingDialog(RobocodeManager manager, boolean isCurrentRankings) {
+		super();
 		this.manager = manager;
 		this.isCurrentRankings = isCurrentRankings;
 		initialize();
 	}
 
 	/**
-	 * Initializes the dialog
+	 * Initializes the frame
 	 */
 	private void initialize() {
 		setTitle(isCurrentRankings ? "Ranking" : ((BattleResultsTableModel) getTableModel()).getTitle());

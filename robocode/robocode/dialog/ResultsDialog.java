@@ -14,13 +14,14 @@
 package robocode.dialog;
 
 
-import java.awt.Frame;
-
 import robocode.manager.RobocodeManager;
 
 
 /**
  * Dialog to display results (scores) of a battle.
+ *
+ * This class is just a wrapper class used for storing the window position and
+ * dimension.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -31,7 +32,7 @@ public class ResultsDialog extends RankingDialog {
 	/**
 	 * ResultsDialog constructor.
 	 */
-	public ResultsDialog(Frame owner, RobocodeManager manager) {
-		super(owner, manager, false);
+	public ResultsDialog(RobocodeManager manager) {
+		super(manager, false);
 	}
 }
