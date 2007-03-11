@@ -193,7 +193,9 @@ public class Battle implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
-		battleView.setPaintMode(BattleView.PAINTBATTLE);
+		if (battleView != null) {
+			battleView.setPaintMode(BattleView.PAINTBATTLE);
+		}
 
 		running = true;
 
