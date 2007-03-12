@@ -1,0 +1,68 @@
+#RoboRumble@home properties - Team battles
+
+#properties for executing the modules. Use YES or NOT
+
+DOWNLOAD=YES
+EXECUTE=YES
+UPLOAD=YES
+ITERATE=NOT
+
+#It tells the program if this competitions is for teams. 
+#It is necessary since teams are treated by Robocode sligthly different.
+
+TEAMS=YES
+
+#leave it blank or put GENERAL if you want to execute battles for all bots, or use MINI, MICRO or NANO if 
+#you want to run only battles for this type of bot.
+#Use SERVER if you want an smart client that uses server info to control process of running battles (recommended)
+#Melee only suports a simplified SERVER mode
+
+RUNONLY=SERVER
+
+#properties for the battle engine
+
+USER=ALBERT
+INPUT=./roborumble/temp/battlesTeams.txt
+PRIORITYBATTLESFILE=./roborumble/temp/priorityTeams.txt
+ROUNDS=10
+FIELDL=1200
+FIELDH=1200
+OUTPUT=./roborumble/files/resultsTeams.txt
+
+#properties to retrieve bots from internet
+
+BOTSREP=./
+TEMP=./roborumble/temp/
+
+#properties to retrieve participants list from internet
+
+PARTICIPANTSURL=http://robowiki.net/?RoboRumble/ParticipantTeams
+PARTICIPANTSFILE=./roborumble/files/participTeams.txt
+STARTAG=pre
+
+#properties to prepare the battles list.
+#Keep this parameter low. Teams tend to consume lots of resources and crash often.
+
+NUMBATTLES=5
+
+#properties to upload the results
+
+RESULTSURL=http://rumble.robowiki.net/servlet/UploadedResults
+
+#URLs to download the rating files (and file names)
+#BATTLESNUMFILE is the file used to store the number of battles fought by the bots (returned by the server)
+
+RATINGS.URL=http://rumble.robowiki.net/servlet/RatingsFile
+
+RATINGS.GENERAL=./roborumble/temp/ratings_teamrumble.txt
+
+BATTLESNUMFILE=./roborumble/temp/battlesnumber.txt
+
+#URL to remove old participants
+UPDATEBOTSURL=http://rumble.robowiki.net/servlet/RemoveOldParticipant
+
+#Number of battles a bot has to fight when it is uploaded. It has priority againts others until it reaches such number
+
+BATTLESPERBOT = 100
+
+

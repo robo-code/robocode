@@ -1,0 +1,23 @@
+#Bots code size
+#Thu Dec 25 13:30:03 CET 2003
+kawigi.spare.SpareParts_0.7.6nosnd=16878
+gg.Wolverine_2.0=9144
+kawigi.sbf.FloodHT_0.8=7401
+qohnil.blot.BlotBot_3.61=17797
+cx.mini.Nimrod_0.55=1493
+axeBots.HataMoto_3.09=27417
+kawigi.mini.Fhqwhgads_1.1=1496
+rz.GlowBlowMelee_1.3=1436
+nic.Nicator_2.4=8070
+ms.Ares_0.19=17118
+dam.MogBot_2.9=7112
+pe.SandboxDT_2.41=26438
+davidalves.net.DuelistMicroMelee_1.4=747
+pe.SandboxLump_1.52=7251
+myl.micro.Troodon_1.10=738
+tad.Dalek98_0.98=24774
+rz.HawkOnFire_0.1=749
+tzu.TheArtOfWar_1.2=20981
+intruder.PrairieWolf_2.61=23780
+abc.Shadow_2.15=11392
+abc.Tron_2.02=14903
