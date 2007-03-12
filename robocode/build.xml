@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ====================================================================== -->
-<!--  Apache Ant build script for building the Robocode                     -->
+<!--  Apache Ant build script for building Robocode                         -->
 <!-- ====================================================================== -->
 
-<project name="autoextract" default="build" basedir="../build">
-  <description>Apache Ant build script for building the Robocode</description>
+<project name="robocode" default="build" basedir="../build">
+  <description>Apache Ant build script for building Robocode</description>
 
   <!-- Enable debug information when compiling -->  
   <property name="debug" value="on"/>
-  
+
   <!-- Import common build file -->
   <import file="../build/build.xml"/>
 
@@ -18,7 +18,7 @@
   <!-- ====================================== -->
   <target
       name="build"
-      description="build robocode"
+      description="build Robocode"
       depends="compile.robocode, compile.robots">
 
     <!-- Copy resources -->
