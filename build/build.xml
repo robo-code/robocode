@@ -32,6 +32,7 @@
   <property name="src.extract" location="../robocodeextract"/>
   <property name="src.autoextract" location="../autoextract"/>
   <property name="src.robots" location="../robocodeextract/robots"/>
+  <property name="src.roborumble" location="../roborumble"/>
 
   <!-- License file -->
   <property name="license.file" location="${src.extract}/license/cpl-v10.html"/>
@@ -93,16 +94,16 @@
   <!-- ====================================== -->
   <target
       name="compile.robocode"
-      description="Compile robocode"
+      description="Compile Robocode"
   	  depends="init"
       unless="robocode.uptodate"> 
 
-    <echo message="Compiling robocode..."/>
+    <echo message="Compiling Robocode..."/>
  
-    <!-- Compile robocode -->
+    <!-- Compile Robocode -->
     <compile srcdir="${src.robocode}" destdir="${build}"/>
 
-    <!-- Flag that robocode has been built -->
+    <!-- Flag that Robocode has been built -->
     <touch file="${build}/.robocode_build"/>
   </target>
 
@@ -137,18 +138,40 @@
   <!-- ====================================== -->
   <target
       name="compile.autoextract"
-      description="Compile auto-extract"
+      description="Compile AutoExtract"
   	  depends="init"
       unless="autoextract.uptodate">
 
-    <echo message="Compiling auto-extract..."/>
+    <echo message="Compiling AutoExtract..."/>
 
-    <!-- Compile auto-extract -->
+    <!-- Compile AutoExtract -->
     <compile srcdir="${src.autoextract}" destdir="${build}"/>
   </target>
 
   <uptodate property="autoextract.uptodate" targetfile="${build}/robocode/AutoExtract.class">
     <srcfiles dir="${src.autoextract}"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: compile.roborumble             -->
+  <!-- ====================================== -->
+  <target
+      name="compile.roborumble"
+      description="Compile RoboRumble"
+  	  depends="init"
+      unless="roborumble.uptodate"> 
+
+    <echo message="Compiling RoboRumble..."/>
+ 
+    <!-- Compile RoboRumble -->
+    <compile srcdir="${src.roborumble}" destdir="${build}" classpath="../robocodeextract/codesize.jar"/>
+
+    <!-- Flag that RoboRumble has been built -->
+    <touch file="${build}/.roborumble_build"/>
+  </target>
+
+  <uptodate property="roborumble.uptodate" targetfile="${build}/.roborumble_build">
+    <srcfiles dir="${src.roborumble}/roborumble"/>
   </uptodate>
 
   <!-- ====================================== -->
@@ -166,7 +189,7 @@
     <jar destfile="${build}/robocode.jar">
       <!-- Specify files to include -->
       <fileset dir="${build}" includes="robocode/**">   <!-- Class files -->
-        <exclude name="robocode/AutoExtract.class"/>				 <!-- Exclude AutoExtract.class -->
+        <exclude name="robocode/AutoExtract.class"/>    <!-- Exclude AutoExtract.class -->
       </fileset>
       <fileset dir="${src.robocode}" includes="resources/**"/>  <!-- Resource files -->
       <fileset file="${license.file}"/>                         <!-- License file -->
@@ -196,7 +219,7 @@
     <jar destfile="${build}/extract.jar">
       <!-- Specify files to include -->
       <fileset dir="${src.extract}">      <!-- Files from the extract folder -->
-        <exclude name="build/**"/>             <!-- Exclude build files (if any) -->
+        <exclude name="build/**"/>        <!-- Exclude build files (if any) -->
       </fileset>
       <fileset dir="${build}">
         <include name="robocode.jar"/>    <!-- Builded robocode.jar file -->
