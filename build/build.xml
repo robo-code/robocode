@@ -236,6 +236,33 @@
   </uptodate>
 
   <!-- ====================================== -->
+  <!-- Target: roborumble.jar                   -->
+  <!-- ====================================== -->
+  <target
+      name="roborumble.jar"
+      description="Build roborumble.jar"
+      depends="init, compile.roborumble"
+      unless="roborumble.jar.uptodate">
+
+    <echo message="Building roborumble.jar..."/>
+
+    <!-- Create the roborumble.jar file -->
+    <jar destfile="${build}/roborumble.jar">
+      <!-- Specify files to include -->
+      <fileset dir="${build}" includes="roborumble/**"/>   <!-- Class files -->
+      <fileset file="${license.file}"/>                   <!-- License file -->
+      <!-- Set the main class of the manifest -->
+      <manifest>
+        <attribute name="Main-Class" value="roborumble.RoboRumbleAtHome"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <uptodate property="roborumble.jar.uptodate" targetfile="${build}/roborumble.jar">
+    <srcfiles dir="${src.roborumble}"/>
+  </uptodate>
+
+  <!-- ====================================== -->
   <!-- Target: javadoc                        -->
   <!-- ====================================== -->
   <target
