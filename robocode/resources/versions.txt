@@ -1,3 +1,10 @@
+Version 1.2.6B
+(03/14/2007)
+-------------
+o Bugfixes
+  -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
+     of an integer. This bug caused problems with running Robocode on RoboLeague
+
 Version 1.2.6A
 (03/11/2007)
 -------------

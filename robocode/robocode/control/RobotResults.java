@@ -140,7 +140,7 @@ public class RobotResults {
 	 *
 	 * @return the ram damage bonus of this robot.
 	 */
-	public double getRamDamageBonus() {
+	public int getRamDamageBonus() {
 		return (int) (ramDamageBonus + 0.5);
 	}
 
