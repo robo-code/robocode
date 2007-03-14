@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Albert Pérez
+ *     - Initial API and implementation
+ *******************************************************************************/
 package roborumble;
 
 
@@ -12,7 +23,6 @@ import java.io.*;
  * Implements the client side of RoboRumbleAtHome
  * Controlled by properties files
  */
-
 public class RoboRumbleAtHome {
 	
 	public static void main(String args[]) {
@@ -137,7 +147,5 @@ public class RoboRumbleAtHome {
 		} while (iterates.equals("YES"));
 	
 		System.exit(0);
-
 	}
-	
 }
