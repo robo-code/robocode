@@ -1,13 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Albert Pérez
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5
+ *     - Removed unused imports
+ *     - Replaced the robocode.util.Utils.copy() method with internal copy()
+ *******************************************************************************/
 package roborumble.netengine;
 
 
 import java.net.*;
 import java.util.*;
-import java.util.Vector;
-import java.util.jar.*;
-import java.util.zip.*;
 import java.io.*;
-import robocode.util.*;
+
 import roborumble.battlesengine.*;
 
 
@@ -16,7 +28,6 @@ import roborumble.battlesengine.*;
  * Manages the download operations (participants and JAR files)
  * Controlled by properties files
  */
-
 public class ResultsUpload {
 
 	private String resultsfile;
@@ -62,7 +73,6 @@ public class ResultsUpload {
 
 		// Open competitions selector
 		size = new CompetitionsSelector(sizesfile, botsrepository);
-		
 	}
 
 	public boolean uploadResults() {
@@ -71,7 +81,7 @@ public class ResultsUpload {
 		
 		// Read the results file
 		
-		Vector results = new Vector();
+		Vector<String> results = new Vector<String>();
 		String match = "";
 		String bot1 = "";
 		String bot2 = "";
@@ -190,7 +200,6 @@ public class ResultsUpload {
 					errorsfound = errorsfound | senddata(nanobots, data, outtxt, false, results, i, battlesnum, null);
 				}
 			}
-			
 		}
 
 		// close files
@@ -209,14 +218,13 @@ public class ResultsUpload {
 		// copy temp file into results file if there was some error
 		if (errorsfound) {
 			try {
-				Utils.copy(new File(tempdir + "results.txt"), new File(resultsfile));
+				copy(new File(tempdir + "results.txt"), new File(resultsfile));
 			} catch (Exception e) {
 				System.out.println("Error when copying results errors file.");
 			}
 		}
 		
 		return true;
-
 	}
 	
 	private void saverror(PrintStream outtxt, String match, String bot1, String bot2, boolean saveonerror) {
@@ -228,11 +236,10 @@ public class ResultsUpload {
 		System.out.println("Unable to upload results " + match + " " + bot1 + " " + bot2);
 	}
 
-	private boolean senddata(String game, String data, PrintStream outtxt, boolean saveonerror, Vector results, int i, PrintStream battlesnum, PrintStream prioritybattles) {
+	private boolean senddata(String game, String data, PrintStream outtxt, boolean saveonerror, Vector<String> results, int i, PrintStream battlesnum, PrintStream prioritybattles) {
 		boolean errorsfound = false;
 
 		try {
-				
 			// Send data
 			URL url = new URL(resultsurl);
 			URLConnection conn = url.openConnection();
@@ -286,7 +293,6 @@ public class ResultsUpload {
 				} else {
 					System.out.println(line);
 				}
-
 			}
 			wr.close();
 			rd.close();
@@ -308,5 +314,27 @@ public class ResultsUpload {
 		return errorsfound;
 	}
 
-}
+	/**
+	 * Copies a file into another file.
+	 * 
+	 * @param inFile the input file to copy
+	 * @param outFile the output file to copy to
+	 * @return {@code true} if the file was copies succesfully; {@code false}
+	 *    otherwise.
+	 * @throws IOException
+	 */
+	public static void copy(File srcFile, File destFile) throws IOException {
+		if (srcFile.equals(destFile)) {
+			throw new IOException("You cannot copy a file onto itself");
+		}
+		byte buf[] = new byte[4096];
+		FileInputStream in = new FileInputStream(srcFile);
+		FileOutputStream out = new FileOutputStream(destFile);
 
+		while (in.available() > 0) {
+			int count = in.read(buf, 0, 4096);
+
+			out.write(buf, 0, count);
+		}
+	}
+}
