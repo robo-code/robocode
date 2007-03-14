@@ -1,22 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Albert Pérez
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Completely rewritten to use the robocode.control package only
+ *******************************************************************************/
 package roborumble.battlesengine;
 
 
 import java.io.File;
-import java.io.IOException;
-import java.security.Policy;
+import java.util.List;
+import java.util.ArrayList;
 
-import robocode.RobocodeFileOutputStream;
-import robocode.manager.RobocodeManager;
-import robocode.repository.FileSpecificationVector;
-import robocode.security.RobocodeSecurityManager;
-import robocode.security.RobocodeSecurityPolicy;
-import robocode.security.SecureInputStream;
-import robocode.security.SecurePrintStream;
-import robocode.util.Constants;
-import robocode.util.Utils;
 import robocode.control.*;
-import robocode.repository.*;
-import robocode.battle.*;
 
 
 /**
@@ -26,101 +28,145 @@ import robocode.battle.*;
  */
 public class RobocodeEngineAtHome {
 	
-	private RobocodeListener listener = null;
-	private RobocodeManager manager = null;   
-
-	private RobocodeEngineAtHome() {/* empty */}
+	private RobocodeEngine engine;
     
+	private RobocodeListener eventHandler;
+
+	private boolean isBattleRunning;
+
+	private RobotResults[] results;
+
 	public RobocodeEngineAtHome(File robocodeHome, RobocodeListener listener) {
-		init(robocodeHome, listener);
+		eventHandler = new EventHandler(listener);
+		engine = new RobocodeEngine(robocodeHome, eventHandler);
 	}
     
 	public RobocodeEngineAtHome(RobocodeListener listener) {
-		File robocodeDir = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile()).getParentFile();
-		File robotsDir = new File(robocodeDir, "robots");
-
-		if (robotsDir.exists()) {
-			init(robocodeDir, listener);
-		} else {
-			throw new RuntimeException("File not found: " + robotsDir);
-		}
+		eventHandler = new EventHandler(listener);
+		engine = new RobocodeEngine(eventHandler);
+		engine.setVisible(true);
 	}
-    
-	private void init(File robocodeHome, RobocodeListener listener) {
-		this.listener = listener;
-		manager = new RobocodeManager(true, listener);
-		try {
-			Constants.setWorkingDirectory(robocodeHome);
-		} catch (IOException e) {
-			System.err.println(e);
-			return;
-		}
-		Thread.currentThread().setName("Application Thread");
-		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
-		Policy.setPolicy(securityPolicy);
-		System.setSecurityManager(new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true));
-		RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
-		for (ThreadGroup tg = Thread.currentThread().getThreadGroup(); tg != null; tg = tg.getParent()) {
-			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
-		}
-		SecurePrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-		SecurePrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-		SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
-
-		System.setOut(sysout);
-		if (!System.getProperty("debug", "false").equals("true")) {
-			System.setErr(syserr);
-		}
-		System.setIn(sysin);
-	}
-    
 	public void close() {
-		manager.getWindowManager().getRobocodeFrame().dispose();
+		engine.close();
 	}
     
 	public String getVersion() {
-		return manager.getVersionManager().getVersion();
+		return engine.getVersion();
 	}
     
 	public void setVisible(boolean visible) {
-		manager.getWindowManager().getRobocodeFrame().setVisible(visible);
+		engine.setVisible(visible);
 	}
 
 	public String[] getLocalRepository() {
-		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
-		FileSpecificationVector v = robotRepository.getRobotSpecificationsVector(false, false, false, false, true, false);
-		String[] robotSpecs = new String[v.size()];
+		RobotSpecification[] robotSpecs = engine.getLocalRepository();
+    	
+		String[] robotNames = new String[robotSpecs.length];
 
-		for (int i = 0; i < robotSpecs.length; i++) {
-			robotSpecs[i] = ((robocode.repository.RobotSpecification) v.elementAt(i)).getName();
+		for (int i = robotSpecs.length - 1; i >= 0; i--) {
+			robotNames[i] = robotSpecs[i].getClassName();
 		}
-		return robotSpecs;
-	}
-	
-	public void runBattle(BattleSpecification battle, String selectedRobots) {
-		boolean run_aborted = false; 
 
-		Utils.setLogListener(listener);
-		BattleProperties battleProperties = battle.getBattleProperties();
-
-		battleProperties.setSelectedRobots(selectedRobots);
-		manager.getBattleManager().startNewBattle(battleProperties, false); 
+		return robotNames;
 	}
 
+	public void runBattle(BattleSpecification battle, String selectedRobotList) {
+		isBattleRunning = true;
+
+		RobotSpecification[] robotSpecs = engine.getLocalRepository();
+
+		String[] selectedRobots = selectedRobotList.split(",");
+    	
+		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
+    	
+		for (RobotSpecification rs : robotSpecs) {
+			for (String robot : selectedRobots) {
+				String[] nameAndVersion = robot.split(" "); 
+
+				if (rs.getClassName().equals(nameAndVersion[0]) && rs.getVersion().equals(nameAndVersion[1])) {
+					selectedRobotSpecs.add(rs);
+					break;
+				}
+			}
+		}
+
+		engine.runBattle(new BattleSpecification(1, battle.getBattlefield(), selectedRobotSpecs.toArray(robotSpecs)));
+	}
+    
 	public boolean isBattleRunning() {
-		return manager.getBattleManager().isBattleRunning();
+		return isBattleRunning;
 	}
     
 	public void abortCurrentBattle() {
-		manager.getBattleManager().stop(false);
+		engine.abortCurrentBattle();
 	}
 
 	public void printBattle() {
-		manager.getBattleManager().printResultsData(manager.getBattleManager().getBattle());
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("Rank,");
+		sb.append("Robot Name,");
+		sb.append("Total Score,");
+		sb.append("Survival,");
+		sb.append("Surv Bonus,");
+		sb.append("Bullet Dmg,");
+		sb.append("Bullet Bonus,");
+		sb.append("Ram Dmg * 2");
+		sb.append("Ram Bonus");
+		sb.append("1sts");
+		sb.append("2nds");
+		sb.append("3rds");
+		
+		for (RobotResults rr : results) {
+			sb.append(rr.getRank()).append(',');
+			sb.append(rr.getRobot().getClassName()).append(' ').append(rr.getRobot().getVersion()).append(',');
+			sb.append(rr.getScore()).append(',');
+			sb.append(rr.getSurvival()).append(',');
+			sb.append(rr.getLastSurvivorBonus()).append(',');
+			sb.append(rr.getBulletDamage()).append(',');
+			sb.append(rr.getBulletDamageBonus()).append(',');
+			sb.append(rr.getRamDamage()).append(',');
+			sb.append(rr.getRamDamageBonus()).append(',');
+			sb.append(rr.getFirsts()).append(',');
+			sb.append(rr.getSeconds()).append(',');
+			sb.append(rr.getThirds()).append('\n');
+		}
+		
+		System.out.println(sb.toString());
 	}
 	
-	public BattleResultsTableModel getResults() {
-		return new BattleResultsTableModel(manager.getBattleManager().getBattle());
+	public RobotResults[] getResults() {
+		return results;
+	}
+
+	private class EventHandler implements RobocodeListener {
+
+		private RobocodeListener externListener;
+
+		private EventHandler(RobocodeListener externListener) {
+			this.externListener = externListener;
+		}
+
+		public void battleAborted(BattleSpecification battleSpec) {
+			isBattleRunning = false;
+			if (externListener != null) {
+				externListener.battleAborted(battleSpec);
+			}
+		}
+
+		public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {
+			isBattleRunning = false;
+			RobocodeEngineAtHome.this.results = results;
+			if (externListener != null) {
+				externListener.battleComplete(battleSpec, results);
+			}
+		}
+
+		public void battleMessage(String message) {
+			if (externListener != null) {
+				externListener.battleMessage(message);
+			}
+		}
 	}
 }
