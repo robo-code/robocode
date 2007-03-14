@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Albert Pérez
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5
+ *     - Removed dead code
+ *     - Replaced the robocode.util.Utils.copy() method with internal copy()
+ *******************************************************************************/
 package roborumble.netengine;
 
 
@@ -7,19 +22,18 @@ import java.util.Vector;
 import java.util.jar.*;
 import java.util.zip.*;
 import java.io.*;
-import robocode.util.*;
 import roborumble.battlesengine.*;
 
+import com.mindprod.filetransfer.FileTransfer;
 
 /**
  * BotsDownload - a class by Albert Perez
  * Manages the download operations (participants and JAR files)
  * Controlled by properties files
  */
-
 public class BotsDownload {
 
-	private String internetrepository;
+	// private String internetrepository;
 	private String botsrepository;
 	private String participantsfile;
 	private String participantsurl;
@@ -49,7 +63,7 @@ public class BotsDownload {
 		} catch (Exception e) {
 			System.out.println("Parameters File not found !!!");
 		}
-		internetrepository = parameters.getProperty("BOTSURL", "");
+		// internetrepository = parameters.getProperty("BOTSURL", "");
 		botsrepository = parameters.getProperty("BOTSREP", "");
 		isteams = parameters.getProperty("TEAMS", "NOT");
 		participantsurl = parameters.getProperty("PARTICIPANTSURL", "");
@@ -115,7 +129,7 @@ public class BotsDownload {
 	public boolean downloadParticipantsList() {
 		String begin = "<" + tag + ">";
 		String end = "</" + tag + ">";
-		Vector bots = new Vector();
+		Vector<String> bots = new Vector<String>();
 
 		try {
 			URL url = new URL(participantsurl);
@@ -127,7 +141,6 @@ public class BotsDownload {
 			urlc.connect();
 
 			boolean arebots = false;
-			// BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 			BufferedReader in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
 			String str;
 
@@ -159,9 +172,9 @@ public class BotsDownload {
 	}
 	
 	public boolean downloadMissingBots() {
-		Vector jars = new Vector();
-		Vector ids = new Vector();
-		Vector names = new Vector();
+		Vector<String> jars = new Vector<String>();
+		Vector<String> ids = new Vector<String>();
+		Vector<String> names = new Vector<String>();
 
 		// Read participants
 		try {
@@ -214,7 +227,6 @@ public class BotsDownload {
 				String record = new String();
 
 				while ((record = br.readLine()) != null) { 
-					String id = record.substring(record.indexOf(",") + 1);
 					String name = record.substring(0, record.indexOf(","));
 
 					name = name.replace(' ', '_');
@@ -226,9 +238,7 @@ public class BotsDownload {
 				System.out.println(e);
 				return; 
 			}
-			
 		}
-		
 	}
 	
 	private boolean downloadBot(String botname, String file, String id, String destination, String tempdir) {
@@ -273,7 +283,7 @@ public class BotsDownload {
 			
 		if (checkJarFile(filed, botname)) {
 			try {
-				Utils.copy(new File(filed), new File(finald));
+				copy(new File(filed), new File(finald));
 			} catch (Exception e) {
 				System.out.println("Unable to copy " + filed + " into the repository");
 				return false;
@@ -357,7 +367,6 @@ public class BotsDownload {
 
 			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);  
 
-			boolean arebots = false;
 			BufferedReader in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
 			String str;
 
@@ -383,7 +392,7 @@ public class BotsDownload {
 
 	public boolean notifyServerForOldParticipants() {
 		// Load participants names
-		Hashtable namesall = new Hashtable();
+		Hashtable<String, String> namesall = new Hashtable<String, String>();
 
 		try {
 			FileReader fr = new FileReader(participantsfile); 
@@ -436,7 +445,7 @@ public class BotsDownload {
 		if (generalratings == null) {
 			return false;
 		}
-		for (Enumeration e = generalratings.propertyNames(); e.hasMoreElements();) {
+		for (Enumeration<?> e = generalratings.propertyNames(); e.hasMoreElements();) {
 			String key = (String) e.nextElement(); 
 
 			if (!namesall.containsKey(key)) {
@@ -449,7 +458,7 @@ public class BotsDownload {
 		if (miniratings == null) {
 			return true;
 		}
-		for (Enumeration e = miniratings.propertyNames(); e.hasMoreElements();) {
+		for (Enumeration<?> e = miniratings.propertyNames(); e.hasMoreElements();) {
 			String key = (String) e.nextElement(); 
 
 			if (!namesall.containsKey(key)) {
@@ -463,7 +472,7 @@ public class BotsDownload {
 		if (microratings == null) {
 			return true;
 		}
-		for (Enumeration e = microratings.propertyNames(); e.hasMoreElements();) {
+		for (Enumeration<?> e = microratings.propertyNames(); e.hasMoreElements();) {
 			String key = (String) e.nextElement(); 
 
 			if (!namesall.containsKey(key)) {
@@ -477,7 +486,7 @@ public class BotsDownload {
 		if (nanoratings == null) {
 			return true;
 		}
-		for (Enumeration e = nanoratings.propertyNames(); e.hasMoreElements();) {
+		for (Enumeration<?> e = nanoratings.propertyNames(); e.hasMoreElements();) {
 			String key = (String) e.nextElement(); 
 
 			if (!namesall.containsKey(key)) {
@@ -497,8 +506,6 @@ public class BotsDownload {
 		}
 		
 		String data = "version=1&game=" + game + "&name=" + bot.trim() + "&dummy=NA";
-		
-		// System.out.println("Sending to "+removeboturl+" ... "+data+".");
 		
 		try {
 			// Send data
@@ -527,6 +534,28 @@ public class BotsDownload {
 		}
 				
 	}
-	
-}
 
+	/**
+	 * Copies a file into another file.
+	 * 
+	 * @param inFile the input file to copy
+	 * @param outFile the output file to copy to
+	 * @return {@code true} if the file was copies succesfully; {@code false}
+	 *    otherwise.
+	 * @throws IOException
+	 */
+	public static void copy(File srcFile, File destFile) throws IOException {
+		if (srcFile.equals(destFile)) {
+			throw new IOException("You cannot copy a file onto itself");
+		}
+		byte buf[] = new byte[4096];
+		FileInputStream in = new FileInputStream(srcFile);
+		FileOutputStream out = new FileOutputStream(destFile);
+
+		while (in.available() > 0) {
+			int count = in.read(buf, 0, 4096);
+
+			out.write(buf, 0, count);
+		}
+	}
+}
