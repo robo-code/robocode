@@ -1,14 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Albert Pérez
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5
+ *     - Removed dead code and unused imports
+ *     - Replaced the robocode.util.Utils.copy() method with internal copy()
+ *******************************************************************************/
 package roborumble.netengine;
 
 
-import java.net.*;
 import java.util.*;
 import java.util.Vector;
-import java.util.jar.*;
-import java.util.zip.*;
 import java.io.*;
-import robocode.util.*;
-import roborumble.battlesengine.*;
 
 
 /**
@@ -16,20 +26,12 @@ import roborumble.battlesengine.*;
  * Manages the download operations (participants and JAR files)
  * Controlled by properties files
  */
-
 public class UpdateRatingFiles {
 
-	// private String resultsfile;
-	// private String resultsurl;
-	// private String tempdir;
 	private String game;
-	// private String user;
-	// private String sizesfile;
-	// private String botsrepository;
 	private String minibots;
 	private String microbots;
 	private String nanobots;
-	// private CompetitionsSelector size;
 	private String battlesnumfile;
 	private String generalratings;
 	private String miniratings;
@@ -46,17 +48,11 @@ public class UpdateRatingFiles {
 		} catch (Exception e) {
 			System.out.println("Parameters File not found !!!");
 		}
-		// resultsfile = parameters.getProperty("OUTPUT","");
-		// resultsurl = parameters.getProperty("RESULTSURL","");
-		// tempdir = parameters.getProperty("TEMP","");
-		// user = parameters.getProperty("USER","");
 		game = propertiesfile;
 		while (game.indexOf("/") != -1) {
 			game = game.substring(game.indexOf("/") + 1);
 		}
-		// botsrepository = parameters.getProperty("BOTSREP","");
 		game = game.substring(0, game.indexOf("."));
-		// sizesfile = parameters.getProperty("CODESIZEFILE","");
 		minibots = parameters.getProperty("MINIBOTS", "");
 		microbots = parameters.getProperty("MICROBOTS", "");
 		nanobots = parameters.getProperty("NANOBOTS", "");
@@ -67,16 +63,12 @@ public class UpdateRatingFiles {
 		miniratings = parameters.getProperty("RATINGS.MINIBOTS", "");
 		microratings = parameters.getProperty("RATINGS.MICROBOTS", "");
 		nanoratings = parameters.getProperty("RATINGS.NANOBOTS", "");
-
-		// Open competitions selector
-		// size = new CompetitionsSelector(sizesfile,botsrepository);
-		
 	}
 
 	public boolean UpdateRatings() {
 
 		// read all the recors to be updated
-		Vector battles = new Vector();
+		Vector<String> battles = new Vector<String>();
 
 		try {
 			FileReader fr = new FileReader(battlesnumfile); 
@@ -129,7 +121,7 @@ public class UpdateRatingFiles {
 
 		// update #battles
 		for (int  i = 0; i < battles.size(); i++) {
-			String[] battle = ((String) battles.get(i)).split(",");
+			String[] battle = (battles.get(i)).split(",");
 
 			battle[1] = battle[1].replaceAll(" ", "_");
 			double num = Double.parseDouble(battle[2]);
@@ -174,11 +166,7 @@ public class UpdateRatingFiles {
 		
 		String[] value = values.split(",");
 
-		// double newnum = battles + Double.parseDouble(value[1]);
-		// values = value[0]+","+Double.toString(newnum)+","+value[2];
 		values = value[0] + "," + Double.toString(battles) + "," + value[2];
 		ratings.setProperty(bot, values);
 	}
-
 }
-
