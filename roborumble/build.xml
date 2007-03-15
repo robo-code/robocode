@@ -19,7 +19,7 @@
   <target
       name="build"
       description="build RoboRumble"
-      depends="compile.roborumble, robocode.jar">
+      depends="robocode.jar, compile.roborumble">
   </target>
 
 </project>
