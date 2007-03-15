@@ -1,14 +1,22 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Albert Pérez
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Removed unused imports
+ *******************************************************************************/
 package roborumble.battlesengine;
 
 
-import robocode.*;
-import robocode.control.*;
-import robocode.battle.*;
 import codesize.*;
 import java.util.*;
-import java.util.zip.*;
 import java.io.*;
-import codesize.*;
 import codesize.Codesize.*;
 
 
@@ -17,7 +25,6 @@ import codesize.Codesize.*;
  * Reads a file with the battles to be runned and outputs the results in another file.
  * Controlled by properties files
  */
-
 public class CompetitionsSelector {
 	private String repository;
 	private String sizesfile;
@@ -81,12 +88,7 @@ public class CompetitionsSelector {
 		} catch (Exception e) {}
 
 		// check the values
-		if (size1 != 0 && size1 < maxsize && size2 != 0 && size2 < maxsize) {
-			return true;
-		} else {
-			return false;
-		}
+		return (size1 != 0 && size1 < maxsize && size2 != 0 && size2 < maxsize);
 	}
-		
 }
 
