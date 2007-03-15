@@ -1,8 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Albert Pérez
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5
+ *     - Removed dead code
+ *******************************************************************************/
 package roborumble.battlesengine;
 
 
-import java.net.*;
-// import java.util.jar.*;
 import java.util.*;
 import java.util.Vector;
 import java.util.Random;
@@ -14,7 +26,6 @@ import java.io.*;
  * Manages the download operations (participants and JAR files)
  * Controlled by properties files
  */
-
 public class PrepareBattles {
 
 	private String botsrepository;
@@ -78,12 +89,11 @@ public class PrepareBattles {
 		}
 
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
-
 	}
 
 	public boolean createBattlesList() {
-		Vector jars = new Vector();
-		Vector names = new Vector();
+		Vector<String> jars = new Vector<String>();
+		Vector<String> names = new Vector<String>();
 
 		// Read participants
 		try {
@@ -93,7 +103,6 @@ public class PrepareBattles {
 
 			while ((record = br.readLine()) != null) { 
 				if (record.indexOf(",") != -1) {
-					String id = record.substring(record.indexOf(",") + 1);
 					String name = record.substring(0, record.indexOf(","));
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
@@ -136,7 +145,7 @@ public class PrepareBattles {
 			if (bot1 != bot2) {
 				// outtxt.println((String)names.get(bot1));
 				// outtxt.println((String)names.get(bot2));
-				outtxt.println((String) names.get(bot1) + "," + (String) names.get(bot2) + "," + runonly);
+				outtxt.println(names.get(bot1) + "," + names.get(bot2) + "," + runonly);
 				count++;
 			} 	
 		}
@@ -145,16 +154,16 @@ public class PrepareBattles {
 	}
 
 	public boolean createSmartBattlesList() {
-		Vector namesall = new Vector();
-		Vector namesmini = new Vector();
-		Vector namesmicro = new Vector();
-		Vector namesnano = new Vector();
-		Vector priorityall = new Vector();
-		Vector prioritymini = new Vector();
-		Vector prioritymicro = new Vector();
-		Vector prioritynano = new Vector();
+		Vector<String> namesall = new Vector<String>();
+		Vector<String> namesmini = new Vector<String>();
+		Vector<String> namesmicro = new Vector<String>();
+		Vector<String> namesnano = new Vector<String>();
+		Vector<String> priorityall = new Vector<String>();
+		Vector<String> prioritymini = new Vector<String>();
+		Vector<String> prioritymicro = new Vector<String>();
+		Vector<String> prioritynano = new Vector<String>();
 
-		Vector prioritarybattles = new Vector();
+		Vector<String> prioritarybattles = new Vector<String>();
 
 		// Read participants
 		try {
@@ -164,7 +173,6 @@ public class PrepareBattles {
 
 			while ((record = br.readLine()) != null) { 
 				if (record.indexOf(",") != -1) {
-					String id = record.substring(record.indexOf(",") + 1);
 					String name = record.substring(0, record.indexOf(","));
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
@@ -230,7 +238,8 @@ public class PrepareBattles {
 		}
 		// Delete priority battles (avoid duplication)
 		File r = new File(priority);
-		boolean b = r.delete();
+
+		r.delete();
 		
 		// Open battles file
 		PrintStream outtxt = null;
@@ -248,7 +257,7 @@ public class PrepareBattles {
 
 		// Add prioritary battles
 		while (count < numbattles && count < prioritarybattles.size()) {
-			String battle = (String) prioritarybattles.get(count);
+			String battle = prioritarybattles.get(count);
 
 			outtxt.println(battle);
 			count++;
@@ -277,18 +286,18 @@ public class PrepareBattles {
 		return true;
 	}
 
-	private String[] getbots(Vector list1, Vector list2, Random rand) {
+	private String[] getbots(Vector<String> list1, Vector<String> list2, Random rand) {
 		int bot1 = rand.nextInt(list1.size());
 		int bot2 = rand.nextInt(list2.size());
 
-		while (((String) list1.get(bot1)).equals((String) list2.get(bot2))) {
+		while ((list1.get(bot1)).equals(list2.get(bot2))) {
 			bot1 = rand.nextInt(list1.size());
 			bot2 = rand.nextInt(list2.size());
 		}
 		String[] bots = new String[2];
 
-		bots[0] = (String) list1.get(bot1);
-		bots[1] = (String) list2.get(bot2);
+		bots[0] = list1.get(bot1);
+		bots[1] = list2.get(bot2);
 		return bots;
 	}
 
@@ -313,14 +322,14 @@ public class PrepareBattles {
 	}
 
 	public boolean createMeleeBattlesList() {
-		Vector namesall = new Vector();
-		Vector namesmini = new Vector();
-		Vector namesmicro = new Vector();
-		Vector namesnano = new Vector();
-		Vector priorityall = new Vector();
-		Vector prioritymini = new Vector();
-		Vector prioritymicro = new Vector();
-		Vector prioritynano = new Vector();
+		Vector<String> namesall = new Vector<String>();
+		Vector<String> namesmini = new Vector<String>();
+		Vector<String> namesmicro = new Vector<String>();
+		Vector<String> namesnano = new Vector<String>();
+		Vector<String> priorityall = new Vector<String>();
+		Vector<String> prioritymini = new Vector<String>();
+		Vector<String> prioritymicro = new Vector<String>();
+		Vector<String> prioritynano = new Vector<String>();
 
 		// Read participants
 		try {
@@ -330,7 +339,6 @@ public class PrepareBattles {
 
 			while ((record = br.readLine()) != null) { 
 				if (record.indexOf(",") != -1) {
-					String id = record.substring(record.indexOf(",") + 1);
 					String name = record.substring(0, record.indexOf(","));
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
@@ -413,14 +421,14 @@ public class PrepareBattles {
 		return true;
 	}
 
-	private String[] getmeleebots(Vector list1, Vector list2, Random rand) {
+	private String[] getmeleebots(Vector<String> list1, Vector<String> list2, Random rand) {
 		String[] bots = new String[meleebots];
 
-		bots[0] = (String) list1.get(rand.nextInt(list1.size())); 
+		bots[0] = list1.get(rand.nextInt(list1.size())); 
 		int count = 1;
 
 		while (count < meleebots) {
-			bots[count] = (String) list2.get(rand.nextInt(list2.size()));
+			bots[count] = list2.get(rand.nextInt(list2.size()));
 			boolean exists = false;
 
 			for (int i = 0; i < count; i++) {
@@ -434,6 +442,4 @@ public class PrepareBattles {
 		}
 		return bots;
 	}
-	
 }
-
