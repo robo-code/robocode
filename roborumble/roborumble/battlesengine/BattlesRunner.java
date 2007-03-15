@@ -1,12 +1,23 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Albert Pérez
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Ported to Java 5
+ *     - Removed dead code and unused imports
+ *     - Changed to read results from robocode.control.RobotResults
+ *******************************************************************************/
 package roborumble.battlesengine;
 
 
-import robocode.*;
 import robocode.control.*;
-import robocode.battle.*;
-import codesize.*;
 import java.util.*;
-import java.util.zip.*;
 import java.io.*;
 
 
@@ -15,7 +26,6 @@ import java.io.*;
  * Reads a file with the battles to be runned and outputs the results in another file.
  * Controlled by properties files
  */
-
 public class BattlesRunner {
 	private String inputfile;
 	private int numrounds;
@@ -24,9 +34,9 @@ public class BattlesRunner {
 	private String outfile;
 	private String user;
 	private String game;
-	private String matchtype; 
+	// private String matchtype; 
 	private String isteams;
-	
+
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
 		Properties parameters = null;
@@ -43,7 +53,7 @@ public class BattlesRunner {
 		fieldhei = Integer.parseInt(parameters.getProperty("FIELDH", "600"));
 		outfile = parameters.getProperty("OUTPUT", "");
 		user = parameters.getProperty("USER", "");
-		matchtype = parameters.getProperty("RUNONLY", "GENERAL");
+		// matchtype = parameters.getProperty("RUNONLY", "GENERAL");
 		isteams = parameters.getProperty("TEAMS", "NOT");
 		game = propertiesfile;
 		while (game.indexOf("/") != -1) {
@@ -61,7 +71,7 @@ public class BattlesRunner {
 		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
 		
 		// Read input file
-		ArrayList robots = new ArrayList();
+		ArrayList<String> robots = new ArrayList<String>();
 		
 		try {
 			FileReader fr = new FileReader(inputfile); 
@@ -93,33 +103,26 @@ public class BattlesRunner {
 		int index = 0; 
 
 		while (index < robots.size()) {
-			String[] param = ((String) robots.get(index)).split(",");
-			// String enemies = ((String) robots.get(index))+","+((String) robots.get(index+1)); 
+			String[] param = (robots.get(index)).split(",");
+
 			String enemies = param[0] + "," + param[1]; 
 
-			// System.out.println("Fighting battle "+(index/2)+" ... "+enemies);
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
 			engine.runBattle(battle, enemies);			
 			coord.get();
 			// get results
-			BattleResultsTableModel resultsTable = engine.getResults();
-			String First = (String) resultsTable.getValueAt(0, 0);
+			RobotResults[] results = engine.getResults();
+			String First = results[0].getRobot().getClassName() + ' ' + results[0].getRobot().getVersion();
+			int PointsFirst = results[0].getScore();
+			int BulletDFirst = results[0].getBulletDamage();
+			int SurvivalFirst = results[0].getFirsts();
+			String Second = results[1].getRobot().getClassName() + ' ' + results[0].getRobot().getVersion();
+			int PointsSecond = results[1].getScore();
+			int BulletDSecond = results[1].getBulletDamage();
+			int SurvivalSecond = results[1].getFirsts();
 
-			First = First.substring(First.lastIndexOf(":") + 2);
-			int PointsFirst = Integer.parseInt((String) resultsTable.getValueAt(0, 1));
-			int BulletDFirst = Integer.parseInt((String) resultsTable.getValueAt(0, 4));
-			int SurvivalFirst = Integer.parseInt((String) resultsTable.getValueAt(0, 8));
-			String Second = (String) resultsTable.getValueAt(1, 0);
-
-			Second = Second.substring(Second.lastIndexOf(":") + 2);
-			int PointsSecond = Integer.parseInt((String) resultsTable.getValueAt(1, 1));
-			int BulletDSecond = Integer.parseInt((String) resultsTable.getValueAt(1, 4));
-			int SurvivalSecond = Integer.parseInt((String) resultsTable.getValueAt(1, 8));
-			
 			// if it is a teams battle, version is not returned by robocode. Add it manually
 			if (isteams.equals("YES")) {
-				// String v1 = ((String) robots.get(index)).substring( ((String) robots.get(index)).indexOf(' ') );
-				// String v2 = ((String) robots.get(index+1)).substring( ((String) robots.get(index+1)).indexOf(' ') );
 				String v1 = param[0].substring(param[0].indexOf(' '));
 				String v2 = param[1].substring(param[1].indexOf(' '));
 
@@ -132,13 +135,11 @@ public class BattlesRunner {
 				}
 			}
 
-			// outtxt.println(game+","+numrounds+","+fieldlen+"x"+fieldhei+","+user+","+System.currentTimeMillis()+","+matchtype);
 			outtxt.println(
 					game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + "," + System.currentTimeMillis()
 					+ "," + param[2]);
 			outtxt.println(First + "," + PointsFirst + "," + BulletDFirst + "," + SurvivalFirst);
 			outtxt.println(Second + "," + PointsSecond + "," + BulletDSecond + "," + SurvivalSecond);
-			// index +=2;
 			index++;
 			System.out.println("RESULT = " + First + " wins " + PointsFirst + " to " + PointsSecond);
 		}
@@ -159,7 +160,7 @@ public class BattlesRunner {
 		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
 		
 		// Read input file
-		ArrayList robots = new ArrayList();
+		ArrayList<String> robots = new ArrayList<String>();
 		
 		try {
 			FileReader fr = new FileReader(inputfile); 
@@ -191,8 +192,8 @@ public class BattlesRunner {
 		int index = 0; 
 
 		while (index < robots.size()) {
-			String[] param = ((String) robots.get(index)).split(",");
-			// String enemies = ((String) robots.get(index))+","+((String) robots.get(index+1)); 
+			String[] param = (robots.get(index)).split(",");
+
 			String enemies = "";
 
 			for (int i = 0; i < param.length - 1; i++) { 
@@ -201,25 +202,23 @@ public class BattlesRunner {
 				}
 				enemies += param[i];
 			}
-			// System.out.println("Fighting battle "+(index/2)+" ... "+enemies);
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
 			engine.runBattle(battle, enemies);			
 			coord.get();
 			// get results
-			BattleResultsTableModel resultsTable = engine.getResults();
-			String[] Bot = new String[param.length - 1];
-			int[] Points = new int[param.length - 1];
-			int[] BulletD = new int[param.length - 1];
-			int[] Survival = new int[param.length - 1];
+			RobotResults[] results = engine.getResults();
+			String[] Bot = new String[results.length];
+			int[] Points = new int[results.length];
+			int[] BulletD = new int[results.length];
+			int[] Survival = new int[results.length];
 
-			for (int i = 0; i < param.length - 1; i++) {
-				Bot[i] = (String) resultsTable.getValueAt(i, 0);
-				Bot[i] = Bot[i].substring(Bot[i].lastIndexOf(":") + 2);
-				Points[i] = Integer.parseInt((String) resultsTable.getValueAt(i, 1));
-				BulletD[i] = Integer.parseInt((String) resultsTable.getValueAt(i, 4));
-				Survival[i] = Integer.parseInt((String) resultsTable.getValueAt(i, 8));
+			for (int i = 0; i < results.length; i++) {
+				Bot[i] = results[i].getRobot().getClassName() + ' ' + results[0].getRobot().getVersion();
+				Points[i] = results[i].getScore();
+				BulletD[i] = results[i].getBulletDamage();
+				Survival[i] = results[i].getFirsts();
 			}
- 
+
 			for (int i = 0; i < param.length - 1; i++) {
 				for (int j = 0; j < param.length - 1; j++) {
 					if (i < j) {
@@ -242,6 +241,4 @@ public class BattlesRunner {
 		
 		return true;
 	}
-
 }
-
