@@ -11,7 +11,9 @@
  *     Flemming N. Larsen
  *     - Moved the former robocode.util.Constants and all file operations from
  *       robocode.util.Utils into this new class
- *     - Added the quoteFileName()
+ *     - Added/updated JavaDoc for all methods
+ *     - Added the quoteFileName(), createDir(), getRobotsDir(), getConfigDir(),
+ *       getRobocodeConfigFile(), getWindowConfigFile(), getCompilerConfigFile()
  *******************************************************************************/
 package robocode.io;
 
@@ -121,10 +123,10 @@ public class FileUtil {
 		FileOutputStream out = new FileOutputStream(destFile);
 
 		while (in.available() > 0) {
-			int count = in.read(buf, 0, 4096);
-
-			out.write(buf, 0, count);
+			out.write(buf, 0, in.read(buf, 0, buf.length));
 		}
+		in.close();
+		out.close();
 	}
 
 	/**
@@ -162,6 +164,25 @@ public class FileUtil {
 		return true;
 	}
 
+	/**
+	 * Creates a directory if it does not exist already
+	 *
+	 * @param dir the File that represents the new directory to create.
+	 * @return the created directory
+	 */
+	public static File createDir(File dir) {
+		if (dir != null && !dir.isDirectory()) {
+			dir.mkdir();
+		}
+		return dir;
+	}
+
+	/**
+	 * Returns the class name of the specified filename.
+	 *
+	 * @param fileName the filename to extract the class name from
+	 * @return the class name of the specified filename
+	 */
 	public static String getClassName(String fileName) {
 		int lastdot = fileName.lastIndexOf('.');
 
@@ -172,5 +193,51 @@ public class FileUtil {
 			return fileName.substring(0, fileName.length() - 1);
 		}
 		return fileName.substring(0, lastdot);
+	}
+
+	/**
+	 * Returns the directory containing the robots.
+	 *
+	 * @return a File that is the directory containing the robots
+	 */
+	public static File getRobotsDir() {
+		return createDir(new File(cwd, "/robots"));
+	}
+
+	/**
+	 * Returns the directory containing the configuration files.
+	 * If the directory does not exist, it will be created automatically.
+	 *
+	 * @return a File that is the directory containing configuration files
+	 */
+	public static File getConfigDir() {
+		return createDir(new File(cwd, "/config"));
+	}
+	
+	/**
+	 * Returns the Robocode configuration file.
+	 *
+	 * @return a File that is the Robocode configuration file.
+	 */
+	public static File getRobocodeConfigFile() {
+		return new File(getConfigDir(), "robocode.properties");
+	}
+
+	/**
+	 * Returns the window configuration file.
+	 *
+	 * @return a File that the window configuration file.
+	 */
+	public static File getWindowConfigFile() {
+		return new File(getConfigDir(), "window.properties");
+	}
+
+	/**
+	 * Returns the compiler configuration file.
+	 *
+	 * @return a File that the compiler configuration file.
+	 */
+	public static File getCompilerConfigFile() {
+		return new File(getConfigDir(), "compiler.properties");
 	}
 }
