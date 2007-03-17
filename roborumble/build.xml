@@ -20,6 +20,13 @@
       name="build"
       description="build RoboRumble"
       depends="robocode.jar, compile.roborumble">
+  	
+  	<mkdir dir="${build}/roborumble/files"/>
+  	<mkdir dir="${build}/roborumble/temp"/>
+	
+	<copy todir="${build}/roborumble">
+	  <fileset dir="${src.roborumble}/config"/>
+	</copy>
   </target>
 
 </project>
