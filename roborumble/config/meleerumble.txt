@@ -32,7 +32,7 @@ OUTPUT=./roborumble/files/resultsmelee.txt
 
 #properties to retrieve bots from internet
 
-BOTSREP=./
+BOTSREP=./robots/
 TEMP=./roborumble/temp/
 
 #properties to retrieve participants list from internet

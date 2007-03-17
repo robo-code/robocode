@@ -1,4 +1,1 @@
-cd robots
-:run
-java -Xmx128M -cp .;../robocode.jar;../codesize.jar; roborumble.RoboRumbleAtHome ./roborumble/teamrumble.txt
-goto run
+java -Xmx128M -Dsun.io.useCanonCaches=false -cp libs/robocode.jar;libs/codesize.jar;libs/roborumble.jar roborumble.RoboRumbleAtHome ./roborumble/teamrumble.txt

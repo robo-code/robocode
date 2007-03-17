@@ -2,7 +2,7 @@
 
 #properties for executing the modules. Use YES or NOT
 
-DOWNLOAD=NO
+DOWNLOAD=YES
 EXECUTE=YES
 UPLOAD=NOT
 ITERATE=NOT
@@ -30,7 +30,7 @@ OUTPUT=./roborumble/files/results1v1.txt
 
 #properties to retrieve bots from internet
 
-BOTSREP=./
+BOTSREP=./robots/
 TEMP=./roborumble/temp/
 
 #properties to retrieve participants list from internet

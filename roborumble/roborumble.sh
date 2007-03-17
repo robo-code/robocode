@@ -1,3 +1,2 @@
 #!/bin/bash
-cd robots
-java -Xmx256M -cp .:../robocode.jar:../codesize.jar: roborumble.RoboRumbleAtHome ./roborumble/roborumble.txt
+java -Xmx256M -Dsun.io.useCanonCaches=false -cp libs/robocode.jar:libs/codesize.jar:libs/roborumble.jar roborumble.RoboRumbleAtHome ./roborumble/roborumble.txt
