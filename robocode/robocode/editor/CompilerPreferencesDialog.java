@@ -11,9 +11,10 @@
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the Utils and Constants class
- *     - Code cleanup
+ *     - Changed to use FileUtil.getWindowConfigFile()
  *******************************************************************************/
 package robocode.editor;
 
@@ -170,7 +171,7 @@ public class CompilerPreferencesDialog extends JDialog {
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "compiler.properties"));
+			FileOutputStream out = new FileOutputStream(FileUtil.getWindowConfigFile());
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {

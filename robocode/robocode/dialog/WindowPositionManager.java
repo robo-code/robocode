@@ -12,6 +12,7 @@
  *     - Moved this class from the robocode.util package into the robocode.dialog
  *       package
  *     - Code cleanup
+ *     - Changed to use FileUtil.getWindowConfigFile()
  *******************************************************************************/
 package robocode.dialog;
 
@@ -34,7 +35,8 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 public class WindowPositionManager implements ComponentListener {
-	private Properties windowPositions = null;
+
+	private Properties windowPositions;
 
 	/**
 	 * WindowPositionManager constructor comment.
@@ -47,11 +49,11 @@ public class WindowPositionManager implements ComponentListener {
 		if (windowPositions == null) {
 			windowPositions = new Properties();
 			try {
-				FileInputStream in = new FileInputStream(new File(FileUtil.getCwd(), "window.properties"));
+				FileInputStream in = new FileInputStream(FileUtil.getWindowConfigFile());
 
 				windowPositions.load(in);
 			} catch (FileNotFoundException e) {
-				Logger.log("Creating window.properties file");
+				Logger.log("Creating " + FileUtil.getWindowConfigFile().getName() + " file");
 			} catch (Exception e) {
 				Logger.log(e);
 			}
@@ -107,7 +109,7 @@ public class WindowPositionManager implements ComponentListener {
 
 	public void saveWindowPositions() {
 		try {
-			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "window.properties"));
+			FileOutputStream out = new FileOutputStream(FileUtil.getWindowConfigFile());
 
 			getWindowPositions().store(out, "Robocode window sizes");
 		} catch (IOException e) {
