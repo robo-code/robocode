@@ -11,10 +11,11 @@
  *     Flemming N. Larsen
  *     - Updated Jikes compiler to version 1.22
  *     - Changed deprecated method calls
- *     - File names are being quoted
  *     - Code cleanup
+ *     - File names are being quoted
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils and Constants
+ *     - Changed to use FileUtil.getCompilerConfigFile()
  *******************************************************************************/
 package robocode.editor;
 
@@ -42,6 +43,7 @@ import robocode.io.FileUtil;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeCompilerFactory {
+
 	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "robocode.jar"
 			+ File.pathSeparator + getRobotPath();
 
@@ -161,7 +163,7 @@ public class RobocodeCompilerFactory {
 		if (compilerProperties == null) {
 			compilerProperties = new CompilerProperties();
 			try {
-				FileInputStream in = new FileInputStream(new File(FileUtil.getCwd(), "compiler.properties"));
+				FileInputStream in = new FileInputStream(FileUtil.getCompilerConfigFile());
 
 				compilerProperties.load(in);
 				if (compilerProperties.getRobocodeVersion() == null) {
@@ -171,7 +173,7 @@ public class RobocodeCompilerFactory {
 			} catch (FileNotFoundException e) {
 				log("Setting up compiler.");
 			} catch (IOException e) {
-				log("IO Exception reading compiler.properties" + e);
+				log("IO Exception reading " + FileUtil.getCompilerConfigFile().getName() + ": " + e);
 			}
 		}
 		return compilerProperties;
@@ -420,7 +422,7 @@ public class RobocodeCompilerFactory {
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "compiler.properties"));
+			FileOutputStream out = new FileOutputStream(FileUtil.getCompilerConfigFile());
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
