@@ -20,16 +20,23 @@
 package robocode;
 
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.jar.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
+
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
 
 /**
  * Installer for Robocode.
- * 
+ *
  * @author Mathew A. Nelsen (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -41,7 +48,7 @@ public class AutoExtract implements ActionListener {
 	public static String osName = System.getProperty("os.name");
 	public static double osVersion = doubleValue(System.getProperty("os.version"));
 	public static String javaVersion = System.getProperty("java.version");
-	
+
 	/**
 	 * AutoExtract constructor.
 	 */
@@ -68,12 +75,22 @@ public class AutoExtract implements ActionListener {
 		return d;
 	}
 
-	private boolean acceptLicense(String licenseFile) {
+	private boolean acceptLicense() {
 		String licenseText = "";
 
-		InputStream is = getClass().getClassLoader().getResourceAsStream(licenseFile);
+		InputStream is = null;
 
-		if (is == null) { // no license
+		try {
+			JarFile extractJar = new JarFile("extract.jar");
+
+			if (extractJar == null) {
+				return true;
+			}
+			is = extractJar.getInputStream(extractJar.getJarEntry("license/cpl-v10.html"));
+		} catch (IOException e) {
+			return true;
+		}
+		if (is == null) {
 			return true;
 		}
 
@@ -166,10 +183,10 @@ public class AutoExtract implements ActionListener {
 
 		byte buf[] = new byte[2048];
 
-		InputStream is = getClass().getClassLoader().getResourceAsStream(src.toString());
+		InputStream is = getClass().getClassLoader().getResourceAsStream(src);
 
 		if (is == null) {
-			String r = getClass().getClassLoader().getResource(src.toString()).toString();
+			String r = getClass().getClassLoader().getResource(src).toString();
 			int i = r.lastIndexOf("!");
 
 			if (i >= 0) {
@@ -253,7 +270,7 @@ public class AutoExtract implements ActionListener {
 
 			System.exit(0);
 		}
-		
+
 		// Set native look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -264,7 +281,7 @@ public class AutoExtract implements ActionListener {
 
 		AutoExtract extractor = new AutoExtract();
 
-		if (extractor.acceptLicense("cpl-v10.html")) {
+		if (extractor.acceptLicense()) {
 			if (argv.length == 1) {
 				suggestedDir = new File(argv[0]);
 			} else if (File.separatorChar == '\\') {
@@ -316,6 +333,26 @@ public class AutoExtract implements ActionListener {
 			} else {
 				JOptionPane.showMessageDialog(null, extractor.message);
 			}
+
+			// Move old robocode.properties, window.properties, and compile.properties
+			move(new File(installDir, "robocode.properties"), new File(installDir, "config/robocode.properties"));
+			move(new File(installDir, "window.properties"), new File(installDir, "config/window.properties"));
+			move(new File(installDir, "compiler.properties"), new File(installDir, "config/compiler.properties"));
+
+			// Create RoboRumble dir
+			File roborumbleDir = createDir(new File(installDir, "roborumble"));
+
+			// Create RoboRumble working dirs
+			createDir(new File(roborumbleDir, "files"));
+			createDir(new File(roborumbleDir, "temp"));
+
+			// Install RoboRumble config files if they do not exists already
+			installConfig(new File(installDir, "config/roborumble.txt"),
+					new File(installDir, "roborumble/roborumble.txt"));
+			installConfig(new File(installDir, "config/meleerumble.txt"),
+					new File(installDir, "roborumble/meleerumble.txt"));
+			installConfig(new File(installDir, "config/teamrumble.txt"),
+					new File(installDir, "roborumble/teamrumble.txt"));
 
 		} else {
 			JOptionPane.showMessageDialog(null, "Installation cancelled.");
@@ -432,5 +469,38 @@ public class AutoExtract implements ActionListener {
 			r += s.charAt(i);
 		}
 		return r;
+	}
+
+	private static File createDir(File dir) {
+		if (dir != null && !dir.isDirectory()) {
+			dir.mkdir();
+		}
+		return dir;
+	}
+
+	private static void move(File srcFile, File destFile) {
+		if (srcFile != null && destFile != null && srcFile.exists() && !srcFile.equals(destFile)) {
+			byte buf[] = new byte[4096];
+
+			try {
+				FileInputStream in = new FileInputStream(srcFile);
+				FileOutputStream out = new FileOutputStream(destFile);
+
+				while (in.available() > 0) {
+					out.write(buf, 0, in.read(buf, 0, buf.length));
+				}
+				
+				in.close();
+				out.close();
+				
+			} catch (IOException e) {}
+			srcFile.delete();
+		}
+	}
+
+	private static void installConfig(File srcFile, File destFile) {
+		if (!destFile.exists()) {
+			move(srcFile, destFile);
+		}
 	}
 }
