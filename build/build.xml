@@ -36,6 +36,8 @@
 
   <!-- License file -->
   <property name="license.file" location="${src.extract}/license/cpl-v10.html"/>
+
+  <!-- Versions file -->
   <property name="versions.file" location="${src.robocode}/resources/versions.txt"/>
 
   <!-- The output setup file -->
@@ -63,7 +65,7 @@
   	<echo message="Initializes the build..."/>
 
   	<!-- Create folder for containing build files -->
-  	<mkdir dir="${build}"/>
+  	<mkdir dir="${build}/libs"/>
   </target>
 
   <!-- ====================================== -->
@@ -80,7 +82,6 @@
 	<jar destfile="${setup.file}">
       <!-- Specify files to include -->
       <fileset dir="${build}" includes="robocode/AutoExtract.class"/>  <!-- Auto extract class -->
-      <fileset file="${license.file}"/>       <!-- License file -->
       <fileset file="${build}/extract.jar"/>  <!-- extract.jar file -->
       <!-- Set the main class of the manifest -->
       <manifest>
@@ -164,7 +165,7 @@
     <echo message="Compiling RoboRumble..."/>
  
     <!-- Compile RoboRumble -->
-    <compile srcdir="${src.roborumble}" destdir="${build}" classpath="../robocodeextract/codesize.jar"/>
+    <compile srcdir="${src.roborumble}" destdir="${build}" classpath="../robocodeextract/libs/codesize.jar"/>
 
     <!-- Flag that RoboRumble has been built -->
     <touch file="${build}/.roborumble_build"/>
@@ -186,7 +187,7 @@
     <echo message="Building robocode.jar..."/>
 
     <!-- Create the robocode.jar file -->
-    <jar destfile="${build}/robocode.jar">
+    <jar destfile="${build}/libs/robocode.jar">
       <!-- Specify files to include -->
       <fileset dir="${build}" includes="robocode/**">   <!-- Class files -->
         <exclude name="robocode/AutoExtract.class"/>    <!-- Exclude AutoExtract.class -->
@@ -200,7 +201,7 @@
     </jar>
   </target>
 
-  <uptodate property="robocode.jar.uptodate" targetfile="${build}/robocode.jar">
+  <uptodate property="robocode.jar.uptodate" targetfile="${build}/libs/robocode.jar">
     <srcfiles dir="${src.robocode}"/>
   </uptodate>
 
@@ -210,7 +211,7 @@
   <target
       name="extract.jar"
       description="Build extract.jar"
-      depends="init, robocode.jar, javadoc, compile.robots"
+      depends="init, robocode.jar, roborumble.jar, compile.robots, javadoc"
       unless="extract.jar.uptodate">
 
     <echo message="Building extract.jar..."/>
@@ -221,13 +222,17 @@
       <fileset dir="${src.extract}">      <!-- Files from the extract folder -->
         <exclude name="build/**"/>        <!-- Exclude build files (if any) -->
       </fileset>
+      <fileset dir="${src.roborumble}">   <!-- Files from the roborumble folder -->
+        <include name="*.bat"/>           <!-- Windows batch files -->
+        <include name="*.sh"/>            <!-- Shell files (Mac, Linux, and similar) -->
+      	<include name="config/*"/>        <!-- Configuration files -->
+      </fileset>
       <fileset dir="${build}">
-        <include name="robocode.jar"/>    <!-- Builded robocode.jar file -->
+        <include name="libs/**"/>         <!-- Builded jar files -->
         <include name="javadoc/**"/>      <!-- Builded javadoc files -->
         <include name="robots/**"/>       <!-- Builded robots -->
       </fileset>
       <fileset file="${versions.file}"/>  <!-- Versions file -->
-      <fileset file="${license.file}"/>   <!-- License file -->
     </jar>
   </target>
 
@@ -241,16 +246,17 @@
   <target
       name="roborumble.jar"
       description="Build roborumble.jar"
-      depends="init, compile.roborumble"
+      depends="init, compile.robocode, compile.roborumble"
       unless="roborumble.jar.uptodate">
 
     <echo message="Building roborumble.jar..."/>
 
     <!-- Create the roborumble.jar file -->
-    <jar destfile="${build}/roborumble.jar">
+    <jar destfile="${build}/libs/roborumble.jar">
       <!-- Specify files to include -->
-      <fileset dir="${build}" includes="roborumble/**"/>   <!-- Class files -->
-      <fileset file="${license.file}"/>                   <!-- License file -->
+      <fileset dir="${build}" includes="roborumble/**"/>                 <!-- Class files -->
+      <fileset dir="${build}" includes="com/mindprod/filetransfer/*"/>
+      <fileset file="${license.file}"/>                                  <!-- License file -->
       <!-- Set the main class of the manifest -->
       <manifest>
         <attribute name="Main-Class" value="roborumble.RoboRumbleAtHome"/>
@@ -258,7 +264,7 @@
     </jar>
   </target>
 
-  <uptodate property="roborumble.jar.uptodate" targetfile="${build}/roborumble.jar">
+  <uptodate property="roborumble.jar.uptodate" targetfile="${build}/libs/roborumble.jar">
     <srcfiles dir="${src.roborumble}"/>
   </uptodate>
 
