@@ -11,11 +11,13 @@
  *     Matthew Reeder
  *     - Changes for Find/Replace commands and Window menu
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Bugfixed the removeFromWindowMenu() method which did not remove the
  *       correct item, and did not break out of the loop when it was found.
- *     - Code cleanup
  *     - Updated to use methods from ImageUtil, FileUtil, Logger, which replaces
  *       methods that have been (re)moved from the robocode.util.Utils class
+ *     - Changed to use FileUtil.getRobocodeConfigFile() and
+ *       FileUtil.getRobotsDir()
  *******************************************************************************/
 package robocode.editor;
 
@@ -101,7 +103,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		if (manager != null) {
 			robotsDirectory = manager.getRobotRepositoryManager().getRobotsDirectory();
 		} else {
-			robotsDirectory = new File(FileUtil.getCwd(), "robots");
+			robotsDirectory = FileUtil.getRobotsDir();
 		}
 		initialize();
 	}
@@ -473,13 +475,13 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		if (robocodeProperties == null) {
 			robocodeProperties = new RobocodeProperties(manager);
 			try {
-				FileInputStream in = new FileInputStream(new File(FileUtil.getCwd(), "robocode.properties"));
+				FileInputStream in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 
 				robocodeProperties.load(in);
 			} catch (FileNotFoundException e) {
-				log("No robocode.properties file, using defaults.");
+				log("No " + FileUtil.getRobocodeConfigFile().getName() + " file, using defaults.");
 			} catch (IOException e) {
-				log("IO Exception reading robocode.properties" + e);
+				log("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 			}
 		}
 		return robocodeProperties;
@@ -685,7 +687,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "robocode.properties"));
+			FileOutputStream out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
 
 			robocodeProperties.store(out, "Robocode Properties");
 		} catch (IOException e) {
