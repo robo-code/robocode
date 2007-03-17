@@ -9,13 +9,14 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Replaced FileSpecificationVector with plain Vector
  *     - GUI is disabled per default. If the setVisible() is called, the GUI will
  *       be enabled. The close() method is only calling dispose() on the
  *       RobocodeFrame if the GUI is enabled
  *     - Updated to use methods from FileUtil and Logger, which replaces
  *       methods that have been (re)moved from the robocode.util.Utils class
- *     - Code cleanup
+ *     - Changed to use FileUtil.getRobotsDir()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -70,11 +71,10 @@ public class RobocodeEngine {
 	 * @param listener Your listener
 	 */
 	public RobocodeEngine(RobocodeListener listener) {
-		File robocodeDir = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile()).getParentFile();
-		File robotsDir = new File(robocodeDir, "robots");
+		File robotsDir = FileUtil.getRobotsDir();
 
 		if (robotsDir.exists()) {
-			init(robocodeDir, listener);
+			init(FileUtil.getCwd(), listener);
 		} else {
 			throw new RuntimeException("File not found: " + robotsDir);
 		}

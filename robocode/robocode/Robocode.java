@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Removed check for the system property "SINGLEBUFFER", as it is not used
  *       anymore
  *     - Replaced the noDisplay with manager.setEnableGUI() and isGUIEnabled()
@@ -19,7 +20,7 @@
  *     - Moved the printRunningThreads() from robocode.util.Utils into this class
  *       and added javadoc for it
  *     - Added playing theme music at the startup, if music is provided
- *     - Code cleanup
+ *     - Changed to use FileUtil.getRobotsDir()
  *******************************************************************************/
 package robocode;
 
@@ -150,7 +151,7 @@ public class Robocode {
 					System.exit(8);
 				}
 			}
-			File robots = new File(FileUtil.getCwd(), "robots");
+			File robots = FileUtil.getRobotsDir();
 
 			if (!robots.exists() || !robots.isDirectory()) {
 				System.err.println(
