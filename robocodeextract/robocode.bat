@@ -1,1 +1,1 @@
-java -Xmx512M -Dsun.io.useCanonCaches=false -jar robocode.jar
+java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
