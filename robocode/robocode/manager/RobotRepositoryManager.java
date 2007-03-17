@@ -12,6 +12,7 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Updated to use methods from WindowUtil, FileTypeFilter, FileUtil, Logger,
  *       which replaces methods that have been (re)moved from the Utils class
+ *     - Changed to use FileUtil.getRobotsDir()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -277,7 +278,7 @@ public class RobotRepositoryManager {
 
 	public File getRobotsDirectory() {
 		if (robotsDirectory == null) {
-			robotsDirectory = new File(FileUtil.getCwd(), "robots");
+			robotsDirectory = FileUtil.getRobotsDir();
 		}
 		return robotsDirectory;
 	}
