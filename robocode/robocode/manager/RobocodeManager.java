@@ -9,11 +9,12 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Added setEnableGUI() and isGUIEnabled()
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Added access for the SoundManager
- *     - Code cleanup
+ *     - Changed to use FileUtil.getRobocodeConfigFile()
  *******************************************************************************/
 package robocode.manager;
 
@@ -121,13 +122,13 @@ public class RobocodeManager {
 		if (properties == null) {
 			properties = new RobocodeProperties(this);
 			try {
-				FileInputStream in = new FileInputStream(new File(FileUtil.getCwd(), "robocode.properties"));
+				FileInputStream in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 
 				properties.load(in);
 			} catch (FileNotFoundException e) {
-				log("No robocode.properties file, using defaults.");
+				log("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
 			} catch (IOException e) {
-				log("IO Exception reading robocode.properties" + e);
+				log("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": "+ e);
 			}
 		}
 		return properties;
@@ -140,7 +141,7 @@ public class RobocodeManager {
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(new File(FileUtil.getCwd(), "robocode.properties"));
+			FileOutputStream out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
 
 			properties.store(out, "Robocode Properties");
 		} catch (IOException e) {
