@@ -12,6 +12,7 @@
  *     - Ported to Java 5
  *     - Removed dead code
  *     - Replaced the robocode.util.Utils.copy() method with internal copy()
+ *     - Minor optimizations
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -25,6 +26,7 @@ import java.io.*;
 import roborumble.battlesengine.*;
 
 import com.mindprod.filetransfer.FileTransfer;
+
 
 /**
  * BotsDownload - a class by Albert Perez
@@ -52,7 +54,7 @@ public class BotsDownload {
 	private String microbotsfile;
 	private String nanobotsfile;
 	private String removeboturl;
-	
+
 	public BotsDownload(String propertiesfile) {
 		// Read parameters
 		Properties parameters = null;
@@ -142,9 +144,8 @@ public class BotsDownload {
 
 			boolean arebots = false;
 			BufferedReader in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
-			String str;
 
-			while ((str = in.readLine()) != null) {
+			for (String str; (str = in.readLine()) != null;) {
 				if (str.indexOf(begin) != -1) {
 					arebots = true;
 				} else if (str.indexOf(end) != -1) {
@@ -156,21 +157,21 @@ public class BotsDownload {
 			in.close();
 			urlc.disconnect();
 
-			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(participantsfile)), false);  
+			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(participantsfile)), false);
 
 			for (int i = 0; i < bots.size(); i++) {
-				outtxt.println((String) bots.get(i));
+				outtxt.println(bots.get(i));
 			}
-			outtxt.close();			
+			outtxt.close();
 
-		} catch (Exception e) { 
-			System.out.println("Unable to retrieve participants list"); 
+		} catch (Exception e) {
+			System.out.println("Unable to retrieve participants list");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
-		return true;	
+		return true;
 	}
-	
+
 	public boolean downloadMissingBots() {
 		Vector<String> jars = new Vector<String>();
 		Vector<String> ids = new Vector<String>();
@@ -178,11 +179,10 @@ public class BotsDownload {
 
 		// Read participants
 		try {
-			FileReader fr = new FileReader(participantsfile); 
+			FileReader fr = new FileReader(participantsfile);
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
 
-			while ((record = br.readLine()) != null) { 
+			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") >= 0) {
 					String id = record.substring(record.indexOf(",") + 1);
 					String name = record.substring(0, record.indexOf(","));
@@ -194,20 +194,20 @@ public class BotsDownload {
 				}
 			}
 			br.close();
-		} catch (Exception e) { 
-			System.out.println("Participants file not found ... Aborting"); 
+		} catch (Exception e) {
+			System.out.println("Participants file not found ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
 		// check if the file exists in the repository and download if not present
 		for (int i = 0; i < jars.size(); i++) {
-			String botjar = (String) jars.get(i);
-			String botid = (String) ids.get(i);
-			String botname = (String) names.get(i);
+			String botjar = jars.get(i);
+			String botid = ids.get(i);
+			String botname = names.get(i);
 			String botpath = botsrepository + botjar;
 			boolean exists = (new File(botpath)).exists();
 
-			if (!exists) { 
+			if (!exists) {
 				// System.out.println("Going to download ..."+botname);
 				boolean downloaded = downloadBot(botname, botjar, botid, botsrepository, tempdir);
 
@@ -222,25 +222,24 @@ public class BotsDownload {
 	public void updateCodeSize() {
 		if (!sizesfile.equals("")) {
 			try {
-				FileReader fr = new FileReader(participantsfile); 
+				FileReader fr = new FileReader(participantsfile);
 				BufferedReader br = new BufferedReader(fr);
-				String record = new String();
 
-				while ((record = br.readLine()) != null) { 
+				for (String record; (record = br.readLine()) != null;) {
 					String name = record.substring(0, record.indexOf(","));
 
 					name = name.replace(' ', '_');
 					size.CheckCompetitorsForSize(name, name, 1500);
 				}
 				br.close();
-			} catch (Exception e) { 
-				System.out.println("Battles input file not found ... Aborting"); 
+			} catch (Exception e) {
+				System.out.println("Battles input file not found ... Aborting");
 				System.out.println(e);
-				return; 
+				return;
 			}
 		}
 	}
-	
+
 	private boolean downloadBot(String botname, String file, String id, String destination, String tempdir) {
 		String filed = tempdir + file;
 		String finald = destination + file;
@@ -249,7 +248,7 @@ public class BotsDownload {
 
 		boolean exists = (new File(finald)).exists();
 
-		if (exists) { 
+		if (exists) {
 			System.out.println("The bot already exists in the repository.");
 			return false;
 		}
@@ -257,10 +256,10 @@ public class BotsDownload {
 		// Download the bot
 
 		FileTransfer filetransfer = new FileTransfer(1000);
-		
+
 		URL url = null;
 
-		try { 
+		try {
 			if (id.indexOf("://") == -1) {
 				url = new URL("http://www.robocoderepository.com/Controller.jsp?submitAction=downloadClass&id=" + id);
 			} else {
@@ -271,7 +270,7 @@ public class BotsDownload {
 			return false;
 		}
 
-		System.out.println("Downloading ..." + botname);	
+		System.out.println("Downloading ..." + botname);
 		boolean downloaded = filetransfer.download(url, new File(filed));
 
 		if (!downloaded) {
@@ -280,7 +279,7 @@ public class BotsDownload {
 		}
 
 		// Check the bot and save it into the repository
-			
+
 		if (checkJarFile(filed, botname)) {
 			try {
 				copy(new File(filed), new File(finald));
@@ -292,24 +291,24 @@ public class BotsDownload {
 		} else {
 			System.out.println("Downloaded file is wrong or corrupted:" + file);
 			return false;
-		} 
-	
+		}
+
 		return true;
 	}
 
 	private boolean checkJarFile(String file, String botname) {
 		if (botname.indexOf(" ") == -1) {
-			System.out.println("Are you sure " + botname + " is a bot/team? Can't download it."); 
+			System.out.println("Are you sure " + botname + " is a bot/team? Can't download it.");
 			return false;
-		}		
+		}
 
-		String bot = botname.substring(0, botname.indexOf(" ")); 
+		String bot = botname.substring(0, botname.indexOf(" "));
 
-		bot = bot.replace('.', '/'); 
+		bot = bot.replace('.', '/');
 		if (!isteams.equals("YES")) {
-			bot = bot + ".properties";
+			bot += ".properties";
 		} else {
-			bot = bot + ".team";
+			bot += ".team";
 		}
 
 		try {
@@ -325,25 +324,17 @@ public class BotsDownload {
 			Properties parameters = null;
 
 			parameters = new Properties();
-			parameters.load(properties); 
-			
+			parameters.load(properties);
+
 			if (!isteams.equals("YES")) {
 				String classname = parameters.getProperty("robot.classname", "");
 				String version = parameters.getProperty("robot.version", "");
 
-				if (botname.equals(classname + " " + version)) {
-					return true;
-				} else {
-					return false;
-				}
+				return (botname.equals(classname + " " + version));
 			} else {
 				String version = parameters.getProperty("team.version", "");
 
-				if (botname.equals(botname.substring(0, botname.indexOf(" ")) + " " + version)) {
-					return true;
-				} else {
-					return false;
-				}				
+				return (botname.equals(botname.substring(0, botname.indexOf(" ")) + " " + version));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -365,23 +356,22 @@ public class BotsDownload {
 			urlc.setDoInput(true);
 			urlc.connect();
 
-			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);  
+			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
-			String str;
 
-			while ((str = in.readLine()) != null) {
+			for (String str; (str = in.readLine()) != null;) {
 				outtxt.println(str);
 			}
 			in.close();
 			urlc.disconnect();
 
-			outtxt.close();			
+			outtxt.close();
 
-		} catch (Exception e) { 
-			System.out.println("Unable to ratings for " + competition); 
+		} catch (Exception e) {
+			System.out.println("Unable to ratings for " + competition);
 			System.out.println(e);
-			return false; 
+			return false;
 		}
 		return true;
 	}
@@ -395,11 +385,10 @@ public class BotsDownload {
 		Hashtable<String, String> namesall = new Hashtable<String, String>();
 
 		try {
-			FileReader fr = new FileReader(participantsfile); 
+			FileReader fr = new FileReader(participantsfile);
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
 
-			while ((record = br.readLine()) != null) { 
+			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") != -1) {
 					String name = record.substring(0, record.indexOf(","));
 
@@ -413,7 +402,7 @@ public class BotsDownload {
 			System.out.println(e);
 			return false;
 		}
-		
+
 		// Load ratings files
 		Properties generalratings = new Properties();
 		Properties miniratings = new Properties();
@@ -440,13 +429,13 @@ public class BotsDownload {
 		} catch (Exception e) {
 			nanoratings = null;
 		}
-		
-		// Check general ratings	
+
+		// Check general ratings
 		if (generalratings == null) {
 			return false;
 		}
 		for (Enumeration<?> e = generalratings.propertyNames(); e.hasMoreElements();) {
-			String key = (String) e.nextElement(); 
+			String key = (String) e.nextElement();
 
 			if (!namesall.containsKey(key)) {
 				// remove the key from the ratings file
@@ -454,12 +443,12 @@ public class BotsDownload {
 				removebot(generalbots, key);
 			}
 		}
-		// Check mini ratings	
+		// Check mini ratings
 		if (miniratings == null) {
 			return true;
 		}
 		for (Enumeration<?> e = miniratings.propertyNames(); e.hasMoreElements();) {
-			String key = (String) e.nextElement(); 
+			String key = (String) e.nextElement();
 
 			if (!namesall.containsKey(key)) {
 				// remove the key from the ratings file
@@ -467,13 +456,13 @@ public class BotsDownload {
 				removebot(minibots, key);
 			}
 		}
-		
+
 		// Check micro ratings
 		if (microratings == null) {
 			return true;
 		}
 		for (Enumeration<?> e = microratings.propertyNames(); e.hasMoreElements();) {
-			String key = (String) e.nextElement(); 
+			String key = (String) e.nextElement();
 
 			if (!namesall.containsKey(key)) {
 				// remove the key from the ratings file
@@ -481,13 +470,13 @@ public class BotsDownload {
 				removebot(microbots, key);
 			}
 		}
-		
+
 		// Check nano ratings
 		if (nanoratings == null) {
 			return true;
 		}
 		for (Enumeration<?> e = nanoratings.propertyNames(); e.hasMoreElements();) {
-			String key = (String) e.nextElement(); 
+			String key = (String) e.nextElement();
 
 			if (!namesall.containsKey(key)) {
 				// remove the key from the ratings file
@@ -495,18 +484,18 @@ public class BotsDownload {
 				removebot(nanobots, key);
 			}
 		}
-	
+
 		return true;
 	}
-	
+
 	private void removebot(String game, String bot) {
 		if (removeboturl.equals("")) {
 			System.out.println("UPDATEBOTS URL not defined!");
 			return;
 		}
-		
+
 		String data = "version=1&game=" + game + "&name=" + bot.trim() + "&dummy=NA";
-		
+
 		try {
 			// Send data
 			URL url = new URL(removeboturl);
@@ -517,27 +506,26 @@ public class BotsDownload {
 
 			wr.println(data);
 			wr.flush();
-			
+
 			// Get the response
 			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String line;
 
-			while ((line = rd.readLine()) != null) {
+			for (String line; (line = rd.readLine()) != null;) {
 				System.out.println(line);
 			}
-				
+
 			wr.close();
-			rd.close();					
-			
+			rd.close();
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-				
+
 	}
 
 	/**
 	 * Copies a file into another file.
-	 * 
+	 *
 	 * @param inFile the input file to copy
 	 * @param outFile the output file to copy to
 	 * @return {@code true} if the file was copies succesfully; {@code false}
