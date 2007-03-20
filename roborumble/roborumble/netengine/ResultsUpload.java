@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Removed unused imports
- *     - Replaced the robocode.util.Utils.copy() method with internal copy()
+ *     - Replaced the robocode.util.Utils.copy() method with FileTransfer.copy()
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -43,7 +43,7 @@ public class ResultsUpload {
 	private CompetitionsSelector size;
 	private String battlesnumfile;
 	private String priority;
-	
+
 	public ResultsUpload(String propertiesfile) {
 		// Read parameters
 		Properties parameters = null;
@@ -78,9 +78,9 @@ public class ResultsUpload {
 	public boolean uploadResults() {
 
 		boolean errorsfound = false;
-		
+
 		// Read the results file
-		
+
 		Vector<String> results = new Vector<String>();
 		String match = "";
 		String bot1 = "";
@@ -88,11 +88,11 @@ public class ResultsUpload {
 		int status = 0;
 
 		try {
-			FileReader fr = new FileReader(resultsfile); 
+			FileReader fr = new FileReader(resultsfile);
 			BufferedReader br = new BufferedReader(fr);
 			String record = new String();
 
-			while ((record = br.readLine()) != null) { 
+			while ((record = br.readLine()) != null) {
 				if (record.indexOf(game) != -1) {
 					match = record;
 					status = 0;
@@ -111,16 +111,16 @@ public class ResultsUpload {
 			System.out.println("Can't open result file for upload");
 			return false;
 		}
-			
+
 		// Open the temp file to put the unuploaded results
 		PrintStream outtxt = null;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(tempdir + "results.txt")), false);
-		} catch (IOException e) { 
-			System.out.println("Not able to open output file ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Not able to open output file ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
 
 		// Open the file to put the battles number for each participant
@@ -128,10 +128,10 @@ public class ResultsUpload {
 
 		try {
 			battlesnum = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesnumfile)), false);
-		} catch (IOException e) { 
-			System.out.println("Not able to open battles number file ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Not able to open battles number file ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
 
 		// Open the file to put the battles which have priority
@@ -139,21 +139,21 @@ public class ResultsUpload {
 
 		try {
 			prioritybattles = new PrintStream(new BufferedOutputStream(new FileOutputStream(priority)), false);
-		} catch (IOException e) { 
-			System.out.println("Not able to open priorities file ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Not able to open priorities file ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
 
 		// Post the results
-		
+
 		for (int i = 0; i < results.size() / 3; i++) {
-			
+
 			// Create the parameters String
 			String[] header = ((String) results.get(i * 3)).split(",");
 			String[] first = ((String) results.get(i * 3 + 1)).split(",");
 			String[] second = ((String) results.get(i * 3 + 2)).split(",");
-			
+
 			// find the match mode
 			String matchtype = "GENERAL";
 
@@ -171,7 +171,7 @@ public class ResultsUpload {
 			if (matchtype.equals("GENERAL") || matchtype.equals("SERVER")) {
 				errorsfound = errorsfound | senddata(game, data, outtxt, true, results, i, battlesnum, prioritybattles);
 			}
-			
+
 			if (!sizesfile.equals("")) { // upload also related competitions
 				if (!minibots.equals("") && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
 						&& size.CheckCompetitorsForSize(first[0], second[0], 1500)) {
@@ -217,16 +217,14 @@ public class ResultsUpload {
 
 		// copy temp file into results file if there was some error
 		if (errorsfound) {
-			try {
-				copy(new File(tempdir + "results.txt"), new File(resultsfile));
-			} catch (Exception e) {
+			if (!FileTransfer.copy(tempdir + "results.txt", resultsfile)) {
 				System.out.println("Error when copying results errors file.");
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	private void saverror(PrintStream outtxt, String match, String bot1, String bot2, boolean saveonerror) {
 		if (saveonerror) {
 			outtxt.println(match);
@@ -269,13 +267,13 @@ public class ResultsUpload {
 
 					bot2 = bot2.substring(0, bot2.indexOf(","));
 					line = line.replaceAll("<", "");
-					line = line.replaceAll(">", ""); 
+					line = line.replaceAll(">", "");
 					String[] b = line.split(" ");
 
 					if (b.length == 2) {
 						battlesnum.println(game + "," + bot1 + "," + b[0]);
 						battlesnum.println(game + "," + bot2 + "," + b[1]);
-					}	
+					}
 				} else if (line.indexOf("[") != -1 && line.indexOf("]") != -1) {
 					line = line.substring(1);
 					line = line.substring(0, line.length() - 1);
@@ -296,45 +294,21 @@ public class ResultsUpload {
 			}
 			wr.close();
 			rd.close();
-			if (!ok) { 
+			if (!ok) {
 				saverror(outtxt, (String) results.get(i * 3), (String) results.get(i * 3 + 1),
-						(String) results.get(i * 3 + 2), saveonerror); 
+						(String) results.get(i * 3 + 2), saveonerror);
 				if (saveonerror) {
 					errorsfound = true;
-				} 
+				}
 			}
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			System.out.println(e);
 			if (saveonerror) {
 				errorsfound = true;
-			} 
+			}
 			saverror(outtxt, (String) results.get(i * 3), (String) results.get(i * 3 + 1),
-					(String) results.get(i * 3 + 2), saveonerror); 
+					(String) results.get(i * 3 + 2), saveonerror);
 		}
 		return errorsfound;
-	}
-
-	/**
-	 * Copies a file into another file.
-	 * 
-	 * @param inFile the input file to copy
-	 * @param outFile the output file to copy to
-	 * @return {@code true} if the file was copies succesfully; {@code false}
-	 *    otherwise.
-	 * @throws IOException
-	 */
-	public static void copy(File srcFile, File destFile) throws IOException {
-		if (srcFile.equals(destFile)) {
-			throw new IOException("You cannot copy a file onto itself");
-		}
-		byte buf[] = new byte[4096];
-		FileInputStream in = new FileInputStream(srcFile);
-		FileOutputStream out = new FileOutputStream(destFile);
-
-		while (in.available() > 0) {
-			int count = in.read(buf, 0, 4096);
-
-			out.write(buf, 0, count);
-		}
 	}
 }
