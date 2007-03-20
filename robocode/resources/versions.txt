@@ -1,9 +1,16 @@
 Version 1.3 Alpha
-(03/15/2007)
+(03/21/2007)
+Now featuring RoboRumble@Home
 -------------
 o Bugfixes
   -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
      of an integer. This bug caused problems with running Robocode on RoboLeague
+o RoboRumble@Home, originally developed by Albert Pérez, is now built-in Robocode
+  -- This is an updated version of the original one, but which has been updated to
+     the current versions of Robocode and ported for Java 5
+  -- Configuration files has been updated, and are available in the 'roborumble' folder
+  -- Issues with downloading robots from the Robocode Repository site has been fixed
+o The codesize utility by Christian D. Schnell has been added to support RoboRumble
 
 Version 1.2.6A
 (03/11/2007)
@@ -287,8 +294,8 @@ o A lot of internal optimizations of Robocode has been made to speed up the game
 o Robocode icons has been updated
 
 Version 1.1.3
-The "Java 5 and Sound" release
 (9/20/2006)
+The "Java 5 and Sound" release
 -------------
 o Bugfixes
   -- Wrong 1st place scores for robots, which got 1 point for winning and also 1 point for the
