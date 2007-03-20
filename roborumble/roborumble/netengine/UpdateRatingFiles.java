@@ -11,7 +11,6 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Removed dead code and unused imports
- *     - Replaced the robocode.util.Utils.copy() method with internal copy()
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -37,7 +36,7 @@ public class UpdateRatingFiles {
 	private String miniratings;
 	private String microratings;
 	private String nanoratings;
-	
+
 	public UpdateRatingFiles(String propertiesfile) {
 		// Read parameters
 		Properties parameters = null;
@@ -71,7 +70,7 @@ public class UpdateRatingFiles {
 		Vector<String> battles = new Vector<String>();
 
 		try {
-			FileReader fr = new FileReader(battlesnumfile); 
+			FileReader fr = new FileReader(battlesnumfile);
 			BufferedReader br = new BufferedReader(fr);
 			String record = new String();
 
@@ -135,7 +134,7 @@ public class UpdateRatingFiles {
 			} else if (battle[0].equals(nanobots) && nano != null) {
 				updateRecord(battle[1], num, nano);
 			}
-		}	
+		}
 
 		// save ratings files
 		try {
@@ -148,7 +147,7 @@ public class UpdateRatingFiles {
 			}
 			if (nano != null) {
 				nano.store(new FileOutputStream(nanoratings), "Nano ratings updated with new battles number");
-			}		
+			}
 		} catch (Exception e) {
 			System.out.println("Encountered problems when saving updated number of battles");
 			return false;
@@ -163,7 +162,7 @@ public class UpdateRatingFiles {
 		if (values == null) {
 			return;
 		}
-		
+
 		String[] value = values.split(",");
 
 		values = value[0] + "," + Double.toString(battles) + "," + value[2];
