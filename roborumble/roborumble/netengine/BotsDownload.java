@@ -11,7 +11,9 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Removed dead code
- *     - Replaced the robocode.util.Utils.copy() method with internal copy()
+ *     - Replaced the robocode.util.Utils.copy() method with FileTransfer.copy()
+ *     - Bugfix: Solved ZipException by creating a session to the Robocode
+ *       Repository site
  *     - Minor optimizations
  *******************************************************************************/
 package roborumble.netengine;
@@ -24,8 +26,6 @@ import java.util.jar.*;
 import java.util.zip.*;
 import java.io.*;
 import roborumble.battlesengine.*;
-
-import com.mindprod.filetransfer.FileTransfer;
 
 
 /**
@@ -255,23 +255,23 @@ public class BotsDownload {
 
 		// Download the bot
 
-		FileTransfer filetransfer = new FileTransfer(1000);
-
-		URL url = null;
+		String url = null;
 
 		try {
 			if (id.indexOf("://") == -1) {
-				url = new URL("http://www.robocoderepository.com/Controller.jsp?submitAction=downloadClass&id=" + id);
+				url = "http://robocoderepository.com/Controller.jsp?submitAction=downloadClass&id=" + id;
 			} else {
-				url = new URL(id);
+				url = id;
 			}
 		} catch (Exception e) {
-			System.out.println("Wrong URL");
+			System.out.println("Wrong URL: '" + url + '\'');
 			return false;
 		}
 
 		System.out.println("Downloading ..." + botname);
-		boolean downloaded = filetransfer.download(url, new File(filed));
+		String sessionId = FileTransfer.getSessionId(
+				"http://robocoderepository.com/BotSearch.jsp?botName=''&authorName=''&uploadDate=");
+		boolean downloaded = FileTransfer.download(url, filed, sessionId);
 
 		if (!downloaded) {
 			System.out.println("Unable to download " + botname + " from site.");
@@ -281,9 +281,7 @@ public class BotsDownload {
 		// Check the bot and save it into the repository
 
 		if (checkJarFile(filed, botname)) {
-			try {
-				copy(new File(filed), new File(finald));
-			} catch (Exception e) {
+			if (!FileTransfer.copy(filed, finald)) {
 				System.out.println("Unable to copy " + filed + " into the repository");
 				return false;
 			}
@@ -519,31 +517,6 @@ public class BotsDownload {
 
 		} catch (Exception e) {
 			System.out.println(e);
-		}
-
-	}
-
-	/**
-	 * Copies a file into another file.
-	 *
-	 * @param inFile the input file to copy
-	 * @param outFile the output file to copy to
-	 * @return {@code true} if the file was copies succesfully; {@code false}
-	 *    otherwise.
-	 * @throws IOException
-	 */
-	public static void copy(File srcFile, File destFile) throws IOException {
-		if (srcFile.equals(destFile)) {
-			throw new IOException("You cannot copy a file onto itself");
-		}
-		byte buf[] = new byte[4096];
-		FileInputStream in = new FileInputStream(srcFile);
-		FileOutputStream out = new FileOutputStream(destFile);
-
-		while (in.available() > 0) {
-			int count = in.read(buf, 0, 4096);
-
-			out.write(buf, 0, count);
 		}
 	}
 }
