@@ -334,10 +334,17 @@ public class AutoExtract implements ActionListener {
 				JOptionPane.showMessageDialog(null, extractor.message);
 			}
 
-			// Move old robocode.properties, window.properties, and compile.properties
+			// Move robocode.properties, window.properties, and compile.properties
 			move(new File(installDir, "robocode.properties"), new File(installDir, "config/robocode.properties"));
 			move(new File(installDir, "window.properties"), new File(installDir, "config/window.properties"));
 			move(new File(installDir, "compiler.properties"), new File(installDir, "config/compiler.properties"));
+
+			// Move robot.database
+			move(new File(installDir, "robot.database"), new File(installDir, "robots/robot.database"));
+
+			// Move .robotcache
+			move(new File(installDir, ".robotcache"), new File(installDir, "robots/.robotcache"));
+
 
 			// Create RoboRumble dir
 			File roborumbleDir = createDir(new File(installDir, "roborumble"));
