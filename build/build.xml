@@ -255,7 +255,6 @@
     <jar destfile="${build}/libs/roborumble.jar">
       <!-- Specify files to include -->
       <fileset dir="${build}" includes="roborumble/**"/>                 <!-- Class files -->
-      <fileset dir="${build}" includes="com/mindprod/filetransfer/*"/>
       <fileset file="${license.file}"/>                                  <!-- License file -->
       <!-- Set the main class of the manifest -->
       <manifest>
