@@ -5,12 +5,16 @@ Now featuring RoboRumble@Home
 o Bugfixes
   -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
      of an integer. This bug caused problems with running Robocode on RoboLeague
-o RoboRumble@Home, originally developed by Albert Pérez, is now built-in Robocode
-  -- This is an updated version of the original one, but which has been updated to
-     the current versions of Robocode and ported for Java 5
+o RoboRumble@Home, originally developed by Albert Pérez, is now built-in
+  -- This is an updated version of the original one that can run with the current
+     version of Robocode and which has been ported to Java 5
   -- Configuration files has been updated, and are available in the 'roborumble' folder
   -- Issues with downloading robots from the Robocode Repository site has been fixed
 o The codesize utility by Christian D. Schnell has been added to support RoboRumble
+o The file structure of Robocode has been slightly changed
+  -- All .jar files including robocode.jar are now located in the libs folder
+  -- The robot.database and .robotcache files has been moved to the robots folder
+  -- All RoboRumble related files are located in the roborumble folder
 
 Version 1.2.6A
 (03/11/2007)
