@@ -76,13 +76,13 @@ public class RobotRepositoryManager {
 			// ---> robotCache = System.getProperty("ROBOTCACHE");
 
 
-			File oldRobotCache = new File(FileUtil.getCwd(), "robotcache");
+			File oldRobotCache = new File(FileUtil.getRobotsDir(), "robotcache");
 
 			if (oldRobotCache.exists()) {
-				oldRobotCache.renameTo(new File(FileUtil.getCwd(), ".robotcache"));
+				oldRobotCache.renameTo(new File(FileUtil.getRobotsDir(), ".robotcache"));
 			}
 
-			robotCache = new File(FileUtil.getCwd(), ".robotcache");
+			robotCache = new File(FileUtil.getRobotsDir(), ".robotcache");
 		}
 		return robotCache;
 	}
@@ -92,7 +92,7 @@ public class RobotRepositoryManager {
 			WindowUtil.setStatus("Reading robot database");
 			robotDatabase = new FileSpecificationDatabase();
 			try {
-				robotDatabase.load(new File(FileUtil.getCwd(), "robot.database"));
+				robotDatabase.load(new File(FileUtil.getRobotsDir(), "robot.database"));
 			} catch (FileNotFoundException e) {
 				log("Building robot database.");
 			} catch (IOException e) {
@@ -376,7 +376,7 @@ public class RobotRepositoryManager {
 			return;
 		}
 		try {
-			robotDatabase.store(new File(FileUtil.getCwd(), "robot.database"));
+			robotDatabase.store(new File(FileUtil.getRobotsDir(), "robot.database"));
 		} catch (IOException e) {
 			log("IO Exception writing robot database: " + e);
 		}
