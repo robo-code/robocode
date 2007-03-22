@@ -56,7 +56,11 @@ public class Robocode {
 
 	/**
 	 * Use the command-line to start Robocode.
-	 * The command is:  java -jar robocode.jar
+	 * The command is:
+	 * <pre>
+	 *    java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
+	 * </pre>
+	 *
 	 * @param args an array of command-line arguments
 	 */
 	public static void main(String[] args) {
