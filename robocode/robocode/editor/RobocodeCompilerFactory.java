@@ -44,7 +44,7 @@ import robocode.io.FileUtil;
  */
 public class RobocodeCompilerFactory {
 
-	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "robocode.jar"
+	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "libs/robocode.jar"
 			+ File.pathSeparator + getRobotPath();
 
 	private static CompilerProperties compilerProperties;
