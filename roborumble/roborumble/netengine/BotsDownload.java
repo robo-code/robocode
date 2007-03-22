@@ -27,6 +27,8 @@ import java.util.zip.*;
 import java.io.*;
 import roborumble.battlesengine.*;
 
+import static roborumble.netengine.FileTransfer.DownloadStatus;
+
 
 /**
  * BotsDownload - a class by Albert Perez
@@ -212,7 +214,7 @@ public class BotsDownload {
 				boolean downloaded = downloadBot(botname, botjar, botid, botsrepository, tempdir);
 
 				if (!downloaded) {
-					System.out.println("Could not download bot " + botjar);
+					System.out.println("Could not download '" + botjar + '\'');
 				}
 			}
 		}
@@ -256,10 +258,14 @@ public class BotsDownload {
 		// Download the bot
 
 		String url = null;
+		String sessionId = null;
 
 		try {
 			if (id.indexOf("://") == -1) {
 				url = "http://robocoderepository.com/Controller.jsp?submitAction=downloadClass&id=" + id;
+
+				sessionId = FileTransfer.getSessionId(
+						"http://robocoderepository.com/BotSearch.jsp?botName=''&authorName=''&uploadDate=");
 			} else {
 				url = id;
 			}
@@ -268,13 +274,15 @@ public class BotsDownload {
 			return false;
 		}
 
-		System.out.println("Downloading ..." + botname);
-		String sessionId = FileTransfer.getSessionId(
-				"http://robocoderepository.com/BotSearch.jsp?botName=''&authorName=''&uploadDate=");
-		boolean downloaded = FileTransfer.download(url, filed, sessionId);
+		System.out.println("Trying to download '" + botname + '\'');
 
-		if (!downloaded) {
-			System.out.println("Unable to download " + botname + " from site.");
+		DownloadStatus downloadStatus = FileTransfer.download(url, filed, sessionId);
+
+		if (downloadStatus == DownloadStatus.FILE_NOT_FOUND) {
+			System.out.println("Could not find '" + botname + "' on the site");
+			return false;
+		} else if (downloadStatus == DownloadStatus.COULD_NOT_CONNECT) {
+			System.out.println("Could not connect to '" + url + "'");
 			return false;
 		}
 
