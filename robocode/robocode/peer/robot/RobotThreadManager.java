@@ -75,23 +75,27 @@ public class RobotThreadManager {
 					"SYSTEM:  You still have " + numThreads + " running threads.  No score will be generated.");
 		}
 		for (Thread thread : threads) {
-			try {
-				thread.setPriority(Thread.MIN_PRIORITY);
-				stopThread(thread);
-			} catch (Exception e) {}
+			if (thread != null) {
+				try {
+					thread.setPriority(Thread.MIN_PRIORITY);
+					stopThread(thread);
+				} catch (Exception e) {}
+			}
 		}
 		for (Thread thread : threads) {
-			try {
-				thread.join(1000);
-			} catch (InterruptedException e) {
-				robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
-				log("Thread: " + thread.getName() + " join interrupted.");
-			} catch (Exception e) {}
-			if (thread.isAlive()) {
-				log("Warning! Unable to stop thread: " + thread.getName());
-			} else {
-				robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " has been stopped.");
-				log("Thread: " + thread.getName() + " has been stopped.");
+			if (thread != null) {
+				try {
+					thread.join(1000);
+				} catch (InterruptedException e) {
+					robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
+					log("Thread: " + thread.getName() + " join interrupted.");
+				} catch (Exception e) {}
+				if (thread.isAlive()) {
+					log("Warning! Unable to stop thread: " + thread.getName());
+				} else {
+					robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " has been stopped.");
+					log("Thread: " + thread.getName() + " has been stopped.");
+				}
 			}
 		}
 	}
