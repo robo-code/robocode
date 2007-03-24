@@ -260,7 +260,7 @@ public class FileTransfer {
 					return;
 				}
 
-				// Get an input stream fromt the connection
+				// Get an input stream from the connection
 				in = con.getInputStream();
 				if (in == null) {
 					return;
