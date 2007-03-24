@@ -15,6 +15,7 @@
  *     - Updated to use methods from the FileUtil, which replaces file operations
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Changed to use FileUtil.getRobotsDir()
+ *     - Fixed the layout, where the filename field was too high
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -23,6 +24,9 @@ package robocode.packager;
 
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -113,12 +117,34 @@ public class FilenamePanel extends WizardPanel {
 
 	private void initialize() {
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(new JLabel("Please type in a .jar file to save this robot package to: "));
-		add(getFilenameField());
-		add(getBrowseButton());
-		add(new JPanel());
 		addComponentListener(eventHandler);
+
+		GridBagLayout layout = new GridBagLayout();
+
+		setLayout(layout);
+		GridBagConstraints c = new GridBagConstraints();
+
+		c.insets = new Insets(5, 5, 5, 5);
+		c.anchor = GridBagConstraints.NORTHWEST;
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridwidth = 1;
+		c.weightx = 1;
+
+		add(new JLabel("Please type in a .jar file to save this robot package to: "), c);
+
+		c.gridy = 1;
+		add(getFilenameField(), c);
+
+		c.fill = GridBagConstraints.NONE;
+		c.gridy = 2;
+		c.insets = new Insets(3, 3, 3, 3);
+		add(getBrowseButton(), c);
+
+		c.fill = GridBagConstraints.VERTICAL;
+		c.weighty = 1;
+		c.gridy = 3;
+		add(new JPanel(), c);
 	}
 
 	@Override
