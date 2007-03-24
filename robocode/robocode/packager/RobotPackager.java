@@ -11,12 +11,13 @@
  *     Matthew Reeder
  *     - Minor changes for UI keyboard accessibility
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Renamed 'enum' variables to allow compiling with Java 1.5
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Moved the NoDuplicateJarOutputStream into the robocode.io package
- *     - Code cleanup
+ *     - Added codesize information using the new outputSizeClass() method
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -51,6 +52,8 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotSpecification;
 import robocode.repository.TeamSpecification;
+
+import codesize.Codesize;
 
 
 /**
@@ -118,6 +121,11 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 		d = new ConsoleDialog(robotManager.getManager().getWindowManager().getRobocodeFrame(), "Packaging results",
 				false);
+
+		if (rc < 8) {
+			outputSizeClass();
+		}
+
 		if (rc == 0) {
 			resultsString = "Robots Packaged Successfully.\n" + output.toString();
 		} else if (rc == 4) {
@@ -127,19 +135,20 @@ public class RobotPackager extends JDialog implements WizardListener {
 		} else {
 			resultsString = "FATAL: Unknown return code " + rc + " from packager.\n" + output.toString();
 		}
+		
 		d.setText(resultsString);
 		d.pack();
 		d.pack();
 		WindowUtil.packCenterShow(this, d);
 		if (rc < 8) {
-			this.dispose();
+			dispose();
 		}
 	}
 
 	/**
 	 * Return the buttonsPanel
 	 *
-	 * @return javax.swing.JButton
+	 * @return JButton
 	 */
 	private WizardController getButtonsPanel() {
 		if (buttonsPanel == null) {
@@ -156,7 +165,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	/**
 	 * Return the buttonsPanel
 	 *
-	 * @return javax.swing.JButton
+	 * @return JButton
 	 */
 	private ConfirmPanel getConfirmPanel() {
 		if (confirmPanel == null) {
@@ -192,11 +201,11 @@ public class RobotPackager extends JDialog implements WizardListener {
 	/**
 	 * Return the newBattleDialogContentPane
 	 *
-	 * @return javax.swing.JPanel
+	 * @return JPanel
 	 */
-	private javax.swing.JPanel getRobotPackagerContentPane() {
+	private JPanel getRobotPackagerContentPane() {
 		if (robotPackagerContentPane == null) {
-			robotPackagerContentPane = new javax.swing.JPanel();
+			robotPackagerContentPane = new JPanel();
 			robotPackagerContentPane.setLayout(new BorderLayout());
 			robotPackagerContentPane.add(getButtonsPanel(), BorderLayout.SOUTH);
 			robotPackagerContentPane.add(getWizardPanel(), BorderLayout.CENTER);
@@ -212,7 +221,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	/**
 	 * Return the Page property value.
 	 *
-	 * @return javax.swing.JPanel
+	 * @return JPanel
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
@@ -226,7 +235,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	/**
 	 * Return the tabbedPane.
 	 *
-	 * @return javax.swing.JTabbedPane
+	 * @return JTabbedPane
 	 */
 	private WizardCardPanel getWizardPanel() {
 		if (wizardPanel == null) {
@@ -240,7 +249,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	}
 
 	private void initialize() {
-		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Robot Packager");
 		setContentPane(getRobotPackagerContentPane());
 	}
@@ -444,6 +453,32 @@ public class RobotPackager extends JDialog implements WizardListener {
 		return rv;
 	}
 
+	public void outputSizeClass() {
+		File jarFile = new File(getFilenamePanel().getFilenameField().getText());
+
+		Codesize.Item item = Codesize.processZipFile(jarFile);
+		
+		int codesize = item.getCodeSize();
+
+		String weightClass;
+
+		if (codesize >= 1500) {
+			weightClass = "MegaBot  (codesize >= 1500 bytes)";
+		} else if (codesize > 750) {
+			weightClass = "MiniBot  (codesize < 1500 bytes)";
+		} else if (codesize > 250) {
+			weightClass = "MicroBot  (codesize < 750 bytes)";
+		} else {
+			weightClass = "NanoBot  (codesize < 250 bytes)";
+		}
+		
+		StringBuffer out = output.getBuffer();
+
+		out.append("\n\n---- Codesize ----\n");
+		out.append("Codesize: ").append(codesize).append(" bytes\n");
+		out.append("Robot weight class: ").append(weightClass).append('\n');
+	}
+	
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,
 			RobotSpecification robotSpecification) {
 		int rv = 0;
