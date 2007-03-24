@@ -101,8 +101,11 @@
 
     <echo message="Compiling Robocode..."/>
  
+  	<!-- Copy libs into the build folder -->
+  	<copy file="${src.extract}/libs/codesize.jar" toDir="${build}/libs"/>
+ 
     <!-- Compile Robocode -->
-    <compile srcdir="${src.robocode}" destdir="${build}"/>
+    <compile srcdir="${src.robocode}" destdir="${build}" classpath="${build}/libs/codesize.jar"/>
 
     <!-- Flag that Robocode has been built -->
     <touch file="${build}/.robocode_build"/>
@@ -164,8 +167,11 @@
 
     <echo message="Compiling RoboRumble..."/>
  
-    <!-- Compile RoboRumble -->
-    <compile srcdir="${src.roborumble}" destdir="${build}" classpath="../robocodeextract/libs/codesize.jar"/>
+  	<!-- Copy libs into the build folder -->
+  	<copy file="${src.extract}/libs/codesize.jar" toDir="${build}/libs"/>
+
+  	<!-- Compile RoboRumble -->
+    <compile srcdir="${src.roborumble}" destdir="${build}" classpath="${build}/libs/codesize.jar"/>
 
     <!-- Flag that RoboRumble has been built -->
     <touch file="${build}/.roborumble_build"/>
@@ -254,8 +260,8 @@
     <!-- Create the roborumble.jar file -->
     <jar destfile="${build}/libs/roborumble.jar">
       <!-- Specify files to include -->
-      <fileset dir="${build}" includes="roborumble/**"/>                 <!-- Class files -->
-      <fileset file="${license.file}"/>                                  <!-- License file -->
+      <fileset dir="${build}" includes="roborumble/**"/>  <!-- Class files -->
+      <fileset file="${license.file}"/>                   <!-- License file -->
       <!-- Set the main class of the manifest -->
       <manifest>
         <attribute name="Main-Class" value="roborumble.RoboRumbleAtHome"/>
