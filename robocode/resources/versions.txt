@@ -6,12 +6,16 @@ o Bugfixes
   -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
      of an integer. This bug caused problems with running Robocode on RoboLeague
   -- Fixed NullPointerException occured when a robot is forced to stop
+  -- The text field for the filename in the robot packager was way too high
 o RoboRumble@Home, originally developed by Albert Pérez, is now built-in
   -- This is an updated version of the original one that can run with the current
      version of Robocode and which has been ported to Java 5
   -- Configuration files has been updated, and are available in the 'roborumble' folder
   -- Issues with downloading robots from the Robocode Repository site has been fixed
-o The codesize utility by Christian D. Schnell has been added to support RoboRumble
+o The codesize tool by Christian D. Schnell has been added
+  -- The codesize tool has been added to support the build-in RoboRumble@Home, and a new
+     feature for getting the codesize and robot codesize class (MiniBot, MegaBot etc.)
+     when a robot is being packaged
 o The file structure of Robocode has been slightly changed
   -- All .jar files including robocode.jar are now located in the libs folder
   -- The robot.database and .robotcache files has been moved to the robots folder
