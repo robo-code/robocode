@@ -171,7 +171,7 @@ public class CompilerPreferencesDialog extends JDialog {
 			return;
 		}
 		try {
-			FileOutputStream out = new FileOutputStream(FileUtil.getWindowConfigFile());
+			FileOutputStream out = new FileOutputStream(FileUtil.getCompilerConfigFile());
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
