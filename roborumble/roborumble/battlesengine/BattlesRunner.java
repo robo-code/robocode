@@ -11,12 +11,16 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Removed dead code and unused imports
- *     - Changed to read results from robocode.control.RobotResults
+ *     - Replaced the RobocodeEngineAtHome will the RobocodeEngine, and added
+ *       runBattle() to run a single battle with RobocodeEngine
+ *     - The results are now read from the AtHomeListener instead of the
+ *       RobocodeEngineAtHome
  *******************************************************************************/
 package roborumble.battlesengine;
 
 
 import robocode.control.*;
+
 import java.util.*;
 import java.io.*;
 
@@ -34,7 +38,7 @@ public class BattlesRunner {
 	private String outfile;
 	private String user;
 	private String game;
-	// private String matchtype; 
+	// private String matchtype;
 	private String isteams;
 
 	public BattlesRunner(String propertiesfile) {
@@ -61,20 +65,20 @@ public class BattlesRunner {
 		}
 		game = game.substring(0, game.indexOf("."));
 	}
-	
+
 	public boolean runBattles() {
 		// Initialize objects
 		Coordinator coord = new Coordinator();
 		AtHomeListener listener = new AtHomeListener(coord);
-		RobocodeEngineAtHome engine = new RobocodeEngineAtHome(listener);
+		RobocodeEngine engine = new RobocodeEngine(listener);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
 		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
-		
+
 		// Read input file
 		ArrayList<String> robots = new ArrayList<String>();
-		
+
 		try {
-			FileReader fr = new FileReader(inputfile); 
+			FileReader fr = new FileReader(inputfile);
 			BufferedReader br = new BufferedReader(fr);
 			String record = new String();
 
@@ -82,36 +86,36 @@ public class BattlesRunner {
 				robots.add(record);
 			}
 			br.close();
-		} catch (Exception e) { 
-			System.out.println("Battles input file not found ... Aborting"); 
+		} catch (Exception e) {
+			System.out.println("Battles input file not found ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
-		
+
 		// open output file
 		PrintStream outtxt = null;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
-		} catch (IOException e) { 
-			System.out.println("Not able to open output file ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Not able to open output file ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
-		
+
 		// run battle
-		int index = 0; 
+		int index = 0;
 
 		while (index < robots.size()) {
 			String[] param = (robots.get(index)).split(",");
 
-			String enemies = param[0] + "," + param[1]; 
+			String enemies = param[0] + "," + param[1];
 
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
-			engine.runBattle(battle, enemies);			
+			runBattle(engine, battle, enemies);
 			coord.get();
 			// get results
-			RobotResults[] results = engine.getResults();
+			RobotResults[] results = listener.getResults();
 			String First = results[0].getRobot().getClassName() + ' ' + results[0].getRobot().getVersion();
 			int PointsFirst = results[0].getScore();
 			int BulletDFirst = results[0].getBulletDamage();
@@ -143,11 +147,11 @@ public class BattlesRunner {
 			index++;
 			System.out.println("RESULT = " + First + " wins " + PointsFirst + " to " + PointsSecond);
 		}
-		
+
 		// close
 		outtxt.close();
 		engine.close();
-		
+
 		return true;
 	}
 
@@ -155,15 +159,15 @@ public class BattlesRunner {
 		// Initialize objects
 		Coordinator coord = new Coordinator();
 		AtHomeListener listener = new AtHomeListener(coord);
-		RobocodeEngineAtHome engine = new RobocodeEngineAtHome(listener);
+		RobocodeEngine engine = new RobocodeEngine(listener);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
 		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
-		
+
 		// Read input file
 		ArrayList<String> robots = new ArrayList<String>();
-		
+
 		try {
-			FileReader fr = new FileReader(inputfile); 
+			FileReader fr = new FileReader(inputfile);
 			BufferedReader br = new BufferedReader(fr);
 			String record = new String();
 
@@ -171,42 +175,42 @@ public class BattlesRunner {
 				robots.add(record);
 			}
 			br.close();
-		} catch (Exception e) { 
-			System.out.println("Battles input file not found ... Aborting"); 
+		} catch (Exception e) {
+			System.out.println("Battles input file not found ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
-		
+
 		// open output file
 		PrintStream outtxt = null;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
-		} catch (IOException e) { 
-			System.out.println("Not able to open output file ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Not able to open output file ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
-		
+
 		// run battle
-		int index = 0; 
+		int index = 0;
 
 		while (index < robots.size()) {
 			String[] param = (robots.get(index)).split(",");
 
 			String enemies = "";
 
-			for (int i = 0; i < param.length - 1; i++) { 
+			for (int i = 0; i < param.length - 1; i++) {
 				if (i > 0) {
 					enemies += ",";
 				}
 				enemies += param[i];
 			}
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
-			engine.runBattle(battle, enemies);			
+			runBattle(engine, battle, enemies);
 			coord.get();
 			// get results
-			RobotResults[] results = engine.getResults();
+			RobotResults[] results = listener.getResults();
 			String[] Bot = new String[results.length];
 			int[] Points = new int[results.length];
 			int[] BulletD = new int[results.length];
@@ -234,11 +238,32 @@ public class BattlesRunner {
 			index++;
 			System.out.println("RESULT = " + Bot[0] + " wins, " + Bot[1] + " is second.");
 		}
-		
+
 		// close
 		outtxt.close();
 		engine.close();
-		
+
 		return true;
+	}
+
+	private void runBattle(RobocodeEngine engine, BattleSpecification battle, String selectedRobotList) {
+		RobotSpecification[] robotSpecs = engine.getLocalRepository();
+
+		String[] selectedRobots = selectedRobotList.split(",");
+
+		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
+
+		for (RobotSpecification rs : robotSpecs) {
+			for (String robot : selectedRobots) {
+				String[] nameAndVersion = robot.split(" ");
+
+				if (rs.getClassName().equals(nameAndVersion[0]) && rs.getVersion().equals(nameAndVersion[1])) {
+					selectedRobotSpecs.add(rs);
+					break;
+				}
+			}
+		}
+
+		engine.runBattle(new BattleSpecification(1, battle.getBattlefield(), selectedRobotSpecs.toArray(robotSpecs)));
 	}
 }
