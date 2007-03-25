@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Removed unused imports
+ *     - Added getResults() that returns the results when battle is complete
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -24,17 +25,27 @@ import roborumble.battlesengine.Coordinator;
 public class AtHomeListener implements RobocodeListener {
 	private Coordinator coord;
 
+	private RobotResults[] results;
+
 	public AtHomeListener(Coordinator c) {
 		coord = c;
 	}
 
 	public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {
+		this.results = results;
+
 		if (coord != null) {
 			coord.put();
 		}
 	}
-    
-	public void battleAborted(BattleSpecification battleSpec) {}
-    
+
+	public void battleAborted(BattleSpecification battleSpec) {
+		results = null;
+	}
+
 	public void battleMessage(String string) {}
+
+	public RobotResults[] getResults() {
+		return results;
+	}
 }
