@@ -264,6 +264,7 @@ public class BattlesRunner {
 			}
 		}
 
-		engine.runBattle(new BattleSpecification(1, battle.getBattlefield(), selectedRobotSpecs.toArray(robotSpecs)));
+		engine.runBattle(
+				new BattleSpecification(battle.getNumRounds(), battle.getBattlefield(), selectedRobotSpecs.toArray(robotSpecs)));
 	}
 }
