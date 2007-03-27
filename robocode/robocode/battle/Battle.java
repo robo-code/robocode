@@ -230,7 +230,9 @@ public class Battle implements Runnable {
 
 		roundNum = 0;
 
-		manager.getWindowManager().getRobocodeFrame().setReplay(false);
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setReplay(false);
+		}
 		isRecordingEnabled = manager.getProperties().getOptionsCommonEnableReplayRecording();
 
 		if (!replay) {
@@ -337,7 +339,9 @@ public class Battle implements Runnable {
 			manager.getSoundManager().playEndOfBattleMusic();
 		}
 
-		manager.getWindowManager().getRobocodeFrame().setReplay(true);
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setReplay(true);
+		}
 
 		System.gc();
 	}
