@@ -1,11 +1,13 @@
 Version 1.3 Alpha
-(03/23/2007)
+(03/27/2007)
 Now featuring RoboRumble@Home
 -------------
 o Bugfixes
   -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
      of an integer. This bug caused problems with running Robocode on RoboLeague
   -- Fixed NullPointerException occured when a robot is forced to stop
+  -- NullPointerException could occur when using robocode.control.RobocodeEngine and the
+     GUI was not enabled
   -- The text field for the filename in the robot packager was way too high
 o RoboRumble@Home, originally developed by Albert Pérez, is now built-in
   -- This is an updated version of the original one that can run with the current
