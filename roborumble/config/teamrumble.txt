@@ -62,4 +62,4 @@ BATTLESNUMFILE=./roborumble/temp/battlesnumber.txt
 UPDATEBOTSURL=http://rumble.fervir.com/rumble/RemoveOldParticipant
 
 #Number of battles a bot has to fight when it is uploaded. It has priority againts others until it reaches such number
-BATTLESPERBOT = 200
+BATTLESPERBOT=200

@@ -69,7 +69,7 @@ RATINGS.NANOBOTS=./roborumble/temp/ratings_nanorumble.txt
 
 BATTLESNUMFILE=./roborumble/temp/battlesnumber.txt
 
-#URL to tell the server to delete old bots
+#URL to remove old participants
 UPDATEBOTSURL=http://rumble.fervir.com/rumble/RemoveOldParticipant
 
 #Number of battles a bot has to fight when it is uploaded. It has priority againts others until it reaches such number
