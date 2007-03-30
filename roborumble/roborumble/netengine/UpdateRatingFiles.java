@@ -21,9 +21,11 @@ import java.io.*;
 
 
 /**
- * BotsDownload - a class by Albert Perez
- * Manages the download operations (participants and JAR files)
- * Controlled by properties files
+ * Class used for updating the local rating files.
+ * Controlled by properties files.
+ * 
+ * @author Albert Pérez (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class UpdateRatingFiles {
 

@@ -21,9 +21,14 @@ import codesize.Codesize.*;
 
 
 /**
- * BattlesRunner - a class by Albert Perez
- * Reads a file with the battles to be runned and outputs the results in another file.
- * Controlled by properties files
+ * This class is used to control which competitions a robot is allowed to
+ * participate in.
+ * Reads a file with the battles to be runned and outputs the results in
+ * another file.
+ * Controlled by properties files.
+ * 
+ * @author Albert Pérez (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class CompetitionsSelector {
 	private String repository;

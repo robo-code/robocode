@@ -19,9 +19,10 @@ import java.io.*;
 
 
 /**
- * RoboRumbleAtHome - a class by Albert Perez
- * Implements the client side of RoboRumbleAtHome
- * Controlled by properties files
+ * Implements the client side of RoboRumbleAtHome.
+ * Controlled by properties files.
+ * 
+ * @author Albert Pérez (original)
  */
 public class RoboRumbleAtHome {
 	

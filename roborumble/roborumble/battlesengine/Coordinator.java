@@ -6,19 +6,22 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Albert Pérez
+ *     Coordinator - by Albert Perez
  *     - Initial API and implementation
  *******************************************************************************/
 package roborumble.battlesengine;
 
 
 /**
- * Project RoboRumble@home
- * Coordinator - by Albert Perez
+ * This class is used to coordinate when to read and write to an object like a
+ * mutex/monitor.
+ *
+ * @author Albert Pérez (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class Coordinator {
 	private boolean available;
-	
+
 	public synchronized void get() {
 		while (!available) {
 			try {

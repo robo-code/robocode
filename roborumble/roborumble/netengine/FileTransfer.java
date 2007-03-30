@@ -22,7 +22,7 @@ import java.net.*;
 /**
  * Utility class for downloading files from the net and copying files.
  *
- * @author Flemming N. Larsen
+ * @author Flemming N. Larsen (original)
  */
 public class FileTransfer {
 
