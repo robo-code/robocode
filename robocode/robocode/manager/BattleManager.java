@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup & optimizations
  *     - Removed getBattleView().setDoubleBuffered(false) as BufferStrategy is
  *       used now
  *     - Replaced FileSpecificationVector, RobotPeerVector, and
@@ -23,7 +24,8 @@
  *     - Added PauseResumeListener interface, addListener(), removeListener(),
  *       notifyBattlePaused(), notifyBattleResumed() for letting listeners
  *       receive notifications when the game is paused or resumed
- *     - Code cleanup & optimizations
+ *     - Added missing functionality in to support team battles in
+ *       startNewBattle(BattleSpecification spec, boolean replay)
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -219,12 +221,44 @@ public class BattleManager {
 
 			for (FileSpecification fileSpec : robotSpecificationsList) {
 				if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-					RobotClassManager rcm = new RobotClassManager((RobotSpecification) fileSpec);
+					if (fileSpec instanceof RobotSpecification) {
+						RobotClassManager rcm = new RobotClassManager((RobotSpecification) fileSpec);
+						rcm.setControlRobotSpecification(battleRobotSpec);
+						battlingRobotsList.add(rcm);
+						found = true;
+						break;
+					} else if (fileSpec instanceof TeamSpecification) {
+						TeamSpecification currentTeam = (TeamSpecification) fileSpec;
+						TeamPeer teamManager = new TeamPeer(currentTeam.getName());
 
-					rcm.setControlRobotSpecification(battleRobotSpec);
-					battlingRobotsList.add(rcm);
-					found = true;
-					break;
+						StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+
+						while (teamTokenizer.hasMoreTokens()) {
+							bot = teamTokenizer.nextToken();
+							RobotSpecification match = null;
+
+							for (FileSpecification teamFileSpec : robotSpecificationsList) {
+								// Teams cannot include teams
+								if (teamFileSpec instanceof TeamSpecification) {
+									continue;
+								}
+								if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+									// Found team member
+									match = (RobotSpecification) teamFileSpec;
+									if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
+											|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
+										found = true;
+										break;
+									}
+									// else, still looking
+								}
+							}
+							RobotClassManager rcm = new RobotClassManager(match, teamManager);
+							rcm.setControlRobotSpecification(battleRobotSpec);
+							battlingRobotsList.add(rcm);
+						}
+						break;
+					}
 				}
 			}
 			if (!found) {
