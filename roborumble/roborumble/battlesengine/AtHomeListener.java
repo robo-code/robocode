@@ -10,7 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Removed unused imports
- *     - Added getResults() that returns the results when battle is complete
+ *     - Added getResults() that returns the results when a battle is complete
+ *     - Coordinator is now created inside this listener
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -20,32 +21,31 @@ import roborumble.battlesengine.Coordinator;
 
 
 /**
- * TeamsListener by Albert Perez
+ * Listener used for receiving battle results.
+ * 
+ * @author Albert Perez (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class AtHomeListener implements RobocodeListener {
-	private Coordinator coord;
+	private Coordinator coord = new Coordinator();
 
 	private RobotResults[] results;
-
-	public AtHomeListener(Coordinator c) {
-		coord = c;
-	}
 
 	public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {
 		this.results = results;
 
-		if (coord != null) {
-			coord.put();
-		}
+		// Notify that results are ready
+		coord.put();
 	}
 
-	public void battleAborted(BattleSpecification battleSpec) {
-		results = null;
-	}
+	public void battleAborted(BattleSpecification battleSpec) {}
 
 	public void battleMessage(String string) {}
 
 	public RobotResults[] getResults() {
+		// Wait till the result become available
+		coord.get();
+
 		return results;
 	}
 }
