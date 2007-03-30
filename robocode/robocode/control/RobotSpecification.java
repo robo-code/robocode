@@ -48,6 +48,8 @@ public class RobotSpecification {
 	 * Gets the name and version of this robot or team
 	 * 
 	 * @return the name and version of this robot or team
+	 * 
+	 * @since 1.3
 	 */
 	public String getNameAndVersion() {
 		String nameAndVersion = getName();
