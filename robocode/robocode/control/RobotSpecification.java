@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Lasen
  *     - Code cleanup
+ *     - Added the getNameAndVersion() method
+ *     - Changed to use the FileSpecification as local specification instead of
+ *       RobotSpecification. This change was done in order to support teams
  *******************************************************************************/
 package robocode.control;
 
@@ -26,10 +29,33 @@ import java.io.File;
  */
 public class RobotSpecification {
 
-	private robocode.repository.RobotSpecification local;
+	private robocode.repository.FileSpecification local;
 
-	RobotSpecification(robocode.repository.RobotSpecification spec) {
+	RobotSpecification(robocode.repository.FileSpecification spec) {
 		this.local = spec;
+	}
+
+	/**
+	 * Gets the name of this robot or team
+	 * 
+	 * @return the name of this robot or team
+	 */
+	public String getName() {
+		return local.getName();
+	}
+
+	/**
+	 * Gets the name and version of this robot or team
+	 * 
+	 * @return the name and version of this robot or team
+	 */
+	public String getNameAndVersion() {
+		String nameAndVersion = getName();
+		String version = getVersion();
+		if (version != null && version.trim().length() > 0) {
+			nameAndVersion += ' ' + version;
+		}
+		return nameAndVersion;
 	}
 
 	/**
