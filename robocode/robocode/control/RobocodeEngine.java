@@ -17,6 +17,8 @@
  *     - Updated to use methods from FileUtil and Logger, which replaces
  *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Changed to use FileUtil.getRobotsDir()
+ *     - Modified getLocalRepository() to support teams by using
+ *       FileSpecification instead of RobotSpecification
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
