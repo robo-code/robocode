@@ -72,7 +72,7 @@ public class UpdateRatingFiles {
 		try {
 			FileReader fr = new FileReader(battlesnumfile);
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
+			String record;
 
 			while ((record = br.readLine()) != null) {
 				battles.add(record);

@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
+ *     - Minor cleanup
  *     - Removed unused imports
  *     - Replaced the robocode.util.Utils.copy() method with FileTransfer.copy()
  *******************************************************************************/
@@ -90,7 +91,7 @@ public class ResultsUpload {
 		try {
 			FileReader fr = new FileReader(resultsfile);
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
+			String record;
 
 			while ((record = br.readLine()) != null) {
 				if (record.indexOf(game) != -1) {

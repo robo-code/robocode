@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Removed dead code
+ *     - Minor cleanup
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -22,9 +23,12 @@ import java.io.*;
 
 
 /**
- * BotsDownload - a class by Albert Perez
- * Manages the download operations (participants and JAR files)
- * Controlled by properties files
+ * BotsDownload is used for downloading robots from the Internet.
+ * Manages the download operations (participants and JAR files).
+ * Controlled by properties files.
+ *
+ * @author Albert Perez (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class PrepareBattles {
 
@@ -99,7 +103,7 @@ public class PrepareBattles {
 		try {
 			FileReader fr = new FileReader(participantsfile); 
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
+			String record;
 
 			while ((record = br.readLine()) != null) { 
 				if (record.indexOf(",") != -1) {
@@ -169,7 +173,7 @@ public class PrepareBattles {
 		try {
 			FileReader fr = new FileReader(participantsfile); 
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
+			String record;
 
 			while ((record = br.readLine()) != null) { 
 				if (record.indexOf(",") != -1) {
@@ -213,7 +217,7 @@ public class PrepareBattles {
 		try {
 			FileReader fr = new FileReader(priority); 
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
+			String record;
 
 			while ((record = br.readLine()) != null) { 
 				String[] items = record.split(",");
@@ -335,7 +339,7 @@ public class PrepareBattles {
 		try {
 			FileReader fr = new FileReader(participantsfile); 
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
+			String record;
 
 			while ((record = br.readLine()) != null) { 
 				if (record.indexOf(",") != -1) {
