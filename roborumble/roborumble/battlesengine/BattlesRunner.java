@@ -26,9 +26,12 @@ import java.io.*;
 
 
 /**
- * BattlesRunner - a class by Albert Perez
+ * The BattlesRunner is running battles.
  * Reads a file with the battles to be runned and outputs the results in another file.
- * Controlled by properties files
+ * Controlled by properties files.
+ * 
+ * @author Albert Perez (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class BattlesRunner {
 	private String inputfile;
@@ -38,8 +41,6 @@ public class BattlesRunner {
 	private String outfile;
 	private String user;
 	private String game;
-	// private String matchtype;
-	private String isteams;
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
@@ -57,8 +58,6 @@ public class BattlesRunner {
 		fieldhei = Integer.parseInt(parameters.getProperty("FIELDH", "600"));
 		outfile = parameters.getProperty("OUTPUT", "");
 		user = parameters.getProperty("USER", "");
-		// matchtype = parameters.getProperty("RUNONLY", "GENERAL");
-		isteams = parameters.getProperty("TEAMS", "NOT");
 		game = propertiesfile;
 		while (game.indexOf("/") != -1) {
 			game = game.substring(game.indexOf("/") + 1);
@@ -68,8 +67,7 @@ public class BattlesRunner {
 
 	public boolean runBattles() {
 		// Initialize objects
-		Coordinator coord = new Coordinator();
-		AtHomeListener listener = new AtHomeListener(coord);
+		AtHomeListener listener = new AtHomeListener();
 		RobocodeEngine engine = new RobocodeEngine(listener);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
 		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
@@ -80,7 +78,7 @@ public class BattlesRunner {
 		try {
 			FileReader fr = new FileReader(inputfile);
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
+			String record;
 
 			while ((record = br.readLine()) != null) {
 				robots.add(record);
@@ -113,31 +111,17 @@ public class BattlesRunner {
 
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
 			runBattle(engine, battle, enemies);
-			coord.get();
 			// get results
 			RobotResults[] results = listener.getResults();
-			String First = results[0].getRobot().getClassName() + ' ' + results[0].getRobot().getVersion();
+			String First = results[0].getRobot().getNameAndVersion();
+
 			int PointsFirst = results[0].getScore();
 			int BulletDFirst = results[0].getBulletDamage();
 			int SurvivalFirst = results[0].getFirsts();
-			String Second = results[1].getRobot().getClassName() + ' ' + results[0].getRobot().getVersion();
+			String Second = results[1].getRobot().getNameAndVersion();
 			int PointsSecond = results[1].getScore();
 			int BulletDSecond = results[1].getBulletDamage();
 			int SurvivalSecond = results[1].getFirsts();
-
-			// if it is a teams battle, version is not returned by robocode. Add it manually
-			if (isteams.equals("YES")) {
-				String v1 = param[0].substring(param[0].indexOf(' '));
-				String v2 = param[1].substring(param[1].indexOf(' '));
-
-				if (param[0].indexOf(First) != -1) {
-					First = First + v1;
-					Second = Second + v2;
-				} else {
-					First = First + v2;
-					Second = Second + v1;
-				}
-			}
 
 			outtxt.println(
 					game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + "," + System.currentTimeMillis()
@@ -157,8 +141,7 @@ public class BattlesRunner {
 
 	public boolean runMeleeBattles() {
 		// Initialize objects
-		Coordinator coord = new Coordinator();
-		AtHomeListener listener = new AtHomeListener(coord);
+		AtHomeListener listener = new AtHomeListener();
 		RobocodeEngine engine = new RobocodeEngine(listener);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
 		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
@@ -169,7 +152,7 @@ public class BattlesRunner {
 		try {
 			FileReader fr = new FileReader(inputfile);
 			BufferedReader br = new BufferedReader(fr);
-			String record = new String();
+			String record;
 
 			while ((record = br.readLine()) != null) {
 				robots.add(record);
@@ -208,7 +191,6 @@ public class BattlesRunner {
 			}
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
 			runBattle(engine, battle, enemies);
-			coord.get();
 			// get results
 			RobotResults[] results = listener.getResults();
 			String[] Bot = new String[results.length];
@@ -217,7 +199,7 @@ public class BattlesRunner {
 			int[] Survival = new int[results.length];
 
 			for (int i = 0; i < results.length; i++) {
-				Bot[i] = results[i].getRobot().getClassName() + ' ' + results[0].getRobot().getVersion();
+				Bot[i] = results[i].getRobot().getNameAndVersion();
 				Points[i] = results[i].getScore();
 				BulletD[i] = results[i].getBulletDamage();
 				Survival[i] = results[i].getFirsts();
@@ -234,7 +216,6 @@ public class BattlesRunner {
 					}
 				}
 			}
-			// index +=2;
 			index++;
 			System.out.println("RESULT = " + Bot[0] + " wins, " + Bot[1] + " is second.");
 		}
@@ -247,24 +228,28 @@ public class BattlesRunner {
 	}
 
 	private void runBattle(RobocodeEngine engine, BattleSpecification battle, String selectedRobotList) {
-		RobotSpecification[] robotSpecs = engine.getLocalRepository();
+		RobotSpecification[] repository = engine.getLocalRepository();
+
+		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
+
+		for (RobotSpecification spec : repository) {
+			robotSpecMap.put(spec.getNameAndVersion(), spec);
+		}
 
 		String[] selectedRobots = selectedRobotList.split(",");
 
 		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
 
-		for (RobotSpecification rs : robotSpecs) {
-			for (String robot : selectedRobots) {
-				String[] nameAndVersion = robot.split(" ");
-
-				if (rs.getClassName().equals(nameAndVersion[0]) && rs.getVersion().equals(nameAndVersion[1])) {
-					selectedRobotSpecs.add(rs);
-					break;
-				}
+		RobotSpecification spec;
+		
+		for (String robot : selectedRobots) {
+			spec = robotSpecMap.get(robot);
+			if (spec != null) {
+				selectedRobotSpecs.add(spec);			
 			}
 		}
-
 		engine.runBattle(
-				new BattleSpecification(battle.getNumRounds(), battle.getBattlefield(), selectedRobotSpecs.toArray(robotSpecs)));
+				new BattleSpecification(battle.getNumRounds(), battle.getBattlefield(),
+				selectedRobotSpecs.toArray(new RobotSpecification[1])));
 	}
 }
