@@ -23,8 +23,7 @@ import java.io.*;
 
 
 /**
- * BotsDownload is used for downloading robots from the Internet.
- * Manages the download operations (participants and JAR files).
+ * PrepareBattles is used for preparing battles.
  * Controlled by properties files.
  *
  * @author Albert Perez (original)
@@ -147,8 +146,6 @@ public class PrepareBattles {
 			int bot2 = random.nextInt(names.size());
 
 			if (bot1 != bot2) {
-				// outtxt.println((String)names.get(bot1));
-				// outtxt.println((String)names.get(bot2));
 				outtxt.println(names.get(bot1) + "," + names.get(bot2) + "," + runonly);
 				count++;
 			} 	
@@ -238,7 +235,6 @@ public class PrepareBattles {
 			br.close();
 		} catch (Exception e) { 
 			System.out.println("Prioritary battles file not found ...  "); 
-			// System.out.println(e);
 		}
 		// Delete priority battles (avoid duplication)
 		File r = new File(priority);
