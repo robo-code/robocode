@@ -1,6 +1,6 @@
 Version 1.3 Alpha
-(03/27/2007)
-Now featuring RoboRumble@Home
+(03/30/2007)
+Now featuring the RoboRumble@Home client
 -------------
 o Bugfixes
   -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
@@ -9,7 +9,12 @@ o Bugfixes
   -- NullPointerException could occur when using robocode.control.RobocodeEngine and the
      GUI was not enabled
   -- The text field for the filename in the robot packager was way too high
-o RoboRumble@Home, originally developed by Albert Pérez, is now built-in
+o RoboRumble@Home client, originally developed by Albert Pérez, is now built-in
+  -- RoboRumble@Home is the ultimate collaborative effort to have a live, up-to-date
+     ranking of bots. It uses the power of available robocoder's computers to distribute
+     the effort of running battles and building the rankings
+  -- For more information about RoboRumble@Home you should read:
+     http://robowiki.net/cgi-bin/robowiki?RoboRumble
   -- This is an updated version of the original one that can run with the current
      version of Robocode and which has been ported to Java 5
   -- Configuration files has been updated, and are available in the 'roborumble' folder
@@ -18,7 +23,9 @@ o The codesize tool by Christian D. Schnell has been added
   -- The codesize tool has been added to support the build-in RoboRumble@Home, and a new
      feature for getting the codesize and robot codesize class (MiniBot, MegaBot etc.)
      when a robot is being packaged
-o The file structure of Robocode has been slightly changed
+o Added a new method called getNameAndVersion() to the robocode.control.RobotSpecification
+  -- This method was added to better support RoboRumble and ranking programs
+o The file structure of Robocode has been slightly improved
   -- All .jar files including robocode.jar are now located in the libs folder
   -- The robot.database and .robotcache files has been moved to the robots folder
   -- All RoboRumble related files are located in the roborumble folder

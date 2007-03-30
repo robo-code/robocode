@@ -42,7 +42,6 @@ import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
 
-
 /**
  * RobocodeEngine - Class for controlling Robocode.
  *
@@ -160,11 +159,11 @@ public class RobocodeEngine {
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
-		List<FileSpecification> l = robotRepository.getRobotSpecificationsList(false, false, true, false, false, true);
-		RobotSpecification robotSpecs[] = new RobotSpecification[l.size()];
+		List<FileSpecification> list = robotRepository.getRobotSpecificationsList(false, false, false, false, false, false);
+		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
-			robotSpecs[i] = new RobotSpecification((robocode.repository.RobotSpecification) l.get(i));
+			robotSpecs[i] = new RobotSpecification(list.get(i));
 		}
 		return robotSpecs;
 	}
@@ -174,6 +173,7 @@ public class RobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battle) {
 		Logger.setLogListener(listener);
+
 		manager.getBattleManager().startNewBattle(battle, false);
 	}
 
