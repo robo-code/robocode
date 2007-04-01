@@ -213,11 +213,10 @@ public class BotsDownload {
 			boolean exists = (new File(botpath)).exists();
 
 			if (!exists) {
-				// System.out.println("Going to download ..."+botname);
 				boolean downloaded = downloadBot(botname, botjar, botid, botsrepository, tempdir);
 
 				if (!downloaded) {
-					System.out.println("Could not download '" + botjar + '\'');
+					System.out.println("Could not download " + botjar);
 				}
 			}
 		}
@@ -273,19 +272,19 @@ public class BotsDownload {
 				url = id;
 			}
 		} catch (Exception e) {
-			System.out.println("Wrong URL: '" + url + '\'');
+			System.out.println("Wrong URL: " + url);
 			return false;
 		}
 
-		System.out.println("Trying to download '" + botname + '\'');
+		System.out.println("Trying to download " + botname);
 
 		DownloadStatus downloadStatus = FileTransfer.download(url, filed, sessionId);
 
 		if (downloadStatus == DownloadStatus.FILE_NOT_FOUND) {
-			System.out.println("Could not find '" + botname + "' on the site");
+			System.out.println("Could not find " + botname + " from " + url);
 			return false;
 		} else if (downloadStatus == DownloadStatus.COULD_NOT_CONNECT) {
-			System.out.println("Could not connect to '" + url + "'");
+			System.out.println("Could not connect to " + url);
 			return false;
 		}
 
@@ -296,12 +295,12 @@ public class BotsDownload {
 				System.out.println("Unable to copy " + filed + " into the repository");
 				return false;
 			}
-			System.out.println("Downloaded " + botname + " into " + finald);
 		} else {
 			System.out.println("Downloaded file is wrong or corrupted:" + file);
 			return false;
 		}
 
+		System.out.println("Downloaded " + botname + " into " + finald);
 		return true;
 	}
 
