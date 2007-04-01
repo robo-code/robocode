@@ -28,9 +28,9 @@ import robocode.security.RobocodeSecurityManager;
  *           public boolean test() {
  *               return (getEnergy() <= trigger);
  *           };
- *	     }
- *  );
- *  </pre>
+ *       }
+ *   );
+ * </pre>
  * You should note that by extending Condition this way, you are actually
  * creating an inner class -- so if you distribute your robot, there will be
  * multiple class files.  (i.e. Target$1.class)
