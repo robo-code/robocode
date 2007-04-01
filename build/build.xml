@@ -234,9 +234,10 @@
       	<include name="config/*"/>        <!-- Configuration files -->
       </fileset>
       <fileset dir="${build}">
-        <include name="libs/**"/>         <!-- Builded jar files -->
-        <include name="javadoc/**"/>      <!-- Builded javadoc files -->
-        <include name="robots/**"/>       <!-- Builded robots -->
+        <include name="libs/robocode.jar"/>    <!-- Builded robocode.jar -->
+        <include name="libs/roborumble.jar"/>  <!-- Builded roborumble.jar -->
+        <include name="javadoc/**"/>           <!-- Builded javadoc files -->
+        <include name="robots/**"/>            <!-- Builded robots -->
       </fileset>
       <fileset file="${versions.file}"/>  <!-- Versions file -->
     </jar>
