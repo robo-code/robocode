@@ -9,8 +9,9 @@
  *     Albert Pérez
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Completely rewritten, to support session-based download that is not
- *       blocked if a connection is hanging, i.e. not responding
+ *     - Completely rewritten to be fully multi-threaded so that download is not
+ *       blocked if a connection is hanging. In addition, this version of
+ *       FileTransfer support sessions
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -27,7 +28,6 @@ import java.net.*;
 public class FileTransfer {
 
 	private final static int CONNECTION_TIMEOUT = 5000; // 5 seconds
-	private final static int DOWNLOAD_TIMEOUT = 60000; // 1 minute
 
 	/**
 	 * Represents the download status returned when downloading files.
@@ -35,13 +35,10 @@ public class FileTransfer {
 	 * @author Flemming N. Larsen
 	 */
 	public enum DownloadStatus {
-
 		/** The download was succesful */
 		OK,
-		
 		/** Connection problem */
 		COULD_NOT_CONNECT,
-
 		/** The file to download was not found */
 		FILE_NOT_FOUND
 	}
@@ -53,7 +50,7 @@ public class FileTransfer {
 	 * @return a session id for keeping a session on a HTTP site or null if no
 	 *    session is available
 	 */
-	public static String getSessionId(String url) {
+	public final static String getSessionId(String url) {
 		HttpURLConnection con = null;
 
 		try {
@@ -64,19 +61,19 @@ public class FileTransfer {
 			}
 
 			// Get a session id if available
-			GetSessionIdThread getter = new GetSessionIdThread(con);
+			final GetSessionIdThread sessionIdThread = new GetSessionIdThread(con);
 
-			getter.start();
+			sessionIdThread.start();
 
 			// Wait for the session id
-			synchronized (getter) {
-				getter.wait(CONNECTION_TIMEOUT);
+			synchronized (sessionIdThread) {
+				sessionIdThread.wait(CONNECTION_TIMEOUT);
 			}
 
 			// Return the session id
-			return getter.sessionId;
+			return sessionIdThread.sessionId;
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// No nothing, null will be returned
 			;
 		} finally {
@@ -97,15 +94,15 @@ public class FileTransfer {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private static class GetSessionIdThread extends Thread {
+	private final static class GetSessionIdThread extends Thread {
 
 		// The resulting session id to read out
 		private String sessionId;
 
-		private HttpURLConnection con;
+		private final HttpURLConnection con;
 
 		private GetSessionIdThread(HttpURLConnection con) {
-			super("file transfer: getting session id");
+			super("FileTransfer: Get session ID");
 			this.con = con;
 		}
 
@@ -115,20 +112,19 @@ public class FileTransfer {
 
 			try {
 				// Get the cookie value
-				String cookieVal = con.getHeaderField("Set-Cookie");
+				final String cookieVal = con.getHeaderField("Set-Cookie");
 
 				// Extract the session id from the cookie value
 				if (cookieVal != null) {
 					sessionId = cookieVal.substring(0, cookieVal.indexOf(";"));
 				}
-
-				// Notify that this thread is finish
-				synchronized (this) {
-					notify();
-				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				// No nothing, sessionId will be null
 				;
+			}
+			// Notify that this thread is finish
+			synchronized (this) {
+				notify();
 			}
 		}
 	}
@@ -143,7 +139,7 @@ public class FileTransfer {
 	 * @return the download status, which is DownloadStatus.OK if the download
 	 *    completed successfully; otherwise an error occured
 	 */
-	public static DownloadStatus download(String url, String filename, String sessionId) {
+	public final static DownloadStatus download(String url, String filename, String sessionId) {
 		HttpURLConnection con = null;
 
 		try {
@@ -168,27 +164,19 @@ public class FileTransfer {
 			con.connect();
 
 			// Begin the download
-			DownloadThread download = new DownloadThread(con, filename);
+			final DownloadThread downloadThread = new DownloadThread(con, filename);
 
-			download.start();
+			downloadThread.start();
 
 			// Wait for the download to complete
-
-			long startTime = System.currentTimeMillis();
-
-			synchronized (download) {
-				download.wait(DOWNLOAD_TIMEOUT);
-			}
-
-			// Return error if the download timed out
-			if ((System.currentTimeMillis() - startTime) >= DOWNLOAD_TIMEOUT) {
-				return DownloadStatus.COULD_NOT_CONNECT;
+			synchronized (downloadThread) {
+				downloadThread.wait();
 			}
 
 			// Return the download status
-			return download.status;
+			return downloadThread.status;
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return DownloadStatus.COULD_NOT_CONNECT;
 		} finally {
 			// Make sure the connection is disconnected.
@@ -205,19 +193,19 @@ public class FileTransfer {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private static class DownloadThread extends Thread {
+	private final static class DownloadThread extends Thread {
 
 		// The download status to be read out
 		private DownloadStatus status = DownloadStatus.COULD_NOT_CONNECT; // Default error
 
-		private HttpURLConnection con;
-		private String filename;
+		private final HttpURLConnection con;
+		private final String filename;
 
 		private InputStream in;
 		private OutputStream out;
 
 		private DownloadThread(HttpURLConnection con, String filename) {
-			super("file transfer: downloading");
+			super("FileTransfer: Download");
 			this.con = con;
 			this.filename = filename;
 		}
@@ -226,16 +214,16 @@ public class FileTransfer {
 		public void run() {
 			try {
 				// Start getting the response code
-				GetResponseCodeThread response = new GetResponseCodeThread(con);
+				final GetResponseCodeThread responseThread = new GetResponseCodeThread(con);
 
-				response.start();
+				responseThread.start();
 
 				// Wait for the response to finish
-				synchronized (response) {
-					response.wait(CONNECTION_TIMEOUT);
+				synchronized (responseThread) {
+					responseThread.wait(CONNECTION_TIMEOUT);
 				}
 
-				int responseCode = response.responseCode;
+				final int responseCode = responseThread.responseCode;
 
 				if (responseCode == -1) {
 					// Terminate if we did not get the response code
@@ -251,12 +239,20 @@ public class FileTransfer {
 					return;
 				}
 
-				// Get the size of the file to download
-				long size = con.getContentLength();
+				// Start getting the size of the file to download
+				final GetContentLengthThread contentLengthThread = new GetContentLengthThread(con);
 
-				// Make sanity check, that the file size is > 0 bytes
-				if (size <= 0) {
-					status = DownloadStatus.FILE_NOT_FOUND;
+				contentLengthThread.start();
+
+				// Wait for the file size
+				synchronized (contentLengthThread) {
+					contentLengthThread.wait(CONNECTION_TIMEOUT);
+				}
+
+				final int size = contentLengthThread.contentLength;
+
+				if (size == -1) {
+					// Terminate if we did not get the content length
 					return;
 				}
 
@@ -275,45 +271,59 @@ public class FileTransfer {
 
 				// Download the file
 
-				byte[] buf = new byte[4096];
+				final byte[] buf = new byte[4096];
 
 				int totalRead = 0;
 				int bytesRead;
 
+				// Start thread for reading bytes into the buffer
+
 				while (totalRead < size) {
-					bytesRead = in.read(buf);
-					if (bytesRead == -1) {
-						break; // Read completed
+					// Start reading bytes into the buffer
+					final ReadInputStreamToBufferThread readThread = new ReadInputStreamToBufferThread(in, buf);
+
+					readThread.start();
+
+					// Wait for the reading to finish
+					synchronized (readThread) {
+						readThread.wait(CONNECTION_TIMEOUT);
 					}
+
+					bytesRead = readThread.bytesRead;
+					if (bytesRead == -1) {
+						// Read completed has completed
+						break;
+					}
+
+					// Write the byte buffer to the output
 					out.write(buf, 0, bytesRead);
 
 					totalRead += bytesRead;
 				}
 
-				// Notify that this thread is finish
-				synchronized (this) {
-					notify();
-				}
-			} catch (Exception e) {
+				// If we reached this point, the download was succesful
+				status = DownloadStatus.OK;
+
+			} catch (final Exception e) {
 				status = DownloadStatus.COULD_NOT_CONNECT;
-				return;
 			} finally {
 				// Make sure the input stream is closed
 				if (in != null) {
 					try {
 						in.close();
-					} catch (IOException e) {}
+					} catch (final IOException e) {}
 				}
 				// Make sure the output stream is closed
 				if (out != null) {
 					try {
 						out.close();
-					} catch (IOException e) {}
+					} catch (final IOException e) {}
 				}
 			}
-
-			// If we reached this point, the download was succesful
-			status = DownloadStatus.OK;
+			// Notify that this thread is finish
+			synchronized (this) {
+				notify();
+			}
 		}
 	}
 
@@ -323,15 +333,15 @@ public class FileTransfer {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private static class GetResponseCodeThread extends Thread {
+	private final static class GetResponseCodeThread extends Thread {
 
 		// The response code to read out
 		private int responseCode;
 
-		private HttpURLConnection con;
+		private final HttpURLConnection con;
 
 		private GetResponseCodeThread(HttpURLConnection con) {
-			super("file transfer: getting response code");
+			super("FileTransfer: Get response code");
 			this.con = con;
 		}
 
@@ -343,14 +353,90 @@ public class FileTransfer {
 			try {
 				// Get the response code
 				responseCode = con.getResponseCode();
-
-				// Notify that this thread is finish
-				synchronized (this) {
-					notify();
-				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				// No nothing, responseCode will be -1
 				;
+			}
+			// Notify that this thread is finish
+			synchronized (this) {
+				notify();
+			}
+		}
+	}
+
+
+	/**
+	 * Thread used for getting the content length of an already open HTTP connection.
+	 *
+	 * @author Flemming N. Larsen
+	 */
+	private final static class GetContentLengthThread extends Thread {
+
+		// The content length to read out
+		private int contentLength;
+
+		private final HttpURLConnection con;
+
+		private GetContentLengthThread(HttpURLConnection con) {
+			super("FileTransfer: Get content length");
+			this.con = con;
+		}
+
+		@Override
+		public void run() {
+			// Initialize the content length to an invalid length
+			contentLength = -1;
+
+			try {
+				// Get the content length
+				contentLength = con.getContentLength();
+			} catch (final Exception e) {
+				// No nothing, contentLength will be -1
+				;
+			}
+			// Notify that this thread is finish
+			synchronized (this) {
+				notify();
+			}
+		}
+	}
+
+
+	/**
+	 * Thread used for reading bytes from an already open input stream into a
+	 * byte buffer.
+	 *
+	 * @author Flemming N. Larsen
+	 */
+	private final static class ReadInputStreamToBufferThread extends Thread {
+
+		private int bytesRead;
+
+		private final InputStream in;
+
+		private final byte[] buf;
+
+		private ReadInputStreamToBufferThread(InputStream in, byte[] buf) {
+			super("FileTransfer: Read input stream to buffer");
+			this.in = in;
+			this.buf = buf;
+		}
+
+		@Override
+		public void run() {
+			// Initialize the number of bytes to read to EOS
+			bytesRead = -1;
+
+			try {
+				// Read bytes into the buffer
+				bytesRead = in.read(buf);
+			} catch (final Exception e) {
+				// No nothing, bytesRead will be -1
+				;
+			}
+			// Notify that this thread is finish
+			synchronized (this) {
+				notify();
 			}
 		}
 	}
@@ -363,19 +449,19 @@ public class FileTransfer {
 	 *    into
 	 * @return true if the file was copied; false otherwise
 	 */
-	public static boolean copy(String src_file, String dest_file) {
+	public final static boolean copy(String src_file, String dest_file) {
 		try {
 			if (src_file.equals(dest_file)) {
 				throw new IOException("You cannot copy a file onto itself");
 			}
-			byte[] buf = new byte[4096];
-			FileInputStream in = new FileInputStream(src_file);
-			FileOutputStream out = new FileOutputStream(dest_file);
+			final byte[] buf = new byte[4096];
+			final FileInputStream in = new FileInputStream(src_file);
+			final FileOutputStream out = new FileOutputStream(dest_file);
 
 			while (in.available() > 0) {
 				out.write(buf, 0, in.read(buf, 0, buf.length));
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return false;
 		}
 		return true;
