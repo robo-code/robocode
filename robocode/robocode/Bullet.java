@@ -101,11 +101,7 @@ public class Bullet {
 	 *    the bullet has not hit a robot.
 	 */
 	public String getVictim() {
-		if (peer.getVictim() == null) {
-			return null;
-		} else {
-			return peer.getVictim().getName();
-		}
+		return (peer.getVictim() != null) ? peer.getVictim().getName() : null;
 	}
 
 	/**

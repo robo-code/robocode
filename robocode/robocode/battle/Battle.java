@@ -263,9 +263,8 @@ public class Battle implements Runnable {
 				if (!abortBattles) {
 					log("Null pointer exception running a battle");
 					throw e;
-				} else {
-					log("Warning:  Null pointer exception while aborting battle.");
 				}
+				log("Warning:  Null pointer exception while aborting battle.");
 			} catch (Exception e) {
 				log("Exception running a battle: " + e);
 			}

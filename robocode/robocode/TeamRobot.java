@@ -58,10 +58,9 @@ public class TeamRobot extends AdvancedRobot {
 				return false;
 			}
 			return peer.getTeamPeer().contains(name);
-		} else {
-			uninitializedException("isTeammate");
-			return false;
 		}
+		uninitializedException("isTeammate");
+		return false;
 	}
 
 	/**
@@ -98,10 +97,9 @@ public class TeamRobot extends AdvancedRobot {
 				}
 			}
 			return s;
-		} else {
-			uninitializedException("getTeammates");
-			return null;
 		}
+		uninitializedException("getTeammates");
+		return null;
 	}
 
 	/**
@@ -176,10 +174,9 @@ public class TeamRobot extends AdvancedRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<MessageEvent>(peer.getEventManager().getMessageEvents());
-		} else {
-			uninitializedException("getMessageEvents");
-			return null; // never called
 		}
+		uninitializedException("getMessageEvents");
+		return null; // never called
 	}
 
 	/**

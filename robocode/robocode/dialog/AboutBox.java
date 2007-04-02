@@ -212,8 +212,7 @@ public class AboutBox extends JDialog {
 
 		if (v < 10) {
 			return (char) ('0' + v);
-		} else {
-			return (char) ('A' + (v - 10));
 		}
+		return (char) ('A' + (v - 10));
 	}
 }

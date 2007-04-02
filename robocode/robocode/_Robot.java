@@ -67,10 +67,9 @@ public class _Robot {
 	public double getGunCharge() {
 		if (peer != null) {
 			return 5 - peer.getGunHeat();
-		} else {
-			uninitializedException("getGunCharge");
-			return 0; // never called
 		}
+		uninitializedException("getGunCharge");
+		return 0; // never called
 	}
 
 	/**
@@ -80,10 +79,9 @@ public class _Robot {
 	public double getLife() {
 		if (peer != null) {
 			return peer.getEnergy();
-		} else {
-			uninitializedException("getLife");
-			return 0; // never called
 		}
+		uninitializedException("getLife");
+		return 0; // never called
 	}
 
 	/**
@@ -94,10 +92,9 @@ public class _Robot {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getNumRounds();
-		} else {
-			uninitializedException("getNumBattles");
-			return 0; // never called
 		}
+		uninitializedException("getNumBattles");
+		return 0; // never called
 	}
 
 	/**
@@ -108,10 +105,9 @@ public class _Robot {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getRoundNum();
-		} else {
-			uninitializedException("getBattleNum");
-			return 0; // never called
 		}
+		uninitializedException("getBattleNum");
+		return 0; // never called
 	}
 
 	/**

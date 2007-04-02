@@ -158,10 +158,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getBattleFieldHeight();
-		} else {
-			uninitializedException("getBattleFieldHeight");
-			return 0; // never called
 		}
+		uninitializedException("getBattleFieldHeight");
+		return 0; // never called
 	}
 
 	/**
@@ -173,10 +172,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getBattleFieldWidth();
-		} else {
-			uninitializedException("getBattleFieldWidth");
-			return 0; // never called
 		}
+		uninitializedException("getBattleFieldWidth");
+		return 0; // never called
 	}
 
 	/**
@@ -200,10 +198,9 @@ public class Robot extends _Robot implements Runnable {
 				rv -= 360;
 			}
 			return rv;
-		} else {
-			uninitializedException("getHeading");
-			return 0; // never called
 		}
+		uninitializedException("getHeading");
+		return 0; // never called
 	}
 
 	/**
@@ -247,10 +244,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getName();
-		} else {
-			uninitializedException("getName");
-			return null; // never called
 		}
+		uninitializedException("getName");
+		return null; // never called
 	}
 
 	/**
@@ -265,10 +261,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getX();
-		} else {
-			uninitializedException("getX");
-			return 0; // never called
 		}
+		uninitializedException("getX");
+		return 0; // never called
 	}
 
 	/**
@@ -283,10 +278,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getY();
-		} else {
-			uninitializedException("getY");
-			return 0; // never called
 		}
+		uninitializedException("getY");
+		return 0; // never called
 	}
 
 	/**
@@ -490,10 +484,9 @@ public class Robot extends _Robot implements Runnable {
 
 			peer.tick();
 			return b;
-		} else {
-			uninitializedException("fireBullet");
-			return null;
 		}
+		uninitializedException("fireBullet");
+		return null;
 	}
 
 	/**
@@ -513,10 +506,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getBattle().getGunCoolingRate();
-		} else {
-			uninitializedException("getGunCoolingRate");
-			return 0; // never called
 		}
+		uninitializedException("getGunCoolingRate");
+		return 0; // never called
 	}
 
 	/**
@@ -532,10 +524,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getGunHeading() * 180.0 / Math.PI;
-		} else {
-			uninitializedException("getGunHeading");
-			return 0; // never called
 		}
+		uninitializedException("getGunHeading");
+		return 0; // never called
 	}
 
 	/**
@@ -560,10 +551,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getGunHeat();
-		} else {
-			uninitializedException("getGunHeat");
-			return 0; // never called
 		}
+		uninitializedException("getGunHeat");
+		return 0; // never called
 	}
 
 	/**
@@ -575,10 +565,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getNumRounds();
-		} else {
-			uninitializedException("getNumRounds");
-			return 0; // never called
 		}
+		uninitializedException("getNumRounds");
+		return 0; // never called
 	}
 
 	/**
@@ -598,10 +587,9 @@ public class Robot extends _Robot implements Runnable {
 			synchronized (peer.getBattle()) {
 				return peer.getOthers();
 			}
-		} else {
-			uninitializedException("getOthers");
-			return 0; // never called
 		}
+		uninitializedException("getOthers");
+		return 0; // never called
 	}
 
 	/**
@@ -617,10 +605,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getRadarHeading() * 180.0 / Math.PI;
-		} else {
-			uninitializedException("getRadarHeading");
-			return 0; // never called
 		}
+		uninitializedException("getRadarHeading");
+		return 0; // never called
 	}
 
 	/**
@@ -635,10 +622,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getRoundNum();
-		} else {
-			uninitializedException("getRoundNum");
-			return 0; // never called
 		}
+		uninitializedException("getRoundNum");
+		return 0; // never called
 	}
 
 	/**
@@ -655,10 +641,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getTime();
-		} else {
-			uninitializedException("getTime");
-			return 0; // never called
 		}
+		uninitializedException("getTime");
+		return 0; // never called
 	}
 
 	/**
@@ -675,10 +660,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getVelocity();
-		} else {
-			uninitializedException("getVelocity");
-			return 0; // never called
 		}
+		uninitializedException("getVelocity");
+		return 0; // never called
 	}
 
 	/**
@@ -1547,10 +1531,9 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEnergy();
-		} else {
-			uninitializedException("getEnergy");
-			return 0; // never called
 		}
+		uninitializedException("getEnergy");
+		return 0; // never called
 	}
 
 	/**

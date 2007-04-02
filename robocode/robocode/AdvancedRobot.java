@@ -51,10 +51,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getDistanceRemaining();
-		} else {
-			uninitializedException("getDistanceRemaining");
-			return 0; // never called
 		}
+		uninitializedException("getDistanceRemaining");
+		return 0; // never called
 	}
 
 	/**
@@ -321,10 +320,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.setCall();
 			return peer.setFire(power);
-		} else {
-			uninitializedException("setFireBullet");
-			return null;
 		}
+		uninitializedException("setFireBullet");
+		return null;
 	}
 
 	/**
@@ -442,10 +440,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<Event>(peer.getEventManager().getAllEvents());
-		} else {
-			uninitializedException("getAllEvents");
-			return null; // never called
 		}
+		uninitializedException("getAllEvents");
+		return null; // never called
 	}
 
 	/**
@@ -470,10 +467,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<BulletHitBulletEvent>(peer.getEventManager().getBulletHitBulletEvents());
-		} else {
-			uninitializedException("getBulletHitBulletEvents");
-			return null; // never called
 		}
+		uninitializedException("getBulletHitBulletEvents");
+		return null; // never called
 	}
 
 	/**
@@ -497,10 +493,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<BulletHitEvent>(peer.getEventManager().getBulletHitEvents());
-		} else {
-			uninitializedException("getBulletHitEvents");
-			return null; // never called
 		}
+		uninitializedException("getBulletHitEvents");
+		return null; // never called
 	}
 
 	/**
@@ -525,10 +520,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<BulletMissedEvent>(peer.getEventManager().getBulletMissedEvents());
-		} else {
-			uninitializedException("getBulletMissedEvents");
-			return null; // never called
 		}
+		uninitializedException("getBulletMissedEvents");
+		return null; // never called
 	}
 
 	/**
@@ -549,10 +543,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 			peer.getCall();
 			peer.setIORobot(true);
 			return peer.getRobotFileSystemManager().getWritableDirectory();
-		} else {
-			uninitializedException("getDataDirectory");
-			return null; // never called
 		}
+		uninitializedException("getDataDirectory");
+		return null; // never called
 	}
 
 	/**
@@ -579,10 +572,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 			peer.getCall();
 			peer.setIORobot(true);
 			return new File(peer.getRobotFileSystemManager().getWritableDirectory(), filename);
-		} else {
-			uninitializedException("getDataFile");
-			return null; // never called
 		}
+		uninitializedException("getDataFile");
+		return null; // never called
 	}
 
 	/**
@@ -597,10 +589,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getRobotFileSystemManager().getMaxQuota() - peer.getRobotFileSystemManager().getQuotaUsed();
-		} else {
-			uninitializedException("getDataQuotaAvailable");
-			return 0; // never called
 		}
+		uninitializedException("getDataQuotaAvailable");
+		return 0; // never called
 	}
 
 	/**
@@ -622,10 +613,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return peer.getEventManager().getEventPriority(eventClass);
-		} else {
-			uninitializedException("getEventPriority");
-			return 0; // never called
 		}
+		uninitializedException("getEventPriority");
+		return 0; // never called
 	}
 
 	/**
@@ -640,10 +630,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public double getGunTurnRemaining() {
 		if (peer != null) {
 			return Math.toDegrees(peer.getGunTurnRemaining());
-		} else {
-			uninitializedException("getGunTurnRemaining");
-			return 0; // never called
 		}
+		uninitializedException("getGunTurnRemaining");
+		return 0; // never called
 	}
 
 	/**
@@ -668,10 +657,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<HitByBulletEvent>(peer.getEventManager().getHitByBulletEvents());
-		} else {
-			uninitializedException("getHitByBulletEvents");
-			return null; // never called
 		}
+		uninitializedException("getHitByBulletEvents");
+		return null; // never called
 	}
 
 	/**
@@ -695,10 +683,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<HitRobotEvent>(peer.getEventManager().getHitRobotEvents());
-		} else {
-			uninitializedException("getHitRobotEvents");
-			return null; // never called
 		}
+		uninitializedException("getHitRobotEvents");
+		return null; // never called
 	}
 
 	/**
@@ -722,10 +709,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<HitWallEvent>(peer.getEventManager().getHitWallEvents());
-		} else {
-			uninitializedException("getHitWallEvents");
-			return null; // never called
 		}
+		uninitializedException("getHitWallEvents");
+		return null; // never called
 	}
 
 	/**
@@ -741,10 +727,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return Math.toDegrees(peer.getRadarTurnRemaining());
-		} else {
-			uninitializedException("getRadarTurnRemaining");
-			return 0; // never called
 		}
+		uninitializedException("getRadarTurnRemaining");
+		return 0; // never called
 	}
 
 	/**
@@ -768,10 +753,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<RobotDeathEvent>(peer.getEventManager().getRobotDeathEvents());
-		} else {
-			uninitializedException("getRobotDeathEvents");
-			return null; // never called
 		}
+		uninitializedException("getRobotDeathEvents");
+		return null; // never called
 	}
 
 	/**
@@ -796,10 +780,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return new Vector<ScannedRobotEvent>(peer.getEventManager().getScannedRobotEvents());
-		} else {
-			uninitializedException("getScannedRobotEvents");
-			return null; // never called
 		}
+		uninitializedException("getScannedRobotEvents");
+		return null; // never called
 	}
 
 	/**
@@ -815,10 +798,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return Math.toDegrees(peer.getTurnRemaining());
-		} else {
-			uninitializedException("getTurnRemaining");
-			return 0; // never called
 		}
+		uninitializedException("getTurnRemaining");
+		return 0; // never called
 	}
 
 	/**
@@ -839,10 +821,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return peer.isAdjustGunForBodyTurn();
-		} else {
-			uninitializedException("isAdjustGunForRobotTurn");
-			return false; // never called
 		}
+		uninitializedException("isAdjustGunForRobotTurn");
+		return false; // never called
 	}
 
 	/**
@@ -863,10 +844,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return peer.isAdjustRadarForGunTurn();
-		} else {
-			uninitializedException("isAdjustRadarForGunTurn");
-			return false; // never called
 		}
+		uninitializedException("isAdjustRadarForGunTurn");
+		return false; // never called
 	}
 
 	/**
@@ -1271,10 +1251,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 		if (peer != null) {
 			peer.getCall();
 			return peer.isAdjustRadarForBodyTurn();
-		} else {
-			uninitializedException("isAdjustRadarForRobotTurn");
-			return false; // never called
 		}
+		uninitializedException("isAdjustRadarForRobotTurn");
+		return false; // never called
 	}
 
 	/**

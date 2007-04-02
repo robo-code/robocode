@@ -116,11 +116,7 @@ public class RobotSpecification {
 	 * @return this robot's webpage
 	 */
 	public String getWebpage() {
-		if (local.getWebpage() == null) {
-			return null;
-		} else {
-			return local.getWebpage().toString();
-		}
+		return (local.getWebpage() != null) ? local.getWebpage().toString() : null;
 	}
 
 	/**

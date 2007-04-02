@@ -51,25 +51,22 @@ public class Event implements Comparable<Event> {
 			diff = event.priority - priority;
 			if (diff != 0) {
 				return diff;
-			} else {
-				int timediff = (int) (event.time - time);
-
-				if (timediff != 0) {
-					return timediff;
-				} else if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
-					return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
-				} else if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
-					int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
-					int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
-
-					return compare1 - compare2;
-				} else {
-					return 0;
-				}
 			}
-		} catch (ClassCastException e) {
-			return 0;
-		}
+			int timediff = (int) (event.time - time);
+
+			if (timediff != 0) {
+				return timediff;
+			} else if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
+				return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
+			} else if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
+				int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
+				int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
+
+				return compare1 - compare2;
+			}
+		} catch (ClassCastException e) {}
+
+		return 0;
 	}
 
 	/**

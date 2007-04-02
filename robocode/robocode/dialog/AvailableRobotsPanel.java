@@ -242,18 +242,17 @@ public class AvailableRobotsPanel extends JPanel {
 					availableRobots.add(robotList.get(j));
 				}
 				break;
-			} else {
-				// Single package.
-				for (int j = 0; j < robotList.size(); j++) {
-					FileSpecification robotSpecification = robotList.get(j);
+			}
+			// Single package.
+			for (int j = 0; j < robotList.size(); j++) {
+				FileSpecification robotSpecification = robotList.get(j);
 
-					if (robotSpecification.getFullPackage() == null) {
-						if (selectedPackage.equals("(No package)")) {
-							availableRobots.add(robotSpecification);
-						}
-					} else if (robotSpecification.getFullPackage().equals(selectedPackage)) {
+				if (robotSpecification.getFullPackage() == null) {
+					if (selectedPackage.equals("(No package)")) {
 						availableRobots.add(robotSpecification);
 					}
+				} else if (robotSpecification.getFullPackage().equals(selectedPackage)) {
+					availableRobots.add(robotSpecification);
 				}
 			}
 		}
