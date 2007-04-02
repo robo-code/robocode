@@ -100,8 +100,7 @@ public class ConfirmPanel extends WizardPanel {
 
 		if (selectedRobots == null || selectedRobots.size() == 0) {
 			getRobotListPanel().add(new JLabel("You have not yet selected any robots."));
-		}
-		if (selectedRobots.size() == 1) {
+		} else if (selectedRobots.size() == 1) {
 			String robotName = (selectedRobots.get(0)).getFullClassName();
 
 			getRobotListPanel().add(new JLabel("You have selected " + robotName + " for packaging."));
