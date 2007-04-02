@@ -225,10 +225,9 @@ public class RobotRepositoryManager {
 					// downloading robocode-setup.jar to the robots dir
 					if (f.exists() && !f.getName().startsWith("robocode")) {
 						continue;
-					} else {
-						WindowUtil.setStatus("Cleaning up cache: Removing " + file);
-						FileUtil.deleteDir(file);
 					}
+					WindowUtil.setStatus("Cleaning up cache: Removing " + file);
+					FileUtil.deleteDir(file);
 				}
 			}
 		}
@@ -420,9 +419,8 @@ public class RobotRepositoryManager {
 						if (superClass.getName().equals("robocode.Robot")) {
 							updateNoDuplicates(robotSpecification);
 							return;
-						} else {
-							superClass = superClass.getSuperclass();
 						}
+						superClass = superClass.getSuperclass();
 					}
 				}
 				getRobotDatabase().put(key, new ClassSpecification(robotSpecification));

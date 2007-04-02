@@ -93,18 +93,17 @@ public class WindowPositionManager implements ComponentListener {
 		window.addComponentListener(this);
 
 		String rString = (String) getWindowPositions().get(window.getClass().getName());
-
 		if (rString == null) {
 			return null;
-		} else {
-			StringTokenizer tokenizer = new StringTokenizer(rString, ",");
-			int x = Integer.parseInt(tokenizer.nextToken());
-			int y = Integer.parseInt(tokenizer.nextToken());
-			int width = Integer.parseInt(tokenizer.nextToken());
-			int height = Integer.parseInt(tokenizer.nextToken());
-
-			return new Rectangle(x, y, width, height);
 		}
+
+		StringTokenizer tokenizer = new StringTokenizer(rString, ",");
+		int x = Integer.parseInt(tokenizer.nextToken());
+		int y = Integer.parseInt(tokenizer.nextToken());
+		int width = Integer.parseInt(tokenizer.nextToken());
+		int height = Integer.parseInt(tokenizer.nextToken());
+
+		return new Rectangle(x, y, width, height);
 	}
 
 	public void saveWindowPositions() {

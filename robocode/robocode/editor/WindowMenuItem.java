@@ -109,25 +109,24 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 			if (parent == null) {
 				return "";
 			}
+
 			int numWindows = parent.getComponentCount() - PRECEDING_WINDOW_MENU_ITEMS - SUBSEQUENT_WINDOW_MENU_ITEMS;
 
 			if (numWindows <= 0) {
 				return "No Windows Open";
-			} else {
-				return "More Windows...";
 			}
-		} else {
-			if (window == null || parentMenu == null) {
-				return "";
-			} else {
-				String text = (getIndex() + 1) + " " + getFileName();
 
-				if (window.modified) {
-					text += " *";
-				}
-				return text;
-			}
+			return "More Windows...";
 		}
+		if (window == null || parentMenu == null) {
+			return "";
+		}
+		String text = (getIndex() + 1) + " " + getFileName();
+
+		if (window.modified) {
+			text += " *";
+		}
+		return text;
 	}
 
 	/**
@@ -139,40 +138,42 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	protected String getFileName() {
 		if (window.getFileName() == null) {
 			return "Untitled " + (getPrecedingNewFiles() + 1);
-		} else {
-			String name = window.getFileName();
-
-			if (name.length() < MAX_WINDOW_NAME_LENGTH) {
-				return name;
-			}
-			if (name.indexOf(File.separatorChar) < 0) {
-				return name;
-			} // If there are no separators, I can't really intelligently truncate.
-			int startLength = name.indexOf(File.separatorChar, 1) + 1;
-			int endLength = name.length() - name.lastIndexOf(File.separatorChar);
-
-			if (endLength + startLength + 3 > name.length()) {
-				return name;
-			} // return name anyways, since we're not getting it any shorter.
-			boolean change;
-
-			do {
-				change = false;
-				int newEndLength = name.length() - name.lastIndexOf(File.separatorChar, name.length() - endLength - 1);
-
-				if (newEndLength + startLength + 3 <= MAX_WINDOW_NAME_LENGTH) {
-					endLength = newEndLength;
-					change = true;
-				}
-				int newStartLength = name.indexOf(File.separatorChar, startLength + 1) + 1;
-
-				if (endLength + startLength + 3 <= MAX_WINDOW_NAME_LENGTH) {
-					startLength = newStartLength;
-					change = true;
-				}
-			} while (change);
-			return name.substring(0, startLength) + "..." + name.substring(name.length() - endLength);
 		}
+
+		String name = window.getFileName();
+
+		if (name.length() < MAX_WINDOW_NAME_LENGTH) {
+			return name;
+		}
+		if (name.indexOf(File.separatorChar) < 0) {
+			return name;
+		} // If there are no separators, I can't really intelligently truncate.
+		int startLength = name.indexOf(File.separatorChar, 1) + 1;
+		int endLength = name.length() - name.lastIndexOf(File.separatorChar);
+
+		if (endLength + startLength + 3 > name.length()) {
+			return name;
+		} // return name anyways, since we're not getting it any shorter.
+
+		boolean change;
+
+		do {
+			change = false;
+			int newEndLength = name.length() - name.lastIndexOf(File.separatorChar, name.length() - endLength - 1);
+
+			if (newEndLength + startLength + 3 <= MAX_WINDOW_NAME_LENGTH) {
+				endLength = newEndLength;
+				change = true;
+			}
+			int newStartLength = name.indexOf(File.separatorChar, startLength + 1) + 1;
+
+			if (endLength + startLength + 3 <= MAX_WINDOW_NAME_LENGTH) {
+				startLength = newStartLength;
+				change = true;
+			}
+		} while (change);
+
+		return name.substring(0, startLength) + "..." + name.substring(name.length() - endLength);
 	}
 
 	/**
@@ -214,11 +215,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 */
 	@Override
 	public int getDisplayedMnemonicIndex() {
-		if (type == SPECIAL_MORE) {
-			return 11;
-		} else {
-			return 0;
-		}
+		return (type == SPECIAL_MORE) ? 11 : 0;
 	}
 
 	/**
@@ -227,11 +224,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 */
 	@Override
 	public int getMnemonic() {
-		if (type == SPECIAL_MORE) {
-			return KeyEvent.VK_S;
-		} else {
-			return KeyEvent.VK_1 + getIndex();
-		}
+		return (type == SPECIAL_MORE) ? KeyEvent.VK_S : KeyEvent.VK_1 + getIndex();
 	}
 
 	/**
@@ -252,10 +245,9 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 			updateSelection();
 			return (numWindows <= 0) || (numWindows > WINDOW_MENU_MAX_SIZE);
-		} else {
-			updateSelection();
-			return getIndex() >= 0;
 		}
+		updateSelection();
+		return getIndex() >= 0;
 	}
 
 	/**
@@ -274,9 +266,8 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 			int numWindows = parent.getComponentCount() - PRECEDING_WINDOW_MENU_ITEMS - SUBSEQUENT_WINDOW_MENU_ITEMS;
 
 			return (numWindows > 0);
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	/**
@@ -286,12 +277,9 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 */
 	@Override
 	public boolean isSelected() {
-		if (type == SPECIAL_MORE) {
-			return false;
-		} else {
-			return window != null && window.getDesktopPane() != null
-					&& window.getDesktopPane().getSelectedFrame() == window;
-		}
+		return (type == SPECIAL_MORE)
+				? false
+				: (window != null && window.getDesktopPane() != null) && window.getDesktopPane().getSelectedFrame() == window;
 	}
 
 	/**
@@ -316,10 +304,6 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 */
 	@Override
 	public String toString() {
-		if (type == SPECIAL_MORE) {
-			return "";
-		} else {
-			return getFileName();
-		}
+		return (type == SPECIAL_MORE) ? "" : getFileName();
 	}
 }

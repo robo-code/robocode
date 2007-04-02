@@ -304,10 +304,6 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 	 * @return Returns a String
 	 */
 	public String getTeamPackage() {
-		if (teamPackage == null) {
-			return ".";
-		} else {
-			return teamPackage;
-		}
+		return (teamPackage != null) ? teamPackage : ".";
 	}
 }

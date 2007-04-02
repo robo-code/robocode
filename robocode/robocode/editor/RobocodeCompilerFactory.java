@@ -44,8 +44,8 @@ import robocode.io.FileUtil;
  */
 public class RobocodeCompilerFactory {
 
-	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "libs/robocode.jar"
-			+ File.pathSeparator + getRobotPath();
+	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator
+			+ "libs/robocode.jar" + File.pathSeparator + getRobotPath();
 
 	private static CompilerProperties compilerProperties;
 	private static String robotPath;
@@ -69,14 +69,12 @@ public class RobocodeCompilerFactory {
 			if (installCompiler(editor)) {
 				return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
 						getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
-			} else {
-				log("Unable to create compiler.");
-				return null;
 			}
-		} else {
-			return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
-					getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
+			log("Unable to create compiler.");
+			return null;
 		}
+		return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
+				getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
 	}
 
 	public static boolean extract(File src, File dest) {
@@ -112,41 +110,37 @@ public class RobocodeCompilerFactory {
 				int spin = 0;
 
 				entryName = entry.getName();
-				if (entry == null) {
-					System.err.println("Could not find entry: " + entry);
+				if (entry.isDirectory()) {
+					File dir = new File(dest, entry.getName());
+
+					dir.mkdirs();
 				} else {
-					if (entry.isDirectory()) {
-						File dir = new File(dest, entry.getName());
+					status.setText(entryName + " " + SPINNER[spin++]);
+					File out = new File(dest, entry.getName());
+					File parentDirectory = new File(out.getParent());
 
-						dir.mkdirs();
-					} else {
-						status.setText(entryName + " " + SPINNER[spin++]);
-						File out = new File(dest, entry.getName());
-						File parentDirectory = new File(out.getParent());
+					parentDirectory.mkdirs();
+					fos = new FileOutputStream(out);
 
-						parentDirectory.mkdirs();
-						fos = new FileOutputStream(out);
+					int index = 0;
+					int num = 0;
+					int count = 0;
 
-						int index = 0;
-						int num = 0;
-						int count = 0;
-
-						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-							fos.write(buf, 0, num);
-							index += num;
-							count++;
-							if (count > 80) {
-								status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
-								if (spin > 3) {
-									spin = 0;
-								}
-								count = 0;
+					while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+						fos.write(buf, 0, num);
+						index += num;
+						count++;
+						if (count > 80) {
+							status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
+							if (spin > 3) {
+								spin = 0;
 							}
+							count = 0;
 						}
-						fos.close();
-
-						status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
 					}
+					fos.close();
+
+					status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
 				}
 				entry = jarIS.getNextJarEntry();
 			}
@@ -207,9 +201,8 @@ public class RobocodeCompilerFactory {
 					"Sorry, the compiler is still installing.\nPlease wait until it is complete.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else {
-			compilerInstalling = true;
 		}
+		compilerInstalling = true;
 
 		String compilerBinary = null;
 		String compilerOptions = "";

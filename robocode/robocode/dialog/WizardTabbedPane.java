@@ -83,11 +83,7 @@ public class WizardTabbedPane extends JTabbedPane implements Wizard {
 	public boolean isCurrentPanelReady() {
 		Component c = getCurrentPanel();
 
-		if (c instanceof WizardPanel) {
-			return ((WizardPanel) c).isReady();
-		} else {
-			return true;
-		}
+		return (c instanceof WizardPanel) ? ((WizardPanel) c).isReady() : true;
 	}
 
 	public boolean isNextAvailable() {

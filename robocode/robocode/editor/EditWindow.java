@@ -460,12 +460,9 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 
 			if (pEIndex > 0) {
 				return text.substring(pIndex + 8, pEIndex);
-			} else {
-				return "";
 			}
-		} else {
-			return "";
 		}
+		return "";
 	}
 
 	public String getReasonableFilename() {
@@ -500,7 +497,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 					packageTree += File.separator;
 					fileName += packageTree;
 				}
-				if (javaFileName == null && token.equals("class")) {
+				if (token.equals("class")) {
 					javaFileName = tokenizer.nextToken() + ".java";
 					fileName += javaFileName;
 					return fileName;
