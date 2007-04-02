@@ -76,6 +76,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		safeThreadGroups.add(safeThreadGroup);
 	}
 
+	@Override
 	public synchronized void checkAccess(Thread t) {
 		super.checkAccess(t);
 		Thread c = Thread.currentThread();
@@ -90,10 +91,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 			r = threadManager.getLoadingRobotPeer(c);
 			if (r != null) {
 				throw new AccessControlException("Preventing " + r.getName() + " from access to thread: " + t.getName());
-			} else {
-				checkPermission(new RuntimePermission("modifyThread"));
-				return;
 			}
+			checkPermission(new RuntimePermission("modifyThread"));
+			return;
 		}
 
 		ThreadGroup cg = c.getThreadGroup();
@@ -120,6 +120,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 				+ ".  You must use your own ThreadGroup.");
 	}
 
+	@Override
 	public synchronized void checkAccess(ThreadGroup g) {
 		super.checkAccess(g);
 
@@ -143,10 +144,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 			if (r != null) {
 				throw new AccessControlException(
 						"Preventing " + r.getName() + " from access to threadgroup: " + g.getName());
-			} else {
-				checkPermission(new RuntimePermission("modifyThreadGroup"));
-				return;
 			}
+			checkPermission(new RuntimePermission("modifyThreadGroup"));
+			return;
 		}
 
 		if (g == null) {
@@ -173,11 +173,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 	 * If the calling thread is in our list of safe threads, allow permission.
 	 * Else deny, with a few exceptions.
 	 */
+	@Override
 	public synchronized void checkPermission(Permission perm, Object context) {
 		syserr.println("Checking permission " + perm + " for context " + context);
 		super.checkPermission(perm);
 	}
 
+	@Override
 	public synchronized void checkPermission(Permission perm) {
 		// For John Burkey at Apple
 		if (!enabled) {
@@ -280,12 +282,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 				if (fileSystemManager.isReadable(fp.getName())) {
 					return;
 				} // Else disable robot
-				else {
-					r.setEnergy(0);
-					throw new AccessControlException(
-							"Preventing " + r.getName() + " from access: " + perm
-							+ ": You may only read files in your own root package directory. ");
-				}
+				r.setEnergy(0);
+				throw new AccessControlException(
+						"Preventing " + r.getName() + " from access: " + perm
+						+ ": You may only read files in your own root package directory. ");
 			} // Robot wants access to write something
 			else if (fp.getActions().equals("write")) {
 				// Get the RobocodeOutputStream the robot is trying to use.
@@ -315,23 +315,21 @@ public class RobocodeSecurityManager extends SecurityManager {
 				if (fileSystemManager.isWritable(fp.getName())) {
 					return;
 				} // else it's not writable, deny access.
-				else {
-					// We are creating the directory.
-					if (fileSystemManager.getWritableDirectory().toString().equals(fp.getName())) {
-						return;
-					} // Not a writable directory.
-					else {
-						r.setEnergy(0);
-						// r.out.println("I would allow access to: " + fileSystemManager.getWritableDirectory());
-						threadOut(
-								"Preventing " + r.getName() + " from access: " + perm
-								+ ": You may only write files in your own data directory. ");
 
-						throw new AccessControlException(
-								"Preventing " + r.getName() + " from access: " + perm
-								+ ": You may only write files in your own data directory. ");
-					}
-				}
+				// We are creating the directory.
+				if (fileSystemManager.getWritableDirectory().toString().equals(fp.getName())) {
+					return;
+				} // Not a writable directory.
+
+				r.setEnergy(0);
+				// r.out.println("I would allow access to: " + fileSystemManager.getWritableDirectory());
+				threadOut(
+						"Preventing " + r.getName() + " from access: " + perm
+						+ ": You may only write files in your own data directory. ");
+
+				throw new AccessControlException(
+						"Preventing " + r.getName() + " from access: " + perm
+						+ ": You may only write files in your own data directory. ");
 			} // Robot wants access to write something
 			else if (fp.getActions().equals("delete")) {
 				// Get the fileSystemManager
@@ -348,19 +346,17 @@ public class RobocodeSecurityManager extends SecurityManager {
 				if (fileSystemManager.isWritable(fp.getName())) {
 					return;
 				} // else it's not writable, deny access.
-				else {
-					// We are deleting our data directory.
-					if (fileSystemManager.getWritableDirectory().toString().equals(fp.getName())) {
-						// r.out.println("SYSTEM:  Please let me know if you see this string.  Thanks.  -Mat");
-						return;
-					} // Not a writable directory.
-					else {
-						r.setEnergy(0);
-						throw new AccessControlException(
-								"Preventing " + r.getName() + " from access: " + perm
-								+ ": You may only delete files in your own data directory. ");
-					}
-				}
+
+				// We are deleting our data directory.
+				if (fileSystemManager.getWritableDirectory().toString().equals(fp.getName())) {
+					// r.out.println("SYSTEM:  Please let me know if you see this string.  Thanks.  -Mat");
+					return;
+				} // Not a writable directory.
+
+				r.setEnergy(0);
+				throw new AccessControlException(
+						"Preventing " + r.getName() + " from access: " + perm
+						+ ": You may only delete files in your own data directory. ");
 			}
 		}
 
@@ -420,18 +416,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	}
 
 	private synchronized RobocodeFileOutputStream getRobocodeOutputStream() {
-		RobocodeFileOutputStream rfos = outputStreamThreads.get(Thread.currentThread());
-
-		if (rfos == null) {
-			return null;
-		}
-		if (rfos instanceof RobocodeFileOutputStream) {
-			return rfos;
-		} else {
-			outputStreamThreads.remove(Thread.currentThread());
-			throw new AccessControlException(
-					"Preventing " + Thread.currentThread().getName() + " from access: This is not a RobocodeOutputStream.");
-		}
+		return outputStreamThreads.get(Thread.currentThread());
 	}
 
 	public String getStatus() {
@@ -527,6 +512,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 	}
 
+	@Override
 	public void checkPackageAccess(String pkg) {
 		if (pkg.equals("java.lang")) {
 			return;
