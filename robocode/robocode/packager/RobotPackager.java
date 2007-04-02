@@ -320,18 +320,14 @@ public class RobotPackager extends JDialog implements WizardListener {
 					URL u = null;
 					String w = getPackagerOptionsPanel().getWebpageField().getText();
 
-					if (w.equals("")) {
-						u = null;
-					} else {
+					if (w.length() > 0) {
 						try {
 							u = new URL(w);
 						} catch (MalformedURLException e) {
 							try {
 								u = new URL("http://" + w);
 								getPackagerOptionsPanel().getWebpageField().setText(u.toString());
-							} catch (MalformedURLException e2) {
-								u = null;
-							}
+							} catch (MalformedURLException e2) {}
 						}
 					}
 					robotSpecification.setRobotWebpage(u);
@@ -356,18 +352,14 @@ public class RobotPackager extends JDialog implements WizardListener {
 				URL u = null;
 				String w = getPackagerOptionsPanel().getWebpageField().getText();
 
-				if (w.equals("")) {
-					u = null;
-				} else {
+				if (w.length() > 0) {
 					try {
 						u = new URL(w);
 					} catch (MalformedURLException e) {
 						try {
 							u = new URL("http://" + w);
 							getPackagerOptionsPanel().getWebpageField().setText(u.toString());
-						} catch (MalformedURLException e2) {
-							u = null;
-						}
+						} catch (MalformedURLException e2) {}
 					}
 				}
 				teamSpecification.setTeamWebpage(u);
