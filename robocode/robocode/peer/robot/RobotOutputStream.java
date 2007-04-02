@@ -53,18 +53,15 @@ public class RobotOutputStream extends java.io.PrintStream {
 			if (Thread.currentThread() == battleThread) {
 				return true;
 			}
-			if (messaged) {
-				return false;
-			} else {
+			if (!messaged) {
 				out.println(
 						"SYSTEM: This robot is printing too much between actions.  Output stopped until next action.");
 				messaged = true;
-				return false;
 			}
-		} else {
-			messaged = false;
-			return true;
+			return false;
 		}
+		messaged = false;
+		return true;
 	}
 
 	public synchronized void resetCounter() {

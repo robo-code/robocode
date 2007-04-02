@@ -60,7 +60,7 @@ public class RobotFileSystemManager {
 		}
 	}
 
-	public synchronized void adjustQuota(long len) throws IOException {
+	public synchronized void adjustQuota(long len) {
 		quotaUsed += len;
 	}
 
@@ -157,11 +157,10 @@ public class RobotFileSystemManager {
 			if (dataIndex >= 0) {
 				if (isWritable(fileName) || attemptedFile.equals(getWritableDirectory())) {
 					return true;
-				} else {
-					throw new java.security.AccessControlException(
-							"Preventing " + Thread.currentThread().getName() + " from access to: " + fileName
-							+ ": You may not read another robot's data directory.");
 				}
+				throw new java.security.AccessControlException(
+						"Preventing " + Thread.currentThread().getName() + " from access to: " + fileName
+						+ ": You may not read another robot's data directory.");
 			}
 			return true;
 		}

@@ -36,11 +36,7 @@ public class SecurePrintStream extends PrintStream {
 	public final boolean checkError() {
 		PrintStream out = checkAccess();
 
-		if (out == this) {
-			return super.checkError();
-		} else {
-			return out.checkError();
-		}
+		return (out == this) ? super.checkError() : out.checkError();
 	}
 
 	@Override
@@ -303,11 +299,7 @@ public class SecurePrintStream extends PrintStream {
 			RobocodeSecurityManager rsm = (RobocodeSecurityManager) securityManager;
 			PrintStream out = rsm.getRobotOutputStream();
 
-			if (out == null) {
-				return this;
-			} else {
-				return out;
-			}
+			return (out == null) ? this : out;
 		}
 		return this;
 	}

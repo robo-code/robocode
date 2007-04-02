@@ -1278,9 +1278,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		bullet.setX(x);
 		bullet.setY(y);
 
-		if (bullet != null) {
-			newBullet = bullet;
-		}
+		newBullet = bullet;
 
 		return bullet.getBullet();
 	}
@@ -1581,10 +1579,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			sayTextPeer.setX((int) x);
 			sayTextPeer.setY((int) y);
 			sayTextPeer.setDuration(20 + text.length());
+
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	public void updateSayText() {
