@@ -29,7 +29,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
 import robocode.dialog.*;
