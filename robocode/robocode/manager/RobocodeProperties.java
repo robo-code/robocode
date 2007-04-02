@@ -974,6 +974,7 @@ public class RobocodeProperties {
 	@SuppressWarnings("serial")
 	private class SortedProperties extends Properties {
 		@SuppressWarnings("unchecked")
+		@Override
 		public synchronized Enumeration keys() {
 			Enumeration<Object> keysEnum = super.keys();
 
