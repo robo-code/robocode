@@ -180,18 +180,14 @@ public class TeamCreator extends JDialog implements WizardListener {
 		URL u = null;
 		String w = teamCreatorOptionsPanel.getWebpageField().getText();
 
-		if (w == null || w.equals("")) {
-			u = null;
-		} else {
+		if (w != null && w.length() > 0) {
 			try {
 				u = new URL(w);
 			} catch (MalformedURLException e) {
 				try {
 					u = new URL("http://" + w);
 					teamCreatorOptionsPanel.getWebpageField().setText(u.toString());
-				} catch (MalformedURLException e2) {
-					u = null;
-				}
+				} catch (MalformedURLException e2) {}
 			}
 		}
 		teamSpec.setTeamWebpage(u);
