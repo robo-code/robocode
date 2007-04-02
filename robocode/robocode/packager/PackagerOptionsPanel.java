@@ -79,74 +79,76 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentShown(ComponentEvent e) {
 			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
-			if (selectedRobots != null && (selectedRobots.size() == 1)) {
-				FileSpecification fileSpecification = selectedRobots.get(0);
-				String v = fileSpecification.getVersion();
-
-				if (v == null || v.equals("")) {
-					getVersionHelpLabel().setVisible(false);
-					v = "1.0";
-				} else {
-					if (v.length() == 10) {
-						v = v.substring(0, 9);
+			if (selectedRobots != null) {
+				if (selectedRobots.size() == 1) {
+					FileSpecification fileSpecification = selectedRobots.get(0);
+					String v = fileSpecification.getVersion();
+	
+					if (v == null || v.equals("")) {
+						getVersionHelpLabel().setVisible(false);
+						v = "1.0";
+					} else {
+						if (v.length() == 10) {
+							v = v.substring(0, 9);
+						}
+						v += "*";
+						getVersionHelpLabel().setVisible(true);
 					}
-					v += "*";
-					getVersionHelpLabel().setVisible(true);
-				}
-				getVersionField().setText(v);
-				String d = fileSpecification.getDescription();
-
-				if (d == null) {
-					d = "";
-				}
-				getDescriptionArea().setText(d);
-				String a = fileSpecification.getAuthorName();
-
-				if (a == null) {
-					a = "";
-				}
-				getAuthorField().setText(a);
-				URL u = fileSpecification.getWebpage();
-
-				if (u == null) {
-					getWebpageField().setText("");
-				} else {
-					getWebpageField().setText(u.toString());
-				}
-
-				String filepath = fileSpecification.getFilePath();
-
-				if (filepath != null && filepath.indexOf(".") > 0) {
-					String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
-
-					getWebpageHelpLabel().setText(
-							"(You may also leave this blank, and simply create the file: " + htmlfn + ")");
-				} else {
-					getWebpageHelpLabel().setText("");
-				}
-
-				getVersionLabel().setVisible(true);
-				getVersionField().setVisible(true);
-				getAuthorLabel().setVisible(true);
-				getAuthorField().setVisible(true);
-				getWebpageLabel().setVisible(true);
-				getWebpageField().setVisible(true);
-				getWebpageHelpLabel().setVisible(true);
-				getDescriptionLabel().setText(
-						"Please enter a short description of your robot (up to 3 lines of 72 chars each).");
-			} else if (selectedRobots.size() > 1) {
-				getVersionLabel().setVisible(false);
-				getVersionField().setVisible(false);
-				getVersionHelpLabel().setVisible(false);
-				getAuthorLabel().setVisible(false);
-				getAuthorField().setVisible(false);
-				getWebpageLabel().setVisible(false);
-				getWebpageField().setVisible(false);
-				getWebpageHelpLabel().setVisible(false);
-				getDescriptionLabel().setText(
-						"Please enter a short description of this robot collection (up to 3 lines of 72 chars each).");
-				if (getDescriptionArea().getText() == null || getDescriptionArea().getText().equals("")) {
-					getDescriptionArea().setText("(Example)This robot comes from the ... robot collection\n");
+					getVersionField().setText(v);
+					String d = fileSpecification.getDescription();
+	
+					if (d == null) {
+						d = "";
+					}
+					getDescriptionArea().setText(d);
+					String a = fileSpecification.getAuthorName();
+	
+					if (a == null) {
+						a = "";
+					}
+					getAuthorField().setText(a);
+					URL u = fileSpecification.getWebpage();
+	
+					if (u == null) {
+						getWebpageField().setText("");
+					} else {
+						getWebpageField().setText(u.toString());
+					}
+	
+					String filepath = fileSpecification.getFilePath();
+	
+					if (filepath != null && filepath.indexOf(".") > 0) {
+						String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
+	
+						getWebpageHelpLabel().setText(
+								"(You may also leave this blank, and simply create the file: " + htmlfn + ")");
+					} else {
+						getWebpageHelpLabel().setText("");
+					}
+	
+					getVersionLabel().setVisible(true);
+					getVersionField().setVisible(true);
+					getAuthorLabel().setVisible(true);
+					getAuthorField().setVisible(true);
+					getWebpageLabel().setVisible(true);
+					getWebpageField().setVisible(true);
+					getWebpageHelpLabel().setVisible(true);
+					getDescriptionLabel().setText(
+							"Please enter a short description of your robot (up to 3 lines of 72 chars each).");
+				} else if (selectedRobots.size() > 1) {
+					getVersionLabel().setVisible(false);
+					getVersionField().setVisible(false);
+					getVersionHelpLabel().setVisible(false);
+					getAuthorLabel().setVisible(false);
+					getAuthorField().setVisible(false);
+					getWebpageLabel().setVisible(false);
+					getWebpageField().setVisible(false);
+					getWebpageHelpLabel().setVisible(false);
+					getDescriptionLabel().setText(
+							"Please enter a short description of this robot collection (up to 3 lines of 72 chars each).");
+					if (getDescriptionArea().getText() == null || getDescriptionArea().getText().equals("")) {
+						getDescriptionArea().setText("(Example)This robot comes from the ... robot collection\n");
+					}
 				}
 			}
 		}

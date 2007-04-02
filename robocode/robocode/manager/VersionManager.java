@@ -164,6 +164,7 @@ public class VersionManager {
 
 			if (versionsUrl == null) {
 				log("no url");
+				return null;
 			}
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
