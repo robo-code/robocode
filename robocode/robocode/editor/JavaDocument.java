@@ -114,9 +114,10 @@ public class JavaDocument extends PlainDocument {
 
 			if (changedElements == null || changedElements.length == 0) {
 				Logger.log("Unknown insert even, 0 children added.");
-			}
-			for (Element element : changedElements) {
-				processMultilineComments(element, true);
+			} else {
+				for (Element element : changedElements) {
+					processMultilineComments(element, true);
+				}
 			}
 		}
 	}
@@ -157,6 +158,7 @@ public class JavaDocument extends PlainDocument {
 			elementText = getText(startOffset, endOffset - startOffset);
 		} catch (BadLocationException e) {
 			Logger.log("Error processing updates: " + e);
+			return;
 		}
 		boolean followingLineComment = false,
 				previousLineComment = false,
