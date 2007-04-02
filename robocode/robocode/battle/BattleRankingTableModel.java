@@ -116,9 +116,6 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 		Collections.sort(contestants);
 
-		if (contestants == null) {
-			return "";
-		}
 		ContestantPeer r = contestants.get(row);
 		ContestantStatistics statistics = r.getStatistics();
 
