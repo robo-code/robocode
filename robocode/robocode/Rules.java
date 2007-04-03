@@ -14,7 +14,6 @@ package robocode;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
-import static java.lang.Math.toRadians;
 
 
 /**
@@ -84,7 +83,7 @@ public final class Rules {
 	 * @see #getTurnRate
 	 * @see #getTurnRateRadians
 	 */
-	public static final double MAX_TURN_RATE_RADIANS = toRadians(MAX_TURN_RATE);
+	public static final double MAX_TURN_RATE_RADIANS = Math.toRadians(MAX_TURN_RATE);
 
 	/**
 	 * The turning rate of the gun measured in degrees, which is
@@ -107,7 +106,7 @@ public final class Rules {
 	 *
 	 * @see #GUN_TURN_RATE
 	 */
-	public static final double GUN_TURN_RATE_RADIANS = toRadians(GUN_TURN_RATE);
+	public static final double GUN_TURN_RATE_RADIANS = Math.toRadians(GUN_TURN_RATE);
 
 	/**
 	 * The turning rate of the radar measured in degrees, which is
@@ -132,7 +131,7 @@ public final class Rules {
 	 *
 	 * @see #RADAR_TURN_RATE
 	 */
-	public static final double RADAR_TURN_RATE_RADIANS = toRadians(RADAR_TURN_RATE);
+	public static final double RADAR_TURN_RATE_RADIANS = Math.toRadians(RADAR_TURN_RATE);
 
 	/**
 	 * The amount of damage taken when a robot hits or is hit by another robot,
@@ -169,7 +168,7 @@ public final class Rules {
 	 * @see #getTurnRate
 	 */
 	public static double getTurnRateRadians(double velocity) {
-		return toRadians(getTurnRate(velocity));
+		return Math.toRadians(getTurnRate(velocity));
 	}
 
 	/**
