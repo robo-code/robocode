@@ -26,6 +26,8 @@
  *       receive notifications when the game is paused or resumed
  *     - Added missing functionality in to support team battles in
  *       startNewBattle(BattleSpecification spec, boolean replay)
+ *     - Added missing close() on FileInputStreams and FileOutputStreams
+ *     - isPaused() is now synchronized
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -223,6 +225,7 @@ public class BattleManager {
 				if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
 					if (fileSpec instanceof RobotSpecification) {
 						RobotClassManager rcm = new RobotClassManager((RobotSpecification) fileSpec);
+
 						rcm.setControlRobotSpecification(battleRobotSpec);
 						battlingRobotsList.add(rcm);
 						found = true;
@@ -254,6 +257,7 @@ public class BattleManager {
 								}
 							}
 							RobotClassManager rcm = new RobotClassManager(match, teamManager);
+
 							rcm.setControlRobotSpecification(battleRobotSpec);
 							battlingRobotsList.add(rcm);
 						}
@@ -341,7 +345,7 @@ public class BattleManager {
 		battleFilename = newBattleFilename;
 	}
 
-	public boolean isPaused() {
+	public synchronized boolean isPaused() {
 		return (pauseCount != 0);
 	}
 
@@ -431,24 +435,39 @@ public class BattleManager {
 			saveBattleAs();
 			return;
 		}
+		FileOutputStream out = null;
+
 		try {
-			FileOutputStream out = new FileOutputStream(battleFilename);
+			out = new FileOutputStream(battleFilename);
 
 			battleProperties.store(out, "Battle Properties");
 		} catch (IOException e) {
 			log("IO Exception saving battle properties: " + e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 
 	public void loadBattleProperties() {
-		try {
-			FileInputStream in = new FileInputStream(battleFilename);
+		FileInputStream in = null;
 
+		try {
+			in = new FileInputStream(battleFilename);
 			getBattleProperties().load(in);
 		} catch (FileNotFoundException e) {
 			log("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {
 			log("IO Exception reading " + battleFilename + ": " + e);
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 
@@ -526,12 +545,21 @@ public class BattleManager {
 		} else {
 			File f = new File(getResultsFile());
 
+			FileOutputStream fos = null;
+
 			try {
-				out = new PrintStream(new FileOutputStream(f));
+				fos = new FileOutputStream(f);
+				out = new PrintStream(fos);
 				close = true;
 			} catch (IOException e) {
 				log(e);
 				return;
+			} finally {
+				if (fos != null) {
+					try {
+						fos.close();
+					} catch (IOException e) {}
+				}
 			}
 		}
 
