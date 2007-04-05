@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Changed to give notification only if the available version number is
  *       greater than the version retrieved from the robocode.jar file, and only
  *       give warning if the user rejects downloading a new version, if the new
@@ -17,7 +18,7 @@
  *     - Updated to use methods from WindowUtil, FileUtil, Logger, which replaces
  *       methods that have been (re)moved from the Utils and Constants class
  *     - Added a connect timeout of 5 seconds when checking for a new version
- *     - Code cleanup
+ *     - Added missing close() on FileReader
  *******************************************************************************/
 package robocode.manager;
 
@@ -201,8 +202,11 @@ public class VersionManager {
 	private String getVersionFromFile() {
 		String versionString = null;
 
+		FileReader fileReader = null;
+
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(new File(FileUtil.getCwd(), "versions.txt")));
+			fileReader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
+			BufferedReader in = new BufferedReader(fileReader);
 
 			versionString = in.readLine();
 			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
@@ -211,10 +215,15 @@ public class VersionManager {
 		} catch (FileNotFoundException e) {
 			log("No versions.txt file.");
 			versionString = "unknown";
-
 		} catch (IOException e) {
 			log("IO Exception reading versions.txt" + e);
 			versionString = "unknown";
+		} finally {
+			if (fileReader != null) {
+				try {
+					fileReader.close();
+				} catch (IOException e) {}
+			}
 		}
 
 		String version = "unknown";
