@@ -9,10 +9,11 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Moved this class from the robocode.util package into the robocode.dialog
  *       package
- *     - Code cleanup
  *     - Changed to use FileUtil.getWindowConfigFile()
+ *     - Added missing close() on FileInputStream and FileOutputStream
  *******************************************************************************/
 package robocode.dialog;
 
@@ -48,14 +49,22 @@ public class WindowPositionManager implements ComponentListener {
 	public Properties getWindowPositions() {
 		if (windowPositions == null) {
 			windowPositions = new Properties();
-			try {
-				FileInputStream in = new FileInputStream(FileUtil.getWindowConfigFile());
 
+			FileInputStream in = null;
+
+			try {
+				in = new FileInputStream(FileUtil.getWindowConfigFile());
 				windowPositions.load(in);
 			} catch (FileNotFoundException e) {
 				Logger.log("Creating " + FileUtil.getWindowConfigFile().getName() + " file");
 			} catch (Exception e) {
 				Logger.log(e);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {}
+				}
 			}
 		}
 		return windowPositions;
@@ -84,7 +93,7 @@ public class WindowPositionManager implements ComponentListener {
 	public void componentShown(ComponentEvent e) {}
 
 	public void setWindowRect(boolean move, Window w, Rectangle rect) {
-		String rString = new String(rect.x + "," + rect.y + "," + rect.width + "," + rect.height);
+		String rString = rect.x + "," + rect.y + "," + rect.width + "," + rect.height;
 
 		getWindowPositions().put(w.getClass().getName(), rString);
 	}
@@ -93,6 +102,7 @@ public class WindowPositionManager implements ComponentListener {
 		window.addComponentListener(this);
 
 		String rString = (String) getWindowPositions().get(window.getClass().getName());
+
 		if (rString == null) {
 			return null;
 		}
@@ -107,12 +117,20 @@ public class WindowPositionManager implements ComponentListener {
 	}
 
 	public void saveWindowPositions() {
+		FileOutputStream out = null;
+
 		try {
-			FileOutputStream out = new FileOutputStream(FileUtil.getWindowConfigFile());
+			out = new FileOutputStream(FileUtil.getWindowConfigFile());
 
 			getWindowPositions().store(out, "Robocode window sizes");
 		} catch (IOException e) {
 			Logger.log("Warning:  Unable to save window positions: " + e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 }
