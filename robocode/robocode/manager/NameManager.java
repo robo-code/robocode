@@ -82,7 +82,7 @@ public class NameManager implements Serializable {
 
 	public String getShortClassNameWithVersion() {
 		if (shortClassNameWithVersion == null) {
-			if (getVersion().equals("")) {
+			if (getVersion().length() == 0) {
 				shortClassNameWithVersion = getShortClassName();
 			} else {
 				shortClassNameWithVersion = getShortClassName() + " " + getVersion();
@@ -163,7 +163,7 @@ public class NameManager implements Serializable {
 
 	public String getVeryShortClassNameWithVersion() {
 		if (veryShortClassNameWithVersion == null) {
-			if (getVersion().equals("")) {
+			if (getVersion().length() == 0) {
 				veryShortClassNameWithVersion = getVeryShortClassName();
 			} else {
 				veryShortClassNameWithVersion = getVeryShortClassName() + " " + getVersion();
@@ -174,7 +174,7 @@ public class NameManager implements Serializable {
 
 	public String getFullClassNameWithVersion() {
 		if (fullClassNameWithVersion == null) {
-			if (getVersion().equals("")) {
+			if (getVersion().length() == 0) {
 				fullClassNameWithVersion = getFullClassName();
 			} else {
 				fullClassNameWithVersion = getFullClassName() + " " + getVersion();

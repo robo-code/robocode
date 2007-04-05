@@ -84,7 +84,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 					FileSpecification fileSpecification = selectedRobots.get(0);
 					String v = fileSpecification.getVersion();
 	
-					if (v == null || v.equals("")) {
+					if (v == null || v.length() == 0) {
 						getVersionHelpLabel().setVisible(false);
 						v = "1.0";
 					} else {
@@ -146,7 +146,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 					getWebpageHelpLabel().setVisible(false);
 					getDescriptionLabel().setText(
 							"Please enter a short description of this robot collection (up to 3 lines of 72 chars each).");
-					if (getDescriptionArea().getText() == null || getDescriptionArea().getText().equals("")) {
+					if (getDescriptionArea().getText() == null || getDescriptionArea().getText().length() == 0) {
 						getDescriptionArea().setText("(Example)This robot comes from the ... robot collection\n");
 					}
 				}
@@ -257,7 +257,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 	@Override
 	public boolean isReady() {
 		if (getVersionLabel().isVisible()) {
-			if (getVersionField().getText().equals("")) {
+			if (getVersionField().getText().length() == 0) {
 				return false;
 			}
 			if (getVersionField().getText().indexOf(",") >= 0) {
@@ -288,7 +288,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 				return false;
 			}
 		}
-		if (getDescriptionArea().getText().equals("")) {
+		if (getDescriptionArea().getText().length() == 0) {
 			return false;
 		}
 		return true;
