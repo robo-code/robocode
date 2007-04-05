@@ -9,9 +9,10 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5.0
- *     - Code cleanup
+ *     - Added missing close() on FileInputStream
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -35,18 +36,27 @@ public class FileSpecificationDatabase implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
+		FileInputStream fis = null;
 
-		Object obj = in.readObject();
-
-		if (obj instanceof Hashtable) {
-			// The following provides backward compability for versions before 1.2.3A
-			Hashtable<String, FileSpecification> hashtable = (Hashtable<String, FileSpecification>) obj;
-
-			hash = new HashMap<String, FileSpecification>(hashtable);
-		} else {
-			// Using new container type for version 1.2.3B and followers
-			hash = (HashMap<String, FileSpecification>) obj;
+		try {
+			fis = new FileInputStream(f);
+			ObjectInputStream in = new ObjectInputStream(fis);
+	
+			Object obj = in.readObject();
+	
+			if (obj instanceof Hashtable) {
+				// The following provides backward compability for versions before 1.2.3A
+				Hashtable<String, FileSpecification> hashtable = (Hashtable<String, FileSpecification>) obj;
+	
+				hash = new HashMap<String, FileSpecification>(hashtable);
+			} else {
+				// Using new container type for version 1.2.3B and followers
+				hash = (HashMap<String, FileSpecification>) obj;
+			}
+		} finally {
+			if (fis != null) {
+				fis.close();
+			}
 		}
 	}
 
