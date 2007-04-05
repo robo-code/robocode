@@ -18,6 +18,8 @@
  *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Changed to use FileUtil.getRobocodeConfigFile() and
  *       FileUtil.getRobotsDir()
+ *     - Added missing close() on FileInputStream, FileOutputStream, and
+ *       FileReader
  *******************************************************************************/
 package robocode.editor;
 
@@ -474,14 +476,22 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	public RobocodeProperties getRobocodeProperties() {
 		if (robocodeProperties == null) {
 			robocodeProperties = new RobocodeProperties(manager);
-			try {
-				FileInputStream in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 
+			FileInputStream in = null;
+
+			try {
+				in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 				robocodeProperties.load(in);
 			} catch (FileNotFoundException e) {
 				log("No " + FileUtil.getRobocodeConfigFile().getName() + " file, using defaults.");
 			} catch (IOException e) {
 				log("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {}
+				}
 			}
 		}
 		return robocodeProperties;
@@ -645,10 +655,15 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			String robotFilename = chooser.getSelectedFile().getPath();
 
 			editorDirectory = chooser.getSelectedFile().getParentFile();
+			
+			FileReader fileReader = null;
+
 			try {
+				fileReader = new FileReader(robotFilename);
+				
 				EditWindow editWindow = new EditWindow(this, robotsDirectory);
 
-				editWindow.getEditorPane().read(new FileReader(robotFilename), new File(robotFilename));
+				editWindow.getEditorPane().read(fileReader, new File(robotFilename));
 				editWindow.getEditorPane().setCaretPosition(0);
 				editWindow.setFileName(robotFilename);
 				editWindow.setModified(false);
@@ -661,6 +676,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, e.toString());
 				log(e);
+			} finally {
+				if (fileReader != null) {
+					try {
+						fileReader.close();
+					} catch (IOException e) {}
+				}
 			}
 		}
 	}
@@ -686,12 +707,20 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			log("Cannot save null robocode properties");
 			return;
 		}
+		FileOutputStream out = null;
+
 		try {
-			FileOutputStream out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
+			out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
 
 			robocodeProperties.store(out, "Robocode Properties");
 		} catch (IOException e) {
 			log(e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 
