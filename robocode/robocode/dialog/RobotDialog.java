@@ -106,7 +106,8 @@ public class RobotDialog extends JFrame {
 	}
 
 	@Override
-	public void finalize() {
+	public void finalize() throws Throwable {
+		super.finalize();
 		manager.getBattleManager().removeListener(pauseResumeHandler);
 	}
 
