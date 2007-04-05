@@ -9,8 +9,9 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Ported to Java 5.0
  *     - Code cleanup
+ *     - Ported to Java 5.0
+ *     - Removed potential NullPointerException in sendMessage()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -78,12 +79,14 @@ public class RobotMessageManager {
 					}
 					RobotMessageManager robotMsgMan = receiver.getMessageManager();
 
-					synchronized (robotMsgMan.out) {
-						robotMsgMan.out.writeObject(o);
-						try {
-							robotMsgMan.addMessage(robotPeer.getName(), (Serializable) robotMsgMan.in.readObject());
-						} catch (ClassNotFoundException e) {
-							System.out.println("Unable to send: " + e);
+					if (robotMsgMan != null) {
+						synchronized (robotMsgMan.out) {
+							robotMsgMan.out.writeObject(o);
+							try {
+								robotMsgMan.addMessage(robotPeer.getName(), (Serializable) robotMsgMan.in.readObject());
+							} catch (ClassNotFoundException e) {
+								System.out.println("Unable to send: " + e);
+							}
 						}
 					}
 				}
