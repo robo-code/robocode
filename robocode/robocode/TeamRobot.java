@@ -44,9 +44,8 @@ public class TeamRobot extends AdvancedRobot {
 	 *   public void onScannedRobot(ScannedRobotEvent e) {
 	 *       if (isTeammate(e.getName()) {
 	 *           return;
-	 *       } else {
-	 *           fire(1);
 	 *       }
+	 *       fire(1);
 	 *   }
 	 * </pre>
 	 * @param name the robot name to check
