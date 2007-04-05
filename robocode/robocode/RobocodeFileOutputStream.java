@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that has been (re)moved from the robocode.util.Utils class
+ *     - Fixed potential NullPointerExceptions
  *     - Code cleanup
  *******************************************************************************/
 package robocode;
@@ -44,7 +45,7 @@ import robocode.security.RobocodeSecurityManager;
  */
 public class RobocodeFileOutputStream extends OutputStream {
 	private static ThreadManager threadManager;
-	private java.io.FileOutputStream out;
+	private FileOutputStream out;
 	private String name = null;
 	private RobotFileSystemManager fileSystemManager;
 
@@ -76,14 +77,19 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
 	 * @see java.io.FileOutputStream
 	 */
-	public RobocodeFileOutputStream(String name, boolean append) throws java.io.IOException {
+	public RobocodeFileOutputStream(String name, boolean append) throws IOException {
 		if (threadManager == null) {
 			Logger.log("RobocodeFileOutputStream.threadManager cannot be null!");
+			return;
 		}
 		Thread c = Thread.currentThread();
 
 		this.name = name;
 		RobotPeer r = threadManager.getRobotPeer(c);
+		if (r == null) {
+			Logger.log("RobotPeer is null");
+			return;
+		}
 
 		if (!(r.getRobot() instanceof AdvancedRobot)) {
 			throw new RobotException("Only robots that extend AdvancedRobot may write to the filesystem.");
@@ -122,7 +128,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream
 	 */
 	@Override
-	public final void close() throws java.io.IOException {
+	public final void close() throws IOException {
 		fileSystemManager.removeStream(this);
 		out.close();
 	}
@@ -133,7 +139,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream
 	 */
 	@Override
-	public final void flush() throws java.io.IOException {
+	public final void flush() throws IOException {
 		out.flush();
 	}
 
@@ -165,7 +171,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream
 	 */
 	@Override
-	public final void write(byte[] b) throws java.io.IOException {
+	public final void write(byte[] b) throws IOException {
 		try {
 			fileSystemManager.checkQuota(b.length);
 			out.write(b);
@@ -183,7 +189,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream
 	 */
 	@Override
-	public final void write(byte[] b, int off, int len) throws java.io.IOException {
+	public final void write(byte[] b, int off, int len) throws IOException {
 		if (len < 0) {
 			throw new IndexOutOfBoundsException();
 		}
@@ -205,7 +211,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream
 	 */
 	@Override
-	public final void write(int b) throws java.io.IOException {
+	public final void write(int b) throws IOException {
 		try {
 			fileSystemManager.checkQuota(1);
 			out.write(b);
