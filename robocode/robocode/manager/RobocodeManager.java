@@ -15,6 +15,7 @@
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Added access for the SoundManager
  *     - Changed to use FileUtil.getRobocodeConfigFile()
+ *     - Added missing close() on FileInputStream and FileOutputStream
  *******************************************************************************/
 package robocode.manager;
 
@@ -121,14 +122,22 @@ public class RobocodeManager {
 	public RobocodeProperties getProperties() {
 		if (properties == null) {
 			properties = new RobocodeProperties(this);
-			try {
-				FileInputStream in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 
+			FileInputStream in = null;
+
+			try {
+				in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 				properties.load(in);
 			} catch (FileNotFoundException e) {
 				log("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
 			} catch (IOException e) {
-				log("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": "+ e);
+				log("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {}
+				}
 			}
 		}
 		return properties;
@@ -140,12 +149,20 @@ public class RobocodeManager {
 			log("Cannot save null robocode properties");
 			return;
 		}
+		FileOutputStream out = null;
+
 		try {
-			FileOutputStream out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
+			out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
 
 			properties.store(out, "Robocode Properties");
 		} catch (IOException e) {
 			log(e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 
