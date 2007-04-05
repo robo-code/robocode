@@ -58,7 +58,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 		String fileType = FileUtil.getFileType(filename);
 
 		this.developmentVersion = developmentVersion;
-		if (prefix.equals("") && fileType.equals(".jar")) {
+		if (prefix.length() == 0 && fileType.equals(".jar")) {
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
 		} else if (fileType.equals(".team")) {
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
@@ -114,7 +114,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 		String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
 		File htmlFile = new File(htmlfn);
 
-		if (htmlFile.exists() && (getWebpage() == null || getWebpage().equals(""))) {
+		if (htmlFile.exists() && (getWebpage() == null || getWebpage().toString().length() == 0)) {
 			try {
 				setRobotWebpage(htmlFile.toURL());
 			} catch (MalformedURLException e) {
@@ -150,7 +150,7 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 
 		if (w == null) {
 			webpage = null;
-		} else if (w.equals("")) {
+		} else if (w.length() == 0) {
 			webpage = null;
 		} else {
 			try {

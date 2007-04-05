@@ -9,9 +9,9 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
- *     - Code cleanup
  *******************************************************************************/
 package robocode.repository;
 
@@ -213,7 +213,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 	}
 
 	public void addMember(RobotSpecification robotSpecification) {
-		if (members == null || members.equals("")) {
+		if (members == null || members.length() == 0) {
 			members = robotSpecification.getFullClassNameWithVersion();
 		} else {
 			members += "," + robotSpecification.getFullClassNameWithVersion();
