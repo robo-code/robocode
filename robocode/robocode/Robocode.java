@@ -65,7 +65,6 @@ public class Robocode {
 	 */
 	public static void main(String[] args) {
 		Robocode robocode = new Robocode();
-
 		robocode.initialize(args);
 	}
 
@@ -213,6 +212,9 @@ public class Robocode {
 	 */
 	public static void printRunningThreads() {
 		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+		if (currentGroup == null) {
+			return;
+		}
 
 		while (currentGroup.getParent() != null) {
 			currentGroup = currentGroup.getParent();
@@ -220,6 +222,7 @@ public class Robocode {
 
 		ThreadGroup groups[] = new ThreadGroup[256];
 		Thread threads[] = new Thread[256];
+
 		int numGroups = currentGroup.enumerate(groups, true);
 
 		for (int i = 0; i < numGroups; i++) {
