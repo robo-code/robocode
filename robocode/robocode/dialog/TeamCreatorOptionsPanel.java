@@ -207,10 +207,10 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 
 	@Override
 	public boolean isReady() {
-		if (getTeamNameField().getText().equals("")) {
+		if (getTeamNameField().getText().length() == 0) {
 			return false;
 		}
-		if (getDescriptionArea().getText().equals("")) {
+		if (getDescriptionArea().getText().length() == 0) {
 			return false;
 		}
 		return true;
