@@ -57,7 +57,7 @@ public class RobotDescriptionPanel extends JPanel {
 				if (currentRobotSpecification != null) {
 					URL htmlFile = currentRobotSpecification.getWebpage();
 
-					if (htmlFile != null && !htmlFile.equals("")) {
+					if (htmlFile != null && htmlFile.toString().length() > 0) {
 						try {
 							BrowserManager.openURL(htmlFile.toString());
 						} catch (IOException ex) {}
@@ -195,7 +195,7 @@ public class RobotDescriptionPanel extends JPanel {
 
 			String s = robotSpecification.getAuthorName();
 
-			if (s != null && !s.equals("")) {
+			if (s != null && s.length() > 0) {
 				name += " by " + s;
 			}
 			getRobotNameLabel().setText(name);
@@ -232,7 +232,7 @@ public class RobotDescriptionPanel extends JPanel {
 
 			URL u = robotSpecification.getWebpage();
 
-			getDetailsButton().setVisible(u != null && !u.equals(""));
+			getDetailsButton().setVisible(u != null && u.toString().length() > 0);
 
 			String v = robotSpecification.getRobocodeVersion();
 
