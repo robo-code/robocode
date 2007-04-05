@@ -10,7 +10,6 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - MAX was turned into a constant called MAX_SIZE
- *     - Removed synchronization from getCount()
  *******************************************************************************/
 package robocode.io;
 
@@ -40,7 +39,7 @@ public class TeamMessageSizer extends OutputStream {
 		count = 0;
 	}
 
-	public long getCount() {
+	public synchronized long getCount() {
 		return count;
 	}
 }
