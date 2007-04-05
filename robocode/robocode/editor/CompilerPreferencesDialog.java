@@ -15,6 +15,7 @@
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the Utils and Constants class
  *     - Changed to use FileUtil.getWindowConfigFile()
+ *     - Added missing close() on FileOutputStream
  *******************************************************************************/
 package robocode.editor;
 
@@ -169,12 +170,20 @@ public class CompilerPreferencesDialog extends JDialog {
 			Logger.log("Cannot save null compiler properties");
 			return;
 		}
+		FileOutputStream out = null;
+
 		try {
-			FileOutputStream out = new FileOutputStream(FileUtil.getCompilerConfigFile());
+			out = new FileOutputStream(FileUtil.getCompilerConfigFile());
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
 			Logger.log(e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 }
