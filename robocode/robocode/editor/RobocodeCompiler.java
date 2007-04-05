@@ -13,10 +13,12 @@
  *     - Code cleanup
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - Added missing close() on InputStreams
  *******************************************************************************/
 package robocode.editor;
 
 
+import java.io.InputStream;
 import java.io.IOException;
 
 import robocode.dialog.ConsoleDialog;
@@ -60,14 +62,21 @@ public class RobocodeCompiler {
 		console.setSize(500, 400);
 		console.setText("Compiling...\n");
 		WindowUtil.centerShow(editor, console);
+		
+		InputStream in = null;
+		InputStream err = null;
+
 		try {
 			String command = compilerBinary + " " + compilerOptions + " " + compilerClassPath + " " + fileName;
 
 			Logger.log("Compile command: " + command);
+
 			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
-			console.processStream(p.getInputStream());
-			console.processStream(p.getErrorStream());
+			in = p.getInputStream();
+			err = p.getErrorStream();
+			console.processStream(in);
+			console.processStream(err);
 			p.waitFor();
 			if (p.exitValue() == 0) {
 				console.append("Compiled successfully.\n");
@@ -84,6 +93,17 @@ public class RobocodeCompiler {
 		} catch (InterruptedException e) {
 			console.append("Compile interrupted.\n");
 			console.setTitle("Compile interrupted.");
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
+			if (err != null) {
+				try {
+					err.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 }
