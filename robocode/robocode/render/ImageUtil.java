@@ -79,7 +79,7 @@ public class ImageUtil {
 		private float[] hsl;
 
 		public ColorFilter(Color color) {
-			hsl = RGBtoHSL(color.getRed(), color.getGreen(), color.getBlue());
+			hsl = fromRGBtoHSL(color.getRed(), color.getGreen(), color.getBlue());
 		}
 
 		@Override
@@ -88,18 +88,18 @@ public class ImageUtil {
 			int g = (argb >> 8) & 0xff;
 			int b = argb & 0xff;
 
-			float[] HSL = RGBtoHSL(r, g, b);
+			float[] HSL = fromRGBtoHSL(r, g, b);
 
 			if (HSL[1] > 0) {
 				float L = Math.min(1, (hsl[2] + HSL[2]) / 2 + hsl[2] / 7);
 
-				return argb & 0xff000000 | HSLtoRGB(hsl[0], hsl[1], L);
+				return argb & 0xff000000 | fromHSLtoRGB(hsl[0], hsl[1], L);
 			}
 			return argb;
 		}
 	}
 
-	private static float[] RGBtoHSL(int r, int g, int b) {
+	private static float[] fromRGBtoHSL(int r, int g, int b) {
 		float R = (float) r / 255;
 		float G = (float) g / 255;
 		float B = (float) b / 255;
@@ -144,18 +144,18 @@ public class ImageUtil {
 		return new float[] { H, S, L };
 	}
 
-	private static int HSLtoRGB(float h, float s, float l) {
+	private static int fromHSLtoRGB(float h, float s, float l) {
 		float m2 = (l <= 0.5f) ? (l * (s + 1)) : (l + s - l * s);
 		float m1 = 2 * l - m2;
 
-		int r = (int) (255 * HUEtoRGB(m1, m2, h + (1f / 3)));
-		int g = (int) (255 * HUEtoRGB(m1, m2, h));
-		int b = (int) (255 * HUEtoRGB(m1, m2, h - (1f / 3)));
+		int r = (int) (255 * fromHUEtoRGB(m1, m2, h + (1f / 3)));
+		int g = (int) (255 * fromHUEtoRGB(m1, m2, h));
+		int b = (int) (255 * fromHUEtoRGB(m1, m2, h - (1f / 3)));
 
 		return (((r << 8) | g) << 8) | b;
 	}
 
-	private static float HUEtoRGB(float m1, float m2, float h) {
+	private static float fromHUEtoRGB(float m1, float m2, float h) {
 		if (h < 0) {
 			h++;
 		}
