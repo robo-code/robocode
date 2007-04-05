@@ -9,13 +9,14 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Updated Jikes compiler to version 1.22
  *     - Changed deprecated method calls
- *     - Code cleanup
  *     - File names are being quoted
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils and Constants
  *     - Changed to use FileUtil.getCompilerConfigFile()
+ *     - Added missing close() on FileInputStreams and FileOutputStreams
  *******************************************************************************/
 package robocode.editor;
 
@@ -65,7 +66,7 @@ public class RobocodeCompilerFactory {
 	public static RobocodeCompiler createCompiler(RobocodeEditor editor) {
 		compilerProperties = null;
 		if (getCompilerProperties().getCompilerBinary() == null
-				|| getCompilerProperties().getCompilerBinary().equals("")) {
+				|| getCompilerProperties().getCompilerBinary().length() == 0) {
 			if (installCompiler(editor)) {
 				return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
 						getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
@@ -96,13 +97,15 @@ public class RobocodeCompilerFactory {
 
 		statusDialog.setVisible(true);
 
+		FileInputStream fis = null;
 		FileOutputStream fos = null;
 		String entryName = "";
 
 		byte buf[] = new byte[2048];
 
 		try {
-			JarInputStream jarIS = new JarInputStream(new FileInputStream(src));
+			fis = new FileInputStream(src);
+			JarInputStream jarIS = new JarInputStream(fis);
 
 			JarEntry entry = jarIS.getNextJarEntry();
 
@@ -150,15 +153,23 @@ public class RobocodeCompilerFactory {
 			statusDialog.dispose();
 			WindowUtil.error(null, e.toString());
 			return false;
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 
 	public static CompilerProperties getCompilerProperties() {
 		if (compilerProperties == null) {
 			compilerProperties = new CompilerProperties();
-			try {
-				FileInputStream in = new FileInputStream(FileUtil.getCompilerConfigFile());
 
+			FileInputStream in = null;
+
+			try {
+				in = new FileInputStream(FileUtil.getCompilerConfigFile());
 				compilerProperties.load(in);
 				if (compilerProperties.getRobocodeVersion() == null) {
 					log("Setting up new compiler");
@@ -168,6 +179,12 @@ public class RobocodeCompilerFactory {
 				log("Setting up compiler.");
 			} catch (IOException e) {
 				log("IO Exception reading " + FileUtil.getCompilerConfigFile().getName() + ": " + e);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {}
+				}
 			}
 		}
 		return compilerProperties;
@@ -377,14 +394,20 @@ public class RobocodeCompilerFactory {
 
 		console.append("\nRobocode building Jikes...\n");
 
+		InputStream in = null;
+		InputStream err = null;
+
 		try {
 			String command = "./compilers/buildJikes.sh";
 
 			log(command);
+
 			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
-			console.processStream(p.getInputStream());
-			console.processStream(p.getErrorStream());
+			in = p.getInputStream();
+			err = p.getErrorStream();
+			console.processStream(in);
+			console.processStream(err);
 			p.waitFor();
 			if (p.exitValue() == 0) {
 				console.append("Finished building Jikes\n");
@@ -405,6 +428,17 @@ public class RobocodeCompilerFactory {
 			console.setTitle("Jikes compile failed.\n");
 			console.scrollToBottom();
 			rv = false;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
+			if (err != null) {
+				try {
+					err.close();
+				} catch (IOException e) {}
+			}
 		}
 		return rv;
 	}
@@ -414,12 +448,20 @@ public class RobocodeCompilerFactory {
 			log("Cannot save null compiler properties");
 			return;
 		}
+		FileOutputStream out = null;
+
 		try {
-			FileOutputStream out = new FileOutputStream(FileUtil.getCompilerConfigFile());
+			out = new FileOutputStream(FileUtil.getCompilerConfigFile());
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
 			log(e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 
@@ -427,16 +469,32 @@ public class RobocodeCompilerFactory {
 		console.append("Testing compile with javac...\n");
 		boolean javacOk = false;
 
+		InputStream in = null;
+		InputStream err = null;
+
 		try {
 			Process p = Runtime.getRuntime().exec("javac compilers/CompilerTest.java", null, FileUtil.getCwd());
 
-			console.processStream(p.getInputStream());
-			console.processStream(p.getErrorStream());
+			in = p.getInputStream();
+			err = p.getErrorStream();
+			console.processStream(in);
+			console.processStream(err);
 			p.waitFor();
 			if (p.exitValue() == 0) {
 				javacOk = true;
 			}
-		} catch (IOException e) {} catch (InterruptedException e) {}
+		} catch (IOException e) {} catch (InterruptedException e) {} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
+			if (err != null) {
+				try {
+					err.close();
+				} catch (IOException e) {}
+			}
+		}
 		if (!javacOk) {
 			console.append("javac does not exist.\n");
 		} else {
@@ -449,16 +507,32 @@ public class RobocodeCompilerFactory {
 		console.append("\nTesting compile with Jikes...\n");
 		boolean jikesOk = false;
 
+		InputStream in = null;
+		InputStream err = null;
+
 		try {
 			Process p = Runtime.getRuntime().exec(jikesBinary + " compilers/CompilerTest.java", null, FileUtil.getCwd());
 
-			console.processStream(p.getInputStream());
-			console.processStream(p.getErrorStream());
+			in = p.getInputStream();
+			err = p.getErrorStream();
+			console.processStream(in);
+			console.processStream(err);
 			p.waitFor();
 			if (p.exitValue() == 0) {
 				jikesOk = true;
 			}
-		} catch (IOException e) {} catch (InterruptedException e) {}
+		} catch (IOException e) {} catch (InterruptedException e) {} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
+			if (err != null) {
+				try {
+					err.close();
+				} catch (IOException e) {}
+			}
+		}
 		if (!jikesOk) {
 			console.append("Unable to compile with Jikes!\n");
 		} else {
