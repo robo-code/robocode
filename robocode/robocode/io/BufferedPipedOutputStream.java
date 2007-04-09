@@ -9,9 +9,12 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Bugfix: Changed the if-statement of "if (readIndex == writeIndex)" in
  *       the read() method to a while-statement in order to correct text-output
  *       bug, where old text or odd characters were printed out
+ *     - The setReadIndexToNextLine() has been embedded into the write(int b)
+ *       method
  *******************************************************************************/
 package robocode.io;
 
@@ -25,11 +28,10 @@ import java.io.OutputStream;
  * @author Flemming N. Larsen (contributor)
  */
 public class BufferedPipedOutputStream extends OutputStream {
-
-	byte buf[];
-	int readIndex;
-	int writeIndex;
-	boolean waiting;
+	private byte buf[];
+	private int readIndex;
+	private int writeIndex;
+	private boolean waiting;
 	private BufferedPipedInputStream in;
 	private boolean closed;
 	private boolean skipLines;
@@ -43,43 +45,38 @@ public class BufferedPipedOutputStream extends OutputStream {
 	 * @see OutputStream#write(int)
 	 */
 	@Override
-	public void write(int b) throws IOException {
+	public synchronized void write(int b) throws IOException {
 		if (closed) {
 			throw new IOException("Stream is closed.");
 		}
 
-		synchronized (this) {
-			buf[writeIndex++] = (byte) (b & 0xff);
-			if (writeIndex == buf.length) {
-				writeIndex = 0;
-			}
-			if (writeIndex == readIndex) {
-				// skipping a line!
-				if (skipLines) {
-					setReadIndexToNextLine();
-				} else {
-					throw new IOException("Buffer is full.");
-				}
-			}
-			if (waiting) {
-				notify();
-			}
+		buf[writeIndex++] = (byte) (b & 0xff);
+		if (writeIndex == buf.length) {
+			writeIndex = 0;
 		}
-	}
+		if (writeIndex == readIndex) {
+			// skipping a line!
+			if (skipLines) {
+				boolean writeIndexReached = false;
 
-	private void setReadIndexToNextLine() {
-		while (buf[readIndex] != '\n') {
-			readIndex++;
-			if (readIndex == buf.length) {
-				readIndex = 0;
+				while (buf[readIndex] != '\n') {
+					readIndex++;
+					if (readIndex == buf.length) {
+						readIndex = 0;
+					}
+					if (readIndex == writeIndex) {
+						writeIndexReached = true;
+					}
+				}
+				if (!writeIndexReached) {
+					readIndex++;
+					if (readIndex == buf.length) {
+						readIndex = 0;
+					}
+				}
+			} else {
+				throw new IOException("Buffer is full.");
 			}
-			if (readIndex == writeIndex) {
-				return;
-			}
-		}
-		readIndex++;
-		if (readIndex == buf.length) {
-			readIndex = 0;
 		}
 	}
 
@@ -109,7 +106,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 	public int read(byte b[], int off, int len) throws IOException {
 		if (b == null) {
 			throw new NullPointerException();
-		} else if ((off < 0) || (off > b.length) || (len < 0) || ((off + len) > b.length) || ((off + len) < 0)) {
+		} else if (off < 0 || len < 0 || off >= b.length || (off + len) > b.length) {
 			throw new IndexOutOfBoundsException();
 		} else if (len == 0) {
 			return 0;
@@ -120,10 +117,10 @@ public class BufferedPipedOutputStream extends OutputStream {
 			return -1;
 		}
 
-		synchronized (this) {
-			b[off] = (byte) (first & 0xff);
-			int count = 1;
+		b[off] = (byte) (first & 0xff);
+		int count = 1;
 
+		synchronized (this) {
 			for (int i = 1; readIndex != writeIndex && i < len; i++) {
 				b[off + i] = buf[readIndex++];
 				count++;
@@ -131,11 +128,11 @@ public class BufferedPipedOutputStream extends OutputStream {
 					readIndex = 0;
 				}
 			}
-			return count;
 		}
+		return count;
 	}
 
-	protected int available() {
+	protected synchronized int available() {
 		if (writeIndex == readIndex) {
 			return 0;
 		} else if (writeIndex > readIndex) {
