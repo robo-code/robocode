@@ -28,6 +28,7 @@
  *       startNewBattle(BattleSpecification spec, boolean replay)
  *     - Added missing close() on FileInputStreams and FileOutputStreams
  *     - isPaused() is now synchronized
+ *     - Extended sendResultsToListener() to handle teams as well as robots
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -57,10 +58,11 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
+import robocode.peer.ContestantStatistics;
+import robocode.peer.ContestantPeer;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
-import robocode.peer.robot.RobotStatistics;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotSpecification;
 import robocode.repository.TeamSpecification;
@@ -519,17 +521,21 @@ public class BattleManager {
 	}
 
 	public void sendResultsToListener(Battle battle, RobocodeListener listener) {
-		List<RobotPeer> orderedRobots = Collections.synchronizedList(new ArrayList<RobotPeer>(battle.getRobots()));
+		List<ContestantPeer> orderedPeers = Collections.synchronizedList(
+				new ArrayList<ContestantPeer>(battle.getContestants()));
 
-		Collections.sort(orderedRobots);
+		Collections.sort(orderedPeers);
 
-		RobotResults results[] = new RobotResults[orderedRobots.size()];
+		RobotResults results[] = new RobotResults[orderedPeers.size()];
 
 		for (int i = 0; i < results.length; i++) {
-			RobotStatistics stats = orderedRobots.get(i).getRobotStatistics();
+			ContestantPeer peer = orderedPeers.get(i);
+			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
+			
+			ContestantStatistics stats = peer.getStatistics();
 
-			results[i] = new RobotResults(orderedRobots.get(i).getRobotClassManager().getControlRobotSpecification(),
-					(i + 1), stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivalBonus(),
+			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
+					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
 					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
 					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
 		}
