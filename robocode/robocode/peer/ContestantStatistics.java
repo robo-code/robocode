@@ -25,7 +25,7 @@ package robocode.peer;
 public interface ContestantStatistics {
 	public double getTotalScore();
 	public double getTotalSurvivalScore();
-	public double getTotalLastSurvivalBonus();
+	public double getTotalLastSurvivorBonus();
 	public double getTotalBulletDamageScore();
 	public double getTotalBulletKillBonus();
 	public double getTotalRammingDamageScore();

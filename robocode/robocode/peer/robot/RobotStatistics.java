@@ -135,7 +135,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		return totalSurvivalScore;
 	}
 
-	public double getTotalLastSurvivalBonus() {
+	public double getTotalLastSurvivorBonus() {
 		return totalLastSurvivorBonus;
 	}
 
@@ -303,7 +303,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	public RobotResults getResults(int rank) {
 		if (robotPeer.getBattle().isRunning()) {
 			return new RobotResults(null, rank, totalScore + getCurrentScore(), totalSurvivalScore + survivalScore,
-					totalLastSurvivorBonus + lastSurvivorBonus, totalBulletDamageScore + bulletDamageScore,
+					totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore,
 					totalBulletKillBonus + bulletKillBonus, totalRammingDamageScore + rammingDamageScore,
 					totalRammingKillBonus + rammingKillBonus, totalFirsts, totalSeconds, totalThirds);
 		}

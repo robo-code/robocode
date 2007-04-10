@@ -50,11 +50,11 @@ public class TeamStatistics implements ContestantStatistics {
 		return d;
 	}
 
-	public double getTotalLastSurvivalBonus() {
+	public double getTotalLastSurvivorBonus() {
 		double d = 0;
 
 		for (RobotPeer teammate : teamPeer) {
-			d += teammate.getRobotStatistics().getTotalLastSurvivalBonus();
+			d += teammate.getRobotStatistics().getTotalLastSurvivorBonus();
 		}
 		return d;
 	}
