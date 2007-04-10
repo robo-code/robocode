@@ -137,7 +137,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalSurvivalScore() + current + 0.5);
 		}
 		case 4:
-			return (int) (statistics.getTotalLastSurvivalBonus() + 0.5);
+			return (int) (statistics.getTotalLastSurvivorBonus() + 0.5);
 
 		case 5: {
 			double current = battle.isRunning() ? statistics.getCurrentBulletDamageScore() : 0;
