@@ -13,6 +13,10 @@
  *     - Updated to use methods from WindowUtil, FileTypeFilter, FileUtil, Logger,
  *       which replaces methods that have been (re)moved from the Utils class
  *     - Changed to use FileUtil.getRobotsDir()
+ *     - Replaced multiple catch'es with a single catch in
+ *       getSpecificationsInDirectory()
+ *     - Minor optimizations
+ *     - Added missing close() on FileInputStream
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -304,7 +308,7 @@ public class RobotRepositoryManager {
 			String fileName = file.getName();
 
 			if (file.isDirectory()) {
-				if (prefix.equals("")) {
+				if (prefix.length() == 0) {
 					int jidx = fileName.lastIndexOf(".jar_");
 
 					if (jidx > 0 && jidx == fileName.length() - 5) {
@@ -387,7 +391,6 @@ public class RobotRepositoryManager {
 
 		if (fileSpecification instanceof RobotSpecification) {
 			RobotSpecification robotSpecification = (RobotSpecification) fileSpecification;
-			String name = robotSpecification.getName();
 
 			try {
 				RobotClassManager robotClassManager = new RobotClassManager(robotSpecification);
@@ -424,21 +427,9 @@ public class RobotRepositoryManager {
 					}
 				}
 				getRobotDatabase().put(key, new ClassSpecification(robotSpecification));
-			} catch (ClassNotFoundException e) {
-				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-			} catch (ClassCastException e) {
-				// Should not happen here.
-				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-				log(name + " is not a robot.");
-			} catch (ClassFormatError e) {
-				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-				log(name + " is not a valid .class file: " + e);
-			} catch (Exception e) {
-				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-				log(name + " :  Something is wrong with this class: " + e);
-			} catch (Error e) {
-				getRobotDatabase().put(key, robotSpecification); // new ClassSpecification(robotSpecification));
-				log(name + " : Something is wrong with this class: " + e);
+			} catch (Throwable t) {
+				getRobotDatabase().put(key, robotSpecification);
+				log(robotSpecification.getName() + ": Got an error with this class: " + t);
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
@@ -552,12 +543,22 @@ public class RobotRepositoryManager {
 
 	public int extractJar(File f, File dest, String statusPrefix, boolean extractJars, boolean close,
 			boolean alwaysReplace) {
+
+		FileInputStream fis = null;
+
 		try {
-			JarInputStream jarIS = new JarInputStream(new FileInputStream(f));
+			fis = new FileInputStream(f);
+			JarInputStream jarIS = new JarInputStream(fis);
 
 			return extractJar(jarIS, dest, statusPrefix, extractJars, close, alwaysReplace);
 		} catch (Exception e) {
 			log("Exception reading " + f + ": " + e);
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {}
+			}
 		}
 		return 16;
 	}
