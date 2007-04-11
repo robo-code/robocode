@@ -1,5 +1,5 @@
 Version 1.3 Alpha
-(03/30/2007)
+(04/11/2007)
 Now featuring the RoboRumble@Home client
 -------------
 o Bugfixes
@@ -11,6 +11,8 @@ o Bugfixes
   -- NullPointerException could occur when using robocode.control.RobocodeEngine and the
      GUI was not enabled
   -- The text field for the filename in the robot packager was way too high
+  -- Lots of synchronizations issues and potential ConcurrentModificationExceptions have
+     been fixed
 o RoboRumble@Home client, originally developed by Albert Pérez, is now built-in
   -- RoboRumble@Home is the ultimate collaborative effort to have a live, up-to-date
      ranking of bots. It uses the power of available robocoder's computers to distribute
@@ -31,6 +33,8 @@ o The file structure of Robocode has been slightly improved
   -- All .jar files including robocode.jar are now located in the libs folder
   -- The robot.database and .robotcache files has been moved to the robots folder
   -- All RoboRumble related files are located in the roborumble folder
+o Special thanks goes to Gert Heijenk (aka GrubbmGait), which did a tremendous with lots
+  of alpha testing regarding the new RoboRumble@Home built into Robocode! :-D  
 
 Version 1.2.6A
 (03/11/2007)
