@@ -135,7 +135,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		} else {
 			resultsString = "FATAL: Unknown return code " + rc + " from packager.\n" + output.toString();
 		}
-		
+
 		d.setText(resultsString);
 		d.pack();
 		d.pack();
@@ -303,7 +303,9 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 		try {
 			out.println("Creating Jar file: " + f.getName());
-			jarout = new NoDuplicateJarOutputStream(new FileOutputStream(f));
+
+			fos = new FileOutputStream(f);
+			jarout = new NoDuplicateJarOutputStream(fos);
 			jarout.setComment(robotManager.getManager().getVersionManager().getVersion() + " - Robocode version");
 
 			for (FileSpecification fileSpecification : selectedRobots) {
@@ -330,19 +332,20 @@ public class RobotPackager extends JDialog implements WizardListener {
 						}
 						robotSpecification.setRobotWebpage(u);
 						robotSpecification.setRobocodeVersion(robotManager.getManager().getVersionManager().getVersion());
-					
-						fos = null;
+
+						FileOutputStream fos2 = null;
+
 						try {
-							fos = new FileOutputStream(new File(robotSpecification.getThisFileName()));
-							robotSpecification.store(fos, "Robot Properties");
+							fos2 = new FileOutputStream(new File(robotSpecification.getThisFileName()));
+							robotSpecification.store(fos2, "Robot Properties");
 						} catch (IOException e) {
 							rv = 4;
 							out.println("Unable to save properties: " + e);
 							out.println("Attempting to continue...");
 						} finally {
-							if (fos != null) {
+							if (fos2 != null) {
 								try {
-									fos.close();
+									fos2.close();
 								} catch (IOException e) {}
 							}
 						}
@@ -372,19 +375,20 @@ public class RobotPackager extends JDialog implements WizardListener {
 					teamSpecification.setTeamDescription(getPackagerOptionsPanel().getDescriptionArea().getText());
 					teamSpecification.setTeamAuthorName(getPackagerOptionsPanel().getAuthorField().getText());
 					teamSpecification.setRobocodeVersion(robotManager.getManager().getVersionManager().getVersion());
-				
-					fos = null;
+
+					FileOutputStream fos2 = null;
+
 					try {
-						fos = new FileOutputStream(new File(teamSpecification.getThisFileName()));
-						teamSpecification.store(fos, "Team Properties");
+						fos2 = new FileOutputStream(new File(teamSpecification.getThisFileName()));
+						teamSpecification.store(fos2, "Team Properties");
 					} catch (IOException e) {
 						rv = 4;
 						out.println("Unable to save .team file: " + e);
 						out.println("Attempting to continue...");
 					} finally {
-						if (fos != null) {
+						if (fos2 != null) {
 							try {
-								fos.close();
+								fos2.close();
 							} catch (IOException e) {}
 						}
 					}
@@ -469,7 +473,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		File jarFile = new File(getFilenamePanel().getFilenameField().getText());
 
 		Codesize.Item item = Codesize.processZipFile(jarFile);
-		
+
 		int codesize = item.getCodeSize();
 
 		String weightClass;
@@ -483,14 +487,14 @@ public class RobotPackager extends JDialog implements WizardListener {
 		} else {
 			weightClass = "NanoBot  (codesize < 250 bytes)";
 		}
-		
+
 		StringBuffer out = output.getBuffer();
 
 		out.append("\n\n---- Codesize ----\n");
 		out.append("Codesize: ").append(codesize).append(" bytes\n");
 		out.append("Robot weight class: ").append(weightClass).append('\n');
 	}
-	
+
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,
 			RobotSpecification robotSpecification) {
 		int rv = 0;
