@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Rewritten for Java 5
+ *     - Changed contains(String) into contains(Object), as the first listed
+ *       shadowed the second one
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -68,13 +70,13 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		return super.add(r);
 	}
 
-	public boolean contains(String s) {
-		if (s == null) {
-			return false;
-		}
-		for (RobotPeer r : this) {
-			if (s.equals(r.getName())) {
-				return true;
+	@Override
+	public boolean contains(Object s) {
+		if (s != null && s instanceof String) {
+			for (RobotPeer r : this) {
+				if (s.equals(r.getName())) {
+					return true;
+				}
 			}
 		}
 		return false;
