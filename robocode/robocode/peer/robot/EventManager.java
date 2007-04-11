@@ -11,7 +11,8 @@
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue with the getTime() method that was
  *       synchronized before, which sometimes caused a deadlock to occur in the
- *       code processing the hitWall event.
+ *       code processing the hitWall event
+ *     - Removed unnecessary assigns to currentEvent in processEvents()
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
  *     - Bugfix: Added setting and getting the priority of BulletHitBulletEvent
@@ -635,7 +636,6 @@ public class EventManager {
 
 			} catch (EventInterruptedException e) {
 				fireAssistValid = false;
-				currentEvent = eventQueue.get(0);
 			} catch (RuntimeException e) {
 				currentTopEventPriority = oldTopEventPriority;
 				throw e;
@@ -644,11 +644,6 @@ public class EventManager {
 				throw e;
 			}
 			currentTopEventPriority = oldTopEventPriority;
-			if (eventQueue.size() > 0) {
-				currentEvent = eventQueue.get(0);
-			} else {
-				currentEvent = null;
-			}
 		}
 	}
 
