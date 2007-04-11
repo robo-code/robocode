@@ -190,6 +190,7 @@ public class RobocodeFrame extends JFrame {
 		}
 	}
 
+
 	private class PauseResumeHandler implements BattleManager.PauseResumeListener {
 
 		public void battlePaused() {
@@ -252,7 +253,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public BattleView getBattleView() {
 		if (battleView == null) {
-			battleView = new BattleView(manager, this, manager.getImageManager());
+			battleView = new BattleView(manager, this);
 			battleView.addComponentListener(eventHandler);
 		}
 		return battleView;
@@ -602,6 +603,7 @@ public class RobocodeFrame extends JFrame {
 
 	public void pauseResumeButtonActionPerformed() {
 		BattleManager battleManager = manager.getBattleManager();
+
 		if (battleManager.isPaused()) {
 			battleManager.resumeBattle();
 		} else {
