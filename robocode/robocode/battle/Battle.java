@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Replaced the ContestantPeerVector, BulletPeerVector, and RobotPeerVector
  *       with plain Vector
  *     - Integration of robocode.render
@@ -29,7 +30,7 @@
  *     - Changed cleanup to only remove the robot in the robot peers, as the
  *       robot peers themselves are used for replay recording
  *     - Added support for playing background music when the battle is ongoing
- *     - Code cleanup
+ *     - Removed unnecessary catches of NullPointerExceptions
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -209,15 +210,7 @@ public class Battle implements Runnable {
 		}
 
 		// Load robots
-		try {
-			initialize();
-		} catch (NullPointerException e) {
-			if (!abortBattles) {
-				log("Null pointer exception in battle.initialize");
-				e.printStackTrace(System.err);
-				throw e;
-			}
-		}
+		initialize();
 
 		deterministic = true;
 		nonDeterministicRobots = null;
@@ -259,12 +252,6 @@ public class Battle implements Runnable {
 				battleManager.setBattleRunning(false);
 
 				cleanupRound();
-			} catch (NullPointerException e) {
-				if (!abortBattles) {
-					log("Null pointer exception running a battle");
-					throw e;
-				}
-				log("Warning:  Null pointer exception while aborting battle.");
 			} catch (Exception e) {
 				log("Exception running a battle: " + e);
 			}
@@ -555,7 +542,7 @@ public class Battle implements Runnable {
 							break;
 						}
 					}
-					if (!(battleView == null || replay)) {
+					if (battleView != null && !replay) {
 						battleView.update();
 					}
 				} catch (Throwable e) {
