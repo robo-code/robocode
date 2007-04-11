@@ -9,10 +9,13 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Added checkPackageAccess() to limit access to the robocode.util Robocode
  *       package only
  *     - Ported to Java 5.0
- *     - Code cleanup
+ *     - Removed unnecessary method synchronization
+ *     - Fixed potential NullPointerException in getFileOutputStream()
+ *     - Added setStatus()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -37,47 +40,46 @@ import robocode.peer.robot.RobotFileSystemManager;
  * @author Robert D. Maupin (contributor)
  */
 public class RobocodeSecurityManager extends SecurityManager {
-	private Map<Thread, RobocodeFileOutputStream> outputStreamThreads;
-	private List<Thread> safeThreads;
-	private List<ThreadGroup> safeThreadGroups;
-	private Thread battleThread;
-	public String status;
+	private final PrintStream syserr = System.err;
 
-	private ThreadManager threadManager;
-	private PrintStream syserr = System.err;
-	private Object safeSecurityContext;
-	private boolean enabled = true;
+	private final ThreadManager threadManager;
+	private final Object safeSecurityContext;
+	private final boolean enabled;
+
+	private final Map<Thread, RobocodeFileOutputStream> outputStreamThreads = Collections.synchronizedMap(
+			new HashMap<Thread, RobocodeFileOutputStream>());
+	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
+	private final List<ThreadGroup> safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
+
+	private Thread battleThread;
 
 	/**
 	 * RobocodeSecurityManager constructor
 	 */
 	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled) {
 		super();
-		safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
 		safeThreads.add(safeThread);
-		safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
-		outputStreamThreads = new HashMap<Thread, RobocodeFileOutputStream>();
 		this.threadManager = threadManager;
-		safeSecurityContext = getSecurityContext();
 		this.enabled = enabled;
+		safeSecurityContext = getSecurityContext();
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
 		outputStreamThreads.put(Thread.currentThread(), o);
 	}
 
-	public synchronized void addSafeThread(Thread safeThread) {
+	public void addSafeThread(Thread safeThread) {
 		checkPermission(new RobocodePermission("addSafeThread"));
 		safeThreads.add(safeThread);
 	}
 
-	public synchronized void addSafeThreadGroup(ThreadGroup safeThreadGroup) {
+	public void addSafeThreadGroup(ThreadGroup safeThreadGroup) {
 		checkPermission(new RobocodePermission("addSafeThreadGroup"));
 		safeThreadGroups.add(safeThreadGroup);
 	}
 
 	@Override
-	public synchronized void checkAccess(Thread t) {
+	public void checkAccess(Thread t) {
 		super.checkAccess(t);
 		Thread c = Thread.currentThread();
 
@@ -121,7 +123,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public synchronized void checkAccess(ThreadGroup g) {
+	public void checkAccess(ThreadGroup g) {
 		super.checkAccess(g);
 
 		Thread c = Thread.currentThread();
@@ -174,13 +176,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 	 * Else deny, with a few exceptions.
 	 */
 	@Override
-	public synchronized void checkPermission(Permission perm, Object context) {
+	public void checkPermission(Permission perm, Object context) {
 		syserr.println("Checking permission " + perm + " for context " + context);
 		super.checkPermission(perm);
 	}
 
 	@Override
-	public synchronized void checkPermission(Permission perm) {
+	public void checkPermission(Permission perm) {
 		// For John Burkey at Apple
 		if (!enabled) {
 			return;
@@ -192,7 +194,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (getSecurityContext().equals(safeSecurityContext)) {
 			return;
 		}
-		Thread c = Thread.currentThread();
 
 		// Ok, could be system, could be robot
 		// We'll check the system policy (RobocodeSecurityPolicy)
@@ -229,6 +230,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		// Ok, we need to figure out who our robot is.
+		Thread c = Thread.currentThread();
+
 		RobotPeer r = threadManager.getRobotPeer(c);
 
 		if (r == null) {
@@ -375,11 +378,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		// Permission denied.
-		if (status == null || status.equals("")) {
-			syserr.println("Preventing " + r.getName() + " from access: " + perm);
-		} else {
-			syserr.println("Preventing " + r.getName() + " from access: " + perm + " (" + status + ")");
-		}
+		syserr.println("Preventing " + r.getName() + " from access: " + perm);
 
 		r.setEnergy(0);
 
@@ -402,8 +401,12 @@ public class RobocodeSecurityManager extends SecurityManager {
 		try {
 			fos = new FileOutputStream(o.getName(), append);
 		} catch (FileNotFoundException e) {
-			Thread c = Thread.currentThread();
-			RobotPeer r = threadManager.getRobotPeer(c);
+			RobotPeer r = threadManager.getRobotPeer(Thread.currentThread());
+
+			if (r == null) {
+				syserr.println("RobotPeer is null");
+				return;
+			}
 			File dir = r.getRobotFileSystemManager().getWritableDirectory();
 
 			addRobocodeOutputStream(o); // it's gone already...
@@ -417,10 +420,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private synchronized RobocodeFileOutputStream getRobocodeOutputStream() {
 		return outputStreamThreads.get(Thread.currentThread());
-	}
-
-	public String getStatus() {
-		return status;
 	}
 
 	public boolean isSafeThread(Thread c) {
@@ -451,13 +450,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 		safeThreads.remove(safeThread);
 	}
 
-	public void setBattleThread(Thread newBattleThread) {
+	public synchronized void setBattleThread(Thread newBattleThread) {
 		checkPermission(new RobocodePermission("setBattleThread"));
 		battleThread = newBattleThread;
-	}
-
-	public void setStatus(String newStatus) {
-		status = newStatus;
 	}
 
 	public void threadOut(String s) {
