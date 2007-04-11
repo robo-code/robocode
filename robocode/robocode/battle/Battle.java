@@ -73,7 +73,6 @@ import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.security.RobocodeClassLoader;
-import robocode.sound.SoundManager;
 
 
 /**
@@ -148,9 +147,6 @@ public class Battle implements Runnable {
 	private boolean unsafeLoaderThreadRunning;
 	private boolean robotsLoaded;
 
-	// Sound manager
-	private SoundManager soundManager;
-
 	// Replay related items
 	private boolean replay;
 	private boolean isRecordingEnabled;
@@ -172,7 +168,6 @@ public class Battle implements Runnable {
 		this.manager = manager;
 
 		battleManager = manager.getBattleManager();
-		soundManager = manager.getSoundManager();
 		robots = Collections.synchronizedList(new ArrayList<RobotPeer>());
 		bullets = Collections.synchronizedList(new ArrayList<BulletPeer>());
 		contestants = Collections.synchronizedList(new ArrayList<ContestantPeer>());
@@ -1529,7 +1524,7 @@ public class Battle implements Runnable {
 	private void playSounds() {
 		if (manager.isSoundEnabled()) {
 			for (BulletPeer bp : getBullets()) {
-				soundManager.playBulletSound(bp);
+				manager.getSoundManager().playBulletSound(bp);
 			}
 
 			boolean playedRobotHitRobot = false;
@@ -1543,7 +1538,7 @@ public class Battle implements Runnable {
 					playedRobotHitRobot = true;
 				}
 
-				soundManager.playRobotSound(rp);
+				manager.getSoundManager().playRobotSound(rp);
 			}
 		}
 	}
