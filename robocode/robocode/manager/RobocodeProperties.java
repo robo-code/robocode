@@ -793,11 +793,7 @@ public class RobocodeProperties {
 	 * @param optionsDevelopmentPath The optionsDevelopmentPath to set
 	 */
 	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
-		try {
-			if (!optionsDevelopmentPath.equals(this.optionsDevelopmentPath)) {
-				manager.getRobotRepositoryManager().clearRobotList();
-			}
-		} catch (NullPointerException e) { // Just to be safe
+		if (!optionsDevelopmentPath.equals(this.optionsDevelopmentPath)) {
 			manager.getRobotRepositoryManager().clearRobotList();
 		}
 		this.optionsDevelopmentPath = optionsDevelopmentPath;
@@ -975,7 +971,7 @@ public class RobocodeProperties {
 	private class SortedProperties extends Properties {
 		@SuppressWarnings("unchecked")
 		@Override
-		public synchronized Enumeration keys() {
+		public Enumeration keys() {
 			Enumeration<Object> keysEnum = super.keys();
 
 			Vector<String> keyList = new Vector<String>();
