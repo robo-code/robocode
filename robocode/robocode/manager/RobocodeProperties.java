@@ -47,63 +47,78 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeProperties {
-	private Properties props = new SortedProperties();
+	// Default SFX files
+	private final static String
+			DEFAULT_FILE_GUNSHOT_SFX = "/resources/sounds/zap.wav",
+			DEFAULT_FILE_ROBOT_COLLISION_SFX = "/resources/sounds/13831_adcbicycle_22.wav",
+			DEFAULT_FILE_WALL_COLLISION_SFX = DEFAULT_FILE_ROBOT_COLLISION_SFX,
+			DEFAULT_FILE_ROBOT_DEATH_SFX = "/resources/sounds/explode.wav",
+			DEFAULT_FILE_BULLET_HITS_ROBOT_SFX = "/resources/sounds/shellhit.wav",
+			DEFAULT_FILE_BULLET_HITS_BULLET_SFX = DEFAULT_FILE_BULLET_HITS_ROBOT_SFX;
 
 	// View Options (Arena)
-	private boolean optionsViewRobotEnergy = true;
-	private boolean optionsViewRobotNames = true;
-	private boolean optionsViewScanArcs = false;
-	private boolean optionsViewExplosions = true;
-	private boolean optionsViewGround = true;
-	private boolean optionsViewExplosionDebris = false;
+	private boolean
+			optionsViewRobotEnergy = true,
+			optionsViewRobotNames = true,
+			optionsViewScanArcs = false,
+			optionsViewExplosions = true,
+			optionsViewGround = true,
+			optionsViewExplosionDebris = false;
 
 	// View Options (Turns Per Second)
-	private boolean optionsViewTPS = true;
-	private boolean optionsViewFPS = true;
+	private boolean
+			optionsViewTPS = true,
+			optionsViewFPS = true;
 
 	// Rendering Options
-	private int optionsRenderingAntialiasing = 0; // 0 = default, 1 = on, 2 = off
-	private int optionsRenderingTextAntialiasing = 0; // 0 = default, 1 = on, 2 = off
-	private int optionsRenderingMethod = 0; // 0 = default, 1 = speed, 2 = quality
-	private int optionsRenderingNoBuffers = 2; // 1 = single buffering, 2 = double buffering, 3 = tripple buffering
-	private int optionsBattleDesiredTPS = 30;
+	private int
+			optionsRenderingAntialiasing = 0, // 0 = default, 1 = on, 2 = off
+			optionsRenderingTextAntialiasing = 0, // 0 = default, 1 = on, 2 = off
+			optionsRenderingMethod = 0, // 0 = default, 1 = speed, 2 = quality
+			optionsRenderingNoBuffers = 2, // 1 = single buffering, 2 = double buffering, 3 = tripple buffering
+			optionsBattleDesiredTPS = 30;
 
 	// Sound Options (Sound Effects)
-	private boolean optionsSoundEnableSound = false;
-	private boolean optionsSoundEnableGunshot = true;
-	private boolean optionsSoundEnableBulletHit = true;
-	private boolean optionsSoundEnableRobotDeath = true;
-	private boolean optionsSoundEnableWallCollision = true;
-	private boolean optionsSoundEnableRobotCollision = true;
+	private boolean
+			optionsSoundEnableSound = false,
+			optionsSoundEnableGunshot = true,
+			optionsSoundEnableBulletHit = true,
+			optionsSoundEnableRobotDeath = true,
+			optionsSoundEnableWallCollision = true,
+			optionsSoundEnableRobotCollision = true;
 
 	// Sound Options (Mixer)
 	private String optionsSoundMixer = "DirectAudioDevice";
-	private boolean optionsSoundEnableMixerVolume = true;
-	private boolean optionsSoundEnableMixerPan = true;
+	private boolean
+			optionsSoundEnableMixerVolume = true,
+			optionsSoundEnableMixerPan = true;
 
 	// Development Options
 	private String optionsDevelopmentPath = "";
 
 	// Common Options
-	private boolean optionsCommonShowResults = true;
-	private boolean optionsCommonAppendWhenSavingResults = true;
-	private boolean optionsCommonEnableReplayRecording = false;
+	private boolean
+			optionsCommonShowResults = true,
+			optionsCommonAppendWhenSavingResults = true,
+			optionsCommonEnableReplayRecording = false;
 
 	// Team Options
 	private boolean optionsTeamShowTeamRobots = false;
 
 	// Music files
-	private String fileThemeMusic = "";
-	private String fileBackgroundMusic = "";
-	private String fileEndOfBattleMusic = "";
+	private String
+			fileThemeMusic = "",
+			fileBackgroundMusic = "",
+			fileEndOfBattleMusic = "";
 
 	// SFX files
-	private String fileGunshotSfx = "/resources/sounds/zap.wav";
-	private String fileRobotCollisionSfx = "/resources/sounds/13831_adcbicycle_22.wav";
-	private String fileWallCollisionSfx = fileRobotCollisionSfx;
-	private String fileRobotDeathSfx = "/resources/sounds/explode.wav";
-	private String fileBulletHitsRobotSfx = "/resources/sounds/shellhit.wav";
-	private String fileBulletHitsBulletSfx = fileRobotCollisionSfx;
+	private String
+			fileGunshotSfx = DEFAULT_FILE_GUNSHOT_SFX,
+			fileRobotCollisionSfx = DEFAULT_FILE_ROBOT_COLLISION_SFX,
+			fileWallCollisionSfx = DEFAULT_FILE_WALL_COLLISION_SFX,
+			fileRobotDeathSfx = DEFAULT_FILE_ROBOT_DEATH_SFX,
+			fileBulletHitsRobotSfx = DEFAULT_FILE_BULLET_HITS_ROBOT_SFX,
+			fileBulletHitsBulletSfx = DEFAULT_FILE_BULLET_HITS_BULLET_SFX;
 
 	// Robocode internals
 	private String lastRunVersion = "";
@@ -112,10 +127,11 @@ public class RobocodeProperties {
 	private long consoleQuota = 8192;
 	private int cpuConstant = 200;
 
+	private Properties props = new SortedProperties();
+
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
 
 	private final static String
-
 			OPTIONS_VIEW_ROBOTNAMES = "robocode.options.view.robotNames",
 			OPTIONS_VIEW_SCANARCS = "robocode.options.view.scanArcs",
 			OPTIONS_VIEW_ROBOTENERGY = "robocode.options.view.robotEnergy",
@@ -907,12 +923,12 @@ public class RobocodeProperties {
 		fileBackgroundMusic = props.getProperty(FILE_BACKGROUND_MUSIC);
 		fileEndOfBattleMusic = props.getProperty(FILE_END_OF_BATTLE_MUSIC);
 
-		fileGunshotSfx = props.getProperty(FILE_GUNSHOT_SFX);
-		fileRobotCollisionSfx = props.getProperty(FILE_ROBOT_COLLISION_SFX);
-		fileWallCollisionSfx = props.getProperty(FILE_WALL_COLLISION_SFX);
-		fileRobotDeathSfx = props.getProperty(FILE_ROBOT_DEATH_SFX);
-		fileBulletHitsRobotSfx = props.getProperty(FILE_BULLET_HITS_ROBOT_SFX);
-		fileBulletHitsBulletSfx = props.getProperty(FILE_BULLET_HITS_BULLET_SFX);
+		fileGunshotSfx = props.getProperty(FILE_GUNSHOT_SFX, DEFAULT_FILE_GUNSHOT_SFX);
+		fileRobotCollisionSfx = props.getProperty(FILE_ROBOT_COLLISION_SFX, DEFAULT_FILE_ROBOT_COLLISION_SFX);
+		fileWallCollisionSfx = props.getProperty(FILE_WALL_COLLISION_SFX, DEFAULT_FILE_WALL_COLLISION_SFX);
+		fileRobotDeathSfx = props.getProperty(FILE_ROBOT_DEATH_SFX, DEFAULT_FILE_ROBOT_DEATH_SFX);
+		fileBulletHitsRobotSfx = props.getProperty(FILE_BULLET_HITS_ROBOT_SFX, DEFAULT_FILE_BULLET_HITS_ROBOT_SFX);
+		fileBulletHitsBulletSfx = props.getProperty(FILE_BULLET_HITS_BULLET_SFX, DEFAULT_FILE_BULLET_HITS_BULLET_SFX);
 
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
 
