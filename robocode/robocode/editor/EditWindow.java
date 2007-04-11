@@ -306,44 +306,38 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 		String fileName = robotsDirectory.getPath() + File.separatorChar;
 		String saveDir = fileName;
 
-		try {
-			String text = getEditorPane().getText();
-			int pIndex = text.indexOf("package ");
+		String text = getEditorPane().getText();
+		int pIndex = text.indexOf("package ");
 
-			if (pIndex >= 0) {
-				int pEIndex = text.indexOf(";", pIndex);
+		if (pIndex >= 0) {
+			int pEIndex = text.indexOf(";", pIndex);
 
-				if (pEIndex > 0) {
-					packageTree = text.substring(pIndex + 8, pEIndex) + File.separatorChar;
-					packageTree = packageTree.replace('.', File.separatorChar);
+			if (pEIndex > 0) {
+				packageTree = text.substring(pIndex + 8, pEIndex) + File.separatorChar;
+				packageTree = packageTree.replace('.', File.separatorChar);
 
-					fileName += packageTree;
-					saveDir = fileName;
-				}
+				fileName += packageTree;
+				saveDir = fileName;
 			}
+		}
 
-			pIndex = text.indexOf("public class ");
-			if (pIndex >= 0) {
-				int pEIndex = text.indexOf(" ", pIndex + 13);
+		pIndex = text.indexOf("public class ");
+		if (pIndex >= 0) {
+			int pEIndex = text.indexOf(" ", pIndex + 13);
 
+			if (pEIndex > 0) {
+				int pEIndex2 = text.indexOf("\n", pIndex + 13);
+
+				if (pEIndex2 > 0 && pEIndex2 < pEIndex) {
+					pEIndex = pEIndex2;
+				}
+				javaFileName = text.substring(pIndex + 13, pEIndex).trim() + ".java";
+			} else {
+				pEIndex = text.indexOf("\n", pIndex + 13);
 				if (pEIndex > 0) {
-					int pEIndex2 = text.indexOf("\n", pIndex + 13);
-
-					if (pEIndex2 > 0 && pEIndex2 < pEIndex) {
-						pEIndex = pEIndex2;
-					}
 					javaFileName = text.substring(pIndex + 13, pEIndex).trim() + ".java";
-					fileName += javaFileName;
-				} else {
-					pEIndex = text.indexOf("\n", pIndex + 13);
-					if (pEIndex > 0) {
-						javaFileName = text.substring(pIndex + 13, pEIndex).trim() + ".java";
-						fileName += javaFileName;
-					}
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException e) {
-			error("Could not parse package and class names.");
 		}
 
 		File f = new File(saveDir);
@@ -490,7 +484,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 
 				if (packageTree == null && token.equals("package")) {
 					packageTree = tokenizer.nextToken();
-					if (packageTree == null || packageTree.equals("")) {
+					if (packageTree == null || packageTree.length() == 0) {
 						return null;
 					}
 					packageTree = packageTree.replace('.', File.separatorChar);
