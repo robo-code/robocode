@@ -12,6 +12,7 @@
  *     - Renamed 'enum' variables to allow compiling with Java 1.5
  *     - Replaced RobotPeerVector with plain Vector
  *     - Ported to Java 5.0
+ *     - Fixed possible ConcurrentModificationException issues
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -19,9 +20,7 @@
 package robocode.manager;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import robocode.battle.Battle;
 import robocode.dialog.RobotDialog;
@@ -46,7 +45,9 @@ public class RobotDialogManager {
 	public void setActiveBattle(Battle b) {
 		List<RobotPeer> robots = b.getRobots();
 
-		for (String name : robotDialogHashMap.keySet()) {
+		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
+
+		for (String name : keys) {
 			boolean found = false;
 
 			for (RobotPeer r : robots) {
@@ -65,7 +66,9 @@ public class RobotDialogManager {
 	}
 
 	public void reset() {
-		for (String name : robotDialogHashMap.keySet()) {
+		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
+
+		for (String name : keys) {
 			RobotDialog dialog = robotDialogHashMap.get(name);
 
 			if (!dialog.isVisible()) {
