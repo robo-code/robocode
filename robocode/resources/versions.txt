@@ -7,14 +7,15 @@ o Bugfixes
      Instead an ArrayOutOfBoundsException occured
   -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
      of an integer. This bug caused problems with running Robocode on RoboLeague
+  -- The "Enable replay recording" got set if it was unset after running Robocode without
+     the robocode.properties file the first time
+  -- No sounds were played (when enabled) when Robocode was launched the second time
   -- Fixed NullPointerException occured when a robot is forced to stop
   -- NullPointerException could occur when using robocode.control.RobocodeEngine and the
      GUI was not enabled
   -- The text field for the filename in the robot packager was way too high
   -- Lots of synchronizations issues and potential ConcurrentModificationExceptions have
      been fixed
-  -- The "Enable replay recording" got set if it was unset after running Robocode without
-     the robocode.properties file the first time
 o RoboRumble@Home client, originally developed by Albert Pérez, is now built-in
   -- RoboRumble@Home is the ultimate collaborative effort to have a live, up-to-date
      ranking of bots. It uses the power of available robocoder's computers to distribute
