@@ -13,6 +13,8 @@ o Bugfixes
   -- The text field for the filename in the robot packager was way too high
   -- Lots of synchronizations issues and potential ConcurrentModificationExceptions have
      been fixed
+  -- The "Enable replay recording" got set if it was unset after running Robocode without
+     the robocode.properties file the first time
 o RoboRumble@Home client, originally developed by Albert Pérez, is now built-in
   -- RoboRumble@Home is the ultimate collaborative effort to have a live, up-to-date
      ranking of bots. It uses the power of available robocoder's computers to distribute
