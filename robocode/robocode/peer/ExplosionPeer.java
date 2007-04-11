@@ -11,8 +11,9 @@
  *     Luis Crespo
  *     - Added states
  *     Flemming N. Larsen
- *     - Added constructor for the BulletPeer in order to support replay feature
  *     - Code cleanup
+ *     - Added constructor for the BulletPeer in order to support replay feature
+ *     - Fixed synchronization issue with update()
  *     Titus Chen
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
@@ -50,9 +51,9 @@ public class ExplosionPeer extends BulletPeer {
 	}
 
 	@Override
-	public final void update() {
-		setX(getOwner().getX());
-		setY(getOwner().getY());
+	public synchronized final void update() {
+		x = getOwner().getX();
+		y = getOwner().getY();
 		nextFrame();
 		if (frame >= getBattle().getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
 			battle.removeBullet(this);
