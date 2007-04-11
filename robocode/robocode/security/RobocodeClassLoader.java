@@ -9,10 +9,11 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Ported to Java 5.0
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
- *     - Code cleanup
+ *     - Fixed method synchronization issues with several member fields
  *     Matthew Reeder
  *     - Fixed compiler problem with protectionDomain
  *     Robert D. Maupin
@@ -48,7 +49,7 @@ public class RobocodeClassLoader extends ClassLoader {
 	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
 
 	private RobotSpecification robotSpecification;
-	private robocode.peer.robot.RobotClassManager robotClassManager;
+	private RobotClassManager robotClassManager;
 	private String rootPackageDirectory;
 	private String rootDirectory;
 	private String classDirectory;
@@ -63,7 +64,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		this.robotSpecification = robotClassManager.getRobotSpecification();
 	}
 
-	public String getClassDirectory() {
+	public synchronized String getClassDirectory() {
 		return classDirectory;
 	}
 
@@ -73,17 +74,17 @@ public class RobocodeClassLoader extends ClassLoader {
 		return super.getResourceAsStream(resource);
 	}
 
-	public String getRootDirectory() {
+	public synchronized String getRootDirectory() {
 		return rootDirectory;
 	}
 
-	public String getRootPackageDirectory() {
+	public synchronized String getRootPackageDirectory() {
 		return rootPackageDirectory;
 	}
 
 	@Override
-	public synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
-		if (className.indexOf(robotClassManager.getRootPackage() + ".") == 0) {
+	public Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
+		if (className.indexOf(getRobotClassManager().getRootPackage() + ".") == 0) {
 			return loadRobotClass(className, false);
 		}
 		try {
@@ -190,10 +191,12 @@ public class RobocodeClassLoader extends ClassLoader {
 
 			cachedClasses.put(name, c);
 			return c;
-		} catch (FileNotFoundException e) {
-			throw new ClassNotFoundException("Could not find: " + name + ": " + e);
 		} catch (IOException e) {
 			throw new ClassNotFoundException("Could not find: " + name + ": " + e);
 		}
+	}
+	
+	private synchronized RobotClassManager getRobotClassManager() {
+		return robotClassManager; 
 	}
 }
