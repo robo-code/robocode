@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 import robocode.battle.Battle;
@@ -90,9 +91,9 @@ public class BattleView extends Canvas {
 	private Font smallFont;
 	private FontMetrics smallFontMetrics;
 
-	private ImageManager imageManager;
+	private final ImageManager imageManager;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	private BufferStrategy bufferStrategy;
 
@@ -108,13 +109,12 @@ public class BattleView extends Canvas {
 	/**
 	 * BattleView constructor.
 	 */
-	public BattleView(RobocodeManager manager, RobocodeFrame robocodeFrame, ImageManager imageManager) {
+	public BattleView(RobocodeManager manager, RobocodeFrame robocodeFrame) {
 		super();
 
 		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
-		this.imageManager = imageManager;
-		this.manager = manager;
+		imageManager = manager.getImageManager();
 	}
 
 	/**
@@ -380,85 +380,81 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		List<RobotPeer> robots = battle.getRobots();
+		List<RobotPeer> robots = new ArrayList<RobotPeer>(battle.getRobots());
 
-		synchronized (robots) {
-			for (RobotPeer r : robots) {
-				if (r.isAlive()) {
-					x = r.getX();
-					y = battleFieldHeight - r.getY();
+		for (RobotPeer r : robots) {
+			if (r.isAlive()) {
+				x = r.getX();
+				y = battleFieldHeight - r.getY();
 
+				at = AffineTransform.getTranslateInstance(x, y);
+				at.rotate(r.getHeading());
+
+				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
+
+				robotRenderImage.setTransform(at);
+				robotRenderImage.paint(g);
+
+				at = AffineTransform.getTranslateInstance(x, y);
+				at.rotate(r.getGunHeading());
+
+				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
+
+				gunRenderImage.setTransform(at);
+				gunRenderImage.paint(g);
+
+				if (!r.isDroid()) {
 					at = AffineTransform.getTranslateInstance(x, y);
-					at.rotate(r.getHeading());
+					at.rotate(r.getRadarHeading());
 
-					RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
+					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
 
-					robotRenderImage.setTransform(at);
-					robotRenderImage.paint(g);
-
-					at = AffineTransform.getTranslateInstance(x, y);
-					at.rotate(r.getGunHeading());
-
-					RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
-
-					gunRenderImage.setTransform(at);
-					gunRenderImage.paint(g);
-
-					if (!r.isDroid()) {
-						at = AffineTransform.getTranslateInstance(x, y);
-						at.rotate(r.getRadarHeading());
-
-						RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
-
-						radarRenderImage.setTransform(at);
-						radarRenderImage.paint(g);
-					}
+					radarRenderImage.setTransform(at);
+					radarRenderImage.paint(g);
 				}
 			}
 		}
 	}
 
 	private void drawText(Graphics2D g) {
-		List<RobotPeer> robots = battle.getRobots();
+		List<RobotPeer> robots = new ArrayList<RobotPeer>(battle.getRobots());
 
-		synchronized (robots) {
-			for (RobotPeer r : robots) {
-				if (r.isDead()) {
-					continue;
-				}
-				int x = (int) r.getX();
-				int y = battle.getBattleField().getHeight() - (int) r.getY();
+		for (RobotPeer r : robots) {
+			if (r.isDead()) {
+				continue;
+			}
+			int x = (int) r.getX();
+			int y = battle.getBattleField().getHeight() - (int) r.getY();
 
-				if (drawRobotEnergy && r.getRobot() != null) {
-					g.setColor(Color.white);
-					int ll = (int) r.getEnergy();
-					int rl = (int) ((r.getEnergy() - ll + .001) * 10.0);
+			if (drawRobotEnergy && r.getRobot() != null) {
+				g.setColor(Color.white);
+				int ll = (int) r.getEnergy();
+				int rl = (int) ((r.getEnergy() - ll + .001) * 10.0);
 
-					if (rl == 10) {
-						rl = 9;
-					}
-					String energyString = ll + "." + rl;
+				if (rl == 10) {
+					rl = 9;
+				}
+				String energyString = ll + "." + rl;
 
-					if (r.getEnergy() == 0 && r.isAlive()) {
-						energyString = "Disabled";
-					}
-					centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2,
-							smallFont, smallFontMetrics);
+				if (r.getEnergy() == 0 && r.isAlive()) {
+					energyString = "Disabled";
 				}
-				if (drawRobotName) {
-					g.setColor(Color.white);
-					centerString(g, r.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
-							smallFont, smallFontMetrics);
-				}
-				if (r.isPaintEnabled() && r.getRobot() != null) {
-					drawRobotPaint(g, r);
-				}
-				if (r.getSayTextPeer() != null) {
-					if (r.getSayTextPeer().getText() != null) {
-						g.setColor(r.getSayTextPeer().getColor());
-						centerString(g, r.getSayTextPeer().getText(), r.getSayTextPeer().getX(),
-								battle.getBattleField().getHeight() - r.getSayTextPeer().getY(), smallFont, smallFontMetrics);
-					}
+				centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2, smallFont,
+						smallFontMetrics);
+			}
+			if (drawRobotName) {
+				g.setColor(Color.white);
+				centerString(g, r.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
+						smallFont, smallFontMetrics);
+			}
+			if (r.isPaintEnabled() && r.getRobot() != null) {
+				drawRobotPaint(g, r);
+			}
+			if (r.getSayTextPeer() != null) {
+				if (r.getSayTextPeer().getText() != null) {
+					g.setColor(r.getSayTextPeer().getColor());
+					centerString(g, r.getSayTextPeer().getText(), r.getSayTextPeer().getX(),
+							battle.getBattleField().getHeight() - r.getSayTextPeer().getY(), smallFont, smallFontMetrics);
 				}
 			}
 		}
@@ -486,48 +482,46 @@ public class BattleView extends Canvas {
 	private void drawBullets(Graphics2D g) {
 		double x, y;
 
-		List<BulletPeer> bullets = battle.getBullets();
+		List<BulletPeer> bullets = new ArrayList<BulletPeer>(battle.getBullets());
 		
-		synchronized (bullets) {	
-			for (BulletPeer bullet : bullets) {
-				if (!(bullet.isActive() || bullet.hasHitVictim || bullet.hasHitBullet)) {
-					continue;
+		for (BulletPeer bullet : bullets) {
+			if (!(bullet.isActive() || bullet.hasHitVictim || bullet.hasHitBullet)) {
+				continue;
+			}
+
+			x = bullet.getX();
+			y = battle.getBattleField().getHeight() - bullet.getY();
+
+			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+
+			if (!(bullet.hasHitVictim || bullet.hasHitBullet)) {
+
+				// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
+				double scale = max(2 * sqrt(2.5 * bullet.getPower()), 2 / this.scale);
+
+				at.scale(scale, scale);
+				Area bulletArea = BULLET_AREA.createTransformedArea(at);
+
+				Color bulletColor = bullet.getOwner().getBulletColor();
+
+				if (bulletColor == null) {
+					bulletColor = Color.WHITE;
 				}
-	
-				x = bullet.getX();
-				y = battle.getBattleField().getHeight() - bullet.getY();
-	
-				AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-	
-				if (!(bullet.hasHitVictim || bullet.hasHitBullet)) {
-	
-					// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
-					double scale = max(2 * sqrt(2.5 * bullet.getPower()), 2 / this.scale);
-	
+				g.setColor(bulletColor);
+				g.fill(bulletArea);
+
+			} else if (drawExplosions) {
+				if (!(bullet instanceof ExplosionPeer)) {
+					double scale = sqrt(1000 * bullet.getPower()) / 128;
+
 					at.scale(scale, scale);
-					Area bulletArea = BULLET_AREA.createTransformedArea(at);
-	
-					Color bulletColor = bullet.getOwner().getBulletColor();
-	
-					if (bulletColor == null) {
-						bulletColor = Color.WHITE;
-					}
-					g.setColor(bulletColor);
-					g.fill(bulletArea);
-	
-				} else if (drawExplosions) {
-					if (!(bullet instanceof ExplosionPeer)) {
-						double scale = sqrt(1000 * bullet.getPower()) / 128;
-	
-						at.scale(scale, scale);
-					}
-	
-					RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(
-							bullet.getExplosionImageIndex(), bullet.getFrame());
-	
-					explosionRenderImage.setTransform(at);
-					explosionRenderImage.paint(g);
 				}
+
+				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getExplosionImageIndex(),
+						bullet.getFrame());
+
+				explosionRenderImage.setTransform(at);
+				explosionRenderImage.paint(g);
 			}
 		}
 	}
