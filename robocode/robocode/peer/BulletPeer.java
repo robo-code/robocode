@@ -9,12 +9,15 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup & optimizations
  *     - Bugfix: checkBulletCollision() now uses a workaround for the Java 5 bug
  *       #6457965 with Line2D.intersectsLine via intersect(Line2D.Double line)
  *     - Integration of robocode.Rules
  *     - Replaced width and height with radius
  *     - Added constructor for the BulletRecord to support the replay feature
- *     - Code cleanup & optimizations
+ *     - Fixed synchonization issues on member fields and methods
+ *     - Some private methods were declared public, and have therefore been
+ *       redeclared as private
  *     Luis Crespo
  *     - Added states
  *     Robert D. Maupin
@@ -71,8 +74,8 @@ public class BulletPeer {
 	private double velocity;
 	private double heading;
 
-	private double x;
-	private double y;
+	protected double x;
+	protected double y;
 
 	private double lastX;
 	private double lastY;
@@ -131,12 +134,13 @@ public class BulletPeer {
 		hasHitBullet = (br.state & 0x80) == 0x80;
 	}
 
-	public void checkBulletCollision() {
+	private void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
+				setHitBullet();
+				resetHitTime();
 				b.state = state = STATE_HIT_BULLET;
-				hasHitBullet = true;
-				hitTime = frame = 0;
+				frame = 0;
 				x = lastX;
 				y = lastY;
 				owner.getEventManager().add(new BulletHitBulletEvent(bullet, b.bullet));
@@ -162,7 +166,7 @@ public class BulletPeer {
 		return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1);
 	}
 
-	public void checkRobotCollision() {
+	private void checkRobotCollision() {
 		RobotPeer r;
 		List<RobotPeer> robots = battle.getRobots();
 
@@ -192,10 +196,12 @@ public class BulletPeer {
 				r.getEventManager().add(
 						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
 						getBullet()));
+
+				setHitVictim();
+				resetHitTime();
 				state = STATE_HIT_VICTIM;
 				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
-				hasHitVictim = true;
-				hitTime = frame = 0;
+				frame = 0;
 				victim = r;
 				deltaX = lastX - r.getX();
 				deltaY = lastY - r.getY();
@@ -214,7 +220,7 @@ public class BulletPeer {
 		}
 	}
 
-	public void checkWallCollision() {
+	private void checkWallCollision() {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
 				|| (y + RADIUS >= battleField.getHeight())) {
 			state = STATE_HIT_WALL;
@@ -254,7 +260,7 @@ public class BulletPeer {
 		return power;
 	}
 
-	public double getVelocity() {
+	public synchronized double getVelocity() {
 		return velocity;
 	}
 
@@ -274,7 +280,7 @@ public class BulletPeer {
 		return state <= STATE_MOVING;
 	}
 
-	public int getState() {
+	public synchronized int getState() {
 		return lastState;
 	}
 
@@ -331,8 +337,8 @@ public class BulletPeer {
 				checkWallCollision();
 			}
 		} else if (hasHitVictim) {
-			setX(victim.getX() + deltaX);
-			setY(victim.getY() + deltaY);
+			x = victim.getX() + deltaX;
+			y = victim.getY() + deltaY;
 			hitTime++;
 			frame = hitTime;
 			if (hitTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
@@ -348,8 +354,8 @@ public class BulletPeer {
 		updateBulletState();
 	}
 
-	protected synchronized void updateBulletState() {
-		lastState = state;
+	protected void updateBulletState() {
+		setLastState();
 		if (state == STATE_SHOT) {
 			state = STATE_MOVING;
 		} else if (state == STATE_EXPLODED || state == STATE_HIT_BULLET || state == STATE_HIT_VICTIM
@@ -358,12 +364,14 @@ public class BulletPeer {
 		}
 	}
 
-	public synchronized void updateMovement() {
+	private void updateMovement() {
 		lastX = x;
 		lastY = y;
 
-		x += velocity * sin(heading);
-		y += velocity * cos(heading);
+		double v = getVelocity();
+
+		x += v * sin(heading);
+		y += v * cos(heading);
 
 		boundingLine.setLine(lastX, lastY, x, y);
 	}
@@ -372,11 +380,27 @@ public class BulletPeer {
 		frame++;
 	}
 
-	public int getExplosionImageIndex() {
+	public synchronized int getExplosionImageIndex() {
 		return explosionImageIndex;
 	}
 
 	public synchronized void setExplosionImageIndex(int index) {
 		explosionImageIndex = index;
+	}
+
+	private synchronized void setHitVictim() {
+		hasHitVictim = true;
+	}
+
+	private synchronized void setHitBullet() {
+		hasHitBullet = true;
+	}
+
+	private synchronized void resetHitTime() {
+		hitTime = 0;
+	}
+
+	private synchronized void setLastState() {
+		lastState = state;
 	}
 }
