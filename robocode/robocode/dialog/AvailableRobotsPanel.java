@@ -9,9 +9,9 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
- *     - Code cleanup
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -357,12 +357,7 @@ public class AvailableRobotsPanel extends JPanel {
 		}
 
 		public FileSpecification getElementAt(int which) {
-			try {
-				return availableRobots.get(which);
-			} catch (ArrayIndexOutOfBoundsException e) {
-				// If the view updates while we're updating...
-				return null;
-			}
+			return availableRobots.get(which);
 		}
 	}
 
