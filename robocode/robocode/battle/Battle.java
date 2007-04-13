@@ -31,6 +31,7 @@
  *       robot peers themselves are used for replay recording
  *     - Added support for playing background music when the battle is ongoing
  *     - Removed unnecessary catches of NullPointerExceptions
+ *     - Added support for setting the initial robot positions on the battlefield
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -55,6 +56,8 @@ import static robocode.io.Logger.log;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import robocode.MessageEvent;
 import robocode.Robot;
@@ -154,6 +157,9 @@ public class Battle implements Runnable {
 	private RoundRecord currentRoundRecord;
 	private TurnRecord currentTurnRecord;
 
+	// Initial robot start positions (if any)
+	private double[][] initialRobotPositions;
+
 	/**
 	 * Battle constructor
 	 */
@@ -189,11 +195,11 @@ public class Battle implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
+		running = true;
+
 		if (battleView != null) {
 			battleView.setPaintMode(BattleView.PAINTBATTLE);
 		}
-
-		running = true;
 
 		if (manager.isSoundEnabled()) {
 			manager.getSoundManager().playBackgroundMusic();
@@ -526,17 +532,9 @@ public class Battle implements Runnable {
 							r.setDroid(true);
 						}
 					}
-					double x = 0, y = 0, heading = 0;
 
-					for (int j = 0; j < 1000; j++) {
-						x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
-						y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
-						heading = 2 * PI * random();
-						r.initialize(x, y, heading);
-						if (validSpot(r)) {
-							break;
-						}
-					}
+					initializeRobotPosition(r);
+					
 					if (battleView != null && !replay) {
 						battleView.update();
 					}
@@ -1221,6 +1219,7 @@ public class Battle implements Runnable {
 			setNumRounds(battleProperties.getNumRounds());
 			setGunCoolingRate(battleProperties.getGunCoolingRate());
 			setInactivityTime(battleProperties.getInactivityTime());
+			setInitialPositions(battleProperties.getInitialPositions());
 		} catch (Exception e) {
 			log("Exception setting battle properties", e);
 		}
@@ -1378,17 +1377,8 @@ public class Battle implements Runnable {
 					e.printStackTrace(r.out);
 				}
 				if (roundNum > 0) {
-					double x = 0, y = 0, heading = 0;
+					initializeRobotPosition(r);
 
-					for (int j = 0; j < 1000; j++) {
-						x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
-						y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
-						heading = 2 * PI * random();
-						r.initialize(x, y, heading);
-						if (validSpot(r)) {
-							break;
-						}
-					}
 					if (!(battleView == null || replay)) {
 						battleView.update();
 					}
@@ -1399,7 +1389,97 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public boolean validSpot(RobotPeer robot) {
+	private void setInitialPositions(String initialPositions) {
+		initialRobotPositions = null;
+
+		if (initialPositions == null || initialPositions.trim().length() == 0) {
+			return;
+		}
+
+		List<String> positions = new ArrayList<String>();
+		
+		Pattern pattern = Pattern.compile("([^,(]*[(][^)]*[)])?[^,]*,?");
+		Matcher matcher = pattern.matcher(initialPositions);
+
+		while (matcher.find()) {
+			String pos = matcher.group();
+
+			if (pos.length() > 0) {
+				positions.add(pos);
+			}
+		}
+
+		if (positions.size() == 0) {
+			return;
+		}
+
+		initialRobotPositions = new double[positions.size()][3];
+
+		String[] coords;
+		double x, y, heading;
+
+		for (int i = 0; i < positions.size(); i++) {
+			coords = positions.get(i).split(",");
+
+			x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
+			y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
+			heading = 2 * PI * random();
+
+			int len = coords.length;
+			
+			if (len >= 1) {
+				try {
+					x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
+				} catch (NumberFormatException e) {}
+
+				if (len >= 2) {
+					try {
+						y = Double.parseDouble(coords[1].replaceAll("[\\D]", ""));
+					} catch (NumberFormatException e) {}
+
+					if (len >= 3) {
+						try {
+							heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[\\D]", "")));
+						} catch (NumberFormatException e) {}
+					}
+				}
+			}
+			initialRobotPositions[i][0] = x;
+			initialRobotPositions[i][1] = y;
+			initialRobotPositions[i][2] = heading;
+		}
+	}
+	
+	private void initializeRobotPosition(RobotPeer robot) {
+		if (initialRobotPositions != null) {
+			int index = robots.indexOf(robot);
+	
+			if (index >= 0 && index < initialRobotPositions.length) {
+				double[] pos = initialRobotPositions[index];
+				
+				robot.initialize(pos[0], pos[1], pos[2]);
+				if (validSpot(robot)) {
+					return;
+				}
+			}
+		}
+
+		double x, y, heading;
+
+		for (int j = 0; j < 1000; j++) {
+			x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
+			y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
+			heading = 2 * PI * random();
+
+			robot.initialize(x, y, heading);
+
+			if (validSpot(robot)) {
+				break;
+			}
+		}
+	}
+
+	private boolean validSpot(RobotPeer robot) {
 		robot.updateBoundingBox();
 		for (RobotPeer r : robots) {
 			if (r != null && r != robot) {
