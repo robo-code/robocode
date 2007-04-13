@@ -264,10 +264,6 @@ public class FileTransfer {
 
 				// Prepare the output stream for the file output
 				out = new FileOutputStream(filename);
-				if (out == null) {
-					status = DownloadStatus.FILE_NOT_FOUND;
-					return;
-				}
 
 				// Download the file
 
@@ -450,19 +446,32 @@ public class FileTransfer {
 	 * @return true if the file was copied; false otherwise
 	 */
 	public final static boolean copy(String src_file, String dest_file) {
+		FileInputStream in = null;
+		FileOutputStream out = null;
 		try {
 			if (src_file.equals(dest_file)) {
 				throw new IOException("You cannot copy a file onto itself");
 			}
 			final byte[] buf = new byte[4096];
-			final FileInputStream in = new FileInputStream(src_file);
-			final FileOutputStream out = new FileOutputStream(dest_file);
+			in = new FileInputStream(src_file);
+			out = new FileOutputStream(dest_file);
 
 			while (in.available() > 0) {
 				out.write(buf, 0, in.read(buf, 0, buf.length));
 			}
 		} catch (final Exception e) {
 			return false;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
 		}
 		return true;
 	}
