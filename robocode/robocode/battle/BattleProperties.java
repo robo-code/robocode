@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Added setSelectedRobots(RobotSpecification[])
+ *     - Added property for specifying initial positions and headings of the
+ *       selected robots
  *******************************************************************************/
 package robocode.battle;
 
@@ -28,12 +30,14 @@ import robocode.control.RobotSpecification;
  */
 public class BattleProperties {
 
-	private final static String BATTLEFIELD_WIDTH = "robocode.battleField.width";
-	private final static String BATTLEFIELD_HEIGHT = "robocode.battleField.height";
-	private final static String BATTLE_NUMROUNDS = "robocode.battle.numRounds";
-	private final static String BATTLE_GUNCOOLINGRATE = "robocode.battle.gunCoolingRate";
-	private final static String BATTLE_RULES_INACTIVITYTIME = "robocode.battle.rules.inactivityTime";
-	private final static String BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots";
+	private final static String
+			BATTLEFIELD_WIDTH = "robocode.battleField.width",
+			BATTLEFIELD_HEIGHT = "robocode.battleField.height",
+			BATTLE_NUMROUNDS = "robocode.battle.numRounds",
+			BATTLE_GUNCOOLINGRATE = "robocode.battle.gunCoolingRate",
+			BATTLE_RULES_INACTIVITYTIME = "robocode.battle.rules.inactivityTime",
+			BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots",
+			BATTLE_INITIAL_POSITIONS = "robocode.battle.initialPositions";
 
 	private int battlefieldWidth = 800;
 	private int battlefieldHeight = 600;
@@ -41,6 +45,7 @@ public class BattleProperties {
 	private double gunCoolingRate = 0.1;
 	private long inactivityTime = 450;
 	private String selectedRobots;
+	private String initialPositions;
 
 	private Properties props = new Properties();
 
@@ -186,6 +191,15 @@ public class BattleProperties {
 		setSelectedRobots(robotString);
 	}
 
+	/**
+	 * Gets the initial robot positions and heading.
+	 *
+	 * @return a comma-separated string
+	 */
+	public String getInitialPositions() {
+		return initialPositions;
+	}
+
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
@@ -198,5 +212,6 @@ public class BattleProperties {
 		inactivityTime = Long.parseLong(props.getProperty(BATTLE_RULES_INACTIVITYTIME, "450"));
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
+		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
 	}
 }
