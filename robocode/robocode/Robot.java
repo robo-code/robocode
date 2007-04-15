@@ -594,7 +594,7 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * Returns the direction that the robot's radar is facing, in degrees.
-	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * The value returned will be between 0 and 360 (is excluded).
 	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * 90 means East, 180 means South, and 270 means West.
