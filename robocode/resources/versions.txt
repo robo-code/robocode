@@ -27,10 +27,10 @@ o RoboRumble@Home client, originally developed by Albert Pérez, is now built-in
   -- Configuration files has been updated, and are available in the 'roborumble' folder
   -- Issues with downloading robots from the Robocode Repository site has been fixed
 o Special thanks goes to Gert Heijenk (aka GrubbmGait)
-  -- Gert did a tremendous with lots of alpha testing regarding the new RoboRumble@Home
+  -- Gert did a tremendous job with lots of alpha testing regarding the new RoboRumble@Home
      built into Robocode! :-D  
 o The codesize tool by Christian D. Schnell has been added
-  -- The codesize tool has been added to support the build-in RoboRumble@Home, and a new
+  -- The codesize tool has been added to support the built-in RoboRumble@Home, and a new
      feature for getting the codesize and robot codesize class (MiniBot, MegaBot etc.)
      when a robot is being packaged
 o Added feature that allows specifying the initial start positions of the robots on the
