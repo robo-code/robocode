@@ -12,6 +12,8 @@
  *     - Code cleanup
  *     - Ported to Java 5.0
  *     - Removed potential NullPointerException in sendMessage()
+ *     - Changed sendMessage() so it does not throw an IOException anymore when
+ *       the robot is not in a team battle
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -61,11 +63,11 @@ public class RobotMessageManager {
 	}
 
 	public void sendMessage(String name, Serializable o) throws IOException {
-		if (robotPeer.getRobotClassManager().getTeamManager() == null) {
-			throw new IOException("Unable to send message, you are not on a team.");
-		}
-
 		TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
+
+		if (teamPeer == null) {
+			return;
+		}
 
 		for (RobotPeer receiver : teamPeer) {
 			if (receiver.isAlive()) {
