@@ -11,15 +11,17 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Removed dead code
- *     - Minor cleanup
+ *     - Minor cleanup and optimizations
+ *     - Properties are now read using PropertiesUtil.getProperties()
+ *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
  *******************************************************************************/
 package roborumble.battlesengine;
 
 
 import java.util.*;
-import java.util.Vector;
-import java.util.Random;
 import java.io.*;
+
+import static roborumble.util.PropertiesUtil.getProperties;
 
 
 /**
@@ -48,14 +50,8 @@ public class PrepareBattles {
 
 	public PrepareBattles(String propertiesfile) {
 		// Read parameters
-		Properties parameters = null;
+		Properties parameters = getProperties(propertiesfile);
 
-		try {
-			parameters = new Properties();
-			parameters.load(new FileInputStream(propertiesfile));
-		} catch (Exception e) {
-			System.out.println("Parameters File not found !!!");
-		}
 		botsrepository = parameters.getProperty("BOTSREP", "");
 		participantsfile = parameters.getProperty("PARTICIPANTSFILE", "");
 		battlesfile = parameters.getProperty("INPUT", "");
@@ -65,32 +61,10 @@ public class PrepareBattles {
 		runonly = parameters.getProperty("RUNONLY", "GENERAL");
 		prioritynum = Integer.parseInt(parameters.getProperty("BATTLESPERBOT", "500"));
 		meleebots = Integer.parseInt(parameters.getProperty("MELEEBOTS", "10"));
-		generalratings = new Properties();
-		miniratings = new Properties();
-		microratings = new Properties();
-		nanoratings = new Properties();
-		
-		try {
-			generalratings.load(new FileInputStream(parameters.getProperty("RATINGS.GENERAL", "")));
-		} catch (Exception e) {
-			generalratings = null;
-		}
-		try {
-			miniratings.load(new FileInputStream(parameters.getProperty("RATINGS.MINIBOTS", "")));
-		} catch (Exception e) {
-			miniratings = null;
-		}
-		try {
-			microratings.load(new FileInputStream(parameters.getProperty("RATINGS.MICROBOTS", "")));
-		} catch (Exception e) {
-			microratings = null;
-		}
-		try {
-			nanoratings.load(new FileInputStream(parameters.getProperty("RATINGS.NANOBOTS", "")));
-		} catch (Exception e) {
-			nanoratings = null;
-		}
-
+		generalratings = getProperties(parameters.getProperty("RATINGS.GENERAL", ""));
+		miniratings = getProperties(parameters.getProperty("RATINGS.MINIBOTS", ""));
+		microratings = getProperties(parameters.getProperty("RATINGS.MICROBOTS", ""));
+		nanoratings = getProperties(parameters.getProperty("RATINGS.NANOBOTS", ""));
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
 	}
 
@@ -111,9 +85,9 @@ public class PrepareBattles {
 					boolean exists = (new File(botsrepository + jar)).exists();
 
 					if (exists) { 
-						if ((runonly.equals("MINI") && size.CheckCompetitorsForSize(name, name, 1500))
-								|| (runonly.equals("MICRO") && size.CheckCompetitorsForSize(name, name, 750))
-								|| (runonly.equals("NANO") && size.CheckCompetitorsForSize(name, name, 250))
+						if ((runonly.equals("MINI") && size.checkCompetitorsForSize(name, name, 1500))
+								|| (runonly.equals("MICRO") && size.checkCompetitorsForSize(name, name, 750))
+								|| (runonly.equals("NANO") && size.checkCompetitorsForSize(name, name, 250))
 								|| (!runonly.equals("MINI") && !runonly.equals("MICRO") && !runonly.equals("NANO"))) {
 							jars.add(jar);
 							names.add(name);
@@ -180,25 +154,25 @@ public class PrepareBattles {
 
 					if (exists) { 
 						namesall.add(name);
-						if (size.CheckCompetitorsForSize(name, name, 1500)) {
+						if (size.checkCompetitorsForSize(name, name, 1500)) {
 							namesmini.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 750)) {
+						if (size.checkCompetitorsForSize(name, name, 750)) {
 							namesmicro.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 250)) {
+						if (size.checkCompetitorsForSize(name, name, 250)) {
 							namesnano.add(name);
 						}
 						if (robothaspriority(name, generalratings)) {
 							priorityall.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 1500) && robothaspriority(name, miniratings)) {
+						if (size.checkCompetitorsForSize(name, name, 1500) && robothaspriority(name, miniratings)) {
 							prioritymini.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 750) && robothaspriority(name, microratings)) {
+						if (size.checkCompetitorsForSize(name, name, 750) && robothaspriority(name, microratings)) {
 							prioritymicro.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 250) && robothaspriority(name, nanoratings)) {
+						if (size.checkCompetitorsForSize(name, name, 250) && robothaspriority(name, nanoratings)) {
 							prioritynano.add(name);
 						}
 					}
@@ -264,7 +238,7 @@ public class PrepareBattles {
 		}
 		// Add bots with less than 500 battles, or a random battle if all bots have enough battles
 		while (count < numbattles && namesall.size() > 1) {
-			String[] bots = null;
+			String[] bots;
 
 			if (priorityall.size() > 0) {
 				bots = getbots(priorityall, namesall, random);
@@ -314,11 +288,7 @@ public class PrepareBattles {
 		String[] value = values.split(",");
 		double battles = Double.parseDouble(value[1]);
 
-		if (battles < prioritynum) {
-			return true;
-		} else {
-			return false;
-		}
+		return (battles < prioritynum);
 	}
 
 	public boolean createMeleeBattlesList() {
@@ -345,25 +315,25 @@ public class PrepareBattles {
 
 					if (exists) { 
 						namesall.add(name);
-						if (size.CheckCompetitorsForSize(name, name, 1500)) {
+						if (size.checkCompetitorsForSize(name, name, 1500)) {
 							namesmini.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 750)) {
+						if (size.checkCompetitorsForSize(name, name, 750)) {
 							namesmicro.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 250)) {
+						if (size.checkCompetitorsForSize(name, name, 250)) {
 							namesnano.add(name);
 						}
 						if (robothaspriority(name, generalratings)) {
 							priorityall.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 1500) && robothaspriority(name, miniratings)) {
+						if (size.checkCompetitorsForSize(name, name, 1500) && robothaspriority(name, miniratings)) {
 							prioritymini.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 750) && robothaspriority(name, microratings)) {
+						if (size.checkCompetitorsForSize(name, name, 750) && robothaspriority(name, microratings)) {
 							prioritymicro.add(name);
 						}
-						if (size.CheckCompetitorsForSize(name, name, 250) && robothaspriority(name, nanoratings)) {
+						if (size.checkCompetitorsForSize(name, name, 250) && robothaspriority(name, nanoratings)) {
 							prioritynano.add(name);
 						}
 					}
@@ -407,12 +377,13 @@ public class PrepareBattles {
 				bots = getmeleebots(namesall, namesall, random);
 			}
 			if (bots != null) {
-				String battle = bots[0];
+				StringBuilder battle = new StringBuilder(bots[0]);
 
 				for (int i = 1; i < bots.length; i++) {
-					battle += "," + bots[i];
+					battle.append(',').append(bots[i]);
 				}
-				battle += "," + runonly;
+				battle.append(',').append(runonly);
+
 				outtxt.println(battle);
 				count++;
 			} 	
