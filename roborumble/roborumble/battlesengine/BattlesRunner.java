@@ -10,11 +10,13 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
+ *     - Minor optimizations
  *     - Removed dead code and unused imports
  *     - Replaced the RobocodeEngineAtHome will the RobocodeEngine, and added
  *       runBattle() to run a single battle with RobocodeEngine
  *     - The results are now read from the AtHomeListener instead of the
  *       RobocodeEngineAtHome
+ *     - Properties are now read using PropertiesUtil.getProperties()
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -23,6 +25,8 @@ import robocode.control.*;
 
 import java.util.*;
 import java.io.*;
+
+import static roborumble.util.PropertiesUtil.getProperties;
 
 
 /**
@@ -44,14 +48,8 @@ public class BattlesRunner {
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
-		Properties parameters = null;
+		Properties parameters = getProperties(propertiesfile);
 
-		try {
-			parameters = new Properties();
-			parameters.load(new FileInputStream(propertiesfile));
-		} catch (Exception e) {
-			System.out.println("Parameters File not found !!!");
-		}
 		inputfile = parameters.getProperty("INPUT", "");
 		numrounds = Integer.parseInt(parameters.getProperty("ROUNDS", "10"));
 		fieldlen = Integer.parseInt(parameters.getProperty("FIELDL", "800"));
@@ -181,16 +179,17 @@ public class BattlesRunner {
 		while (index < robots.size()) {
 			String[] param = (robots.get(index)).split(",");
 
-			String enemies = "";
+			StringBuilder enemies = new StringBuilder();
 
 			for (int i = 0; i < param.length - 1; i++) {
 				if (i > 0) {
-					enemies += ",";
+					enemies.append(',');
 				}
-				enemies += param[i];
+				enemies.append(param[i]);
 			}
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
-			runBattle(engine, battle, enemies);
+			runBattle(engine, battle, enemies.toString());
+
 			// get results
 			RobotResults[] results = listener.getResults();
 			String[] Bot = new String[results.length];
