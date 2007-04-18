@@ -11,13 +11,18 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Removed dead code and unused imports
+ *     - Properties are now read using PropertiesUtil.getProperties()
+ *     - Properties are now stored using PropertiesUtil.storeProperties()
+ *     - Renamed UpdateRatings() into updateRatings()
  *******************************************************************************/
 package roborumble.netengine;
 
 
 import java.util.*;
-import java.util.Vector;
 import java.io.*;
+
+import static roborumble.util.PropertiesUtil.getProperties;
+import static roborumble.util.PropertiesUtil.storeProperties;
 
 
 /**
@@ -41,14 +46,8 @@ public class UpdateRatingFiles {
 
 	public UpdateRatingFiles(String propertiesfile) {
 		// Read parameters
-		Properties parameters = null;
+		Properties parameters = getProperties(propertiesfile);
 
-		try {
-			parameters = new Properties();
-			parameters.load(new FileInputStream(propertiesfile));
-		} catch (Exception e) {
-			System.out.println("Parameters File not found !!!");
-		}
 		game = propertiesfile;
 		while (game.indexOf("/") != -1) {
 			game = game.substring(game.indexOf("/") + 1);
@@ -66,7 +65,7 @@ public class UpdateRatingFiles {
 		nanoratings = parameters.getProperty("RATINGS.NANOBOTS", "");
 	}
 
-	public boolean UpdateRatings() {
+	public boolean updateRatings() {
 
 		// read all the recors to be updated
 		Vector<String> battles = new Vector<String>();
@@ -86,39 +85,10 @@ public class UpdateRatingFiles {
 		}
 
 		// read the ratings files
-		Properties all = null;
-
-		try {
-			all = new Properties();
-			all.load(new FileInputStream(generalratings));
-		} catch (Exception e) {
-			System.out.println("All Ratings File not found !!!");
-			return false;
-		}
-		Properties mini = null;
-
-		try {
-			mini = new Properties();
-			mini.load(new FileInputStream(miniratings));
-		} catch (Exception e) {
-			mini = null;
-		}
-		Properties micro = null;
-
-		try {
-			micro = new Properties();
-			micro.load(new FileInputStream(microratings));
-		} catch (Exception e) {
-			micro = null;
-		}
-		Properties nano = null;
-
-		try {
-			nano = new Properties();
-			nano.load(new FileInputStream(nanoratings));
-		} catch (Exception e) {
-			nano = null;
-		}
+		Properties all = getProperties(generalratings);
+		Properties mini = getProperties(miniratings);
+		Properties micro = getProperties(microratings);
+		Properties nano = getProperties(nanoratings);
 
 		// update #battles
 		for (int  i = 0; i < battles.size(); i++) {
@@ -139,19 +109,16 @@ public class UpdateRatingFiles {
 		}
 
 		// save ratings files
-		try {
-			all.store(new FileOutputStream(generalratings), "General ratings updated with new battles number");
-			if (mini != null) {
-				mini.store(new FileOutputStream(miniratings), "Mini ratings updated with new battles number");
-			}
-			if (micro != null) {
-				micro.store(new FileOutputStream(microratings), "Micro ratings updated with new battles number");
-			}
-			if (nano != null) {
-				nano.store(new FileOutputStream(nanoratings), "Nano ratings updated with new battles number");
-			}
-		} catch (Exception e) {
-			System.out.println("Encountered problems when saving updated number of battles");
+		if (!storeProperties(all, generalratings, "General ratings updated with new battles number")) {
+			return false;
+		}
+		if (!storeProperties(all, miniratings, "Mini ratings updated with new battles number")) {
+			return false;
+		}
+		if (!storeProperties(all, microratings, "Micro ratings updated with new battles number")) {
+			return false;
+		}
+		if (!storeProperties(all, nanoratings, "Nano ratings updated with new battles number")) {
 			return false;
 		}
 
