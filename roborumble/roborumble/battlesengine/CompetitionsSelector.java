@@ -65,12 +65,9 @@ public class CompetitionsSelector {
 			fileneedsupdate = true;
 			File f = new File(repository + bot1name + ".jar");
 
-			try {
-				Item s1 = Codesize.processZipFile(f);
-
+			Item s1 = Codesize.processZipFile(f);
+			if (s1 != null) {
 				size1 = s1.getCodeSize();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 			if (size1 != 0) {
 				sizes.setProperty(bot1name, Long.toString(size1));
@@ -80,12 +77,9 @@ public class CompetitionsSelector {
 			fileneedsupdate = true;
 			File f = new File(repository + bot2name + ".jar");
 
-			try {
-				Item s2 = Codesize.processZipFile(f);
-
+			Item s2 = Codesize.processZipFile(f);
+			if (s2 != null) {
 				size2 = s2.getCodeSize();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 			if (size2 != 0) {
 				sizes.setProperty(bot2name, Long.toString(size2));
