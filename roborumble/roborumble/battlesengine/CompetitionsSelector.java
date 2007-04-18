@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Removed unused imports
+ *     - Properties are now read using PropertiesUtil.getProperties()
+ *     - Properties are now stored using PropertiesUtil.storeProperties()
+ *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -17,6 +20,10 @@ package roborumble.battlesengine;
 import codesize.*;
 import java.util.*;
 import java.io.*;
+
+import static roborumble.util.PropertiesUtil.getProperties;
+import static roborumble.util.PropertiesUtil.storeProperties;
+
 import codesize.Codesize.*;
 
 
@@ -39,15 +46,11 @@ public class CompetitionsSelector {
 		this.repository = repository;
 		// open sizes file
 		this.sizesfile = sizesfile;
-		try {
-			sizes = new Properties();
-			sizes.load(new FileInputStream(sizesfile));
-		} catch (Exception e) {
-			System.out.println("Sizes File not found !!!");
-		}
+
+		sizes = getProperties(sizesfile);
 	}
 
-	public boolean CheckCompetitorsForSize(String bot1, String bot2, long maxsize) {
+	public boolean checkCompetitorsForSize(String bot1, String bot2, long maxsize) {
 		String bot1name = bot1.replace(' ', '_');
 		String bot2name = bot2.replace(' ', '_');
 
@@ -66,7 +69,9 @@ public class CompetitionsSelector {
 				Item s1 = Codesize.processZipFile(f);
 
 				size1 = s1.getCodeSize();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (size1 != 0) {
 				sizes.setProperty(bot1name, Long.toString(size1));
 			}
@@ -79,18 +84,18 @@ public class CompetitionsSelector {
 				Item s2 = Codesize.processZipFile(f);
 
 				size2 = s2.getCodeSize();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (size2 != 0) {
 				sizes.setProperty(bot2name, Long.toString(size2));
 			}
 		}
 		
 		// if the file needs update, then save the file
-		try {
-			if (fileneedsupdate && size1 != 0 && size2 != 0) {
-				sizes.store(new FileOutputStream(sizesfile), "Bots code size");
-			}
-		} catch (Exception e) {}
+		if (fileneedsupdate && size1 != 0 && size2 != 0) {
+			storeProperties(sizes, sizesfile, "Bots code size");
+		}
 
 		// check the values
 		return (size1 != 0 && size1 < maxsize && size2 != 0 && size2 < maxsize);
