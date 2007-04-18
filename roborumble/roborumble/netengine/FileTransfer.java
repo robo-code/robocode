@@ -35,6 +35,7 @@ public class FileTransfer {
 	 * @author Flemming N. Larsen
 	 */
 	public enum DownloadStatus {
+
 		/** The download was succesful */
 		OK,
 		/** Connection problem */
@@ -108,8 +109,6 @@ public class FileTransfer {
 
 		@Override
 		public void run() {
-			sessionId = null;
-
 			try {
 				// Get the cookie value
 				final String cookieVal = con.getHeaderField("Set-Cookie");
@@ -119,8 +118,7 @@ public class FileTransfer {
 					sessionId = cookieVal.substring(0, cookieVal.indexOf(";"));
 				}
 			} catch (final Exception e) {
-				// No nothing, sessionId will be null
-				;
+				sessionId = null;
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
@@ -307,13 +305,17 @@ public class FileTransfer {
 				if (in != null) {
 					try {
 						in.close();
-					} catch (final IOException e) {}
+					} catch (final IOException e) {
+						e.printStackTrace();
+					}
 				}
 				// Make sure the output stream is closed
 				if (out != null) {
 					try {
 						out.close();
-					} catch (final IOException e) {}
+					} catch (final IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			// Notify that this thread is finish
@@ -343,15 +345,11 @@ public class FileTransfer {
 
 		@Override
 		public void run() {
-			// Initialize the response code to an invalid response code
-			responseCode = -1;
-
 			try {
 				// Get the response code
 				responseCode = con.getResponseCode();
 			} catch (final Exception e) {
-				// No nothing, responseCode will be -1
-				;
+				responseCode = -1;
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
@@ -380,15 +378,11 @@ public class FileTransfer {
 
 		@Override
 		public void run() {
-			// Initialize the content length to an invalid length
-			contentLength = -1;
-
 			try {
 				// Get the content length
 				contentLength = con.getContentLength();
 			} catch (final Exception e) {
-				// No nothing, contentLength will be -1
-				;
+				contentLength = -1;
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
@@ -420,15 +414,11 @@ public class FileTransfer {
 
 		@Override
 		public void run() {
-			// Initialize the number of bytes to read to EOS
-			bytesRead = -1;
-
 			try {
 				// Read bytes into the buffer
 				bytesRead = in.read(buf);
 			} catch (final Exception e) {
-				// No nothing, bytesRead will be -1
-				;
+				bytesRead = -1;
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
@@ -448,11 +438,13 @@ public class FileTransfer {
 	public final static boolean copy(String src_file, String dest_file) {
 		FileInputStream in = null;
 		FileOutputStream out = null;
+
 		try {
 			if (src_file.equals(dest_file)) {
 				throw new IOException("You cannot copy a file onto itself");
 			}
 			final byte[] buf = new byte[4096];
+
 			in = new FileInputStream(src_file);
 			out = new FileOutputStream(dest_file);
 
@@ -465,12 +457,16 @@ public class FileTransfer {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return true;
