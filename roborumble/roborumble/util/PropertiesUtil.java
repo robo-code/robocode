@@ -31,22 +31,22 @@ public final class PropertiesUtil {
 	 * @return a new java.util.Properties instance
 	 */
 	public static Properties getProperties(String filename) {
-		Properties props = null;
-		FileInputStream fis = null;
+		Properties props = new Properties();
 
-		try {
-			fis = new FileInputStream(filename);
-			props = new Properties();
-			props.load(fis);
-		} catch (Exception e) {
-			System.err.println("Could not load properties file: " + filename);
-			props = null;
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
+		if (filename != null && filename.trim().length() > 0) {
+			FileInputStream fis = null;
+			try {
+				fis = new FileInputStream(filename);
+				props.load(fis);
+			} catch (Exception e) {
+				System.err.println("Could not load properties file: " + filename);
+			} finally {
+				if (fis != null) {
+					try {
+						fis.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -60,14 +60,11 @@ public final class PropertiesUtil {
 	 * @return a new java.util.Properties instance
 	 */
 	public static Properties getProperties(InputStream is) {
-		Properties props = null;
-
+		Properties props = new Properties();
 		try {
-			props = new Properties();
 			props.load(is);
 		} catch (Exception e) {
 			System.err.println("Could not load properties input stream: " + is);
-			props = null;
 		}
 		return props;
 	}
@@ -81,22 +78,23 @@ public final class PropertiesUtil {
 	 * @return true if the properties were stored; false otherwise
 	 */
 	public static boolean storeProperties(Properties properties, String filename, String comments) {
-		if (properties != null) {
-			FileOutputStream fos = null;
+		if (properties == null || filename == null || filename.trim().length() == 0) {
+			return false;
+		}
 
-			try {
-				fos = new FileOutputStream(filename);
-				properties.store(fos, comments);
-			} catch (IOException e) {
-				System.err.println("Could not store properties to file: " + filename);
-				return false;
-			} finally {
-				if (fos != null) {
-					try {
-						fos.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(filename);
+			properties.store(fos, comments);
+		} catch (IOException e) {
+			System.err.println("Could not store properties to file: " + filename);
+			return false;
+		} finally {
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
 		}
