@@ -6,8 +6,11 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Coordinator - by Albert Perez
+ *     Albert Pérez
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Minor optimizations
+ *     - Added e.printStackTraces to catches
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -26,7 +29,9 @@ public class Coordinator {
 		while (!available) {
 			try {
 				wait();
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		available = false;
 		notifyAll();
@@ -36,7 +41,9 @@ public class Coordinator {
 		while (available) {
 			try {
 				wait();
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		available = true;
 		notifyAll();
