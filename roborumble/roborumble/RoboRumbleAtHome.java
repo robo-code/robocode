@@ -8,6 +8,9 @@
  * Contributors:
  *     Albert Pérez
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Properties are now read using PropertiesUtil.getProperties()
+ *     - Renamed UpdateRatings() into updateRatings()
  *******************************************************************************/
 package roborumble;
 
@@ -15,14 +18,16 @@ package roborumble;
 import roborumble.battlesengine.*;
 import roborumble.netengine.*;
 import java.util.*;
-import java.io.*;
+
+import static roborumble.util.PropertiesUtil.getProperties;
 
 
 /**
- * Implements the client side of RoboRumbleAtHome.
+ * Implements the client side of RoboRumble@Home.
  * Controlled by properties files.
- * 
+ *
  * @author Albert Pérez (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RoboRumbleAtHome {
 	
@@ -38,14 +43,8 @@ public class RoboRumbleAtHome {
 		}
 
 		// Read parameters for running the app
-		Properties param = null;
+		Properties param = getProperties(parameters);
 
-		try {
-			param = new Properties();
-			param.load(new FileInputStream(parameters));
-		} catch (Exception e) {
-			System.out.println("Parameters File not found !!!");
-		}
 		String downloads = param.getProperty("DOWNLOAD", "NOT");
 		String executes = param.getProperty("EXECUTE", "NOT");
 		String uploads = param.getProperty("UPLOAD", "NOT");
@@ -139,7 +138,7 @@ public class RoboRumbleAtHome {
 				System.out.println("Updating number of battles fought ...");
 				UpdateRatingFiles updater = new UpdateRatingFiles(parameters);
 
-				ratingsdownloaded = updater.UpdateRatings();
+				ratingsdownloaded = updater.updateRatings();
 				// if (!ok) ratingsdownloaded = false;
 				updater = null;
 			}
