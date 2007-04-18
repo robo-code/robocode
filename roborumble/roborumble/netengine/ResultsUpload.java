@@ -10,9 +10,10 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
- *     - Minor cleanup
+ *     - Minor cleanup and optimizations
  *     - Removed unused imports
  *     - Replaced the robocode.util.Utils.copy() method with FileTransfer.copy()
+ *     - Properties are now read using PropertiesUtil.getProperties()
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -22,6 +23,8 @@ import java.util.*;
 import java.io.*;
 
 import roborumble.battlesengine.*;
+
+import static roborumble.util.PropertiesUtil.getProperties;
 
 
 /**
@@ -49,14 +52,8 @@ public class ResultsUpload {
 
 	public ResultsUpload(String propertiesfile) {
 		// Read parameters
-		Properties parameters = null;
+		Properties parameters = getProperties(propertiesfile);
 
-		try {
-			parameters = new Properties();
-			parameters.load(new FileInputStream(propertiesfile));
-		} catch (Exception e) {
-			System.out.println("Parameters File not found !!!");
-		}
 		resultsfile = parameters.getProperty("OUTPUT", "");
 		resultsurl = parameters.getProperty("RESULTSURL", "");
 		tempdir = parameters.getProperty("TEMP", "");
@@ -153,9 +150,9 @@ public class ResultsUpload {
 		for (int i = 0; i < results.size() / 3; i++) {
 
 			// Create the parameters String
-			String[] header = ((String) results.get(i * 3)).split(",");
-			String[] first = ((String) results.get(i * 3 + 1)).split(",");
-			String[] second = ((String) results.get(i * 3 + 2)).split(",");
+			String[] header = results.get(i * 3).split(",");
+			String[] first = results.get(i * 3 + 1).split(",");
+			String[] second = results.get(i * 3 + 2).split(",");
 
 			// find the match mode
 			String matchtype = "GENERAL";
@@ -175,9 +172,9 @@ public class ResultsUpload {
 				errorsfound = errorsfound | senddata(game, data, outtxt, true, results, i, battlesnum, prioritybattles);
 			}
 
-			if (!sizesfile.equals("")) { // upload also related competitions
-				if (!minibots.equals("") && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
-						&& size.CheckCompetitorsForSize(first[0], second[0], 1500)) {
+			if (sizesfile.length() != 0) { // upload also related competitions
+				if (minibots.length() != 0 && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
+						&& size.checkCompetitorsForSize(first[0], second[0], 1500)) {
 					data = "version=1" + "&" + "game=" + minibots + "&" + "rounds=" + header[1] + "&" + "field="
 							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
 							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
@@ -185,8 +182,8 @@ public class ResultsUpload {
 							+ "ssurvival=" + second[3];
 					errorsfound = errorsfound | senddata(minibots, data, outtxt, false, results, i, battlesnum, null);
 				}
-				if (!microbots.equals("") && !matchtype.equals("NANO")
-						&& size.CheckCompetitorsForSize(first[0], second[0], 750)) {
+				if (microbots.length() != 0 && !matchtype.equals("NANO")
+						&& size.checkCompetitorsForSize(first[0], second[0], 750)) {
 					data = "version=1" + "&" + "game=" + microbots + "&" + "rounds=" + header[1] + "&" + "field="
 							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
 							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
@@ -194,7 +191,7 @@ public class ResultsUpload {
 							+ "ssurvival=" + second[3];
 					errorsfound = errorsfound | senddata(microbots, data, outtxt, false, results, i, battlesnum, null);
 				}
-				if (!nanobots.equals("") && size.CheckCompetitorsForSize(first[0], second[0], 250)) {
+				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
 					data = "version=1" + "&" + "game=" + nanobots + "&" + "rounds=" + header[1] + "&" + "field="
 							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
 							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
@@ -263,10 +260,10 @@ public class ResultsUpload {
 				} else if (line.indexOf("<") != -1 && line.indexOf(">") != -1) {
 					// System.out.println(line);
 					// Save the number of battles for the bots into battlesnum !!!!!!!!!!!!!
-					String bot1 = (String) results.get(i * 3 + 1);
+					String bot1 = results.get(i * 3 + 1);
 
 					bot1 = bot1.substring(0, bot1.indexOf(","));
-					String bot2 = (String) results.get(i * 3 + 2);
+					String bot2 = results.get(i * 3 + 2);
 
 					bot2 = bot2.substring(0, bot2.indexOf(","));
 					line = line.replaceAll("<", "");
@@ -298,8 +295,7 @@ public class ResultsUpload {
 			wr.close();
 			rd.close();
 			if (!ok) {
-				saverror(outtxt, (String) results.get(i * 3), (String) results.get(i * 3 + 1),
-						(String) results.get(i * 3 + 2), saveonerror);
+				saverror(outtxt, results.get(i * 3), results.get(i * 3 + 1), results.get(i * 3 + 2), saveonerror);
 				if (saveonerror) {
 					errorsfound = true;
 				}
@@ -309,8 +305,7 @@ public class ResultsUpload {
 			if (saveonerror) {
 				errorsfound = true;
 			}
-			saverror(outtxt, (String) results.get(i * 3), (String) results.get(i * 3 + 1),
-					(String) results.get(i * 3 + 2), saveonerror);
+			saverror(outtxt, results.get(i * 3), results.get(i * 3 + 1), results.get(i * 3 + 2), saveonerror);
 		}
 		return errorsfound;
 	}
