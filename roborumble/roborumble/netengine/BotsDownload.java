@@ -11,23 +11,26 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Removed dead code
+ *     - Minor optimizations
  *     - Replaced the robocode.util.Utils.copy() method with FileTransfer.copy()
  *     - Bugfix: Solved ZipException by creating a session to the Robocode
  *       Repository site
- *     - Minor optimizations
+ *     - Properties are now read using PropertiesUtil.getProperties()
+ *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
  *******************************************************************************/
 package roborumble.netengine;
 
 
 import java.net.*;
 import java.util.*;
-import java.util.Vector;
 import java.util.jar.*;
 import java.util.zip.*;
 import java.io.*;
+
 import roborumble.battlesengine.*;
 
 import static roborumble.netengine.FileTransfer.DownloadStatus;
+import static roborumble.util.PropertiesUtil.getProperties;
 
 
 /**
@@ -62,24 +65,19 @@ public class BotsDownload {
 
 	public BotsDownload(String propertiesfile) {
 		// Read parameters
-		Properties parameters = null;
+		Properties parameters = getProperties(propertiesfile);
 
-		try {
-			parameters = new Properties();
-			parameters.load(new FileInputStream(propertiesfile));
-		} catch (Exception e) {
-			System.out.println("Parameters File not found !!!");
-		}
-		// internetrepository = parameters.getProperty("BOTSURL", "");
 		botsrepository = parameters.getProperty("BOTSREP", "");
 		isteams = parameters.getProperty("TEAMS", "NOT");
 		participantsurl = parameters.getProperty("PARTICIPANTSURL", "");
 		participantsfile = parameters.getProperty("PARTICIPANTSFILE", "");
 		tag = parameters.getProperty("STARTAG", "pre");
 		tempdir = parameters.getProperty("TEMP", "");
+
 		// Code size
 		sizesfile = parameters.getProperty("CODESIZEFILE", "");
 		size = new CompetitionsSelector(sizesfile, botsrepository);
+
 		// Ratings files
 		ratingsurl = parameters.getProperty("RATINGS.URL", "");
 		generalbots = propertiesfile;
@@ -100,34 +98,34 @@ public class BotsDownload {
 
 	public boolean downloadRatings() {
 		// delete previous files
-		if (!generalbotsfile.equals("")) {
+		if (generalbotsfile.length() != 0) {
 			(new File(generalbotsfile)).delete();
 		}
-		if (!minibotsfile.equals("")) {
+		if (minibotsfile.length() != 0) {
 			(new File(minibotsfile)).delete();
 		}
-		if (!microbotsfile.equals("")) {
+		if (microbotsfile.length() != 0) {
 			(new File(microbotsfile)).delete();
 		}
-		if (!nanobotsfile.equals("")) {
+		if (nanobotsfile.length() != 0) {
 			(new File(nanobotsfile)).delete();
 		}
 		// download new ones
-		if (ratingsurl.equals("")) {
+		if (ratingsurl.length() == 0) {
 			return false;
 		}
 		boolean downloaded = true;
 
-		if (!generalbots.equals("") && !generalbotsfile.equals("")) {
+		if (generalbots.length() != 0 && generalbotsfile.length() != 0) {
 			downloaded = downloadRatingsFile(generalbots, generalbotsfile) & downloaded;
 		}
-		if (!minibots.equals("") && !minibotsfile.equals("")) {
+		if (minibots.length() != 0 && minibotsfile.length() != 0) {
 			downloaded = downloadRatingsFile(minibots, minibotsfile) & downloaded;
 		}
-		if (!microbots.equals("") && !microbotsfile.equals("")) {
+		if (microbots.length() != 0 && microbotsfile.length() != 0) {
 			downloaded = downloadRatingsFile(microbots, microbotsfile) & downloaded;
 		}
-		if (!nanobots.equals("") && !nanobotsfile.equals("")) {
+		if (nanobots.length() != 0 && nanobotsfile.length() != 0) {
 			downloaded = downloadRatingsFile(nanobots, nanobotsfile) & downloaded;
 		}
 		return downloaded;
@@ -224,7 +222,7 @@ public class BotsDownload {
 	}
 
 	public void updateCodeSize() {
-		if (!sizesfile.equals("")) {
+		if (sizesfile.length() != 0) {
 			try {
 				FileReader fr = new FileReader(participantsfile);
 				BufferedReader br = new BufferedReader(fr);
@@ -233,7 +231,7 @@ public class BotsDownload {
 					String name = record.substring(0, record.indexOf(","));
 
 					name = name.replace(' ', '_');
-					size.CheckCompetitorsForSize(name, name, 1500);
+					size.checkCompetitorsForSize(name, name, 1500);
 				}
 				br.close();
 			} catch (Exception e) {
@@ -329,21 +327,17 @@ public class BotsDownload {
 			}
 			InputStream properties = jarf.getInputStream(zipe);
 
-			Properties parameters = null;
-
-			parameters = new Properties();
-			parameters.load(properties);
+			Properties parameters = getProperties(properties);
 
 			if (!isteams.equals("YES")) {
 				String classname = parameters.getProperty("robot.classname", "");
 				String version = parameters.getProperty("robot.version", "");
 
 				return (botname.equals(classname + " " + version));
-			} else {
-				String version = parameters.getProperty("team.version", "");
-
-				return (botname.equals(botname.substring(0, botname.indexOf(" ")) + " " + version));
 			}
+			String version = parameters.getProperty("team.version", "");
+
+			return (botname.equals(botname.substring(0, botname.indexOf(" ")) + " " + version));
 		} catch (Exception e) {
 			System.out.println(e);
 			return false;
@@ -412,31 +406,10 @@ public class BotsDownload {
 		}
 
 		// Load ratings files
-		Properties generalratings = new Properties();
-		Properties miniratings = new Properties();
-		Properties microratings = new Properties();
-		Properties nanoratings = new Properties();
-
-		try {
-			generalratings.load(new FileInputStream(generalbotsfile));
-		} catch (Exception e) {
-			generalratings = null;
-		}
-		try {
-			miniratings.load(new FileInputStream(minibotsfile));
-		} catch (Exception e) {
-			miniratings = null;
-		}
-		try {
-			microratings.load(new FileInputStream(microbotsfile));
-		} catch (Exception e) {
-			microratings = null;
-		}
-		try {
-			nanoratings.load(new FileInputStream(nanobotsfile));
-		} catch (Exception e) {
-			nanoratings = null;
-		}
+		Properties generalratings = getProperties(generalbotsfile);
+		Properties miniratings = getProperties(minibotsfile);
+		Properties microratings = getProperties(microbotsfile);
+		Properties nanoratings = getProperties(nanobotsfile);
 
 		// Check general ratings
 		if (generalratings == null) {
@@ -497,7 +470,7 @@ public class BotsDownload {
 	}
 
 	private void removebot(String game, String bot) {
-		if (removeboturl.equals("")) {
+		if (removeboturl.length() == 0) {
 			System.out.println("UPDATEBOTS URL not defined!");
 			return;
 		}
