@@ -12,6 +12,9 @@
   <!-- The build folder -->
   <property name="build" location="build"/>
 
+  <!-- Enable debug information when compiling -->
+  <property name="debug" value="off"/>
+
   <!-- ====================================== -->
   <!-- Target: build                          -->
   <!-- ====================================== -->
