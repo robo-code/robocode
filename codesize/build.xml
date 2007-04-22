@@ -74,7 +74,7 @@
     <javadoc
         destdir="${build}/docs"
         sourcepath="codesize"
-        windowtitle="Codesize"
+        windowtitle="Codesize ${version}"
     	link="http://java.sun.com/j2se/1.5.0/docs/api">
       <fileset dir="codesize"/>
     </javadoc>
