@@ -6,7 +6,7 @@
 
 <project name="build" default="build">
   <description>Apache Ant build script for building the Robocode setup file</description>
-  
+
   <!-- ====================================== -->
   <!-- Global properties                      -->
   <!-- ====================================== -->
@@ -64,6 +64,9 @@
 
   	<echo message="Initializes the build..."/>
 
+  	<!-- Create timestamp -->
+  	<tstamp/>
+
   	<!-- Create folder for containing build files -->
   	<mkdir dir="${build}/libs"/>
   </target>
@@ -85,6 +88,9 @@
       <fileset file="${build}/extract.jar"/>  <!-- extract.jar file -->
       <!-- Set the main class of the manifest -->
       <manifest>
+        <attribute name="Implementation-Title" value="Robocode installer"/>
+	    <attribute name="Implementation-Version" value="v${version}, ${TODAY}"/> 
+	    <attribute name="Implementation-Vendor" value="Mathew A. Nelson, Flemming N. Larsen"/>
         <attribute name="Main-Class" value="robocode.AutoExtract"/>
       </manifest>
     </jar>
@@ -202,6 +208,9 @@
       <fileset file="${license.file}"/>                         <!-- License file -->
       <!-- Set the main class of the manifest -->
       <manifest>
+        <attribute name="Implementation-Title" value="Robocode"/>
+	    <attribute name="Implementation-Version" value="v${version}, ${TODAY}"/> 
+	    <attribute name="Implementation-Vendor" value="Mathew A. Nelson, Flemming N. Larsen, and other Robocode contributors"/>
         <attribute name="Main-Class" value="robocode.Robocode"/>
       </manifest>
     </jar>
@@ -265,6 +274,9 @@
       <fileset file="${license.file}"/>                   <!-- License file -->
       <!-- Set the main class of the manifest -->
       <manifest>
+        <attribute name="Implementation-Title" value="RoboRumble@Home"/>
+	    <attribute name="Implementation-Version" value="v${version}, ${TODAY}"/> 
+	    <attribute name="Implementation-Vendor" value="Albert Pérez, Flemming N. Larsen, and other Robocode contributors"/>
         <attribute name="Main-Class" value="roborumble.RoboRumbleAtHome"/>
       </manifest>
     </jar>
@@ -341,6 +353,10 @@
     <!-- Extract the extract.jar into the installation folder -->
     <unjar src="${build}/extract.jar" dest="${install.dir}"/>
   </target>
+
+  <!-- ====================================== -->
+  <!-- Target: clean                          -->
+  <!-- ====================================== -->
 
   <!-- Clean up all build files -->
   <target
