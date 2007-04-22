@@ -1,18 +1,43 @@
+/*******************************************************************************
+ * Copyright (c) 2002, 2007 Christian D. Schnell, Flemming N. Larsen
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Christian D. Schnell
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Changed to a dynamic buffer when processing .jar files based on the size
+ *       of the .jar file
+ *     - Added the getByteArrayOutputStream() as helper method
+ *     - Extended the processZipFile(File, ZipInputStream) to take nested .jar
+ *       files into account
+ *******************************************************************************/
 package codesize;
 
 
 import java.io.*;
 import java.util.*;
 import java.util.zip.*;
-import de.fub.bytecode.classfile.*;
+
+import org.apache.bcel.classfile.*;
 
 
+/**
+ * Codesize is a tool for calculating the code size of a Java class file or Java
+ * archive (JAR).
+ *
+ * @author Christian D. Schnell (original)
+ * @author Flemming N. Larsen (contributor)
+ */
 public class Codesize {
-	static boolean verbose;
-	static byte buf[] = new byte[2048];
-	static ByteArrayOutputStream bufOutputStream = new ByteArrayOutputStream();
+	private final static int DEFAULT_BUFFER_SIZE = 512 * 1024; // 512 KB
 
-	Codesize() {}
+	private static boolean verbose;
+
+	private Codesize() {}
 
 	public static class Item implements Comparable {
 		File location;
@@ -115,22 +140,22 @@ public class Codesize {
 	static void help() {
 		Package p = Codesize.class.getPackage();
 
-		System.err.println(
+		System.out.println(
 				p.getImplementationTitle() + " " + p.getImplementationVersion()
 				+ " - http://user.cs.tu-berlin.de/~lulli/codesize/");
-		System.err.println("SYNTAX:");
-		System.err.println();
-		System.err.println("  codesize [-v] [<class-file> | <zip-file> | <directory> | -r <repository>]+");
-		System.err.println();
-		System.err.println("- <class-file> is a single .class file");
-		System.err.println("- <zip-file> is a zip compressed file (or a .jar file)");
-		System.err.println("- <directory> is treated like an uncompressed <zip-file>,");
-		System.err.println("  recursively processing any subdirectories");
-		System.err.println("- <repository> is a directory like '<robocode>/robots':");
-		System.err.println("  - any class file in it is treated like a <class-file>");
-		System.err.println("  - any zip file in it is treated like a <zip-file>");
-		System.err.println("  - any subdirectory is ignored (can't distinguish different robots here)");
-		System.err.println("- specify -v for verbose output");
+		System.out.println("SYNTAX:");
+		System.out.println();
+		System.out.println("  codesize [-v] [<class-file> | <zip-file> | <directory> | -r <repository>]+");
+		System.out.println();
+		System.out.println("- <class-file> is a single .class file");
+		System.out.println("- <zip-file> is a zip compressed file (or a .jar file)");
+		System.out.println("- <directory> is treated like an uncompressed <zip-file>,");
+		System.out.println("  recursively processing any subdirectories");
+		System.out.println("- <repository> is a directory like '<robocode>/robots':");
+		System.out.println("  - any class file in it is treated like a <class-file>");
+		System.out.println("  - any zip file in it is treated like a <zip-file>");
+		System.out.println("  - any subdirectory is ignored (can't distinguish different robots here)");
+		System.out.println("- specify -v for verbose output");
 	}
 
 	static int processClassInputStream(InputStream inputStream, String filename)
@@ -215,18 +240,26 @@ public class Codesize {
 		ZipEntry zipEntry;
 
 		while ((zipEntry = inputStream.getNextEntry()) != null) {
-			if (zipEntry.getName().toLowerCase().endsWith(".class")) {
-				bufOutputStream.reset();
-				int nRead;
+			String lcName = zipEntry.getName().toLowerCase();
 
-				while ((nRead = inputStream.read(buf, 0, buf.length)) > -1) {
-					bufOutputStream.write(buf, 0, nRead);
-				}
+			if (lcName.endsWith(".class")) {
+				ByteArrayOutputStream baos = getByteArrayOutputStream(inputStream, (int) zipFile.length());
 
-				ttlCodeSize += processClassInputStream(new ByteArrayInputStream(bufOutputStream.toByteArray()),
-						zipEntry.getName());
-				ttlClassSize += bufOutputStream.size();
+				ttlCodeSize += processClassInputStream(new ByteArrayInputStream(baos.toByteArray()), zipEntry.getName());
+				ttlClassSize += baos.size();
 				nClassFiles++;
+			} else if (lcName.endsWith(".jar")) {
+				ByteArrayOutputStream baos = getByteArrayOutputStream(inputStream, (int) zipFile.length());
+				ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(baos.toByteArray()));
+
+				try {
+					Item item = processZipFile(zipFile, zis);
+
+					ttlCodeSize += item.ttlCodeSize;
+					ttlClassSize += item.ttlClassSize;
+				} finally {
+					zis.close();
+				}
 			}
 		}
 
@@ -237,6 +270,23 @@ public class Codesize {
 		return new Item(zipFile, nClassFiles, ttlClassSize, ttlCodeSize);
 	}
 
+	private static ByteArrayOutputStream getByteArrayOutputStream(ZipInputStream zis, int length) throws IOException {
+		if (length < 0) {
+			length = DEFAULT_BUFFER_SIZE;
+		}
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int nRead;
+
+		byte buf[] = new byte[length];
+
+		while ((nRead = zis.read(buf, 0, length)) > -1) {
+			baos.write(buf, 0, nRead);
+		}
+
+		return baos;
+	}
+	
 	public static void dump(ArrayList items, PrintStream target) {
 		target.println("\tCode\tClass\tClass");
 		target.println("Nr\tsize\tsize\tfiles\tLocation");
