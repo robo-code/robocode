@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     - Fixed potential NullPointerException in getLoadingRobotPeer()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -47,13 +48,14 @@ public class ThreadManager {
 		}
 	}
 
-	public RobotPeer getLoadingRobot() {
+	public synchronized RobotPeer getLoadingRobot() {
 		return loadingRobot;
 	}
 
-	public RobotPeer getLoadingRobotPeer(Thread t) {
-		if (robotLoaderThread != null
-				&& (t.equals(robotLoaderThread) || t.getThreadGroup().equals(robotLoaderThread.getThreadGroup()))) {
+	public synchronized RobotPeer getLoadingRobotPeer(Thread t) {
+		if (t != null && robotLoaderThread != null
+				&& (t.equals(robotLoaderThread)
+				|| (t.getThreadGroup() != null && t.getThreadGroup().equals(robotLoaderThread.getThreadGroup())))) {
 			return loadingRobot;
 		}
 		return null;
