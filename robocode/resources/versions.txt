@@ -16,6 +16,9 @@ o Bugfixes
   -- The text field for the filename in the robot packager was way too high
   -- Lots of synchronizations issues and potential ConcurrentModificationExceptions have
      been fixed
+  -- In RoboRumble, the codesize of some robots were incorrectly calculated to be 0 bytes,
+     and hence these robots was not able to participate in RoboRumble battles
+     -- This was due to the codesize tool, which could not analyze .jar files inside .jars
 o RoboRumble@Home client, originally developed by Albert Pérez, is now built-in
   -- RoboRumble@Home is the ultimate collaborative effort to have a live, up-to-date
      ranking of bots. It uses the power of available robocoder's computers to distribute
@@ -33,6 +36,9 @@ o The codesize tool by Christian D. Schnell has been added
   -- The codesize tool has been added to support the built-in RoboRumble@Home, and a new
      feature for getting the codesize and robot codesize class (MiniBot, MegaBot etc.)
      when a robot is being packaged
+  -- The codesize tool has been taken over by Flemming N. Larsen (agreed with Christian)
+     and updated to version 1.1, which can handle files > 2KB, and which can analyse .jar
+     files inside .jar files 
 o Added feature that allows specifying the initial start positions of the robots on the
   battlefield
   -- By specifying positions by setting robocode.battle.initialPositions in a .battle
