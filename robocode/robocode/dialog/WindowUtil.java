@@ -36,7 +36,6 @@ public class WindowUtil {
 	private static JLabel statusLabel;
 	private static PrintWriter statusWriter;
 	private static JLabel defaultStatusLabel;
-	private static Point locationFixer;
 
 	public static void center(Window w) {
 		WindowUtil.center(null, w);
@@ -44,10 +43,6 @@ public class WindowUtil {
 
 	public static void center(Window main, Window w) {
 		WindowUtil.center(main, w, true);
-	}
-
-	private static Point fixLocation(Window w, Point p) {
-		return (locationFixer != null) ? new Point(p.x + locationFixer.x, p.y + locationFixer.y) : p;
 	}
 
 	public static void center(Window main, Window w, boolean move) {
@@ -104,7 +99,7 @@ public class WindowUtil {
 
 		w.setSize(size);
 		if (move) {
-			w.setLocation(fixLocation(w, location));
+			w.setLocation(location);
 		}
 	}
 
@@ -183,7 +178,7 @@ public class WindowUtil {
 		if (origin.y + size.height > screenSize.height) {
 			origin.y = 0;
 		}
-		w.setLocation(fixLocation(w, origin));
+		w.setLocation(origin);
 		origin.x += 10;
 		origin.y += 10;
 	}
