@@ -195,7 +195,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			dis.readFully(buff);
 			dis.close();
 			template = new String(buff);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			if (f != null) {
 				template = "Unable to read template file: " + f.getPath();
 			} else {
@@ -350,7 +350,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			dis.readFully(buff);
 			dis.close();
 			template = new String(buff);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			if (f != null) {
 				template = "Unable to read template file: " + f.getPath();
 			} else {
