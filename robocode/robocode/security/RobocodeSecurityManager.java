@@ -16,6 +16,7 @@
  *     - Removed unnecessary method synchronization
  *     - Fixed potential NullPointerException in getFileOutputStream()
  *     - Added setStatus()
+ *     - Fixed synchronization issue with accessing battleThread
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -423,7 +424,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	}
 
 	public boolean isSafeThread(Thread c) {
-		if (c == battleThread) {
+		if (c == getBattleThread()) {
 			return true;
 		}
 
@@ -450,6 +451,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 		safeThreads.remove(safeThread);
 	}
 
+	public synchronized Thread getBattleThread() {
+		return battleThread;
+	}
+	
 	public synchronized void setBattleThread(Thread newBattleThread) {
 		checkPermission(new RobocodePermission("setBattleThread"));
 		battleThread = newBattleThread;
