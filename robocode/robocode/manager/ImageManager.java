@@ -191,7 +191,7 @@ public class ImageManager {
 	 * @author Titus Chen
 	 */
 	@SuppressWarnings("serial")
-	private class RenderCache<K, V> extends LinkedHashMap<K, V> {
+	private static class RenderCache<K, V> extends LinkedHashMap<K, V> {
 
 		/* Note about initial capacity:
 		 * To avoid rehashing (inefficient though probably unavoidable), initial
