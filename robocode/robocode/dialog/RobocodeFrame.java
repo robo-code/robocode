@@ -9,6 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Added JPopupMenu.setDefaultLightWeightPopupEnabled(false), i.e. enabling
  *       heavy-weight components in order to prevent battleview to hide menus
  *     - Changed so BattleView handles resizing instead of the RobocodeFrame
@@ -16,7 +17,7 @@
  *     - Added "Replay" button in order to activate the replay feature
  *     - Updated to use methods from ImageUtil, FileUtil, Logger, which replaces
  *       methods that have been (re)moved from the robocode.util.Utils class
- *     - Code cleanup
+ *     - Added missing close() on FileReader in loadVersionFile()
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons
  *     Luis Crespo
@@ -73,8 +74,6 @@ public class RobocodeFrame extends JFrame {
 	private JPanel mainPanel;
 	private JPanel battleViewPanel;
 	private JPanel robotButtonsPanel;
-
-	private String battleFilename;
 
 	private JToolBar toolBar;
 
@@ -240,10 +239,6 @@ public class RobocodeFrame extends JFrame {
 	public void clearRobotButtons() {
 		getRobotButtonsPanel().removeAll();
 		getRobotButtonsPanel().repaint();
-	}
-
-	public String getBattleFilename() {
-		return battleFilename;
 	}
 
 	/**
@@ -577,8 +572,12 @@ public class RobocodeFrame extends JFrame {
 	public void loadVersionFile() {
 		String versionString = null;
 
+		FileReader reader = null;
+		BufferedReader in = null;
+
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(new File(FileUtil.getCwd(), "versions.txt")));
+			reader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
+			in = new BufferedReader(reader);
 
 			versionString = in.readLine();
 			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
@@ -590,6 +589,17 @@ public class RobocodeFrame extends JFrame {
 		} catch (IOException e) {
 			Logger.log("IO Exception reading version.txt" + e);
 			versionString = "unknown";
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {}
+			}
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
 		}
 		this.version = "";
 		if (versionString != null) {
