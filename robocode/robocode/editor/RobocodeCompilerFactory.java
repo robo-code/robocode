@@ -16,7 +16,8 @@
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils and Constants
  *     - Changed to use FileUtil.getCompilerConfigFile()
- *     - Added missing close() on FileInputStreams and FileOutputStreams
+ *     - Added missing close() on FileInputStreams, FileOutputStreams, and
+ *       JarInputStream
  *******************************************************************************/
 package robocode.editor;
 
@@ -99,13 +100,15 @@ public class RobocodeCompilerFactory {
 
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
+		JarInputStream jarIS = null;
+
 		String entryName = "";
 
 		byte buf[] = new byte[2048];
 
 		try {
 			fis = new FileInputStream(src);
-			JarInputStream jarIS = new JarInputStream(fis);
+			jarIS = new JarInputStream(fis);
 
 			JarEntry entry = jarIS.getNextJarEntry();
 
@@ -157,6 +160,11 @@ public class RobocodeCompilerFactory {
 			if (fis != null) {
 				try {
 					fis.close();
+				} catch (IOException e) {}
+			}
+			if (jarIS != null) {
+				try {
+					jarIS.close();
 				} catch (IOException e) {}
 			}
 		}
