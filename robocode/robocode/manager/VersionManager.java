@@ -18,7 +18,7 @@
  *     - Updated to use methods from WindowUtil, FileUtil, Logger, which replaces
  *       methods that have been (re)moved from the Utils and Constants class
  *     - Added a connect timeout of 5 seconds when checking for a new version
- *     - Added missing close() on FileReader
+ *     - Added missing close() on input stream readers
  *******************************************************************************/
 package robocode.manager;
 
@@ -85,7 +85,9 @@ public class VersionManager {
 			return false;
 		}
 
-		BufferedReader reader;
+		InputStream inputStream = null;
+		InputStreamReader inputStreamReader = null;
+		BufferedReader reader = null;
 
 		try {
 			URLConnection urlConnection = u.openConnection();
@@ -100,13 +102,33 @@ public class VersionManager {
 					log("http using proxy.");
 				}
 			}
-			reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+			inputStream = urlConnection.getInputStream();
+			inputStreamReader = new InputStreamReader(inputStream);
+			reader = new BufferedReader(inputStreamReader);
 		} catch (IOException e) {
 			log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
 				WindowUtil.messageError("Unable to check for new version: " + e);
 			}
 			return false;
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {}
+			}
+			if (inputStreamReader != null) {
+				try {
+					inputStreamReader.close();
+				} catch (IOException e) {}
+			}
+			if (reader == null) {
+				log("Unable to check for new version");
+				if (notifyNoUpdate) {
+					WindowUtil.messageError("Unable to check for new version");
+				}
+				return false;
+			}
 		}
 
 		String v = null;
@@ -119,11 +141,15 @@ public class VersionManager {
 				WindowUtil.messageError("Unable to check for new version: " + e);
 			}
 			return false;
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {}
 		}
 
 		String installurl = "http://robocode.sourceforge.net/installer";
 
-		if (v.compareToIgnoreCase(getVersion()) > 0) {
+		if (v != null && v.compareToIgnoreCase(getVersion()) > 0) {
 			if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
 					"Version " + v + " of Robocode is now available.  Would you like to download it?",
 					"Version " + v + " available", JOptionPane.YES_NO_OPTION)
@@ -203,10 +229,11 @@ public class VersionManager {
 		String versionString = null;
 
 		FileReader fileReader = null;
+		BufferedReader in = null;
 
 		try {
 			fileReader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
-			BufferedReader in = new BufferedReader(fileReader);
+			in = new BufferedReader(fileReader);
 
 			versionString = in.readLine();
 			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
@@ -222,6 +249,11 @@ public class VersionManager {
 			if (fileReader != null) {
 				try {
 					fileReader.close();
+				} catch (IOException e) {}
+			}
+			if (in != null) {
+				try {
+					in.close();
 				} catch (IOException e) {}
 			}
 		}
