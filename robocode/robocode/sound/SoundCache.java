@@ -46,7 +46,7 @@ public class SoundCache {
 	 * Holds data, length and format for a given sound effect, which can be used to create
 	 * multiple instances of the same clip.
 	 */
-	private class SoundData {
+	private static class SoundData {
 		private AudioFormat format;
 		private int length;
 		private byte[] byteData;
@@ -156,7 +156,7 @@ public class SoundCache {
 	 */
 	private SoundData createSoundData(String resourceName) {
 		SoundData data;
-		URL url = this.getClass().getResource(resourceName);
+		URL url = getClass().getResource(resourceName);
 
 		if (url == null) {
 			Logger.log("Could not load sound because of invalid resource name: " + resourceName);
