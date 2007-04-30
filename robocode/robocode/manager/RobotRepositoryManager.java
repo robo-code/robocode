@@ -51,8 +51,6 @@ import robocode.repository.*;
  * @author Robert D. Maupin (contributor)
  */
 public class RobotRepositoryManager {
-	boolean alwaysYes, alwaysNo;
-
 	private FileSpecificationDatabase robotDatabase;
 
 	private File robotsDirectory;
@@ -116,9 +114,6 @@ public class RobotRepositoryManager {
 		}
 
 		WindowUtil.setStatus("Refreshing robot database");
-
-		alwaysYes = false;
-		alwaysNo = false;
 
 		updatedJarList.clear();
 
@@ -631,8 +626,8 @@ public class RobotRepositoryManager {
 			if (close) {
 				jarIS.close();
 			}
-		} catch (Exception e) {
-			log("Exception " + statusPrefix + ": " + e);
+		} catch (IOException e) {
+			log("IOException " + statusPrefix + ": " + e);
 		}
 		return rc;
 	}
