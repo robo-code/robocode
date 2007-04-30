@@ -427,13 +427,21 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 		Line.Info lineInfo = mixer.getSourceLineInfo(new Line.Info(Clip.class))[0];
 
+		boolean volumeSupported;
+		boolean panSupported;
+		
 		try {
 			Line line = mixer.getLine(lineInfo);
 
-			enableMixerVolumeCheckBox.setEnabled(line.isControlSupported(FloatControl.Type.MASTER_GAIN));
-			enableMixerPanCheckBox.setEnabled(line.isControlSupported(FloatControl.Type.PAN));
+			volumeSupported = line.isControlSupported(FloatControl.Type.MASTER_GAIN);
+			panSupported = line.isControlSupported(FloatControl.Type.PAN);
+		} catch (LineUnavailableException e) {
+			volumeSupported = false;
+			panSupported = false;
+		}
 
-		} catch (LineUnavailableException e) {}
+		enableMixerVolumeCheckBox.setEnabled(volumeSupported);
+		enableMixerPanCheckBox.setEnabled(panSupported);
 	}
 
 	private void mixerDefaultButtonActionPerformed() {
@@ -441,7 +449,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	}
 
 	@SuppressWarnings("serial")
-	private class MixerInfoCellRenderer extends javax.swing.plaf.basic.BasicComboBoxRenderer {
+	private static class MixerInfoCellRenderer extends javax.swing.plaf.basic.BasicComboBoxRenderer {
 
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
