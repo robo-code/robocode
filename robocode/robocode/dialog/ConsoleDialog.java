@@ -37,9 +37,9 @@ public class ConsoleDialog extends JDialog {
 	private JMenu editMenu;
 	private JMenuItem editCopyMenuItem;
 	private JMenuBar consoleDialogMenuBar;
-	EventHandler eventHandler = new EventHandler();
+	private EventHandler eventHandler = new EventHandler();
 
-	class EventHandler implements ActionListener {
+	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == ConsoleDialog.this.getOkButton() || e.getSource() == getConsoleDialogContentPane()) {
 				okButtonActionPerformed();
