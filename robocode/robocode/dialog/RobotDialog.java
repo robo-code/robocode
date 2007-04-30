@@ -106,7 +106,7 @@ public class RobotDialog extends JFrame {
 	}
 
 	@Override
-	public void finalize() throws Throwable {
+	protected void finalize() throws Throwable {
 		super.finalize();
 		manager.getBattleManager().removeListener(pauseResumeHandler);
 	}
@@ -285,6 +285,7 @@ public class RobotDialog extends JFrame {
 	 */
 	private JButton getNewButton(String text) {
 		JButton button = new JButton(text);
+
 		button.addActionListener(eventHandler);
 		return button;
 	}
@@ -329,6 +330,7 @@ public class RobotDialog extends JFrame {
 	 */
 	private void pauseResumeButtonActionPerformed() {
 		BattleManager battleManager = manager.getBattleManager();
+
 		if (battleManager.isPaused()) {
 			battleManager.resumeBattle();
 		} else {
