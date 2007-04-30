@@ -13,6 +13,8 @@
  *     - Replaced RobotPeerVector with plain Vector
  *     - Ported to Java 5.0
  *     - Fixed possible ConcurrentModificationException issues
+ *     - Bugfixed setActiveBattle() and reset() which removed dialogs via
+ *       remove(dialog) instead of remove(name)
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -59,7 +61,7 @@ public class RobotDialogManager {
 			if (!found) {
 				RobotDialog dialog = robotDialogHashMap.get(name);
 
-				robotDialogHashMap.remove(dialog);
+				robotDialogHashMap.remove(name);
 				dialog.dispose();
 			}
 		}
@@ -72,7 +74,7 @@ public class RobotDialogManager {
 			RobotDialog dialog = robotDialogHashMap.get(name);
 
 			if (!dialog.isVisible()) {
-				robotDialogHashMap.remove(dialog);
+				robotDialogHashMap.remove(name);
 				dialog.dispose();
 			}
 		}
