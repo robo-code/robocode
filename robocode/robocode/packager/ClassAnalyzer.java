@@ -137,7 +137,7 @@ public class ClassAnalyzer {
 				case CONSTANT_Class: {
 						int name_index = in.readUnsignedShort();
 
-						classNameIndexes.add(new Integer(name_index));
+						classNameIndexes.add(Integer.valueOf(name_index));
 					}
 					break;
 
