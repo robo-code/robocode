@@ -53,7 +53,7 @@ public class CpuManager {
 					count++;
 				}
 
-				double cyclesPerMS = count / TEST_PERIOD_MILLIS;
+				double cyclesPerMS = count / (double) TEST_PERIOD_MILLIS;
 
 				double msPerCycle = 1 / cyclesPerMS;
 
