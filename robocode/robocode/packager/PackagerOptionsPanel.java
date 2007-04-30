@@ -58,8 +58,6 @@ public class PackagerOptionsPanel extends WizardPanel {
 	private JLabel webpageHelpLabel;
 
 	private class EventHandler implements ComponentListener, KeyListener, DocumentListener {
-		int count = 0;
-
 		public void insertUpdate(DocumentEvent e) {
 			fireStateChanged();
 		}
