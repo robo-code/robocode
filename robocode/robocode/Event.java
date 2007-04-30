@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Optimized for Java 5
  *     - Updated Javadoc
+ *     - Removed try-catch(ClassCastException) from compareTo()
  *******************************************************************************/
 package robocode;
 
@@ -45,26 +46,23 @@ public class Event implements Comparable<Event> {
 	 *    specified event
 	 */
 	public int compareTo(Event event) {
-		int diff = 0;
+		int diff = event.priority - priority;
 
-		try {
-			diff = event.priority - priority;
-			if (diff != 0) {
-				return diff;
-			}
-			int timediff = (int) (event.time - time);
+		if (diff != 0) {
+			return diff;
+		}
+		int timediff = (int) (event.time - time);
 
-			if (timediff != 0) {
-				return timediff;
-			} else if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
-				return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
-			} else if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
-				int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
-				int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
+		if (timediff != 0) {
+			return timediff;
+		} else if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
+			return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
+		} else if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
+			int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
+			int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
 
-				return compare1 - compare2;
-			}
-		} catch (ClassCastException e) {}
+			return compare1 - compare2;
+		}
 
 		return 0;
 	}
