@@ -39,7 +39,9 @@ public class FileUtil {
 	static {
 		try {
 			FileUtil.setCwd(new File(""));
-		} catch (IOException e) {}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
