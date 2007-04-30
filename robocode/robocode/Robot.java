@@ -13,6 +13,7 @@
  *       setBodyColor(), setGunColor(), setRadarColor(), setBulletColor(), and
  *       setScanColor()
  *     - Updated Javadoc
+ *     - The finalize() is now protected instead of public
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue
  *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
@@ -378,7 +379,7 @@ public class Robot extends _Robot implements Runnable {
 	 * You may not override this method.
 	 */
 	@Override
-	public final void finalize() {}
+	protected final void finalize() {}
 
 	/**
 	 * Immediately fires a bullet. The bullet will travel in the direction the
