@@ -454,7 +454,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 			}
 			jarout.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			out.println(e);
 			return 8;
 		} finally {
