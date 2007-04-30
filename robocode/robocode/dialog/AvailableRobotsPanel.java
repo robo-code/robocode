@@ -363,7 +363,7 @@ public class AvailableRobotsPanel extends JPanel {
 
 
 	@SuppressWarnings("serial")
-	private class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
+	private static class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
 		private boolean useShortNames = false;
 
 		public RobotNameCellRenderer() {
