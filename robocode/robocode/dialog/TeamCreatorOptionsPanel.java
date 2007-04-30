@@ -63,8 +63,6 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 	private String teamPackage;
 
 	class EventHandler implements ComponentListener, DocumentListener {
-		int count = 0;
-
 		public void insertUpdate(DocumentEvent e) {
 			fireStateChanged();
 		}
