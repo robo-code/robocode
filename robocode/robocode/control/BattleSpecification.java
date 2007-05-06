@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Removed the battlefield field, which can be created when calling
  *       getBattlefield() and optimized constructor
+ *     - Changed getRobots() to return a copy of the robots
  *******************************************************************************/
 package robocode.control;
 
@@ -25,8 +26,8 @@ import robocode.battle.BattleProperties;
  * @author Flemming N. Larsen (contributor)
  */
 public class BattleSpecification {
-	private RobotSpecification robots[];
-	private BattleProperties battleProperties;
+	private final RobotSpecification[] robots;
+	private final BattleProperties battleProperties;
 
 	/**
 	 * Creates a BattleSpecification with the given number of rounds, battlefield, and robots
@@ -102,7 +103,15 @@ public class BattleSpecification {
 	 * @return the robots participating in this battle
 	 */
 	public RobotSpecification[] getRobots() {
-		return robots;
+		if (robots == null) {
+			return null;
+		}
+
+		RobotSpecification[] robotsCopy = new RobotSpecification[robots.length];
+
+		System.arraycopy(robots, 0, robotsCopy, 0, robots.length);
+
+		return robotsCopy;
 	}
 
 	/**
