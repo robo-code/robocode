@@ -724,7 +724,7 @@ public class RobocodeProperties {
 	 * @return Returns a String
 	 */
 	public Date getVersionChecked() {
-		return versionChecked;
+		return (versionChecked != null) ? (Date) versionChecked.clone() : null;
 	}
 
 	/**
@@ -733,7 +733,7 @@ public class RobocodeProperties {
 	 * @param versionChecked The versionChecked to set
 	 */
 	public void setVersionChecked(Date versionChecked) {
-		this.versionChecked = versionChecked;
+		this.versionChecked = (versionChecked != null) ? (Date) versionChecked.clone() : null;
 		props.setProperty(VERSIONCHECKED, dateFormat.format(new Date()));
 	}
 
@@ -984,7 +984,7 @@ public class RobocodeProperties {
 	 * @author Flemming N. Larsen
 	 */
 	@SuppressWarnings("serial")
-	private class SortedProperties extends Properties {
+	private static class SortedProperties extends Properties {
 		@SuppressWarnings("unchecked")
 		@Override
 		public Enumeration keys() {
