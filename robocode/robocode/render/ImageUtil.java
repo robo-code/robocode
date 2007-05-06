@@ -22,6 +22,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import robocode.io.Logger;
+import static robocode.util.Utils.isNear;
 
 
 /**
@@ -126,9 +127,9 @@ public class ImageUtil {
 			float deltaG = (((max - G) / 6) + (delta / 2)) / delta;
 			float deltaB = (((max - B) / 6) + (delta / 2)) / delta;
 
-			if (R == max) {
+			if (isNear(R, max)) {
 				H = deltaB - deltaG;
-			} else if (G == max) {
+			} else if (isNear(G, max)) {
 				H = (1f / 3) + deltaR - deltaB;
 			} else {
 				H = (2f / 3) + deltaG - deltaR;
