@@ -390,10 +390,10 @@ public class EventManager {
 		return robot;
 	}
 
-	public synchronized void setRobot(Robot r) {
+	public void setRobot(Robot r) {
 		this.robot = r;
 		if (r instanceof AdvancedRobot) {
-			this.useFireAssist = false;
+			useFireAssist = false;
 		}
 	}
 
