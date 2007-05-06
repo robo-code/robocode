@@ -450,13 +450,6 @@ public class BattleView extends Canvas {
 			if (r.isPaintEnabled() && r.getRobot() != null) {
 				drawRobotPaint(g, r);
 			}
-			if (r.getSayTextPeer() != null) {
-				if (r.getSayTextPeer().getText() != null) {
-					g.setColor(r.getSayTextPeer().getColor());
-					centerString(g, r.getSayTextPeer().getText(), r.getSayTextPeer().getX(),
-							battle.getBattleField().getHeight() - r.getSayTextPeer().getY(), smallFont, smallFontMetrics);
-				}
-			}
 		}
 	}
 
@@ -605,7 +598,7 @@ public class BattleView extends Canvas {
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2, (getHeight() - 46) / 2));
+		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2.0, (getHeight() - 46) / 2.0));
 		g.setColor(Color.DARK_GRAY);
 		g.fill(robocodeTextPath);
 	}
