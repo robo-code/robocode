@@ -153,7 +153,7 @@ public class Battle implements Runnable {
 	// Replay related items
 	private boolean replay;
 	private boolean isRecordingEnabled;
-	private static BattleRecord battleRecord;
+	private BattleRecord battleRecord;
 	private RoundRecord currentRoundRecord;
 	private TurnRecord currentTurnRecord;
 
@@ -329,8 +329,6 @@ public class Battle implements Runnable {
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().setReplay(true);
 		}
-
-		System.gc();
 	}
 
 	public void addBullet(BulletPeer bullet) {
@@ -338,8 +336,7 @@ public class Battle implements Runnable {
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
-
-		RobotPeer robotPeer = new RobotPeer(robotClassManager, battleManager.getManager().getRobotRepositoryManager(),
+		RobotPeer robotPeer = new RobotPeer(robotClassManager,
 				battleManager.getManager().getProperties().getRobotFilesystemQuota());
 		TeamPeer teamManager = robotClassManager.getTeamManager();
 
@@ -350,7 +347,6 @@ public class Battle implements Runnable {
 			addContestant(robotPeer);
 		}
 		robotPeer.setBattle(this);
-		robotPeer.setBattleField(battleField);
 		robotPeer.getOut();
 
 		int count = 0;
@@ -656,8 +652,6 @@ public class Battle implements Runnable {
 
 			// Move all bots
 			for (RobotPeer r : robots) {
-				r.updateSayText();
-
 				if (!r.isDead()) {
 					// setWinner was here
 					r.update();
@@ -776,9 +770,11 @@ public class Battle implements Runnable {
 					|| ((System.currentTimeMillis() - startTimeThisSec) >= 1000));
 
 			// Delay to match desired TPS
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {}
+			if (delay > 0) {
+				try {
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {}
+			}
 
 			if (resetThisSec) {
 				updateTitle();
@@ -948,9 +944,11 @@ public class Battle implements Runnable {
 					|| ((System.currentTimeMillis() - startTimeThisSec) >= 1000));
 
 			// Delay to match desired TPS
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {}
+			if (delay > 0) {
+				try {
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {}
+			}
 
 			if (resetThisSec) {
 				updateTitle();
@@ -1146,7 +1144,7 @@ public class Battle implements Runnable {
 			if (endTimer > 4 * 30) {
 				for (RobotPeer r : robots) {
 					if (!r.isDead()) {
-						r.halt();
+						r.setHalt(true);
 					}
 				}
 			}
