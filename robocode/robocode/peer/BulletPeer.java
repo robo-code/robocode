@@ -64,7 +64,10 @@ public class BulletPeer {
 
 	private static final int RADIUS = 3;
 
-	private RobotPeer owner;
+	protected final RobotPeer owner;
+	protected final Battle battle;
+	private final BattleField battleField;
+
 	private Bullet bullet;
 	protected RobotPeer victim;
 
@@ -79,10 +82,6 @@ public class BulletPeer {
 
 	private double lastX;
 	private double lastY;
-
-	protected Battle battle;
-
-	private BattleField battleField;
 
 	protected double power;
 
@@ -108,10 +107,10 @@ public class BulletPeer {
 
 		this.owner = owner;
 		this.battle = battle;
-		this.battleField = battle.getBattleField();
-		this.bullet = new Bullet(this);
-		this.state = STATE_SHOT;
-		this.lastState = STATE_SHOT;
+		battleField = battle.getBattleField();
+		bullet = new Bullet(this);
+		state = STATE_SHOT;
+		lastState = STATE_SHOT;
 	}
 
 	public BulletPeer(RobotPeer owner, Battle battle, BulletRecord br) {
@@ -119,7 +118,7 @@ public class BulletPeer {
 
 		this.owner = owner;
 		this.battle = battle;
-		this.battleField = battle.getBattleField();
+		battleField = battle.getBattleField();
 		x = br.x;
 		y = br.y;
 		power = ((double) br.power) / 10;
@@ -228,27 +227,19 @@ public class BulletPeer {
 		}
 	}
 
-	public Battle getBattle() {
-		return battle;
-	}
-
 	public BattleField getBattleField() {
 		return battleField;
 	}
 
-	public Line2D getBoundingLine() {
-		return boundingLine;
-	}
-
-	public robocode.Bullet getBullet() {
+	public Bullet getBullet() {
 		return bullet;
 	}
 
-	public int getFrame() {
+	public synchronized int getFrame() {
 		return frame;
 	}
 
-	public double getHeading() {
+	public synchronized double getHeading() {
 		return heading;
 	}
 
@@ -256,7 +247,7 @@ public class BulletPeer {
 		return owner;
 	}
 
-	public double getPower() {
+	public synchronized double getPower() {
 		return power;
 	}
 
@@ -264,19 +255,19 @@ public class BulletPeer {
 		return velocity;
 	}
 
-	public RobotPeer getVictim() {
+	public synchronized RobotPeer getVictim() {
 		return victim;
 	}
 
-	public double getX() {
+	public synchronized double getX() {
 		return x;
 	}
 
-	public double getY() {
+	public synchronized double getY() {
 		return y;
 	}
 
-	public boolean isActive() {
+	public synchronized boolean isActive() {
 		return state <= STATE_MOVING;
 	}
 
@@ -284,20 +275,8 @@ public class BulletPeer {
 		return lastState;
 	}
 
-	public synchronized void setBattle(Battle newBattle) {
-		battle = newBattle;
-	}
-
-	public synchronized void setBattleField(BattleField newBattleField) {
-		battleField = newBattleField;
-	}
-
 	public synchronized void setHeading(double newHeading) {
 		heading = newHeading;
-	}
-
-	public synchronized void setOwner(RobotPeer newOwner) {
-		owner = newOwner;
 	}
 
 	public synchronized void setPower(double newPower) {
@@ -380,11 +359,11 @@ public class BulletPeer {
 		frame++;
 	}
 
-	public synchronized int getExplosionImageIndex() {
+	public int getExplosionImageIndex() {
 		return explosionImageIndex;
 	}
 
-	public synchronized void setExplosionImageIndex(int index) {
+	public void setExplosionImageIndex(int index) {
 		explosionImageIndex = index;
 	}
 
