@@ -393,7 +393,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	@SuppressWarnings("serial")
-	class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
+	private static class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
 		private boolean useShortNames;
 
 		public RobotNameCellRenderer() {
@@ -465,7 +465,7 @@ public class RobotSelectionPanel extends WizardPanel {
 				List<FileSpecification> l = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
 
 				getAvailableRobotsPanel().setRobotList(l);
-				if (selectedRobots != null && !selectedRobots.equals("")) {
+				if (selectedRobots != null && selectedRobots.size() > 0) {
 					setSelectedRobots(getAvailableRobotsPanel().getRobotList(), preSelectedRobots);
 					preSelectedRobots = null;
 				}
