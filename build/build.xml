@@ -54,7 +54,8 @@
   <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
   <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
   <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
-  
+  <defaultexcludes add="**/_*.java"/>    <!-- Java files to hide in Javadoc -->
+
   <!-- ====================================== -->
   <!-- Target: init                           -->
   <!-- ====================================== -->
@@ -301,15 +302,17 @@
     <javadoc
         destdir="${build}/javadoc"
         sourcepath="${src.robocode}"
+    	excludepackagenames="robocode.*"
         windowtitle="Robocode ${version} API"
     	link="http://java.sun.com/j2se/1.5.0/docs/api">
-      <fileset dir="${src.robocode}">
+      <fileset dir="${src.robocode}" defaultexcludes="yes">
         <include name="robocode/*.java"/>
       	<include name="robocode/util/Utils.java"/>
       	<include name="robocode/control/*.java"/>
       </fileset>
+      <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
     </javadoc>
-    
+
     <!-- Flag that javadoc has been built -->
     <touch file="${build}/.javadoc_build"/>
   </target>
