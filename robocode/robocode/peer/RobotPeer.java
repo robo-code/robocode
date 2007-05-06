@@ -64,7 +64,6 @@ import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.exception.WinException;
 import robocode.manager.NameManager;
-import robocode.manager.RobotRepositoryManager;
 import robocode.peer.robot.*;
 import robocode.util.BoundingRectangle;
 
@@ -187,7 +186,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private RobotMessageManager messageManager;
 
 	private TeamPeer teamPeer;
-	private TextPeer sayTextPeer;
 
 	private boolean isDuplicate;
 	private boolean slowingDown;
@@ -207,15 +205,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		this.name = name;
 	}
 
-	public TextPeer getSayTextPeer() {
-		return sayTextPeer;
-	}
-
 	public boolean isIORobot() {
 		return isIORobot;
 	}
 
-	public synchronized void setIORobot(boolean ioRobot) {
+	public void setIORobot(boolean ioRobot) {
 		this.isIORobot = ioRobot;
 	}
 
@@ -223,7 +217,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		this.testingCondition = testingCondition;
 	}
 
-	public boolean getTestingCondition() {
+	public synchronized boolean getTestingCondition() {
 		return testingCondition;
 	}
 
@@ -242,7 +236,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		} while (distanceRemaining != 0);
 	}
 
-	public void checkRobotCollision() {
+	private void checkRobotCollision() {
 		inCollision = false;
 
 		for (int i = 0; i < battle.getRobots().size(); i++) {
@@ -250,7 +244,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 			if (!(r == null || r == this || r.isDead()) && boundingBox.intersects(r.boundingBox)) {
 				// Bounce back
-				double angle = atan2(r.x - x, r.y - y);
+				double angle = atan2(r.getX() - x, r.getY() - y);
 
 				double movedx = velocity * sin(heading);
 				double movedy = velocity * cos(heading);
@@ -264,12 +258,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					distanceRemaining = 0;
 					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
+					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
 					inCollision = true;
 					x -= movedx;
 					y -= movedy;
 
-					if (r.energy == 0) {
+					if (r.getEnergy() == 0) {
 						if (r.isAlive()) {
 							r.kill();
 							statistics.scoreRammingKill(i);
@@ -281,12 +275,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					distanceRemaining = 0;
 					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-					r.setEnergy(r.energy - Rules.ROBOT_HIT_DAMAGE);
+					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
 					inCollision = true;
 					x -= movedx;
 					y -= movedy;
 
-					if (r.energy == 0) {
+					if (r.getEnergy() == 0) {
 						if (r.isAlive()) {
 							r.kill();
 							statistics.scoreRammingKill(i);
@@ -294,9 +288,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					}
 				}
 
-				eventManager.add(new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.energy, atFault));
+				eventManager.add(
+						new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
 				r.eventManager.add(
-						new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.heading), energy, false));
+						new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getHeading()), energy, false));
 
 			} // if robot active & not me & hit
 		} // for robots
@@ -305,7 +300,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void checkWallCollision() {
+	private void checkWallCollision() {
 		boolean hitWall = false;
 		double fixx = 0, fixy = 0;
 		double angle = 0;
@@ -388,27 +383,23 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return battle;
 	}
 
-	public BattleField getBattleField() {
-		return battleField;
-	}
-
 	public double getBattleFieldHeight() {
-		return battle.getBattleField().getHeight();
+		return battleField.getHeight();
 	}
 
 	public double getBattleFieldWidth() {
-		return battle.getBattleField().getWidth();
+		return battleField.getWidth();
 	}
 
 	public BoundingRectangle getBoundingBox() {
 		return boundingBox;
 	}
 
-	public double getGunHeading() {
+	public synchronized double getGunHeading() {
 		return gunHeading;
 	}
 
-	public double getHeading() {
+	public synchronized double getHeading() {
 		return heading;
 	}
 
@@ -438,15 +429,15 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return battle.getActiveRobots() - (isAlive() ? 1 : 0);
 	}
 
-	public double getRadarHeading() {
+	public synchronized double getRadarHeading() {
 		return radarHeading;
 	}
 
-	public double getX() {
+	public synchronized double getX() {
 		return x;
 	}
 
-	public double getY() {
+	public synchronized double getY() {
 		return y;
 	}
 
@@ -458,11 +449,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return isAdjustRadarForGunTurn;
 	}
 
-	public boolean isDead() {
+	public synchronized boolean isDead() {
 		return state == STATE_DEAD;
 	}
 
-	public boolean isAlive() {
+	public synchronized boolean isAlive() {
 		return state != STATE_DEAD;
 	}
 
@@ -509,7 +500,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public boolean intersects(Arc2D arc, Rectangle2D rect) {
+	private boolean intersects(Arc2D arc, Rectangle2D rect) {
 		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
 				arc.getStartPoint().getY()))
 				? true
@@ -521,8 +512,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			return;
 		}
 
-		double startAngle = lastRadarHeading;
-		double scanRadians = radarHeading - lastRadarHeading;
+		double startAngle = getLastRadarHeading();
+		double scanRadians = getRadarHeading() - startAngle;
 
 		// Check if we passed through 360
 		if (scanRadians < -PI) {
@@ -538,19 +529,19 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		startAngle = normalAbsoluteAngle(startAngle);
 
-		scanArc.setArc(x - Rules.RADAR_SCAN_RADIUS, y - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
+		scanArc.setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
 		for (RobotPeer r : battle.getRobots()) {
 			if (!(r == null || r == this || r.isDead()) && intersects(scanArc, r.boundingBox)) {
-				double dx = r.x - x;
-				double dy = r.y - y;
+				double dx = r.getX() - getX();
+				double dy = r.getY() - getY();
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 
 				eventManager.add(
-						new ScannedRobotEvent(r.getName(), r.energy, normalRelativeAngle(angle - heading), dist, r.heading,
-						r.velocity));
+						new ScannedRobotEvent(r.getName(), r.getEnergy(), normalRelativeAngle(angle - getHeading()), dist,
+						r.getHeading(), r.getVelocity()));
 			}
 		}
 	}
@@ -585,10 +576,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void setBattle(Battle newBattle) {
 		battle = newBattle;
-	}
-
-	public void setBattleField(BattleField newBattleField) {
-		battleField = newBattleField;
+		battleField = battle.getBattleField();
 	}
 
 	public synchronized void kill() {
@@ -598,12 +586,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			if (isTeamLeader()) {
 				for (RobotPeer teammate : teamPeer) {
 					if (!(teammate.isDead() || teammate == this)) {
-						teammate.setEnergy(teammate.energy - 30);
+						teammate.setEnergy(teammate.getEnergy() - 30);
+
 						BulletPeer sBullet = new BulletPeer(this, battle);
 
 						sBullet.setState(BulletPeer.STATE_HIT_VICTIM);
-						sBullet.setX(teammate.x);
-						sBullet.setY(teammate.y);
+						sBullet.setX(teammate.getX());
+						sBullet.setY(teammate.getY());
 						sBullet.setVictim(teammate);
 						sBullet.hasHitVictim = true;
 						sBullet.setPower(4);
@@ -704,7 +693,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		eventManager.setFireAssistValid(false);
 
 		if (isDead()) {
-			halt();
+			setHalt(true);
 		}
 
 		eventManager.processEvents();
@@ -825,7 +814,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		gunHeading = normalAbsoluteAngle(gunHeading);
 	}
 
-	public void updateHeading() {
+	private void updateHeading() {
 		boolean normalizeHeading = true;
 
 		turnRate = min(maxTurnRate, (.4 + .6 * (1 - (abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
@@ -1049,8 +1038,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void halt() {
-		halt = true;
+	public synchronized void setHalt(boolean halt) {
+		this.halt = halt;
 	}
 
 	public int compareTo(ContestantPeer cp) {
@@ -1080,7 +1069,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return battle.getCurrentTime();
 	}
 
-	public double getVelocity() {
+	public synchronized double getVelocity() {
 		return velocity;
 	}
 
@@ -1110,8 +1099,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		distanceRemaining = turnRemaining = gunTurnRemaining = radarTurnRemaining = 0;
 
 		setStop(true);
+		setHalt(false);
 
-		scan = halt = inCollision = false;
+		setScan(false);
+
+		inCollision = false;
 
 		scanArc.setAngleStart(0);
 		scanArc.setAngleExtent(0);
@@ -1135,6 +1127,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setAdjustGunForBodyTurn(false);
 		setAdjustRadarForBodyTurn(false);
 		setAdjustRadarForGunTurn(false);
+		isAdjustRadarForBodyTurnSet = false;
 
 		newBullet = null;
 	}
@@ -1216,7 +1209,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		tick();
 	}
 
-	public void waitFor(Condition condition) {
+	public synchronized void waitFor(Condition condition) {
 		waitCondition = condition;
 		do {
 			tick(); // Always tick at least once
@@ -1229,11 +1222,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return eventManager;
 	}
 
-	public double getLastGunHeading() {
+	public synchronized double getLastGunHeading() {
 		return lastGunHeading;
 	}
 
-	public double getLastRadarHeading() {
+	public synchronized double getLastRadarHeading() {
 		return lastRadarHeading;
 	}
 
@@ -1244,7 +1237,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	/**
 	 * RobotPeer constructor
 	 */
-	public RobotPeer(RobotClassManager robotClassManager, RobotRepositoryManager robotManager, long fileSystemQuota) {
+	public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota) {
 		super();
 		this.robotClassManager = robotClassManager;
 		robotThreadManager = new RobotThreadManager(this);
@@ -1252,13 +1245,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		eventManager = new EventManager(this);
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
-		this.teamPeer = robotClassManager.getTeamManager();
+		teamPeer = robotClassManager.getTeamManager();
 
 		// Create statistics after teamPeer set
 		statistics = new RobotStatistics(this);
 	}
 
-	public robocode.Bullet setFire(double power) {
+	public synchronized Bullet setFire(double power) {
 		if (Double.isNaN(power)) {
 			out.println("SYSTEM: You cannot call fire(NaN)");
 			return null;
@@ -1272,6 +1265,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		this.setEnergy(energy - firePower);
 
 		gunHeat += Rules.getGunHeat(firePower);
+
 		BulletPeer bullet = new BulletPeer(this, battle);
 
 		bullet.setPower(firePower);
@@ -1279,9 +1273,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (eventManager.isFireAssistValid()) {
 			bullet.setHeading(eventManager.getFireAssistAngle());
 		} else {
-			bullet.setHeading(gunHeading);
+			bullet.setHeading(getGunHeading());
 		}
-		bullet.setOwner(this);
 		bullet.setX(x);
 		bullet.setY(y);
 
@@ -1290,23 +1283,23 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return bullet.getBullet();
 	}
 
-	public double getDistanceRemaining() {
+	public synchronized double getDistanceRemaining() {
 		return distanceRemaining;
 	}
 
-	public double getEnergy() {
+	public synchronized double getEnergy() {
 		return energy;
 	}
 
-	public double getGunHeat() {
+	public synchronized double getGunHeat() {
 		return gunHeat;
 	}
 
-	public double getGunTurnRemaining() {
+	public synchronized double getGunTurnRemaining() {
 		return gunTurnRemaining;
 	}
 
-	public double getMaxVelocity() {
+	public synchronized double getMaxVelocity() {
 		return maxVelocity;
 	}
 
@@ -1323,7 +1316,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return out;
 	}
 
-	public double getRadarTurnRemaining() {
+	public synchronized double getRadarTurnRemaining() {
 		return radarTurnRemaining;
 	}
 
@@ -1331,11 +1324,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return robotClassManager;
 	}
 
-	public robocode.peer.robot.RobotFileSystemManager getRobotFileSystemManager() {
+	public RobotFileSystemManager getRobotFileSystemManager() {
 		return robotFileSystemManager;
 	}
 
-	public robocode.peer.robot.RobotThreadManager getRobotThreadManager() {
+	public RobotThreadManager getRobotThreadManager() {
 		return robotThreadManager;
 	}
 
@@ -1343,8 +1336,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return getBattle().getRoundNum();
 	}
 
-	public boolean getScan() {
-		return this.scan;
+	public synchronized boolean getScan() {
+		return scan;
 	}
 
 	public Arc2D getScanArc() {
@@ -1363,7 +1356,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return statistics;
 	}
 
-	public double getTurnRemaining() {
+	public synchronized double getTurnRemaining() {
 		return turnRemaining;
 	}
 
@@ -1421,7 +1414,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return isDuplicate;
 	}
 
-	public void setEnergy(double newEnergy) {
+	public synchronized void setEnergy(double newEnergy) {
 		setEnergy(newEnergy, true);
 	}
 
@@ -1449,30 +1442,27 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		skippedTurns = newSkippedTurns;
 	}
 
-	public void setStatistics(robocode.peer.robot.RobotStatistics newStatistics) {
+	public void setStatistics(RobotStatistics newStatistics) {
 		statistics = newStatistics;
 	}
 
-	private void updateGunHeat() {
+	private synchronized void updateGunHeat() {
 		gunHeat -= battle.getGunCoolingRate();
 		if (gunHeat < 0) {
 			gunHeat = 0;
 		}
 	}
 
-	public void zap(double zapAmount) {
-		double energy = getEnergy();
-
+	public synchronized void zap(double zapAmount) {
 		if (energy == 0) {
 			kill();
-		} else {
-			energy -= abs(zapAmount);
-			if (energy < .1) {
-				energy = 0;
-				setDistanceRemaining(0);
-				turnRemaining = 0;
-			}
-			setEnergy(0);
+			return;
+		}
+		energy -= abs(zapAmount);
+		if (energy < .1) {
+			energy = 0;
+			distanceRemaining = 0;
+			turnRemaining = 0;
 		}
 	}
 
@@ -1576,31 +1566,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return messageManager;
 	}
 
-	public boolean say(String text) {
-		if (sayTextPeer == null) {
-			sayTextPeer = new TextPeer();
-		}
-
-		if (sayTextPeer.isReady()) {
-			if (text.length() > 100) {
-				return false;
-			}
-			sayTextPeer.setText(getVeryShortName() + ": " + text);
-			sayTextPeer.setX((int) x);
-			sayTextPeer.setY((int) y);
-			sayTextPeer.setDuration(20 + text.length());
-
-			return true;
-		}
-		return false;
-	}
-
-	public void updateSayText() {
-		if (sayTextPeer != null) {
-			sayTextPeer.tick();
-		}
-	}
-
 	public void setPaintEnabled(boolean enabled) {
 		paintEnabled = enabled;
 	}
@@ -1617,7 +1582,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return sgPaintEnabled;
 	}
 
-	public int getState() {
+	public synchronized int getState() {
 		return state;
 	}
 
@@ -1625,7 +1590,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		state = newState;
 	}
 
-	public void set(RobotRecord rr) {
+	public synchronized void set(RobotRecord rr) {
 		x = rr.x;
 		y = rr.y;
 		energy = (double) rr.energy / 10;
