@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Moved the original robocode.util.RobocodeFileFilter into this new class
  *       and added javadoc comments
+ *     - Changed the constructor to make a deep copy of the file types
  *******************************************************************************/
 package robocode.io;
 
@@ -38,7 +39,12 @@ public class FileTypeFilter implements FileFilter {
 	 */
 	public FileTypeFilter(String[] fileTypes) {
 		super();
-		this.fileTypes = fileTypes;
+		if (fileTypes == null) {
+			this.fileTypes = null;
+		} else {
+			this.fileTypes = new String[fileTypes.length];
+			System.arraycopy(fileTypes, 0, this.fileTypes, 0, fileTypes.length);
+		}
 	}
 
 	/**
