@@ -72,7 +72,9 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 		anchor = lastIndex = -1;
 		try {
 			checkLines(e.getDocument().getText(0, e.getDocument().getLength()));
-		} catch (BadLocationException ex) {}
+		} catch (BadLocationException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/**
@@ -84,7 +86,9 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 		anchor = lastIndex = -1;
 		try {
 			checkLines(e.getDocument().getText(0, e.getDocument().getLength()));
-		} catch (BadLocationException ex) {}
+		} catch (BadLocationException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/**
@@ -96,7 +100,9 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 		anchor = lastIndex = -1;
 		try {
 			checkLines(e.getDocument().getText(0, e.getDocument().getLength()));
-		} catch (BadLocationException ex) {}
+		} catch (BadLocationException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/**
