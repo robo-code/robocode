@@ -100,17 +100,21 @@ public class Utils {
 	}
 
 	/**
-	 * Tests if the two specified angles are near to each other.
-	 * Whether or not the specified angles are near t each other is defined by
+	 * Tests if the two <code>double</code> values are near to each other.
+	 * It is recommended to use this method instead of testing if the two
+	 * doubles are equal using an this expression: <code>value1 == value2</code>.
+	 * The reason being, that this expression might never become
+	 * <code>true</code> due to the precision of double values.
+	 * Whether or not the specified doubles are near to each other is defined by
 	 * the following expression:
-	 * <code>(Math.abs(angle1 - angle2) < .00001)</code>
+	 * <code>(Math.abs(value1 - value2) < .00001)</code>
 	 *
-	 * @param angle1 the first angle
-	 * @param angle2 the second angle
-	 * @return <code>true</code> if the two angles are near to each other;
+	 * @param value1 the first double value
+	 * @param value2 the second double value
+	 * @return <code>true</code> if the two doubles are near to each other;
 	 *    <code>false</code> otherwise.
 	 */
-	public static boolean isNear(double angle1, double angle2) {
-		return (Math.abs(angle1 - angle2) < .00001);
+	public static boolean isNear(double value1, double value2) {
+		return (Math.abs(value1 - value2) < .00001);
 	}
 }
