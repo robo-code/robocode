@@ -73,10 +73,10 @@ public class VersionManager {
 	}
 
 	public boolean checkForNewVersion(boolean notifyNoUpdate) {
-		URL u = null;
+		URL url = null;
 
 		try {
-			u = new URL("http://robocode.sourceforge.net/version/version.html");
+			url = new URL("http://robocode.sourceforge.net/version/version.html");
 		} catch (MalformedURLException e) {
 			log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
@@ -90,7 +90,7 @@ public class VersionManager {
 		BufferedReader reader = null;
 
 		try {
-			URLConnection urlConnection = u.openConnection();
+			URLConnection urlConnection = url.openConnection();
 
 			urlConnection.setConnectTimeout(5000);
 
@@ -105,6 +105,34 @@ public class VersionManager {
 			inputStream = urlConnection.getInputStream();
 			inputStreamReader = new InputStreamReader(inputStream);
 			reader = new BufferedReader(inputStreamReader);
+
+			String v = reader.readLine();
+
+			String installurl = "http://robocode.sourceforge.net/installer";
+
+			if (v != null && v.compareToIgnoreCase(getVersion()) > 0) {
+				if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
+						"Version " + v + " of Robocode is now available.  Would you like to download it?",
+						"Version " + v + " available", JOptionPane.YES_NO_OPTION)
+						== JOptionPane.YES_OPTION) {
+					try {
+						BrowserManager.openURL(installurl);
+					} catch (IOException e) {
+						JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
+								"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else if (!v.matches(".*([Aa][Ll][Pp][Hh]|[Bb][Ee][Tt])[Aa].*")) {
+					JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
+							"It is highly recommended that you always download the latest version.  You may get it at "
+							+ installurl,
+							"Update when you can!",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			} else if (notifyNoUpdate) {
+				JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
+						"You have version " + version + ".  This is the latest version of Robocode.", "No update available",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
 		} catch (IOException e) {
 			log("Unable to check for new version: " + e);
 			if (notifyNoUpdate) {
@@ -122,55 +150,11 @@ public class VersionManager {
 					inputStreamReader.close();
 				} catch (IOException e) {}
 			}
-			if (reader == null) {
-				log("Unable to check for new version");
-				if (notifyNoUpdate) {
-					WindowUtil.messageError("Unable to check for new version");
-				}
-				return false;
-			}
-		}
-
-		String v = null;
-
-		try {
-			v = reader.readLine();
-		} catch (IOException e) {
-			log("Unable to check for new version: " + e);
-			if (notifyNoUpdate) {
-				WindowUtil.messageError("Unable to check for new version: " + e);
-			}
-			return false;
-		} finally {
-			try {
-				reader.close();
-			} catch (IOException e) {}
-		}
-
-		String installurl = "http://robocode.sourceforge.net/installer";
-
-		if (v != null && v.compareToIgnoreCase(getVersion()) > 0) {
-			if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
-					"Version " + v + " of Robocode is now available.  Would you like to download it?",
-					"Version " + v + " available", JOptionPane.YES_NO_OPTION)
-					== JOptionPane.YES_OPTION) {
+			if (reader != null) {
 				try {
-					BrowserManager.openURL(installurl);
-				} catch (IOException e) {
-					JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
-							"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
-				}
-			} else if (!v.matches(".*([Aa][Ll][Pp][Hh]|[Bb][Ee][Tt])[Aa].*")) {
-				JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
-						"It is highly recommended that you always download the latest version.  You may get it at "
-						+ installurl,
-						"Update when you can!",
-						JOptionPane.INFORMATION_MESSAGE);
+					reader.close();
+				} catch (IOException e) {}
 			}
-		} else if (notifyNoUpdate) {
-			JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
-					"You have version " + version + ".  This is the latest version of Robocode.", "No update available",
-					JOptionPane.INFORMATION_MESSAGE);
 		}
 
 		return true;
