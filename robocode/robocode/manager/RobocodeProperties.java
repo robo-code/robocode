@@ -913,9 +913,9 @@ public class RobocodeProperties {
 
 		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
 
-		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "false")).booleanValue();
+		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true")).booleanValue();
 		optionsCommonAppendWhenSavingResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true")).booleanValue();
-		optionsCommonEnableReplayRecording = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "true")).booleanValue();
+		optionsCommonEnableReplayRecording = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "false")).booleanValue();
 
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
 
