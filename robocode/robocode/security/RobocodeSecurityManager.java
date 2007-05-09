@@ -17,6 +17,8 @@
  *     - Fixed potential NullPointerException in getFileOutputStream()
  *     - Added setStatus()
  *     - Fixed synchronization issue with accessing battleThread
+ *     - Bugfix: The Event Dispatch Thread was denied access in
+ *       checkPermission(Permission)
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -204,10 +206,15 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		} catch (SecurityException e) {}
 
+		// Allow the Event Dispatch Thread
+		if (javax.swing.SwingUtilities.isEventDispatchThread()) {
+			return;
+		}
+
 		// For development purposes, allow read any file if override is set.
 		if (perm instanceof FilePermission) {
 			FilePermission fp = (FilePermission) perm;
-
+			
 			if (fp.getActions().equals("read")) {
 				if (System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals("true")) {
 					return;
