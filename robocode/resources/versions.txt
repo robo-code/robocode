@@ -19,6 +19,7 @@ o Bugfixes
   -- In RoboRumble, the codesize of some robots were incorrectly calculated to be 0 bytes,
      and hence these robots was not able to participate in RoboRumble battles
      -- This was due to the codesize tool, which could not analyze .jar files inside .jars
+  -- The Event Dispatch Thread was denied access by the RobocodeSecurityManager
 o RoboRumble@Home client, originally developed by Albert Pérez, is now built-in
   -- RoboRumble@Home is the ultimate collaborative effort to have a live, up-to-date
      ranking of bots. It uses the power of available robocoder's computers to distribute
