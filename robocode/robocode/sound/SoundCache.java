@@ -12,6 +12,7 @@
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - The addSound() will now return if the resource name is not specified
+ *     - Improved the error message in addSound() if the line is unavailable
  *******************************************************************************/
 package robocode.sound;
 
@@ -144,7 +145,8 @@ public class SoundCache {
 			clones = new ClipClones(data, numClones);
 			soundTable.put(key, clones);
 		} catch (LineUnavailableException e) {
-			Logger.log("Error while trying to create sound clips: " + resourceName, e);
+			Logger.log("The audio mixer " + mixer.getMixerInfo().getName() +
+					" does not support the audio format of the sound clip: " + resourceName);
 		}
 	}
 
