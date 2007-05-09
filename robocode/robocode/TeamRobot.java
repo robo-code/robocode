@@ -9,8 +9,6 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Bugfix: getTeammates() returned null instead of an empty array when no
- *       teammates exists
  *     - Added missing getMessageEvents()
  *     - Updated Javadoc
  *******************************************************************************/
@@ -63,20 +61,25 @@ public class TeamRobot extends AdvancedRobot {
 	}
 
 	/**
-	 * Returns the names of all your teammates.
+	 * Returns the names of all teammates, or <code>null</code> there is no
+	 * teammates.
 	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
 	 *       // Prints out all teammates
-	 *       for (String teammate : getTeammates()) {
-	 *           System.out.println(teammate);
+	 *       String[] teammates = getTeammates();
+	 *       if (teammates != null) {
+	 *           for (String member : teammates) {
+	 *               out.println(member);
+	 *           }
 	 *       }
 	 *   }
 	 * </pre>
 	 *
-	 * @return an array containing the names of all your teammates.
-	 *     The length of the array is equal to the number of teammates
+	 * @return a String array containing the names of all your teammates, or
+	 *     <code>null</code> if there is no teammates. The length of the String
+	 *     array is equal to the number of teammates
 	 */
 	public String[] getTeammates() {
 		if (peer != null) {
@@ -84,7 +87,7 @@ public class TeamRobot extends AdvancedRobot {
 			robocode.peer.TeamPeer teamPeer = peer.getTeamPeer();
 
 			if (teamPeer == null) {
-				return new String[0];
+				return null;
 			}
 			String s[] = new String[teamPeer.size() - 1];
 

@@ -1,16 +1,16 @@
 Version 1.3
-(04/25/2007)
+(05/09/2007)
 Now featuring the RoboRumble@Home client
 -------------
 o Bugfixes
   -- When using robocode.control.RobocodeEngine it was not possible to play team battles.
-     Instead an ArrayOutOfBoundsException occured
+     Instead an ArrayOutOfBoundsException occurred
   -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
      of an integer. This bug caused problems with running Robocode on RoboLeague
-  -- The "Enable replay recording" got set if it was unset after running Robocode without
+  -- The "Enable replay recording" got set if it was not set after running Robocode without
      the robocode.properties file the first time
   -- No sounds were played (when enabled) when Robocode was launched the second time
-  -- Fixed NullPointerException occured when a robot is forced to stop
+  -- Fixed NullPointerException occurred when a robot is forced to stop
   -- NullPointerException could occur when using robocode.control.RobocodeEngine and the
      GUI was not enabled
   -- The text field for the filename in the robot packager was way too high
@@ -53,6 +53,8 @@ o Added a new method called getNameAndVersion() to the robocode.control.RobotSpe
   -- This method was added to better support RoboRumble and ranking programs
 o Changed the TeamRobot.broadcastMessage() so it does not throw an IOException when the
   robot is not in a team
+o Changed back the TeamRobot.getTeammates() to return null if no teammates are available
+  -- This rollback was done in order to keep compatibility with old legacy robots
 o The file structure of Robocode has been slightly improved
   -- All .jar files including robocode.jar are now located in the libs folder
   -- The robot.database and .robotcache files has been moved to the robots folder
