@@ -153,7 +153,7 @@ public class Battle implements Runnable {
 	// Replay related items
 	private boolean replay;
 	private boolean isRecordingEnabled;
-	private BattleRecord battleRecord;
+	private static BattleRecord battleRecord;
 	private RoundRecord currentRoundRecord;
 	private TurnRecord currentTurnRecord;
 
