@@ -67,10 +67,6 @@ public class RobotRepositoryManager {
 		this.manager = manager;
 	}
 
-	public ImageManager getImageManager() {
-		return manager.getImageManager();
-	}
-
 	public File getRobotCache() {
 		if (robotCache == null) {
 			// Doesn't work with my cwd(), File does not resolve absolute path correctly
