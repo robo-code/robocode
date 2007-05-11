@@ -18,6 +18,8 @@
  *     - Fixed synchonization issues on member fields and methods
  *     - Some private methods were declared public, and have therefore been
  *       redeclared as private
+ *     - Replaced getting the number of explosion frames from image manager with
+ *       integer constant
  *     Luis Crespo
  *     - Added states
  *     Robert D. Maupin
@@ -62,8 +64,10 @@ public class BulletPeer {
 			STATE_EXPLODED = 5,
 			STATE_INACTIVE = 6;
 
-	private static final int RADIUS = 3;
+	private static final int EXPLOSION_LENGTH = 17;
 
+	private static final int RADIUS = 3;
+	
 	protected final RobotPeer owner;
 	protected final Battle battle;
 	private final BattleField battleField;
@@ -320,13 +324,13 @@ public class BulletPeer {
 			y = victim.getY() + deltaY;
 			hitTime++;
 			frame = hitTime;
-			if (hitTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
+			if (hitTime >= EXPLOSION_LENGTH) {
 				hasHitVictim = false;
 			}
 		} else if (hasHitBullet) {
 			hitTime++;
 			frame = hitTime;
-			if (hitTime >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
+			if (hitTime >= EXPLOSION_LENGTH) {
 				hasHitBullet = false;
 			}
 		}

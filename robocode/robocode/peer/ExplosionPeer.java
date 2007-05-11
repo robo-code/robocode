@@ -14,6 +14,8 @@
  *     - Code cleanup
  *     - Added constructor for the BulletPeer in order to support replay feature
  *     - Fixed synchronization issue with update()
+ *     - Replaced getting the number of explosion frames from image manager with
+ *       integer constant
  *     Titus Chen
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
@@ -33,6 +35,8 @@ import robocode.battle.record.BulletRecord;
  * @author Titus Chen (contributor)
  */
 public class ExplosionPeer extends BulletPeer {
+
+	private static final int EXPLOSION_LENGTH = 71;
 
 	public ExplosionPeer(RobotPeer owner, Battle battle) {
 		super(owner, battle);
@@ -54,7 +58,7 @@ public class ExplosionPeer extends BulletPeer {
 		x = owner.getX();
 		y = owner.getY();
 		nextFrame();
-		if (frame >= battle.getManager().getImageManager().getExplosionFrames(explosionImageIndex)) {
+		if (frame >= EXPLOSION_LENGTH) {
 			battle.removeBullet(this);
 		}
 		updateBulletState();
