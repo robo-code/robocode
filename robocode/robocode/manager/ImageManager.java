@@ -66,14 +66,6 @@ public class ImageManager {
 		return groundImages[index];
 	}
 
-	public int getNumExplosions() {
-		return explosionRenderImages.length;
-	}
-
-	public int getExplosionFrames(int which) {
-		return explosionRenderImages[which].length;
-	}
-
 	public RenderImage getExplosionRenderImage(int which, int frame) {
 		if (explosionRenderImages == null) {
 			int numExplosion, numFrame;
