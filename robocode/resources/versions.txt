@@ -1,5 +1,5 @@
-Version 1.3 Beta 2
-(05/09/2007)
+Version 1.3
+(05/17/2007)
 Now featuring the RoboRumble@Home client
 -------------
 o Bugfixes
