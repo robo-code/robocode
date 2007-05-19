@@ -16,6 +16,9 @@
  *     - Code cleanup
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - Bugfixed buildRobotList(), which checked if selectedRobots was set
+ *       instead of preSelectedRobots. Robots were not selected when loading a
+ *       battle
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -465,7 +468,7 @@ public class RobotSelectionPanel extends WizardPanel {
 				List<FileSpecification> l = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
 
 				getAvailableRobotsPanel().setRobotList(l);
-				if (selectedRobots != null && selectedRobots.size() > 0) {
+				if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
 					setSelectedRobots(getAvailableRobotsPanel().getRobotList(), preSelectedRobots);
 					preSelectedRobots = null;
 				}
