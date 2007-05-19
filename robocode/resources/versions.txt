@@ -4,6 +4,9 @@ Version 1.3.1
 o Bugfixes
   -- When loading a battle, the robots specified in the battle file were not selected on
      the battle dialog
+  -- When the intro battle has finished the battle settings are now reset to the default
+     battle settings. This fixes the issue were the fixed starting positions are not
+     removed and where the number of battles to play was set to 1 instead of 10 
 
 Version 1.3
 (05/17/2007)
