@@ -78,6 +78,9 @@ public class BufferedPipedOutputStream extends OutputStream {
 				throw new IOException("Buffer is full.");
 			}
 		}
+		if (waiting) {
+			notify();
+		}
 	}
 
 	protected synchronized int read() throws IOException {
