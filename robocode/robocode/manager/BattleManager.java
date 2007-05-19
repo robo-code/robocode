@@ -29,6 +29,7 @@
  *     - Added missing close() on FileInputStreams and FileOutputStreams
  *     - isPaused() is now synchronized
  *     - Extended sendResultsToListener() to handle teams as well as robots
+ *     - Added setDefaultBattleProperties() for resetting battle properties
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -488,6 +489,10 @@ public class BattleManager {
 			battleProperties = new BattleProperties();
 		}
 		return battleProperties;
+	}
+
+	public void setDefaultBattleProperties() {
+		battleProperties = new BattleProperties();
 	}
 
 	public synchronized void resumeBattle() {
