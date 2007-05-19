@@ -16,6 +16,9 @@
  *     - Added access for the SoundManager
  *     - Changed to use FileUtil.getRobocodeConfigFile()
  *     - Added missing close() on FileInputStream and FileOutputStream
+ *     - Bugfix: When the intro battle has completed or is aborted the battle
+ *       properties are now reset to the default battle properties. This fixes
+ *       the issue were the initial robot positions are fixed in new battles
  *******************************************************************************/
 package robocode.manager;
 
@@ -238,15 +241,20 @@ public class RobocodeManager {
 			public void battleMessage(String s) {}
 
 			public void battleComplete(BattleSpecification b, RobotResults c[]) {
-				setListener(null);
-				getWindowManager().getRobocodeFrame().clearRobotButtons();
+				cleanup();
 			}
 
 			public void battleAborted(BattleSpecification b) {
+				cleanup();
+			}
+			
+			private void cleanup() {
 				setListener(null);
 				getWindowManager().getRobocodeFrame().clearRobotButtons();
+				getBattleManager().setDefaultBattleProperties();
 			}
 		});
+
 		getBattleManager().startNewBattle(getBattleManager().getBattleProperties(), false, false);
 	}
 
