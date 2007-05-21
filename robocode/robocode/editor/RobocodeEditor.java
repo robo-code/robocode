@@ -586,9 +586,9 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	 */
 	public static void main(String[] args) {
 		try {
+			// Set the Look and Feel (LAF)
+			robocode.manager.LookAndFeelManager.setLookAndFeel();
 
-			/* Set native look and feel */
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			RobocodeEditor robocodeEditor;
 
 			robocodeEditor = new RobocodeEditor(null);

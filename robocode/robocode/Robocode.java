@@ -29,8 +29,6 @@ import java.awt.Frame;
 import java.io.File;
 import java.security.Policy;
 
-import javax.swing.UIManager;
-
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -73,9 +71,6 @@ public class Robocode {
 	private boolean initialize(String args[]) {
 		try {
 			manager = new RobocodeManager(false, null);
-
-			// Set native look and feel
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			if (System.getProperty("WORKINGDIRECTORY") != null) {
 				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
@@ -174,6 +169,9 @@ public class Robocode {
 			if (!manager.isGUIEnabled()) {
 				return true;
 			}
+
+			// Set the Look and Feel (LAF)
+			robocode.manager.LookAndFeelManager.setLookAndFeel();
 
 			if (!minimize && battleFilename == null) {
 				if (manager.isSoundEnabled()) {

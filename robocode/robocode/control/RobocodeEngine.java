@@ -31,8 +31,6 @@ import java.io.IOException;
 import java.security.Policy;
 import java.util.List;
 
-import javax.swing.UIManager;
-
 import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -145,10 +143,8 @@ public class RobocodeEngine {
 			manager.setEnableGUI(true);
 		}
 		if (manager.isGUIEnabled()) {
-			// Set native look and feel
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (Exception e) {}
+			// Set the Look and Feel (LAF)
+			robocode.manager.LookAndFeelManager.setLookAndFeel();
 	
 			manager.getWindowManager().showRobocodeFrame(visible);
 		}
