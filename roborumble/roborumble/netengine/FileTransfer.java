@@ -44,6 +44,22 @@ public class FileTransfer {
 		FILE_NOT_FOUND
 	}
 
+	/**
+	 * Daemon worker thread containing a 'finish' flag for waiting and notifying
+	 * when the thread has finished it's job.
+	 *
+	 * @author Flemming N. Larsen
+	 */
+	private static class WorkerThread extends Thread {
+
+		public volatile boolean finish;
+
+		public WorkerThread(String name) {
+			super(name);
+			setDaemon(true);
+		}
+	}
+
 	/*
 	 * Returns a session id for keeping a session on a HTTP site.
 	 *
@@ -68,15 +84,21 @@ public class FileTransfer {
 
 			// Wait for the session id
 			synchronized (sessionIdThread) {
-				sessionIdThread.wait(CONNECTION_TIMEOUT);
+				while (!sessionIdThread.finish) {
+					try {
+						sessionIdThread.wait(CONNECTION_TIMEOUT);
+						sessionIdThread.interrupt();
+					} catch (InterruptedException e) {
+						return null;
+					}
+				}
 			}
 
 			// Return the session id
 			return sessionIdThread.sessionId;
 
-		} catch (final Exception e) {
-			// No nothing, null will be returned
-			;
+		} catch (final IOException e) {
+			return null;
 		} finally {
 			// Make sure the connection is disconnected.
 			// This will cause threads using the connection to throw an exception
@@ -85,17 +107,15 @@ public class FileTransfer {
 				con.disconnect();
 			}
 		}
-
-		// If we got here, the session id is not available
-		return null;
 	}
 
 	/**
-	 * Thread used for getting the session id of an already open HTTP connection.
+	 * Worker thread used for getting the session id of an already open HTTP
+	 * connection.
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private final static class GetSessionIdThread extends Thread {
+	private final static class GetSessionIdThread extends WorkerThread {
 
 		// The resulting session id to read out
 		private String sessionId;
@@ -122,6 +142,7 @@ public class FileTransfer {
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
+				finish = true;
 				notify();
 			}
 		}
@@ -168,13 +189,19 @@ public class FileTransfer {
 
 			// Wait for the download to complete
 			synchronized (downloadThread) {
-				downloadThread.wait();
+				while (!downloadThread.finish) {
+					try {
+						downloadThread.wait();
+					} catch (InterruptedException e) {
+						return DownloadStatus.COULD_NOT_CONNECT;
+					}
+				}
 			}
 
 			// Return the download status
 			return downloadThread.status;
 
-		} catch (final Exception e) {
+		} catch (final IOException e) {
 			return DownloadStatus.COULD_NOT_CONNECT;
 		} finally {
 			// Make sure the connection is disconnected.
@@ -187,11 +214,12 @@ public class FileTransfer {
 	}
 
 	/**
-	 * Thread used for downloading a file from an already open HTTP connection.
+	 * Worker thread used for downloading a file from an already open HTTP
+	 * connection.
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private final static class DownloadThread extends Thread {
+	private final static class DownloadThread extends WorkerThread {
 
 		// The download status to be read out
 		private DownloadStatus status = DownloadStatus.COULD_NOT_CONNECT; // Default error
@@ -218,7 +246,14 @@ public class FileTransfer {
 
 				// Wait for the response to finish
 				synchronized (responseThread) {
-					responseThread.wait(CONNECTION_TIMEOUT);
+					while (!responseThread.finish) {
+						try {
+							responseThread.wait(CONNECTION_TIMEOUT);
+							responseThread.interrupt();
+						} catch (InterruptedException e) {
+							return;
+						}
+					}
 				}
 
 				final int responseCode = responseThread.responseCode;
@@ -244,7 +279,14 @@ public class FileTransfer {
 
 				// Wait for the file size
 				synchronized (contentLengthThread) {
-					contentLengthThread.wait(CONNECTION_TIMEOUT);
+					while (!contentLengthThread.finish) {
+						try {
+							contentLengthThread.wait(CONNECTION_TIMEOUT);
+							contentLengthThread.interrupt();
+						} catch (InterruptedException e) {
+							return;
+						}
+					}
 				}
 
 				final int size = contentLengthThread.contentLength;
@@ -280,7 +322,14 @@ public class FileTransfer {
 
 					// Wait for the reading to finish
 					synchronized (readThread) {
-						readThread.wait(CONNECTION_TIMEOUT);
+						while (!readThread.finish) {
+							try {
+								readThread.wait(CONNECTION_TIMEOUT);
+								readThread.interrupt();
+							} catch (InterruptedException e) {
+								return;
+							}
+						}
 					}
 
 					bytesRead = readThread.bytesRead;
@@ -298,7 +347,7 @@ public class FileTransfer {
 				// If we reached this point, the download was succesful
 				status = DownloadStatus.OK;
 
-			} catch (final Exception e) {
+			} catch (final IOException e) {
 				status = DownloadStatus.COULD_NOT_CONNECT;
 			} finally {
 				// Make sure the input stream is closed
@@ -320,6 +369,7 @@ public class FileTransfer {
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
+				finish = true;
 				notify();
 			}
 		}
@@ -327,11 +377,12 @@ public class FileTransfer {
 
 
 	/**
-	 * Thread used for getting the response code of an already open HTTP connection.
+	 * Worker thread used for getting the response code of an already open HTTP
+	 * connection.
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private final static class GetResponseCodeThread extends Thread {
+	private final static class GetResponseCodeThread extends WorkerThread {
 
 		// The response code to read out
 		private int responseCode;
@@ -353,6 +404,7 @@ public class FileTransfer {
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
+				finish = true;
 				notify();
 			}
 		}
@@ -360,11 +412,12 @@ public class FileTransfer {
 
 
 	/**
-	 * Thread used for getting the content length of an already open HTTP connection.
+	 * Worker thread used for getting the content length of an already open HTTP
+	 * connection.
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private final static class GetContentLengthThread extends Thread {
+	private final static class GetContentLengthThread extends WorkerThread {
 
 		// The content length to read out
 		private int contentLength;
@@ -386,6 +439,7 @@ public class FileTransfer {
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
+				finish = true;
 				notify();
 			}
 		}
@@ -393,12 +447,12 @@ public class FileTransfer {
 
 
 	/**
-	 * Thread used for reading bytes from an already open input stream into a
-	 * byte buffer.
+	 * Worker thread used for reading bytes from an already open input stream
+	 * into a byte buffer.
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private final static class ReadInputStreamToBufferThread extends Thread {
+	private final static class ReadInputStreamToBufferThread extends WorkerThread {
 
 		private int bytesRead;
 
@@ -422,6 +476,7 @@ public class FileTransfer {
 			}
 			// Notify that this thread is finish
 			synchronized (this) {
+				finish = true;
 				notify();
 			}
 		}
@@ -451,7 +506,7 @@ public class FileTransfer {
 			while (in.available() > 0) {
 				out.write(buf, 0, in.read(buf, 0, buf.length));
 			}
-		} catch (final Exception e) {
+		} catch (final IOException e) {
 			return false;
 		} finally {
 			if (in != null) {
