@@ -58,6 +58,14 @@ public class FileTransfer {
 			super(name);
 			setDaemon(true);
 		}
+		
+		protected void notifyFinish() {
+			// Notify that this thread is finish
+			synchronized (this) {
+				finish = true;
+				notify();
+			}
+		}
 	}
 
 	/*
@@ -141,10 +149,7 @@ public class FileTransfer {
 				sessionId = null;
 			}
 			// Notify that this thread is finish
-			synchronized (this) {
-				finish = true;
-				notify();
-			}
+			notifyFinish();
 		}
 	}
 
@@ -251,6 +256,7 @@ public class FileTransfer {
 							responseThread.wait(CONNECTION_TIMEOUT);
 							responseThread.interrupt();
 						} catch (InterruptedException e) {
+							notifyFinish();
 							return;
 						}
 					}
@@ -260,15 +266,18 @@ public class FileTransfer {
 
 				if (responseCode == -1) {
 					// Terminate if we did not get the response code
+					notifyFinish();
 					return;
 
 				} else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
 					// Terminate if the HTTP page containing the file was not found
 					status = DownloadStatus.FILE_NOT_FOUND;
+					notifyFinish();
 					return;
 
 				} else if (responseCode != HttpURLConnection.HTTP_OK) {
 					// Generally, terminate if did not receive a OK response
+					notifyFinish();
 					return;
 				}
 
@@ -284,6 +293,7 @@ public class FileTransfer {
 							contentLengthThread.wait(CONNECTION_TIMEOUT);
 							contentLengthThread.interrupt();
 						} catch (InterruptedException e) {
+							notifyFinish();
 							return;
 						}
 					}
@@ -293,12 +303,14 @@ public class FileTransfer {
 
 				if (size == -1) {
 					// Terminate if we did not get the content length
+					notifyFinish();
 					return;
 				}
 
 				// Get an input stream from the connection
 				in = con.getInputStream();
 				if (in == null) {
+					notifyFinish();
 					return;
 				}
 
@@ -327,6 +339,7 @@ public class FileTransfer {
 								readThread.wait(CONNECTION_TIMEOUT);
 								readThread.interrupt();
 							} catch (InterruptedException e) {
+								notifyFinish();
 								return;
 							}
 						}
@@ -335,6 +348,7 @@ public class FileTransfer {
 					bytesRead = readThread.bytesRead;
 					if (bytesRead == -1) {
 						// Read completed has completed
+						notifyFinish();
 						break;
 					}
 
@@ -367,14 +381,8 @@ public class FileTransfer {
 					}
 				}
 			}
-			// Notify that this thread is finish
-			synchronized (this) {
-				finish = true;
-				notify();
-			}
 		}
 	}
-
 
 	/**
 	 * Worker thread used for getting the response code of an already open HTTP
@@ -403,10 +411,7 @@ public class FileTransfer {
 				responseCode = -1;
 			}
 			// Notify that this thread is finish
-			synchronized (this) {
-				finish = true;
-				notify();
-			}
+			notifyFinish();
 		}
 	}
 
@@ -438,10 +443,7 @@ public class FileTransfer {
 				contentLength = -1;
 			}
 			// Notify that this thread is finish
-			synchronized (this) {
-				finish = true;
-				notify();
-			}
+			notifyFinish();
 		}
 	}
 
@@ -475,10 +477,7 @@ public class FileTransfer {
 				bytesRead = -1;
 			}
 			// Notify that this thread is finish
-			synchronized (this) {
-				finish = true;
-				notify();
-			}
+			notifyFinish();
 		}
 	}
 
