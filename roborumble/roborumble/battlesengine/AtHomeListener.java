@@ -12,6 +12,8 @@
  *     - Removed unused imports
  *     - Added getResults() that returns the results when a battle is complete
  *     - Coordinator is now created inside this listener
+ *     - Results retrieved and returned are now deep copied in order to prevent
+ *       exposure of internal representation
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -32,7 +34,15 @@ public class AtHomeListener implements RobocodeListener {
 	private RobotResults[] results;
 
 	public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {
-		this.results = results;
+		if (results == null) {
+			this.results = null;
+		} else {
+			// Results are copied in order to prevent exposure of internal results
+			RobotResults[] resultsCopy = new RobotResults[results.length];
+			System.arraycopy(results, 0, resultsCopy, 0, results.length);
+
+			this.results = resultsCopy;
+		}
 
 		// Notify that results are ready
 		coord.put();
@@ -46,6 +56,14 @@ public class AtHomeListener implements RobocodeListener {
 		// Wait till the result become available
 		coord.get();
 
-		return results;
+		if (results == null) {
+			return null;
+		}
+
+		// Results are copied in order to prevent exposure of internal results
+		RobotResults[] resultsCopy = new RobotResults[results.length];
+		System.arraycopy(results, 0, resultsCopy, 0, results.length);
+
+		return resultsCopy;
 	}
 }
