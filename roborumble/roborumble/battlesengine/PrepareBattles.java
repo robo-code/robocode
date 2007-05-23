@@ -14,6 +14,8 @@
  *     - Minor cleanup and optimizations
  *     - Properties are now read using PropertiesUtil.getProperties()
  *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
+ *     - Catch of entire Exception has been reduced to catch of IOException when
+ *       only this exception is ever thrown
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -179,7 +181,7 @@ public class PrepareBattles {
 				}
 			}
 			br.close();
-		} catch (Exception e) { 
+		} catch (IOException e) { 
 			System.out.println("Participants file not found ... Aborting"); 
 			System.out.println(e);
 			return false; 
@@ -207,7 +209,7 @@ public class PrepareBattles {
 				}
 			}
 			br.close();
-		} catch (Exception e) { 
+		} catch (IOException e) { 
 			System.out.println("Prioritary battles file not found ...  "); 
 		}
 		// Delete priority battles (avoid duplication)
@@ -340,7 +342,7 @@ public class PrepareBattles {
 				}
 			}
 			br.close();
-		} catch (Exception e) { 
+		} catch (IOException e) { 
 			System.out.println("Participants file not found ... Aborting"); 
 			System.out.println(e);
 			return false; 

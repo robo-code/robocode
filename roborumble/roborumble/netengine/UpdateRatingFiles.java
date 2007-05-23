@@ -14,6 +14,8 @@
  *     - Properties are now read using PropertiesUtil.getProperties()
  *     - Properties are now stored using PropertiesUtil.storeProperties()
  *     - Renamed UpdateRatings() into updateRatings()
+ *     - Catch of entire Exception has been reduced to catch of IOException when
+ *       only this exception is ever thrown
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -79,7 +81,7 @@ public class UpdateRatingFiles {
 				battles.add(record);
 			}
 			br.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Can't open # battles file ... Aborting # battles update");
 			return false;
 		}

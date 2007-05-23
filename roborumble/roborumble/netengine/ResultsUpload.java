@@ -14,6 +14,8 @@
  *     - Removed unused imports
  *     - Replaced the robocode.util.Utils.copy() method with FileTransfer.copy()
  *     - Properties are now read using PropertiesUtil.getProperties()
+ *     - Catch of entire Exception has been reduced to catch of IOException when
+ *       only this exception is ever thrown
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -107,7 +109,7 @@ public class ResultsUpload {
 				}
 			}
 			br.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Can't open result file for upload");
 			return false;
 		}
@@ -287,7 +289,6 @@ public class ResultsUpload {
 					if (prioritybattles != null) {
 						prioritybattles.println(battle);
 					}
-					// System.out.println(battle);
 				} else {
 					System.out.println(line);
 				}
@@ -300,7 +301,7 @@ public class ResultsUpload {
 					errorsfound = true;
 				}
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println(e);
 			if (saveonerror) {
 				errorsfound = true;
