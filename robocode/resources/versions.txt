@@ -8,6 +8,10 @@ o Bugfixes
      battle settings. This fixes the issue were the fixed robot starting positions are still
      used in new battles and where the "Number of Rounds" was set to 1 instead of 10
   -- The output in the robot console windows were written out in bulks instead of immediately
+  -- Bugs fixed in RoboRumble which could cause a java.lang.IllegalThreadStateException
+o Workaround
+  -- Robocode will now use the default Java Look and Feel (LAF) if the operating system is
+     causing problems when trying to set the native OS or cross-platform LAF
 o New features
   -- Add link to Java 5.0 Documentation in the Help menu
 
