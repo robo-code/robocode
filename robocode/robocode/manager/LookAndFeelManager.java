@@ -28,16 +28,22 @@ public class LookAndFeelManager {
 	 * If this also fails, the LAF will not be changed.
 	 */
 	public static void setLookAndFeel() {
-		String laf = UIManager.getSystemLookAndFeelClassName();
-		if (laf == null) {
-			laf = UIManager.getCrossPlatformLookAndFeelClassName();
-		}
-		if (laf != null) {
-			try {
-				UIManager.setLookAndFeel(laf);
-			} catch (Exception e) {
-				e.printStackTrace();
+		try {
+			String laf = UIManager.getSystemLookAndFeelClassName();
+			if (laf == null) {
+				laf = UIManager.getCrossPlatformLookAndFeelClassName();
 			}
+			if (laf != null) {
+				try {
+					UIManager.setLookAndFeel(laf);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (Exception e) {
+			// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
+			System.err.println("Could not set the Look and Feel (LAF) on this operating system.");
+			System.err.println("The default LAF is used instead");
 		}
 	}
 }
