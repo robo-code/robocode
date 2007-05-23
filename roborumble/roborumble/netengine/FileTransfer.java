@@ -361,6 +361,8 @@ public class FileTransfer {
 				// If we reached this point, the download was succesful
 				status = DownloadStatus.OK;
 
+				notifyFinish();
+
 			} catch (final IOException e) {
 				status = DownloadStatus.COULD_NOT_CONNECT;
 			} finally {
