@@ -494,6 +494,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		if (threadManager == null) {
 			syserr.println("Null thread manager.");
+			return null;
 		}
 
 		try {
