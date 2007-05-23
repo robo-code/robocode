@@ -15,6 +15,8 @@ package robocode.peer.robot;
 
 
 import java.io.PrintStream;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import robocode.io.BufferedPipedInputStream;
 import robocode.io.BufferedPipedOutputStream;
@@ -26,15 +28,16 @@ import robocode.io.BufferedPipedOutputStream;
  */
 public class RobotOutputStream extends java.io.PrintStream {
 
+	private final static int MAX = 100;
+
 	private BufferedPipedOutputStream bufferedStream;
 	private PrintStream out;
 
 	private Thread battleThread;
 
-	private int count;
-	private int max = 100;
+	private AtomicInteger count = new AtomicInteger();
 
-	private boolean messaged;
+	private AtomicBoolean messaged = new AtomicBoolean(false);
 
 	public RobotOutputStream(Thread battleThread) {
 		super(new BufferedPipedOutputStream(8192, true, true));
@@ -47,25 +50,24 @@ public class RobotOutputStream extends java.io.PrintStream {
 		return bufferedStream.getInputStream();
 	}
 
-	public final synchronized boolean isOkToPrint() {
-		count++;
-		if (count > max) {
+	public final boolean isOkToPrint() {
+		if (count.incrementAndGet() > MAX) {
 			if (Thread.currentThread() == battleThread) {
 				return true;
 			}
-			if (!messaged) {
+			if (!messaged.get()) {
 				out.println(
 						"SYSTEM: This robot is printing too much between actions.  Output stopped until next action.");
-				messaged = true;
+				messaged.set(true);
 			}
 			return false;
 		}
-		messaged = false;
+		messaged.set(false);
 		return true;
 	}
 
-	public synchronized void resetCounter() {
-		count = 0;
+	public void resetCounter() {
+		count.set(0);
 	}
 
 	@Override
@@ -73,9 +75,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		if (isOkToPrint()) {
 			out.print(s);
 			if (s != null) {
-				synchronized (this) {
-					count += (s.length / 1000);
-				}
+				count.addAndGet(s.length / 1000);
 			}
 		}
 	}
@@ -120,9 +120,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		if (isOkToPrint()) {
 			out.print(obj);
 			if (obj != null) {
-				synchronized (this) {
-					count += obj.toString().length() / 1000;
-				}
+				count.addAndGet(obj.toString().length() / 1000);
 			}
 		}
 	}
@@ -132,9 +130,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		if (isOkToPrint()) {
 			out.print(s);
 			if (s != null) {
-				synchronized (this) {
-					count += s.length() / 1000;
-				}
+				count.addAndGet(s.length() / 1000);
 			}
 		}
 	}
@@ -158,9 +154,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		if (isOkToPrint()) {
 			out.println(x);
 			if (x != null) {
-				synchronized (this) {
-					count += (x.length / 1000);
-				}
+				count.addAndGet(x.length / 1000);
 			}
 		}
 	}
@@ -205,9 +199,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		if (isOkToPrint()) {
 			out.println(x);
 			if (x != null) {
-				synchronized (this) {
-					count += x.toString().length() / 1000;
-				}
+				count.addAndGet(x.toString().length() / 1000);
 			}
 		}
 	}
@@ -217,9 +209,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		if (isOkToPrint()) {
 			out.println(x);
 			if (x != null) {
-				synchronized (this) {
-					count += x.length() / 1000;
-				}
+				count.addAndGet(x.length() / 1000);
 			}
 		}
 	}
@@ -235,9 +225,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 	public void write(byte[] buf) {
 		if (isOkToPrint()) {
 			out.print(buf);
-			synchronized (this) {
-				count += buf.length / 1000;
-			}
+			count.addAndGet(buf.length / 1000);
 		}
 	}
 
