@@ -115,8 +115,13 @@ public class TeamSpecification extends FileSpecification implements Serializable
 		version = props.getProperty(TEAM_VERSION);
 		members = props.getProperty(TEAM_MEMBERS);
 		try {
-			webpage = new URL(props.getProperty(TEAM_WEBPAGE));
-		} catch (MalformedURLException e) {}
+			String team_webpage = props.getProperty(TEAM_WEBPAGE);
+			if (team_webpage != null) {
+				webpage = new URL(team_webpage);
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		teamJavaSourceIncluded = Boolean.valueOf(props.getProperty(TEAM_JAVA_SOURCE_INCLUDED, "false")).booleanValue();
 	}
 
