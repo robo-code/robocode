@@ -149,6 +149,10 @@ public class WindowManager {
 		showInBrowser("http://robocode.sourceforge.net/help");
 	}
 
+	public void showJavaDocumentation() {
+		showInBrowser("http://java.sun.com/j2se/1.5.0/docs");
+	}
+
 	public void showRobocodeHome() {
 		showInBrowser("http://robocode.sourceforge.net");
 	}

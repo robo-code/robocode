@@ -73,6 +73,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem helpCheckForNewVersionMenuItem;
 	private JMenuItem helpVersionsTxtMenuItem;
 	private JMenuItem helpRobocodeApiMenuItem;
+	private JMenuItem helpJavaDocumentationMenuItem;
 	private JMenuItem helpFaqMenuItem;
 	private JMenuItem helpAboutMenuItem;
 	private JMenuItem helpRobocodeMenuItem;
@@ -124,10 +125,12 @@ public class RobocodeMenuBar extends JMenuBar {
 				helpOnlineHelpActionPerformed();
 			} else if (source == mb.getHelpRobocodeApiMenuItem()) {
 				helpRobocodeApiActionPerformed();
+			} else if (source == mb.getHelpJavaDocumentationMenuItem()) {
+				helpJavaDocumentationActionPerformed();
 			} else if (source == mb.getHelpFaqMenuItem()) {
 				helpFaqActionPerformed();
 			} else if (source == mb.getHelpRobocodeMenuItem()) {
-				helpRobocondeMenuItemActionPerformed();
+				helpRobocodeHomeMenuItemActionPerformed();
 			} else if (source == mb.getHelpRoboWikiMenuItem()) {
 				helpRoboWikiMenuItemActionPerformed();
 			} else if (source == mb.getHelpYahooGroupRobocodeMenuItem()) {
@@ -349,6 +352,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpMenu.setDisplayedMnemonicIndex(0);
 			helpMenu.add(getHelpOnlineHelpMenuItem());
 			helpMenu.add(getHelpRobocodeApiMenuItem());
+			helpMenu.add(getHelpJavaDocumentationMenuItem());
 			helpMenu.add(getHelpFaqMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpRobocodeMenuItem());
@@ -443,6 +447,22 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpRobocodeMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeMenuItem;
+	}
+
+	/**
+	 * Return the helpJavaApiMenuItem.
+	 *
+	 * @return JMenuItem
+	 */
+	private JMenuItem getHelpJavaDocumentationMenuItem() {
+		if (helpJavaDocumentationMenuItem == null) {
+			helpJavaDocumentationMenuItem = new JMenuItem();
+			helpJavaDocumentationMenuItem.setText("Java 5.0 Documentation");
+			helpJavaDocumentationMenuItem.setMnemonic('J');
+			helpJavaDocumentationMenuItem.setDisplayedMnemonicIndex(0);
+			helpJavaDocumentationMenuItem.addActionListener(eventHandler);
+		}
+		return helpJavaDocumentationMenuItem;
 	}
 
 	/**
@@ -690,10 +710,14 @@ public class RobocodeMenuBar extends JMenuBar {
 		manager.getWindowManager().showHelpApi();
 	}
 
-	private void helpRobocondeMenuItemActionPerformed() {
+	private void helpRobocodeHomeMenuItemActionPerformed() {
 		manager.getWindowManager().showRobocodeHome();
 	}
 
+	private void helpJavaDocumentationActionPerformed() {
+		manager.getWindowManager().showJavaDocumentation();
+	}
+	
 	private void helpRoboWikiMenuItemActionPerformed() {
 		manager.getWindowManager().showRoboWiki();
 	}
