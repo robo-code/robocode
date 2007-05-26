@@ -32,6 +32,8 @@
  *     - Added support for playing background music when the battle is ongoing
  *     - Removed unnecessary catches of NullPointerExceptions
  *     - Added support for setting the initial robot positions on the battlefield
+ *     - Changed stop(boolean) to set the TPS to maximum while the game is
+ *       stopping
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -1312,6 +1314,11 @@ public class Battle implements Runnable {
 		if (!running) {
 			cleanup();
 		} else {
+			// Save the current TPS and set it to maximum speed ->
+			// This way slow battles will restart immediately
+			int currentTPS = desiredTPS;
+			desiredTPS = 10000;
+
 			this.showResultsDialog = showResultsDialog;
 			endTimer = 0;
 			abortBattles = true;
@@ -1331,6 +1338,9 @@ public class Battle implements Runnable {
 			if (abortBattles && manager.getListener() != null) {
 				manager.getListener().battleAborted(battleSpecification);
 			}
+
+			// Restore the TPS
+			desiredTPS = currentTPS;
 		}
 	}
 
