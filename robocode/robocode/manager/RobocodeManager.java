@@ -237,9 +237,11 @@ public class RobocodeManager {
 	public void runIntroBattle() {
 		getBattleManager().setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());
 		getBattleManager().loadBattleProperties();
-		setListener(new RobocodeListener() {
-			public void battleMessage(String s) {}
 
+		final boolean origShowResults = getProperties().getOptionsCommonShowResults();
+		getProperties().setOptionsCommonShowResults(false);
+
+		setListener(new RobocodeListener() {
 			public void battleComplete(BattleSpecification b, RobotResults c[]) {
 				cleanup();
 			}
@@ -248,10 +250,13 @@ public class RobocodeManager {
 				cleanup();
 			}
 			
+			public void battleMessage(String s) {}
+
 			private void cleanup() {
 				setListener(null);
 				getWindowManager().getRobocodeFrame().clearRobotButtons();
 				getBattleManager().setDefaultBattleProperties();
+				getProperties().setOptionsCommonShowResults(origShowResults);
 			}
 		});
 
