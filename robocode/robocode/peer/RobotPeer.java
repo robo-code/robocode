@@ -1122,8 +1122,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setGetCallCount(0);
 		skippedTurns = 0;
 
-		getRobotThreadManager().resetCpuTime();
-
 		setAdjustGunForBodyTurn(false);
 		setAdjustRadarForBodyTurn(false);
 		setAdjustRadarForGunTurn(false);
