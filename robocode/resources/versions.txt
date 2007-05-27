@@ -12,6 +12,10 @@ o Bugfixes
 o Workaround
   -- Robocode will now use the default Java Look and Feel (LAF) if the operating system is
      causing problems when trying to set the native OS or cross-platform LAF
+o Changes
+  -- When stopping or restarting a battle, the battle will now stop immediately instead of
+     continuing for a while showing robot explosions when the robots are being terminated
+     due to the stop
 o New features
   -- Add link to Java 5.0 Documentation in the Help menu
 
