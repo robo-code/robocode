@@ -15,6 +15,7 @@
  *     - Code cleanup
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     - Added confirm dialog when trying to reset the compiler preferences
  *******************************************************************************/
 package robocode.editor;
 
@@ -128,7 +129,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem compilerOptionsPreferencesMenuItem;
 	private JMenuItem compilerOptionsResetCompilerMenuItem;
 	public RobocodeEditor editor;
-	EventHandler eventHandler = new EventHandler();
+	private EventHandler eventHandler = new EventHandler();
 	private JMenuItem fileNewJavaFileMenuItem;
 	private JMenu fileNewMenu;
 	private JMenuItem fileNewRobotMenuItem;
@@ -181,6 +182,14 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	}
 
 	private void compilerOptionsResetCompilerActionPerformed() {
+		if (JOptionPane.showConfirmDialog(editor,
+				"You are about to reset the compiler preferences.  Do you wish to proceed?",
+				"Reset Compiler Preferences",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION) {
+			return;
+		}
+
 		new Thread(new Runnable() {
 			public void run() {
 				editor.resetCompilerProperties();
