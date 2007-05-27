@@ -30,8 +30,6 @@ public class RobotThreadManager {
 	private RobotPeer robotPeer;
 	private Thread runThread;
 	private ThreadGroup runThreadGroup;
-	private boolean disabled;
-	private long cpuTime;
 
 	public RobotThreadManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
@@ -113,11 +111,6 @@ public class RobotThreadManager {
 	}
 
 	public void start() {
-		if (disabled) {
-			log("Not starting robot: " + robotPeer.getName() + " due to JVM bug.");
-			return;
-		}
-
 		try {
 			runThread = new Thread(runThreadGroup, robotPeer, robotPeer.getName());
 			runThread.setDaemon(true);
@@ -150,8 +143,7 @@ public class RobotThreadManager {
 				log("Robot " + robotPeer.getName() + " has threads still running.  Forcing a stop.");
 				forceStop();
 			} else {
-				log(
-						"Robot " + robotPeer.getName()
+				log("Robot " + robotPeer.getName()
 						+ " has threads still running.  Not stopping them because security is off.");
 			}
 		}
@@ -164,51 +156,6 @@ public class RobotThreadManager {
 	 */
 	public Thread getRunThread() {
 		return runThread;
-	}
-
-	/**
-	 * Gets the disabled.
-	 *
-	 * @return Returns a boolean
-	 */
-	public boolean getDisabled() {
-		return disabled;
-	}
-
-	/**
-	 * Sets the disabled.
-	 *
-	 * @param disabled The disabled to set
-	 */
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
-	}
-
-	/**
-	 * Gets the cpuTime.
-	 *
-	 * @return Returns a double
-	 */
-	public long getCpuTime() {
-		return cpuTime;
-	}
-
-	/**
-	 * Sets the cpuTime.
-	 *
-	 * @param cpuTime The cpuTime to set
-	 */
-	public void addCpuTime(long cpuTime) {
-		this.cpuTime += cpuTime;
-	}
-
-	/**
-	 * Sets the cpuTime.
-	 *
-	 * @param cpuTime The cpuTime to set
-	 */
-	public void resetCpuTime() {
-		this.cpuTime = 0;
 	}
 
 	private void stopThread(Thread t) {
