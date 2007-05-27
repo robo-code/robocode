@@ -626,7 +626,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private void stopButtonActionPerformed() {
-		manager.getBattleManager().stop(true);
+		manager.getBattleManager().stop();
 	}
 
 	private void restartButtonActionPerformed() {

@@ -179,6 +179,6 @@ public class RobocodeEngine {
 	 * Asks a battle to abort.
 	 */
 	public void abortCurrentBattle() {
-		manager.getBattleManager().stop(false);
+		manager.getBattleManager().stop();
 	}
 }
