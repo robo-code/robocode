@@ -32,8 +32,10 @@
  *     - Added support for playing background music when the battle is ongoing
  *     - Removed unnecessary catches of NullPointerExceptions
  *     - Added support for setting the initial robot positions on the battlefield
- *     - Changed stop(boolean) to set the TPS to maximum while the game is
- *       stopping
+ *     - Changed stop() to set the TPS to maximum while the game is stopping
+ *     - Removed the showResultsDialog field which is replaced by the
+ *       getOptionsCommonShowResults() from the properties
+ *     - Simplified the code run() method when battle is stopped
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -141,7 +143,6 @@ public class Battle implements Runnable {
 
 	// Results related items
 	private boolean exitOnComplete;
-	private boolean showResultsDialog;
 
 	// Results for RobocodeEngine controller
 	private BattleSpecification battleSpecification;
@@ -268,34 +269,24 @@ public class Battle implements Runnable {
 				r.getRobotThreadManager().cleanup();
 			}
 			unsafeLoadRobotsThread.interrupt();
-			if (!abortBattles || showResultsDialog) {
-				showResultsDialog = false;
-				if (exitOnComplete) {
-					battleManager.printResultsData(this);
-				} else if (manager.getListener() != null) {
-					if (!abortBattles) {
-						battleManager.sendResultsToListener(this, manager.getListener());
-					} else {
-						manager.getListener().battleAborted(battleSpecification);
-					}
-				} else if (manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
-					manager.getWindowManager().showResultsDialog();
-				}
-
-				if (exitOnComplete) {
-					System.exit(0);
-				}
-			} else {
+			if (abortBattles) {
 				if (manager.getListener() != null) {
 					manager.getListener().battleAborted(battleSpecification);
+				} else {
+					battleManager.sendResultsToListener(this, manager.getListener());
 				}
+			}
+			if (manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
+				manager.getWindowManager().showResultsDialog();
+			}
+			if (exitOnComplete) {
+				battleManager.printResultsData(this);
+				System.exit(0);
 			}
 		} else {
 			// Replay
 
-			if (!abortBattles || showResultsDialog) {
-				showResultsDialog = false;
-
+			if (!abortBattles) {
 				if (manager.getProperties().getOptionsCommonShowResults()) {
 					RobotResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
 
@@ -1307,40 +1298,25 @@ public class Battle implements Runnable {
 	}
 
 	public void stop() {
-		stop(false);
-	}
-
-	public void stop(boolean showResultsDialog) {
 		if (!running) {
 			cleanup();
 		} else {
 			// Save the current TPS and set it to maximum speed ->
 			// This way slow battles will restart immediately
 			int currentTPS = desiredTPS;
-			desiredTPS = 10000;
+			manager.getProperties().setOptionsBattleDesiredTPS(10000);
 
-			this.showResultsDialog = showResultsDialog;
 			endTimer = 0;
 			abortBattles = true;
 
-			if (!showResultsDialog) {
-				for (int i = 0; running && i < 40; i++) {
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {}
-				}
-				if (battleView != null) {
-					battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-					battleView.repaint();
-				}
-			}
-			cleanup();
 			if (abortBattles && manager.getListener() != null) {
 				manager.getListener().battleAborted(battleSpecification);
 			}
 
+			cleanup();
+
 			// Restore the TPS
-			desiredTPS = currentTPS;
+			manager.getProperties().setOptionsBattleDesiredTPS(currentTPS);
 		}
 	}
 
