@@ -30,6 +30,8 @@
  *     - isPaused() is now synchronized
  *     - Extended sendResultsToListener() to handle teams as well as robots
  *     - Added setDefaultBattleProperties() for resetting battle properties
+ *     - Removed the showResultsDialog parameter from the stop() method
+ *     - Added null pointer check to the sendResultsToListener() method
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -124,18 +126,17 @@ public class BattleManager {
 		this.manager = manager;
 	}
 
-	public void stop(boolean showResultsDialog) {
+	public void stop() {
 		if (getBattle() != null) {
-			if (manager.isSoundEnabled()) {
-				manager.getSoundManager().stopBackgroundMusic();
-			}
-
-			getBattle().stop(showResultsDialog);
+			getBattle().stop();
+		}
+		if (manager.isSoundEnabled()) {
+			manager.getSoundManager().stopBackgroundMusic();
 		}
 	}
 
 	public void restart() {
-		stop(false);
+		stop();
 		startNewBattle(battleProperties, false, false);
 	}
 
@@ -526,6 +527,10 @@ public class BattleManager {
 	}
 
 	public void sendResultsToListener(Battle battle, RobocodeListener listener) {
+		if (listener == null) {
+			return;
+		}
+
 		List<ContestantPeer> orderedPeers = Collections.synchronizedList(
 				new ArrayList<ContestantPeer>(battle.getContestants()));
 
