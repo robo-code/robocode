@@ -32,10 +32,10 @@
  *     - Added support for playing background music when the battle is ongoing
  *     - Removed unnecessary catches of NullPointerExceptions
  *     - Added support for setting the initial robot positions on the battlefield
- *     - Changed stop() to set the TPS to maximum while the game is stopping
  *     - Removed the showResultsDialog field which is replaced by the
  *       getOptionsCommonShowResults() from the properties
- *     - Simplified the code run() method when battle is stopped
+ *     - Simplified the code in the run() method when battle is stopped
+ *     - Changed so that stop() makes the current round stop immediately
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -130,7 +130,6 @@ public class Battle implements Runnable {
 	private int framesThisSec;
 	private int currentTime;
 	private int endTimer;
-	private int stopTime;
 	private int activeRobots;
 
 	// Death events
@@ -276,7 +275,7 @@ public class Battle implements Runnable {
 					battleManager.sendResultsToListener(this, manager.getListener());
 				}
 			}
-			if (manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
+			if (!abortBattles && manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
 				manager.getWindowManager().showResultsDialog();
 			}
 			if (exitOnComplete) {
@@ -582,7 +581,6 @@ public class Battle implements Runnable {
 		boolean battleOver = false;
 
 		endTimer = 0;
-		stopTime = 0;
 
 		currentTime = 0;
 		inactiveTurnCount = 0;
@@ -664,10 +662,6 @@ public class Battle implements Runnable {
 
 			deathEvents.clear();
 
-			if (abortBattles && getActiveRobots() > 0) {
-				stopTime = endTimer;
-			}
-
 			battleOver = checkBattleOver();
 
 			inactiveTurnCount++;
@@ -711,14 +705,14 @@ public class Battle implements Runnable {
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
 
-			if (endTimer < TURNS_DISPLAYED_AFTER_ENDING
-					&& !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
+			if (!abortBattles && (endTimer < TURNS_DISPLAYED_AFTER_ENDING
+					&& !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified()))) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
 				if ((totalFrameMillisThisSec == 0)
 						|| (frameStartTime - startTimeThisSec) > (framesThisSec * 1000f / estimatedFPS)) {
-					battleView.update();
 
+					battleView.update();
 					framesThisSec++;
 				}
 
@@ -807,7 +801,6 @@ public class Battle implements Runnable {
 		boolean replayOver = false;
 
 		endTimer = 0;
-		stopTime = 0;
 
 		currentTime = 0;
 
@@ -890,11 +883,11 @@ public class Battle implements Runnable {
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
 
-			if (!(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
+			if (!(abortBattles || battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
-				if ((totalFrameMillisThisSec == 0)
-						|| (frameStartTime - startTimeThisSec) > (framesThisSec * 1000f / estimatedFPS)) {
+				if (((totalFrameMillisThisSec == 0)
+						|| (frameStartTime - startTimeThisSec) > (framesThisSec * 1000f / estimatedFPS))) {
 					battleView.update();
 
 					framesThisSec++;
@@ -1146,11 +1139,6 @@ public class Battle implements Runnable {
 			if (endTimer > 5 * 30) {
 				battleOver = true;
 			}
-			if (abortBattles) {
-				if (endTimer - stopTime > 30) {
-					battleOver = true;
-				}
-			}
 		}
 		return battleOver;
 	}
@@ -1298,25 +1286,18 @@ public class Battle implements Runnable {
 	}
 
 	public void stop() {
-		if (!running) {
-			cleanup();
-		} else {
-			// Save the current TPS and set it to maximum speed ->
-			// This way slow battles will restart immediately
-			int currentTPS = desiredTPS;
-			manager.getProperties().setOptionsBattleDesiredTPS(10000);
-
-			endTimer = 0;
+		if (!abortBattles) {
 			abortBattles = true;
 
-			if (abortBattles && manager.getListener() != null) {
-				manager.getListener().battleAborted(battleSpecification);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
 			}
 
-			cleanup();
-
-			// Restore the TPS
-			manager.getProperties().setOptionsBattleDesiredTPS(currentTPS);
+			if (battleView != null) {
+				battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
+				battleView.repaint();
+			}
 		}
 	}
 
