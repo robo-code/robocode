@@ -268,8 +268,9 @@ public class Battle implements Runnable {
 				r.getRobotThreadManager().cleanup();
 			}
 			unsafeLoadRobotsThread.interrupt();
-			if (abortBattles) {
-				if (manager.getListener() != null) {
+
+			if (manager.getListener() != null) {
+				if (abortBattles) {
 					manager.getListener().battleAborted(battleSpecification);
 				} else {
 					battleManager.sendResultsToListener(this, manager.getListener());
