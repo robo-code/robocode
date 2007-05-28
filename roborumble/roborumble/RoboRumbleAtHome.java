@@ -146,6 +146,7 @@ public class RoboRumbleAtHome {
 			iterations++;
 		} while (iterates.equals("YES"));
 	
-		System.exit(0);
+		// With Java 5 this causes a IllegalThreadStateException, but not in Java 6
+		// System.exit(0);
 	}
 }
