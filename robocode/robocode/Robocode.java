@@ -157,6 +157,9 @@ public class Robocode {
 				System.exit(8);
 			}
 
+			// Set the Look and Feel (LAF)
+			robocode.manager.LookAndFeelManager.setLookAndFeel();
+
 			if (battleFilename != null) {
 				if (resultsFilename != null) {
 					manager.getBattleManager().setResultsFile(resultsFilename);
@@ -169,9 +172,6 @@ public class Robocode {
 			if (!manager.isGUIEnabled()) {
 				return true;
 			}
-
-			// Set the Look and Feel (LAF)
-			robocode.manager.LookAndFeelManager.setLookAndFeel();
 
 			if (!minimize && battleFilename == null) {
 				if (manager.isSoundEnabled()) {
