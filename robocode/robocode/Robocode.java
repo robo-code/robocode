@@ -158,7 +158,9 @@ public class Robocode {
 			}
 
 			// Set the Look and Feel (LAF)
-			robocode.manager.LookAndFeelManager.setLookAndFeel();
+			if (manager.isGUIEnabled()) {
+				robocode.manager.LookAndFeelManager.setLookAndFeel();
+			}
 
 			if (battleFilename != null) {
 				if (resultsFilename != null) {
