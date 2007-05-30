@@ -1,3 +1,10 @@
+Version 1.3.2 Alpha
+(05/31/2007)
+-------------
+o Bugfixes
+  -- The sample.SittingDuck would not start when no GUI is enabled
+  -- The Look and Feel is not set if the GUI is disabled
+
 Version 1.3.1
 (05/30/2007)
 -------------
@@ -11,7 +18,7 @@ o Bugfixes
   -- Bugs fixed in RoboRumble which could cause a java.lang.IllegalThreadStateException
 o Changes
   -- Robocode will now print out an error message and just proceed if problems arise with
-     tring to set the Look and Feel (LAF) to the system LAF.
+     trying to set the Look and Feel (LAF) to the system LAF.
   -- When stopping or restarting a battle, the battle will now stop immediately instead of
      continuing for a while showing robot explosions when the robots are being terminated
      due to the stop
@@ -19,7 +26,7 @@ o Changes
      Compiler->Options->Reset Compiler in the Robocode Editor in order to prevent the
      compiler preferences to be reset by accident
 o New features
-  -- Add link to Java 5.0 Documentation in the Help menu
+  -- Added link to Java 5.0 Documentation in the Help menu
 
 Version 1.3
 (05/17/2007)
