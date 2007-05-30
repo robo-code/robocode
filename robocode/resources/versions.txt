@@ -1,5 +1,5 @@
-Version 1.3.1 Alpha
-(05/27/2007)
+Version 1.3.1
+(05/30/2007)
 -------------
 o Bugfixes
   -- When loading a battle, the robots specified in the battle file were not selected on
@@ -9,10 +9,9 @@ o Bugfixes
      used in new battles and where the "Number of Rounds" was set to 1 instead of 10
   -- The output in the robot console windows were written out in bulks instead of immediately
   -- Bugs fixed in RoboRumble which could cause a java.lang.IllegalThreadStateException
-o Workaround
-  -- Robocode will now use the default Java Look and Feel (LAF) if the operating system is
-     causing problems when trying to set the native OS or cross-platform LAF
 o Changes
+  -- Robocode will now print out an error message and just proceed if problems arise with
+     tring to set the Look and Feel (LAF) to the system LAF.
   -- When stopping or restarting a battle, the battle will now stop immediately instead of
      continuing for a while showing robot explosions when the robots are being terminated
      due to the stop
