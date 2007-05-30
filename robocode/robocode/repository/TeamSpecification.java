@@ -119,9 +119,7 @@ public class TeamSpecification extends FileSpecification implements Serializable
 			if (team_webpage != null) {
 				webpage = new URL(team_webpage);
 			}
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+		} catch (MalformedURLException e) {}
 		teamJavaSourceIncluded = Boolean.valueOf(props.getProperty(TEAM_JAVA_SOURCE_INCLUDED, "false")).booleanValue();
 	}
 
