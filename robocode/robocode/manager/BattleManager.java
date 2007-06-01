@@ -89,7 +89,7 @@ public class BattleManager {
 	private RobocodeManager manager;
 	private int stepTurn;
 
-	private List<PauseResumeListener> pauseResumeListeners;
+	private List<PauseResumeListener> pauseResumeListeners = new ArrayList<PauseResumeListener>();
 
 	public interface PauseResumeListener {
 		public void battlePaused();
