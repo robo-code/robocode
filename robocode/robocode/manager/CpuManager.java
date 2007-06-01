@@ -27,6 +27,9 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 public class CpuManager {
+	private final static int APPROXIMATE_CYCLES_ALLOWED = 50000;
+	private final static int TEST_PERIOD_MILLIS = 5000;
+
 	private int cpuConstant = -1;
 	private RobocodeManager manager;
 
@@ -35,9 +38,6 @@ public class CpuManager {
 	}
 
 	public int getCpuConstant() {
-		final int APPROXIMATE_CYCLES_ALLOWED = 50000;
-
-		final int TEST_PERIOD_MILLIS = 5000;
 
 		if (cpuConstant == -1) {
 			cpuConstant = manager.getProperties().getCpuConstant();
