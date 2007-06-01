@@ -167,10 +167,7 @@ public class FilenamePanel extends WizardPanel {
 				return false;
 			}
 		}
-		if (filenameField.getText().toLowerCase().indexOf(".jar") > 0) {
-			return true;
-		}
-		return false;
+		return (filenameField.getText().toLowerCase().indexOf(".jar") > 0);
 	}
 
 	public static void main(String[] args) {
