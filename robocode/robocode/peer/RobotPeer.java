@@ -233,7 +233,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setMove(distance);
 		do {
 			tick(); // Always tick at least once
-		} while (distanceRemaining != 0);
+		} while (getDistanceRemaining() != 0);
 	}
 
 	private void checkRobotCollision() {
@@ -496,7 +496,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		// If battle is waiting for us, well, all done!
 		synchronized (this) {
-			notify();
+			notifyAll();
 		}
 	}
 
@@ -647,7 +647,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (Thread.currentThread() != robotThreadManager.getRunThread()) {
 			throw new RobotException("You cannot take action in this thread!");
 		}
-		if (testingCondition) {
+		if (getTestingCondition()) {
 			throw new RobotException(
 					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
 		}
@@ -661,7 +661,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
-		if (halt) {
+		if (getHalt()) {
 			if (isDead()) {
 				death();
 			} else if (isWinner) {
@@ -673,7 +673,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			// Notify the battle that we are now asleep.
 			// This ends any pending wait() call in battle.runRound().
 			// Should not actually take place until we release the lock in wait(), below.
-			notify();
+			notifyAll();
 			isSleeping = true;
 			// Notifying battle that we're asleep
 			// Sleeping and waiting for battle to wake us up.
@@ -687,7 +687,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			// our wakeup() call, to return.
 			// It's quite possible, by the way, that we'll be back in sleep (above)
 			// before the battle thread actually wakes up
-			notify();
+			notifyAll();
 		}
 
 		eventManager.setFireAssistValid(false);
@@ -709,7 +709,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setTurnGun(radians);
 		do {
 			tick(); // Always tick at least once
-		} while (gunTurnRemaining != 0);
+		} while (getGunTurnRemaining() != 0);
 	}
 
 	public synchronized final void setTurnChassis(double radians) {
@@ -722,7 +722,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setTurnChassis(radians);
 		do {
 			tick(); // Always tick at least once
-		} while (turnRemaining != 0);
+		} while (getTurnRemaining() != 0);
 	}
 
 	public synchronized final void setTurnRadar(double radians) {
@@ -733,7 +733,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setTurnRadar(radians);
 		do {
 			tick(); // Always tick at least once
-		} while (radarTurnRemaining != 0);
+		} while (getRadarTurnRemaining() != 0);
 	}
 
 	public final synchronized void update() {
@@ -1031,13 +1031,17 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public synchronized void wakeup(Battle b) {
 		if (isSleeping) {
 			// Wake up the thread
-			notify();
+			notifyAll();
 			try {
 				wait(10000);
 			} catch (InterruptedException e) {}
 		}
 	}
 
+	private synchronized boolean getHalt() {
+		return halt;
+	}
+	
 	public synchronized void setHalt(boolean halt) {
 		this.halt = halt;
 	}
@@ -1073,7 +1077,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return velocity;
 	}
 
-	public void initialize(double x, double y, double heading) {
+	public synchronized void initialize(double x, double y, double heading) {
 		state = STATE_ACTIVE;
 
 		isWinner = false;
@@ -1408,7 +1412,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		nonVersionedName = cnm.getFullClassName() + countString;
 	}
 
-	public boolean isDuplicate() {
+	public synchronized boolean isDuplicate() {
 		return isDuplicate;
 	}
 
@@ -1464,7 +1468,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public boolean isRunning() {
+	public synchronized boolean isRunning() {
 		return isRunning;
 	}
 

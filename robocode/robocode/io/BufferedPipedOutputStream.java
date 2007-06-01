@@ -79,7 +79,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 			}
 		}
 		if (waiting) {
-			notify();
+			notifyAll();
 		}
 	}
 
@@ -156,7 +156,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 	public synchronized void close() {
 		closed = true;
 		if (waiting) {
-			notify();
+			notifyAll();
 		}
 	}
 }

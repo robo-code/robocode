@@ -142,7 +142,8 @@ public class BulletPeer {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
 				setHitBullet();
 				resetHitTime();
-				b.state = state = STATE_HIT_BULLET;
+				state = STATE_HIT_BULLET;
+				b.setState(state);
 				frame = 0;
 				x = lastX;
 				y = lastY;
@@ -338,7 +339,7 @@ public class BulletPeer {
 	}
 
 	protected void updateBulletState() {
-		setLastState();
+		lastState = state;
 		if (state == STATE_SHOT) {
 			state = STATE_MOVING;
 		} else if (state == STATE_EXPLODED || state == STATE_HIT_BULLET || state == STATE_HIT_VICTIM
@@ -381,9 +382,5 @@ public class BulletPeer {
 
 	private synchronized void resetHitTime() {
 		hitTime = 0;
-	}
-
-	private synchronized void setLastState() {
-		lastState = state;
 	}
 }
