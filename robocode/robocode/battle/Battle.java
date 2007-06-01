@@ -544,7 +544,7 @@ public class Battle implements Runnable {
 		return exitOnComplete;
 	}
 
-	public boolean isRobotsLoaded() {
+	public synchronized boolean isRobotsLoaded() {
 		return robotsLoaded;
 	}
 
@@ -1234,7 +1234,7 @@ public class Battle implements Runnable {
 
 		// Notifying loader
 		synchronized (unsafeLoaderMonitor) {
-			unsafeLoaderMonitor.notify();
+			unsafeLoaderMonitor.notifyAll();
 		}
 		while (!isRobotsLoaded()) {
 			try {
@@ -1524,7 +1524,7 @@ public class Battle implements Runnable {
 	 *
 	 * @return Returns a boolean
 	 */
-	public boolean isUnsafeLoaderThreadRunning() {
+	public synchronized boolean isUnsafeLoaderThreadRunning() {
 		return unsafeLoaderThreadRunning;
 	}
 
