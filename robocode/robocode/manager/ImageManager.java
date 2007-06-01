@@ -81,7 +81,7 @@ public class ImageManager {
 				for (numFrame = 1;; numFrame++) {
 					filename = "/resources/images/explosion/explosion" + numExplosion + '-' + numFrame + ".png";
 
-					if (getClass().getResource(filename) == null) {
+					if (ClassLoader.class.getResource(filename) == null) {
 						if (numFrame == 1) {
 							done = true;
 						} else {
@@ -98,7 +98,7 @@ public class ImageManager {
 			explosionRenderImages = new RenderImage[numExplosion][];
 
 			for (int i = numExplosion - 1; i >= 0; i--) {
-				explosionRenderImages[i] = explosions.get(i).toArray(new RenderImage[0]);
+				explosionRenderImages[i] = explosions.get(i).toArray(new RenderImage[explosions.size()]);
 			}
 		}
 		return explosionRenderImages[which][frame];
