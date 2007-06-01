@@ -183,23 +183,31 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 		String template = "";
 
-		File f = null;
+		File f = new File(FileUtil.getCwd(), templateName);
+		int size = (int) (f.length());
+		byte buff[] = new byte[size];
+
+		FileInputStream fis = null;
+		DataInputStream dis = null;
 
 		try {
-			f = new File(FileUtil.getCwd(), templateName);
-			int size = (int) (f.length());
-			byte buff[] = new byte[size];
-			FileInputStream fis = new FileInputStream(f);
-			DataInputStream dis = new DataInputStream(fis);
+			fis = new FileInputStream(f);
+			dis = new DataInputStream(fis);
 
 			dis.readFully(buff);
-			dis.close();
 			template = new String(buff);
 		} catch (IOException e) {
-			if (f != null) {
-				template = "Unable to read template file: " + f.getPath();
-			} else {
-				template = "Unable to read template file (null)";
+			template = "Unable to read template file: " + FileUtil.getCwd() + File.pathSeparatorChar + templateName;
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {}
+			}
+			if (dis != null) {
+				try {
+					dis.close();
+				} catch (IOException e) {}
 			}
 		}
 
@@ -338,23 +346,30 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 		String template = "";
 
-		File f = null;
+		File f = new File(FileUtil.getCwd(), templateName);
+		int size = (int) (f.length());
+		byte buff[] = new byte[size];
+		FileInputStream fis = null;
+		DataInputStream dis = null;
 
 		try {
-			f = new File(FileUtil.getCwd(), templateName);
-			int size = (int) (f.length());
-			byte buff[] = new byte[size];
-			FileInputStream fis = new FileInputStream(f);
-			DataInputStream dis = new DataInputStream(fis);
-
+			fis = new FileInputStream(f);
+			dis = new DataInputStream(fis);
 			dis.readFully(buff);
 			dis.close();
 			template = new String(buff);
 		} catch (IOException e) {
-			if (f != null) {
-				template = "Unable to read template file: " + f.getPath();
-			} else {
-				template = "Unable to read template file (null)";
+			template = "Unable to read template file: " + FileUtil.getCwd() + File.pathSeparatorChar + templateName;
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {}
+			}
+			if (dis != null) {
+				try {
+					dis.close();
+				} catch (IOException e) {}
 			}
 		}
 
