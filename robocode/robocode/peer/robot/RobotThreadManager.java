@@ -39,11 +39,13 @@ public class RobotThreadManager {
 
 	public void forceStop() {
 		if (runThread != null && runThread.isAlive()) {
+			runThread.setPriority(Thread.MIN_PRIORITY);
+			runThread.interrupt();
 			try {
-				runThread.setPriority(Thread.MIN_PRIORITY);
-				runThread.interrupt();
 				runThread.join(5000);
-			} catch (Exception e) {}
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 			robotPeer.setRunning(false);
 			robotPeer.getRobotStatistics().setInactive();
 			if (runThread.isAlive()) {
