@@ -93,7 +93,7 @@ public class RobocodeFrame extends JFrame {
 
 	private WindowManager windowManager;
 
-	private class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ComponentListener, ContainerListener, WindowListener, ChangeListener {
+	private class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ContainerListener, WindowListener, ChangeListener {
 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == RobocodeFrame.this.getPauseButton()) {
@@ -603,9 +603,7 @@ public class RobocodeFrame extends JFrame {
 		}
 		this.version = "";
 		if (versionString != null) {
-			try {
-				this.version = versionString.substring(8);
-			} catch (Exception e) {}
+			this.version = versionString.substring(8);
 		} else {
 			versionString = "unknown";
 		}

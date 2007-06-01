@@ -932,9 +932,7 @@ public class RobocodeProperties {
 
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
 
-		try {
-			props.remove("robocode.cpu.constant");
-		} catch (Exception e) {}
+		props.remove("robocode.cpu.constant");
 
 		try {
 			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
