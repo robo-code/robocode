@@ -19,6 +19,7 @@ package robocode.security;
 
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.*;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class RobocodeSecurityPolicy extends Policy {
 				if (!trustedCodeUrls.contains(u)) {
 					trustedCodeUrls.add(u);
 				}
-			} catch (Exception e) {}
+			} catch (MalformedURLException e) {}
 		}
 	}
 
