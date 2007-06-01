@@ -33,7 +33,7 @@ import robocode.manager.RobocodeManager;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class AboutBox extends JDialog {
+public final class AboutBox extends JDialog {
 	private final static Color BG_COLOR = SystemColor.controlHighlight;
 
 	// Tag used for Robocode version replacement
@@ -119,7 +119,7 @@ public class AboutBox extends JDialog {
 
 		robocodeVersion = manager.getVersionManager().getVersion();
 
-		iconURL = getClass().getResource("/resources/icons/robocode-icon.png");
+		iconURL = ClassLoader.class.getResource("/resources/icons/robocode-icon.png");
 
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("About Robocode");
