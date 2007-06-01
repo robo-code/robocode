@@ -60,11 +60,8 @@ public class NameManager implements Serializable {
 
 	public String getRootPackage() {
 		if (rootPackage == null) {
-			if (fullClassName.indexOf(".") > 0) {
-				rootPackage = fullClassName.substring(0, fullClassName.indexOf("."));
-			} else {
-				rootPackage = null;
-			}
+			rootPackage = (fullClassName.indexOf(".") > 0) ? 
+					fullClassName.substring(0, fullClassName.indexOf(".")) : null;
 		}
 		return rootPackage;
 	}
