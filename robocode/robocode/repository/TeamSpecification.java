@@ -19,7 +19,6 @@ package robocode.repository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -32,7 +31,7 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class TeamSpecification extends FileSpecification implements Serializable, Cloneable {
+public class TeamSpecification extends FileSpecification {
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";
 	private final static String TEAM_AUTHOR_EMAIL = "team.author.email";
@@ -119,7 +118,9 @@ public class TeamSpecification extends FileSpecification implements Serializable
 			if (team_webpage != null) {
 				webpage = new URL(team_webpage);
 			}
-		} catch (MalformedURLException e) {}
+		} catch (MalformedURLException e) {
+			webpage = null;
+		}
 		teamJavaSourceIncluded = Boolean.valueOf(props.getProperty(TEAM_JAVA_SOURCE_INCLUDED, "false")).booleanValue();
 	}
 
