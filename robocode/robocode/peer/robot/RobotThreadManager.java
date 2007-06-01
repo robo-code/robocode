@@ -43,8 +43,8 @@ public class RobotThreadManager {
 			runThread.interrupt();
 			try {
 				runThread.join(5000);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			robotPeer.setRunning(false);
 			robotPeer.getRobotStatistics().setInactive();
@@ -53,7 +53,9 @@ public class RobotThreadManager {
 			}
 			try {
 				runThread.join(5000);
-			} catch (InterruptedException e) {} catch (Exception e) {}
+			} catch (InterruptedException e) {
+				e.printStackTrace();				
+			}
 			if (runThread.isAlive()) {
 				log("Warning!  Unable to stop thread: " + runThread.getName());
 			} else {
@@ -76,10 +78,8 @@ public class RobotThreadManager {
 		}
 		for (Thread thread : threads) {
 			if (thread != null) {
-				try {
-					thread.setPriority(Thread.MIN_PRIORITY);
-					stopThread(thread);
-				} catch (Exception e) {}
+				thread.setPriority(Thread.MIN_PRIORITY);
+				stopThread(thread);
 			}
 		}
 		for (Thread thread : threads) {
@@ -89,7 +89,7 @@ public class RobotThreadManager {
 				} catch (InterruptedException e) {
 					robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
 					log("Thread: " + thread.getName() + " join interrupted.");
-				} catch (Exception e) {}
+				}
 				if (thread.isAlive()) {
 					log("Warning! Unable to stop thread: " + thread.getName());
 				} else {

@@ -130,7 +130,7 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 			setIconifiable(true);
 			setClosable(true);
 			setMaximum(false);
-			setFrameIcon(new ImageIcon(getClass().getResource("/resources/icons/robocode-icon.png")));
+			setFrameIcon(new ImageIcon(ClassLoader.class.getResource("/resources/icons/robocode-icon.png")));
 			setSize(553, 441);
 			setMaximizable(true);
 			setTitle("Edit Window");
@@ -280,21 +280,25 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 						return fileSaveAs();
 					}
 				}
-			} catch (Exception e) {
+			} catch (IOException e) {
 				Logger.log("Unable to check reasonable filename: " + e);
 			}
 		}
-		File f = new File(fileName);
 
+		FileWriter writer = null;
 		try {
-			FileWriter writer = new FileWriter(f);
-
+			writer = new FileWriter(new File(fileName));
 			getEditorPane().write(writer);
 			setModified(false);
-			writer.close();
 		} catch (IOException e) {
 			error("Cannot write file: " + e);
 			return false;
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {}
+			}
 		}
 		return true;
 	}
@@ -464,41 +468,37 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 		String javaFileName = null;
 		String packageTree = null;
 
-		try {
-			String text = getEditorPane().getText();
-			StringTokenizer tokenizer = new StringTokenizer(text, " \t\r\n;");
-			String token = null;
-			boolean inComment = false;
+		String text = getEditorPane().getText();
+		StringTokenizer tokenizer = new StringTokenizer(text, " \t\r\n;");
+		String token = null;
+		boolean inComment = false;
 
-			while (tokenizer.hasMoreTokens()) {
-				token = tokenizer.nextToken();
-				if (!inComment && (token.equals("/*") || token.equals("/**"))) {
-					inComment = true;
-				}
-				if (inComment && (token.equals("*/") || token.equals("**/"))) {
-					inComment = false;
-				}
-				if (inComment) {
-					continue;
-				}
-
-				if (packageTree == null && token.equals("package")) {
-					packageTree = tokenizer.nextToken();
-					if (packageTree == null || packageTree.length() == 0) {
-						return null;
-					}
-					packageTree = packageTree.replace('.', File.separatorChar);
-					packageTree += File.separator;
-					fileName += packageTree;
-				}
-				if (token.equals("class")) {
-					javaFileName = tokenizer.nextToken() + ".java";
-					fileName += javaFileName;
-					return fileName;
-				}
+		while (tokenizer.hasMoreTokens()) {
+			token = tokenizer.nextToken();
+			if (!inComment && (token.equals("/*") || token.equals("/**"))) {
+				inComment = true;
 			}
-		} catch (Exception e) {
-			return null;
+			if (inComment && (token.equals("*/") || token.equals("**/"))) {
+				inComment = false;
+			}
+			if (inComment) {
+				continue;
+			}
+
+			if (packageTree == null && token.equals("package")) {
+				packageTree = tokenizer.nextToken();
+				if (packageTree == null || packageTree.length() == 0) {
+					return null;
+				}
+				packageTree = packageTree.replace('.', File.separatorChar);
+				packageTree += File.separator;
+				fileName += packageTree;
+			}
+			if (token.equals("class")) {
+				javaFileName = tokenizer.nextToken() + ".java";
+				fileName += javaFileName;
+				return fileName;
+			}
 		}
 		return null;
 	}

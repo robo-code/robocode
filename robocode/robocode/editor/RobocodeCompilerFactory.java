@@ -126,25 +126,32 @@ public class RobocodeCompilerFactory {
 					File parentDirectory = new File(out.getParent());
 
 					parentDirectory.mkdirs();
-					fos = new FileOutputStream(out);
 
 					int index = 0;
-					int num = 0;
-					int count = 0;
 
-					while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-						fos.write(buf, 0, num);
-						index += num;
-						count++;
-						if (count > 80) {
-							status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
-							if (spin > 3) {
-								spin = 0;
+					try {
+						fos = new FileOutputStream(out);
+	
+						int num = 0;
+						int count = 0;
+	
+						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+							fos.write(buf, 0, num);
+							index += num;
+							count++;
+							if (count > 80) {
+								status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
+								if (spin > 3) {
+									spin = 0;
+								}
+								count = 0;
 							}
-							count = 0;
+						}
+					} finally {
+						if (fos != null) {
+							fos.close();
 						}
 					}
-					fos.close();
 
 					status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
 				}
@@ -431,7 +438,12 @@ public class RobocodeCompilerFactory {
 				console.scrollToBottom();
 				rv = false;
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
+			console.append("\n" + e.toString() + "\n");
+			console.setTitle("Jikes compile failed.\n");
+			console.scrollToBottom();
+			rv = false;
+		} catch (InterruptedException e) {
 			console.append("\n" + e.toString() + "\n");
 			console.setTitle("Jikes compile failed.\n");
 			console.scrollToBottom();
