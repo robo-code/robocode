@@ -18,7 +18,6 @@ package robocode.repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -29,7 +28,7 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class JarSpecification extends FileSpecification implements Serializable {
+public class JarSpecification extends FileSpecification {
 
 	// Used in FileSpecification
 	protected JarSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {

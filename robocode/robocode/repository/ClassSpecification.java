@@ -14,15 +14,12 @@
 package robocode.repository;
 
 
-import java.io.Serializable;
-
-
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class ClassSpecification extends FileSpecification implements Serializable {
+public class ClassSpecification extends FileSpecification {
 
 	// Used in FileSpecification
 	public ClassSpecification(RobotSpecification robotSpecification) {
