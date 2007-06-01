@@ -23,7 +23,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 
 
 /**
@@ -31,7 +30,7 @@ import javax.swing.table.TableCellRenderer;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class ResultsTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
+public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 
 	private boolean isBordered;
 
