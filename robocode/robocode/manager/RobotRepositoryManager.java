@@ -481,14 +481,28 @@ public class RobotRepositoryManager {
 
 	private void conflictLog(String s) {
 		log(s);
-		try {
-			File f = new File(FileUtil.getCwd(), "conflict.log");
-			BufferedWriter out = new BufferedWriter(new FileWriter(f.getPath(), true));
 
+		File f = new File(FileUtil.getCwd(), "conflict.log");
+		FileWriter writer = null;
+		BufferedWriter out = null;
+
+		try {
+			writer = new FileWriter(f.getPath(), true);
+			out = new BufferedWriter(writer);
 			out.write(s + "\n");
-			out.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			log("Warning:  Could not write to conflict.log");
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 
@@ -542,7 +556,7 @@ public class RobotRepositoryManager {
 			JarInputStream jarIS = new JarInputStream(fis);
 
 			return extractJar(jarIS, dest, statusPrefix, extractJars, close, alwaysReplace);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			log("Exception reading " + f + ": " + e);
 		} finally {
 			if (fis != null) {
@@ -594,18 +608,26 @@ public class RobotRepositoryManager {
 					File parentDirectory = new File(out.getParent());
 
 					parentDirectory.mkdirs();
-					FileOutputStream fos = new FileOutputStream(out);
 
-					int num = 0;
+					FileOutputStream fos = null;
+					try {
+						fos = new FileOutputStream(out);
 
-					while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-						fos.write(buf, 0, num);
+						int num = 0;
+	
+						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+							fos.write(buf, 0, num);
+						}
+	
+						FileDescriptor fd = fos.getFD();
+	
+						fd.sync();
+					} finally {
+						if (fos != null) {
+							fos.close();
+						}
 					}
 
-					FileDescriptor fd = fos.getFD();
-
-					fd.sync();
-					fos.close();
 					if (entry.getTime() >= 0) {
 						out.setLastModified(entry.getTime());
 					}

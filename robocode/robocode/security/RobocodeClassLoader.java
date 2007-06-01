@@ -152,9 +152,12 @@ public class RobocodeClassLoader extends ClassLoader {
 		uid1 += size;
 		byte buff[] = new byte[size];
 
+		FileInputStream fis = null;
+		DataInputStream dis = null;
+
 		try {
-			FileInputStream fis = new FileInputStream(f);
-			DataInputStream dis = new DataInputStream(fis);
+			fis = new FileInputStream(f);
+			dis = new DataInputStream(fis);
 
 			dis.readFully(buff);
 			dis.close();
@@ -169,20 +172,14 @@ public class RobocodeClassLoader extends ClassLoader {
 
 			robotClassManager.addResolvedClass(name);
 			if (name.equals(robotClassManager.getFullClassName())) {
-				try {
-					if (robotClassManager.getRootPackage() == null) {
-						rootPackageDirectory = null;
-						classDirectory = null;
-						rootDirectory = new File(classPath).getCanonicalPath();
-					} else {
-						rootPackageDirectory = new File(classPath + File.separator + robotClassManager.getRootPackage() + File.separator).getCanonicalPath();
-						classDirectory = new File(classPath + File.separator + robotClassManager.getClassNameManager().getFullPackage().replace('.', File.separatorChar) + File.separator).getCanonicalPath();
-						rootDirectory = new File(classPath).getCanonicalPath();
-					}
-				} catch (Exception e) {
-					rootPackageDirectory = new File(classPath + File.separator + robotClassManager.getRootPackage() + File.separator).getAbsolutePath();
-					log("Unexpected error:  Cannot build canonical path for " + rootPackageDirectory);
+				if (robotClassManager.getRootPackage() == null) {
+					rootPackageDirectory = null;
+					classDirectory = null;
+				} else {
+					rootPackageDirectory = new File(classPath + File.separator + robotClassManager.getRootPackage() + File.separator).getCanonicalPath();
+					classDirectory = new File(classPath + File.separator + robotClassManager.getClassNameManager().getFullPackage().replace('.', File.separatorChar) + File.separator).getCanonicalPath();
 				}
+				rootDirectory = new File(classPath).getCanonicalPath();
 			}
 			if (toplevel) {
 				robotClassManager.loadUnresolvedClasses();
@@ -193,6 +190,17 @@ public class RobocodeClassLoader extends ClassLoader {
 			return c;
 		} catch (IOException e) {
 			throw new ClassNotFoundException("Could not find: " + name + ": " + e);
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {}
+			}
+			if (dis != null) {
+				try {
+					dis.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 	

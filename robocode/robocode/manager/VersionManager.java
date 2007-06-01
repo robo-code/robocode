@@ -43,7 +43,7 @@ import robocode.io.FileUtil;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class VersionManager {
+public final class VersionManager {
 	private String version;
 	private RobocodeManager manager;
 
@@ -170,6 +170,8 @@ public class VersionManager {
 	private String getVersionFromJar() {
 		String versionString = null;
 
+		BufferedReader in = null;
+
 		try {
 			URL versionsUrl = getClass().getResource("/resources/versions.txt");
 
@@ -178,19 +180,24 @@ public class VersionManager {
 				return null;
 			}
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
+			in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
 
 			versionString = in.readLine();
 			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
 				versionString = in.readLine();
 			}
-			in.close();
 		} catch (FileNotFoundException e) {
 			log("No versions.txt file in robocode.jar.");
 			versionString = "unknown";
 		} catch (IOException e) {
 			log("IO Exception reading versions.txt from robocode.jar" + e);
 			versionString = "unknown";
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
 		}
 
 		String version = "unknown";

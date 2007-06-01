@@ -151,7 +151,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 				JOptionPane.showMessageDialog(this, "Team creation cancelled", "Cancelled",
 						JOptionPane.INFORMATION_MESSAGE, null);
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.toString(), "Team Creation Failed", JOptionPane.ERROR_MESSAGE, null);
 		}
 	}
@@ -196,10 +196,15 @@ public class TeamCreator extends JDialog implements WizardListener {
 		teamSpec.setMembers(robotSelectionPanel.getSelectedRobotsAsString());
 		teamSpec.setRobocodeVersion(manager.getVersionManager().getVersion());
 
-		FileOutputStream out = new FileOutputStream(f);
-
-		teamSpec.store(out, "Robocode robot team");
-		out.close();
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(f);
+			teamSpec.store(out, "Robocode robot team");
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
 
 		robotRepositoryManager.clearRobotList();
 

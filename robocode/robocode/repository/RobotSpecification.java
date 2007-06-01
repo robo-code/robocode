@@ -19,7 +19,6 @@ package robocode.repository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -32,7 +31,7 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class RobotSpecification extends FileSpecification implements Serializable {
+public class RobotSpecification extends FileSpecification {
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
 	private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
@@ -90,9 +89,11 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 		String pfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".properties";
 		File pf = new File(pfn);
 
+		FileInputStream in = null;
+
 		try {
 			if (pf.exists()) {
-				FileInputStream in = new FileInputStream(pf);
+				in = new FileInputStream(pf);
 
 				load(in);
 				in.close();
@@ -109,7 +110,14 @@ public class RobotSpecification extends FileSpecification implements Serializabl
 		} catch (IOException e) {
 			// Oh well.
 			Logger.log("Warning:  Could not load properties file: " + pfn);
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
 		}
+
 		setThisFileName(pfn);
 		String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
 		File htmlFile = new File(htmlfn);
