@@ -9,9 +9,10 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Replaced deprecated show() method with setVisible(true)
- *     - Code cleanup
+ *     - Showing the frame is now performed in the Swing Event Thread
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -23,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 
@@ -115,15 +117,14 @@ public class PackagerOptionsPanel extends WizardPanel {
 	
 					String filepath = fileSpecification.getFilePath();
 	
+					String text = "";
 					if (filepath != null && filepath.indexOf(".") > 0) {
 						String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
 	
-						getWebpageHelpLabel().setText(
-								"(You may also leave this blank, and simply create the file: " + htmlfn + ")");
-					} else {
-						getWebpageHelpLabel().setText("");
+						text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
 					}
-	
+					getWebpageHelpLabel().setText(text);
+
 					getVersionLabel().setVisible(true);
 					getVersionField().setVisible(true);
 					getAuthorLabel().setVisible(true);
@@ -297,8 +298,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 
 		frame.setSize(new Dimension(500, 300));
 		frame.getContentPane().add(new PackagerOptionsPanel(null));
-		frame.pack();
-		frame.setVisible(true);
+
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -310,6 +310,14 @@ public class PackagerOptionsPanel extends WizardPanel {
 				System.exit(0);
 			}
 		});
+
+		try {
+			SwingUtilities.invokeAndWait(new PackAndShowFrameWorker(frame));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private JLabel getAuthorLabel() {
@@ -392,4 +400,18 @@ public class PackagerOptionsPanel extends WizardPanel {
 		}
 		return webpageHelpLabel;
 	}
-}
+
+	static class PackAndShowFrameWorker implements Runnable {
+		JFrame frame;
+		
+		public PackAndShowFrameWorker(JFrame frame) {
+			this.frame = frame;
+		}
+
+		public void run() {
+			if (frame != null) {
+				frame.pack();
+				frame.setVisible(true);
+			}
+		}		
+	}}

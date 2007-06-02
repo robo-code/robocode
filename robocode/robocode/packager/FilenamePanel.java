@@ -16,6 +16,7 @@
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Changed to use FileUtil.getRobotsDir()
  *     - Fixed the layout, where the filename field was too high
+ *     - Showing the frame is now performed in the Swing Event Thread
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -32,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.swing.*;
@@ -167,7 +169,7 @@ public class FilenamePanel extends WizardPanel {
 				return false;
 			}
 		}
-		return (filenameField.getText().toLowerCase().indexOf(".jar") > 0);
+		return (filenameField.getText().toLowerCase().indexOf(".jar") != 0);
 	}
 
 	public static void main(String[] args) {
@@ -175,9 +177,16 @@ public class FilenamePanel extends WizardPanel {
 
 		frame.setSize(new Dimension(500, 300));
 		frame.getContentPane().add(new FilenamePanel(null));
-		frame.setVisible(true);
-	}
 
+		try {
+			SwingUtilities.invokeAndWait(new ShowFrameWorker(frame));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public JButton getBrowseButton() {
 		if (browseButton == null) {
 			browseButton = new JButton("Browse");
@@ -265,5 +274,19 @@ public class FilenamePanel extends WizardPanel {
 			}
 		}
 		return true;
+	}
+
+	static class ShowFrameWorker implements Runnable {
+		JFrame frame;
+		
+		public ShowFrameWorker(JFrame frame) {
+			this.frame = frame;
+		}
+
+		public void run() {
+			if (frame != null) {
+				frame.setVisible(true);
+			}
+		}		
 	}
 }
