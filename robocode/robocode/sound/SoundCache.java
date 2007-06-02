@@ -77,11 +77,11 @@ public class SoundCache {
 	 * returning the next available clip. If all clips are active, the least
 	 * recently used clip will be returned.
 	 */
-	private class ClipClones {
+	private static class ClipClones {
 		private Clip[] clips;
 		private int idx;
 
-		private ClipClones(SoundData soundData, int size) throws LineUnavailableException {
+		private ClipClones(Mixer mixer, SoundData soundData, int size) throws LineUnavailableException {
 			idx = 0;
 			clips = new Clip[size];
 			DataLine.Info info = new DataLine.Info(Clip.class, soundData.format);
@@ -142,7 +142,7 @@ public class SoundCache {
 		ClipClones clones;
 
 		try {
-			clones = new ClipClones(data, numClones);
+			clones = new ClipClones(mixer, data, numClones);
 			soundTable.put(key, clones);
 		} catch (LineUnavailableException e) {
 			Logger.log("The audio mixer " + mixer.getMixerInfo().getName() +
@@ -158,7 +158,7 @@ public class SoundCache {
 	 */
 	private SoundData createSoundData(String resourceName) {
 		SoundData data;
-		URL url = getClass().getResource(resourceName);
+		URL url = ClassLoader.class.getResource(resourceName);
 
 		if (url == null) {
 			Logger.log("Could not load sound because of invalid resource name: " + resourceName);
