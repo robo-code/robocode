@@ -120,15 +120,27 @@ public class FileUtil {
 		if (srcFile.equals(destFile)) {
 			throw new IOException("You cannot copy a file onto itself");
 		}
-		byte buf[] = new byte[4096];
-		FileInputStream in = new FileInputStream(srcFile);
-		FileOutputStream out = new FileOutputStream(destFile);
 
-		while (in.available() > 0) {
-			out.write(buf, 0, in.read(buf, 0, buf.length));
+		byte buf[] = new byte[4096];
+
+		FileInputStream in = null;
+		FileOutputStream out = null;
+
+		try {
+			in = new FileInputStream(srcFile);
+			out = new FileOutputStream(destFile);
+	
+			while (in.available() > 0) {
+				out.write(buf, 0, in.read(buf, 0, buf.length));
+			}
+		} finally {
+			if (in != null) {
+				in.close();
+			}
+			if (out != null) {
+				out.close();
+			}
 		}
-		in.close();
-		out.close();
 	}
 
 	/**
