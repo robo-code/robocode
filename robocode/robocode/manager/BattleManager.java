@@ -32,6 +32,9 @@
  *     - Added setDefaultBattleProperties() for resetting battle properties
  *     - Removed the showResultsDialog parameter from the stop() method
  *     - Added null pointer check to the sendResultsToListener() method
+ *     - Enhanced the getBattleFilename() to look into the battle dir and also
+ *       add the .battle file extension to the returned file name if this is
+ *       missing
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -342,7 +345,15 @@ public class BattleManager {
 	}
 
 	public String getBattleFilename() {
-		return battleFilename;
+		String filename = battleFilename;
+
+		if (filename.indexOf(File.separatorChar) < 0) {
+			filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
+		}
+		if (!filename.endsWith(".battle")) {
+			filename += ".battle";
+		}
+		return filename;
 	}
 
 	public void setBattleFilename(String newBattleFilename) {
@@ -460,12 +471,12 @@ public class BattleManager {
 		FileInputStream in = null;
 
 		try {
-			in = new FileInputStream(battleFilename);
+			in = new FileInputStream(getBattleFilename());
 			getBattleProperties().load(in);
 		} catch (FileNotFoundException e) {
 			log("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {
-			log("IO Exception reading " + battleFilename + ": " + e);
+			log("IO Exception reading " + getBattleFilename() + ": " + e);
 		} finally {
 			if (in != null) {
 				try {
