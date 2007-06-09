@@ -57,7 +57,7 @@ public class AtHomeListener implements RobocodeListener {
 		coord.get();
 
 		if (results == null) {
-			return null;
+			return new RobotResults[0];
 		}
 
 		// Results are copied in order to prevent exposure of internal results
