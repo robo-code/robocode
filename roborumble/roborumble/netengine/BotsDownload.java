@@ -17,6 +17,7 @@
  *       Repository site
  *     - Properties are now read using PropertiesUtil.getProperties()
  *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
+ *     - Added missing close() to streams
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -135,6 +136,7 @@ public class BotsDownload {
 		String begin = "<" + tag + ">";
 		String end = "</" + tag + ">";
 		Vector<String> bots = new Vector<String>();
+		BufferedReader in = null;
 
 		try {
 			URL url = new URL(participantsurl);
@@ -146,7 +148,7 @@ public class BotsDownload {
 			urlc.connect();
 
 			boolean arebots = false;
-			BufferedReader in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
 
 			for (String str; (str = in.readLine()) != null;) {
 				if (str.indexOf(begin) != -1) {
@@ -157,7 +159,6 @@ public class BotsDownload {
 					bots.add(str);
 				}
 			}
-			in.close();
 			urlc.disconnect();
 
 			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(participantsfile)), false);
@@ -167,10 +168,16 @@ public class BotsDownload {
 			}
 			outtxt.close();
 
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Unable to retrieve participants list");
 			System.out.println(e);
 			return false;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
 		}
 		return true;
 	}
@@ -181,9 +188,12 @@ public class BotsDownload {
 		Vector<String> names = new Vector<String>();
 
 		// Read participants
+
+		BufferedReader br = null;
+
 		try {
 			FileReader fr = new FileReader(participantsfile);
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 
 			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") >= 0) {
@@ -196,12 +206,18 @@ public class BotsDownload {
 					names.add(name);
 				}
 			}
-			br.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Participants file not found ... Aborting");
 			System.out.println(e);
 			return false;
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
+
 		// check if the file exists in the repository and download if not present
 		for (int i = 0; i < jars.size(); i++) {
 			String botjar = jars.get(i);
@@ -223,9 +239,11 @@ public class BotsDownload {
 
 	public void updateCodeSize() {
 		if (sizesfile.length() != 0) {
+			BufferedReader br = null;
+
 			try {
 				FileReader fr = new FileReader(participantsfile);
-				BufferedReader br = new BufferedReader(fr);
+				br = new BufferedReader(fr);
 
 				for (String record; (record = br.readLine()) != null;) {
 					String name = record.substring(0, record.indexOf(","));
@@ -233,11 +251,16 @@ public class BotsDownload {
 					name = name.replace(' ', '_');
 					size.checkCompetitorsForSize(name, name, 1500);
 				}
-				br.close();
-			} catch (Exception e) {
+			} catch (IOException e) {
 				System.out.println("Battles input file not found ... Aborting");
 				System.out.println(e);
 				return;
+			} finally {
+				if (br != null) {
+					try {
+						br.close();
+					} catch (IOException e) {}
+				}
 			}
 		}
 	}
@@ -260,18 +283,13 @@ public class BotsDownload {
 		String url = null;
 		String sessionId = null;
 
-		try {
-			if (id.indexOf("://") == -1) {
-				url = "http://robocoderepository.com/Controller.jsp?submitAction=downloadClass&id=" + id;
+		if (id.indexOf("://") == -1) {
+			url = "http://robocoderepository.com/Controller.jsp?submitAction=downloadClass&id=" + id;
 
-				sessionId = FileTransfer.getSessionId(
-						"http://robocoderepository.com/BotSearch.jsp?botName=''&authorName=''&uploadDate=");
-			} else {
-				url = id;
-			}
-		} catch (Exception e) {
-			System.out.println("Wrong URL: " + url);
-			return false;
+			sessionId = FileTransfer.getSessionId(
+					"http://robocoderepository.com/BotSearch.jsp?botName=''&authorName=''&uploadDate=");
+		} else {
+			url = id;
 		}
 
 		System.out.println("Trying to download " + botname);
@@ -349,6 +367,9 @@ public class BotsDownload {
 	// ----------------------------------------------------------------------------------
 	private boolean downloadRatingsFile(String competition, String file) {
 
+		BufferedReader in = null;
+		PrintStream outtxt = null;
+
 		try {
 			URL url = new URL(ratingsurl + "?version=1&game=" + competition);
 
@@ -358,22 +379,28 @@ public class BotsDownload {
 			urlc.setDoInput(true);
 			urlc.connect();
 
-			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);
+			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
 
 			for (String str; (str = in.readLine()) != null;) {
 				outtxt.println(str);
 			}
-			in.close();
 			urlc.disconnect();
 
-			outtxt.close();
-
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Unable to ratings for " + competition);
 			System.out.println(e);
 			return false;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {}
+			}
+			if (outtxt != null) {
+				outtxt.close();
+			}
 		}
 		return true;
 	}
@@ -385,10 +412,11 @@ public class BotsDownload {
 	public boolean notifyServerForOldParticipants() {
 		// Load participants names
 		Hashtable<String, String> namesall = new Hashtable<String, String>();
+		BufferedReader br = null;
 
 		try {
 			FileReader fr = new FileReader(participantsfile);
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 
 			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") != -1) {
@@ -398,11 +426,16 @@ public class BotsDownload {
 					namesall.put(name, name);
 				}
 			}
-			br.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Participants file not found when removing old participants ... Aborting");
 			System.out.println(e);
 			return false;
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
 
 		// Load ratings files
@@ -412,9 +445,6 @@ public class BotsDownload {
 		Properties nanoratings = getProperties(nanobotsfile);
 
 		// Check general ratings
-		if (generalratings == null) {
-			return false;
-		}
 		for (Enumeration<?> e = generalratings.propertyNames(); e.hasMoreElements();) {
 			String key = (String) e.nextElement();
 
@@ -425,9 +455,6 @@ public class BotsDownload {
 			}
 		}
 		// Check mini ratings
-		if (miniratings == null) {
-			return true;
-		}
 		for (Enumeration<?> e = miniratings.propertyNames(); e.hasMoreElements();) {
 			String key = (String) e.nextElement();
 
@@ -439,9 +466,6 @@ public class BotsDownload {
 		}
 
 		// Check micro ratings
-		if (microratings == null) {
-			return true;
-		}
 		for (Enumeration<?> e = microratings.propertyNames(); e.hasMoreElements();) {
 			String key = (String) e.nextElement();
 
@@ -453,9 +477,6 @@ public class BotsDownload {
 		}
 
 		// Check nano ratings
-		if (nanoratings == null) {
-			return true;
-		}
 		for (Enumeration<?> e = nanoratings.propertyNames(); e.hasMoreElements();) {
 			String key = (String) e.nextElement();
 
@@ -476,6 +497,8 @@ public class BotsDownload {
 		}
 
 		String data = "version=1&game=" + game + "&name=" + bot.trim() + "&dummy=NA";
+		PrintWriter wr = null;
+		BufferedReader rd = null;
 
 		try {
 			// Send data
@@ -483,23 +506,28 @@ public class BotsDownload {
 			URLConnection conn = url.openConnection();
 
 			conn.setDoOutput(true);
-			PrintWriter wr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream()));
+			wr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream()));
 
 			wr.println(data);
 			wr.flush();
 
 			// Get the response
-			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 			for (String line; (line = rd.readLine()) != null;) {
 				System.out.println(line);
 			}
-
-			wr.close();
-			rd.close();
-
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println(e);
+		} finally {
+			if (wr != null) {
+				wr.close();
+			}
+			if (rd != null) {
+				try {
+					rd.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 }

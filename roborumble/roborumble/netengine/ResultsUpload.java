@@ -16,6 +16,7 @@
  *     - Properties are now read using PropertiesUtil.getProperties()
  *     - Catch of entire Exception has been reduced to catch of IOException when
  *       only this exception is ever thrown
+ *     - Added missing close() to streams
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -88,10 +89,11 @@ public class ResultsUpload {
 		String bot1 = "";
 		String bot2 = "";
 		int status = 0;
+		BufferedReader br = null;
 
 		try {
 			FileReader fr = new FileReader(resultsfile);
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 			String record;
 
 			while ((record = br.readLine()) != null) {
@@ -108,10 +110,15 @@ public class ResultsUpload {
 					results.add(bot2);
 				}
 			}
-			br.close();
 		} catch (IOException e) {
 			System.out.println("Can't open result file for upload");
 			return false;
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
 
 		// Open the temp file to put the unuploaded results
@@ -133,6 +140,8 @@ public class ResultsUpload {
 		} catch (IOException e) {
 			System.out.println("Not able to open battles number file ... Aborting");
 			System.out.println(e);
+			
+			outtxt.close();
 			return false;
 		}
 
@@ -144,6 +153,9 @@ public class ResultsUpload {
 		} catch (IOException e) {
 			System.out.println("Not able to open priorities file ... Aborting");
 			System.out.println(e);
+
+			outtxt.close();
+			battlesnum.close();
 			return false;
 		}
 
@@ -238,6 +250,8 @@ public class ResultsUpload {
 
 	private boolean senddata(String game, String data, PrintStream outtxt, boolean saveonerror, Vector<String> results, int i, PrintStream battlesnum, PrintStream prioritybattles) {
 		boolean errorsfound = false;
+		PrintWriter wr = null;
+		BufferedReader rd = null;
 
 		try {
 			// Send data
@@ -245,13 +259,13 @@ public class ResultsUpload {
 			URLConnection conn = url.openConnection();
 
 			conn.setDoOutput(true);
-			PrintWriter wr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream()));
+			wr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream()));
 
 			wr.println(data);
 			wr.flush();
 
 			// Get the response
-			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String line;
 			boolean ok = false;
 
@@ -293,8 +307,6 @@ public class ResultsUpload {
 					System.out.println(line);
 				}
 			}
-			wr.close();
-			rd.close();
 			if (!ok) {
 				saverror(outtxt, results.get(i * 3), results.get(i * 3 + 1), results.get(i * 3 + 2), saveonerror);
 				if (saveonerror) {
@@ -307,6 +319,15 @@ public class ResultsUpload {
 				errorsfound = true;
 			}
 			saverror(outtxt, results.get(i * 3), results.get(i * 3 + 1), results.get(i * 3 + 2), saveonerror);
+		} finally {
+			if (wr != null) {
+				wr.close();
+			}
+			if (rd != null) {
+				try {
+					rd.close();
+				} catch (IOException e) {}
+			}
 		}
 		return errorsfound;
 	}

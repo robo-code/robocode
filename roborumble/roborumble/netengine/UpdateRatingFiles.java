@@ -16,6 +16,7 @@
  *     - Renamed UpdateRatings() into updateRatings()
  *     - Catch of entire Exception has been reduced to catch of IOException when
  *       only this exception is ever thrown
+ *     - Added missing close() to streams
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -71,19 +72,25 @@ public class UpdateRatingFiles {
 
 		// read all the recors to be updated
 		Vector<String> battles = new Vector<String>();
+		BufferedReader br = null;
 
 		try {
 			FileReader fr = new FileReader(battlesnumfile);
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 			String record;
 
 			while ((record = br.readLine()) != null) {
 				battles.add(record);
 			}
-			br.close();
 		} catch (IOException e) {
 			System.out.println("Can't open # battles file ... Aborting # battles update");
 			return false;
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
 
 		// read the ratings files
