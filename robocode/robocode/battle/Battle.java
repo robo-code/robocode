@@ -279,8 +279,10 @@ public class Battle implements Runnable {
 			if (!abortBattles && manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
 				manager.getWindowManager().showResultsDialog();
 			}
+
+			battleManager.printResultsData(this);
+
 			if (exitOnComplete) {
-				battleManager.printResultsData(this);
 				System.exit(0);
 			}
 		} else {
