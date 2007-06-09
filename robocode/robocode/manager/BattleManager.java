@@ -565,7 +565,7 @@ public class BattleManager {
 
 	public void printResultsData(Battle battle) {
 		// Do not print out if no result file has been specified and the GUI is enabled
-		if (manager.isGUIEnabled() && getResultsFile() == null) {
+		if (getResultsFile() == null && (!battle.isExitOnComplete() || manager.isGUIEnabled())) {
 			return;
 		}
 
