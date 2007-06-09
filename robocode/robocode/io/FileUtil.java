@@ -219,6 +219,15 @@ public class FileUtil {
 	}
 
 	/**
+	 * Returns the directory containing the battle files.
+	 *
+	 * @return a File that is the directory containing the battle files
+	 */
+	public static File getBattlesDir() {
+		return createDir(new File(cwd, "/battles"));
+	}
+
+	/**
 	 * Returns the directory containing the configuration files.
 	 * If the directory does not exist, it will be created automatically.
 	 *
