@@ -553,37 +553,32 @@ public class BattleManager {
 	}
 
 	public void printResultsData(Battle battle) {
-		PrintStream out;
-		boolean close = false;
+		PrintStream out = null;
+		FileOutputStream fos = null;
 
 		if (getResultsFile() == null) {
 			out = System.out;
 		} else {
 			File f = new File(getResultsFile());
 
-			FileOutputStream fos = null;
-
 			try {
 				fos = new FileOutputStream(f);
 				out = new PrintStream(fos);
-				close = true;
 			} catch (IOException e) {
 				log(e);
-				return;
-			} finally {
-				if (fos != null) {
-					try {
-						fos.close();
-					} catch (IOException e) {}
-				}
 			}
 		}
 
 		BattleResultsTableModel resultsTable = new BattleResultsTableModel(battle);
 
-		resultsTable.print(out);
-		if (close) {
+		if (out != null) {
+			resultsTable.print(out);
 			out.close();
+		}
+		if (fos != null) {
+			try {
+				fos.close();
+			} catch (IOException e) {}
 		}
 	}
 
