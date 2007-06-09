@@ -976,7 +976,7 @@ public class Battle implements Runnable {
 					synchronized (r) {
 						// This call blocks until the
 						// robot's thread actually wakes up.
-						r.wakeup(this);
+						r.wakeup();
 
 						// It's quite possible for simple robots to
 						// complete their processing before we get here,

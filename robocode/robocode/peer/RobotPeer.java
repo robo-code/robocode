@@ -492,10 +492,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				log(getName() + " stopped successfully.");
 			}
 		}
-		setRunning(false);
 
 		// If battle is waiting for us, well, all done!
 		synchronized (this) {
+			isRunning = false;
 			notifyAll();
 		}
 	}
@@ -673,8 +673,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			// Notify the battle that we are now asleep.
 			// This ends any pending wait() call in battle.runRound().
 			// Should not actually take place until we release the lock in wait(), below.
-			notifyAll();
 			isSleeping = true;
+			notifyAll();
 			// Notifying battle that we're asleep
 			// Sleeping and waiting for battle to wake us up.
 			try {
@@ -1028,7 +1028,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		radarHeading = normalAbsoluteAngle(radarHeading);
 	}
 
-	public synchronized void wakeup(Battle b) {
+	public synchronized void wakeup() {
 		if (isSleeping) {
 			// Wake up the thread
 			notifyAll();
