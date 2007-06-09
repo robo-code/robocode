@@ -1,9 +1,10 @@
 Version 1.3.2 Alpha
-(05/31/2007)
+(06/09/2007)
 -------------
 o Bugfixes
   -- The sample.SittingDuck would not start when no GUI is enabled
   -- The Look and Feel is not set if the GUI is disabled
+  -- The robocode.sh ignored command line arguments (e.g. under Linux and Mac)
 
 Version 1.3.1
 (05/30/2007)
@@ -50,7 +51,7 @@ o Bugfixes
      and hence these robots was not able to participate in RoboRumble battles
      -- This was due to the codesize tool, which could not analyze .jar files inside .jars
   -- The Event Dispatch Thread was denied access by the RobocodeSecurityManager
-o RoboRumble@Home client, originally developed by Albert Pérez, is now built-in
+o RoboRumble@Home client, originally developed by Albert Prez, is now built-in
   -- RoboRumble@Home is the ultimate collaborative effort to have a live, up-to-date
      ranking of bots. It uses the power of available robocoder's computers to distribute
      the effort of running battles and building the rankings
