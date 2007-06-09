@@ -17,6 +17,7 @@
  *     - The results are now read from the AtHomeListener instead of the
  *       RobocodeEngineAtHome
  *     - Properties are now read using PropertiesUtil.getProperties()
+ *     - Added missing close() to buffered readers
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -72,20 +73,26 @@ public class BattlesRunner {
 
 		// Read input file
 		ArrayList<String> robots = new ArrayList<String>();
+		BufferedReader br = null;
 
 		try {
 			FileReader fr = new FileReader(inputfile);
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 			String record;
 
 			while ((record = br.readLine()) != null) {
 				robots.add(record);
 			}
-			br.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Battles input file not found ... Aborting");
 			System.out.println(e);
 			return false;
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
 
 		// open output file
@@ -146,20 +153,26 @@ public class BattlesRunner {
 
 		// Read input file
 		ArrayList<String> robots = new ArrayList<String>();
-
+		BufferedReader br = null;
+		
 		try {
 			FileReader fr = new FileReader(inputfile);
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 			String record;
 
 			while ((record = br.readLine()) != null) {
 				robots.add(record);
 			}
-			br.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Battles input file not found ... Aborting");
 			System.out.println(e);
 			return false;
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
 
 		// open output file

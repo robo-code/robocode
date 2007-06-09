@@ -16,6 +16,7 @@
  *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
  *     - Catch of entire Exception has been reduced to catch of IOException when
  *       only this exception is ever thrown
+ *     - Added missing close() to buffered readers
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -75,9 +76,12 @@ public class PrepareBattles {
 		Vector<String> names = new Vector<String>();
 
 		// Read participants
+
+		BufferedReader br = null;
+
 		try {
 			FileReader fr = new FileReader(participantsfile); 
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 			String record;
 
 			while ((record = br.readLine()) != null) { 
@@ -97,11 +101,16 @@ public class PrepareBattles {
 					}
 				}
 			}
-			br.close();
-		} catch (Exception e) { 
+		} catch (IOException e) { 
 			System.out.println("Participants file not found ... Aborting"); 
 			System.out.println(e);
 			return false; 
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
 		// Open battles file
 		PrintStream outtxt = null;
@@ -143,9 +152,12 @@ public class PrepareBattles {
 		Vector<String> prioritarybattles = new Vector<String>();
 
 		// Read participants
+
+		BufferedReader br = null;
+		
 		try {
 			FileReader fr = new FileReader(participantsfile); 
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 			String record;
 
 			while ((record = br.readLine()) != null) { 
@@ -180,16 +192,25 @@ public class PrepareBattles {
 					}
 				}
 			}
-			br.close();
 		} catch (IOException e) { 
 			System.out.println("Participants file not found ... Aborting"); 
 			System.out.println(e);
 			return false; 
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
+
 		// Read priority battles
+		
+		br = null;
+
 		try {
 			FileReader fr = new FileReader(priority); 
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 			String record;
 
 			while ((record = br.readLine()) != null) { 
@@ -208,10 +229,16 @@ public class PrepareBattles {
 					}
 				}
 			}
-			br.close();
 		} catch (IOException e) { 
 			System.out.println("Prioritary battles file not found ...  "); 
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
+
 		// Delete priority battles (avoid duplication)
 		File r = new File(priority);
 
@@ -304,9 +331,12 @@ public class PrepareBattles {
 		Vector<String> prioritynano = new Vector<String>();
 
 		// Read participants
+		
+		BufferedReader br = null;
+
 		try {
 			FileReader fr = new FileReader(participantsfile); 
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 			String record;
 
 			while ((record = br.readLine()) != null) { 
@@ -341,11 +371,16 @@ public class PrepareBattles {
 					}
 				}
 			}
-			br.close();
 		} catch (IOException e) { 
 			System.out.println("Participants file not found ... Aborting"); 
 			System.out.println(e);
 			return false; 
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
 		}
 		
 		// Open battles file
