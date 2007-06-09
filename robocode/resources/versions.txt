@@ -1,4 +1,4 @@
-Version 1.3.2 Alpha
+Version 1.3.2
 (06/09/2007)
 -------------
 o Bugfixes
@@ -9,6 +9,7 @@ o Bugfixes
 o Enhancements
   -- When specifying the -battle parameter the .battle extension and battle directory can
      be omitted. Hence you can write "-battle sample" instead of "-battle battles/sample.battle"
+  -- If a specified battle file does not exist Robocode will now exit with an error
   -- If you specify the -results parameter the last results will now always be printed out,
      i.e. with and without the GUI enabled. Otherwise, if the GUI is not enabled (by setting
      the -nodisplay parameter) then the last results will be printed out to system out
