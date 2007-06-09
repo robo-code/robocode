@@ -38,7 +38,7 @@ public final class PropertiesUtil {
 			try {
 				fis = new FileInputStream(filename);
 				props.load(fis);
-			} catch (Exception e) {
+			} catch (IOException e) {
 				System.err.println("Could not load properties file: " + filename);
 			} finally {
 				if (fis != null) {
