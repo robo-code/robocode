@@ -21,6 +21,7 @@
  *       and added javadoc for it
  *     - Added playing theme music at the startup, if music is provided
  *     - Changed to use FileUtil.getRobotsDir()
+ *     - Setting the results file is now independent of setting the battle file
  *******************************************************************************/
 package robocode;
 
@@ -163,13 +164,13 @@ public class Robocode {
 			}
 
 			if (battleFilename != null) {
-				if (resultsFilename != null) {
-					manager.getBattleManager().setResultsFile(resultsFilename);
-				}
 				manager.getBattleManager().setBattleFilename(battleFilename);
 				manager.getBattleManager().loadBattleProperties();
 				manager.getBattleManager().startNewBattle(manager.getBattleManager().getBattleProperties(), true, false);
 				manager.getBattleManager().getBattle().setDesiredTPS(tps);
+			}
+			if (resultsFilename != null) {
+				manager.getBattleManager().setResultsFile(resultsFilename);
 			}
 			if (!manager.isGUIEnabled()) {
 				return true;
