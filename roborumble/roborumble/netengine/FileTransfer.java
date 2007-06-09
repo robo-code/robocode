@@ -63,7 +63,7 @@ public class FileTransfer {
 			// Notify that this thread is finish
 			synchronized (this) {
 				finish = true;
-				notify();
+				notifyAll();
 			}
 		}
 	}
@@ -309,10 +309,6 @@ public class FileTransfer {
 
 				// Get an input stream from the connection
 				in = con.getInputStream();
-				if (in == null) {
-					notifyFinish();
-					return;
-				}
 
 				// Prepare the output stream for the file output
 				out = new FileOutputStream(filename);
