@@ -160,6 +160,7 @@ public class RobotThreadManager {
 		return runThread;
 	}
 
+	@SuppressWarnings("deprecation")
 	private void stopThread(Thread t) {
 		synchronized (runThread) {
 			t.stop();
