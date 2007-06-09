@@ -22,6 +22,8 @@
  *     - Added playing theme music at the startup, if music is provided
  *     - Changed to use FileUtil.getRobotsDir()
  *     - Setting the results file is now independent of setting the battle file
+ *     - Robocode now returns with an error message if a specified battle file
+ *       could not be found
  *******************************************************************************/
 package robocode;
 
@@ -164,10 +166,17 @@ public class Robocode {
 			}
 
 			if (battleFilename != null) {
-				manager.getBattleManager().setBattleFilename(battleFilename);
-				manager.getBattleManager().loadBattleProperties();
-				manager.getBattleManager().startNewBattle(manager.getBattleManager().getBattleProperties(), true, false);
-				manager.getBattleManager().getBattle().setDesiredTPS(tps);
+				robocode.manager.BattleManager battleManager = manager.getBattleManager();
+				
+				battleManager.setBattleFilename(battleFilename);
+				if (new File(battleManager.getBattleFilename()).exists()) {
+					battleManager.loadBattleProperties();
+					battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
+					battleManager.getBattle().setDesiredTPS(tps);
+				} else {
+					System.err.println("The specified battle file '" + battleFilename + "' was not be found");
+					System.exit(8);
+				}
 			}
 			if (resultsFilename != null) {
 				manager.getBattleManager().setResultsFile(resultsFilename);
