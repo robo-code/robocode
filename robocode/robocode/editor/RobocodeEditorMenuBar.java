@@ -16,11 +16,11 @@
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Added confirm dialog when trying to reset the compiler preferences
+ *     - Did a lot of NullPointerException bugfixes with getActiveWindow()
  *******************************************************************************/
 package robocode.editor;
 
 
-import java.awt.AWTEvent;
 import java.awt.Event;
 import java.awt.event.*;
 
@@ -212,10 +212,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	}
 
 	public void fileExitActionPerformed() {
-		AWTEvent evt;
-
-		evt = new WindowEvent(editor, WindowEvent.WINDOW_CLOSING);
-		editor.dispatchEvent(evt);
+		editor.dispatchEvent(new WindowEvent(editor, WindowEvent.WINDOW_CLOSING));
 	}
 
 	public void fileNewJavaFileActionPerformed() {
@@ -243,31 +240,59 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	}
 
 	public void editUndoActionPerformed() {
-		editor.getActiveWindow().undo();
+		EditWindow editWindow = editor.getActiveWindow();
+
+		if (editWindow != null) {
+			editWindow.undo();
+		}
 	}
 
 	public void editRedoActionPerformed() {
-		editor.getActiveWindow().redo();
+		EditWindow editWindow = editor.getActiveWindow();
+
+		if (editWindow != null) {
+			editWindow.redo();
+		}
 	}
 
 	public void editCutActionPerformed() {
-		editor.getActiveWindow().getEditorPane().cut();
+		EditWindow editWindow = editor.getActiveWindow();
+
+		if (editWindow != null) {
+			editWindow.getEditorPane().cut();
+		}
 	}
 
 	public void editCopyActionPerformed() {
-		editor.getActiveWindow().getEditorPane().copy();
+		EditWindow editWindow = editor.getActiveWindow();
+
+		if (editWindow != null) {
+			editWindow.getEditorPane().copy();
+		}
 	}
 
 	public void editPasteActionPerformed() {
-		editor.getActiveWindow().getEditorPane().paste();
+		EditWindow editWindow = editor.getActiveWindow();
+
+		if (editWindow != null) {
+			editWindow.getEditorPane().paste();
+		}
 	}
 
 	public void editDeleteActionPerformed() {
-		editor.getActiveWindow().getEditorPane().replaceSelection(null);
+		EditWindow editWindow = editor.getActiveWindow();
+
+		if (editWindow != null) {
+			editWindow.getEditorPane().replaceSelection(null);
+		}
 	}
 
 	public void editSelectAllActionPerformed() {
-		editor.getActiveWindow().getEditorPane().selectAll();
+		EditWindow editWindow = editor.getActiveWindow();
+
+		if (editWindow != null) {
+			editWindow.getEditorPane().selectAll();
+		}
 	}
 
 	public void editFindActionPerformed() {
@@ -283,8 +308,10 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	}
 
 	public void windowCloseActionPerformed() {
-		if (editor.getActiveWindow() != null) {
-			editor.getActiveWindow().doDefaultCloseAction();
+		EditWindow editWindow = editor.getActiveWindow();
+		
+		if (editWindow != null) {
+			editWindow.doDefaultCloseAction();
 		}
 	}
 
