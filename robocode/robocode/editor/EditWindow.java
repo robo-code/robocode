@@ -508,6 +508,14 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		return lineNumbers;
 	}
 
+	public void undo() {
+		((JavaDocument) getEditorPane().getDocument()).undo();
+	}
+	
+	public void redo() {	
+		((JavaDocument) getEditorPane().getDocument()).redo();
+	}
+
 	public void scrollToTop() {
 		getEditorPane().scrollRectToVisible(new Rectangle(0, 0, 10, 10));
 	}
