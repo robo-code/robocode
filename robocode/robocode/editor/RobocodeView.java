@@ -22,7 +22,7 @@ import javax.swing.text.*;
 /**
  * @author Mathew A. Nelson (original)
  */
-public class RobocodeView extends javax.swing.text.PlainView {
+public class RobocodeView extends PlainView {
 	public final static Color commentColor = new Color(0, 150, 0);
 	public final static Color stringColor = new Color(0, 150, 150);
 	public final static Color keywordColor = new Color(0, 0, 150);
@@ -33,7 +33,7 @@ public class RobocodeView extends javax.swing.text.PlainView {
 	public final static int STRING = 3;
 	public final static int MULTILINECOMMENT = 4;
 
-	public RobocodeView(javax.swing.text.Element elem) {
+	public RobocodeView(Element elem) {
 		super(elem);
 	}
 
@@ -49,7 +49,7 @@ public class RobocodeView extends javax.swing.text.PlainView {
 	}
 
 	@Override
-	protected int drawUnselectedText(java.awt.Graphics g, int x, int y, int p0, int p1) throws javax.swing.text.BadLocationException {
+	protected int drawUnselectedText(java.awt.Graphics g, int x, int y, int p0, int p1) throws BadLocationException {
 		Document doc = getDocument();
 		Segment segment = new Segment();
 		Segment token = getLineBuffer();
