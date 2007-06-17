@@ -24,8 +24,6 @@ package robocode.editor;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,7 +35,6 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.undo.UndoManager;
 
 import robocode.io.Logger;
 
@@ -48,7 +45,7 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class EditWindow extends JInternalFrame implements CaretListener, PropertyChangeListener {
+public class EditWindow extends JInternalFrame implements CaretListener {
 
 	public RobocodeEditorKit editorKit;
 	public String fileName;
@@ -62,7 +59,6 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 	private JScrollPane scrollPane;
 
 	private LineNumbers lineNumbers;
-	private UndoManager undoManager;
 
 	/**
 	 * Return the editorPane property value.
@@ -73,15 +69,12 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 		if (editorPane == null) {
 			editorPane = new JEditorPane();
 			editorPane.setFont(new Font("monospaced", 0, 12));
-			editorPane.setContentType("text/java");
 			editorKit = new RobocodeEditorKit();
 			editorPane.setEditorKitForContentType("text/java", editorKit);
 			editorPane.setContentType("text/java");
 			editorKit.setEditWindow(this);
 			editorPane.addCaretListener(this);
 			((JavaDocument) editorPane.getDocument()).setEditWindow(this);
-			editorPane.getDocument().addUndoableEditListener(getUndoManager());
-			editorPane.addPropertyChangeListener(this);
 
 			InputMap im = editorPane.getInputMap();
 
@@ -182,19 +175,6 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 		int lineend = getEditorPane().getDocument().getDefaultRootElement().getElementIndex(e.getDot());
 
 		editor.setLineStatus(lineend);
-	}
-
-	/**
-	 * Event handler for PropertyChangeListener
-	 *
-	 * If the Document changes, adds clears out our UndoManager and attaches it
-	 * to the new document.
-	 */
-	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getOldValue() instanceof JavaDocument) {
-			getUndoManager().discardAllEdits();
-			((JavaDocument) e.getNewValue()).addUndoableEditListener(getUndoManager());
-		}
 	}
 
 	public void compile() {
@@ -526,35 +506,6 @@ public class EditWindow extends JInternalFrame implements CaretListener, Propert
 			lineNumbers = new LineNumbers(getEditorPane());
 		}
 		return lineNumbers;
-	}
-
-	/**
-	 * Returns the undoManager
-	 * @ UndoManager
-	 */
-	private UndoManager getUndoManager() {
-		if (undoManager == null) {
-			undoManager = new UndoManager();
-		}
-		return undoManager;
-	}
-
-	/**
-	 * Undo
-	 */
-	public void undo() {
-		if (getUndoManager().canUndo()) {
-			getUndoManager().undo();
-		}
-	}
-
-	/**
-	 * Redo
-	 */
-	public void redo() {
-		if (getUndoManager().canRedo()) {
-			getUndoManager().redo();
-		}
 	}
 
 	public void scrollToTop() {
