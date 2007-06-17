@@ -20,6 +20,7 @@ package robocode.editor;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.*;
+import javax.swing.undo.UndoManager;
 
 import robocode.io.Logger;
 
@@ -30,22 +31,24 @@ import robocode.io.Logger;
  */
 @SuppressWarnings("serial")
 public class JavaDocument extends PlainDocument {
+	private UndoHandler undoHandler;
 	private boolean needsRedraw;
 	private EditWindow editWindow;
 	private boolean editing;
 
 	public JavaDocument() {
 		super();
-	}
-
-	protected JavaDocument(AbstractDocument.Content c) {
-		super(c);
+		init();
 	}
 
 	public EditWindow getEditWindow() {
 		return editWindow;
 	}
 
+	private void init() {
+		addUndoableEditListener(getUndoHandler());
+	}
+	
 	@Override
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 		if (!editing) {
@@ -132,19 +135,17 @@ public class JavaDocument extends PlainDocument {
 			editWindow.setModified(true);
 		}
 		super.postRemoveUpdate(event);
-		// Get the root element
+
+		processMultilineComments(event);
+	}
+
+	public void processMultilineComments(DefaultDocumentEvent event) {
 		Element rootElement = getDefaultRootElement();
 		// Determine what changes were made to the document
 		int changedIndex = getDefaultRootElement().getElementIndex(event.getOffset());
 		Element changedElement = getDefaultRootElement().getElement(changedIndex);
 
-		DocumentEvent.ElementChange deltas = event.getChange(rootElement);
-
-		if (deltas != null) {
-			processMultilineComments(changedElement, true);
-		} else {
-			processMultilineComments(changedElement, false);
-		}
+		processMultilineComments(changedElement, event.getChange(rootElement) != null);
 	}
 
 	public void processMultilineComments(Element element, boolean isDeltas) {
@@ -168,7 +169,7 @@ public class JavaDocument extends PlainDocument {
 		// If we already had a comment flag, then the last line must
 		// have ended "still in a comment"
 		MutableAttributeSet a = (MutableAttributeSet) element.getAttributes();
-
+		
 		if (a.isDefined("inComment")) {
 			previousLineComment = true;
 		} // we don't have a comment flag, so check the last line.
@@ -177,7 +178,7 @@ public class JavaDocument extends PlainDocument {
 			int lastElementIndex = elementIndex - 1;
 
 			if (lastElementIndex >= 0) {
-				AbstractDocument.AbstractElement lastElement = (AbstractDocument.AbstractElement) getDefaultRootElement().getElement(
+				AbstractElement lastElement = (AbstractElement) getDefaultRootElement().getElement(
 						lastElementIndex);
 
 				if (!lastElement.isDefined("endsComment") && lastElement.isDefined("inComment")
@@ -314,5 +315,53 @@ public class JavaDocument extends PlainDocument {
 
 	public void setEditing(boolean editing) {
 		this.editing = editing;
+	}
+
+	/**
+	 * Returns the UndoHandler
+	 */
+	private UndoHandler getUndoHandler() {
+		if (undoHandler == null) {
+			undoHandler = new UndoHandler();
+		}
+		return undoHandler;
+	}
+
+	/**
+	 * Undo
+	 */
+	public void undo() {
+		if (getUndoHandler().canUndo()) {
+			writeLock();
+			getUndoHandler().undo();
+			writeUnlock();
+			needsRedraw = true;
+		}
+	}
+
+	/**
+	 * Redo
+	 */
+	public void redo() {
+		if (getUndoHandler().canRedo()) {
+			writeLock();
+			getUndoHandler().redo();
+			writeUnlock();
+			needsRedraw = true;
+		}
+	}
+
+	private class UndoHandler extends UndoManager {
+		@Override
+		public void undo() {
+			super.undo();
+			processMultilineComments((DefaultDocumentEvent) lastEdit());
+		}
+
+		@Override
+		public void redo() {
+			super.redo();
+			processMultilineComments((DefaultDocumentEvent) lastEdit());
+		}
 	}
 }
