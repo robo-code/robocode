@@ -1,12 +1,19 @@
 Version 1.3.3
-(06/21/2007)
+(06/22/2007)
 -------------
 o Bugfixes
   -- Wrong colors when undoing and redoing multiline comment in the Robot Editor
   -- When a battle was stopped a new battle could start before the previous battle was
      closed down
   -- When restarting a battle while it was paused caused strange behaviour with new battles,
-     and the "Next Turn" button stopped working 
+     and the "Next Turn" button stopped working
+  -- In some situations the Rankings Panel did not show the results for all robots
+     -- This could be seen if first playing a battle with only 2 robots, and then start a
+        new battle with more robots. In this case, only the rankings for the top 2 robots
+        were shown
+o Changes
+  -- The Rankings Panel and Results Dialog are now automatically packed to fit the table
+     containing the rankings/results
 
 Version 1.3.2
 (06/09/2007)
