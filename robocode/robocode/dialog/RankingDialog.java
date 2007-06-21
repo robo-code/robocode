@@ -12,6 +12,7 @@
  *     - Totally rewritten to contain the functionality for both the
  *       RankingDialog and ResultsDialog (code reuse)
  *     - Changed to be a independent frame instead of a dialog
+ *     - Changed to pack the dialog to fit the table with the rankings
  *******************************************************************************/
 package robocode.dialog;
 
@@ -190,6 +191,7 @@ public class RankingDialog extends JFrame {
 			table.setRowSelectionAllowed(true);
 			table.getTableHeader().setReorderingAllowed(false);
 			setResultsData();
+			pack();
 		}
 		return table;
 	}
@@ -243,14 +245,21 @@ public class RankingDialog extends JFrame {
 			thread = new Thread() {
 				@Override
 				public void run() {
+					int rows = table.getModel().getRowCount();
+
 					while (thread == Thread.currentThread()) {
 						try {
 							sleep(1000);
 						} catch (InterruptedException e) {}
 
-						table.setSize(table.getColumnModel().getTotalColumnWidth(),
-								table.getModel().getRowCount() * table.getRowHeight());
+						if (table.getModel().getRowCount() != rows) {
+							rows = table.getModel().getRowCount();
 
+							table.setPreferredSize(new Dimension(table.getColumnModel().getTotalColumnWidth(),
+									table.getModel().getRowCount() * table.getRowHeight()));
+					        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+					        pack();
+						}					
 						repaint();
 					}
 				}
