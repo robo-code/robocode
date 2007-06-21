@@ -197,7 +197,10 @@ public class Battle implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
-		running = true;
+		synchronized (this) {
+			running = true;
+			notifyAll();
+		}
 
 		if (battleView != null) {
 			battleView.setPaintMode(BattleView.PAINTBATTLE);
@@ -310,12 +313,10 @@ public class Battle implements Runnable {
 			battleView.repaint();
 		}
 
-		running = false;
-
 		updateTitle();
 
 		cleanup();
-		
+
 		if (soundInitialized) {
 			manager.getSoundManager().stopBackgroundMusic();
 			manager.getSoundManager().playEndOfBattleMusic();
@@ -323,6 +324,11 @@ public class Battle implements Runnable {
 
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().setReplay(true);
+		}
+
+		synchronized (this) {
+			running = false;
+			notifyAll();
 		}
 	}
 
@@ -613,6 +619,10 @@ public class Battle implements Runnable {
 
 		battleManager.startNewRound();
 
+		if (battleView != null) {
+			battleView.update();
+		}
+
 		while (!battleOver) {
 			if (shouldPause() && !battleManager.shouldStep()) {
 				resetThisSec = true;
@@ -830,6 +840,10 @@ public class Battle implements Runnable {
 
 		BulletPeer bullet;
 		RobotPeer robot;
+
+		if (battleView != null) {
+			battleView.update();
+		}
 
 		while (!(replayOver || abortBattles)) {
 			if (shouldPause() && !battleManager.shouldStep()) {
@@ -1290,11 +1304,15 @@ public class Battle implements Runnable {
 
 	public void stop() {
 		if (!abortBattles) {
-			abortBattles = true;
+			synchronized (this) {
+				abortBattles = true;
+				desiredTPS = 10000;
 
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
+				while (running) {
+					try {
+						this.wait();
+					} catch (InterruptedException e) {}
+				}
 			}
 
 			if (battleView != null) {
@@ -1346,10 +1364,6 @@ public class Battle implements Runnable {
 				}
 				if (roundNum > 0) {
 					initializeRobotPosition(r);
-
-					if (!(battleView == null || replay)) {
-						battleView.update();
-					}
 				}
 			} // for
 			manager.getThreadManager().setLoadingRobot(null);
