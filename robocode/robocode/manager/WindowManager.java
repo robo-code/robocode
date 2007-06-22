@@ -181,16 +181,18 @@ public class WindowManager {
 
 	public void showResultsDialog() {
 		ResultsDialog resultsDialog = new ResultsDialog(manager);
-
-		resultsDialog.setSize(0, 0);
-		WindowUtil.packCenterShow(robocodeFrame, resultsDialog);
+		resultsDialog.pack();
+		resultsDialog.setLocation(robocodeFrame.getX() + (robocodeFrame.getWidth() - resultsDialog.getWidth()) / 2,
+				robocodeFrame.getY() + (robocodeFrame.getHeight() - resultsDialog.getHeight()) / 2);
+		resultsDialog.setVisible(true);
 	}
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(manager, true);
-			rankingDialog.setSize(0, 0);
-			WindowUtil.packCenterShow(robocodeFrame, rankingDialog);
+			rankingDialog.pack();
+			rankingDialog.setLocation(robocodeFrame.getX() + (robocodeFrame.getWidth() - rankingDialog.getWidth()) / 2,
+					robocodeFrame.getY() + (robocodeFrame.getHeight() - rankingDialog.getHeight()) / 2);
 		}
 		rankingDialog.setVisible(visible);
 	}
