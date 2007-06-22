@@ -510,10 +510,12 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 
 	public void undo() {
 		((JavaDocument) getEditorPane().getDocument()).undo();
+		repaint();
 	}
 	
 	public void redo() {	
 		((JavaDocument) getEditorPane().getDocument()).redo();
+		repaint();
 	}
 
 	public void scrollToTop() {
