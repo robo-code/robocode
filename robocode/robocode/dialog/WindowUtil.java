@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Moved window related methods from robocode.util.Utils into this class
+ *     - Removed packCenterShow(Window main, Window window, boolean pack)
  *******************************************************************************/
 package robocode.dialog;
 
@@ -49,11 +50,11 @@ public class WindowUtil {
 		Point location = null;
 		Dimension size = null;
 
-		Rectangle windowPosition = windowPositionManager.getWindowRect(w);
+		Rectangle windowRect = windowPositionManager.getWindowRect(w);
 
-		if (windowPosition != null) {
-			location = new Point(windowPosition.x, windowPosition.y);
-			size = new Dimension(windowPosition.width, windowPosition.height);
+		if (windowRect != null) {
+			location = new Point(windowRect.x, windowRect.y);
+			size = new Dimension(windowRect.width, windowRect.height);
 		}
 		if (!move) {
 			size = null;
@@ -139,14 +140,6 @@ public class WindowUtil {
 	}
 
 	public static void packCenterShow(Window main, Window window) {
-		// We don't want to receive the resize event for this pack!
-		window.removeComponentListener(windowPositionManager);
-		window.pack();
-		center(main, window);
-		window.setVisible(true);
-	}
-
-	public static void packCenterShow(Window main, Window window, boolean pack) {
 		// We don't want to receive the resize event for this pack!
 		window.removeComponentListener(windowPositionManager);
 		window.pack();
