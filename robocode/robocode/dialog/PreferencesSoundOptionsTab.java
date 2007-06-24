@@ -111,6 +111,12 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 			c.weightx = 1;
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			soundOptionsPanel.add(getDisableAllSoundsButton(), c);
+
+			if (AudioSystem.getMixerInfo().length == 0) {
+				for (Component child : soundOptionsPanel.getComponents()) {
+					child.setEnabled(false);
+				}
+			}
 		}
 		return soundOptionsPanel;
 	}
@@ -267,6 +273,12 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 			c.gridy = 5;
 			mixerOptionsPanel.add(getEnableMixerPanCheckBox(), c);
+
+			if (AudioSystem.getMixerInfo().length == 0) {
+				for (Component child : mixerOptionsPanel.getComponents()) {
+					child.setEnabled(false);
+				}
+			}
 		}
 		return mixerOptionsPanel;
 	}
@@ -457,16 +469,18 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 			Mixer.Info mi = (Mixer.Info) value;
 
-			String text = mi.getName();
+			if (mi != null) {
+				String text = mi.getName();
+		
+				if (!"Unknown Version".equals(mi.getVersion())) {
+					text += ' ' + mi.getVersion();
+				}
+				if (!"Unknown Vendor".equals(mi.getVendor())) {
+					text += " by " + mi.getVendor();
+				}
 
-			if (!"Unknown Version".equals(mi.getVersion())) {
-				text += ' ' + mi.getVersion();
+				setText(text);
 			}
-			if (!"Unknown Vendor".equals(mi.getVendor())) {
-				text += " by " + mi.getVendor();
-			}
-
-			setText(text);
 
 			return component;
 		}
