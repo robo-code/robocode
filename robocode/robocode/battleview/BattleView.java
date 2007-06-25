@@ -599,8 +599,17 @@ public class BattleView extends Canvas {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2.0, (getHeight() - 46) / 2.0));
-		g.setColor(Color.DARK_GRAY);
+		g.setColor(new Color(0, 0x40, 0));
 		g.fill(robocodeTextPath);
+
+		final String text = "Build the best, destroy the rest";
+		Font font = new Font("Dialog", Font.BOLD, 14);
+		int width = g.getFontMetrics(font).stringWidth(text);
+
+		g.setTransform(new AffineTransform());
+		g.setFont(font);
+		g.setColor(new Color(0, 0x50, 0));
+		g.drawString(text, (float)((getWidth() - width) / 2.0), (float)(getHeight() / 2.0 + 50));
 	}
 
 	public boolean isDisplayTPS() {
