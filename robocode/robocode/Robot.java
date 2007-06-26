@@ -14,6 +14,9 @@
  *       setScanColor()
  *     - Updated Javadoc
  *     - The finalize() is now protected instead of public
+ *     - Added onKeyPressed(), onKeyReleased(), onKeyTyped() events
+ *     - Added onMouseMoved(), onMouseClicked(), onMouseReleased(),
+ *       onMouseEntered(), onMouseExited() events
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue
  *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
@@ -24,6 +27,8 @@ package robocode;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 
 /**
@@ -1605,4 +1610,85 @@ public class Robot extends _Robot implements Runnable {
 	 * @since 1.1
 	 */
 	public void onPaint(Graphics2D g) {}
+
+	/**
+	 * This method is called when a key has been pressed.
+	 * 
+	 * @see java.awt.event.KeyListener#keyPressed(KeyEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onKeyPressed(KeyEvent e) {}
+
+	/**
+	 * This method is called when a key has been released.
+	 * 
+	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onKeyReleased(KeyEvent e) {}
+
+	/**
+	 * This method is called when a key has been typed (pressed and released).
+	 * 
+	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onKeyTyped(KeyEvent e) {}
+
+	/**
+	 * This method is called when a mouse button has been clicked (pressed and released).
+	 * 
+	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onMouseClicked(MouseEvent e) {}
+
+	/**
+	 * This method is called when the mouse has entered the battle view.
+	 * 
+	 * @see java.awt.event.MouseListener#mouseEntered(MouseEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onMouseEntered(MouseEvent e) {}
+
+	/**
+	 * This method is called when the mouse has exited the battle view.
+	 * 
+	 * @see java.awt.event.MouseListener#mouseExited(MouseEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onMouseExited(MouseEvent e) {}
+
+	/**
+	 * This method is called when a mouse button has been pressed. 
+	 * 
+	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onMousePressed(MouseEvent e) {}
+
+	/**
+	 * This method is called when a mouse button has been released. 
+	 * 
+	 * @see java.awt.event.MouseListener#mouseReleased(MouseEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onMouseReleased(MouseEvent e) {}
+
+	/**
+	 * This method is called when the mouse has been moved. 
+	 * 
+	 * @see java.awt.event.MouseMotionListener#mouseMoved(MouseEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onMouseMoved(MouseEvent e) {}
 }
