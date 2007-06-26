@@ -36,6 +36,9 @@
  *       getOptionsCommonShowResults() from the properties
  *     - Simplified the code in the run() method when battle is stopped
  *     - Changed so that stop() makes the current round stop immediately
+ *     - Added keyPressed(), keyReleased(), keyTyped()
+ *     - Added mouseMoved(), mouseClicked(), mouseReleased(), mouseEntered(),
+ *       mouseExited()
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -57,6 +60,8 @@ import static java.lang.Math.min;
 import static java.lang.Math.random;
 import static robocode.io.Logger.log;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -1308,7 +1313,7 @@ public class Battle implements Runnable {
 				abortBattles = true;
 				desiredTPS = 10000;
 
-				while (running) {
+				while (isRunning()) {
 					try {
 						this.wait();
 					} catch (InterruptedException e) {}
@@ -1610,7 +1615,7 @@ public class Battle implements Runnable {
 	 *
 	 * @return true if the battle is running, false otherwise
 	 */
-	public boolean isRunning() {
+	public synchronized boolean isRunning() {
 		return running;
 	}
 
@@ -1621,7 +1626,7 @@ public class Battle implements Runnable {
 
 		StringBuffer title = new StringBuffer("Robocode");
 
-		if (running) {
+		if (isRunning()) {
 			title.append(": ");
 
 			if (currentTime == 0) {
@@ -1655,5 +1660,141 @@ public class Battle implements Runnable {
 			title.append(" (paused)");
 		}
 		battleView.setTitle(title.toString());
+	}
+	
+	public void keyPressed(final KeyEvent e) {
+		if (isRunning()) {
+			for (RobotPeer r : robots) {
+				KeyEvent ke = cloneKeyEvent(e);
+
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onKeyPressed(ke);
+				}
+			}
+		}
+	}
+
+	public void keyReleased(final KeyEvent e) {
+		if (isRunning()) {
+			for (RobotPeer r : robots) {
+				KeyEvent ke = cloneKeyEvent(e);
+
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onKeyReleased(ke);
+				}
+			}
+		}
+	}
+
+	public void keyTyped(KeyEvent e) {
+		if (isRunning()) {
+			KeyEvent ke = cloneKeyEvent(e);
+
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onKeyTyped(ke);
+				}
+			}
+		}
+	}
+
+	public void mouseClicked(final MouseEvent e) {
+		if (isRunning()) {
+			MouseEvent me = mirroredMouseEvent(e);
+
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onMouseClicked(me);
+				}
+			}
+		}
+	}
+
+	public void mouseEntered(final MouseEvent e) {
+		if (isRunning()) {
+			MouseEvent me = mirroredMouseEvent(e);
+
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onMouseEntered(me);
+				}
+			}
+		}
+	}
+
+	public void mouseExited(final MouseEvent e) {
+		if (isRunning()) {
+			MouseEvent me = mirroredMouseEvent(e);
+
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onMouseExited(me);
+				}
+			}
+		}
+	}
+
+	public void mousePressed(final MouseEvent e) {
+		if (isRunning()) {
+			MouseEvent me = mirroredMouseEvent(e);
+
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onMousePressed(me);
+				}
+			}
+		}
+	}
+
+	public void mouseReleased(final MouseEvent e) {
+		if (isRunning()) {
+			MouseEvent me = mirroredMouseEvent(e);
+
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onMouseReleased(me);
+				}
+			}
+		}
+	}
+
+	public void mouseMoved(final MouseEvent e) {
+		if (isRunning()) {
+			MouseEvent me = mirroredMouseEvent(e);
+			
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onMouseMoved(me);
+				}
+			}
+		}
+	}
+	
+	// This dummy component is used to prevent robot in accessing the real source component
+	private final static java.awt.Component SAFE_EVENT_COMPONENT = new java.awt.Label("Dummy");
+
+
+	private KeyEvent cloneKeyEvent(final KeyEvent e) {
+		return new KeyEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
+				e.getKeyChar(), e.getKeyLocation());
+	}
+	
+	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
+		double scale;
+
+		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
+			scale = min((double) battleView.getWidth() / battleField.getWidth(), (double) battleView.getHeight() / battleField.getHeight());
+		} else {
+			scale = 1;
+		}
+
+		double dx = (battleView.getWidth() - scale * battleField.getWidth()) / 2;
+		double dy = (battleView.getHeight() - scale * battleField.getHeight()) / 2;
+
+		int x = (int) ((e.getX() - dx) / scale + 0.5);
+		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
+
+		return new MouseEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
+				e.getClickCount(), false, e.getButton()); 
 	}
 }
