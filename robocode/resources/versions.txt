@@ -1,9 +1,19 @@
 Version 1.3.4
-(06/24/2007)
+(06/26/2007)
+The "Interactive" release
 -------------
 o Bugfixes
   -- NullPointerException occurred when trying to open the Sound Options page from the
      Preferences when no sound card (or actually audio mixer) is present in the system
+o New features
+  -- The Robot class has now been extended with keyboard and mouse events:
+     onKeyTyped, onKeyPressed, onKeyReleased, onMouseMoved, onMouseClicked, onMousePressed,
+     onMouseReleased, onMouseEntered, onMouseExited
+  -- These new features adds a new dimension to the game, i.e. you could make robots that
+     must be controlled entirely manual, semi-automized robots, or press various key for
+     changing between various robot strategies, e.g. when debugging
+  -- Thus, it is now possible to create robots where multiple human players battle against
+     each other, or compete against existing legacy robots 
 
 Version 1.3.3
 (06/22/2007)
