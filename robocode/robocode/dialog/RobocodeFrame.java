@@ -18,6 +18,7 @@
  *     - Updated to use methods from ImageUtil, FileUtil, Logger, which replaces
  *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Added missing close() on FileReader in loadVersionFile()
+ *     - Added support for keyboard and mouse events
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons
  *     Luis Crespo
@@ -37,6 +38,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import robocode.battle.Battle;
 import robocode.battleview.BattleView;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -93,54 +95,64 @@ public class RobocodeFrame extends JFrame {
 
 	private WindowManager windowManager;
 
-	private class EventHandler extends ComponentAdapter implements KeyListener, ActionListener, ContainerListener, WindowListener, ChangeListener {
+	private class EventHandler implements ComponentListener, KeyListener, ActionListener, ContainerListener,
+			WindowListener, ChangeListener, MouseListener, MouseMotionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == RobocodeFrame.this.getPauseButton()) {
+			final Object source = e.getSource();
+			
+			if (source == getPauseButton()) {
 				pauseResumeButtonActionPerformed();
-			} else if (e.getSource() == RobocodeFrame.this.getNextTurnButton()) {
-				nextTurnButtonActionPerformed();
-			} else if (e.getSource() == RobocodeFrame.this.getStopButton()) {
-				stopButtonActionPerformed();
-			} else if (e.getSource() == RobocodeFrame.this.getRestartButton()) {
-				restartButtonActionPerformed();
-			} else if (e.getSource() == RobocodeFrame.this.getReplayButton()) {
-				replayButtonActionPerformed();
+			} else if (source == getStopButton()) {
+				manager.getBattleManager().stop();
+			} else if (source == getRestartButton()) {
+				manager.getBattleManager().restart();
+			} else if (source == getNextTurnButton()) {
+				manager.getBattleManager().nextTurn();
+			} else if (source == getReplayButton()) {
+				manager.getBattleManager().replay();
 			}
 		}
 
-		@Override
-		public void componentHidden(ComponentEvent e) {}
-
-		@Override
-		public void componentMoved(ComponentEvent e) {}
-
-		@Override
 		public void componentResized(ComponentEvent e) {
-			if (e.getSource() == RobocodeFrame.this.getBattleView()) {
-				RobocodeFrame.this.battleViewResized();
+			if (e.getSource() == getBattleView()) {
+				battleViewResized();
 			}
-			if (e.getSource() == RobocodeFrame.this.getBattleViewPanel()) {
-				RobocodeFrame.this.battleViewPanelResized();
+			if (e.getSource() == getBattleViewPanel()) {
+				battleViewPanelResized();
 			}
 		}
 
-		@Override
 		public void componentShown(ComponentEvent e) {}
+
+		public void componentHidden(ComponentEvent e) {}
 
 		public void componentRemoved(ContainerEvent e) {}
 
 		public void componentAdded(ContainerEvent e) {}
 
+		public void componentMoved(ComponentEvent e) {}
+
 		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_F4 && e.getModifiers() == InputEvent.ALT_MASK) {
-				System.exit(0);
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.keyPressed(e);
 			}
 		}
 
-		public void keyReleased(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.keyReleased(e);
+			}
+		}
 
-		public void keyTyped(KeyEvent e) {}
+		public void keyTyped(KeyEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.keyTyped(e);
+			}
+		}
 
 		public void windowActivated(WindowEvent e) {}
 
@@ -187,6 +199,50 @@ public class RobocodeFrame extends JFrame {
 				tpsLabel.setText("  " + tps);
 			}
 		}
+
+		public void mouseClicked(MouseEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.mouseClicked(e);
+			}
+		}
+
+		public void mouseEntered(MouseEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.mouseEntered(e);
+			}
+		}
+
+		public void mouseExited(MouseEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.mouseExited(e);
+			}
+		}
+
+		public void mousePressed(MouseEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.mousePressed(e);
+			}
+		}
+
+		public void mouseReleased(MouseEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.mouseReleased(e);
+			}
+		}
+
+		public void mouseMoved(MouseEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.mouseMoved(e);
+			}
+		}
+
+		public void mouseDragged(MouseEvent e) {}
 	}
 
 
@@ -545,6 +601,7 @@ public class RobocodeFrame extends JFrame {
 		setTitle("Robocode");
 		setIconImage(ImageUtil.getImage("/resources/icons/robocode-icon.png"));
 		setResizable(true);
+		setVisible(false);
 
 		// FNL: Make sure that menus are heavy-weight components so that the menus are not painted
 		// behind the BattleView which is a heavy-weight component. This must be done before
@@ -556,10 +613,13 @@ public class RobocodeFrame extends JFrame {
 
 		manager.getBattleManager().addListener(pauseResumeHandler);
 
-		addKeyListener(eventHandler);
 		addWindowListener(eventHandler);
 
-		setVisible(false);
+		getBattleView().addKeyListener(eventHandler);
+		getBattleView().addMouseListener(eventHandler);
+		getBattleView().addMouseMotionListener(eventHandler);
+		getBattleView().setFocusable(true);
+
 		if (manager.isSlave()) {
 			getRobocodeMenuBar().getBattleMenu().setEnabled(false);
 			getRobocodeMenuBar().getRobotMenu().setEnabled(false);
@@ -617,22 +677,6 @@ public class RobocodeFrame extends JFrame {
 		} else {
 			battleManager.pauseBattle();
 		}
-	}
-
-	private void nextTurnButtonActionPerformed() {
-		manager.getBattleManager().nextTurn();
-	}
-
-	private void stopButtonActionPerformed() {
-		manager.getBattleManager().stop();
-	}
-
-	private void restartButtonActionPerformed() {
-		manager.getBattleManager().restart();
-	}
-
-	private void replayButtonActionPerformed() {
-		manager.getBattleManager().replay();
 	}
 
 	/**
