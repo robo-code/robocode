@@ -38,7 +38,7 @@
  *     - Changed so that stop() makes the current round stop immediately
  *     - Added keyPressed(), keyReleased(), keyTyped()
  *     - Added mouseMoved(), mouseClicked(), mouseReleased(), mouseEntered(),
- *       mouseExited()
+ *       mouseExited(), mouseDragged(), mouseWheelMoved()
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -62,6 +62,7 @@ import static robocode.io.Logger.log;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -1770,8 +1771,32 @@ public class Battle implements Runnable {
 		}
 	}
 	
+	public void mouseDragged(final MouseEvent e) {
+		if (isRunning()) {
+			MouseEvent me = mirroredMouseEvent(e);
+			
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onMouseDragged(me);
+				}
+			}
+		}
+	}
+
+	public void mouseWheelMoved(final MouseWheelEvent e) {
+		if (isRunning()) {
+			MouseWheelEvent mwe = mirroredMouseWheelEvent(e);
+
+			for (RobotPeer r : robots) {
+				if (r.isAlive() && r.getRobot() != null) {
+					r.getRobot().onMouseWheelMoved(mwe);
+				}
+			}
+		}
+	}
+
 	// This dummy component is used to prevent robot in accessing the real source component
-	private final static java.awt.Component SAFE_EVENT_COMPONENT = new java.awt.Label("Dummy");
+	private final static java.awt.Component SAFE_EVENT_COMPONENT = new java.awt.Label();
 
 
 	private KeyEvent cloneKeyEvent(final KeyEvent e) {
@@ -1795,6 +1820,26 @@ public class Battle implements Runnable {
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
 
 		return new MouseEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-				e.getClickCount(), false, e.getButton()); 
+				e.getClickCount(), e.isPopupTrigger(), e.getButton()); 
+	}
+
+	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
+		double scale;
+
+		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
+			scale = min((double) battleView.getWidth() / battleField.getWidth(), (double) battleView.getHeight() / battleField.getHeight());
+		} else {
+			scale = 1;
+		}
+
+		double dx = (battleView.getWidth() - scale * battleField.getWidth()) / 2;
+		double dy = (battleView.getHeight() - scale * battleField.getHeight()) / 2;
+
+		int x = (int) ((e.getX() - dx) / scale + 0.5);
+		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
+
+		return new MouseWheelEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
+				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(),
+				e.getWheelRotation()); 
 	}
 }
