@@ -16,7 +16,8 @@
  *     - The finalize() is now protected instead of public
  *     - Added onKeyPressed(), onKeyReleased(), onKeyTyped() events
  *     - Added onMouseMoved(), onMouseClicked(), onMouseReleased(),
- *       onMouseEntered(), onMouseExited() events
+ *       onMouseEntered(), onMouseExited(), onMouseDragged(), onMouseWheelMoved()
+ *       events
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue
  *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
@@ -29,6 +30,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 
 /**
@@ -1613,8 +1615,12 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when a key has been pressed.
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use key events.
 	 * 
 	 * @see java.awt.event.KeyListener#keyPressed(KeyEvent)
+	 * @see #onKeyReleased(KeyEvent)
+	 * @see #onKeyTyped(KeyEvent)
 	 * 
 	 * @since 1.3.4
 	 */
@@ -1622,8 +1628,12 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when a key has been released.
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use key events.
 	 * 
 	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent)
+	 * @see #onKeyPressed(KeyEvent)
+	 * @see #onKeyTyped(KeyEvent)
 	 * 
 	 * @since 1.3.4
 	 */
@@ -1631,8 +1641,12 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when a key has been typed (pressed and released).
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use key events.
 	 * 
 	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent)
+	 * @see #onKeyPressed(KeyEvent)
+	 * @see #onKeyReleased(KeyEvent)
 	 * 
 	 * @since 1.3.4
 	 */
@@ -1640,8 +1654,17 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when a mouse button has been clicked (pressed and released).
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use mouse events.
 	 * 
 	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 * 
 	 * @since 1.3.4
 	 */
@@ -1649,8 +1672,17 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when the mouse has entered the battle view.
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use mouse events.
 	 * 
 	 * @see java.awt.event.MouseListener#mouseEntered(MouseEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseClicked(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 * 
 	 * @since 1.3.4
 	 */
@@ -1658,8 +1690,17 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when the mouse has exited the battle view.
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use mouse events.
 	 * 
 	 * @see java.awt.event.MouseListener#mouseExited(MouseEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseClicked(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 * 
 	 * @since 1.3.4
 	 */
@@ -1667,8 +1708,17 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when a mouse button has been pressed. 
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use mouse events.
 	 * 
 	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseClicked(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 * 
 	 * @since 1.3.4
 	 */
@@ -1676,8 +1726,17 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when a mouse button has been released. 
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use mouse events.
 	 * 
 	 * @see java.awt.event.MouseListener#mouseReleased(MouseEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseClicked(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 * 
 	 * @since 1.3.4
 	 */
@@ -1685,10 +1744,55 @@ public class Robot extends _Robot implements Runnable {
 
 	/**
 	 * This method is called when the mouse has been moved. 
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use mouse events.
 	 * 
 	 * @see java.awt.event.MouseMotionListener#mouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseClicked(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 * 
 	 * @since 1.3.4
 	 */
 	public void onMouseMoved(MouseEvent e) {}
+
+	/**
+	 * This method is called when a mouse button has been pressed and then dragged. 
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use mouse events.
+	 * 
+	 * @see java.awt.event.MouseMotionListener#mouseDragged(MouseEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseClicked(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onMouseDragged(MouseEvent e) {}
+
+	/**
+	 * This method is called the mouse wheel has been rotated. 
+	 * <p>
+	 * See the sample.Interactive robot for an example of how to use mouse events.
+	 * 
+	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(MouseWheelEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseClicked(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * 
+	 * @since 1.3.4
+	 */
+	public void onMouseWheelMoved(MouseWheelEvent e) {} 
 }
