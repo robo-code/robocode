@@ -96,7 +96,7 @@ public class RobocodeFrame extends JFrame {
 	private WindowManager windowManager;
 
 	private class EventHandler implements ComponentListener, KeyListener, ActionListener, ContainerListener,
-			WindowListener, ChangeListener, MouseListener, MouseMotionListener {
+			WindowListener, ChangeListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
 		public void actionPerformed(ActionEvent e) {
 			final Object source = e.getSource();
@@ -242,7 +242,19 @@ public class RobocodeFrame extends JFrame {
 			}
 		}
 
-		public void mouseDragged(MouseEvent e) {}
+		public void mouseDragged(MouseEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.mouseDragged(e);
+			}
+		}
+
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			Battle battle = manager.getBattleManager().getBattle();
+			if (battle != null) {
+				battle.mouseWheelMoved(e);
+			}
+		}
 	}
 
 
@@ -618,6 +630,7 @@ public class RobocodeFrame extends JFrame {
 		getBattleView().addKeyListener(eventHandler);
 		getBattleView().addMouseListener(eventHandler);
 		getBattleView().addMouseMotionListener(eventHandler);
+		getBattleView().addMouseWheelListener(eventHandler);
 		getBattleView().setFocusable(true);
 
 		if (manager.isSlave()) {
