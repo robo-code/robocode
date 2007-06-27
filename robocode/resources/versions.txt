@@ -8,12 +8,18 @@ o Bugfixes
 o New features
   -- The Robot class has now been extended with keyboard and mouse events:
      onKeyTyped, onKeyPressed, onKeyReleased, onMouseMoved, onMouseClicked, onMousePressed,
-     onMouseReleased, onMouseEntered, onMouseExited
+     onMouseReleased, onMouseEntered, onMouseExited, onMouseDragged, onMouseWheelMoved()
   -- These new features adds a new dimension to the game, i.e. you could make robots that
      must be controlled entirely manual, semi-automized robots, or press various key for
      changing between various robot strategies, e.g. when debugging
   -- Thus, it is now possible to create robots where multiple human players battle against
-     each other, or compete against existing legacy robots 
+     each other, or compete against existing legacy robots
+o New sample robot
+  -- A new sample robot named Interactive has been added to demonstrate how to control
+     a robot using keyboard and mouse events only
+  -- This robot is controlled by the arrow keys and/or the mouse wheel, and let the gun
+     point towards the current coordinate of the mouse pointer used for aiming. Mouse
+     buttons are used for firing bullets with various fire power
 
 Version 1.3.3
 (06/22/2007)
