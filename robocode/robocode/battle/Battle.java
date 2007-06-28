@@ -319,6 +319,11 @@ public class Battle implements Runnable {
 			battleView.repaint();
 		}
 
+		synchronized (this) {
+			running = false;
+			notifyAll();
+		}
+
 		updateTitle();
 
 		cleanup();
@@ -330,11 +335,6 @@ public class Battle implements Runnable {
 
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().setReplay(true);
-		}
-
-		synchronized (this) {
-			running = false;
-			notifyAll();
 		}
 	}
 
