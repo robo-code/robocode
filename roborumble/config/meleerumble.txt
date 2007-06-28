@@ -16,7 +16,7 @@ TEAMS=NOT
 #leave it blank or put GENERAL if you want to execute battles for all bots, or use MINI, MICRO or NANO if 
 #you want to run only battles for this type of bot.
 #Use SERVER if you want an smart client that uses server info to control process of running battles (recommended)
-#Melee only suports a simplified SERVER mode
+#Melee only supports a simplified SERVER mode
 
 RUNONLY=SERVER
 
