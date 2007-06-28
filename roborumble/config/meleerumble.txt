@@ -31,12 +31,12 @@ FIELDH=1000
 MELEEBOTS=10
 OUTPUT=./roborumble/files/resultsmelee.txt
 
-#properties to retrieve bots from internet
+#properties to retrieve bots from Internet
 
 BOTSREP=./robots/
 TEMP=./roborumble/temp/
 
-#properties to retrieve participants list from internet
+#properties to retrieve participants list from Internet
 
 PARTICIPANTSURL=http://robowiki.net/cgi-bin/robowiki?RoboRumble/MeleeParticipants
 PARTICIPANTSFILE=./roborumble/files/participmelee.txt
@@ -74,5 +74,5 @@ BATTLESNUMFILE=./roborumble/temp/meleebattlesnumber.txt
 #URL to remove old participants
 UPDATEBOTSURL=http://rumble.fervir.com/rumble/RemoveOldParticipant
 
-#Number of battles a bot has to fight when it is uploaded. It has priority againts others until it reaches such number
+#Number of battles a bot has to fight when it is uploaded. It has priority against others until it reaches such number
 BATTLESPERBOT = 1500
