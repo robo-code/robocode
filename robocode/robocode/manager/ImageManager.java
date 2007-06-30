@@ -33,7 +33,10 @@ import robocode.render.RenderImage;
  * @author Titus Chen (contributor)
  */
 public class ImageManager {
-	private Image[] groundImages = new Image[5];
+
+	private RobocodeManager manager;
+
+	private Image[] groundImages;
 
 	private RenderImage[][] explosionRenderImages;
 	private RenderImage debriseRenderImage;
@@ -44,15 +47,30 @@ public class ImageManager {
 
 	private static final int MAX_NUM_COLORS = 256;
 
-	private HashMap<Color, RenderImage> robotBodyImageCache = new RenderCache<Color, RenderImage>();
-	private HashMap<Color, RenderImage> robotGunImageCache = new RenderCache<Color, RenderImage>();
-	private HashMap<Color, RenderImage> robotRadarImageCache = new RenderCache<Color, RenderImage>();
+	private HashMap<Color, RenderImage> robotBodyImageCache;
+	private HashMap<Color, RenderImage> robotGunImageCache;
+	private HashMap<Color, RenderImage> robotRadarImageCache;
 
-	public ImageManager() {
+	public ImageManager(RobocodeManager manager) {
+		this.manager = manager;
 		initialize();
 	}
 
 	public void initialize() {
+		// Note that initialize could be called in order to reset all images (image buffering)
+
+		// Reset image cache
+		groundImages = new Image[5];
+		explosionRenderImages = null;
+		debriseRenderImage = null;
+		bodyImage = null;
+		gunImage = null;
+		radarImage = null;
+		robotBodyImageCache = new RenderCache<Color, RenderImage>();
+		robotGunImageCache = new RenderCache<Color, RenderImage>();
+		robotRadarImageCache = new RenderCache<Color, RenderImage>();
+
+		// Read images into the cache
 		getBodyImage();
 		getGunImage();
 		getRadarImage();
@@ -61,7 +79,7 @@ public class ImageManager {
 
 	public Image getGroundTileImage(int index) {
 		if (groundImages[index] == null) {
-			groundImages[index] = ImageUtil.getImage("/resources/images/ground/blue_metal/blue_metal_" + index + ".png");
+			groundImages[index] = getImage("/resources/images/ground/blue_metal/blue_metal_" + index + ".png");
 		}
 		return groundImages[index];
 	}
@@ -90,7 +108,7 @@ public class ImageManager {
 						break;
 					}
 
-					frames.add(new RenderImage(ImageUtil.getImage(filename)));
+					frames.add(new RenderImage(getImage(filename)));
 				}
 			}
 
@@ -106,9 +124,17 @@ public class ImageManager {
 
 	public RenderImage getExplosionDebriseRenderImage() {
 		if (debriseRenderImage == null) {
-			debriseRenderImage = new RenderImage(ImageUtil.getImage("/resources/images/ground/explode_debris.png"));
+			debriseRenderImage = new RenderImage(getImage("/resources/images/ground/explode_debris.png"));
 		}
 		return debriseRenderImage;
+	}
+
+	private Image getImage(String filename) {
+		Image image = ImageUtil.getImage(filename);
+		if (manager.getProperties().getOptionsRenderingBufferImages()) {
+			image = ImageUtil.getBufferedImage(image);
+		}
+		return image;
 	}
 
 	/**
@@ -118,7 +144,7 @@ public class ImageManager {
 	 */
 	private Image getBodyImage() {
 		if (bodyImage == null) {
-			bodyImage = ImageUtil.getImage("/resources/images/body.png");
+			bodyImage = getImage("/resources/images/body.png");
 		}
 		return bodyImage;
 	}
@@ -130,7 +156,7 @@ public class ImageManager {
 	 */
 	private Image getGunImage() {
 		if (gunImage == null) {
-			gunImage = ImageUtil.getImage("/resources/images/turret.png");
+			gunImage = getImage("/resources/images/turret.png");
 		}
 		return gunImage;
 	}
@@ -142,7 +168,7 @@ public class ImageManager {
 	 */
 	private Image getRadarImage() {
 		if (radarImage == null) {
-			radarImage = ImageUtil.getImage("/resources/images/radar.png");
+			radarImage = getImage("/resources/images/radar.png");
 		}
 		return radarImage;
 	}
