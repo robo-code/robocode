@@ -13,8 +13,10 @@ package robocode.render;
 
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.RGBImageFilter;
 import java.net.URL;
@@ -39,7 +41,6 @@ public class ImageUtil {
 	 * @return the loaded image
 	 */
 	public static Image getImage(String filename) {
-
 		URL url = ClassLoader.class.getResource(filename);
 
 		if (url == null) {
@@ -53,6 +54,22 @@ public class ImageUtil {
 			Logger.log("Could not load image: " + filename);
 			return null;
 		}
+	}
+
+	/**
+	 * Creates and returns a buffered version of the specified image.
+	 *
+	 * @param image the image to create a buffered image for
+	 * @return a buffered image based on the specified image
+	 */
+	public static BufferedImage getBufferedImage(Image image) {
+		BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
+
+		Graphics g = bufferedImage.getGraphics();
+		g.drawImage(image, 0, 0, null);	
+
+		return bufferedImage;
 	}
 
 	/**
