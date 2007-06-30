@@ -118,7 +118,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 					String filepath = fileSpecification.getFilePath();
 	
 					String text = "";
-					if (filepath != null && filepath.indexOf(".") > 0) {
+					if (filepath != null && filepath.indexOf(".") != -1) {
 						String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
 	
 						text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
