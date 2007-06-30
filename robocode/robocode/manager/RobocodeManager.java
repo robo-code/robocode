@@ -176,7 +176,7 @@ public class RobocodeManager {
 	 */
 	public ImageManager getImageManager() {
 		if (imageManager == null) {
-			imageManager = new ImageManager();
+			imageManager = new ImageManager(this);
 		}
 		return imageManager;
 	}
