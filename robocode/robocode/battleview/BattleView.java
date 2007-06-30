@@ -119,7 +119,6 @@ public class BattleView extends Canvas {
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
-		battle = new Battle(battleField, manager);
 	}
 
 	/**
