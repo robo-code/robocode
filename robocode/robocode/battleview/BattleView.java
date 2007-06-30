@@ -25,6 +25,7 @@ import java.util.List;
 
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
+import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
@@ -45,6 +46,8 @@ import robocode.util.GraphicsState;
 public class BattleView extends Canvas {
 	public static final int PAINTROBOCODELOGO = 0;
 	public static final int PAINTBATTLE = 1;
+
+	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
 
@@ -114,6 +117,9 @@ public class BattleView extends Canvas {
 		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
 		imageManager = manager.getImageManager();
+
+		battleField = new DefaultBattleField(800, 600);
+		battle = new Battle(battleField, manager);
 	}
 
 	/**
@@ -598,14 +604,13 @@ public class BattleView extends Canvas {
 		g.setColor(new Color(0, 0x40, 0));
 		g.fill(robocodeTextPath);
 
-		final String text = "Build the best, destroy the rest";
 		Font font = new Font("Dialog", Font.BOLD, 14);
-		int width = g.getFontMetrics(font).stringWidth(text);
+		int width = g.getFontMetrics(font).stringWidth(ROBOCODE_SLOGAN);
 
 		g.setTransform(new AffineTransform());
 		g.setFont(font);
 		g.setColor(new Color(0, 0x50, 0));
-		g.drawString(text, (float)((getWidth() - width) / 2.0), (float)(getHeight() / 2.0 + 50));
+		g.drawString(ROBOCODE_SLOGAN, (float)((getWidth() - width) / 2.0), (float)(getHeight() / 2.0 + 50));
 	}
 
 	public boolean isDisplayTPS() {

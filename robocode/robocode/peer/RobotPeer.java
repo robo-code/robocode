@@ -59,6 +59,7 @@ import robocode.*;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
+import robocode.battlefield.DefaultBattleField;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
@@ -203,6 +204,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public RobotPeer(String name) {
 		this.name = name;
+		
+		battleField = new DefaultBattleField(800, 600);
+		battle = new Battle(battleField, null);
 	}
 
 	public boolean isIORobot() {

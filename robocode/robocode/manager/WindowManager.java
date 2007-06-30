@@ -56,10 +56,6 @@ public class WindowManager {
 		this.manager = manager;
 	}
 
-	public void setRobocodeFrame(RobocodeFrame newRobocodeFrame) {
-		robocodeFrame = newRobocodeFrame;
-	}
-
 	public RobocodeFrame getRobocodeFrame() {
 		if (robocodeFrame == null) {
 			// Create the frame
@@ -82,9 +78,9 @@ public class WindowManager {
 	}
 
 	public void showAboutBox() {
-		AboutBox aboutBox = new AboutBox(robocodeFrame, manager);
+		AboutBox aboutBox = new AboutBox(getRobocodeFrame(), manager);
 
-		WindowUtil.packCenterShow(robocodeFrame, aboutBox);
+		WindowUtil.packCenterShow(getRobocodeFrame(), aboutBox);
 	}
 
 	public void showBattleOpenDialog() {
@@ -120,7 +116,7 @@ public class WindowManager {
 
 		BattleManager battleManager = manager.getBattleManager();
 
-		if (chooser.showOpenDialog(robocodeFrame) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
 			battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
 			battleManager.loadBattleProperties();
 			showNewBattleDialog(battleManager.getBattleProperties());
@@ -176,14 +172,14 @@ public class WindowManager {
 		PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
 
 		// Show it
-		WindowUtil.packCenterShow(robocodeFrame, preferencesDialog);
+		WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
 	}
 
 	public void showResultsDialog() {
 		ResultsDialog resultsDialog = new ResultsDialog(manager);
 		resultsDialog.pack();
-		resultsDialog.setLocation(robocodeFrame.getX() + (robocodeFrame.getWidth() - resultsDialog.getWidth()) / 2,
-				robocodeFrame.getY() + (robocodeFrame.getHeight() - resultsDialog.getHeight()) / 2);
+		resultsDialog.setLocation(getRobocodeFrame().getX() + (getRobocodeFrame().getWidth() - resultsDialog.getWidth()) / 2,
+				getRobocodeFrame().getY() + (getRobocodeFrame().getHeight() - resultsDialog.getHeight()) / 2);
 		resultsDialog.setVisible(true);
 	}
 
@@ -191,8 +187,8 @@ public class WindowManager {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(manager, true);
 			rankingDialog.pack();
-			rankingDialog.setLocation(robocodeFrame.getX() + (robocodeFrame.getWidth() - rankingDialog.getWidth()) / 2,
-					robocodeFrame.getY() + (robocodeFrame.getHeight() - rankingDialog.getHeight()) / 2);
+			rankingDialog.setLocation(getRobocodeFrame().getX() + (getRobocodeFrame().getWidth() - rankingDialog.getWidth()) / 2,
+					getRobocodeFrame().getY() + (getRobocodeFrame().getHeight() - rankingDialog.getHeight()) / 2);
 		}
 		rankingDialog.setVisible(visible);
 	}
@@ -260,7 +256,7 @@ public class WindowManager {
 		NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
 
 		// Pack, center, and show it
-		WindowUtil.packCenterShow(robocodeFrame, newBattleDialog);
+		WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
 	}
 
 	public boolean closeRobocodeEditor() {
@@ -382,7 +378,7 @@ public class WindowManager {
 		try {
 			BrowserManager.openURL(url);
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(robocodeFrame, e.getMessage(), "Unable to open browser!",
+			JOptionPane.showMessageDialog(getRobocodeFrame(), e.getMessage(), "Unable to open browser!",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
