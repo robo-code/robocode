@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - This class now implements java.io.Serializable
  *******************************************************************************/
 package robocode.control;
 
@@ -16,8 +18,12 @@ package robocode.control;
  * Defines a battlefield
  *
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
-public class BattlefieldSpecification {
+public class BattlefieldSpecification implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private int width;
 	private int height;
 

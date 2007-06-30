@@ -10,6 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Changed to be consistent with the battle results and ranking scores
+ *     - This class now implements java.io.Serializable
  *******************************************************************************/
 package robocode.control;
 
@@ -21,7 +22,10 @@ package robocode.control;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class RobotResults {
+public class RobotResults implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private RobotSpecification robot;
 	private int rank;
 	private double score;

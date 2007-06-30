@@ -12,6 +12,7 @@
  *     - Removed the battlefield field, which can be created when calling
  *       getBattlefield() and optimized constructor
  *     - Changed getRobots() to return a copy of the robots
+ *     - This class now implements java.io.Serializable
  *******************************************************************************/
 package robocode.control;
 
@@ -25,7 +26,10 @@ import robocode.battle.BattleProperties;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class BattleSpecification {
+public class BattleSpecification implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private final RobotSpecification[] robots;
 	private final BattleProperties battleProperties;
 

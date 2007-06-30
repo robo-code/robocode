@@ -13,6 +13,7 @@
  *     - Added the getNameAndVersion() method
  *     - Changed to use the FileSpecification as local specification instead of
  *       RobotSpecification. This change was done in order to support teams
+ *     - This class now implements java.io.Serializable
  *******************************************************************************/
 package robocode.control;
 
@@ -27,7 +28,9 @@ import java.io.File;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class RobotSpecification {
+public class RobotSpecification implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private robocode.repository.FileSpecification local;
 
