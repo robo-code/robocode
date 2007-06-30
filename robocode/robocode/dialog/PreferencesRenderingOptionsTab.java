@@ -35,12 +35,13 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 	private JPanel specificSettingsPanel;
 	private JPanel predefinedSettingsPanel;
+	private JPanel otherSettingsPanel;
 
 	private JComboBox optionsRenderingAntialiasingComboBox;
 	private JComboBox optionsRenderingTextAntialiasingComboBox;
 	private JComboBox optionsRenderingMethodComboBox;
-
 	private JComboBox optionsRenderingNoBuffersComboBox;
+	private JCheckBox optionsRenderingBufferImagesCheckBox;
 
 	private JButton predefinedPlaformDefaultButton;
 	private JButton predefinedSpeedButton;
@@ -57,10 +58,11 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private void initialize() {
 		eventHandler = new EventHandler();
 
-		setLayout(new GridLayout(1, 2));
+		setLayout(new GridLayout(1, 3));
 
 		add(getSpecificSettingsPanel());
 		add(getPredefinedSettingsPanel());
+		add(getOtherSettingsPanel());
 
 		loadPreferences(manager.getProperties());
 	}
@@ -148,6 +150,22 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return predefinedSettingsPanel;
 	}
 
+	/**
+	 * Return the otherSettingsPanel
+	 *
+	 * @return JPanel
+	 */
+	private JPanel getOtherSettingsPanel() {
+		if (otherSettingsPanel == null) {
+			otherSettingsPanel = new JPanel();
+			otherSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+					"Other settings"));
+			otherSettingsPanel.setLayout(new BoxLayout(otherSettingsPanel, BoxLayout.Y_AXIS));
+			otherSettingsPanel.add(getOptionsRenderingBufferImagesCheckBox());
+		}
+		return otherSettingsPanel;
+	}
+
 	private JComboBox getOptionsRenderingAntialiasingComboBox() {
 		if (optionsRenderingAntialiasingComboBox == null) {
 			optionsRenderingAntialiasingComboBox = new JComboBox(new String[] { "Default", "On", "Off" });
@@ -211,12 +229,28 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return predefinedQualityButton;
 	}
 
+	/**
+	 * Return the optionsRenderingBufferImagesCheckBox
+	 *
+	 * @return JCheckBox
+	 */
+	private JCheckBox getOptionsRenderingBufferImagesCheckBox() {
+		if (optionsRenderingBufferImagesCheckBox == null) {
+			optionsRenderingBufferImagesCheckBox = new JCheckBox("Buffer images (uses memory)");
+			optionsRenderingBufferImagesCheckBox.setMnemonic('i');
+			optionsRenderingBufferImagesCheckBox.setDisplayedMnemonicIndex(7);
+			optionsRenderingBufferImagesCheckBox.addActionListener(eventHandler);
+		}
+		return optionsRenderingBufferImagesCheckBox;
+	}
+
 	private void loadPreferences(RobocodeProperties robocodeProperties) {
 		getOptionsRenderingAntialiasingComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingAntialiasing());
 		getOptionsRenderingTextAntialiasingComboBox().setSelectedIndex(
 				robocodeProperties.getOptionsRenderingTextAntialiasing());
 		getOptionsRenderingMethodComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingMethod());
 		getOptionsRenderingNoBuffersComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingNoBuffers() - 1);
+		getOptionsRenderingBufferImagesCheckBox().setSelected(robocodeProperties.getOptionsRenderingBufferImages());
 	}
 
 	public void storePreferences() {
@@ -226,6 +260,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		props.setOptionsRenderingTextAntialiasing(optionsRenderingTextAntialiasingComboBox.getSelectedIndex());
 		props.setOptionsRenderingMethod(optionsRenderingMethodComboBox.getSelectedIndex());
 		props.setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
+		props.setOptionsRenderingBufferImages(optionsRenderingBufferImagesCheckBox.isSelected());
 		manager.saveProperties();
 	}
 
@@ -251,6 +286,15 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 				setPredefinedSettings(1);
 			} else if (src == predefinedSpeedButton) {
 				setPredefinedSettings(2);
+			} else if (src == optionsRenderingBufferImagesCheckBox) {
+				// Reset images so they are reloaded and gets buffered or unbuffered
+				new Thread() {
+					public void run() {
+						storePreferences();
+						manager.getImageManager().initialize();
+					}
+				}.start();
+				return;
 			}
 			manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
 		}
