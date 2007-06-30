@@ -289,6 +289,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			} else if (src == optionsRenderingBufferImagesCheckBox) {
 				// Reset images so they are reloaded and gets buffered or unbuffered
 				new Thread() {
+					@Override
 					public void run() {
 						storePreferences();
 						manager.getImageManager().initialize();
