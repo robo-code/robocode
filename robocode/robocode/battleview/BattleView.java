@@ -26,7 +26,6 @@ import java.util.List;
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.dialog.RobocodeFrame;
-import robocode.io.Logger;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
@@ -121,40 +120,37 @@ public class BattleView extends Canvas {
 	 * Shows the next frame. The game calls this every frame.
 	 */
 	public void update() {
-		try {
-			if (robocodeFrame.isIconified() || (getWidth() <= 0) || (getHeight() <= 0)) {
-				return;
-			}
+		if (robocodeFrame.isIconified() || (getWidth() <= 0) || (getHeight() <= 0)) {
+			return;
+		}
 
-			if (!initialized) {
-				initialize();
-			}
+		if (!initialized) {
+			initialize();
+		}
 
-			if (offscreenImage != null && isDisplayable()) {
-				offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-				offscreenGfx.setRenderingHints(renderingHints);
+		if (offscreenImage != null && isDisplayable()) {
+			offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
+			offscreenGfx.setRenderingHints(renderingHints);
 
-				drawBattle(offscreenGfx);
+			drawBattle(offscreenGfx);
 
-				if (bufferStrategy != null) {
-					Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+			if (bufferStrategy != null) {
+				Graphics2D g = null;
+				try {
+					g = (Graphics2D) bufferStrategy.getDrawGraphics();
+					g.drawImage(offscreenImage, 0, 0, null);
 
+					bufferStrategy.show();	
+				} catch (NullPointerException e) {
+					// Sometimes caused by:
+					// java.awt.Component$BltBufferStrategy.revalidate()
+					;
+				} finally {
 					if (g != null) {
-						g.drawImage(offscreenImage, 0, 0, null);
-
-						bufferStrategy.show();
-
 						g.dispose();
 					}
 				}
 			}
-		} catch (NullPointerException e) {
-			// Sometimes caused by:
-			// java.awt.Component$BltBufferStrategy.revalidate()
-			;
-		} catch (Throwable t) {
-			Logger.log("Could not draw: ", t);
-			t.printStackTrace(System.err);
 		}
 	}
 
@@ -201,7 +197,7 @@ public class BattleView extends Canvas {
 		offscreenImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
 		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 
-		if (bufferStrategy == null && isDisplayable()) {
+		if (bufferStrategy == null) {
 			createBufferStrategy(numBuffers);
 			bufferStrategy = getBufferStrategy();
 		}
