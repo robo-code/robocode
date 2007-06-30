@@ -28,6 +28,7 @@
  *       file path for sound effects like gunshot, robot death etc.
  *     - Added SortedProperties class in order to sort the keys/fields of the
  *       Robocode properties file
+ *     - Added "Buffer images" Render Option
  *******************************************************************************/
 package robocode.manager;
 
@@ -63,7 +64,7 @@ public class RobocodeProperties {
 			optionsViewScanArcs = false,
 			optionsViewExplosions = true,
 			optionsViewGround = true,
-			optionsViewExplosionDebris = false;
+			optionsViewExplosionDebris = true;
 
 	// View Options (Turns Per Second)
 	private boolean
@@ -77,6 +78,9 @@ public class RobocodeProperties {
 			optionsRenderingMethod = 0, // 0 = default, 1 = speed, 2 = quality
 			optionsRenderingNoBuffers = 2, // 1 = single buffering, 2 = double buffering, 3 = tripple buffering
 			optionsBattleDesiredTPS = 30;
+
+	private boolean
+			optionsRenderingBufferImages = true;
 
 	// Sound Options (Sound Effects)
 	private boolean
@@ -147,6 +151,7 @@ public class RobocodeProperties {
 			OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing",
 			OPTIONS_RENDERING_METHOD = "robocode.options.rendering.method",
 			OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers",
+			OPTIONS_RENDERING_BUFFERIMAGES = "robocode.options.rendering.bufferImages",
 
 			OPTIONS_SOUND_ENABLESOUND = "robocode.options.sound.enableSound",
 			OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunshot",
@@ -479,6 +484,25 @@ public class RobocodeProperties {
 	public void setOptionsRenderingNoBuffers(int optionsRenderingNoBuffers) {
 		this.optionsRenderingNoBuffers = optionsRenderingNoBuffers;
 		props.setProperty(OPTIONS_RENDERING_NO_BUFFERS, "" + optionsRenderingNoBuffers);
+	}
+
+	/**
+	 * Gets the optionsRenderingBufferImages
+	 *
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsRenderingBufferImages() {
+		return optionsRenderingBufferImages;
+	}
+
+	/**
+	 * Sets the optionsRenderingBufferImages.
+	 *
+	 * @param optionsRenderingBufferImages The optionsRenderingBufferImages to set
+	 */
+	public void setOptionsRenderingBufferImages(boolean optionsRenderingBufferImages) {
+		this.optionsRenderingBufferImages = optionsRenderingBufferImages;
+		props.setProperty(OPTIONS_RENDERING_BUFFERIMAGES, "" + optionsRenderingBufferImages);
 	}
 
 	/**
@@ -889,7 +913,7 @@ public class RobocodeProperties {
 		optionsViewTPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_TPS, "true")).booleanValue();
 		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
-		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "false")).booleanValue();
+		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "true")).booleanValue();
 
 		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
 
@@ -899,6 +923,7 @@ public class RobocodeProperties {
 				Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0")));
 		setOptionsRenderingMethod(Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0")));
 		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
+		optionsRenderingBufferImages = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_BUFFERIMAGES, "true")).booleanValue();
 
 		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false")).booleanValue();
 		optionsSoundEnableGunshot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true")).booleanValue();
