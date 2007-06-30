@@ -347,11 +347,13 @@ public class BattleManager {
 	public String getBattleFilename() {
 		String filename = battleFilename;
 
-		if (filename.indexOf(File.separatorChar) < 0) {
-			filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
-		}
-		if (!filename.endsWith(".battle")) {
-			filename += ".battle";
+		if (filename != null) {
+			if (filename.indexOf(File.separatorChar) < 0) {
+				filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
+			}
+			if (!filename.endsWith(".battle")) {
+				filename += ".battle";
+			}
 		}
 		return filename;
 	}
