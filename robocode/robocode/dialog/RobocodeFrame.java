@@ -18,7 +18,7 @@
  *     - Updated to use methods from ImageUtil, FileUtil, Logger, which replaces
  *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Added missing close() on FileReader in loadVersionFile()
- *     - Added support for keyboard and mouse events
+ *     - Added support for mouse events
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons
  *     Luis Crespo
@@ -95,8 +95,8 @@ public class RobocodeFrame extends JFrame {
 
 	private WindowManager windowManager;
 
-	private class EventHandler implements ComponentListener, KeyListener, ActionListener, ContainerListener,
-			WindowListener, ChangeListener, MouseListener, MouseMotionListener, MouseWheelListener {
+	private class EventHandler implements ComponentListener, ActionListener, ContainerListener, WindowListener,
+			ChangeListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
 		public void actionPerformed(ActionEvent e) {
 			final Object source = e.getSource();
@@ -132,27 +132,6 @@ public class RobocodeFrame extends JFrame {
 		public void componentAdded(ContainerEvent e) {}
 
 		public void componentMoved(ComponentEvent e) {}
-
-		public void keyPressed(KeyEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-			if (battle != null) {
-				battle.keyPressed(e);
-			}
-		}
-
-		public void keyReleased(KeyEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-			if (battle != null) {
-				battle.keyReleased(e);
-			}
-		}
-
-		public void keyTyped(KeyEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-			if (battle != null) {
-				battle.keyTyped(e);
-			}
-		}
 
 		public void windowActivated(WindowEvent e) {}
 
@@ -256,7 +235,6 @@ public class RobocodeFrame extends JFrame {
 			}
 		}
 	}
-
 
 	private class PauseResumeHandler implements BattleManager.PauseResumeListener {
 
@@ -627,7 +605,6 @@ public class RobocodeFrame extends JFrame {
 
 		addWindowListener(eventHandler);
 
-		getBattleView().addKeyListener(eventHandler);
 		getBattleView().addMouseListener(eventHandler);
 		getBattleView().addMouseMotionListener(eventHandler);
 		getBattleView().addMouseWheelListener(eventHandler);
