@@ -36,7 +36,7 @@
  *       getOptionsCommonShowResults() from the properties
  *     - Simplified the code in the run() method when battle is stopped
  *     - Changed so that stop() makes the current round stop immediately
- *     - Added keyPressed(), keyReleased(), keyTyped()
+ *     - Added handling keyboard events thru a KeyboardEventDispather
  *     - Added mouseMoved(), mouseClicked(), mouseReleased(), mouseEntered(),
  *       mouseExited(), mouseDragged(), mouseWheelMoved()
  *     Luis Crespo
@@ -60,6 +60,8 @@ import static java.lang.Math.min;
 import static java.lang.Math.random;
 import static robocode.io.Logger.log;
 
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -185,6 +187,8 @@ public class Battle implements Runnable {
 		robots = Collections.synchronizedList(new ArrayList<RobotPeer>());
 		bullets = Collections.synchronizedList(new ArrayList<BulletPeer>());
 		contestants = Collections.synchronizedList(new ArrayList<ContestantPeer>());
+
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventHandler());
 	}
 
 	public void setReplay(boolean replay) {
@@ -1663,42 +1667,6 @@ public class Battle implements Runnable {
 		battleView.setTitle(title.toString());
 	}
 	
-	public void keyPressed(final KeyEvent e) {
-		if (isRunning()) {
-			for (RobotPeer r : robots) {
-				KeyEvent ke = cloneKeyEvent(e);
-
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onKeyPressed(ke);
-				}
-			}
-		}
-	}
-
-	public void keyReleased(final KeyEvent e) {
-		if (isRunning()) {
-			for (RobotPeer r : robots) {
-				KeyEvent ke = cloneKeyEvent(e);
-
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onKeyReleased(ke);
-				}
-			}
-		}
-	}
-
-	public void keyTyped(KeyEvent e) {
-		if (isRunning()) {
-			KeyEvent ke = cloneKeyEvent(e);
-
-			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onKeyTyped(ke);
-				}
-			}
-		}
-	}
-
 	public void mouseClicked(final MouseEvent e) {
 		if (isRunning()) {
 			MouseEvent me = mirroredMouseEvent(e);
@@ -1841,5 +1809,38 @@ public class Battle implements Runnable {
 		return new MouseWheelEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
 				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(),
 				e.getWheelRotation()); 
+	}
+
+	private class KeyEventHandler implements KeyEventDispatcher {
+
+		public boolean dispatchKeyEvent(KeyEvent e) {
+			if (isRunning()) {
+				Robot robot;
+				for (RobotPeer r : robots) {
+					if (!r.isAlive()) {
+						continue;
+					}
+					robot = r.getRobot();
+					if (robot == null) {
+						continue;
+					}
+					KeyEvent ke = cloneKeyEvent(e);
+
+					switch (e.getID()) {
+					case KeyEvent.KEY_TYPED:
+						robot.onKeyTyped(ke);
+						break;
+					case KeyEvent.KEY_PRESSED:
+						robot.onKeyPressed(ke);
+						break;
+					case KeyEvent.KEY_RELEASED:
+						robot.onKeyReleased(ke);
+						break;
+					}
+				}
+			
+			}
+			return false;
+		}
 	}
 }
