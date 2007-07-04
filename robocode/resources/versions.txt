@@ -10,6 +10,10 @@ o Improvements
      on the fly while playing a battle. By default, "Buffer images" is enabled which
      makes the rendering faster, but which also uses additional memory 
   -- Due to the faster renderings, explosion debris is now enabled by default
+o Controlling Robocode
+  -- The container classes in the robocode.control package are now Serializable, which
+     makes it easy to load and store, battle specifications, results etc., but also to
+     send these over the network
 
 Version 1.3.4
 (06/27/2007)
