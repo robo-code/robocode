@@ -11,12 +11,12 @@
  *     Flemming N. Larsen
  *     - Updated Javadoc
  *     - Code cleanup
+ *     - Changed to extend the new _RobotBase class instead of being top class
+ *     - The uninitializedException() method does not need a method name as input
+ *       parameter anymore, and was moved to the new _RobotBase class
+ *     - The setPeer() methods has been moved to the _RobotPeer class
  *******************************************************************************/
 package robocode;
-
-
-import robocode.exception.RobotException;
-import robocode.peer.RobotPeer;
 
 
 /**
@@ -31,34 +31,12 @@ import robocode.peer.RobotPeer;
  *
  * @author Mathew A. Nelson (original)
  */
-public class _Robot {
-	RobotPeer peer;
+public abstract class _Robot extends _RobotBase {
 	private String robotImageName;
 	private String gunImageName;
 	private String radarImageName;
 
 	protected _Robot() {}
-
-	/**
-	 * This method is called by the game. RobotPeer is the object that deals with
-	 * game mechanics and rules, and makes sure your robot abides by them.
-	 * Do not call this method! Your robot will simply stop interacting with the game.
-	 */
-	public final void setPeer(RobotPeer peer) {
-		this.peer = peer;
-	}
-
-	/**
-	 * Throws a RobotException. This method should be called when the robot's peer
-	 * is uninitialized.
-	 *
-	 * @param methodName the name of the method that failed
-	 */
-	protected void uninitializedException(String methodName) {
-		throw new RobotException(
-				"You cannot call the " + methodName
-				+ "() method before your run() method is called, or you are using a Robot object that the game doesn't know about.");
-	}
 
 	/**
 	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat} instead.
@@ -68,7 +46,7 @@ public class _Robot {
 		if (peer != null) {
 			return 5 - peer.getGunHeat();
 		}
-		uninitializedException("getGunCharge");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -80,7 +58,7 @@ public class _Robot {
 		if (peer != null) {
 			return peer.getEnergy();
 		}
-		uninitializedException("getLife");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -93,7 +71,7 @@ public class _Robot {
 			peer.getCall();
 			return peer.getNumRounds();
 		}
-		uninitializedException("getNumBattles");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -106,7 +84,7 @@ public class _Robot {
 			peer.getCall();
 			return peer.getRoundNum();
 		}
-		uninitializedException("getBattleNum");
+		uninitializedException();
 		return 0; // never called
 	}
 
