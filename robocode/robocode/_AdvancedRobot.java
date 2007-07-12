@@ -12,6 +12,8 @@
  *     - Added a peer.getCall() to getWaitCount()
  *     - Fixed wrong names used in uninitializedException() calls
  *     - Updated Javadoc
+ *     - The uninitializedException() method does not need a method name as input
+ *       parameter anymore
  *******************************************************************************/
 package robocode;
 
@@ -43,7 +45,7 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnGun(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnGunLeftDegrees");
+			uninitializedException();
 		}
 	}
 
@@ -57,7 +59,7 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnGun(Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnGunRightDegrees");
+			uninitializedException();
 		}
 	}
 
@@ -80,7 +82,7 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnChassis(Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnRightDegrees");
+			uninitializedException();
 		}
 	}
 
@@ -94,7 +96,7 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnChassis(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnRadarLeftDegrees");
+			uninitializedException();
 		}
 	}
 
@@ -108,7 +110,7 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnChassis(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnLeftDegrees");
+			uninitializedException();
 		}
 	}
 
@@ -144,7 +146,7 @@ public class _AdvancedRobot extends Robot {
 		if (peer != null) {
 			peer.tick();
 		} else {
-			uninitializedException("endTurn");
+			uninitializedException();
 		}
 	}
 
@@ -186,7 +188,7 @@ public class _AdvancedRobot extends Robot {
 			peer.setCall();
 			peer.setTurnRadar(Math.toRadians(degrees));
 		} else {
-			uninitializedException("setTurnRadarRightDegrees");
+			uninitializedException();
 		}
 	}
 

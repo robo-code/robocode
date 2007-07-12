@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Added missing getMessageEvents()
  *     - Updated Javadoc
+ *     - The uninitializedException() method does not need a method name as input
+ *       parameter anymore
  *******************************************************************************/
 package robocode;
 
@@ -56,7 +58,7 @@ public class TeamRobot extends AdvancedRobot {
 			}
 			return peer.getTeamPeer().contains(name);
 		}
-		uninitializedException("isTeammate");
+		uninitializedException();
 		return false;
 	}
 
@@ -100,7 +102,7 @@ public class TeamRobot extends AdvancedRobot {
 			}
 			return s;
 		}
-		uninitializedException("getTeammates");
+		uninitializedException();
 		return null;
 	}
 
@@ -124,7 +126,7 @@ public class TeamRobot extends AdvancedRobot {
 			}
 			peer.getMessageManager().sendMessage(null, message);
 		} else {
-			uninitializedException("broadcastMessage");
+			uninitializedException();
 		}
 	}
 
@@ -149,7 +151,7 @@ public class TeamRobot extends AdvancedRobot {
 			}
 			peer.getMessageManager().sendMessage(name, message);
 		} else {
-			uninitializedException("sendMessage");
+			uninitializedException();
 		}
 	}
 
@@ -177,7 +179,7 @@ public class TeamRobot extends AdvancedRobot {
 			peer.getCall();
 			return new Vector<MessageEvent>(peer.getEventManager().getMessageEvents());
 		}
-		uninitializedException("getMessageEvents");
+		uninitializedException();
 		return null; // never called
 	}
 
