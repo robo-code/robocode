@@ -408,7 +408,7 @@ public class RobotRepositoryManager {
 				}
 
 				if (robotSpecification.getValid()) {
-					final String superClassName = superClass.getName();
+					String superClassName = superClass.getName();
 
 					while (!updated && superClass != null && !superClassName.equals("java.lang.Object")) {
 						if (superClassName.equals("robocode.TeamRobot")) {
