@@ -17,6 +17,7 @@
  *     - Bugfix: Added setting and getting the priority of BulletHitBulletEvent
  *     - Added missing getMessageEvents()
  *     - Code cleanup
+ *     - Added features to support the new JuniorRobot class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -71,7 +72,7 @@ public class EventManager {
 
 	private final static int MAX_QUEUE_SIZE = 256;
 
-	private Robot robot;
+	private _RobotBase robot;
 
 	/**
 	 * EventManager constructor comment.
@@ -386,11 +387,11 @@ public class EventManager {
 		return this.interruptible[priority];
 	}
 
-	private Robot getRobot() {
+	private _RobotBase getRobot() {
 		return robot;
 	}
 
-	public void setRobot(Robot r) {
+	public void setRobot(_RobotBase r) {
 		this.robot = r;
 		if (r instanceof AdvancedRobot) {
 			useFireAssist = false;
@@ -462,86 +463,179 @@ public class EventManager {
 	}
 
 	public void onBulletHit(BulletHitEvent e) {
-		if (getRobot() != null) {
-			getRobot().onBulletHit(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null && robot instanceof Robot) {
+			((Robot) robot).onBulletHit(e);
 		}
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
-		if (getRobot() != null) {
-			getRobot().onBulletHitBullet(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null && robot instanceof Robot) {
+			((Robot) robot).onBulletHitBullet(e);
 		}
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
-		if (getRobot() != null) {
-			getRobot().onBulletMissed(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null && robot instanceof Robot) {
+			((Robot) robot).onBulletMissed(e);
 		}
 	}
 
 	public void onCustomEvent(CustomEvent e) {
-		if (getRobot() != null) {
-			if (getRobot() instanceof AdvancedRobot) {
-				((AdvancedRobot) getRobot()).onCustomEvent(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null) {
+			if (robot instanceof AdvancedRobot) {
+				((AdvancedRobot) robot).onCustomEvent(e);
+			} else if (robot instanceof JuniorRobot) {
+				Condition c = e.getCondition();
+
+				if (c instanceof RobotPeer.GunReadyCondition) {
+					JuniorRobot jr = (JuniorRobot) robot;
+
+					jr.gunReady = true;
+
+					double firePower = robotPeer.getJuniorFirePower(); 
+
+					if (firePower >= Rules.MIN_BULLET_POWER) {
+						if (robotPeer.setFire(firePower) != null) {
+							jr.gunReady = false;
+						}
+						robotPeer.setJuniorFire(0);
+					}
+				}
 			}
 		}
 	}
 
 	public void onDeath(DeathEvent e) {
-		if (getRobot() != null) {
-			getRobot().onDeath(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null && robot instanceof Robot) {
+			((Robot) robot).onDeath(e);
 		}
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
-		if (getRobot() != null) {
-			getRobot().onHitByBullet(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null) {
+			if (robot instanceof JuniorRobot) {
+				JuniorRobot jr = ((JuniorRobot) robot);
+
+				robotPeer.updateJuniorRobotFields();
+
+				jr.hitByBulletAngle = (int) (Math.toDegrees(
+						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
+								+ 0.5);
+				jr.hitByBulletBearing = (int) (e.getBearing() + 0.5);
+				jr.onHitByBullet();
+			} else {
+				((Robot) robot).onHitByBullet(e);
+			}
 		}
 	}
 
 	public void onHitRobot(HitRobotEvent e) {
-		if (getRobot() != null) {
-			getRobot().onHitRobot(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null) {
+			if (robot instanceof JuniorRobot) {
+				JuniorRobot jr = ((JuniorRobot) robot);
+
+				robotPeer.updateJuniorRobotFields();
+
+				jr.hitRobotAngle = (int) (Math.toDegrees(
+						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
+								+ 0.5);
+				jr.hitRobotBearing = (int) (e.getBearing() + 0.5);
+				jr.onHitRobot();
+			} else {
+				((Robot) robot).onHitRobot(e);
+			}
 		}
 	}
 
 	public void onHitWall(HitWallEvent e) {
-		if (getRobot() != null) {
-			getRobot().onHitWall(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null) {
+			if (robot instanceof JuniorRobot) {
+				JuniorRobot jr = ((JuniorRobot) robot);
+
+				robotPeer.updateJuniorRobotFields();
+
+				jr.hitWallAngle = (int) (Math.toDegrees(
+						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
+								+ 0.5);
+				jr.hitWallBearing = (int) (e.getBearing() + 0.5);
+				jr.onHitWall();
+			} else {
+				((Robot) robot).onHitWall(e);
+			}
 		}
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
-		if (getRobot() != null) {
-			getRobot().onRobotDeath(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null) {
+			if (robot instanceof JuniorRobot) {
+				JuniorRobot jr = ((JuniorRobot) robot);
+
+				jr.others = robotPeer.getOthers();
+			} else {
+				((Robot) robot).onRobotDeath(e);
+			}
 		}
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if (getRobot() != null) {
-			getRobot().onScannedRobot(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null) {
+			if (robot instanceof JuniorRobot) {
+				JuniorRobot jr = ((JuniorRobot) robot);
+
+				jr.scannedDistance = (int) (e.getDistance() + 0.5);
+				jr.scannedEnergy = Math.max(1, (int) (e.getEnergy() + 0.5));
+				jr.scannedAngle = (int) (Math.toDegrees(
+						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
+								+ 0.5);
+				jr.scannedBearing = (int) (e.getBearing() + 0.5);
+				jr.onScannedRobot();
+			} else {
+				((Robot) robot).onScannedRobot(e);
+			}
 		}
 	}
 
 	public void onSkippedTurn(SkippedTurnEvent e) {
-		Robot r = getRobot();
+		_RobotBase robot = getRobot();
 
-		if (r != null && r instanceof AdvancedRobot) {
-			((AdvancedRobot) r).onSkippedTurn(e);
+		if (robot != null && robot instanceof AdvancedRobot) {
+			((AdvancedRobot) robot).onSkippedTurn(e);
 		}
 	}
 
 	public void onMessageReceived(MessageEvent e) {
-		Robot r = getRobot();
+		_RobotBase robot = getRobot();
 
-		if (r != null && r instanceof TeamRobot) {
-			((TeamRobot) r).onMessageReceived(e);
+		if (robot != null && robot instanceof TeamRobot) {
+			((TeamRobot) robot).onMessageReceived(e);
 		}
 	}
 
 	public void onWin(WinEvent e) {
-		if (getRobot() != null) {
-			getRobot().onWin(e);
+		_RobotBase robot = getRobot();
+
+		if (robot != null && robot instanceof Robot) {
+			((Robot) robot).onWin(e);
 		}
 	}
 
