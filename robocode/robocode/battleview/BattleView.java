@@ -23,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import robocode.Robot;
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
@@ -455,17 +456,23 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotPeer robotPeer) {
+		if (!(robotPeer.getRobot() instanceof Robot)) {
+			return;
+		}
+
 		GraphicsState gfxState = new GraphicsState();
 
 		// Save the graphics state
 		gfxState.save(g);
 
+		Robot robot = (Robot)robotPeer.getRobot();
+		
 		// Do the painting
 		if (robotPeer.isSGPaintEnabled()) {
-			robotPeer.getRobot().onPaint(g);
+			robot.onPaint(g);
 		} else {
 			mirroredGraphics.bind(g, battleField.getHeight());
-			robotPeer.getRobot().onPaint(mirroredGraphics);
+			robot.onPaint(mirroredGraphics);
 			mirroredGraphics.release();
 		}
 

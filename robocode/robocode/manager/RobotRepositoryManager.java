@@ -17,6 +17,8 @@
  *       getSpecificationsInDirectory()
  *     - Minor optimizations
  *     - Added missing close() on FileInputStream
+ *     - Changed updateRobotDatabase() to take the new JuniorRobot class into
+ *       account
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -406,11 +408,13 @@ public class RobotRepositoryManager {
 				}
 
 				if (robotSpecification.getValid()) {
-					while (!updated && superClass != null && !superClass.getName().equals("java.lang.Object")) {
-						if (superClass.getName().equals("robocode.TeamRobot")) {
+					final String superClassName = superClass.getName();
+
+					while (!updated && superClass != null && !superClassName.equals("java.lang.Object")) {
+						if (superClassName.equals("robocode.TeamRobot")) {
 							robotSpecification.setTeamRobot(true);
 						}
-						if (superClass.getName().equals("robocode.Robot")) {
+						if (superClassName.equals("robocode.Robot") || superClassName.equals("robocode.JuniorRobot")) {
 							updateNoDuplicates(robotSpecification);
 							return;
 						}
@@ -610,6 +614,7 @@ public class RobotRepositoryManager {
 					parentDirectory.mkdirs();
 
 					FileOutputStream fos = null;
+
 					try {
 						fos = new FileOutputStream(out);
 

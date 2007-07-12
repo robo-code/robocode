@@ -39,6 +39,7 @@
  *     - Added handling keyboard events thru a KeyboardEventDispather
  *     - Added mouseMoved(), mouseClicked(), mouseReleased(), mouseEntered(),
  *       mouseExited(), mouseDragged(), mouseWheelMoved()
+ *     - Changed to take the new JuniorRobot class into account
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -73,6 +74,7 @@ import java.util.regex.Pattern;
 
 import robocode.MessageEvent;
 import robocode.Robot;
+import robocode._RobotBase;
 import robocode.RobotDeathEvent;
 import robocode.SkippedTurnEvent;
 import robocode.battle.record.*;
@@ -728,8 +730,9 @@ public class Battle implements Runnable {
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
 
-			if (!abortBattles && (endTimer < TURNS_DISPLAYED_AFTER_ENDING
-					&& !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified()))) {
+			if (!abortBattles
+					&& (endTimer < TURNS_DISPLAYED_AFTER_ENDING
+							&& !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified()))) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
 				if ((totalFrameMillisThisSec == 0)
@@ -1358,7 +1361,7 @@ public class Battle implements Runnable {
 						r.out.println("SYSTEM: Skipping robot: " + r.getName());
 						continue;
 					}
-					Robot bot = (Robot) robotClass.newInstance();
+					_RobotBase bot = (_RobotBase) robotClass.newInstance();
 
 					bot.out = r.getOut();
 					r.setRobot(bot);
@@ -1672,8 +1675,8 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onMouseClicked(me);
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					((Robot) r.getRobot()).onMouseClicked(me);
 				}
 			}
 		}
@@ -1684,8 +1687,8 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onMouseEntered(me);
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					((Robot) r.getRobot()).onMouseEntered(me);
 				}
 			}
 		}
@@ -1696,8 +1699,8 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onMouseExited(me);
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					((Robot) r.getRobot()).onMouseExited(me);
 				}
 			}
 		}
@@ -1708,8 +1711,8 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onMousePressed(me);
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					((Robot) r.getRobot()).onMousePressed(me);
 				}
 			}
 		}
@@ -1720,8 +1723,8 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onMouseReleased(me);
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					((Robot) r.getRobot()).onMouseReleased(me);
 				}
 			}
 		}
@@ -1732,8 +1735,8 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 			
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onMouseMoved(me);
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					((Robot) r.getRobot()).onMouseMoved(me);
 				}
 			}
 		}
@@ -1744,8 +1747,8 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 			
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onMouseDragged(me);
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					((Robot) r.getRobot()).onMouseDragged(me);
 				}
 			}
 		}
@@ -1756,8 +1759,8 @@ public class Battle implements Runnable {
 			MouseWheelEvent mwe = mirroredMouseWheelEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null) {
-					r.getRobot().onMouseWheelMoved(mwe);
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					((Robot) r.getRobot()).onMouseWheelMoved(mwe);
 				}
 			}
 		}
@@ -1765,7 +1768,6 @@ public class Battle implements Runnable {
 
 	// This dummy component is used to prevent robot in accessing the real source component
 	private final static java.awt.Component SAFE_EVENT_COMPONENT = new java.awt.Label();
-
 
 	private KeyEvent cloneKeyEvent(final KeyEvent e) {
 		return new KeyEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
@@ -1776,7 +1778,8 @@ public class Battle implements Runnable {
 		double scale;
 
 		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
-			scale = min((double) battleView.getWidth() / battleField.getWidth(), (double) battleView.getHeight() / battleField.getHeight());
+			scale = min((double) battleView.getWidth() / battleField.getWidth(),
+					(double) battleView.getHeight() / battleField.getHeight());
 		} else {
 			scale = 1;
 		}
@@ -1787,15 +1790,16 @@ public class Battle implements Runnable {
 		int x = (int) ((e.getX() - dx) / scale + 0.5);
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
 
-		return new MouseEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-				e.getClickCount(), e.isPopupTrigger(), e.getButton()); 
+		return new MouseEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y, e.getClickCount(),
+				e.isPopupTrigger(), e.getButton()); 
 	}
 
 	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
 		double scale;
 
 		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
-			scale = min((double) battleView.getWidth() / battleField.getWidth(), (double) battleView.getHeight() / battleField.getHeight());
+			scale = min((double) battleView.getWidth() / battleField.getWidth(),
+					(double) battleView.getHeight() / battleField.getHeight());
 		} else {
 			scale = 1;
 		}
@@ -1807,8 +1811,7 @@ public class Battle implements Runnable {
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
 
 		return new MouseWheelEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(),
-				e.getWheelRotation()); 
+				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()); 
 	}
 
 	private class KeyEventHandler implements KeyEventDispatcher {
@@ -1816,11 +1819,12 @@ public class Battle implements Runnable {
 		public boolean dispatchKeyEvent(KeyEvent e) {
 			if (isRunning()) {
 				Robot robot;
+
 				for (RobotPeer r : robots) {
-					if (!r.isAlive()) {
+					if (!(r.isAlive() && r.getRobot() instanceof Robot)) {
 						continue;
 					}
-					robot = r.getRobot();
+					robot = (Robot) r.getRobot();
 					if (robot == null) {
 						continue;
 					}
@@ -1830,9 +1834,11 @@ public class Battle implements Runnable {
 					case KeyEvent.KEY_TYPED:
 						robot.onKeyTyped(ke);
 						break;
+
 					case KeyEvent.KEY_PRESSED:
 						robot.onKeyPressed(ke);
 						break;
+
 					case KeyEvent.KEY_RELEASED:
 						robot.onKeyReleased(ke);
 						break;

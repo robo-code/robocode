@@ -34,6 +34,7 @@
  *     - Added the set() that copies a RobotRecord into this robot in order to
  *       support the replay feature
  *     - Fixed synchronization issues with several member fields
+ *     - Added features to support the new JuniorRobot class
  *     Luis Crespo
  *     - Added states
  *     Titus Chen
@@ -97,6 +98,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
+	_RobotBase robot;
+
 	public RobotOutputStream out;
 
 	private double energy;
@@ -118,8 +121,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private double distanceRemaining;
 
 	private double turnRate;
-
-	private Robot robot;
 
 	private BattleField battleField;
 
@@ -196,6 +197,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean testingCondition;
 
 	private BulletPeer newBullet;
+
+	private double juniorFirePower;
 
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
@@ -466,6 +469,19 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		try {
 			if (robot != null) {
+				if (robot instanceof JuniorRobot) {
+					JuniorRobot jr = (JuniorRobot) robot;
+					jr.fieldWidth = (int)(getBattleFieldWidth() + 0.5);
+					jr.fieldHeight = (int)(getBattleFieldHeight() + 0.5);
+
+					updateJuniorRobotFields();
+
+					eventManager.addCustomEvent(new GunReadyCondition());
+
+					for (;;) {
+						jr.run();
+					}
+				}
 				robot.run();
 			}
 			for (;;) {
@@ -1061,7 +1077,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
 	}
 
-	public Robot getRobot() {
+	public _RobotBase getRobot() {
 		return robot;
 	}
 
@@ -1173,7 +1189,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void setRobot(Robot newRobot) {
+	public void setRobot(_RobotBase newRobot) {
 		robot = newRobot;
 		if (robot != null) {
 			if (robot instanceof robocode.TeamRobot) {
@@ -1624,5 +1640,42 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	private synchronized void setLastHeading() {
 		lastHeading = heading;
+	}
+
+	public void updateJuniorRobotFields() {
+		if (!(robot instanceof JuniorRobot)) {
+			return;
+		}
+
+		JuniorRobot jr = (JuniorRobot) robot;
+
+		jr.others = getOthers();
+
+		jr.energy = Math.max(1, (int)(getEnergy() + 0.5));
+
+		jr.robotX = (int)(getX() + 0.5);
+		jr.robotY = (int)(getY() + 0.5);
+
+		jr.heading = (int)(toDegrees(getHeading()) + 0.5);
+
+		jr.gunHeading = (int)(toDegrees(getGunHeading()) + 0.5);
+		jr.gunBearing = (int)(toDegrees(normalRelativeAngle(getGunHeading() - getHeading())) + 0.5);
+
+		jr.gunReady = (getGunHeat() <= 0);
+	}
+
+	public synchronized void setJuniorFire(double power) {
+		juniorFirePower = power;
+	}
+
+	public synchronized double getJuniorFirePower() {
+		return juniorFirePower;
+	}
+
+	public class GunReadyCondition extends Condition {
+		@Override
+		public boolean test() {
+			return (getGunHeat() <= 0);
+		}
 	}
 }
