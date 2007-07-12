@@ -18,6 +18,9 @@
  *     - Added onMouseMoved(), onMouseClicked(), onMouseReleased(),
  *       onMouseEntered(), onMouseExited(), onMouseDragged(), onMouseWheelMoved()
  *       events
+ *     - The uninitializedException() method does not need a method name as input
+ *       parameter anymore
+ *     - The PrintStream 'out' has been moved to the new _RobotBase class
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue
  *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
@@ -57,23 +60,7 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  */
-public class Robot extends _Robot implements Runnable {
-
-	/**
-	 * The output stream your robot should use to print.
-	 * <p>
-	 * You can view the print-outs by clicking the button for your robot in the
-	 * right side of the battle window.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   // Print out a line each time my robot hits another robot
-	 *   public void onHitRobot(HitRobotEvent e) {
-	 *       out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
-	 *   }
-	 * </pre>
-	 */
-	public java.io.PrintStream out;
+public class Robot extends _Robot {
 
 	/**
 	 * Constructs a new robot.
@@ -115,7 +102,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.move(distance);
 		} else {
-			uninitializedException("ahead");
+			uninitializedException();
 		}
 	}
 
@@ -153,7 +140,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.move(-distance);
 		} else {
-			uninitializedException("back");
+			uninitializedException();
 		}
 	}
 
@@ -167,7 +154,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getBattleFieldHeight();
 		}
-		uninitializedException("getBattleFieldHeight");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -181,7 +168,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getBattleFieldWidth();
 		}
-		uninitializedException("getBattleFieldWidth");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -207,7 +194,7 @@ public class Robot extends _Robot implements Runnable {
 			}
 			return rv;
 		}
-		uninitializedException("getHeading");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -222,7 +209,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 		} else {
-			uninitializedException("getHeight");
+			uninitializedException();
 		}
 		return robocode.peer.RobotPeer.HEIGHT;
 	}
@@ -238,7 +225,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.getCall();
 		} else {
-			uninitializedException("getWidth");
+			uninitializedException();
 		}
 		return robocode.peer.RobotPeer.WIDTH;
 	}
@@ -253,7 +240,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getName();
 		}
-		uninitializedException("getName");
+		uninitializedException();
 		return null; // never called
 	}
 
@@ -270,7 +257,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getX();
 		}
-		uninitializedException("getX");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -287,7 +274,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getY();
 		}
-		uninitializedException("getY");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -334,7 +321,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.turnChassis(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("turnLeft");
+			uninitializedException();
 		}
 	}
 
@@ -363,7 +350,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.turnChassis(Math.toRadians(degrees));
 		} else {
-			uninitializedException("turnRight");
+			uninitializedException();
 		}
 	}
 
@@ -377,7 +364,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.tick();
 		} else {
-			uninitializedException("doNothing");
+			uninitializedException();
 		}
 	}
 
@@ -434,7 +421,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setFire(power);
 			peer.tick();
 		} else {
-			uninitializedException("fire");
+			uninitializedException();
 		}
 	}
 
@@ -493,7 +480,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.tick();
 			return b;
 		}
-		uninitializedException("fireBullet");
+		uninitializedException();
 		return null;
 	}
 
@@ -515,7 +502,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getBattle().getGunCoolingRate();
 		}
-		uninitializedException("getGunCoolingRate");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -533,7 +520,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getGunHeading() * 180.0 / Math.PI;
 		}
-		uninitializedException("getGunHeading");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -560,7 +547,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getGunHeat();
 		}
-		uninitializedException("getGunHeat");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -574,7 +561,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getNumRounds();
 		}
-		uninitializedException("getNumRounds");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -596,7 +583,7 @@ public class Robot extends _Robot implements Runnable {
 				return peer.getOthers();
 			}
 		}
-		uninitializedException("getOthers");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -614,7 +601,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getRadarHeading() * 180.0 / Math.PI;
 		}
-		uninitializedException("getRadarHeading");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -631,7 +618,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getRoundNum();
 		}
-		uninitializedException("getRoundNum");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -650,7 +637,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getTime();
 		}
-		uninitializedException("getTime");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -669,7 +656,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getVelocity();
 		}
-		uninitializedException("getVelocity");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -908,7 +895,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.resume();
 		} else {
-			uninitializedException("resume");
+			uninitializedException();
 		}
 	}
 
@@ -952,7 +939,7 @@ public class Robot extends _Robot implements Runnable {
 						resetValue);
 			}
 		} else {
-			uninitializedException("scan");
+			uninitializedException();
 		}
 	}
 
@@ -998,7 +985,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setCall();
 			peer.setAdjustGunForBodyTurn(independent);
 		} else {
-			uninitializedException("setAdjustGunForRobotTurn");
+			uninitializedException();
 		}
 	}
 
@@ -1043,7 +1030,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setCall();
 			peer.setAdjustRadarForGunTurn(independent);
 		} else {
-			uninitializedException("setAdjustRadarForGunTurn");
+			uninitializedException();
 		}
 	}
 
@@ -1084,7 +1071,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setGunColor(gunColor);
 			peer.setRadarColor(radarColor);
 		} else {
-			uninitializedException("setColors(Color, Color, Color)");
+			uninitializedException();
 		}
 	}
 
@@ -1111,7 +1098,7 @@ public class Robot extends _Robot implements Runnable {
 	 * @param gunColor the new gun color
 	 * @param radarColor the new radar color
 	 * @param bulletColor the new bullet color
-	 * @param scanColor the new scan color
+	 * @param scanArcColor the new scan arc color
 	 *
 	 * @see #setColors(Color, Color, Color)
 	 * @see #setAllColors
@@ -1124,16 +1111,16 @@ public class Robot extends _Robot implements Runnable {
 	 *
 	 * @since 1.1.3
 	 */
-	public void setColors(Color bodyColor, Color gunColor, Color radarColor, Color bulletColor, Color scanColor) {
+	public void setColors(Color bodyColor, Color gunColor, Color radarColor, Color bulletColor, Color scanArcColor) {
 		if (peer != null) {
 			peer.setCall();
 			peer.setBodyColor(bodyColor);
 			peer.setGunColor(gunColor);
 			peer.setRadarColor(radarColor);
 			peer.setBulletColor(bulletColor);
-			peer.setScanColor(scanColor);
+			peer.setScanColor(scanArcColor);
 		} else {
-			uninitializedException("setColors(Color, Color, Color, Color, Color)");
+			uninitializedException();
 		}
 	}
 
@@ -1178,7 +1165,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setBulletColor(color);
 			peer.setScanColor(color);
 		} else {
-			uninitializedException("setAllColors");
+			uninitializedException();
 		}
 	}
 
@@ -1216,7 +1203,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setCall();
 			peer.setBodyColor(color);
 		} else {
-			uninitializedException("setBodyColor");
+			uninitializedException();
 		}
 	}
 
@@ -1254,7 +1241,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setCall();
 			peer.setGunColor(color);
 		} else {
-			uninitializedException("setGunColor");
+			uninitializedException();
 		}
 	}
 
@@ -1292,7 +1279,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setCall();
 			peer.setRadarColor(color);
 		} else {
-			uninitializedException("setRadarColor");
+			uninitializedException();
 		}
 	}
 
@@ -1330,7 +1317,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setCall();
 			peer.setBulletColor(color);
 		} else {
-			uninitializedException("setBulletColor");
+			uninitializedException();
 		}
 	}
 
@@ -1368,7 +1355,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setCall();
 			peer.setScanColor(color);
 		} else {
-			uninitializedException("setScanColor");
+			uninitializedException();
 		}
 	}
 
@@ -1398,7 +1385,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.stop(overwrite);
 		} else {
-			uninitializedException("stop");
+			uninitializedException();
 		}
 	}
 
@@ -1430,7 +1417,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.turnGun(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("turnGunLeft");
+			uninitializedException();
 		}
 	}
 
@@ -1461,7 +1448,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.turnGun(Math.toRadians(degrees));
 		} else {
-			uninitializedException("turnGunRight");
+			uninitializedException();
 		}
 	}
 
@@ -1494,7 +1481,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.turnRadar(-Math.toRadians(degrees));
 		} else {
-			uninitializedException("turnRadarLeft");
+			uninitializedException();
 		}
 	}
 
@@ -1526,7 +1513,7 @@ public class Robot extends _Robot implements Runnable {
 		if (peer != null) {
 			peer.turnRadar(Math.toRadians(degrees));
 		} else {
-			uninitializedException("turnRadarRight");
+			uninitializedException();
 		}
 	}
 
@@ -1540,7 +1527,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.getCall();
 			return peer.getEnergy();
 		}
-		uninitializedException("getEnergy");
+		uninitializedException();
 		return 0; // never called
 	}
 
@@ -1584,7 +1571,7 @@ public class Robot extends _Robot implements Runnable {
 			peer.setCall();
 			peer.setAdjustRadarForBodyTurn(independent);
 		} else {
-			uninitializedException("setAdjustRadarForRobotTurn");
+			uninitializedException();
 		}
 	}
 
