@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001 Mathew A. Nelson
+ * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -62,6 +62,7 @@ public final class AboutBox extends JDialog {
 			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan<br><br>"
 			+ "<b>Featuring RoboRumble@Home</b><br><br>Originally designed and programmed by Albert Pérez<br><br>"
 			+ "<b>Contributors:</b><br><br>Flemming N. Larsen (main developer, integrator and admin),<br>"
+			+ "Cubic Creative (the design and ideas for the JuniorRobot class),<br>"
 			+ "Christian D. Schnell (for the codesize utility),<br>"
 			+ "Luis Crespo (sound engine, single-step debugging, ranking panel),<br>"
 			+ "Matthew Reeder (editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
