@@ -35,6 +35,7 @@
  *       support the replay feature
  *     - Fixed synchronization issues with several member fields
  *     - Added features to support the new JuniorRobot class
+ *     - Added cleanupStaticFields() for clearing static fields on robots
  *     Luis Crespo
  *     - Added states
  *     Titus Chen
@@ -55,6 +56,8 @@ import static robocode.util.Utils.normalRelativeAngle;
 import java.awt.Color;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import robocode.*;
 import robocode.battle.Battle;
@@ -1676,6 +1679,35 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		@Override
 		public boolean test() {
 			return (getGunHeat() <= 0);
+		}
+	}
+
+	public void cleanupStaticFields() {
+		if (robot == null) {
+			return;
+		}
+
+		Field[] fields = new Field[0];
+		
+		// This try-catch-throwable must be here, as it is not always possible to get the
+		// declared fields without getting a Throwable like java.lang.NoClassDefFoundError.
+		try {
+			fields = robot.getClass().getDeclaredFields();
+		} catch (Throwable t) {
+			// Do nothing
+		}
+
+		for (Field f : fields) {
+			int m = f.getModifiers();
+
+			if (Modifier.isStatic(m) && !(Modifier.isFinal(m) || f.getType().isPrimitive())) {
+				try {
+					f.setAccessible(true);
+					f.set(robot, null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
