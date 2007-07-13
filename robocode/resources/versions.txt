@@ -2,6 +2,8 @@ Version 1.4 Beta
 (07/13/2007)
 The "Junior Robot" release
 -------------
+o Bugfixes
+  -- Static fields on robots were not cleaned up anymore after each battle has ended
 o Added JuniorRobot
   -- This class is simpler to use than the Robot class and has a simplified model,
      in purpose of teaching programming skills to inexperienced in programming
