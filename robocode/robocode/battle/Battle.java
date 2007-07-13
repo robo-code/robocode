@@ -40,6 +40,7 @@
  *     - Added mouseMoved(), mouseClicked(), mouseReleased(), mouseEntered(),
  *       mouseExited(), mouseDragged(), mouseWheelMoved()
  *     - Changed to take the new JuniorRobot class into account
+ *     - When cleaning up robots their static fields are now being cleaned up
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -393,7 +394,15 @@ public class Battle implements Runnable {
 
 	public void cleanup() {
 		for (RobotPeer r : robots) {
+			// Clear all static field on the robot (at class level)
+			r.cleanupStaticFields();
+			// Clear the robot object by removing the reference to it
 			r.setRobot(null);
+		}
+
+		// Request garbage collecting
+		for (int i = 0; i < 4; i--) { // Make sure it is run
+			System.gc();
 		}
 	}
 
