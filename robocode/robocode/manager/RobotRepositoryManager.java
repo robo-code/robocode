@@ -408,13 +408,12 @@ public class RobotRepositoryManager {
 				}
 
 				if (robotSpecification.getValid()) {
-					String superClassName = superClass.getName();
-
-					while (!updated && superClass != null && !superClassName.equals("java.lang.Object")) {
-						if (superClassName.equals("robocode.TeamRobot")) {
+					while (!updated && superClass != null && !superClass.getName().equals("java.lang.Object")) {
+						if (superClass.getName().equals("robocode.TeamRobot")) {
 							robotSpecification.setTeamRobot(true);
 						}
-						if (superClassName.equals("robocode.Robot") || superClassName.equals("robocode.JuniorRobot")) {
+						if (superClass.getName().equals("robocode.Robot")
+								|| superClass.getName().equals("robocode.JuniorRobot")) {
 							updateNoDuplicates(robotSpecification);
 							return;
 						}
