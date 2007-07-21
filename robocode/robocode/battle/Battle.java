@@ -401,7 +401,7 @@ public class Battle implements Runnable {
 		}
 
 		// Request garbage collecting
-		for (int i = 0; i < 4; i--) { // Make sure it is run
+		for (int i = 4; i >= 0; i--) { // Make sure it is run
 			System.gc();
 		}
 	}
