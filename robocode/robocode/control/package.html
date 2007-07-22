@@ -71,16 +71,13 @@ public class RobocodeRunner {
         // Run the battle based on our battle specification (5 rounds, 800x600, selected robots)
         engine.runBattle(battleSpec);
 
-        // Loop for each round
-        for (i = 1; i <= NUM_ROUNDS; i++) {
-            // Here we loop until our battle listener sets the battleComplete flag
-            do {
-                try {
-                    // Sleep 1/10 second
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {}
-            } while (!battleListener.battleComplete); // Wait for battleComplete flag
-        }
+        // Here we loop until our battle listener sets the battleComplete flag
+        do {
+            try {
+                // Sleep 1/10 second
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        } while (!battleListener.battleComplete); // Wait for battleComplete flag
 
         // Close Robocode
         engine.close();
@@ -106,7 +103,7 @@ class BattleListener implements RobocodeListener {
      * @param battleSpec the battle specification used for starting this battle
      */
     public void battleAborted(BattleSpecification battleSpec) {
-        System.out.println("BattleListener: battleAborted");
+        System.out.println("-- Battle was aborted --");
 
         // Flag that the battle is complete
         battleComplete = true;
@@ -119,14 +116,15 @@ class BattleListener implements RobocodeListener {
      * @param results the list of results for each robot
      */
     public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {
-        System.out.println("BattleListener: battleComplete");
+        System.out.println("-- Battle has completed --");
 
         // Flag that the battle is complete
         battleComplete = true;
 
         // Print out the results for each robot
+        System.out.println("\n-- Battle results --");
         for (RobotResults result : results) {
-            System.out.println(result.getRobot().getName() + ": " + result.getScore());
+            System.out.println("  " + result.getRobot().getName() + ": " + result.getScore());
         }
     }
 
@@ -136,7 +134,7 @@ class BattleListener implements RobocodeListener {
      * @param message the message from Robocode
      */
     public void battleMessage(String message) {
-        System.out.println("BattleListener: battleMessage: " + message);
+        System.out.println(">" + message);
     }
 }
 </pre>
