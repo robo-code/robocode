@@ -71,16 +71,22 @@ public class RobocodeRunner {
         // Run the battle based on our battle specification (5 rounds, 800x600, selected robots)
         engine.runBattle(battleSpec);
 
-        // Here we loop until our battle listener sets the battleComplete flag
-        do {
-            try {
-                // Sleep 1/10 second
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        } while (!battleListener.battleComplete); // Wait for battleComplete flag
+        // Loop for each round
+        for (i = 1; i <= NUM_ROUNDS; i++) {
+            // Here we loop until our battle listener sets the battleComplete flag
+            do {
+                try {
+                    // Sleep 1/10 second
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {}
+            } while (!battleListener.battleComplete); // Wait for battleComplete flag
+        }
 
         // Close Robocode
         engine.close();
+
+        // Make sure that the Java VM is shut down properly
+        System.exit(0);
     }
 }
 
