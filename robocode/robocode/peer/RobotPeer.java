@@ -474,12 +474,14 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			if (robot != null) {
 				if (robot instanceof JuniorRobot) {
 					JuniorRobot jr = (JuniorRobot) robot;
-					jr.fieldWidth = (int)(getBattleFieldWidth() + 0.5);
-					jr.fieldHeight = (int)(getBattleFieldHeight() + 0.5);
+
+					jr.fieldWidth = (int) (getBattleFieldWidth() + 0.5);
+					jr.fieldHeight = (int) (getBattleFieldHeight() + 0.5);
 
 					updateJuniorRobotFields();
 
 					eventManager.addCustomEvent(new GunReadyCondition());
+					eventManager.addCustomEvent(new GunFireCondition());
 
 					for (;;) {
 						jr.run();
@@ -1654,15 +1656,15 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		jr.others = getOthers();
 
-		jr.energy = Math.max(1, (int)(getEnergy() + 0.5));
+		jr.energy = Math.max(1, (int) (getEnergy() + 0.5));
 
-		jr.robotX = (int)(getX() + 0.5);
-		jr.robotY = (int)(getY() + 0.5);
+		jr.robotX = (int) (getX() + 0.5);
+		jr.robotY = (int) (getY() + 0.5);
 
-		jr.heading = (int)(toDegrees(getHeading()) + 0.5);
+		jr.heading = (int) (toDegrees(getHeading()) + 0.5);
 
-		jr.gunHeading = (int)(toDegrees(getGunHeading()) + 0.5);
-		jr.gunBearing = (int)(toDegrees(normalRelativeAngle(getGunHeading() - getHeading())) + 0.5);
+		jr.gunHeading = (int) (toDegrees(getGunHeading()) + 0.5);
+		jr.gunBearing = (int) (toDegrees(normalRelativeAngle(getGunHeading() - getHeading())) + 0.5);
 
 		jr.gunReady = (getGunHeat() <= 0);
 	}
@@ -1682,6 +1684,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
+	public class GunFireCondition extends Condition {
+		@Override
+		public boolean test() {
+			return (getGunHeat() <= 0 && getGunTurnRemaining() == 0);
+		}
+	}
+
 	public void cleanupStaticFields() {
 		if (robot == null) {
 			return;
@@ -1693,8 +1702,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		// declared fields without getting a Throwable like java.lang.NoClassDefFoundError.
 		try {
 			fields = robot.getClass().getDeclaredFields();
-		} catch (Throwable t) {
-			// Do nothing
+		} catch (Throwable t) {// Do nothing
 		}
 
 		for (Field f : fields) {
