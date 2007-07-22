@@ -492,19 +492,19 @@ public class EventManager {
 		if (robot != null) {
 			if (robot instanceof AdvancedRobot) {
 				((AdvancedRobot) robot).onCustomEvent(e);
+
 			} else if (robot instanceof JuniorRobot) {
 				Condition c = e.getCondition();
 
 				if (c instanceof RobotPeer.GunReadyCondition) {
-					JuniorRobot jr = (JuniorRobot) robot;
+					((JuniorRobot) robot).gunReady = true;
 
-					jr.gunReady = true;
-
+				} else if (c instanceof RobotPeer.GunFireCondition) {
 					double firePower = robotPeer.getJuniorFirePower(); 
 
-					if (firePower >= Rules.MIN_BULLET_POWER) {
+					if (firePower > 0) {
 						if (robotPeer.setFire(firePower) != null) {
-							jr.gunReady = false;
+							((JuniorRobot) robot).gunReady = false;
 						}
 						robotPeer.setJuniorFire(0);
 					}
