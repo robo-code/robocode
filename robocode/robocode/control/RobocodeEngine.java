@@ -19,6 +19,10 @@
  *     - Changed to use FileUtil.getRobotsDir()
  *     - Modified getLocalRepository() to support teams by using
  *       FileSpecification instead of RobotSpecification
+ *     - Bugfix: The original System.out, System.err, and System.in were not
+ *       restored when the RobocodeEngine was closed, and the secured outputs
+ *       were not closed. This caused memory leaks and the RobocodeEngine to
+ *       become slower and slower for each new instance of RobocodeEngine 
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -27,7 +31,9 @@ package robocode.control;
 
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.security.Policy;
 import java.util.List;
 
@@ -42,6 +48,7 @@ import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
 
+
 /**
  * RobocodeEngine - Class for controlling Robocode.
  *
@@ -52,8 +59,16 @@ import robocode.security.SecurePrintStream;
  * @author Robert D. Maupin (contributor)
  */
 public class RobocodeEngine {
+	private static final PrintStream ORIG_SYSTEM_OUT = System.out;
+	private static final PrintStream ORIG_SYSTEM_ERR = System.err;
+	private static final InputStream ORIG_SYSTEM_IN = System.in;
+	
 	private RobocodeListener listener;
 	private RobocodeManager manager;
+
+	private PrintStream sysout;
+	private PrintStream syserr;
+	private InputStream sysin;
 
 	/**
 	 * Creates a new RobocodeEngine
@@ -77,6 +92,12 @@ public class RobocodeEngine {
 		} else {
 			throw new RuntimeException("File not found: " + robotsDir);
 		}
+	}
+
+	@Override
+	public void finalize() {
+		// Make sure close() is called to prevent memory leaks
+		close();
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {
@@ -104,9 +125,10 @@ public class RobocodeEngine {
 			tg = tg.getParent();
 		}
 
-		SecurePrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-		SecurePrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-		SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
+		// Secure System.in, System.err, System.out
+		sysout = new SecurePrintStream(System.out, true, "System.out");
+		syserr = new SecurePrintStream(System.err, true, "System.err");
+		sysin = new SecureInputStream(System.in, "System.in");
 
 		System.setOut(sysout);
 		if (!System.getProperty("debug", "false").equals("true")) {
@@ -123,6 +145,16 @@ public class RobocodeEngine {
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().dispose();
 		}
+
+		// Restore the original System.in, System.err, System.out
+		System.setOut(ORIG_SYSTEM_OUT);
+		System.setErr(ORIG_SYSTEM_ERR);
+		System.setIn(ORIG_SYSTEM_IN);
+
+		// Make sure the secured System.out and System.err is closed.
+		// Otherwise, these will cause memory leaks
+		sysout.close();
+		syserr.close();
 	}
 
 	/**
@@ -157,7 +189,8 @@ public class RobocodeEngine {
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
-		List<FileSpecification> list = robotRepository.getRobotSpecificationsList(false, false, false, false, false, false);
+		List<FileSpecification> list = robotRepository.getRobotSpecificationsList(false, false, false, false, false,
+				false);
 		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
