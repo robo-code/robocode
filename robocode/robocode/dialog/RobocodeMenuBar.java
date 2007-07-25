@@ -9,11 +9,13 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Added menu items for Robocode API, Robo Wiki, Yahoo Group Robocode,
  *       and Robocode Repository
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
- *     - Code cleanup
+ *     - Changed menu accelerator keys to use Toolkit.getMenuShortcutKeyMask()
+ *       instead of Event.CTRL_MASK
  *     Matthew Reeder
  *     - Added keyboard mnemonics and a few accelerators to all menus and menu
  *       items
@@ -82,6 +84,8 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem helpRobocodeRepositoryMenuItem;
 	private RobocodeFrame robocodeFrame;
 	private RobocodeManager manager;
+
+	private final int MENU_SHORTCUT_KEY_MASK = java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
 	private class EventHandler implements ActionListener, MenuListener {
 		public void actionPerformed(ActionEvent e) {
@@ -246,7 +250,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleNewMenuItem.setText("New");
 			battleNewMenuItem.setMnemonic('N');
 			battleNewMenuItem.setDisplayedMnemonicIndex(0);
-			battleNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK, false));
+			battleNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, MENU_SHORTCUT_KEY_MASK, false));
 			battleNewMenuItem.addActionListener(eventHandler);
 		}
 		return battleNewMenuItem;
@@ -263,7 +267,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleOpenMenuItem.setText("Open");
 			battleOpenMenuItem.setMnemonic('O');
 			battleOpenMenuItem.setDisplayedMnemonicIndex(0);
-			battleOpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK, false));
+			battleOpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU_SHORTCUT_KEY_MASK, false));
 			battleOpenMenuItem.addActionListener(eventHandler);
 		}
 		return battleOpenMenuItem;
@@ -281,7 +285,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleSaveAsMenuItem.setMnemonic('A');
 			battleSaveAsMenuItem.setDisplayedMnemonicIndex(5);
 			battleSaveAsMenuItem.setAccelerator(
-					KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK, false));
+					KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_KEY_MASK | InputEvent.SHIFT_MASK, false));
 			battleSaveAsMenuItem.setEnabled(false);
 			battleSaveAsMenuItem.addActionListener(eventHandler);
 		}
@@ -299,7 +303,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleSaveMenuItem.setText("Save");
 			battleSaveMenuItem.setMnemonic('S');
 			battleSaveMenuItem.setDisplayedMnemonicIndex(0);
-			battleSaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK, false));
+			battleSaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_KEY_MASK, false));
 			battleSaveMenuItem.setEnabled(false);
 			battleSaveMenuItem.addActionListener(eventHandler);
 		}
@@ -591,7 +595,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			robotEditorMenuItem.setText("Editor");
 			robotEditorMenuItem.setMnemonic('E');
 			robotEditorMenuItem.setDisplayedMnemonicIndex(0);
-			robotEditorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK, false));
+			robotEditorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, MENU_SHORTCUT_KEY_MASK, false));
 			robotEditorMenuItem.addActionListener(eventHandler);
 		}
 		return robotEditorMenuItem;

@@ -13,10 +13,12 @@
  *     - Added keyboard mnemonics to all menus and menu items
  *     Flemming N. Larsen
  *     - Code cleanup
- *     - Updated to use methods from the WindowUtil, which replaces window methods
- *       that have been (re)moved from the robocode.util.Utils class
+ *     - Updated to use methods from the WindowUtil, which replaces window
+ *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Added confirm dialog when trying to reset the compiler preferences
  *     - Did a lot of NullPointerException bugfixes with getActiveWindow()
+ *     - Changed menu accelerator keys to use Toolkit.getMenuShortcutKeyMask()
+ *       instead of Event.CTRL_MASK
  *******************************************************************************/
 package robocode.editor;
 
@@ -45,6 +47,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem fileExitMenuItem;
 
 	private JMenu functionsMenu;
+
+	private final int MENU_SHORTCUT_KEY_MASK = java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -183,10 +187,9 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void compilerOptionsResetCompilerActionPerformed() {
 		if (JOptionPane.showConfirmDialog(editor,
-				"You are about to reset the compiler preferences.  Do you wish to proceed?",
-				"Reset Compiler Preferences",
-				JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION) {
+				"You are about to reset the compiler preferences.  Do you wish to proceed?", "Reset Compiler Preferences",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+				== JOptionPane.NO_OPTION) {
 			return;
 		}
 
@@ -462,7 +465,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileNewJavaFileMenuItem.setMnemonic('J');
 			fileNewJavaFileMenuItem.setDisplayedMnemonicIndex(0);
 			fileNewJavaFileMenuItem.setAccelerator(
-					KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK | Event.SHIFT_MASK));
+					KeyStroke.getKeyStroke(KeyEvent.VK_N, MENU_SHORTCUT_KEY_MASK | Event.SHIFT_MASK));
 			fileNewJavaFileMenuItem.addActionListener(eventHandler);
 		}
 		return fileNewJavaFileMenuItem;
@@ -496,7 +499,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileNewRobotMenuItem.setText("Robot");
 			fileNewRobotMenuItem.setMnemonic('R');
 			fileNewRobotMenuItem.setDisplayedMnemonicIndex(0);
-			fileNewRobotMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+			fileNewRobotMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, MENU_SHORTCUT_KEY_MASK));
 			fileNewRobotMenuItem.addActionListener(eventHandler);
 		}
 		return fileNewRobotMenuItem;
@@ -513,7 +516,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileOpenMenuItem.setText("Open");
 			fileOpenMenuItem.setMnemonic('O');
 			fileOpenMenuItem.setDisplayedMnemonicIndex(0);
-			fileOpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+			fileOpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU_SHORTCUT_KEY_MASK));
 			fileOpenMenuItem.addActionListener(eventHandler);
 		}
 		return fileOpenMenuItem;
@@ -541,7 +544,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileSaveAsMenuItem.setText("Save As");
 			fileSaveAsMenuItem.setMnemonic('A');
 			fileSaveAsMenuItem.setDisplayedMnemonicIndex(5);
-			fileSaveAsMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK | Event.SHIFT_MASK));
+			fileSaveAsMenuItem.setAccelerator(
+					KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_KEY_MASK | Event.SHIFT_MASK));
 			fileSaveAsMenuItem.addActionListener(eventHandler);
 		}
 		return fileSaveAsMenuItem;
@@ -558,7 +562,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileSaveMenuItem.setText("Save");
 			fileSaveMenuItem.setMnemonic('S');
 			fileSaveMenuItem.setDisplayedMnemonicIndex(0);
-			fileSaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+			fileSaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_KEY_MASK));
 			fileSaveMenuItem.addActionListener(eventHandler);
 		}
 		return fileSaveMenuItem;
@@ -665,7 +669,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editUndoMenuItem.setText("Undo");
 			editUndoMenuItem.setMnemonic('U');
 			editUndoMenuItem.setDisplayedMnemonicIndex(0);
-			editUndoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+			editUndoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, MENU_SHORTCUT_KEY_MASK));
 			editUndoMenuItem.addActionListener(eventHandler);
 		}
 		return editUndoMenuItem;
@@ -682,7 +686,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editRedoMenuItem.setText("Redo");
 			editRedoMenuItem.setMnemonic('R');
 			editRedoMenuItem.setDisplayedMnemonicIndex(0);
-			editRedoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK));
+			editRedoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, MENU_SHORTCUT_KEY_MASK));
 			editRedoMenuItem.addActionListener(eventHandler);
 		}
 		return editRedoMenuItem;
@@ -699,7 +703,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editCutMenuItem.setText("Cut");
 			editCutMenuItem.setMnemonic('t');
 			editCutMenuItem.setDisplayedMnemonicIndex(2);
-			editCutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
+			editCutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, MENU_SHORTCUT_KEY_MASK));
 			editCutMenuItem.addActionListener(eventHandler);
 		}
 		return editCutMenuItem;
@@ -716,7 +720,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editCopyMenuItem.setText("Copy");
 			editCopyMenuItem.setMnemonic('C');
 			editCopyMenuItem.setDisplayedMnemonicIndex(0);
-			editCopyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
+			editCopyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, MENU_SHORTCUT_KEY_MASK));
 			editCopyMenuItem.addActionListener(eventHandler);
 		}
 		return editCopyMenuItem;
@@ -733,7 +737,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editPasteMenuItem.setText("Paste");
 			editPasteMenuItem.setMnemonic('P');
 			editPasteMenuItem.setDisplayedMnemonicIndex(0);
-			editPasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
+			editPasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, MENU_SHORTCUT_KEY_MASK));
 			editPasteMenuItem.addActionListener(eventHandler);
 		}
 		return editPasteMenuItem;
@@ -767,7 +771,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editFindMenuItem.setText("Find...");
 			editFindMenuItem.setMnemonic('F');
 			editFindMenuItem.setDisplayedMnemonicIndex(0);
-			editFindMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK));
+			editFindMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, MENU_SHORTCUT_KEY_MASK));
 			editFindMenuItem.addActionListener(eventHandler);
 		}
 		return editFindMenuItem;
@@ -801,7 +805,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editReplaceMenuItem.setText("Replace...");
 			editReplaceMenuItem.setMnemonic('R');
 			editReplaceMenuItem.setDisplayedMnemonicIndex(0);
-			editReplaceMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_MASK));
+			editReplaceMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, MENU_SHORTCUT_KEY_MASK));
 			editReplaceMenuItem.addActionListener(eventHandler);
 		}
 		return editReplaceMenuItem;
@@ -818,7 +822,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editSelectAllMenuItem.setText("Select All");
 			editSelectAllMenuItem.setMnemonic('A');
 			editSelectAllMenuItem.setDisplayedMnemonicIndex(7);
-			editSelectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
+			editSelectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, MENU_SHORTCUT_KEY_MASK));
 			editSelectAllMenuItem.addActionListener(eventHandler);
 		}
 		return editSelectAllMenuItem;
