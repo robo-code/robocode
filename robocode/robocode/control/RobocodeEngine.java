@@ -19,6 +19,9 @@
  *     - Changed to use FileUtil.getRobotsDir()
  *     - Modified getLocalRepository() to support teams by using
  *       FileSpecification instead of RobotSpecification
+ *     - System.out, System.err, and System.in is now only set once, as new
+ *       instances of the RobocodeEngine causes memory leaks with
+ *       System.setOut() and System.setErr()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -57,6 +60,19 @@ import robocode.security.SecurePrintStream;
 public class RobocodeEngine {
 	private RobocodeListener listener;
 	private RobocodeManager manager;
+
+	static PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
+	static PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
+	static InputStream sysin = new SecureInputStream(System.in, "System.in");
+
+	static {
+		// Secure System.in, System.err, System.out
+		System.setOut(sysout);
+		if (!System.getProperty("debug", "false").equals("true")) {
+			System.setErr(syserr);
+		}
+		System.setIn(sysin);
+	}
 
 	/**
 	 * Creates a new RobocodeEngine
@@ -113,17 +129,6 @@ public class RobocodeEngine {
 			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
 			tg = tg.getParent();
 		}
-
-		// Secure System.in, System.err, System.out
-		PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-		PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-		InputStream sysin = new SecureInputStream(System.in, "System.in");
-
-		System.setOut(sysout);
-		if (!System.getProperty("debug", "false").equals("true")) {
-			System.setErr(syserr);
-		}
-		System.setIn(sysin);
 	}
 
 	/**
