@@ -14,6 +14,7 @@
  *       under v1.06.
  *     - Updated to use methods from WindowUtil and Logger, which replaces
  *       methods that have been (re)moved from the robocode.util.Utils class
+ *     - Added calculateCpuConstant() used for (re)calculating the CPU constant
  *******************************************************************************/
 package robocode.manager;
 
@@ -38,45 +39,47 @@ public class CpuManager {
 	}
 
 	public int getCpuConstant() {
-
 		if (cpuConstant == -1) {
 			cpuConstant = manager.getProperties().getCpuConstant();
 			if (cpuConstant == -1) {
-				WindowUtil.setStatus("Estimating CPU speed, please wait...");
-
-				long start = System.currentTimeMillis();
-				long count = 0;
-				double d = 0;
-
-				while (System.currentTimeMillis() - start < TEST_PERIOD_MILLIS && d >= 0) {
-					d = Math.random() * Math.random();
-					count++;
-				}
-
-				double cyclesPerMS = count / (double) TEST_PERIOD_MILLIS;
-
-				double msPerCycle = 1 / cyclesPerMS;
-
-				cpuConstant = (int) (APPROXIMATE_CYCLES_ALLOWED * msPerCycle + .5);
-
-				if (cpuConstant < 1) {
-					cpuConstant = 1;
-				}
-
-				Logger.log(
-						"Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
-				manager.getProperties().setCpuConstant(cpuConstant);
-				manager.saveProperties();
-
-				WindowUtil.setStatus("");
+				calculateCpuConstant();
 			}
-
-			/*
-			 17 MFlops:  32 ms
-			 35 MFlops:  16 ms
-			 70 MFlops:  8 ms
-			 */
 		}
 		return cpuConstant;
+	}
+	
+	public void calculateCpuConstant() {
+		WindowUtil.setStatus("Estimating CPU speed, please wait...");
+
+		long start = System.currentTimeMillis();
+		long count = 0;
+		double d = 0;
+
+		while (System.currentTimeMillis() - start < TEST_PERIOD_MILLIS && d >= 0) {
+			d = Math.random() * Math.random();
+			count++;
+		}
+
+		double cyclesPerMS = count / (double) TEST_PERIOD_MILLIS;
+
+		double msPerCycle = 1 / cyclesPerMS;
+
+		cpuConstant = (int) (APPROXIMATE_CYCLES_ALLOWED * msPerCycle + .5);
+
+		if (cpuConstant < 1) {
+			cpuConstant = 1;
+		}
+
+		Logger.log("Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
+		manager.getProperties().setCpuConstant(cpuConstant);
+		manager.saveProperties();
+
+		WindowUtil.setStatus("");
+
+		/*
+		 17 MFlops:  32 ms
+		 35 MFlops:  16 ms
+		 70 MFlops:  8 ms
+		 */
 	}
 }
