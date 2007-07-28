@@ -10,8 +10,6 @@ on the default battlefield of 800x600 pixels. The robots selected for the
 battle are sample.RamFire and sample.Corners.
 
 <pre>
-//import java.io.File;
-
 import robocode.control.*;
 
 /**
@@ -71,13 +69,14 @@ public class RobocodeRunner {
         // Run the battle based on our battle specification (5 rounds, 800x600, selected robots)
         engine.runBattle(battleSpec);
 
-        // Here we loop until our battle listener sets the battleComplete flag
-        do {
-            try {
-                // Sleep 1/10 second
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        } while (!battleListener.battleComplete); // Wait for battleComplete flag
+        // Wait for the battle to complete
+        synchronized (battleListener) {
+            while (!battleListener.battleComplete) {
+                try {
+                    battleListener.wait();
+                } catch (InterruptedException e) {}
+            }
+        }
 
         // Close Robocode
         engine.close();
@@ -105,8 +104,8 @@ class BattleListener implements RobocodeListener {
     public void battleAborted(BattleSpecification battleSpec) {
         System.out.println("-- Battle was aborted --");
 
-        // Flag that the battle is complete
-        battleComplete = true;
+        // Notify that the battle is complete
+        notifyBattleComplete();
     }
 
     /**
@@ -118,8 +117,8 @@ class BattleListener implements RobocodeListener {
     public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {
         System.out.println("-- Battle has completed --");
 
-        // Flag that the battle is complete
-        battleComplete = true;
+        // Notify that the battle is complete
+        notifyBattleComplete();
 
         // Print out the results for each robot
         System.out.println("\n-- Battle results --");
@@ -135,6 +134,17 @@ class BattleListener implements RobocodeListener {
      */
     public void battleMessage(String message) {
         System.out.println(">" + message);
+    }
+
+    /**
+     * Notify that the battle has been completed.
+     */
+    private synchronized void notifyBattleComplete() {
+    	// Set the flag that the battle is complete
+    	battleComplete = true;
+
+    	// Notify all that waits for the battle to complete
+    	notifyAll();
     }
 }
 </pre>
