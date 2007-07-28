@@ -22,6 +22,8 @@ o Improved battleview a bit
      the battlefield
   -- The text for the Robot names and scores are now "clipped" to the width and height
      of the battleview instead of the battlefield
+o 
+  -- This makes it possible to force recalculation of the CPU constant
 
 Version 1.3.5
 (07/04/2007)

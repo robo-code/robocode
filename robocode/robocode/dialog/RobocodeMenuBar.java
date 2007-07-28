@@ -16,6 +16,7 @@
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Changed menu accelerator keys to use Toolkit.getMenuShortcutKeyMask()
  *       instead of Event.CTRL_MASK
+ *     - Added "Recalculate CPU constant" to the Options menu
  *     Matthew Reeder
  *     - Added keyboard mnemonics and a few accelerators to all menus and menu
  *       items
@@ -68,6 +69,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem optionsPreferencesMenuItem;
 	private JMenuItem optionsFitWindowMenuItem;
 	private JCheckBoxMenuItem optionsShowRankingCheckBoxMenuItem;
+	private JMenuItem optionsRecalculateCpuConstant;
 
 	// Help Menu
 	private JMenu helpMenu;
@@ -123,6 +125,8 @@ public class RobocodeMenuBar extends JMenuBar {
 				optionsFitWindowActionPerformed();
 			} else if (source == mb.getOptionsShowRankingCheckBoxMenuItem()) {
 				optionsShowRankingActionPerformed();
+			} else if (source == mb.getOptionsRecalculateCpuConstant()) {
+				optionsRecalculateCpuConstantPerformed();
 
 				// Help menu
 			} else if (source == mb.getHelpOnlineHelpMenuItem()) {
@@ -550,6 +554,22 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	/**
+	 * Return the optionsRecalculateCpuConstant.
+	 *
+	 * @return JMenuItem
+	 */
+	private JMenuItem getOptionsRecalculateCpuConstant() {
+		if (optionsRecalculateCpuConstant == null) {
+			optionsRecalculateCpuConstant = new JMenuItem();
+			optionsRecalculateCpuConstant.setText("Recalculate CPU constant");
+			optionsRecalculateCpuConstant.setMnemonic('e');
+			optionsRecalculateCpuConstant.setDisplayedMnemonicIndex(1);
+			optionsRecalculateCpuConstant.addActionListener(eventHandler);
+		}
+		return optionsRecalculateCpuConstant;
+	}
+
+	/**
 	 * Return the Options Menu.
 	 *
 	 * @return JMenu
@@ -563,6 +583,8 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsMenu.add(getOptionsPreferencesMenuItem());
 			optionsMenu.add(getOptionsFitWindowMenuItem());
 			optionsMenu.add(getOptionsShowRankingCheckBoxMenuItem());
+			optionsMenu.add(new JSeparator());
+			optionsMenu.add(getOptionsRecalculateCpuConstant());
 			optionsMenu.addMenuListener(eventHandler);
 		}
 		return optionsMenu;
@@ -740,6 +762,20 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	private void optionsShowRankingActionPerformed() {
 		manager.getWindowManager().showRankingDialog(getOptionsShowRankingCheckBoxMenuItem().getState());
+	}
+
+	private void optionsRecalculateCpuConstantPerformed() {
+		int ok = JOptionPane.showConfirmDialog(this, "Do you want to recalculate the CPU constant?",
+				"Recalculate CPU constant", JOptionPane.YES_NO_OPTION);
+
+		if (ok == JOptionPane.YES_OPTION) {
+			manager.getCpuManager().calculateCpuConstant();
+
+			int cpuConstant = manager.getCpuManager().getCpuConstant();
+
+			JOptionPane.showMessageDialog(this, "CPU constant: " + cpuConstant + " milliseconds per turn",
+					"New CPU constant", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	private void optionsPreferencesActionPerformed() {
