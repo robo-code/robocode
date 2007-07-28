@@ -1,5 +1,5 @@
 Version 1.4 Beta
-(07/28/2007)
+(07/29/2007)
 The "Junior Robot" release
 -------------
 o Bugfixes
@@ -9,6 +9,8 @@ o Added JuniorRobot
      in purpose of teaching programming skills to inexperienced in programming
      students
   -- This new robot type has been designed by Nutch Poovarawan / Cubic Creative team
+o Added sample.MyFirstJuniorRobot
+  -- This robot is very similar to MyFirstRobot, but tracks it's scanned enemy better
 o GUI: Changed menu shortcut key
   -- Robocode forced the use of the Ctrl key to be used as menu shortcut key.
      Now Robocode ask the Java VM what menu shortcut key to use
