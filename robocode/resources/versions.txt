@@ -1,5 +1,5 @@
 Version 1.4 Beta
-(07/25/2007)
+(07/28/2007)
 The "Junior Robot" release
 -------------
 o Bugfixes
@@ -15,6 +15,13 @@ o GUI: Changed menu shortcut key
   -- This change means that Mac OS X users should now use the Command key instead of
      the control key
   -- Thanks goes to Nutch Poovarawan for the tip of how to do this! :-)
+o Improved battleview a bit
+  -- A red border is now painted around the battlefield, when the battleview's height
+     and/or width is larger than the battlefield
+  -- Explosions are painted outside the battlefield, when the battleview is larger than
+     the battlefield
+  -- The text for the Robot names and scores are now "clipped" to the width and height
+     of the battleview instead of the battlefield
 
 Version 1.3.5
 (07/04/2007)
