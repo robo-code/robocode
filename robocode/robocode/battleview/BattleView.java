@@ -311,6 +311,9 @@ public class BattleView extends Canvas {
 		// Draw robots
 		drawRobots(g);
 
+		// Draw the border of the battlefield
+		drawBorder(g);
+
 		// Draw all bullets
 		drawBullets(g);
 
@@ -334,8 +337,8 @@ public class BattleView extends Canvas {
 
 			// Draw the pre-rendered ground if it is available
 			if (groundImage != null) {
-				int groundWidth = (int) (battleField.getWidth() * scale);
-				int groundHeight = (int) (battleField.getHeight() * scale);
+				int groundWidth = (int) (battleField.getWidth() * scale) + 1;
+				int groundHeight = (int) (battleField.getHeight() * scale) + 1;
 
 				int dx = (getWidth() - groundWidth) / 2;
 				int dy = (getHeight() - groundHeight) / 2;
@@ -351,6 +354,17 @@ public class BattleView extends Canvas {
 		}
 	}
 
+	private void drawBorder(Graphics2D g) {
+		final Shape savedClip = g.getClip();
+
+		g.setClip(null);
+		
+		g.setColor(Color.RED);
+		g.drawRect(-1, -1, battleField.getWidth() + 2, battleField.getHeight() + 2);
+
+		g.setClip(savedClip);
+	}
+	
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
 			for (RobotPeer r : battle.getRobots()) {
@@ -419,6 +433,9 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawText(Graphics2D g) {
+		Shape savedClip = g.getClip();
+		g.setClip(null);
+
 		List<RobotPeer> robots = new ArrayList<RobotPeer>(battle.getRobots());
 
 		for (RobotPeer r : robots) {
@@ -453,6 +470,8 @@ public class BattleView extends Canvas {
 				drawRobotPaint(g, r);
 			}
 		}
+
+		g.setClip(savedClip);
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotPeer robotPeer) {
@@ -460,10 +479,11 @@ public class BattleView extends Canvas {
 			return;
 		}
 
-		GraphicsState gfxState = new GraphicsState();
-
 		// Save the graphics state
+		GraphicsState gfxState = new GraphicsState();
 		gfxState.save(g);
+
+		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
 		Robot robot = (Robot)robotPeer.getRobot();
 		
@@ -481,6 +501,9 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawBullets(Graphics2D g) {
+		Shape savedClip = g.getClip();
+		g.setClip(null);
+		
 		double x, y;
 
 		List<BulletPeer> bullets = new ArrayList<BulletPeer>(battle.getBullets());
@@ -525,6 +548,7 @@ public class BattleView extends Canvas {
 				explosionRenderImage.paint(g);
 			}
 		}
+		g.setClip(savedClip);
 	}
 
 	public void setBattle(Battle battle) {
@@ -537,27 +561,28 @@ public class BattleView extends Canvas {
 
 	public void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
 		g.setFont(font);
-		int left, top, descent;
-		int width, height;
 
-		width = fm.stringWidth(s);
-		height = fm.getHeight();
-		descent = fm.getDescent();
+		int width = fm.stringWidth(s);
+		int height = fm.getHeight();
+		int descent = fm.getDescent();
 
-		left = x - width / 2;
-		top = y - height / 2;
+		int left = x - width / 2;
+		int top = y - height / 2;
 
-		if (left + width > battleField.getWidth()) {
-			left = battleField.getWidth() - width;
+		int borderWidth = (int)(getWidth() - scale * battleField.getWidth()) / 2;
+		int borderHeight = (int)(getHeight() - scale * battleField.getHeight()) / 2;
+
+		if (left + width > getWidth()) {
+			left = getWidth() - width;
 		}
-		if (top + height >= battleField.getHeight()) {
-			top = battleField.getHeight() - height - 1;
+		if (top + height > getHeight()) {
+			top = getHeight() - height;
 		}
-		if (left < 0) {
-			left = 0;
+		if (left < -borderWidth) {
+			left = -borderWidth;
 		}
-		if (top < 0) {
-			top = 0;
+		if (top < -borderHeight) {
+			top = -borderHeight;
 		}
 		g.drawString(s, left, (top + height - descent));
 	}
