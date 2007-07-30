@@ -275,7 +275,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	public void drawBattle(Graphics2D g) {
+	private void drawBattle(Graphics2D g) {
 		// Save the graphics state
 		graphicsState.save(g);
 
@@ -559,24 +559,27 @@ public class BattleView extends Canvas {
 		paintMode = newPaintMode;
 	}
 
-	public void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
+	private void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
 		g.setFont(font);
 
 		int width = fm.stringWidth(s);
 		int height = fm.getHeight();
 		int descent = fm.getDescent();
 
-		int left = x - width / 2;
-		int top = y - height / 2;
+		double left = x - width / 2;
+		double top = y - height / 2;
 
-		int borderWidth = (int)(getWidth() - scale * battleField.getWidth()) / 2;
-		int borderHeight = (int)(getHeight() - scale * battleField.getHeight()) / 2;
+		double scaledViewWidth = getWidth() / scale;
+		double scaledViewHeight = getHeight() / scale;
+		
+		double borderWidth = (scaledViewWidth - battleField.getWidth()) / 2;
+		double borderHeight = (scaledViewHeight - battleField.getHeight()) / 2;
 
-		if (left + width > getWidth()) {
-			left = getWidth() - width;
+		if (left + width > scaledViewWidth) {
+			left = scaledViewWidth - width;
 		}
-		if (top + height > getHeight()) {
-			top = getHeight() - height;
+		if (top + height > scaledViewHeight) {
+			top = scaledViewHeight - height;
 		}
 		if (left < -borderWidth) {
 			left = -borderWidth;
@@ -584,7 +587,7 @@ public class BattleView extends Canvas {
 		if (top < -borderHeight) {
 			top = -borderHeight;
 		}
-		g.drawString(s, left, (top + height - descent));
+		g.drawString(s, (int)(left + 0.5), (int)(top + height - descent + 0.5));
 	}
 
 	public void setTitle(String s) {
