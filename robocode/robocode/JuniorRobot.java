@@ -360,7 +360,12 @@ public class JuniorRobot extends _RobotBase {
 
 	/**
 	 * Moves this robot forward by pixels and turns this robot left by degrees
-	 * at the same time.
+	 * at the same time. The robot will move in a curve that follows a perfect
+	 * circle, and the moving and turning will end at the same time.<br>
+	 * <br>
+	 * Note that the max. velocity and max. turn rate is automatically adjusted,
+	 * which means that the robot will move slower the sharper the turn is
+	 * compared to the distance. 
 	 *
 	 * @param distance the amount of pixels to move forward
 	 * @param degrees the amount of degrees to turn to the left
@@ -381,7 +386,12 @@ public class JuniorRobot extends _RobotBase {
 
 	/**
 	 * Moves this robot forward by pixels and turns this robot right by degrees
-	 * at the same time.
+	 * at the same time. The robot will move in a curve that follows a perfect
+	 * circle, and the moving and turning will end at the same time.<br>
+	 * <br>
+	 * Note that the max. velocity and max. turn rate is automatically adjusted,
+	 * which means that the robot will move slower the sharper the turn is
+	 * compared to the distance. 
 	 *
 	 * @param distance the amount of pixels to move forward
 	 * @param degrees the amount of degrees to turn to the right
@@ -407,7 +417,12 @@ public class JuniorRobot extends _RobotBase {
 
 	/**
 	 * Moves this robot backward by pixels and turns this robot left by degrees
-	 * at the same time.
+	 * at the same time. The robot will move in a curve that follows a perfect
+	 * circle, and the moving and turning will end at the same time.<br>
+	 * <br>
+	 * Note that the max. velocity and max. turn rate is automatically adjusted,
+	 * which means that the robot will move slower the sharper the turn is
+	 * compared to the distance. 
 	 *
 	 * @param distance the amount of pixels to move backward
 	 * @param degrees the amount of degrees to turn to the left
@@ -428,7 +443,12 @@ public class JuniorRobot extends _RobotBase {
 
 	/**
 	 * Moves this robot backward by pixels and turns this robot right by degrees
-	 * at the same time.
+	 * at the same time. The robot will move in a curve that follows a perfect
+	 * circle, and the moving and turning will end at the same time.<br>
+	 * <br>
+	 * Note that the max. velocity and max. turn rate is automatically adjusted,
+	 * which means that the robot will move slower the sharper the turn is
+	 * compared to the distance. 
 	 *
 	 * @param distance the amount of pixels to move backward
 	 * @param degrees the amount of degrees to turn to the right
