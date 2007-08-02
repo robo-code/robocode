@@ -36,6 +36,11 @@
  *     - Fixed synchronization issues with several member fields
  *     - Added features to support the new JuniorRobot class
  *     - Added cleanupStaticFields() for clearing static fields on robots
+ *     - Added getMaxTurnRate()
+ *     - Added turnAndMoveChassis() in order to support the turnAheadLeft(),
+ *       turnAheadRight(), turnBackLeft(), and turnBackRight() for the
+ *       JuniorRobot, which moves the robot in a perfect curve that follows a
+ *       circle
  *     Luis Crespo
  *     - Added states
  *     Titus Chen
@@ -1330,6 +1335,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return maxVelocity;
 	}
 
+	public synchronized double getMaxTurnRate() {
+		return maxTurnRate;
+	}
+
 	public int getNumRounds() {
 		return getBattle().getNumRounds();
 	}
@@ -1717,5 +1726,89 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				}
 			}
 		}
+	}
+
+	public void turnAndMoveChassis(double distance, double radians) {
+		if (distance == 0) {
+			turnChassis(radians);
+			return;
+		}
+
+		final double absDegrees = Math.abs(Math.toDegrees(radians));
+		final double absDistance = Math.abs(distance);
+
+		// -- Calculate max. velocity for moving perfect in a circle --
+
+		// maxTurnRate = 10 * 0.75 * velocity  (Robocode rule), and
+		// maxTurnRate = velocity * degrees / distance  (curve turn rate)
+		//
+		// Hence, max. velocity = 10 / (degrees / distance + 0.75)
+
+		final double maxVelocity = Math.min(Rules.MAX_VELOCITY, 10 / (absDegrees / absDistance + 0.75));
+
+		// -- Calculate number of turns for acceleration + deceleration --
+
+		double accDist = 0; // accumulated distance during acceleration
+		double decDist = 0; // accumulated distance during deceleration
+
+		int turns = 0; // number of turns to it will take to move the distance
+
+		// Calculate the amount of turn it will take to accelerate + decelerate
+		// up to the max. velocity, but stop if the distance for used for
+		// acceleration + deceleration gets bigger than the total distance to move
+		for (int t = 1; t < maxVelocity; t++) {
+
+			// Add the current velocity to the acceleration distance
+			accDist += t;
+
+			// Every 2nd time we add the deceleration distance needed to
+			// get to a velocity of 0
+			if (t > 2 && (t % 2) > 0) {
+				decDist += t - 2;
+			}
+
+			// Stop if the acceleration + deceleration > total distance to move
+			if ((accDist + decDist) >= absDistance) {
+				break;
+			}
+
+			// Increment turn for acceleration
+			turns++;
+
+			// Every 2nd time we increment time for deceleration 
+			if (t > 2 && (t % 2) > 0) {
+				turns++;
+			}
+		}
+
+		// Add number of turns for the remaining distance at max velocity
+		if ((accDist + decDist) < absDistance) {
+			turns += (int)((absDistance - accDist - decDist) / maxVelocity + 1);
+		}
+
+		// -- Move and turn chassis in a curve --
+
+		// Save current max. velocity and max. turn rate so they can be restored
+		final double savedMaxVelocity = getMaxVelocity();
+		final double savedMaxTurnRate = getMaxTurnRate();
+
+		// Set the calculated max. velocity
+		setMaxVelocity(maxVelocity);
+
+		// Set the robot to move the specified distance
+		setMove(distance);
+		// Set the robot to turn its chassis to the specified amount of radians
+		setTurnChassis(radians);
+
+		// Loop thru the number of turns it will take to move the distance and adjust
+		// the max. turn rate so it fit the current velocity of the robot 
+		for (int t = turns; t >= 0; t--) {
+			setMaxTurnRate(getVelocity() * absDegrees / absDistance);
+			tick(); // Perform next turn
+		}
+
+		// Restore the saved max. velocity and max. turn rate
+		setMaxVelocity(savedMaxVelocity);
+		setMaxTurnRate(savedMaxTurnRate);
 	}
 }
