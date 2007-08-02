@@ -398,13 +398,7 @@ public class JuniorRobot extends _RobotBase {
 	 */
 	public void turnAheadRight(int distance, int degrees) {
 		if (peer != null) {
-			peer.setMove(distance);
-			peer.setTurnChassis(toRadians(degrees));
-
-			do {
-				peer.tick(); // Always tick at least once
-			} while (peer.getDistanceRemaining() != 0 && peer.getTurnRemaining() != 0);
-
+			peer.turnAndMoveChassis(distance, toRadians(degrees));
 			peer.updateJuniorRobotFields();
 		} else {
 			uninitializedException();
