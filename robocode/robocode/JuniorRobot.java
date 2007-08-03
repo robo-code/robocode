@@ -438,7 +438,7 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #turnBackRight(int, int)
 	 */
 	public void turnBackLeft(int distance, int degrees) {
-		turnAheadRight(-distance, -degrees);
+		turnAheadRight(-distance, degrees);
 	}
 
 	/**
@@ -464,7 +464,7 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #turnBackLeft(int, int)
 	 */
 	public void turnBackRight(int distance, int degrees) {
-		turnAheadRight(-distance, degrees);
+		turnAheadRight(-distance, -degrees);
 	}
 
 	/**
