@@ -152,6 +152,7 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #scannedAngle
 	 * @see #scannedBearing
 	 * @see #scannedEnergy
+	 * @see #scannedVelocity
 	 */
 	public int scannedDistance = -1;
 
@@ -164,6 +165,7 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #scannedDistance
 	 * @see #scannedBearing
 	 * @see #scannedEnergy
+	 * @see #scannedVelocity
 	 */
 	public int scannedAngle = -1;
 
@@ -177,8 +179,26 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #scannedDistance
 	 * @see #scannedAngle
 	 * @see #scannedEnergy
+	 * @see #scannedVelocity
 	 */
 	public int scannedBearing = -1;
+
+	/**
+	 * Current velocity of scanned nearest other robot.
+	 * If there is no robot in the radar's sight, this field will be -99.
+	 * Note that a positive value means that the robot moves forward, a negative
+	 * value means that the robot moved backward, and 0 means that the robot is
+	 * not moving at all.
+	 * This field will not be updated while {@link #onScannedRobot()} event is active.
+	 *
+	 * @see #onScannedRobot()
+	 * @see #scannedDistance
+	 * @see #scannedAngle
+	 * @see #scannedBearing
+	 * @see #scannedEnergy
+	 * @see #scannedVelocity
+	 */
+	public int scannedVelocity = -99;
 
 	/**
 	 * Current energy of scanned nearest other robot.
@@ -189,6 +209,7 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #scannedDistance
 	 * @see #scannedAngle
 	 * @see #scannedBearing
+	 * @see #scannedVelocity
 	 */
 	public int scannedEnergy = -1;
 
