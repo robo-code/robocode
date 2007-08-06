@@ -975,7 +975,7 @@ public class Robot extends _Robot {
 	 * Note: The gun compensating this way does count as "turning the gun".
 	 * See {@link #setAdjustRadarForGunTurn(boolean)} for details.
 	 *
-	 * @param independent @{code true} if the gun must turn independent from the
+	 * @param independent {@code true} if the gun must turn independent from the
 	 *    robot's turn; {@code false} if the gun must turn with the robot's turn.
 	 *
 	 * @see #setAdjustRadarForGunTurn
@@ -1018,7 +1018,7 @@ public class Robot extends _Robot {
 	 * you have already called it earlier. This behavior is primarily for
 	 * backward compatibility with older Robocode robots.
 	 *
-	 * @param independent @{code true} if the radar must turn independent from
+	 * @param independent {@code true} if the radar must turn independent from
 	 *    the gun's turn; {@code false} if the radar must turn with the gun's
 	 *    turn.
 	 *
@@ -1559,7 +1559,7 @@ public class Robot extends _Robot {
 	 *   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
 	 * </pre>
 	 *
-	 * @param independent @{code true} if the radar must turn independent from
+	 * @param independent {@code true} if the radar must turn independent from
 	 *    the robots's turn; {@code false} if the radar must turn with the robot's
 	 *    turn.
 	 *
