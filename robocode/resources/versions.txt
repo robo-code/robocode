@@ -28,6 +28,8 @@ o Added "Recalculate CPU constant" to the Options menu
   -- This makes it possible to force recalculation of the CPU constant
 o RoboRumble changes
   -- Redundant RoboRumble config files are now removed from the /config folder
+  -- Changed UPLOAD=NOT to UPLOAD=YES as default, i.e. the results are now automatically
+     uploaded to the RoboRumble server
 
 
 Version 1.3.5
