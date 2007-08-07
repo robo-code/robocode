@@ -4,7 +4,7 @@
 
 DOWNLOAD=YES
 EXECUTE=YES
-UPLOAD=NOT
+UPLOAD=YES
 ITERATE=NOT
 
 #It tells the program if this competitions is for teams. 
