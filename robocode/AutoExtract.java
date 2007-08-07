@@ -83,9 +83,6 @@ public class AutoExtract implements ActionListener {
 		try {
 			JarFile extractJar = new JarFile("extract.jar");
 
-			if (extractJar == null) {
-				return true;
-			}
 			is = extractJar.getInputStream(extractJar.getJarEntry("license/cpl-v10.html"));
 		} catch (IOException e) {
 			return true;
@@ -307,8 +304,9 @@ public class AutoExtract implements ActionListener {
 					if (r == null) {
 						JOptionPane.showMessageDialog(null, "Installation cancelled.");
 						System.exit(0);
+					} else {
+						suggestedDir = new File(((String) r).trim());
 					}
-					suggestedDir = new File(((String) r).trim());
 				} else if (rc == JOptionPane.CANCEL_OPTION) {
 					JOptionPane.showMessageDialog(null, "Installation cancelled.");
 					System.exit(0);
@@ -345,21 +343,18 @@ public class AutoExtract implements ActionListener {
 			// Move .robotcache
 			move(new File(installDir, ".robotcache"), new File(installDir, "robots/.robotcache"));
 
-
 			// Create RoboRumble dir
 			File roborumbleDir = createDir(new File(installDir, "roborumble"));
 
 			// Create RoboRumble working dirs
 			createDir(new File(roborumbleDir, "files"));
 			createDir(new File(roborumbleDir, "temp"));
-
-			// Install RoboRumble config files if they do not exists already
-			installConfig(new File(installDir, "config/roborumble.txt"),
-					new File(installDir, "roborumble/roborumble.txt"));
-			installConfig(new File(installDir, "config/meleerumble.txt"),
-					new File(installDir, "roborumble/meleerumble.txt"));
-			installConfig(new File(installDir, "config/teamrumble.txt"),
-					new File(installDir, "roborumble/teamrumble.txt"));
+			
+			// Delete RoboRumble config from /config folder files if they exists,
+			// i.e. cleanup from earlier versions
+			(new File(installDir, "config/roborumble.txt")).delete();
+			(new File(installDir, "config/meleerumble.txt")).delete();
+			(new File(installDir, "config/teamrumble.txt")).delete();
 
 		} else {
 			JOptionPane.showMessageDialog(null, "Installation cancelled.");
@@ -407,63 +402,55 @@ public class AutoExtract implements ActionListener {
 		} else {
 			command = "cmd.exe /c cscript.exe ";
 		} // /nologo
-		if (command != null) {
+		try {
+			File shortcutMaker = new File(installDir, "makeshortcut.js");
+			PrintStream out = new PrintStream(new FileOutputStream(shortcutMaker));
+
+			out.println("WScript.Echo(\"Creating shortcuts...\");");
+			out.println("Shell = new ActiveXObject(\"WScript.Shell\");");
+			out.println("ProgramsPath = Shell.SpecialFolders(\"Programs\");");
+			out.println("fso = new ActiveXObject(\"Scripting.FileSystemObject\");");
+			out.println("if (!fso.folderExists(ProgramsPath + \"\\\\" + folder + "\"))");
+			out.println("	fso.CreateFolder(ProgramsPath + \"\\\\" + folder + "\");");
+			out.println("link = Shell.CreateShortcut(ProgramsPath + \"\\\\" + folder + "\\\\" + name + ".lnk\");");
+			out.println("link.Arguments = \"\";");
+			out.println("link.Description = \"" + name + "\";");
+			out.println("link.HotKey = \"\";");
+			out.println("link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + "robocode.ico,0\";");
+			out.println("link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + runnable + "\";");
+			out.println("link.WindowStyle = 1;");
+			out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\";");
+			out.println("link.Save();");
+			out.println("DesktopPath = Shell.SpecialFolders(\"Desktop\");");
+			out.println("link = Shell.CreateShortcut(DesktopPath + \"\\\\" + name + ".lnk\");");
+			out.println("link.Arguments = \"\";");
+			out.println("link.Description = \"" + name + "\";");
+			out.println("link.HotKey = \"\";");
+			out.println("link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + "robocode.ico,0\";");
+			out.println("link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + runnable + "\";");
+			out.println("link.WindowStyle = 1;");
+			out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\";");
+			out.println("link.Save();");
+			out.println("WScript.Echo(\"Shortcuts created.\");");
+
+			out.close();
+			Process p = Runtime.getRuntime().exec(command + " makeshortcut.js", null, installDir);
+
+			p.waitFor();
+			int rv = p.exitValue();
+
 			try {
-				File shortcutMaker = new File(installDir, "makeshortcut.js");
-				PrintStream out = new PrintStream(new FileOutputStream(shortcutMaker));
-
-				out.println("WScript.Echo(\"Creating shortcuts...\");");
-				out.println("Shell = new ActiveXObject(\"WScript.Shell\");");
-				out.println("ProgramsPath = Shell.SpecialFolders(\"Programs\");");
-				out.println("fso = new ActiveXObject(\"Scripting.FileSystemObject\");");
-				out.println("if (!fso.folderExists(ProgramsPath + \"\\\\" + folder + "\"))");
-				out.println("	fso.CreateFolder(ProgramsPath + \"\\\\" + folder + "\");");
-				out.println("link = Shell.CreateShortcut(ProgramsPath + \"\\\\" + folder + "\\\\" + name + ".lnk\");");
-				out.println("link.Arguments = \"\";");
-				out.println("link.Description = \"" + name + "\";");
-				out.println("link.HotKey = \"\";");
-				out.println(
-						"link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + "robocode.ico,0\";");
-				out.println("link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + runnable + "\";");
-				out.println("link.WindowStyle = 1;");
-				out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\";");
-				out.println("link.Save();");
-				out.println("DesktopPath = Shell.SpecialFolders(\"Desktop\");");
-				out.println("link = Shell.CreateShortcut(DesktopPath + \"\\\\" + name + ".lnk\");");
-				out.println("link.Arguments = \"\";");
-				out.println("link.Description = \"" + name + "\";");
-				out.println("link.HotKey = \"\";");
-				out.println(
-						"link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + "robocode.ico,0\";");
-				out.println("link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + runnable + "\";");
-				out.println("link.WindowStyle = 1;");
-				out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\";");
-				out.println("link.Save();");
-				out.println("WScript.Echo(\"Shortcuts created.\");");
-
-				out.close();
-				Process p = Runtime.getRuntime().exec(command + " makeshortcut.js", null, installDir);
-
-				p.waitFor();
-				int rv = p.exitValue();
-
-				try {
-					shortcutMaker.delete();
-				} catch (Exception e) {}
-				if (rv == 0) {
-					JOptionPane.showMessageDialog(null,
-							message + "\n" + "A Robocode program group has been added to your Start menu\n"
-							+ "A Robocode icon has been added to your desktop.");
-					return true;
-				} else {
-					return false;
-				}
-			} catch (Exception e) {
-				return false;
+				shortcutMaker.delete();
+			} catch (Exception e) {}
+			if (rv == 0) {
+				JOptionPane.showMessageDialog(null,
+						message + "\n" + "A Robocode program group has been added to your Start menu\n"
+						+ "A Robocode icon has been added to your desktop.");
+				return true;
 			}
-		} else {
-			return false;
-		}
+		} catch (Exception e) {}
+
+		return false;
 	}
 
 	private String escaped(String s) {
@@ -502,12 +489,6 @@ public class AutoExtract implements ActionListener {
 				
 			} catch (IOException e) {}
 			srcFile.delete();
-		}
-	}
-
-	private static void installConfig(File srcFile, File destFile) {
-		if (!destFile.exists()) {
-			move(srcFile, destFile);
 		}
 	}
 }
