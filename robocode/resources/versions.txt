@@ -1,5 +1,5 @@
-Version 1.4 Beta
-(07/29/2007)
+Version 1.4
+(08/07/2007)
 The "Junior Robot" release
 -------------
 o Bugfixes
@@ -26,6 +26,9 @@ o Improved battleview a bit
      of the battleview instead of the battlefield
 o Added "Recalculate CPU constant" to the Options menu
   -- This makes it possible to force recalculation of the CPU constant
+o RoboRumble changes
+  -- Redundant RoboRumble config files are now removed from the /config folder
+
 
 Version 1.3.5
 (07/04/2007)
