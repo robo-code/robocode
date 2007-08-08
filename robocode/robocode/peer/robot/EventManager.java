@@ -608,6 +608,7 @@ public class EventManager {
 						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
 								+ 0.5);
 				jr.scannedBearing = (int) (e.getBearing() + 0.5);
+				jr.scannedHeading = (int) (e.getHeading() + 0.5);
 				jr.scannedVelocity = (int) (e.getVelocity() + 0.5);
 				jr.onScannedRobot();
 			} else {

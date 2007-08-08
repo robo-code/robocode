@@ -13,6 +13,7 @@
  *******************************************************************************/
 package robocode;
 
+
 import static java.lang.Math.toRadians;
 
 import java.awt.Color;
@@ -41,22 +42,31 @@ public class JuniorRobot extends _RobotBase {
 
 	/** The color black (0x000000) */
 	public final static int	black = 0x000000;
+
 	/** The color white (0xFFFFFF) */
 	public final static int white = 0xFFFFFF;
+
 	/** The color red  (0xFF0000) */
 	public final static int red = 0xFF0000;
+
 	/** The color orange (0xFFA500) */
 	public final static int orange = 0xFFA500;
+
 	/** The color yellow (0xFFFF00) */
 	public final static int yellow = 0xFFFF00;
+
 	/** The color green (0x008000) */
 	public final static int green = 0x008000;
+
 	/** The color blue (0x0000FF) */
 	public final static int blue = 0x0000FF;
+
 	/** The color purple (0x800080) */
 	public final static int purple = 0x800080;
+
 	/** The color brown (0x8B4513) */
 	public final static int brown = 0x8B4513;
+
 	/** The color gray (0x808080) */
 	public final static int gray = 0x808080;
 	
@@ -144,7 +154,7 @@ public class JuniorRobot extends _RobotBase {
 	public boolean gunReady;
 
 	/**
-	 * Current distance for scanned nearest other robot (in pixels).
+	 * Current distance to the scanned nearest other robot (in pixels).
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
 	 * This field will not be updated while {@link #onScannedRobot()} event is active.
 	 *
@@ -153,11 +163,12 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #scannedBearing
 	 * @see #scannedEnergy
 	 * @see #scannedVelocity
+	 * @see #scannedHeading
 	 */
 	public int scannedDistance = -1;
 
 	/**
-	 * Current angle for scanned nearest other robot (in degrees).
+	 * Current angle to the scanned nearest other robot (in degrees).
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
 	 * This field will not be updated while {@link #onScannedRobot()} event is active.
 	 *
@@ -166,11 +177,12 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #scannedBearing
 	 * @see #scannedEnergy
 	 * @see #scannedVelocity
+	 * @see #scannedHeading
 	 */
 	public int scannedAngle = -1;
 
 	/**
-	 * Current angle for scanned nearest other robot (in degrees) compared to
+	 * Current angle to the scanned nearest other robot (in degrees) compared to
 	 * the body of this robot.
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
 	 * This field will not be updated while {@link #onScannedRobot()} event is active.
@@ -180,11 +192,12 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #scannedAngle
 	 * @see #scannedEnergy
 	 * @see #scannedVelocity
+	 * @see #scannedHeading
 	 */
 	public int scannedBearing = -1;
 
 	/**
-	 * Current velocity of scanned nearest other robot.
+	 * Current velocity of the scanned nearest other robot.
 	 * If there is no robot in the radar's sight, this field will be -99.
 	 * Note that a positive value means that the robot moves forward, a negative
 	 * value means that the robot moved backward, and 0 means that the robot is
@@ -196,9 +209,23 @@ public class JuniorRobot extends _RobotBase {
 	 * @see #scannedAngle
 	 * @see #scannedBearing
 	 * @see #scannedEnergy
-	 * @see #scannedVelocity
+	 * @see #scannedHeading
 	 */
 	public int scannedVelocity = -99;
+
+	/**
+	 * Current heading of the scanned nearest other robot (in degrees).
+	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+	 * This field will not be updated while {@link #onScannedRobot()} event is active.
+	 *
+	 * @see #onScannedRobot()
+	 * @see #scannedDistance
+	 * @see #scannedAngle
+	 * @see #scannedBearing
+	 * @see #scannedEnergy
+	 * @see #scannedVelocity
+	 */
+	public int scannedHeading = -1;
 
 	/**
 	 * Current energy of scanned nearest other robot.
