@@ -113,8 +113,9 @@ public class Battle implements Runnable {
 
 	// Battle items
 	private Thread battleThread;
-	private boolean running;
-	private boolean abortBattles;
+	private Object battleMonitor = new Object();
+	private volatile boolean running;
+	private volatile boolean abortBattles;
 
 	// Option related items
 	private double gunCoolingRate = .1;
@@ -160,8 +161,8 @@ public class Battle implements Runnable {
 	// Robot loading related items
 	private Thread unsafeLoadRobotsThread;
 	private Object unsafeLoaderMonitor = new Object();
-	private boolean unsafeLoaderThreadRunning;
-	private boolean robotsLoaded;
+	private volatile boolean unsafeLoaderRunning;
+	private volatile boolean robotsLoaded;
 
 	// Replay related items
 	private boolean replay;
@@ -210,9 +211,9 @@ public class Battle implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
-		synchronized (this) {
+		synchronized (battleMonitor) {
 			running = true;
-			notifyAll();
+			battleMonitor.notifyAll();
 		}
 
 		if (battleView != null) {
@@ -326,9 +327,9 @@ public class Battle implements Runnable {
 			battleView.repaint();
 		}
 
-		synchronized (this) {
+		synchronized (battleMonitor) {
 			running = false;
-			notifyAll();
+			battleMonitor.notifyAll();
 		}
 
 		updateTitle();
@@ -573,8 +574,10 @@ public class Battle implements Runnable {
 		return exitOnComplete;
 	}
 
-	public synchronized boolean isRobotsLoaded() {
-		return robotsLoaded;
+	public boolean isRobotsLoaded() {
+		synchronized (unsafeLoaderMonitor) {
+			return robotsLoaded;
+		}
 	}
 
 	public void printSystemThreads() {
@@ -1003,10 +1006,12 @@ public class Battle implements Runnable {
 				ar++;
 			}
 		}
-		setActiveRobots(ar);
+		activeRobots = ar;
 	}
 
 	private void wakeupRobots() {
+		final int cpuTime = manager.getCpuManager().getCpuConstant();
+
 		// Wake up all robot threads
 		synchronized (robots) {
 			for (RobotPeer r : robots) {
@@ -1020,12 +1025,12 @@ public class Battle implements Runnable {
 						// complete their processing before we get here,
 						// so we test if the robot is already asleep.
 
-						if (!r.isSleeping()) {
+						while (!r.isSleeping()) {
 							try {
-								r.wait(manager.getCpuManager().getCpuConstant());
+								r.wait(cpuTime);
+								break;
 							} catch (InterruptedException e) {
-								// ?
-								log("Wait for " + r + " interrupted.");
+								break;
 							}
 						}
 					}
@@ -1243,21 +1248,23 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public synchronized void setRobotsLoaded(boolean newRobotsLoaded) {
-		robotsLoaded = newRobotsLoaded;
-	}
-
 	public void setupRound() {
 		log("----------------------");
 		log("Round " + (roundNum + 1) + " initializing..", false);
 		currentTime = 0;
 
-		setRobotsLoaded(false);
-		while (!isUnsafeLoaderThreadRunning()) {
+		synchronized (unsafeLoaderMonitor) {
+			robotsLoaded = false;
+			unsafeLoaderMonitor.notifyAll();
+			
 			// waiting for loader to start
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {}
+			while (!unsafeLoaderRunning) {
+				try {
+					unsafeLoaderMonitor.wait();
+				} catch (InterruptedException e) {
+					return;
+				}
+			}
 		}
 
 		for (RobotPeer r : robots) {
@@ -1270,14 +1277,17 @@ public class Battle implements Runnable {
 			r.out.println("=========================");
 		}
 
-		// Notifying loader
+		// Notifying loader that it can continue
 		synchronized (unsafeLoaderMonitor) {
 			unsafeLoaderMonitor.notifyAll();
-		}
-		while (!isRobotsLoaded()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {}
+
+			while (!robotsLoaded) {
+				try {
+					unsafeLoaderMonitor.wait();
+				} catch (InterruptedException e) {
+					return;
+				}
+			}
 		}
 
 		for (RobotPeer r : robots) {
@@ -1305,14 +1315,16 @@ public class Battle implements Runnable {
 				int waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000);
 
 				synchronized (r) {
-					try {
-						log(".", false);
-						r.getRobotThreadManager().start();
-						// Wait for the robot to go to sleep (take action)
-						r.wait(waitTime);
-
-					} catch (InterruptedException e) {
-						log("Wait for " + r + " interrupted.");
+					log(".", false);
+					r.getRobotThreadManager().start();
+					// Wait for the robot to go to sleep (take action)
+					while (!r.isSleeping()) {
+						try {
+							r.wait(waitTime);
+							break;
+						} catch (InterruptedException e) {
+							break;
+						}
 					}
 				}
 				if (!r.isSleeping()) {
@@ -1326,13 +1338,15 @@ public class Battle implements Runnable {
 
 	public void stop() {
 		if (!abortBattles) {
-			synchronized (this) {
+			synchronized (battleMonitor) {
 				abortBattles = true;
+				battleMonitor.notifyAll();
+
 				desiredTPS = 10000;
 
 				while (isRunning()) {
 					try {
-						this.wait();
+						battleMonitor.wait();
 					} catch (InterruptedException e) {}
 				}
 			}
@@ -1345,19 +1359,23 @@ public class Battle implements Runnable {
 	}
 
 	public void unsafeLoadRobots() {
-		while (true) {
+		synchronized (unsafeLoaderMonitor) {
+			// Unsafe loader is running
+			unsafeLoaderRunning = true;
+			unsafeLoaderMonitor.notifyAll();
+		}
+
+		while (!(roundNum >= numRounds || abortBattles)) {
+
 			// Loader waiting
 			synchronized (unsafeLoaderMonitor) {
 				try {
-					setUnsafeLoaderThreadRunning(true);
 					unsafeLoaderMonitor.wait();
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					return;
+				}
 			}
-			// Loader awake
-			if (roundNum >= numRounds || abortBattles) {
-				// Robot loader thread terminating
-				return;
-			}
+
 			// Loading robots
 			for (RobotPeer r : robots) {
 				r.setRobot(null);
@@ -1389,7 +1407,11 @@ public class Battle implements Runnable {
 				}
 			} // for
 			manager.getThreadManager().setLoadingRobot(null);
-			setRobotsLoaded(true);
+
+			synchronized (unsafeLoaderMonitor) {
+				robotsLoaded = true;
+				unsafeLoaderMonitor.notifyAll();
+			}
 		}
 	}
 
@@ -1531,15 +1553,6 @@ public class Battle implements Runnable {
 	}
 
 	/**
-	 * Sets the activeRobots.
-	 *
-	 * @param activeRobots The activeRobots to set
-	 */
-	private synchronized void setActiveRobots(int activeRobots) {
-		this.activeRobots = activeRobots;
-	}
-
-	/**
 	 * Gets the roundNum.
 	 *
 	 * @return Returns a int
@@ -1555,24 +1568,6 @@ public class Battle implements Runnable {
 	 */
 	public void setRoundNum(int roundNum) {
 		this.roundNum = roundNum;
-	}
-
-	/**
-	 * Gets the unsafeLoaderThreadRunning.
-	 *
-	 * @return Returns a boolean
-	 */
-	public synchronized boolean isUnsafeLoaderThreadRunning() {
-		return unsafeLoaderThreadRunning;
-	}
-
-	/**
-	 * Sets the unsafeLoaderThreadRunning.
-	 *
-	 * @param unsafeLoaderThreadRunning The unsafeLoaderThreadRunning to set
-	 */
-	public synchronized void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
-		this.unsafeLoaderThreadRunning = unsafeLoaderThreadRunning;
 	}
 
 	/**
@@ -1632,8 +1627,10 @@ public class Battle implements Runnable {
 	 *
 	 * @return true if the battle is running, false otherwise
 	 */
-	public synchronized boolean isRunning() {
-		return running;
+	public boolean isRunning() {
+		synchronized (battleMonitor) {
+			return running;
+		}
 	}
 
 	private void updateTitle() {
