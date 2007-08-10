@@ -353,13 +353,13 @@ public class JavaDocument extends PlainDocument {
 
 	private class UndoHandler extends UndoManager {
 		@Override
-		public void undo() {
+		public synchronized void undo() {
 			super.undo();
 			processMultilineComments((DefaultDocumentEvent) lastEdit());
 		}
 
 		@Override
-		public void redo() {
+		public synchronized void redo() {
 			super.redo();
 			processMultilineComments((DefaultDocumentEvent) lastEdit());
 		}
