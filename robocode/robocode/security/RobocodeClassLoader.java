@@ -83,7 +83,7 @@ public class RobocodeClassLoader extends ClassLoader {
 	}
 
 	@Override
-	public Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
+	public synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
 		if (className.indexOf(getRobotClassManager().getRootPackage() + ".") == 0) {
 			return loadRobotClass(className, false);
 		}
