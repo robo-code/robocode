@@ -36,6 +36,7 @@ import robocode.WinEvent;
 @SuppressWarnings("serial")
 public class EventQueue extends ArrayList<Event> {
 
+	private Object monitor = new Object();
 	private EventManager eventManager;
 
 	public EventQueue(EventManager eventManager) {
@@ -56,7 +57,7 @@ public class EventQueue extends ArrayList<Event> {
 			return;
 		}
 
-		synchronized (this) {
+		synchronized (monitor) {
 			for (int i = 0; i < size(); i++) {
 				Event e = get(i);
 
@@ -68,7 +69,7 @@ public class EventQueue extends ArrayList<Event> {
 	}
 
 	public void clear(long clearTime) {
-		synchronized (this) {
+		synchronized (monitor) {
 			for (int i = 0; i < size(); i++) {
 				Event e = get(i);
 
@@ -81,7 +82,7 @@ public class EventQueue extends ArrayList<Event> {
 	}
 
 	public void sort() {
-		synchronized (this) {
+		synchronized (monitor) {
 			Collections.sort(this);
 		}
 	}

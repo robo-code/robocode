@@ -28,15 +28,17 @@ import java.io.OutputStream;
  * @author Flemming N. Larsen (contributor)
  */
 public class BufferedPipedOutputStream extends OutputStream {
-	private byte buf[];
-	private int readIndex;
-	private int writeIndex;
-	private boolean waiting;
-	private BufferedPipedInputStream in;
-	private boolean closed;
-	private boolean skipLines;
 
-	public BufferedPipedOutputStream(int bufferSize, boolean skipLines, boolean blocking) {
+	private Object monitor = new Object();
+	private byte buf[];
+	private volatile int readIndex;
+	private volatile int writeIndex;
+	private volatile boolean waiting;
+	private volatile boolean closed;
+	private BufferedPipedInputStream in;
+	private final boolean skipLines;
+
+	public BufferedPipedOutputStream(int bufferSize, boolean skipLines) {
 		this.buf = new byte[bufferSize];
 		this.skipLines = skipLines;
 	}
@@ -45,65 +47,69 @@ public class BufferedPipedOutputStream extends OutputStream {
 	 * @see OutputStream#write(int)
 	 */
 	@Override
-	public synchronized void write(int b) throws IOException {
-		if (closed) {
-			throw new IOException("Stream is closed.");
-		}
-
-		buf[writeIndex++] = (byte) (b & 0xff);
-		if (writeIndex == buf.length) {
-			writeIndex = 0;
-		}
-		if (writeIndex == readIndex) {
-			// skipping a line!
-			if (skipLines) {
-				boolean writeIndexReached = false;
-
-				while (buf[readIndex] != '\n') {
-					readIndex++;
-					if (readIndex == buf.length) {
-						readIndex = 0;
-					}
-					if (readIndex == writeIndex) {
-						writeIndexReached = true;
-					}
-				}
-				if (!writeIndexReached) {
-					readIndex++;
-					if (readIndex == buf.length) {
-						readIndex = 0;
-					}
-				}
-			} else {
-				throw new IOException("Buffer is full.");
+	public void write(int b) throws IOException {
+		synchronized (monitor) {
+			if (closed) {
+				throw new IOException("Stream is closed.");
 			}
-		}
-		if (waiting) {
-			notifyAll();
+
+			buf[writeIndex++] = (byte) (b & 0xff);
+			if (writeIndex == buf.length) {
+				writeIndex = 0;
+			}
+			if (writeIndex == readIndex) {
+				// skipping a line!
+				if (skipLines) {
+					boolean writeIndexReached = false;
+	
+					while (buf[readIndex] != '\n') {
+						readIndex++;
+						if (readIndex == buf.length) {
+							readIndex = 0;
+						}
+						if (readIndex == writeIndex) {
+							writeIndexReached = true;
+						}
+					}
+					if (!writeIndexReached) {
+						readIndex++;
+						if (readIndex == buf.length) {
+							readIndex = 0;
+						}
+					}
+				} else {
+					throw new IOException("Buffer is full.");
+				}
+			}
+			if (waiting) {
+				monitor.notifyAll();
+			}
 		}
 	}
 
-	protected synchronized int read() throws IOException {
-		while (readIndex == writeIndex) {
-			waiting = true;
-			try {
-				if (!closed) {
-					wait(10000);
+	protected int read() throws IOException {
+		synchronized (monitor) {
+			while (readIndex == writeIndex) {
+				waiting = true;
+				try {
+					if (!closed) {
+						monitor.wait(10000);
+					}
+					if (closed) {
+						return -1;
+					}
+				} catch (InterruptedException e) {
+					throw new IOException("read interrupted");
 				}
-				if (closed) {
-					return -1;
-				}
-			} catch (InterruptedException e) {
-				throw new IOException("read interrupted");
 			}
+			int result = buf[readIndex++];
+	
+			if (readIndex == buf.length) {
+				readIndex = 0;
+			}
+	
+			return result;
 		}
-		int result = buf[readIndex++];
-
-		if (readIndex == buf.length) {
-			readIndex = 0;
-		}
-
-		return result;
 	}
 
 	public int read(byte b[], int off, int len) throws IOException {
@@ -123,7 +129,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 		b[off] = (byte) (first & 0xff);
 		int count = 1;
 
-		synchronized (this) {
+		synchronized (monitor) {
 			for (int i = 1; readIndex != writeIndex && i < len; i++) {
 				b[off + i] = buf[readIndex++];
 				count++;
@@ -135,28 +141,34 @@ public class BufferedPipedOutputStream extends OutputStream {
 		return count;
 	}
 
-	protected synchronized int available() {
-		if (writeIndex == readIndex) {
-			return 0;
-		} else if (writeIndex > readIndex) {
-			return writeIndex - readIndex;
-		} else {
-			return buf.length - readIndex + writeIndex;
+	protected int available() {
+		synchronized (monitor) {
+			if (writeIndex == readIndex) {
+				return 0;
+			} else if (writeIndex > readIndex) {
+				return writeIndex - readIndex;
+			} else {
+				return buf.length - readIndex + writeIndex;
+			}
 		}
 	}
 
 	public BufferedPipedInputStream getInputStream() {
-		if (in == null) {
-			in = new BufferedPipedInputStream(this);
+		synchronized (monitor) {
+			if (in == null) {
+				in = new BufferedPipedInputStream(this);
+			}
+			return in;
 		}
-		return in;
 	}
 
 	@Override
-	public synchronized void close() {
-		closed = true;
-		if (waiting) {
-			notifyAll();
+	public void close() {
+		synchronized (monitor) {
+			closed = true;
+			if (waiting) {
+				monitor.notifyAll();
+			}
 		}
 	}
 }
