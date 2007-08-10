@@ -53,7 +53,7 @@ public class SecureInputStream extends java.io.InputStream {
 	}
 
 	@Override
-	public final void mark(int readlimit) {
+	public final synchronized void mark(int readlimit) {
 		checkAccess();
 		in.mark(readlimit);
 	}
@@ -97,7 +97,7 @@ public class SecureInputStream extends java.io.InputStream {
 	}
 
 	@Override
-	public final void reset() throws IOException {
+	public final synchronized void reset() throws IOException {
 		checkAccess();
 		in.reset();
 	}
