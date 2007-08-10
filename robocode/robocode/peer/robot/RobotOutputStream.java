@@ -40,7 +40,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 	private AtomicBoolean messaged = new AtomicBoolean(false);
 
 	public RobotOutputStream(Thread battleThread) {
-		super(new BufferedPipedOutputStream(8192, true, true));
+		super(new BufferedPipedOutputStream(8192, true));
 		bufferedStream = (BufferedPipedOutputStream) super.out;
 		out = new PrintStream(bufferedStream);
 		this.battleThread = battleThread;
