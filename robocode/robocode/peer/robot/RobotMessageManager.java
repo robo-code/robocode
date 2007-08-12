@@ -52,7 +52,7 @@ public class RobotMessageManager {
 	public RobotMessageManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
 		try {
-			BufferedPipedOutputStream bufOut = new BufferedPipedOutputStream(32768, false, false);
+			BufferedPipedOutputStream bufOut = new BufferedPipedOutputStream(32768, false);
 
 			out = new ObjectOutputStream(bufOut);
 			in = new RobocodeObjectInputStream(bufOut.getInputStream(),
