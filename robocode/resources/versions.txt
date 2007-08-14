@@ -1,9 +1,11 @@
 Version 1.4
-(08/07/2007)
+(08/14/2007)
 The "Junior Robot" release
 -------------
 o Bugfixes
   -- Static fields on robots were not cleaned up anymore after each battle has ended
+  -- When printing to 'out' in onScannedRobot() event before a scan() call, the
+     the logging to out would stop with an system error that to much is printed out
 o Added JuniorRobot
   -- This class is simpler to use than the Robot class and has a simplified model,
      in purpose of teaching programming skills to inexperienced in programming
