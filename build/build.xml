@@ -4,8 +4,8 @@
 <!--  Apache Ant build script for building the Robocode setup file          -->
 <!-- ====================================================================== -->
 
-<project name="build" default="build">
-  <description>Apache Ant build script for building the Robocode setup file</description>
+<project name="build" default="archive">
+  <description>Apache Ant build script for building the Robocode archive files</description>
 
   <!-- ====================================== -->
   <!-- Global properties                      -->
@@ -40,9 +40,9 @@
   <!-- Versions file -->
   <property name="versions.file" location="${src.robocode}/resources/versions.txt"/>
 
-  <!-- The output setup file -->
-  <property name="setup.filename" value="robocode-setup-${version}.jar"/>
-  <property name="setup.file" location="${build}/${setup.filename}"/>
+  <!-- The output archive files -->
+  <property name="setup.archive" value="robocode-setup-${version}.jar"/>
+  <property name="sources.archive" value="robocode-src-${version}.zip"/>
 
   <!-- ====================================== -->
   <!-- Default Excludes                       -->
@@ -73,17 +73,26 @@
   </target>
 
   <!-- ====================================== -->
-  <!-- Target: build                          -->
+  <!-- Target: archive                        -->
   <!-- ====================================== -->
   <target
-      name="build"
-      description="Build the Robocode setup file"
+      name="archive"
+      description="Build the Robocode distribution files"
+      depends="archive.setup, archive.sources"
+  />
+
+  <!-- ====================================== -->
+  <!-- Target: archive.setup                  -->
+  <!-- ====================================== -->
+  <target
+      name="archive.setup"
+      description="Build the Robocode setup archive"
       depends="clean, extract.jar, compile.autoextract">
 
-    <echo message="Building Robocode setup file (${setup.filename})..."/>
+    <echo message="Building Robocode setup archive (${setup.archive})..."/>
 
-    <!-- Create the Robocode setup file -->
-	<jar destfile="${setup.file}">
+    <!-- Create the Robocode setup archive -->
+	<jar destfile="${build}/${setup.archive}">
       <!-- Specify files to include -->
       <fileset dir="${build}" includes="robocode/AutoExtract.class"/>  <!-- Auto extract class -->
       <fileset file="${build}/extract.jar"/>  <!-- extract.jar file -->
@@ -95,6 +104,24 @@
         <attribute name="Main-Class" value="robocode.AutoExtract"/>
       </manifest>
     </jar>
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: archive.sources                -->
+  <!-- ====================================== -->
+  <target
+  	  name="archive.sources"
+	  description="Zip all source files">
+	
+	<echo message="Building Robocode sources archive (${sources.archive})..."/>
+	
+	<zip
+        destfile="${build}/${sources.archive}"
+        basedir=".."
+        includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**"
+        excludes="build/build, **/bin/**"
+        defaultexcludes="no"
+    />
   </target>
 
   <!-- ====================================== -->
@@ -327,7 +354,7 @@
   <target
       name="install"
       description="Install Robocode"
-      depends="build">
+      depends="archive.setup">
 
     <echo message="Installing Robocode..."/>
 
