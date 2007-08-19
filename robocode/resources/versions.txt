@@ -1,3 +1,13 @@
+Version 1.4.1
+(08/19/2007)
+-------------
+o Bugfix
+  -- A couple of ConcurrentModificationException bugs have been introduced with
+     version 1.4. ConcurrentModificationException in robots could occur on some
+     systems, which in worst case could cause a robot to loose battles or in
+     best case give a robot a lesser score
+  -- Thank goes to Helge Rhodin (aka Krabb) for help with solving the bug!
+
 Version 1.4
 (08/14/2007)
 The "Junior Robot" release
@@ -32,7 +42,6 @@ o RoboRumble changes
   -- Redundant RoboRumble config files are now removed from the /config folder
   -- Changed UPLOAD=NOT to UPLOAD=YES as default, i.e. the results are now automatically
      uploaded to the RoboRumble server
-
 
 Version 1.3.5
 (07/04/2007)
