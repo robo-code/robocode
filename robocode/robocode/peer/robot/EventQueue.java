@@ -12,14 +12,11 @@
  *     - Updated for Java 5
  *     - Optimized
  *     - Code cleanup
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
 
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.Collections;
 
 import robocode.DeathEvent;
@@ -31,10 +28,9 @@ import robocode.WinEvent;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
- * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
-public class EventQueue extends ArrayList<Event> {
+public class EventQueue extends Vector<Event> {
 
 	private Object monitor = new Object();
 	private EventManager eventManager;
