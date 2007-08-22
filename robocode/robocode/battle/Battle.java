@@ -173,6 +173,9 @@ public class Battle implements Runnable {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
+	// Key event dispatcher
+	KeyEventDispatcher keyHandler;
+
 	/**
 	 * Battle constructor
 	 */
@@ -191,7 +194,17 @@ public class Battle implements Runnable {
 		bullets = Collections.synchronizedList(new ArrayList<BulletPeer>());
 		contestants = Collections.synchronizedList(new ArrayList<ContestantPeer>());
 
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventHandler());
+		if (manager.isGUIEnabled()) {
+			keyHandler = new KeyEventHandler();
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
+		}
+	}
+	
+	@Override
+	public void finalize() {
+		if (keyHandler != null) {
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(keyHandler);
+		}
 	}
 
 	public void setReplay(boolean replay) {
