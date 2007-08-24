@@ -41,6 +41,8 @@
  *       mouseExited(), mouseDragged(), mouseWheelMoved()
  *     - Changed to take the new JuniorRobot class into account
  *     - When cleaning up robots their static fields are now being cleaned up
+ *     - Bugfix: Changed the runRound() so that the robot are painted after
+ *       they have made their turn 
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -631,8 +633,9 @@ public class Battle implements Runnable {
 		turnsThisSec = 0;
 		framesThisSec = 0;
 
+		long robotStartTime;
 		long frameStartTime;
-		int currentFrameMillis = 0;
+		int currentRobotMillis = 0;
 
 		int totalRobotMillisThisSec = 0;
 		int totalFrameMillisThisSec = 0;
@@ -747,11 +750,22 @@ public class Battle implements Runnable {
 				}
 			}
 
-			// Paint current battle frame
+			// Store the robot start time
+			robotStartTime = System.currentTimeMillis();
 
-			// Store the start time before the frame update
+			// Robot time!
+			wakeupRobots();
+
+			// Calculate the time spend on the robots
+			currentRobotMillis = (int) (System.currentTimeMillis() - robotStartTime);
+
+			// Calculate the total time spend on robots this second
+			totalRobotMillisThisSec += currentRobotMillis;
+
+			// Store the frame update start time
 			frameStartTime = System.currentTimeMillis();
 
+			// Paint current battle frame
 			if (!abortBattles
 					&& (endTimer < TURNS_DISPLAYED_AFTER_ENDING
 							&& !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified()))) {
@@ -767,17 +781,8 @@ public class Battle implements Runnable {
 				playSounds();
 			}
 
-			// Calculate the time spend on the frame update
-			currentFrameMillis = (int) (System.currentTimeMillis() - frameStartTime);
-
-			// Calculate the total time spend on frame updates this second
-			totalFrameMillisThisSec += currentFrameMillis;
-
-			// Robot time!
-			wakeupRobots();
-
-			// Calculate the total time used for the robots only this second
-			totalRobotMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentFrameMillis;
+			// Calculate the total time used for the frame update
+			totalFrameMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentRobotMillis;
 
 			// Calculate the total turn time this second
 			totalTurnMillisThisSec = totalRobotMillisThisSec + totalFrameMillisThisSec;
@@ -858,9 +863,7 @@ public class Battle implements Runnable {
 		long frameStartTime;
 		int currentFrameMillis = 0;
 
-		int totalRobotMillisThisSec = 0;
 		int totalFrameMillisThisSec = 0;
-		int totalTurnMillisThisSec;
 
 		float estFrameTimeThisSec;
 		float estimatedFPS = 0;
@@ -898,7 +901,6 @@ public class Battle implements Runnable {
 				turnsThisSec = 0;
 				framesThisSec = 0;
 
-				totalRobotMillisThisSec = 0;
 				totalFrameMillisThisSec = 0;
 			}
 
@@ -954,20 +956,14 @@ public class Battle implements Runnable {
 			// Calculate the total time spend on frame updates this second
 			totalFrameMillisThisSec += currentFrameMillis;
 
-			// Calculate the total time used for the robots only this second
-			totalRobotMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentFrameMillis;
-
-			// Calculate the total turn time this second
-			totalTurnMillisThisSec = totalRobotMillisThisSec + totalFrameMillisThisSec;
-
 			// Estimate the time remaining this second to spend on frame updates
-			estFrameTimeThisSec = max(0, 1000f - desiredTPS * (float) totalTurnMillisThisSec / turnsThisSec);
+			estFrameTimeThisSec = max(0, 1000f - desiredTPS * (float) totalFrameMillisThisSec / turnsThisSec);
 
 			// Estimate the possible FPS based on the estimated frame time
 			estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
 
 			// Estimate the time that will be used on the total turn this second
-			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
+			estimatedTurnMillisThisSec = desiredTPS * totalFrameMillisThisSec / turnsThisSec;
 
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
 			if (manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible()
