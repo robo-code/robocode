@@ -1,3 +1,14 @@
+Version 1.4.2 Alpha
+(08/24/2007)
+-------------
+o Bugfixes
+  -- RoboRumble was invoking AWT (GUI) stuff when running, which caused problems
+     on systems without support graphical display or running RoboRumble remotely
+     behind a firewall
+  -- When running robocode.control.RobocodeEngine it caused memory leaks each time
+     a new instance of the RobocodeEngine was created, even though the object was
+     completely destroyed
+
 Version 1.4.1
 (08/19/2007)
 -------------
