@@ -7,7 +7,10 @@ o Bugfixes
      behind a firewall
   -- When running robocode.control.RobocodeEngine it caused memory leaks each time
      a new instance of the RobocodeEngine was created, even though the object was
-     completely destroyed
+     completely destroyed 
+  -- The onPaint() method was invoked just before the robot got the chance of
+     updating it's internal world model. Now the battle view is updated as the
+     first thing right after the robots have updated their internal model 
 
 Version 1.4.1
 (08/19/2007)
