@@ -488,12 +488,19 @@ public class BattleView extends Canvas {
 		Robot robot = (Robot)robotPeer.getRobot();
 		
 		// Do the painting
-		if (robotPeer.isSGPaintEnabled()) {
-			robot.onPaint(g);
-		} else {
-			mirroredGraphics.bind(g, battleField.getHeight());
-			robot.onPaint(mirroredGraphics);
-			mirroredGraphics.release();
+		try {
+			if (robotPeer.isSGPaintEnabled()) {
+				robot.onPaint(g);
+			} else {
+				mirroredGraphics.bind(g, battleField.getHeight());
+				robot.onPaint(mirroredGraphics);
+				mirroredGraphics.release();
+			}
+		} catch (Exception e) {
+			// Make sure that Robocode is not halted by an exception caused by letting the robot paint
+
+			robot.out.println("SYSTEM: Exception occured on onPaint(Graphics2D): " + e);
+			e.printStackTrace(robot.out);
 		}
 
 		// Restore the graphics state
