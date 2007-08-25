@@ -1,5 +1,5 @@
 Version 1.4.2 Alpha
-(08/24/2007)
+(08/25/2007)
 -------------
 o Bugfixes
   -- RoboRumble was invoking AWT (GUI) stuff when running, which caused problems
@@ -10,7 +10,9 @@ o Bugfixes
      completely destroyed 
   -- The onPaint() method was invoked just before the robot got the chance of
      updating it's internal world model. Now the battle view is updated as the
-     first thing right after the robots have updated their internal model 
+     first thing right after the robots have updated their internal model
+  -- One ConcurrentModificationException bug did still occur with the internal
+     EventQueue of a robot
 
 Version 1.4.1
 (08/19/2007)
