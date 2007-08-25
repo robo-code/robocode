@@ -13,6 +13,11 @@ o Bugfixes
      first thing right after the robots have updated their internal model
   -- One ConcurrentModificationException bug did still occur with the internal
      EventQueue of a robot
+  -- The Robocode engine was halted with spurious exceptions when an exception
+     occurred inside a onPaint() method in a robot, i.e. when the robot itself
+     causes an exception inside onPaint(). Now, whenever an exception occurs
+     inside the onPaint() method of a robot, the exception is now being catched
+     by Robocode and printed out in the robot console
 
 Version 1.4.1
 (08/19/2007)
