@@ -1694,7 +1694,13 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					((Robot) r.getRobot()).onMouseClicked(me);
+					Robot robot = (Robot)r.getRobot();
+					try {
+						robot.onMouseClicked(me);
+					} catch (Exception e2) {
+						robot.out.println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
+						e2.printStackTrace(robot.out);
+					}
 				}
 			}
 		}
@@ -1706,7 +1712,13 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					((Robot) r.getRobot()).onMouseEntered(me);
+					Robot robot = (Robot)r.getRobot();
+					try {
+						robot.onMouseEntered(me);
+					} catch (Exception e2) {
+						robot.out.println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
+						e2.printStackTrace(robot.out);
+					}
 				}
 			}
 		}
@@ -1718,7 +1730,13 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					((Robot) r.getRobot()).onMouseExited(me);
+					Robot robot = (Robot)r.getRobot();
+					try {
+						robot.onMouseExited(me);
+					} catch (Exception e2) {
+						robot.out.println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
+						e2.printStackTrace(robot.out);
+					}
 				}
 			}
 		}
@@ -1729,8 +1747,12 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					((Robot) r.getRobot()).onMousePressed(me);
+				Robot robot = (Robot)r.getRobot();
+				try {
+					robot.onMousePressed(me);
+				} catch (Exception e2) {
+					robot.out.println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
+					e2.printStackTrace(robot.out);
 				}
 			}
 		}
@@ -1742,7 +1764,13 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					((Robot) r.getRobot()).onMouseReleased(me);
+					Robot robot = (Robot)r.getRobot();
+					try {
+						robot.onMouseReleased(me);
+					} catch (Exception e2) {
+						robot.out.println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
+						e2.printStackTrace(robot.out);
+					}
 				}
 			}
 		}
@@ -1754,7 +1782,13 @@ public class Battle implements Runnable {
 			
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					((Robot) r.getRobot()).onMouseMoved(me);
+					Robot robot = (Robot)r.getRobot();
+					try {
+						robot.onMouseMoved(me);
+					} catch (Exception e2) {
+						robot.out.println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
+						e2.printStackTrace(robot.out);
+					}
 				}
 			}
 		}
@@ -1766,7 +1800,13 @@ public class Battle implements Runnable {
 			
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					((Robot) r.getRobot()).onMouseDragged(me);
+					Robot robot = (Robot)r.getRobot();
+					try {
+						robot.onMouseDragged(me);
+					} catch (Exception e2) {
+						robot.out.println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
+						e2.printStackTrace(robot.out);
+					}
 				}
 			}
 		}
@@ -1778,7 +1818,13 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					((Robot) r.getRobot()).onMouseWheelMoved(mwe);
+					Robot robot = (Robot)r.getRobot();
+					try {
+						robot.onMouseWheelMoved(mwe);
+					} catch (Exception e2) {
+						robot.out.println("SYSTEM: Exception occurred on onMouseWheelMoved(MouseWheelEvent):");
+						e2.printStackTrace(robot.out);
+					}
 				}
 			}
 		}
@@ -1850,15 +1896,30 @@ public class Battle implements Runnable {
 
 					switch (e.getID()) {
 					case KeyEvent.KEY_TYPED:
-						robot.onKeyTyped(ke);
+						try {
+							robot.onKeyTyped(ke);
+						} catch (Exception e2) {
+							robot.out.println("SYSTEM: Exception occurred on onKeyTyped(KeyEvent):");
+							e2.printStackTrace(robot.out);
+						}
 						break;
 
 					case KeyEvent.KEY_PRESSED:
-						robot.onKeyPressed(ke);
+						try {
+							robot.onKeyPressed(ke);
+						} catch (Exception e2) {
+							robot.out.println("SYSTEM: Exception occurred on onKeyPressed(KeyEvent):");
+							e2.printStackTrace(robot.out);
+						}
 						break;
 
 					case KeyEvent.KEY_RELEASED:
-						robot.onKeyReleased(ke);
+						try {
+							robot.onKeyReleased(ke);
+						} catch (Exception e2) {
+							robot.out.println("SYSTEM: Exception occurred on onKeyReleased(KeyEvent):");
+							e2.printStackTrace(robot.out);
+						}
 						break;
 					}
 				}
