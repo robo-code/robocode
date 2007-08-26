@@ -1,5 +1,5 @@
-Version 1.4.2 Alpha
-(08/25/2007)
+Version 1.4.2
+(08/26/2007)
 -------------
 o Bugfixes
   -- RoboRumble was invoking AWT (GUI) stuff when running, which caused problems
@@ -18,6 +18,10 @@ o Bugfixes
      causes an exception inside onPaint(). Now, whenever an exception occurs
      inside the onPaint() method of a robot, the exception is now being catched
      by Robocode and printed out in the robot console
+  -- Due to the bug found above regarding exceptions occurring inside the onPaint()
+     method of a robot, exception handlers have now been added to all onKeyXXX
+     and onMouseXXX events, where the exceptions are now printed out into the robot
+     console
 
 Version 1.4.1
 (08/19/2007)
