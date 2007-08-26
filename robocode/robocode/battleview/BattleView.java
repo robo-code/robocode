@@ -499,7 +499,7 @@ public class BattleView extends Canvas {
 		} catch (Exception e) {
 			// Make sure that Robocode is not halted by an exception caused by letting the robot paint
 
-			robot.out.println("SYSTEM: Exception occured on onPaint(Graphics2D): " + e);
+			robot.out.println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
 			e.printStackTrace(robot.out);
 		}
 
