@@ -1,3 +1,14 @@
+Version 1.4.3 Alpha
+(08/27/2007)
+-------------
+o Bugfix
+  -- Fixed inconsistent behavior of the RobocodeEngine.setVisible().
+     -- When invoking the RobocodeEngine to directly run a battle(s) and calling
+        RobocodeEngine.setVisible(true), and then later call
+        RobocodeEngine.setVisible(false) the results dialog would still show up
+        at the end of a battle
+     -- This fix was done by "ntroutman"
+
 Version 1.4.2
 (08/26/2007)
 -------------
