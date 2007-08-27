@@ -25,6 +25,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     ntroutman
+ *     - Bugfix: Inconsistent Behavior of RobocodeEngine.setVisible()
  *******************************************************************************/
 package robocode.control;
 
@@ -154,15 +156,17 @@ public class RobocodeEngine {
 	 * Shows or hides the Robocode window.
 	 */
 	public void setVisible(boolean visible) {
-		if (visible) {
+		if (visible && !manager.isGUIEnabled()) {
 			// The GUI must be enabled in order to show the window
 			manager.setEnableGUI(true);
-		}
-		if (manager.isGUIEnabled()) {
+			
 			// Set the Look and Feel (LAF)
 			robocode.manager.LookAndFeelManager.setLookAndFeel();
-	
+		}
+
+		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().showRobocodeFrame(visible);
+			manager.getProperties().setOptionsCommonShowResults(visible);
 		}
 	}
 
