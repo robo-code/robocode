@@ -350,12 +350,10 @@ public class AutoExtract implements ActionListener {
 			createDir(new File(roborumbleDir, "files"));
 			createDir(new File(roborumbleDir, "temp"));
 			
-			// Delete RoboRumble config from /config folder files if they exists,
-			// i.e. cleanup from earlier versions
-			(new File(installDir, "config/roborumble.txt")).delete();
-			(new File(installDir, "config/meleerumble.txt")).delete();
-			(new File(installDir, "config/teamrumble.txt")).delete();
-
+			// Move RoboRumble config files from /config folder into the /roborumble folder
+			move(new File(installDir, "config/roborumble.txt"), new File(installDir, "roborumble/roborumble.txt"));
+			move(new File(installDir, "config/meleerumble.txt"), new File(installDir, "roborumble/meleerumble.txt"));
+			move(new File(installDir, "config/teamrumble.txt"), new File(installDir, "roborumble/teamrumble.txt"));
 		} else {
 			JOptionPane.showMessageDialog(null, "Installation cancelled.");
 		}
