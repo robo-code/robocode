@@ -7,7 +7,7 @@ o Bugfixes
         RobocodeEngine.setVisible(true), and then later call
         RobocodeEngine.setVisible(false) the results dialog would still show up
         at the end of a battle
-     -- This fix was done by "ntroutman"
+     -- This fix was done by Nathaniel Troutman
   -- The configuration files for RoboRumble was completely missing under the
      /roborumble folder, i.e. the meleerumble.txt, roborumble.txt, and
      teamrumble.txt

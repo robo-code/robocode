@@ -25,7 +25,7 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
- *     ntroutman
+ *     Nathaniel Troutman
  *     - Bugfix: Inconsistent Behavior of RobocodeEngine.setVisible()
  *******************************************************************************/
 package robocode.control;
