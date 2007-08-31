@@ -11,6 +11,9 @@
  *     Flemming N. Larsen
  *     - Code cleanup
  *     - Updated Javadoc
+ *     Nathaniel Troutman
+ *     - Added cleanup() method for cleaning up references to internal classes
+ *       to prevent circular references causing memory leaks
  *******************************************************************************/
 package robocode;
 
@@ -42,6 +45,7 @@ import robocode.security.RobocodeSecurityManager;
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public abstract class Condition {
 
@@ -74,7 +78,7 @@ public abstract class Condition {
 	 * Creates a new Condition with the specified name and priority.
 	 * A condition priority is a value from 0 - 99. The higher value, the
 	 * higher priority. The default priority is 80.
-     *
+	 *
 	 * @param name the name for the new condition
 	 * @param priority the priority of the new condition
 	 */
@@ -156,4 +160,12 @@ public abstract class Condition {
 	 *    otherwise.
 	 */
 	public abstract boolean test();
+
+	/**
+	 * Called by the system in order to clean up references to internal objects.
+	 *
+	 * @since 1.4.3
+	 */
+	public void cleanup() {/* Do nothing: Should be overridden by sub-classes to perform needed
+		 clean up to ensure that there are NO circular references */}
 }

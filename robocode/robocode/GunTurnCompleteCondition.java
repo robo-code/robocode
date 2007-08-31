@@ -10,6 +10,9 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Updated Javadoc
+ *     Nathaniel Troutman
+ *     - Added cleanup() method for cleaning up references to internal classes
+ *       to prevent circular references causing memory leaks
  *******************************************************************************/
 package robocode;
 
@@ -21,6 +24,8 @@ package robocode;
  * @see Condition
  *
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class GunTurnCompleteCondition extends Condition {
 	private AdvancedRobot robot = null;
@@ -61,5 +66,15 @@ public class GunTurnCompleteCondition extends Condition {
 	@Override
 	public boolean test() {
 		return (robot.getGunTurnRemaining() == 0);
+	}
+
+	/**
+	 * Called by the system in order to clean up references to internal objects.
+	 *
+	 * @since 1.4.3
+	 */
+	@Override
+	public final void cleanup() {
+		robot = null;
 	}
 }
