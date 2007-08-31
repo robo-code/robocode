@@ -54,6 +54,9 @@
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
  *       as the battleField variable was not intialized
+ *     Nathaniel Troutman
+ *     - Bugfix: In order to prevent memory leaks, the cleanup() method is now
+ *       calling a cleanup() method on the robots
  *******************************************************************************/
 package robocode.battle;
 
@@ -101,6 +104,7 @@ import robocode.security.RobocodeClassLoader;
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class Battle implements Runnable {
 
@@ -411,8 +415,10 @@ public class Battle implements Runnable {
 		for (RobotPeer r : robots) {
 			// Clear all static field on the robot (at class level)
 			r.cleanupStaticFields();
+			
 			// Clear the robot object by removing the reference to it
 			r.setRobot(null);
+			r.cleanup();
 		}
 
 		// Request garbage collecting
@@ -1694,7 +1700,8 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot)r.getRobot();
+					Robot robot = (Robot) r.getRobot();
+
 					try {
 						robot.onMouseClicked(me);
 					} catch (Exception e2) {
@@ -1712,7 +1719,8 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot)r.getRobot();
+					Robot robot = (Robot) r.getRobot();
+
 					try {
 						robot.onMouseEntered(me);
 					} catch (Exception e2) {
@@ -1730,7 +1738,8 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot)r.getRobot();
+					Robot robot = (Robot) r.getRobot();
+
 					try {
 						robot.onMouseExited(me);
 					} catch (Exception e2) {
@@ -1747,7 +1756,8 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				Robot robot = (Robot)r.getRobot();
+				Robot robot = (Robot) r.getRobot();
+
 				try {
 					robot.onMousePressed(me);
 				} catch (Exception e2) {
@@ -1764,7 +1774,8 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot)r.getRobot();
+					Robot robot = (Robot) r.getRobot();
+
 					try {
 						robot.onMouseReleased(me);
 					} catch (Exception e2) {
@@ -1782,7 +1793,8 @@ public class Battle implements Runnable {
 			
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot)r.getRobot();
+					Robot robot = (Robot) r.getRobot();
+
 					try {
 						robot.onMouseMoved(me);
 					} catch (Exception e2) {
@@ -1800,7 +1812,8 @@ public class Battle implements Runnable {
 			
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot)r.getRobot();
+					Robot robot = (Robot) r.getRobot();
+
 					try {
 						robot.onMouseDragged(me);
 					} catch (Exception e2) {
@@ -1818,7 +1831,8 @@ public class Battle implements Runnable {
 
 			for (RobotPeer r : robots) {
 				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot)r.getRobot();
+					Robot robot = (Robot) r.getRobot();
+
 					try {
 						robot.onMouseWheelMoved(mwe);
 					} catch (Exception e2) {

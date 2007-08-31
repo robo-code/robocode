@@ -18,6 +18,9 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Nathaniel Troutman
+ *     - Added cleanup() method for cleaning up references to internal classes
+ *       to prevent circular references causing memory leaks
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -35,6 +38,7 @@ import robocode.security.RobocodeClassLoader;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class RobotClassManager {
 	private RobotSpecification robotSpecification;
@@ -199,5 +203,11 @@ public class RobotClassManager {
 	 */
 	public static boolean isSecutityOn() {
 		return !System.getProperty("NOSECURITY", "false").equals("true");
+	}
+
+	public void cleanup() {
+		robotClass = null;
+		robotClassLoader = null;
+		robotSpecification = null;
 	}
 }

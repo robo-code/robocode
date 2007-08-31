@@ -48,6 +48,9 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Nathaniel Troutman
+ *     - Added cleanup() method for cleaning up references to internal classes
+ *       to prevent circular references causing memory leaks
  *******************************************************************************/
 package robocode.peer;
 
@@ -84,6 +87,7 @@ import robocode.util.BoundingRectangle;
  * @author Luis Crespo (contributor)
  * @author Titus Chen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class RobotPeer implements Runnable, ContestantPeer {
 
@@ -1697,6 +1701,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
+
 	public class GunFireCondition extends Condition {
 		@Override
 		public boolean test() {
@@ -1704,6 +1709,33 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
+	/**
+	 * Clean things up removing all references to the robot.
+	 */
+	public void cleanup() {
+		// Cleanup and remove the event manager
+		if (eventManager != null) {
+			eventManager.cleanup();
+			eventManager = null;
+		}
+
+		// Cleanup and remove class manager
+		if (robotClassManager != null) {
+			robotClassManager.cleanup();
+			robotClassManager = null;
+		}
+
+		// Remove the file system and the manager
+		robotFileSystemManager = null;
+		robotThreadManager = null;
+
+		// Cleanup and remove current wait condition
+		if (waitCondition != null) {
+			waitCondition.cleanup();
+			waitCondition = null;
+		}
+	}
+        
 	public void cleanupStaticFields() {
 		if (robot == null) {
 			return;
@@ -1787,7 +1819,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		// Add number of turns for the remaining distance at max velocity
 		if ((accDist + decDist) < absDistance) {
-			turns += (int)((absDistance - accDist - decDist) / maxVelocity + 1);
+			turns += (int) ((absDistance - accDist - decDist) / maxVelocity + 1);
 		}
 
 		// -- Move and turn chassis in a curve --

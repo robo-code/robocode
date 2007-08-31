@@ -21,6 +21,9 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Nathaniel Troutman
+ *     - Added cleanup() method for cleaning up references to internal classes
+ *       to prevent circular references causing memory leaks
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -40,6 +43,7 @@ import robocode.util.Utils;
  * @author Matthew Reeder (contributor)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class EventManager {
 	private RobotPeer robotPeer = null;
@@ -106,6 +110,15 @@ public class EventManager {
 
 	public void clear(long clearTime) {
 		eventQueue.clear(clearTime);
+	}
+        
+	public void cleanup() {
+		// Remove all events
+		reset();
+
+		// Remove all references to robots
+		robot = null;
+		robotPeer = null;
 	}
 
 	/**
