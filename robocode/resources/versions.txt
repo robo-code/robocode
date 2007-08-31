@@ -1,7 +1,12 @@
 Version 1.4.3 Alpha
-(08/27/2007)
+(09/01/2007)
 -------------
 o Bugfixes
+  -- Major bugfixes was done by Nathaniel Troutman to get rid of large memory
+     leaks, especially when creating and destroying robocode.control.RobocodeEngine
+     instances many times
+     -- Most of the memory leaks were caused by circular references between internal
+        classes/objects in Robocode. Now, these circular references are cleaned up
   -- Fixed inconsistent behavior of the RobocodeEngine.setVisible().
      -- When invoking the RobocodeEngine to directly run a battle(s) and calling
         RobocodeEngine.setVisible(true), and then later call
