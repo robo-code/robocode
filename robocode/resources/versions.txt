@@ -16,6 +16,9 @@ o Bugfixes
   -- The configuration files for RoboRumble was completely missing under the
      /roborumble folder, i.e. the meleerumble.txt, roborumble.txt, and
      teamrumble.txt
+  -- Did another fix where a dummy AWT (GUI) component was created even though the
+     GUI was disabled causing problems when trying to run e.g. RoboRumble remotely
+     without the GUI enabled
 
 Version 1.4.2
 (08/26/2007)
