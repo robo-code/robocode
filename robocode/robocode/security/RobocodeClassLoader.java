@@ -14,6 +14,8 @@
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Fixed method synchronization issues with several member fields
+ *     - Bugfix: Ignore robots that reside in the .robotcache dir if the
+ *       robot.database does not exist
  *     Matthew Reeder
  *     - Fixed compiler problem with protectionDomain
  *     Robert D. Maupin
@@ -95,10 +97,14 @@ public class RobocodeClassLoader extends ClassLoader {
 	}
 
 	public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
+		if (name == null || name.startsWith(".robotcache.")) {
+			return null;
+		}
+
 		if (cachedClasses.containsKey(name)) {
 			return cachedClasses.get(name);
 		}
-
+		
 		Class<?> c = null;
 		File f = null;
 

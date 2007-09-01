@@ -19,6 +19,8 @@
  *     - Added missing close() on FileInputStream
  *     - Changed updateRobotDatabase() to take the new JuniorRobot class into
  *       account
+ *     - Bugfix: Ignore robots that reside in the .robotcache dir if the
+ *       robot.database does not exist
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -389,6 +391,11 @@ public class RobotRepositoryManager {
 				RobotClassManager robotClassManager = new RobotClassManager(robotSpecification);
 				Class<?> robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(
 						robotClassManager.getFullClassName(), true);
+				
+				// Check if the robot class must be ignored, e.g. if it reside in the robot cache dir
+				if (robotClass == null) {
+					return; // Ignore it -> return
+				}
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
