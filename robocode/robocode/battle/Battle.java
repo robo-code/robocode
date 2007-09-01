@@ -67,8 +67,10 @@ import static java.lang.Math.min;
 import static java.lang.Math.random;
 import static robocode.io.Logger.log;
 
+import java.awt.Component;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.Label;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -180,7 +182,10 @@ public class Battle implements Runnable {
 	private double[][] initialRobotPositions;
 
 	// Key event dispatcher
-	KeyEventDispatcher keyHandler;
+	private KeyEventDispatcher keyHandler;
+
+	// Dummy component used to preventing robots in accessing the real source component
+	private static Component safeEventComponent;
 
 	/**
 	 * Battle constructor
@@ -1844,11 +1849,16 @@ public class Battle implements Runnable {
 		}
 	}
 
-	// This dummy component is used to prevent robot in accessing the real source component
-	private final static java.awt.Component SAFE_EVENT_COMPONENT = new java.awt.Label();
-
+	// Returns a dummy component used to preventing robots in accessing the real source component
+	private static Component getSafeEventComponent() {
+		if (safeEventComponent == null) {
+			safeEventComponent = new Label();
+		}
+		return safeEventComponent;
+	}
+	
 	private KeyEvent cloneKeyEvent(final KeyEvent e) {
-		return new KeyEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
+		return new KeyEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
 				e.getKeyChar(), e.getKeyLocation());
 	}
 	
@@ -1868,7 +1878,7 @@ public class Battle implements Runnable {
 		int x = (int) ((e.getX() - dx) / scale + 0.5);
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
 
-		return new MouseEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y, e.getClickCount(),
+		return new MouseEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y, e.getClickCount(),
 				e.isPopupTrigger(), e.getButton()); 
 	}
 
@@ -1888,7 +1898,7 @@ public class Battle implements Runnable {
 		int x = (int) ((e.getX() - dx) / scale + 0.5);
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
 
-		return new MouseWheelEvent(SAFE_EVENT_COMPONENT, e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
+		return new MouseWheelEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
 				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()); 
 	}
 
