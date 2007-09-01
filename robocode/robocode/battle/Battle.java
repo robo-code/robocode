@@ -1761,13 +1761,15 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
+					Robot robot = (Robot) r.getRobot();
 
-				try {
-					robot.onMousePressed(me);
-				} catch (Exception e2) {
-					robot.out.println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
-					e2.printStackTrace(robot.out);
+					try {
+						robot.onMousePressed(me);
+					} catch (Exception e2) {
+						robot.out.println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
+						e2.printStackTrace(robot.out);
+					}
 				}
 			}
 		}
