@@ -7,18 +7,21 @@ o Bugfixes
      instances many times
      -- Most of the memory leaks were caused by circular references between internal
         classes/objects in Robocode. Now, these circular references are cleaned up
+  -- The configuration files for RoboRumble was completely missing under the
+     /roborumble folder, i.e. the meleerumble.txt, roborumble.txt, and
+     teamrumble.txt
   -- Fixed inconsistent behavior of the RobocodeEngine.setVisible().
      -- When invoking the RobocodeEngine to directly run a battle(s) and calling
         RobocodeEngine.setVisible(true), and then later call
         RobocodeEngine.setVisible(false) the results dialog would still show up
         at the end of a battle
      -- This fix was done by Nathaniel Troutman
-  -- The configuration files for RoboRumble was completely missing under the
-     /roborumble folder, i.e. the meleerumble.txt, roborumble.txt, and
-     teamrumble.txt
   -- Did another fix where a dummy AWT (GUI) component was created even though the
      GUI was disabled causing problems when trying to run e.g. RoboRumble remotely
      without the GUI enabled
+  -- Sometimes the "New Batle" window would show robot classes that reside in the
+     .robotcache folder under the /robots folder. This occured when the robot
+     database was (re)builded, e.g. if the robot.database file was missing
 
 Version 1.4.2
 (08/26/2007)
