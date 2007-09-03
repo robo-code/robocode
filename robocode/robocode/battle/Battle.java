@@ -55,8 +55,10 @@
  *       BulletRecord as parameter due to a NullPointerException that was raised
  *       as the battleField variable was not intialized
  *     Nathaniel Troutman
- *     - Bugfix: In order to prevent memory leaks, the cleanup() method is now
- *       calling a cleanup() method on the robots
+ *     - Bugfix: In order to prevent memory leaks, the cleanup() method has now
+ *       been extended to cleanup all robots, but also all classes that this
+ *       class refers to in order to avoid circular references. In addition,
+ *       cleanup has been added to the KeyEventHandler
  *******************************************************************************/
 package robocode.battle;
 
@@ -82,9 +84,9 @@ import java.util.regex.Pattern;
 
 import robocode.MessageEvent;
 import robocode.Robot;
-import robocode._RobotBase;
 import robocode.RobotDeathEvent;
 import robocode.SkippedTurnEvent;
+import robocode._RobotBase;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
@@ -94,6 +96,7 @@ import robocode.dialog.RobotButton;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
+import robocode.manager.RobocodeProperties.PropertyListener;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
@@ -181,8 +184,11 @@ public class Battle implements Runnable {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
+	// Property listener
+	private PropertyListener propertyListener;
+
 	// Key event dispatcher
-	private KeyEventDispatcher keyHandler;
+	private KeyEventHandler keyHandler;
 
 	// Dummy component used to preventing robots in accessing the real source component
 	private static Component safeEventComponent;
@@ -206,11 +212,11 @@ public class Battle implements Runnable {
 		contestants = Collections.synchronizedList(new ArrayList<ContestantPeer>());
 
 		if (manager.isGUIEnabled()) {
-			keyHandler = new KeyEventHandler();
+			keyHandler = new KeyEventHandler(this, robots);
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
 		}
 	}
-	
+
 	@Override
 	public void finalize() {
 		if (keyHandler != null) {
@@ -357,7 +363,12 @@ public class Battle implements Runnable {
 
 		updateTitle();
 
-		cleanup();
+		// The results dialog needs the battle object to be complete, so we
+		// won't clean it up just yet, instead the ResultsDialog is responsible
+		// for cleaning up the battle when its done with it.
+		if (!manager.isGUIEnabled()) {
+			cleanup();
+		}
 
 		if (soundInitialized) {
 			manager.getSoundManager().stopBackgroundMusic();
@@ -425,6 +436,33 @@ public class Battle implements Runnable {
 			r.setRobot(null);
 			r.cleanup();
 		}
+
+		if (contestants != null) {
+			contestants.clear();
+			contestants = null;
+		}
+
+		if (robots != null) {
+			robots.clear();
+			robots = null;
+		}
+
+		if (keyHandler != null) {
+			keyHandler.cleanup();
+			keyHandler = null;
+		}
+
+		if (manager != null) {
+			RobocodeProperties props = manager.getProperties();
+
+			props.removePropertyListener(propertyListener);
+			props = null;
+			propertyListener = null;
+		}
+
+		battleField = null;
+		battleManager = null;
+		battleSpecification = null;
 
 		// Request garbage collecting
 		for (int i = 4; i >= 0; i--) { // Make sure it is run
@@ -510,12 +548,14 @@ public class Battle implements Runnable {
 
 		desiredTPS = props.getOptionsBattleDesiredTPS();
 
-		props.addPropertyListener(props.new PropertyListener() {
+		propertyListener = props.new PropertyListener() {
 			@Override
 			public void desiredTpsChanged(int tps) {
 				desiredTPS = tps;
 			}
-		});
+		};
+
+		props.addPropertyListener(propertyListener);
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
@@ -578,7 +618,7 @@ public class Battle implements Runnable {
 					}
 
 					initializeRobotPosition(r);
-					
+
 					if (battleView != null && !replay) {
 						battleView.update();
 					}
@@ -1081,7 +1121,7 @@ public class Battle implements Runnable {
 	}
 
 	private void flushOldEvents() {
-		// New turn:  Flush any old events.
+		// New turn: Flush any old events.
 		for (RobotPeer r : robots) {
 			r.getEventManager().clear(currentTime - 1);
 		}
@@ -1421,7 +1461,7 @@ public class Battle implements Runnable {
 		}
 
 		List<String> positions = new ArrayList<String>();
-		
+
 		Pattern pattern = Pattern.compile("([^,(]*[(][^)]*[)])?[^,]*,?");
 		Matcher matcher = pattern.matcher(initialPositions);
 
@@ -1450,7 +1490,7 @@ public class Battle implements Runnable {
 			heading = 2 * PI * random();
 
 			int len = coords.length;
-			
+
 			if (len >= 1) {
 				try {
 					x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
@@ -1473,14 +1513,14 @@ public class Battle implements Runnable {
 			initialRobotPositions[i][2] = heading;
 		}
 	}
-	
+
 	private void initializeRobotPosition(RobotPeer robot) {
 		if (initialRobotPositions != null) {
 			int index = robots.indexOf(robot);
-	
+
 			if (index >= 0 && index < initialRobotPositions.length) {
 				double[] pos = initialRobotPositions[index];
-				
+
 				robot.initialize(pos[0], pos[1], pos[2]);
 				if (validSpot(robot)) {
 					return;
@@ -1517,7 +1557,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the activeRobots.
-	 *
+	 * 
 	 * @return Returns a int
 	 */
 	public int getActiveRobots() {
@@ -1552,7 +1592,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the activeRobots.
-	 *
+	 * 
 	 * @param activeRobots The activeRobots to set
 	 */
 	private synchronized void setActiveRobots(int activeRobots) {
@@ -1561,7 +1601,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the roundNum.
-	 *
+	 * 
 	 * @return Returns a int
 	 */
 	public int getRoundNum() {
@@ -1570,7 +1610,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the roundNum.
-	 *
+	 * 
 	 * @param roundNum The roundNum to set
 	 */
 	public void setRoundNum(int roundNum) {
@@ -1579,7 +1619,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the unsafeLoaderThreadRunning.
-	 *
+	 * 
 	 * @return Returns a boolean
 	 */
 	public synchronized boolean isUnsafeLoaderThreadRunning() {
@@ -1588,7 +1628,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the unsafeLoaderThreadRunning.
-	 *
+	 * 
 	 * @param unsafeLoaderThreadRunning The unsafeLoaderThreadRunning to set
 	 */
 	public synchronized void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
@@ -1597,7 +1637,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the battleSpecification.
-	 *
+	 * 
 	 * @return Returns a BattleSpecification
 	 */
 	public BattleSpecification getBattleSpecification() {
@@ -1606,7 +1646,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the battleSpecification.
-	 *
+	 * 
 	 * @param battleSpecification The battleSpecification to set
 	 */
 	public void setBattleSpecification(BattleSpecification battleSpecification) {
@@ -1615,7 +1655,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the manager.
-	 *
+	 * 
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {
@@ -1649,7 +1689,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Informs on whether the battle is running or not.
-	 *
+	 * 
 	 * @return true if the battle is running, false otherwise
 	 */
 	public synchronized boolean isRunning() {
@@ -1859,11 +1899,6 @@ public class Battle implements Runnable {
 		return safeEventComponent;
 	}
 	
-	private KeyEvent cloneKeyEvent(final KeyEvent e) {
-		return new KeyEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
-				e.getKeyChar(), e.getKeyLocation());
-	}
-	
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 		double scale;
 
@@ -1880,8 +1915,8 @@ public class Battle implements Runnable {
 		int x = (int) ((e.getX() - dx) / scale + 0.5);
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
 
-		return new MouseEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y, e.getClickCount(),
-				e.isPopupTrigger(), e.getButton()); 
+		return new MouseEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
+				e.getClickCount(), e.isPopupTrigger(), e.getButton()); 
 	}
 
 	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
@@ -1904,10 +1939,17 @@ public class Battle implements Runnable {
 				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()); 
 	}
 
-	private class KeyEventHandler implements KeyEventDispatcher {
+	private final class KeyEventHandler implements KeyEventDispatcher {
+		private Battle battle = null;
+		private List<RobotPeer> robots = null;
+
+		public KeyEventHandler(Battle battle, List<RobotPeer> robots) {
+			this.battle = battle;
+			this.robots = robots;
+		}
 
 		public boolean dispatchKeyEvent(KeyEvent e) {
-			if (isRunning()) {
+			if (battle != null && battle.isRunning()) {
 				Robot robot;
 
 				for (RobotPeer r : robots) {
@@ -1949,9 +1991,19 @@ public class Battle implements Runnable {
 						break;
 					}
 				}
-			
+
 			}
 			return false;
+		}
+
+		private KeyEvent cloneKeyEvent(final KeyEvent e) {
+			return new KeyEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
+					e.getKeyChar(), e.getKeyLocation());
+		}
+
+		public void cleanup() {
+			robots = null;
+			battle = null;
 		}
 	}
 }
