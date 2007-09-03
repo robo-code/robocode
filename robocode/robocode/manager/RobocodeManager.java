@@ -19,6 +19,9 @@
  *     - Bugfix: When the intro battle has completed or is aborted the battle
  *       properties are now reset to the default battle properties. This fixes
  *       the issue were the initial robot positions are fixed in new battles
+ *     Nathaniel Troutman
+ *     - Bugfix: Added cleanup() to prevent memory leaks by removing circular
+ *       references
  *******************************************************************************/
 package robocode.manager;
 
@@ -37,6 +40,7 @@ import robocode.sound.SoundManager;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeManager {
 	private BattleManager battleManager;
@@ -64,7 +68,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the battleManager.
-	 *
+	 * 
 	 * @return Returns a BattleManager
 	 */
 	public BattleManager getBattleManager() {
@@ -76,7 +80,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the robotManager.
-	 *
+	 * 
 	 * @return Returns a RobotListManager
 	 */
 	public RobotRepositoryManager getRobotRepositoryManager() {
@@ -88,7 +92,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the windowManager.
-	 *
+	 * 
 	 * @return Returns a WindowManager
 	 */
 	public WindowManager getWindowManager() {
@@ -100,7 +104,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the threadManager.
-	 *
+	 * 
 	 * @return Returns a ThreadManager
 	 */
 	public ThreadManager getThreadManager() {
@@ -112,7 +116,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the robotDialogManager.
-	 *
+	 * 
 	 * @return Returns a RobotDialogManager
 	 */
 	public RobotDialogManager getRobotDialogManager() {
@@ -171,7 +175,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the imageManager.
-	 *
+	 * 
 	 * @return Returns a ImageManager
 	 */
 	public ImageManager getImageManager() {
@@ -183,7 +187,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the versionManager.
-	 *
+	 * 
 	 * @return Returns a VersionManager
 	 */
 	public VersionManager getVersionManager() {
@@ -195,7 +199,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the cpuManager.
-	 *
+	 * 
 	 * @return Returns a CpuManager
 	 */
 	public CpuManager getCpuManager() {
@@ -207,7 +211,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the Sound Manager.
-	 *
+	 * 
 	 * @return Returns a SoundManager
 	 */
 	public SoundManager getSoundManager() {
@@ -219,7 +223,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the slave.
-	 *
+	 * 
 	 * @return Returns a boolean
 	 */
 	public boolean isSlave() {
@@ -239,6 +243,7 @@ public class RobocodeManager {
 		getBattleManager().loadBattleProperties();
 
 		final boolean origShowResults = getProperties().getOptionsCommonShowResults();
+
 		getProperties().setOptionsCommonShowResults(false);
 
 		setListener(new RobocodeListener() {
@@ -249,7 +254,7 @@ public class RobocodeManager {
 			public void battleAborted(BattleSpecification b) {
 				cleanup();
 			}
-			
+
 			public void battleMessage(String s) {}
 
 			private void cleanup() {
@@ -277,5 +282,12 @@ public class RobocodeManager {
 
 	public void setEnableSound(boolean enable) {
 		isSoundEnabled = enable;
+	}
+
+	public void cleanup() {
+		if (battleManager != null) {
+			battleManager.cleanup();
+			battleManager = null;
+		}
 	}
 }

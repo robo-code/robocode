@@ -41,6 +41,9 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Nathaniel Troutman
+ *     - Bugfix: Added cleanup() to prevent memory leaks by removing circular
+ *       references
  *******************************************************************************/
 package robocode.manager;
 
@@ -64,8 +67,8 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
-import robocode.peer.ContestantStatistics;
 import robocode.peer.ContestantPeer;
+import robocode.peer.ContestantStatistics;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
@@ -80,6 +83,7 @@ import robocode.security.RobocodeSecurityManager;
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class BattleManager {
 	private BattleProperties battleProperties = new BattleProperties();
@@ -630,5 +634,10 @@ public class BattleManager {
 		for (PauseResumeListener l : pauseResumeListeners) {
 			l.battleResumed();
 		}
+	}
+
+	public void cleanup() {
+		battle = null;
+		manager = null;
 	}
 }
