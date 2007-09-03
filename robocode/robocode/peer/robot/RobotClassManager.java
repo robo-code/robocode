@@ -207,7 +207,16 @@ public class RobotClassManager {
 
 	public void cleanup() {
 		robotClass = null;
-		robotClassLoader = null;
+
+		if (robotClassLoader != null) {
+			robotClassLoader.cleanup();
+			robotClassLoader = null;
+		}
+
+		if (referencedClasses != null) {
+			referencedClasses.clear();
+		}
+
 		robotSpecification = null;
 	}
 }
