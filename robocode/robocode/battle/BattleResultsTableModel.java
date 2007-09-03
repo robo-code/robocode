@@ -20,6 +20,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Nathaniel Troutman
+ *     - Added sanity check on battle object in getRowCount()
  *******************************************************************************/
 package robocode.battle;
 
@@ -44,6 +46,7 @@ import robocode.text.StringUtil;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
@@ -104,6 +107,12 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public int getRowCount() {
+		// Due to the lovely nature of threads and race conditions we have to
+		// verify that the battle object is still around and hasn't been cleaned
+		// up removing the contestants.
+		if (battle == null || battle.getContestants() == null) {
+			return 0;
+		}
 		return battle.getContestants().size();
 	}
 
