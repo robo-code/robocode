@@ -21,6 +21,10 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Nathaniel Troutman
+ *     - Added cleanup() method for cleaning up references to internal classes
+ *       to prevent circular references causing memory leaks
+ *     - Added cleanup of hidden ClassLoader.class.classes
  *******************************************************************************/
 package robocode.security;
 
@@ -28,6 +32,7 @@ package robocode.security;
 import static robocode.io.Logger.log;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.security.CodeSource;
 import java.security.Permissions;
@@ -46,6 +51,7 @@ import robocode.repository.RobotSpecification;
  * @author Flemming N. Larsen (contributor)
  * @author Matthew Reeder (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeClassLoader extends ClassLoader {
 	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
@@ -60,10 +66,29 @@ public class RobocodeClassLoader extends ClassLoader {
 	private long uid1;
 	private long uid2;
 
+	// The hidden ClassLoader.class.classes field
+	private Field classesField = null;
+
 	public RobocodeClassLoader(ClassLoader parent, RobotClassManager robotClassManager) {
 		super(parent);
 		this.robotClassManager = robotClassManager;
 		this.robotSpecification = robotClassManager.getRobotSpecification();
+
+		// Deep within the class loader is a vector of classes, and is VM
+		// implementation specific, so its not in every VM. However, if a VM
+		// does have it then we have to make sure we clear it during cleanup().
+		Field[] fields = ClassLoader.class.getDeclaredFields();
+
+		for (Field field : fields) {
+			if (field.getName().equals("classes")) {
+				classesField = field;
+				break;
+			}
+		}
+
+		if (classesField == null) {
+			System.err.println("Failed to find classes field in:" + this);
+		}
 	}
 
 	public synchronized String getClassDirectory() {
@@ -209,8 +234,25 @@ public class RobocodeClassLoader extends ClassLoader {
 			}
 		}
 	}
-	
+
 	private synchronized RobotClassManager getRobotClassManager() {
-		return robotClassManager; 
+		return robotClassManager;
+	}
+
+	public void cleanup() {
+		if (cachedClasses != null) {
+			cachedClasses.clear();
+		}
+
+		if (classesField != null) {
+			try {
+				classesField.set(this, null);
+			} catch (IllegalArgumentException e) {// TODO Graceful error handling
+			} catch (IllegalAccessException e) {// TODO Graceful error handling
+			}
+		}
+
+		robotClassManager = null;
+		robotSpecification = null;
 	}
 }
