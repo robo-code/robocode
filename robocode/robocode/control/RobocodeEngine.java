@@ -27,6 +27,7 @@
  *       synchronized List and HashMap
  *     Nathaniel Troutman
  *     - Bugfix: Inconsistent Behavior of RobocodeEngine.setVisible()
+ *     - Bugfix: Added cleanup of the Robocode manager to the close() method
  *******************************************************************************/
 package robocode.control;
 
@@ -52,12 +53,13 @@ import robocode.security.SecurePrintStream;
 
 /**
  * RobocodeEngine - Class for controlling Robocode.
- *
+ * 
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
- *
+ * 
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeEngine {
 	private RobocodeListener listener;
@@ -78,7 +80,7 @@ public class RobocodeEngine {
 
 	/**
 	 * Creates a new RobocodeEngine
-	 *
+	 * 
 	 * @param robocodeHome should be the root robocode directory (i.e. c:\robocode)
 	 * @param listener Your listener
 	 */
@@ -141,11 +143,15 @@ public class RobocodeEngine {
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().dispose();
 		}
+		if (manager != null) {
+			manager.cleanup();
+			manager = null;
+		}
 	}
 
 	/**
 	 * Returns the installed version of Robocode.
-	 *
+	 * 
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
@@ -159,7 +165,7 @@ public class RobocodeEngine {
 		if (visible && !manager.isGUIEnabled()) {
 			// The GUI must be enabled in order to show the window
 			manager.setEnableGUI(true);
-			
+
 			// Set the Look and Feel (LAF)
 			robocode.manager.LookAndFeelManager.setLookAndFeel();
 		}
@@ -172,7 +178,7 @@ public class RobocodeEngine {
 
 	/**
 	 * Gets a list of robots available for battle.
-	 *
+	 * 
 	 * @return An array of all available robots.
 	 */
 	public RobotSpecification[] getLocalRepository() {
