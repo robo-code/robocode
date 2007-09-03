@@ -51,6 +51,7 @@
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
+ *     - Optimized getting the name of the robot using the getName() method
  *******************************************************************************/
 package robocode.peer;
 
@@ -222,6 +223,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		
 		battleField = new DefaultBattleField(800, 600);
 		battle = new Battle(battleField, null);
+
+		if (name == null) {
+			this.name = robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		}
 	}
 
 	public boolean isIORobot() {
@@ -423,7 +428,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public String getName() {
-		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		return name;
 	}
 
 	public String getShortName() {
@@ -1289,6 +1294,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		// Create statistics after teamPeer set
 		statistics = new RobotStatistics(this);
+
+		if (name == null) {
+			name = robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		}
 	}
 
 	public synchronized Bullet setFire(double power) {
@@ -1724,6 +1733,14 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			robotClassManager.cleanup();
 			robotClassManager = null;
 		}
+
+		if (statistics != null) {
+			statistics.cleanup();
+			statistics = null;
+		}
+		
+		out = null;
+		battle = null;
 
 		// Remove the file system and the manager
 		robotFileSystemManager = null;
