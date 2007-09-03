@@ -13,6 +13,9 @@
  *       RankingDialog and ResultsDialog (code reuse)
  *     - Changed to be a independent frame instead of a dialog
  *     - Changed to pack the dialog to fit the table with the rankings
+ *     Nathaniel Troutman
+ *     - Bugfix: Added cleanup to prevent memory leaks with the battle object in
+ *       okButtonActionPerformed()
  *******************************************************************************/
 package robocode.dialog;
 
@@ -26,6 +29,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import robocode.battle.Battle;
 import robocode.battle.BattleRankingTableModel;
 import robocode.battle.BattleResultsTableModel;
 import robocode.manager.RobocodeManager;
@@ -33,10 +37,11 @@ import robocode.manager.RobocodeManager;
 
 /**
  * Frame to display the battle results or ranking during battles.
- *
+ * 
  * @author Mathew A. Nelson (original)
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 @SuppressWarnings("serial")
 public class RankingDialog extends JFrame {
@@ -60,6 +65,8 @@ public class RankingDialog extends JFrame {
 
 	private boolean isCurrentRankings;
 
+	private Battle battle;
+
 	/**
 	 * RankingDialog constructor
 	 */
@@ -74,6 +81,10 @@ public class RankingDialog extends JFrame {
 	 * Initializes the frame
 	 */
 	private void initialize() {
+		// We need to know what battle we are showing results for so that we can
+		// clean it up later.
+		battle = manager.getBattleManager().getBattle();
+
 		setTitle(isCurrentRankings ? "Ranking" : ((BattleResultsTableModel) getTableModel()).getTitle());
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getDialogContentPane());
@@ -94,7 +105,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the content pane.
-	 *
+	 * 
 	 * @return JPanel
 	 */
 	private JPanel getDialogContentPane() {
@@ -111,7 +122,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the buttonPanel.
-	 *
+	 * 
 	 * @return JPanel
 	 */
 	private JPanel getButtonPanel() {
@@ -126,7 +137,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the okButton
-	 *
+	 * 
 	 * @return JButton
 	 */
 	private JButton getOkButton() {
@@ -141,7 +152,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the saveButton
-	 *
+	 * 
 	 * @return JButton
 	 */
 	private JButton getSaveButton() {
@@ -156,7 +167,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the scroll pane
-	 *
+	 * 
 	 * @return JScrollPane
 	 */
 	private JScrollPane getScrollPane() {
@@ -180,7 +191,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the table.
-	 *
+	 * 
 	 * @return JTable
 	 */
 	private JTable getTable() {
@@ -233,9 +244,7 @@ public class RankingDialog extends JFrame {
 
 	private AbstractTableModel getTableModel() {
 		if (tableModel == null) {
-			tableModel = isCurrentRankings
-					? new BattleRankingTableModel(manager)
-					: new BattleResultsTableModel(manager.getBattleManager().getBattle());
+			tableModel = isCurrentRankings ? new BattleRankingTableModel(manager) : new BattleResultsTableModel(battle);
 		}
 		return tableModel;
 	}
@@ -255,11 +264,12 @@ public class RankingDialog extends JFrame {
 						if (table.getModel().getRowCount() != rows) {
 							rows = table.getModel().getRowCount();
 
-							table.setPreferredSize(new Dimension(table.getColumnModel().getTotalColumnWidth(),
+							table.setPreferredSize(
+									new Dimension(table.getColumnModel().getTotalColumnWidth(),
 									table.getModel().getRowCount() * table.getRowHeight()));
-					        table.setPreferredScrollableViewportSize(table.getPreferredSize());
-					        pack();
-						}					
+							table.setPreferredScrollableViewportSize(table.getPreferredSize());
+							pack();
+						}
 						repaint();
 					}
 				}
@@ -324,7 +334,16 @@ public class RankingDialog extends JFrame {
 	}
 
 	private void okButtonActionPerformed() {
+		// Hide the window so as to hopefully not get any more updates that might
+		// depend on battle being intact still
+		setVisible(false);
+		
 		dispose();
+		
+		// Since we are displaying the results we have to keep the battle
+		// around, but now that we are done we need to clean things up.
+		battle.cleanup();
+		battle = null;
 	}
 
 	private void saveButtonActionPerformed() {
