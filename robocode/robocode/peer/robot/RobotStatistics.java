@@ -27,6 +27,9 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Nathaniel Troutman
+ *     - Added cleanup() method for cleaning up references to internal classes
+ *       to prevent circular references causing memory leaks
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -44,6 +47,7 @@ import robocode.peer.TeamPeer;
  * @author Luis Crespo (contributor)
  * @author Titus Chen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
@@ -303,9 +307,9 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	public RobotResults getResults(int rank) {
 		if (robotPeer.getBattle().isRunning()) {
 			return new RobotResults(null, rank, totalScore + getCurrentScore(), totalSurvivalScore + survivalScore,
-					totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore,
-					totalBulletKillBonus + bulletKillBonus, totalRammingDamageScore + rammingDamageScore,
-					totalRammingKillBonus + rammingKillBonus, totalFirsts, totalSeconds, totalThirds);
+					totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore, totalBulletKillBonus + bulletKillBonus,
+					totalRammingDamageScore + rammingDamageScore, totalRammingKillBonus + rammingKillBonus, totalFirsts,
+					totalSeconds, totalThirds);
 		}
 		return new RobotResults(null, rank, totalScore, totalSurvivalScore, totalLastSurvivorBonus,
 				totalBulletDamageScore, totalBulletKillBonus, totalRammingDamageScore, totalRammingKillBonus, totalFirsts,
@@ -321,5 +325,8 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 	private boolean isTeammate(int robot) {
 		return (teamPeer != null && teamPeer == robots.get(robot).getTeamPeer());
+	}
+
+	public void cleanup() { // Do nothing, for now
 	}
 }
