@@ -29,6 +29,8 @@
  *     - Added SortedProperties class in order to sort the keys/fields of the
  *       Robocode properties file
  *     - Added "Buffer images" Render Option
+ *     Nathaniel Troutman
+ *     - Added missing removePropertyListener() method
  *******************************************************************************/
 package robocode.manager;
 
@@ -46,6 +48,7 @@ import robocode.io.Logger;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeProperties {
 	// Default SFX files
@@ -989,6 +992,10 @@ public class RobocodeProperties {
 		listeners.add(listener);
 	}
 
+	public void removePropertyListener(PropertyListener propertyListener) {
+		listeners.remove(propertyListener);
+	}
+
 	private void notifyDesiredTpsChanged() {
 		for (PropertyListener listener : listeners) {
 			listener.desiredTpsChanged(optionsBattleDesiredTPS);
@@ -1024,7 +1031,6 @@ public class RobocodeProperties {
 			return keyList.elements();
 		}
 	}
-
 
 	/**
 	 * Property listener.
