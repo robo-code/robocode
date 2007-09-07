@@ -1,5 +1,5 @@
 Version 1.4.3
-(09/04/2007)
+(09/07/2007)
 -------------
 o Bugfixes
   -- Major bugfixes was done by Nathaniel Troutman to get rid of large memory
@@ -24,6 +24,9 @@ o Bugfixes
      database was (re)builded, e.g. if the robot.database file was missing
   -- When running battles including the MyFirstJunior and the pressing the mouse
      button outside of the battle field a ClassCastException would occur
+  -- When double-clicking the Restart button for the battle window the UI could
+     lock up completely trying to play all battles, and it would not be possible
+     to stop the battle
 
 Version 1.4.2
 (08/26/2007)
