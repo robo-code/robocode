@@ -175,16 +175,15 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 	public void setRobotList(List<FileSpecification> robotListList) {
-		AvailableRobotsPanel.this.robotList = robotListList;
+		robotList = robotListList;
 		SwingUtilities.invokeLater(
 				new Runnable() {
 			public void run() {
 				availablePackages.clear();
 				availableRobots.clear();
 
-				if (AvailableRobotsPanel.this.robotList == null) {
-					AvailableRobotsPanel.this.robotList = Collections.synchronizedList(
-							new ArrayList<FileSpecification>());
+				if (robotList == null) {
+					robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
 					availablePackages.add("One moment please...");
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().clearSelection();
@@ -194,17 +193,12 @@ public class AvailableRobotsPanel extends JPanel {
 					String packageName = null;
 
 					for (FileSpecification robotSpec : robotList) {
-						if (packageName != null && robotSpec.getFullPackage() != null
-								&& !packageName.equals(robotSpec.getFullPackage())) {
-							packageName = robotSpec.getFullPackage();
-							if (!availablePackages.contains(robotSpec.getFullPackage())) {
-								availablePackages.add(robotSpec.getFullPackage());
-							}
-						} else if (robotSpec.getFullPackage() != null && !robotSpec.getFullPackage().equals(packageName)) {
-							packageName = robotSpec.getFullPackage();
-							if (!availablePackages.contains(robotSpec.getFullPackage())) {
-								availablePackages.add(robotSpec.getFullPackage());
-							}
+						packageName = robotSpec.getFullPackage();
+						if (packageName == null) {
+							continue;
+						}
+						if (!availablePackages.contains(packageName)) {
+							availablePackages.add(packageName);
 						}
 					}
 					availablePackages.add("(No package)");
