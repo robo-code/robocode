@@ -35,6 +35,9 @@
  *     - Enhanced the getBattleFilename() to look into the battle dir and also
  *       add the .battle file extension to the returned file name if this is
  *       missing
+ *     - Removed battleRunning field, isBattleRunning(), and setBattle()
+ *     - Bugfix: Multiple battle threads could run in the same time when the
+ *       battle thread was started in startNewBattle()
  *     Luis Crespo
  *     - Added debug step feature, including the nextTurn(), shouldStep(),
  *       startNewRound()
@@ -90,7 +93,6 @@ public class BattleManager {
 	private String battleFilename;
 	private String battlePath;
 	private Battle battle;
-	private boolean battleRunning;
 	private int pauseCount;
 	private String resultsFile;
 	private RobocodeManager manager;
@@ -107,7 +109,7 @@ public class BattleManager {
 	 * Steps for a single turn, then goes back to paused
 	 */
 	public void nextTurn() {
-		if (battleRunning) {
+		if (battle != null && battle.isRunning()) {
 			stepTurn = battle.getCurrentTime() + 1;
 		}
 	}
@@ -143,7 +145,7 @@ public class BattleManager {
 	}
 
 	public void restart() {
-		stop();
+		// Start new battle. The old battle is automatically stopped
 		startNewBattle(battleProperties, false, false);
 	}
 
@@ -345,7 +347,14 @@ public class BattleManager {
 
 			manager.getRobotDialogManager().setActiveBattle(battle);
 		}
+
+		// Start the battle thread
 		battleThread.start();
+
+		// Wait until the battle is running.
+		// This must be done as a new battle could be started immediately after this one causing
+		// multiple battle threads to run at the same time, which must be prevented!
+		battle.waitTillRunning();
 	}
 
 	public String getBattleFilename() {
@@ -521,18 +530,6 @@ public class BattleManager {
 		if (oldPauseCount == 1) {
 			notifyBattleResumed();
 		}
-	}
-
-	public boolean isBattleRunning() {
-		return battleRunning;
-	}
-
-	public void setBattle(Battle newBattle) {
-		battle = newBattle;
-	}
-
-	public void setBattleRunning(boolean newBattleRunning) {
-		battleRunning = newBattleRunning;
 	}
 
 	public void setResultsFile(String newResultsFile) {
