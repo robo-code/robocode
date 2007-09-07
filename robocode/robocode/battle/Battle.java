@@ -42,7 +42,15 @@
  *     - Changed to take the new JuniorRobot class into account
  *     - When cleaning up robots their static fields are now being cleaned up
  *     - Bugfix: Changed the runRound() so that the robot are painted after
- *       they have made their turn 
+ *       they have made their turn
+ *     - The thread handling for unsafe robot loading has been put in an
+ *       independent UnsafeLoadRobotsThread class. In addition, the battle
+ *       thread is not sharing it's run() method anymore with the
+ *       UnsafeLoadRobotsThread, which has now got its own run() method
+ *     - The 'running' and 'aborted' flags are now synchronized towards
+ *       'battleMonitor' instead of 'this' object
+ *     - Added waitTillRunning() method so another thread can be blocked until
+ *       the battle has started running
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -124,8 +132,9 @@ public class Battle implements Runnable {
 
 	// Battle items
 	private Thread battleThread;
-	private boolean running;
-	private boolean abortBattles;
+	private Object battleMonitor = new Object();
+	private volatile boolean running;
+	private volatile boolean aborted;
 
 	// Option related items
 	private double gunCoolingRate = .1;
@@ -240,9 +249,10 @@ public class Battle implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
-		synchronized (this) {
+		// Notify that the battle is now running
+		synchronized (battleMonitor) {
 			running = true;
-			notifyAll();
+			battleMonitor.notifyAll();
 		}
 
 		if (battleView != null) {
@@ -253,12 +263,6 @@ public class Battle implements Runnable {
 			manager.getSoundManager().playBackgroundMusic();
 		}
 
-		if (unsafeLoadRobotsThread != null && Thread.currentThread() == unsafeLoadRobotsThread) {
-			unsafeLoadRobots();
-			return;
-		}
-
-		// Load robots
 		initialize();
 
 		deterministic = true;
@@ -280,13 +284,11 @@ public class Battle implements Runnable {
 		if (!replay) {
 			battleRecord = isRecordingEnabled ? new BattleRecord(battleField, robots) : null;
 		}
-
-		while (!abortBattles && roundNum < numRounds) {
+			
+		while (!isAborted() && roundNum < numRounds) {
 			updateTitle();
 			try {
 				setupRound();
-
-				battleManager.setBattleRunning(true);
 
 				updateTitle();
 
@@ -297,8 +299,6 @@ public class Battle implements Runnable {
 				} else {
 					runRound();
 				}
-
-				battleManager.setBattleRunning(false);
 
 				cleanupRound();
 			} catch (Exception e) {
@@ -316,13 +316,13 @@ public class Battle implements Runnable {
 			unsafeLoadRobotsThread.interrupt();
 
 			if (manager.getListener() != null) {
-				if (abortBattles) {
+				if (!isAborted()) {
 					manager.getListener().battleAborted(battleSpecification);
 				} else {
 					battleManager.sendResultsToListener(this, manager.getListener());
 				}
 			}
-			if (!abortBattles && manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
+			if (!isAborted() && manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
 				manager.getWindowManager().showResultsDialog();
 			}
 
@@ -334,7 +334,7 @@ public class Battle implements Runnable {
 		} else {
 			// Replay
 
-			if (!abortBattles) {
+			if (!isAborted()) {
 				if (manager.getProperties().getOptionsCommonShowResults()) {
 					RobotResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
 
@@ -356,11 +356,6 @@ public class Battle implements Runnable {
 			battleView.repaint();
 		}
 
-		synchronized (this) {
-			running = false;
-			notifyAll();
-		}
-
 		updateTitle();
 
 		// The results dialog needs the battle object to be complete, so we
@@ -377,6 +372,24 @@ public class Battle implements Runnable {
 
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().setReplay(true);
+		}
+
+		// Notify that the battle is over
+		synchronized (battleMonitor) {
+			running = false;
+			battleMonitor.notifyAll();
+		}
+	}
+
+	public void waitTillRunning() {
+		synchronized (battleMonitor) {
+			while (!running) {
+				try {
+					battleMonitor.wait();
+				} catch (InterruptedException e) {
+					return;
+				}
+			}
 		}
 	}
 
@@ -562,9 +575,7 @@ public class Battle implements Runnable {
 
 		unsafeThreadGroup.setDaemon(true);
 		unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
-		unsafeLoadRobotsThread = new Thread(unsafeThreadGroup, this);
-		unsafeLoadRobotsThread.setName("Robot Loader");
-		unsafeLoadRobotsThread.setDaemon(true);
+		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
@@ -628,7 +639,6 @@ public class Battle implements Runnable {
 				}
 			}
 		}
-		abortBattles = false;
 	}
 
 	public boolean isDeterministic() {
@@ -748,8 +758,8 @@ public class Battle implements Runnable {
 					// setWinner was here
 					r.update();
 				}
-				if ((zap || abortBattles) && !r.isDead()) {
-					if (abortBattles) {
+				if ((zap || isAborted()) && !r.isDead()) {
+					if (isAborted()) {
 						r.zap(5);
 					} else {
 						r.zap(.1);
@@ -817,7 +827,7 @@ public class Battle implements Runnable {
 			frameStartTime = System.currentTimeMillis();
 
 			// Paint current battle frame
-			if (!abortBattles
+			if (!isAborted()
 					&& (endTimer < TURNS_DISPLAYED_AFTER_ENDING
 							&& !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified()))) {
 				// Update the battle view if the frame has not been painted yet this second
@@ -934,7 +944,7 @@ public class Battle implements Runnable {
 			battleView.update();
 		}
 
-		while (!(replayOver || abortBattles)) {
+		while (!(replayOver || isAborted())) {
 			if (shouldPause() && !battleManager.shouldStep()) {
 				resetThisSec = true;
 				continue;
@@ -988,7 +998,7 @@ public class Battle implements Runnable {
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
 
-			if (!(abortBattles || battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
+			if (!(isAborted() || battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
 				if (((totalFrameMillisThisSec == 0)
@@ -1044,7 +1054,7 @@ public class Battle implements Runnable {
 	}
 
 	private boolean shouldPause() {
-		if (battleManager.isPaused() && !abortBattles) {
+		if (battleManager.isPaused() && !isAborted()) {
 			updateTitle();
 			try {
 				Thread.sleep(500);
@@ -1201,7 +1211,7 @@ public class Battle implements Runnable {
 		boolean battleOver = false;
 
 		// Check game over
-		if (oneTeamRemaining() || abortBattles) {
+		if (isAborted() || oneTeamRemaining()) {
 			if (endTimer == 0) {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
@@ -1385,22 +1395,31 @@ public class Battle implements Runnable {
 	}
 
 	public void stop() {
-		if (!abortBattles) {
-			synchronized (this) {
-				abortBattles = true;
-				desiredTPS = 10000;
+		synchronized (battleMonitor) {
+			// Return immediately if the battle is not running
+			if (!running) {
+				return;
+			}
 
-				while (isRunning()) {
-					try {
-						this.wait();
-					} catch (InterruptedException e) {}
+			// Notify that the battle is aborted
+			aborted = true;
+			battleMonitor.notifyAll();
+
+			// Adjust the desired TPS temporary to maximum rate to stop the battle as quickly as possible
+			int savedTPS = desiredTPS;			
+			desiredTPS = 10000;
+
+			// Wait till the battle is not running anymore
+			while (running) {
+				try {
+					battleMonitor.wait();
+				} catch (InterruptedException e) {
+					return;
 				}
 			}
 
-			if (battleView != null) {
-				battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-				battleView.repaint();
-			}
+			// Restore the desired TPS
+			desiredTPS = savedTPS;
 		}
 	}
 
@@ -1414,7 +1433,7 @@ public class Battle implements Runnable {
 				} catch (InterruptedException e) {}
 			}
 			// Loader awake
-			if (roundNum >= numRounds || abortBattles) {
+			if (roundNum >= numRounds || isAborted()) {
 				// Robot loader thread terminating
 				return;
 			}
@@ -1692,10 +1711,23 @@ public class Battle implements Runnable {
 	 * 
 	 * @return true if the battle is running, false otherwise
 	 */
-	public synchronized boolean isRunning() {
-		return running;
+	public boolean isRunning() {
+		synchronized (battleMonitor) {
+			return running;
+		}
 	}
 
+	/**
+	 * Informs on whether the battle is aborted or not.
+	 * 
+	 * @return true if the battle is aborted, false otherwise
+	 */
+	private boolean isAborted() {
+		synchronized (battleMonitor) {
+			return aborted;
+		}
+	}
+	
 	private void updateTitle() {
 		if (battleView == null) {
 			return;
@@ -2004,6 +2036,20 @@ public class Battle implements Runnable {
 		public void cleanup() {
 			robots = null;
 			battle = null;
+		}
+	}
+
+	private class UnsafeLoadRobotsThread extends Thread {
+
+		public UnsafeLoadRobotsThread() {
+			super(new ThreadGroup("Robot Loader Group"), "Robot Loader");
+			setDaemon(true);
+		}
+
+		@Override
+		public void run() {
+			// Load robots
+			unsafeLoadRobots();
 		}
 	}
 }
