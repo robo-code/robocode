@@ -462,10 +462,10 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	public void buildRobotList() {
-		new Thread(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				getAvailableRobotsPanel().setRobotList(null);
-				List<FileSpecification> l = RobotSelectionPanel.this.robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
+				List<FileSpecification> l = robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
 
 				getAvailableRobotsPanel().setRobotList(l);
 				if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
@@ -473,7 +473,7 @@ public class RobotSelectionPanel extends WizardPanel {
 					preSelectedRobots = null;
 				}
 			}
-		}).start();
+		});
 	}
 
 	public AvailableRobotsPanel getAvailableRobotsPanel() {
