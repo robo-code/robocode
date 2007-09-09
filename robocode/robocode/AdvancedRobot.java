@@ -341,11 +341,16 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *   );
 	 * </pre>
 	 *
-	 * @param condition The condition that must be met.
+	 * @param condition the condition that must be met. Notice, that null is not
+	 *     allowed, and will cause a NullPointerException.
+	 * @throws NullPointerException if the condition parameter has been set to null.
 	 *
 	 * @see Condition
 	 */
 	public void addCustomEvent(Condition condition) {
+		if (condition == null) {
+			throw new NullPointerException("the condition cannot be null");
+		}
 		if (peer != null) {
 			peer.setCall();
 			peer.getEventManager().addCustomEvent(condition);
@@ -869,11 +874,16 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * <p>
 	 * See the sample robots for examples of use.
 	 *
-	 * @param condition the custom event to remove
+	 * @param condition the custom event to remove. Notice, that null is not
+	 *     allowed, and will cause a NullPointerException.
+	 * @throws NullPointerException if the condition parameter has been set to null.
 	 *
 	 * @see #addCustomEvent
 	 */
 	public void removeCustomEvent(Condition condition) {
+		if (condition == null) {
+			throw new NullPointerException("the condition cannot be null");
+		}
 		if (peer != null) {
 			peer.setCall();
 			peer.getEventManager().removeCustomEvent(condition);
