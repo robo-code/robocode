@@ -1,11 +1,12 @@
 Version 1.4.4
 (09/09/2007)
 -------------
-o Bugfix
+o Bugfixes
   -- With version 1.4.3 a bug was introduced so that battleAborted() was called
      in the robocode.control.RobocodeListener when the battle was not aborted,
-     i.e. when a battle completes successfully.
-  -- This bug caused Robocode clients as e.g. RoboRumble to hang!
+     i.e. when a battle completes successfully
+     -- This bug caused Robocode clients as e.g. RoboRumble to hang!
+  -- Removed Windows end-of-line characters from the .sh files for RoboRumble
 
 Version 1.4.3
 (09/07/2007)
