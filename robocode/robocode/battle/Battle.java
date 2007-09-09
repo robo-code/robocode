@@ -316,7 +316,7 @@ public class Battle implements Runnable {
 			unsafeLoadRobotsThread.interrupt();
 
 			if (manager.getListener() != null) {
-				if (!isAborted()) {
+				if (isAborted()) {
 					manager.getListener().battleAborted(battleSpecification);
 				} else {
 					battleManager.sendResultsToListener(this, manager.getListener());
