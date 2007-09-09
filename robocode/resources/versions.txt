@@ -7,6 +7,10 @@ o Bugfixes
      i.e. when a battle completes successfully
      -- This bug caused Robocode clients as e.g. RoboRumble to hang!
   -- Removed Windows end-of-line characters from the .sh files for RoboRumble
+o Change
+  -- Robocode now throws NullPointerException if the condition parameter has been
+     set to null when calling addCustomEvent() or removeCustomEvent() on an
+     AdvancedRobot
 
 Version 1.4.3
 (09/07/2007)
