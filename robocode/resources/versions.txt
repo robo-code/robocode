@@ -12,6 +12,8 @@ o Bugfixes
         event all following rounds will trigger a
         "robocode.exception.RobotException: You cannot take action inside
         Condition.test(). You should handleonCustomEvent instead."
+  -- Again, the title of Robocode was incorrectly showing round N+1 of N when a
+     battle was ended
 
 Version 1.4.4
 (09/09/2007)
