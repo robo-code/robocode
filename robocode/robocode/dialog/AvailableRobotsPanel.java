@@ -12,6 +12,10 @@
  *     - Code cleanup
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
+ *     - Replaced synchronizedList on lists for availableRobots, robotList, and
+ *       availablePackages with a CopyOnWriteArrayList in order to prevent
+ *       ConcurrentModificationExceptions when accessing these list via
+ *       Iterators using public methods to this class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -26,8 +30,8 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.*;
@@ -46,9 +50,9 @@ import robocode.repository.TeamSpecification;
 @SuppressWarnings("serial")
 public class AvailableRobotsPanel extends JPanel {
 
-	private List<FileSpecification> availableRobots = Collections.synchronizedList(new ArrayList<FileSpecification>());
-	private List<FileSpecification> robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
-	private List<String> availablePackages = Collections.synchronizedList(new ArrayList<String>());
+	private List<FileSpecification> availableRobots = new CopyOnWriteArrayList<FileSpecification>();
+	private List<FileSpecification> robotList = new CopyOnWriteArrayList<FileSpecification>();
+	private List<String> availablePackages = new CopyOnWriteArrayList<String>();
 
 	private JScrollPane availableRobotsScrollPane;
 	private JList availableRobotsList;
@@ -176,14 +180,13 @@ public class AvailableRobotsPanel extends JPanel {
 
 	public void setRobotList(List<FileSpecification> robotListList) {
 		robotList = robotListList;
-		SwingUtilities.invokeLater(
-				new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				availablePackages.clear();
 				availableRobots.clear();
 
 				if (robotList == null) {
-					robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
+					robotList = new CopyOnWriteArrayList<FileSpecification>();
 					availablePackages.add("One moment please...");
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().clearSelection();
