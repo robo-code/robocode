@@ -20,8 +20,6 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 import robocode.Robot;
 import robocode.battle.Battle;
@@ -142,6 +140,7 @@ public class BattleView extends Canvas {
 
 			if (bufferStrategy != null) {
 				Graphics2D g = null;
+
 				try {
 					g = (Graphics2D) bufferStrategy.getDrawGraphics();
 					g.drawImage(offscreenImage, 0, 0, null);
@@ -396,9 +395,7 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		List<RobotPeer> robots = new ArrayList<RobotPeer>(battle.getRobots());
-
-		for (RobotPeer r : robots) {
+		for (RobotPeer r : battle.getRobots()) {
 			if (r.isAlive()) {
 				x = r.getX();
 				y = battleFieldHeight - r.getY();
@@ -434,11 +431,10 @@ public class BattleView extends Canvas {
 
 	private void drawText(Graphics2D g) {
 		Shape savedClip = g.getClip();
+
 		g.setClip(null);
 
-		List<RobotPeer> robots = new ArrayList<RobotPeer>(battle.getRobots());
-
-		for (RobotPeer r : robots) {
+		for (RobotPeer r : battle.getRobots()) {
 			if (r.isDead()) {
 				continue;
 			}
@@ -481,11 +477,12 @@ public class BattleView extends Canvas {
 
 		// Save the graphics state
 		GraphicsState gfxState = new GraphicsState();
+
 		gfxState.save(g);
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		Robot robot = (Robot)robotPeer.getRobot();
+		Robot robot = (Robot) robotPeer.getRobot();
 		
 		// Do the painting
 		try {
@@ -509,13 +506,12 @@ public class BattleView extends Canvas {
 
 	private void drawBullets(Graphics2D g) {
 		Shape savedClip = g.getClip();
+
 		g.setClip(null);
 		
 		double x, y;
 
-		List<BulletPeer> bullets = new ArrayList<BulletPeer>(battle.getBullets());
-		
-		for (BulletPeer bullet : bullets) {
+		for (BulletPeer bullet : battle.getBullets()) {
 			if (!(bullet.isActive() || bullet.hasHitVictim || bullet.hasHitBullet)) {
 				continue;
 			}
@@ -594,7 +590,7 @@ public class BattleView extends Canvas {
 		if (top < -borderHeight) {
 			top = -borderHeight;
 		}
-		g.drawString(s, (int)(left + 0.5), (int)(top + height - descent + 0.5));
+		g.drawString(s, (int) (left + 0.5), (int) (top + height - descent + 0.5));
 	}
 
 	public void setTitle(String s) {
@@ -651,7 +647,7 @@ public class BattleView extends Canvas {
 		g.setTransform(new AffineTransform());
 		g.setFont(font);
 		g.setColor(new Color(0, 0x50, 0));
-		g.drawString(ROBOCODE_SLOGAN, (float)((getWidth() - width) / 2.0), (float)(getHeight() / 2.0 + 50));
+		g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
 	}
 
 	public boolean isDisplayTPS() {
