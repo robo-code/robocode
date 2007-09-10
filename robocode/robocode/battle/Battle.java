@@ -51,6 +51,10 @@
  *       'battleMonitor' instead of 'this' object
  *     - Added waitTillRunning() method so another thread can be blocked until
  *       the battle has started running
+ *     - Replaced synchronizedList on lists for deathEvent, robots, bullets,
+ *       and contestants with a CopyOnWriteArrayList in order to prevent
+ *       ConcurrentModificationExceptions when accessing these list via
+ *       Iterators using public methods to this class
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -84,6 +88,7 @@ import java.awt.Label;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -164,12 +169,12 @@ public class Battle implements Runnable {
 	private int activeRobots;
 
 	// Death events
-	private List<RobotPeer> deathEvents = Collections.synchronizedList(new ArrayList<RobotPeer>());
+	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
 
 	// Objects in the battle
-	private List<RobotPeer> robots;
-	private List<ContestantPeer> contestants;
-	private List<BulletPeer> bullets;
+	private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
+	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
+	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
 
 	// Results related items
 	private boolean exitOnComplete;
@@ -216,9 +221,6 @@ public class Battle implements Runnable {
 		this.manager = manager;
 
 		battleManager = manager.getBattleManager();
-		robots = Collections.synchronizedList(new ArrayList<RobotPeer>());
-		bullets = Collections.synchronizedList(new ArrayList<BulletPeer>());
-		contestants = Collections.synchronizedList(new ArrayList<ContestantPeer>());
 
 		if (manager.isGUIEnabled()) {
 			keyHandler = new KeyEventHandler(this, robots);
@@ -883,7 +885,7 @@ public class Battle implements Runnable {
 		}
 
 		if (isRecordingEnabled) {
-			List<RobotPeer> orderedRobots = Collections.synchronizedList(new ArrayList<RobotPeer>(robots));
+			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
 
 			Collections.sort(orderedRobots);
 
@@ -1407,6 +1409,7 @@ public class Battle implements Runnable {
 
 			// Adjust the desired TPS temporary to maximum rate to stop the battle as quickly as possible
 			int savedTPS = desiredTPS;			
+
 			desiredTPS = 10000;
 
 			// Wait till the battle is not running anymore
@@ -2038,6 +2041,7 @@ public class Battle implements Runnable {
 			battle = null;
 		}
 	}
+
 
 	private class UnsafeLoadRobotsThread extends Thread {
 
