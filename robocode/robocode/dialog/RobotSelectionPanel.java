@@ -19,6 +19,10 @@
  *     - Bugfixed buildRobotList(), which checked if selectedRobots was set
  *       instead of preSelectedRobots. Robots were not selected when loading a
  *       battle
+ *     - Replaced synchronizedList on list for selectedRobots with a
+ *       CopyOnWriteArrayList in order to prevent ConcurrentModificationException
+ *       when accessing this list via Iterators using public methods to this
+ *       class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -28,8 +32,7 @@ package robocode.dialog;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -84,7 +87,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
 	private RobotNameCellRenderer robotNamesCellRenderer;
-	private List<FileSpecification> selectedRobots = Collections.synchronizedList(new ArrayList<FileSpecification>());
+	private List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
 	private boolean showNumRoundsPanel;
 	private RobotRepositoryManager robotManager;
 	private boolean listBuilt;
@@ -462,10 +465,12 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	public void buildRobotList() {
-		SwingUtilities.invokeLater(new Runnable() {
+		SwingUtilities.invokeLater(
+				new Runnable() {
 			public void run() {
 				getAvailableRobotsPanel().setRobotList(null);
-				List<FileSpecification> l = robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
+				List<FileSpecification> l = robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource,
+						onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
 
 				getAvailableRobotsPanel().setRobotList(l);
 				if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
