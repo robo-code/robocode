@@ -1165,6 +1165,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		out.resetCounter();
 
+		setTestingCondition(false);
+
 		setSetCallCount(0);
 		setGetCallCount(0);
 		skippedTurns = 0;
