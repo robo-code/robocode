@@ -14,6 +14,8 @@
  *     - Removed potential NullPointerException in sendMessage()
  *     - Changed sendMessage() so it does not throw an IOException anymore when
  *       the robot is not in a team battle
+ *     - Changed the list of messageEvents to use the CopyOnWriteArrayList that
+ *       is fully thread-safe 
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -25,8 +27,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
 
 import robocode.MessageEvent;
@@ -44,7 +45,7 @@ import robocode.peer.TeamPeer;
 public class RobotMessageManager {
 
 	private RobotPeer robotPeer;
-	private List<MessageEvent> messageEvents = Collections.synchronizedList(new ArrayList<MessageEvent>());
+	private List<MessageEvent> messageEvents = new CopyOnWriteArrayList<MessageEvent>();
 
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
