@@ -545,8 +545,7 @@ public class BattleManager {
 			return;
 		}
 
-		List<ContestantPeer> orderedPeers = Collections.synchronizedList(
-				new ArrayList<ContestantPeer>(battle.getContestants()));
+		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(battle.getContestants());
 
 		Collections.sort(orderedPeers);
 
@@ -555,7 +554,7 @@ public class BattleManager {
 		for (int i = 0; i < results.length; i++) {
 			ContestantPeer peer = orderedPeers.get(i);
 			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
-			
+
 			ContestantStatistics stats = peer.getStatistics();
 
 			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
