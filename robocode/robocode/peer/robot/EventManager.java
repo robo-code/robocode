@@ -18,6 +18,10 @@
  *     - Added missing getMessageEvents()
  *     - Code cleanup
  *     - Added features to support the new JuniorRobot class
+ *     - Bugfix: Fixed ConcurrentModificationExceptions due to lack of
+ *       synchronization with the event queue. Now all getXXXEvents() methods
+ *       are synchronized against the event queue, and the list of customEvents
+ *       is a CopyOnWriteArrayList which is fully thread-safe
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -28,6 +32,7 @@
 package robocode.peer.robot;
 
 
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -64,7 +69,7 @@ public class EventManager {
 
 	private int currentTopEventPriority;
 
-	private List<Condition> customEvents = Collections.synchronizedList(new ArrayList<Condition>());
+	private List<Condition> customEvents = new CopyOnWriteArrayList<Condition>();
 	private EventQueue eventQueue;
 
 	private double fireAssistAngle;
@@ -156,8 +161,10 @@ public class EventManager {
 	public List<Event> getAllEvents() {
 		List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
 
-		for (Event e : eventQueue) {
-			events.add(e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				events.add(e);
+			}
 		}
 		return events;
 	}
@@ -180,9 +187,11 @@ public class EventManager {
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		List<BulletHitBulletEvent> events = Collections.synchronizedList(new ArrayList<BulletHitBulletEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof BulletHitBulletEvent) {
-				events.add((BulletHitBulletEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof BulletHitBulletEvent) {
+					events.add((BulletHitBulletEvent) e);
+				}
 			}
 		}
 		return events;
@@ -206,9 +215,11 @@ public class EventManager {
 	public List<BulletHitEvent> getBulletHitEvents() {
 		List<BulletHitEvent> events = Collections.synchronizedList(new ArrayList<BulletHitEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof BulletHitEvent) {
-				events.add((BulletHitEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof BulletHitEvent) {
+					events.add((BulletHitEvent) e);
+				}
 			}
 		}
 		return events;
@@ -232,9 +243,11 @@ public class EventManager {
 	public List<BulletMissedEvent> getBulletMissedEvents() {
 		List<BulletMissedEvent> events = Collections.synchronizedList(new ArrayList<BulletMissedEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof BulletMissedEvent) {
-				events.add((BulletMissedEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof BulletMissedEvent) {
+					events.add((BulletMissedEvent) e);
+				}
 			}
 		}
 		return events;
@@ -336,9 +349,11 @@ public class EventManager {
 	public List<HitByBulletEvent> getHitByBulletEvents() {
 		List<HitByBulletEvent> events = Collections.synchronizedList(new ArrayList<HitByBulletEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof HitByBulletEvent) {
-				events.add((HitByBulletEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof HitByBulletEvent) {
+					events.add((HitByBulletEvent) e);
+				}
 			}
 		}
 		return events;
@@ -362,9 +377,11 @@ public class EventManager {
 	public List<HitRobotEvent> getHitRobotEvents() {
 		List<HitRobotEvent> events = Collections.synchronizedList(new ArrayList<HitRobotEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof HitRobotEvent) {
-				events.add((HitRobotEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof HitRobotEvent) {
+					events.add((HitRobotEvent) e);
+				}
 			}
 		}
 		return events;
@@ -388,9 +405,11 @@ public class EventManager {
 	public List<HitWallEvent> getHitWallEvents() {
 		List<HitWallEvent> events = Collections.synchronizedList(new ArrayList<HitWallEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof HitWallEvent) {
-				events.add((HitWallEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof HitWallEvent) {
+					events.add((HitWallEvent) e);
+				}
 			}
 		}
 		return events;
@@ -429,9 +448,11 @@ public class EventManager {
 	public List<RobotDeathEvent> getRobotDeathEvents() {
 		List<RobotDeathEvent> events = Collections.synchronizedList(new ArrayList<RobotDeathEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof RobotDeathEvent) {
-				events.add((RobotDeathEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof RobotDeathEvent) {
+					events.add((RobotDeathEvent) e);
+				}
 			}
 		}
 		return events;
@@ -459,9 +480,11 @@ public class EventManager {
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		List<ScannedRobotEvent> events = Collections.synchronizedList(new ArrayList<ScannedRobotEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof ScannedRobotEvent) {
-				events.add((ScannedRobotEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof ScannedRobotEvent) {
+					events.add((ScannedRobotEvent) e);
+				}
 			}
 		}
 		return events;
@@ -845,9 +868,11 @@ public class EventManager {
 	public List<MessageEvent> getMessageEvents() {
 		List<MessageEvent> events = Collections.synchronizedList(new ArrayList<MessageEvent>());
 
-		for (Event e : eventQueue) {
-			if (e instanceof MessageEvent) {
-				events.add((MessageEvent) e);
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof MessageEvent) {
+					events.add((MessageEvent) e);
+				}
 			}
 		}
 		return events;
