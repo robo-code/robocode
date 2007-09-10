@@ -1,3 +1,13 @@
+Version 1.4.5
+(09/10/2007)
+-------------
+o Bugfixes
+  -- Test Condition flag of a robot not reset between rounds 
+     -- If the robot thread was disabled while testing a condition for a custom
+        event all folowing rounds will trigger a "robocode.exception.RobotException:
+        You cannot take action inside Condition.test(). You should handleonCustomEvent
+        instead."
+
 Version 1.4.4
 (09/09/2007)
 -------------
