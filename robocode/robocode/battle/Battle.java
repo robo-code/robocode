@@ -358,8 +358,6 @@ public class Battle implements Runnable {
 			battleView.repaint();
 		}
 
-		updateTitle();
-
 		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
 		// for cleaning up the battle when its done with it.
@@ -381,6 +379,9 @@ public class Battle implements Runnable {
 			running = false;
 			battleMonitor.notifyAll();
 		}
+
+		// Must be done here, as this method depends on the running state
+		updateTitle();
 	}
 
 	public void waitTillRunning() {
