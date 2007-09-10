@@ -25,7 +25,7 @@ import static robocode.util.Utils.normalRelativeAngle;
  * This is the simplest robot type, which is simpler than the Robot and
  * AdvancedRobot classes. The JuniorRobot has a simplified model, in purpose of
  * teaching programming skills to inexperienced in programming students.
- * The simplified robot model will keep player from overwhelming of Robocode’s
+ * The simplified robot model will keep player from overwhelming of Robocode's
  * rules, programming syntax and programming concept.
  * <p>
  * All methods on this class are blocking calls, i.e. they do not return before
