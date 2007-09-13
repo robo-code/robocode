@@ -20,6 +20,11 @@
  *       redeclared as private
  *     - Replaced getting the number of explosion frames from image manager with
  *       integer constant
+ *     - Removed hitTime and resetHitTime(), which is handled thru frame instead
+ *     - Added getExplosionLength() to get the exact number of explosion frames
+ *       for this class and sub classes
+ *     - The update() method is now removing the bullet from the battle field,
+ *       when the bullet reaches the inactive state (i.e. is finished)
  *     Luis Crespo
  *     - Added states
  *     Robert D. Maupin
@@ -92,8 +97,6 @@ public class BulletPeer {
 	public boolean hasHitVictim;
 	public boolean hasHitBullet;
 
-	public int hitTime;
-
 	public double deltaX;
 	public double deltaY;
 
@@ -141,7 +144,6 @@ public class BulletPeer {
 		for (BulletPeer b : battle.getBullets()) {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
 				setHitBullet();
-				resetHitTime();
 				state = STATE_HIT_BULLET;
 				b.setState(state);
 				frame = 0;
@@ -202,7 +204,6 @@ public class BulletPeer {
 						getBullet()));
 
 				setHitVictim();
-				resetHitTime();
 				state = STATE_HIT_VICTIM;
 				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
 				frame = 0;
@@ -323,28 +324,33 @@ public class BulletPeer {
 		} else if (hasHitVictim) {
 			x = victim.getX() + deltaX;
 			y = victim.getY() + deltaY;
-			hitTime++;
-			frame = hitTime;
-			if (hitTime >= EXPLOSION_LENGTH) {
-				hasHitVictim = false;
-			}
+
+			frame++;
 		} else if (hasHitBullet) {
-			hitTime++;
-			frame = hitTime;
-			if (hitTime >= EXPLOSION_LENGTH) {
-				hasHitBullet = false;
-			}
+			frame++;
 		}
 		updateBulletState();
 	}
 
 	protected void updateBulletState() {
 		lastState = state;
+
 		if (state == STATE_SHOT) {
 			state = STATE_MOVING;
-		} else if (state == STATE_EXPLODED || state == STATE_HIT_BULLET || state == STATE_HIT_VICTIM
-				|| state == STATE_HIT_WALL) {
+		} else if (state == STATE_EXPLODED) {
+			if (frame >= getExplosionLength()) {
+				state = STATE_INACTIVE;
+			}
+		} else if (state == STATE_HIT_BULLET || state == STATE_HIT_VICTIM) {
+			if (frame >= getExplosionLength()) {
+				state = STATE_INACTIVE;
+			}
+		} else if (state == STATE_HIT_WALL) {
 			state = STATE_INACTIVE;
+		}
+
+		if (state == STATE_INACTIVE) {
+			battle.removeBullet(this);
 		}
 	}
 
@@ -380,7 +386,7 @@ public class BulletPeer {
 		hasHitBullet = true;
 	}
 
-	private synchronized void resetHitTime() {
-		hitTime = 0;
+	protected int getExplosionLength() {
+		return EXPLOSION_LENGTH;
 	}
 }
