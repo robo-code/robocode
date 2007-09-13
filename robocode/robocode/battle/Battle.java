@@ -55,6 +55,8 @@
  *       and contestants with a CopyOnWriteArrayList in order to prevent
  *       ConcurrentModificationExceptions when accessing these list via
  *       Iterators using public methods to this class
+ *     - The moveBullets() was simplified and moved inside the runRound() method
+ *     - The flushOldEvents() method was moved into the runRound() method
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -746,12 +748,18 @@ public class Battle implements Runnable {
 				totalFrameMillisThisSec = 0;
 			}
 
-			flushOldEvents();
+			// New turn: flush any old events
+			for (RobotPeer r : robots) {
+				r.getEventManager().clear(currentTime - 1);
+			}
 
 			currentTime++;
 			turnsThisSec++;
 
-			moveBullets();
+			// Update bullets
+			for (BulletPeer b : bullets) {
+				b.update();
+			}
 
 			boolean zap = (inactiveTurnCount > inactivityTime);
 
@@ -1129,25 +1137,6 @@ public class Battle implements Runnable {
 						}
 					}
 				} // if isRunning
-			}
-		}
-	}
-
-	private void flushOldEvents() {
-		// New turn: Flush any old events.
-		for (RobotPeer r : robots) {
-			r.getEventManager().clear(currentTime - 1);
-		}
-	}
-
-	private void moveBullets() {
-		// Move all bullets
-		for (int i = 0; i < bullets.size(); i++) {
-			int numBullets = bullets.size();
-
-			bullets.get(i).update();
-			if (bullets.size() < numBullets) {
-				i--;
 			}
 		}
 	}
