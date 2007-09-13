@@ -16,6 +16,9 @@
  *     - Fixed synchronization issue with update()
  *     - Replaced getting the number of explosion frames from image manager with
  *       integer constant
+ *     - Added getExplosionLength() that overrides the one at the super class
+ *     - Changed so that the update() method is no longer removing the bullet
+ *       from the battle field, which is now handled by updateBulletState()
  *     Titus Chen
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
@@ -57,10 +60,14 @@ public class ExplosionPeer extends BulletPeer {
 	public synchronized final void update() {
 		x = owner.getX();
 		y = owner.getY();
+
 		nextFrame();
-		if (frame >= EXPLOSION_LENGTH) {
-			battle.removeBullet(this);
-		}
+
 		updateBulletState();
+	}
+
+	@Override
+	protected int getExplosionLength() {
+		return EXPLOSION_LENGTH;
 	}
 }
