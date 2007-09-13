@@ -44,7 +44,7 @@ import robocode.AdvancedRobot;
  * mouse).
  * 
  * @author Flemming N. Larsen
- * @version 1.0
+ * @version 1.1
  * @since 1.3.4
  */
 public class Interactive extends AdvancedRobot {
@@ -56,14 +56,13 @@ public class Interactive extends AdvancedRobot {
 	int turnDirection;
 
 	// Amount of pixels/units to move
-	int moveAmount;
+	double moveAmount;
 
 	// The coordinate of the aim (x,y)
 	int aimX, aimY;
 
 	// Fire power, where 0 = don't fire
 	int firePower;
-
 
 	// Called when the robot must run
 	public void run() {
@@ -90,6 +89,7 @@ public class Interactive extends AdvancedRobot {
 			// Turns the gun toward the current aim coordinate (x,y) controlled by
 			// the current mouse coordinate
 			double angle = normalAbsoluteAngle(Math.atan2(aimX - getX(), aimY - getY()));
+
 			setTurnGunRightRadians(normalRelativeAngle(angle - getGunHeadingRadians()));
 
 			// Fire the gun with the specified fire power, unless the fire power = 0
@@ -108,19 +108,22 @@ public class Interactive extends AdvancedRobot {
 	public void onKeyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case VK_UP:
-			// Arrow up key: move direction = forward, move amount = 50 pixels
+			// Arrow up key: move direction = forward (infinitely)
 			moveDirection = 1;
-			moveAmount = 50;
+			moveAmount = Double.POSITIVE_INFINITY;
 			break;
+
 		case VK_DOWN:
-			// Arrow down key: move direction = backward, move amount = 50 pixels
+			// Arrow down key: move direction = backward (infinitely)
 			moveDirection = -1;
-			moveAmount = 50;
+			moveAmount = Double.POSITIVE_INFINITY;
 			break;
+
 		case VK_RIGHT:
 			// Arrow right key: turn direction = right
 			turnDirection = 1;
 			break;
+
 		case VK_LEFT:
 			// Arrow left key: turn direction = left
 			turnDirection = -1;
@@ -136,6 +139,7 @@ public class Interactive extends AdvancedRobot {
 			// Arrow up and down keys: move direction = stand still 
 			moveDirection = 0;
 			break;
+
 		case VK_RIGHT:
 		case VK_LEFT:
 			// Arrow right and left keys: turn direction = stop turning
