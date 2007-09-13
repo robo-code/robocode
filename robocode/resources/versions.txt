@@ -1,5 +1,5 @@
 Version 1.4.5
-(09/10/2007)
+(09/13/2007)
 -------------
 o Bugfixes
   -- ConcurrentModificationException could still occur when called one of the
@@ -14,6 +14,13 @@ o Bugfixes
         Condition.test(). You should handleonCustomEvent instead."
   -- Again, the title of Robocode was incorrectly showing round N+1 of N when a
      battle was ended
+o Changes
+  -- The sample robot named "sample.Interactive" has been changed so it continues
+     moving forward or back when the UP or DOWN arrow key is being pressed down.
+     -- Previously, the robot would only move 50 pixel when pressing down the
+        UP or down arrow key, which was not intuitive compared to the behaviour
+        with traditional first person shooter games. Thus, this looked like a bug
+
 
 Version 1.4.4
 (09/09/2007)
