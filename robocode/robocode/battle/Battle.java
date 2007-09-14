@@ -991,7 +991,7 @@ public class Battle implements Runnable {
 
 			for (BulletRecord br : turnRecord.bulletStates) {
 				robot = robots.get(br.owner);
-				if ((br.state & 0x20) == 0x20) {
+				if (br.state == BulletPeer.STATE_EXPLODED) {
 					bullet = new ExplosionPeer(robot, this, br);
 				} else {
 					bullet = new BulletPeer(robot, this, br);
