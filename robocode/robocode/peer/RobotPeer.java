@@ -633,7 +633,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						sBullet.setX(teammate.getX());
 						sBullet.setY(teammate.getY());
 						sBullet.setVictim(teammate);
-						sBullet.hasHitVictim = true;
 						sBullet.setPower(4);
 						battle.addBullet(sBullet);
 					}
