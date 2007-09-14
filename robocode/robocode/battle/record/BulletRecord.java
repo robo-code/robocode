@@ -62,16 +62,6 @@ public class BulletRecord {
 		frame = (byte) bullet.getFrame();
 		deltaX = (byte) (bullet.deltaX + 0.5);
 		deltaY = (byte) (bullet.deltaY + 0.5);
-
 		state = (byte) bullet.getState();
-		if (bullet.getExplosionImageIndex() == 1) {
-			state |= 0x20; // set bit 5;
-		}
-		if (bullet.hasHitVictim) {
-			state |= 0x40; // set bit 6
-		}
-		if (bullet.hasHitBullet) {
-			state |= 0x80; // set bit 7
-		}
 	}
 }
