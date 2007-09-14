@@ -639,12 +639,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				}
 			}
 			battle.generateDeathEvents(this);
-			// 'fake' bullet for explosion on self
-			BulletPeer sBullet = new ExplosionPeer(this, battle);
 
-			sBullet.setX(x);
-			sBullet.setY(y);
-			battle.addBullet(sBullet);
+			// 'fake' bullet for explosion on self
+			battle.addBullet(new ExplosionPeer(this, battle));
 		}
 		setEnergy(0);
 
