@@ -335,18 +335,20 @@ public class BulletPeer {
 	protected void updateBulletState() {
 		lastState = state;
 
-		if (state == STATE_SHOT) {
+		switch (state) {
+		case STATE_SHOT:
 			state = STATE_MOVING;
-		} else if (state == STATE_EXPLODED) {
+			break;
+		case STATE_HIT_BULLET:
+		case STATE_HIT_VICTIM:
+		case STATE_EXPLODED:
 			if (frame >= getExplosionLength()) {
 				state = STATE_INACTIVE;
 			}
-		} else if (state == STATE_HIT_BULLET || state == STATE_HIT_VICTIM) {
-			if (frame >= getExplosionLength()) {
-				state = STATE_INACTIVE;
-			}
-		} else if (state == STATE_HIT_WALL) {
+			break;
+		case STATE_HIT_WALL:
 			state = STATE_INACTIVE;
+			break;
 		}
 
 		if (state == STATE_INACTIVE) {
