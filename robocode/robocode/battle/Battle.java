@@ -1680,7 +1680,9 @@ public class Battle implements Runnable {
 	private void playSounds() {
 		if (manager.isSoundEnabled()) {
 			for (BulletPeer bp : getBullets()) {
-				manager.getSoundManager().playBulletSound(bp);
+				if (bp.getFrame() == 0) {
+					manager.getSoundManager().playBulletSound(bp);
+				}
 			}
 
 			boolean playedRobotHitRobot = false;
