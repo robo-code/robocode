@@ -116,20 +116,15 @@ public class BulletPeer {
 	}
 
 	public BulletPeer(RobotPeer owner, Battle battle, BulletRecord br) {
-		super();
+		this(owner, battle);
 
-		this.owner = owner;
-		this.battle = battle;
-		battleField = battle.getBattleField();
 		x = br.x;
 		y = br.y;
 		power = ((double) br.power) / 10;
 		frame = br.frame;
 		deltaX = br.deltaX;
 		deltaY = br.deltaY;
-
-		state = (br.state & 0x07);
-		explosionImageIndex = getExplosionImageIndex();
+		state = br.state;
 	}
 
 	private void checkBulletCollision() {
@@ -361,10 +356,6 @@ public class BulletPeer {
 
 	public int getExplosionImageIndex() {
 		return explosionImageIndex;
-	}
-
-	public void setExplosionImageIndex(int index) {
-		explosionImageIndex = index;
 	}
 
 	protected int getExplosionLength() {
