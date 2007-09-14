@@ -44,6 +44,8 @@ public class ExplosionPeer extends BulletPeer {
 	public ExplosionPeer(RobotPeer owner, Battle battle) {
 		super(owner, battle);
 
+		x = owner.getX();
+		y = owner.getY();
 		victim = owner;
 		power = 1;
 		state = STATE_EXPLODED;
@@ -52,6 +54,11 @@ public class ExplosionPeer extends BulletPeer {
 
 	public ExplosionPeer(RobotPeer owner, Battle battle, BulletRecord br) {
 		super(owner, battle, br);
+
+		victim = owner;
+		power = 1;
+		state = STATE_EXPLODED;
+		explosionImageIndex = 1;
 	}
 
 	@Override
