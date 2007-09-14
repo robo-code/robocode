@@ -44,11 +44,9 @@ public class ExplosionPeer extends BulletPeer {
 	public ExplosionPeer(RobotPeer owner, Battle battle) {
 		super(owner, battle);
 
-		hasHitVictim = true;
 		victim = owner;
 		power = 1;
 		state = STATE_EXPLODED;
-		lastState = STATE_EXPLODED;
 		explosionImageIndex = 1;
 	}
 
