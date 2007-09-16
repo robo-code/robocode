@@ -57,6 +57,11 @@
  *       Iterators using public methods to this class
  *     - The moveBullets() was simplified and moved inside the runRound() method
  *     - The flushOldEvents() method was moved into the runRound() method
+ *     - Major bugfix: Two robots running with exactly the same code was getting
+ *       different scores. Robots listed before other robots always got a better
+ *       score in the end. Hence, the getRobotsAtRandom() method has been added
+ *       in order to gain fair play, and this method should be used where robots
+ *       are checked and awakened in turn
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -539,6 +544,31 @@ public class Battle implements Runnable {
 		return robots;
 	}
 
+	/**
+	 * Returns a list of all robots in random order. This method is used to gain fair play in Robocode,
+	 * so that a robot placed before another robot in the list will not gain any benefit when the game
+	 * checks if a robot has won, is dead, etc.
+	 * This method was introduced as two equal robots like sample.RamFire got different scores even
+	 * though the code was exactly the same.
+	 *
+	 * @return a list of robots
+	 */
+	private List<RobotPeer> getRobotsAtRandom() {
+		int count = robots.size();
+
+		List<RobotPeer> list = new ArrayList<RobotPeer>(count);
+
+		if (count > 0) {
+			list.add(robots.get(0));
+
+			for (int i = 1; i < count; i++) {
+				list.add((int) (Math.random() * i + 0.5), robots.get(i));
+			}
+		}
+
+		return list;
+	}
+
 	public RobotPeer getRobotByName(String name) {
 		for (RobotPeer r : robots) {
 			if (r.getName().equals(name)) {
@@ -764,9 +794,8 @@ public class Battle implements Runnable {
 			boolean zap = (inactiveTurnCount > inactivityTime);
 
 			// Move all bots
-			for (RobotPeer r : robots) {
+			for (RobotPeer r : getRobotsAtRandom()) {
 				if (!r.isDead()) {
-					// setWinner was here
 					r.update();
 				}
 				if ((zap || isAborted()) && !r.isDead()) {
@@ -1090,7 +1119,7 @@ public class Battle implements Runnable {
 	private void wakeupRobots() {
 		// Wake up all robot threads
 		synchronized (robots) {
-			for (RobotPeer r : robots) {
+			for (RobotPeer r : getRobotsAtRandom()) {
 				if (r.isRunning()) {
 					synchronized (r) {
 						// This call blocks until the
@@ -1176,7 +1205,7 @@ public class Battle implements Runnable {
 
 	private void performScans() {
 		// Perform scans, handle messages
-		for (RobotPeer r : robots) {
+		for (RobotPeer r : getRobotsAtRandom()) {
 			if (!r.isDead()) {
 				if (r.getScan()) {
 					// Enter scan
@@ -1208,7 +1237,7 @@ public class Battle implements Runnable {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
-				for (RobotPeer r : robots) {
+				for (RobotPeer r : getRobotsAtRandom()) {
 					if (!r.isDead()) {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreLastSurvivor();
@@ -1362,7 +1391,7 @@ public class Battle implements Runnable {
 			manager.getThreadManager().reset();
 
 			// Turning on robots
-			for (RobotPeer r : robots) {
+			for (RobotPeer r : getRobotsAtRandom()) {
 				manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
 				int waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000);
 
@@ -1722,7 +1751,7 @@ public class Battle implements Runnable {
 			return aborted;
 		}
 	}
-	
+
 	private void updateTitle() {
 		if (battleView == null) {
 			return;
