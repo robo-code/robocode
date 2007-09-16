@@ -1,7 +1,16 @@
 Version 1.4.5
-(09/13/2007)
+(09/17/2007)
 -------------
 o Bugfixes
+  -- Unfair play. Two robots with the same code (but different names) would get
+     different scores instead of a 50-50 split
+     -- Robots listed before other robots in a battle would gain a minor benefit
+        compared to the other robots, especially if they killed each other at the
+        same time. Then the robot listed first would get a "half turn" advantage
+        over the other robot
+     -- Now, the ordering does not matter anymore, as when ever the robots are
+        checked one at a time in sequence, then they will be checked in random
+        order
   -- ConcurrentModificationException could still occur when called one of the
      getXXXEvent methods with an AdvancedRobot
      -- Now all getXXXEvent methods like e.g. getAllEvents() are all synchronized
@@ -17,9 +26,10 @@ o Bugfixes
   -- Memory leaks occurring during a round due to missing cleanup of bullets have
      been removed. Note that ALL bullets were actually cleaned up, when ending the
      battle (containing one or several rounds)
-     -- One good side-effect of this bugfix is that the game is speeded up a little
-        as the game does not have to perform unnecessary calculations on bullets
-        that is not visible on the battle field anymore 
+     -- One good side-effect of this bugfix is that the game is speeded, especially
+        when running in minimized mode, as the game does not have to perform
+        unnecessary calculations on bullets that is not visible on the battle field
+        anymore 
 o Changes
   -- The sample robot named "sample.Interactive" has been changed so it continues
      moving forward or back when the UP or DOWN arrow key is being pressed down.
