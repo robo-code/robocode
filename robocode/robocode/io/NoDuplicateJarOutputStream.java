@@ -12,6 +12,8 @@
  *     - Ported to Java 5.0
  *     - Moved this class from the robocode.util package into the robocode.io
  *       package
+ *     - Removed useless closeEntry() which was only calling the closeEntry() at
+ *       the super class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -52,10 +54,5 @@ public class NoDuplicateJarOutputStream extends JarOutputStream {
 		}
 		entries.put(ze.getName(), "");
 		super.putNextEntry(ze);
-	}
-
-	@Override
-	public void closeEntry() throws IOException {
-		super.closeEntry();
 	}
 }
