@@ -9,11 +9,12 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Ported to Java 5
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Moved the compare() method from robocode.util.Utils into this class
- *     - Code cleanup
+ *     - Bugfix: Removed NullPointerException from the exists() method
  *******************************************************************************/
 package robocode.repository;
 
@@ -469,7 +470,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public boolean exists() {
-		return new File(getFilePath()).exists();
+		return (getFilePath() != null) ? new File(getFilePath()).exists() : false;
 	}
 
 	/**
