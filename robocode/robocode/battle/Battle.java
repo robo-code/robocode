@@ -286,7 +286,8 @@ public class Battle implements Runnable {
 		roundNum = 0;
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setReplay(false);
+			manager.getWindowManager().getRobocodeFrame().setEnableRestart(true);
+			manager.getWindowManager().getRobocodeFrame().setEnableReplay(false);
 		}
 		isRecordingEnabled = manager.getProperties().getOptionsCommonEnableReplayRecording();
 
@@ -378,7 +379,7 @@ public class Battle implements Runnable {
 		}
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setReplay(true);
+			manager.getWindowManager().getRobocodeFrame().setEnableReplay(true);
 		}
 
 		// Notify that the battle is over

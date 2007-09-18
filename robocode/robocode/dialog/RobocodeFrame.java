@@ -469,6 +469,7 @@ public class RobocodeFrame extends JFrame {
 	public JButton getRestartButton() {
 		if (restartButton == null) {
 			restartButton = new JButton("Restart");
+			restartButton.setEnabled(false);
 			restartButton.setMnemonic('t');
 			restartButton.setDisplayedMnemonicIndex(3);
 			restartButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -688,7 +689,11 @@ public class RobocodeFrame extends JFrame {
 		this.iconified = iconified;
 	}
 
-	public void setReplay(boolean enable) {
+	public void setEnableRestart(boolean enable) {
+		getRestartButton().setEnabled(enable);
+	}
+
+	public void setEnableReplay(boolean enable) {
 		getReplayButton().setEnabled(enable);
 	}
 }
