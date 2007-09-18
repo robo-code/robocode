@@ -4,6 +4,7 @@ Version 1.4.6
 o Bugfixes
   -- When Robocode cleaned up the robot database a NullPointerException could
      occur if a file was missing which the database file referred to
+  -- The Restart button was enabled when do battles had been started previously
 
 Version 1.4.5
 The "Fair Play" release
