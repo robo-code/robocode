@@ -1537,42 +1537,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		this.getCallCount = getCallCount;
 	}
 
-	public boolean intersectsLine(BoundingRectangle r, double x1, double y1, double x2, double y2) {
-		int out1, out2;
-
-		if ((out2 = r.outcode(x2, y2)) == 0) {
-			return true;
-		}
-		while ((out1 = r.outcode(x1, y1)) != 0) {
-			log("testing: " + x1 + "," + y1);
-			if ((out1 & out2) != 0) {
-				return false;
-			}
-			if ((out1 & (Rectangle2D.OUT_LEFT | Rectangle2D.OUT_RIGHT)) != 0) {
-				double x = r.x;
-
-				if ((out1 & Rectangle2D.OUT_RIGHT) != 0) {
-					log("adding r.getWidth");
-					x += r.getWidth();
-					log("x is now: " + x);
-				}
-				y1 = y1 + (x - x1) * (y2 - y1) / (x2 - x1);
-				x1 = x;
-				log("x1 is now: " + x1);
-			} else {
-				double y = r.y;
-
-				if ((out1 & Rectangle2D.OUT_BOTTOM) != 0) {
-					log("adding r.getHeight");
-					y += r.getHeight();
-				}
-				x1 = x1 + (y - y1) * (x2 - x1) / (y2 - y1);
-				y1 = y;
-			}
-		}
-		return true;
-	}
-
 	public Color getBodyColor() {
 		return bodyColor;
 	}
