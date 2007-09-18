@@ -1,3 +1,10 @@
+Version 1.4.6
+(09/18/2007)
+-------------
+o Bugfixes
+  -- When Robocode cleaned up the robot database a NullPointerException could
+     occur if a file was missing which the database file referred to
+
 Version 1.4.5
 The "Fair Play" release
 (09/17/2007)
@@ -37,7 +44,6 @@ o Changes
      -- Previously, the robot would only move 50 pixel when pressing down the
         UP or down arrow key, which was not intuitive compared to the behaviour
         with traditional first person shooter games. Thus, this looked like a bug
-
 
 Version 1.4.4
 (09/09/2007)
