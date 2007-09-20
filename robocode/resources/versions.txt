@@ -1,7 +1,18 @@
 Version 1.4.6
-(09/18/2007)
+(09/20/2007)
 -------------
 o Bugfixes
+  -- The coordinates of a Bullet from a bullet event like HitByBulletEvent()
+     was not correct as the coordinates of the bullets would follow the bullet
+     explosion on the robot it has hit.
+     -- Now the coordinates of the Bullet will not change when it hits a robot
+        or another bullet, even though the coordinates of the bullet explosion
+        will change internally, but only for painting the explosion
+     -- This means that the coordinates of a bullet received from a bullet event
+        will actually by on the real bullet line
+     -- The initial explosion painting on a robot has also changed so it shows
+        exactly where the bullet has hit the robot, or more precisely the
+        bounding box of the robot, which does not rotate with the robot rotation
   -- When Robocode cleaned up the robot database a NullPointerException could
      occur if a file was missing which the database file referred to
   -- The Restart button was enabled when do battles had been started previously
