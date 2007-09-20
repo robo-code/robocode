@@ -25,6 +25,11 @@
  *       for this class and sub classes
  *     - The update() method is now removing the bullet from the battle field,
  *       when the bullet reaches the inactive state (i.e. is finished)
+ *     - Bugfix: Changed the delta coordinates of a bullet explosion on a robot,
+ *       so that it will be on the true bullet line for all bullet events
+ *     - The coordinates of the bullet when it hits, and the coordinates for the
+ *       explosion rendering on a robot has been split. So now the bullet is
+ *       painted using the new getPaintX() and getPaintY() methods
  *     Luis Crespo
  *     - Added states
  *     Robert D. Maupin
@@ -39,7 +44,6 @@ package robocode.peer;
 
 
 import static java.lang.Math.cos;
-import static java.lang.Math.hypot;
 import static java.lang.Math.sin;
 
 import java.awt.geom.Line2D;
@@ -193,18 +197,23 @@ public class BulletPeer {
 				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
 				frame = 0;
 				victim = r;
-				deltaX = lastX - r.getX();
-				deltaY = lastY - r.getY();
-				double dist = hypot(deltaX, deltaY);
 
-				if (dist > 0) {
-					double mult = 10 / dist;
+				double newX, newY;
+				
+				if (r.getBoundingBox().contains(lastX, lastY)) {
+					newX = lastX;
+					newY = lastY;
 
-					deltaX *= mult;
-					deltaY *= mult;
+					setX(newX);
+					setY(newY);
+				} else {
+					newX = x;
+					newY = y;
 				}
-				setX(r.getX() + deltaX);
-				setY(r.getY() + deltaY);
+
+				deltaX = newX - r.getX();
+				deltaY = newY - r.getY();
+
 				break;
 			}
 		}
@@ -258,6 +267,20 @@ public class BulletPeer {
 		return y;
 	}
 
+	public synchronized double getPaintX() {
+		if (state == STATE_HIT_VICTIM) {
+			return victim.getX() + deltaX;
+		}
+		return x;
+	}
+
+	public synchronized double getPaintY() {
+		if (state == STATE_HIT_VICTIM) {
+			return victim.getY() + deltaY;
+		}
+		return y;
+	}
+
 	public synchronized boolean isActive() {
 		return state <= STATE_MOVING;
 	}
@@ -305,12 +328,7 @@ public class BulletPeer {
 			if (isActive()) {
 				checkWallCollision();
 			}
-		} else if (state == STATE_HIT_VICTIM) {
-			x = victim.getX() + deltaX;
-			y = victim.getY() + deltaY;
-
-			frame++;
-		} else if (state == STATE_HIT_BULLET) {
+		} else if (state == STATE_HIT_VICTIM || state == STATE_HIT_BULLET) {
 			frame++;
 		}
 		updateBulletState();
@@ -321,6 +339,7 @@ public class BulletPeer {
 		case STATE_SHOT:
 			state = STATE_MOVING;
 			break;
+
 		case STATE_HIT_BULLET:
 		case STATE_HIT_VICTIM:
 		case STATE_EXPLODED:
@@ -328,6 +347,7 @@ public class BulletPeer {
 				state = STATE_INACTIVE;
 			}
 			break;
+
 		case STATE_HIT_WALL:
 			state = STATE_INACTIVE;
 			break;
