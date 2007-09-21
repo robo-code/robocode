@@ -62,6 +62,7 @@
  *       score in the end. Hence, the getRobotsAtRandom() method has been added
  *       in order to gain fair play, and this method should be used where robots
  *       are checked and awakened in turn
+ *     - Simplified the repainting of the battle
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -265,7 +266,7 @@ public class Battle implements Runnable {
 		}
 
 		if (battleView != null) {
-			battleView.setPaintMode(BattleView.PAINTBATTLE);
+			battleView.repaint();
 		}
 
 		if (manager.isSoundEnabled()) {
@@ -362,7 +363,6 @@ public class Battle implements Runnable {
 		}
 
 		if (battleView != null) {
-			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
 			battleView.repaint();
 		}
 
@@ -615,9 +615,6 @@ public class Battle implements Runnable {
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
-		if (battleView != null) {
-			battleView.setPaintMode(BattleView.PAINTROBOCODELOGO);
-		}
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().clearRobotButtons();
 		}
