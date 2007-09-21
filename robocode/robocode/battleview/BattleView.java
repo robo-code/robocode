@@ -43,9 +43,6 @@ import robocode.util.GraphicsState;
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
-	public static final int PAINTROBOCODELOGO = 0;
-	public static final int PAINTBATTLE = 1;
-
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
@@ -62,7 +59,6 @@ public class BattleView extends Canvas {
 
 	private boolean initialized;
 	private double scale = 1.0;
-	private int paintMode = PAINTROBOCODELOGO;
 
 	// Ground
 	private int[][] groundTiles;
@@ -134,25 +130,23 @@ public class BattleView extends Canvas {
 
 		if (offscreenImage != null && isDisplayable()) {
 			offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-			offscreenGfx.setRenderingHints(renderingHints);
+			if (offscreenGfx != null) {
+				offscreenGfx.setRenderingHints(renderingHints);
 
-			drawBattle(offscreenGfx);
+				drawBattle(offscreenGfx);
 
-			if (bufferStrategy != null) {
-				Graphics2D g = null;
+				if (bufferStrategy != null) {
+					Graphics2D g = null;
 
-				try {
-					g = (Graphics2D) bufferStrategy.getDrawGraphics();
-					g.drawImage(offscreenImage, 0, 0, null);
+					try {
+						g = (Graphics2D) bufferStrategy.getDrawGraphics();
+						g.drawImage(offscreenImage, 0, 0, null);
 
-					bufferStrategy.show();	
-				} catch (NullPointerException e) {
-					// Sometimes caused by:
-					// java.awt.Component$BltBufferStrategy.revalidate()
-					;
-				} finally {
-					if (g != null) {
-						g.dispose();
+						bufferStrategy.show();	
+					} finally {
+						if (g != null) {
+							g.dispose();
+						}
 					}
 				}
 			}
@@ -161,20 +155,11 @@ public class BattleView extends Canvas {
 
 	@Override
 	public void paint(Graphics g) {
-		switch (paintMode) {
-		case PAINTROBOCODELOGO:
-			paintRobocodeLogo((Graphics2D) g);
-			return;
-
-		case PAINTBATTLE: {
+		if (battle != null && battle.isRunning()) {
 			update();
-			break;
+		} else {
+			paintRobocodeLogo((Graphics2D) g);
 		}
-		}
-	}
-
-	public int getPaintMode() {
-		return paintMode;
 	}
 
 	public void setDisplayOptions() {
@@ -512,8 +497,8 @@ public class BattleView extends Canvas {
 		double x, y;
 
 		for (BulletPeer bullet : battle.getBullets()) {
-			x = bullet.getX();
-			y = battle.getBattleField().getHeight() - bullet.getY();
+			x = bullet.getPaintX();
+			y = battle.getBattleField().getHeight() - bullet.getPaintY();
 
 			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
@@ -552,10 +537,6 @@ public class BattleView extends Canvas {
 
 	public void setBattle(Battle battle) {
 		this.battle = battle;
-	}
-
-	public void setPaintMode(int newPaintMode) {
-		paintMode = newPaintMode;
 	}
 
 	private void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
