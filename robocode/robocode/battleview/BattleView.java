@@ -179,6 +179,8 @@ public class BattleView extends Canvas {
 	}
 
 	private void initialize() {
+		setDisplayOptions();
+
 		if (offscreenImage != null) {
 			offscreenImage.flush();
 			offscreenImage = null;
