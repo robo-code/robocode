@@ -268,17 +268,11 @@ public class BulletPeer {
 	}
 
 	public synchronized double getPaintX() {
-		if (state == STATE_HIT_VICTIM) {
-			return victim.getX() + deltaX;
-		}
-		return x;
+		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getX() + deltaX : x; 
 	}
 
 	public synchronized double getPaintY() {
-		if (state == STATE_HIT_VICTIM) {
-			return victim.getY() + deltaY;
-		}
-		return y;
+		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getY() + deltaY : y; 
 	}
 
 	public synchronized boolean isActive() {
