@@ -411,7 +411,8 @@
       <mkdir dir="@{destdir}"/>
       <!-- Compile the sources -->
       <javac
-          srcdir="@{srcdir}"
+          encoding="8859_1"
+      	  srcdir="@{srcdir}"
           destdir="@{destdir}"
           classpath="@{classpath}"
           source="1.5"
