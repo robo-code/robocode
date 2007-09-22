@@ -301,18 +301,15 @@ public class Battle implements Runnable {
 			try {
 				setupRound();
 
-				updateTitle();
-
-				if (replay && battleRecord != null) {
-					if (battleRecord.rounds.size() > roundNum) {
-						runReplay();
-					}
+				if (replay && battleRecord != null && battleRecord.rounds.size() > roundNum) {
+					runReplay();
 				} else {
 					runRound();
 				}
 
 				cleanupRound();
 			} catch (Exception e) {
+				e.printStackTrace();
 				log("Exception running a battle: " + e);
 			}
 
@@ -861,13 +858,15 @@ public class Battle implements Runnable {
 			// Calculate the total time spend on robots this second
 			totalRobotMillisThisSec += currentRobotMillis;
 
+			// Set flag indication if we are running in "minimized mode"
+			boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
+
+			// Paint current battle frame
+
 			// Store the frame update start time
 			frameStartTime = System.currentTimeMillis();
 
-			// Paint current battle frame
-			if (!isAborted()
-					&& (endTimer < TURNS_DISPLAYED_AFTER_ENDING
-							&& !(battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified()))) {
+			if (!(isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode)) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
 				if ((totalFrameMillisThisSec == 0)
@@ -896,17 +895,19 @@ public class Battle implements Runnable {
 			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
 
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-			if (endTimer < TURNS_DISPLAYED_AFTER_ENDING && manager.isGUIEnabled()
-					&& manager.getWindowManager().getRobocodeFrame().isVisible()
-					&& !manager.getWindowManager().getRobocodeFrame().isIconified()) {
-				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
-			} else {
+			if (endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode) {
 				delay = 0;
+			} else {
+				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
 			}
 
 			// Set flag for if the second has passed
-			resetThisSec = ((desiredTPS - turnsThisSec == 0)
-					|| ((System.currentTimeMillis() - startTimeThisSec) >= 1000));
+			resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
+			
+			// Check if we must limit the TPS
+			if (!(resetThisSec || minimizedMode)) {
+				resetThisSec = ((desiredTPS - turnsThisSec) == 0);
+			}
 
 			// Delay to match desired TPS
 			if (delay > 0) {
@@ -915,6 +916,7 @@ public class Battle implements Runnable {
 				} catch (InterruptedException e) {}
 			}
 
+			// Update title when second has passed
 			if (resetThisSec) {
 				updateTitle();
 			}
@@ -1031,12 +1033,15 @@ public class Battle implements Runnable {
 
 			replayOver = currentTime >= roundRecord.turns.size();
 
+			// Set flag indication if we are running in "minimized mode"
+			boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
+
 			// Paint current battle frame
 
 			// Store the start time before the frame update
 			frameStartTime = System.currentTimeMillis();
 
-			if (!(isAborted() || battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified())) {
+			if (!(isAborted() || minimizedMode)) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
 				if (((totalFrameMillisThisSec == 0)
@@ -1065,16 +1070,19 @@ public class Battle implements Runnable {
 			estimatedTurnMillisThisSec = desiredTPS * totalFrameMillisThisSec / turnsThisSec;
 
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-			if (manager.isGUIEnabled() && manager.getWindowManager().getRobocodeFrame().isVisible()
-					&& !manager.getWindowManager().getRobocodeFrame().isIconified()) {
-				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
-			} else {
+			if (endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode) {
 				delay = 0;
+			} else {
+				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
 			}
 
 			// Set flag for if the second has passed
-			resetThisSec = ((desiredTPS - turnsThisSec == 0)
-					|| ((System.currentTimeMillis() - startTimeThisSec) >= 1000));
+			resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
+			
+			// Check if we must limit the TPS
+			if (!(resetThisSec || minimizedMode)) {
+				resetThisSec = ((desiredTPS - turnsThisSec) == 0);
+			}
 
 			// Delay to match desired TPS
 			if (delay > 0) {
@@ -1083,6 +1091,7 @@ public class Battle implements Runnable {
 				} catch (InterruptedException e) {}
 			}
 
+			// Update title when second has passed
 			if (resetThisSec) {
 				updateTitle();
 			}
