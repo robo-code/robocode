@@ -142,7 +142,9 @@ public class BattleView extends Canvas {
 						g = (Graphics2D) bufferStrategy.getDrawGraphics();
 						g.drawImage(offscreenImage, 0, 0, null);
 
-						bufferStrategy.show();	
+						bufferStrategy.show();
+					} catch (NullPointerException e) {
+						; // Occurs sometimes for no reason?!
 					} finally {
 						if (g != null) {
 							g.dispose();
