@@ -15,6 +15,8 @@
  *     - Updated to use methods from the FileUtil, which replaces file operations
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Changed showRobocodeFrame() to take a visible parameter
+ *     - Added packCenterShow() for windows where the window position and
+ *       dimension should not be read or saved to window.properties
  *     Luis Crespo & Flemming N. Larsen
  *     - Added showRankingDialog()
  *******************************************************************************/
@@ -23,6 +25,10 @@ package robocode.manager;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Window;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -78,9 +84,7 @@ public class WindowManager {
 	}
 
 	public void showAboutBox() {
-		AboutBox aboutBox = new AboutBox(getRobocodeFrame(), manager);
-
-		WindowUtil.packCenterShow(getRobocodeFrame(), aboutBox);
+		packCenterShow(new AboutBox(getRobocodeFrame(), manager));
 	}
 
 	public void showBattleOpenDialog() {
@@ -176,21 +180,14 @@ public class WindowManager {
 	}
 
 	public void showResultsDialog() {
-		ResultsDialog resultsDialog = new ResultsDialog(manager);
-		resultsDialog.pack();
-		resultsDialog.setLocation(getRobocodeFrame().getX() + (getRobocodeFrame().getWidth() - resultsDialog.getWidth()) / 2,
-				getRobocodeFrame().getY() + (getRobocodeFrame().getHeight() - resultsDialog.getHeight()) / 2);
-		resultsDialog.setVisible(true);
+		packCenterShow(new ResultsDialog(manager));
 	}
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(manager, true);
-			rankingDialog.pack();
-			rankingDialog.setLocation(getRobocodeFrame().getX() + (getRobocodeFrame().getWidth() - rankingDialog.getWidth()) / 2,
-					getRobocodeFrame().getY() + (getRobocodeFrame().getHeight() - rankingDialog.getHeight()) / 2);
 		}
-		rankingDialog.setVisible(visible);
+		packCenterShow(rankingDialog);
 	}
 
 	public void showRobocodeEditor() {
@@ -229,13 +226,17 @@ public class WindowManager {
 		// Create the splash screen
 		SplashScreen splashScreen = new SplashScreen(manager);
 
-		// Pack, center, and show it
-		WindowUtil.packCenterShow(splashScreen);
-		for (int i = 0; i < 5 * 20 && !splashScreen.isPainted(); i++) {
+		synchronized (splashScreen) {
+			// Pack, center, and show it
+			packCenterShow(splashScreen);
+
 			try {
-				Thread.sleep(200);
-			} catch (InterruptedException ie) {}
+				splashScreen.wait(20000);
+			} catch (InterruptedException e) {
+				; // Do nothing
+			}
 		}
+
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
 		manager.getRobotRepositoryManager().getRobotRepository();
@@ -431,5 +432,16 @@ public class WindowManager {
 
 			tableModel.saveToFile(filename, append);
 		}
+	}
+
+	/**
+	 * Packs, centers, and shows the specified window on the screen.
+	 */
+	private void packCenterShow(Window window) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		window.pack();
+		window.setLocation((screenSize.width - window.getWidth()) / 2, (screenSize.height - window.getHeight()) / 2);
+		window.setVisible(true);
 	}
 }
