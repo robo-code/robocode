@@ -9,8 +9,9 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Changed to render the Robocode logo instead of using a bitmap image
  *     - Code cleanup
+ *     - Changed to render the Robocode logo instead of using a bitmap image
+ *     - Replaced isPainted() and painted field with wait/notify
  *******************************************************************************/
 package robocode.dialog;
 
@@ -38,13 +39,13 @@ import robocode.render.RobocodeLogo;
  */
 @SuppressWarnings("serial")
 public class SplashScreen extends JWindow {
+
 	private final static Color LABEL_COLOR = Color.WHITE;
 
 	private JLabel splashLabel;
 	private JPanel splashPanel;
 	private JPanel splashScreenContentPane;
 	private Image splashImage;
-	private boolean painted;
 	private String version;
 
 	private WindowListener eventHandler = new WindowAdapter() {
@@ -139,13 +140,12 @@ public class SplashScreen extends JWindow {
 		addWindowListener(eventHandler);
 	}
 
-	public boolean isPainted() {
-		return painted;
-	}
-
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		painted = true;
+
+		synchronized (this) {
+			notifyAll();
+		}
 	}
 }
