@@ -12,6 +12,7 @@
 package robocode.battle.record;
 
 
+import static robocode.gfx.ColorUtil.toRGB565;
 import robocode.peer.BulletPeer;
 
 
@@ -40,13 +41,12 @@ public class BulletRecord {
 	// Index of the frame
 	public byte frame;
 
-	// Coordinates of the bullet
+	// The painted coordinates of the bullet
 	public short x;
 	public short y;
 
-	// Delta coordinates on the robot the bullet has hit
-	public byte deltaX;
-	public byte deltaY;
+	// Bullet color packed as RGB 565, where 0 means null
+	public short color;
 
 	/**
 	 * Constructs a new bullet record.
@@ -56,12 +56,11 @@ public class BulletRecord {
 	 */
 	public BulletRecord(int owner, BulletPeer bullet) {
 		this.owner = (byte) owner;
-		x = (short) (bullet.getX() + 0.5);
-		y = (short) (bullet.getY() + 0.5);
+		x = (short) (bullet.getPaintX() + 0.5);
+		y = (short) (bullet.getPaintY() + 0.5);
 		power = (byte) (bullet.getPower() * 10);
 		frame = (byte) bullet.getFrame();
-		deltaX = (byte) (bullet.deltaX + 0.5);
-		deltaY = (byte) (bullet.deltaY + 0.5);
 		state = (byte) bullet.getState();
+		color = toRGB565(bullet.getColor());
 	}
 }
