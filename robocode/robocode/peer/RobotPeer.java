@@ -57,6 +57,7 @@ package robocode.peer;
 
 
 import static java.lang.Math.*;
+import static robocode.gfx.ColorUtil.toColor;
 import static robocode.io.Logger.log;
 import static robocode.util.Utils.normalAbsoluteAngle;
 import static robocode.util.Utils.normalNearAbsoluteAngle;
@@ -1616,19 +1617,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		bodyColor = toColor(rr.bodyColor);
 		gunColor = toColor(rr.gunColor);
 		radarColor = toColor(rr.radarColor);
-		bulletColor = toColor(rr.bulletColor);
 		scanColor = toColor(rr.scanColor);
-	}
-
-	private static Color toColor(short rgb565) {
-		if (rgb565 == 0) {
-			return null;
-		}
-		if (rgb565 == 0x20) {
-			return Color.BLACK;
-		}
-		return new Color(255 * ((rgb565 & 0xF800) >> 11) / 31, 255 * ((rgb565 & 0x07e0) >> 5) / 63,
-				255 * (rgb565 & 0x001f) / 31);
 	}
 
 	private synchronized void setLastHeading() {
