@@ -23,8 +23,8 @@ import java.awt.Color;
 import java.awt.Image;
 import java.util.*;
 
-import robocode.render.ImageUtil;
-import robocode.render.RenderImage;
+import robocode.gfx.ImageUtil;
+import robocode.gfx.RenderImage;
 
 
 /**

@@ -40,13 +40,13 @@ import javax.swing.event.ChangeListener;
 
 import robocode.battle.Battle;
 import robocode.battleview.BattleView;
+import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
-import robocode.render.ImageUtil;
 
 
 /**

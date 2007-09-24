@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
 
+import robocode.gfx.RobocodeLogo;
 import robocode.manager.RobocodeManager;
-import robocode.render.RobocodeLogo;
 
 
 /**
