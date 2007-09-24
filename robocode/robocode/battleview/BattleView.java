@@ -26,14 +26,14 @@ import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
+import robocode.gfx.RenderImage;
+import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.ExplosionPeer;
 import robocode.peer.RobotPeer;
-import robocode.render.RenderImage;
-import robocode.render.RobocodeLogo;
 import robocode.util.GraphicsState;
 
 
@@ -514,7 +514,7 @@ public class BattleView extends Canvas {
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
 
-				Color bulletColor = bullet.getOwner().getBulletColor();
+				Color bulletColor = bullet.getColor();
 
 				if (bulletColor == null) {
 					bulletColor = Color.WHITE;
