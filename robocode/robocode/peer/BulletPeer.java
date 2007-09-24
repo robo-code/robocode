@@ -45,7 +45,9 @@ package robocode.peer;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static robocode.gfx.ColorUtil.toColor;
 
+import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.util.List;
 
@@ -97,12 +99,14 @@ public class BulletPeer {
 
 	protected double power;
 
-	public double deltaX;
-	public double deltaY;
+	private double deltaX;
+	private double deltaY;
 
 	private Line2D.Double boundingLine = new Line2D.Double();
 
 	protected int frame;
+
+	private Color color;
 
 	protected int explosionImageIndex;
 
@@ -117,6 +121,7 @@ public class BulletPeer {
 		battleField = battle.getBattleField();
 		bullet = new Bullet(this);
 		state = STATE_SHOT;
+		color = owner.getBulletColor(); // Store current bullet color set on robot
 	}
 
 	public BulletPeer(RobotPeer owner, Battle battle, BulletRecord br) {
@@ -126,9 +131,8 @@ public class BulletPeer {
 		y = br.y;
 		power = ((double) br.power) / 10;
 		frame = br.frame;
-		deltaX = br.deltaX;
-		deltaY = br.deltaY;
 		state = br.state;
+		color = toColor(br.color);
 	}
 
 	private void checkBulletCollision() {
@@ -281,6 +285,10 @@ public class BulletPeer {
 
 	public synchronized int getState() {
 		return state;
+	}
+
+	public Color getColor() {
+		return color;
 	}
 
 	public synchronized void setHeading(double newHeading) {
