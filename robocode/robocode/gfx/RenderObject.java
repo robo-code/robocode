@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.render;
+package robocode.gfx;
 
 
 import java.awt.Graphics2D;
