@@ -22,6 +22,11 @@ o Bugfixes
   -- When the Robocode window was minimized the actual TPS and FPS were not shown
   -- When installing new versions of Robocode on top of an existing Robocode
      installation, the About window did not have the right height
+o Changes
+  -- The color of each bullet is now independent on the current color set with
+     the setBulletColor() method. Previously, all bullets were instantly changing
+     their colors when setBulletColor() was called. Now, the color of the bullet
+     will stick to the bullet color set when the bullet was fired
 
 Version 1.4.5
 The "Fair Play" release
