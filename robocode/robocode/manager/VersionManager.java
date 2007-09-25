@@ -13,12 +13,13 @@
  *     - Changed to give notification only if the available version number is
  *       greater than the version retrieved from the robocode.jar file, and only
  *       give warning if the user rejects downloading a new version, if the new
- *       version is not an alpha or beta version
+ *       version is a final version
  *     - Changed the checkdate time interval from 10 days to 5 days
  *     - Updated to use methods from WindowUtil, FileUtil, Logger, which replaces
  *       methods that have been (re)moved from the Utils and Constants class
  *     - Added a connect timeout of 5 seconds when checking for a new version
  *     - Added missing close() on input stream readers
+ *     - Added the Version class for comparing versions with compareTo()
  *******************************************************************************/
 package robocode.manager;
 
@@ -44,6 +45,8 @@ import robocode.io.FileUtil;
  * @author Flemming N. Larsen (contributor)
  */
 public final class VersionManager {
+	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
+
 	private String version;
 	private RobocodeManager manager;
 
@@ -106,29 +109,37 @@ public final class VersionManager {
 			inputStreamReader = new InputStreamReader(inputStream);
 			reader = new BufferedReader(inputStreamReader);
 
-			String v = reader.readLine();
+			String newVersLine = reader.readLine();
+			String curVersLine = getVersion();
 
-			String installurl = "http://robocode.sourceforge.net/installer";
+			boolean newVersionAvailable = false;
+			
+			if (newVersLine != null && curVersLine != null) {
+				Version newVersion = new Version(newVersLine);
 
-			if (v != null && v.compareToIgnoreCase(getVersion()) > 0) {
-				if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
-						"Version " + v + " of Robocode is now available.  Would you like to download it?",
-						"Version " + v + " available", JOptionPane.YES_NO_OPTION)
-						== JOptionPane.YES_OPTION) {
-					try {
-						BrowserManager.openURL(installurl);
-					} catch (IOException e) {
-						JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
-								"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
+				if (newVersion.compareTo(curVersLine) > 0) {
+					newVersionAvailable = true;
+
+					if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
+							"Version " + newVersion + " of Robocode is now available.  Would you like to download it?",
+							"Version " + newVersion + " available", JOptionPane.YES_NO_OPTION)
+							== JOptionPane.YES_OPTION) {
+						try {
+							BrowserManager.openURL(INSTALL_URL);
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
+									"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
+						}
+					} else if (newVersion.isFinal()) {
+						JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
+								"It is highly recommended that you always download the latest version.  You may get it at "
+								+ INSTALL_URL,
+								"Update when you can!",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
-				} else if (!v.matches(".*([Aa][Ll][Pp][Hh]|[Bb][Ee][Tt])[Aa].*")) {
-					JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
-							"It is highly recommended that you always download the latest version.  You may get it at "
-							+ installurl,
-							"Update when you can!",
-							JOptionPane.INFORMATION_MESSAGE);
 				}
-			} else if (notifyNoUpdate) {
+			}
+			if (!newVersionAvailable && notifyNoUpdate) {
 				JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
 						"You have version " + version + ".  This is the latest version of Robocode.", "No update available",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -258,6 +269,124 @@ public final class VersionManager {
 				version = "unknown";
 			}
 		}
+		return version;
+	}
+}
+
+
+class Version implements Comparable<Object> {
+
+	private final String version;
+
+	public Version(String version) {
+		this.version = version.replaceAll("\\.\\s++", ".").replaceAll("\\s++|lpha|eta", "");
+	}
+
+	public boolean isAlpha() {
+		return (version.matches(".*(A|a).*"));
+	}
+
+	public boolean isBeta() {
+		return (version.matches(".*(B|b).*"));
+	}
+
+	public boolean isFinal() {
+		return !(isAlpha() || isBeta());
+	}
+
+	public int compareTo(Object o) {
+		if (o == null) {
+			throw new IllegalArgumentException();
+		}
+		if (o instanceof String) {
+			return compareTo(new Version((String) o));
+		} else if (o instanceof Version) {
+			Version v = (Version) o;
+
+			if (version.equalsIgnoreCase(v.version)) {
+				return 0;
+			}
+
+			String[] split1 = version.split(" ", 2);
+			String[] split2 = v.version.split(" ", 2);
+
+			if (split1[0].equalsIgnoreCase(split2[0])) {
+				if (split1.length == 1) {
+					return 1;
+				}
+				if (split2.length == 1) {
+					return -1;
+				}
+				
+				split1 = split1[1].split(" ", 2);
+				split2 = split2[1].split(" ", 2);
+
+				int compare = split1[0].compareToIgnoreCase(split2[0]);
+
+				if (compare == 0) {
+					if (split1.length == 1) {
+						return -1;
+					}
+					if (split2.length == 1) {
+						return 1;
+					}
+					return split1[1].compareToIgnoreCase(split2[1]);
+				}
+				return compare;
+			}
+
+			split1 = split1[0].split("\\.", 3);
+			split2 = split2[0].split("\\.", 3);
+
+			split1[0] = split1[0].trim();
+			split2[0] = split2[0].trim();
+			int compare = split1[0].compareToIgnoreCase(split2[0]);
+			
+			if (compare == 0) {
+				if (split1.length == 1) {
+					return -1;
+				}
+				if (split2.length == 1) {
+					return 1;
+				}
+
+				split1[1] = (split1[1] + '\uffff').trim();
+				split2[1] = (split2[1] + '\uffff').trim();
+				compare = split1[1].compareToIgnoreCase(split2[1]);
+
+				if (compare == 0) {
+					if (split1.length == 2) {
+						return -1;
+					}
+					if (split2.length == 2) {
+						return 1;
+					}
+
+					split1[2] = (split1[2] + '\uffff').trim();
+					split2[2] = (split2[2] + '\uffff').trim();
+					compare = split1[2].compareToIgnoreCase(split2[2]);
+
+					if (compare == 0) {
+						if (split1.length == 3) {
+							return -1;
+						}
+						if (split2.length == 3) {
+							return 1;
+						}
+					}
+					return compare;
+				}
+				return compare;
+			}
+			return compare;
+			
+		} else {
+			throw new IllegalArgumentException("The input object must be a String or Version object");
+		}
+	}
+	
+	@Override
+	public String toString() {
 		return version;
 	}
 }
