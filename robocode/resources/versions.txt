@@ -1,5 +1,5 @@
 Version 1.4.6
-(09/24/2007)
+(09/25/2007)
 -------------
 o Bugfixes
   -- The coordinates of a Bullet from a bullet event like HitByBulletEvent()
@@ -27,6 +27,8 @@ o Changes
      the setBulletColor() method. Previously, all bullets were instantly changing
      their colors when setBulletColor() was called. Now, the color of the bullet
      will stick to the bullet color set when the bullet was fired
+  -- Improved the "Check for new version", so that is able to differ between
+     release type as alpha, beta, and final release types 
 
 Version 1.4.5
 The "Fair Play" release
