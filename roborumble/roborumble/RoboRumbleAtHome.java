@@ -128,7 +128,7 @@ public class RoboRumbleAtHome {
 
 			// upload results
 			if (uploads.equals("YES")) {
-				System.out.println("Uloading results ...");
+				System.out.println("Uploading results ...");
 				ResultsUpload upload = new ResultsUpload(parameters);
 
 				// uploads the results to the server
