@@ -208,16 +208,16 @@ CODESIZEFILE=./roborumble/files/codesizemelee.txt
 #           URL to where ratings files are located on Internet.
 #
 # RATINGS.GENERAL:
-#           File name for the rating file of the general RoboRumble.
+#           File name for the rating file of the general MeleeRumble.
 #
 # RATINGS.MINIBOTS:
-#           File name for the rating file of the MiniRumble.
+#           File name for the rating file of the Melee MiniRumble.
 #
 # RATINGS.MICROBOTS:
-#           File name for the rating file of the MicroRumble.
+#           File name for the rating file of the Melee MicroRumble.
 #
 # RATINGS.NANOBOTS:
-#           File name for the rating file of the NanoRumble.
+#           File name for the rating file of the Melee NanoRumble.
 
 RATINGS.URL=http://rumble.fervir.com/rumble/RatingsFile
 
