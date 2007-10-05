@@ -18,6 +18,8 @@
  *     - Properties are now read using PropertiesUtil.getProperties()
  *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
  *     - Added missing close() to streams
+ *     - Added new EXCLUDE property, which is used for excluding participants
+ *     - Added the isExcluded() method
  *******************************************************************************/
 package roborumble.netengine;
 
@@ -63,6 +65,7 @@ public class BotsDownload {
 	private String microbotsfile;
 	private String nanobotsfile;
 	private String removeboturl;
+	private String[] excludes;
 
 	public BotsDownload(String propertiesfile) {
 		// Read parameters
@@ -95,6 +98,28 @@ public class BotsDownload {
 		nanobotsfile = parameters.getProperty("RATINGS.NANOBOTS", "");
 		// remove old bots
 		removeboturl = parameters.getProperty("UPDATEBOTSURL", "");
+
+		// Read and prepare exclude filters
+		String exclude = parameters.getProperty("EXCLUDE");
+
+		if (exclude != null) {
+			// Convert into regular expression
+
+			// Dots must be dots, not "any character" in the regular expression
+			exclude = exclude.replaceAll("\\.", "\\\\.");
+
+			// The wildcard character ? corresponds to the regular expression .?
+			exclude = exclude.replaceAll("\\?", ".?");
+
+			// The wildcard character * corresponds to the regular expression .*
+			exclude = exclude.replaceAll("\\*", ".*");
+
+			// Split the exclude line into independent exclude filters that are trimmed for white-spaces
+			excludes = exclude.split("[,;]");
+			for (String excl : excludes) {
+				excl = excl.trim();
+			}
+		}
 	}
 
 	public boolean downloadRatings() {
@@ -148,6 +173,7 @@ public class BotsDownload {
 			urlc.connect();
 
 			boolean arebots = false;
+
 			in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
 
 			for (String str; (str = in.readLine()) != null;) {
@@ -156,7 +182,11 @@ public class BotsDownload {
 				} else if (str.indexOf(end) != -1) {
 					arebots = false;
 				} else if (arebots) {
-					bots.add(str);
+					String name = str.substring(0, str.indexOf(","));
+
+					if (!isExcluded(name)) {
+						bots.add(str);
+					}
 				}
 			}
 			urlc.disconnect();
@@ -193,6 +223,7 @@ public class BotsDownload {
 
 		try {
 			FileReader fr = new FileReader(participantsfile);
+
 			br = new BufferedReader(fr);
 
 			for (String record; (record = br.readLine()) != null;) {
@@ -243,6 +274,7 @@ public class BotsDownload {
 
 			try {
 				FileReader fr = new FileReader(participantsfile);
+
 				br = new BufferedReader(fr);
 
 				for (String record; (record = br.readLine()) != null;) {
@@ -416,6 +448,7 @@ public class BotsDownload {
 
 		try {
 			FileReader fr = new FileReader(participantsfile);
+
 			br = new BufferedReader(fr);
 
 			for (String record; (record = br.readLine()) != null;) {
@@ -529,5 +562,27 @@ public class BotsDownload {
 				} catch (IOException e) {}
 			}
 		}
+	}
+
+	// Check if a robot is excluded
+	private boolean isExcluded(String name) {
+		if (excludes == null) {
+			return false;
+		}
+
+		// Check the name against all exclude filters
+		for (int i = excludes.length - 1; i >= 0; i--) {
+			try {
+				if (name.matches(excludes[i])) {
+					return true;
+				}
+			} catch (java.util.regex.PatternSyntaxException e) {
+				// Clear the current exclude if the syntax is illegal (for next time this method is called)
+				excludes[i] = "";
+			}
+		}
+
+		// Not excluded
+		return false;
 	}
 }

@@ -13,6 +13,23 @@
 USER=Put_Your_Name_Here
 
 #-------------------------------------------------------------------------------
+# Exclude filter used for excluding participants. Use with care!
+#-------------------------------------------------------------------------------
+
+# EXCLUDE   A comma separated list of all the participants you want to exclude
+#           from the competition. Excluded participants will not be downloaded
+#           or take part in battles. This way you can exclude participants that
+#           cannot be downloaded due to web servers that are down or hanging,
+#           the repository is down, robots/teams that crashes for some reason or
+#           cause other trouble. 
+#
+#           You can use the filename wildcards * and ? in the filter. Example:
+#
+#           EXCLUDE=xyz.*v1.?, *Nano*
+
+EXCLUDE=  
+
+#-------------------------------------------------------------------------------
 # Properties for controlling the rumble. Use YES or NOT
 #-------------------------------------------------------------------------------
 
