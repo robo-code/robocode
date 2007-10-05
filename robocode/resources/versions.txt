@@ -1,3 +1,19 @@
+Version 1.4.7
+(10/06/2007)
+o RoboRumble changes
+  -- The configurations files roborumble.txt, meleerumble.txt, and teamrumble.txt
+     has been improved
+     -- All properties are now documented and have been grouped more logically.
+     -- The BATTLESPERBOT property has been raised to 2000 for the RoboRumble
+        and MeleeRumble
+  -- An exclude filter has now been added, which makes it possible to exclude
+     participants that causes trouble somehow
+     -- The exclude filter is controlled using the new EXCLUDE property, which
+        takes a comma-separate list of participants where the wildcards * and ?
+        can be used
+     -- Excluded participants are not added to the participants file, and will
+        not be downloaded or take part in battles
+
 Version 1.4.6
 (09/25/2007)
 -------------
