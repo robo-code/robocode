@@ -1,6 +1,9 @@
 Version 1.4.7
 (10/06/2007)
 o Bugfixes
+  -- Teams located in the .robotcache dir were still put into the robot.database
+     file. Thus, these teams located in the .robotcache dir were shown in the
+     New Battle dialog
   -- When stopping a battle while recording was enabled and then replaying the
      recorded battle, Robocode would show the last rounds of the battle even
      though no recording occurred for these rounds, i.e. "ghost" rounds
