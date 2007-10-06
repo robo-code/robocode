@@ -181,6 +181,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void mouseClicked(MouseEvent e) {
 			Battle battle = manager.getBattleManager().getBattle();
+
 			if (battle != null) {
 				battle.mouseClicked(e);
 			}
@@ -188,6 +189,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void mouseEntered(MouseEvent e) {
 			Battle battle = manager.getBattleManager().getBattle();
+
 			if (battle != null) {
 				battle.mouseEntered(e);
 			}
@@ -195,6 +197,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void mouseExited(MouseEvent e) {
 			Battle battle = manager.getBattleManager().getBattle();
+
 			if (battle != null) {
 				battle.mouseExited(e);
 			}
@@ -202,6 +205,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void mousePressed(MouseEvent e) {
 			Battle battle = manager.getBattleManager().getBattle();
+
 			if (battle != null) {
 				battle.mousePressed(e);
 			}
@@ -209,6 +213,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void mouseReleased(MouseEvent e) {
 			Battle battle = manager.getBattleManager().getBattle();
+
 			if (battle != null) {
 				battle.mouseReleased(e);
 			}
@@ -216,6 +221,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void mouseMoved(MouseEvent e) {
 			Battle battle = manager.getBattleManager().getBattle();
+
 			if (battle != null) {
 				battle.mouseMoved(e);
 			}
@@ -223,6 +229,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void mouseDragged(MouseEvent e) {
 			Battle battle = manager.getBattleManager().getBattle();
+
 			if (battle != null) {
 				battle.mouseDragged(e);
 			}
@@ -230,11 +237,13 @@ public class RobocodeFrame extends JFrame {
 
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			Battle battle = manager.getBattleManager().getBattle();
+
 			if (battle != null) {
 				battle.mouseWheelMoved(e);
 			}
 		}
 	}
+
 
 	private class PauseResumeHandler implements BattleManager.PauseResumeListener {
 
@@ -457,6 +466,8 @@ public class RobocodeFrame extends JFrame {
 			stopButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			stopButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			stopButton.addActionListener(eventHandler);
+
+			stopButton.setEnabled(false);
 		}
 		return stopButton;
 	}
@@ -469,12 +480,13 @@ public class RobocodeFrame extends JFrame {
 	public JButton getRestartButton() {
 		if (restartButton == null) {
 			restartButton = new JButton("Restart");
-			restartButton.setEnabled(false);
 			restartButton.setMnemonic('t');
 			restartButton.setDisplayedMnemonicIndex(3);
 			restartButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			restartButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			restartButton.addActionListener(eventHandler);
+
+			restartButton.setEnabled(false);
 		}
 		return restartButton;
 	}
@@ -614,9 +626,11 @@ public class RobocodeFrame extends JFrame {
 		if (manager.isSlave()) {
 			getRobocodeMenuBar().getBattleMenu().setEnabled(false);
 			getRobocodeMenuBar().getRobotMenu().setEnabled(false);
-			getPauseButton().setEnabled(false);
 			getStopButton().setEnabled(false);
+			getPauseButton().setEnabled(false);
+			getNextTurnButton().setEnabled(false);
 			getRestartButton().setEnabled(false);
+			getReplayButton().setEnabled(false);
 		}
 	}
 
@@ -689,11 +703,15 @@ public class RobocodeFrame extends JFrame {
 		this.iconified = iconified;
 	}
 
-	public void setEnableRestart(boolean enable) {
+	public void setEnableStopButton(boolean enable) {
+		getStopButton().setEnabled(enable);
+	}
+
+	public void setEnableRestartButton(boolean enable) {
 		getRestartButton().setEnabled(enable);
 	}
 
-	public void setEnableReplay(boolean enable) {
+	public void setEnableReplayButton(boolean enable) {
 		getReplayButton().setEnabled(enable);
 	}
 }
