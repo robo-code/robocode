@@ -114,6 +114,7 @@ import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
 import robocode.dialog.RobotButton;
+import robocode.dialog.RobocodeFrame;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
@@ -287,8 +288,11 @@ public class Battle implements Runnable {
 		roundNum = 0;
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setEnableRestart(true);
-			manager.getWindowManager().getRobocodeFrame().setEnableReplay(false);
+			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
+
+			frame.setEnableStopButton(true);
+			frame.setEnableRestartButton(true);
+			frame.setEnableReplayButton(false);
 		}
 		isRecordingEnabled = manager.getProperties().getOptionsCommonEnableReplayRecording();
 
@@ -376,7 +380,10 @@ public class Battle implements Runnable {
 		}
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setEnableReplay(true);
+			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
+
+			frame.setEnableStopButton(false);
+			frame.setEnableReplayButton(true);
 		}
 
 		// Notify that the battle is over

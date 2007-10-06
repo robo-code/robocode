@@ -1,5 +1,8 @@
 Version 1.4.7
 (10/06/2007)
+o Robocode changes
+  -- The Stop button is now only enabled when a battle is running and disabled
+     afterwards
 o RoboRumble changes
   -- The configurations files roborumble.txt, meleerumble.txt, and teamrumble.txt
      has been improved
