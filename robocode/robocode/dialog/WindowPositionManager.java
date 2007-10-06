@@ -18,9 +18,7 @@
 package robocode.dialog;
 
 
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.*;
@@ -113,7 +111,7 @@ public class WindowPositionManager implements ComponentListener {
 		int width = Integer.parseInt(tokenizer.nextToken());
 		int height = Integer.parseInt(tokenizer.nextToken());
 
-		return new Rectangle(x, y, width, height);
+		return fitWindowBoundsToScreen(new Rectangle(x, y, width, height));
 	}
 
 	public void saveWindowPositions() {
@@ -132,5 +130,35 @@ public class WindowPositionManager implements ComponentListener {
 				} catch (IOException e) {}
 			}
 		}
+	}
+	
+	private Rectangle fitWindowBoundsToScreen(Rectangle windowBounds) {
+		if (windowBounds == null) {
+			return null;
+		}
+
+		// Return the input window bounds, if we can find a screen device that contains these bounds
+
+		final GraphicsEnvironment gfxEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		final GraphicsDevice[] screenDevices = gfxEnv.getScreenDevices();
+
+		for (int i = screenDevices.length - 1; i >= 0; i--) { 
+			GraphicsConfiguration[] gfxCfg = screenDevices[i].getConfigurations();
+
+			for (int j = gfxCfg.length - 1; j >= 0; j--) {
+				if (gfxCfg[j].getBounds().contains(windowBounds.getLocation())) {
+					return windowBounds; // Found the bounds
+				}
+			}
+		}
+
+		// Otherwise, return window bounds at a location within the current screen
+
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		int x = (screenSize.width - windowBounds.width) / 2; 
+		int y = (screenSize.height - windowBounds.height) / 2; 
+		
+		return new Rectangle(x, y, windowBounds.width, windowBounds.height); 
 	}
 }

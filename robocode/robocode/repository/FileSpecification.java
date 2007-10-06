@@ -36,6 +36,8 @@ import robocode.manager.RobotRepositoryManager;
  */
 public abstract class FileSpecification implements Comparable<FileSpecification>, Serializable, Cloneable {
 
+	private static final long serialVersionUID = 1L;
+
 	protected Properties props = new Properties();
 
 	private final static String ROBOCODE_VERSION = "robocode.version";

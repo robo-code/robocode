@@ -22,6 +22,8 @@ import javax.swing.event.ChangeEvent;
  * @author Flemming N. Larsen (contributor)
  */
 public abstract class WizardPanel extends javax.swing.JPanel {
+	private static final long serialVersionUID = 1L;
+
 	private WizardController wizardController;
 
 	public void fireStateChanged() {
