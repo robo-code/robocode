@@ -305,8 +305,11 @@ public class Battle implements Runnable {
 			try {
 				setupRound();
 
-				if (replay && battleRecord != null && battleRecord.rounds.size() > roundNum) {
-					runReplay();
+				if (replay) {
+					// Only run replay for a round if it has been recorded
+					if (battleRecord != null && battleRecord.rounds.size() > roundNum) {
+						runReplay();
+					}
 				} else {
 					runRound();
 				}
