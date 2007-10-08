@@ -39,7 +39,11 @@ public class RobotThreadManager {
 
 	public void forceStop() {
 		if (runThread != null && runThread.isAlive()) {
-			runThread.setPriority(Thread.MIN_PRIORITY);
+			try {
+				runThread.setPriority(Thread.MIN_PRIORITY);
+			} catch (NullPointerException e) {
+				; // Work-around: Sometimes this occurs in the Java core?!
+			}
 			runThread.interrupt();
 			try {
 				runThread.join(5000);
