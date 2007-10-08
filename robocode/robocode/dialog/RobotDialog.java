@@ -119,7 +119,9 @@ public class RobotDialog extends JFrame {
 	public void setRobotPeer(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
 		getConsoleScrollPane().setText("");
-		getConsoleScrollPane().processStream(robotPeer.getOut().getInputStream());
+		if (robotPeer != null && robotPeer.getOut() != null) {
+			getConsoleScrollPane().processStream(robotPeer.getOut().getInputStream());
+		}
 	}
 
 	/**
