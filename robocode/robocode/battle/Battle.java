@@ -1453,7 +1453,7 @@ public class Battle implements Runnable {
 				try {
 					battleMonitor.wait();
 				} catch (InterruptedException e) {
-					return;
+					break;
 				}
 			}
 
