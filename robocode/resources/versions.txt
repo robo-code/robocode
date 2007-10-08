@@ -7,12 +7,15 @@ o Bugfixes
   -- When stopping a battle while recording was enabled and then replaying the
      recorded battle, Robocode would show the last rounds of the battle even
      though no recording occurred for these rounds, i.e. "ghost" rounds
+  -- When using the -battle option Robocode would run at full speed, i.e. the TPS
+     set to maximum, even though the GUI was enabled with a predefined TPS
+     -- Now, the TPS is only set to maximum when the -nodisplay option is used 
 o Robocode changes
   -- The Stop button is now only enabled when a battle is running and disabled
      afterwards
 o RoboRumble changes
   -- The configurations files roborumble.txt, meleerumble.txt, and teamrumble.txt
-     has been improved
+     have been improved:
      -- All properties are now documented and have been grouped more logically.
      -- The BATTLESPERBOT property has been raised to 2000 for the RoboRumble
         and MeleeRumble
