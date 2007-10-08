@@ -66,6 +66,7 @@ public class Robocode {
 	 */
 	public static void main(String[] args) {
 		Robocode robocode = new Robocode();
+
 		robocode.initialize(args);
 	}
 
@@ -121,7 +122,8 @@ public class Robocode {
 			boolean minimize = false;
 			String battleFilename = null;
 			String resultsFilename = null;
-			int tps = 10000;
+
+			int tps = manager.getProperties().getOptionsBattleDesiredTPS();
 
 			for (int i = 0; i < args.length; i++) {
 				if (args[i].equals("-cwd") && (i < args.length + 1)) {
@@ -141,6 +143,7 @@ public class Robocode {
 				} else if (args[i].equals("-nodisplay")) {
 					manager.setEnableGUI(false);
 					manager.setEnableSound(false);
+					tps = 10000;
 				} else if (args[i].equals("-nosound")) {
 					manager.setEnableSound(false);
 				} else if (args[i].equals("-?") || args[i].equals("-help")) {
@@ -222,6 +225,7 @@ public class Robocode {
 	 */
 	public static void printRunningThreads() {
 		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+
 		if (currentGroup == null) {
 			return;
 		}
