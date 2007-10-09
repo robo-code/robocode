@@ -9,11 +9,14 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Moved the stopThread() method from the RobocodeDeprecated class into
  *       this class
- *     - Code cleanup
+ *     - Bugfix: The waitForStop() was using 'runThreadGroup.activeCount > 0'
+ *       instead of runThread.isAlive() causing some robots to be forced to stop.
+ *       In the same time this method was simplified up updated for faster CPU's   
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -131,26 +134,24 @@ public class RobotThreadManager {
 		if (runThread == null) {
 			return;
 		}
+
 		runThread.interrupt();
-		for (int j = 0; j < 20 && runThreadGroup.activeCount() > 0; j++) {
-			if (j == 10) {
-				log("Waiting for robot: " + robotPeer.getName() + " to stop");
+
+		for (int j = 0; j < 100 && runThread.isAlive(); j++) {
+			if (j == 50) {
+				log("Waiting for robot " + robotPeer.getName() + " to stop");
 			}
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {}
 		}
+
 		if (runThread.isAlive()) {
-			log(robotPeer.getName() + " is not stopping.  Forcing a stop.");
-			forceStop();
-		}
-		if (runThreadGroup.activeCount() > 0) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-				log("Robot " + robotPeer.getName() + " has threads still running.  Forcing a stop.");
+				log("Robot " + robotPeer.getName() + " is not stopping.  Forcing a stop.");
 				forceStop();
 			} else {
-				log("Robot " + robotPeer.getName()
-						+ " has threads still running.  Not stopping them because security is off.");
+				log("Robot " + robotPeer.getName() + " is still running.  Not stopping it because security is off.");
 			}
 		}
 	}
