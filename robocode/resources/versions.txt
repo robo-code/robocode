@@ -1,6 +1,11 @@
 Version 1.4.7
-(10/06/2007)
+(10/09/2007)
 o Bugfixes
+  -- Some robots did not receive any score even though they won the battle due
+     to Robocode did not always detect correctly that the robot's thread(s)
+     had been properly terminated.
+     -- Thanks goes to Eric Simonton, David Alves, and "AaronR" for help solving
+        this issue!
   -- Teams located in the .robotcache dir were still put into the robot.database
      file. Thus, these teams located in the .robotcache dir were shown in the
      New Battle dialog
@@ -9,7 +14,11 @@ o Bugfixes
      though no recording occurred for these rounds, i.e. "ghost" rounds
   -- When using the -battle option Robocode would run at full speed, i.e. the TPS
      set to maximum, even though the GUI was enabled with a predefined TPS
-     -- Now, the TPS is only set to maximum when the -nodisplay option is used 
+     -- Now, the TPS is only set to maximum when the -nodisplay option is used
+  -- Robocode was wasting time on trying to wake up robots that was dead
+     -- Robocode was blocked for the amount of milliseconds specified by the CPU
+        constant when a robot was killed in a battle, as Robocode was waiting for
+        the dead robot to wake up for exactly this amount of time
 o Robocode changes
   -- The Stop button is now only enabled when a battle is running and disabled
      afterwards
