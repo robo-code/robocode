@@ -386,7 +386,7 @@ public class Battle implements Runnable {
 			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
 
 			frame.setEnableStopButton(false);
-			frame.setEnableReplayButton(true);
+			frame.setEnableReplayButton(battleRecord != null);
 		}
 
 		// Notify that the battle is over
