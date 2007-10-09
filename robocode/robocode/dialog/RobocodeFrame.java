@@ -499,7 +499,6 @@ public class RobocodeFrame extends JFrame {
 	public JButton getReplayButton() {
 		if (replayButton == null) {
 			replayButton = new JButton("Replay");
-			replayButton.setEnabled(false);
 			replayButton.setMnemonic('y');
 			replayButton.setDisplayedMnemonicIndex(5);
 			replayButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -518,6 +517,8 @@ public class RobocodeFrame extends JFrame {
 							RobocodeFrame.this.manager.getProperties().getOptionsCommonEnableReplayRecording());
 				}
 			});
+
+			replayButton.setEnabled(false);
 		}
 		return replayButton;
 	}
