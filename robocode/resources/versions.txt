@@ -22,6 +22,10 @@ o Bugfixes
 o Robocode changes
   -- The Stop button is now only enabled when a battle is running and disabled
      afterwards
+  -- When starting Robocode, and the saved window locations (x and y coordinate)
+     of a window does not fit into any of the available screens/displays (e.g.
+     virtual desktop), when Robocode will center that window into the current
+     screen displayed 
 o RoboRumble changes
   -- The configurations files roborumble.txt, meleerumble.txt, and teamrumble.txt
      have been improved:
