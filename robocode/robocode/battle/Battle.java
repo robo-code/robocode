@@ -63,6 +63,7 @@
  *       in order to gain fair play, and this method should be used where robots
  *       are checked and awakened in turn
  *     - Simplified the repainting of the battle
+ *     - Bugfix: In wakeupRobots(), only wakeup a robot that is running and alive
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -1137,7 +1138,7 @@ public class Battle implements Runnable {
 		// Wake up all robot threads
 		synchronized (robots) {
 			for (RobotPeer r : getRobotsAtRandom()) {
-				if (r.isRunning()) {
+				if (r.isRunning() && r.isAlive()) {
 					synchronized (r) {
 						// This call blocks until the
 						// robot's thread actually wakes up.
