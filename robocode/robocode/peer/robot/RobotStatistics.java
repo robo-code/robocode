@@ -21,6 +21,9 @@
  *     - Ordered all methods more naturally
  *     - Added methods for getting current scores
  *     - Optimizations
+ *     - Removed damage parameter from the scoreRammingDamage() method, as the
+ *       damage is constant and defined by Rules.ROBOT_HIT_DAMAGE and the score
+ *       of hitting a robot is defined by Rules.ROBOT_HIT_BONUS
  *     Titus Chen
  *     - Bugfix: Initial getResults() method only factored in the most recent
  *       round
@@ -250,10 +253,10 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		}
 	}
 
-	public void scoreRammingDamage(int robot, double damage) {
+	public void scoreRammingDamage(int robot) {
 		if (isActive && !isTeammate(robot)) {
-			getRobotDamage()[robot] += damage;
-			rammingDamageScore += 2.0 * damage;
+			getRobotDamage()[robot] += robocode.Rules.ROBOT_HIT_DAMAGE;
+			rammingDamageScore += robocode.Rules.ROBOT_HIT_BONUS;
 		}
 	}
 
@@ -327,6 +330,6 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		return (teamPeer != null && teamPeer == robots.get(robot).getTeamPeer());
 	}
 
-	public void cleanup() { // Do nothing, for now
+	public void cleanup() {// Do nothing, for now
 	}
 }
