@@ -702,7 +702,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				log("Wait interrupted");
+				; // We are expecting this to happen when a round is ended!
 			}
 			isSleeping = false;
 			// Notify battle thread, which is waiting in
