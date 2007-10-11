@@ -277,33 +277,20 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				boolean atFault = false;
 				double bearing = normalRelativeAngle(angle - heading);
 
-				if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
-					velocity = 0;
-					atFault = true;
-					distanceRemaining = 0;
-					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
+				if ((velocity > 0 && bearing > -PI / 2 && bearing < PI / 2)
+						|| (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2))) {
+
 					inCollision = true;
+					atFault = true;
+					velocity = 0;
+					distanceRemaining = 0;
 					x -= movedx;
 					y -= movedy;
 
-					if (r.getEnergy() == 0) {
-						if (r.isAlive()) {
-							r.kill();
-							statistics.scoreRammingKill(i);
-						}
-					}
-				} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
-					velocity = 0;
-					atFault = true;
-					distanceRemaining = 0;
-					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
+					statistics.scoreRammingDamage(i);
+
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
-					inCollision = true;
-					x -= movedx;
-					y -= movedy;
 
 					if (r.getEnergy() == 0) {
 						if (r.isAlive()) {
@@ -312,14 +299,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						}
 					}
 				}
-
 				eventManager.add(
 						new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
 				r.eventManager.add(
 						new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getHeading()), energy, false));
 
-			} // if robot active & not me & hit
-		} // for robots
+			}
+		}
 		if (inCollision) {
 			state = STATE_HIT_ROBOT;
 		}
