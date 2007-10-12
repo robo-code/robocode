@@ -1,9 +1,15 @@
+Version 1.4.8
+(10/11/2007)
+o Bugfixes
+  -- With Robocode 1.4.7 a minor bug was introduced so that the robot console
+     printed out "Wait interrupted" when a round was completed
+
 Version 1.4.7
 (10/09/2007)
 o Bugfixes
   -- Some robots did not receive any score even though they won the battle due
      to Robocode did not always detect correctly that the robot's thread(s)
-     had been properly terminated.
+     had been properly terminated
      -- Thanks goes to Eric Simonton, David Alves, and "AaronR" for help solving
         this issue!
   -- Teams located in the .robotcache dir were still put into the robot.database
