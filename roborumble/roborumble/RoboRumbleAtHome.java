@@ -33,7 +33,7 @@ public class RoboRumbleAtHome {
 	
 	public static void main(String args[]) {
 
-		// get the associated parameters file
+		// Get the associated parameters file
 		String parameters = "./roborumble/roborumble.txt";
 
 		try {
@@ -60,7 +60,7 @@ public class RoboRumbleAtHome {
 		do {			
 			System.out.println("Iteration number " + iterations);
 
-			// Download data from internet if downloads is YES and it has not beeen download for two hours
+			// Download data from Internet if downloads is YES and it has not been download for two hours
 			if (downloads.equals("YES") && (System.currentTimeMillis() - lastdownload) > 2 * 3600 * 1000) {
 				BotsDownload download = new BotsDownload(parameters);
 
@@ -70,14 +70,14 @@ public class RoboRumbleAtHome {
 				download.downloadMissingBots();
 				download.updateCodeSize();
 				if (runonly.equals("SERVER")) { 
-					// download rating files and update ratings downloaded
+					// Download rating files and update ratings downloaded
 					System.out.println("Downloading rating files ...");
 					ratingsdownloaded = download.downloadRatings();
 				}
-				// send the order to the server to remove old participants from the ratings file
+				// Send the order to the server to remove old participants from the ratings file
 				if (ratingsdownloaded && participantsdownloaded) {
 					System.out.println("Removing old participants from server ...");
-					// send unwanted participants to the server
+					// Send unwanted participants to the server
 					download.notifyServerForOldParticipants();
 				}
 
@@ -85,7 +85,7 @@ public class RoboRumbleAtHome {
 				lastdownload = System.currentTimeMillis();
 			}
 
-			// create battles file (and delete old ones), and execute battles
+			// Create battles file (and delete old ones), and execute battles
 			if (executes.equals("YES")) {
 				
 				boolean ready = false;
@@ -99,47 +99,45 @@ public class RoboRumbleAtHome {
 							"Preparing battles list ... Using smart battles is "
 									+ (ratingsdownloaded && runonly.equals("SERVER")));
 					if (ratingsdownloaded && runonly.equals("SERVER")) {
+						// Create the smart lists
 						ready = battles.createSmartBattlesList();
-					} // create the smart lists
-					else {
+					} else {
+						// Create the normal lists
 						ready = battles.createBattlesList();
-					} // create the normal lists 
+					} 
 				}
 
 				battles = null;
 
-				// execute battles
+				// Execute battles
 				if (ready) {
+					BattlesRunner engine = new BattlesRunner(parameters);
+
 					if (melee.equals("YES")) {
 						System.out.println("Executing melee battles ...");
-						BattlesRunner engine = new BattlesRunner(parameters);
-
 						engine.runMeleeBattles();
-						engine = null;
 					} else {
 						System.out.println("Executing battles ...");
-						BattlesRunner engine = new BattlesRunner(parameters);
-
 						engine.runBattles();
-						engine = null;
 					}
+					engine = null;
 				} 
 			}
 
-			// upload results
+			// Upload results
 			if (uploads.equals("YES")) {
 				System.out.println("Uploading results ...");
 				ResultsUpload upload = new ResultsUpload(parameters);
 
-				// uploads the results to the server
+				// Uploads the results to the server
 				upload.uploadResults();
 				upload = null;
-				// updates the number of battles from the info received from the server
+
+				// Updates the number of battles from the info received from the server
 				System.out.println("Updating number of battles fought ...");
 				UpdateRatingFiles updater = new UpdateRatingFiles(parameters);
 
 				ratingsdownloaded = updater.updateRatings();
-				// if (!ok) ratingsdownloaded = false;
 				updater = null;
 			}
 
