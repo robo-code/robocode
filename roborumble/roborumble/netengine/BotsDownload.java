@@ -103,6 +103,9 @@ public class BotsDownload {
 		String exclude = parameters.getProperty("EXCLUDE");
 
 		if (exclude != null) {
+			// Trim trailing white spaces
+			exclude = exclude.trim();
+
 			// Convert into regular expression
 
 			// Dots must be dots, not "any character" in the regular expression
@@ -453,9 +456,7 @@ public class BotsDownload {
 
 			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") != -1) {
-					String name = record.substring(0, record.indexOf(","));
-
-					name = name.replace(' ', '_');
+					String name = record.substring(0, record.indexOf(",")).replace(' ', '_');
 					namesall.put(name, name);
 				}
 			}
@@ -479,44 +480,44 @@ public class BotsDownload {
 
 		// Check general ratings
 		for (Enumeration<?> e = generalratings.propertyNames(); e.hasMoreElements();) {
-			String key = (String) e.nextElement();
+			String bot = (String) e.nextElement();
 
-			if (!namesall.containsKey(key)) {
-				// remove the key from the ratings file
-				System.out.println("Removing entry ... " + key + " from " + generalbots);
-				removebot(generalbots, key);
+			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
+				// Remove the bot from the ratings file
+				System.out.println("Removing entry ... " + bot + " from " + generalbots);
+				removebot(generalbots, bot);
 			}
 		}
 		// Check mini ratings
 		for (Enumeration<?> e = miniratings.propertyNames(); e.hasMoreElements();) {
-			String key = (String) e.nextElement();
+			String bot = (String) e.nextElement();
 
-			if (!namesall.containsKey(key)) {
-				// remove the key from the ratings file
-				System.out.println("Removing entry ... " + key + " from " + minibots);
-				removebot(minibots, key);
+			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
+				// Remove the bot from the ratings file
+				System.out.println("Removing entry ... " + bot + " from " + minibots);
+				removebot(minibots, bot);
 			}
 		}
 
 		// Check micro ratings
 		for (Enumeration<?> e = microratings.propertyNames(); e.hasMoreElements();) {
-			String key = (String) e.nextElement();
+			String bot = (String) e.nextElement();
 
-			if (!namesall.containsKey(key)) {
-				// remove the key from the ratings file
-				System.out.println("Removing entry ... " + key + " from " + microbots);
-				removebot(microbots, key);
+			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
+				// Remove the bot from the ratings file
+				System.out.println("Removing entry ... " + bot + " from " + microbots);
+				removebot(microbots, bot);
 			}
 		}
 
 		// Check nano ratings
 		for (Enumeration<?> e = nanoratings.propertyNames(); e.hasMoreElements();) {
-			String key = (String) e.nextElement();
+			String bot = (String) e.nextElement();
 
-			if (!namesall.containsKey(key)) {
-				// remove the key from the ratings file
-				System.out.println("Removing entry ... " + key + " from " + nanobots);
-				removebot(nanobots, key);
+			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
+				// Remove the bot from the ratings file
+				System.out.println("Removing entry ... " + bot + " from " + nanobots);
+				removebot(nanobots, bot);
 			}
 		}
 
@@ -565,7 +566,7 @@ public class BotsDownload {
 	}
 
 	// Check if a robot is excluded
-	private boolean isExcluded(String name) {
+	private boolean isExcluded(String bot) {
 		if (excludes == null) {
 			return false;
 		}
@@ -573,7 +574,7 @@ public class BotsDownload {
 		// Check the name against all exclude filters
 		for (int i = excludes.length - 1; i >= 0; i--) {
 			try {
-				if (name.matches(excludes[i])) {
+				if (bot.matches(excludes[i])) {
 					return true;
 				}
 			} catch (java.util.regex.PatternSyntaxException e) {
