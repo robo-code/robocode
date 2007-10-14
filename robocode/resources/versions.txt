@@ -1,8 +1,12 @@
-Version 1.4.8
-(10/11/2007)
+Version 1.4.8 Alpha
+(10/14/2007)
 o Bugfixes
   -- With Robocode 1.4.7 a minor bug was introduced so that the robot console
      printed out "Wait interrupted" when a round was completed
+  -- RoboRumble participants excluded with the EXCLUDE filter were also removed
+     from the ratings, which is not the intension. In addition, if trailing white-
+     spaces occurred with the comma-separated list for the EXCLUDE filter, the
+     filter did not filter out participants correctly
 
 Version 1.4.7
 (10/09/2007)
