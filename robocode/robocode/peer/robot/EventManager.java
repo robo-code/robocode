@@ -704,16 +704,14 @@ public class EventManager {
 			currentEvent = eventQueue.get(0);
 		}
 		while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority) {
-			// robotPeer.out.println("processing event of priority: " + currentEvent.getPriority() + " in loop with ctep: " + currentTopEventPriority);
-			if (currentTopEventPriority > Integer.MIN_VALUE && currentEvent.getPriority() == currentTopEventPriority
-					&& getInterruptible(currentTopEventPriority)) {
-				setInterruptible(currentTopEventPriority, false); // we're going to restart it, so reset.
+			if (currentEvent.getPriority() == currentTopEventPriority) {
+				if (currentTopEventPriority > Integer.MIN_VALUE && getInterruptible(currentTopEventPriority)) {
+					setInterruptible(currentTopEventPriority, false); // we're going to restart it, so reset.
 
-				// We are already in an event handler, took action, and a new event was generated.
-				// So we want to break out of the old handler to process it here.
-				throw new EventInterruptedException(currentEvent.getPriority());
-			} else if (currentEvent.getPriority() == currentTopEventPriority) {
-				// robotPeer.out.println("Next event is same priority but not interruptable, ending loop.");
+					// We are already in an event handler, took action, and a new event was generated.
+					// So we want to break out of the old handler to process it here.
+					throw new EventInterruptedException(currentEvent.getPriority());
+				}
 				break;
 			}
 
@@ -775,11 +773,7 @@ public class EventManager {
 				throw e;
 			}
 			currentTopEventPriority = oldTopEventPriority;
-			if (eventQueue.size() > 0) {
-				currentEvent = eventQueue.get(0);
-			} else {
-				currentEvent = null;
-			}
+			currentEvent = (eventQueue.size() > 0) ? eventQueue.get(0) : null;
 		}
 	}
 
