@@ -12,6 +12,12 @@
  *     - Optimized for Java 5
  *     - Updated Javadoc
  *     - Removed try-catch(ClassCastException) from compareTo()
+ *     - Changed compareTo() to first and foremost compare the events based on
+ *       their event times, and secondly to compare the priorities if the event
+ *       times are equals. Previously, the priorities were compared first, and
+ *       secondly the event times if the priorities were equal.
+ *       This change was made to sort the event queues of the robots in
+ *       chronological so that the older events are listed before newer events
  *******************************************************************************/
 package robocode;
 
@@ -34,36 +40,56 @@ public class Event implements Comparable<Event> {
 	}
 
 	/**
-	 * Compares this event with another event, but only based on the priority
-	 * and time of the two events.
+	 * Compares this event to another event regarding precedence.
+	 * The event precedence is first and foremost determined by the event time,
+	 * secondly the event priority, and lastly specific event information.
 	 * <p>
-	 * This call is called by the game in order to sort events based on the
-	 * priority and time.
-	 * 
-	 * @param event the event to compare to this event
-	 * @return a negative integer, zero, or a positive integer as this event has
-	 *    a lower priority, same priority, or greater priority than the
-	 *    specified event
+	 * This method will first compare the time of each event. If the event time
+	 * is the same for both events, then this method compared the priority of
+	 * each event. If the event priorities are equals, then this method will
+	 * compare the two event based on specific event information.
+	 * <p>
+	 * This method is called by the game in order to sort the event queue of a
+	 * robot to make sure the events are listed in chronological order.
+	 * <p>
+	 * @param event the event to compare to this event.
+	 * @return a negative value if this event has higher precedence, i.e. must
+	 *    be listed before the specified event. A positive value if this event
+	 *    has a lower precedence, i.e. must be listed after the specified event.
+	 *    0 means that the precedence of the two events are equal.
 	 */
 	public int compareTo(Event event) {
-		int diff = event.priority - priority;
+		// Compare the time difference which has precedence over priority.
+		int timeDiff = (int) (time - event.time);
 
-		if (diff != 0) {
-			return diff;
+		if (timeDiff != 0) {
+			return timeDiff; // Time differ
 		}
-		int timediff = (int) (event.time - time);
 
-		if (timediff != 0) {
-			return timediff;
-		} else if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
+		// Same time -> Compare the difference in priority
+		int priorityDiff = event.priority - priority;
+
+		if (priorityDiff != 0) {
+			return priorityDiff; // Priority differ
+		}
+
+		// Same time and priority -> Compare specific event types
+
+		// Compare the distance, if the events are ScannedRobotEvents
+		// The shorter distance to the robot, the higher priority
+		if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
 			return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
-		} else if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
+		}
+		// Compare the isMyFault, if the events are HitRobotEvents
+		// The isMyFault has higher priority when it is set compared to when it is not set 
+		if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
 			int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
 			int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
 
 			return compare1 - compare2;
 		}
 
+		// No difference found
 		return 0;
 	}
 
