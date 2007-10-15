@@ -41,6 +41,9 @@
  *       turnAheadRight(), turnBackLeft(), and turnBackRight() for the
  *       JuniorRobot, which moves the robot in a perfect curve that follows a
  *       circle
+ *     - Changed the behaviour of checkRobotCollision() so that HitRobotEvents
+ *       are only created and sent to robot when damage do occur. Previously, a
+ *       robot could receive HitRobotEvents even when no damage was done
  *     Luis Crespo
  *     - Added states
  *     Titus Chen
@@ -298,12 +301,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 							statistics.scoreRammingKill(i);
 						}
 					}
+					eventManager.add(
+							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
+					r.eventManager.add(
+							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getHeading()), energy, false));
 				}
-				eventManager.add(
-						new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
-				r.eventManager.add(
-						new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getHeading()), energy, false));
-
 			}
 		}
 		if (inCollision) {
