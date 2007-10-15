@@ -17,7 +17,18 @@ o Changes
         the robot that was moving, which WAS causing damage
      -- Now: HitRobotEvents will only occur when damage is done to each robot,
         and no HitRobotEvents will be ever be sent when no damage is done, i.e.
-        when a stationary robot is "colliding" with another robot 
+        when a stationary robot is "colliding" with another robot
+  -- The events in the robot event queue are now sorted in chronological order
+     so that events that occurred before newer events gets processed first
+     -- Previously, the event queue was ordered based on the event priorities so
+        that the events with the highest priorities were processed first.
+        This could cause some problems with robots with skipped turns, as their
+        event queue would potentially contain events from different time frames
+     -- Now it is perfectly safe for robots to assume that events occurring
+        before other event are processed first
+     -- Events occurring in the same time frame is still sorted based on their
+        priorities so that the events with higher priorities are processed before
+        events with lower priorities 
 
 Version 1.4.7
 (10/09/2007)
