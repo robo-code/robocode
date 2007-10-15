@@ -1,5 +1,5 @@
-Version 1.4.8 Alpha
-(10/14/2007)
+Version 1.5 Alpha
+(10/15/2007)
 o Bugfixes
   -- With Robocode 1.4.7 a minor bug was introduced so that the robot console
      printed out "Wait interrupted" when a round was completed
@@ -7,6 +7,17 @@ o Bugfixes
      from the ratings, which is not the intension. In addition, if trailing white-
      spaces occurred with the comma-separated list for the EXCLUDE filter, the
      filter did not filter out participants correctly
+o Changes
+  -- Redundant HitRobotEvents are no longer occurring when Robocode is performing
+     collision detection between two robots
+     -- Previously: If a collision between a stationary robot (i.e. not moving)
+        and another robot that was moving, then two HitRobotEvents would first
+        be sent to each robot based on the stationary robot even though no damage
+        was done. Next, two HitRobotEvents would be sent to each robot based on
+        the robot that was moving, which WAS causing damage
+     -- Now: HitRobotEvents will only occur when damage is done to each robot,
+        and no HitRobotEvents will be ever be sent when no damage is done, i.e.
+        when a stationary robot is "colliding" with another robot 
 
 Version 1.4.7
 (10/09/2007)
