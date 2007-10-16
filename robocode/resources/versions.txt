@@ -1,5 +1,5 @@
 Version 1.5 Alpha
-(10/15/2007)
+(10/16/2007)
 o Bugfixes
   -- With Robocode 1.4.7 a minor bug was introduced so that the robot console
      printed out "Wait interrupted" when a round was completed
@@ -28,7 +28,14 @@ o Changes
         before other event are processed first
      -- Events occurring in the same time frame is still sorted based on their
         priorities so that the events with higher priorities are processed before
-        events with lower priorities 
+        events with lower priorities
+  -- The priority of the DeathEvent was changed from the reserved priority 100
+     to -1 in order to allow robots to process all pending events before they die
+     -- Previously, robots were not able to process all events when it died as
+        the DeathEvent was having the highest possible priority
+     -- Now when the DeathEvent has the lowest priority, this will be the last
+        event left on the robot's event queue before it dies. That is, all events
+        in the event queue have already been processed when reaching the DeathEvent
 
 Version 1.4.7
 (10/09/2007)
