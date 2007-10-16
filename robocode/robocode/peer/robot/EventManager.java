@@ -22,6 +22,8 @@
  *       synchronization with the event queue. Now all getXXXEvents() methods
  *       are synchronized against the event queue, and the list of customEvents
  *       is a CopyOnWriteArrayList which is fully thread-safe
+ *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
+ *       robots process events before they die
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -53,6 +55,9 @@ import robocode.util.Utils;
 public class EventManager {
 	private RobotPeer robotPeer = null;
 
+	private final int MAX_PRIORITY = 100;
+
+	private final int deathEventPriority = -1; // System event -> cannot be changed!
 	private int scannedRobotEventPriority = 10;
 	private int hitByBulletEventPriority = 20;
 	private int hitWallEventPriority = 30;
@@ -63,9 +68,8 @@ public class EventManager {
 	private int robotDeathEventPriority = 70;
 	private int messageEventPriority = 75;
 	// custom events defaults to 80
-	private int skippedTurnEventPriority = 100;
-	private int winEventPriority = 100;
-	private int deathEventPriority = 100;
+	private final int skippedTurnEventPriority = 100; // System event -> cannot be changed!
+	private final int winEventPriority = 100; // System event -> cannot be changed!
 
 	private int currentTopEventPriority;
 
@@ -76,8 +80,7 @@ public class EventManager {
 	private boolean fireAssistValid = false;
 	private boolean useFireAssist = true;
 
-	private int maxPriorities = 101;
-	private boolean interruptible[] = new boolean[maxPriorities];
+	private boolean interruptible[] = new boolean[MAX_PRIORITY + 1];
 
 	private final static int MAX_QUEUE_SIZE = 256;
 

@@ -13,6 +13,8 @@
  *     - Updated Javadoc
  *     - The uninitializedException() method does not need a method name as input
  *       parameter anymore
+ *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
+ *       robots process events before they die
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -906,33 +908,38 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 *   setEventPriority("RobotDeathEvent", 15);
 	 * </pre>
 	 *
-	 * The default priorities are, from lowest to highest:
+	 * The default priorities are, from highest to lowest:
 	 * <pre>
-	 *	 {@link ScannedRobotEvent}:     10
-	 *	 {@link HitRobotEvent}:         20
-	 *	 {@link HitWallEvent}:          30
-	 *	 {@link HitByBulletEvent}:      40
-	 *	 {@link BulletHitEvent}:        50
-	 *	 {@link BulletHitBulletEvent}:  55
-	 *	 {@link BulletMissedEvent}:     60
-	 *	 {@link RobotDeathEvent}:       70
-	 *	 {@link MessageEvent}:          75
-	 *	 {@link CustomEvent}:           80
-	 *	 {@link SkippedTurnEvent}:     100 (reserved)
 	 *	 {@link WinEvent}:             100 (reserved)
-	 *	 {@link DeathEvent}:           100 (reserved)
+	 *	 {@link SkippedTurnEvent}:     100 (reserved)
+	 *	 {@link CustomEvent}:           80
+	 *	 {@link MessageEvent}:          75
+	 *	 {@link RobotDeathEvent}:       70
+	 *	 {@link BulletMissedEvent}:     60
+	 *	 {@link BulletHitBulletEvent}:  55
+	 *	 {@link BulletHitEvent}:        50
+	 *	 {@link HitByBulletEvent}:      40
+	 *	 {@link HitWallEvent}:          30
+	 *	 {@link HitRobotEvent}:         20
+	 *	 {@link ScannedRobotEvent}:     10
+	 *	 {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
 	 *
 	 * Note that you cannot change the priority for events with the special
-	 * priority value 100 (reserved) as these event are system events. Also note
-	 * that you cannot change the priority of CustomEvent. Instead you must
-	 * change the priority of the condition(s) for your custom event(s). 
+	 * priority value -1 or 100 (reserved) as these event are system events.
+	 * Also note that you cannot change the priority of CustomEvent.
+	 * Instead you must change the priority of the condition(s) for your custom
+	 * event(s). 
 	 *
 	 * @param eventClass the name of the event class (string) to set the
 	 *    priority for
 	 * @param priority the new priority for that event class
 	 *
 	 * @see Robot#setInterruptible
+	 * 
+	 * @since 1.5, the priority of DeathEvent was changed from 100 to -1 in
+	 *    order to let robots process pending events on its event queue before
+	 *    it dies. When the robot dies, it will not be able to process events.
 	 */
 	public void setEventPriority(String eventClass, int priority) {
 		if (peer != null) {
