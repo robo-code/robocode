@@ -1,12 +1,5 @@
 Version 1.5 Alpha
-(10/16/2007)
-o Bugfixes
-  -- With Robocode 1.4.7 a minor bug was introduced so that the robot console
-     printed out "Wait interrupted" when a round was completed
-  -- RoboRumble participants excluded with the EXCLUDE filter were also removed
-     from the ratings, which is not the intension. In addition, if trailing white-
-     spaces occurred with the comma-separated list for the EXCLUDE filter, the
-     filter did not filter out participants correctly
+(10/26/2007)
 o Changes
   -- Redundant HitRobotEvents are no longer occurring when Robocode is performing
      collision detection between two robots
@@ -36,6 +29,18 @@ o Changes
      -- Now when the DeathEvent has the lowest priority, this will be the last
         event left on the robot's event queue before it dies. That is, all events
         in the event queue have already been processed when reaching the DeathEvent
+
+Version 1.4.8
+(10/25/2007)
+o Bugfixes
+  -- When debugging robots or the Robocode game itself within Eclipse on Windows,
+     the Java VM was crashing with an "Access Violation" 
+  -- With Robocode 1.4.7 a minor bug was introduced so that the robot console
+     printed out "Wait interrupted" when a round was completed
+  -- RoboRumble participants excluded with the EXCLUDE filter were also removed
+     from the ratings, which is not the intension. In addition, if trailing white-
+     spaces occurred with the comma-separated list for the EXCLUDE filter, the
+     filter did not filter out participants correctly
 
 Version 1.4.7
 (10/09/2007)
