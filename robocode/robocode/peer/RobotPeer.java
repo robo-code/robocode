@@ -51,7 +51,6 @@
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
- *     - Optimized getting the name of the robot using the getName() method
  *******************************************************************************/
 package robocode.peer;
 
@@ -224,10 +223,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		
 		battleField = new DefaultBattleField(800, 600);
 		battle = new Battle(battleField, null);
-
-		if (name == null) {
-			this.name = robotClassManager.getClassNameManager().getFullClassNameWithVersion();
-		}
 	}
 
 	public boolean isIORobot() {
@@ -277,33 +272,20 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				boolean atFault = false;
 				double bearing = normalRelativeAngle(angle - heading);
 
-				if (velocity > 0 && bearing > -PI / 2 && bearing < PI / 2) {
-					velocity = 0;
-					atFault = true;
-					distanceRemaining = 0;
-					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
-					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
+				if ((velocity > 0 && bearing > -PI / 2 && bearing < PI / 2)
+						|| (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2))) {
+
 					inCollision = true;
+					atFault = true;
+					velocity = 0;
+					distanceRemaining = 0;
 					x -= movedx;
 					y -= movedy;
 
-					if (r.getEnergy() == 0) {
-						if (r.isAlive()) {
-							r.kill();
-							statistics.scoreRammingKill(i);
-						}
-					}
-				} else if (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2)) {
-					velocity = 0;
-					atFault = true;
-					distanceRemaining = 0;
-					statistics.scoreRammingDamage(i, Rules.ROBOT_HIT_DAMAGE);
+					statistics.scoreRammingDamage(i);
+
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
-					inCollision = true;
-					x -= movedx;
-					y -= movedy;
 
 					if (r.getEnergy() == 0) {
 						if (r.isAlive()) {
@@ -312,14 +294,13 @@ public class RobotPeer implements Runnable, ContestantPeer {
 						}
 					}
 				}
-
 				eventManager.add(
 						new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
 				r.eventManager.add(
 						new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getHeading()), energy, false));
 
-			} // if robot active & not me & hit
-		} // for robots
+			}
+		}
 		if (inCollision) {
 			state = STATE_HIT_ROBOT;
 		}
@@ -429,7 +410,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public String getName() {
-		return name;
+		return (name != null)
+				? shortName
+				: robotClassManager.getClassNameManager().getFullClassNameWithVersion();
 	}
 
 	public String getShortName() {
@@ -716,7 +699,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				log("Wait interrupted");
+				; // We are expecting this to happen when a round is ended!
 			}
 			isSleeping = false;
 			// Notify battle thread, which is waiting in
@@ -1293,10 +1276,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		// Create statistics after teamPeer set
 		statistics = new RobotStatistics(this);
-
-		if (name == null) {
-			name = robotClassManager.getClassNameManager().getFullClassNameWithVersion();
-		}
 	}
 
 	public synchronized Bullet setFire(double power) {
