@@ -1138,12 +1138,15 @@ public class Battle implements Runnable {
 		// Wake up all robot threads
 		synchronized (robots) {
 			for (RobotPeer r : getRobotsAtRandom()) {
-				if (r.isRunning() && r.isAlive()) {
-					synchronized (r) {
-						// This call blocks until the
-						// robot's thread actually wakes up.
-						r.wakeup();
+				if (!r.isRunning()) {
+					continue;
+				}
+				// This call blocks until the
+				// robot's thread actually wakes up.
+				r.wakeup();
 
+				if (r.isAlive()) {
+					synchronized (r) {
 						// It's quite possible for simple robots to
 						// complete their processing before we get here,
 						// so we test if the robot is already asleep.
@@ -1183,7 +1186,7 @@ public class Battle implements Runnable {
 							r.getRobotThreadManager().forceStop();
 						}
 					}
-				} // if isRunning
+				}
 			}
 		}
 	}
