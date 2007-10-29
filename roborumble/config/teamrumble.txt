@@ -27,7 +27,7 @@ USER=Put_Your_Name_Here
 #
 #           EXCLUDE=xyz.*v1.?, *Nano*
 
-EXCLUDE=  
+EXCLUDE=
 
 #-------------------------------------------------------------------------------
 # Properties for controlling the rumble. Use YES or NOT

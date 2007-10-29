@@ -70,7 +70,7 @@ public class UpdateRatingFiles {
 
 	public boolean updateRatings() {
 
-		// read all the recors to be updated
+		// read all the records to be updated
 		Vector<String> battles = new Vector<String>();
 		BufferedReader br = null;
 
