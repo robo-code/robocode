@@ -985,7 +985,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	public void setMaxTurnRate(double newMaxTurnRate) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setMaxTurnRate(newMaxTurnRate);
+			peer.setMaxTurnRate(Math.toRadians(newMaxTurnRate));
 		} else {
 			uninitializedException();
 		}
