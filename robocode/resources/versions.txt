@@ -1,5 +1,5 @@
 Version 1.4.9
-(11/06/2007)
+(11/07/2007)
 -------------
 o Bugfixes
   -- RoboRumble participants excluded with the EXCLUDE filter were also removed
@@ -17,6 +17,14 @@ o Bugfixes
      compared to was is really possible to do with the available hardware
      -- With this bugfix, Robocode will render the battles even faster than before
         in most cases
+o Changes
+  -- When a new CPU constant is being calculated it will now take the time
+     granularity (OS dependent) into account. Previously, if the CPU constant
+     was less than the time millis granularity, then skipped turns did occur on
+     robots when the CPU constant <= Time millis granularity
+     -- It is strongly encouraged that you recalculate your CPU constant when
+        running this Robocode version the first time by selecting "Recalculate
+        CPU constant" from the Options menu
 
 Version 1.4.8
 (10/25/2007)
