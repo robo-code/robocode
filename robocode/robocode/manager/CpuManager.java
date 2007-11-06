@@ -15,6 +15,11 @@
  *     - Updated to use methods from WindowUtil and Logger, which replaces
  *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Added calculateCpuConstant() used for (re)calculating the CPU constant
+ *     - Added setCpuConstant() for calculating and setting the CPU constant
+ *     - Added getMillisGranularity() for calculating the time millis
+ *       granularity
+ *     - Limited the CPU constant to be >= millis granularity in order to prevent
+ *       robots from skipping turns as the granularity might be coarse
  *******************************************************************************/
 package robocode.manager;
 
@@ -51,6 +56,16 @@ public class CpuManager {
 	public void calculateCpuConstant() {
 		WindowUtil.setStatus("Estimating CPU speed, please wait...");
 
+		setCpuConstant();
+
+		Logger.log("Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
+		manager.getProperties().setCpuConstant(cpuConstant);
+		manager.saveProperties();
+
+		WindowUtil.setStatus("");
+	}
+	
+	private void setCpuConstant() {
 		long start = System.currentTimeMillis();
 		long count = 0;
 		double d = 0;
@@ -64,22 +79,27 @@ public class CpuManager {
 
 		double msPerCycle = 1 / cyclesPerMS;
 
-		cpuConstant = (int) (APPROXIMATE_CYCLES_ALLOWED * msPerCycle + .5);
+		cpuConstant = Math.max((int) (APPROXIMATE_CYCLES_ALLOWED * msPerCycle + .5), getMillisGranularity());
 
 		if (cpuConstant < 1) {
 			cpuConstant = 1;
 		}
+	}
 
-		Logger.log("Each robot will be allowed a maximum of " + cpuConstant + " milliseconds per turn on this system.");
-		manager.getProperties().setCpuConstant(cpuConstant);
-		manager.saveProperties();
+	private int getMillisGranularity() {
+		int granularity = 0;
+		int delta = 0, i;
 
-		WindowUtil.setStatus("");
+		// Run several times, so we find the most representative granularity
+		// Sometimes, e.g. 1 out of 100 times we get a lower granularity.
+		for (i = 0; i < 10; i++) {
+			long time = System.currentTimeMillis();
 
-		/*
-		 17 MFlops:  32 ms
-		 35 MFlops:  16 ms
-		 70 MFlops:  8 ms
-		 */
+			while ((delta = (int) (System.currentTimeMillis() - time)) == 0);
+			
+			granularity = Math.max(granularity, delta);
+		}
+
+		return granularity;
 	}
 }
