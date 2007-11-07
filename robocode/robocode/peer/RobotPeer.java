@@ -412,7 +412,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public String getName() {
-		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		return (name != null)
+				? shortName
+				: robotClassManager.getClassNameManager().getFullClassNameWithVersion();
 	}
 
 	public String getShortName() {
@@ -1138,8 +1140,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		eventManager.reset();
 
-		setMaxVelocity(999);
-		setMaxTurnRate(999);
+		setMaxVelocity(Double.MAX_VALUE);
+		setMaxTurnRate(Double.MAX_VALUE);
 
 		statistics.initialize();
 
@@ -1173,7 +1175,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			out.println("You cannot setMaxTurnRate to: " + newTurnRate);
 			return;
 		}
-		maxTurnRate = min(toRadians(abs(newTurnRate)), Rules.MAX_TURN_RATE_RADIANS);
+		maxTurnRate = min(abs(newTurnRate), Rules.MAX_TURN_RATE_RADIANS);
 	}
 
 	public synchronized void setMaxVelocity(double newVelocity) {
@@ -1717,6 +1719,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			return;
 		}
 
+		// Save current max. velocity and max. turn rate so they can be restored
+		final double savedMaxVelocity = getMaxVelocity();
+		final double savedMaxTurnRate = getMaxTurnRate();
+
 		final double absDegrees = Math.abs(Math.toDegrees(radians));
 		final double absDistance = Math.abs(distance);
 
@@ -1771,10 +1777,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 		// -- Move and turn chassis in a curve --
 
-		// Save current max. velocity and max. turn rate so they can be restored
-		final double savedMaxVelocity = getMaxVelocity();
-		final double savedMaxTurnRate = getMaxTurnRate();
-
 		// Set the calculated max. velocity
 		setMaxVelocity(maxVelocity);
 
@@ -1786,7 +1788,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		// Loop thru the number of turns it will take to move the distance and adjust
 		// the max. turn rate so it fit the current velocity of the robot 
 		for (int t = turns; t >= 0; t--) {
-			setMaxTurnRate(getVelocity() * absDegrees / absDistance);
+			setMaxTurnRate(getVelocity() * radians / absDistance);
 			tick(); // Perform next turn
 		}
 

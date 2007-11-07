@@ -1,5 +1,6 @@
 Version 1.5 Alpha
-(10/26/2007)
+(11/07/2007)
+-------------
 o Changes
   -- Redundant HitRobotEvents are no longer occurring when Robocode is performing
      collision detection between two robots
@@ -30,24 +31,50 @@ o Changes
         event left on the robot's event queue before it dies. That is, all events
         in the event queue have already been processed when reaching the DeathEvent
 
+Version 1.4.9
+(11/07/2007)
+-------------
+o Bugfixes
+  -- RoboRumble participants excluded with the EXCLUDE filter were also removed
+     from the ratings, which is not the intension.
+     -- In addition, if trailing white-spaces occurred with the comma-separated
+        list for the EXCLUDE filter, the filter did not filter out participants
+        correctly
+     -- With the release of 1.4.8 this bug was claimed to be fixed, but
+        unfortunately the bugfix was missing in the build of the 1.4.8 release
+  -- Corrected bug seen with the JuniorRobot, when first calling
+     turnAheadLeft(100,90) and then turnRight(90) right after this call, where
+     the robot turn quickly to the left, but slowly to the right
+  -- The calculation of the possible frame rate (FPS) was calculated incorrectly
+     causing Robocode to run with lower FPS when rendering battles on the GUI
+     compared to was is really possible to do with the available hardware
+     -- With this bugfix, Robocode will render the battles even faster than before
+        in most cases
+o Changes
+  -- When a new CPU constant is being calculated it will now take the time
+     granularity (OS dependent) into account. Previously, if the CPU constant
+     was less than the time millis granularity, then skipped turns did occur on
+     robots when the CPU constant <= Time millis granularity
+     -- It is strongly encouraged that you recalculate your CPU constant when
+        running this Robocode version the first time by selecting "Recalculate
+        CPU constant" from the Options menu
+
 Version 1.4.8
 (10/25/2007)
+-------------
 o Bugfixes
   -- When debugging robots or the Robocode game itself within Eclipse on Windows,
      the Java VM was crashing with an "Access Violation" 
   -- With Robocode 1.4.7 a minor bug was introduced so that the robot console
      printed out "Wait interrupted" when a round was completed
-  -- RoboRumble participants excluded with the EXCLUDE filter were also removed
-     from the ratings, which is not the intension. In addition, if trailing white-
-     spaces occurred with the comma-separated list for the EXCLUDE filter, the
-     filter did not filter out participants correctly
 
 Version 1.4.7
 (10/09/2007)
+-------------
 o Bugfixes
   -- Some robots did not receive any score even though they won the battle due
      to Robocode did not always detect correctly that the robot's thread(s)
-     had been properly terminated
+     had been properly terminated.
      -- Thanks goes to Eric Simonton, David Alves, and "AaronR" for help solving
         this issue!
   -- Teams located in the .robotcache dir were still put into the robot.database

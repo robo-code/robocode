@@ -736,7 +736,6 @@ public class Battle implements Runnable {
 		framesThisSec = 0;
 
 		long robotStartTime;
-		long frameStartTime;
 		int currentRobotMillis = 0;
 
 		int totalRobotMillisThisSec = 0;
@@ -866,23 +865,15 @@ public class Battle implements Runnable {
 			// Calculate the time spend on the robots
 			currentRobotMillis = (int) (System.currentTimeMillis() - robotStartTime);
 
-			// Calculate the total time spend on robots this second
-			totalRobotMillisThisSec += currentRobotMillis;
-
 			// Set flag indication if we are running in "minimized mode"
 			boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
 
 			// Paint current battle frame
-
-			// Store the frame update start time
-			frameStartTime = System.currentTimeMillis();
-
+			
 			if (!(isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode)) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
-				if ((totalFrameMillisThisSec == 0)
-						|| (frameStartTime - startTimeThisSec) > (framesThisSec * 1000f / estimatedFPS)) {
-
+				if ((estimatedFPS * turnsThisSec / desiredTPS) >= framesThisSec) {
 					battleView.update();
 					framesThisSec++;
 				}
@@ -890,21 +881,24 @@ public class Battle implements Runnable {
 				playSounds();
 			}
 
+			// Calculate the total time spend on robots this second
+			totalRobotMillisThisSec += currentRobotMillis;
+
 			// Calculate the total time used for the frame update
 			totalFrameMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentRobotMillis;
 
 			// Calculate the total turn time this second
-			totalTurnMillisThisSec = totalRobotMillisThisSec + totalFrameMillisThisSec;
+			totalTurnMillisThisSec = max(1, totalRobotMillisThisSec + totalFrameMillisThisSec);
 
 			// Estimate the time remaining this second to spend on frame updates
-			estFrameTimeThisSec = max(0, 1000f - desiredTPS * (float) totalTurnMillisThisSec / turnsThisSec);
+			estFrameTimeThisSec = max(0, 1000 - desiredTPS * totalRobotMillisThisSec / turnsThisSec);
 
 			// Estimate the possible FPS based on the estimated frame time
 			estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
 
 			// Estimate the time that will be used on the total turn this second
 			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
-
+			
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
 			if (endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode) {
 				delay = 0;
@@ -973,9 +967,9 @@ public class Battle implements Runnable {
 		framesThisSec = 0;
 
 		long frameStartTime;
-		int currentFrameMillis = 0;
 
 		int totalFrameMillisThisSec = 0;
+		int totalTurnMillisThisSec;
 
 		float estFrameTimeThisSec;
 		float estimatedFPS = 0;
@@ -1055,24 +1049,22 @@ public class Battle implements Runnable {
 			if (!(isAborted() || minimizedMode)) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
-				if (((totalFrameMillisThisSec == 0)
-						|| (frameStartTime - startTimeThisSec) > (framesThisSec * 1000f / estimatedFPS))) {
+				if ((estimatedFPS * turnsThisSec / desiredTPS) >= framesThisSec) {
 					battleView.update();
-
 					framesThisSec++;
 				}
 
 				playSounds();
 			}
 
-			// Calculate the time spend on the frame update
-			currentFrameMillis = (int) (System.currentTimeMillis() - frameStartTime);
-
 			// Calculate the total time spend on frame updates this second
-			totalFrameMillisThisSec += currentFrameMillis;
+			totalFrameMillisThisSec += (int) (System.currentTimeMillis() - frameStartTime);
+
+			// Calculate the total turn time this second
+			totalTurnMillisThisSec = max(1, (int)(System.currentTimeMillis() - startTimeThisSec - totalFrameMillisThisSec));
 
 			// Estimate the time remaining this second to spend on frame updates
-			estFrameTimeThisSec = max(0, 1000f - desiredTPS * (float) totalFrameMillisThisSec / turnsThisSec);
+			estFrameTimeThisSec = max(0, 1000 - desiredTPS * totalTurnMillisThisSec / turnsThisSec);
 
 			// Estimate the possible FPS based on the estimated frame time
 			estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
