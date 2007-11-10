@@ -138,6 +138,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	private double turnRate;
 
+	private double gunHeat;
+
 	private BattleField battleField;
 
 	private BoundingRectangle boundingBox;
@@ -176,7 +178,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean isAdjustRadarForBodyTurnSet;
 
 	private boolean checkFileQuota;
-	private double gunHeat;
+
 	private boolean halt;
 	private boolean inCollision;
 
