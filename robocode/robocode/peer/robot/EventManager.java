@@ -24,6 +24,9 @@
  *       is a CopyOnWriteArrayList which is fully thread-safe
  *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
  *       robots process events before they die
+ *     - Added handling of the new StatusEvent, which is used for calling the new
+ *       Robot.onStatus(StatusEvent e) event handler, and added the
+ *       getStatusEvents() method
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -47,8 +50,8 @@ import robocode.util.Utils;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder (contributor)
  * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
@@ -68,6 +71,7 @@ public class EventManager {
 	private int robotDeathEventPriority = 70;
 	private int messageEventPriority = 75;
 	// custom events defaults to 80
+	private int statusEventPriority = 99;
 	private final int skippedTurnEventPriority = 100; // System event -> cannot be changed!
 	private final int winEventPriority = 100; // System event -> cannot be changed!
 
@@ -285,6 +289,8 @@ public class EventManager {
 			return winEventPriority;
 		} else if (eventClass.equals("robocode.BulletHitBulletEvent") || eventClass.equals("BulletHitBulletEvent")) {
 			return bulletHitBulletEventPriority;
+		} else if (eventClass.equals("robocode.StatusEvent") || eventClass.equals("StatusEvent")) {
+			return statusEventPriority;
 		} else {
 			return -1;
 		}
@@ -323,6 +329,9 @@ public class EventManager {
 		}
 		if (e instanceof WinEvent) {
 			return winEventPriority;
+		}
+		if (e instanceof StatusEvent) {
+			return statusEventPriority;
 		}
 		if (e instanceof CustomEvent) {
 			return ((CustomEvent) e).getCondition().getPriority();
@@ -680,6 +689,14 @@ public class EventManager {
 		}
 	}
 
+	public void onStatus(StatusEvent e) {
+		_RobotBase robot = getRobot();
+
+		if (robot != null && robot instanceof Robot) {
+			((Robot) robot).onStatus(e);
+		}
+	}
+
 	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
@@ -724,7 +741,9 @@ public class EventManager {
 
 			eventQueue.remove(currentEvent);
 			try {
-				if (currentEvent instanceof HitWallEvent) {
+				if (currentEvent instanceof StatusEvent) {
+					onStatus((StatusEvent) currentEvent);
+				} else if (currentEvent instanceof HitWallEvent) {
 					onHitWall((HitWallEvent) currentEvent);
 				} else if (currentEvent instanceof HitRobotEvent) {
 					onHitRobot((HitRobotEvent) currentEvent);
@@ -818,6 +837,8 @@ public class EventManager {
 			scannedRobotEventPriority = priority;
 		} else if (eventClass.equals("robocode.MessageEvent") || eventClass.equals("MessageEvent")) {
 			messageEventPriority = priority;
+		} else if (eventClass.equals("robocode.StatusEvent") || eventClass.equals("StatusEvent")) {
+			statusEventPriority = priority;
 		} else if (eventClass.equals("robocode.CustomEvent") || eventClass.equals("CustomEvent")) {
 			robotPeer.out.println(
 					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
@@ -869,6 +890,38 @@ public class EventManager {
 			for (Event e : eventQueue) {
 				if (e instanceof MessageEvent) {
 					events.add((MessageEvent) e);
+				}
+			}
+		}
+		return events;
+	}
+
+	/**
+	 * Returns a vector containing all StatusEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   for (StatusEvent e : getStatusEvents()) {
+	 *      // do something with e
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all StatusEvents currently in the robot's
+	 *    queue.
+	 *
+	 * @see #onStatus
+	 * @see StatusEvent
+	 *
+	 * @since 1.5
+	 */
+	public List<StatusEvent> getStatusEvents() {
+		List<StatusEvent> events = Collections.synchronizedList(new ArrayList<StatusEvent>());
+
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof StatusEvent) {
+					events.add((StatusEvent) e);
 				}
 			}
 		}
