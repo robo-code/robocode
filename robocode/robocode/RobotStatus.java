@@ -75,7 +75,7 @@ public class RobotStatus {
 	 *
 	 * @return the X position of the robot
 	 *
-	 * @see #getY
+	 * @see #getY()
 	 */
 	public double getX() {
 		return x;
@@ -87,7 +87,7 @@ public class RobotStatus {
 	 *
 	 * @return the Y position of the robot
 	 *
-	 * @see #getX
+	 * @see #getX()
 	 */
 	public double getY() {
 		return y;
@@ -285,16 +285,16 @@ public class RobotStatus {
 	 * <p>
 	 * The amount of gun heat generated when the gun is fired is
 	 * 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
-	 * by {@link #getGunCoolingRate()}, which is a battle setup.
+	 * by {@link Robot#getGunCoolingRate()}, which is a battle setup.
 	 * <p>
 	 * Note that all guns are "hot" at the start of each round, where the gun
 	 * heat is 3.
 	 *
 	 * @return the current gun heat
 	 *
-	 * @see Robot#getGunCoolingRate
-	 * @see Robot#fire
-	 * @see Robot#fireBullet
+	 * @see Robot#getGunCoolingRate()
+	 * @see Robot#fire(double)
+	 * @see Robot#fireBullet(double)
 	 */
 	public double getGunHeat() {
 		return gunHeat;
