@@ -64,6 +64,7 @@
  *       are checked and awakened in turn
  *     - Simplified the repainting of the battle
  *     - Bugfix: In wakeupRobots(), only wakeup a robot that is running and alive
+ *     - A StatusEvent is now send to all alive robot each turn
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -104,11 +105,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import robocode.MessageEvent;
-import robocode.Robot;
-import robocode.RobotDeathEvent;
-import robocode.SkippedTurnEvent;
-import robocode._RobotBase;
+import robocode.*;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
@@ -856,6 +853,13 @@ public class Battle implements Runnable {
 				}
 			}
 
+			// Handle status events
+			for (RobotPeer r : robots) {
+				if (!r.isDead()) {
+					r.getEventManager().add(new StatusEvent(r));
+				}
+			}
+			
 			// Store the robot start time
 			robotStartTime = System.currentTimeMillis();
 
@@ -1061,7 +1065,8 @@ public class Battle implements Runnable {
 			totalFrameMillisThisSec += (int) (System.currentTimeMillis() - frameStartTime);
 
 			// Calculate the total turn time this second
-			totalTurnMillisThisSec = max(1, (int)(System.currentTimeMillis() - startTimeThisSec - totalFrameMillisThisSec));
+			totalTurnMillisThisSec = max(1,
+					(int) (System.currentTimeMillis() - startTimeThisSec - totalFrameMillisThisSec));
 
 			// Estimate the time remaining this second to spend on frame updates
 			estFrameTimeThisSec = max(0, 1000 - desiredTPS * totalTurnMillisThisSec / turnsThisSec);
@@ -1807,7 +1812,7 @@ public class Battle implements Runnable {
 		}
 		battleView.setTitle(title.toString());
 	}
-	
+
 	public void mouseClicked(final MouseEvent e) {
 		if (isRunning()) {
 			MouseEvent me = mirroredMouseEvent(e);
