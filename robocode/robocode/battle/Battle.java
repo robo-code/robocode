@@ -754,6 +754,11 @@ public class Battle implements Runnable {
 
 		battleManager.startNewRound();
 
+		// Add status events to all robots for the first turn
+		for (RobotPeer r : robots) {
+			r.getEventManager().add(new StatusEvent(r));
+		}
+
 		if (battleView != null) {
 			battleView.update();
 		}
@@ -853,7 +858,7 @@ public class Battle implements Runnable {
 				}
 			}
 
-			// Handle status events
+			// Add status events for the current turn to all robots that are alive 
 			for (RobotPeer r : robots) {
 				if (!r.isDead()) {
 					r.getEventManager().add(new StatusEvent(r));
