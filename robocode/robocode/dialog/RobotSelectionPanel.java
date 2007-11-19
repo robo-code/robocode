@@ -398,7 +398,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
-	@SuppressWarnings("serial")
 	private static class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
 		private boolean useShortNames;
 

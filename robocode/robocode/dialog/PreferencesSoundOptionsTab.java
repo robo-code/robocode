@@ -460,7 +460,6 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		setMixerCompoBox("DirectAudioDevice");
 	}
 
-	@SuppressWarnings("serial")
 	private static class MixerInfoCellRenderer extends javax.swing.plaf.basic.BasicComboBoxRenderer {
 
 		@Override

@@ -327,7 +327,6 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 
-	@SuppressWarnings("serial")
 	private class AvailablePackagesModel extends AbstractListModel {
 		public void changed() {
 			fireContentsChanged(this, 0, getSize());
@@ -343,7 +342,6 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 
-	@SuppressWarnings("serial")
 	private class AvailableRobotsModel extends AbstractListModel {
 		public void changed() {
 			fireContentsChanged(this, 0, getSize());
@@ -359,7 +357,6 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 
-	@SuppressWarnings("serial")
 	private static class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
 		private boolean useShortNames = false;
 

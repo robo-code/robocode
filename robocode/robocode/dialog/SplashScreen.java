@@ -87,7 +87,6 @@ public class SplashScreen extends JWindow {
 	 *
 	 * @return the splash panel
 	 */
-	@SuppressWarnings("serial")
 	private JPanel getSplashPanel() {
 		if (splashPanel == null) {
 			splashPanel = new JPanel() {
