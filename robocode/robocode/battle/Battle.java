@@ -754,12 +754,6 @@ public class Battle implements Runnable {
 
 		battleManager.startNewRound();
 
-		// Add and process status events to all robots for the first turn
-		for (RobotPeer r : robots) {
-			r.getEventManager().add(new StatusEvent(r));
-			r.getEventManager().processEvents();
-		}
-
 		if (battleView != null) {
 			battleView.update();
 		}
@@ -1422,7 +1416,14 @@ public class Battle implements Runnable {
 				synchronized (r) {
 					try {
 						log(".", false);
+
+						// Add and process status event for the first turn
+						r.getEventManager().add(new StatusEvent(r));
+						r.getEventManager().processEvents();
+
+						// Start the robot thread
 						r.getRobotThreadManager().start();
+
 						// Wait for the robot to go to sleep (take action)
 						r.wait(waitTime);
 
