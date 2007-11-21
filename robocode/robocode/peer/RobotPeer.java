@@ -414,9 +414,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public String getName() {
-		return (name != null)
-				? shortName
-				: robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		return (name != null) ? shortName : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
 	}
 
 	public String getShortName() {
@@ -471,6 +469,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void run() {
 		setRunning(true);
+
+		// Add StatusEvent for the first turn
+		eventManager.add(new StatusEvent(this));
+
+		// Process all events for the first turn
+		eventManager.processEvents();
 
 		try {
 			if (robot != null) {
