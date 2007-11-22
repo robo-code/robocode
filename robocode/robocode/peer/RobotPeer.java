@@ -470,13 +470,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public void run() {
 		setRunning(true);
 
-		// Add StatusEvent for the first turn
-		eventManager.add(new StatusEvent(this));
-
-		// Process all events for the first turn
-		eventManager.processEvents();
-
 		try {
+			// Process all events for the first turn
+			eventManager.processEvents();
+
 			if (robot != null) {
 				if (robot instanceof JuniorRobot) {
 					JuniorRobot jr = (JuniorRobot) robot;
