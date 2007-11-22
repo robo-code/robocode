@@ -1417,6 +1417,9 @@ public class Battle implements Runnable {
 					try {
 						log(".", false);
 
+						// Add StatusEvent for the first turn
+						r.getEventManager().add(new StatusEvent(r));
+
 						// Start the robot thread
 						r.getRobotThreadManager().start();
 
