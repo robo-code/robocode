@@ -1150,7 +1150,9 @@ public class Battle implements Runnable {
 
 						if (!r.isSleeping()) {
 							try {
-								r.wait(manager.getCpuManager().getCpuConstant());
+								long waitTime = manager.getCpuManager().getCpuConstant();
+
+								r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
 							} catch (InterruptedException e) {
 								// ?
 								log("Wait for " + r + " interrupted.");
@@ -1411,7 +1413,7 @@ public class Battle implements Runnable {
 			// Turning on robots
 			for (RobotPeer r : getRobotsAtRandom()) {
 				manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
-				int waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000);
+				long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
 				synchronized (r) {
 					try {
@@ -1424,7 +1426,7 @@ public class Battle implements Runnable {
 						r.getRobotThreadManager().start();
 
 						// Wait for the robot to go to sleep (take action)
-						r.wait(waitTime);
+						r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
 
 					} catch (InterruptedException e) {
 						log("Wait for " + r + " interrupted.");

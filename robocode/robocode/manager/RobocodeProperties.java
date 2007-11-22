@@ -132,7 +132,10 @@ public class RobocodeProperties {
 	private Date versionChecked;
 	private long robotFilesystemQuota = 200000;
 	private long consoleQuota = 8192;
-	private int cpuConstant = 200;
+	private long cpuConstant = 200000000;
+
+	// Number of Rounds
+	private int numberOfRounds = 10;
 
 	private Properties props = new SortedProperties();
 
@@ -188,8 +191,10 @@ public class RobocodeProperties {
 			VERSIONCHECKED = "robocode.versionchecked",
 			ROBOT_FILESYSTEM_QUOTA = "robocode.robot.filesystem.quota",
 			CONSOLE_QUOTA = "robocode.console.quota",
-			CPU_CONSTANT = "robocode.cpu.constant.1000",
-			LAST_RUN_VERSION = "robocode.version.lastrun";
+			CPU_CONSTANT = "robocode.cpu.constant",
+			LAST_RUN_VERSION = "robocode.version.lastrun",
+
+			NUMBER_OF_ROUNDS = "robocode.numberOfBattles";
 
 	private RobocodeManager manager;
 
@@ -805,9 +810,9 @@ public class RobocodeProperties {
 	/**
 	 * Gets the cpuConstant.
 	 *
-	 * @return Returns a int
+	 * @return Returns a long
 	 */
-	public int getCpuConstant() {
+	public long getCpuConstant() {
 		return cpuConstant;
 	}
 
@@ -816,7 +821,7 @@ public class RobocodeProperties {
 	 *
 	 * @param cpuConstant The cpuConstant to set
 	 */
-	public void setCpuConstant(int cpuConstant) {
+	public void setCpuConstant(long cpuConstant) {
 		this.cpuConstant = cpuConstant;
 		props.setProperty(CPU_CONSTANT, "" + cpuConstant);
 	}
@@ -902,6 +907,15 @@ public class RobocodeProperties {
 		notifyReplayRecordingChanged();
 	}
 
+	public int getNumberOfRounds() {
+		return numberOfRounds;
+	}
+
+	public void setNumberOfRounds(int numberOfRounds) {
+		this.numberOfRounds = Math.max(1, numberOfRounds);
+		props.setProperty(NUMBER_OF_ROUNDS, "" + this.numberOfRounds);
+	}
+	
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
@@ -960,7 +974,7 @@ public class RobocodeProperties {
 
 		lastRunVersion = props.getProperty(LAST_RUN_VERSION, "");
 
-		props.remove("robocode.cpu.constant");
+		props.remove("robocode.cpu.constant.1000");
 
 		try {
 			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
@@ -971,7 +985,9 @@ public class RobocodeProperties {
 
 		robotFilesystemQuota = Long.parseLong(props.getProperty(ROBOT_FILESYSTEM_QUOTA, "" + 200000));
 		consoleQuota = Long.parseLong(props.getProperty(CONSOLE_QUOTA, "8192"));
-		cpuConstant = Integer.parseInt(props.getProperty(CPU_CONSTANT, "-1"));
+		cpuConstant = Long.parseLong(props.getProperty(CPU_CONSTANT, "-1"));
+		
+		numberOfRounds = Integer.parseInt(props.getProperty(NUMBER_OF_ROUNDS, "10"));
 	}
 
 	public String getLastRunVersion() {
@@ -979,9 +995,9 @@ public class RobocodeProperties {
 	}
 
 	/**
-	 * Sets the cpuConstant.
+	 * Sets the lastRunVersion.
 	 *
-	 * @param cpuConstant The cpuConstant to set
+	 * @param lastRunVersion The lastRunVersion to set
 	 */
 	public void setLastRunVersion(String lastRunVersion) {
 		this.lastRunVersion = lastRunVersion;
@@ -1031,6 +1047,7 @@ public class RobocodeProperties {
 			return keyList.elements();
 		}
 	}
+
 
 	/**
 	 * Property listener.

@@ -771,9 +771,9 @@ public class RobocodeMenuBar extends JMenuBar {
 		if (ok == JOptionPane.YES_OPTION) {
 			manager.getCpuManager().calculateCpuConstant();
 
-			int cpuConstant = manager.getCpuManager().getCpuConstant();
+			long cpuConstant = manager.getCpuManager().getCpuConstant();
 
-			JOptionPane.showMessageDialog(this, "CPU constant: " + cpuConstant + " milliseconds per turn",
+			JOptionPane.showMessageDialog(this, "CPU constant: " + cpuConstant + " nanoseconds per turn",
 					"New CPU constant", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
