@@ -175,7 +175,10 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		super(manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
 		this.battleProperties = battleProperties;
+
 		initialize();
+
+		battleProperties.setNumRounds(manager.getProperties().getNumberOfRounds());
 		processBattleProperties();
 	}
 

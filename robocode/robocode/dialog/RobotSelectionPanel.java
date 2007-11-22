@@ -38,6 +38,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -89,7 +91,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private RobotNameCellRenderer robotNamesCellRenderer;
 	private List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
 	private boolean showNumRoundsPanel;
-	private RobotRepositoryManager robotManager;
+	private RobotRepositoryManager repositoryManager;
 	private boolean listBuilt;
 
 	private class EventHandler implements ActionListener, ListSelectionListener, HierarchyListener {
@@ -141,7 +143,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		this.onlyShowPackaged = onlyShowPackaged;
 		this.ignoreTeamRobots = ignoreTeamRobots;
 		this.preSelectedRobots = preSelectedRobots;
-		this.robotManager = robotManager;
+		this.repositoryManager = robotManager;
 		initialize();
 		showInstructions();
 	}
@@ -363,8 +365,8 @@ public class RobotSelectionPanel extends WizardPanel {
 		add(getInstructionsLabel(), BorderLayout.NORTH);
 		add(getMainPanel(), BorderLayout.CENTER);
 		add(getDescriptionPanel(), BorderLayout.SOUTH);
-		this.addHierarchyListener(eventHandler);
-		this.setVisible(true);
+		addHierarchyListener(eventHandler);
+		setVisible(true);
 	}
 
 	private void removeAllButtonActionPerformed() {
@@ -468,8 +470,9 @@ public class RobotSelectionPanel extends WizardPanel {
 				new Runnable() {
 			public void run() {
 				getAvailableRobotsPanel().setRobotList(null);
-				List<FileSpecification> l = robotManager.getRobotRepository().getRobotSpecificationsList(onlyShowSource,
-						onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
+				List<FileSpecification> l = repositoryManager.getRobotRepository().getRobotSpecificationsList(
+						onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged,
+						ignoreTeamRobots);
 
 				getAvailableRobotsPanel().setRobotList(l);
 				if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
@@ -543,7 +546,10 @@ public class RobotSelectionPanel extends WizardPanel {
 		try {
 			return Integer.parseInt(getNumRoundsTextField().getText());
 		} catch (NumberFormatException e) {
-			return 10;
+			int numRounds = repositoryManager.getManager().getProperties().getNumberOfRounds();
+
+			getNumRoundsTextField().setText("" + numRounds);
+			return numRounds;
 		}
 	}
 
@@ -576,14 +582,45 @@ public class RobotSelectionPanel extends WizardPanel {
 	 * @return JTextField
 	 */
 	private JTextField getNumRoundsTextField() {
+		final robocode.manager.RobocodeProperties props = repositoryManager.getManager().getProperties();
+
 		if (numRoundsTextField == null) {
 			numRoundsTextField = new JTextField();
 			numRoundsTextField.setAutoscrolls(false);
+
 			// Center in panel
 			numRoundsTextField.setAlignmentX((float) .5);
 			// Center text in textfield
 			numRoundsTextField.setHorizontalAlignment(SwingConstants.CENTER);
+ 
+			// Add document listener
+			numRoundsTextField.getDocument().addDocumentListener(new DocumentListener() {
+
+				public void changedUpdate(DocumentEvent e) {}
+
+				public void insertUpdate(DocumentEvent e) {
+					handleChange();
+				}
+
+				public void removeUpdate(DocumentEvent e) {
+					handleChange();
+				}
+				
+				private void handleChange() {
+					try {
+						int numRounds = Integer.parseInt(numRoundsTextField.getText());
+
+						repositoryManager.getManager().getBattleManager().getBattleProperties().setNumRounds(numRounds);
+
+						if (numRounds != props.getNumberOfRounds()) {
+							props.setNumberOfRounds(numRounds);
+							
+						}
+					} catch (NumberFormatException nfe) {}
+				}
+			});
 		}
+
 		return numRoundsTextField;
 	}
 
@@ -598,7 +635,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	public void refreshRobotList() {
 		getAvailableRobotsPanel().setRobotList(null);
-		robotManager.clearRobotList();
+		repositoryManager.clearRobotList();
 		buildRobotList();
 	}
 
