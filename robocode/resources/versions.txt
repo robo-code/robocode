@@ -1,5 +1,5 @@
 Version 1.5 Beta
-(11/14/2007)
+(11/22/2007)
 -------------
 o Changes
   -- Redundant HitRobotEvents are no longer occurring when Robocode is performing
@@ -30,6 +30,9 @@ o Changes
      -- Now when the DeathEvent has the lowest priority, this will be the last
         event left on the robot's event queue before it dies. That is, all events
         in the event queue have already been processed when reaching the DeathEvent
+  -- The CPU constant is now measured in nanoseconds rather than milliseconds
+     -- Using the new features introduced of Java 5.0 provides more precise timing
+        and also offer better granularity of timings
 o New feature
   -- The Robot class has got a new onStatus(StatusEvent e) method which is
      automatically called for each turn of a battle, and which contain a complete
