@@ -71,16 +71,10 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		}
 	}
 
-	/**
-	 * Comment
-	 */
 	public void cancelButtonActionPerformed() {
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 
-	/**
-	 * Comment
-	 */
 	public void finishButtonActionPerformed() {
 		if (robotSelectionPanel.getSelectedRobotsCount() > 24) {
 			if (JOptionPane.showConfirmDialog(this,
