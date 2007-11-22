@@ -33,6 +33,8 @@ o Changes
   -- The CPU constant is now measured in nanoseconds rather than milliseconds
      -- Using the new features introduced of Java 5.0 provides more precise timing
         and also offer better granularity of timings
+  -- The "Number of Rounds" value on the New Battle Dialog is now saved and restored
+     when the game is restarted, i.e. Robocode remember that value you used last time  
 o New feature
   -- The Robot class has got a new onStatus(StatusEvent e) method which is
      automatically called for each turn of a battle, and which contain a complete
