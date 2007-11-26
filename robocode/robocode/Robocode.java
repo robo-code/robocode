@@ -24,6 +24,7 @@
  *     - Setting the results file is now independent of setting the battle file
  *     - Robocode now returns with an error message if a specified battle file
  *       could not be found
+ *     - Extended the usage / syntax for using Robocode from a console
  *******************************************************************************/
 package robocode;
 
@@ -216,8 +217,24 @@ public class Robocode {
 	}
 
 	private void printUsage() {
-		System.out.println(
-				"Usage: robocode [-cwd directory] [-battle filename [-results filename] [-tps tps] [-minimize]]");
+		System.out.print(
+				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n" +
+				"                [-minimize] [-nodisplay] [-nosound]]\n" +
+				"\n" +
+				"where options include:\n" +
+				"    -cwd <path>             Change the current working directory\n" +
+				"    -battle <battle file>   Run the battle specified in a battle file\n" +
+				"    -results <file>         Save results to the specified text file\n" +
+				"    -tps <tps>              Set the TPS (Turns Per Second) to use\n" +
+				"    -minimize               Run minimized when Robocode starts\n" +
+				"    -nodisplay              Run with the display / GUI disabled\n" +
+				"    -nosound                Run with sound disabled\n" +
+				"\n" +
+				"properties include:\n" +
+				"    -DWORKINGDIRECTORY=<path>    Set the current working directory\n" +
+				"    -DNOSECURITY=\"true\"|\"false\"  Enable or disable Robocode's security manager\n" +
+				"    -Ddebug=\"true\"|\"false\"       Enable or disable System.err messages\n" +
+				"\n");
 	}
 
 	/**
