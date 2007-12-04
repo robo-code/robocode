@@ -17,6 +17,7 @@
  *     - Changed menu accelerator keys to use Toolkit.getMenuShortcutKeyMask()
  *       instead of Event.CTRL_MASK
  *     - Added "Recalculate CPU constant" to the Options menu
+ *     - Added "Clean Robot Cache" to the Options menu
  *     Matthew Reeder
  *     - Added keyboard mnemonics and a few accelerators to all menus and menu
  *       items
@@ -69,7 +70,8 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem optionsPreferencesMenuItem;
 	private JMenuItem optionsFitWindowMenuItem;
 	private JCheckBoxMenuItem optionsShowRankingCheckBoxMenuItem;
-	private JMenuItem optionsRecalculateCpuConstant;
+	private JMenuItem optionsRecalculateCpuConstantMenuItem;
+	private JMenuItem optionsCleanRobotCacheMenuItem;
 
 	// Help Menu
 	private JMenu helpMenu;
@@ -125,8 +127,10 @@ public class RobocodeMenuBar extends JMenuBar {
 				optionsFitWindowActionPerformed();
 			} else if (source == mb.getOptionsShowRankingCheckBoxMenuItem()) {
 				optionsShowRankingActionPerformed();
-			} else if (source == mb.getOptionsRecalculateCpuConstant()) {
+			} else if (source == mb.getOptionsRecalculateCpuConstantMenuItem()) {
 				optionsRecalculateCpuConstantPerformed();
+			} else if (source == mb.getOptionsCleanRobotCacheMenuItem()) {
+				optionsCleanRobotCachePerformed();
 
 				// Help menu
 			} else if (source == mb.getHelpOnlineHelpMenuItem()) {
@@ -554,19 +558,35 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	/**
-	 * Return the optionsRecalculateCpuConstant.
+	 * Return the optionsRecalculateCpuConstantMenuItem.
 	 *
 	 * @return JMenuItem
 	 */
-	private JMenuItem getOptionsRecalculateCpuConstant() {
-		if (optionsRecalculateCpuConstant == null) {
-			optionsRecalculateCpuConstant = new JMenuItem();
-			optionsRecalculateCpuConstant.setText("Recalculate CPU constant");
-			optionsRecalculateCpuConstant.setMnemonic('e');
-			optionsRecalculateCpuConstant.setDisplayedMnemonicIndex(1);
-			optionsRecalculateCpuConstant.addActionListener(eventHandler);
+	private JMenuItem getOptionsRecalculateCpuConstantMenuItem() {
+		if (optionsRecalculateCpuConstantMenuItem == null) {
+			optionsRecalculateCpuConstantMenuItem = new JMenuItem();
+			optionsRecalculateCpuConstantMenuItem.setText("Recalculate CPU constant");
+			optionsRecalculateCpuConstantMenuItem.setMnemonic('e');
+			optionsRecalculateCpuConstantMenuItem.setDisplayedMnemonicIndex(1);
+			optionsRecalculateCpuConstantMenuItem.addActionListener(eventHandler);
 		}
-		return optionsRecalculateCpuConstant;
+		return optionsRecalculateCpuConstantMenuItem;
+	}
+
+	/**
+	 * Return the optionsCleanRobotCacheMenuItem.
+	 *
+	 * @return JMenuItem
+	 */
+	private JMenuItem getOptionsCleanRobotCacheMenuItem() {
+		if (optionsCleanRobotCacheMenuItem == null) {
+			optionsCleanRobotCacheMenuItem = new JMenuItem();
+			optionsCleanRobotCacheMenuItem.setText("Clean Robot Cache");
+			optionsCleanRobotCacheMenuItem.setMnemonic('C');
+			optionsCleanRobotCacheMenuItem.setDisplayedMnemonicIndex(0);
+			optionsCleanRobotCacheMenuItem.addActionListener(eventHandler);
+		}
+		return optionsCleanRobotCacheMenuItem;
 	}
 
 	/**
@@ -584,7 +604,8 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsMenu.add(getOptionsFitWindowMenuItem());
 			optionsMenu.add(getOptionsShowRankingCheckBoxMenuItem());
 			optionsMenu.add(new JSeparator());
-			optionsMenu.add(getOptionsRecalculateCpuConstant());
+			optionsMenu.add(getOptionsRecalculateCpuConstantMenuItem());
+			optionsMenu.add(getOptionsCleanRobotCacheMenuItem());
 			optionsMenu.addMenuListener(eventHandler);
 		}
 		return optionsMenu;
@@ -775,6 +796,16 @@ public class RobocodeMenuBar extends JMenuBar {
 
 			JOptionPane.showMessageDialog(this, "CPU constant: " + cpuConstant + " nanoseconds per turn",
 					"New CPU constant", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	private void optionsCleanRobotCachePerformed() {
+		int ok = JOptionPane.showConfirmDialog(this, "Do you want to clean the robot cache?",
+				"Clean Robot Cache", JOptionPane.YES_NO_OPTION);
+
+		if (ok == JOptionPane.YES_OPTION) {
+			// Call AaronR's robot cache cleaner utility
+			ar.robocode.cachecleaner.CacheCleaner.clean();
 		}
 	}
 
