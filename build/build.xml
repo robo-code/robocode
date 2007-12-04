@@ -33,6 +33,7 @@
   <property name="src.autoextract" location="../autoextract"/>
   <property name="src.robots" location="../robocodeextract/robots"/>
   <property name="src.roborumble" location="../roborumble"/>
+  <property name="src.cachecleaner" location="../robocode/ar"/>
 
   <!-- License file -->
   <property name="license.file" location="${src.extract}/license/cpl-v10.html"/>
@@ -216,6 +217,28 @@
   </uptodate>
 
   <!-- ====================================== -->
+  <!-- Target: compile.cachecleaner           -->
+  <!-- ====================================== -->
+  <target
+      name="compile.cachecleaner"
+      description="Compile CacheCleaner"
+      depends="init"
+      unless="cachecleaner.uptodate">
+
+    <echo message="Compiling CacheCleaner..."/>
+
+    <!-- Compile CacheCleaner -->
+    <compile srcdir="${src.cachecleaner}" destdir="${build}"/>
+
+    <!-- Flag that CacheCleaner has been built -->
+    <touch file="${build}/.cachecleaner_build"/>
+  </target>
+
+  <uptodate property="cachecleaner.uptodate" targetfile="${build}/.cachecleaner_build">
+    <srcfiles dir="${src.cachecleaner}"/>
+  </uptodate>
+
+  <!-- ====================================== -->
   <!-- Target: robocode.jar                   -->
   <!-- ====================================== -->
   <target
@@ -254,7 +277,7 @@
   <target
       name="extract.jar"
       description="Build extract.jar"
-      depends="init, robocode.jar, roborumble.jar, compile.robots, javadoc"
+      depends="init, robocode.jar, roborumble.jar, compile.robots, cachecleaner.jar, javadoc"
       unless="extract.jar.uptodate">
 
     <echo message="Building extract.jar..."/>
@@ -271,10 +294,11 @@
       	<include name="config/*"/>        <!-- Configuration files -->
       </fileset>
       <fileset dir="${build}">
-        <include name="libs/robocode.jar"/>    <!-- Builded robocode.jar -->
-        <include name="libs/roborumble.jar"/>  <!-- Builded roborumble.jar -->
-        <include name="javadoc/**"/>           <!-- Builded javadoc files -->
-        <include name="robots/**"/>            <!-- Builded robots -->
+        <include name="libs/robocode.jar"/>      <!-- Builded robocode.jar -->
+        <include name="libs/roborumble.jar"/>    <!-- Builded roborumble.jar -->
+        <include name="libs/cachecleaner.jar"/>  <!-- Builded cachecleaner.jar -->
+        <include name="javadoc/**"/>             <!-- Builded javadoc files -->
+        <include name="robots/**"/>              <!-- Builded robots -->
       </fileset>
       <fileset file="${versions.file}"/>  <!-- Versions file -->
     </jar>
@@ -285,7 +309,7 @@
   </uptodate>
 
   <!-- ====================================== -->
-  <!-- Target: roborumble.jar                   -->
+  <!-- Target: roborumble.jar                 -->
   <!-- ====================================== -->
   <target
       name="roborumble.jar"
@@ -312,6 +336,35 @@
 
   <uptodate property="roborumble.jar.uptodate" targetfile="${build}/libs/roborumble.jar">
     <srcfiles dir="${src.roborumble}"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: cachecleaner.jar               -->
+  <!-- ====================================== -->
+  <target
+      name="cachecleaner.jar"
+      description="Build cachecleaner.jar"
+      depends="init, compile.cachecleaner"
+      unless="cachecleaner.jar.uptodate">
+
+    <echo message="Building cachecleaner.jar..."/>
+
+    <!-- Create the cachecleaner.jar file -->
+    <jar destfile="${build}/libs/cachecleaner.jar">
+      <!-- Specify files to include -->
+      <fileset dir="${build}" includes="ar/**"/>  <!-- Class files -->
+      <!-- Set the main class of the manifest -->
+      <manifest>
+        <attribute name="Implementation-Title" value="CacheCleaner for Robocode"/>
+	    <attribute name="Implementation-Version" value="v${version}, ${TODAY}"/> 
+	    <attribute name="Implementation-Vendor" value="AaronR"/>
+        <attribute name="Main-Class" value="ar.robocode.cachecleaner.CacheCleaner"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <uptodate property="cachecleaner.jar.uptodate" targetfile="${build}/libs/cachecleaner.jar">
+    <srcfiles dir="${src.cachecleaner}"/>
   </uptodate>
 
   <!-- ====================================== -->
