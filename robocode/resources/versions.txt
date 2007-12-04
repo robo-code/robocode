@@ -1,5 +1,5 @@
-Version 1.5 Beta
-(11/22/2007)
+Version 1.5
+(12/05/2007)
 -------------
 o Changes
   -- Redundant HitRobotEvents are no longer occurring when Robocode is performing
@@ -34,13 +34,25 @@ o Changes
      -- Using the new features introduced of Java 5.0 provides more precise timing
         and also offer better granularity of timings
   -- The "Number of Rounds" value on the New Battle Dialog is now saved and restored
-     when the game is restarted, i.e. Robocode remember that value you used last time  
-o New feature
+     when the game is restarted, i.e. Robocode remember that value you used last time
+  -- Improved the output of the command line usage of Robocode when called from the
+     command line with the -? or -help option
+o New features
   -- The Robot class has got a new onStatus(StatusEvent e) method which is
      automatically called for each turn of a battle, and which contain a complete
      snapshot of the current robot state at that specific time/turn
      -- This new method makes it possible to map a specific robot field to a
         specific time
+  -- Added the Robot Cache Cleaner tool created by Aaron Rotenberg (aka AaronR)
+     -- Used for cleaning the cache files for the robots, which is very useful with
+        the RoboRumble client, where most problems can be solved by cleaning the
+        robot cache files
+     -- This tool is activation by selecting "Clean Robot Cache" in the Options menu
+        or by running the tool from a command line (standing in the robocode home
+        directory):
+
+          java -cp ./libs/robocode.jar;./libs/cachecleaner.jar
+              ar.robocode.cachecleaner.CacheCleaner
 
 Version 1.4.9
 (11/07/2007)
