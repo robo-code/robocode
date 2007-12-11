@@ -205,9 +205,21 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		} catch (SecurityException e) {}
 
-		// Allow the Event Dispatch Thread
+		// Check if it was one of the tools for Robocode that was invoked by the Event Dispatch Thread
 		if (javax.swing.SwingUtilities.isEventDispatchThread()) {
-			return;
+			StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+
+			for (StackTraceElement element : stackTrace) {
+				String classname = element.getClassName();
+				String method = element.getMethodName();
+
+				if (classname.equals("codesize.Codesize") && method.equals("processZipFile")) {
+					return;
+				}
+				if (classname.equals("ar.robocode.cachecleaner.CacheCleaner") && method.equals("clean")) {
+					return;
+				}
+			}
 		}
 
 		// For development purposes, allow read any file if override is set.
