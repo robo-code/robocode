@@ -88,7 +88,7 @@ public class FileUtil {
 	}
 
 	/**
-	 * Quotes a file name if it contains whitespaces and has not already been
+	 * Quotes a file name if it contains white spaces and has not already been
 	 * quoted.
 	 *
 	 * @param filename the file to quote
@@ -146,7 +146,7 @@ public class FileUtil {
 	/**
 	 * Deletes a directory.
 	 *
-	 * @param dir the file for the direcory to delete
+	 * @param dir the file for the directory to delete
 	 * @return <code>true</code> if the directory was deleted;
 	 *    <code>false</code> otherwise if e.g. the file is not a directory
 	 */
