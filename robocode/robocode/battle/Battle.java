@@ -1433,7 +1433,7 @@ public class Battle implements Runnable {
 					}
 				}
 				if (!r.isSleeping()) {
-					log("\n" + r.getName() + " still has not started after " + waitTime + " ms... giving up.");
+					log("\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 				}
 			}
 		}
