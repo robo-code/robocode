@@ -1,3 +1,10 @@
+Version 1.5.1
+(12/12/2007)
+-------------
+o Bugfix:
+  -- Fixed security flaw with the Event Dispatch Thread, where robots could use
+     the SwingUtilities.invokeLater() for running any code they should like to
+
 Version 1.5
 (12/05/2007)
 -------------
