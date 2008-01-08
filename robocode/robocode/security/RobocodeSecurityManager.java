@@ -17,7 +17,6 @@
  *     - Fixed potential NullPointerException in getFileOutputStream()
  *     - Added setStatus()
  *     - Fixed synchronization issue with accessing battleThread
- *     - The Event Dispatch Thread is now allowed in the checkPermission()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -190,6 +189,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
+		// Check if the current running thread is a safe thread
+		if (isSafeThread(Thread.currentThread())) {
+			return;
+		}
+
 		// First, if we're running in Robocode's security context,
 		// AND the thread is a safe thread, permission granted.
 		// Essentially this optimizes the security manager for Robocode.
@@ -204,23 +208,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 			super.checkPermission(perm);
 			return;
 		} catch (SecurityException e) {}
-
-		// Check if it was one of the tools for Robocode that was invoked by the Event Dispatch Thread
-		if (javax.swing.SwingUtilities.isEventDispatchThread()) {
-			StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-
-			for (StackTraceElement element : stackTrace) {
-				String classname = element.getClassName();
-				String method = element.getMethodName();
-
-				if (classname.equals("codesize.Codesize") && method.equals("processZipFile")) {
-					return;
-				}
-				if (classname.equals("ar.robocode.cachecleaner.CacheCleaner") && method.equals("clean")) {
-					return;
-				}
-			}
-		}
 
 		// For development purposes, allow read any file if override is set.
 		if (perm instanceof FilePermission) {
