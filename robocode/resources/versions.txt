@@ -1,9 +1,9 @@
 Version 1.5.2
 (01/08/2008)
 -------------
-Bugfix:
-o On some systems Robocode would not start up when attempting to running
-  robocode.bat or robocode.sh
+o Bugfix:
+  -- On some systems Robocode would not start up when tryng to run robocode.bat
+     or robocode.sh
 
 Version 1.5.1
 (12/12/2007)
