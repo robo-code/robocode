@@ -34,6 +34,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import robocode.manager.RobocodeManager;
+import robocode.security.RobocodeSecurityManager;
 
 
 /**
@@ -804,8 +805,21 @@ public class RobocodeMenuBar extends JMenuBar {
 				"Clean Robot Cache", JOptionPane.YES_NO_OPTION);
 
 		if (ok == JOptionPane.YES_OPTION) {
-			// Call AaronR's robot cache cleaner utility
-			ar.robocode.cachecleaner.CacheCleaner.clean();
+			// Run the robot cache clear in a safe thread
+			final RobocodeSecurityManager securityManager = (RobocodeSecurityManager)System.getSecurityManager();
+
+			Thread thread = new Thread() {
+				@Override
+				public void run() {
+					// Call AaronR's robot cache cleaner utility
+					ar.robocode.cachecleaner.CacheCleaner.clean();
+
+					securityManager.removeSafeThread(this);
+				}
+			};
+
+			securityManager.addSafeThread(thread);
+			thread.start();
 		}
 	}
 
