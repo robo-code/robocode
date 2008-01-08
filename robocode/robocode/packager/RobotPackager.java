@@ -54,6 +54,7 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotSpecification;
 import robocode.repository.TeamSpecification;
+import robocode.security.RobocodeSecurityManager;
 
 import codesize.Codesize;
 
@@ -470,29 +471,54 @@ public class RobotPackager extends JDialog implements WizardListener {
 	}
 
 	public void outputSizeClass() {
-		File jarFile = new File(getFilenamePanel().getFilenameField().getText());
+		// Codesize must be called within a safe thread to prevent security exception
+		
+		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager)System.getSecurityManager();
 
-		Codesize.Item item = Codesize.processZipFile(jarFile);
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				File jarFile = new File(getFilenamePanel().getFilenameField().getText());
 
-		int codesize = item.getCodeSize();
+				Codesize.Item item = Codesize.processZipFile(jarFile);
 
-		String weightClass;
+				int codesize = item.getCodeSize();
 
-		if (codesize >= 1500) {
-			weightClass = "MegaBot  (codesize >= 1500 bytes)";
-		} else if (codesize > 750) {
-			weightClass = "MiniBot  (codesize < 1500 bytes)";
-		} else if (codesize > 250) {
-			weightClass = "MicroBot  (codesize < 750 bytes)";
-		} else {
-			weightClass = "NanoBot  (codesize < 250 bytes)";
+				String weightClass;
+
+				if (codesize >= 1500) {
+					weightClass = "MegaBot  (codesize >= 1500 bytes)";
+				} else if (codesize > 750) {
+					weightClass = "MiniBot  (codesize < 1500 bytes)";
+				} else if (codesize > 250) {
+					weightClass = "MicroBot  (codesize < 750 bytes)";
+				} else {
+					weightClass = "NanoBot  (codesize < 250 bytes)";
+				}
+
+				StringBuffer out = output.getBuffer();
+
+				out.append("\n\n---- Codesize ----\n");
+				out.append("Codesize: ").append(codesize).append(" bytes\n");
+				out.append("Robot weight class: ").append(weightClass).append('\n');
+
+				synchronized (this) {
+					notify();
+				}
+			}
+		};
+
+		securityManager.addSafeThread(thread);
+
+		thread.start();
+
+		synchronized (thread) {
+			try {
+				thread.wait();
+			} catch (InterruptedException e) {}
 		}
 
-		StringBuffer out = output.getBuffer();
-
-		out.append("\n\n---- Codesize ----\n");
-		out.append("Codesize: ").append(codesize).append(" bytes\n");
-		out.append("Robot weight class: ").append(weightClass).append('\n');
+		securityManager.removeSafeThread(thread);
 	}
 
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,
