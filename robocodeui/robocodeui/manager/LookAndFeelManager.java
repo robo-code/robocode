@@ -9,10 +9,13 @@
  *     Flemming N. Larsen
  *     - Initial API and implementation
  *******************************************************************************/
-package robocode.manager;
+package robocodeui.manager;
 
 
 import javax.swing.UIManager;
+
+import robocode.ui.ILookAndFeelManager;
+import robocode.manager.RobocodeManager;
 
 
 /**
@@ -20,14 +23,20 @@ import javax.swing.UIManager;
  *
  * @author Flemming N. Larsen (original)
  */
-public class LookAndFeelManager {
+public class LookAndFeelManager implements ILookAndFeelManager {
+
+    private RobocodeManager manager;
 
 	/**
 	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
 	 * system's LAF. If this fails, it try to use the cross platform LAF.
 	 * If this also fails, the LAF will not be changed.
 	 */
-	public static void setLookAndFeel() {
+	public void setLookAndFeel() {
+        SetLookAndFeel();
+    }
+
+    public static void SetLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable t) {
@@ -35,4 +44,8 @@ public class LookAndFeelManager {
 			System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
 		}
 	}
+
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        manager = robocodeManager;
+    }
 }

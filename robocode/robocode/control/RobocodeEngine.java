@@ -167,7 +167,7 @@ public class RobocodeEngine {
 			manager.setEnableGUI(true);
 
 			// Set the Look and Feel (LAF)
-			robocode.manager.LookAndFeelManager.setLookAndFeel();
+			manager.getLookAndFeelManager().setLookAndFeel();
 		}
 
 		if (manager.isGUIEnabled()) {

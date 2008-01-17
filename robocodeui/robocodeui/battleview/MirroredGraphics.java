@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battleview;
+package robocodeui.battleview;
 
 
 import java.awt.*;

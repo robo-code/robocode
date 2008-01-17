@@ -15,7 +15,7 @@
  *     - Changed to use FileUtil.getWindowConfigFile()
  *     - Added missing close() on FileInputStream and FileOutputStream
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.*;

@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Rewritten to reuse RankingDialog, which contains buttons etc.
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import robocode.manager.RobocodeManager;

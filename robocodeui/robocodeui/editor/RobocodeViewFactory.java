@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import javax.swing.text.View;

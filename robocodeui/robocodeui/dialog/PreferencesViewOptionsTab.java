@@ -21,7 +21,7 @@
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons and other controls
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.GridBagConstraints;

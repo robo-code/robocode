@@ -9,7 +9,7 @@
  *     Matthew Reeder
  *     - Initial API and implementation
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import static java.lang.Math.max;

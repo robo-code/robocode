@@ -15,7 +15,7 @@
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.Dimension;
@@ -27,7 +27,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import robocode.manager.RobotDialogManager;
+import robocodeui.manager.RobotDialogManager;
 import robocode.peer.RobotPeer;
 
 

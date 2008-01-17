@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Rewritten + added browse button
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.GridBagConstraints;

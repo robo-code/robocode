@@ -20,7 +20,7 @@
  *     - Changed menu accelerator keys to use Toolkit.getMenuShortcutKeyMask()
  *       instead of Event.CTRL_MASK
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import java.awt.Event;
@@ -28,7 +28,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import robocode.dialog.WindowUtil;
+import robocodeui.dialog.WindowUtil;
 
 
 /**

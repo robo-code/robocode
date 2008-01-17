@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!--  Apache Ant build script for building Robocode                         -->
+<!-- ====================================================================== -->
+
+<project name="robocodeui" default="build" basedir="../build">
+  <description>Apache Ant build script for building Robocode UI</description>
+
+  <!-- Enable debug information when compiling -->  
+  <property name="debug" value="on"/>
+
+  <!-- Import common build file -->
+  <import file="../build/build.xml"/>
+
+  <!-- ====================================== -->
+  <!-- Target: build                          -->
+  <!-- ====================================== -->
+  <target
+      name="build"
+      description="build RobocodeUI"
+      depends="compile.robocodeui">
+
+    <!-- Copy resources -->
+    <copy todir="${build}/resources">
+      <fileset dir="../robocodeui/resources"/>
+    </copy>
+
+  </target>
+
+</project>

@@ -15,14 +15,14 @@
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Added missing close() on InputStreams
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import java.io.InputStream;
 import java.io.IOException;
 
-import robocode.dialog.ConsoleDialog;
-import robocode.dialog.WindowUtil;
+import robocodeui.dialog.ConsoleDialog;
+import robocodeui.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 

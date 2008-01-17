@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Totally rewritten
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.BorderLayout;

@@ -13,7 +13,7 @@
  *     - Changed to render the Robocode logo instead of using a bitmap image
  *     - Replaced isPainted() and painted field with wait/notify
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.*;
@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
 
-import robocode.gfx.RobocodeLogo;
+import robocodeui.gfx.RobocodeLogo;
 import robocode.manager.RobocodeManager;
 
 

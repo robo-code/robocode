@@ -25,7 +25,7 @@
  *     - Added debug step feature by adding a "Next Turn" button, and changing
  *       the "Pause" button into a "Pause/Debug" button
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.BorderLayout;
@@ -39,14 +39,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import robocode.battle.Battle;
-import robocode.battleview.BattleView;
-import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.manager.WindowManager;
+import robocode.peer.RobotPeer;
+import robocode.ui.IRobocodeFrame;
+import robocode.ui.IRobotDialogManager;
+import robocodeui.battleview.BattleView;
+import robocodeui.gfx.ImageUtil;
+import robocodeui.manager.WindowManager;
+import robocodeui.manager.RobotDialogManager;
 
 
 /**
@@ -56,7 +60,7 @@ import robocode.manager.WindowManager;
  * @author Luis Crespo (contributor)
  */
 @SuppressWarnings("serial")
-public class RobocodeFrame extends JFrame {
+public class RobocodeFrame extends JFrame implements IRobocodeFrame {
 	private EventHandler eventHandler = new EventHandler();
 	private PauseResumeHandler pauseResumeHandler = new PauseResumeHandler();
 
@@ -263,7 +267,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
-		this.windowManager = manager.getWindowManager();
+		this.windowManager = (WindowManager)manager.getWindowManager();
 		this.manager = manager;
 		initialize();
 	}
@@ -295,6 +299,10 @@ public class RobocodeFrame extends JFrame {
 		getRobotButtonsPanel().removeAll();
 		getRobotButtonsPanel().repaint();
 	}
+
+    public void addRobotButton(IRobotDialogManager robotDialogManager, RobotPeer robotPeer) {
+        addRobotButton(new RobotButton((RobotDialogManager)robotDialogManager, robotPeer));
+    }
 
 	/**
 	 * Return the BattleView.
@@ -685,6 +693,18 @@ public class RobocodeFrame extends JFrame {
 		}
 	}
 
+    public void setStatus(String s) {
+        WindowUtil.setStatus(s);
+    }
+
+    public void messageError(String s) {
+        WindowUtil.messageError(s);
+    }
+
+    public void messageWarning(String s) {
+        WindowUtil.messageWarning(s);
+    }
+
 	/**
 	 * Gets the iconified.
 	 *
@@ -712,7 +732,55 @@ public class RobocodeFrame extends JFrame {
 		getRestartButton().setEnabled(enable);
 	}
 
+    public void setEnableBattleSaveAsMenuItem(boolean b) {
+        getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(b);
+    }
+
+    public void setEnableBattleSaveMenuItem(boolean b) {
+        getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(b);
+    }
+
 	public void setEnableReplayButton(boolean enable) {
 		getReplayButton().setEnabled(enable);
 	}
+
+    public String saveBattleDialog(File f) {
+        JFileChooser chooser;
+        chooser = new JFileChooser(f);
+
+        javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                if (pathname.isDirectory()) {
+                    return false;
+                }
+                String fn = pathname.getName();
+                int idx = fn.lastIndexOf('.');
+                String extension = "";
+
+                if (idx >= 0) {
+                    extension = fn.substring(idx);
+                }
+                if (extension.equalsIgnoreCase(".battle")) {
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Battles";
+            }
+        };
+
+        chooser.setFileFilter(filter);
+        int rv = chooser.showSaveDialog(this);
+
+        if (rv == JFileChooser.APPROVE_OPTION)
+        {
+            return chooser.getSelectedFile().getPath();
+        }
+        return null;
+    }
+
 }

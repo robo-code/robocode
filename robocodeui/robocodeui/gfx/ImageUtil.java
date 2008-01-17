@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.gfx;
+package robocodeui.gfx;
 
 
 import java.awt.Color;
@@ -24,6 +24,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import robocode.io.Logger;
+import robocode.gfx.ColorUtil;
 
 
 /**

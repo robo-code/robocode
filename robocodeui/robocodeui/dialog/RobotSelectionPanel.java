@@ -27,7 +27,7 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.*;

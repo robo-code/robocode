@@ -17,7 +17,7 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.Component;
@@ -45,7 +45,7 @@ import robocode.text.LimitedDocument;
 @SuppressWarnings("serial")
 public class TeamCreatorOptionsPanel extends WizardPanel {
 	TeamCreator teamCreator;
-	robocode.packager.RobotPackager teamPackager;
+	robocodeui.packager.RobotPackager teamPackager;
 	EventHandler eventHandler = new EventHandler();
 
 	JLabel authorLabel;
@@ -140,7 +140,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		initialize();
 	}
 
-	public TeamCreatorOptionsPanel(robocode.packager.RobotPackager teamPackager) {
+	public TeamCreatorOptionsPanel(robocodeui.packager.RobotPackager teamPackager) {
 		super();
 		this.teamPackager = teamPackager;
 		initialize();

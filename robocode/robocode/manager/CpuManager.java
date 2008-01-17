@@ -21,7 +21,6 @@
 package robocode.manager;
 
 
-import robocode.dialog.WindowUtil;
 import robocode.io.Logger;
 
 
@@ -51,7 +50,7 @@ public class CpuManager {
 	}
 	
 	public void calculateCpuConstant() {
-		WindowUtil.setStatus("Estimating CPU speed, please wait...");
+		manager.getWindowManager().getRobocodeFrame().setStatus("Estimating CPU speed, please wait...");
 
 		setCpuConstant();
 
@@ -59,7 +58,7 @@ public class CpuManager {
 		manager.getProperties().setCpuConstant(cpuConstant);
 		manager.saveProperties();
 
-		WindowUtil.setStatus("");
+		manager.getWindowManager().getRobocodeFrame().setStatus("");
 	}
 	
 	private void setCpuConstant() {

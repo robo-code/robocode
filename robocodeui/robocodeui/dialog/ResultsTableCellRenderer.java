@@ -12,7 +12,7 @@
  *     - Removed from the robocode.dialog.ResultsDialog into a file of it's own
  *     - Cleanup
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.Component;

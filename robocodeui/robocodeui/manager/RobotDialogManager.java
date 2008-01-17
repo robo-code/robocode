@@ -19,14 +19,16 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.manager;
+package robocodeui.manager;
 
 
 import java.util.*;
 
 import robocode.battle.Battle;
-import robocode.dialog.RobotDialog;
+import robocodeui.dialog.RobotDialog;
 import robocode.peer.RobotPeer;
+import robocode.manager.RobocodeManager;
+import robocode.ui.IRobotDialogManager;
 
 
 /**
@@ -34,14 +36,13 @@ import robocode.peer.RobotPeer;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class RobotDialogManager {
+public class RobotDialogManager implements IRobotDialogManager {
 
 	private Map<String, RobotDialog> robotDialogHashMap = new HashMap<String, RobotDialog>();
 	private RobocodeManager manager;
 
-	public RobotDialogManager(RobocodeManager manager) {
+	public RobotDialogManager() {
 		super();
-		this.manager = manager;
 	}
 
 	public void setActiveBattle(Battle b) {
@@ -92,4 +93,8 @@ public class RobotDialogManager {
 		}
 		return dialog;
 	}
+	
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        manager = robocodeManager;
+    }
 }

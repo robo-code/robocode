@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Code cleanup
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import javax.swing.event.ChangeEvent;

@@ -23,11 +23,10 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.packager;
+package robocodeui.packager;
 
 
-import java.awt.AWTEvent;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -46,7 +45,8 @@ import java.util.zip.ZipException;
 
 import javax.swing.*;
 
-import robocode.dialog.*;
+import robocodeui.dialog.*;
+import robocodeui.dialog.WindowUtil;
 import robocode.io.Logger;
 import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.RobotRepositoryManager;
@@ -97,7 +97,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	 * Packager constructor comment.
 	 */
 	public RobotPackager(RobotRepositoryManager robotManager, boolean isTeamPackager) {
-		super(robotManager.getManager().getWindowManager().getRobocodeFrame());
+		super((Frame) robotManager.getManager().getWindowManager().getRobocodeFrame());
 		this.robotManager = robotManager;
 		initialize();
 	}
@@ -120,7 +120,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		String resultsString;
 
 		int rc = packageRobots();
-		ConsoleDialog d = new ConsoleDialog(robotManager.getManager().getWindowManager().getRobocodeFrame(),
+		ConsoleDialog d = new ConsoleDialog((Frame) robotManager.getManager().getWindowManager().getRobocodeFrame(),
 				"Packaging results", false);
 
 		if (rc < 8) {

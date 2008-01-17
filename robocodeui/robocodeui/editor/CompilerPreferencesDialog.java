@@ -17,7 +17,7 @@
  *     - Changed to use FileUtil.getWindowConfigFile()
  *     - Added missing close() on FileOutputStream
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import java.awt.Component;

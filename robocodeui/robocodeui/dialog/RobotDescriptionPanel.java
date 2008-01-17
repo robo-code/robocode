@@ -13,7 +13,7 @@
  *     Flemming N. Larsen
  *     - Code cleanup
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.BorderLayout;
@@ -28,7 +28,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.*;
 
-import robocode.manager.BrowserManager;
+import robocodeui.manager.BrowserManager;
 import robocode.repository.FileSpecification;
 
 

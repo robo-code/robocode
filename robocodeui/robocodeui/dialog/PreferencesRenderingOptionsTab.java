@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial API and implementation
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.GridBagConstraints;
@@ -23,6 +23,7 @@ import javax.swing.*;
 
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
+import robocodeui.manager.ImageManager;
 
 
 /**
@@ -292,7 +293,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 					@Override
 					public void run() {
 						storePreferences();
-						manager.getImageManager().initialize();
+						((ImageManager)manager.getImageManager()).initialize();
 					}
 				}.start();
 				return;

@@ -18,7 +18,7 @@
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import java.awt.BorderLayout;

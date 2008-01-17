@@ -17,7 +17,7 @@
  *     - Bugfix: Added cleanup to prevent memory leaks with the battle object in
  *       okButtonActionPerformed()
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.BorderLayout;
@@ -33,6 +33,7 @@ import robocode.battle.Battle;
 import robocode.battle.BattleRankingTableModel;
 import robocode.battle.BattleResultsTableModel;
 import robocode.manager.RobocodeManager;
+import robocodeui.manager.WindowManager;
 
 
 /**
@@ -96,7 +97,7 @@ public class RankingDialog extends JFrame {
 					new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
-					manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
+					((RobocodeFrame)manager.getWindowManager().getRobocodeFrame()).getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
 							false);
 				}
 			});
@@ -347,6 +348,6 @@ public class RankingDialog extends JFrame {
 	}
 
 	private void saveButtonActionPerformed() {
-		manager.getWindowManager().showSaveResultsDialog();
+		((WindowManager)manager.getWindowManager()).showSaveResultsDialog();
 	}
 }

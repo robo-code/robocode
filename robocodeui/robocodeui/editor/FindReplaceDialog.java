@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Minor optimizations
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import java.awt.Dimension;

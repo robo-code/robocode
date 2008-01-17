@@ -108,11 +108,8 @@ import java.util.regex.Pattern;
 import robocode.*;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
-import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
-import robocode.dialog.RobotButton;
-import robocode.dialog.RobocodeFrame;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
@@ -121,6 +118,8 @@ import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.security.RobocodeClassLoader;
+import robocode.ui.IBattleView;
+import robocode.ui.IRobocodeFrame;
 
 
 /**
@@ -137,7 +136,7 @@ public class Battle implements Runnable {
 	private final static int TURNS_DISPLAYED_AFTER_ENDING = 35;
 
 	// Objects we use
-	private BattleView battleView;
+	private IBattleView battleView;
 	private BattleField battleField;
 	private BattleManager battleManager;
 	private RobocodeManager manager;
@@ -286,7 +285,7 @@ public class Battle implements Runnable {
 		roundNum = 0;
 
 		if (manager.isGUIEnabled()) {
-			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
+			IRobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
 
 			frame.setEnableStopButton(true);
 			frame.setEnableRestartButton(true);
@@ -381,7 +380,7 @@ public class Battle implements Runnable {
 		}
 
 		if (manager.isGUIEnabled()) {
-			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
+			IRobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
 
 			frame.setEnableStopButton(false);
 			frame.setEnableReplayButton(battleRecord != null);
@@ -628,7 +627,7 @@ public class Battle implements Runnable {
 			r.preInitialize();
 			if (manager.isGUIEnabled()) {
 				manager.getWindowManager().getRobocodeFrame().addRobotButton(
-						new RobotButton(manager.getRobotDialogManager(), r));
+						manager.getRobotDialogManager(), r);
 			}
 		}
 		if (manager.isGUIEnabled()) {

@@ -16,7 +16,7 @@
  *     Matthew Reeder
  *     - Added keyboard mnemonics to View Options and Development Options tabs
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.BorderLayout;
@@ -64,7 +64,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	 * PreferencesDialog constructor
 	 */
 	public PreferencesDialog(RobocodeManager manager) {
-		super(manager.getWindowManager().getRobocodeFrame());
+		super((RobocodeFrame)manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
 		initialize();
 	}

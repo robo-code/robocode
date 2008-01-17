@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Rewritten to use a JEditorPane with HTML content
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.*;
@@ -106,7 +106,7 @@ public final class AboutBox extends JDialog {
 		public void hyperlinkUpdate(HyperlinkEvent event) {
 			if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 				try {
-					robocode.manager.BrowserManager.openURL(event.getURL().toExternalForm());
+					robocodeui.manager.BrowserManager.openURL(event.getURL().toExternalForm());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

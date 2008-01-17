@@ -29,11 +29,9 @@
 package robocode;
 
 
-import java.awt.Frame;
 import java.io.File;
 import java.security.Policy;
 
-import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
@@ -65,155 +63,158 @@ public class Robocode {
 	 *
 	 * @param args an array of command-line arguments
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Throwable {
+        try {
 		Robocode robocode = new Robocode();
-
 		robocode.initialize(args);
+        } catch (Throwable e) {
+            Logger.log(e);
+        }
 	}
+
+    public static void main2(String[] args) throws Throwable {
+        Robocode robocode = new Robocode();
+        robocode.initialize(args);
+    }
 
 	private Robocode() {}
 
-	private boolean initialize(String args[]) {
-		try {
-			manager = new RobocodeManager(false, null);
+	private boolean initialize(String args[]) throws Throwable {
+		manager = new RobocodeManager(false, null);
 
-			if (System.getProperty("WORKINGDIRECTORY") != null) {
-				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
+		if (System.getProperty("WORKINGDIRECTORY") != null) {
+			FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
+		}
+
+		Thread.currentThread().setName("Application Thread");
+
+		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
+
+		Policy.setPolicy(securityPolicy);
+
+		// For John Burkey at Apple
+		boolean securityOn = true;
+
+		if (System.getProperty("NOSECURITY", "false").equals("true")) {
+            manager.getWindowManager().getRobocodeFrame().messageWarning(
+					"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
+					+ "You should only run robots which you trust!");
+			securityOn = false;
+		}
+		if (securityOn) {
+			System.setSecurityManager(
+					new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true));
+
+			RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
+
+			ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+			while (tg != null) {
+				((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
+				tg = tg.getParent();
 			}
+		}
 
-			Thread.currentThread().setName("Application Thread");
+		SecurePrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
+		SecurePrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
+		SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
 
-			RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
+		System.setOut(sysout);
+		if (!System.getProperty("debug", "false").equals("true")) {
+			System.setErr(syserr);
+		}
+		System.setIn(sysin);
 
-			Policy.setPolicy(securityPolicy);
+		boolean minimize = false;
+		String battleFilename = null;
+		String resultsFilename = null;
 
-			// For John Burkey at Apple
-			boolean securityOn = true;
+		int tps = manager.getProperties().getOptionsBattleDesiredTPS();
 
-			if (System.getProperty("NOSECURITY", "false").equals("true")) {
-				WindowUtil.messageWarning(
-						"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-						+ "You should only run robots which you trust!");
-				securityOn = false;
-			}
-			if (securityOn) {
-				System.setSecurityManager(
-						new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true));
-
-				RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
-
-				ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-				while (tg != null) {
-					((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
-					tg = tg.getParent();
-				}
-			}
-
-			SecurePrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-			SecurePrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-			SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
-
-			System.setOut(sysout);
-			if (!System.getProperty("debug", "false").equals("true")) {
-				System.setErr(syserr);
-			}
-			System.setIn(sysin);
-
-			boolean minimize = false;
-			String battleFilename = null;
-			String resultsFilename = null;
-
-			int tps = manager.getProperties().getOptionsBattleDesiredTPS();
-
-			for (int i = 0; i < args.length; i++) {
-				if (args[i].equals("-cwd") && (i < args.length + 1)) {
-					FileUtil.setCwd(new File(args[i + 1]));
-					i++;
-				} else if (args[i].equals("-battle") && (i < args.length + 1)) {
-					battleFilename = args[i + 1];
-					i++;
-				} else if (args[i].equals("-results") && (i < args.length + 1)) {
-					resultsFilename = args[i + 1];
-					i++;
-				} else if (args[i].equals("-tps") && (i < args.length + 1)) {
-					tps = Integer.parseInt(args[i + 1]);
-					i++;
-				} else if (args[i].equals("-minimize")) {
-					minimize = true;
-				} else if (args[i].equals("-nodisplay")) {
-					manager.setEnableGUI(false);
-					manager.setEnableSound(false);
-					tps = 10000;
-				} else if (args[i].equals("-nosound")) {
-					manager.setEnableSound(false);
-				} else if (args[i].equals("-?") || args[i].equals("-help")) {
-					printUsage();
-					System.exit(0);
-				} else {
-					System.out.println("Not understood: " + args[i]);
-					printUsage();
-					System.exit(8);
-				}
-			}
-			File robots = FileUtil.getRobotsDir();
-
-			if (!robots.exists() || !robots.isDirectory()) {
-				System.err.println(
-						new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals("-cwd") && (i < args.length + 1)) {
+				FileUtil.setCwd(new File(args[i + 1]));
+				i++;
+			} else if (args[i].equals("-battle") && (i < args.length + 1)) {
+				battleFilename = args[i + 1];
+				i++;
+			} else if (args[i].equals("-results") && (i < args.length + 1)) {
+				resultsFilename = args[i + 1];
+				i++;
+			} else if (args[i].equals("-tps") && (i < args.length + 1)) {
+				tps = Integer.parseInt(args[i + 1]);
+				i++;
+			} else if (args[i].equals("-minimize")) {
+				minimize = true;
+			} else if (args[i].equals("-nodisplay")) {
+				manager.setEnableGUI(false);
+				manager.setEnableSound(false);
+				tps = 10000;
+			} else if (args[i].equals("-nosound")) {
+				manager.setEnableSound(false);
+			} else if (args[i].equals("-?") || args[i].equals("-help")) {
+				printUsage();
+				System.exit(0);
+			} else {
+				System.out.println("Not understood: " + args[i]);
+				printUsage();
 				System.exit(8);
 			}
-
-			// Set the Look and Feel (LAF)
-			if (manager.isGUIEnabled()) {
-				robocode.manager.LookAndFeelManager.setLookAndFeel();
-			}
-
-			if (battleFilename != null) {
-				robocode.manager.BattleManager battleManager = manager.getBattleManager();
-				
-				battleManager.setBattleFilename(battleFilename);
-				if (new File(battleManager.getBattleFilename()).exists()) {
-					battleManager.loadBattleProperties();
-					battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
-					battleManager.getBattle().setDesiredTPS(tps);
-				} else {
-					System.err.println("The specified battle file '" + battleFilename + "' was not be found");
-					System.exit(8);
-				}
-			}
-			if (resultsFilename != null) {
-				manager.getBattleManager().setResultsFile(resultsFilename);
-			}
-			if (!manager.isGUIEnabled()) {
-				return true;
-			}
-
-			if (!minimize && battleFilename == null) {
-				if (manager.isSoundEnabled()) {
-					manager.getSoundManager().playThemeMusic();
-				}
-				manager.getWindowManager().showSplashScreen();
-			}
-			manager.getWindowManager().showRobocodeFrame(true);
-			if (!minimize) {
-				manager.getVersionManager().checkUpdateCheck();
-			}
-			if (minimize) {
-				manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
-			}
-
-			if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
-				manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
-				manager.saveProperties();
-				manager.runIntroBattle();
-			}
-
-			return true;
-		} catch (Throwable e) {
-			Logger.log(e);
-			return false;
 		}
+		File robots = FileUtil.getRobotsDir();
+
+		if (!robots.exists() || !robots.isDirectory()) {
+			System.err.println(
+					new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
+			System.exit(8);
+		}
+
+		// Set the Look and Feel (LAF)
+		if (manager.isGUIEnabled()) {
+            manager.getLookAndFeelManager().setLookAndFeel();
+		}
+
+		if (battleFilename != null) {
+			robocode.manager.BattleManager battleManager = manager.getBattleManager();
+			
+			battleManager.setBattleFilename(battleFilename);
+			if (new File(battleManager.getBattleFilename()).exists()) {
+				battleManager.loadBattleProperties();
+				battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
+				battleManager.getBattle().setDesiredTPS(tps);
+			} else {
+				System.err.println("The specified battle file '" + battleFilename + "' was not be found");
+				System.exit(8);
+			}
+		}
+		if (resultsFilename != null) {
+			manager.getBattleManager().setResultsFile(resultsFilename);
+		}
+		if (!manager.isGUIEnabled()) {
+			return true;
+		}
+
+		if (!minimize && battleFilename == null) {
+			if (manager.isSoundEnabled()) {
+				manager.getSoundManager().playThemeMusic();
+			}
+			manager.getWindowManager().showSplashScreen();
+		}
+		manager.getWindowManager().showRobocodeFrame(true);
+		if (!minimize) {
+			manager.getVersionManager().checkUpdateCheck();
+		}
+		if (minimize) {
+            manager.getWindowManager().getRobocodeFrame().setIconified(true);
+		}
+
+		if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
+			manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
+			manager.saveProperties();
+			manager.runIntroBattle();
+		}
+
+        return true;
 	}
 
 	private void printUsage() {

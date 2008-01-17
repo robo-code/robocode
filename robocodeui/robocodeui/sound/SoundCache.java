@@ -14,7 +14,7 @@
  *     - The addSound() will now return if the resource name is not specified
  *     - Improved the error message in addSound() if the line is unavailable
  *******************************************************************************/
-package robocode.sound;
+package robocodeui.sound;
 
 
 import java.io.IOException;

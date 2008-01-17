@@ -21,7 +21,7 @@
  *     - Added missing close() on FileInputStream, FileOutputStream, and
  *       FileReader
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import static robocode.io.Logger.log;
@@ -34,9 +34,11 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.Document;
 
-import robocode.gfx.ImageUtil;
+import robocodeui.gfx.ImageUtil;
 import robocode.io.FileUtil;
-import robocode.manager.BrowserManager;
+import robocodeui.manager.BrowserManager;
+import robocodeui.manager.WindowManager;
+import robocodeui.manager.LookAndFeelManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 
@@ -601,7 +603,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	public static void main(String[] args) {
 		try {
 			// Set the Look and Feel (LAF)
-			robocode.manager.LookAndFeelManager.setLookAndFeel();
+			LookAndFeelManager.SetLookAndFeel();
 
 			RobocodeEditor robocodeEditor;
 
@@ -701,7 +703,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public void extractRobot() {
-		manager.getWindowManager().showRobotExtractor(this);
+		((WindowManager)manager.getWindowManager()).showRobotExtractor(this);
 	}
 
 	public void run() {

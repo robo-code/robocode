@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial API and implementation
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.GridLayout;

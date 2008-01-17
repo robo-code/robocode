@@ -17,7 +17,7 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.BorderLayout;
@@ -147,7 +147,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	 */
 	private NewBattleRulesTab getRulesTab() {
 		if (rulesTab == null) {
-			rulesTab = new robocode.dialog.NewBattleRulesTab();
+			rulesTab = new robocodeui.dialog.NewBattleRulesTab();
 		}
 		return rulesTab;
 	}
@@ -169,10 +169,10 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	/**
 	 * NewBattleDialog constructor comment.
 	 *
-	 * @param owner Frame
+	 * @param manager Frame
 	 */
 	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
-		super(manager.getWindowManager().getRobocodeFrame());
+		super((RobocodeFrame)manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
 		this.battleProperties = battleProperties;
 

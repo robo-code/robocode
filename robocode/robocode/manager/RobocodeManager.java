@@ -34,7 +34,8 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
-import robocode.sound.SoundManager;
+import robocode.sound.ISoundManager;
+import robocode.ui.*;
 
 
 /**
@@ -45,13 +46,14 @@ import robocode.sound.SoundManager;
 public class RobocodeManager {
 	private BattleManager battleManager;
 	private CpuManager cpuManager;
-	private ImageManager imageManager;
-	private RobotDialogManager robotDialogManager;
+	private IImageManager imageManager;
+	private IRobotDialogManager robotDialogManager;
 	private RobotRepositoryManager robotRepositoryManager;
 	private ThreadManager threadManager;
-	private WindowManager windowManager;
-	private VersionManager versionManager;
-	private SoundManager soundManager;
+	private IWindowManager windowManager;
+	private IVersionManager versionManager;
+	private ISoundManager soundManager;
+    private ILookAndFeelManager lookAndFeelManager;
 
 	private boolean slave;
 
@@ -64,7 +66,7 @@ public class RobocodeManager {
 	public RobocodeManager(boolean slave, RobocodeListener listener) {
 		this.slave = slave;
 		this.listener = listener;
-	}
+    }
 
 	/**
 	 * Gets the battleManager.
@@ -95,10 +97,10 @@ public class RobocodeManager {
 	 * 
 	 * @return Returns a WindowManager
 	 */
-	public WindowManager getWindowManager() {
+	public IWindowManager getWindowManager() {
 		if (windowManager == null) {
-			windowManager = new WindowManager(this);
-		}
+            windowManager = (IWindowManager)loadManager("robocodeui.manager.WindowManager");
+        }
 		return windowManager;
 	}
 
@@ -119,9 +121,9 @@ public class RobocodeManager {
 	 * 
 	 * @return Returns a RobotDialogManager
 	 */
-	public RobotDialogManager getRobotDialogManager() {
+	public IRobotDialogManager getRobotDialogManager() {
 		if (robotDialogManager == null) {
-			robotDialogManager = new RobotDialogManager(this);
+            robotDialogManager = (IRobotDialogManager)loadManager("robocodeui.manager.RobotDialogManager");
 		}
 		return robotDialogManager;
 	}
@@ -178,10 +180,11 @@ public class RobocodeManager {
 	 * 
 	 * @return Returns a ImageManager
 	 */
-	public ImageManager getImageManager() {
+	public IImageManager getImageManager() {
 		if (imageManager == null) {
-			imageManager = new ImageManager(this);
-		}
+            imageManager = (IImageManager)loadManager("robocodeui.manager.ImageManager");
+            imageManager.initialize();
+        }
 		return imageManager;
 	}
 
@@ -190,9 +193,9 @@ public class RobocodeManager {
 	 * 
 	 * @return Returns a VersionManager
 	 */
-	public VersionManager getVersionManager() {
+	public IVersionManager getVersionManager() {
 		if (versionManager == null) {
-			versionManager = new VersionManager(this);
+            versionManager = (IVersionManager)loadManager("robocodeui.manager.VersionManager");
 		}
 		return versionManager;
 	}
@@ -214,14 +217,63 @@ public class RobocodeManager {
 	 * 
 	 * @return Returns a SoundManager
 	 */
-	public SoundManager getSoundManager() {
+	public ISoundManager getSoundManager() {
 		if (soundManager == null) {
-			soundManager = new SoundManager(this);
+            soundManager = (ISoundManager)loadManager("robocodeui.manager.SoundManager");
 		}
 		return soundManager;
 	}
 
-	/**
+    /**
+     * Gets the Look and Manager.
+     *
+     * @return Returns a LookAndFeelManager
+     */
+    public ILookAndFeelManager getLookAndFeelManager() {
+        if (lookAndFeelManager == null) {
+            lookAndFeelManager = (ILookAndFeelManager)loadManager("robocodeui.manager.LookAndFeelManager");
+        }
+        return lookAndFeelManager;
+    }
+
+    private ILoadableManager loadManager(String name)
+    {
+        Class<?> c = loadClass(name);
+        ILoadableManager manager;
+        try {
+            manager = (ILoadableManager)c.newInstance();
+        } catch (InstantiationException e) {
+            log(e);
+            return null;
+        } catch (IllegalAccessException e) {
+            log(e);
+            return null;
+        }
+        manager.setRobocodeManager(this);
+        return manager; 
+    }
+    
+    private Class<?> loadClass(String name) {
+    	try {
+    		ClassLoader loader = ClassLoader.getSystemClassLoader();
+            if (loader.getClass().getName().contains("ikvm"))
+            {
+                //name="n" + name + ", nrobocodeui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a8c9038a4fffb2bb";
+                name="n" + name + ", nrobocodeui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+				ClassLoader loader2 = Thread.currentThread().getContextClassLoader();
+				return Class.forName(name, true, loader2);
+            }
+            else
+            {
+				return Class.forName(name, true, loader);
+			}
+		} catch (ClassNotFoundException e) {
+            log(e);
+			return null;
+        }
+    }
+
+    /**
 	 * Gets the slave.
 	 * 
 	 * @return Returns a boolean

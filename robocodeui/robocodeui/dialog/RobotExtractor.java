@@ -19,11 +19,10 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
-import java.awt.AWTEvent;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -92,7 +91,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		int rc = extractRobot();
 		ConsoleDialog d;
 
-		d = new ConsoleDialog(robotManager.getManager().getWindowManager().getRobocodeFrame(), "Extract results", false);
+		d = new ConsoleDialog((Frame) robotManager.getManager().getWindowManager().getRobocodeFrame(), "Extract results", false);
 		d.setText(output.toString());
 		d.pack();
 		d.pack();

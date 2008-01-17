@@ -13,7 +13,7 @@
  *     - The constructor was removed
  *     - The string constant 'keywords' was renamed into 'KEYWORDS'
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import javax.swing.text.Segment;

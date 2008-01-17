@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Rewritten
  *******************************************************************************/
-package robocode.battleview;
+package robocodeui.battleview;
 
 
 import static java.lang.Math.*;
@@ -25,16 +25,17 @@ import robocode.Robot;
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.dialog.RobocodeFrame;
-import robocode.gfx.RenderImage;
-import robocode.gfx.RobocodeLogo;
-import robocode.manager.ImageManager;
+import robocode.ui.IBattleView;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.ExplosionPeer;
 import robocode.peer.RobotPeer;
 import robocode.util.GraphicsState;
+import robocodeui.dialog.RobocodeFrame;
+import robocodeui.gfx.RenderImage;
+import robocodeui.gfx.RobocodeLogo;
+import robocodeui.manager.ImageManager;
 
 
 /**
@@ -42,7 +43,7 @@ import robocode.util.GraphicsState;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class BattleView extends Canvas {
+public class BattleView extends Canvas implements IBattleView {
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
@@ -111,7 +112,7 @@ public class BattleView extends Canvas {
 
 		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
-		imageManager = manager.getImageManager();
+		imageManager = (ImageManager) manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
 	}

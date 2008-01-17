@@ -16,15 +16,17 @@
  *       cache of rendered robot images when max. capacity (MAX_NUM_COLORS) of
  *       images has been reached
  *******************************************************************************/
-package robocode.manager;
+package robocodeui.manager;
 
 
 import java.awt.Color;
 import java.awt.Image;
 import java.util.*;
 
-import robocode.gfx.ImageUtil;
-import robocode.gfx.RenderImage;
+import robocodeui.gfx.ImageUtil;
+import robocodeui.gfx.RenderImage;
+import robocode.ui.IImageManager;
+import robocode.manager.RobocodeManager;
 
 
 /**
@@ -32,7 +34,7 @@ import robocode.gfx.RenderImage;
  * @author Flemming N. Larsen (contributor)
  * @author Titus Chen (contributor)
  */
-public class ImageManager {
+public class ImageManager implements IImageManager {
 
 	private RobocodeManager manager;
 
@@ -51,9 +53,7 @@ public class ImageManager {
 	private HashMap<Color, RenderImage> robotGunImageCache;
 	private HashMap<Color, RenderImage> robotRadarImageCache;
 
-	public ImageManager(RobocodeManager manager) {
-		this.manager = manager;
-		initialize();
+    public ImageManager() {
 	}
 
 	public void initialize() {
@@ -202,6 +202,11 @@ public class ImageManager {
 		}
 		return img;
 	}
+
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        manager = robocodeManager;
+		initialize();
+    }
 
 	/**
 	 * Class used for caching rendered robot parts in various colors.

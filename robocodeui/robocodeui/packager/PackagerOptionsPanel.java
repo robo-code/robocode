@@ -17,7 +17,7 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.packager;
+package robocodeui.packager;
 
 
 import java.awt.Component;
@@ -32,7 +32,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import robocode.dialog.WizardPanel;
+import robocodeui.dialog.WizardPanel;
 import robocode.repository.FileSpecification;
 import robocode.text.LimitedDocument;
 

@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Rewritten
  *******************************************************************************/
-package robocode.manager;
+package robocodeui.manager;
 
 
 import java.io.File;

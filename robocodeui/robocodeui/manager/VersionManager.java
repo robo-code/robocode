@@ -21,7 +21,7 @@
  *     - Added missing close() on input stream readers
  *     - Added the Version class for comparing versions with compareTo()
  *******************************************************************************/
-package robocode.manager;
+package robocodeui.manager;
 
 
 import static robocode.io.Logger.log;
@@ -33,25 +33,27 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
+import java.awt.*;
 
 import javax.swing.JOptionPane;
 
-import robocode.dialog.WindowUtil;
+import robocodeui.dialog.WindowUtil;
 import robocode.io.FileUtil;
+import robocode.manager.IVersionManager;
+import robocode.manager.RobocodeManager;
 
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public final class VersionManager {
+public final class VersionManager implements IVersionManager {
 	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
 
 	private String version;
 	private RobocodeManager manager;
 
-	public VersionManager(RobocodeManager manager) {
-		this.manager = manager;
+    public VersionManager() {
 	}
 
 	public void checkUpdateCheck() {
@@ -113,6 +115,7 @@ public final class VersionManager {
 			String curVersLine = getVersion();
 
 			boolean newVersionAvailable = false;
+            Component parentComponent = (Component) manager.getWindowManager().getRobocodeFrame();
 			
 			if (newVersLine != null && curVersLine != null) {
 				Version newVersion = new Version(newVersLine);
@@ -120,18 +123,18 @@ public final class VersionManager {
 				if (newVersion.compareTo(curVersLine) > 0) {
 					newVersionAvailable = true;
 
-					if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
+                    if (JOptionPane.showConfirmDialog(parentComponent,
 							"Version " + newVersion + " of Robocode is now available.  Would you like to download it?",
 							"Version " + newVersion + " available", JOptionPane.YES_NO_OPTION)
 							== JOptionPane.YES_OPTION) {
 						try {
 							BrowserManager.openURL(INSTALL_URL);
 						} catch (IOException e) {
-							JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
+							JOptionPane.showMessageDialog(parentComponent, e.getMessage(),
 									"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
 						}
 					} else if (newVersion.isFinal()) {
-						JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
+						JOptionPane.showMessageDialog(parentComponent,
 								"It is highly recommended that you always download the latest version.  You may get it at "
 								+ INSTALL_URL,
 								"Update when you can!",
@@ -140,7 +143,7 @@ public final class VersionManager {
 				}
 			}
 			if (!newVersionAvailable && notifyNoUpdate) {
-				JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
+				JOptionPane.showMessageDialog(parentComponent,
 						"You have version " + version + ".  This is the latest version of Robocode.", "No update available",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -271,6 +274,10 @@ public final class VersionManager {
 		}
 		return version;
 	}
+    
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        manager = robocodeManager;
+    }
 }
 
 

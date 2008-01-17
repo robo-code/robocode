@@ -19,7 +19,7 @@
  *     - Added missing close() on FileInputStreams, FileOutputStreams, and
  *       JarInputStream
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import static robocode.io.Logger.log;
@@ -35,8 +35,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import robocode.dialog.ConsoleDialog;
-import robocode.dialog.WindowUtil;
+import robocodeui.dialog.ConsoleDialog;
+import robocodeui.dialog.WindowUtil;
 import robocode.io.FileUtil;
 
 

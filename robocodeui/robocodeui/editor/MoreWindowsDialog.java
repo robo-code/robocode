@@ -12,7 +12,7 @@
  *     - Ported to Java 5
  *     - Optimizations
  *******************************************************************************/
-package robocode.editor;
+package robocodeui.editor;
 
 
 import java.awt.BorderLayout;

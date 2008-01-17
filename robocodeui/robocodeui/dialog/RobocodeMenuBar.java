@@ -24,7 +24,7 @@
  *     Luis Crespo & Flemming N. Larsen
  *     - Added check box menu item for "Show Rankings"
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.event.*;
@@ -35,6 +35,8 @@ import javax.swing.event.MenuListener;
 
 import robocode.manager.RobocodeManager;
 import robocode.security.RobocodeSecurityManager;
+import robocodeui.manager.WindowManager;
+import robocodeui.manager.VersionManager;
 
 
 /**
@@ -195,11 +197,11 @@ public class RobocodeMenuBar extends JMenuBar {
 	 * Handle battleNew menu item action
 	 */
 	private void battleNewActionPerformed() {
-		manager.getWindowManager().showNewBattleDialog(manager.getBattleManager().getBattleProperties());
+		getWindowManager().showNewBattleDialog(manager.getBattleManager().getBattleProperties());
 	}
 
 	private void battleOpenActionPerformed() {
-		manager.getWindowManager().showBattleOpenDialog();
+		getWindowManager().showBattleOpenDialog();
 	}
 
 	private void battleSaveActionPerformed() {
@@ -731,59 +733,59 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void teamCreateTeamActionPerformed() {
-		manager.getWindowManager().showCreateTeamDialog();
+		getWindowManager().showCreateTeamDialog();
 	}
 
 	private void helpAboutActionPerformed() {
-		manager.getWindowManager().showAboutBox();
+		getWindowManager().showAboutBox();
 	}
 
 	private void helpCheckForNewVersionActionPerformed() {
-		manager.getVersionManager().checkForNewVersion(true);
+		((VersionManager)manager.getVersionManager()).checkForNewVersion(true);
 	}
 
 	private void helpFaqActionPerformed() {
-		manager.getWindowManager().showFaq();
+		getWindowManager().showFaq();
 	}
 
 	private void helpOnlineHelpActionPerformed() {
-		manager.getWindowManager().showOnlineHelp();
+		getWindowManager().showOnlineHelp();
 	}
 
 	private void helpVersionsTxtActionPerformed() {
-		manager.getWindowManager().showVersionsTxt();
+		getWindowManager().showVersionsTxt();
 	}
 
 	private void helpRobocodeApiActionPerformed() {
-		manager.getWindowManager().showHelpApi();
+		getWindowManager().showHelpApi();
 	}
 
 	private void helpRobocodeHomeMenuItemActionPerformed() {
-		manager.getWindowManager().showRobocodeHome();
+		getWindowManager().showRobocodeHome();
 	}
 
 	private void helpJavaDocumentationActionPerformed() {
-		manager.getWindowManager().showJavaDocumentation();
+		getWindowManager().showJavaDocumentation();
 	}
 	
 	private void helpRoboWikiMenuItemActionPerformed() {
-		manager.getWindowManager().showRoboWiki();
+		getWindowManager().showRoboWiki();
 	}
 
 	private void helpYahooGroupRobocodeActionPerformed() {
-		manager.getWindowManager().showYahooGroupRobocode();
+		getWindowManager().showYahooGroupRobocode();
 	}
 
 	private void helpRobocodeRepositoryActionPerformed() {
-		manager.getWindowManager().showRobocodeRepository();
+		getWindowManager().showRobocodeRepository();
 	}
 
 	private void optionsFitWindowActionPerformed() {
-		WindowUtil.fitWindow(manager.getWindowManager().getRobocodeFrame());
+		getWindowManager().getRobocodeFrame();
 	}
 
 	private void optionsShowRankingActionPerformed() {
-		manager.getWindowManager().showRankingDialog(getOptionsShowRankingCheckBoxMenuItem().getState());
+		getWindowManager().showRankingDialog(getOptionsShowRankingCheckBoxMenuItem().getState());
 	}
 
 	private void optionsRecalculateCpuConstantPerformed() {
@@ -824,18 +826,23 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void optionsPreferencesActionPerformed() {
-		manager.getWindowManager().showOptionsPreferences();
+		getWindowManager().showOptionsPreferences();
 	}
 
 	private void robotEditorActionPerformed() {
-		manager.getWindowManager().showRobocodeEditor();
+		getWindowManager().showRobocodeEditor();
 	}
 
 	private void robotImportActionPerformed() {
-		manager.getWindowManager().showImportRobotDialog();
+		getWindowManager().showImportRobotDialog();
 	}
 
 	private void robotPackagerActionPerformed() {
-		manager.getWindowManager().showRobotPackager();
+		getWindowManager().showRobotPackager();
+	}
+
+    private WindowManager getWindowManager()
+    {
+     return ((WindowManager)manager.getWindowManager());
 	}
 }

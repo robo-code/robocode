@@ -29,11 +29,16 @@
 
   <!-- The source folders -->
   <property name="src.robocode" location="../robocode"/>
+  <property name="src.robocodeui" location="../robocodeui"/>
   <property name="src.extract" location="../robocodeextract"/>
   <property name="src.autoextract" location="../autoextract"/>
   <property name="src.robots" location="../robocodeextract/robots"/>
   <property name="src.roborumble" location="../roborumble"/>
   <property name="src.cachecleaner" location="../robocode/ar"/>
+  <property name="src.nrobocodeui" location="../nrobocodeui"/>
+  <property name="ikvm" location="../nrobocodeui/ikvm"/>
+  <property name="csc" location="C:/Windows/Microsoft.NET/Framework/v2.0.50727/csc.exe"/>
+  <property name="vs9" location="C:/Program Files/Microsoft Visual Studio 9.0/Common7/IDE/devenv.exe"/>
 
   <!-- License file -->
   <property name="license.file" location="${src.extract}/license/cpl-v10.html"/>
@@ -119,11 +124,20 @@
 	<zip
         destfile="${build}/${sources.archive}"
         basedir=".."
-        includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**"
+        includes="autoextract/**, build/*, robocode/**, robocodeui/**, robocodeextract/**, roborumble/**"
         excludes="build/build, **/bin/**"
         defaultexcludes="no"
     />
   </target>
+
+  <!-- ====================================== -->
+  <!-- Target: libs                           -->
+  <!-- ====================================== -->
+  <target
+      name="libs"
+      description="Build the jars and dll"
+      depends="compile.robocode, compile.robocodeui, nrobocodeui.dll, robocode.exe"
+  />
 
   <!-- ====================================== -->
   <!-- Target: compile.robocode               -->
@@ -148,6 +162,31 @@
 
   <uptodate property="robocode.uptodate" targetfile="${build}/.robocode_build">
     <srcfiles dir="${src.robocode}/robocode"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: compile.robocodeui             -->
+  <!-- ====================================== -->
+  <target
+      name="compile.robocodeui"
+      description="Compile Robocode UI"
+  	  depends="init, compile.robocode, robocode.jar"
+      unless="robocodeui.uptodate"> 
+
+    <echo message="Compiling Robocode UI..."/>
+ 
+  	<!-- Copy libs into the build folder -->
+  	<copy file="${src.extract}/libs/codesize.jar" toDir="${build}/libs"/>
+
+    <!-- Compile Robocode UI -->
+    <compile srcdir="${src.robocodeui}" destdir="${build}" classpath="${build}/libs/codesize.jar"/>
+
+    <!-- Flag that Robocode has been built -->
+    <touch file="${build}/.robocodeui_build"/>
+  </target>
+
+  <uptodate property="robocodeui.uptodate" targetfile="${build}/.robocodeui_build">
+    <srcfiles dir="${src.robocodeui}/robocodeui"/>
   </uptodate>
 
   <!-- ====================================== -->
@@ -267,8 +306,120 @@
     </jar>
   </target>
 
+  <!-- ====================================== -->
+  <!-- Target: codesize.dll                   -->
+  <!-- ====================================== -->
+  <target
+      name="codesize.dll"
+      description="Build codesize.dll"
+      depends="init"
+      unless="codesize.dll.uptodate">
+
+    <echo message="Building codesize.dll..."/>
+
+  	<copy file="${ikvm}/IKVM.OpenJDK.ClassLibrary.dll" toDir="${build}/nlibs"/>
+  	<copy file="${ikvm}/IKVM.Runtime.dll" toDir="${build}/nlibs"/>
+    <copy file="${ikvm}/ICSharpCode.SharpZipLib.dll" toDir="${build}/nlibs"/>
+    
+    <!-- 
+    <copy file="${ikvm}/IKVM.OpenJDK.ClassLibrary.pdb" toDir="${build}/nlibs"/>
+    <copy file="${ikvm}/IKVM.Runtime.pdb" toDir="${build}/nlibs"/>
+    -->
+
+    <!-- Create the codesize.dll file -->
+	<exec executable="${ikvm}/ikvmc.exe">
+		<arg value="-debug"/>
+		<arg value="-target:library"/>
+		<!--
+        <arg value="-keyfile:${src.nrobocodeui}/nrobocodeui.snk"/>
+        <arg value="-classloader:ikvm.runtime.AppDomainAssemblyClassLoader"/>
+		-->
+		<arg value="${build}/libs/codesize.jar"/>
+		<arg value="-out:${build}/nlibs/codesize.dll"/>
+	</exec>    
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: robocode.exe                   -->
+  <!-- ====================================== -->
+  <target
+      name="robocode.exe"
+      description="Build robocode.exe"
+      depends="init, robocode.jar, codesize.dll"
+      unless="robocode.exe.uptodate">
+
+    <echo message="Building robocode.exe..."/>
+
+    <!-- Create the robocode.exe file -->
+	<exec executable="${ikvm}/ikvmc.exe">
+		<arg value="-debug"/>
+		<!--
+        <arg value="-keyfile:${src.nrobocodeui}/nrobocodeui.snk"/>
+        <arg value="-classloader:ikvm.runtime.AppDomainAssemblyClassLoader"/>
+        <arg value="-classloader:ikvm.runtime.AssemblyClassLoader"/>
+        <arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
+		-->
+		<arg value="-target:exe"/>
+		<arg value="-reference:${build}/nlibs/codesize.dll"/>
+		<arg value="${build}/libs/robocode.jar"/>
+		<arg value="-main:robocode.Robocode"/>
+		<arg value="-out:${build}/nlibs/robocode.exe"/>
+	</exec>    
+  </target>
+
   <uptodate property="robocode.jar.uptodate" targetfile="${build}/libs/robocode.jar">
     <srcfiles dir="${src.robocode}"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: nrobocodeui.dll                -->
+  <!-- ====================================== -->
+  <target
+      name="nrobocodeui.dll"
+      description="Build nrobocodeui.dll"
+      depends="init, robocode.exe"
+      unless="codesize.dll.uptodate">
+
+    <echo message="Building nrobocodeui.dll..."/>
+
+    <!-- Create the nrobocodeui.dll file -->
+	<exec executable="${vs9}">
+		<arg value="${src.nrobocodeui}/robocode.sln"/>
+		<arg value="/Rebuild"/>
+	</exec>    
+
+  	<copy file="${src.nrobocodeui}/bin/Debug/nrobocodeui.dll" toDir="${build}/nlibs"/>
+  	
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: robocodeui.jar                   -->
+  <!-- ====================================== -->
+  <target
+      name="robocodeui.jar"
+      description="Build robocodeui.jar"
+      depends="init, compile.robocodeui"
+      unless="robocodeui.jar.uptodate">
+
+    <echo message="Building robocodeui.jar..."/>
+
+    <!-- Create the robocodeui.jar file -->
+    <jar destfile="${build}/libs/robocodeui.jar">
+      <!-- Specify files to include -->
+      <fileset dir="${build}" includes="robocodeui/**"/>   <!-- Class files -->
+      <fileset dir="${src.robocodeui}" includes="resources/**"/>  <!-- Resource files -->
+      <fileset file="${license.file}"/>                         <!-- License file -->
+      <!-- Set the main class of the manifest -->
+      <manifest>
+        <attribute name="Implementation-Title" value="Robocode UI"/>
+	    <attribute name="Implementation-Version" value="v${version}, ${TODAY}"/> 
+	    <attribute name="Implementation-Vendor" value="Mathew A. Nelson, Flemming N. Larsen, and other Robocode contributors"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <uptodate property="robocodeui.jar.uptodate" targetfile="${build}/libs/robocodeui.jar">
+    <srcfiles dir="${src.robocodeui}"/>
   </uptodate>
 
   <!-- ====================================== -->
@@ -277,7 +428,7 @@
   <target
       name="extract.jar"
       description="Build extract.jar"
-      depends="init, robocode.jar, roborumble.jar, compile.robots, cachecleaner.jar, javadoc"
+      depends="init, robocode.jar, robocodeui.jar, roborumble.jar, compile.robots, cachecleaner.jar, javadoc"
       unless="extract.jar.uptodate">
 
     <echo message="Building extract.jar..."/>
@@ -295,6 +446,7 @@
       </fileset>
       <fileset dir="${build}">
         <include name="libs/robocode.jar"/>      <!-- Builded robocode.jar -->
+        <include name="libs/robocodeui.jar"/>    <!-- Builded robocodeui.jar -->
         <include name="libs/roborumble.jar"/>    <!-- Builded roborumble.jar -->
         <include name="libs/cachecleaner.jar"/>  <!-- Builded cachecleaner.jar -->
         <include name="javadoc/**"/>             <!-- Builded javadoc files -->

@@ -25,7 +25,7 @@
  *     Titus Chen:
  *     - Slight optimization with pan calculation in playBulletSound()
  *******************************************************************************/
-package robocode.sound;
+package robocodeui.sound;
 
 
 import javax.sound.sampled.AudioSystem;

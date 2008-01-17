@@ -18,7 +18,7 @@
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Added Pause button
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.BorderLayout;

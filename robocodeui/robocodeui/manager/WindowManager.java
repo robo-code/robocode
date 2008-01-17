@@ -20,15 +20,13 @@
  *     Luis Crespo & Flemming N. Larsen
  *     - Added showRankingDialog()
  *******************************************************************************/
-package robocode.manager;
+package robocodeui.manager;
 
 
 import java.io.File;
 import java.io.IOException;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.Window;
+import java.awt.*;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -37,10 +35,15 @@ import javax.swing.filechooser.FileFilter;
 
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
-import robocode.dialog.*;
-import robocode.editor.RobocodeEditor;
+import robocodeui.dialog.*;
+import robocodeui.dialog.SplashScreen;
+import robocodeui.editor.RobocodeEditor;
 import robocode.io.FileUtil;
-import robocode.packager.RobotPackager;
+import robocodeui.packager.RobotPackager;
+import robocode.manager.RobocodeManager;
+import robocode.manager.BattleManager;
+import robocode.ui.IRobocodeFrame;
+import robocode.ui.IWindowManager;
 
 
 /**
@@ -48,7 +51,7 @@ import robocode.packager.RobotPackager;
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  */
-public class WindowManager {
+public class WindowManager implements IWindowManager {
 
 	private RobocodeEditor robocodeEditor;
 	private RobotPackager robotPackager;
@@ -58,11 +61,10 @@ public class WindowManager {
 	private TeamCreator teamCreator;
 	private RankingDialog rankingDialog;
 
-	public WindowManager(RobocodeManager manager) {
-		this.manager = manager;
+    public WindowManager() {
 	}
 
-	public RobocodeFrame getRobocodeFrame() {
+	public IRobocodeFrame getRobocodeFrame() {
 		if (robocodeFrame == null) {
 			// Create the frame
 			robocodeFrame = new RobocodeFrame(manager);
@@ -71,7 +73,7 @@ public class WindowManager {
 	}
 
 	public void showRobocodeFrame(boolean visible) {
-		RobocodeFrame frame = getRobocodeFrame();
+		RobocodeFrame frame = (RobocodeFrame)getRobocodeFrame();
 		
 		if (visible) {
 			// Pack frame to size all components
@@ -84,7 +86,7 @@ public class WindowManager {
 	}
 
 	public void showAboutBox() {
-		packCenterShow(new AboutBox(getRobocodeFrame(), manager));
+		packCenterShow(new AboutBox((Frame) getRobocodeFrame(), manager));
 	}
 
 	public void showBattleOpenDialog() {
@@ -120,7 +122,7 @@ public class WindowManager {
 
 		BattleManager battleManager = manager.getBattleManager();
 
-		if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showOpenDialog((Component) getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
 			battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
 			battleManager.loadBattleProperties();
 			showNewBattleDialog(battleManager.getBattleProperties());
@@ -176,7 +178,7 @@ public class WindowManager {
 		PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
 
 		// Show it
-		WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
+		WindowUtil.packCenterShow((Window) getRobocodeFrame(), preferencesDialog);
 	}
 
 	public void showResultsDialog() {
@@ -192,7 +194,7 @@ public class WindowManager {
 
 	public void showRobocodeEditor() {
 		if (robocodeEditor == null) {
-			robocodeEditor = new robocode.editor.RobocodeEditor(manager);
+			robocodeEditor = new robocodeui.editor.RobocodeEditor(manager);
 			// Pack, center, and show it
 			WindowUtil.packCenterShow(robocodeEditor);
 		} else {
@@ -206,7 +208,7 @@ public class WindowManager {
 			robotPackager = null;
 		}
 
-		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager(), false);
+		robotPackager = new robocodeui.packager.RobotPackager(manager.getRobotRepositoryManager(), false);
 		// Pack, center, and show it
 		WindowUtil.packCenterShow(robotPackager);
 	}
@@ -217,7 +219,7 @@ public class WindowManager {
 			robotExtractor = null;
 		}
 
-		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
+		robotExtractor = new robocodeui.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
 		// Pack, center, and show it
 		WindowUtil.packCenterShow(robotExtractor);
 	}
@@ -257,7 +259,7 @@ public class WindowManager {
 		NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
 
 		// Pack, center, and show it
-		WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
+		WindowUtil.packCenterShow((Window) getRobocodeFrame(), newBattleDialog);
 	}
 
 	public boolean closeRobocodeEditor() {
@@ -282,7 +284,7 @@ public class WindowManager {
 	}
 
 	public void showCreateTeamDialog() {
-		teamCreator = new robocode.dialog.TeamCreator(manager.getRobotRepositoryManager());
+		teamCreator = new robocodeui.dialog.TeamCreator(manager.getRobotRepositoryManager());
 		WindowUtil.packCenterShow(teamCreator);
 	}
 
@@ -328,7 +330,7 @@ public class WindowManager {
 		chooser.setDialogTitle(
 				"Select the robot .jar file to copy to " + manager.getRobotRepositoryManager().getRobotsDirectory());
 
-		if (chooser.showDialog(getRobocodeFrame(), "Import") == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showDialog((Component) getRobocodeFrame(), "Import") == JFileChooser.APPROVE_OPTION) {
 			File inputFile = chooser.getSelectedFile();
 			String fileName = chooser.getSelectedFile().getName();
 			int idx = fileName.lastIndexOf('.');
@@ -343,27 +345,27 @@ public class WindowManager {
 			File outputFile = new File(manager.getRobotRepositoryManager().getRobotsDirectory(), fileName);
 
 			if (inputFile.equals(outputFile)) {
-				JOptionPane.showMessageDialog(getRobocodeFrame(),
+				JOptionPane.showMessageDialog((Component) getRobocodeFrame(),
 						outputFile.getName() + " is already in the robots directory!");
 				return;
 			}
 			if (outputFile.exists()) {
-				if (JOptionPane.showConfirmDialog(getRobocodeFrame(), outputFile + " already exists.  Overwrite?",
+				if (JOptionPane.showConfirmDialog((Component) getRobocodeFrame(), outputFile + " already exists.  Overwrite?",
 						"Warning", JOptionPane.YES_NO_OPTION)
 						== JOptionPane.NO_OPTION) {
 					return;
 				}
 			}
-			if (JOptionPane.showConfirmDialog(getRobocodeFrame(),
+			if (JOptionPane.showConfirmDialog((Component) getRobocodeFrame(),
 					"Robocode will now copy " + inputFile.getName() + " to " + outputFile.getParent(), "Import robot",
 					JOptionPane.OK_CANCEL_OPTION)
 					== JOptionPane.OK_OPTION) {
 				try {
 					FileUtil.copy(inputFile, outputFile);
 					manager.getRobotRepositoryManager().clearRobotList();
-					JOptionPane.showMessageDialog(getRobocodeFrame(), "Robot imported successfully.");
+					JOptionPane.showMessageDialog((Component) getRobocodeFrame(), "Robot imported successfully.");
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(getRobocodeFrame(), "Import failed: " + e);
+					JOptionPane.showMessageDialog((Component) getRobocodeFrame(), "Import failed: " + e);
 				}
 			}
 		}
@@ -379,7 +381,7 @@ public class WindowManager {
 		try {
 			BrowserManager.openURL(url);
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(getRobocodeFrame(), e.getMessage(), "Unable to open browser!",
+			JOptionPane.showMessageDialog((Component) getRobocodeFrame(), e.getMessage(), "Unable to open browser!",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -419,7 +421,7 @@ public class WindowManager {
 
 		chooser.setDialogTitle("Save battle results");
 
-		if (chooser.showSaveDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showSaveDialog((Component) getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
 			BattleResultsTableModel tableModel = new BattleResultsTableModel(manager.getBattleManager().getBattle());
 
 			String filename = chooser.getSelectedFile().getPath();
@@ -444,4 +446,8 @@ public class WindowManager {
 		window.setLocation((screenSize.width - window.getWidth()) / 2, (screenSize.height - window.getHeight()) / 2);
 		window.setVisible(true);
 	}
+    
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        manager = robocodeManager;
+    }
 }

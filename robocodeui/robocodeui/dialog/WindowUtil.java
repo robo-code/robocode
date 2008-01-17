@@ -12,7 +12,7 @@
  *     - Moved window related methods from robocode.util.Utils into this class
  *     - Removed packCenterShow(Window main, Window window, boolean pack)
  *******************************************************************************/
-package robocode.dialog;
+package robocodeui.dialog;
 
 
 import java.awt.*;

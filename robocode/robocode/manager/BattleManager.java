@@ -59,8 +59,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import javax.swing.JFileChooser;
-
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
@@ -325,7 +323,7 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			robocode.ui.IBattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 			battleView.setVisible(true);
 			battleView.setInitialized(false);
@@ -336,13 +334,13 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.dialog.RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
+			robocode.ui.IRobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
 
-			frame.getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
-			frame.getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+			frame.setEnableBattleSaveAsMenuItem(true);
+			frame.setEnableBattleSaveMenuItem(true);
 
-			if (frame.getPauseButton().getText().equals("Resume")) {
-				frame.pauseResumeButtonActionPerformed();
+			if (isPaused()) {
+                pauseResumeBattle();
 			}
 
 			manager.getRobotDialogManager().setActiveBattle(battle);
@@ -374,6 +372,14 @@ public class BattleManager {
 	public void setBattleFilename(String newBattleFilename) {
 		battleFilename = newBattleFilename;
 	}
+
+    public synchronized void pauseResumeBattle() {
+        if (isPaused()) {
+            resumeBattle();
+        } else {
+            pauseBattle();
+        }
+    }
 
 	public synchronized boolean isPaused() {
 		return (pauseCount != 0);
@@ -408,55 +414,26 @@ public class BattleManager {
 		pauseBattle();
 		File f = new File(getBattlePath());
 
-		JFileChooser chooser;
+        String path = manager.getWindowManager().getRobocodeFrame().saveBattleDialog(f);
+        if (path!=null)
+        {
+            battleFilename = path;
+            int idx = battleFilename.lastIndexOf('.');
+            String extension = "";
 
-		chooser = new JFileChooser(f);
+            if (idx > 0) {
+                extension = battleFilename.substring(idx);
+            }
+            if (!(extension.equalsIgnoreCase(".battle"))) {
+                battleFilename += ".battle";
+            }
+            saveBattleProperties();
+        }
 
-		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-			@Override
-			public boolean accept(File pathname) {
-				if (pathname.isDirectory()) {
-					return false;
-				}
-				String fn = pathname.getName();
-				int idx = fn.lastIndexOf('.');
-				String extension = "";
-
-				if (idx >= 0) {
-					extension = fn.substring(idx);
-				}
-				if (extension.equalsIgnoreCase(".battle")) {
-					return true;
-				}
-				return false;
-			}
-
-			@Override
-			public String getDescription() {
-				return "Battles";
-			}
-		};
-
-		chooser.setFileFilter(filter);
-		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
-
-		if (rv == JFileChooser.APPROVE_OPTION) {
-			battleFilename = chooser.getSelectedFile().getPath();
-			int idx = battleFilename.lastIndexOf('.');
-			String extension = "";
-
-			if (idx > 0) {
-				extension = battleFilename.substring(idx);
-			}
-			if (!(extension.equalsIgnoreCase(".battle"))) {
-				battleFilename += ".battle";
-			}
-			saveBattleProperties();
-		}
-		resumeBattle();
+        resumeBattle();
 	}
 
-	public void saveBattleProperties() {
+    public void saveBattleProperties() {
 		if (battleProperties == null) {
 			log("Cannot save null battle properties");
 			return;
