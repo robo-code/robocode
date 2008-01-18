@@ -1,5 +1,8 @@
 Download binaries IKVM for .NET 2.0 from and upack it here
+http://www.frijters.net/ikvmbin-0.37.2928.zip
+Or here
 http://www.ikvm.net/download.html
+
 
 It will look like this:
 
