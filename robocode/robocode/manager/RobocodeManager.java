@@ -34,7 +34,6 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
-import robocode.sound.ISoundManager;
 import robocode.ui.*;
 
 
@@ -255,8 +254,7 @@ public class RobocodeManager {
     
     private Class<?> loadClass(String name) {
     	try {
-    		ClassLoader loader = ClassLoader.getSystemClassLoader();
-            if (loader.getClass().getName().contains("ikvm"))
+            if (isRunningIKVM())
             {
                 //name="n" + name + ", nrobocodeui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a8c9038a4fffb2bb";
                 name="n" + name + ", nrobocodeui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
@@ -265,12 +263,18 @@ public class RobocodeManager {
             }
             else
             {
+                ClassLoader loader = ClassLoader.getSystemClassLoader();
 				return Class.forName(name, true, loader);
 			}
 		} catch (ClassNotFoundException e) {
             log(e);
 			return null;
         }
+    }
+
+    public boolean isRunningIKVM() {
+        ClassLoader loader = ClassLoader.getSystemClassLoader();
+        return loader.getClass().getName().contains("ikvm");
     }
 
     /**

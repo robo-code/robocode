@@ -37,10 +37,11 @@ import java.awt.*;
 
 import javax.swing.JOptionPane;
 
-import robocodeui.dialog.WindowUtil;
 import robocode.io.FileUtil;
-import robocode.manager.IVersionManager;
+import robocode.ui.IVersionManager;
 import robocode.manager.RobocodeManager;
+
+import robocodeui.dialog.WindowUtil;
 
 
 /**

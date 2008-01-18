@@ -41,15 +41,15 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\build\build\nlibs\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>ikvm\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="IKVM.OpenJDK.ClassLibrary, Version=0.36.0.5, Culture=neutral, PublicKeyToken=01460a3745c5c530">
+    <Reference Include="IKVM.OpenJDK.ClassLibrary, Version=0.37.2928.14392, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\build\build\nlibs\IKVM.OpenJDK.ClassLibrary.dll</HintPath>
+      <HintPath>ikvm\IKVM.OpenJDK.ClassLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="IKVM.Runtime, Version=0.36.0.5, Culture=neutral, PublicKeyToken=01460a3745c5c530">
+    <Reference Include="IKVM.Runtime, Version=0.37.2928.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\build\build\nlibs\IKVM.Runtime.dll</HintPath>
+      <HintPath>ikvm\IKVM.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="robocode, Version=0.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>

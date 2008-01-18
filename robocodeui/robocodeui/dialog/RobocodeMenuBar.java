@@ -35,6 +35,7 @@ import javax.swing.event.MenuListener;
 
 import robocode.manager.RobocodeManager;
 import robocode.security.RobocodeSecurityManager;
+
 import robocodeui.manager.WindowManager;
 import robocodeui.manager.VersionManager;
 

@@ -12,7 +12,7 @@
  * *****************************************************************************
  */
 
-package robocode.sound;
+package robocode.ui;
 
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;

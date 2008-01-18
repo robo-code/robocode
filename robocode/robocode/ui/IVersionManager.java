@@ -12,7 +12,7 @@
  * *****************************************************************************
  */
 
-package robocode.manager;
+package robocode.ui;
 
 public interface IVersionManager extends robocode.ui.ILoadableManager {
     void checkUpdateCheck();
