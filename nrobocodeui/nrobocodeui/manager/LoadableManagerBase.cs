@@ -1,4 +1,5 @@
-﻿using robocode.manager;
+﻿using System;
+using robocode.manager;
 using robocode.ui;
 
 namespace nrobocodeui.manager
@@ -8,6 +9,7 @@ namespace nrobocodeui.manager
         private RobocodeManager robocodeManager;
         public void setRobocodeManager(RobocodeManager rm)
         {
+            Console.WriteLine("setRobocodeManager");
             robocodeManager = rm;
         }
     }

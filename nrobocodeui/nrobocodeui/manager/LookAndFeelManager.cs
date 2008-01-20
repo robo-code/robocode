@@ -7,7 +7,6 @@ namespace nrobocodeui.manager
     {
         public void setLookAndFeel()
         {
-            Console.WriteLine("setLookAndFeel Ha hah ah ah ah ah !!!!!");
             //TODO ZAMO
         }
     }

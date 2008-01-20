@@ -11,7 +11,6 @@ namespace nrobocodeui.dialog
         private BattleView battleView;
         public IBattleView getBattleView()
         {
-            Console.WriteLine("getBattleView Ha hah ah ah ah ah !!!!!");
             if (battleView==null)
             {
                 battleView=new BattleView();
@@ -31,28 +30,25 @@ namespace nrobocodeui.dialog
 
         public string saveBattleDialog(File f)
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
             return "potemkin.battle";
         }
 
         public void setStatus(string str)
         {
-            Console.WriteLine("setStatus Ha hah ah ah ah ah !!!!!");
+            Console.WriteLine(str);
         }
 
         public void dispose()
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
         }
 
         public void messageWarning(string str)
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
+            Console.WriteLine(str);
         }
 
         public void setIconified(bool b)
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
         }
 
         public void setEnableStopButton(bool b)
@@ -87,13 +83,12 @@ namespace nrobocodeui.dialog
 
         public bool isIconified()
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
             return true;
         }
 
         public void messageError(string str)
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
+            Console.Error.WriteLine(str);
         }
     }
 }

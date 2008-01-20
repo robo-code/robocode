@@ -9,7 +9,6 @@ namespace nrobocodeui.manager
     {
         public void setActiveBattle(Battle b)
         {
-            Console.WriteLine("setActiveBattle Ha hah ah ah ah ah !!!!!");
             //TODO ZAMO
         }
     }

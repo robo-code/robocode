@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nrobocodeui", "nrobocodeui\nrobocodeui.csproj", "{E21468A7-F5E6-4C75-B76F-D560F5672FF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nrobocode", "nrobocode\nrobocode.csproj", "{81282584-DA6A-4C07-8EE2-4F50680AFB99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robocodewrap", "robocode\robocodewrap.csproj", "{89226273-C330-4C36-A01F-74D990D5E2AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstJuniorRobot", "nsamples\MyFirstJuniorRobot\MyFirstJuniorRobot.csproj", "{F6DAA279-C339-4991-94AF-DE665BB46F1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E21468A7-F5E6-4C75-B76F-D560F5672FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E21468A7-F5E6-4C75-B76F-D560F5672FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E21468A7-F5E6-4C75-B76F-D560F5672FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E21468A7-F5E6-4C75-B76F-D560F5672FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81282584-DA6A-4C07-8EE2-4F50680AFB99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81282584-DA6A-4C07-8EE2-4F50680AFB99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81282584-DA6A-4C07-8EE2-4F50680AFB99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81282584-DA6A-4C07-8EE2-4F50680AFB99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89226273-C330-4C36-A01F-74D990D5E2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89226273-C330-4C36-A01F-74D990D5E2AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89226273-C330-4C36-A01F-74D990D5E2AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89226273-C330-4C36-A01F-74D990D5E2AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6DAA279-C339-4991-94AF-DE665BB46F1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6DAA279-C339-4991-94AF-DE665BB46F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6DAA279-C339-4991-94AF-DE665BB46F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6DAA279-C339-4991-94AF-DE665BB46F1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

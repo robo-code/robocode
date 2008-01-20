@@ -61,13 +61,11 @@ namespace nrobocodeui.battleview
 
         public int getWidth()
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
             return 0;
         }
 
         public int getHeight()
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
             return 0;
         }
     }

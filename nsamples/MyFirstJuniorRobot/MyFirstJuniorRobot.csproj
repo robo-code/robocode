@@ -5,23 +5,19 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E21468A7-F5E6-4C75-B76F-D560F5672FF6}</ProjectGuid>
+    <ProjectGuid>{F6DAA279-C339-4991-94AF-DE665BB46F1D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>nrobocodeui</RootNamespace>
-    <AssemblyName>nrobocodeui</AssemblyName>
+    <RootNamespace>nsample</RootNamespace>
+    <AssemblyName>MyFirstJuniorRobot</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>nrobocodeui.snk</AssemblyOriginatorKeyFile>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\build\build\nlibs\</OutputPath>
+    <OutputPath>..\..\build\build\robots\nsample\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,21 +33,22 @@
   <ItemGroup>
     <Reference Include="codesize, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\build\build\nlibs\codesize.dll</HintPath>
+      <HintPath>..\..\build\build\nlibs\codesize.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="IKVM.OpenJDK.ClassLibrary, Version=0.37.2928.14392, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\nrobocode\ikvm\IKVM.OpenJDK.ClassLibrary.dll</HintPath>
+      <HintPath>..\..\nrobocode\ikvm\IKVM.OpenJDK.ClassLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="IKVM.Runtime, Version=0.37.2928.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\nrobocode\ikvm\IKVM.Runtime.dll</HintPath>
+      <HintPath>..\..\nrobocode\ikvm\IKVM.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="robocode, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <ExecutableExtension>.exe</ExecutableExtension>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\build\build\nlibs\robocode.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -59,30 +56,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="nrobocodeui\repository\NetAssemblySpecification.cs" />
-    <Compile Include="nrobocodeui\repository\NetRepositoryPlugin.cs" />
-    <Compile Include="nrobocodeui\security\NetRobocodeClassLoader.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="nrobocodeui\battleview\BattleView.cs" />
-    <Compile Include="nrobocodeui\dialog\RobocodeFrame.cs" />
-    <Compile Include="nrobocodeui\manager\BrowserManager.cs" />
-    <Compile Include="nrobocodeui\manager\ImageManager.cs" />
-    <Compile Include="nrobocodeui\manager\LoadableManagerBase.cs" />
-    <Compile Include="nrobocodeui\manager\LookAndFeelManager.cs" />
-    <Compile Include="nrobocodeui\manager\RobotDialogManager.cs" />
-    <Compile Include="nrobocodeui\manager\VersionManager.cs" />
-    <Compile Include="nrobocodeui\manager\WindowManager.cs" />
-    <Compile Include="Starter.cs" />
+    <Compile Include="MyFirstJuniorRobot.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="nrobocodeui.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\nrobocode\nrobocode.csproj">
+    <ProjectReference Include="..\..\nrobocode\nrobocode.csproj">
       <Project>{81282584-DA6A-4C07-8EE2-4F50680AFB99}</Project>
       <Name>nrobocode</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -92,4 +78,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

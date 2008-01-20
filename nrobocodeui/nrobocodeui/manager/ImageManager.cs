@@ -8,7 +8,6 @@ namespace nrobocodeui.manager
     {
         public void initialize()
         {
-            Console.WriteLine("Ha hah ah ah ah ah !!!!!");
             //TODO ZAMO
         }
     }

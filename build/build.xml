@@ -22,7 +22,7 @@
   </loadfile>
 
   <!-- Disable debug information when compiling -->  
-  <property name="debug" value="off"/>  <!-- Debug information is stripped from the setup file -->
+  <property name="debug" value="on"/>  <!-- Debug information is stripped from the setup file -->
 
   <!-- The build folder -->
   <property name="build" location="build"/>
@@ -36,7 +36,7 @@
   <property name="src.roborumble" location="../roborumble"/>
   <property name="src.cachecleaner" location="../robocode/ar"/>
   <property name="src.nrobocodeui" location="../nrobocodeui"/>
-  <property name="ikvm" location="../nrobocodeui/ikvm"/>
+  <property name="ikvm" location="../nrobocode/ikvm"/>
   <property name="csc" location="C:/Windows/Microsoft.NET/Framework/v2.0.50727/csc.exe"/>
   <property name="vs9" location="C:/Program Files/Microsoft Visual Studio 9.0/Common7/IDE/devenv.exe"/>
 
@@ -136,8 +136,11 @@
   <target
       name="libs"
       description="Build the jars and dll"
-      depends="compile.robocode, compile.robocodeui, nrobocodeui.dll, robocode.exe"
+      depends="compile.robocode, compile.robocodeui, robocode.jar, robocodeui.jar, cachecleaner.jar, nrobocodeui.dll, robocode.exe"
   />
+    <!--
+    ,
+     -->
 
   <!-- ====================================== -->
   <!-- Target: compile.robocode               -->
@@ -179,7 +182,7 @@
   	<copy file="${src.extract}/libs/codesize.jar" toDir="${build}/libs"/>
 
     <!-- Compile Robocode UI -->
-    <compile srcdir="${src.robocodeui}" destdir="${build}" classpath="${build}/libs/codesize.jar"/>
+    <compile srcdir="${src.robocodeui}" destdir="${build}" classpath="${build}/libs/codesize.jar;${build}/libs/robocode.jar"/>
 
     <!-- Flag that Robocode has been built -->
     <touch file="${build}/.robocodeui_build"/>
@@ -261,13 +264,13 @@
   <target
       name="compile.cachecleaner"
       description="Compile CacheCleaner"
-      depends="init"
+      depends="init, robocode.jar"
       unless="cachecleaner.uptodate">
 
     <echo message="Compiling CacheCleaner..."/>
 
     <!-- Compile CacheCleaner -->
-    <compile srcdir="${src.cachecleaner}" destdir="${build}"/>
+    <compile srcdir="${src.cachecleaner}" destdir="${build}" classpath="${build}/libs/robocode.jar"/>
 
     <!-- Flag that CacheCleaner has been built -->
     <touch file="${build}/.cachecleaner_build"/>
@@ -603,6 +606,32 @@
     <!-- Delete the folder containing all build files -->
     <delete dir="${build}"/>
   </target>
+
+    <!-- ====================================== -->
+    <!-- Target: clean.small                    -->
+    <!-- ====================================== -->
+
+    <!-- Clean up all build files -->
+    <target
+        name="clean.small"
+        description="Clean up build files">
+
+      <echo message="Cleaning up build files..."/>
+
+      <!-- Delete the folder containing all build files -->
+      <delete dir="${build}/robocode"/>
+      <delete dir="${build}/robocodeui"/>
+      <delete dir="${build}/libs"/>
+      <delete dir="${build}/nlibs"/>
+      <delete dir="${src.robocode}/bin"/>
+      <delete dir="${src.robocodeui}/bin"/>
+      <delete dir="${src.roborumble}/bin"/>
+      <delete dir="${src.roborumble}/bin"/>
+      <delete file="${build}/.robocode_build"/>
+      <delete file="${build}/.robocodeui_build"/>
+      <delete file="${build}/.cachecleaner_build"/>
+      <delete file="${build}/.roborumble_build"/>
+    </target>
 
   <!-- ====================================== -->
   <!-- Macro: compile                         -->

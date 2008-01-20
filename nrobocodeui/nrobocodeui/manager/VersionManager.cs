@@ -1,5 +1,5 @@
 ﻿using System;
-using robocode.manager;
+using robocode.ui;
 
 namespace nrobocodeui.manager
 {
@@ -7,13 +7,11 @@ namespace nrobocodeui.manager
     {
         public void checkUpdateCheck()
         {
-            Console.WriteLine("checkUpdateCheck Ha hah ah ah ah ah !!!!!");
             //TODO ZAMO
         }
 
         public string getVersion()
         {
-            Console.WriteLine("getVersion Ha hah ah ah ah ah !!!!!");
             //TODO ZAMO
             return "0.0.0.1";
         }
