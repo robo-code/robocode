@@ -21,7 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import robocode.control.RobotSpecification;
+import robocode.control.RobotBattleSpecification;
 
 
 /**
@@ -168,9 +168,9 @@ public class BattleProperties {
 	 *
 	 * @param robots The robots to set
 	 */
-	public void setSelectedRobots(RobotSpecification[] robots) {
+	public void setSelectedRobots(RobotBattleSpecification[] robots) {
 		String robotString = "";
-		RobotSpecification robot;
+		RobotBattleSpecification robot;
 
 		for (int i = 0; i < robots.length; i++) {
 			robot = robots[i];

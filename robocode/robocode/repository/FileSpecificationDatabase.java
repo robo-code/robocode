@@ -32,7 +32,7 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class FileSpecificationDatabase implements Serializable {
 
-	private Map<String, FileSpecification> hash = new HashMap<String, FileSpecification>();
+	private Map<String, IFileSpecification> hash = new HashMap<String, IFileSpecification>();
 
 	@SuppressWarnings("unchecked")
 	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
@@ -46,12 +46,12 @@ public class FileSpecificationDatabase implements Serializable {
 	
 			if (obj instanceof Hashtable) {
 				// The following provides backward compability for versions before 1.2.3A
-				Hashtable<String, FileSpecification> hashtable = (Hashtable<String, FileSpecification>) obj;
+				Hashtable<String, IFileSpecification> hashtable = (Hashtable<String, IFileSpecification>) obj;
 	
-				hash = new HashMap<String, FileSpecification>(hashtable);
+				hash = new HashMap<String, IFileSpecification>(hashtable);
 			} else {
 				// Using new container type for version 1.2.3B and followers
-				hash = (HashMap<String, FileSpecification>) obj;
+				hash = (HashMap<String, IFileSpecification>) obj;
 			}
 		} finally {
 			if (fis != null) {
@@ -68,13 +68,13 @@ public class FileSpecificationDatabase implements Serializable {
 	}
 
 	public boolean contains(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Iterator<FileSpecification> i = hash.values().iterator();
+		Iterator<IFileSpecification> i = hash.values().iterator();
 
 		while (i.hasNext()) {
 			Object o = i.next();
 
-			if (o instanceof RobotSpecification || o instanceof TeamSpecification) {
-				FileSpecification spec = (FileSpecification) o;
+			if (o instanceof IRobotSpecification || o instanceof TeamSpecification) {
+				IFileSpecification spec = (IFileSpecification) o;
 
 				if (spec.isDuplicate()) {
 					continue;
@@ -97,14 +97,14 @@ public class FileSpecificationDatabase implements Serializable {
 		return false;
 	}
 
-	public FileSpecification get(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Iterator<FileSpecification> i = hash.values().iterator();
+	public IFileSpecification get(String fullClassName, String version, boolean isDevelopmentVersion) {
+		Iterator<IFileSpecification> i = hash.values().iterator();
 
 		while (i.hasNext()) {
 			Object o = i.next();
 
-			if (o instanceof RobotSpecification || o instanceof TeamSpecification) {
-				FileSpecification spec = (FileSpecification) o;
+			if (o instanceof IRobotSpecification || o instanceof TeamSpecification) {
+				IFileSpecification spec = (IFileSpecification) o;
 
 				if (spec.isDuplicate()) {
 					continue;
@@ -127,8 +127,8 @@ public class FileSpecificationDatabase implements Serializable {
 		return null;
 	}
 
-	public List<FileSpecification> getFileSpecifications() {
-		List<FileSpecification> v = new ArrayList<FileSpecification>();
+	public List<IFileSpecification> getFileSpecifications() {
+		List<IFileSpecification> v = new ArrayList<IFileSpecification>();
 
 		for (String key : hash.keySet()) {
 			v.add(hash.get(key));
@@ -140,7 +140,7 @@ public class FileSpecificationDatabase implements Serializable {
 		List<JarSpecification> v = new ArrayList<JarSpecification>();
 
 		for (String key : hash.keySet()) {
-			FileSpecification spec = hash.get(key);
+			IFileSpecification spec = hash.get(key);
 
 			if (spec instanceof JarSpecification) {
 				v.add((JarSpecification) spec);
@@ -149,20 +149,20 @@ public class FileSpecificationDatabase implements Serializable {
 		return v;
 	}
 
-	public FileSpecification get(String key) {
+	public IFileSpecification get(String key) {
 		Object o = hash.get(key);
 
 		if (o == null) {
 			return null;
 		}
-		if (!(o instanceof FileSpecification)) {
+		if (!(o instanceof IFileSpecification)) {
 			return null;
 		}
-		return (FileSpecification) o;
+		return (IFileSpecification) o;
 	}
 
 	public void remove(String key) {
-		FileSpecification removedSpecification = hash.get(key);
+		IFileSpecification removedSpecification = hash.get(key);
 
 		if (removedSpecification == null) {
 			return;
@@ -171,7 +171,7 @@ public class FileSpecificationDatabase implements Serializable {
 		hash.remove(key);
 
 		// No concept of duplicates for classes
-		if (!(removedSpecification instanceof RobotSpecification)) {
+		if (!(removedSpecification instanceof IRobotSpecification)) {
 			return;
 		}
 		// If it's already a dupe we're removing, return
@@ -184,17 +184,17 @@ public class FileSpecificationDatabase implements Serializable {
 		}
 
 		// If there were any duplicates, we need to set one to not-duplicate
-		FileSpecification unduplicatedSpec = null;
+		IFileSpecification unduplicatedSpec = null;
 		String fullClassName = removedSpecification.getFullClassName();
 		String version = removedSpecification.getVersion();
 
-		Iterator<FileSpecification> i = hash.values().iterator();
+		Iterator<IFileSpecification> i = hash.values().iterator();
 
 		while (i.hasNext()) {
 			Object o = i.next();
 
-			if (o instanceof RobotSpecification) {
-				RobotSpecification spec = (RobotSpecification) o;
+			if (o instanceof IRobotSpecification) {
+				IRobotSpecification spec = (IRobotSpecification) o;
 
 				if (spec.isDevelopmentVersion()) {
 					continue;
@@ -218,7 +218,7 @@ public class FileSpecificationDatabase implements Serializable {
 		}
 	}
 
-	public void put(String key, FileSpecification spec) {
+	public void put(String key, IFileSpecification spec) {
 		hash.put(key, spec);
 	}
 }

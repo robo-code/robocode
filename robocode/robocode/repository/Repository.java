@@ -30,23 +30,23 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class Repository {
-	private List<FileSpecification> fileSpecifications = Collections.synchronizedList(new ArrayList<FileSpecification>());
+	private List<IFileSpecification> fileSpecifications = Collections.synchronizedList(new ArrayList<IFileSpecification>());
 
-	public void add(FileSpecification fileSpecification) {
+	public void add(IFileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);
 	}
 
-	public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
+	public List<IFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
 
-		List<FileSpecification> v = Collections.synchronizedList(new ArrayList<FileSpecification>());
+		List<IFileSpecification> v = Collections.synchronizedList(new ArrayList<IFileSpecification>());
 
-		for (FileSpecification spec : fileSpecifications) {
+		for (IFileSpecification spec : fileSpecifications) {
 
 			if (spec.isDuplicate()) {
 				continue;
 			}
-			if (!(spec instanceof RobotSpecification)) {
+			if (!(spec instanceof IRobotSpecification)) {
 				if (onlyRobots) {
 					continue;
 				}
@@ -58,7 +58,7 @@ public class Repository {
 					continue;
 				}
 			} else {
-				RobotSpecification robotSpec = (RobotSpecification) spec;
+				IRobotSpecification robotSpec = (IRobotSpecification) spec;
 
 				if (onlyWithSource && !robotSpec.getRobotJavaSourceIncluded()) {
 					continue;

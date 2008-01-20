@@ -27,7 +27,7 @@ import java.util.List;
 import javax.swing.*;
 
 import robocodeui.dialog.WizardPanel;
-import robocode.repository.FileSpecification;
+import robocode.repository.IFileSpecification;
 
 
 /**
@@ -95,7 +95,7 @@ public class ConfirmPanel extends WizardPanel {
 		return visible;
 	}
 
-	public void setSelectedRobots(List<FileSpecification> selectedRobots) {
+	public void setSelectedRobots(List<IFileSpecification> selectedRobots) {
 		getRobotListPanel().removeAll();
 
 		if (selectedRobots == null || selectedRobots.size() == 0) {
@@ -107,7 +107,7 @@ public class ConfirmPanel extends WizardPanel {
 		} else {
 			getRobotListPanel().add(new JLabel("You have selected the following robots for packaging:"));
 
-			for (FileSpecification selected : selectedRobots) {
+			for (IFileSpecification selected : selectedRobots) {
 				getRobotListPanel().add(new JLabel(selected.getFullClassName()));
 			}
 		}

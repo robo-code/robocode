@@ -35,6 +35,10 @@ import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
 import robocode.ui.*;
+import robocode.repository.JavaRepositoryPlugin;
+import robocode.security.IRobocodeClassLoader;
+import robocode.security.RobocodeClassLoader;
+import robocode.peer.robot.RobotClassManager;
 
 
 /**
@@ -53,8 +57,9 @@ public class RobocodeManager {
 	private IVersionManager versionManager;
 	private ISoundManager soundManager;
     private ILookAndFeelManager lookAndFeelManager;
+    private IRepositoryPlugin[] repositoryPlugins;
 
-	private boolean slave;
+    private boolean slave;
 
 	private RobocodeProperties properties;
 	private RobocodeListener listener;
@@ -98,7 +103,7 @@ public class RobocodeManager {
 	 */
 	public IWindowManager getWindowManager() {
 		if (windowManager == null) {
-            windowManager = (IWindowManager)loadManager("robocodeui.manager.WindowManager");
+            windowManager = (IWindowManager) loadManager("robocodeui.manager.WindowManager");
         }
 		return windowManager;
 	}
@@ -122,7 +127,7 @@ public class RobocodeManager {
 	 */
 	public IRobotDialogManager getRobotDialogManager() {
 		if (robotDialogManager == null) {
-            robotDialogManager = (IRobotDialogManager)loadManager("robocodeui.manager.RobotDialogManager");
+            robotDialogManager = (IRobotDialogManager) loadManager("robocodeui.manager.RobotDialogManager");
 		}
 		return robotDialogManager;
 	}
@@ -181,7 +186,7 @@ public class RobocodeManager {
 	 */
 	public IImageManager getImageManager() {
 		if (imageManager == null) {
-            imageManager = (IImageManager)loadManager("robocodeui.manager.ImageManager");
+            imageManager = (IImageManager) loadManager("robocodeui.manager.ImageManager");
             imageManager.initialize();
         }
 		return imageManager;
@@ -194,7 +199,7 @@ public class RobocodeManager {
 	 */
 	public IVersionManager getVersionManager() {
 		if (versionManager == null) {
-            versionManager = (IVersionManager)loadManager("robocodeui.manager.VersionManager");
+            versionManager = (IVersionManager) loadManager("robocodeui.manager.VersionManager");
 		}
 		return versionManager;
 	}
@@ -218,7 +223,7 @@ public class RobocodeManager {
 	 */
 	public ISoundManager getSoundManager() {
 		if (soundManager == null) {
-            soundManager = (ISoundManager)loadManager("robocodeui.manager.SoundManager");
+            soundManager = (ISoundManager) loadManager("robocodeui.manager.SoundManager");
 		}
 		return soundManager;
 	}
@@ -230,9 +235,49 @@ public class RobocodeManager {
      */
     public ILookAndFeelManager getLookAndFeelManager() {
         if (lookAndFeelManager == null) {
-            lookAndFeelManager = (ILookAndFeelManager)loadManager("robocodeui.manager.LookAndFeelManager");
+            lookAndFeelManager = (ILookAndFeelManager) loadManager("robocodeui.manager.LookAndFeelManager");
         }
         return lookAndFeelManager;
+    }
+
+    /**
+     * Gets the Look and Manager.
+     *
+     * @return Returns a list of Repository Plugins 
+     */
+    public IRepositoryPlugin[] getRepositoryPlugins() {
+        if (repositoryPlugins == null) {
+            JavaRepositoryPlugin javaRepositoryPlugin = new JavaRepositoryPlugin();
+            if (isRunningIKVM())
+            {
+                IRepositoryPlugin netRepositoryPlugin = (IRepositoryPlugin) loadManager("robocodeui.repository.NetRepositoryPlugin");
+                repositoryPlugins = new IRepositoryPlugin[]{netRepositoryPlugin, javaRepositoryPlugin}; 
+            }
+            else
+            {
+                repositoryPlugins = new IRepositoryPlugin[]{javaRepositoryPlugin};
+            }
+        }
+        return repositoryPlugins;
+    }
+
+    /**
+     * Gets the Look and Manager.
+     *
+     * @return Returns a list of Repository Plugins
+     */
+    public IRobocodeClassLoader createRobocodeClassLoader(RobotClassManager robotClassManager) {
+        IRobocodeClassLoader robocodeClassLoader;
+        if (isRunningIKVM() && robotClassManager.getRobotSpecification().getNeedsExternalLoader())
+        {
+            robocodeClassLoader = (IRobocodeClassLoader) loadManager("robocodeui.security.NetRobocodeClassLoader");
+        }
+        else
+        {
+            robocodeClassLoader = new RobocodeClassLoader(getClass().getClassLoader());
+        }
+        robocodeClassLoader.init(robotClassManager);
+        return robocodeClassLoader;
     }
 
     private ILoadableManager loadManager(String name)

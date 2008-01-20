@@ -117,7 +117,7 @@ import robocode.manager.RobocodeProperties.PropertyListener;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
-import robocode.security.RobocodeClassLoader;
+import robocode.security.IRobocodeClassLoader;
 import robocode.ui.IBattleView;
 import robocode.ui.IRobocodeFrame;
 
@@ -645,7 +645,7 @@ public class Battle implements Runnable {
 					RobotClassManager classManager = r.getRobotClassManager();
 					String className = classManager.getFullClassName();
 
-					RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
+					IRobocodeClassLoader classLoader = classManager.getRobotClassLoader();
 
 					if (RobotClassManager.isSecutityOn()) {
 						c = classLoader.loadRobotClass(className, true);

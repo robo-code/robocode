@@ -24,17 +24,15 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.NameManager;
-import robocode.manager.RobotRepositoryManager;
 
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public abstract class FileSpecification implements Comparable<FileSpecification>, Serializable, Cloneable {
+public abstract class FileSpecification implements IFileSpecification {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,7 +53,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	protected URL webpage;
 	protected String libraryDescription;
 	protected File rootDir;
-	private File packageFile;
+	protected File packageFile;
 
 	private String filePath;
 	private String fileName;
@@ -82,46 +80,6 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	public abstract String getUid();
 
-	public static FileSpecification createSpecification(RobotRepositoryManager repositoryManager, File f, File rootDir, String prefix, boolean developmentVersion) {
-		String filename = f.getName();
-		String fileType = FileUtil.getFileType(filename);
-
-		FileSpecification newSpec = null;
-
-		if (fileType.equals(".team")) {
-			newSpec = new TeamSpecification(f, rootDir, prefix, developmentVersion);
-		} else if (fileType.equals(".jar") || fileType.equals(".zip")) {
-			newSpec = new JarSpecification(f, rootDir, prefix, developmentVersion);
-		} else {
-			newSpec = new RobotSpecification(f, rootDir, prefix, developmentVersion);
-			if (!(developmentVersion || newSpec.getValid())) {
-				newSpec = new ClassSpecification((RobotSpecification) newSpec);
-			}
-		}
-		newSpec.developmentVersion = developmentVersion;
-		newSpec.rootDir = rootDir;
-		newSpec.storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
-
-		return newSpec;
-	}
-
-	private void storeJarFile(File robotDir, File robotCacheDir) {
-		File src = null;
-
-		if (rootDir.getName().indexOf(".jar_") == rootDir.getName().length() - 5
-				|| rootDir.getName().indexOf(".zip_") == rootDir.getName().length() - 5) {
-			if (rootDir.getParentFile().equals(robotCacheDir)) {
-				src = new File(robotDir, rootDir.getName().substring(0, rootDir.getName().length() - 1));
-			} else if (rootDir.getParentFile().getParentFile().equals(robotCacheDir)) {
-				src = new File(rootDir.getParentFile(), rootDir.getName().substring(0, rootDir.getName().length() - 1));
-			}
-		}
-		if (src != null && !src.exists()) {
-			src = null;
-		}
-		this.packageFile = src;
-	}
-
 	public File getJarFile() {
 		return packageFile;
 	}
@@ -135,7 +93,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		return developmentVersion;
 	}
 
-	public int compareTo(FileSpecification other) {
+	public int compareTo(IFileSpecification other) {
 		return FileSpecification.compare(getNameManager().getFullPackage(), getNameManager().getFullClassName(),
 				getNameManager().getVersion(), other.getNameManager().getFullPackage(),
 				other.getNameManager().getFullClassName(), other.getNameManager().getVersion());
@@ -301,7 +259,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the thisFilename.
 	 *
-	 * @param thisFilename The thisFilename to set
+	 * @param thisFileName The thisFilename to set
 	 */
 	public void setThisFileName(String thisFileName) {
 		this.thisFileName = thisFileName;
@@ -337,7 +295,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the propertiesFilename.
 	 *
-	 * @param propertiesFilename The propertiesFilename to set
+	 * @param propertiesFileName The propertiesFilename to set
 	 */
 	public void setPropertiesFileName(String propertiesFileName) {
 		this.propertiesFileName = propertiesFileName;
@@ -355,7 +313,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the filename.
 	 *
-	 * @param filename The filename to set
+	 * @param fileName The filename to set
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
@@ -460,7 +418,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	public NameManager getNameManager() {
 		if (nameManager == null) {
-			if (this instanceof RobotSpecification) {
+			if (this instanceof IRobotSpecification) {
 				nameManager = new NameManager(name, version, developmentVersion, false);
 			} else if (this instanceof TeamSpecification) {
 				nameManager = new NameManager(name, version, developmentVersion, true);
@@ -484,6 +442,15 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		return rootDir;
 	}
 
+/*  TODO ZAMO
+    public void setDevelopmentVersion(boolean value) {
+        developmentVersion = value;
+    }
+
+    public void setRootDir(File value) {
+        rootDir = value;
+    }
+*/
 	public static int compare(String p1, String c1, String v1, String p2, String c2, String v2) {
 		if (p1 == null && p2 != null) {
 			return 1;

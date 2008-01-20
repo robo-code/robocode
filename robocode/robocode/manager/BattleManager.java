@@ -67,15 +67,14 @@ import robocode.battlefield.DefaultBattleField;
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
+import robocode.control.RobotBattleSpecification;
 import robocode.io.FileUtil;
 import robocode.peer.ContestantPeer;
 import robocode.peer.ContestantStatistics;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
-import robocode.repository.FileSpecification;
-import robocode.repository.RobotSpecification;
-import robocode.repository.TeamSpecification;
+import robocode.repository.*;
 import robocode.security.RobocodeSecurityManager;
 
 
@@ -154,7 +153,7 @@ public class BattleManager {
 	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete, boolean replay) {
 		this.battleProperties = battleProperties;
 
-		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
+		List<IFileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
 				false, false, false, false, false, false);
 
 		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
@@ -165,10 +164,10 @@ public class BattleManager {
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				for (FileSpecification fileSpec : robotSpecificationsList) {
+				for (IFileSpecification fileSpec : robotSpecificationsList) {
 					if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-						if (fileSpec instanceof RobotSpecification) {
-							battlingRobotsList.add(new RobotClassManager((RobotSpecification) fileSpec));
+						if (fileSpec instanceof IRobotSpecification) {
+							battlingRobotsList.add(new RobotClassManager((IRobotSpecification) fileSpec, manager));
 							break;
 						} else if (fileSpec instanceof TeamSpecification) {
 							TeamSpecification currentTeam = (TeamSpecification) fileSpec;
@@ -178,9 +177,9 @@ public class BattleManager {
 
 							while (teamTokenizer.hasMoreTokens()) {
 								bot = teamTokenizer.nextToken();
-								RobotSpecification match = null;
+								IRobotSpecification match = null;
 
-								for (FileSpecification teamFileSpec : robotSpecificationsList) {
+								for (IFileSpecification teamFileSpec : robotSpecificationsList) {
 									// Teams cannot include teams
 									if (teamFileSpec instanceof TeamSpecification) {
 										continue;
@@ -195,7 +194,7 @@ public class BattleManager {
 										// else, still looking
 									}
 								}
-								battlingRobotsList.add(new RobotClassManager(match, teamManager));
+								battlingRobotsList.add(new RobotClassManager(match, teamManager, manager));
 							}
 							break;
 						}
@@ -215,11 +214,11 @@ public class BattleManager {
 		battleProperties.setNumRounds(spec.getNumRounds());
 		battleProperties.setSelectedRobots(spec.getRobots());
 
-		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
+		List<IFileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
 				false, false, false, false, false, false);
 		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
 
-		for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
+		for (RobotBattleSpecification battleRobotSpec : spec.getRobots()) {
 			if (battleRobotSpec == null) {
 				break;
 			}
@@ -232,10 +231,10 @@ public class BattleManager {
 
 			boolean found = false;
 
-			for (FileSpecification fileSpec : robotSpecificationsList) {
+			for (IFileSpecification fileSpec : robotSpecificationsList) {
 				if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-					if (fileSpec instanceof RobotSpecification) {
-						RobotClassManager rcm = new RobotClassManager((RobotSpecification) fileSpec);
+					if (fileSpec instanceof IRobotSpecification) {
+						RobotClassManager rcm = new RobotClassManager((RobotSpecification) fileSpec, manager);
 
 						rcm.setControlRobotSpecification(battleRobotSpec);
 						battlingRobotsList.add(rcm);
@@ -249,9 +248,9 @@ public class BattleManager {
 
 						while (teamTokenizer.hasMoreTokens()) {
 							bot = teamTokenizer.nextToken();
-							RobotSpecification match = null;
+							IRobotSpecification match = null;
 
-							for (FileSpecification teamFileSpec : robotSpecificationsList) {
+							for (IFileSpecification teamFileSpec : robotSpecificationsList) {
 								// Teams cannot include teams
 								if (teamFileSpec instanceof TeamSpecification) {
 									continue;
@@ -267,7 +266,7 @@ public class BattleManager {
 									// else, still looking
 								}
 							}
-							RobotClassManager rcm = new RobotClassManager(match, teamManager);
+							RobotClassManager rcm = new RobotClassManager(match, teamManager, manager);
 
 							rcm.setControlRobotSpecification(battleRobotSpec);
 							battlingRobotsList.add(rcm);

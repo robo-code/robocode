@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
 import javax.swing.*;
 
 import robocodeui.manager.BrowserManager;
-import robocode.repository.FileSpecification;
+import robocode.repository.IFileSpecification;
 
 
 /**
@@ -45,7 +45,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JButton detailsButton;
 	private JLabel robocodeVersionLabel;
 	private JLabel filePathLabel;
-	private FileSpecification currentRobotSpecification;
+	private IFileSpecification currentRobotSpecification;
 
 	private final static String BLANK_STRING = "                                                                        ";
 
@@ -176,7 +176,7 @@ public class RobotDescriptionPanel extends JPanel {
 		add(p, BorderLayout.EAST);
 	}
 
-	public void showDescription(FileSpecification robotSpecification) {
+	public void showDescription(IFileSpecification robotSpecification) {
 		this.currentRobotSpecification = robotSpecification;
 		if (robotSpecification == null) {
 			getRobotNameLabel().setText(" ");

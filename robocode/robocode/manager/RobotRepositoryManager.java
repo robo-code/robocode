@@ -46,8 +46,9 @@ import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
+import robocode.ui.IRepositoryPlugin;
 
-            
+
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -63,7 +64,7 @@ public class RobotRepositoryManager {
 	private boolean cacheWarning;
 	private RobocodeManager manager;
 
-	private List<FileSpecification> updatedJarList = Collections.synchronizedList(new ArrayList<FileSpecification>());
+	private List<IFileSpecification> updatedJarList = Collections.synchronizedList(new ArrayList<IFileSpecification>());
 	private boolean write;
 
 	public RobotRepositoryManager(RobocodeManager manager) {
@@ -186,7 +187,7 @@ public class RobotRepositoryManager {
 			getSpecificationsInDirectory(f, f, "", false);
 		}
 
-		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
+		List<IFileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
 		if (write) {
             if (manager.isGUIEnabled())
@@ -201,11 +202,11 @@ public class RobotRepositoryManager {
     		manager.getWindowManager().getRobocodeFrame().setStatus("Adding robots to repository");
         }
 
-        for (FileSpecification fs : fileSpecificationList) {
+        for (IFileSpecification fs : fileSpecificationList) {
 			if (fs instanceof TeamSpecification) {
 				repository.add(fs);
 				continue;
-			} else if (fs instanceof RobotSpecification) {
+			} else if (fs instanceof IRobotSpecification) {
 				if (verifyRootPackage(fs.getName())) {
 					repository.add(fs);
 					continue;
@@ -272,9 +273,9 @@ public class RobotRepositoryManager {
 			externalDirectories.add(f);
 		}
 
-		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
+		List<IFileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
-		for (FileSpecification fs : fileSpecificationList) {
+		for (IFileSpecification fs : fileSpecificationList) {
 			if (fs.exists()) {
 				File rootDir = fs.getRootDir();
 
@@ -314,14 +315,22 @@ public class RobotRepositoryManager {
 		repository = null;
 	}
 
-	private List<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
-		List<FileSpecification> robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
+	private List<IFileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
+		List<IFileSpecification> robotList = Collections.synchronizedList(new ArrayList<IFileSpecification>());
 
-		// Order is important?
-		String fileTypes[] = {
-			".class", ".jar", ".team", ".jar.zip"
-		};
-		File files[] = dir.listFiles(new FileTypeFilter(fileTypes));
+        ArrayList<String> fileTypesList= new ArrayList<String>();
+        for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
+            for (String ext : p.getExtensions()) {
+                if (!fileTypesList.contains(ext))
+                {
+                    fileTypesList.add(ext);
+                }
+            }
+        }
+        String[] fileTypes= new String[fileTypesList.size()];
+        fileTypesList.toArray(fileTypes);
+
+        File files[] = dir.listFiles(new FileTypeFilter(fileTypes));
 
 		if (files == null) {
 			log("Warning:  Unable to read directory " + dir);
@@ -364,8 +373,8 @@ public class RobotRepositoryManager {
 							getSpecificationsInDirectory(rootDir, file, prefix + fileName + ".", isDevelopmentDirectory));
 				}
 			} else if (fileName.indexOf("$") < 0 && fileName.indexOf("robocode") != 0) {
-				FileSpecification cachedSpecification = getRobotDatabase().get(file.getPath());
-				FileSpecification fileSpecification = null;
+				IFileSpecification cachedSpecification = getRobotDatabase().get(file.getPath());
+				IFileSpecification fileSpecification = null;
 
 				// if cachedSpecification is null, then this is a new file
 				if (cachedSpecification != null
@@ -373,9 +382,19 @@ public class RobotRepositoryManager {
 					// this file is unchanged
 					fileSpecification = cachedSpecification;
 				} else {
-					fileSpecification = FileSpecification.createSpecification(this, file, rootDir, prefix,
-							isDevelopmentDirectory);
-					updateRobotDatabase(fileSpecification);
+                    for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
+                        fileSpecification = p.createSpecification(this, file, rootDir, prefix, isDevelopmentDirectory);
+                        if (fileSpecification!=null)
+                        {
+                            break;
+                        }
+                    }
+                    if (fileSpecification==null)
+                    {
+                        log("Skipping file");
+                        continue; //lopp for files
+                    }
+                    updateRobotDatabase(fileSpecification);
 					write = true;
 					if (fileSpecification instanceof JarSpecification) {
 						String path = fileSpecification.getFilePath();
@@ -409,7 +428,7 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	private void updateRobotDatabase(FileSpecification fileSpecification) {
+	private void updateRobotDatabase(IFileSpecification fileSpecification) {
 		// Ignore files located in the robot cache
 		String name = fileSpecification.getName();
 
@@ -421,11 +440,11 @@ public class RobotRepositoryManager {
 
 		boolean updated = false;
 
-		if (fileSpecification instanceof RobotSpecification) {
-			RobotSpecification robotSpecification = (RobotSpecification) fileSpecification;
+		if (fileSpecification instanceof IRobotSpecification) {
+			IRobotSpecification robotSpecification = (IRobotSpecification) fileSpecification;
 
 			try {
-				RobotClassManager robotClassManager = new RobotClassManager(robotSpecification);
+				RobotClassManager robotClassManager = new RobotClassManager(robotSpecification, manager);
 				Class<?> robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(
 						robotClassManager.getFullClassName(), true);
 
@@ -463,6 +482,7 @@ public class RobotRepositoryManager {
 			} catch (Throwable t) {
 				getRobotDatabase().put(key, robotSpecification);
 				log(robotSpecification.getName() + ": Got an error with this class: " + t);
+				log(t);
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
@@ -475,7 +495,7 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	private void updateNoDuplicates(FileSpecification spec) {
+	private void updateNoDuplicates(IFileSpecification spec) {
 		String key = spec.getFilePath();
 
         if (manager.isGUIEnabled())
@@ -484,7 +504,7 @@ public class RobotRepositoryManager {
         }
         if (!spec.isDevelopmentVersion()
 				&& getRobotDatabase().contains(spec.getFullClassName(), spec.getVersion(), false)) {
-			FileSpecification existingSpec = getRobotDatabase().get(spec.getFullClassName(), spec.getVersion(), false);
+			IFileSpecification existingSpec = getRobotDatabase().get(spec.getFullClassName(), spec.getVersion(), false);
 
 			if (existingSpec == null) {
 				getRobotDatabase().put(key, spec);
@@ -688,11 +708,23 @@ public class RobotRepositoryManager {
 					}
 
 					if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
-						FileSpecification fileSpecification = FileSpecification.createSpecification(this, out,
-								parentDirectory, "", false);
-
-						updatedJarList.add(fileSpecification);
-					}
+                        IFileSpecification fileSpecification=null;
+                        for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
+                            fileSpecification = p.createSpecification(this, out, parentDirectory, "", false);
+                            if (fileSpecification!=null)
+                            {
+                                break;
+                            }
+                        }
+                        if (fileSpecification!=null)
+                        {
+                            log("Skipping file");
+                        }
+                        else
+                        {
+                            updatedJarList.add(fileSpecification);
+                        }
+                    }
 				}
 				entry = jarIS.getNextJarEntry();
 			}

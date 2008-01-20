@@ -36,7 +36,7 @@ import javax.swing.*;
 
 import robocode.manager.RobotRepositoryManager;
 import robocode.peer.robot.RobotClassManager;
-import robocode.repository.FileSpecification;
+import robocode.repository.IFileSpecification;
 
 
 /**
@@ -179,8 +179,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Extract");
-		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
-		FileSpecification spec = selectedRobots.get(0);
+		List<IFileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
+		IFileSpecification spec = selectedRobots.get(0);
 
 		try {
 			WindowUtil.setStatusWriter(out);

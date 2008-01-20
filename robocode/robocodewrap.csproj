@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{89226273-C330-4C36-A01F-74D990D5E2AE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>robocodewrap</RootNamespace>
+    <AssemblyName>robocodewrap</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>trashbin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Content Include="robocode\AdvancedRobot.java" />
+    <Content Include="robocode\battlefield\BattleField.java" />
+    <Content Include="robocode\battlefield\DefaultBattleField.java" />
+    <Content Include="robocode\battle\Battle.java" />
+    <Content Include="robocode\battle\BattleProperties.java" />
+    <Content Include="robocode\battle\BattleRankingTableModel.java" />
+    <Content Include="robocode\battle\BattleResultsTableModel.java" />
+    <Content Include="robocode\battle\record\BattleRecord.java" />
+    <Content Include="robocode\battle\record\BulletRecord.java" />
+    <Content Include="robocode\battle\record\RobotRecord.java" />
+    <Content Include="robocode\battle\record\RoundRecord.java" />
+    <Content Include="robocode\battle\record\TurnRecord.java" />
+    <Content Include="robocode\Bullet.java" />
+    <Content Include="robocode\BulletHitBulletEvent.java" />
+    <Content Include="robocode\BulletHitEvent.java" />
+    <Content Include="robocode\BulletMissedEvent.java" />
+    <Content Include="robocode\Condition.java" />
+    <Content Include="robocode\control\BattlefieldSpecification.java" />
+    <Content Include="robocode\control\BattleSpecification.java" />
+    <Content Include="robocode\control\package.html" />
+    <Content Include="robocode\control\RobocodeEngine.java" />
+    <Content Include="robocode\control\RobocodeListener.java" />
+    <Content Include="robocode\control\RobotResults.java" />
+    <Content Include="robocode\control\RobotSpecification.java" />
+    <Content Include="robocode\CustomEvent.java" />
+    <Content Include="robocode\DeathEvent.java" />
+    <Content Include="robocode\Droid.java" />
+    <Content Include="robocode\Event.java" />
+    <Content Include="robocode\exception\DeathException.java" />
+    <Content Include="robocode\exception\DisabledException.java" />
+    <Content Include="robocode\exception\EventInterruptedException.java" />
+    <Content Include="robocode\exception\RobotException.java" />
+    <Content Include="robocode\exception\WinException.java" />
+    <Content Include="robocode\gfx\ColorUtil.java" />
+    <Content Include="robocode\GunTurnCompleteCondition.java" />
+    <Content Include="robocode\HitByBulletEvent.java" />
+    <Content Include="robocode\HitRobotEvent.java" />
+    <Content Include="robocode\HitWallEvent.java" />
+    <Content Include="robocode\io\BufferedPipedInputStream.java" />
+    <Content Include="robocode\io\BufferedPipedOutputStream.java" />
+    <Content Include="robocode\io\FileTypeFilter.java" />
+    <Content Include="robocode\io\FileUtil.java" />
+    <Content Include="robocode\io\Logger.java" />
+    <Content Include="robocode\io\NoDuplicateJarOutputStream.java" />
+    <Content Include="robocode\io\RobocodeObjectInputStream.java" />
+    <Content Include="robocode\io\TeamMessageSizer.java" />
+    <Content Include="robocode\JuniorRobot.java" />
+    <Content Include="robocode\manager\BattleManager.java" />
+    <Content Include="robocode\manager\CpuManager.java" />
+    <Content Include="robocode\manager\NameManager.java" />
+    <Content Include="robocode\manager\RobocodeManager.java" />
+    <Content Include="robocode\manager\RobocodeProperties.java" />
+    <Content Include="robocode\manager\RobotRepositoryManager.java" />
+    <Content Include="robocode\manager\ThreadManager.java" />
+    <Content Include="robocode\MessageEvent.java" />
+    <Content Include="robocode\MoveCompleteCondition.java" />
+    <Content Include="robocode\package.html" />
+    <Content Include="robocode\packager\ClassAnalyzer.java" />
+    <Content Include="robocode\peer\BulletPeer.java" />
+    <Content Include="robocode\peer\ContestantPeer.java" />
+    <Content Include="robocode\peer\ContestantStatistics.java" />
+    <Content Include="robocode\peer\ExplosionPeer.java" />
+    <Content Include="robocode\peer\RobotPeer.java" />
+    <Content Include="robocode\peer\robot\EventManager.java" />
+    <Content Include="robocode\peer\robot\EventQueue.java" />
+    <Content Include="robocode\peer\robot\RobotClassManager.java" />
+    <Content Include="robocode\peer\robot\RobotFileSystemManager.java" />
+    <Content Include="robocode\peer\robot\RobotMessageManager.java" />
+    <Content Include="robocode\peer\robot\RobotOutputStream.java" />
+    <Content Include="robocode\peer\robot\RobotStatistics.java" />
+    <Content Include="robocode\peer\robot\RobotThreadManager.java" />
+    <Content Include="robocode\peer\TeamPeer.java" />
+    <Content Include="robocode\peer\TeamStatistics.java" />
+    <Content Include="robocode\peer\TextPeer.java" />
+    <Content Include="robocode\RadarTurnCompleteCondition.java" />
+    <Content Include="robocode\repository\ClassSpecification.java" />
+    <Content Include="robocode\repository\FileSpecification.java" />
+    <Content Include="robocode\repository\FileSpecificationDatabase.java" />
+    <Content Include="robocode\repository\IFileSpecification.java" />
+    <Content Include="robocode\repository\IRobotSpecification.java" />
+    <Content Include="robocode\repository\JarSpecification.java" />
+    <Content Include="robocode\repository\JavaRepositoryPlugin.java" />
+    <Content Include="robocode\repository\Repository.java" />
+    <Content Include="robocode\repository\RobotSpecification.java" />
+    <Content Include="robocode\repository\TeamSpecification.java" />
+    <Content Include="robocode\Robocode.java" />
+    <Content Include="robocode\RobocodeFileOutputStream.java" />
+    <Content Include="robocode\RobocodeFileWriter.java" />
+    <Content Include="robocode\Robot.java" />
+    <Content Include="robocode\RobotDeathEvent.java" />
+    <Content Include="robocode\RobotStatus.java" />
+    <Content Include="robocode\Rules.java" />
+    <Content Include="robocode\ScannedRobotEvent.java" />
+    <Content Include="robocode\security\IRobocodeClassLoader.java" />
+    <Content Include="robocode\security\RobocodeClassLoader.java" />
+    <Content Include="robocode\security\RobocodePermission.java" />
+    <Content Include="robocode\security\RobocodeSecurityManager.java" />
+    <Content Include="robocode\security\RobocodeSecurityPolicy.java" />
+    <Content Include="robocode\security\SecureInputStream.java" />
+    <Content Include="robocode\security\SecurePrintStream.java" />
+    <Content Include="robocode\SkippedTurnEvent.java" />
+    <Content Include="robocode\StatusEvent.java" />
+    <Content Include="robocode\TeamRobot.java" />
+    <Content Include="robocode\text\LimitedClassnameDocument.java" />
+    <Content Include="robocode\text\LimitedDocument.java" />
+    <Content Include="robocode\text\StringUtil.java" />
+    <Content Include="robocode\TurnCompleteCondition.java" />
+    <Content Include="robocode\ui\IBattleView.java" />
+    <Content Include="robocode\ui\IImageManager.java" />
+    <Content Include="robocode\ui\ILoadableManager.java" />
+    <Content Include="robocode\ui\ILookAndFeelManager.java" />
+    <Content Include="robocode\ui\IRepositoryPlugin.java" />
+    <Content Include="robocode\ui\IRobocodeFrame.java" />
+    <Content Include="robocode\ui\IRobotDialogManager.java" />
+    <Content Include="robocode\ui\ISoundManager.java" />
+    <Content Include="robocode\ui\IVersionManager.java" />
+    <Content Include="robocode\ui\IWindowManager.java" />
+    <Content Include="robocode\util\BoundingRectangle.java" />
+    <Content Include="robocode\util\GraphicsState.java" />
+    <Content Include="robocode\util\package.html" />
+    <Content Include="robocode\util\Utils.java" />
+    <Content Include="robocode\WinEvent.java" />
+    <Content Include="robocode\_AdvancedRadiansRobot.java" />
+    <Content Include="robocode\_AdvancedRobot.java" />
+    <Content Include="robocode\_Robot.java" />
+    <Content Include="robocode\_RobotBase.java" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="robocode\peer\robot\NameStuff.jpage" />
+  </ItemGroup>
+</Project>

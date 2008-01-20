@@ -43,7 +43,7 @@ import javax.swing.text.Caret;
 
 import robocodeui.dialog.WizardPanel;
 import robocode.io.FileUtil;
-import robocode.repository.FileSpecification;
+import robocode.repository.IFileSpecification;
 
 
 /**
@@ -94,7 +94,7 @@ public class FilenamePanel extends WizardPanel {
 				outgoingFile.mkdirs();
 			}
 			String jarName = "myrobots.jar";
-			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			List<IFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null && selectedRobots.size() == 1) {
 				jarName = selectedRobots.get(0).getFullClassName() + "_"

@@ -38,8 +38,8 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import robocode.repository.FileSpecification;
 import robocode.repository.TeamSpecification;
+import robocode.repository.IFileSpecification;
 
 
 /**
@@ -50,8 +50,8 @@ import robocode.repository.TeamSpecification;
 @SuppressWarnings("serial")
 public class AvailableRobotsPanel extends JPanel {
 
-	private List<FileSpecification> availableRobots = new CopyOnWriteArrayList<FileSpecification>();
-	private List<FileSpecification> robotList = new CopyOnWriteArrayList<FileSpecification>();
+	private List<IFileSpecification> availableRobots = new CopyOnWriteArrayList<IFileSpecification>();
+	private List<IFileSpecification> robotList = new CopyOnWriteArrayList<IFileSpecification>();
 	private List<String> availablePackages = new CopyOnWriteArrayList<String>();
 
 	private JScrollPane availableRobotsScrollPane;
@@ -116,16 +116,16 @@ public class AvailableRobotsPanel extends JPanel {
 		add(f5Label, BorderLayout.SOUTH);
 	}
 
-	public List<FileSpecification> getAvailableRobots() {
+	public List<IFileSpecification> getAvailableRobots() {
 		return availableRobots;
 	}
 
-	public List<FileSpecification> getRobotList() {
+	public List<IFileSpecification> getRobotList() {
 		return robotList;
 	}
 
-	public List<FileSpecification> getSelectedRobots() {
-		List<FileSpecification> selected = new ArrayList<FileSpecification>();
+	public List<IFileSpecification> getSelectedRobots() {
+		List<IFileSpecification> selected = new ArrayList<IFileSpecification>();
 
 		for (int i : getAvailableRobotsList().getSelectedIndices()) {
 			selected.add(availableRobots.get(i));
@@ -178,7 +178,7 @@ public class AvailableRobotsPanel extends JPanel {
 		return availableRobotsScrollPane;
 	}
 
-	public void setRobotList(List<FileSpecification> robotListList) {
+	public void setRobotList(List<IFileSpecification> robotListList) {
 		robotList = robotListList;
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -186,7 +186,7 @@ public class AvailableRobotsPanel extends JPanel {
 				availableRobots.clear();
 
 				if (robotList == null) {
-					robotList = new CopyOnWriteArrayList<FileSpecification>();
+					robotList = new CopyOnWriteArrayList<IFileSpecification>();
 					availablePackages.add("One moment please...");
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().clearSelection();
@@ -195,7 +195,7 @@ public class AvailableRobotsPanel extends JPanel {
 					availablePackages.add("(All)");
 					String packageName = null;
 
-					for (FileSpecification robotSpec : robotList) {
+					for (IFileSpecification robotSpec : robotList) {
 						packageName = robotSpec.getFullPackage();
 						if (packageName == null) {
 							continue;
@@ -206,7 +206,7 @@ public class AvailableRobotsPanel extends JPanel {
 					}
 					availablePackages.add("(No package)");
 
-					for (FileSpecification robotSpec : robotList) {
+					for (IFileSpecification robotSpec : robotList) {
 						availableRobots.add(robotSpec);
 					}
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
@@ -242,7 +242,7 @@ public class AvailableRobotsPanel extends JPanel {
 			}
 			// Single package.
 			for (int j = 0; j < robotList.size(); j++) {
-				FileSpecification robotSpecification = robotList.get(j);
+				IFileSpecification robotSpecification = robotList.get(j);
 
 				if (robotSpecification.getFullPackage() == null) {
 					if (selectedPackage.equals("(No package)")) {
@@ -267,7 +267,7 @@ public class AvailableRobotsPanel extends JPanel {
 			if (actionList != null) {
 				actionList.clearSelection();
 			}
-			FileSpecification robotSpecification = (FileSpecification) getAvailableRobotsList().getModel().getElementAt(
+			IFileSpecification robotSpecification = (IFileSpecification) getAvailableRobotsList().getModel().getElementAt(
 					sel[0]);
 
 			if (robotSelectionPanel != null) {
@@ -351,7 +351,7 @@ public class AvailableRobotsPanel extends JPanel {
 			return availableRobots.size();
 		}
 
-		public FileSpecification getElementAt(int which) {
+		public IFileSpecification getElementAt(int which) {
 			return availableRobots.get(which);
 		}
 	}
@@ -379,16 +379,16 @@ public class AvailableRobotsPanel extends JPanel {
 				setBackground(list.getBackground());
 				setForeground(list.getForeground());
 			}
-			if (useShortNames && value instanceof FileSpecification) {
-				FileSpecification fileSpecification = (FileSpecification) value;
+			if (useShortNames && value instanceof IFileSpecification) {
+				IFileSpecification fileSpecification = (IFileSpecification) value;
 
 				if (fileSpecification instanceof TeamSpecification) {
 					setText("Team: " + fileSpecification.getNameManager().getUniqueShortClassNameWithVersion());
 				} else {
 					setText(fileSpecification.getNameManager().getUniqueShortClassNameWithVersion());
 				}
-			} else if (value instanceof FileSpecification) {
-				FileSpecification fileSpecification = (FileSpecification) value;
+			} else if (value instanceof IFileSpecification) {
+				IFileSpecification fileSpecification = (IFileSpecification) value;
 
 				if (fileSpecification instanceof TeamSpecification) {
 					setText("Team: " + fileSpecification.getNameManager().getUniqueFullClassNameWithVersion());

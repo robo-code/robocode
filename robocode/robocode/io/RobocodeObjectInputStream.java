@@ -14,6 +14,8 @@
 package robocode.io;
 
 
+import robocode.security.IRobocodeClassLoader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -26,9 +28,9 @@ import java.io.ObjectStreamClass;
  */
 public class RobocodeObjectInputStream extends ObjectInputStream {
 
-	private ClassLoader classLoader;
+	private IRobocodeClassLoader classLoader;
 
-	public RobocodeObjectInputStream(InputStream in, ClassLoader classLoader) throws IOException {
+	public RobocodeObjectInputStream(InputStream in, IRobocodeClassLoader classLoader) throws IOException {
 		super(in);
 		this.classLoader = classLoader;
 	}
@@ -38,7 +40,7 @@ public class RobocodeObjectInputStream extends ObjectInputStream {
 		String name = desc.getName();
 
 		try {
-			return Class.forName(name, false, classLoader);
+			return Class.forName(name, false, (ClassLoader)classLoader);
 		} catch (ClassNotFoundException ex) {
 			return super.resolveClass(desc);
 		}

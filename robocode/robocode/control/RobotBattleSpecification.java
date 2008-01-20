@@ -28,13 +28,13 @@ import java.io.File;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class RobotSpecification implements java.io.Serializable {
+public class RobotBattleSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private robocode.repository.FileSpecification local;
+	private robocode.repository.IFileSpecification local;
 
-	RobotSpecification(robocode.repository.FileSpecification spec) {
+	RobotBattleSpecification(robocode.repository.IFileSpecification spec) {
 		this.local = spec;
 	}
 

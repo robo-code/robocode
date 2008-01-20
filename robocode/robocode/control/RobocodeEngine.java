@@ -43,8 +43,8 @@ import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
-import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
+import robocode.repository.IFileSpecification;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
@@ -181,14 +181,14 @@ public class RobocodeEngine {
 	 * 
 	 * @return An array of all available robots.
 	 */
-	public RobotSpecification[] getLocalRepository() {
+	public RobotBattleSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
-		List<FileSpecification> list = robotRepository.getRobotSpecificationsList(false, false, false, false, false,
+		List<IFileSpecification> list = robotRepository.getRobotSpecificationsList(false, false, false, false, false,
 				false);
-		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
+		RobotBattleSpecification robotSpecs[] = new RobotBattleSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
-			robotSpecs[i] = new RobotSpecification(list.get(i));
+			robotSpecs[i] = new RobotBattleSpecification(list.get(i));
 		}
 		return robotSpecs;
 	}

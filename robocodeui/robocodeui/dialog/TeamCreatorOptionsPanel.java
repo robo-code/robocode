@@ -32,7 +32,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import robocode.repository.FileSpecification;
+import robocode.repository.IFileSpecification;
 import robocode.text.LimitedClassnameDocument;
 import robocode.text.LimitedDocument;
 
@@ -80,7 +80,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			List<FileSpecification> selectedRobots;
+			List<IFileSpecification> selectedRobots;
 
 			if (teamCreator != null) {
 				selectedRobots = teamCreator.getRobotSelectionPanel().getSelectedRobots();
@@ -89,7 +89,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 			}
 
 			if (selectedRobots != null) {
-				FileSpecification robotSpecification = selectedRobots.get(0);
+				IFileSpecification robotSpecification = selectedRobots.get(0);
 
 				getTeamNameLabel().setText("Please choose a name for your team: (Must be a valid Java classname)");
 				getTeamNameField().setText(robotSpecification.getNameManager().getShortClassName() + "Team");

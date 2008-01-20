@@ -33,7 +33,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import robocodeui.dialog.WizardPanel;
-import robocode.repository.FileSpecification;
+import robocode.repository.IFileSpecification;
 import robocode.text.LimitedDocument;
 
 
@@ -77,11 +77,11 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			List<IFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null) {
 				if (selectedRobots.size() == 1) {
-					FileSpecification fileSpecification = selectedRobots.get(0);
+					IFileSpecification fileSpecification = selectedRobots.get(0);
 					String v = fileSpecification.getVersion();
 	
 					if (v == null || v.length() == 0) {

@@ -25,8 +25,6 @@ import robocode.manager.RobocodeManager;
  */
 public class LookAndFeelManager implements ILookAndFeelManager {
 
-    private RobocodeManager manager;
-
 	/**
 	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
 	 * system's LAF. If this fails, it try to use the cross platform LAF.
@@ -46,6 +44,5 @@ public class LookAndFeelManager implements ILookAndFeelManager {
 	}
 
     public void setRobocodeManager(RobocodeManager robocodeManager) {
-        manager = robocodeManager;
     }
 }

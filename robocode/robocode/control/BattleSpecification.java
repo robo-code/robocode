@@ -30,7 +30,7 @@ public class BattleSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final RobotSpecification[] robots;
+	private final RobotBattleSpecification[] robots;
 	private final BattleProperties battleProperties;
 
 	/**
@@ -40,7 +40,7 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @param battlefield The battlefield
 	 * @param robotSpecifications Robots in this battle
 	 */
-	public BattleSpecification(int numRounds, BattlefieldSpecification battlefield, RobotSpecification robotSpecifications[]) {
+	public BattleSpecification(int numRounds, BattlefieldSpecification battlefield, RobotBattleSpecification robotSpecifications[]) {
 		this(numRounds, 450, .1, battlefield, robotSpecifications);
 	}
 
@@ -52,7 +52,7 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @param battlefield The battlefield
 	 * @param robots Robots in this battle
 	 */
-	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefield, RobotSpecification[] robots) {
+	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefield, RobotBattleSpecification[] robots) {
 		battleProperties = new BattleProperties();
 		battleProperties.setNumRounds(numRounds);
 		battleProperties.setInactivityTime(inactivityTime);
@@ -106,12 +106,12 @@ public class BattleSpecification implements java.io.Serializable {
 	 *
 	 * @return the robots participating in this battle
 	 */
-	public RobotSpecification[] getRobots() {
+	public RobotBattleSpecification[] getRobots() {
 		if (robots == null) {
 			return null;
 		}
 
-		RobotSpecification[] robotsCopy = new RobotSpecification[robots.length];
+		RobotBattleSpecification[] robotsCopy = new RobotBattleSpecification[robots.length];
 
 		System.arraycopy(robots, 0, robotsCopy, 0, robots.length);
 

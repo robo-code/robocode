@@ -216,7 +216,7 @@ public class TeamSpecification extends FileSpecification {
 		props.setProperty(TEAM_MEMBERS, members);
 	}
 
-	public void addMember(RobotSpecification robotSpecification) {
+	public void addMember(IRobotSpecification robotSpecification) {
 		if (members == null || members.length() == 0) {
 			members = robotSpecification.getFullClassNameWithVersion();
 		} else {

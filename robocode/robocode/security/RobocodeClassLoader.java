@@ -41,7 +41,8 @@ import java.util.Map;
 
 import robocode.packager.ClassAnalyzer;
 import robocode.peer.robot.RobotClassManager;
-import robocode.repository.RobotSpecification;
+import robocode.repository.IRobotSpecification;
+import robocode.manager.RobocodeManager;
 
 
 /**
@@ -51,10 +52,10 @@ import robocode.repository.RobotSpecification;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobocodeClassLoader extends ClassLoader {
+public class RobocodeClassLoader extends ClassLoader implements IRobocodeClassLoader {
 	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
 
-	private RobotSpecification robotSpecification;
+	private IRobotSpecification robotSpecification;
 	private RobotClassManager robotClassManager;
 	private String rootPackageDirectory;
 	private String rootDirectory;
@@ -67,29 +68,33 @@ public class RobocodeClassLoader extends ClassLoader {
 	// The hidden ClassLoader.class.classes field
 	private Field classesField = null;
 
-	public RobocodeClassLoader(ClassLoader parent, RobotClassManager robotClassManager) {
-		super(parent);
-		this.robotClassManager = robotClassManager;
-		this.robotSpecification = robotClassManager.getRobotSpecification();
+    public RobocodeClassLoader(ClassLoader parent) {
+        super(parent);
+    }
 
-		// Deep within the class loader is a vector of classes, and is VM
-		// implementation specific, so its not in every VM. However, if a VM
-		// does have it then we have to make sure we clear it during cleanup().
-		Field[] fields = ClassLoader.class.getDeclaredFields();
+    public void init(RobotClassManager robotClassManager)
+    {
+        this.robotClassManager = robotClassManager;
+        this.robotSpecification = robotClassManager.getRobotSpecification();
 
-		for (Field field : fields) {
-			if (field.getName().equals("classes")) {
-				classesField = field;
-				break;
-			}
-		}
+        // Deep within the class loader is a vector of classes, and is VM
+        // implementation specific, so its not in every VM. However, if a VM
+        // does have it then we have to make sure we clear it during cleanup().
+        Field[] fields = ClassLoader.class.getDeclaredFields();
 
-		if (classesField == null) {
-			System.err.println("Failed to find classes field in:" + this);
-		}
-	}
+        for (Field field : fields) {
+            if (field.getName().equals("classes")) {
+                classesField = field;
+                break;
+            }
+        }
 
-	public synchronized String getClassDirectory() {
+        if (classesField == null) {
+            System.err.println("Failed to find classes field in:" + this);
+        }
+    }
+
+    public synchronized String getClassDirectory() {
 		return classDirectory;
 	}
 
@@ -119,7 +124,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		}
 	}
 
-	public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
+    public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
 		if (cachedClasses.containsKey(name)) {
 			return cachedClasses.get(name);
 		}
@@ -249,4 +254,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		robotClassManager = null;
 		robotSpecification = null;
 	}
+
+    public void setRobocodeManager(RobocodeManager root) {
+    }
 }

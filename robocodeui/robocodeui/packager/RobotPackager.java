@@ -51,9 +51,7 @@ import robocode.io.Logger;
 import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.RobotRepositoryManager;
 import robocode.peer.robot.RobotClassManager;
-import robocode.repository.FileSpecification;
-import robocode.repository.RobotSpecification;
-import robocode.repository.TeamSpecification;
+import robocode.repository.*;
 import robocode.security.RobocodeSecurityManager;
 
 import codesize.Codesize;
@@ -263,7 +261,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Packager");
-		List<FileSpecification> robotSpecificationsList = robotManager.getRobotRepository().getRobotSpecificationsList(
+		List<IFileSpecification> robotSpecificationsList = robotManager.getRobotRepository().getRobotSpecificationsList(
 				false, false, false, false, false, false);
 		String jarFilename = getFilenamePanel().getFilenameField().getText();
 		File f = new File(jarFilename);
@@ -283,7 +281,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 			out.println("Overwriting " + jarFilename);
 		}
-		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
+		List<IFileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
 
 		// Create the jar file
 		Manifest manifest = new Manifest();
@@ -309,9 +307,9 @@ public class RobotPackager extends JDialog implements WizardListener {
 			jarout = new NoDuplicateJarOutputStream(fos);
 			jarout.setComment(robotManager.getManager().getVersionManager().getVersion() + " - Robocode version");
 
-			for (FileSpecification fileSpecification : selectedRobots) {
-				if (fileSpecification instanceof RobotSpecification) {
-					RobotSpecification robotSpecification = (RobotSpecification) fileSpecification;
+			for (IFileSpecification fileSpecification : selectedRobots) {
+				if (fileSpecification instanceof IRobotSpecification) {
+					IRobotSpecification robotSpecification = (IRobotSpecification) fileSpecification;
 
 					if (robotSpecification.isDevelopmentVersion()) {
 						robotSpecification.setRobotDescription(getPackagerOptionsPanel().getDescriptionArea().getText());
@@ -351,7 +349,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 							}
 						}
 						// Create clone with version for jar
-						robotSpecification = (RobotSpecification) robotSpecification.clone();
+						robotSpecification = (IRobotSpecification) robotSpecification.clone();
 						robotSpecification.setRobotVersion(getPackagerOptionsPanel().getVersionField().getText());
 						addRobotSpecification(out, jarout, robotSpecification);
 					} else {
@@ -406,7 +404,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 							newMembers += ",";
 						}
 						bot = teamTokenizer.nextToken();
-						for (FileSpecification currentFileSpecification : robotSpecificationsList) {
+						for (IFileSpecification currentFileSpecification : robotSpecificationsList) {
 							// Teams cannot include teams
 							if (currentFileSpecification instanceof TeamSpecification) {
 								continue;
@@ -522,7 +520,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	}
 
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,
-			RobotSpecification robotSpecification) {
+			IRobotSpecification robotSpecification) {
 		int rv = 0;
 
 		if (!robotSpecification.isDevelopmentVersion()) {
@@ -566,9 +564,9 @@ public class RobotPackager extends JDialog implements WizardListener {
 		return name;
 	}
 
-	public int addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, RobotSpecification robotSpecification) {
+	public int addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, IRobotSpecification robotSpecification) {
 		int rv = 0;
-		RobotClassManager classManager = new RobotClassManager(robotSpecification);
+		RobotClassManager classManager = new RobotClassManager(robotSpecification, robotManager.getManager());
 
 		try {
 			Iterator<String> classes = getClasses(classManager).iterator();

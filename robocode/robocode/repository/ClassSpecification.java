@@ -22,7 +22,7 @@ package robocode.repository;
 public class ClassSpecification extends FileSpecification {
 
 	// Used in FileSpecification
-	public ClassSpecification(RobotSpecification robotSpecification) {
+	public ClassSpecification(IRobotSpecification robotSpecification) {
 		this.developmentVersion = robotSpecification.isDevelopmentVersion();
 		this.rootDir = robotSpecification.getRootDir();
 		this.name = robotSpecification.getName();

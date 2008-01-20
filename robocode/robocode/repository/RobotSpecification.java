@@ -31,7 +31,7 @@ import robocode.io.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class RobotSpecification extends FileSpecification {
+public class RobotSpecification extends FileSpecification implements IRobotSpecification {
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
 	private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
@@ -57,7 +57,8 @@ public class RobotSpecification extends FileSpecification {
 		String fileType = FileUtil.getFileType(filename);
 
 		this.developmentVersion = developmentVersion;
-		if (prefix.length() == 0 && fileType.equals(".jar")) {
+        this.rootDir = rootDir; 
+        if (prefix.length() == 0 && fileType.equals(".jar")) {
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
 		} else if (fileType.equals(".team")) {
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
@@ -177,7 +178,7 @@ public class RobotSpecification extends FileSpecification {
 	/**
 	 * Sets the robotName.
 	 *
-	 * @param robotName The robotName to set
+	 * @param name The robotName to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -233,7 +234,11 @@ public class RobotSpecification extends FileSpecification {
 		return robotJavaSourceIncluded;
 	}
 
-	/**
+    public boolean getNeedsExternalLoader() {
+        return false;
+    }
+
+    /**
 	 * Sets the robotJavaSourceIncluded.
 	 *
 	 * @param robotJavaSourceIncluded The robotJavaSourceIncluded to set
@@ -269,7 +274,7 @@ public class RobotSpecification extends FileSpecification {
 	/**
 	 * Sets the robotClasspath.
 	 *
-	 * @param robotClasspath The robotClasspath to set
+	 * @param robotClassPath The robotClasspath to set
 	 */
 	public void setRobotClassPath(String robotClassPath) {
 		this.robotClassPath = robotClassPath;
