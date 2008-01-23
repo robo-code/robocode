@@ -10,14 +10,14 @@ namespace nrobocodeui.manager
 {
     public class WindowManager : LoadableManagerBase, IWindowManager
     {
-        private RobocodeFrame frame;
+        private RobocodeFrameStub frame;
 
         public IRobocodeFrame getRobocodeFrame()
         {
             //TODO ZAMO
             if (frame==null)
             {
-                frame = new RobocodeFrame();
+                frame = new RobocodeFrameStub();
             }
             return frame;
         }
@@ -25,11 +25,13 @@ namespace nrobocodeui.manager
         public void showResultsDialog()
         {
             //TODO ZAMO
+            Console.WriteLine("Results");
         }
 
         public void showSplashScreen()
         {
             //TODO ZAMO
+            Console.WriteLine("Splash");
         }
 
         public void showRobocodeFrame(bool b)

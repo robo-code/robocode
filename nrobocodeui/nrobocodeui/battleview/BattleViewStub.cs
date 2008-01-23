@@ -1,83 +1,72 @@
-﻿using System.Windows.Forms;
+﻿using System;
 using robocode.battle;
 using robocode.battlefield;
 using robocode.ui;
 
-namespace nrobocodeui.nrobocodeui.battleview
+namespace nrobocodeui.battleview
 {
-    public partial class BattleView : UserControl, IBattleView
+    class BattleViewStub : IBattleView
     {
-        public BattleView()
-        {
-            InitializeComponent();
-        }
-
-        #region IBattleView Members
-
         public void setBattleField(BattleField bf)
         {
-            //TODO
+            Console.WriteLine("setBattleField");
         }
 
         public void setVisible(bool b)
         {
-            //TODO
+            Console.WriteLine("setVisible "+b);
         }
 
         public void setInitialized(bool b)
         {
-            //TODO
+            Console.WriteLine("setInitialized "+b);
         }
 
         public void setBattle(Battle b)
         {
-            //TODO
+            Console.WriteLine("setBattle");
         }
 
         public void repaint()
         {
-            //TODO
+            Console.WriteLine("repaint");
         }
 
         public void setDisplayOptions()
         {
-            //TODO
+            Console.WriteLine("setDisplayOptions");
         }
 
         public void update()
         {
-            //TODO
+            Console.WriteLine("update");
         }
 
         public bool isDisplayTPS()
         {
-            //TODO
+            Console.WriteLine("isDisplayTPS");
             return false;
         }
 
         public bool isDisplayFPS()
         {
-            //TODO
+            Console.WriteLine("isDisplayFPS");
             return false;
         }
 
         public void setTitle(string str)
         {
-            //TODO
+            Console.WriteLine("setTitle "+str);
         }
 
         public int getWidth()
         {
-            //TODO
             return 0;
         }
 
         public int getHeight()
         {
-            //TODO
             return 0;
         }
-
-        #endregion
     }
 }
