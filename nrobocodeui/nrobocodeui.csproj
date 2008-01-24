@@ -73,6 +73,7 @@
     <Compile Include="nrobocodeui\dialog\RobocodeFrame.Designer.cs">
       <DependentUpon>RobocodeFrame.cs</DependentUpon>
     </Compile>
+    <Compile Include="nrobocodeui\gfx\RenderImage.cs" />
     <Compile Include="nrobocodeui\gfx\RenderObject.cs" />
     <Compile Include="nrobocodeui\repository\NetAssemblySpecification.cs" />
     <Compile Include="nrobocodeui\repository\NetRepositoryPlugin.cs" />
