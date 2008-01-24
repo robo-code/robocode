@@ -17,7 +17,7 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/robocodeui build.xml [Builder].launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/robocodeui build.xml.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
