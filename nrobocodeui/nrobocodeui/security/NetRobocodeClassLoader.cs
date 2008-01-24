@@ -41,17 +41,12 @@ namespace nrobocodeui.security
             return clazz2;
         }
 
-        public Class loadClass(string str, bool b)
+        public new Class loadClass(string name, bool resolve)
         {
-            throw new NotImplementedException();
+            return base.loadClass(name, resolve);
         }
 
         public void cleanup()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Class loadClass(string str)
         {
             throw new NotImplementedException();
         }

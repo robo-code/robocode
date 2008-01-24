@@ -373,7 +373,7 @@
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.SplitContainer splitContainer;
-        private global::nrobocodeui.nrobocodeui.battleview.BattleView battleView1;
+        private nrobocodeui.battleview.BattleView battleView1;
     }
 }
 

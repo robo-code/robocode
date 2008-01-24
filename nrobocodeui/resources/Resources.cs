@@ -1,0 +1,156 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Resources;
+
+namespace nrobocodeui.resources
+{
+    public static class images
+    {
+        #region body
+        
+        private static Bitmap body_cache;
+        public static Bitmap body
+        {
+            get
+            {
+                if (body_cache == null)
+                {
+                    body_cache = Resources.images_body;
+                }
+                return body_cache;
+            }
+        }
+
+        #endregion
+
+        #region radar
+
+        private static Bitmap radar_cache;
+        public static Bitmap radar
+        {
+            get
+            {
+                if (radar_cache == null)
+                {
+                    radar_cache = Resources.images_radar;
+                }
+                return radar_cache;
+            }
+        }
+
+        #endregion
+
+        #region turret
+
+        private static Bitmap turret_cache;
+        public static Bitmap turret
+        {
+            get
+            {
+                if (turret_cache == null)
+                {
+                    turret_cache = Resources.images_turret;
+                }
+                return turret_cache;
+            }
+        }
+
+        #endregion
+        
+        public static class explosion
+        {
+            #region explosions
+
+            private static List<Bitmap>[] explosions_cache;
+
+            public static List<Bitmap>[] explosions
+            {
+                get
+                {
+                    if (explosions_cache == null)
+                    {
+                        explosions_cache=new List<Bitmap>[2];
+                        explosions_cache[0]=new List<Bitmap>();
+                        explosions_cache[1] = new List<Bitmap>();
+                        for (int f = 1; f < 17; f++)
+                        {
+                            string name = string.Format("images_explosion_explosion{0}_{1}", 1, f);
+                            explosions_cache[0].Add(Resources.ResourceManager.GetObject(name, Resources.Culture) as Bitmap);
+                        }
+                        for (int f = 1; f < 71; f++)
+                        {
+                            string name = string.Format("images_explosion_explosion{0}_{1}", 2, f);
+                            explosions_cache[1].Add(Resources.ResourceManager.GetObject(name, Resources.Culture) as Bitmap);
+                        }
+                    }
+                    return explosions_cache;
+                }
+            }
+
+            #endregion
+        }
+        public static class ground
+        {
+            #region explode_debris
+
+            private static Bitmap explode_debris_cache;
+            public static Bitmap explode_debris
+            {
+                get
+                {
+                    if (explode_debris_cache == null)
+                    {
+                        explode_debris_cache = Resources.images_ground_explode_debris;
+                    }
+                    return explode_debris_cache;
+                }
+            }
+
+            #endregion
+
+            #region blue_metal
+
+            private static List<Bitmap> blue_metal_cache;
+
+            public static List<Bitmap> blue_metal
+            {
+                get
+                {
+                    if (blue_metal_cache == null)
+                    {
+                        blue_metal_cache = new List<Bitmap>();
+                        for (int f = 0; f < 4; f++)
+                        {
+                            string name = string.Format("images_ground_blue_metal_blue_metal_{0}", f);
+                            blue_metal_cache.Add(Resources.ResourceManager.GetObject(name, Resources.Culture) as Bitmap);
+                        }
+                    }
+                    return blue_metal_cache;
+                }
+            }
+
+            #endregion
+        }
+    }
+
+    public static class sounds
+    {
+        #region sounds_explode
+
+        private static System.IO.UnmanagedMemoryStream sounds_explode_cache;
+        public static System.IO.UnmanagedMemoryStream sounds_explode
+        {
+            get
+            {
+                if (sounds_explode_cache == null)
+                {
+                    sounds_explode_cache = Resources.sounds_explode;
+                }
+                return sounds_explode_cache;
+            }
+        }
+
+        #endregion
+    }
+}
