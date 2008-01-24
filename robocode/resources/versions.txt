@@ -1,14 +1,30 @@
+Version 1.5.3 Alpha 2
+(01/24/2008)
+-------------
+o Changes
+  -- All functions key shortcuts have been replaced to comply with OSes where
+     the function keys (F1 - F12) are not available or have a specific purpose,
+     and thus should not be overridden
+     -- The F5 shortcut key for refreshing the list of available robots in the
+        New Battle, Robot Packager, Robot Extractor, and Team Creator window has
+        been changed to 'modifier key' + R, i.e. Ctrl+R on Windows and Linux, and
+        Command+R for Mac OS
+     -- The F6 shortcut key for 'Compile' has been changed to 'modifier key' + B,
+        i.e. Ctrl+B on Windows and Linux, and Command+B for Mac OS
+     -- The F3 shortcut key for 'Find Next' has been changed to 'modifier key' + G,
+        i.e. Ctrl+G on Windows and Linux, and Command+G for Mac OS
+
 Version 1.5.2
 (01/08/2008)
 -------------
-o Bugfix:
+o Bugfix
   -- On some systems Robocode would not start up when trying to run robocode.bat
      or robocode.sh
 
 Version 1.5.1
 (12/12/2007)
 -------------
-o Bugfix:
+o Bugfix
   -- Fixed security flaw with the Event Dispatch Thread, where robots could use
      the SwingUtilities.invokeLater() for running any code they should like to
      -- Thanks goes to John Cleland who reported  this security flaw and provided
