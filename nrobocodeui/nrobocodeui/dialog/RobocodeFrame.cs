@@ -21,7 +21,6 @@ namespace nrobocodeui.dialog
         #region Private members
 
         private int childFormNumber = 0;
-        private BattleViewStub battleView;
         private FormWindowState lastState = FormWindowState.Normal;
 
         #endregion
@@ -62,7 +61,7 @@ namespace nrobocodeui.dialog
             if (battleView == null)
             {
                 //TODO
-                battleView = new BattleViewStub();
+                battleView = new BattleView();
             }
             return battleView;
         }

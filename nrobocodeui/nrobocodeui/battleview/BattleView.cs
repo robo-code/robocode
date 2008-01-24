@@ -1,9 +1,10 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using robocode.battle;
 using robocode.battlefield;
 using robocode.ui;
 
-namespace nrobocodeui.nrobocodeui.battleview
+namespace nrobocodeui.battleview
 {
     public partial class BattleView : UserControl, IBattleView
     {
@@ -11,6 +12,7 @@ namespace nrobocodeui.nrobocodeui.battleview
         {
             InitializeComponent();
         }
+
 
         #region IBattleView Members
 
@@ -63,21 +65,36 @@ namespace nrobocodeui.nrobocodeui.battleview
 
         public void setTitle(string str)
         {
-            //TODO
+            //TODO move to frame ?
         }
 
         public int getWidth()
         {
-            //TODO
-            return 0;
+            return Width;
         }
 
         public int getHeight()
         {
-            //TODO
-            return 0;
+            return Height;
         }
 
         #endregion
+
+        private void BattleView_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+
+            //g = Graphics.FromImage(resources.images.body);
+
+            g.RotateTransform(15);
+            g.TranslateTransform(100, 100);
+            e.Graphics.DrawImage(resources.images.body, new Point(100, 100));
+            g.ResetTransform();
+
+            g.RotateTransform(65);
+            g.TranslateTransform(100, 40);
+            e.Graphics.DrawImage(resources.images.body, new Point(100, 40));
+            g.ResetTransform();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace nrobocodeui.nrobocodeui.battleview
+﻿namespace nrobocodeui.battleview
 {
     partial class BattleView
     {
@@ -38,6 +38,7 @@
             this.DoubleBuffered = true;
             this.Name = "BattleView";
             this.Size = new System.Drawing.Size(435, 390);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.BattleView_Paint);
             this.ResumeLayout(false);
 
         }

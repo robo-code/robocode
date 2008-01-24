@@ -59,7 +59,7 @@
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.battleView1 = new nrobocodeui.battleview.BattleView();
+            this.battleView = new nrobocodeui.battleview.BattleView();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -296,19 +296,19 @@
             // 
             // splitContainer.Panel1
             // 
-            this.splitContainer.Panel1.Controls.Add(this.battleView1);
+            this.splitContainer.Panel1.Controls.Add(this.battleView);
             this.splitContainer.Size = new System.Drawing.Size(632, 357);
             this.splitContainer.SplitterDistance = 526;
             this.splitContainer.TabIndex = 0;
             // 
             // battleView1
             // 
-            this.battleView1.BackColor = System.Drawing.Color.Black;
-            this.battleView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.battleView1.Location = new System.Drawing.Point(0, 0);
-            this.battleView1.Name = "battleView1";
-            this.battleView1.Size = new System.Drawing.Size(526, 357);
-            this.battleView1.TabIndex = 0;
+            this.battleView.BackColor = System.Drawing.Color.Black;
+            this.battleView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.battleView.Location = new System.Drawing.Point(0, 0);
+            this.battleView.Name = "battleView1";
+            this.battleView.Size = new System.Drawing.Size(526, 357);
+            this.battleView.TabIndex = 0;
             // 
             // RobocodeFrame
             // 
@@ -373,7 +373,7 @@
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.SplitContainer splitContainer;
-        private nrobocodeui.battleview.BattleView battleView1;
+        private nrobocodeui.battleview.BattleView battleView;
     }
 }
 

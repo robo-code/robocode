@@ -73,6 +73,7 @@
     <Compile Include="nrobocodeui\dialog\RobocodeFrame.Designer.cs">
       <DependentUpon>RobocodeFrame.cs</DependentUpon>
     </Compile>
+    <Compile Include="nrobocodeui\gfx\RenderObject.cs" />
     <Compile Include="nrobocodeui\repository\NetAssemblySpecification.cs" />
     <Compile Include="nrobocodeui\repository\NetRepositoryPlugin.cs" />
     <Compile Include="nrobocodeui\security\NetRobocodeClassLoader.cs" />
@@ -120,9 +121,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="nrobocodeui\gfx\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
