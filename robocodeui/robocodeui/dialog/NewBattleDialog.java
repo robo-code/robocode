@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,18 @@
  *     Matthew Reeder
  *     - Added keyboard mnemonics to buttons and tabs
  *     Flemming N. Larsen
- *     - Replaced FileSpecificationVector with plain Vector
  *     - Code cleanup
+ *     - Replaced FileSpecificationVector with plain Vector
+ *     - Changed the F5 key press for refreshing the list of available robots
+ *       into 'modifier key' + R to comply with other OSes like e.g. Mac OS
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
 package robocodeui.dialog;
 
+
+import static robocodeui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import java.awt.BorderLayout;
 import java.awt.event.*;
@@ -135,7 +139,8 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			newBattleDialogContentPane.add(getWizardController(), BorderLayout.SOUTH);
 			newBattleDialogContentPane.add(getTabbedPane(), BorderLayout.CENTER);
 			newBattleDialogContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK),
+					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		}
 		return newBattleDialogContentPane;
 	}
@@ -172,7 +177,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	 * @param manager Frame
 	 */
 	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
-		super((RobocodeFrame)manager.getWindowManager().getRobocodeFrame());
+		super((RobocodeFrame) manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
 		this.battleProperties = battleProperties;
 

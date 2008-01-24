@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,14 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
- *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
+ *     - Replaced FileSpecificationVector with plain Vector
  *     - Replaced synchronizedList on lists for availableRobots, robotList, and
  *       availablePackages with a CopyOnWriteArrayList in order to prevent
  *       ConcurrentModificationExceptions when accessing these list via
  *       Iterators using public methods to this class
+ *     - Changed the F5 key press for refreshing the list of available robots
+ *       into 'shortcut key' + R to comply with other OSes like e.g. Mac OS
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -38,8 +40,10 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import robocode.repository.TeamSpecification;
 import robocode.repository.IFileSpecification;
+import robocode.repository.TeamSpecification;
+
+import robocodeui.util.ShortcutUtil;
 
 
 /**
@@ -110,10 +114,10 @@ public class AvailableRobotsPanel extends JPanel {
 		top.add(b);
 		add(top, BorderLayout.CENTER);
 
-		JLabel f5Label = new JLabel("Press F5 to refresh");
+		JLabel refreshLabel = new JLabel("Press " + ShortcutUtil.getModifierKeyText() + "+R to refresh");
 
-		f5Label.setHorizontalAlignment(SwingConstants.CENTER);
-		add(f5Label, BorderLayout.SOUTH);
+		refreshLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		add(refreshLabel, BorderLayout.SOUTH);
 	}
 
 	public List<IFileSpecification> getAvailableRobots() {

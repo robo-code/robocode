@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@
  *       and Robocode Repository
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
- *     - Changed menu accelerator keys to use Toolkit.getMenuShortcutKeyMask()
- *       instead of Event.CTRL_MASK
+ *     - Changed menu shortcut keys to use getMenuShortcutKeyMask() instead of
+ *       Event.CTRL_MASK in order to comply with other OSes like e.g. Mac OS
  *     - Added "Recalculate CPU constant" to the Options menu
  *     - Added "Clean Robot Cache" to the Options menu
  *     Matthew Reeder
@@ -26,6 +26,8 @@
  *******************************************************************************/
 package robocodeui.dialog;
 
+
+import static robocodeui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import java.awt.event.*;
 
@@ -92,8 +94,6 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem helpRobocodeRepositoryMenuItem;
 	private RobocodeFrame robocodeFrame;
 	private RobocodeManager manager;
-
-	private final int MENU_SHORTCUT_KEY_MASK = java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
 	private class EventHandler implements ActionListener, MenuListener {
 		public void actionPerformed(ActionEvent e) {
@@ -742,7 +742,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void helpCheckForNewVersionActionPerformed() {
-		((VersionManager)manager.getVersionManager()).checkForNewVersion(true);
+		((VersionManager) manager.getVersionManager()).checkForNewVersion(true);
 	}
 
 	private void helpFaqActionPerformed() {
@@ -804,12 +804,12 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void optionsCleanRobotCachePerformed() {
-		int ok = JOptionPane.showConfirmDialog(this, "Do you want to clean the robot cache?",
-				"Clean Robot Cache", JOptionPane.YES_NO_OPTION);
+		int ok = JOptionPane.showConfirmDialog(this, "Do you want to clean the robot cache?", "Clean Robot Cache",
+				JOptionPane.YES_NO_OPTION);
 
 		if (ok == JOptionPane.YES_OPTION) {
 			// Run the robot cache clear in a safe thread
-			final RobocodeSecurityManager securityManager = (RobocodeSecurityManager)System.getSecurityManager();
+			final RobocodeSecurityManager securityManager = (RobocodeSecurityManager) System.getSecurityManager();
 
 			Thread thread = new Thread() {
 				@Override
@@ -842,8 +842,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		getWindowManager().showRobotPackager();
 	}
 
-    private WindowManager getWindowManager()
-    {
-     return ((WindowManager)manager.getWindowManager());
+	private WindowManager getWindowManager() {
+		return ((WindowManager) manager.getWindowManager());
 	}
 }

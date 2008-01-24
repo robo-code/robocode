@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,17 @@
  *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Added confirm dialog when trying to reset the compiler preferences
  *     - Did a lot of NullPointerException bugfixes with getActiveWindow()
- *     - Changed menu accelerator keys to use Toolkit.getMenuShortcutKeyMask()
- *       instead of Event.CTRL_MASK
+ *     - Changed menu accelerator keys to use getMenuShortcutKeyMask() instead of
+ *       Event.CTRL_MASK in order to comply with other OSes like e.g. Mac OS
+ *     - Changed the F6 key press for 'Compile' into 'modifier key' + B, and the
+ *       F3 key press for 'Find Next' into 'modifier key' + G to comply with
+ *       OSes like e.g. Mac OS, where the function keys are used for other
+ *       purposes
  *******************************************************************************/
 package robocodeui.editor;
 
+
+import static robocodeui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import java.awt.Event;
 import java.awt.event.*;
@@ -47,8 +53,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem fileExitMenuItem;
 
 	private JMenu functionsMenu;
-
-	private final int MENU_SHORTCUT_KEY_MASK = java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -343,7 +347,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			compilerCompileMenuItem.setText("Compile");
 			compilerCompileMenuItem.setMnemonic('m');
 			compilerCompileMenuItem.setDisplayedMnemonicIndex(2);
-			compilerCompileMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0, false));
+			compilerCompileMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, MENU_SHORTCUT_KEY_MASK));			
 			compilerCompileMenuItem.addActionListener(eventHandler);
 		}
 		return compilerCompileMenuItem;
@@ -788,7 +792,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			editFindNextMenuItem.setText("Find Next");
 			editFindNextMenuItem.setMnemonic('N');
 			editFindNextMenuItem.setDisplayedMnemonicIndex(5);
-			editFindNextMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+			editFindNextMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, MENU_SHORTCUT_KEY_MASK));
 			editFindNextMenuItem.addActionListener(eventHandler);
 		}
 		return editFindNextMenuItem;

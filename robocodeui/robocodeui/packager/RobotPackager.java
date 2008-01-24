@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,8 @@
  *     - Moved the NoDuplicateJarOutputStream into the robocode.io package
  *     - Added codesize information using the new outputSizeClass() method
  *     - Added missing close() on FileInputStreams and FileOutputStreams
+ *     - Changed the F5 key press for refreshing the list of available robots
+ *       into 'modifier key' + R to comply with other OSes like e.g. Mac OS
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -26,7 +28,11 @@
 package robocodeui.packager;
 
 
-import java.awt.*;
+import static robocodeui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+
+import java.awt.AWTEvent;
+import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -45,14 +51,18 @@ import java.util.zip.ZipException;
 
 import javax.swing.*;
 
-import robocodeui.dialog.*;
-import robocodeui.dialog.WindowUtil;
 import robocode.io.Logger;
 import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.RobotRepositoryManager;
 import robocode.peer.robot.RobotClassManager;
-import robocode.repository.*;
+import robocode.repository.IFileSpecification;
+import robocode.repository.IRobotSpecification;
+import robocode.repository.RobotSpecification;
+import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
+
+import robocodeui.dialog.*;
+import robocodeui.dialog.WindowUtil;
 
 import codesize.Codesize;
 
@@ -210,9 +220,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 			robotPackagerContentPane.add(getWizardPanel(), BorderLayout.CENTER);
 			getWizardPanel().getWizardController().setFinishButtonTextAndMnemonic("Package!", 'P', 0);
 			robotPackagerContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK),
+					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			robotPackagerContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_FOCUSED);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK), JComponent.WHEN_FOCUSED);
 		}
 		return robotPackagerContentPane;
 	}
@@ -471,7 +482,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public void outputSizeClass() {
 		// Codesize must be called within a safe thread to prevent security exception
 		
-		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager)System.getSecurityManager();
+		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager) System.getSecurityManager();
 
 		Thread thread = new Thread() {
 			@Override
