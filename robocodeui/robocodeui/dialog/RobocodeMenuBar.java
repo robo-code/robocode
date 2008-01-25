@@ -245,6 +245,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleSaveMenuItem());
 			battleMenu.add(getBattleSaveAsMenuItem());
+			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleExitMenuItem());
 			battleMenu.addMenuListener(eventHandler);
 		}
@@ -442,8 +443,8 @@ public class RobocodeMenuBar extends JMenuBar {
 		if (helpRobocodeApiMenuItem == null) {
 			helpRobocodeApiMenuItem = new JMenuItem();
 			helpRobocodeApiMenuItem.setText("Robocode API");
-			helpRobocodeApiMenuItem.setMnemonic('A');
-			helpRobocodeApiMenuItem.setDisplayedMnemonicIndex(9);
+			helpRobocodeApiMenuItem.setMnemonic('I');
+			helpRobocodeApiMenuItem.setDisplayedMnemonicIndex(11);
 			helpRobocodeApiMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeApiMenuItem;
@@ -459,7 +460,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpRobocodeMenuItem = new JMenuItem();
 			helpRobocodeMenuItem.setText("Robocode Home");
 			helpRobocodeMenuItem.setMnemonic('H');
-			helpRobocodeMenuItem.setDisplayedMnemonicIndex(11);
+			helpRobocodeMenuItem.setDisplayedMnemonicIndex(9);
 			helpRobocodeMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeMenuItem;
@@ -522,8 +523,8 @@ public class RobocodeMenuBar extends JMenuBar {
 		if (helpRobocodeRepositoryMenuItem == null) {
 			helpRobocodeRepositoryMenuItem = new JMenuItem();
 			helpRobocodeRepositoryMenuItem.setText("Robocode Repository");
-			helpRobocodeRepositoryMenuItem.setMnemonic('p');
-			helpRobocodeRepositoryMenuItem.setDisplayedMnemonicIndex(11);
+			helpRobocodeRepositoryMenuItem.setMnemonic('R');
+			helpRobocodeRepositoryMenuItem.setDisplayedMnemonicIndex(9);
 			helpRobocodeRepositoryMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeRepositoryMenuItem;
@@ -676,6 +677,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			robotMenu.setMnemonic('R');
 			robotMenu.setDisplayedMnemonicIndex(0);
 			robotMenu.add(getRobotEditorMenuItem());
+			robotMenu.add(new JSeparator());
 			robotMenu.add(getRobotImportMenuItem());
 			robotMenu.add(getRobotPackagerMenuItem());
 			robotMenu.add(getTeamMenu());
