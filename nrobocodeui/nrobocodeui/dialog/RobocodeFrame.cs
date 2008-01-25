@@ -73,12 +73,12 @@ namespace nrobocodeui.dialog
 
         public void setEnableBattleSaveAsMenuItem(bool b)
         {
-            saveAsToolStripMenuItem.Enabled = b;
+            saveAsMenuItem.Enabled = b;
         }
 
         public void setEnableBattleSaveMenuItem(bool b)
         {
-            saveToolStripMenuItem.Enabled = b;
+            saveMenuItem.Enabled = b;
         }
 
         public string saveBattleDialog(File f)

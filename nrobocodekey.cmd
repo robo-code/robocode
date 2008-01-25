@@ -1,0 +1,1 @@
+"C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\sn.exe" -k nrobocode.snk

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JuniorRobot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="robot\AuthorNameAttribute.cs" />
     <Compile Include="robot\AuthorEmailAttribute.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="robot\VersionAttribute.cs" />
     <Compile Include="robot\DescriptionAttribute.cs" />
     <Compile Include="robot\WebPageAttribute.cs" />
+    <Compile Include="utils\JavaConsole.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

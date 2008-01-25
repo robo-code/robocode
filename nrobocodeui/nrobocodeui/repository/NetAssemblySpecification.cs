@@ -66,20 +66,18 @@ namespace nrobocodeui.repository
             setFileName(file.getName());
             setName(prefix + FileUtil.getClassName(filename));
             setRobotClassPath(Path.GetDirectoryName(file.getPath()));
-            valid = loadProperties(filepath);
+            valid = loadProperties(filepath, prefix);
         }
 
-        private bool loadProperties(String filepath)
+        private bool loadProperties(string filepath, string prefix)
         {
             Assembly assembly = Assembly.LoadFile(filepath);
-            Type type = assembly.GetType(name);
-            if (type==null)
-                return false;
 
-            if (!type.IsSubclassOf(typeof(_RobotBase)))
-                return false;
+            //guess default name
+            name =  prefix + Path.GetFileNameWithoutExtension(filepath);
+            Type type = null;
 
-            object[] attributes = type.GetCustomAttributes(false);
+            object[] attributes = assembly.GetCustomAttributes(false);
             foreach (Attribute attribute in attributes)
             {
                 if (attribute is AuthorNameAttribute)
@@ -99,8 +97,10 @@ namespace nrobocodeui.repository
                 }
                 else if (attribute is NameAttribute)
                 {
-                    string lname = (attribute as NameAttribute).Name;
-                    props.setProperty(ROBOT_NAME, lname);
+                    NameAttribute na = attribute as NameAttribute;
+                    name = na.Name;
+                    type = na.Type;
+                    props.setProperty(ROBOT_NAME, name);
                 }
                 else if (attribute is DescriptionAttribute)
                 {
@@ -125,6 +125,19 @@ namespace nrobocodeui.repository
                     props.setProperty(ROBOT_WEBPAGE, url);
                 }
             }
+
+            //try default
+            if (type==null)
+                type = assembly.GetType(name);
+
+            if (type == null)
+                return false;
+
+            if (!type.IsSubclassOf(typeof(Robot)) && 
+                !type.IsSubclassOf(typeof(JuniorRobot)) &&
+                !type.IsSubclassOf(typeof(nrobocode.JuniorRobot))
+                )
+                return false;
             return true;
         }
 
@@ -205,16 +218,9 @@ namespace nrobocodeui.repository
             throw new NotImplementedException();
         }
 
-        /*public int CompareTo(object obj)
-        {
-            IFileSpecification other = obj as IFileSpecification;
-            if (other==null)
-                return -1;
-            other.
-        }*/
-
         public int CompareTo(object obj)
         {
+            //case sensitive compare to
             return base.compareTo(obj);
         }
     }

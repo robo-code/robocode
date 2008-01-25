@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using nrobocode.robot;
 using robocode;
 
+[assembly: Description("A sample robot\n     Moves in a seesaw motion, and spins the gun around at each end\n     Moves perpendicular to the direction of a bullet that hits it")]
+[assembly: WebPage("http://robocode.sourceforge.net/")]
+[assembly: Version("1.4")]
+[assembly: SourceIncluded(true)]
+[assembly: AuthorName("Flemming N. Larsen, Pavel Savara")]
+[assembly: Name(typeof(nsample.MyFirstJuniorRobot))]
+
 namespace nsample
 {
-    [Description("A sample robot\n     Moves in a seesaw motion, and spins the gun around at each end\n     Moves perpendicular to the direction of a bullet that hits it")]
-    [WebPage("http://robocode.sourceforge.net/")]
-    [Version("1.4")]
-    [SourceIncluded(true)]
-    [AuthorName("Flemming N. Larsen")]
-    [Name("MyFirstJuniorRobot")]
     public class MyFirstJuniorRobot : JuniorRobot
     {
         public override void run()

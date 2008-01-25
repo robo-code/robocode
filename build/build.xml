@@ -28,6 +28,7 @@
   <property name="build" location="build"/>
 
   <!-- The source folders -->
+  <property name="src.root" location=".."/>
   <property name="src.robocode" location="../robocode"/>
   <property name="src.robocodeui" location="../robocodeui"/>
   <property name="src.extract" location="../robocodeextract"/>
@@ -35,6 +36,7 @@
   <property name="src.robots" location="../robocodeextract/robots"/>
   <property name="src.roborumble" location="../roborumble"/>
   <property name="src.cachecleaner" location="../robocode/ar"/>
+  <property name="src.nrobocode" location="../nrobocode"/>
   <property name="src.nrobocodeui" location="../nrobocodeui"/>
   <property name="ikvm" location="../nrobocode/ikvm"/>
   <property name="csc" location="C:/Windows/Microsoft.NET/Framework/v2.0.50727/csc.exe"/>
@@ -334,7 +336,7 @@
 		<arg value="-debug"/>
 		<arg value="-target:library"/>
 		<!--
-        <arg value="-keyfile:${src.nrobocodeui}/nrobocodeui.snk"/>
+        <arg value="-keyfile:${src.root}/nrobocode.snk"/>
         <arg value="-classloader:ikvm.runtime.AppDomainAssemblyClassLoader"/>
 		-->
 		<arg value="${build}/libs/codesize.jar"/>
@@ -357,7 +359,7 @@
 	<exec executable="${ikvm}/ikvmc.exe">
 		<arg value="-debug"/>
 		<!--
-        <arg value="-keyfile:${src.nrobocodeui}/nrobocodeui.snk"/>
+        <arg value="-keyfile:${src.root}/nrobocode.snk"/>
         <arg value="-classloader:ikvm.runtime.AppDomainAssemblyClassLoader"/>
         <arg value="-classloader:ikvm.runtime.AssemblyClassLoader"/>
         <arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
@@ -387,7 +389,7 @@
 
     <!-- Create the nrobocodeui.dll file -->
 	<exec executable="${vs9}">
-		<arg value="${src.nrobocodeui}/robocode.sln"/>
+		<arg value="${src.root}/nrobocode.sln"/>
 		<arg value="/Rebuild"/>
 	</exec>    
 

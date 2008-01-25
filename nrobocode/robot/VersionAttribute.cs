@@ -2,7 +2,7 @@
 
 namespace nrobocode.robot
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
     public sealed class VersionAttribute : Attribute
     {
         private Version m_Version;

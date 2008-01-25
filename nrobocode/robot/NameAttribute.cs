@@ -2,22 +2,27 @@
 
 namespace nrobocode.robot
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
     public sealed class NameAttribute : Attribute
     {
         // Fields
-        private string m_Name;
+        private Type robot;
 
         // Methods
-        public NameAttribute(string Name)
+        public NameAttribute(Type robot)
         {
-            this.m_Name = Name;
+            this.robot = robot;
         }
 
         // Properties
         public string Name
         {
-            get { return this.m_Name; }
+            get { return robot.FullName; }
+        }
+
+        public Type Type
+        {
+            get { return robot; }
         }
     }
 }
