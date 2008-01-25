@@ -1,6 +1,8 @@
-Version 1.5.3 Alpha 2
-(01/24/2008)
+Version 1.5.3
+(01/26/2008)
 -------------
+o Bugfixes
+  -- Some of the mnemonics on the menus on the Help menu did not work correctly
 o Changes
   -- All functions key shortcuts have been replaced to comply with OSes where
      the function keys (F1 - F12) are not available or have a specific purpose,
