@@ -46,10 +46,15 @@ namespace nrobocodeui.dialog
             }
         }
 
-        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveAsMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs(null);
             //TODO ? call save
+        }
+
+        private void ExitMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         #endregion

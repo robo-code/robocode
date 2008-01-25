@@ -32,17 +32,42 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RobocodeFrame));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.battleMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.robotMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.editorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importRobotMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.packageRobotMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.teamMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createTeamMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferencesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.defaultWindowSizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rankingPanelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.recalculateCPUConstantMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanRobotCacheMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineHelpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.robocodeAPIMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.netDocumentationMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.robocodeFAQMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.robocodeHomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.roboWikiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yahooGroupMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.robocodeRepositoryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.checkForNewVersionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.versionInfoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -56,6 +81,7 @@
             this.nextTurnButton = new System.Windows.Forms.ToolStripButton();
             this.stopButton = new System.Windows.Forms.ToolStripButton();
             this.restartButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -86,93 +112,272 @@
             // battleMenu
             // 
             this.battleMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
-            this.openToolStripMenuItem,
+            this.newMenuItem,
+            this.openMenuItem,
             this.toolStripSeparator3,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
+            this.saveMenuItem,
+            this.saveAsMenuItem,
             this.toolStripSeparator5,
-            this.exitToolStripMenuItem});
+            this.exitMenuItem});
             this.battleMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder;
             this.battleMenu.Name = "battleMenu";
-            this.battleMenu.Size = new System.Drawing.Size(46, 20);
+            this.battleMenu.Size = new System.Drawing.Size(49, 20);
             this.battleMenu.Text = "&Battle";
             // 
-            // newToolStripMenuItem
+            // newMenuItem
             // 
-            this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.newToolStripMenuItem.Text = "&New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.ShowNewForm);
+            this.newMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newMenuItem.Image")));
+            this.newMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
+            this.newMenuItem.Name = "newMenuItem";
+            this.newMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.newMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.newMenuItem.Text = "&New";
+            this.newMenuItem.Click += new System.EventHandler(this.ShowNewForm);
             // 
-            // openToolStripMenuItem
+            // openMenuItem
             // 
-            this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.openToolStripMenuItem.Text = "&Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenFile);
+            this.openMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openMenuItem.Image")));
+            this.openMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
+            this.openMenuItem.Name = "openMenuItem";
+            this.openMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.openMenuItem.Text = "&Open";
+            this.openMenuItem.Click += new System.EventHandler(this.OpenFile);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(173, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(183, 6);
             // 
-            // saveToolStripMenuItem
+            // saveMenuItem
             // 
-            this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveMenuItem.Image")));
+            this.saveMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
+            this.saveMenuItem.Name = "saveMenuItem";
+            this.saveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.saveMenuItem.Text = "&Save";
             // 
-            // saveAsToolStripMenuItem
+            // saveAsMenuItem
             // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Shift+S";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.saveAsToolStripMenuItem.Text = "Save &As";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
+            this.saveAsMenuItem.Name = "saveAsMenuItem";
+            this.saveAsMenuItem.ShortcutKeyDisplayString = "Ctrl+Shift+S";
+            this.saveAsMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.saveAsMenuItem.Text = "Save &As";
+            this.saveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(173, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(183, 6);
             // 
-            // exitToolStripMenuItem
+            // exitMenuItem
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitMenuItem.Name = "exitMenuItem";
+            this.exitMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.exitMenuItem.Text = "E&xit";
+            this.exitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
             // 
             // robotMenu
             // 
+            this.robotMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editorMenuItem,
+            this.importRobotMenuItem,
+            this.packageRobotMenuItem,
+            this.teamMenuItem});
             this.robotMenu.Name = "robotMenu";
-            this.robotMenu.Size = new System.Drawing.Size(48, 20);
+            this.robotMenu.Size = new System.Drawing.Size(51, 20);
             this.robotMenu.Text = "&Robot";
+            // 
+            // editorMenuItem
+            // 
+            this.editorMenuItem.Name = "editorMenuItem";
+            this.editorMenuItem.ShortcutKeyDisplayString = "";
+            this.editorMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.editorMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.editorMenuItem.Text = "&Editor";
+            // 
+            // importRobotMenuItem
+            // 
+            this.importRobotMenuItem.Name = "importRobotMenuItem";
+            this.importRobotMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.importRobotMenuItem.Text = "&Import downloaded robot";
+            // 
+            // packageRobotMenuItem
+            // 
+            this.packageRobotMenuItem.Name = "packageRobotMenuItem";
+            this.packageRobotMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.packageRobotMenuItem.Text = "&Package robot for upload";
+            // 
+            // teamMenuItem
+            // 
+            this.teamMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createTeamMenuItem});
+            this.teamMenuItem.Name = "teamMenuItem";
+            this.teamMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.teamMenuItem.Text = "&Team";
+            // 
+            // createTeamMenuItem
+            // 
+            this.createTeamMenuItem.Name = "createTeamMenuItem";
+            this.createTeamMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createTeamMenuItem.Text = "&Create Team";
             // 
             // optionsToolStripMenuItem
             // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.preferencesMenuItem,
+            this.toolStripSeparator2,
+            this.defaultWindowSizeMenuItem,
+            this.rankingPanelMenuItem,
+            this.toolStripSeparator1,
+            this.recalculateCPUConstantMenuItem,
+            this.cleanRobotCacheMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
-            this.optionsToolStripMenuItem.Text = "Options";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "&Options";
+            // 
+            // preferencesMenuItem
+            // 
+            this.preferencesMenuItem.Name = "preferencesMenuItem";
+            this.preferencesMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.preferencesMenuItem.Text = "&Preferences";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(208, 6);
+            // 
+            // defaultWindowSizeMenuItem
+            // 
+            this.defaultWindowSizeMenuItem.Name = "defaultWindowSizeMenuItem";
+            this.defaultWindowSizeMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.defaultWindowSizeMenuItem.Text = "&Default Window Size";
+            // 
+            // rankingPanelMenuItem
+            // 
+            this.rankingPanelMenuItem.Name = "rankingPanelMenuItem";
+            this.rankingPanelMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.rankingPanelMenuItem.Text = "&Ranking Panel";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(208, 6);
+            // 
+            // recalculateCPUConstantMenuItem
+            // 
+            this.recalculateCPUConstantMenuItem.Name = "recalculateCPUConstantMenuItem";
+            this.recalculateCPUConstantMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.recalculateCPUConstantMenuItem.Text = "R&ecalculate CPU Constant";
+            // 
+            // cleanRobotCacheMenuItem
+            // 
+            this.cleanRobotCacheMenuItem.Name = "cleanRobotCacheMenuItem";
+            this.cleanRobotCacheMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.cleanRobotCacheMenuItem.Text = "&Clean Robot Cache";
             // 
             // helpMenu
             // 
             this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
+            this.onlineHelpMenuItem,
+            this.robocodeAPIMenuItem,
+            this.netDocumentationMenuItem,
+            this.robocodeFAQMenuItem,
+            this.toolStripSeparator6,
+            this.robocodeHomeMenuItem,
+            this.roboWikiMenuItem,
+            this.yahooGroupMenuItem,
+            this.robocodeRepositoryMenuItem,
+            this.toolStripSeparator4,
+            this.checkForNewVersionMenuItem,
+            this.versionInfoMenuItem,
+            this.toolStripSeparator7,
+            this.aboutMenuItem});
             this.helpMenu.Name = "helpMenu";
-            this.helpMenu.Size = new System.Drawing.Size(41, 20);
+            this.helpMenu.Size = new System.Drawing.Size(44, 20);
             this.helpMenu.Text = "&Help";
             // 
-            // aboutToolStripMenuItem
+            // onlineHelpMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
-            this.aboutToolStripMenuItem.Text = "&About ... ...";
+            this.onlineHelpMenuItem.Name = "onlineHelpMenuItem";
+            this.onlineHelpMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.onlineHelpMenuItem.Text = "&Online Help";
+            // 
+            // robocodeAPIMenuItem
+            // 
+            this.robocodeAPIMenuItem.Name = "robocodeAPIMenuItem";
+            this.robocodeAPIMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.robocodeAPIMenuItem.Text = "Robocode &API";
+            // 
+            // netDocumentationMenuItem
+            // 
+            this.netDocumentationMenuItem.Name = "netDocumentationMenuItem";
+            this.netDocumentationMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.netDocumentationMenuItem.Text = ".&Net 2.0 Documentation";
+            // 
+            // robocodeFAQMenuItem
+            // 
+            this.robocodeFAQMenuItem.Name = "robocodeFAQMenuItem";
+            this.robocodeFAQMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.robocodeFAQMenuItem.Text = "Robocode &FAQ";
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(216, 6);
+            // 
+            // robocodeHomeMenuItem
+            // 
+            this.robocodeHomeMenuItem.Name = "robocodeHomeMenuItem";
+            this.robocodeHomeMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.robocodeHomeMenuItem.Text = "Robocode &Home";
+            // 
+            // roboWikiMenuItem
+            // 
+            this.roboWikiMenuItem.Name = "roboWikiMenuItem";
+            this.roboWikiMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.roboWikiMenuItem.Text = "Robo&Wiki";
+            // 
+            // yahooGroupMenuItem
+            // 
+            this.yahooGroupMenuItem.Name = "yahooGroupMenuItem";
+            this.yahooGroupMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.yahooGroupMenuItem.Text = "&Yahoo Group for Robocode";
+            // 
+            // robocodeRepositoryMenuItem
+            // 
+            this.robocodeRepositoryMenuItem.Name = "robocodeRepositoryMenuItem";
+            this.robocodeRepositoryMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.robocodeRepositoryMenuItem.Text = "Robocode &Repository";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(216, 6);
+            // 
+            // checkForNewVersionMenuItem
+            // 
+            this.checkForNewVersionMenuItem.Name = "checkForNewVersionMenuItem";
+            this.checkForNewVersionMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.checkForNewVersionMenuItem.Text = "&Check for new version";
+            // 
+            // versionInfoMenuItem
+            // 
+            this.versionInfoMenuItem.Name = "versionInfoMenuItem";
+            this.versionInfoMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.versionInfoMenuItem.Text = "&Version Info";
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(216, 6);
+            // 
+            // aboutMenuItem
+            // 
+            this.aboutMenuItem.Name = "aboutMenuItem";
+            this.aboutMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.aboutMenuItem.Text = "&About";
             // 
             // statusStrip
             // 
@@ -187,7 +392,7 @@
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(37, 17);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
             // BottomToolStripPanel
@@ -233,11 +438,12 @@
             this.pauseDebugButton,
             this.nextTurnButton,
             this.stopButton,
-            this.restartButton});
+            this.restartButton,
+            this.toolStripSeparator8});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(224, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(245, 25);
             this.toolStrip1.TabIndex = 20;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -246,29 +452,34 @@
             this.pauseDebugButton.CheckOnClick = true;
             this.pauseDebugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.pauseDebugButton.Name = "pauseDebugButton";
-            this.pauseDebugButton.Size = new System.Drawing.Size(78, 22);
+            this.pauseDebugButton.Size = new System.Drawing.Size(82, 22);
             this.pauseDebugButton.Text = "Pause/Debug";
             // 
             // nextTurnButton
             // 
             this.nextTurnButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.nextTurnButton.Name = "nextTurnButton";
-            this.nextTurnButton.Size = new System.Drawing.Size(58, 22);
+            this.nextTurnButton.Size = new System.Drawing.Size(63, 22);
             this.nextTurnButton.Text = "Next Turn";
             // 
             // stopButton
             // 
             this.stopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(33, 22);
+            this.stopButton.Size = new System.Drawing.Size(35, 22);
             this.stopButton.Text = "Stop";
             // 
             // restartButton
             // 
             this.restartButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.restartButton.Name = "restartButton";
-            this.restartButton.Size = new System.Drawing.Size(45, 22);
+            this.restartButton.Size = new System.Drawing.Size(47, 22);
             this.restartButton.Text = "Restart";
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripContainer1
             // 
@@ -343,19 +554,18 @@
         }
         #endregion
 
-
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem battleMenu;
-        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
         private System.Windows.Forms.ToolStripMenuItem robotMenu;
         private System.Windows.Forms.ToolStripMenuItem helpMenu;
         private System.Windows.Forms.ToolTip toolTip;
@@ -371,6 +581,32 @@
         private System.Windows.Forms.ToolStripPanel LeftToolStripPanel;
         private System.Windows.Forms.ToolStripContentPanel ContentPanel;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
+        private System.Windows.Forms.ToolStripMenuItem editorMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importRobotMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem packageRobotMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem teamMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createTeamMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preferencesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem defaultWindowSizeMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem rankingPanelMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem recalculateCPUConstantMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cleanRobotCacheMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem onlineHelpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem robocodeAPIMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem netDocumentationMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem robocodeFAQMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem robocodeHomeMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem roboWikiMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem yahooGroupMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem robocodeRepositoryMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkForNewVersionMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem versionInfoMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.SplitContainer splitContainer;
         private nrobocodeui.battleview.BattleView battleView;
