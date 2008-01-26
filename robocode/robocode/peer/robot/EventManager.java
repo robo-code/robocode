@@ -43,6 +43,8 @@ import java.util.Collections;
 import java.util.List;
 
 import robocode.*;
+import robocode.robotinterfaces.IRobot;
+import robocode.robotinterfaces.IRobotBase;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.RobotPeer;
 import robocode.util.Utils;
@@ -88,7 +90,7 @@ public class EventManager {
 
 	private final static int MAX_QUEUE_SIZE = 256;
 
-	private _RobotBase robot;
+	private IRobotBase robot;
 
 	/**
 	 * EventManager constructor comment.
@@ -151,14 +153,12 @@ public class EventManager {
 	 * @see #onBulletHitBullet
 	 * @see #onBulletMissed
 	 * @see #onHitByBullet
-	 * @see #onHitByRobot
 	 * @see #onHitRobot
 	 * @see #onHitWall
 	 * @see #onSkippedTurn
 	 * @see robocode.BulletHitEvent
 	 * @see robocode.BulletMissedEvent
 	 * @see robocode.HitByBulletEvent
-	 * @see robocode.HitByRobotEvent
 	 * @see robocode.HitRobotEvent
 	 * @see robocode.HitWallEvent
 	 * @see robocode.SkippedTurnEvent
@@ -431,11 +431,11 @@ public class EventManager {
 		return this.interruptible[priority];
 	}
 
-	private _RobotBase getRobot() {
+	private IRobotBase getRobot() {
 		return robot;
 	}
 
-	public void setRobot(_RobotBase r) {
+	public void setRobot(IRobotBase r) {
 		this.robot = r;
 		if (r instanceof AdvancedRobot) {
 			useFireAssist = false;
@@ -511,31 +511,31 @@ public class EventManager {
 	}
 
 	public void onBulletHit(BulletHitEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onBulletHit(e);
+		if (robot != null && robot instanceof IRobot) {
+            ((IRobot) robot).getRobotEventListener().onBulletHit(e);
 		}
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onBulletHitBullet(e);
+		if (robot != null && robot instanceof IRobot) {
+			((IRobot) robot).getRobotEventListener().onBulletHitBullet(e);
 		}
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onBulletMissed(e);
+		if (robot != null && robot instanceof IRobot) {
+			((IRobot) robot).getRobotEventListener().onBulletMissed(e);
 		}
 	}
 
 	public void onCustomEvent(CustomEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof AdvancedRobot) {
@@ -562,15 +562,15 @@ public class EventManager {
 	}
 
 	public void onDeath(DeathEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onDeath(e);
+		if (robot != null && robot instanceof IRobot) {
+			((IRobot) robot).getRobotEventListener().onDeath(e);
 		}
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof JuniorRobot) {
@@ -584,13 +584,13 @@ public class EventManager {
 				jr.hitByBulletBearing = (int) (e.getBearing() + 0.5);
 				jr.onHitByBullet();
 			} else {
-				((Robot) robot).onHitByBullet(e);
+				((IRobot) robot).getRobotEventListener().onHitByBullet(e);
 			}
 		}
 	}
 
 	public void onHitRobot(HitRobotEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof JuniorRobot) {
@@ -604,13 +604,13 @@ public class EventManager {
 				jr.hitRobotBearing = (int) (e.getBearing() + 0.5);
 				jr.onHitRobot();
 			} else {
-				((Robot) robot).onHitRobot(e);
+				((IRobot) robot).getRobotEventListener().onHitRobot(e);
 			}
 		}
 	}
 
 	public void onHitWall(HitWallEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof JuniorRobot) {
@@ -624,13 +624,13 @@ public class EventManager {
 				jr.hitWallBearing = (int) (e.getBearing() + 0.5);
 				jr.onHitWall();
 			} else {
-				((Robot) robot).onHitWall(e);
+				((IRobot) robot).getRobotEventListener().onHitWall(e);
 			}
 		}
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof JuniorRobot) {
@@ -638,13 +638,13 @@ public class EventManager {
 
 				jr.others = robotPeer.getOthers();
 			} else {
-				((Robot) robot).onRobotDeath(e);
+				((IRobot) robot).getRobotEventListener().onRobotDeath(e);
 			}
 		}
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof JuniorRobot) {
@@ -660,13 +660,13 @@ public class EventManager {
 				jr.scannedVelocity = (int) (e.getVelocity() + 0.5);
 				jr.onScannedRobot();
 			} else {
-				((Robot) robot).onScannedRobot(e);
+				((IRobot) robot).getRobotEventListener().onScannedRobot(e);
 			}
 		}
 	}
 
 	public void onSkippedTurn(SkippedTurnEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
 		if (robot != null && robot instanceof AdvancedRobot) {
 			((AdvancedRobot) robot).onSkippedTurn(e);
@@ -674,7 +674,7 @@ public class EventManager {
 	}
 
 	public void onMessageReceived(MessageEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
 		if (robot != null && robot instanceof TeamRobot) {
 			((TeamRobot) robot).onMessageReceived(e);
@@ -682,18 +682,18 @@ public class EventManager {
 	}
 
 	public void onWin(WinEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onWin(e);
+		if (robot != null && robot instanceof IRobot) {
+			((IRobot) robot).getRobotEventListener().onWin(e);
 		}
 	}
 
 	public void onStatus(StatusEvent e) {
-		_RobotBase robot = getRobot();
+		IRobotBase robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onStatus(e);
+		if (robot != null && robot instanceof IRobot) {
+			((IRobot) robot).getSystemEventListener().onStatus(e);
 		}
 	}
 
@@ -781,7 +781,7 @@ public class EventManager {
 				} else if (currentEvent instanceof CustomEvent) {
 					onCustomEvent((CustomEvent) currentEvent);
 				} else {
-					robotPeer.out.println("Unknown event: " + currentEvent);
+					robotPeer.getOut().println("Unknown event: " + currentEvent);
 				}
 				setInterruptible(currentTopEventPriority, false);
 
@@ -811,12 +811,12 @@ public class EventManager {
 
 	public void setEventPriority(String eventClass, int priority) {
 		if (priority < 0) {
-			robotPeer.out.println("SYSTEM: Priority must be between 0 and 99.");
-			robotPeer.out.println("SYSTEM: Priority for " + eventClass + " will be 0.");
+			robotPeer.getOut().println("SYSTEM: Priority must be between 0 and 99.");
+			robotPeer.getOut().println("SYSTEM: Priority for " + eventClass + " will be 0.");
 			priority = 0;
 		} else if (priority > 99) {
-			robotPeer.out.println("SYSTEM: Priority must be between 0 and 99.");
-			robotPeer.out.println("SYSTEM: Priority for " + eventClass + " will be 99.");
+			robotPeer.getOut().println("SYSTEM: Priority must be between 0 and 99.");
+			robotPeer.getOut().println("SYSTEM: Priority for " + eventClass + " will be 99.");
 			priority = 99;
 		}
 		if (eventClass.equals("robocode.BulletHitEvent") || eventClass.equals("BulletHitEvent")) {
@@ -840,16 +840,16 @@ public class EventManager {
 		} else if (eventClass.equals("robocode.StatusEvent") || eventClass.equals("StatusEvent")) {
 			statusEventPriority = priority;
 		} else if (eventClass.equals("robocode.CustomEvent") || eventClass.equals("CustomEvent")) {
-			robotPeer.out.println(
+			robotPeer.getOut().println(
 					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.SkippedTurnEvent") || eventClass.equals("SkippedTurnEvent")) {
-			robotPeer.out.println("SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
+			robotPeer.getOut().println("SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.WinEvent") || eventClass.equals("WinEvent")) {
-			robotPeer.out.println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
+			robotPeer.getOut().println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.DeathEvent") || eventClass.equals("DeathEvent")) {
-			robotPeer.out.println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
+			robotPeer.getOut().println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
 		} else {
-			robotPeer.out.println("SYSTEM: Unknown event class: " + eventClass);
+			robotPeer.getOut().println("SYSTEM: Unknown event class: " + eventClass);
 		}
 	}
 

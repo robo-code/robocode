@@ -29,6 +29,11 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBaseRobotEvents;
+import robocode.robotinterfaces.IRobot;
+import robocode.robotinterfaces.IRobotEvents;
+import robocode.robotinterfaces.ISystemEvents;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -60,12 +65,20 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  */
-public class Robot extends _Robot {
+public class Robot extends _Robot implements IRobot, IRobotEvents, ISystemEvents {
 
 	/**
 	 * Constructs a new robot.
 	 */
 	public Robot() {}
+
+    public IRobotEvents getRobotEventListener() {
+        return this;
+    }
+
+    public ISystemEvents getSystemEventListener() {
+        return this;
+    }
 
 	/**
 	 * Immediately moves your robot ahead (forward) by distance measured in
@@ -1803,4 +1816,5 @@ public class Robot extends _Robot {
 	 * @since 1.5
 	 */
 	public void onStatus(StatusEvent e) {}
+
 }

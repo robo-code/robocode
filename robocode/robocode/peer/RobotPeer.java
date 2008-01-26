@@ -72,6 +72,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import robocode.*;
+import robocode.robotinterfaces.IRobotBase;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
@@ -114,7 +115,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
-	_RobotBase robot;
+	IRobotBase robot;
 
 	public RobotOutputStream out;
 
@@ -1085,7 +1086,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
 	}
 
-	public _RobotBase getRobot() {
+	public IRobotBase getRobot() {
 		return robot;
 	}
 
@@ -1199,7 +1200,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void setRobot(_RobotBase newRobot) {
+	public void setRobot(IRobotBase newRobot) {
 		robot = newRobot;
 		if (robot != null) {
 			if (robot instanceof robocode.TeamRobot) {
