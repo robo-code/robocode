@@ -56,7 +56,6 @@ public class RobocodeManager {
 	private IWindowManager windowManager;
 	private IVersionManager versionManager;
 	private ISoundManager soundManager;
-    private ILookAndFeelManager lookAndFeelManager;
     private IRepositoryPlugin[] repositoryPlugins;
 
     private boolean slave;
@@ -227,18 +226,6 @@ public class RobocodeManager {
 		}
 		return soundManager;
 	}
-
-    /**
-     * Gets the Look and Manager.
-     *
-     * @return Returns a LookAndFeelManager
-     */
-    public ILookAndFeelManager getLookAndFeelManager() {
-        if (lookAndFeelManager == null) {
-            lookAndFeelManager = (ILookAndFeelManager) loadManager("robocodeui.manager.LookAndFeelManager");
-        }
-        return lookAndFeelManager;
-    }
 
     /**
      * Gets the Look and Manager.

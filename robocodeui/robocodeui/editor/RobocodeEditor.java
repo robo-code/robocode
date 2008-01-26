@@ -38,7 +38,6 @@ import robocodeui.gfx.ImageUtil;
 import robocode.io.FileUtil;
 import robocodeui.manager.BrowserManager;
 import robocodeui.manager.WindowManager;
-import robocodeui.manager.LookAndFeelManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 
@@ -603,7 +602,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	public static void main(String[] args) {
 		try {
 			// Set the Look and Feel (LAF)
-			LookAndFeelManager.SetLookAndFeel();
+			WindowManager.SetLookAndFeel();
 
 			RobocodeEditor robocodeEditor;
 

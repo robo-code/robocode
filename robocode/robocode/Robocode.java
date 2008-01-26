@@ -166,7 +166,7 @@ public class Robocode {
 
 		// Set the Look and Feel (LAF)
 		if (manager.isGUIEnabled()) {
-            manager.getLookAndFeelManager().setLookAndFeel();
+            manager.getWindowManager().setLookAndFeel();
 		}
 
 		if (battleFilename != null) {

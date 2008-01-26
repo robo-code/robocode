@@ -16,5 +16,9 @@ package robocode.ui;
  * @author Pavel Savara (original)
  */
 public interface IImageManager extends ILoadableManager {
-	void initialize();
+
+    /**
+     * Will pre-load all images
+     */
+    void initialize();
 }
