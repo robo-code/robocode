@@ -88,6 +88,7 @@
     <Content Include="robocode\io\RobocodeObjectInputStream.java" />
     <Content Include="robocode\io\TeamMessageSizer.java" />
     <Content Include="robocode\JuniorRobot.java" />
+    <Content Include="robocode\JuniorStructure.java" />
     <Content Include="robocode\manager\BattleManager.java" />
     <Content Include="robocode\manager\CpuManager.java" />
     <Content Include="robocode\manager\NameManager.java" />
@@ -131,6 +132,14 @@
     <Content Include="robocode\RobocodeFileWriter.java" />
     <Content Include="robocode\Robot.java" />
     <Content Include="robocode\RobotDeathEvent.java" />
+    <Content Include="robocode\robotinterfaces\IBaseRobotEvents.java" />
+    <Content Include="robocode\robotinterfaces\IBaseSystemEvents.java" />
+    <Content Include="robocode\robotinterfaces\IJuniorEvents.java" />
+    <Content Include="robocode\robotinterfaces\IJuniorRobot.java" />
+    <Content Include="robocode\robotinterfaces\IRobot.java" />
+    <Content Include="robocode\robotinterfaces\IRobotBase.java" />
+    <Content Include="robocode\robotinterfaces\IRobotEvents.java" />
+    <Content Include="robocode\robotinterfaces\ISystemEvents.java" />
     <Content Include="robocode\RobotStatus.java" />
     <Content Include="robocode\Rules.java" />
     <Content Include="robocode\ScannedRobotEvent.java" />
@@ -151,7 +160,6 @@
     <Content Include="robocode\ui\IBattleView.java" />
     <Content Include="robocode\ui\IImageManager.java" />
     <Content Include="robocode\ui\ILoadableManager.java" />
-    <Content Include="robocode\ui\ILookAndFeelManager.java" />
     <Content Include="robocode\ui\IRepositoryPlugin.java" />
     <Content Include="robocode\ui\IRobocodeFrame.java" />
     <Content Include="robocode\ui\IRobotDialogManager.java" />

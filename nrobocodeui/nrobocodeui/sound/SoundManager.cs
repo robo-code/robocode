@@ -15,47 +15,31 @@ namespace nrobocodeui.sound
         {
         }
 
-        private List<SoundPlayer> players=new List<SoundPlayer>();
+        private int count;
 
         public void stopBackgroundMusic()
         {
-            StopAll();
+            //StopAll();
         }
 
         private void StopAll()
         {
-            lock(players)
-            {
-                foreach (SoundPlayer player in players)
-                {
-                    player.Stop();
-                }
-                players.Clear();
-            }
+           
         }
 
         private void Play(Stream tune)
         {
-            return;
-            if (players.Count>5)
-                return;
+            /*
+            //if (count > 50) return;
 
             SoundPlayer player = new SoundPlayer(tune);
             player.Load();
-            player.Disposed += player_Disposed;
-            lock (players)
+            lock (this)
             {
-                players.Add(player);
-                player.Play();
+                count++;
+                player.PlaySync();
             }
-        }
-
-        void player_Disposed(object sender, EventArgs e)
-        {
-            lock (players)
-            {
-                players.Remove(sender as SoundPlayer);
-            }
+             */
         }
 
         public void playBulletSound(BulletPeer bp)

@@ -86,7 +86,6 @@
     <Compile Include="nrobocodeui\manager\BrowserManager.cs" />
     <Compile Include="nrobocodeui\manager\ImageManager.cs" />
     <Compile Include="nrobocodeui\manager\LoadableManagerBase.cs" />
-    <Compile Include="nrobocodeui\manager\LookAndFeelManager.cs" />
     <Compile Include="nrobocodeui\manager\RobotDialogManager.cs" />
     <Compile Include="nrobocodeui\manager\VersionManager.cs" />
     <Compile Include="nrobocodeui\manager\WindowManager.cs" />
@@ -96,7 +95,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="resources\Resources.cs" />
-    <Compile Include="Starter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nrobocode\nrobocode.csproj">

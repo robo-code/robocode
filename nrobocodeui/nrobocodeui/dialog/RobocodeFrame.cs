@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using nrobocodeui.battleview;
 using robocode.peer;
+using robocode.peer.robot;
 using robocode.ui;
 using File=java.io.File;
 
@@ -132,11 +134,23 @@ namespace nrobocodeui.dialog
         public void clearRobotButtons()
         {
             //TODO
+            fpRobotButtons.Controls.Clear();
         }
 
         public void addRobotButton(IRobotDialogManager irdm, RobotPeer rp)
         {
-            //TODO
+            this.Invoke(new addRobotButtonImplD(addRobotButtonImpl), new object[] { rp });
+        }
+
+        private delegate void addRobotButtonImplD(RobotPeer rp);
+        private void addRobotButtonImpl(RobotPeer rp)
+        {
+            Button rb=new Button();
+            rb.Tag = rp;
+            rb.Text = rp.getName();
+            rb.Size=new Size(100,20);
+            fpRobotButtons.Controls.Add(rb);
+            //TODO event handler
         }
 
         public void validate()

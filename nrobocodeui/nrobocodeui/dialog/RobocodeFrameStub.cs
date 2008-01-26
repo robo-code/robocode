@@ -83,7 +83,7 @@ namespace nrobocodeui.dialog
 
         public bool isIconified()
         {
-            return true;
+            return false;
         }
 
         public void messageError(string str)
