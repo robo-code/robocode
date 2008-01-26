@@ -59,11 +59,8 @@ public class SoundManager implements ISoundManager {
 
 	/**
 	 * Constructs a new sound manager.
-	 *
-	 * @param manager the Robocode manager
 	 */
-	public SoundManager(RobocodeManager manager) {
-		properties = manager.getProperties();
+	public SoundManager() {
 	}
 
 	/**
@@ -304,6 +301,6 @@ public class SoundManager implements ISoundManager {
 	}
 
     public void setRobocodeManager(RobocodeManager robocodeManager) {
-        //TODO ZAMO
+        properties = robocodeManager.getProperties();
     }
 }
