@@ -19,6 +19,9 @@ import static java.lang.Math.toRadians;
 import java.awt.Color;
 
 import static robocode.util.Utils.normalRelativeAngle;
+import robocode.robotinterfaces.IJuniorRobot;
+import robocode.robotinterfaces.IJuniorEvents;
+import robocode.JuniorStructure;
 
 
 /**
@@ -38,9 +41,17 @@ import static robocode.util.Utils.normalRelativeAngle;
  * 
  * @since 1.4
  */
-public class JuniorRobot extends _RobotBase {
+public class JuniorRobot extends JuniorStructure implements IJuniorRobot, IJuniorEvents {
 
-	/** The color black (0x000000) */
+    public JuniorStructure getJuniorStructure() {
+        return this;
+    }
+
+    public IJuniorEvents getJuniorEventListener() {
+        return this;
+    }
+
+    /** The color black (0x000000) */
 	public final static int	black = 0x000000;
 
 	/** The color white (0xFFFFFF) */
@@ -70,239 +81,6 @@ public class JuniorRobot extends _RobotBase {
 	/** The color gray (0x808080) */
 	public final static int gray = 0x808080;
 	
-	/**
-	 * Contains the width of the battlefield.
-	 *
-	 * @see #fieldWidth
-	 */
-	public int fieldWidth;
-
-	/**
-	 * Contains the height of the battlefield.
-	 *
-	 * @see #fieldWidth
-	 */
-	public int fieldHeight;
-
-	/**
-	 * Current number of other robots on the battle field.
-	 */
-	public int others;
-
-	/**
-	 * Current energy of this robot, where 100 means full energy and 0 means no energy (dead).
-	 */
-	public int energy;
-
-	/**
-	 * Current horizontal location of this robot (in pixels).
-	 * 
-	 * @see #robotY
-	 */
-	public int robotX;
-
-	/**
-	 * Current vertical location of this robot (in pixels).
-	 *
-	 * @see #robotX
-	 */
-	public int robotY;
-
-	/**
-	 * Current heading angle of this robot (in degrees).
-	 *
-	 * @see #turnLeft(int)
-	 * @see #turnRight(int)
-	 * @see #turnTo(int)
-	 * @see #turnAheadLeft(int, int)
-	 * @see #turnAheadRight(int, int)
-	 * @see #turnBackLeft(int, int)
-	 * @see #turnBackRight(int, int)
-	 */
-	public int heading;
-
-	/**
-	 * Current gun heading angle of this robot (in degrees).
-	 *
-	 * @see #gunBearing
-	 * @see #turnGunLeft(int)
-	 * @see #turnGunRight(int)
-	 * @see #turnGunTo(int)
-	 * @see #bearGunTo(int)
-	 */
-	public int gunHeading;
-
-	/**
-	 * Current gun heading angle of this robot compared to its body (in degrees).
-	 *
-	 * @see #gunHeading
-	 * @see #turnGunLeft(int)
-	 * @see #turnGunRight(int)
-	 * @see #turnGunTo(int)
-	 * @see #bearGunTo(int)
-	 */
-	public int gunBearing;
-
-	/**
-	 * Flag specifying if the gun is ready to fire, i.e. gun heat <= 0.
-	 * <code>true</code> means that the gun is able to fire; <code>false</code>
-	 * means that the gun cannot fire yet as it still needs to cool down.
-	 * 
-	 * @see #fire()
-	 * @see #fire(double)
-	 */
-	public boolean gunReady;
-
-	/**
-	 * Current distance to the scanned nearest other robot (in pixels).
-	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link #onScannedRobot()} event is active.
-	 *
-	 * @see #onScannedRobot()
-	 * @see #scannedAngle
-	 * @see #scannedBearing
-	 * @see #scannedEnergy
-	 * @see #scannedVelocity
-	 * @see #scannedHeading
-	 */
-	public int scannedDistance = -1;
-
-	/**
-	 * Current angle to the scanned nearest other robot (in degrees).
-	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link #onScannedRobot()} event is active.
-	 *
-	 * @see #onScannedRobot()
-	 * @see #scannedDistance
-	 * @see #scannedBearing
-	 * @see #scannedEnergy
-	 * @see #scannedVelocity
-	 * @see #scannedHeading
-	 */
-	public int scannedAngle = -1;
-
-	/**
-	 * Current angle to the scanned nearest other robot (in degrees) compared to
-	 * the body of this robot.
-	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link #onScannedRobot()} event is active.
-	 *
-	 * @see #onScannedRobot()
-	 * @see #scannedDistance
-	 * @see #scannedAngle
-	 * @see #scannedEnergy
-	 * @see #scannedVelocity
-	 * @see #scannedHeading
-	 */
-	public int scannedBearing = -1;
-
-	/**
-	 * Current velocity of the scanned nearest other robot.
-	 * If there is no robot in the radar's sight, this field will be -99.
-	 * Note that a positive value means that the robot moves forward, a negative
-	 * value means that the robot moved backward, and 0 means that the robot is
-	 * not moving at all.
-	 * This field will not be updated while {@link #onScannedRobot()} event is active.
-	 *
-	 * @see #onScannedRobot()
-	 * @see #scannedDistance
-	 * @see #scannedAngle
-	 * @see #scannedBearing
-	 * @see #scannedEnergy
-	 * @see #scannedHeading
-	 */
-	public int scannedVelocity = -99;
-
-	/**
-	 * Current heading of the scanned nearest other robot (in degrees).
-	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link #onScannedRobot()} event is active.
-	 *
-	 * @see #onScannedRobot()
-	 * @see #scannedDistance
-	 * @see #scannedAngle
-	 * @see #scannedBearing
-	 * @see #scannedEnergy
-	 * @see #scannedVelocity
-	 */
-	public int scannedHeading = -1;
-
-	/**
-	 * Current energy of scanned nearest other robot.
-	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link #onScannedRobot()} event is active.
-	 *
-	 * @see #onScannedRobot()
-	 * @see #scannedDistance
-	 * @see #scannedAngle
-	 * @see #scannedBearing
-	 * @see #scannedVelocity
-	 */
-	public int scannedEnergy = -1;
-
-	/**
-	 * Latest angle from where this robot was hit by a bullet (in degrees).
-	 * If the robot has never been hit, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link #onHitByBullet()} event is active.
-	 * 
-	 * @see #onHitByBullet()
-	 * @see #hitByBulletBearing
-	 */
-	public int hitByBulletAngle = -1;
-
-	/**
-	 * Latest angle from where this robot was hit by a bullet (in degrees)
-	 * compared to the body of this robot.
-	 * If the robot has never been hit, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link #onHitByBullet()} event is active.
-	 *
-	 * @see #onHitByBullet()
-	 * @see #hitByBulletAngle
-	 */
-	public int hitByBulletBearing = -1;
-
-	/**
-	 * Latest angle where this robot has hit another robot (in degrees).
-	 * If this robot has never hit another robot, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link #onHitRobot()} event is active.
-	 * 
-	 * @see #onHitRobot()
-	 * @see #hitRobotBearing
-	 */
-	public int hitRobotAngle = -1;
-
-	/**
-	 * Latest angle where this robot has hit another robot (in degrees)
-	 * compared to the body of this robot.
-	 * If this robot has never hit another robot, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link #onHitRobot()} event is active.
-	 *
-	 * @see #onHitRobot()
-	 * @see #hitRobotAngle
-	 */
-	public int hitRobotBearing = -1;
-
-	/**
-	 * Latest angle where this robot has hit a wall (in degrees).
-	 * If this robot has never hit a wall, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link #onHitWall()} event is active.
-	 *
-	 * @see #onHitWall()
-	 * @see #hitWallBearing
-	 */
-	public int hitWallAngle = -1;
-
-	/**
-	 * Latest angle where this robot has hit a wall (in degrees)
-	 * compared to the body of this robot.
-	 * If this robot has never hit a wall, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link #onHitWall()} event is active.
-	 *
-	 * @see #onHitWall()
-	 * @see #hitWallAngle
-	 */
-	public int hitWallBearing = -1;
-
 	/**
 	 * Contains the program that controls the behaviour of this robot.
 	 * This method is automatically re-called when it has returned.

@@ -14,7 +14,6 @@ package robocode;
 
 import robocode.exception.RobotException;
 import robocode.peer.RobotPeer;
-import robocode.robotinterfaces.IRobotBase;
 
 
 /**
@@ -35,7 +34,7 @@ import robocode.robotinterfaces.IRobotBase;
  * 
  * @since 1.4
  */
-public abstract class _RobotBase implements IRobotBase {
+public abstract class _RobotBase {
 
 	RobotPeer peer;
 
@@ -59,7 +58,7 @@ public abstract class _RobotBase implements IRobotBase {
 	 * This method is called by the game.
 	 * Do not call this method!
 	 */
-    public void setOut(java.io.PrintStream out) {
+    public final void setOut(java.io.PrintStream out) {
         this.out=out;
     }
 
@@ -77,7 +76,7 @@ public abstract class _RobotBase implements IRobotBase {
      *   }
      * </pre>
      */
-    public java.io.PrintStream getOut() {
+    public final java.io.PrintStream getOut() {
         return out;
     }
 

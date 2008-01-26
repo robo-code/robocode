@@ -11,12 +11,20 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
+import robocode.JuniorStructure;
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobot extends IRobotBase {
+public interface IJuniorRobot extends IRobotBase {
 
-    IRobotEvents getRobotEventListener();
-    ISystemEvents getSystemEventListener();
+    IJuniorEvents getJuniorEventListener();
 
+    JuniorStructure getJuniorStructure();
+
+    /**
+     * Contains the program that controls the behaviour of this robot.
+     * This method is automatically re-called when it has returned.
+     */
+    void run();
 }

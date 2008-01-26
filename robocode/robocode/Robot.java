@@ -29,7 +29,6 @@
 package robocode;
 
 
-import robocode.robotinterfaces.IBaseRobotEvents;
 import robocode.robotinterfaces.IRobot;
 import robocode.robotinterfaces.IRobotEvents;
 import robocode.robotinterfaces.ISystemEvents;

@@ -108,6 +108,7 @@ import java.util.regex.Pattern;
 import robocode.*;
 import robocode.robotinterfaces.IRobot;
 import robocode.robotinterfaces.IRobotBase;
+import robocode.robotinterfaces.ISystemEvents;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.control.BattleSpecification;
@@ -1831,7 +1832,9 @@ public class Battle implements Runnable {
 					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-                        robot.getSystemEventListener().onMouseClicked(me);
+                        ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+                          listener.onMouseClicked(me);
                     } catch (Exception e2) {
 						robot.getOut().println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
 						e2.printStackTrace(robot.getOut());
@@ -1850,7 +1853,9 @@ public class Battle implements Runnable {
 					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.getSystemEventListener().onMouseEntered(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onMouseEntered(me);
 					} catch (Exception e2) {
 						robot.getOut().println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
 						e2.printStackTrace(robot.getOut());
@@ -1869,7 +1874,9 @@ public class Battle implements Runnable {
 					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.getSystemEventListener().onMouseExited(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onMouseExited(me);
 					} catch (Exception e2) {
 						robot.getOut().println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
 						e2.printStackTrace(robot.getOut());
@@ -1888,7 +1895,9 @@ public class Battle implements Runnable {
 					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.getSystemEventListener().onMousePressed(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onMousePressed(me);
 					} catch (Exception e2) {
 						robot.getOut().println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
 						e2.printStackTrace(robot.getOut());
@@ -1907,7 +1916,9 @@ public class Battle implements Runnable {
 					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.getSystemEventListener().onMouseReleased(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onMouseReleased(me);
 					} catch (Exception e2) {
 						robot.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
 						e2.printStackTrace(robot.getOut());
@@ -1926,7 +1937,9 @@ public class Battle implements Runnable {
 					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.getSystemEventListener().onMouseMoved(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onMouseMoved(me);
 					} catch (Exception e2) {
 						robot.getOut().println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
 						e2.printStackTrace(robot.getOut());
@@ -1945,7 +1958,9 @@ public class Battle implements Runnable {
 					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.getSystemEventListener().onMouseDragged(me);
+                        ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onMouseDragged(me);
 					} catch (Exception e2) {
 						robot.getOut().println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
 						e2.printStackTrace(robot.getOut());
@@ -1964,7 +1979,9 @@ public class Battle implements Runnable {
 					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.getSystemEventListener().onMouseWheelMoved(mwe);
+						ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onMouseWheelMoved(mwe);
 					} catch (Exception e2) {
 						robot.getOut().println("SYSTEM: Exception occurred on onMouseWheelMoved(MouseWheelEvent):");
 						e2.printStackTrace(robot.getOut());
@@ -2048,7 +2065,9 @@ public class Battle implements Runnable {
 					switch (e.getID()) {
 					case KeyEvent.KEY_TYPED:
 						try {
-							robot.getSystemEventListener().onKeyTyped(ke);
+							ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onKeyTyped(ke);
 						} catch (Exception e2) {
 							robot.getOut().println("SYSTEM: Exception occurred on onKeyTyped(KeyEvent):");
 							e2.printStackTrace(robot.getOut());
@@ -2057,7 +2076,9 @@ public class Battle implements Runnable {
 
 					case KeyEvent.KEY_PRESSED:
 						try {
-							robot.getSystemEventListener().onKeyPressed(ke);
+							ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onKeyPressed(ke);
 						} catch (Exception e2) {
 							robot.getOut().println("SYSTEM: Exception occurred on onKeyPressed(KeyEvent):");
 							e2.printStackTrace(robot.getOut());
@@ -2066,7 +2087,9 @@ public class Battle implements Runnable {
 
 					case KeyEvent.KEY_RELEASED:
 						try {
-							robot.getSystemEventListener().onKeyReleased(ke);
+							ISystemEvents listener = robot.getSystemEventListener();
+                        if (listener!=null)
+						    listener.onKeyReleased(ke);
 						} catch (Exception e2) {
 							robot.getOut().println("SYSTEM: Exception occurred on onKeyReleased(KeyEvent):");
 							e2.printStackTrace(robot.getOut());
