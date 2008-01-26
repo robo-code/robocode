@@ -138,16 +138,48 @@ namespace nrobocodeui.resources
     {
         #region sounds_explode
 
-        private static System.IO.UnmanagedMemoryStream sounds_explode_cache;
-        public static System.IO.UnmanagedMemoryStream sounds_explode
+        public static System.IO.UnmanagedMemoryStream explode
         {
             get
             {
-                if (sounds_explode_cache == null)
-                {
-                    sounds_explode_cache = Resources.sounds_explode;
-                }
-                return sounds_explode_cache;
+                return Resources.sounds_explode;
+            }
+        }
+
+        #endregion
+
+
+        #region shell_hit
+
+        public static System.IO.UnmanagedMemoryStream shell_hit
+        {
+            get
+            {
+                return Resources.sounds_shellhit;
+            }
+        }
+
+        #endregion
+
+        #region zap
+
+        public static System.IO.UnmanagedMemoryStream zap
+        {
+            get
+            {
+                return Resources.sounds_shellhit;
+            }
+        }
+
+        #endregion
+
+        #region crash
+
+        public static System.IO.UnmanagedMemoryStream crash
+        {
+            get
+            {
+                return Resources.sounds__13831_adcbicycle_22;
             }
         }
 

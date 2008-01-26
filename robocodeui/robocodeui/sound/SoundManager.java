@@ -37,6 +37,7 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
+import robocode.ui.ISoundManager;
 
 
 /**
@@ -48,7 +49,7 @@ import robocode.peer.RobotPeer;
  * @author Flemming N. Larsen (contributor)
  * @author Titus Chen (contributor)
  */
-public class SoundManager {
+public class SoundManager implements ISoundManager {
 
 	// Cache containing sound clips
 	private SoundCache sounds;
@@ -301,4 +302,8 @@ public class SoundManager {
 	private float calcBulletVolume(BulletPeer bp) {
 		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
 	}
+
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        //TODO ZAMO
+    }
 }

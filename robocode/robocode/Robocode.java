@@ -72,11 +72,6 @@ public class Robocode {
         }
 	}
 
-    public static void main2(String[] args) throws Throwable {
-        Robocode robocode = new Robocode();
-        robocode.initialize(args);
-    }
-
 	private Robocode() {}
 
 	private boolean initialize(String args[]) throws Throwable {

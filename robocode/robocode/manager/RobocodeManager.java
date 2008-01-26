@@ -223,7 +223,7 @@ public class RobocodeManager {
 	 */
 	public ISoundManager getSoundManager() {
 		if (soundManager == null) {
-            soundManager = (ISoundManager) loadManager("robocodeui.manager.SoundManager");
+            soundManager = (ISoundManager) loadManager("robocodeui.sound.SoundManager");
 		}
 		return soundManager;
 	}
@@ -317,7 +317,7 @@ public class RobocodeManager {
         }
     }
 
-    public boolean isRunningIKVM() {
+    public static boolean isRunningIKVM() {
         ClassLoader loader = ClassLoader.getSystemClassLoader();
         return loader.getClass().getName().contains("ikvm");
     }

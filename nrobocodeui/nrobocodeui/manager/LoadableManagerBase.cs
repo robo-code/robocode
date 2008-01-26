@@ -6,8 +6,15 @@ namespace nrobocodeui.manager
 {
     public abstract class LoadableManagerBase : ILoadableManager
     {
+        public RobocodeManager RobocodeManager
+        {
+            get
+            {
+                return robocodeManager;
+            }
+        }
         private RobocodeManager robocodeManager;
-        public void setRobocodeManager(RobocodeManager rm)
+        public virtual void setRobocodeManager(RobocodeManager rm)
         {
             Console.WriteLine("setRobocodeManager");
             robocodeManager = rm;

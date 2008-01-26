@@ -84,8 +84,9 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.battleView = new nrobocodeui.battleview.BattleView();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.fpRobotButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -93,6 +94,7 @@
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.splitContainer.Panel1.SuspendLayout();
+            this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,60 +123,57 @@
             this.exitMenuItem});
             this.battleMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder;
             this.battleMenu.Name = "battleMenu";
-            this.battleMenu.Size = new System.Drawing.Size(49, 20);
+            this.battleMenu.Size = new System.Drawing.Size(46, 20);
             this.battleMenu.Text = "&Battle";
             // 
             // newMenuItem
             // 
-            this.newMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newMenuItem.Image")));
             this.newMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.newMenuItem.Name = "newMenuItem";
             this.newMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.newMenuItem.Size = new System.Drawing.Size(176, 22);
             this.newMenuItem.Text = "&New";
             this.newMenuItem.Click += new System.EventHandler(this.ShowNewForm);
             // 
             // openMenuItem
             // 
-            this.openMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openMenuItem.Image")));
             this.openMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.openMenuItem.Name = "openMenuItem";
             this.openMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.openMenuItem.Size = new System.Drawing.Size(176, 22);
             this.openMenuItem.Text = "&Open";
             this.openMenuItem.Click += new System.EventHandler(this.OpenFile);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(183, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(173, 6);
             // 
             // saveMenuItem
             // 
-            this.saveMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveMenuItem.Image")));
             this.saveMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.saveMenuItem.Name = "saveMenuItem";
             this.saveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.saveMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveMenuItem.Text = "&Save";
             // 
             // saveAsMenuItem
             // 
             this.saveAsMenuItem.Name = "saveAsMenuItem";
             this.saveAsMenuItem.ShortcutKeyDisplayString = "Ctrl+Shift+S";
-            this.saveAsMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.saveAsMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveAsMenuItem.Text = "Save &As";
             this.saveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(183, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(173, 6);
             // 
             // exitMenuItem
             // 
             this.exitMenuItem.Name = "exitMenuItem";
-            this.exitMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.exitMenuItem.Size = new System.Drawing.Size(176, 22);
             this.exitMenuItem.Text = "E&xit";
             this.exitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
             // 
@@ -186,7 +185,7 @@
             this.packageRobotMenuItem,
             this.teamMenuItem});
             this.robotMenu.Name = "robotMenu";
-            this.robotMenu.Size = new System.Drawing.Size(51, 20);
+            this.robotMenu.Size = new System.Drawing.Size(48, 20);
             this.robotMenu.Text = "&Robot";
             // 
             // editorMenuItem
@@ -194,19 +193,19 @@
             this.editorMenuItem.Name = "editorMenuItem";
             this.editorMenuItem.ShortcutKeyDisplayString = "";
             this.editorMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.editorMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.editorMenuItem.Size = new System.Drawing.Size(194, 22);
             this.editorMenuItem.Text = "&Editor";
             // 
             // importRobotMenuItem
             // 
             this.importRobotMenuItem.Name = "importRobotMenuItem";
-            this.importRobotMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.importRobotMenuItem.Size = new System.Drawing.Size(194, 22);
             this.importRobotMenuItem.Text = "&Import downloaded robot";
             // 
             // packageRobotMenuItem
             // 
             this.packageRobotMenuItem.Name = "packageRobotMenuItem";
-            this.packageRobotMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.packageRobotMenuItem.Size = new System.Drawing.Size(194, 22);
             this.packageRobotMenuItem.Text = "&Package robot for upload";
             // 
             // teamMenuItem
@@ -214,13 +213,13 @@
             this.teamMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createTeamMenuItem});
             this.teamMenuItem.Name = "teamMenuItem";
-            this.teamMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.teamMenuItem.Size = new System.Drawing.Size(194, 22);
             this.teamMenuItem.Text = "&Team";
             // 
             // createTeamMenuItem
             // 
             this.createTeamMenuItem.Name = "createTeamMenuItem";
-            this.createTeamMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createTeamMenuItem.Size = new System.Drawing.Size(135, 22);
             this.createTeamMenuItem.Text = "&Create Team";
             // 
             // optionsToolStripMenuItem
@@ -234,47 +233,47 @@
             this.recalculateCPUConstantMenuItem,
             this.cleanRobotCacheMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // preferencesMenuItem
             // 
             this.preferencesMenuItem.Name = "preferencesMenuItem";
-            this.preferencesMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.preferencesMenuItem.Size = new System.Drawing.Size(201, 22);
             this.preferencesMenuItem.Text = "&Preferences";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(208, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(198, 6);
             // 
             // defaultWindowSizeMenuItem
             // 
             this.defaultWindowSizeMenuItem.Name = "defaultWindowSizeMenuItem";
-            this.defaultWindowSizeMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.defaultWindowSizeMenuItem.Size = new System.Drawing.Size(201, 22);
             this.defaultWindowSizeMenuItem.Text = "&Default Window Size";
             // 
             // rankingPanelMenuItem
             // 
             this.rankingPanelMenuItem.Name = "rankingPanelMenuItem";
-            this.rankingPanelMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.rankingPanelMenuItem.Size = new System.Drawing.Size(201, 22);
             this.rankingPanelMenuItem.Text = "&Ranking Panel";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(208, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
             // 
             // recalculateCPUConstantMenuItem
             // 
             this.recalculateCPUConstantMenuItem.Name = "recalculateCPUConstantMenuItem";
-            this.recalculateCPUConstantMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.recalculateCPUConstantMenuItem.Size = new System.Drawing.Size(201, 22);
             this.recalculateCPUConstantMenuItem.Text = "R&ecalculate CPU Constant";
             // 
             // cleanRobotCacheMenuItem
             // 
             this.cleanRobotCacheMenuItem.Name = "cleanRobotCacheMenuItem";
-            this.cleanRobotCacheMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.cleanRobotCacheMenuItem.Size = new System.Drawing.Size(201, 22);
             this.cleanRobotCacheMenuItem.Text = "&Clean Robot Cache";
             // 
             // helpMenu
@@ -295,88 +294,88 @@
             this.toolStripSeparator7,
             this.aboutMenuItem});
             this.helpMenu.Name = "helpMenu";
-            this.helpMenu.Size = new System.Drawing.Size(44, 20);
+            this.helpMenu.Size = new System.Drawing.Size(41, 20);
             this.helpMenu.Text = "&Help";
             // 
             // onlineHelpMenuItem
             // 
             this.onlineHelpMenuItem.Name = "onlineHelpMenuItem";
-            this.onlineHelpMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.onlineHelpMenuItem.Size = new System.Drawing.Size(205, 22);
             this.onlineHelpMenuItem.Text = "&Online Help";
             // 
             // robocodeAPIMenuItem
             // 
             this.robocodeAPIMenuItem.Name = "robocodeAPIMenuItem";
-            this.robocodeAPIMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.robocodeAPIMenuItem.Size = new System.Drawing.Size(205, 22);
             this.robocodeAPIMenuItem.Text = "Robocode &API";
             // 
             // netDocumentationMenuItem
             // 
             this.netDocumentationMenuItem.Name = "netDocumentationMenuItem";
-            this.netDocumentationMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.netDocumentationMenuItem.Size = new System.Drawing.Size(205, 22);
             this.netDocumentationMenuItem.Text = ".&Net 2.0 Documentation";
             // 
             // robocodeFAQMenuItem
             // 
             this.robocodeFAQMenuItem.Name = "robocodeFAQMenuItem";
-            this.robocodeFAQMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.robocodeFAQMenuItem.Size = new System.Drawing.Size(205, 22);
             this.robocodeFAQMenuItem.Text = "Robocode &FAQ";
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(216, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(202, 6);
             // 
             // robocodeHomeMenuItem
             // 
             this.robocodeHomeMenuItem.Name = "robocodeHomeMenuItem";
-            this.robocodeHomeMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.robocodeHomeMenuItem.Size = new System.Drawing.Size(205, 22);
             this.robocodeHomeMenuItem.Text = "Robocode &Home";
             // 
             // roboWikiMenuItem
             // 
             this.roboWikiMenuItem.Name = "roboWikiMenuItem";
-            this.roboWikiMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.roboWikiMenuItem.Size = new System.Drawing.Size(205, 22);
             this.roboWikiMenuItem.Text = "Robo&Wiki";
             // 
             // yahooGroupMenuItem
             // 
             this.yahooGroupMenuItem.Name = "yahooGroupMenuItem";
-            this.yahooGroupMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.yahooGroupMenuItem.Size = new System.Drawing.Size(205, 22);
             this.yahooGroupMenuItem.Text = "&Yahoo Group for Robocode";
             // 
             // robocodeRepositoryMenuItem
             // 
             this.robocodeRepositoryMenuItem.Name = "robocodeRepositoryMenuItem";
-            this.robocodeRepositoryMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.robocodeRepositoryMenuItem.Size = new System.Drawing.Size(205, 22);
             this.robocodeRepositoryMenuItem.Text = "Robocode &Repository";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(216, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(202, 6);
             // 
             // checkForNewVersionMenuItem
             // 
             this.checkForNewVersionMenuItem.Name = "checkForNewVersionMenuItem";
-            this.checkForNewVersionMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.checkForNewVersionMenuItem.Size = new System.Drawing.Size(205, 22);
             this.checkForNewVersionMenuItem.Text = "&Check for new version";
             // 
             // versionInfoMenuItem
             // 
             this.versionInfoMenuItem.Name = "versionInfoMenuItem";
-            this.versionInfoMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.versionInfoMenuItem.Size = new System.Drawing.Size(205, 22);
             this.versionInfoMenuItem.Text = "&Version Info";
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(216, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(202, 6);
             // 
             // aboutMenuItem
             // 
             this.aboutMenuItem.Name = "aboutMenuItem";
-            this.aboutMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.aboutMenuItem.Size = new System.Drawing.Size(205, 22);
             this.aboutMenuItem.Text = "&About";
             // 
             // statusStrip
@@ -392,7 +391,7 @@
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(37, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
             // BottomToolStripPanel
@@ -443,7 +442,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(245, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(230, 25);
             this.toolStrip1.TabIndex = 20;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -452,28 +451,28 @@
             this.pauseDebugButton.CheckOnClick = true;
             this.pauseDebugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.pauseDebugButton.Name = "pauseDebugButton";
-            this.pauseDebugButton.Size = new System.Drawing.Size(82, 22);
+            this.pauseDebugButton.Size = new System.Drawing.Size(78, 22);
             this.pauseDebugButton.Text = "Pause/Debug";
             // 
             // nextTurnButton
             // 
             this.nextTurnButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.nextTurnButton.Name = "nextTurnButton";
-            this.nextTurnButton.Size = new System.Drawing.Size(63, 22);
+            this.nextTurnButton.Size = new System.Drawing.Size(58, 22);
             this.nextTurnButton.Text = "Next Turn";
             // 
             // stopButton
             // 
             this.stopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(35, 22);
+            this.stopButton.Size = new System.Drawing.Size(33, 22);
             this.stopButton.Text = "Stop";
             // 
             // restartButton
             // 
             this.restartButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.restartButton.Name = "restartButton";
-            this.restartButton.Size = new System.Drawing.Size(47, 22);
+            this.restartButton.Size = new System.Drawing.Size(45, 22);
             this.restartButton.Text = "Restart";
             // 
             // toolStripSeparator8
@@ -508,18 +507,31 @@
             // splitContainer.Panel1
             // 
             this.splitContainer.Panel1.Controls.Add(this.battleView);
+            // 
+            // splitContainer.Panel2
+            // 
+            this.splitContainer.Panel2.Controls.Add(this.fpRobotButtons);
             this.splitContainer.Size = new System.Drawing.Size(632, 357);
             this.splitContainer.SplitterDistance = 526;
             this.splitContainer.TabIndex = 0;
             // 
-            // battleView1
+            // battleView
             // 
             this.battleView.BackColor = System.Drawing.Color.Black;
             this.battleView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.battleView.Location = new System.Drawing.Point(0, 0);
-            this.battleView.Name = "battleView1";
+            this.battleView.Name = "battleView";
             this.battleView.Size = new System.Drawing.Size(526, 357);
             this.battleView.TabIndex = 0;
+            // 
+            // fpRobotButtons
+            // 
+            this.fpRobotButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fpRobotButtons.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.fpRobotButtons.Location = new System.Drawing.Point(0, 0);
+            this.fpRobotButtons.Name = "fpRobotButtons";
+            this.fpRobotButtons.Size = new System.Drawing.Size(102, 357);
+            this.fpRobotButtons.TabIndex = 0;
             // 
             // RobocodeFrame
             // 
@@ -547,6 +559,7 @@
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();
             this.splitContainer.Panel1.ResumeLayout(false);
+            this.splitContainer.Panel2.ResumeLayout(false);
             this.splitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -610,6 +623,7 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.SplitContainer splitContainer;
         private nrobocodeui.battleview.BattleView battleView;
+        private System.Windows.Forms.FlowLayoutPanel fpRobotButtons;
     }
 }
 

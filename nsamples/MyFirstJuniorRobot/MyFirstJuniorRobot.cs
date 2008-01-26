@@ -31,7 +31,7 @@ namespace nsample
 
         public override void onScannedRobot()
         {
-            Console.WriteLine("Attaaaaaaack ");
+            //Console.WriteLine("Attaaaaaaack ");
 
             // Turn gun to point at the scanned robot
             turnGunTo(scannedAngle);
@@ -42,7 +42,7 @@ namespace nsample
 
         public override void onHitByBullet()
         {
-            Console.WriteLine("Ouch !");
+            //Console.WriteLine("Ouch !");
 
             // Move ahead 100 and in the same time turn left papendicular to the bullet
             turnAheadLeft(100, 90 - hitByBulletBearing);
