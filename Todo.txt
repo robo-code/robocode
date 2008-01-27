@@ -10,6 +10,7 @@
 
 Java Core
 - re-think interfaces to UI, move methods, write JavaDoc
+- beautify my code
 
 .NET UI
 - solve issue with Event Thread Dispatcher in ATW (single threaded WinForms)

@@ -463,7 +463,7 @@ namespace nrobocode
 
         #region Fast Actions
 
-        public void setColors(Color bodyColor, Color gunColor, Color radarColor)
+        public void SetColors(Color bodyColor, Color gunColor, Color radarColor)
         {
             robot.setColors((int)bodyColor, (int)gunColor, (int)radarColor);
         }

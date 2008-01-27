@@ -27,7 +27,7 @@ namespace nsample
     {
         public override void Run()
         {
-            setColors(Color.Green, Color.Black, Color.Blue);
+            SetColors(Color.Green, Color.Black, Color.Blue);
 
             Out.WriteLine("Cool, we are running !");
             Console.WriteLine("Cool, we are running !");

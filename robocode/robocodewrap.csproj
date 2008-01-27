@@ -132,14 +132,13 @@
     <Content Include="robocode\RobocodeFileWriter.java" />
     <Content Include="robocode\Robot.java" />
     <Content Include="robocode\RobotDeathEvent.java" />
-    <Content Include="robocode\robotinterfaces\IBaseRobotEvents.java" />
-    <Content Include="robocode\robotinterfaces\IBaseSystemEvents.java" />
     <Content Include="robocode\robotinterfaces\IJuniorEvents.java" />
     <Content Include="robocode\robotinterfaces\IJuniorRobot.java" />
     <Content Include="robocode\robotinterfaces\IRobot.java" />
     <Content Include="robocode\robotinterfaces\IRobotBase.java" />
     <Content Include="robocode\robotinterfaces\IRobotEvents.java" />
     <Content Include="robocode\robotinterfaces\ISystemEvents.java" />
+    <Content Include="robocode\robotinterfaces\ITeamRobot.java" />
     <Content Include="robocode\RobotStatus.java" />
     <Content Include="robocode\Rules.java" />
     <Content Include="robocode\ScannedRobotEvent.java" />
