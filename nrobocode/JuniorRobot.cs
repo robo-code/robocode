@@ -11,29 +11,40 @@
 // *****************************************************************************
 
 using System.IO;
+using java.io;
+using java.lang;
 using nrobocode.utils;
+using robocode;
+using robocode.peer;
+using robocode.robotinterfaces;
 
 namespace nrobocode
 {
     /// <summary>
-    /// .NET Friendly wrapper for junior robot
+    /// .NET Friendly base for junior robot
     /// </summary>
-    public abstract class JuniorRobot // : IJuniorRobot
+    public abstract class JuniorRobot : IJuniorRobot
     {
         #region Java JuniorRobot
 
         private class JR : robocode.JuniorRobot
         {
             private JuniorRobot owner;
+
             public JR(JuniorRobot owner)
             {
                 this.owner = owner;
-                myOut = new JavaConsole(this.@out);
+            }
+
+            public override void setOut(PrintStream @out)
+            {
+                base.setOut(@out);
+                myOut = new JavaConsole(@out);
             }
 
             public override void onHitByBullet()
             {
-                owner.OnHitByBullet(owner.robot.hitByBulletBearing);
+                owner.OnHitByBullet();
             }
 
             public override void onHitRobot()
@@ -55,15 +66,50 @@ namespace nrobocode
 
             public TextWriter Out
             {
-                get
-                {
-                    return myOut;
-                }
+                get { return myOut; }
             }
-
         }
 
         private JR robot;
+
+        #endregion
+
+        #region IJuniorRobot Members
+
+        JuniorStructure IJuniorRobot.getJuniorStructure()
+        {
+            return robot;
+        }
+
+        IJuniorEvents IJuniorRobot.getJuniorEventListener()
+        {
+            return robot;
+        }
+
+        void IRobotBase.setPeer(RobotPeer rp)
+        {
+            robot.setPeer(rp);
+        }
+
+        RobotPeer IRobotBase.getPeer()
+        {
+            return robot.getPeer();
+        }
+
+        void IRobotBase.setOut(PrintStream ps)
+        {
+            robot.setOut(ps);
+        }
+
+        PrintStream IRobotBase.getOut()
+        {
+            return robot.getOut();
+        }
+
+        void Runnable.run()
+        {
+            Run();
+        }
 
         #endregion
 
@@ -71,7 +117,7 @@ namespace nrobocode
 
         public JuniorRobot()
         {
-            robot=new JR(this);
+            robot = new JR(this);
         }
 
         #endregion
@@ -98,38 +144,39 @@ namespace nrobocode
             /// <summary>
             /// The color orange (0xFFA500)
             /// </summary>
-            Orange = 0xFFA500, 
+            Orange = 0xFFA500,
 
             /// <summary>
             /// The color yellow (0xFFFF00)
             /// </summary>
-            Yellow = 0xFFFF00, 
+            Yellow = 0xFFFF00,
 
             /// <summary>
             /// The color green (0x008000)
             /// </summary>
-            Green = 0x008000, 
-            
+            Green = 0x008000,
+
             /// <summary>
             /// The color blue (0x0000FF)
             /// </summary>
-            Blue = 0x0000FF, 
-            
+            Blue = 0x0000FF,
+
             /// <summary>
             /// The color purple (0x800080)
             /// </summary>
-            Purple = 0x800080, 
+            Purple = 0x800080,
 
             /// <summary>
             /// The color brown (0x8B4513)
             /// </summary>
-            Brown = 0x8B4513, 
+            Brown = 0x8B4513,
 
             /// <summary>
             /// The color gray (0x808080)
             /// </summary>
             Gray = 0x808080,
         }
+
         #endregion
 
         #region Fields
@@ -150,11 +197,263 @@ namespace nrobocode
             get { return robot.fieldWidth; }
         }
 
+        /// <summary>
+        /// Contains the height of the battlefield.
+        /// </summary>
         public int FieldHeight
         {
             get { return robot.fieldHeight; }
         }
 
+        /// <summary>
+        /// Current number of other robots on the battle field.
+        /// </summary>
+        public int Others
+        {
+            get { return robot.others; }
+        }
+
+
+        /// Current horizontal location of this robot (in pixels).
+        /// <see cref="RobotY"/>
+        public int RobotX
+        {
+            get { return robot.robotX; }
+        }
+
+        /// Current vertical location of this robot (in pixels).
+        /// <see cref="RobotX"/>
+        public int RobotY
+        {
+            get { return robot.robotY; }
+        }
+
+
+        /// Current heading angle of this robot (in degrees).
+        /// <see cref="TurnLeft(int)"/>
+        /// <see cref="TurnRight(int)"/>
+        /// <see cref="TurnTo(int)"/>
+        /// <see cref="TurnAheadLeft(int, int)"/>
+        /// <see cref="TurnAheadRight(int, int)"/>
+        /// <see cref="TurnBackLeft(int, int)"/>
+        /// <see cref="TurnBackRight(int, int)"/>
+        public int Heading
+        {
+            get { return robot.heading; }
+        }
+
+
+        /// Current gun heading angle of this robot (in degrees).
+        /// <see cref="GunBearing"/>
+        /// <see cref="TurnGunLeft(int)"/>
+        /// <see cref="TurnGunRight(int)"/>
+        /// <see cref="TurnGunTo(int)"/>
+        /// <see cref="BearGunTo(int)"/>
+        public int GunHeading
+        {
+            get { return robot.gunHeading; }
+        }
+
+
+        /// Current gun heading angle of this robot compared to its body (in degrees).
+        /// <see cref="GunHeading"/>
+        /// <see cref="TurnGunLeft(int)"/>
+        /// <see cref="TurnGunRight(int)"/>
+        /// <see cref="TurnGunTo(int)"/>
+        /// <see cref="BearGunTo(int)"/>
+        public int GunBearing
+        {
+            get { return robot.gunBearing; }
+        }
+
+
+        /// Flag specifying if the gun is ready to fire, i.e. gun heat <= 0.
+        /// <code>true</code> means that the gun is able to fire; <code>false</code>
+        /// means that the gun cannot fire yet as it still needs to cool down.
+        /// <see cref="Fire()"/>
+        /// <see cref="Fire(double)"/>
+        public bool GunReady
+        {
+            get { return robot.gunReady; }
+        }
+
+
+        /// Current distance to the scanned nearest other robot (in pixels).
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link onScannedRobot()} event is active.
+        /// <see cref="OnScannedRobot"/>
+        /// <see cref="ScannedAngle"/>
+        /// <see cref="ScannedBearing"/>
+        /// <see cref="ScannedEnergy"/>
+        /// <see cref="ScannedVelocity"/>
+        /// <see cref="ScannedHeading"/>
+        public int ScannedDistance
+        {
+            get { return robot.scannedDistance; }
+        }
+
+
+        /// Current angle to the scanned nearest other robot (in degrees).
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link onScannedRobot()} event is active.
+        /// <see cref="OnScannedRobot"/>
+        /// <see cref="ScannedDistance"/>
+        /// <see cref="ScannedBearing"/>
+        /// <see cref="ScannedEnergy"/>
+        /// <see cref="ScannedVelocity"/>
+        /// <see cref="ScannedHeading"/>
+        public int ScannedAngle
+        {
+            get { return robot.scannedAngle; }
+        }
+
+
+        /// Current angle to the scanned nearest other robot (in degrees) compared to
+        /// the body of this robot.
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link onScannedRobot()} event is active.
+        /// <see cref="OnScannedRobot"/>
+        /// <see cref="ScannedDistance"/>
+        /// <see cref="ScannedAngle"/>
+        /// <see cref="ScannedEnergy"/>
+        /// <see cref="ScannedVelocity"/>
+        /// <see cref="ScannedHeading"/>
+        public int ScannedBearing
+        {
+            get { return robot.scannedBearing; }
+        }
+
+
+        /// Current velocity of the scanned nearest other robot.
+        /// If there is no robot in the radar's sight, this field will be -99.
+        /// Note that a positive value means that the robot moves forward, a negative
+        /// value means that the robot moved backward, and 0 means that the robot is
+        /// not moving at all.
+        /// This field will not be updated while {@link onScannedRobot()} event is active.
+        /// <see cref="OnScannedRobot"/>
+        /// <see cref="ScannedDistance"/>
+        /// <see cref="ScannedAngle"/>
+        /// <see cref="ScannedBearing"/>
+        /// <see cref="ScannedEnergy"/>
+        /// <see cref="ScannedHeading"/>
+        public int ScannedVelocity
+        {
+            get { return robot.scannedVelocity; }
+        }
+
+
+        /// Current heading of the scanned nearest other robot (in degrees).
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link onScannedRobot()} event is active.
+        /// <see cref="OnScannedRobot"/>
+        /// <see cref="ScannedDistance"/>
+        /// <see cref="ScannedAngle"/>
+        /// <see cref="ScannedBearing"/>
+        /// <see cref="ScannedEnergy"/>
+        /// <see cref="ScannedVelocity"/>
+        public int ScannedHeading
+        {
+            get { return robot.scannedHeading; }
+        }
+
+
+        /// Current energy of scanned nearest other robot.
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link onScannedRobot()} event is active.
+        /// <see cref="OnScannedRobot"/>
+        /// <see cref="ScannedDistance"/>
+        /// <see cref="ScannedAngle"/>
+        /// <see cref="ScannedBearing"/>
+        /// <see cref="ScannedVelocity"/>
+        public int ScannedEnergy
+        {
+            get { return robot.scannedEnergy; }
+        }
+
+
+        /// Latest angle from where this robot was hit by a bullet (in degrees).
+        /// If the robot has never been hit, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link onHitByBullet()} event is active.
+        /// <see cref="OnHitByBullet"/>
+        /// <see cref="HitByBulletBearing"/>
+        public int HitByBulletAngle
+        {
+            get { return robot.hitByBulletAngle; }
+        }
+
+
+        /// Latest angle from where this robot was hit by a bullet (in degrees)
+        /// compared to the body of this robot.
+        /// If the robot has never been hit, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link onHitByBullet()} event is active.
+        /// <see cref="OnHitByBullet"/>
+        /// <see cref="HitByBulletAngle"/>
+        public int HitByBulletBearing
+        {
+            get { return robot.hitByBulletBearing; }
+        }
+
+
+        /// Latest angle where this robot has hit another robot (in degrees).
+        /// If this robot has never hit another robot, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link onHitRobot()} event is active.
+        /// <see cref="OnHitRobot"/>
+        /// <see cref="HitRobotBearing"/>
+        public int HitRobotAngle
+        {
+            get { return robot.hitRobotAngle; }
+        }
+
+
+        /// Latest angle where this robot has hit another robot (in degrees)
+        /// compared to the body of this robot.
+        /// If this robot has never hit another robot, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link onHitRobot()} event is active.
+        /// <see cref="OnHitRobot"/>
+        /// <see cref="HitRobotAngle"/>
+        public int HitRobotBearing
+        {
+            get { return robot.hitRobotBearing; }
+        }
+
+
+        /// Latest angle where this robot has hit a wall (in degrees).
+        /// If this robot has never hit a wall, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link onHitWall()} event is active.
+        /// <see cref="OnHitWall"/>
+        /// <see cref="HitWallBearing"/>
+        public int HitWallAngle
+        {
+            get { return robot.hitWallAngle; }
+        }
+
+
+        /// Latest angle where this robot has hit a wall (in degrees)
+        /// compared to the body of this robot.
+        /// If this robot has never hit a wall, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link onHitWall()} event is active.
+        /// <see cref="OnHitWall"/>
+        /// <see cref="HitWallAngle"/>
+        public int HitWallBearing
+        {
+            get { return robot.hitWallBearing; }
+        }
+
+        /// <summary>
+        /// The output stream your robot should use to print.
+        /// <p>
+        /// You can view the print-outs by clicking the button for your robot in the
+        /// right side of the battle window.
+        /// <p>
+        /// Example:
+        /// <pre>
+        /// // Print out a line each time my robot hits another robot
+        /// public void OnHitRobot() 
+        /// {
+        ///     Out.WriteLine("I hit a robot!  My energy: " + Energy);
+        /// }
+        /// </pre>
+        /// </summary>
         public TextWriter Out
         {
             get { return robot.Out; }
@@ -262,11 +561,25 @@ namespace nrobocode
 
         #region Events
 
-        public abstract void Run();
-        public virtual void OnScannedRobot() { }
-        public virtual void OnHitByBullet(int hitByBulletBearing) { }
-        public virtual void OnHitRobot() { }
-        public virtual void OnHitWall() { }
+        public virtual void Run()
+        {
+        }
+
+        public virtual void OnScannedRobot()
+        {
+        }
+
+        public virtual void OnHitByBullet()
+        {
+        }
+
+        public virtual void OnHitRobot()
+        {
+        }
+
+        public virtual void OnHitWall()
+        {
+        }
 
         #endregion
     }

@@ -1,8 +1,20 @@
-﻿using System;
-using nrobocode.robot;
-using robocode;
+﻿// ****************************************************************************
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+// 
+// Contributors:
+// Pavel Savara
+// - Port from Java version
+// *****************************************************************************
 
-[assembly: Description("A sample robot\n     Moves in a seesaw motion, and spins the gun around at each end\n     Moves perpendicular to the direction of a bullet that hits it")]
+using System;
+using nrobocode.robot;
+using nrobocode;
+
+[assembly: Description("A sample robot\r\n     Moves in a seesaw motion, and spins the gun around at each end\r\n     Moves perpendicular to the direction of a bullet that hits it")]
 [assembly: WebPage("http://robocode.sourceforge.net/")]
 [assembly: Version("1.4")]
 [assembly: SourceIncluded(true)]
@@ -13,39 +25,38 @@ namespace nsample
 {
     public class MyFirstJuniorRobot : JuniorRobot
     {
-        public override void run()
+        public override void Run()
         {
-            setColors(green, black, blue);
+            setColors(Color.Green, Color.Black, Color.Blue);
 
+            Out.WriteLine("Cool, we are running !");
             Console.WriteLine("Cool, we are running !");
 
             // Seesaw forever
             while (true)
             {
-                ahead(100); // Move ahead 100
-                turnGunRight(360); // Spin gun around
-                back(100); // Move back 100
-                turnGunRight(360); // Spin gun around
+                Ahead(100); // Move ahead 100
+                TurnGunRight(360); // Spin gun around
+                Back(100); // Move back 100
+                TurnGunRight(360); // Spin gun around
             }
         }
 
-        public override void onScannedRobot()
+        public override void OnScannedRobot()
         {
-            //Console.WriteLine("Attaaaaaaack ");
-
             // Turn gun to point at the scanned robot
-            turnGunTo(scannedAngle);
+            TurnGunTo(ScannedAngle);
 
             // Fire!
-            fire(1);
+            Fire(1);
         }
 
-        public override void onHitByBullet()
+        public override void OnHitByBullet()
         {
-            //Console.WriteLine("Ouch !");
+            Out.WriteLine("Ouch !");
 
             // Move ahead 100 and in the same time turn left papendicular to the bullet
-            turnAheadLeft(100, 90 - hitByBulletBearing);
+            TurnAheadLeft(100, 90 - HitByBulletBearing);
         }
     }
 }

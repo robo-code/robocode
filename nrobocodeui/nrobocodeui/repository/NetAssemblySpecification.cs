@@ -18,6 +18,7 @@ using robocode;
 using nrobocode.robot;
 using robocode.io;
 using robocode.repository;
+using robocode.robotinterfaces;
 using File=java.io.File;
 using IOException=java.io.IOException;
 using String=System.String;
@@ -133,10 +134,7 @@ namespace nrobocodeui.repository
             if (type == null)
                 return false;
 
-            if (!type.IsSubclassOf(typeof(Robot)) && 
-                !type.IsSubclassOf(typeof(JuniorRobot)) &&
-                !type.IsSubclassOf(typeof(nrobocode.JuniorRobot))
-                )
+            if (!typeof(IRobotBase).IsAssignableFrom(type))
                 return false;
             return true;
         }
