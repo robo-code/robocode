@@ -2117,7 +2117,7 @@ public class Battle implements Runnable {
 	private class UnsafeLoadRobotsThread extends Thread {
 
 		public UnsafeLoadRobotsThread() {
-			super(new ThreadGroup("IRobot Loader Group"), "IRobot Loader");
+			super(new ThreadGroup("Robot Loader Group"), "IRobot Loader");
 			setDaemon(true);
 		}
 

@@ -477,7 +477,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			eventManager.processEvents();
 
 			if (robot != null) {
-				if (robot instanceof JuniorRobot) {
+				if (robot instanceof IJuniorRobot) {
 					IJuniorRobot jr = (IJuniorRobot) robot;
                     JuniorStructure js = jr.getJuniorStructure();
                     if (js!=null) {

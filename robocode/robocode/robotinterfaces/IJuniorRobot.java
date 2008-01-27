@@ -18,13 +18,13 @@ import robocode.JuniorStructure;
  */
 public interface IJuniorRobot extends IRobotBase {
 
+    /**
+     * @return listener to junior robot events
+     */
     IJuniorEvents getJuniorEventListener();
 
-    JuniorStructure getJuniorStructure();
-
     /**
-     * Contains the program that controls the behaviour of this robot.
-     * This method is automatically re-called when it has returned.
+     * @return structure which should be updated with new info
      */
-    void run();
+    JuniorStructure getJuniorStructure();
 }

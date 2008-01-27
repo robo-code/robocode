@@ -47,6 +47,9 @@ import robocode.io.FileUtil;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
 import robocode.ui.IRepositoryPlugin;
+import robocode.robotinterfaces.ITeamRobot;
+import robocode.robotinterfaces.IRobotBase;
+import robocode.Droid;
 
 
 /**
@@ -450,34 +453,24 @@ public class RobotRepositoryManager {
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
-				Class<?>[] interfaces = robotClass.getInterfaces();
+                if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
+                    if (Droid.class.isAssignableFrom(robotClass))
+                    {
+                        robotSpecification.setDroid(true);
+                    }
 
-				for (Class<?> itf : interfaces) {
-					if (itf.getName().equals("robocode.Droid")) {
-						robotSpecification.setDroid(true);
-						break;
-					}
-				}
+                    if (ITeamRobot.class.isAssignableFrom(robotClass))
+                    {
+                        robotSpecification.setTeamRobot(true);
+                    }
 
-				Class<?> superClass = robotClass.getSuperclass();
+                    if (IRobotBase.class.isAssignableFrom(robotClass))
+                    {
+                        updateNoDuplicates(robotSpecification);
+                        return;
+                    }
+                }
 
-				if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
-					superClass = null;
-				}
-
-				if (robotSpecification.getValid()) {
-					while (!updated && superClass != null && !superClass.getName().equals("java.lang.Object")) {
-						if (superClass.getName().equals("robocode.TeamRobot")) {
-							robotSpecification.setTeamRobot(true);
-						}
-						if (superClass.getName().equals("robocode.Robot")
-								|| superClass.getName().equals("robocode.JuniorRobot")) {
-							updateNoDuplicates(robotSpecification);
-							return;
-						}
-						superClass = superClass.getSuperclass();
-					}
-				}
 				getRobotDatabase().put(key, new ClassSpecification(robotSpecification));
 			} catch (Throwable t) {
 				getRobotDatabase().put(key, robotSpecification);

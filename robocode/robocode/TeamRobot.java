@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Vector;
 
 import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.ITeamRobot;
 
 
 /**
@@ -34,7 +35,7 @@ import robocode.peer.RobotPeer;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class TeamRobot extends AdvancedRobot {
+public class TeamRobot extends AdvancedRobot implements ITeamRobot {
 
 	/**
 	 * Checks if a given robot name is the name of one of your teammates.
