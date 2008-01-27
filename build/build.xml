@@ -641,8 +641,8 @@
   <taskdef name="jacobe" classname="com.tiobe.jacobe.JacobeTask" classpath="jacobe.jar"/>
   
   <target depends="init" name="jacobe">
-	<jacobe input="${src.robocode}" cfg="robocode.cfg" overwrite="true"/>
-	<jacobe input="${src.robocodeui}" cfg="robocode.cfg" overwrite="true"/>
+	<jacobe input="${src.robocode}" cfg="robocode.cfg" overwrite="true" nobackup="true"/>
+	<jacobe input="${src.robocodeui}" cfg="robocode.cfg" overwrite="true" nobackup="true"/>
   </target>
   
 
