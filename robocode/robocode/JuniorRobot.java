@@ -43,15 +43,15 @@ import robocode.JuniorStructure;
  */
 public class JuniorRobot extends JuniorStructure implements IJuniorRobot, IJuniorEvents {
 
-    public JuniorStructure getJuniorStructure() {
-        return this;
-    }
+	public JuniorStructure getJuniorStructure() {
+		return this;
+	}
 
-    public IJuniorEvents getJuniorEventListener() {
-        return this;
-    }
+	public IJuniorEvents getJuniorEventListener() {
+		return this;
+	}
 
-    /** The color black (0x000000) */
+	/** The color black (0x000000) */
 	public final static int	black = 0x000000;
 
 	/** The color white (0xFFFFFF) */

@@ -68,33 +68,32 @@ public class RobocodeClassLoader extends ClassLoader implements IRobocodeClassLo
 	// The hidden ClassLoader.class.classes field
 	private Field classesField = null;
 
-    public RobocodeClassLoader(ClassLoader parent) {
-        super(parent);
-    }
+	public RobocodeClassLoader(ClassLoader parent) {
+		super(parent);
+	}
 
-    public void init(RobotClassManager robotClassManager)
-    {
-        this.robotClassManager = robotClassManager;
-        this.robotSpecification = robotClassManager.getRobotSpecification();
+	public void init(RobotClassManager robotClassManager) {
+		this.robotClassManager = robotClassManager;
+		this.robotSpecification = robotClassManager.getRobotSpecification();
 
-        // Deep within the class loader is a vector of classes, and is VM
-        // implementation specific, so its not in every VM. However, if a VM
-        // does have it then we have to make sure we clear it during cleanup().
-        Field[] fields = ClassLoader.class.getDeclaredFields();
+		// Deep within the class loader is a vector of classes, and is VM
+		// implementation specific, so its not in every VM. However, if a VM
+		// does have it then we have to make sure we clear it during cleanup().
+		Field[] fields = ClassLoader.class.getDeclaredFields();
 
-        for (Field field : fields) {
-            if (field.getName().equals("classes")) {
-                classesField = field;
-                break;
-            }
-        }
+		for (Field field : fields) {
+			if (field.getName().equals("classes")) {
+				classesField = field;
+				break;
+			}
+		}
 
-        if (classesField == null) {
-            System.err.println("Failed to find classes field in:" + this);
-        }
-    }
+		if (classesField == null) {
+			System.err.println("Failed to find classes field in:" + this);
+		}
+	}
 
-    public synchronized String getClassDirectory() {
+	public synchronized String getClassDirectory() {
 		return classDirectory;
 	}
 
@@ -124,7 +123,7 @@ public class RobocodeClassLoader extends ClassLoader implements IRobocodeClassLo
 		}
 	}
 
-    public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
+	public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
 		if (cachedClasses.containsKey(name)) {
 			return cachedClasses.get(name);
 		}
@@ -255,6 +254,5 @@ public class RobocodeClassLoader extends ClassLoader implements IRobocodeClassLo
 		robotSpecification = null;
 	}
 
-    public void setRobocodeManager(RobocodeManager root) {
-    }
+	public void setRobocodeManager(RobocodeManager root) {}
 }

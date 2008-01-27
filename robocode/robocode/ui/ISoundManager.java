@@ -20,37 +20,38 @@ import robocode.peer.RobotPeer;
  * @author Pavel Savara (original)
  */
 public interface ISoundManager extends robocode.ui.ILoadableManager {
-    /**
-     * Plays a bullet sound depending on the bullet's state
-     *
-     * @param bp the bullet peer
-     */
+
+	/**
+	 * Plays a bullet sound depending on the bullet's state
+	 *
+	 * @param bp the bullet peer
+	 */
 	void playBulletSound(BulletPeer bp);
 
-    /**
-     * Plays a robot sound depending on the robot's state
-     *
-     * @param rp the robot peer
-     */
+	/**
+	 * Plays a robot sound depending on the robot's state
+	 *
+	 * @param rp the robot peer
+	 */
 	void playRobotSound(RobotPeer rp);
 
-    /**
-     * Stops the background music.
-     */
+	/**
+	 * Stops the background music.
+	 */
 	void stopBackgroundMusic();
 
-    /**
-     * Plays the end of battle music once.
-     */
+	/**
+	 * Plays the end of battle music once.
+	 */
 	void playEndOfBattleMusic();
 
-    /**
-     * Plays the background music, which is looping forever until stopped.
-     */
+	/**
+	 * Plays the background music, which is looping forever until stopped.
+	 */
 	void playBackgroundMusic();
 
-    /**
-     * Plays the theme music once.
-     */
+	/**
+	 * Plays the theme music once.
+	 */
 	void playThemeMusic();
 }

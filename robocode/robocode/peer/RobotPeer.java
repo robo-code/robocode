@@ -479,16 +479,17 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			if (robot != null) {
 				if (robot instanceof IJuniorRobot) {
 					IJuniorRobot jr = (IJuniorRobot) robot;
-                    JuniorStructure js = jr.getJuniorStructure();
-                    if (js!=null) {
+					JuniorStructure js = jr.getJuniorStructure();
 
-                        js.fieldWidth = (int) (getBattleFieldWidth() + 0.5);
-                        js.fieldHeight = (int) (getBattleFieldHeight() + 0.5);
+					if (js != null) {
 
-					    updateJuniorRobotFields();
-                    }
+						js.fieldWidth = (int) (getBattleFieldWidth() + 0.5);
+						js.fieldHeight = (int) (getBattleFieldHeight() + 0.5);
 
-                    eventManager.addCustomEvent(new GunReadyCondition());
+						updateJuniorRobotFields();
+					}
+
+					eventManager.addCustomEvent(new GunReadyCondition());
 					eventManager.addCustomEvent(new GunFireCondition());
 
 					for (;;) {
@@ -1619,23 +1620,24 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 
 		IJuniorRobot jr = (IJuniorRobot) robot;
-        JuniorStructure js = jr.getJuniorStructure();
-        if (js!=null) {
-            js.others = getOthers();
+		JuniorStructure js = jr.getJuniorStructure();
 
-            js.energy = Math.max(1, (int) (getEnergy() + 0.5));
+		if (js != null) {
+			js.others = getOthers();
 
-            js.robotX = (int) (getX() + 0.5);
-            js.robotY = (int) (getY() + 0.5);
+			js.energy = Math.max(1, (int) (getEnergy() + 0.5));
 
-            js.heading = (int) (toDegrees(getHeading()) + 0.5);
+			js.robotX = (int) (getX() + 0.5);
+			js.robotY = (int) (getY() + 0.5);
 
-            js.gunHeading = (int) (toDegrees(getGunHeading()) + 0.5);
-            js.gunBearing = (int) (toDegrees(normalRelativeAngle(getGunHeading() - getHeading())) + 0.5);
+			js.heading = (int) (toDegrees(getHeading()) + 0.5);
 
-            js.gunReady = (getGunHeat() <= 0);
-        }
-    }
+			js.gunHeading = (int) (toDegrees(getGunHeading()) + 0.5);
+			js.gunBearing = (int) (toDegrees(normalRelativeAngle(getGunHeading() - getHeading())) + 0.5);
+
+			js.gunReady = (getGunHeat() <= 0);
+		}
+	}
 
 	public synchronized void setJuniorFire(double power) {
 		juniorFirePower = power;

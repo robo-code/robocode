@@ -59,8 +59,7 @@ public class WindowManager implements IWindowManager {
 	private TeamCreator teamCreator;
 	private RankingDialog rankingDialog;
 
-    public WindowManager() {
-	}
+	public WindowManager() {}
 
 	public IRobocodeFrame getRobocodeFrame() {
 		if (robocodeFrame == null) {
@@ -71,7 +70,7 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showRobocodeFrame(boolean visible) {
-		RobocodeFrame frame = (RobocodeFrame)getRobocodeFrame();
+		RobocodeFrame frame = (RobocodeFrame) getRobocodeFrame();
 		
 		if (visible) {
 			// Pack frame to size all components
@@ -348,8 +347,8 @@ public class WindowManager implements IWindowManager {
 				return;
 			}
 			if (outputFile.exists()) {
-				if (JOptionPane.showConfirmDialog((Component) getRobocodeFrame(), outputFile + " already exists.  Overwrite?",
-						"Warning", JOptionPane.YES_NO_OPTION)
+				if (JOptionPane.showConfirmDialog((Component) getRobocodeFrame(),
+						outputFile + " already exists.  Overwrite?", "Warning", JOptionPane.YES_NO_OPTION)
 						== JOptionPane.NO_OPTION) {
 					return;
 				}
@@ -445,25 +444,25 @@ public class WindowManager implements IWindowManager {
 		window.setVisible(true);
 	}
     
-    /**
-     * Sets the Look and Feel (LAF). This method first try to set the LAF to the
-     * system's LAF. If this fails, it try to use the cross platform LAF.
-     * If this also fails, the LAF will not be changed.
-     */
-    public void setLookAndFeel() {
-        SetLookAndFeel();
-    }
+	/**
+	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
+	 * system's LAF. If this fails, it try to use the cross platform LAF.
+	 * If this also fails, the LAF will not be changed.
+	 */
+	public void setLookAndFeel() {
+		SetLookAndFeel();
+	}
 
-    public static void SetLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Throwable t) {
-            // For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
-            System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
-        }
-    }
+	public static void SetLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable t) {
+			// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
+			System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
+		}
+	}
 
-    public void setRobocodeManager(RobocodeManager robocodeManager) {
-        manager = robocodeManager;
-    }
+	public void setRobocodeManager(RobocodeManager robocodeManager) {
+		manager = robocodeManager;
+	}
 }

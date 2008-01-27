@@ -54,8 +54,7 @@ public final class VersionManager implements IVersionManager {
 	private String version;
 	private RobocodeManager manager;
 
-    public VersionManager() {
-	}
+	public VersionManager() {}
 
 	public void checkUpdateCheck() {
 		Date lastCheckedDate = manager.getProperties().getVersionChecked();
@@ -116,7 +115,7 @@ public final class VersionManager implements IVersionManager {
 			String curVersLine = getVersion();
 
 			boolean newVersionAvailable = false;
-            Component parentComponent = (Component) manager.getWindowManager().getRobocodeFrame();
+			Component parentComponent = (Component) manager.getWindowManager().getRobocodeFrame();
 			
 			if (newVersLine != null && curVersLine != null) {
 				Version newVersion = new Version(newVersLine);
@@ -124,15 +123,15 @@ public final class VersionManager implements IVersionManager {
 				if (newVersion.compareTo(curVersLine) > 0) {
 					newVersionAvailable = true;
 
-                    if (JOptionPane.showConfirmDialog(parentComponent,
+					if (JOptionPane.showConfirmDialog(parentComponent,
 							"Version " + newVersion + " of Robocode is now available.  Would you like to download it?",
 							"Version " + newVersion + " available", JOptionPane.YES_NO_OPTION)
 							== JOptionPane.YES_OPTION) {
 						try {
 							BrowserManager.openURL(INSTALL_URL);
 						} catch (IOException e) {
-							JOptionPane.showMessageDialog(parentComponent, e.getMessage(),
-									"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(parentComponent, e.getMessage(), "Unable to open browser!",
+									JOptionPane.INFORMATION_MESSAGE);
 						}
 					} else if (newVersion.isFinal()) {
 						JOptionPane.showMessageDialog(parentComponent,
@@ -276,9 +275,9 @@ public final class VersionManager implements IVersionManager {
 		return version;
 	}
     
-    public void setRobocodeManager(RobocodeManager robocodeManager) {
-        manager = robocodeManager;
-    }
+	public void setRobocodeManager(RobocodeManager robocodeManager) {
+		manager = robocodeManager;
+	}
 }
 
 

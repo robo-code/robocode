@@ -57,6 +57,7 @@ public class RobotBattleSpecification implements java.io.Serializable {
 	public String getNameAndVersion() {
 		String nameAndVersion = getName();
 		String version = getVersion();
+
 		if (version != null && version.trim().length() > 0) {
 			nameAndVersion += ' ' + version;
 		}

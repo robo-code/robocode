@@ -442,15 +442,15 @@ public abstract class FileSpecification implements IFileSpecification {
 		return rootDir;
 	}
 
-/*  TODO ZAMO
-    public void setDevelopmentVersion(boolean value) {
-        developmentVersion = value;
-    }
+	/* TODO ZAMO
+	 public void setDevelopmentVersion(boolean value) {
+	 developmentVersion = value;
+	 }
 
-    public void setRootDir(File value) {
-        rootDir = value;
-    }
-*/
+	 public void setRootDir(File value) {
+	 rootDir = value;
+	 }
+	 */
 	public static int compare(String p1, String c1, String v1, String p2, String c2, String v2) {
 		if (p1 == null && p2 != null) {
 			return 1;

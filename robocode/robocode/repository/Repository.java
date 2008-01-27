@@ -30,7 +30,8 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class Repository {
-	private List<IFileSpecification> fileSpecifications = Collections.synchronizedList(new ArrayList<IFileSpecification>());
+	private List<IFileSpecification> fileSpecifications = Collections.synchronizedList(
+			new ArrayList<IFileSpecification>());
 
 	public void add(IFileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);

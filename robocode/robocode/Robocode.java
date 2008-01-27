@@ -64,12 +64,13 @@ public class Robocode {
 	 * @param args an array of command-line arguments
 	 */
 	public static void main(String[] args) throws Throwable {
-        try {
-		Robocode robocode = new Robocode();
-		robocode.initialize(args);
-        } catch (Throwable e) {
-            Logger.log(e);
-        }
+		try {
+			Robocode robocode = new Robocode();
+
+			robocode.initialize(args);
+		} catch (Throwable e) {
+			Logger.log(e);
+		}
 	}
 
 	private Robocode() {}
@@ -91,7 +92,7 @@ public class Robocode {
 		boolean securityOn = true;
 
 		if (System.getProperty("NOSECURITY", "false").equals("true")) {
-            manager.getWindowManager().getRobocodeFrame().messageWarning(
+			manager.getWindowManager().getRobocodeFrame().messageWarning(
 					"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
 					+ "You should only run robots which you trust!");
 			securityOn = false;
@@ -166,7 +167,7 @@ public class Robocode {
 
 		// Set the Look and Feel (LAF)
 		if (manager.isGUIEnabled()) {
-            manager.getWindowManager().setLookAndFeel();
+			manager.getWindowManager().setLookAndFeel();
 		}
 
 		if (battleFilename != null) {
@@ -200,7 +201,7 @@ public class Robocode {
 			manager.getVersionManager().checkUpdateCheck();
 		}
 		if (minimize) {
-            manager.getWindowManager().getRobocodeFrame().setIconified(true);
+			manager.getWindowManager().getRobocodeFrame().setIconified(true);
 		}
 
 		if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
@@ -209,30 +210,25 @@ public class Robocode {
 			manager.runIntroBattle();
 		}
 
-        return true;
+		return true;
 	}
 
 	private void printUsage() {
 		System.out.print(
-				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n" +
-				"                [-minimize] [-nodisplay] [-nosound]]\n" +
-				"\n" +
-				"where options include:\n" +
-				"    -cwd <path>             Change the current working directory\n" +
-				"    -battle <battle file>   Run the battle specified in a battle file\n" +
-				"    -results <file>         Save results to the specified text file\n" +
-				"    -tps <tps>              Set the TPS (Turns Per Second) to use\n" +
-				"    -minimize               Run minimized when Robocode starts\n" +
-				"    -nodisplay              Run with the display / GUI disabled\n" +
-				"    -nosound                Run with sound disabled\n" +
-				"\n" +
-				"properties include:\n" +
-				"    -DWORKINGDIRECTORY=<path>  Set the working directory\n" +
-				"    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n" +
-				"    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n" +
-				"    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n" +
-				"    -Ddebug=true|false         Enable or disable System.err messages\n" +
-				"\n");
+				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
+						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
+						+ "    -cwd <path>             Change the current working directory\n"
+						+ "    -battle <battle file>   Run the battle specified in a battle file\n"
+						+ "    -results <file>         Save results to the specified text file\n"
+						+ "    -tps <tps>              Set the TPS (Turns Per Second) to use\n"
+						+ "    -minimize               Run minimized when Robocode starts\n"
+						+ "    -nodisplay              Run with the display / GUI disabled\n"
+						+ "    -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
+						+ "    -DWORKINGDIRECTORY=<path>  Set the working directory\n"
+						+ "    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
+						+ "    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
+						+ "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
+						+ "    -Ddebug=true|false         Enable or disable System.err messages\n" + "\n");
 	}
 
 	/**

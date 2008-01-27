@@ -56,9 +56,9 @@ public class RobocodeManager {
 	private IWindowManager windowManager;
 	private IVersionManager versionManager;
 	private ISoundManager soundManager;
-    private IRepositoryPlugin[] repositoryPlugins;
+	private IRepositoryPlugin[] repositoryPlugins;
 
-    private boolean slave;
+	private boolean slave;
 
 	private RobocodeProperties properties;
 	private RobocodeListener listener;
@@ -69,7 +69,7 @@ public class RobocodeManager {
 	public RobocodeManager(boolean slave, RobocodeListener listener) {
 		this.slave = slave;
 		this.listener = listener;
-    }
+	}
 
 	/**
 	 * Gets the battleManager.
@@ -102,8 +102,8 @@ public class RobocodeManager {
 	 */
 	public IWindowManager getWindowManager() {
 		if (windowManager == null) {
-            windowManager = (IWindowManager) loadManager("robocodeui.manager.WindowManager");
-        }
+			windowManager = (IWindowManager) loadManager("robocodeui.manager.WindowManager");
+		}
 		return windowManager;
 	}
 
@@ -126,7 +126,7 @@ public class RobocodeManager {
 	 */
 	public IRobotDialogManager getRobotDialogManager() {
 		if (robotDialogManager == null) {
-            robotDialogManager = (IRobotDialogManager) loadManager("robocodeui.manager.RobotDialogManager");
+			robotDialogManager = (IRobotDialogManager) loadManager("robocodeui.manager.RobotDialogManager");
 		}
 		return robotDialogManager;
 	}
@@ -185,9 +185,9 @@ public class RobocodeManager {
 	 */
 	public IImageManager getImageManager() {
 		if (imageManager == null) {
-            imageManager = (IImageManager) loadManager("robocodeui.manager.ImageManager");
-            imageManager.initialize();
-        }
+			imageManager = (IImageManager) loadManager("robocodeui.manager.ImageManager");
+			imageManager.initialize();
+		}
 		return imageManager;
 	}
 
@@ -198,7 +198,7 @@ public class RobocodeManager {
 	 */
 	public IVersionManager getVersionManager() {
 		if (versionManager == null) {
-            versionManager = (IVersionManager) loadManager("robocodeui.manager.VersionManager");
+			versionManager = (IVersionManager) loadManager("robocodeui.manager.VersionManager");
 		}
 		return versionManager;
 	}
@@ -222,94 +222,92 @@ public class RobocodeManager {
 	 */
 	public ISoundManager getSoundManager() {
 		if (soundManager == null) {
-            soundManager = (ISoundManager) loadManager("robocodeui.sound.SoundManager");
+			soundManager = (ISoundManager) loadManager("robocodeui.sound.SoundManager");
 		}
 		return soundManager;
 	}
 
-    /**
-     * Gets the Look and Manager.
-     *
-     * @return Returns a list of Repository Plugins 
-     */
-    public IRepositoryPlugin[] getRepositoryPlugins() {
-        if (repositoryPlugins == null) {
-            JavaRepositoryPlugin javaRepositoryPlugin = new JavaRepositoryPlugin();
-            if (isRunningIKVM())
-            {
-                IRepositoryPlugin netRepositoryPlugin = (IRepositoryPlugin) loadManager("robocodeui.repository.NetRepositoryPlugin");
-                repositoryPlugins = new IRepositoryPlugin[]{netRepositoryPlugin, javaRepositoryPlugin}; 
-            }
-            else
-            {
-                repositoryPlugins = new IRepositoryPlugin[]{javaRepositoryPlugin};
-            }
-        }
-        return repositoryPlugins;
-    }
+	/**
+	 * Gets the Look and Manager.
+	 *
+	 * @return Returns a list of Repository Plugins 
+	 */
+	public IRepositoryPlugin[] getRepositoryPlugins() {
+		if (repositoryPlugins == null) {
+			JavaRepositoryPlugin javaRepositoryPlugin = new JavaRepositoryPlugin();
 
-    /**
-     * Gets the Look and Manager.
-     *
-     * @return Returns a list of Repository Plugins
-     */
-    public IRobocodeClassLoader createRobocodeClassLoader(RobotClassManager robotClassManager) {
-        IRobocodeClassLoader robocodeClassLoader;
-        if (isRunningIKVM() && robotClassManager.getRobotSpecification().getNeedsExternalLoader())
-        {
-            robocodeClassLoader = (IRobocodeClassLoader) loadManager("robocodeui.security.NetRobocodeClassLoader");
-        }
-        else
-        {
-            robocodeClassLoader = new RobocodeClassLoader(getClass().getClassLoader());
-        }
-        robocodeClassLoader.init(robotClassManager);
-        return robocodeClassLoader;
-    }
+			if (isRunningIKVM()) {
+				IRepositoryPlugin netRepositoryPlugin = (IRepositoryPlugin) loadManager(
+						"robocodeui.repository.NetRepositoryPlugin");
 
-    private ILoadableManager loadManager(String name)
-    {
-        Class<?> c = loadClass(name);
-        ILoadableManager manager;
-        try {
-            manager = (ILoadableManager)c.newInstance();
-        } catch (InstantiationException e) {
-            log(e);
-            return null;
-        } catch (IllegalAccessException e) {
-            log(e);
-            return null;
-        }
-        manager.setRobocodeManager(this);
-        return manager; 
-    }
+				repositoryPlugins = new IRepositoryPlugin[] { netRepositoryPlugin, javaRepositoryPlugin}; 
+			} else {
+				repositoryPlugins = new IRepositoryPlugin[] { javaRepositoryPlugin};
+			}
+		}
+		return repositoryPlugins;
+	}
+
+	/**
+	 * Gets the Look and Manager.
+	 *
+	 * @return Returns a list of Repository Plugins
+	 */
+	public IRobocodeClassLoader createRobocodeClassLoader(RobotClassManager robotClassManager) {
+		IRobocodeClassLoader robocodeClassLoader;
+
+		if (isRunningIKVM() && robotClassManager.getRobotSpecification().getNeedsExternalLoader()) {
+			robocodeClassLoader = (IRobocodeClassLoader) loadManager("robocodeui.security.NetRobocodeClassLoader");
+		} else {
+			robocodeClassLoader = new RobocodeClassLoader(getClass().getClassLoader());
+		}
+		robocodeClassLoader.init(robotClassManager);
+		return robocodeClassLoader;
+	}
+
+	private ILoadableManager loadManager(String name) {
+		Class<?> c = loadClass(name);
+		ILoadableManager manager;
+
+		try {
+			manager = (ILoadableManager) c.newInstance();
+		} catch (InstantiationException e) {
+			log(e);
+			return null;
+		} catch (IllegalAccessException e) {
+			log(e);
+			return null;
+		}
+		manager.setRobocodeManager(this);
+		return manager; 
+	}
     
-    private Class<?> loadClass(String name) {
-    	try {
-            if (isRunningIKVM())
-            {
-                //name="n" + name + ", nrobocodeui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a8c9038a4fffb2bb";
-                name="n" + name + ", nrobocodeui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+	private Class<?> loadClass(String name) {
+		try {
+			if (isRunningIKVM()) {
+				// name="n" + name + ", nrobocodeui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a8c9038a4fffb2bb";
+				name = "n" + name + ", nrobocodeui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
 				ClassLoader loader2 = Thread.currentThread().getContextClassLoader();
+
 				return Class.forName(name, true, loader2);
-            }
-            else
-            {
-                ClassLoader loader = ClassLoader.getSystemClassLoader();
+			} else {
+				ClassLoader loader = ClassLoader.getSystemClassLoader();
+
 				return Class.forName(name, true, loader);
 			}
 		} catch (ClassNotFoundException e) {
-            log(e);
+			log(e);
 			return null;
-        }
-    }
+		}
+	}
 
-    public static boolean isRunningIKVM() {
-        ClassLoader loader = ClassLoader.getSystemClassLoader();
-        return loader.getClass().getName().contains("ikvm");
-    }
+	public static boolean isRunningIKVM() {
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
 
-    /**
+		return loader.getClass().getName().contains("ikvm");
+	}
+
+	/**
 	 * Gets the slave.
 	 * 
 	 * @return Returns a boolean

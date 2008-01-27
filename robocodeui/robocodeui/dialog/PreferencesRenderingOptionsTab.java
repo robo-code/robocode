@@ -159,8 +159,8 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JPanel getOtherSettingsPanel() {
 		if (otherSettingsPanel == null) {
 			otherSettingsPanel = new JPanel();
-			otherSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-					"Other settings"));
+			otherSettingsPanel.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Other settings"));
 			otherSettingsPanel.setLayout(new BoxLayout(otherSettingsPanel, BoxLayout.Y_AXIS));
 			otherSettingsPanel.add(getOptionsRenderingBufferImagesCheckBox());
 		}
@@ -293,7 +293,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 					@Override
 					public void run() {
 						storePreferences();
-						((ImageManager)manager.getImageManager()).initialize();
+						((ImageManager) manager.getImageManager()).initialize();
 					}
 				}.start();
 				return;

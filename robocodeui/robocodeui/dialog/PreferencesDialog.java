@@ -64,7 +64,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	 * PreferencesDialog constructor
 	 */
 	public PreferencesDialog(RobocodeManager manager) {
-		super((RobocodeFrame)manager.getWindowManager().getRobocodeFrame());
+		super((RobocodeFrame) manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
 		initialize();
 	}

@@ -11,8 +11,8 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public interface ITeamRobot {
-}
+public interface ITeamRobot {}

@@ -57,8 +57,8 @@ public class RobotSpecification extends FileSpecification implements IRobotSpeci
 		String fileType = FileUtil.getFileType(filename);
 
 		this.developmentVersion = developmentVersion;
-        this.rootDir = rootDir; 
-        if (prefix.length() == 0 && fileType.equals(".jar")) {
+		this.rootDir = rootDir; 
+		if (prefix.length() == 0 && fileType.equals(".jar")) {
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
 		} else if (fileType.equals(".team")) {
 			throw new RuntimeException("Robot Specification can only be constructed from a .class file");
@@ -234,11 +234,11 @@ public class RobotSpecification extends FileSpecification implements IRobotSpeci
 		return robotJavaSourceIncluded;
 	}
 
-    public boolean getNeedsExternalLoader() {
-        return false;
-    }
+	public boolean getNeedsExternalLoader() {
+		return false;
+	}
 
-    /**
+	/**
 	 * Sets the robotJavaSourceIncluded.
 	 *
 	 * @param robotJavaSourceIncluded The robotJavaSourceIncluded to set

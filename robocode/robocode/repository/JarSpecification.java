@@ -50,30 +50,30 @@ public class JarSpecification extends FileSpecification {
 				setFilePath(f.getPath());
 			}
 			setFileName(f.getName());
-            storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
+			storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
 		} else {
 			throw new RuntimeException("JarSpecification can only be constructed from a .jar file");
 		}
 	}
 
-    // Create and store this new specification as a jar file in the directory containing
-    // the robots as a robot package
-    private void storeJarFile(File robotDir, File robotCacheDir) {
-        File src = null;
+	// Create and store this new specification as a jar file in the directory containing
+	// the robots as a robot package
+	private void storeJarFile(File robotDir, File robotCacheDir) {
+		File src = null;
 
-        if (rootDir.getName().indexOf(".jar_") == rootDir.getName().length() - 5
-                || rootDir.getName().indexOf(".zip_") == rootDir.getName().length() - 5) {
-            if (rootDir.getParentFile().equals(robotCacheDir)) {
-                src = new File(robotDir, rootDir.getName().substring(0, rootDir.getName().length() - 1));
-            } else if (rootDir.getParentFile().getParentFile().equals(robotCacheDir)) {
-                src = new File(rootDir.getParentFile(), rootDir.getName().substring(0, rootDir.getName().length() - 1));
-            }
-        }
-        if (src != null && !src.exists()) {
-            src = null;
-        }
-        packageFile = src;
-    }
+		if (rootDir.getName().indexOf(".jar_") == rootDir.getName().length() - 5
+				|| rootDir.getName().indexOf(".zip_") == rootDir.getName().length() - 5) {
+			if (rootDir.getParentFile().equals(robotCacheDir)) {
+				src = new File(robotDir, rootDir.getName().substring(0, rootDir.getName().length() - 1));
+			} else if (rootDir.getParentFile().getParentFile().equals(robotCacheDir)) {
+				src = new File(rootDir.getParentFile(), rootDir.getName().substring(0, rootDir.getName().length() - 1));
+			}
+		}
+		if (src != null && !src.exists()) {
+			src = null;
+		}
+		packageFile = src;
+	}
 
 	@Override
 	public String getUid() {

@@ -53,9 +53,9 @@ public class RobotClassManager {
 
 	private String fullClassName;
 	private TeamPeer teamManager;
-    private RobocodeManager manager;
+	private RobocodeManager manager;
 
-    private String uid = "";
+	private String uid = "";
 
 	/**
 	 * RobotClassHandler constructor
@@ -68,8 +68,8 @@ public class RobotClassManager {
 		this.robotSpecification = robotSpecification;
 		this.fullClassName = robotSpecification.getName();
 		this.teamManager = teamManager;
-        this.manager = manager;
-    }
+		this.manager = manager;
+	}
 
 	public String getRootPackage() {
 		return getClassNameManager().getRootPackage();
@@ -120,8 +120,8 @@ public class RobotClassManager {
 
 	public IRobocodeClassLoader getRobotClassLoader() {
 		if (robotClassLoader == null) {
-            robotClassLoader = manager.createRobocodeClassLoader(this);
-        }
+			robotClassLoader = manager.createRobocodeClassLoader(this);
+		}
 		return robotClassLoader;
 	}
 

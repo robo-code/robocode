@@ -702,7 +702,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public void extractRobot() {
-		((WindowManager)manager.getWindowManager()).showRobotExtractor(this);
+		((WindowManager) manager.getWindowManager()).showRobotExtractor(this);
 	}
 
 	public void run() {

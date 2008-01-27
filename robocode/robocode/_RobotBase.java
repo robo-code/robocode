@@ -52,35 +52,35 @@ public abstract class _RobotBase {
 	 *   }
 	 * </pre>
 	 */
-    public java.io.PrintStream out;
+	public java.io.PrintStream out;
 
-    /**
+	/**
 	 * This method is called by the game.
 	 * Do not call this method!
 	 */
-    public void setOut(java.io.PrintStream out) {
-        this.out=out;
-    }
+	public void setOut(java.io.PrintStream out) {
+		this.out = out;
+	}
 
-    /**
-     * The output stream your robot should use to print.
-     * <p>
-     * You can view the print-outs by clicking the button for your robot in the
-     * right side of the battle window.
-     * <p>
-     * Example:
-     * <pre>
-     *   // Print out a line each time my robot hits another robot
-     *   public void onHitRobot(HitRobotEvent e) {
-     *       getOut.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
-     *   }
-     * </pre>
-     */
-    public final java.io.PrintStream getOut() {
-        return out;
-    }
+	/**
+	 * The output stream your robot should use to print.
+	 * <p>
+	 * You can view the print-outs by clicking the button for your robot in the
+	 * right side of the battle window.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Print out a line each time my robot hits another robot
+	 *   public void onHitRobot(HitRobotEvent e) {
+	 *       getOut.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
+	 *   }
+	 * </pre>
+	 */
+	public final java.io.PrintStream getOut() {
+		return out;
+	}
 
-    /**
+	/**
 	 * This method is called by the game. RobotPeer is the object that deals with
 	 * game mechanics and rules, and makes sure your robot abides by them.
 	 * Do not call this method! Your robot will simply stop interacting with the game.
@@ -89,15 +89,14 @@ public abstract class _RobotBase {
 		this.peer = peer;
 	}
 
-    /**
-     * @return RobotPeer, the object that deals with game mechanics and rules. 
-     */
-    public final RobotPeer getPeer() {
-        return peer;
-    }
+	/**
+	 * @return RobotPeer, the object that deals with game mechanics and rules. 
+	 */
+	public final RobotPeer getPeer() {
+		return peer;
+	}
 
-
-    /**
+	/**
 	 * Throws a RobotException. This method should be called when the robot's peer
 	 * is uninitialized.
 	 */

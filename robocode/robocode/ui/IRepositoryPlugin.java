@@ -23,19 +23,19 @@ import java.io.File;
  */
 public interface IRepositoryPlugin extends ILoadableManager {
 
-    /**
-     * @return setof file extensions returned by this plugin 
-     */
-    String[] getExtensions();
+	/**
+	 * @return setof file extensions returned by this plugin 
+	 */
+	String[] getExtensions();
 
-    /**
-     * Creates new instance of file specification for given file. Returns null when there is no supported robot in the file.
-     * @param repositoryManager
-     * @param file to load robot from
-     * @param rootDir parent directory
-     * @param prefix robot prefix
-     * @param developmentVersion
-     * @return specification or null
-     */
-    IFileSpecification createSpecification(RobotRepositoryManager repositoryManager, File file, File rootDir, String prefix, boolean developmentVersion);
+	/**
+	 * Creates new instance of file specification for given file. Returns null when there is no supported robot in the file.
+	 * @param repositoryManager
+	 * @param file to load robot from
+	 * @param rootDir parent directory
+	 * @param prefix robot prefix
+	 * @param developmentVersion
+	 * @return specification or null
+	 */
+	IFileSpecification createSpecification(RobotRepositoryManager repositoryManager, File file, File rootDir, String prefix, boolean developmentVersion);
 }

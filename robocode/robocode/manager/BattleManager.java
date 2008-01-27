@@ -339,7 +339,7 @@ public class BattleManager {
 			frame.setEnableBattleSaveMenuItem(true);
 
 			if (isPaused()) {
-                pauseResumeBattle();
+				pauseResumeBattle();
 			}
 
 			manager.getRobotDialogManager().setActiveBattle(battle);
@@ -372,13 +372,13 @@ public class BattleManager {
 		battleFilename = newBattleFilename;
 	}
 
-    public synchronized void pauseResumeBattle() {
-        if (isPaused()) {
-            resumeBattle();
-        } else {
-            pauseBattle();
-        }
-    }
+	public synchronized void pauseResumeBattle() {
+		if (isPaused()) {
+			resumeBattle();
+		} else {
+			pauseBattle();
+		}
+	}
 
 	public synchronized boolean isPaused() {
 		return (pauseCount != 0);
@@ -413,26 +413,26 @@ public class BattleManager {
 		pauseBattle();
 		File f = new File(getBattlePath());
 
-        String path = manager.getWindowManager().getRobocodeFrame().saveBattleDialog(f);
-        if (path!=null)
-        {
-            battleFilename = path;
-            int idx = battleFilename.lastIndexOf('.');
-            String extension = "";
+		String path = manager.getWindowManager().getRobocodeFrame().saveBattleDialog(f);
 
-            if (idx > 0) {
-                extension = battleFilename.substring(idx);
-            }
-            if (!(extension.equalsIgnoreCase(".battle"))) {
-                battleFilename += ".battle";
-            }
-            saveBattleProperties();
-        }
+		if (path != null) {
+			battleFilename = path;
+			int idx = battleFilename.lastIndexOf('.');
+			String extension = "";
 
-        resumeBattle();
+			if (idx > 0) {
+				extension = battleFilename.substring(idx);
+			}
+			if (!(extension.equalsIgnoreCase(".battle"))) {
+				battleFilename += ".battle";
+			}
+			saveBattleProperties();
+		}
+
+		resumeBattle();
 	}
 
-    public void saveBattleProperties() {
+	public void saveBattleProperties() {
 		if (battleProperties == null) {
 			log("Cannot save null battle properties");
 			return;

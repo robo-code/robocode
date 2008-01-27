@@ -40,7 +40,7 @@ public class RobocodeObjectInputStream extends ObjectInputStream {
 		String name = desc.getName();
 
 		try {
-			return Class.forName(name, false, (ClassLoader)classLoader);
+			return Class.forName(name, false, (ClassLoader) classLoader);
 		} catch (ClassNotFoundException ex) {
 			return super.resolveClass(desc);
 		}

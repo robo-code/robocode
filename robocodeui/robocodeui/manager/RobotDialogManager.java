@@ -94,7 +94,7 @@ public class RobotDialogManager implements IRobotDialogManager {
 		return dialog;
 	}
 	
-    public void setRobocodeManager(RobocodeManager robocodeManager) {
-        manager = robocodeManager;
-    }
+	public void setRobocodeManager(RobocodeManager robocodeManager) {
+		manager = robocodeManager;
+	}
 }

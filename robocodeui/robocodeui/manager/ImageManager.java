@@ -53,8 +53,7 @@ public class ImageManager implements IImageManager {
 	private HashMap<Color, RenderImage> robotGunImageCache;
 	private HashMap<Color, RenderImage> robotRadarImageCache;
 
-    public ImageManager() {
-	}
+	public ImageManager() {}
 
 	public void initialize() {
 		// Note that initialize could be called in order to reset all images (image buffering)
@@ -131,6 +130,7 @@ public class ImageManager implements IImageManager {
 
 	private Image getImage(String filename) {
 		Image image = ImageUtil.getImage(filename);
+
 		if (manager.getProperties().getOptionsRenderingBufferImages()) {
 			image = ImageUtil.getBufferedImage(image);
 		}
@@ -203,10 +203,10 @@ public class ImageManager implements IImageManager {
 		return img;
 	}
 
-    public void setRobocodeManager(RobocodeManager robocodeManager) {
-        manager = robocodeManager;
+	public void setRobocodeManager(RobocodeManager robocodeManager) {
+		manager = robocodeManager;
 		initialize();
-    }
+	}
 
 	/**
 	 * Class used for caching rendered robot parts in various colors.

@@ -267,7 +267,7 @@ public class RobocodeFrame extends JFrame implements IRobocodeFrame {
 	 */
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
-		this.windowManager = (WindowManager)manager.getWindowManager();
+		this.windowManager = (WindowManager) manager.getWindowManager();
 		this.manager = manager;
 		initialize();
 	}
@@ -300,9 +300,9 @@ public class RobocodeFrame extends JFrame implements IRobocodeFrame {
 		getRobotButtonsPanel().repaint();
 	}
 
-    public void addRobotButton(IRobotDialogManager robotDialogManager, RobotPeer robotPeer) {
-        addRobotButton(new RobotButton((RobotDialogManager)robotDialogManager, robotPeer));
-    }
+	public void addRobotButton(IRobotDialogManager robotDialogManager, RobotPeer robotPeer) {
+		addRobotButton(new RobotButton((RobotDialogManager) robotDialogManager, robotPeer));
+	}
 
 	/**
 	 * Return the BattleView.
@@ -693,17 +693,17 @@ public class RobocodeFrame extends JFrame implements IRobocodeFrame {
 		}
 	}
 
-    public void setStatus(String s) {
-        WindowUtil.setStatus(s);
-    }
+	public void setStatus(String s) {
+		WindowUtil.setStatus(s);
+	}
 
-    public void messageError(String s) {
-        WindowUtil.messageError(s);
-    }
+	public void messageError(String s) {
+		WindowUtil.messageError(s);
+	}
 
-    public void messageWarning(String s) {
-        WindowUtil.messageWarning(s);
-    }
+	public void messageWarning(String s) {
+		WindowUtil.messageWarning(s);
+	}
 
 	/**
 	 * Gets the iconified.
@@ -732,55 +732,55 @@ public class RobocodeFrame extends JFrame implements IRobocodeFrame {
 		getRestartButton().setEnabled(enable);
 	}
 
-    public void setEnableBattleSaveAsMenuItem(boolean b) {
-        getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(b);
-    }
+	public void setEnableBattleSaveAsMenuItem(boolean b) {
+		getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(b);
+	}
 
-    public void setEnableBattleSaveMenuItem(boolean b) {
-        getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(b);
-    }
+	public void setEnableBattleSaveMenuItem(boolean b) {
+		getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(b);
+	}
 
 	public void setEnableReplayButton(boolean enable) {
 		getReplayButton().setEnabled(enable);
 	}
 
-    public String saveBattleDialog(File f) {
-        JFileChooser chooser;
-        chooser = new JFileChooser(f);
+	public String saveBattleDialog(File f) {
+		JFileChooser chooser;
 
-        javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                if (pathname.isDirectory()) {
-                    return false;
-                }
-                String fn = pathname.getName();
-                int idx = fn.lastIndexOf('.');
-                String extension = "";
+		chooser = new JFileChooser(f);
 
-                if (idx >= 0) {
-                    extension = fn.substring(idx);
-                }
-                if (extension.equalsIgnoreCase(".battle")) {
-                    return true;
-                }
-                return false;
-            }
+		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory()) {
+					return false;
+				}
+				String fn = pathname.getName();
+				int idx = fn.lastIndexOf('.');
+				String extension = "";
 
-            @Override
-            public String getDescription() {
-                return "Battles";
-            }
-        };
+				if (idx >= 0) {
+					extension = fn.substring(idx);
+				}
+				if (extension.equalsIgnoreCase(".battle")) {
+					return true;
+				}
+				return false;
+			}
 
-        chooser.setFileFilter(filter);
-        int rv = chooser.showSaveDialog(this);
+			@Override
+			public String getDescription() {
+				return "Battles";
+			}
+		};
 
-        if (rv == JFileChooser.APPROVE_OPTION)
-        {
-            return chooser.getSelectedFile().getPath();
-        }
-        return null;
-    }
+		chooser.setFileFilter(filter);
+		int rv = chooser.showSaveDialog(this);
+
+		if (rv == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile().getPath();
+		}
+		return null;
+	}
 
 }

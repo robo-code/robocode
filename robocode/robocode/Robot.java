@@ -71,13 +71,13 @@ public class Robot extends _Robot implements IRobot, IRobotEvents, ISystemEvents
 	 */
 	public Robot() {}
 
-    public IRobotEvents getRobotEventListener() {
-        return this;
-    }
+	public IRobotEvents getRobotEventListener() {
+		return this;
+	}
 
-    public ISystemEvents getSystemEventListener() {
-        return this;
-    }
+	public ISystemEvents getSystemEventListener() {
+		return this;
+	}
 
 	/**
 	 * Immediately moves your robot ahead (forward) by distance measured in

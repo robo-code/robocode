@@ -94,11 +94,10 @@ public class RobotRepositoryManager {
 
 	private FileSpecificationDatabase getRobotDatabase() {
 		if (robotDatabase == null) {
-            if (manager.isGUIEnabled())
-            {
-                manager.getWindowManager().getRobocodeFrame().setStatus("Reading robot database");
-            }
-            robotDatabase = new FileSpecificationDatabase();
+			if (manager.isGUIEnabled()) {
+				manager.getWindowManager().getRobocodeFrame().setStatus("Reading robot database");
+			}
+			robotDatabase = new FileSpecificationDatabase();
 			try {
 				robotDatabase.load(new File(FileUtil.getRobotsDir(), "robot.database"));
 			} catch (FileNotFoundException e) {
@@ -119,12 +118,11 @@ public class RobotRepositoryManager {
 			return repository;
 		}
 
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("Refreshing robot database");
-        }
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("Refreshing robot database");
+		}
 
-        updatedJarList.clear();
+		updatedJarList.clear();
 
 		// jarUpdated = false;
 		cacheWarning = false;
@@ -138,11 +136,10 @@ public class RobotRepositoryManager {
 
 		// Clean up cache -- delete nonexistent jar directories
 		cleanupCache();
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("Cleaning up robot database");
-        }
-        cleanupDatabase();
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("Cleaning up robot database");
+		}
+		cleanupDatabase();
 
 		String externalRobotsPath = manager.getProperties().getOptionsDevelopmentPath(); {
 			StringTokenizer tokenizer = new StringTokenizer(externalRobotsPath, File.pathSeparator);
@@ -161,11 +158,10 @@ public class RobotRepositoryManager {
 
 		File f = getRobotsDirectory();
 
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("Reading: " + f.getName());
-        }
-        if (f.exists() && f.isDirectory()) { // it better be!
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("Reading: " + f.getName());
+		}
+		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", true);
 		}
 
@@ -182,30 +178,27 @@ public class RobotRepositoryManager {
 		updatedJarList.clear();
 
 		f = getRobotCache();
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("Reading: " + getRobotCache());
-        }
-        if (f.exists() && f.isDirectory()) { // it better be!
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("Reading: " + getRobotCache());
+		}
+		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", false);
 		}
 
 		List<IFileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
 		if (write) {
-            if (manager.isGUIEnabled())
-            {
-    			manager.getWindowManager().getRobocodeFrame().setStatus("Saving robot database");
-            }
-            saveRobotDatabase();
+			if (manager.isGUIEnabled()) {
+				manager.getWindowManager().getRobocodeFrame().setStatus("Saving robot database");
+			}
+			saveRobotDatabase();
 		}
 
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("Adding robots to repository");
-        }
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("Adding robots to repository");
+		}
 
-        for (IFileSpecification fs : fileSpecificationList) {
+		for (IFileSpecification fs : fileSpecificationList) {
 			if (fs instanceof TeamSpecification) {
 				repository.add(fs);
 				continue;
@@ -226,15 +219,13 @@ public class RobotRepositoryManager {
 					"Unexpected robotcache update",
 					JOptionPane.OK_OPTION);
 		}
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("Sorting repository");
-        }
-        repository.sortRobotSpecifications();
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("");
-        }
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("Sorting repository");
+		}
+		repository.sortRobotSpecifications();
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("");
+		}
 
 		return repository;
 	}
@@ -255,11 +246,10 @@ public class RobotRepositoryManager {
 					if (f.exists() && !f.getName().startsWith("robocode")) {
 						continue;
 					}
-                    if (manager.isGUIEnabled())
-                    {
-    					manager.getWindowManager().getRobocodeFrame().setStatus("Cleaning up cache: Removing " + file);
-                    }
-                    FileUtil.deleteDir(file);
+					if (manager.isGUIEnabled()) {
+						manager.getWindowManager().getRobocodeFrame().setStatus("Cleaning up cache: Removing " + file);
+					}
+					FileUtil.deleteDir(file);
 				}
 			}
 		}
@@ -321,19 +311,20 @@ public class RobotRepositoryManager {
 	private List<IFileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
 		List<IFileSpecification> robotList = Collections.synchronizedList(new ArrayList<IFileSpecification>());
 
-        ArrayList<String> fileTypesList= new ArrayList<String>();
-        for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
-            for (String ext : p.getExtensions()) {
-                if (!fileTypesList.contains(ext))
-                {
-                    fileTypesList.add(ext);
-                }
-            }
-        }
-        String[] fileTypes= new String[fileTypesList.size()];
-        fileTypesList.toArray(fileTypes);
+		ArrayList<String> fileTypesList = new ArrayList<String>();
 
-        File files[] = dir.listFiles(new FileTypeFilter(fileTypes));
+		for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
+			for (String ext : p.getExtensions()) {
+				if (!fileTypesList.contains(ext)) {
+					fileTypesList.add(ext);
+				}
+			}
+		}
+		String[] fileTypes = new String[fileTypesList.size()];
+
+		fileTypesList.toArray(fileTypes);
+
+		File files[] = dir.listFiles(new FileTypeFilter(fileTypes));
 
 		if (files == null) {
 			log("Warning:  Unable to read directory " + dir);
@@ -385,19 +376,17 @@ public class RobotRepositoryManager {
 					// this file is unchanged
 					fileSpecification = cachedSpecification;
 				} else {
-                    for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
-                        fileSpecification = p.createSpecification(this, file, rootDir, prefix, isDevelopmentDirectory);
-                        if (fileSpecification!=null)
-                        {
-                            break;
-                        }
-                    }
-                    if (fileSpecification==null)
-                    {
-                        log("Skipping file");
-                        continue; //lopp for files
-                    }
-                    updateRobotDatabase(fileSpecification);
+					for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
+						fileSpecification = p.createSpecification(this, file, rootDir, prefix, isDevelopmentDirectory);
+						if (fileSpecification != null) {
+							break;
+						}
+					}
+					if (fileSpecification == null) {
+						log("Skipping file");
+						continue; // lopp for files
+					}
+					updateRobotDatabase(fileSpecification);
 					write = true;
 					if (fileSpecification instanceof JarSpecification) {
 						String path = fileSpecification.getFilePath();
@@ -453,23 +442,20 @@ public class RobotRepositoryManager {
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
-                if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
-                    if (Droid.class.isAssignableFrom(robotClass))
-                    {
-                        robotSpecification.setDroid(true);
-                    }
+				if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
+					if (Droid.class.isAssignableFrom(robotClass)) {
+						robotSpecification.setDroid(true);
+					}
 
-                    if (ITeamRobot.class.isAssignableFrom(robotClass))
-                    {
-                        robotSpecification.setTeamRobot(true);
-                    }
+					if (ITeamRobot.class.isAssignableFrom(robotClass)) {
+						robotSpecification.setTeamRobot(true);
+					}
 
-                    if (IRobotBase.class.isAssignableFrom(robotClass))
-                    {
-                        updateNoDuplicates(robotSpecification);
-                        return;
-                    }
-                }
+					if (IRobotBase.class.isAssignableFrom(robotClass)) {
+						updateNoDuplicates(robotSpecification);
+						return;
+					}
+				}
 
 				getRobotDatabase().put(key, new ClassSpecification(robotSpecification));
 			} catch (Throwable t) {
@@ -491,11 +477,10 @@ public class RobotRepositoryManager {
 	private void updateNoDuplicates(IFileSpecification spec) {
 		String key = spec.getFilePath();
 
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("Updating database: " + spec.getName());
-        }
-        if (!spec.isDevelopmentVersion()
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("Updating database: " + spec.getName());
+		}
+		if (!spec.isDevelopmentVersion()
 				&& getRobotDatabase().contains(spec.getFullClassName(), spec.getVersion(), false)) {
 			IFileSpecification existingSpec = getRobotDatabase().get(spec.getFullClassName(), spec.getVersion(), false);
 
@@ -584,10 +569,9 @@ public class RobotRepositoryManager {
 				out.close();
 			} catch (IOException e) {}
 		}
-        if (manager.isGUIEnabled())
-        {
-    		manager.getWindowManager().getRobocodeFrame().setStatus("Extracting .jar: " + jarSpecification.getFileName());
-        }
+		if (manager.isGUIEnabled()) {
+			manager.getWindowManager().getRobocodeFrame().setStatus("Extracting .jar: " + jarSpecification.getFileName());
+		}
 
 		File dest;
 
@@ -639,11 +623,10 @@ public class RobotRepositoryManager {
 			JarEntry entry = jarIS.getNextJarEntry();
 
 			while (entry != null) {
-                if (manager.isGUIEnabled())
-                {
-    				manager.getWindowManager().getRobocodeFrame().setStatus(statusPrefix + " (" + entry.getName() + ")");
-                }
-                if (entry.isDirectory()) {
+				if (manager.isGUIEnabled()) {
+					manager.getWindowManager().getRobocodeFrame().setStatus(statusPrefix + " (" + entry.getName() + ")");
+				}
+				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
 					dir.mkdirs();
@@ -660,11 +643,10 @@ public class RobotRepositoryManager {
 						if (r == 0) {
 							always = true;
 						} else if (r == 2) {
-                            if (manager.isGUIEnabled())
-                            {
-    							manager.getWindowManager().getRobocodeFrame().setStatus(entry.getName() + " skipped.");
-                            }
-                            entry = jarIS.getNextJarEntry();
+							if (manager.isGUIEnabled()) {
+								manager.getWindowManager().getRobocodeFrame().setStatus(entry.getName() + " skipped.");
+							}
+							entry = jarIS.getNextJarEntry();
 							continue;
 						} else if (r == 3) {
 							entry = null;
@@ -701,23 +683,20 @@ public class RobotRepositoryManager {
 					}
 
 					if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
-                        IFileSpecification fileSpecification=null;
-                        for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
-                            fileSpecification = p.createSpecification(this, out, parentDirectory, "", false);
-                            if (fileSpecification!=null)
-                            {
-                                break;
-                            }
-                        }
-                        if (fileSpecification!=null)
-                        {
-                            log("Skipping file");
-                        }
-                        else
-                        {
-                            updatedJarList.add(fileSpecification);
-                        }
-                    }
+						IFileSpecification fileSpecification = null;
+
+						for (IRepositoryPlugin p : manager.getRepositoryPlugins()) {
+							fileSpecification = p.createSpecification(this, out, parentDirectory, "", false);
+							if (fileSpecification != null) {
+								break;
+							}
+						}
+						if (fileSpecification != null) {
+							log("Skipping file");
+						} else {
+							updatedJarList.add(fileSpecification);
+						}
+					}
 				}
 				entry = jarIS.getNextJarEntry();
 			}

@@ -60,8 +60,7 @@ public class SoundManager implements ISoundManager {
 	/**
 	 * Constructs a new sound manager.
 	 */
-	public SoundManager() {
-	}
+	public SoundManager() {}
 
 	/**
 	 * Returns the current mixer selected from the Robocode properties.
@@ -300,7 +299,7 @@ public class SoundManager implements ISoundManager {
 		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
 	}
 
-    public void setRobocodeManager(RobocodeManager robocodeManager) {
-        properties = robocodeManager.getProperties();
-    }
+	public void setRobocodeManager(RobocodeManager robocodeManager) {
+		properties = robocodeManager.getProperties();
+	}
 }

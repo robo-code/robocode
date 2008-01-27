@@ -11,19 +11,20 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobot extends IRobotBase {
 
-    /**
-     * @return listener to robot events
-     */
-    IRobotEvents getRobotEventListener();
+	/**
+	 * @return listener to robot events
+	 */
+	IRobotEvents getRobotEventListener();
 
-    /**
-     * @return listener to system events
-     */
-    ISystemEvents getSystemEventListener();
+	/**
+	 * @return listener to system events
+	 */
+	ISystemEvents getSystemEventListener();
 
 }

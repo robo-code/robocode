@@ -17,6 +17,7 @@ Java Core
 - implement BattleView
 - implement dialogs
 - solve issues with multiple concurent sounds, now exhaust resources
+- create .NET packaging to msi
 
 Propagation (later)
 - update file Changes.txt regulary
@@ -28,3 +29,4 @@ Propagation (later)
 Future
 - infrastructure for DLR (IronPython) robots
 - profile for speed
+- better support for robot debugging in VS (UI as independent app ?)

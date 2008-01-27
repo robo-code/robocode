@@ -178,8 +178,7 @@ public class JavaDocument extends PlainDocument {
 			int lastElementIndex = elementIndex - 1;
 
 			if (lastElementIndex >= 0) {
-				AbstractElement lastElement = (AbstractElement) getDefaultRootElement().getElement(
-						lastElementIndex);
+				AbstractElement lastElement = (AbstractElement) getDefaultRootElement().getElement(lastElementIndex);
 
 				if (!lastElement.isDefined("endsComment") && lastElement.isDefined("inComment")
 						|| lastElement.isDefined("startsComment")) {

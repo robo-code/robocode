@@ -97,7 +97,7 @@ public class RankingDialog extends JFrame {
 					new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
-					((RobocodeFrame)manager.getWindowManager().getRobocodeFrame()).getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
+					((RobocodeFrame) manager.getWindowManager().getRobocodeFrame()).getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
 							false);
 				}
 			});
@@ -348,6 +348,6 @@ public class RankingDialog extends JFrame {
 	}
 
 	private void saveButtonActionPerformed() {
-		((WindowManager)manager.getWindowManager()).showSaveResultsDialog();
+		((WindowManager) manager.getWindowManager()).showSaveResultsDialog();
 	}
 }

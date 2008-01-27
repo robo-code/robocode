@@ -513,9 +513,11 @@ public class EventManager {
 		IRobotBase robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
-            IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-            if (listener!=null)
-                listener.onBulletHit(e);
+			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
+
+			if (listener != null) {
+				listener.onBulletHit(e);
+			}
 		}
 	}
 
@@ -524,8 +526,10 @@ public class EventManager {
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-            if (listener!=null)
-                listener.onBulletHitBullet(e);
+
+			if (listener != null) {
+				listener.onBulletHitBullet(e);
+			}
 		}
 	}
 
@@ -534,8 +538,10 @@ public class EventManager {
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-            if (listener!=null)
-                listener.onBulletMissed(e);
+
+			if (listener != null) {
+				listener.onBulletMissed(e);
+			}
 		}
 	}
 
@@ -550,21 +556,23 @@ public class EventManager {
 				Condition c = e.getCondition();
 
 				if (c instanceof RobotPeer.GunReadyCondition) {
-                    JuniorStructure js = ((IJuniorRobot) robot).getJuniorStructure();
-                    if (js!=null) {
-					    js.gunReady = true;
-                    }
+					JuniorStructure js = ((IJuniorRobot) robot).getJuniorStructure();
 
-                } else if (c instanceof RobotPeer.GunFireCondition) {
+					if (js != null) {
+						js.gunReady = true;
+					}
+
+				} else if (c instanceof RobotPeer.GunFireCondition) {
 					double firePower = robotPeer.getJuniorFirePower(); 
 
 					if (firePower > 0) {
 						if (robotPeer.setFire(firePower) != null) {
-                            JuniorStructure js = ((IJuniorRobot) robot).getJuniorStructure();
-                            if (js!=null) {
-							    js.gunReady = false;
-                            }
-                        }
+							JuniorStructure js = ((IJuniorRobot) robot).getJuniorStructure();
+
+							if (js != null) {
+								js.gunReady = false;
+							}
+						}
 						robotPeer.setJuniorFire(0);
 					}
 				}
@@ -577,8 +585,10 @@ public class EventManager {
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-            if (listener!=null)
-                listener.onDeath(e);
+
+			if (listener != null) {
+				listener.onDeath(e);
+			}
 		}
 	}
 
@@ -591,21 +601,26 @@ public class EventManager {
 
 				robotPeer.updateJuniorRobotFields();
 
-                JuniorStructure js = jr.getJuniorStructure();
-                if (js!=null) {
-                    js.hitByBulletAngle = (int) (Math.toDegrees(
-                            Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
-                                    + 0.5);
-                    js.hitByBulletBearing = (int) (e.getBearing() + 0.5);
-                }
+				JuniorStructure js = jr.getJuniorStructure();
 
-                IJuniorEvents listener = ((IJuniorRobot) robot).getJuniorEventListener();
-                if (listener!=null)
-                    listener.onHitByBullet();
+				if (js != null) {
+					js.hitByBulletAngle = (int) (Math.toDegrees(
+							Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
+									+ 0.5);
+					js.hitByBulletBearing = (int) (e.getBearing() + 0.5);
+				}
+
+				IJuniorEvents listener = ((IJuniorRobot) robot).getJuniorEventListener();
+
+				if (listener != null) {
+					listener.onHitByBullet();
+				}
 			} else {
 				IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-                if (listener!=null)
-                    listener.onHitByBullet(e);
+
+				if (listener != null) {
+					listener.onHitByBullet(e);
+				}
 			}
 		}
 	}
@@ -619,20 +634,25 @@ public class EventManager {
 
 				robotPeer.updateJuniorRobotFields();
 
-                JuniorStructure js = jr.getJuniorStructure();
-                if (js!=null) {
-                    js.hitRobotAngle = (int) (Math.toDegrees(
-                            Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
-                                    + 0.5);
-                    js.hitRobotBearing = (int) (e.getBearing() + 0.5);
-                }
-                IJuniorEvents listener = ((IJuniorRobot) robot).getJuniorEventListener();
-                if (listener!=null)
-                    listener.onHitRobot();
+				JuniorStructure js = jr.getJuniorStructure();
+
+				if (js != null) {
+					js.hitRobotAngle = (int) (Math.toDegrees(
+							Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
+									+ 0.5);
+					js.hitRobotBearing = (int) (e.getBearing() + 0.5);
+				}
+				IJuniorEvents listener = ((IJuniorRobot) robot).getJuniorEventListener();
+
+				if (listener != null) {
+					listener.onHitRobot();
+				}
 			} else {
 				IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-                if (listener!=null)
-                    listener.onHitRobot(e);
+
+				if (listener != null) {
+					listener.onHitRobot(e);
+				}
 			}
 		}
 	}
@@ -646,20 +666,25 @@ public class EventManager {
 
 				robotPeer.updateJuniorRobotFields();
 
-                JuniorStructure js = jr.getJuniorStructure();
-                if (js!=null) {
-                    js.hitWallAngle = (int) (Math.toDegrees(
-                            Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
-                                    + 0.5);
-                    js.hitWallBearing = (int) (e.getBearing() + 0.5);
-                }
-                IJuniorEvents listener = ((IJuniorRobot) robot).getJuniorEventListener();
-                if (listener!=null)
-                    listener.onHitWall();
+				JuniorStructure js = jr.getJuniorStructure();
+
+				if (js != null) {
+					js.hitWallAngle = (int) (Math.toDegrees(
+							Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
+									+ 0.5);
+					js.hitWallBearing = (int) (e.getBearing() + 0.5);
+				}
+				IJuniorEvents listener = ((IJuniorRobot) robot).getJuniorEventListener();
+
+				if (listener != null) {
+					listener.onHitWall();
+				}
 			} else {
 				IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-                if (listener!=null)
-                    listener.onHitWall(e);
+
+				if (listener != null) {
+					listener.onHitWall(e);
+				}
 			}
 		}
 	}
@@ -671,14 +696,17 @@ public class EventManager {
 			if (robot instanceof IJuniorRobot) {
 				IJuniorRobot jr = ((IJuniorRobot) robot);
 
-                JuniorStructure js = jr.getJuniorStructure();
-                if (js!=null) {
-    				js.others = robotPeer.getOthers();
-                }
-            } else {
+				JuniorStructure js = jr.getJuniorStructure();
+
+				if (js != null) {
+					js.others = robotPeer.getOthers();
+				}
+			} else {
 				IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-                if (listener!=null)
-                    listener.onRobotDeath(e);
+
+				if (listener != null) {
+					listener.onRobotDeath(e);
+				}
 			}
 		}
 	}
@@ -689,25 +717,30 @@ public class EventManager {
 		if (robot != null) {
 			if (robot instanceof IJuniorRobot) {
 				IJuniorRobot jr = ((IJuniorRobot) robot);
-                JuniorStructure js = jr.getJuniorStructure();
-                if (js!=null) {
+				JuniorStructure js = jr.getJuniorStructure();
 
-                    js.scannedDistance = (int) (e.getDistance() + 0.5);
-                    js.scannedEnergy = Math.max(1, (int) (e.getEnergy() + 0.5));
-                    js.scannedAngle = (int) (Math.toDegrees(
-                            Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
-                                    + 0.5);
-                    js.scannedBearing = (int) (e.getBearing() + 0.5);
-                    js.scannedHeading = (int) (e.getHeading() + 0.5);
-                    js.scannedVelocity = (int) (e.getVelocity() + 0.5);
-                }
-                IJuniorEvents listener = ((IJuniorRobot) robot).getJuniorEventListener();
-                if (listener!=null)
-                    listener.onScannedRobot();
+				if (js != null) {
+
+					js.scannedDistance = (int) (e.getDistance() + 0.5);
+					js.scannedEnergy = Math.max(1, (int) (e.getEnergy() + 0.5));
+					js.scannedAngle = (int) (Math.toDegrees(
+							Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
+									+ 0.5);
+					js.scannedBearing = (int) (e.getBearing() + 0.5);
+					js.scannedHeading = (int) (e.getHeading() + 0.5);
+					js.scannedVelocity = (int) (e.getVelocity() + 0.5);
+				}
+				IJuniorEvents listener = ((IJuniorRobot) robot).getJuniorEventListener();
+
+				if (listener != null) {
+					listener.onScannedRobot();
+				}
 			} else {
 				IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-                if (listener!=null)
-                    listener.onScannedRobot(e);
+
+				if (listener != null) {
+					listener.onScannedRobot(e);
+				}
 			}
 		}
 	}
@@ -733,19 +766,24 @@ public class EventManager {
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
-            if (listener!=null)
-                listener.onWin(e);
+
+			if (listener != null) {
+				listener.onWin(e);
+			}
 		}
 	}
 
 	public void onStatus(StatusEvent e) {
 		IRobotBase robot = getRobot();
-        if (robot != null && robot instanceof IRobot) {
-            ISystemEvents listener = ((IRobot) robot).getSystemEventListener();
-            if (listener != null)
-                listener.onStatus(e);
-        }
-    }
+
+		if (robot != null && robot instanceof IRobot) {
+			ISystemEvents listener = ((IRobot) robot).getSystemEventListener();
+
+			if (listener != null) {
+				listener.onStatus(e);
+			}
+		}
+	}
 
 	public void processEvents() {
 		// Process custom events
@@ -893,7 +931,8 @@ public class EventManager {
 			robotPeer.getOut().println(
 					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.SkippedTurnEvent") || eventClass.equals("SkippedTurnEvent")) {
-			robotPeer.getOut().println("SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
+			robotPeer.getOut().println(
+					"SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.WinEvent") || eventClass.equals("WinEvent")) {
 			robotPeer.getOut().println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.DeathEvent") || eventClass.equals("DeathEvent")) {
