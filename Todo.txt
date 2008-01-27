@@ -1,0 +1,29 @@
+.NET Core
+- Create .NET Robot and AdvancedRobot
+- Port sample robots to .NET
+- wait for strongly signed IKVM 0.37 and sign the assemblies
+- .NET security
+- make sure that cachecleaner is in right place (transform to plugin ?)
+- open for general plugins (low priority)
+- check todo in code (low priority)
+- more robot properties (sounds etc.)
+
+Java Core
+- re-think interfaces to UI, move methods, write JavaDoc
+
+.NET UI
+- solve issue with Event Thread Dispatcher in ATW (single threaded WinForms)
+- implement BattleView
+- implement dialogs
+- solve issues with multiple concurent sounds, now exhaust resources
+
+Propagation (later)
+- update file Changes.txt regulary
+- prepare alpha testing version HOWTO for Java & .NET people
+- create blog for robocode, integrate into website
+- publish .NET news on blog, forums,
+- create pages about engine itself on wiki, put ideas there
+
+Future
+- infrastructure for DLR (IronPython) robots
+- profile for speed

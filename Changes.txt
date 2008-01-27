@@ -1,0 +1,4 @@
+01/05/2008 - introduced UI interfaces and split the core from UI
+01/10/2008 - created .NET UI stub with IKVM
+01/15/2008 - migrated CVS to SVN, created working branch
+01/27/2008 - introduced robot interfaces
