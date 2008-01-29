@@ -1,3 +1,10 @@
+.NET UI
+- solve issue with Event Thread Dispatcher in ATW (single threaded WinForms)
+- implement BattleView
+- implement dialogs
+- solve issues with multiple concurent sounds, now exhaust resources
+- create .NET packaging to msi
+
 .NET Core
 - Create .NET Robot and AdvancedRobot
 - Port sample robots to .NET
@@ -7,17 +14,13 @@
 - open for general plugins (low priority)
 - check todo in code (low priority)
 - more robot properties (sounds etc.)
+- ikvmc -> .NET roborumble.exe
 
 Java Core
 - re-think interfaces to UI, move methods, write JavaDoc
 - beautify my code
+- test roborumble
 
-.NET UI
-- solve issue with Event Thread Dispatcher in ATW (single threaded WinForms)
-- implement BattleView
-- implement dialogs
-- solve issues with multiple concurent sounds, now exhaust resources
-- create .NET packaging to msi
 
 Propagation (later)
 - update file Changes.txt regulary
@@ -28,5 +31,6 @@ Propagation (later)
 
 Future
 - infrastructure for DLR (IronPython) robots
+- Jython robots
 - profile for speed
 - better support for robot debugging in VS (UI as independent app ?)
