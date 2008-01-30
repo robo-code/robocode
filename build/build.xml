@@ -142,7 +142,7 @@
         destfile="${build}/${sources.archive}"
         basedir=".."
         includes="autoextract/**, build/*, robocode/**, robocodeui/**, robocodeextract/**, roborumble/**"
-        excludes="build/build, **/bin/**"
+        excludes="build/build, **/bin/**, **/.svn/**"
         defaultexcludes="no"
     />
   </target>

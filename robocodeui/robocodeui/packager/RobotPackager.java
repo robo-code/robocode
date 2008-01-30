@@ -282,11 +282,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 					jarFilename + " already exists.  Are you sure you want to replace it?", "Warning",
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
-			if (ok == JOptionPane.NO_OPTION) {
-				out.println("Cancelled by user.");
-				return -1;
-			}
-			if (ok == JOptionPane.CANCEL_OPTION) {
+			if (ok == JOptionPane.NO_OPTION || ok == JOptionPane.CANCEL_OPTION) {
 				out.println("Cancelled by user.");
 				return -1;
 			}

@@ -40,7 +40,9 @@ public abstract class FileSpecification implements IFileSpecification {
 
 	private final static String ROBOCODE_VERSION = "robocode.version";
 	private final static String LIBRARY_DESCRIPTION = "library.description";
+	private final static String UUID = "uuid";
 
+	protected String uuid;
 	protected String name;
 	protected String description;
 	protected String authorName;
@@ -163,6 +165,25 @@ public abstract class FileSpecification implements IFileSpecification {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Gets the UUID.
+	 * 
+	 * @return Returns a String
+	 */
+	public String getUUID() {
+		return uuid;
+	}
+
+	/**
+	 * Sets the UUID.
+	 */
+	public void setUUID() {
+		// Generate new UUID
+		uuid = java.util.UUID.randomUUID().toString();
+
+		props.setProperty(UUID, uuid);
 	}
 
 	/**
@@ -383,11 +404,15 @@ public abstract class FileSpecification implements IFileSpecification {
 	}
 
 	public void store(OutputStream out, String desc) throws IOException {
+		setUUID();
+
 		props.store(out, desc);
 	}
 
 	protected void load(FileInputStream in) throws IOException {
 		props.load(in);
+
+		uuid = props.getProperty(UUID);
 		robocodeVersion = props.getProperty(ROBOCODE_VERSION);
 		libraryDescription = props.getProperty(LIBRARY_DESCRIPTION);
 	}
