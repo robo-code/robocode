@@ -169,10 +169,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			int ok = JOptionPane.showConfirmDialog(this, f + " already exists.  Are you sure you want to replace it?",
 					"Warning", JOptionPane.YES_NO_CANCEL_OPTION);
 
-			if (ok == JOptionPane.NO_OPTION) {
-				return -1;
-			}
-			if (ok == JOptionPane.CANCEL_OPTION) {
+			if (ok == JOptionPane.NO_OPTION || ok == JOptionPane.CANCEL_OPTION) {
 				return -1;
 			}
 		}

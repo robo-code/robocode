@@ -1,8 +1,10 @@
 Version 1.5.3
-(01/26/2008)
+(01/30/2008)
 -------------
 o Bugfixes
   -- Some of the mnemonics on the menus on the Help menu did not work correctly
+  -- NullPointerException occurred when clicking a robot button on the right side
+     of the battle view, when no battle was running
 o Changes
   -- All functions key shortcuts have been replaced to comply with OSes where
      the function keys (F1 - F12) are not available or have a specific purpose,
@@ -15,6 +17,12 @@ o Changes
         i.e. Ctrl+B on Windows and Linux, and Command+B for Mac OS
      -- The F3 shortcut key for 'Find Next' has been changed to 'modifier key' + G,
         i.e. Ctrl+G on Windows and Linux, and Command+G for Mac OS
+  -- When a robot or team is being packaged an UUID is now put in the .properties
+     and/or .team files in the newly generated robot or team archive file (.jar file)
+     -- The UUID is a unique identifier for the robot or team, which is generated
+        every time a robot or team package is being created or overwritten
+     -- This feature has been made in advantage to support coming features provided
+        in Robocode Repository, which is currently being updated
 
 Version 1.5.2
 (01/08/2008)
