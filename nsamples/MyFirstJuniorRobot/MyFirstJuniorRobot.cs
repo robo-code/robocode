@@ -19,9 +19,9 @@ using nrobocode;
 [assembly: Version("1.4")]
 [assembly: SourceIncluded(true)]
 [assembly: AuthorName("Flemming N. Larsen, Pavel Savara")]
-[assembly: Name(typeof(nsample.MyFirstJuniorRobot))]
+[assembly: Name(typeof(sample.MyFirstJuniorRobot))]
 
-namespace nsample
+namespace sample
 {
     public class MyFirstJuniorRobot : JuniorRobot
     {

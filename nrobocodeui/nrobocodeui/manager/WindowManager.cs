@@ -50,7 +50,7 @@ namespace nrobocodeui.manager
 
         public void showRobocodeFrame(bool b)
         {
-            RobocodeFrame frame = RobocodeManager.getWindowManager().getRobocodeFrame() as RobocodeFrame;
+            RobocodeFrame frame = getRobocodeFrame() as RobocodeFrame;
             //frame.Show();
         }
     }

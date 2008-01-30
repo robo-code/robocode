@@ -58,13 +58,13 @@ public class JuniorStructure extends _RobotBase {
 	/**
 	 * Current heading angle of this robot (in degrees).
 	 *
-	 * @see @JuniorRobot#turnLeft(int)
-	 * @see @JuniorRobot#turnRight(int)
-	 * @see @JuniorRobot#turnTo(int)
-	 * @see @JuniorRobot#turnAheadLeft(int, int)
-	 * @see @JuniorRobot#turnAheadRight(int, int)
-	 * @see @JuniorRobot#turnBackLeft(int, int)
-	 * @see @JuniorRobot#turnBackRight(int, int)
+	 * @see JuniorRobot#turnLeft(int)
+	 * @see JuniorRobot#turnRight(int)
+	 * @see JuniorRobot#turnTo(int)
+	 * @see JuniorRobot#turnAheadLeft(int, int)
+	 * @see JuniorRobot#turnAheadRight(int, int)
+	 * @see JuniorRobot#turnBackLeft(int, int)
+	 * @see JuniorRobot#turnBackRight(int, int)
 	 */
 	public int heading;
 
@@ -72,10 +72,10 @@ public class JuniorStructure extends _RobotBase {
 	 * Current gun heading angle of this robot (in degrees).
 	 *
 	 * @see #gunBearing
-	 * @see @JuniorRobot#turnGunLeft(int)
-	 * @see @JuniorRobot#turnGunRight(int)
-	 * @see @JuniorRobot#turnGunTo(int)
-	 * @see @JuniorRobot#bearGunTo(int)
+	 * @see JuniorRobot#turnGunLeft(int)
+	 * @see JuniorRobot#turnGunRight(int)
+	 * @see JuniorRobot#turnGunTo(int)
+	 * @see JuniorRobot#bearGunTo(int)
 	 */
 	public int gunHeading;
 
@@ -83,10 +83,10 @@ public class JuniorStructure extends _RobotBase {
 	 * Current gun heading angle of this robot compared to its body (in degrees).
 	 *
 	 * @see #gunHeading
-	 * @see @JuniorRobot#turnGunLeft(int)
-	 * @see @JuniorRobot#turnGunRight(int)
-	 * @see @JuniorRobot#turnGunTo(int)
-	 * @see @JuniorRobot#bearGunTo(int)
+	 * @see JuniorRobot#turnGunLeft(int)
+	 * @see JuniorRobot#turnGunRight(int)
+	 * @see JuniorRobot#turnGunTo(int)
+	 * @see JuniorRobot#bearGunTo(int)
 	 */
 	public int gunBearing;
 
@@ -95,17 +95,17 @@ public class JuniorStructure extends _RobotBase {
 	 * <code>true</code> means that the gun is able to fire; <code>false</code>
 	 * means that the gun cannot fire yet as it still needs to cool down.
 	 *
-	 * @see @JuniorRobot#fire()
-	 * @see @JuniorRobot#fire(double)
+	 * @see JuniorRobot#fire()
+	 * @see JuniorRobot#fire(double)
 	 */
 	public boolean gunReady;
     
 	/**
 	 * Current distance to the scanned nearest other robot (in pixels).
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link @JuniorRobot#onScannedRobot()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onScannedRobot()} event is active.
 	 *
-	 * @see @JuniorRobot#onScannedRobot()
+	 * @see JuniorRobot#onScannedRobot()
 	 * @see #scannedAngle
 	 * @see #scannedBearing
 	 * @see #scannedEnergy
@@ -117,9 +117,9 @@ public class JuniorStructure extends _RobotBase {
 	/**
 	 * Current angle to the scanned nearest other robot (in degrees).
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link @JuniorRobot#onScannedRobot()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onScannedRobot()} event is active.
 	 *
-	 * @see @JuniorRobot#onScannedRobot()
+	 * @see JuniorRobot#onScannedRobot()
 	 * @see #scannedDistance
 	 * @see #scannedBearing
 	 * @see #scannedEnergy
@@ -132,9 +132,9 @@ public class JuniorStructure extends _RobotBase {
 	 * Current angle to the scanned nearest other robot (in degrees) compared to
 	 * the body of this robot.
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link @JuniorRobot#onScannedRobot()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onScannedRobot()} event is active.
 	 *
-	 * @see @JuniorRobot#onScannedRobot()
+	 * @see JuniorRobot#onScannedRobot()
 	 * @see #scannedDistance
 	 * @see #scannedAngle
 	 * @see #scannedEnergy
@@ -149,9 +149,9 @@ public class JuniorStructure extends _RobotBase {
 	 * Note that a positive value means that the robot moves forward, a negative
 	 * value means that the robot moved backward, and 0 means that the robot is
 	 * not moving at all.
-	 * This field will not be updated while {@link @JuniorRobot#onScannedRobot()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onScannedRobot()} event is active.
 	 *
-	 * @see @JuniorRobot#onScannedRobot()
+	 * @see JuniorRobot#onScannedRobot()
 	 * @see #scannedDistance
 	 * @see #scannedAngle
 	 * @see #scannedBearing
@@ -163,9 +163,9 @@ public class JuniorStructure extends _RobotBase {
 	/**
 	 * Current heading of the scanned nearest other robot (in degrees).
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link @JuniorRobot#onScannedRobot()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onScannedRobot()} event is active.
 	 *
-	 * @see @JuniorRobot#onScannedRobot()
+	 * @see JuniorRobot#onScannedRobot()
 	 * @see #scannedDistance
 	 * @see #scannedAngle
 	 * @see #scannedBearing
@@ -177,9 +177,9 @@ public class JuniorStructure extends _RobotBase {
 	/**
 	 * Current energy of scanned nearest other robot.
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-	 * This field will not be updated while {@link @JuniorRobot#onScannedRobot()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onScannedRobot()} event is active.
 	 *
-	 * @see @JuniorRobot#onScannedRobot()
+	 * @see JuniorRobot#onScannedRobot()
 	 * @see #scannedDistance
 	 * @see #scannedAngle
 	 * @see #scannedBearing
@@ -190,9 +190,9 @@ public class JuniorStructure extends _RobotBase {
 	/**
 	 * Latest angle from where this robot was hit by a bullet (in degrees).
 	 * If the robot has never been hit, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link @JuniorRobot#onHitByBullet()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onHitByBullet()} event is active.
 	 *
-	 * @see @JuniorRobot#onHitByBullet()
+	 * @see JuniorRobot#onHitByBullet()
 	 * @see #hitByBulletBearing
 	 */
 	public int hitByBulletAngle = -1;
@@ -201,9 +201,9 @@ public class JuniorStructure extends _RobotBase {
 	 * Latest angle from where this robot was hit by a bullet (in degrees)
 	 * compared to the body of this robot.
 	 * If the robot has never been hit, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link @JuniorRobot#onHitByBullet()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onHitByBullet()} event is active.
 	 *
-	 * @see @JuniorRobot#onHitByBullet()
+	 * @see JuniorRobot#onHitByBullet()
 	 * @see #hitByBulletAngle
 	 */
 	public int hitByBulletBearing = -1;
@@ -211,9 +211,9 @@ public class JuniorStructure extends _RobotBase {
 	/**
 	 * Latest angle where this robot has hit another robot (in degrees).
 	 * If this robot has never hit another robot, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link @JuniorRobot#onHitRobot()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onHitRobot()} event is active.
 	 *
-	 * @see @JuniorRobot#onHitRobot()
+	 * @see JuniorRobot#onHitRobot()
 	 * @see #hitRobotBearing
 	 */
 	public int hitRobotAngle = -1;
@@ -222,9 +222,9 @@ public class JuniorStructure extends _RobotBase {
 	 * Latest angle where this robot has hit another robot (in degrees)
 	 * compared to the body of this robot.
 	 * If this robot has never hit another robot, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link @JuniorRobot#onHitRobot()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onHitRobot()} event is active.
 	 *
-	 * @see @JuniorRobot#onHitRobot()
+	 * @see JuniorRobot#onHitRobot()
 	 * @see #hitRobotAngle
 	 */
 	public int hitRobotBearing = -1;
@@ -232,9 +232,9 @@ public class JuniorStructure extends _RobotBase {
 	/**
 	 * Latest angle where this robot has hit a wall (in degrees).
 	 * If this robot has never hit a wall, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link @JuniorRobot#onHitWall()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onHitWall()} event is active.
 	 *
-	 * @see @JuniorRobot#onHitWall()
+	 * @see JuniorRobot#onHitWall()
 	 * @see #hitWallBearing
 	 */
 	public int hitWallAngle = -1;
@@ -243,9 +243,9 @@ public class JuniorStructure extends _RobotBase {
 	 * Latest angle where this robot has hit a wall (in degrees)
 	 * compared to the body of this robot.
 	 * If this robot has never hit a wall, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link @JuniorRobot#onHitWall()} event is active.
+	 * This field will not be updated while {@link JuniorRobot#onHitWall()} event is active.
 	 *
-	 * @see @JuniorRobot#onHitWall()
+	 * @see JuniorRobot#onHitWall()
 	 * @see #hitWallAngle
 	 */
 	public int hitWallBearing = -1;

@@ -22,7 +22,22 @@
   </loadfile>
 
   <!-- Disable debug information when compiling -->  
-  <property name="debug" value="on"/>  <!-- Debug information is stripped from the setup file -->
+  <property name="debug" value="false"/>
+  <condition property="java.debug" value="on" else="off">
+    <istrue value="${debug}"/>
+  </condition>  
+  <condition property="ikvm.debug" value="-debug" else="">
+    <istrue value="${debug}"/>
+  </condition>  
+  <condition property="vs.debug" value="-debug" else="">
+    <istrue value="${debug}"/>
+  </condition>
+  
+  <!-- Sign assemblies -->  
+  <property name="sign" value="false"/>
+  <condition property="ikvm.sign" value="-keyfile:${src.root}/nrobocode.snk" else="">
+    <istrue value="${sign}"/>
+  </condition>
 
   <!-- The build folder -->
   <property name="build" location="build"/>
@@ -138,7 +153,7 @@
   <target
       name="libs"
       description="Build the jars and dll"
-      depends="compile.robocode, compile.robocodeui, robocode.jar, robocodeui.jar, cachecleaner.jar, nrobocodeui.dll, robocode.exe"
+      depends="nrobocode, robocode.exe"
   />
     <!--
     ,
@@ -311,91 +326,9 @@
     </jar>
   </target>
 
-  <!-- ====================================== -->
-  <!-- Target: codesize.dll                   -->
-  <!-- ====================================== -->
-  <target
-      name="codesize.dll"
-      description="Build codesize.dll"
-      depends="init"
-      unless="codesize.dll.uptodate">
-
-    <echo message="Building codesize.dll..."/>
-
-  	<copy file="${ikvm}/IKVM.OpenJDK.ClassLibrary.dll" toDir="${build}/nlibs"/>
-  	<copy file="${ikvm}/IKVM.Runtime.dll" toDir="${build}/nlibs"/>
-    <copy file="${ikvm}/ICSharpCode.SharpZipLib.dll" toDir="${build}/nlibs"/>
-    
-    <!-- 
-    <copy file="${ikvm}/IKVM.OpenJDK.ClassLibrary.pdb" toDir="${build}/nlibs"/>
-    <copy file="${ikvm}/IKVM.Runtime.pdb" toDir="${build}/nlibs"/>
-    -->
-
-    <!-- Create the codesize.dll file -->
-	<exec executable="${ikvm}/ikvmc.exe">
-		<arg value="-debug"/>
-		<arg value="-target:library"/>
-		<!--
-        <arg value="-keyfile:${src.root}/nrobocode.snk"/>
-        <arg value="-classloader:ikvm.runtime.AppDomainAssemblyClassLoader"/>
-		-->
-		<arg value="${build}/libs/codesize.jar"/>
-		<arg value="-out:${build}/nlibs/codesize.dll"/>
-	</exec>    
-  </target>
-
-  <!-- ====================================== -->
-  <!-- Target: robocode.exe                   -->
-  <!-- ====================================== -->
-  <target
-      name="robocode.exe"
-      description="Build robocode.exe"
-      depends="init, robocode.jar, codesize.dll"
-      unless="robocode.exe.uptodate">
-
-    <echo message="Building robocode.exe..."/>
-
-    <!-- Create the robocode.exe file -->
-	<exec executable="${ikvm}/ikvmc.exe">
-		<arg value="-debug"/>
-		<!--
-        <arg value="-keyfile:${src.root}/nrobocode.snk"/>
-        <arg value="-classloader:ikvm.runtime.AppDomainAssemblyClassLoader"/>
-        <arg value="-classloader:ikvm.runtime.AssemblyClassLoader"/>
-        <arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
-		-->
-		<arg value="-target:exe"/>
-		<arg value="-reference:${build}/nlibs/codesize.dll"/>
-		<arg value="${build}/libs/robocode.jar"/>
-		<arg value="-main:robocode.Robocode"/>
-		<arg value="-out:${build}/nlibs/robocode.exe"/>
-	</exec>    
-  </target>
-
   <uptodate property="robocode.jar.uptodate" targetfile="${build}/libs/robocode.jar">
     <srcfiles dir="${src.robocode}"/>
   </uptodate>
-
-  <!-- ====================================== -->
-  <!-- Target: nrobocodeui.dll                -->
-  <!-- ====================================== -->
-  <target
-      name="nrobocodeui.dll"
-      description="Build nrobocodeui.dll"
-      depends="init, robocode.exe"
-      unless="codesize.dll.uptodate">
-
-    <echo message="Building nrobocodeui.dll..."/>
-
-    <!-- Create the nrobocodeui.dll file -->
-	<exec executable="${vs9}">
-		<arg value="${src.root}/nrobocode.sln"/>
-		<arg value="/Rebuild"/>
-	</exec>    
-
-  	<copy file="${src.nrobocodeui}/bin/Debug/nrobocodeui.dll" toDir="${build}/nlibs"/>
-  	
-  </target>
 
   <!-- ====================================== -->
   <!-- Target: robocodeui.jar                   -->
@@ -664,12 +597,111 @@
           classpath="@{classpath}"
           source="1.5"
           target="1.5"
-          debug="${debug}"
+          debug="${java.debug}"
           debuglevel="lines,vars,source"
           optimize="true"
           includes="**/*.java"
       />
     </sequential>
   </macrodef>
+
+
+  <!-- ====================================== -->
+  <!-- Target: codesize.dll                   -->
+  <!-- ====================================== -->
+  <target
+      name="codesize.dll"
+      description="Build codesize.dll"
+      depends="init"
+      unless="codesize.dll.uptodate">
+
+    <echo message="Building codesize.dll..."/>
+
+  	<copy file="${ikvm}/IKVM.OpenJDK.ClassLibrary.dll" toDir="${build}/nlibs"/>
+  	<copy file="${ikvm}/IKVM.Runtime.dll" toDir="${build}/nlibs"/>
+    <copy file="${ikvm}/ICSharpCode.SharpZipLib.dll" toDir="${build}/nlibs"/>
+    
+    <!-- 
+    <copy file="${ikvm}/IKVM.OpenJDK.ClassLibrary.pdb" toDir="${build}/nlibs"/>
+    <copy file="${ikvm}/IKVM.Runtime.pdb" toDir="${build}/nlibs"/>
+    -->
+
+    <!-- Create the codesize.dll file -->
+	<exec executable="${ikvm}/ikvmc.exe">
+		<arg value="${ikvm.debug}"/>
+		<arg value="-target:library"/>
+        <arg value="${ikvm.sign}"/>
+		<arg value="${build}/libs/codesize.jar"/>
+		<arg value="-out:${build}/nlibs/codesize.dll"/>
+	</exec>    
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: robocode.exe                   -->
+  <!-- ====================================== -->
+  <target
+      name="robocode.exe"
+      description="Build robocode.exe"
+      depends="init, robocode.jar, codesize.dll"
+      unless="robocode.exe.uptodate">
+
+    <echo message="Building robocode.exe..."/>
+
+    <!-- Create the robocode.exe file -->
+	<exec executable="${ikvm}/ikvmc.exe">
+		<arg value="${ikvm.debug}"/>
+        <arg value="${ikvm.sign}"/>
+		<arg value="-target:exe"/>
+		<arg value="-reference:${build}/nlibs/codesize.dll"/>
+		<arg value="${build}/libs/robocode.jar"/>
+		<arg value="-main:robocode.Robocode"/>
+		<arg value="-out:${build}/nlibs/robocode.exe"/>
+	</exec>    
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: roborumble.exe                   -->
+  <!-- ====================================== -->
+  <target
+      name="roborumble.exe"
+      description="Build roborumble.exe"
+      depends="init, robocode.exe, roborumble.jar"
+      unless="roborumble.exe.uptodate">
+
+    <echo message="Building roborumble.exe..."/>
+
+    <!-- Create the roborumble.exe file -->
+	<exec executable="${ikvm}/ikvmc.exe">
+		<arg value="${ikvm.debug}"/>
+        <arg value="${ikvm.sign}"/>
+		<arg value="-target:exe"/>
+		<arg value="-reference:${build}/nlibs/codesize.dll"/>
+		<arg value="-reference:${build}/nlibs/robocode.exe"/>
+		<arg value="${build}/libs/roborumble.jar"/>
+		<arg value="-main:roborumble.RoboRumbleAtHome"/>
+		<arg value="-out:${build}/nlibs/roborumble.exe"/>
+	</exec>    
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: nrobocode                      -->
+  <!-- ====================================== -->
+  <target
+      name="nrobocode"
+      description="Build nrobocode"
+      depends="init, robocode.exe, roborumble.exe"
+      unless="codesize.dll.uptodate">
+
+    <echo message="Building nrobocode..."/>
+
+    <!-- Create the nrobocode file -->
+	<exec executable="${vs9}">
+		<arg value="${src.root}/nrobocode.sln"/>
+		<arg value="/Rebuild"/>
+	</exec>    
+  </target>
+
+
+
 
 </project>

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robocodewrap", "robocode\ro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstJuniorRobot", "nsamples\MyFirstJuniorRobot\MyFirstJuniorRobot.csproj", "{F6DAA279-C339-4991-94AF-DE665BB46F1D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ninstall", "ninstall\ninstall.vdproj", "{1CBA218F-E37F-4058-8C01-9098BFBC2374}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,9 @@ Global
 		{F6DAA279-C339-4991-94AF-DE665BB46F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6DAA279-C339-4991-94AF-DE665BB46F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6DAA279-C339-4991-94AF-DE665BB46F1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CBA218F-E37F-4058-8C01-9098BFBC2374}.Debug|Any CPU.ActiveCfg = Debug
+		{1CBA218F-E37F-4058-8C01-9098BFBC2374}.Release|Any CPU.ActiveCfg = Release
+		{1CBA218F-E37F-4058-8C01-9098BFBC2374}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
