@@ -1,4 +1,6 @@
-﻿namespace nrobocodeui.battleview
+﻿using robocode.battlefield;
+
+namespace nrobocodeui.battleview
 {
     partial class BattleView
     {
@@ -28,19 +30,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            this.battleField = new DefaultBattleField(800, 600);
             // 
             // BattleView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.SuspendLayout();
+
+            this.Name = "BattleView";
+//            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+//            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.DoubleBuffered = true;
-            this.Name = "BattleView";
-            this.Size = new System.Drawing.Size(435, 390);
+//            this.Size = new System.Drawing.Size(435, 390);*/
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.BattleView_Paint);
-            this.ResumeLayout(false);
 
+            this.ResumeLayout(false);
         }
 
         #endregion

@@ -84,7 +84,7 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.battleView = new nrobocodeui.battleview.BattleView();
+            this.battleView = new nrobocodeui.battleview.BattleView(this);
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.fpRobotButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.menuStrip.SuspendLayout();

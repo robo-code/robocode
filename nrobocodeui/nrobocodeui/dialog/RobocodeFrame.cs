@@ -68,7 +68,7 @@ namespace nrobocodeui.dialog
             if (battleView == null)
             {
                 //TODO
-                battleView = new BattleView();
+                battleView = new BattleView(this);
             }
             return battleView;
         }

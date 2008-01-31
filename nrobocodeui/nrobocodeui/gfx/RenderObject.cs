@@ -1,5 +1,5 @@
 // ****************************************************************************
-// Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Common Public License v1.0
 // which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
 // Flemming N. Larsen
 // - Initial implementation
 // Pavel Savara
-// - Conversion
+// - Migration to .Net
 // *****************************************************************************
 
 using System;
@@ -52,13 +52,12 @@ namespace nrobocodeui.gfx
         }
 
         /// <summary> 
-        /// Sets the current frame number
-        /// Returns the current frame number
+        /// Sets the current frame number.
+        /// Returns the current frame number.
         /// </summary>
         public virtual int Frame
         {
             get { return frame; }
-
             set { frame = value; }
         }
 
@@ -67,23 +66,32 @@ namespace nrobocodeui.gfx
         /// </summary>
         public abstract Rectangle Bounds { get; }
 
-        /// <summary>Base transform, e.g. the initial rotation and translation </summary>
+        /// <summary>
+        /// Base transform, e.g. the initial rotation and translation.
+        /// </summary>
         protected internal Matrix baseTransform;
 
-        /// <summary>Current transform that is concatenated with the base transform </summary>
+        /// <summary>
+        /// Current transform that is concatenated with the base transform
+        /// </summary>
         protected internal Matrix transform;
 
-        /// <summary>Current frame that must be rendered </summary>
+        /// <summary>
+        /// Current frame that must be rendered,
+        /// </summary>
         protected internal int frame;
 
-        /// <summary> Constructs a new <code>RenderObject</code>.</summary>
+        /// <summary>
+        /// Constructs a new <code>RenderObject</code>.
+        /// </summary>
         public RenderObject()
         {
             baseTransform = new Matrix();
             transform = new Matrix();
         }
 
-        /// <summary> Constructs a new <code>RenderObject</code> that is a copy of another
+        /// <summary>
+        /// Constructs a new <code>RenderObject</code> that is a copy of another
         /// <code>RenderObject</code>.
         /// </summary>
         public RenderObject(RenderObject ro)
