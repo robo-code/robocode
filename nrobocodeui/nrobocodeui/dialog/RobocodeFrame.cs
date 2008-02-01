@@ -34,6 +34,8 @@ namespace nrobocodeui.dialog
             string path = robocode.io.FileUtil.getBattlesDir().getAbsolutePath();
             openFileDialog.InitialDirectory = path;
             saveFileDialog.InitialDirectory = path;
+
+            battleViewProxy = new BattleViewProxy(battleView);
         }
 
         #endregion
@@ -43,6 +45,19 @@ namespace nrobocodeui.dialog
         private int childFormNumber = 0;
         private FormWindowState lastState = FormWindowState.Normal;
         private robocode.manager.RobocodeManager manager;
+        private BattleViewProxy battleViewProxy;
+
+        #endregion
+
+        #region Public fields
+
+        public BattleViewProxy BattleViewProxy
+        {
+            get
+            {
+                return battleViewProxy;
+            }
+        }
 
         #endregion
 

@@ -108,6 +108,7 @@
             this.helpMenu});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
+            this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.menuStrip.Size = new System.Drawing.Size(891, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
@@ -445,7 +446,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(517, 45);
+            this.toolStrip1.Size = new System.Drawing.Size(486, 45);
             this.toolStrip1.TabIndex = 20;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -485,11 +486,12 @@
             // 
             // speedSlider
             // 
+            this.speedSlider.Maximum = 201;
+            this.speedSlider.Minimum = 1;
             this.speedSlider.Name = "trackBar";
             this.speedSlider.Size = new System.Drawing.Size(256, 42);
             this.speedSlider.Text = "1";
-            this.speedSlider.Maximum = 201;
-            this.speedSlider.Minimum = 1;
+            this.speedSlider.Value = 1;
             this.speedSlider.Scroll += new System.EventHandler(this.speedSlider_Scroll);
             // 
             // toolStripContainer1
@@ -498,6 +500,7 @@
             // toolStripContainer1.BottomToolStripPanel
             // 
             this.toolStripContainer1.BottomToolStripPanel.Controls.Add(this.toolStrip1);
+            this.toolStripContainer1.BottomToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
             // toolStripContainer1.ContentPanel
             // 
@@ -509,6 +512,10 @@
             this.toolStripContainer1.Size = new System.Drawing.Size(891, 496);
             this.toolStripContainer1.TabIndex = 24;
             this.toolStripContainer1.Text = "toolStripContainer1";
+            // 
+            // toolStripContainer1.TopToolStripPanel
+            // 
+            this.toolStripContainer1.TopToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
             // splitContainer
             // 

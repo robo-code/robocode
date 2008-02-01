@@ -27,14 +27,9 @@ namespace nrobocodeui.dialog
 
         private RobocodeFrame frame;
 
-        private BattleViewProxy battleView;
         public IBattleView getBattleView()
         {
-            if (battleView==null)
-            {
-                battleView=new BattleViewProxy();
-            }
-            return battleView;
+            return frame.BattleViewProxy;
         }
 
         public void setStatus(string value)

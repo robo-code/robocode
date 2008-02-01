@@ -16,6 +16,7 @@ namespace nrobocodeui.battleview
         private RobocodeFrame robocodeFrame;
 
         private BattleField battleField;
+        private Battle battle;
 
         private double scale = 1.0;
 
@@ -44,7 +45,7 @@ namespace nrobocodeui.battleview
 
         public void setBattleField(BattleField bf)
         {
-            //TODO
+            this.battleField = bf;
         }
 
         public void setVisible(bool b)
@@ -59,12 +60,12 @@ namespace nrobocodeui.battleview
 
         public void setBattle(Battle b)
         {
-            //TODO
+            this.battle = b;
         }
 
         public void repaint()
         {
-            //TODO
+            this.Invalidate();
         }
 
         public void setDisplayOptions()
@@ -74,7 +75,7 @@ namespace nrobocodeui.battleview
 
         public void update()
         {
-            //TODO
+            this.Invalidate();
         }
 
         public bool isDisplayTPS()
@@ -89,11 +90,6 @@ namespace nrobocodeui.battleview
             return false;
         }
 
-        public void setTitle(string str)
-        {
-            //TODO move to frame ?
-        }
-
         public int getWidth()
         {
             return Width;
@@ -105,6 +101,11 @@ namespace nrobocodeui.battleview
         }
 
         #endregion
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            BattleView_Paint(this, e);
+        }
 
         private void BattleView_Paint(object sender, PaintEventArgs e)
         {
@@ -148,7 +149,7 @@ namespace nrobocodeui.battleview
             // Hmm.. let's paint it's bounding box
             g.DrawRectangle(new Pen(Color.Red), renderImage.Bounds);
 
-//            DrawBattle(g);
+            DrawBattle(g);
         }
 
         private void DrawBattle(Graphics g)
