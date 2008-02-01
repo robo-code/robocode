@@ -122,16 +122,16 @@ namespace nrobocodeui.resources
 
             #region blue_metal
 
-            private static List<Bitmap> blue_metal_cache;
+            private static List<Image> blue_metal_cache;
 
-            public static List<Bitmap> blue_metal
+            public static List<Image> blue_metal
             {
                 get
                 {
                     if (blue_metal_cache == null)
                     {
-                        blue_metal_cache = new List<Bitmap>();
-                        for (int f = 0; f < 4; f++)
+                        blue_metal_cache = new List<Image>();
+                        for (int f = 0; f <= 4; f++)
                         {
                             string name = string.Format("images_ground_blue_metal_blue_metal_{0}", f);
                             blue_metal_cache.Add(Resources.ResourceManager.GetObject(name, Resources.Culture) as Bitmap);

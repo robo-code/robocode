@@ -208,7 +208,7 @@ namespace nrobocodeui.battleview
                 {
 				    for (int x = NUM_HORZ_TILES - 1; x >= 0; x--)
                     {
-                        groundTiles[x, y] = random.Next(4);
+                        groundTiles[x, y] = random.Next(5);
 				    }
 			    }
 		    }
@@ -228,10 +228,10 @@ namespace nrobocodeui.battleview
             {
                 for (int x = NUM_HORZ_TILES - 1; x >= 0; x--)
                 {
-                    Bitmap img = resources.images.ground.blue_metal[groundTiles[x, y]];
+                    Image img = resources.images.ground.blue_metal[groundTiles[x, y]];
                     if (img != null)
                     {
-                        groundGfx.DrawImageUnscaled(img, x * groundTileWidth, y * groundTileHeight);
+                        groundGfx.DrawImage(img, new Rectangle(x * groundTileWidth, y * groundTileHeight, img.Width, img.Height), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
                     }
                 }
             }
