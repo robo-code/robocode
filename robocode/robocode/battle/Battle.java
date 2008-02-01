@@ -1819,8 +1819,8 @@ public class Battle implements Runnable {
 		if (battleManager.isPaused()) {
 			title.append(" (paused)");
 		}
-		battleView.setTitle(title.toString());
-	}
+        manager.getWindowManager().getRobocodeFrame().setTitle(title.toString());
+    }
 
 	public void mouseClicked(final MouseEvent e) {
 		if (isRunning()) {

@@ -1,11 +1,24 @@
-﻿using System;
+﻿// ****************************************************************************
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+// 
+// Contributors:
+// Pavel Savara
+// - Initial implementation
+// *****************************************************************************
+
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using nrobocodeui.battleview;
+using nrobocodeui.manager;
+using robocode.battle;
+using robocode.manager;
 using robocode.peer;
-using robocode.peer.robot;
 using robocode.ui;
-using File=java.io.File;
 
 namespace nrobocodeui.dialog
 {
@@ -13,9 +26,14 @@ namespace nrobocodeui.dialog
     {
         #region Constructors
 
-        public RobocodeFrame()
+        public RobocodeFrame(robocode.manager.RobocodeManager manager)
         {
+            this.manager = manager;
             InitializeComponent();
+            battleView.InitFrame(this);
+            string path = robocode.io.FileUtil.getBattlesDir().getAbsolutePath();
+            openFileDialog.InitialDirectory = path;
+            saveFileDialog.InitialDirectory = path;
         }
 
         #endregion
@@ -24,40 +42,7 @@ namespace nrobocodeui.dialog
 
         private int childFormNumber = 0;
         private FormWindowState lastState = FormWindowState.Normal;
-
-        #endregion
-
-        #region Event Handlers
-
-        private void ShowNewForm(object sender, EventArgs e)
-        {
-            Form childForm = new Form();
-            childForm.MdiParent = this;
-            childForm.Text = "Window " + childFormNumber++;
-            childForm.Show();
-        }
-
-        private void OpenFile(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                string FileName = openFileDialog.FileName;
-            }
-        }
-
-        private void SaveAsMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveAs(null);
-            //TODO ? call save
-        }
-
-        private void ExitMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private robocode.manager.RobocodeManager manager;
 
         #endregion
 
@@ -68,7 +53,7 @@ namespace nrobocodeui.dialog
             if (battleView == null)
             {
                 //TODO
-                battleView = new BattleView(this);
+                battleView = new BattleView();
             }
             return battleView;
         }
@@ -83,9 +68,14 @@ namespace nrobocodeui.dialog
             saveMenuItem.Enabled = b;
         }
 
-        public string saveBattleDialog(File f)
+        public void setTitle(string str)
         {
-            return SaveAs(f.getAbsolutePath());
+            this.Text = str;
+        }
+
+        public string saveBattleDialog(string file)
+        {
+            return SaveBattleAs(file);
         }
 
         public void messageError(string str)
@@ -133,22 +123,15 @@ namespace nrobocodeui.dialog
 
         public void clearRobotButtons()
         {
-            //TODO
             fpRobotButtons.Controls.Clear();
         }
 
         public void addRobotButton(IRobotDialogManager irdm, RobotPeer rp)
         {
-            this.Invoke(new addRobotButtonImplD(addRobotButtonImpl), new object[] { rp });
-        }
-
-        private delegate void addRobotButtonImplD(RobotPeer rp);
-        private void addRobotButtonImpl(RobotPeer rp)
-        {
-            Button rb=new Button();
+            Button rb = new Button();
             rb.Tag = rp;
             rb.Text = rp.getName();
-            rb.Size=new Size(100,20);
+            rb.Size = new Size(100, 20);
             fpRobotButtons.Controls.Add(rb);
             //TODO event handler
         }
@@ -173,16 +156,87 @@ namespace nrobocodeui.dialog
 
         #region Private Implementation
 
-        private string SaveAs(string fileName)
+        private void ShowNewBattleDialog(BattleProperties battleProperties)
+        {
+            manager.getBattleManager().pauseBattle();
+
+            NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
+
+            newBattleDialog.ShowDialog(this);
+        }
+
+        private void OpenBattle()
+        {
+            BattleManager battleManager = manager.getBattleManager();
+            battleManager.pauseBattle();
+
+            //openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            openFileDialog.Filter = "Battle files (*.battle)|*.battle|All Files (*.*)|*.*";
+            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                battleManager.setBattleFilename(openFileDialog.FileName);
+                battleManager.loadBattleProperties();
+                ShowNewBattleDialog(battleManager.getBattleProperties());
+            }
+            battleManager.resumeBattle();
+        }
+
+        private string SaveBattleAs(string fileName)
         {
             saveFileDialog.FileName = fileName;
-            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            //saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            saveFileDialog.Filter = "Battle files (*.battle)|*.battle|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 return saveFileDialog.FileName;
             }
             return null;
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void OpenFileMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenBattle();
+        }
+
+        private void saveMenuItem_Click(object sender, EventArgs e)
+        {
+            manager.getBattleManager().saveBattle();
+        }
+
+        private void SaveAsMenuItem_Click(object sender, EventArgs e)
+        {
+            manager.getBattleManager().saveBattleAs();
+        }
+
+        private void ExitMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void RobocodeFrame_Load(object sender, EventArgs e)
+        {
+            ((WindowManager)manager.getWindowManager()).OnDisplayLoaded();
+        }
+
+
+        private void newMenuItem_Click(object sender, EventArgs e)
+        {
+            //TODO
+        }
+
+        private void speedSlider_Scroll(object sender, EventArgs e)
+        {
+            int tps = speedSlider.Value;
+            if (tps == speedSlider.Maximum)
+            {
+                tps = 10000;
+            }
+            manager.getProperties().setOptionsBattleDesiredTPS(tps);
+            speedSlider.Text= "  " + tps;
         }
 
         #endregion

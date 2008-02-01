@@ -42,6 +42,7 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.BattleManager;
 import robocode.ui.IRobocodeFrame;
 import robocode.ui.IWindowManager;
+import robocode.Robocode;
 
 
 /**
@@ -71,7 +72,7 @@ public class WindowManager implements IWindowManager {
 
 	public void showRobocodeFrame(boolean visible) {
 		RobocodeFrame frame = (RobocodeFrame) getRobocodeFrame();
-		
+
 		if (visible) {
 			// Pack frame to size all components
 			WindowUtil.packCenterShow(frame);
@@ -87,7 +88,8 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showBattleOpenDialog() {
-		manager.getBattleManager().pauseBattle();
+        BattleManager battleManager = manager.getBattleManager();
+		battleManager.pauseBattle();
 
 		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 
@@ -117,7 +119,6 @@ public class WindowManager implements IWindowManager {
 			}
 		});
 
-		BattleManager battleManager = manager.getBattleManager();
 
 		if (chooser.showOpenDialog((Component) getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
 			battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
@@ -444,16 +445,17 @@ public class WindowManager implements IWindowManager {
 		window.setVisible(true);
 	}
     
-	/**
-	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
-	 * system's LAF. If this fails, it try to use the cross platform LAF.
-	 * If this also fails, the LAF will not be changed.
-	 */
-	public void setLookAndFeel() {
-		SetLookAndFeel();
-	}
+	public boolean initializeDisplay(Robocode robocode) {
+		setLookAndFeel();
+        return true;
+    }
 
-	public static void SetLookAndFeel() {
+    /**
+     * Sets the Look and Feel (LAF). This method first try to set the LAF to the
+     * system's LAF. If this fails, it try to use the cross platform LAF.
+     * If this also fails, the LAF will not be changed.
+     */
+	public static void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable t) {

@@ -5,7 +5,7 @@ using robocode.ui;
 
 namespace nrobocodeui.battleview
 {
-    class BattleViewStub : IBattleView
+    class BattleViewProxy : IBattleView
     {
         public void setBattleField(BattleField bf)
         {
@@ -39,7 +39,7 @@ namespace nrobocodeui.battleview
 
         public void update()
         {
-            Console.WriteLine("update");
+            //Console.WriteLine("update");
         }
 
         public bool isDisplayTPS()
@@ -52,11 +52,6 @@ namespace nrobocodeui.battleview
         {
             Console.WriteLine("isDisplayFPS");
             return false;
-        }
-
-        public void setTitle(string str)
-        {
-            Console.WriteLine("setTitle "+str);
         }
 
         public int getWidth()

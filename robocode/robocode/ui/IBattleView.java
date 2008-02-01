@@ -25,7 +25,6 @@ public interface IBattleView {
 
 	void setVisible(boolean value);
 	void setInitialized(boolean value);
-	void setTitle(String title);
 	boolean isDisplayTPS();
 	boolean isDisplayFPS();
 	void update();

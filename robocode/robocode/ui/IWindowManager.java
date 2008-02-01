@@ -11,6 +11,8 @@
  *******************************************************************************/
 package robocode.ui;
 
+import robocode.Robocode;
+
 
 /**
  * @author Pavel Savara (original)
@@ -21,10 +23,5 @@ public interface IWindowManager extends ILoadableManager {
 	void showSplashScreen();
 	void showRobocodeFrame(boolean value);
 
-	/**
-	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
-	 * system's LAF. If this fails, it try to use the cross platform LAF.
-	 * If this also fails, the LAF will not be changed.
-	 */
-	void setLookAndFeel();
+	boolean initializeDisplay(Robocode robocode);
 }

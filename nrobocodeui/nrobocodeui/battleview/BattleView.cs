@@ -29,11 +29,15 @@ namespace nrobocodeui.battleview
 
         private bool drawGround = true;
 
-        public BattleView(RobocodeFrame robocodeFrame)
+        public BattleView()
         {
-            this.robocodeFrame = robocodeFrame;
 
             InitializeComponent();
+        }
+
+        public void InitFrame(RobocodeFrame robocodeFrame)
+        {
+            this.robocodeFrame = robocodeFrame;
         }
 
         #region IBattleView Members

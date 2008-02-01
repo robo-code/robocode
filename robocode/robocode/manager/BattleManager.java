@@ -356,19 +356,22 @@ public class BattleManager {
 
 	public String getBattleFilename() {
 		String filename = battleFilename;
-
-		if (filename != null) {
-			if (filename.indexOf(File.separatorChar) < 0) {
-				filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
-			}
-			if (!filename.endsWith(".battle")) {
-				filename += ".battle";
-			}
-		}
-		return filename;
+        return getBattleFilename(filename);
 	}
 
-	public void setBattleFilename(String newBattleFilename) {
+    public static String getBattleFilename(String filename) {
+        if (filename != null) {
+            if (filename.indexOf(File.separatorChar) < 0) {
+                filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
+            }
+            if (!filename.endsWith(".battle")) {
+                filename += ".battle";
+            }
+        }
+        return filename;
+    }
+
+    public void setBattleFilename(String newBattleFilename) {
 		battleFilename = newBattleFilename;
 	}
 
@@ -411,9 +414,7 @@ public class BattleManager {
 
 	public void saveBattleAs() {
 		pauseBattle();
-		File f = new File(getBattlePath());
-
-		String path = manager.getWindowManager().getRobocodeFrame().saveBattleDialog(f);
+		String path = manager.getWindowManager().getRobocodeFrame().saveBattleDialog(getBattlePath());
 
 		if (path != null) {
 			battleFilename = path;

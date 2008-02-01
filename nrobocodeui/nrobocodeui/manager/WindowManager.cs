@@ -11,47 +11,67 @@
 // *****************************************************************************
 
 using System;
+using System.Threading;
+using System.Windows.Forms;
 using nrobocodeui.dialog;
 using nrobocodeui.manager;
+using robocode;
 using robocode.ui;
 
 namespace nrobocodeui.manager
 {
+    /// <summary>
+    /// Proxy
+    /// </summary>
     public class WindowManager : LoadableManagerBase, IWindowManager
     {
-        private IRobocodeFrame frame;
+        private RobocodeFrameProxy  frameProxy;
+        private RobocodeFrame frame;
+        private Thread battleWorker;
+        private Robocode robocode;
+
+        public bool initializeDisplay(Robocode robocode)
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            this.robocode = robocode;
+            frame = new RobocodeFrame(RobocodeManager);
+            frameProxy = new RobocodeFrameProxy(frame);
+
+            //will block
+            Application.Run(frame);
+
+            //after game
+            return false;
+        }
+
+        public void OnDisplayLoaded()
+        {
+            battleWorker = new Thread(RunBattle);
+            battleWorker.Start();
+        }
+
+        private void RunBattle()
+        {
+            Robocode.run(robocode);
+        }
 
         public IRobocodeFrame getRobocodeFrame()
         {
-            //TODO ZAMO
-            if (frame==null)
-            {
-                frame = new RobocodeFrameStub();
-            }
-            return frame;
-        }
-
-        public void setLookAndFeel()
-        {
-            //TODO
+            return frameProxy;
         }
 
         public void showResultsDialog()
         {
-            //TODO ZAMO
-            Console.WriteLine("Results");
         }
 
         public void showSplashScreen()
         {
-            //TODO ZAMO
-            Console.WriteLine("Splash");
         }
 
         public void showRobocodeFrame(bool b)
         {
-            RobocodeFrame frame = getRobocodeFrame() as RobocodeFrame;
-            //frame.Show();
         }
     }
 }

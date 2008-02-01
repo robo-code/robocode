@@ -22,7 +22,7 @@
   </loadfile>
 
   <!-- Disable debug information when compiling -->  
-  <property name="debug" value="false"/>
+  <property name="debug" value="true"/>
   <condition property="java.debug" value="on" else="off">
     <istrue value="${debug}"/>
   </condition>  
@@ -557,7 +557,11 @@
       <delete dir="${build}/robocode"/>
       <delete dir="${build}/robocodeui"/>
       <delete dir="${build}/libs"/>
-      <delete dir="${build}/nlibs"/>
+      <delete dir="${build}/nlibs/*.pdb"/>
+      <delete dir="${build}/nlibs/robocode.exe"/>
+      <delete dir="${build}/nlibs/roborumble.exe"/>
+      <delete dir="${build}/nlibs/nrobocodeui.dll"/>
+      <delete dir="${build}/nlibs/codesize.dll"/>
       <delete dir="${src.robocode}/bin"/>
       <delete dir="${src.robocodeui}/bin"/>
       <delete dir="${src.roborumble}/bin"/>

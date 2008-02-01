@@ -30,12 +30,13 @@ public interface IRobocodeFrame {
 	void clearRobotButtons();
 	void addRobotButton(IRobotDialogManager robotDialogManager, RobotPeer robotPeer);
 	void validate();
+    void setTitle(String title);
 	void setEnableStopButton(boolean value);
 	void setEnableReplayButton(boolean value);
 	void setEnableRestartButton(boolean value);
 	void setEnableBattleSaveAsMenuItem(boolean value);
 	void setEnableBattleSaveMenuItem(boolean value);
 	IBattleView getBattleView();
-	String saveBattleDialog(File f);
+	String saveBattleDialog(String file);
 	void dispose();
 }

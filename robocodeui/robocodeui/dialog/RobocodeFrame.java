@@ -744,9 +744,10 @@ public class RobocodeFrame extends JFrame implements IRobocodeFrame {
 		getReplayButton().setEnabled(enable);
 	}
 
-	public String saveBattleDialog(File f) {
+	public String saveBattleDialog(String file) {
 		JFileChooser chooser;
 
+        File f = new File(file);
 		chooser = new JFileChooser(f);
 
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {

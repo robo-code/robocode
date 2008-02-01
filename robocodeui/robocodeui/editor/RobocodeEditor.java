@@ -602,7 +602,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	public static void main(String[] args) {
 		try {
 			// Set the Look and Feel (LAF)
-			WindowManager.SetLookAndFeel();
+			WindowManager.setLookAndFeel();
 
 			RobocodeEditor robocodeEditor;
 
