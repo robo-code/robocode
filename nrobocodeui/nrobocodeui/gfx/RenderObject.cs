@@ -47,7 +47,7 @@ namespace nrobocodeui.gfx
             set
             {
                 transform = value.Clone();
-                transform.Multiply(baseTransform, MatrixOrder.Append);
+                transform.Multiply(baseTransform, MatrixOrder.Prepend);
             }
         }
 

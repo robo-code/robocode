@@ -222,19 +222,18 @@ public class Battle implements Runnable {
 	public Battle(BattleField battleField, RobocodeManager manager) {
 		super();
 
-		if (manager.isGUIEnabled()) {
-			battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-			battleView.setBattle(this);
-		}
-		this.battleField = battleField;
-		this.manager = manager;
+        this.battleField = battleField;
+        this.manager = manager;
 
-		battleManager = manager.getBattleManager();
-
-		if (manager.isGUIEnabled()) {
-			keyHandler = new KeyEventHandler(this, robots);
-			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
-		}
+		if (manager!=null){
+            if (manager.isGUIEnabled()) {
+                battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+                battleView.setBattle(this);
+                keyHandler = new KeyEventHandler(this, robots);
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
+            }
+            battleManager = manager.getBattleManager();
+        }
 	}
 
 	@Override

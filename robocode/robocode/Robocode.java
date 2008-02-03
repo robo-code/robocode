@@ -75,20 +75,29 @@ public class Robocode {
 	 * @param args an array of command-line arguments
 	 */
 	public static void main(String[] args) throws Throwable {
+        boolean runInThisThread=true;
+        Robocode robocode = new Robocode();
 		try {
-			Robocode robocode = new Robocode();
 			robocode.initialize(args);
-            boolean runInThisThread=true;
             if (robocode.manager.isGUIEnabled()) {
-                runInThisThread=robocode.manager.getWindowManager().initializeDisplay(robocode);
-            }
-            if (runInThisThread)
-            {
-                run(robocode);
+                runInThisThread=robocode.manager.getWindowManager().initializeDisplay();
             }
         } catch (Throwable e) {
 			Logger.log(e);
 		}
+        if (runInThisThread)
+        {
+            try {
+                run(robocode);
+            } catch (Throwable e) {
+                Logger.log(e);
+            }
+        }
+        else
+        {
+            // TODO One nice day we could start catching exceptions here, but now we are debugging
+            robocode.manager.getWindowManager().runDisplay(robocode);
+        }
 	}
 
 	private Robocode() {}

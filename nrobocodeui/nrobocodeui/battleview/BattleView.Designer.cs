@@ -30,21 +30,15 @@ namespace nrobocodeui.battleview
         /// </summary>
         private void InitializeComponent()
         {
-            this.battleField = new DefaultBattleField(800, 600);
+            this.SuspendLayout();
             // 
             // BattleView
             // 
-            this.SuspendLayout();
-
-            this.Name = "BattleView";
-//            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-//            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.DoubleBuffered = true;
-//            this.Size = new System.Drawing.Size(435, 390);*/
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.BattleView_Paint);
-
+            this.Name = "BattleView";
             this.ResumeLayout(false);
+
         }
 
         #endregion

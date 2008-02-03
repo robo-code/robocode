@@ -109,7 +109,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip.Size = new System.Drawing.Size(891, 24);
+            this.menuStrip.Size = new System.Drawing.Size(650, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
             // 
@@ -385,9 +385,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 520);
+            this.statusStrip.Location = new System.Drawing.Point(0, 405);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(891, 22);
+            this.statusStrip.Size = new System.Drawing.Size(650, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "StatusStrip";
             // 
@@ -446,7 +446,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(486, 45);
+            this.toolStrip1.Size = new System.Drawing.Size(517, 45);
             this.toolStrip1.TabIndex = 20;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -457,6 +457,7 @@
             this.pauseDebugButton.Name = "pauseDebugButton";
             this.pauseDebugButton.Size = new System.Drawing.Size(78, 42);
             this.pauseDebugButton.Text = "Pause/Debug";
+            this.pauseDebugButton.Click += new System.EventHandler(this.pauseDebugButton_Click);
             // 
             // nextTurnButton
             // 
@@ -464,6 +465,7 @@
             this.nextTurnButton.Name = "nextTurnButton";
             this.nextTurnButton.Size = new System.Drawing.Size(58, 42);
             this.nextTurnButton.Text = "Next Turn";
+            this.nextTurnButton.Click += new System.EventHandler(this.nextTurnButton_Click);
             // 
             // stopButton
             // 
@@ -471,6 +473,7 @@
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(33, 42);
             this.stopButton.Text = "Stop";
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
             // restartButton
             // 
@@ -478,6 +481,7 @@
             this.restartButton.Name = "restartButton";
             this.restartButton.Size = new System.Drawing.Size(45, 42);
             this.restartButton.Text = "Restart";
+            this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
             // 
             // toolStripSeparator8
             // 
@@ -505,11 +509,11 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(891, 426);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(650, 311);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 24);
             this.toolStripContainer1.Name = "toolStripContainer1";
-            this.toolStripContainer1.Size = new System.Drawing.Size(891, 496);
+            this.toolStripContainer1.Size = new System.Drawing.Size(650, 381);
             this.toolStripContainer1.TabIndex = 24;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -530,8 +534,8 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.fpRobotButtons);
-            this.splitContainer.Size = new System.Drawing.Size(891, 426);
-            this.splitContainer.SplitterDistance = 741;
+            this.splitContainer.Size = new System.Drawing.Size(650, 311);
+            this.splitContainer.SplitterDistance = 539;
             this.splitContainer.TabIndex = 0;
             // 
             // battleView
@@ -540,7 +544,7 @@
             this.battleView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.battleView.Location = new System.Drawing.Point(0, 0);
             this.battleView.Name = "battleView";
-            this.battleView.Size = new System.Drawing.Size(741, 426);
+            this.battleView.Size = new System.Drawing.Size(539, 311);
             this.battleView.TabIndex = 0;
             // 
             // fpRobotButtons
@@ -549,7 +553,7 @@
             this.fpRobotButtons.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.fpRobotButtons.Location = new System.Drawing.Point(0, 0);
             this.fpRobotButtons.Name = "fpRobotButtons";
-            this.fpRobotButtons.Size = new System.Drawing.Size(146, 426);
+            this.fpRobotButtons.Size = new System.Drawing.Size(107, 311);
             this.fpRobotButtons.TabIndex = 0;
             // 
             // RobocodeFrame
@@ -557,7 +561,7 @@
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(891, 542);
+            this.ClientSize = new System.Drawing.Size(650, 427);
             this.Controls.Add(this.toolStripContainer1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);

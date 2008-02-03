@@ -30,22 +30,20 @@ namespace nrobocodeui.dialog
         {
             this.manager = manager;
             InitializeComponent();
-            battleView.InitFrame(this);
+            Size=new Size(971, 718);
+            battleView.InitBattleView(manager, this);
             string path = robocode.io.FileUtil.getBattlesDir().getAbsolutePath();
             openFileDialog.InitialDirectory = path;
             saveFileDialog.InitialDirectory = path;
 
-            battleViewProxy = new BattleViewProxy(battleView);
         }
 
         #endregion
 
         #region Private members
 
-        private int childFormNumber = 0;
         private FormWindowState lastState = FormWindowState.Normal;
-        private robocode.manager.RobocodeManager manager;
-        private BattleViewProxy battleViewProxy;
+        private RobocodeManager manager;
 
         #endregion
 
@@ -55,7 +53,7 @@ namespace nrobocodeui.dialog
         {
             get
             {
-                return battleViewProxy;
+                return battleView.BattleViewProxy;
             }
         }
 
@@ -65,11 +63,6 @@ namespace nrobocodeui.dialog
 
         public IBattleView getBattleView()
         {
-            if (battleView == null)
-            {
-                //TODO
-                battleView = new BattleView();
-            }
             return battleView;
         }
 
@@ -85,7 +78,7 @@ namespace nrobocodeui.dialog
 
         public void setTitle(string str)
         {
-            this.Text = str;
+            Text = str;
         }
 
         public string saveBattleDialog(string file)
@@ -153,7 +146,7 @@ namespace nrobocodeui.dialog
 
         public void validate()
         {
-            //TODO
+            Invalidate();
         }
 
         public bool isIconified()
@@ -229,7 +222,7 @@ namespace nrobocodeui.dialog
 
         private void ExitMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void RobocodeFrame_Load(object sender, EventArgs e)
@@ -252,6 +245,35 @@ namespace nrobocodeui.dialog
             }
             manager.getProperties().setOptionsBattleDesiredTPS(tps);
             speedSlider.Text= "  " + tps;
+        }
+
+        private void pauseDebugButton_Click(object sender, EventArgs e)
+        {
+            BattleManager battleManager = manager.getBattleManager();
+
+            if (battleManager.isPaused())
+            {
+                battleManager.resumeBattle();
+            }
+            else
+            {
+                battleManager.pauseBattle();
+            }
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            manager.getBattleManager().stop();
+        }
+
+        private void restartButton_Click(object sender, EventArgs e)
+        {
+            manager.getBattleManager().restart();
+        }
+
+        private void nextTurnButton_Click(object sender, EventArgs e)
+        {
+            manager.getBattleManager().nextTurn();
         }
 
         #endregion

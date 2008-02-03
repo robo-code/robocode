@@ -86,13 +86,16 @@
     <Compile Include="nrobocodeui\dialog\RobocodeFrame.Designer.cs">
       <DependentUpon>RobocodeFrame.cs</DependentUpon>
     </Compile>
+    <Compile Include="nrobocodeui\gfx\HLSColor.cs" />
     <Compile Include="nrobocodeui\gfx\RenderImage.cs" />
     <Compile Include="nrobocodeui\gfx\RenderObject.cs" />
+    <Compile Include="nrobocodeui\gfx\ColorFilter.cs" />
     <Compile Include="nrobocodeui\repository\NetAssemblySpecification.cs" />
     <Compile Include="nrobocodeui\repository\NetRepositoryPlugin.cs" />
     <Compile Include="nrobocodeui\security\NetRobocodeClassLoader.cs" />
     <Compile Include="nrobocodeui\sound\SoundManager.cs" />
     <Compile Include="nrobocodeui\utils\Delegates.cs" />
+    <Compile Include="nrobocodeui\utils\Radians.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="nrobocodeui\battleview\BattleViewProxy.cs" />
     <Compile Include="nrobocodeui\dialog\RobocodeFrameProxy.cs" />

@@ -575,12 +575,6 @@ public class BattleView extends Canvas implements IBattleView {
 		g.drawString(s, (int) (left + 0.5), (int) (top + height - descent + 0.5));
 	}
 
-	public void setTitle(String s) {
-		if (robocodeFrame != null) {
-			robocodeFrame.setTitle(s);
-		}
-	}
-
 	private Rectangle drawScanArc(Graphics2D g, RobotPeer robot) {
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using nrobocodeui.utils;
 using robocode.battle;
 using robocode.battlefield;
@@ -11,67 +12,69 @@ namespace nrobocodeui.battleview
     /// </summary>
     public class BattleViewProxy : IBattleView
     {
-        public BattleViewProxy(BattleView battleView)
+        public BattleViewProxy(IBattleView battleView, ISynchronizeInvoke synchronizer)
         {
             this.battleView = battleView;
+            this.synchronizer = synchronizer;
         }
 
-        private BattleView battleView;
+        private IBattleView battleView;
+        private ISynchronizeInvoke synchronizer;
 
 
         public void setBattleField(BattleField value)
         {
-            battleView.Invoke(new System.Action<BattleField>(battleView.setBattleField), new object[] { value });
+            synchronizer.Invoke(new System.Action<BattleField>(battleView.setBattleField), new object[] { value });
         }
 
         public void setVisible(bool value)
         {
-            battleView.Invoke(new System.Action<bool>(battleView.setVisible), new object[] { value });
+            synchronizer.Invoke(new System.Action<bool>(battleView.setVisible), new object[] { value });
         }
 
         public void setInitialized(bool value)
         {
-            battleView.Invoke(new System.Action<bool>(battleView.setInitialized), new object[] { value });
+            synchronizer.Invoke(new System.Action<bool>(battleView.setInitialized), new object[] { value });
         }
 
         public void setBattle(Battle value)
         {
-            battleView.Invoke(new System.Action<Battle>(battleView.setBattle), new object[] { value });
+            synchronizer.Invoke(new System.Action<Battle>(battleView.setBattle), new object[] { value });
         }
 
         public void repaint()
         {
-            battleView.Invoke(new Action(battleView.repaint));
+            synchronizer.Invoke(new Action(battleView.repaint), new object[]{});
         }
 
         public void setDisplayOptions()
         {
-            battleView.Invoke(new Action(battleView.setDisplayOptions));
+            synchronizer.Invoke(new Action(battleView.setDisplayOptions), new object[] { });
         }
 
         public void update()
         {
-            battleView.Invoke(new Action(battleView.update));
+            synchronizer.Invoke(new Action(battleView.update), new object[] { });
         }
 
         public bool isDisplayTPS()
         {
-            return (bool)battleView.Invoke(new Delegate<bool>(battleView.isDisplayTPS));
+            return (bool)synchronizer.Invoke(new Delegate<bool>(battleView.isDisplayTPS), new object[] { });
         }
 
         public bool isDisplayFPS()
         {
-            return (bool)battleView.Invoke(new Delegate<bool>(battleView.isDisplayFPS));
+            return (bool)synchronizer.Invoke(new Delegate<bool>(battleView.isDisplayFPS), new object[] { });
         }
 
         public int getWidth()
         {
-            return (int)battleView.Invoke(new Delegate<int>(battleView.getWidth));
+            return (int)synchronizer.Invoke(new Delegate<int>(battleView.getWidth), new object[] { });
         }
 
         public int getHeight()
         {
-            return (int)battleView.Invoke(new Delegate<int>(battleView.getHeight));
+            return (int)synchronizer.Invoke(new Delegate<int>(battleView.getHeight), new object[] { });
         }
     }
 }

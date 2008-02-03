@@ -445,9 +445,13 @@ public class WindowManager implements IWindowManager {
 		window.setVisible(true);
 	}
     
-	public boolean initializeDisplay(Robocode robocode) {
+	public boolean initializeDisplay() {
 		setLookAndFeel();
         return true;
+    }
+
+    public void runDisplay(Robocode robocode) {
+        //intentionally empty
     }
 
     /**

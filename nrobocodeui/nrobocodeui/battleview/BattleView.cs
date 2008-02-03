@@ -3,49 +3,84 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using java.util;
+using nrobocodeui.manager;
+using nrobocodeui.utils;
 using robocode.battle;
 using robocode.battlefield;
+using robocode.manager;
+using robocode.peer;
 using robocode.ui;
 using nrobocodeui.dialog;
 using nrobocodeui.gfx;
+using Random = System.Random;
 
 namespace nrobocodeui.battleview
 {
     public partial class BattleView : UserControl, IBattleView
     {
+        #region Construction
+
+        public BattleView()
+        {
+            this.battleField = new DefaultBattleField(800, 600);
+            InitializeComponent();
+        }
+
+        public void InitBattleView(RobocodeManager manager, RobocodeFrame robocodeFrame)
+        {
+            this.manager = manager;
+            this.robocodeFrame = robocodeFrame;
+            battleViewProxy = new BattleViewProxy(this, robocodeFrame);
+            imageManager = (ImageManager)manager.getImageManager();
+
+            SetScale();
+        }
+
+        #endregion
+
+        #region Private variables
+
+        private RobocodeManager manager;
+        private ImageManager imageManager;
         private RobocodeFrame robocodeFrame;
+        private BattleViewProxy battleViewProxy;
+        public BattleViewProxy BattleViewProxy
+        {
+            get
+            {
+                return battleViewProxy;
+            }
+        }
 
         private BattleField battleField;
         private Battle battle;
 
+        #endregion
+
+        #region Drawing variables
+
+        private bool displayTPS;
+        private bool displayFPS;
+        private bool drawRobotName;
+        private bool drawRobotEnergy;
+        private bool drawScanArcs;
+        private bool drawGround;
+        private bool drawExplosions;
+        private bool drawExplosionDebris;
+        //TODO renderingHints = props.getRenderingHints();
+        //TODO numBuffers = props.getOptionsRenderingNoBuffers();
+
         private double scale = 1.0;
 
-        // Ground
-        private int[,] groundTiles;
+        #endregion
 
-        private int groundTileWidth = 64;
-        private int groundTileHeight = 64;
-
-        private Bitmap groundImage;
-
-        private bool drawGround = true;
-
-        public BattleView()
-        {
-
-            InitializeComponent();
-        }
-
-        public void InitFrame(RobocodeFrame robocodeFrame)
-        {
-            this.robocodeFrame = robocodeFrame;
-        }
 
         #region IBattleView Members
 
         public void setBattleField(BattleField bf)
         {
-            this.battleField = bf;
+            battleField = bf;
         }
 
         public void setVisible(bool b)
@@ -60,34 +95,49 @@ namespace nrobocodeui.battleview
 
         public void setBattle(Battle b)
         {
-            this.battle = b;
+            battle = b;
         }
 
         public void repaint()
         {
-            this.Invalidate();
+            Invalidate();
         }
+
 
         public void setDisplayOptions()
         {
-            //TODO
+            RobocodeProperties props = manager.getProperties();
+
+            displayTPS = props.getOptionsViewTPS();
+            displayFPS = props.getOptionsViewFPS();
+            drawRobotName = props.getOptionsViewRobotNames();
+            drawRobotEnergy = props.getOptionsViewRobotEnergy();
+            drawScanArcs = props.getOptionsViewScanArcs();
+            drawGround = props.getOptionsViewGround();
+            drawExplosions = props.getOptionsViewExplosions();
+            drawExplosionDebris = props.getOptionsViewExplosionDebris();
+
+            //TODO renderingHints = props.getRenderingHints();
+            //TODO numBuffers = props.getOptionsRenderingNoBuffers();
         }
 
         public void update()
         {
-            this.Invalidate();
+            if (robocodeFrame.isIconified() || (getWidth() <= 0) || (getHeight() <= 0))
+            {
+                return;
+            }
+            Invalidate();
         }
 
         public bool isDisplayTPS()
         {
-            //TODO
-            return false;
+            return displayTPS;
         }
 
         public bool isDisplayFPS()
         {
-            //TODO
-            return false;
+            return displayFPS;
         }
 
         public int getWidth()
@@ -102,60 +152,112 @@ namespace nrobocodeui.battleview
 
         #endregion
 
+        #region Helpers
+
+        private void SetScale()
+        {
+            if ((getWidth() < battleField.getWidth() || getHeight() < battleField.getHeight()))
+            {
+                scale = Math.Min((double)getWidth() / battleField.getWidth(), (double)getHeight() / battleField.getHeight());
+            }
+            else
+            {
+                scale = 1;
+            }
+        }
+
+        #endregion
+
+        #region Events
+
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            base.OnClientSizeChanged(e);
+            SetScale();
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
-            BattleView_Paint(this, e);
+            if (battle != null && battle.isRunning())
+            {
+                //TODO ? update();
+                DrawBattle(e.Graphics);
+            }
+            else
+            {
+                paintRobocodeLogo(e.Graphics);
+            }
         }
 
-        private void BattleView_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
+        #endregion
 
-            //g = Graphics.FromImage(resources.images.body);
-/*
-            g.RotateTransform(15);
-            g.TranslateTransform(100, 100);
-            e.Graphics.DrawImage(resources.images.body, new Point(100, 100));
-            g.ResetTransform();
-
-            g.RotateTransform(65);
-            g.TranslateTransform(100, 40);
-            e.Graphics.DrawImage(resources.images.body, new Point(100, 40));
-            g.ResetTransform();*/
-
-
-            //// Test of RenderImage ////
-
-            // Initialize our render image
-            Image img = resources.images.ground.blue_metal[0];
-            RenderImage renderImage = new RenderImage(img, 0, 0);
-
-            // Prepare translation to move (200, 100)
-            Matrix tx = new Matrix();
-            tx.Translate(200, 100);
-
-            // Rotate 37 deg
-            tx.Rotate(37);
-
-            // Now scale it by 2x3
-            tx.Scale(2, 3);
-
-            // Set the final transform on the render image
-            renderImage.Transform = tx;
-
-            // Paint our render image
-            renderImage.Paint(g);
-
-            // Hmm.. let's paint it's bounding box
-            g.DrawRectangle(new Pen(Color.Red), renderImage.Bounds);
-
-            DrawBattle(g);
-        }
+        #region Draw root
 
         private void DrawBattle(Graphics g)
         {
             DrawGround(g);
+            DrawRobots(g);
         }
+
+        #endregion
+
+        #region Robots
+
+        public void DrawRobots(Graphics g)
+        {
+            List robots = battle.getRobots();
+            object[] robotPeers = robots.toArray();
+
+            foreach (RobotPeer r in robotPeers)
+            {
+                DrawRobot(r, g);
+            }
+        }
+
+        private void DrawRobot(RobotPeer robot, Graphics g)
+        {
+            if (robot.isAlive())
+            {
+                float x = (float)robot.getX();
+                float y = battleField.getHeight() - (float)robot.getY();
+                bool droid = robot.isDroid();
+
+                Matrix at;
+                at = new Matrix();
+                at.Translate(x, y);
+                at.Rotate(Radians.ToDegrees(robot.getHeading()));
+
+                RenderImage robotRenderImage = new RenderImage(imageManager.getColoredBodyRenderImage(robot.getBodyColor()));
+
+                robotRenderImage.Transform = at;
+                robotRenderImage.Paint(g);
+
+                at = new Matrix();
+                at.Translate(x, y);
+                at.Rotate(Radians.ToDegrees(robot.getGunHeading()));
+
+                RenderImage gunRenderImage = new RenderImage(imageManager.getColoredGunRenderImage(robot.getGunColor()));
+
+                gunRenderImage.Transform = at;
+                gunRenderImage.Paint(g);
+
+                if (!droid)
+                {
+                    at = new Matrix();
+                    at.Translate(x, y);
+                    at.Rotate(Radians.ToDegrees(robot.getRadarHeading()));
+
+                    RenderImage radarRenderImage = new RenderImage(imageManager.getColoredRadarRenderImage(robot.getRadarColor()));
+
+                    radarRenderImage.Transform = at;
+                    radarRenderImage.Paint(g);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Ground
 
         private void DrawGround(Graphics g)
         {
@@ -180,38 +282,43 @@ namespace nrobocodeui.battleview
                     int dx = (getWidth() - groundWidth) / 2;
                     int dy = (getHeight() - groundHeight) / 2;
 
-//                    AffineTransform savedTx = g.getTransform();
+                    //                    AffineTransform savedTx = g.getTransform();
 
-//                    g.setTransform(new AffineTransform());
+                    //                    g.setTransform(new AffineTransform());
 
                     g.DrawImageUnscaled(groundImage, 0, 0);
 
-//                    g.setTransform(savedTx);
+                    //                    g.setTransform(savedTx);
                 }
             }
         }
 
+        private Bitmap groundImage;
+        private int[,] groundTiles;
+        private int groundTileWidth = 64;
+        private int groundTileHeight = 64;
+
         private void CreateGroundImage()
         {
-		    // Reinitialize ground tiles
+            // Reinitialize ground tiles
 
-		    int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
-		    int NUM_VERT_TILES = battleField.getHeight() / groundTileHeight + 1;
+            int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
+            int NUM_VERT_TILES = battleField.getHeight() / groundTileHeight + 1;
 
             if ((groundTiles == null) || (groundTiles.GetLength(0) != NUM_HORZ_TILES) || (groundTiles.GetLength(1) != NUM_VERT_TILES))
             {
-			    groundTiles = new int[NUM_HORZ_TILES, NUM_VERT_TILES];
+                groundTiles = new int[NUM_HORZ_TILES, NUM_VERT_TILES];
 
                 Random random = new Random();
 
-			    for (int y = NUM_VERT_TILES - 1; y >= 0; y--)
+                for (int y = NUM_VERT_TILES - 1; y >= 0; y--)
                 {
-				    for (int x = NUM_HORZ_TILES - 1; x >= 0; x--)
+                    for (int x = NUM_HORZ_TILES - 1; x >= 0; x--)
                     {
                         groundTiles[x, y] = random.Next(5);
-				    }
-			    }
-		    }
+                    }
+                }
+            }
 
             // Create new buffered image with the ground pre-rendered
 
@@ -236,5 +343,17 @@ namespace nrobocodeui.battleview
                 }
             }
         }
+
+        #endregion
+
+        #region Logo
+
+        public void paintRobocodeLogo(Graphics g)
+        {
+            //TODO
+        }
+
+        #endregion
+
     }
 }

@@ -30,20 +30,31 @@ namespace nrobocodeui.manager
         private Thread battleWorker;
         private Robocode robocode;
 
-        public bool initializeDisplay(Robocode robocode)
+        public bool initializeDisplay()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            this.robocode = robocode;
             frame = new RobocodeFrame(RobocodeManager);
-            frameProxy = new RobocodeFrameProxy(frame);
+            frameProxy = new RobocodeFrameProxy(frame, frame);
 
-            //will block
-            Application.Run(frame);
-
-            //after game
             return false;
+        }
+
+        public void runDisplay(Robocode robocode)
+        {
+            this.robocode = robocode;
+            //will block
+            try
+            {
+                Application.Run(frame);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
+            
         }
 
         public void OnDisplayLoaded()
@@ -54,7 +65,15 @@ namespace nrobocodeui.manager
 
         private void RunBattle()
         {
-            Robocode.run(robocode);
+            try
+            {
+                Robocode.run(robocode);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
         }
 
         public IRobocodeFrame getRobocodeFrame()

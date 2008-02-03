@@ -23,5 +23,6 @@ public interface IWindowManager extends ILoadableManager {
 	void showSplashScreen();
 	void showRobocodeFrame(boolean value);
 
-	boolean initializeDisplay(Robocode robocode);
+	boolean initializeDisplay();
+    void runDisplay(Robocode robocode);
 }
