@@ -75,7 +75,6 @@ namespace nrobocodeui.battleview
 
         #endregion
 
-
         #region IBattleView Members
 
         public void setBattleField(BattleField bf)
@@ -195,8 +194,46 @@ namespace nrobocodeui.battleview
 
         private void DrawBattle(Graphics g)
         {
+    		// Save the graphics state
+	    	GraphicsState graphicsState = g.Save();
+
+            // Reset transform
+            g.Transform = new Matrix();
+
+            // Reset clip
+            g.Clip = new Region();
+
+            // Clear canvas
+            g.Clear(BackColor);
+
+            // Calculate border space
+            float dx = (float)(getWidth() - scale * battleField.getWidth()) / 2;
+            float dy = (float)(getHeight() - scale * battleField.getHeight()) / 2;
+
+            // Translate and scale the Graphics context
+            Matrix at;
+            at = new Matrix();
+            at.Translate(dx, dy);
+            at.Scale((float)scale, (float)scale);
+            g.Transform = at;
+
+            // Set the clip rectangle
+            g.Clip = new Region(new Rectangle(0, 0, battleField.getWidth(), battleField.getHeight()));
+
+            // Draw ground
             DrawGround(g);
+
+            // Draw robots and debrises
             DrawRobots(g);
+
+            // Draw the border of the battlefield
+            DrawBorder(g);
+
+            // Draw all bullets
+            DrawBullets(g);
+
+            // Restore the graphics state
+            g.Restore(graphicsState);
         }
 
         #endregion
@@ -208,6 +245,32 @@ namespace nrobocodeui.battleview
             List robots = battle.getRobots();
             object[] robotPeers = robots.toArray();
 
+    		float x, y;
+            Matrix at;
+    		int battleFieldHeight = battle.getBattleField().getHeight();
+
+            // Paint all explosion debrises for dead robots
+	        if (drawGround && drawExplosionDebris && battle.isRobotsLoaded())
+            {
+                RenderImage explodeDebrise = new RenderImage(resources.images.ground.explode_debris);
+
+                foreach (RobotPeer r in robotPeers)
+                {
+			        if (r.isDead())
+                    {
+				        x = (float)r.getX();
+				        y = (float)(battleFieldHeight - r.getY());
+
+                        at = new Matrix();
+                        at.Translate(x, y);
+
+				        explodeDebrise.Transform = at;
+				        explodeDebrise.Paint(g);
+			        }
+		        }
+	        }
+
+            // Draw all robots
             foreach (RobotPeer r in robotPeers)
             {
                 DrawRobot(r, g);
@@ -282,15 +345,24 @@ namespace nrobocodeui.battleview
                     int dx = (getWidth() - groundWidth) / 2;
                     int dy = (getHeight() - groundHeight) / 2;
 
-                    //                    AffineTransform savedTx = g.getTransform();
+                    Matrix savedTx = g.Transform.Clone();
+                    g.Transform = new Matrix();
 
-                    //                    g.setTransform(new AffineTransform());
+                    g.DrawImage(groundImage, dx, dy, groundWidth, groundHeight);
 
-                    g.DrawImageUnscaled(groundImage, 0, 0);
-
-                    //                    g.setTransform(savedTx);
+                    g.Transform = savedTx;
                 }
             }
+        }
+
+        private void DrawBorder(Graphics g)
+        {
+            Region savedClip = g.Clip.Clone();
+            g.Clip = new Region();
+
+            g.DrawRectangle(new Pen(Color.Red), -1, -1, battleField.getWidth() + 2, battleField.getHeight() + 2);
+
+            g.Clip = savedClip;
         }
 
         private Bitmap groundImage;
@@ -346,6 +418,69 @@ namespace nrobocodeui.battleview
 
         #endregion
 
+        #region Bullets
+
+	    private void DrawBullets(Graphics g) {
+		    Region savedClip = g.Clip.Clone();
+
+		    g.Clip = new Region();
+
+		    float x, y;
+            Matrix at;
+
+            foreach (BulletPeer bullet in battle.getBullets().toArray())
+            {
+			    x = (float)bullet.getPaintX();
+			    y = (float)(battle.getBattleField().getHeight() - bullet.getPaintY());
+
+                at = new Matrix();
+                at.Translate(x, y);
+
+			    if (bullet.getState() <= BulletPeer.STATE_MOVING)
+                {
+				    // radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
+				    float scale = (float)Math.Max(2 * Math.Sqrt(2.5 * bullet.getPower()), 2 / this.scale);
+
+				    at.Scale(scale, scale);
+
+                    Region bulletArea = BULLET_AREA.Clone();
+                    bulletArea.Transform(at);
+
+				    Color bulletColor = Color.FromArgb(bullet.getColor().getRGB());
+
+				    if (bulletColor == null) {
+					    bulletColor = Color.White;
+				    }
+
+                    g.FillEllipse(new SolidBrush(bulletColor), bulletArea.GetBounds(g));
+
+			    }
+                else if (drawExplosions)
+                {
+				    if (!(bullet is ExplosionPeer))
+                    {
+					    float scale = (float)Math.Sqrt(1000 * bullet.getPower()) / 128;
+
+					    at.Scale(scale, scale);
+				    }
+
+                    // TODO: Fix the error where with bounds exception in array
+//                    Image img = resources.images.explosion.explosions[bullet.getExplosionImageIndex()][bullet.getFrame()];
+                    Image img = resources.images.explosion.explosions[0][0];
+                    RenderImage explosionRenderImage = new RenderImage(img);
+
+				    explosionRenderImage.Transform = at;
+				    explosionRenderImage.Paint(g);
+			    }
+		    }
+
+		    g.Clip = savedClip;
+	    }
+
+        private static readonly Region BULLET_AREA = new Region(new RectangleF(-0.5F, -0.5F, 1, 1));
+
+        #endregion
+
         #region Logo
 
         public void paintRobocodeLogo(Graphics g)
@@ -354,6 +489,5 @@ namespace nrobocodeui.battleview
         }
 
         #endregion
-
     }
 }

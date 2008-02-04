@@ -88,16 +88,18 @@ namespace nrobocodeui.gfx
 ///                g.Transform = Equals(transform, null) ? new Matrix(1, 0, 0, 1, 0, 0) : transform;
 
                 // Save the current transform so that it can be restored after the painting
-                Matrix orig_Tranform = g.Transform;
+                Matrix orig_Transform = g.Transform;
 
-                // Use our transform
-                g.Transform = transform;
+                // Multiply our transform to the transform from the Graphics context
+                Matrix at = orig_Transform.Clone();
+                at.Multiply(Transform);
+                g.Transform = at;
 
                 // Draw the image as it is in pixel. Yes, this ugly way is the only way to do it!
                 g.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
 
                 // Restore the transform
-                g.Transform = orig_Tranform;
+                g.Transform = orig_Transform;
             //}
 
             // TODO: FNL: The y axis is mirrored, and the transformations must follow the Robocode angles

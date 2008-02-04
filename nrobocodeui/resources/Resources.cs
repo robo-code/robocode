@@ -72,17 +72,17 @@ namespace nrobocodeui.resources
         {
             #region explosions
 
-            private static List<Bitmap>[] explosions_cache;
+            private static List<Image>[] explosions_cache;
 
-            public static List<Bitmap>[] explosions
+            public static List<Image>[] explosions
             {
                 get
                 {
                     if (explosions_cache == null)
                     {
-                        explosions_cache=new List<Bitmap>[2];
-                        explosions_cache[0]=new List<Bitmap>();
-                        explosions_cache[1] = new List<Bitmap>();
+                        explosions_cache=new List<Image>[2];
+                        explosions_cache[0]=new List<Image>();
+                        explosions_cache[1] = new List<Image>();
                         for (int f = 1; f < 17; f++)
                         {
                             string name = string.Format("images_explosion_explosion{0}_{1}", 1, f);
