@@ -30,7 +30,7 @@ public interface IRobocodeFrame {
 	void clearRobotButtons();
 	void addRobotButton(IRobotDialogManager robotDialogManager, RobotPeer robotPeer);
 	void validate();
-    void setTitle(String title);
+	void setTitle(String title);
 	void setEnableStopButton(boolean value);
 	void setEnableReplayButton(boolean value);
 	void setEnableRestartButton(boolean value);

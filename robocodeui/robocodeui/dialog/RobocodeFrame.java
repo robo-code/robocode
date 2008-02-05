@@ -747,7 +747,8 @@ public class RobocodeFrame extends JFrame implements IRobocodeFrame {
 	public String saveBattleDialog(String file) {
 		JFileChooser chooser;
 
-        File f = new File(file);
+		File f = new File(file);
+
 		chooser = new JFileChooser(f);
 
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {

@@ -62,6 +62,11 @@ namespace nrobocode
                 owner.OnScannedRobot();
             }
 
+            public override void run()
+            {
+                owner.Run();
+            }
+
             private JavaConsole myOut;
 
             public TextWriter Out
@@ -86,9 +91,14 @@ namespace nrobocode
             return robot;
         }
 
+        public Runnable getRobotRunnable()
+        {
+            return robot;
+        }
+
         public IRobotEvents getRobotEventListener()
         {
-            return null;
+            return robot.getRobotEventListener();
         }
 
         public ISystemEvents getSystemEventListener()
@@ -114,11 +124,6 @@ namespace nrobocode
         PrintStream IRobot.getOut()
         {
             return robot.getOut();
-        }
-
-        void Runnable.run()
-        {
-            Run();
         }
 
         #endregion

@@ -241,4 +241,16 @@ public interface IRobotEvents {
 	 */
 	void onWin(WinEvent event);
 
+	/**
+	 * This method is called when a custom condition is met.
+	 * <p>
+	 * See the sample robots for examples of use.
+	 *
+	 * @param event the custom event that occured
+	 *
+	 * @see AdvancedRobot#addCustomEvent
+	 * @see CustomEvent
+	 * @see Event
+	 */
+	void onCustomEvent(CustomEvent event);
 }

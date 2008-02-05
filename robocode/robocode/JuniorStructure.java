@@ -12,10 +12,26 @@
 package robocode;
 
 
+import static robocode.util.Utils.normalRelativeAngle;
+
+import static java.lang.Math.toDegrees;
+
+
 /**
  * @author Pavel Savara (original)
  */
 public class JuniorStructure extends _RobotBase {
+
+	public void updateJuniorRobotFields() {
+		others = getPeer().getOthers();
+		energy = Math.max(1, (int) (getPeer().getEnergy() + 0.5));
+		robotX = (int) (getPeer().getX() + 0.5);
+		robotY = (int) (getPeer().getY() + 0.5);
+		heading = (int) (toDegrees(getPeer().getHeading()) + 0.5);
+		gunHeading = (int) (toDegrees(getPeer().getGunHeading()) + 0.5);
+		gunBearing = (int) (toDegrees(normalRelativeAngle(getPeer().getGunHeading() - getPeer().getHeading())) + 0.5);
+		gunReady = (getPeer().getGunHeat() <= 0);
+	}
 
 	/**
 	 * Contains the width of the battlefield.

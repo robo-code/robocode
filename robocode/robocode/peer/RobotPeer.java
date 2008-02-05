@@ -75,6 +75,7 @@ import java.lang.reflect.Modifier;
 
 import robocode.*;
 import robocode.robotinterfaces.IRobot;
+import robocode.robotinterfaces.IRobotEvents;
 import robocode.robotinterfaces.IJuniorRobot;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
@@ -479,26 +480,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			eventManager.processEvents();
 
 			if (robot != null) {
-				if (robot instanceof IJuniorRobot) {
-					IJuniorRobot jr = (IJuniorRobot) robot;
-					JuniorStructure js = jr.getJuniorStructure();
+				Runnable runnable = robot.getRobotRunnable();
 
-					if (js != null) {
-
-						js.fieldWidth = (int) (getBattleFieldWidth() + 0.5);
-						js.fieldHeight = (int) (getBattleFieldHeight() + 0.5);
-
-						updateJuniorRobotFields();
-					}
-
-					eventManager.addCustomEvent(new GunReadyCondition());
-					eventManager.addCustomEvent(new GunFireCondition());
-
-					for (;;) {
-						jr.run();
-					}
+				if (runnable != null) {
+					runnable.run();
 				}
-				robot.run();
 			}
 			for (;;) {
 				tick();
@@ -1616,28 +1602,30 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		lastHeading = heading;
 	}
 
+	/**
+	 * Deprecated, please use JuniorRobot#updateJuniorRobotFields intead
+	 */
+	@Deprecated
 	public void updateJuniorRobotFields() {
-		if (!(robot instanceof IJuniorRobot)) {
-			return;
-		}
+		if ((robot instanceof IJuniorRobot)) {
 
-		IJuniorRobot jr = (IJuniorRobot) robot;
-		JuniorStructure js = jr.getJuniorStructure();
+			JuniorStructure js = ((IJuniorRobot) robot).getJuniorStructure();
 
-		if (js != null) {
-			js.others = getOthers();
+			if (js != null) {
+				js.others = getOthers();
 
-			js.energy = Math.max(1, (int) (getEnergy() + 0.5));
+				js.energy = Math.max(1, (int) (getEnergy() + 0.5));
 
-			js.robotX = (int) (getX() + 0.5);
-			js.robotY = (int) (getY() + 0.5);
+				js.robotX = (int) (getX() + 0.5);
+				js.robotY = (int) (getY() + 0.5);
 
-			js.heading = (int) (toDegrees(getHeading()) + 0.5);
+				js.heading = (int) (toDegrees(getHeading()) + 0.5);
 
-			js.gunHeading = (int) (toDegrees(getGunHeading()) + 0.5);
-			js.gunBearing = (int) (toDegrees(normalRelativeAngle(getGunHeading() - getHeading())) + 0.5);
+				js.gunHeading = (int) (toDegrees(getGunHeading()) + 0.5);
+				js.gunBearing = (int) (toDegrees(normalRelativeAngle(getGunHeading() - getHeading())) + 0.5);
 
-			js.gunReady = (getGunHeat() <= 0);
+				js.gunReady = (getGunHeat() <= 0);
+			}
 		}
 	}
 
@@ -1647,21 +1635,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized double getJuniorFirePower() {
 		return juniorFirePower;
-	}
-
-	public class GunReadyCondition extends Condition {
-		@Override
-		public boolean test() {
-			return (getGunHeat() <= 0);
-		}
-	}
-
-
-	public class GunFireCondition extends Condition {
-		@Override
-		public boolean test() {
-			return (getGunHeat() <= 0 && getGunTurnRemaining() == 0);
-		}
 	}
 
 	/**

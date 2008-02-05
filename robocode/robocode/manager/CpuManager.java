@@ -70,11 +70,11 @@ public class CpuManager {
 			d += Math.random() * Math.random();
 			count++;
 		}
-        // to cheat optimizer
-        if (d==0.0) {
-            Logger.log("Bingo!");
-        }
+		// to cheat optimizer
+		if (d == 0.0) {
+			Logger.log("Bingo!");
+		}
 
-        cpuConstant = Math.max(1, APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_NANOSECS / count);
+		cpuConstant = Math.max(1, APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_NANOSECS / count);
 	}
 }

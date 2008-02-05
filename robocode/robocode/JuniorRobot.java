@@ -21,6 +21,7 @@ import static java.lang.Math.toRadians;
 import java.awt.Color;
 
 import static robocode.util.Utils.normalRelativeAngle;
+import robocode.util.Utils;
 import robocode.robotinterfaces.*;
 
 
@@ -41,37 +42,174 @@ import robocode.robotinterfaces.*;
  * 
  * @since 1.4
  */
-public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuniorRobot {
+public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuniorRobot, Runnable {
 
-    /**
-     * @return structure which should be updated with new info
-     */
+	private class GunReadyCondition extends Condition {
+		@Override
+		public boolean test() {
+			return (getPeer().getGunHeat() <= 0);
+		}
+	}
+
+
+	private class GunFireCondition extends Condition {
+		@Override
+		public boolean test() {
+			return (getPeer().getGunHeat() <= 0 && getPeer().getGunTurnRemaining() == 0);
+		}
+	}
+
+
+	private class RobotEventsListener implements IRobotEvents, Runnable {
+
+		public RobotEventsListener(JuniorRobot junior) {
+			this.junior = junior;
+		}
+		public JuniorRobot junior;
+
+		public void run() {
+			junior.fieldWidth = (int) (junior.getPeer().getBattleFieldWidth() + 0.5);
+			junior.fieldHeight = (int) (junior.getPeer().getBattleFieldHeight() + 0.5);
+			junior.updateJuniorRobotFields();
+
+			addCustomEvent(new GunReadyCondition());
+			addCustomEvent(new GunFireCondition());
+
+			for (;;) {
+				junior.run();
+			}
+		}
+
+		public void onBulletHit(BulletHitEvent event) {// too complicated for junior ?
+		}
+
+		public void onBulletHitBullet(BulletHitBulletEvent event) {// too complicated for junior ?
+		}
+
+		public void onBulletMissed(BulletMissedEvent event) {// too complicated for junior ?
+		}
+
+		public void onRobotDeath(RobotDeathEvent event) {// too complicated for junior ?
+		}
+
+		public void onWin(WinEvent event) {// too complicated for junior ?
+		}
+
+		public void onDeath(DeathEvent event) {
+			others = getPeer().getOthers();
+		}
+
+		public void onHitByBullet(HitByBulletEvent event) {
+			junior.updateJuniorRobotFields();
+			double angle = junior.getPeer().getHeading() + event.getBearingRadians();
+
+			junior.hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			junior.hitByBulletBearing = (int) (event.getBearing() + 0.5);
+			junior.onHitByBullet();
+		}
+
+		public void onHitRobot(HitRobotEvent event) {
+			junior.updateJuniorRobotFields();
+			double angle = junior.getPeer().getHeading() + event.getBearingRadians();
+
+			junior.hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			junior.hitRobotBearing = (int) (event.getBearing() + 0.5);
+			junior.onHitRobot();
+		}
+
+		public void onHitWall(HitWallEvent event) {
+			junior.updateJuniorRobotFields();
+			double angle = junior.getPeer().getHeading() + event.getBearingRadians();
+
+			junior.hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			junior.hitWallBearing = (int) (event.getBearing() + 0.5);
+			junior.onHitWall();
+		}
+
+		public void onScannedRobot(ScannedRobotEvent event) {
+			junior.scannedDistance = (int) (event.getDistance() + 0.5);
+			junior.scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
+			junior.scannedAngle = (int) (Math.toDegrees(
+					Utils.normalAbsoluteAngle(junior.getPeer().getHeading() + event.getBearingRadians()))
+							+ 0.5);
+			junior.scannedBearing = (int) (event.getBearing() + 0.5);
+			junior.scannedHeading = (int) (event.getHeading() + 0.5);
+			junior.scannedVelocity = (int) (event.getVelocity() + 0.5);
+            
+			junior.onScannedRobot();
+		}
+
+		public void onCustomEvent(CustomEvent event) {
+			Condition c = event.getCondition();
+
+			if (c instanceof GunReadyCondition) {
+				junior.gunReady = true;
+			} else if (c instanceof GunFireCondition) {
+				double firePower = junior.getPeer().getJuniorFirePower(); 
+
+				if (firePower > 0) {
+					if (junior.getPeer().setFire(firePower) != null) {
+						junior.gunReady = false;
+					}
+					junior.getPeer().setJuniorFire(0);
+				}
+			}
+		}
+	}
+
+	public JuniorRobot() {
+		listener = new RobotEventsListener(this);
+	}
+	private RobotEventsListener listener;
+
+	private void addCustomEvent(Condition condition) {
+		if (condition == null) {
+			throw new NullPointerException("the condition cannot be null");
+		}
+		if (peer != null) {
+			peer.setCall();
+			peer.getEventManager().addCustomEvent(condition);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @return structure which should be updated with new info
+	 */
 	public JuniorStructure getJuniorStructure() {
 		return this;
 	}
 
-    /**
-     * @return listener to junior robot events
-     */
-    public IJuniorEvents getJuniorEventListener() {
+	/**
+	 * @return listener to junior robot events
+	 */
+	public IJuniorEvents getJuniorEventListener() {
 		return this;
 	}
 
-    /**
-     * @return listener to robot events
-     */
-    public IRobotEvents getRobotEventListener() {
-        return null;  //this is not full robot
-    }
+	/**
+	 * @return runnable to implementation
+	 */
+	public Runnable getRobotRunnable() {
+		return listener;
+	}
 
-    /**
-     * @return listener to system events
-     */
-    public ISystemEvents getSystemEventListener() {
-        return null;  //this is not full robot
-    }
+	/**
+	 * @return listener to robot events
+	 */
+	public IRobotEvents getRobotEventListener() {
+		return listener;
+	}
+
+	/**
+	 * @return listener to system events
+	 */
+	public ISystemEvents getSystemEventListener() {
+		return null; // we don't hear it
+	}
     
-    /** The color black (0x000000) */
+	/** The color black (0x000000) */
 	public final static int	black = 0x000000;
 
 	/** The color white (0xFFFFFF) */
@@ -120,7 +258,7 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 		if (peer != null) {
 			peer.move(distance);
 
-			peer.updateJuniorRobotFields();
+			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -173,7 +311,7 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 		if (peer != null) {
 			peer.turnChassis(toRadians(degrees));
 
-			peer.updateJuniorRobotFields();
+			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -198,7 +336,7 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 		if (peer != null) {
 			peer.turnChassis(normalRelativeAngle(toRadians(angle) - peer.getHeading()));
 
-			peer.updateJuniorRobotFields();
+			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -255,7 +393,7 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 	public void turnAheadRight(int distance, int degrees) {
 		if (peer != null) {
 			peer.turnAndMoveChassis(distance, toRadians(degrees));
-			peer.updateJuniorRobotFields();
+			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -343,7 +481,7 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 		if (peer != null) {
 			peer.turnGun(toRadians(degrees));
 
-			peer.updateJuniorRobotFields();
+			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -366,7 +504,7 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 		if (peer != null) {
 			peer.turnGun(normalRelativeAngle(toRadians(angle) - peer.getGunHeading()));
 	
-			peer.updateJuniorRobotFields();
+			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -388,7 +526,7 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 		if (peer != null) {
 			peer.turnGun(normalRelativeAngle(peer.getHeading() + toRadians(angle) - peer.getGunHeading()));
 	
-			peer.updateJuniorRobotFields();
+			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -411,10 +549,10 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 	 * If the gun heat is more than 0 and hence cannot fire, this method will
 	 * suspend until the gun is ready to fire, and then fire a bullet.
 	 *
-     * @param power between 0.1 and 3
+	 * @param power between 0.1 and 3
 	 * @see #gunReady
 	 */
-    public void fire(double power) {
+	public void fire(double power) {
 		if (peer != null) {
 			peer.setJuniorFire(power);
 			peer.tick();

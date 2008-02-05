@@ -168,11 +168,11 @@ public class RobocodeEngine {
 
 			// Set the Look and Feel (LAF)
 			manager.getWindowManager().initializeDisplay();
-            //TODO ZAMO .NET UI EDT
-        }
+			// TODO ZAMO .NET UI EDT
+		}
 
 		if (manager.isGUIEnabled()) {
-            manager.getWindowManager().showRobocodeFrame(visible);
+			manager.getWindowManager().showRobocodeFrame(visible);
 			manager.getProperties().setOptionsCommonShowResults(visible);
 		}
 	}

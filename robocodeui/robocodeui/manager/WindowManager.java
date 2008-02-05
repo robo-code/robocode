@@ -88,7 +88,8 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showBattleOpenDialog() {
-        BattleManager battleManager = manager.getBattleManager();
+		BattleManager battleManager = manager.getBattleManager();
+
 		battleManager.pauseBattle();
 
 		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
@@ -118,7 +119,6 @@ public class WindowManager implements IWindowManager {
 				return "Battles";
 			}
 		});
-
 
 		if (chooser.showOpenDialog((Component) getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
 			battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
@@ -447,18 +447,18 @@ public class WindowManager implements IWindowManager {
     
 	public boolean initializeDisplay() {
 		setLookAndFeel();
-        return true;
-    }
+		return true;
+	}
 
-    public void runDisplay(Robocode robocode) {
-        //intentionally empty
-    }
+	// intentionally empty
+	public void runDisplay(Robocode robocode) {
+	}
 
-    /**
-     * Sets the Look and Feel (LAF). This method first try to set the LAF to the
-     * system's LAF. If this fails, it try to use the cross platform LAF.
-     * If this also fails, the LAF will not be changed.
-     */
+	/**
+	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
+	 * system's LAF. If this fails, it try to use the cross platform LAF.
+	 * If this also fails, the LAF will not be changed.
+	 */
 	public static void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

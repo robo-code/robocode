@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robocode.ui;
 
+
 import robocode.Robocode;
 
 
@@ -24,5 +25,5 @@ public interface IWindowManager extends ILoadableManager {
 	void showRobocodeFrame(boolean value);
 
 	boolean initializeDisplay();
-    void runDisplay(Robocode robocode);
+	void runDisplay(Robocode robocode);
 }

@@ -134,7 +134,7 @@ namespace nrobocodeui.repository
             if (type == null)
                 return false;
 
-            if (!typeof(IRobotBase).IsAssignableFrom(type))
+            if (!typeof(IRobot).IsAssignableFrom(type))
                 return false;
             return true;
         }

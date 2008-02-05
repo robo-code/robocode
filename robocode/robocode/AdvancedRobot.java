@@ -859,19 +859,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * This method is called when a custom condition is met.
-	 * <p>
-	 * See the sample robots for examples of use.
-	 *
-	 * @param event the custom event that occured
-	 *
-	 * @see #addCustomEvent
-	 * @see CustomEvent
-	 * @see Event
-	 */
-	public void onCustomEvent(CustomEvent event) {}
-
-	/**
 	 * Removes a custom event (specified by condition).
 	 * <p>
 	 * See the sample robots for examples of use.

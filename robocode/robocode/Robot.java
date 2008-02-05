@@ -66,17 +66,30 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  */
-public class Robot extends _Robot implements IRobot, IRobotEvents, ISystemEvents {
+public class Robot extends _Robot implements IRobot, IRobotEvents, ISystemEvents, Runnable {
 
 	/**
 	 * Constructs a new robot.
 	 */
 	public Robot() {}
 
+	/**
+	 * @return runnable to implementation
+	 */
+	public Runnable getRobotRunnable() {
+		return this;
+	}
+
+	/**
+	 * @return listener to robot events
+	 */
 	public IRobotEvents getRobotEventListener() {
 		return this;
 	}
 
+	/**
+	 * @return listener to system events
+	 */
 	public ISystemEvents getSystemEventListener() {
 		return this;
 	}
@@ -897,6 +910,19 @@ public class Robot extends _Robot implements IRobot, IRobotEvents, ISystemEvents
 	 * @see Event
 	 */
 	public void onWin(WinEvent event) {}
+
+	/**
+	 * This method is called when a custom condition is met.
+	 * <p>
+	 * See the sample robots for examples of use.
+	 *
+	 * @param event the custom event that occured
+	 *
+	 * @see AdvancedRobot#addCustomEvent
+	 * @see CustomEvent
+	 * @see Event
+	 */
+	public void onCustomEvent(CustomEvent event) {}
 
 	/**
 	 * Immediately resumes the movement you stopped by stop(), if any.

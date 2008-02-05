@@ -223,18 +223,18 @@ public class Battle implements Runnable {
 	public Battle(BattleField battleField, RobocodeManager manager) {
 		super();
 
-        this.battleField = battleField;
-        this.manager = manager;
+		this.battleField = battleField;
+		this.manager = manager;
 
-		if (manager!=null){
-            if (manager.isGUIEnabled()) {
-                battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-                battleView.setBattle(this);
-                keyHandler = new KeyEventHandler(this, robots);
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
-            }
-            battleManager = manager.getBattleManager();
-        }
+		if (manager != null) {
+			if (manager.isGUIEnabled()) {
+				battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+				battleView.setBattle(this);
+				keyHandler = new KeyEventHandler(this, robots);
+				KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
+			}
+			battleManager = manager.getBattleManager();
+		}
 	}
 
 	@Override
@@ -1819,8 +1819,8 @@ public class Battle implements Runnable {
 		if (battleManager.isPaused()) {
 			title.append(" (paused)");
 		}
-        manager.getWindowManager().getRobocodeFrame().setTitle(title.toString());
-    }
+		manager.getWindowManager().getRobocodeFrame().setTitle(title.toString());
+	}
 
 	public void mouseClicked(final MouseEvent e) {
 		if (isRunning()) {
