@@ -33,6 +33,8 @@
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -89,7 +91,7 @@ public class EventManager {
 
 	private final static int MAX_QUEUE_SIZE = 256;
 
-	private IRobotBase robot;
+	private IRobot robot;
 
 	/**
 	 * EventManager constructor comment.
@@ -430,11 +432,11 @@ public class EventManager {
 		return this.interruptible[priority];
 	}
 
-	private IRobotBase getRobot() {
+	private IRobot getRobot() {
 		return robot;
 	}
 
-	public void setRobot(IRobotBase r) {
+	public void setRobot(IRobot r) {
 		this.robot = r;
 		if (r instanceof AdvancedRobot) {
 			useFireAssist = false;
@@ -510,7 +512,7 @@ public class EventManager {
 	}
 
 	public void onBulletHit(BulletHitEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
@@ -522,7 +524,7 @@ public class EventManager {
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
@@ -534,7 +536,7 @@ public class EventManager {
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
@@ -546,7 +548,7 @@ public class EventManager {
 	}
 
 	public void onCustomEvent(CustomEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof AdvancedRobot) {
@@ -581,7 +583,7 @@ public class EventManager {
 	}
 
 	public void onDeath(DeathEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
@@ -593,7 +595,7 @@ public class EventManager {
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof IJuniorRobot) {
@@ -626,7 +628,7 @@ public class EventManager {
 	}
 
 	public void onHitRobot(HitRobotEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof IJuniorRobot) {
@@ -658,7 +660,7 @@ public class EventManager {
 	}
 
 	public void onHitWall(HitWallEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof IJuniorRobot) {
@@ -690,7 +692,7 @@ public class EventManager {
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof IJuniorRobot) {
@@ -712,7 +714,7 @@ public class EventManager {
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null) {
 			if (robot instanceof IJuniorRobot) {
@@ -746,7 +748,7 @@ public class EventManager {
 	}
 
 	public void onSkippedTurn(SkippedTurnEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof AdvancedRobot) {
 			((AdvancedRobot) robot).onSkippedTurn(e);
@@ -754,7 +756,7 @@ public class EventManager {
 	}
 
 	public void onMessageReceived(MessageEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof TeamRobot) {
 			((TeamRobot) robot).onMessageReceived(e);
@@ -762,7 +764,7 @@ public class EventManager {
 	}
 
 	public void onWin(WinEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
 			IRobotEvents listener = ((IRobot) robot).getRobotEventListener();
@@ -774,7 +776,7 @@ public class EventManager {
 	}
 
 	public void onStatus(StatusEvent e) {
-		IRobotBase robot = getRobot();
+		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
 			ISystemEvents listener = ((IRobot) robot).getSystemEventListener();

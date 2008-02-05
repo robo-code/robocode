@@ -26,6 +26,8 @@
  *       synchronized List and HashMap
  *     - Changed so that the robot repository only adds .jar files from the root
  *       of the robots folder and not from sub folders of the robots folder
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.manager;
 
@@ -48,7 +50,7 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
 import robocode.ui.IRepositoryPlugin;
 import robocode.robotinterfaces.ITeamRobot;
-import robocode.robotinterfaces.IRobotBase;
+import robocode.robotinterfaces.IRobot;
 import robocode.Droid;
 
 
@@ -451,7 +453,7 @@ public class RobotRepositoryManager {
 						robotSpecification.setTeamRobot(true);
 					}
 
-					if (IRobotBase.class.isAssignableFrom(robotClass)) {
+					if (IRobot.class.isAssignableFrom(robotClass)) {
 						updateNoDuplicates(robotSpecification);
 						return;
 					}

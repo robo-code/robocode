@@ -25,6 +25,8 @@
  *     - Fix for HyperThreading hang issue
  *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
  *     - Added onPaint() method for painting the robot
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode;
 

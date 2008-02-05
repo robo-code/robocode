@@ -54,6 +54,8 @@
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.peer;
 
@@ -72,7 +74,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import robocode.*;
-import robocode.robotinterfaces.IRobotBase;
+import robocode.robotinterfaces.IRobot;
 import robocode.robotinterfaces.IJuniorRobot;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
@@ -116,7 +118,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
-	IRobotBase robot;
+	IRobot robot;
 
 	public RobotOutputStream out;
 
@@ -1091,7 +1093,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
 	}
 
-	public IRobotBase getRobot() {
+	public IRobot getRobot() {
 		return robot;
 	}
 
@@ -1205,7 +1207,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void setRobot(IRobotBase newRobot) {
+	public void setRobot(IRobot newRobot) {
 		robot = newRobot;
 		if (robot != null) {
 			if (robot instanceof robocode.TeamRobot) {

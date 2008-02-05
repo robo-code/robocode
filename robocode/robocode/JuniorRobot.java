@@ -10,6 +10,8 @@
  *     - The design and ideas for the JuniorRobot class
  *     Flemming N. Larsen
  *     - Implementor of the JuniorRobot
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode;
 
@@ -19,9 +21,7 @@ import static java.lang.Math.toRadians;
 import java.awt.Color;
 
 import static robocode.util.Utils.normalRelativeAngle;
-import robocode.robotinterfaces.IJuniorRobot;
-import robocode.robotinterfaces.IJuniorEvents;
-import robocode.JuniorStructure;
+import robocode.robotinterfaces.*;
 
 
 /**
@@ -41,17 +41,37 @@ import robocode.JuniorStructure;
  * 
  * @since 1.4
  */
-public class JuniorRobot extends JuniorStructure implements IJuniorRobot, IJuniorEvents {
+public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuniorRobot {
 
+    /**
+     * @return structure which should be updated with new info
+     */
 	public JuniorStructure getJuniorStructure() {
 		return this;
 	}
 
-	public IJuniorEvents getJuniorEventListener() {
+    /**
+     * @return listener to junior robot events
+     */
+    public IJuniorEvents getJuniorEventListener() {
 		return this;
 	}
 
-	/** The color black (0x000000) */
+    /**
+     * @return listener to robot events
+     */
+    public IRobotEvents getRobotEventListener() {
+        return null;  //this is not full robot
+    }
+
+    /**
+     * @return listener to system events
+     */
+    public ISystemEvents getSystemEventListener() {
+        return null;  //this is not full robot
+    }
+    
+    /** The color black (0x000000) */
 	public final static int	black = 0x000000;
 
 	/** The color white (0xFFFFFF) */
@@ -391,9 +411,10 @@ public class JuniorRobot extends JuniorStructure implements IJuniorRobot, IJunio
 	 * If the gun heat is more than 0 and hence cannot fire, this method will
 	 * suspend until the gun is ready to fire, and then fire a bullet.
 	 *
+     * @param power between 0.1 and 3
 	 * @see #gunReady
 	 */
-	public void fire(double power) {
+    public void fire(double power) {
 		if (peer != null) {
 			peer.setJuniorFire(power);
 			peer.tick();

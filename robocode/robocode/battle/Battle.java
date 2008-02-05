@@ -81,6 +81,8 @@
  *       been extended to cleanup all robots, but also all classes that this
  *       class refers to in order to avoid circular references. In addition,
  *       cleanup has been added to the KeyEventHandler
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.battle;
 
@@ -107,7 +109,6 @@ import java.util.regex.Pattern;
 
 import robocode.*;
 import robocode.robotinterfaces.IRobot;
-import robocode.robotinterfaces.IRobotBase;
 import robocode.robotinterfaces.ISystemEvents;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
@@ -1497,7 +1498,7 @@ public class Battle implements Runnable {
 						r.getOut().println("SYSTEM: Skipping robot: " + r.getName());
 						continue;
 					}
-					IRobotBase bot = (IRobotBase) robotClass.newInstance();
+					IRobot bot = (IRobot) robotClass.newInstance();
 
 					bot.setOut(r.getOut());
 					r.setRobot(bot);

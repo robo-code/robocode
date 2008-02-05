@@ -18,7 +18,7 @@ import robocode.JuniorStructure;
 /**
  * @author Pavel Savara (original)
  */
-public interface IJuniorRobot extends IRobotBase {
+public interface IJuniorRobot extends IRobot {
 
 	/**
 	 * @return listener to junior robot events
