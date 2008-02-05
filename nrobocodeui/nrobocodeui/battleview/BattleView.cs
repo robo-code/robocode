@@ -471,9 +471,9 @@ namespace nrobocodeui.battleview
 					    at.Scale(scale, scale);
 				    }
 
-                    // TODO: Fix the error where with bounds exception in array
-//                    Image img = resources.images.explosion.explosions[bullet.getExplosionImageIndex()][bullet.getFrame()];
-                    Image img = resources.images.explosion.explosions[0][0];
+                    int index = bullet.getExplosionImageIndex();
+                    int frame = bullet.getFrame();
+                    Image img = resources.images.explosion.explosions[index,frame];
                     RenderImage explosionRenderImage = new RenderImage(img);
 
 				    explosionRenderImage.Transform = at;

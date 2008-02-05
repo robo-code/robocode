@@ -26,11 +26,11 @@ namespace nrobocodeui.dialog
     {
         #region Constructors
 
-        public RobocodeFrame(robocode.manager.RobocodeManager manager)
+        public RobocodeFrame(RobocodeManager manager)
         {
             this.manager = manager;
             InitializeComponent();
-            Size=new Size(971, 718);
+            Size=new Size(971, 717);
             battleView.InitBattleView(manager, this);
             string path = robocode.io.FileUtil.getBattlesDir().getAbsolutePath();
             openFileDialog.InitialDirectory = path;

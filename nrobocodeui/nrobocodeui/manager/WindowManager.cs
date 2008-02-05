@@ -44,9 +44,9 @@ namespace nrobocodeui.manager
         public void runDisplay(Robocode robocode)
         {
             this.robocode = robocode;
-            //will block
             try
             {
+                //will block until end of game
                 Application.Run(frame);
             }
             catch (Exception ex)
