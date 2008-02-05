@@ -86,22 +86,32 @@ namespace nrobocode
             return robot;
         }
 
-        void IRobotBase.setPeer(RobotPeer rp)
+        public IRobotEvents getRobotEventListener()
+        {
+            return null;
+        }
+
+        public ISystemEvents getSystemEventListener()
+        {
+            return null;
+        }
+
+        void IRobot.setPeer(RobotPeer rp)
         {
             robot.setPeer(rp);
         }
 
-        RobotPeer IRobotBase.getPeer()
+        RobotPeer IRobot.getPeer()
         {
             return robot.getPeer();
         }
 
-        void IRobotBase.setOut(PrintStream ps)
+        void IRobot.setOut(PrintStream ps)
         {
             robot.setOut(ps);
         }
 
-        PrintStream IRobotBase.getOut()
+        PrintStream IRobot.getOut()
         {
             return robot.getOut();
         }
