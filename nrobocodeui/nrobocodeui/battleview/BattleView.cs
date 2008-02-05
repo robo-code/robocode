@@ -446,11 +446,18 @@ namespace nrobocodeui.battleview
                     Region bulletArea = BULLET_AREA.Clone();
                     bulletArea.Transform(at);
 
-				    Color bulletColor = Color.FromArgb(bullet.getColor().getRGB());
+                    java.awt.Color color = bullet.getColor();
 
-				    if (bulletColor == null) {
-					    bulletColor = Color.White;
+                    Color bulletColor;
+                    if (color == null)
+                    {
+                        bulletColor = Color.White;
 				    }
+                    else
+                    {
+                        bulletColor = Color.FromArgb(color.getRGB());
+                    }
+
 
                     g.FillEllipse(new SolidBrush(bulletColor), bulletArea.GetBounds(g));
 
