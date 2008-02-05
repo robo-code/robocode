@@ -102,7 +102,6 @@ namespace nrobocodeui.battleview
             Invalidate();
         }
 
-
         public void setDisplayOptions()
         {
             RobocodeProperties props = manager.getProperties();
@@ -231,6 +230,9 @@ namespace nrobocodeui.battleview
 
             // Draw all bullets
             DrawBullets(g);
+
+            // Draw all text
+            DrawText(g);
 
             // Restore the graphics state
             g.Restore(graphicsState);
@@ -485,6 +487,97 @@ namespace nrobocodeui.battleview
 	    }
 
         private static readonly Region BULLET_AREA = new Region(new RectangleF(-0.5F, -0.5F, 1, 1));
+
+        #endregion
+
+        #region Text
+
+	    private void DrawText(Graphics g)
+        {
+		    Region savedClip = g.Clip.Clone();
+
+		    g.Clip = new Region();
+
+            Font font = new Font(FontFamily.GenericSansSerif, (float)(10.0 / scale), FontStyle.Regular);
+            Brush brush = new SolidBrush(Color.White);
+
+		    foreach (RobotPeer r in battle.getRobots().toArray())
+            {
+			    if (r.isDead()) {
+				    continue;
+			    }
+			    float x = (float)r.getX();
+			    float y = (float)(battle.getBattleField().getHeight() - r.getY());
+
+			    if (drawRobotEnergy && r.getRobot() != null)
+                {
+				    int ll = (int)r.getEnergy();
+				    int rl = (int)((r.getEnergy() - ll + .001) * 10.0);
+
+				    if (rl == 10)
+                    {
+					    rl = 9;
+				    }
+
+                    String energyString = ll + "." + rl;
+
+				    if (r.getEnergy() == 0 && r.isAlive())
+                    {
+					    energyString = "Disabled";
+				    }
+
+                    CenterString(g, brush, energyString, x, y - ROBOT_TEXT_Y_OFFSET - font.Height / 2, font);
+			    }
+			    if (drawRobotName)
+                {
+                    CenterString(g, brush, r.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + font.Height / 2, font);
+			    }
+			    if (r.isPaintEnabled() && r.getRobot() != null)
+                {
+// TODO:				    DrawRobotPaint(g, r);
+			    }
+		    }
+
+            g.Clip = savedClip;
+        }
+
+        private const int ROBOT_TEXT_Y_OFFSET = 24;
+
+        private void CenterString(Graphics g, Brush brush, String s, float x, float y, Font font)
+        {
+            SizeF measuredSize = g.MeasureString(s, font);
+
+            float width = measuredSize.Width;
+            float height = font.Height;
+
+            float left = x - width / 2;
+            float top = y - height / 2;
+
+            float scaledViewWidth = (float)(Width / scale);
+            float scaledViewHeight = (float)(Height / scale);
+
+            float borderWidth = (scaledViewWidth - battleField.getWidth()) / 2;
+            float borderHeight = (scaledViewHeight - battleField.getHeight()) / 2;
+
+            if (left + width > scaledViewWidth)
+            {
+                left = scaledViewWidth - width;
+            }
+            if (top + height > scaledViewHeight)
+            {
+                top = scaledViewHeight - height;
+            }
+            if (left < -borderWidth)
+            {
+                left = -borderWidth;
+            }
+            if (top < -borderHeight)
+            {
+                top = -borderHeight;
+            }
+
+            g.DrawString(s, font, brush, left, top);
+        }
 
         #endregion
 
