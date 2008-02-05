@@ -1,9 +1,9 @@
 .NET UI
-- solve issue with Event Thread Dispatcher in ATW (single threaded WinForms)
-- implement BattleView
+- Solve deadlocks and sychonization issues
+- finish BattleView, bullets, scan arcs
 - implement dialogs
 - solve issues with multiple concurent sounds, now exhaust resources
-- create .NET packaging to msi
+- finish and test .NET packaging to msi
 
 .NET Core
 - Create .NET Robot and AdvancedRobot
@@ -17,15 +17,14 @@
 - ikvmc -> .NET roborumble.exe
 
 Java Core
+- more IRObot refactorings
 - re-think interfaces to UI, move methods, write JavaDoc
 - beautify my code
 - test roborumble
 
-
 Propagation (later)
 - update file Changes.txt regulary
 - prepare alpha testing version HOWTO for Java & .NET people
-- create blog for robocode, integrate into website
 - publish .NET news on blog, forums,
 - create pages about engine itself on wiki, put ideas there
 
@@ -34,3 +33,4 @@ Future
 - Jython robots
 - profile for speed
 - better support for robot debugging in VS (UI as independent app ?)
+- integrate .NET robots with robocode repository
