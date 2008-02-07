@@ -67,7 +67,41 @@ namespace nrobocodeui.resources
         }
 
         #endregion
-        
+
+        #region robocode_logo
+
+        private static Bitmap robocode_logo_cache;
+        public static Bitmap robocode_logo
+        {
+            get
+            {
+                if (robocode_logo_cache == null)
+                {
+                    robocode_logo_cache = Resources.images_robocode_logo;
+                }
+                return robocode_logo_cache;
+            }
+        }
+
+        #endregion
+
+        #region robocode_full_logo
+
+        private static Bitmap robocode_full_logo_cache;
+        public static Bitmap robocode_full_logo
+        {
+            get
+            {
+                if (robocode_full_logo_cache == null)
+                {
+                    robocode_full_logo_cache = Resources.images_robocode_full_logo;
+                }
+                return robocode_full_logo_cache;
+            }
+        }
+
+        #endregion
+
         public static class explosion
         {
             #region explosions

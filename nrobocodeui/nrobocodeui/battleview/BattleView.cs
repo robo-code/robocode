@@ -430,10 +430,12 @@ namespace nrobocodeui.battleview
 		    float x, y;
             Matrix at;
 
+            int battleFieldHeight = battle.getBattleField().getHeight();
+
             foreach (BulletPeer bullet in battle.getBullets().toArray())
             {
 			    x = (float)bullet.getPaintX();
-			    y = (float)(battle.getBattleField().getHeight() - bullet.getPaintY());
+                y = (float)(battleFieldHeight - bullet.getPaintY());
 
                 at = new Matrix();
                 at.Translate(x, y);
@@ -501,13 +503,15 @@ namespace nrobocodeui.battleview
             Font font = new Font(FontFamily.GenericSansSerif, (float)(10.0 / scale), FontStyle.Regular);
             Brush brush = new SolidBrush(Color.White);
 
-		    foreach (RobotPeer r in battle.getRobots().toArray())
+            int battleFieldHeight = battle.getBattleField().getHeight();
+
+            foreach (RobotPeer r in battle.getRobots().toArray())
             {
 			    if (r.isDead()) {
 				    continue;
 			    }
 			    float x = (float)r.getX();
-			    float y = (float)(battle.getBattleField().getHeight() - r.getY());
+                float y = (float)(battleFieldHeight - r.getY());
 
 			    if (drawRobotEnergy && r.getRobot() != null)
                 {
@@ -585,7 +589,8 @@ namespace nrobocodeui.battleview
 
         public void paintRobocodeLogo(Graphics g)
         {
-            //TODO
+            Bitmap logo = resources.images.robocode_logo;
+            g.DrawImage(logo, (Width - logo.Width) / 2, (Height - logo.Height) / 2);
         }
 
         #endregion

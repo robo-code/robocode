@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,366 +59,372 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-	<data name="images_radar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\radar.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_body" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\body.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_turret" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\turret.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-10.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-11.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-12.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_13" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-13.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_14" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-14.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-15.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-17.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-5.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-6.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-7.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-8.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion1_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion1-9.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-10.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-11.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-12.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_13" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-13.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_14" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-14.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-15.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-17.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-18.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_19" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-19.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_20" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-20.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-21.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_22" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-22.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_23" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-23.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-24.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-25.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-26.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_27" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-27.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_28" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-28.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_29" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-29.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-30.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_31" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-31.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_33" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-33.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_34" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-34.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_35" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-35.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_36" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-36.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_37" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-37.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_38" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-38.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_39" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-39.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_40" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-40.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_41" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-41.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_42" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-42.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_43" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-43.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_44" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-44.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_45" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-45.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_46" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-46.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_47" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-47.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-48.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_49" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-49.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-5.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_50" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-50.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_51" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-51.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_52" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-52.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_53" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-53.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_54" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-54.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_55" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-55.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_56" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-56.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_57" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-57.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_58" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-58.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_59" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-59.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-6.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_60" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-60.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_61" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-61.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_62" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-62.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_63" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-63.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-64.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_65" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-65.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_66" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-66.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_67" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-67.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_68" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-68.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_69" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-69.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-7.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_70" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-70.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_71" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-71.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-8.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_explosion_explosion2_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\explosion\explosion2-9.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_ground_explode_debris" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\ground\explode_debris.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_ground_blue_metal_blue_metal_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_0.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_ground_blue_metal_blue_metal_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_ground_blue_metal_blue_metal_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_ground_blue_metal_blue_metal_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="images_ground_blue_metal_blue_metal_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-	</data>
-	<data name="sounds_explode" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\sounds\explode.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</data>
-	<data name="sounds_shellhit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\sounds\shellhit.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</data>
-	<data name="sounds_zap" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\sounds\zap.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</data>
-	<data name="sounds__13831_adcbicycle_22" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>..\..\robocodeui\resources\sounds\13831_adcbicycle_22.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</data>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="images_radar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\radar.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_body" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\body.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_turret" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\turret.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-10.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-11.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-12.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_13" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-13.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_14" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-14.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-15.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-17.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-5.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-6.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-7.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-8.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion1_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion1-9.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-10.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-11.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-12.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_13" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-13.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_14" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-14.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-15.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-17.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-18.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_19" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-19.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-20.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-21.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_22" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-22.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_23" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-23.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-24.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-25.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-26.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_27" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-27.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_28" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-28.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_29" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-29.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-30.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_31" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-31.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_33" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-33.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_34" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-34.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_35" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-35.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_36" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-36.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_37" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-37.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-38.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_39" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-39.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-40.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_41" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-41.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_42" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-42.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_43" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-43.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_44" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-44.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_45" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-45.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_46" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-46.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_47" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-47.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-48.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_49" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-49.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-5.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_50" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-50.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_51" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-51.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_52" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-52.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_53" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-53.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_54" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-54.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_55" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-55.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_56" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-56.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_57" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-57.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_58" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-58.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_59" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-59.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-6.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_60" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-60.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_61" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-61.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_62" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-62.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_63" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-63.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-64.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_65" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-65.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_66" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-66.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_67" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-67.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_68" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-68.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_69" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-69.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-7.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_70" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-70.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_71" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-71.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-8.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_explosion_explosion2_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\explosion\explosion2-9.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_ground_explode_debris" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\ground\explode_debris.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_ground_blue_metal_blue_metal_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_0.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_ground_blue_metal_blue_metal_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_ground_blue_metal_blue_metal_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_ground_blue_metal_blue_metal_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_ground_blue_metal_blue_metal_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\images\ground\blue_metal\blue_metal_4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sounds_explode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\sounds\explode.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sounds_shellhit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\sounds\shellhit.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sounds_zap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\sounds\zap.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sounds__13831_adcbicycle_22" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\robocodeui\resources\sounds\13831_adcbicycle_22.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="images_robocode_full_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\robocode-full-logo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="images_robocode_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\robocode-logo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

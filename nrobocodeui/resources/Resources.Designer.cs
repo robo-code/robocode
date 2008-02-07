@@ -732,6 +732,20 @@ namespace nrobocodeui.resources {
             }
         }
         
+        internal static System.Drawing.Bitmap images_robocode_full_logo {
+            get {
+                object obj = ResourceManager.GetObject("images_robocode_full_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap images_robocode_logo {
+            get {
+                object obj = ResourceManager.GetObject("images_robocode_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap images_turret {
             get {
                 object obj = ResourceManager.GetObject("images_turret", resourceCulture);
