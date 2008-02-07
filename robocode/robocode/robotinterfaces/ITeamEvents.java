@@ -11,22 +11,30 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
-
-import robocode.JuniorStructure;
+import robocode.MessageEvent;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IJuniorRobot extends IRobot {
-
+public interface ITeamEvents {
 	/**
-	 * @return listener to junior robot events
+	 * This method is called when your robot receives a message from a teammate.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   public void onMessageReceived(MessageEvent event) {
+	 *       out.println(event.getSender() + " sent me: " + event.getMessage());
+	 *   }
+	 * </pre>
+	 *
+	 * @param event the event sent by the game
+	 *
+	 * @see robocode.MessageEvent
+	 * @see robocode.Event
 	 */
-	IJuniorEvents getJuniorEventListener();
+	void onMessageReceived(MessageEvent event);
 
-	/**
-	 * @return structure which should be updated with new info
-	 */
-	JuniorStructure getJuniorStructure();
 }

@@ -74,9 +74,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import robocode.*;
-import robocode.robotinterfaces.IRobot;
-import robocode.robotinterfaces.IRobotEvents;
-import robocode.robotinterfaces.IJuniorRobot;
+import robocode.robotinterfaces.*;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
@@ -375,7 +373,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
 
 			// Update energy, but do not reset inactiveTurnCount
-			if (robot instanceof robocode.AdvancedRobot) {
+			//TODO ZAMO, why there is exception for AdvancedRobot ? Is that fair ?
+			if (robot.getAdvancedEventListener() instanceof IAdvancedEvents) {
 				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
 			}
 
@@ -1196,7 +1195,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	public void setRobot(IRobot newRobot) {
 		robot = newRobot;
 		if (robot != null) {
-			if (robot instanceof robocode.TeamRobot) {
+			if (robot instanceof ITeamEvents) {
 				messageManager = new RobotMessageManager(this);
 			}
 			eventManager.setRobot(newRobot);
@@ -1607,9 +1606,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	 */
 	@Deprecated
 	public void updateJuniorRobotFields() {
-		if ((robot instanceof IJuniorRobot)) {
+		// this is only test for inheritance from JuniorRobot, the method id deprecated, do not copy
+		if ((robot instanceof JuniorRobot)) {
 
-			JuniorStructure js = ((IJuniorRobot) robot).getJuniorStructure();
+			JuniorStructure js = ((JuniorRobot) robot);
 
 			if (js != null) {
 				js.others = getOthers();

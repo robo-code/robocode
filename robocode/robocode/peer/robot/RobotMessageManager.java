@@ -63,7 +63,7 @@ public class RobotMessageManager {
 		}
 	}
 
-	public void sendMessage(String name, Serializable o) throws IOException {
+	public void sendMessage(String name, Serializable message) throws IOException {
 		TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
 
 		if (teamPeer == null) {
@@ -84,7 +84,7 @@ public class RobotMessageManager {
 
 					if (robotMsgMan != null) {
 						synchronized (robotMsgMan.out) {
-							robotMsgMan.out.writeObject(o);
+							robotMsgMan.out.writeObject(message);
 							try {
 								robotMsgMan.addMessage(robotPeer.getName(), (Serializable) robotMsgMan.in.readObject());
 							} catch (ClassNotFoundException e) {

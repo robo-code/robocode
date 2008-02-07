@@ -26,6 +26,7 @@ import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.security.RobocodePermission;
 import robocode.security.RobocodeSecurityManager;
+import robocode.robotinterfaces.IAdvancedEvents;
 
 
 /**
@@ -92,8 +93,8 @@ public class RobocodeFileOutputStream extends OutputStream {
 			return;
 		}
 
-		if (!(r.getRobot() instanceof AdvancedRobot)) {
-			throw new RobotException("Only robots that extend AdvancedRobot may write to the filesystem.");
+		if (!(r.getRobot().getAdvancedEventListener() instanceof IAdvancedEvents)) {
+			throw new RobotException("Only robots that listen to IAdvancedEvents may write to the filesystem.");
 		}
 
 		this.fileSystemManager = r.getRobotFileSystemManager();

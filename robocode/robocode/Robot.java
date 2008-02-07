@@ -31,9 +31,7 @@
 package robocode;
 
 
-import robocode.robotinterfaces.IRobot;
-import robocode.robotinterfaces.IRobotEvents;
-import robocode.robotinterfaces.ISystemEvents;
+import robocode.robotinterfaces.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -66,7 +64,7 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  */
-public class Robot extends _Robot implements IRobot, IRobotEvents, ISystemEvents, Runnable {
+public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents, Runnable {
 
 	/**
 	 * Constructs a new robot.
@@ -74,24 +72,48 @@ public class Robot extends _Robot implements IRobot, IRobotEvents, ISystemEvents
 	public Robot() {}
 
 	/**
-	 * @return runnable to implementation
+	 * Robot implements runnable.
+	 * This method is called by environment, you don't need it.
+	 * @return runnable implementation
 	 */
 	public Runnable getRobotRunnable() {
 		return this;
 	}
 
 	/**
+	 * Robot is listening to basic events.
+	 * This method is called by environment, you don't need it.
 	 * @return listener to robot events
 	 */
-	public IRobotEvents getRobotEventListener() {
+	public IBasicEvents getBasicEventListener() {
 		return this;
 	}
 
 	/**
+	 * Robot is listening to system events.
+	 * This method is called by environment, you don't need it.
 	 * @return listener to system events
 	 */
 	public ISystemEvents getSystemEventListener() {
 		return this;
+	}
+
+	/**
+	 * Robot is not listening to advanced events.
+	 * This method is called by environment, you don't need it.
+	 * @return null
+	 */
+	public IAdvancedEvents getAdvancedEventListener() {
+		return null;  //we do not listen to advanced events
+	}
+
+	/**
+	 * Robot is not listening to team events.
+	 * This method is called by environment, you don't need it.
+	 * @return null
+	 */
+	public ITeamEvents getTeamEventListener() {
+		return null;  //we do not listen to team events
 	}
 
 	/**

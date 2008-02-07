@@ -18,7 +18,7 @@ import robocode.*;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotEvents {
+public interface IBasicEvents {
 
 	/**
 	 * This method is called when one of your bullets hits another robot.
@@ -172,17 +172,6 @@ public interface IRobotEvents {
 	void onHitWall(HitWallEvent event);
 
 	/**
-	 * This method is called when another robot dies.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 *
-	 * @param event The robot-death event set by the game
-	 * @see RobotDeathEvent
-	 * @see Event
-	 */
-	void onRobotDeath(RobotDeathEvent event);
-
-	/**
 	 * This method is called when your robot sees another robot, i.e. when the
 	 * robot's radar scan "hits" another robot.
 	 * You should override it in your robot if you want to be informed of this
@@ -229,6 +218,17 @@ public interface IRobotEvents {
 	 * @see Event
 	 */
 	void onScannedRobot(ScannedRobotEvent event);
+
+	/**
+	 * This method is called when another robot dies.
+	 * You should override it in your robot if you want to be informed of this
+	 * event.
+	 *
+	 * @param event The robot-death event set by the game
+	 * @see RobotDeathEvent
+	 * @see Event
+	 */
+	void onRobotDeath(RobotDeathEvent event);
 
 	/**
 	 * This method is called if your robot wins a battle.

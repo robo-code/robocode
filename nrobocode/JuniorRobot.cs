@@ -14,7 +14,6 @@ using System.IO;
 using java.io;
 using java.lang;
 using nrobocode.utils;
-using robocode;
 using robocode.peer;
 using robocode.robotinterfaces;
 
@@ -23,7 +22,7 @@ namespace nrobocode
     /// <summary>
     /// .NET Friendly base for junior robot
     /// </summary>
-    public abstract class JuniorRobot : IJuniorRobot
+    public abstract class JuniorRobot : IRobot
     {
         #region Java JuniorRobot
 
@@ -36,10 +35,10 @@ namespace nrobocode
                 this.owner = owner;
             }
 
-            public override void setOut(PrintStream @out)
+            public override void setOut(PrintStream output)
             {
-                base.setOut(@out);
-                myOut = new JavaConsole(@out);
+                base.setOut(output);
+                myOut = new JavaConsole(output);
             }
 
             public override void onHitByBullet()
@@ -81,27 +80,27 @@ namespace nrobocode
 
         #region IJuniorRobot Members
 
-        JuniorStructure IJuniorRobot.getJuniorStructure()
+        Runnable IRobot.getRobotRunnable()
         {
             return robot;
         }
 
-        IJuniorEvents IJuniorRobot.getJuniorEventListener()
+        IAdvancedEvents IRobot.getAdvancedEventListener()
         {
-            return robot;
+            return null;
         }
 
-        public Runnable getRobotRunnable()
+        IBasicEvents IRobot.getBasicEventListener()
         {
-            return robot;
+            return robot.getBasicEventListener();
         }
 
-        public IRobotEvents getRobotEventListener()
+        ITeamEvents IRobot.getTeamEventListener()
         {
-            return robot.getRobotEventListener();
+            return null;
         }
 
-        public ISystemEvents getSystemEventListener()
+        ISystemEvents IRobot.getSystemEventListener()
         {
             return null;
         }

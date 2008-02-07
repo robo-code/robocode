@@ -49,7 +49,7 @@ import robocode.io.FileUtil;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
 import robocode.ui.IRepositoryPlugin;
-import robocode.robotinterfaces.ITeamRobot;
+import robocode.robotinterfaces.ITeamEvents;
 import robocode.robotinterfaces.IRobot;
 import robocode.Droid;
 
@@ -449,7 +449,7 @@ public class RobotRepositoryManager {
 						robotSpecification.setDroid(true);
 					}
 
-					if (ITeamRobot.class.isAssignableFrom(robotClass)) {
+					if (ITeamEvents.class.isAssignableFrom(robotClass)) {
 						robotSpecification.setTeamRobot(true);
 					}
 

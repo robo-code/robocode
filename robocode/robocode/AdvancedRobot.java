@@ -22,6 +22,9 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.ITeamEvents;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -38,7 +41,7 @@ import java.util.Vector;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class AdvancedRobot extends _AdvancedRadiansRobot {
+public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedEvents {
 
 	/**
 	 * Returns the distance remaining in the robot's current move measured in
@@ -1297,4 +1300,14 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see Event
 	 */
 	public void onSkippedTurn(SkippedTurnEvent event) {}
+
+	/**
+	 * AdvancedRobot is listening to advanced events.
+	 * This method is called by environment, you don't need it.
+	 * @return listener to advanced events
+	 */
+	@Override
+	public IAdvancedEvents getAdvancedEventListener() {
+		return this; //we are listening
+	}
 }

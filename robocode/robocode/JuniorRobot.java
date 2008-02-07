@@ -42,7 +42,7 @@ import robocode.robotinterfaces.*;
  * 
  * @since 1.4
  */
-public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuniorRobot, Runnable {
+public class JuniorRobot extends JuniorStructure implements IRobot, Runnable {
 
 	private class GunReadyCondition extends Condition {
 		@Override
@@ -60,7 +60,7 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 	}
 
 
-	private class RobotEventsListener implements IRobotEvents, Runnable {
+	private class RobotEventsListener implements IBasicEvents, Runnable {
 
 		public RobotEventsListener(JuniorRobot junior) {
 			this.junior = junior;
@@ -175,40 +175,50 @@ public class JuniorRobot extends JuniorStructure implements IJuniorEvents, IJuni
 	}
 
 	/**
-	 * @return structure which should be updated with new info
-	 */
-	public JuniorStructure getJuniorStructure() {
-		return this;
-	}
-
-	/**
-	 * @return listener to junior robot events
-	 */
-	public IJuniorEvents getJuniorEventListener() {
-		return this;
-	}
-
-	/**
-	 * @return runnable to implementation
+	 * JuniorRobot implements runnable internaly.
+	 * This method is called by environment, you don't need it.
+	 * @return runnable implementation
 	 */
 	public Runnable getRobotRunnable() {
 		return listener;
 	}
 
 	/**
+	 * JuniorRobot is listening to basic events internaly.
+	 * This method is called by environment, you don't need it.
 	 * @return listener to robot events
 	 */
-	public IRobotEvents getRobotEventListener() {
+	public IBasicEvents getBasicEventListener() {
 		return listener;
 	}
 
 	/**
-	 * @return listener to system events
+	 * JuniorRobot is not listening to system events.
+	 * This method is called by environment, you don't need it.
+	 * @return null
 	 */
 	public ISystemEvents getSystemEventListener() {
 		return null; // we don't hear it
 	}
-    
+
+	/**
+	 * JuniorRobot is not listening to advanced events.
+	 * This method is called by environment, you don't need it.
+	 * @return listener to advanced events
+	 */
+	public IAdvancedEvents getAdvancedEventListener() {
+		return null; // we don't hear it
+	}
+
+	/**
+	 * JuniorRobot is not listening to team events.
+	 * This method is called by environment, you don't need it.
+	 * @return null
+	 */
+	public ITeamEvents getTeamEventListener() {
+		return null; // we don't hear it
+	}
+
 	/** The color black (0x000000) */
 	public final static int	black = 0x000000;
 

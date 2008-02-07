@@ -438,7 +438,8 @@ public class EventManager {
 
 	public void setRobot(IRobot r) {
 		this.robot = r;
-		if (r instanceof AdvancedRobot) {
+
+		if (r.getAdvancedEventListener() instanceof IAdvancedEvents) {
 			useFireAssist = false;
 		}
 	}
@@ -515,7 +516,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onBulletHit(e);
@@ -527,7 +528,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onBulletHitBullet(e);
@@ -539,7 +540,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null && robot instanceof IRobot) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onBulletMissed(e);
@@ -551,7 +552,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onCustomEvent(e);
@@ -563,7 +564,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onDeath(e);
@@ -575,7 +576,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onHitByBullet(e);
@@ -587,7 +588,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onHitRobot(e);
@@ -599,7 +600,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onHitWall(e);
@@ -611,7 +612,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onRobotDeath(e);
@@ -623,7 +624,7 @@ public class EventManager {
 		IRobot robot = getRobot();
 
 		if (robot != null) {
-			IRobotEvents listener = robot.getRobotEventListener();
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onScannedRobot(e);
@@ -633,25 +634,31 @@ public class EventManager {
 
 	public void onSkippedTurn(SkippedTurnEvent e) {
 		IRobot robot = getRobot();
+		if (robot != null) {
+			IAdvancedEvents listener = robot.getAdvancedEventListener();
 
-		if (robot != null && robot instanceof AdvancedRobot) {
-			((AdvancedRobot) robot).onSkippedTurn(e);
+			if (listener != null) {
+				listener.onSkippedTurn(e);
+			}
 		}
 	}
 
 	public void onMessageReceived(MessageEvent e) {
 		IRobot robot = getRobot();
+		if (robot != null) {
+			ITeamEvents listener = robot.getTeamEventListener();
 
-		if (robot != null && robot instanceof TeamRobot) {
-			((TeamRobot) robot).onMessageReceived(e);
+			if (listener != null) {
+				listener.onMessageReceived(e);
+			}
 		}
 	}
 
 	public void onWin(WinEvent e) {
 		IRobot robot = getRobot();
 
-		if (robot != null && robot instanceof IRobot) {
-			IRobotEvents listener = robot.getRobotEventListener();
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
 				listener.onWin(e);
@@ -732,7 +739,7 @@ public class EventManager {
 				} else if (currentEvent instanceof ScannedRobotEvent) {
 					if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
 							&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
-							&& !(getRobot() instanceof AdvancedRobot)) {
+							&& !(getRobot().getAdvancedEventListener() instanceof IAdvancedEvents)) {
 						fireAssistAngle = Utils.normalAbsoluteAngle(
 								robotPeer.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
 						if (useFireAssist) {

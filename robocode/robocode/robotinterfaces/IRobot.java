@@ -13,7 +13,6 @@ package robocode.robotinterfaces;
 
 
 import robocode.peer.RobotPeer;
-import robocode.JuniorStructure;
 
 
 /**
@@ -22,19 +21,34 @@ import robocode.JuniorStructure;
 public interface IRobot {
 
 	/**
+	 * This method is called by the game.
 	 * @return runnable to implementation
 	 */
 	Runnable getRobotRunnable();
 
 	/**
+	 * This method is called by the game.
 	 * @return listener to robot events
 	 */
-	IRobotEvents getRobotEventListener();
+	IBasicEvents getBasicEventListener();
 
 	/**
+	 * This method is called by the game.
 	 * @return listener to system events
 	 */
 	ISystemEvents getSystemEventListener();
+
+	/**
+	 * This method is called by the game.
+	 * @return listener to advanced events
+	 */
+	IAdvancedEvents getAdvancedEventListener();
+
+	/**
+	 * This method is called by the game.
+	 * @return listener to team events
+	 */
+	ITeamEvents getTeamEventListener();
 
 	/**
 	 * This method is called by the game. RobotPeer is the object that deals with
