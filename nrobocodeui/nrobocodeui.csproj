@@ -62,48 +62,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="nrobocodeui\battleview\BattleView.cs">
+    <Compile Include="battleview\BattleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="nrobocodeui\battleview\BattleView.Designer.cs">
+    <Compile Include="battleview\BattleView.Designer.cs">
       <DependentUpon>BattleView.cs</DependentUpon>
     </Compile>
-    <Compile Include="nrobocodeui\dialog\NewBattleDialog.cs">
+    <Compile Include="dialog\NewBattleDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="nrobocodeui\dialog\NewBattleDialog.Designer.cs">
+    <Compile Include="dialog\NewBattleDialog.Designer.cs">
       <DependentUpon>NewBattleDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="nrobocodeui\dialog\SliderToolStrip.cs">
+    <Compile Include="dialog\SliderToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="nrobocodeui\dialog\SliderToolStrip.Designer.cs">
+    <Compile Include="dialog\SliderToolStrip.Designer.cs">
       <DependentUpon>SliderToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="nrobocodeui\dialog\RobocodeFrame.cs">
+    <Compile Include="dialog\RobocodeFrame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="nrobocodeui\dialog\RobocodeFrame.Designer.cs">
+    <Compile Include="dialog\RobocodeFrame.Designer.cs">
       <DependentUpon>RobocodeFrame.cs</DependentUpon>
     </Compile>
-    <Compile Include="nrobocodeui\gfx\HLSColor.cs" />
-    <Compile Include="nrobocodeui\gfx\RenderImage.cs" />
-    <Compile Include="nrobocodeui\gfx\RenderObject.cs" />
-    <Compile Include="nrobocodeui\gfx\ColorFilter.cs" />
-    <Compile Include="nrobocodeui\repository\NetAssemblySpecification.cs" />
-    <Compile Include="nrobocodeui\repository\NetRepositoryPlugin.cs" />
-    <Compile Include="nrobocodeui\security\NetRobocodeClassLoader.cs" />
-    <Compile Include="nrobocodeui\sound\SoundManager.cs" />
-    <Compile Include="nrobocodeui\utils\Delegates.cs" />
-    <Compile Include="nrobocodeui\utils\Radians.cs" />
+    <Compile Include="gfx\HLSColor.cs" />
+    <Compile Include="gfx\RenderImage.cs" />
+    <Compile Include="gfx\RenderObject.cs" />
+    <Compile Include="gfx\ColorFilter.cs" />
+    <Compile Include="repository\NetAssemblySpecification.cs" />
+    <Compile Include="repository\NetRepositoryPlugin.cs" />
+    <Compile Include="security\NetRobocodeClassLoader.cs" />
+    <Compile Include="sound\SoundManager.cs" />
+    <Compile Include="utils\Delegates.cs" />
+    <Compile Include="utils\Radians.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="nrobocodeui\battleview\BattleViewProxy.cs" />
-    <Compile Include="nrobocodeui\dialog\RobocodeFrameProxy.cs" />
-    <Compile Include="nrobocodeui\manager\ImageManager.cs" />
-    <Compile Include="nrobocodeui\manager\LoadableManagerBase.cs" />
-    <Compile Include="nrobocodeui\manager\RobotDialogManager.cs" />
-    <Compile Include="nrobocodeui\manager\VersionManager.cs" />
-    <Compile Include="nrobocodeui\manager\WindowManager.cs" />
+    <Compile Include="battleview\BattleViewProxy.cs" />
+    <Compile Include="dialog\RobocodeFrameProxy.cs" />
+    <Compile Include="manager\ImageManager.cs" />
+    <Compile Include="manager\LoadableManagerBase.cs" />
+    <Compile Include="manager\RobotDialogManager.cs" />
+    <Compile Include="manager\VersionManager.cs" />
+    <Compile Include="manager\WindowManager.cs" />
     <Compile Include="resources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -119,21 +119,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="nrobocodeui\battleview\BattleView.resx">
+    <EmbeddedResource Include="battleview\BattleView.resx">
       <DependentUpon>BattleView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="nrobocodeui\dialog\RobocodeFrame.resx">
+    <EmbeddedResource Include="dialog\RobocodeFrame.resx">
       <DependentUpon>RobocodeFrame.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="nrobocodeui\dialog\NewBattleDialog.resx">
+    <EmbeddedResource Include="dialog\NewBattleDialog.resx">
       <DependentUpon>NewBattleDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="nrobocodeui\dialog\SliderToolStrip.resx">
+    <EmbeddedResource Include="dialog\SliderToolStrip.resx">
       <DependentUpon>SliderToolStrip.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
