@@ -42,7 +42,7 @@ import robocode.robotinterfaces.*;
  * 
  * @since 1.4
  */
-public class JuniorRobot extends JuniorStructure implements IRobot, Runnable {
+public class JuniorRobot extends JuniorStructure implements IJuniorRobot, Runnable {
 
 	private class GunReadyCondition extends Condition {
 		@Override
@@ -191,33 +191,6 @@ public class JuniorRobot extends JuniorStructure implements IRobot, Runnable {
 	 */
 	public IBasicEvents getBasicEventListener() {
 		return listener;
-	}
-
-	/**
-	 * JuniorRobot is not listening to system events.
-	 * This method is called by environment, you don't need it.
-	 * @return null
-	 */
-	public ISystemEvents getSystemEventListener() {
-		return null; // we don't hear it
-	}
-
-	/**
-	 * JuniorRobot is not listening to advanced events.
-	 * This method is called by environment, you don't need it.
-	 * @return listener to advanced events
-	 */
-	public IAdvancedEvents getAdvancedEventListener() {
-		return null; // we don't hear it
-	}
-
-	/**
-	 * JuniorRobot is not listening to team events.
-	 * This method is called by environment, you don't need it.
-	 * @return null
-	 */
-	public ITeamEvents getTeamEventListener() {
-		return null; // we don't hear it
 	}
 
 	/** The color black (0x000000) */

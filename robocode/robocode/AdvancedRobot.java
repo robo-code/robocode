@@ -24,8 +24,7 @@
 package robocode;
 
 
-import robocode.robotinterfaces.IAdvancedEvents;
-import robocode.robotinterfaces.ITeamEvents;
+import robocode.robotinterfaces.*;
 
 import java.io.File;
 import java.util.Vector;
@@ -43,7 +42,7 @@ import java.util.Vector;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedEvents {
+public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRobot, IAdvancedEvents {
 
 	/**
 	 * Returns the distance remaining in the robot's current move measured in

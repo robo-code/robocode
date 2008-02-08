@@ -117,7 +117,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
-	IRobot robot;
+	IBasicRobot robot;
 
 	public RobotOutputStream out;
 
@@ -1077,7 +1077,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
 	}
 
-	public IRobot getRobot() {
+	public IBasicRobot getRobot() {
 		return robot;
 	}
 
@@ -1191,7 +1191,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void setRobot(IRobot newRobot) {
+	public void setRobot(IBasicRobot newRobot) {
 		robot = newRobot;
 		if (robot != null) {
 			if (robot instanceof ITeamRobot) {

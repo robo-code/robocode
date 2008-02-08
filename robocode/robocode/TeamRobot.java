@@ -208,7 +208,6 @@ public class TeamRobot extends AdvancedRobot implements IAdvancedRobot, ITeamEve
 	 * This method is called by environment, you don't need it.
 	 * @return listener to team events
 	 */
-	@Override
 	public ITeamEvents getTeamEventListener() {
 		return this;
 	}

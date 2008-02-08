@@ -406,7 +406,7 @@ public class RobotRepositoryManager {
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
-				if (robotSpecification.getValid()) {
+                if (robotSpecification.getValid()) {
 					if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 						if (Droid.class.isAssignableFrom(robotClass)) {
 							robotSpecification.setDroid(true);
@@ -416,7 +416,7 @@ public class RobotRepositoryManager {
 							robotSpecification.setTeamRobot(true);
 						}
     
-						if (IRobot.class.isAssignableFrom(robotClass)) {
+						if (IBasicRobot.class.isAssignableFrom(robotClass)) {
 							updateNoDuplicates(robotSpecification);
 							return;
 						}

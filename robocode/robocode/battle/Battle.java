@@ -108,8 +108,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import robocode.*;
-import robocode.robotinterfaces.IRobot;
-import robocode.robotinterfaces.ISystemEvents;
+import robocode.robotinterfaces.*;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
@@ -1501,7 +1500,7 @@ public class Battle implements Runnable {
 						r.getOut().println("SYSTEM: Skipping robot: " + r.getName());
 						continue;
 					}
-					IRobot bot = (IRobot) robotClass.newInstance();
+					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
 					bot.setOut(r.getOut());
 					r.setRobot(bot);

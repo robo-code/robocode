@@ -99,24 +99,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	}
 
 	/**
-	 * Robot is not listening to advanced events.
-	 * This method is called by environment, you don't need it.
-	 * @return null
-	 */
-	public IAdvancedEvents getAdvancedEventListener() {
-		return null; // we do not listen to advanced events
-	}
-
-	/**
-	 * Robot is not listening to team events.
-	 * This method is called by environment, you don't need it.
-	 * @return null
-	 */
-	public ITeamEvents getTeamEventListener() {
-		return null; // we do not listen to team events
-	}
-
-	/**
 	 * Immediately moves your robot ahead (forward) by distance measured in
 	 * pixels.
 	 * <p>

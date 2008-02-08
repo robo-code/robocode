@@ -11,15 +11,8 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
-
 /**
  * @author Pavel Savara (original)
  */
-public interface IAdvancedRobot extends IRobot {
-
-    /**
-     * This method is called by the game.
-     * @return listener to advanced events
-     */
-    IAdvancedEvents getAdvancedEventListener();
+public interface IJuniorRobot extends IBasicRobot {
 }
