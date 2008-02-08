@@ -18,9 +18,14 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode;
 
+
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.ITeamEvents;
 
 import java.io.File;
 import java.util.Vector;
@@ -38,7 +43,7 @@ import java.util.Vector;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class AdvancedRobot extends _AdvancedRadiansRobot {
+public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedEvents {
 
 	/**
 	 * Returns the distance remaining in the robot's current move measured in
@@ -859,19 +864,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	}
 
 	/**
-	 * This method is called when a custom condition is met.
-	 * <p>
-	 * See the sample robots for examples of use.
-	 *
-	 * @param event the custom event that occured
-	 *
-	 * @see #addCustomEvent
-	 * @see CustomEvent
-	 * @see Event
-	 */
-	public void onCustomEvent(CustomEvent event) {}
-
-	/**
 	 * Removes a custom event (specified by condition).
 	 * <p>
 	 * See the sample robots for examples of use.
@@ -1310,4 +1302,14 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * @see Event
 	 */
 	public void onSkippedTurn(SkippedTurnEvent event) {}
+
+	/**
+	 * AdvancedRobot is listening to advanced events.
+	 * This method is called by environment, you don't need it.
+	 * @return listener to advanced events
+	 */
+	@Override
+	public IAdvancedEvents getAdvancedEventListener() {
+		return this; // we are listening
+	}
 }

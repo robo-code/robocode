@@ -26,6 +26,8 @@
  *       synchronized List and HashMap
  *     - Changed so that the robot repository only adds .jar files from the root
  *       of the robots folder and not from sub folders of the robots folder
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.manager;
 
@@ -47,6 +49,8 @@ import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
+import robocode.robotinterfaces.*;
+import robocode.Droid;
 
 
 /**
@@ -402,32 +406,20 @@ public class RobotRepositoryManager {
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
-				Class<?>[] interfaces = robotClass.getInterfaces();
-
-				for (Class<?> itf : interfaces) {
-					if (itf.getName().equals("robocode.Droid")) {
-						robotSpecification.setDroid(true);
-						break;
-					}
-				}
-
-				Class<?> superClass = robotClass.getSuperclass();
-
-				if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
-					superClass = null;
-				}
-
 				if (robotSpecification.getValid()) {
-					while (!updated && superClass != null && !superClass.getName().equals("java.lang.Object")) {
-						if (superClass.getName().equals("robocode.TeamRobot")) {
+					if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
+						if (Droid.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setDroid(true);
+						}
+    
+						if (ITeamRobot.class.isAssignableFrom(robotClass)) {
 							robotSpecification.setTeamRobot(true);
 						}
-						if (superClass.getName().equals("robocode.Robot")
-								|| superClass.getName().equals("robocode.JuniorRobot")) {
+    
+						if (IRobot.class.isAssignableFrom(robotClass)) {
 							updateNoDuplicates(robotSpecification);
 							return;
 						}
-						superClass = superClass.getSuperclass();
 					}
 				}
 				getRobotDatabase().put(key, new ClassSpecification(robotSpecification));

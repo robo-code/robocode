@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Vector;
 
 import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.*;
 
 
 /**
@@ -34,7 +35,7 @@ import robocode.peer.RobotPeer;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class TeamRobot extends AdvancedRobot {
+public class TeamRobot extends AdvancedRobot implements IAdvancedRobot, ITeamEvents {
 
 	/**
 	 * Checks if a given robot name is the name of one of your teammates.
@@ -201,4 +202,14 @@ public class TeamRobot extends AdvancedRobot {
 	 * @see Event
 	 */
 	public void onMessageReceived(MessageEvent event) {}
+
+	/**
+	 * TeamRobot is listening to team events.
+	 * This method is called by environment, you don't need it.
+	 * @return listener to team events
+	 */
+	@Override
+	public ITeamEvents getTeamEventListener() {
+		return this;
+	}
 }

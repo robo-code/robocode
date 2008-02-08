@@ -81,6 +81,8 @@
  *       been extended to cleanup all robots, but also all classes that this
  *       class refers to in order to avoid circular references. In addition,
  *       cleanup has been added to the KeyEventHandler
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.battle;
 
@@ -106,6 +108,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import robocode.*;
+import robocode.robotinterfaces.IRobot;
+import robocode.robotinterfaces.ISystemEvents;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
@@ -323,7 +327,7 @@ public class Battle implements Runnable {
 
 		if (!replay) {
 			for (RobotPeer r : robots) {
-				r.out.close();
+				r.getOut().close();
 				r.getRobotThreadManager().cleanup();
 			}
 			unsafeLoadRobotsThread.interrupt();
@@ -672,8 +676,8 @@ public class Battle implements Runnable {
 						battleView.update();
 					}
 				} catch (Throwable e) {
-					r.out.println("SYSTEM: Could not load " + r.getName() + " : " + e);
-					e.printStackTrace(r.out);
+					r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
+					e.printStackTrace(r.getOut());
 				}
 			}
 		}
@@ -1177,10 +1181,10 @@ public class Battle implements Runnable {
 						}
 						if ((!r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurns))
 								|| (r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurnsWithIO))) {
-							r.out.println(
+							r.getOut().println(
 									"SYSTEM: " + r.getName()
 									+ " has not performed any actions in a reasonable amount of time.");
-							r.out.println("SYSTEM: No score will be generated.");
+							r.getOut().println("SYSTEM: No score will be generated.");
 							r.getRobotStatistics().setInactive();
 							r.getRobotThreadManager().forceStop();
 						}
@@ -1376,9 +1380,9 @@ public class Battle implements Runnable {
 				r.preInitialize();
 			} // fake dead so robot won't display
 
-			r.out.println("=========================");
-			r.out.println("Round " + (roundNum + 1) + " of " + numRounds);
-			r.out.println("=========================");
+			r.getOut().println("=========================");
+			r.getOut().println("Round " + (roundNum + 1) + " of " + numRounds);
+			r.getOut().println("=========================");
 		}
 
 		// Notifying loader
@@ -1394,13 +1398,13 @@ public class Battle implements Runnable {
 		for (RobotPeer r : robots) {
 			if (r.getRobotClassManager().getClassNameManager().getFullPackage() != null
 					&& r.getRobotClassManager().getClassNameManager().getFullPackage().length() > 18) {
-				r.out.println("SYSTEM: Your package name is too long.  16 characters maximum please.");
-				r.out.println("SYSTEM: Robot disabled.");
+				r.getOut().println("SYSTEM: Your package name is too long.  16 characters maximum please.");
+				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 			if (r.getRobotClassManager().getClassNameManager().getShortClassName().length() > 35) {
-				r.out.println("SYSTEM: Your classname is too long.  32 characters maximum please.");
-				r.out.println("SYSTEM: Robot disabled.");
+				r.getOut().println("SYSTEM: Your classname is too long.  32 characters maximum please.");
+				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 		}
@@ -1494,22 +1498,22 @@ public class Battle implements Runnable {
 					manager.getThreadManager().setLoadingRobot(r);
 					robotClass = r.getRobotClassManager().getRobotClass();
 					if (robotClass == null) {
-						r.out.println("SYSTEM: Skipping robot: " + r.getName());
+						r.getOut().println("SYSTEM: Skipping robot: " + r.getName());
 						continue;
 					}
-					_RobotBase bot = (_RobotBase) robotClass.newInstance();
+					IRobot bot = (IRobot) robotClass.newInstance();
 
-					bot.out = r.getOut();
+					bot.setOut(r.getOut());
 					r.setRobot(bot);
 					r.getRobot().setPeer(r);
-					r.getRobot().out = r.getOut();
+					r.getRobot().setOut(r.getOut());
 				} catch (IllegalAccessException e) {
-					r.out.println("SYSTEM: Unable to instantiate this robot: " + e);
-					r.out.println("SYSTEM: Is your constructor marked public?");
+					r.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
+					r.getOut().println("SYSTEM: Is your constructor marked public?");
 				} catch (Throwable e) {
-					r.out.println("SYSTEM: An error occurred during initialization of " + r.getRobotClassManager());
-					r.out.println("SYSTEM: " + e);
-					e.printStackTrace(r.out);
+					r.getOut().println("SYSTEM: An error occurred during initialization of " + r.getRobotClassManager());
+					r.getOut().println("SYSTEM: " + e);
+					e.printStackTrace(r.getOut());
 				}
 				if (roundNum > 0) {
 					initializeRobotPosition(r);
@@ -1826,14 +1830,18 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof IRobot) {
+					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.onMouseClicked(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+
+						if (listener != null) {
+							listener.onMouseClicked(me);
+						}
 					} catch (Exception e2) {
-						robot.out.println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
-						e2.printStackTrace(robot.out);
+						robot.getOut().println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
+						e2.printStackTrace(robot.getOut());
 					}
 				}
 			}
@@ -1845,14 +1853,18 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof IRobot) {
+					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.onMouseEntered(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+
+						if (listener != null) {
+							listener.onMouseEntered(me);
+						}
 					} catch (Exception e2) {
-						robot.out.println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
-						e2.printStackTrace(robot.out);
+						robot.getOut().println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
+						e2.printStackTrace(robot.getOut());
 					}
 				}
 			}
@@ -1864,14 +1876,18 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof IRobot) {
+					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.onMouseExited(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+
+						if (listener != null) {
+							listener.onMouseExited(me);
+						}
 					} catch (Exception e2) {
-						robot.out.println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
-						e2.printStackTrace(robot.out);
+						robot.getOut().println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
+						e2.printStackTrace(robot.getOut());
 					}
 				}
 			}
@@ -1883,14 +1899,18 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof IRobot) {
+					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.onMousePressed(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+
+						if (listener != null) {
+							listener.onMousePressed(me);
+						}
 					} catch (Exception e2) {
-						robot.out.println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
-						e2.printStackTrace(robot.out);
+						robot.getOut().println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
+						e2.printStackTrace(robot.getOut());
 					}
 				}
 			}
@@ -1902,14 +1922,18 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof IRobot) {
+					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.onMouseReleased(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+
+						if (listener != null) {
+							listener.onMouseReleased(me);
+						}
 					} catch (Exception e2) {
-						robot.out.println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
-						e2.printStackTrace(robot.out);
+						robot.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
+						e2.printStackTrace(robot.getOut());
 					}
 				}
 			}
@@ -1921,14 +1945,18 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 			
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof IRobot) {
+					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.onMouseMoved(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+
+						if (listener != null) {
+							listener.onMouseMoved(me);
+						}
 					} catch (Exception e2) {
-						robot.out.println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
-						e2.printStackTrace(robot.out);
+						robot.getOut().println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
+						e2.printStackTrace(robot.getOut());
 					}
 				}
 			}
@@ -1940,14 +1968,18 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 			
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof IRobot) {
+					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.onMouseDragged(me);
+						ISystemEvents listener = robot.getSystemEventListener();
+
+						if (listener != null) {
+							listener.onMouseDragged(me);
+						}
 					} catch (Exception e2) {
-						robot.out.println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
-						e2.printStackTrace(robot.out);
+						robot.getOut().println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
+						e2.printStackTrace(robot.getOut());
 					}
 				}
 			}
@@ -1959,14 +1991,18 @@ public class Battle implements Runnable {
 			MouseWheelEvent mwe = mirroredMouseWheelEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof Robot) {
-					Robot robot = (Robot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.getRobot() instanceof IRobot) {
+					IRobot robot = (IRobot) r.getRobot();
 
 					try {
-						robot.onMouseWheelMoved(mwe);
+						ISystemEvents listener = robot.getSystemEventListener();
+
+						if (listener != null) {
+							listener.onMouseWheelMoved(mwe);
+						}
 					} catch (Exception e2) {
-						robot.out.println("SYSTEM: Exception occurred on onMouseWheelMoved(MouseWheelEvent):");
-						e2.printStackTrace(robot.out);
+						robot.getOut().println("SYSTEM: Exception occurred on onMouseWheelMoved(MouseWheelEvent):");
+						e2.printStackTrace(robot.getOut());
 					}
 				}
 			}
@@ -2032,13 +2068,13 @@ public class Battle implements Runnable {
 
 		public boolean dispatchKeyEvent(KeyEvent e) {
 			if (battle != null && battle.isRunning()) {
-				Robot robot;
+				IRobot robot;
 
 				for (RobotPeer r : robots) {
-					if (!(r.isAlive() && r.getRobot() instanceof Robot)) {
+					if (!(r.isAlive() && r.getRobot() instanceof IRobot)) {
 						continue;
 					}
-					robot = (Robot) r.getRobot();
+					robot = (IRobot) r.getRobot();
 					if (robot == null) {
 						continue;
 					}
@@ -2047,28 +2083,40 @@ public class Battle implements Runnable {
 					switch (e.getID()) {
 					case KeyEvent.KEY_TYPED:
 						try {
-							robot.onKeyTyped(ke);
+							ISystemEvents listener = robot.getSystemEventListener();
+
+							if (listener != null) {
+								listener.onKeyTyped(ke);
+							}
 						} catch (Exception e2) {
-							robot.out.println("SYSTEM: Exception occurred on onKeyTyped(KeyEvent):");
-							e2.printStackTrace(robot.out);
+							robot.getOut().println("SYSTEM: Exception occurred on onKeyTyped(KeyEvent):");
+							e2.printStackTrace(robot.getOut());
 						}
 						break;
 
 					case KeyEvent.KEY_PRESSED:
 						try {
-							robot.onKeyPressed(ke);
+							ISystemEvents listener = robot.getSystemEventListener();
+
+							if (listener != null) {
+								listener.onKeyPressed(ke);
+							}
 						} catch (Exception e2) {
-							robot.out.println("SYSTEM: Exception occurred on onKeyPressed(KeyEvent):");
-							e2.printStackTrace(robot.out);
+							robot.getOut().println("SYSTEM: Exception occurred on onKeyPressed(KeyEvent):");
+							e2.printStackTrace(robot.getOut());
 						}
 						break;
 
 					case KeyEvent.KEY_RELEASED:
 						try {
-							robot.onKeyReleased(ke);
+							ISystemEvents listener = robot.getSystemEventListener();
+
+							if (listener != null) {
+								listener.onKeyReleased(ke);
+							}
 						} catch (Exception e2) {
-							robot.out.println("SYSTEM: Exception occurred on onKeyReleased(KeyEvent):");
-							e2.printStackTrace(robot.out);
+							robot.getOut().println("SYSTEM: Exception occurred on onKeyReleased(KeyEvent):");
+							e2.printStackTrace(robot.getOut());
 						}
 						break;
 					}

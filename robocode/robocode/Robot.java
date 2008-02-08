@@ -25,9 +25,13 @@
  *     - Fix for HyperThreading hang issue
  *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
  *     - Added onPaint() method for painting the robot
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode;
 
+
+import robocode.robotinterfaces.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -60,12 +64,57 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  */
-public class Robot extends _Robot {
+public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents, Runnable {
 
 	/**
 	 * Constructs a new robot.
 	 */
 	public Robot() {}
+
+	/**
+	 * Robot implements runnable.
+	 * This method is called by environment, you don't need it.
+	 * @return runnable implementation
+	 */
+	public Runnable getRobotRunnable() {
+		return this;
+	}
+
+	/**
+	 * Robot is listening to basic events.
+	 * This method is called by environment, you don't need it.
+	 * @return listener to robot events
+	 */
+	public IBasicEvents getBasicEventListener() {
+		return this;
+	}
+
+	/**
+	 * Robot is listening to system events.
+	 * This method is called by environment, you don't need it.
+	 * @return listener to system events
+	 */
+	public ISystemEvents getSystemEventListener() {
+		return this;
+	}
+
+	/**
+	 * Robot is not listening to advanced events.
+	 * This method is called by environment, you don't need it.
+	 * @return null
+	 */
+	public IAdvancedEvents getAdvancedEventListener() {
+		return null; // we do not listen to advanced events
+	}
+
+	/**
+	 * Robot is not listening to team events.
+	 * This method is called by environment, you don't need it.
+	 * @return null
+	 */
+	public ITeamEvents getTeamEventListener() {
+		return null; // we do not listen to team events
+	}
 
 	/**
 	 * Immediately moves your robot ahead (forward) by distance measured in
@@ -883,6 +932,19 @@ public class Robot extends _Robot {
 	 * @see Event
 	 */
 	public void onWin(WinEvent event) {}
+
+	/**
+	 * This method is called when a custom condition is met.
+	 * <p>
+	 * See the sample robots for examples of use.
+	 *
+	 * @param event the custom event that occured
+	 *
+	 * @see AdvancedRobot#addCustomEvent
+	 * @see CustomEvent
+	 * @see Event
+	 */
+	public void onCustomEvent(CustomEvent event) {}
 
 	/**
 	 * Immediately resumes the movement you stopped by stop(), if any.

@@ -54,6 +54,8 @@
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.peer;
 
@@ -72,6 +74,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import robocode.*;
+import robocode.robotinterfaces.*;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
@@ -114,7 +117,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
-	_RobotBase robot;
+	IRobot robot;
 
 	public RobotOutputStream out;
 
@@ -370,7 +373,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
 
 			// Update energy, but do not reset inactiveTurnCount
-			if (robot instanceof robocode.AdvancedRobot) {
+			if (robot instanceof IAdvancedRobot) {
 				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
 			}
 
@@ -475,22 +478,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			eventManager.processEvents();
 
 			if (robot != null) {
-				if (robot instanceof JuniorRobot) {
-					JuniorRobot jr = (JuniorRobot) robot;
+				Runnable runnable = robot.getRobotRunnable();
 
-					jr.fieldWidth = (int) (getBattleFieldWidth() + 0.5);
-					jr.fieldHeight = (int) (getBattleFieldHeight() + 0.5);
-
-					updateJuniorRobotFields();
-
-					eventManager.addCustomEvent(new GunReadyCondition());
-					eventManager.addCustomEvent(new GunFireCondition());
-
-					for (;;) {
-						jr.run();
-					}
+				if (runnable != null) {
+					runnable.run();
 				}
-				robot.run();
 			}
 			for (;;) {
 				tick();
@@ -1085,7 +1077,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
 	}
 
-	public _RobotBase getRobot() {
+	public IRobot getRobot() {
 		return robot;
 	}
 
@@ -1199,10 +1191,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void setRobot(_RobotBase newRobot) {
+	public void setRobot(IRobot newRobot) {
 		robot = newRobot;
 		if (robot != null) {
-			if (robot instanceof robocode.TeamRobot) {
+			if (robot instanceof ITeamRobot) {
 				messageManager = new RobotMessageManager(this);
 			}
 			eventManager.setRobot(newRobot);
@@ -1608,7 +1600,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		lastHeading = heading;
 	}
 
+	/**
+	 * Deprecated, please use JuniorRobot#updateJuniorRobotFields intead
+	 */
+	@Deprecated
 	public void updateJuniorRobotFields() {
+		// this is only test for inheritance from JuniorRobotleft in the game, the method id deprecated, do not reuse
 		if (!(robot instanceof JuniorRobot)) {
 			return;
 		}
@@ -1636,21 +1633,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized double getJuniorFirePower() {
 		return juniorFirePower;
-	}
-
-	public class GunReadyCondition extends Condition {
-		@Override
-		public boolean test() {
-			return (getGunHeat() <= 0);
-		}
-	}
-
-
-	public class GunFireCondition extends Condition {
-		@Override
-		public boolean test() {
-			return (getGunHeat() <= 0 && getGunTurnRemaining() == 0);
-		}
 	}
 
 	/**
