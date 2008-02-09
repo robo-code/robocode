@@ -72,6 +72,15 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	public Robot() {}
 
 	/**
+	 * Robot implements runnable.
+	 * This method is called by environment, you don't need it.
+	 * @return runnable implementation
+	 */
+	public Runnable getRobotRunnable() {
+		return this;
+	}
+
+	/**
 	 * Robot is listening to basic events.
 	 * This method is called by environment, you don't need it.
 	 * @return listener to robot events

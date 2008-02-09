@@ -19,6 +19,12 @@ import robocode.peer.RobotPeer;
 public interface IBasicRobot extends Runnable {
     /**
      * This method is called by the game.
+     * @return runnable to implementation
+     */
+    Runnable getRobotRunnable();
+
+    /**
+     * This method is called by the game.
      * @return listener to robot events
      */
     IBasicEvents getBasicEventListener();

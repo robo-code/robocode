@@ -259,9 +259,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Latest angle from where this robot was hit by a bullet (in degrees)
 	 * compared to the body of this robot.
 	 * If the robot has never been hit, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link JuniorRobot#onHitByBullet()} event is active.
+	 * This field will not be updated while {@link #onHitByBullet()} event is active.
 	 *
-	 * @see JuniorRobot#onHitByBullet()
+	 * @see #onHitByBullet()
 	 * @see #hitByBulletAngle
 	 */
 	public int hitByBulletBearing = -1;
@@ -269,9 +269,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Latest angle where this robot has hit another robot (in degrees).
 	 * If this robot has never hit another robot, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link JuniorRobot#onHitRobot()} event is active.
+	 * This field will not be updated while {@link #onHitRobot()} event is active.
 	 *
-	 * @see JuniorRobot#onHitRobot()
+	 * @see #onHitRobot()
 	 * @see #hitRobotBearing
 	 */
 	public int hitRobotAngle = -1;
@@ -280,9 +280,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Latest angle where this robot has hit another robot (in degrees)
 	 * compared to the body of this robot.
 	 * If this robot has never hit another robot, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link JuniorRobot#onHitRobot()} event is active.
+	 * This field will not be updated while {@link #onHitRobot()} event is active.
 	 *
-	 * @see JuniorRobot#onHitRobot()
+	 * @see #onHitRobot()
 	 * @see #hitRobotAngle
 	 */
 	public int hitRobotBearing = -1;
@@ -290,9 +290,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Latest angle where this robot has hit a wall (in degrees).
 	 * If this robot has never hit a wall, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link JuniorRobot#onHitWall()} event is active.
+	 * This field will not be updated while {@link #onHitWall()} event is active.
 	 *
-	 * @see JuniorRobot#onHitWall()
+	 * @see #onHitWall()
 	 * @see #hitWallBearing
 	 */
 	public int hitWallAngle = -1;
@@ -301,19 +301,28 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Latest angle where this robot has hit a wall (in degrees)
 	 * compared to the body of this robot.
 	 * If this robot has never hit a wall, this field will be less than 0, i.e. -1.
-	 * This field will not be updated while {@link JuniorRobot#onHitWall()} event is active.
+	 * This field will not be updated while {@link #onHitWall()} event is active.
 	 *
-	 * @see JuniorRobot#onHitWall()
+	 * @see #onHitWall()
 	 * @see #hitWallAngle
 	 */
 	public int hitWallBearing = -1;
+
+	/**
+	 * JuniorRobot implements runnable internally.
+	 * This method is called by environment, you don't need it.
+	 * @return runnable implementation
+	 */
+	public final Runnable getRobotRunnable() {
+		return eventHandler;
+	}
 
 	/**
 	 * JuniorRobot is listening to basic events internally.
 	 * This method is called by environment, you don't need it.
 	 * @return listener to robot events
 	 */
-	public IBasicEvents getBasicEventListener() {
+	public final IBasicEvents getBasicEventListener() {
 		return eventHandler;
 	}
 
@@ -321,11 +330,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Contains the program that controls the behaviour of this robot.
 	 * This method is automatically re-called when it has returned.
 	 */
-	public void run() {
-		if (eventHandler != null) {
-			eventHandler.run();
-		}
-	}
+	public void run() {}
 
 	/**
 	 * Moves this robot forward by pixels.
@@ -770,7 +775,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	private final RobotEventsHandler eventHandler = new RobotEventsHandler(this);
 
 
-	private void updateJuniorRobotFields() {
+	private final void updateJuniorRobotFields() {
 		others = getPeer().getOthers();
 		energy = Math.max(1, (int) (getPeer().getEnergy() + 0.5));
 		robotX = (int) (getPeer().getX() + 0.5);
@@ -781,7 +786,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		gunReady = (getPeer().getGunHeat() <= 0);
 	}
 
-	private void addCustomEvent(Condition condition) {
+	private final void addCustomEvent(Condition condition) {
 		if (condition == null) {
 			throw new NullPointerException("the condition cannot be null");
 		}
@@ -793,7 +798,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 	}
 
-	private class GunReadyCondition extends Condition {
+	private final class GunReadyCondition extends Condition {
 		@Override
 		public boolean test() {
 			return (getPeer().getGunHeat() <= 0);
@@ -801,7 +806,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	}
 
 
-	private class GunFireCondition extends Condition {
+	private final class GunFireCondition extends Condition {
 		@Override
 		public boolean test() {
 			return (getPeer().getGunHeat() <= 0 && getPeer().getGunTurnRemaining() == 0);
@@ -809,7 +814,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	}
 
 
-	private class RobotEventsHandler implements IBasicEvents, Runnable {
+	private final class RobotEventsHandler implements IBasicEvents, Runnable {
 
 		public RobotEventsHandler(JuniorRobot junior) {
 			this.junior = junior;
