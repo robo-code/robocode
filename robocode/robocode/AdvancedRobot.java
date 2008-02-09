@@ -1307,7 +1307,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * This method is called by environment, you don't need it.
 	 * @return listener to advanced events
 	 */
-	@Override
 	public IAdvancedEvents getAdvancedEventListener() {
 		return this; // we are listening
 	}

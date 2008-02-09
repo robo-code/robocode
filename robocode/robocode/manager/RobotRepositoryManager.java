@@ -394,8 +394,6 @@ public class RobotRepositoryManager {
 
 		String key = fileSpecification.getFilePath();
 
-		boolean updated = false;
-
 		if (fileSpecification instanceof RobotSpecification) {
 			RobotSpecification robotSpecification = (RobotSpecification) fileSpecification;
 
