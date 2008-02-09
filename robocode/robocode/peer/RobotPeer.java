@@ -478,11 +478,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			eventManager.processEvents();
 
 			if (robot != null) {
-				Runnable runnable = robot.getRobotRunnable();
-
-				if (runnable != null) {
-					runnable.run();
-				}
+				robot.run();
 			}
 			for (;;) {
 				tick();

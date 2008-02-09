@@ -43,7 +43,7 @@ import robocode.robotinterfaces.*;
  * 
  * @since 1.4
  */
-public class JuniorRobot extends _RobotBase implements IJuniorRobot, Runnable {
+public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 	/** The color black (0x000000) */
 	public final static int	black = 0x000000;
@@ -309,28 +309,23 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot, Runnable {
 	public int hitWallBearing = -1;
 
 	/**
-	 * JuniorRobot implements runnable internaly.
-	 * This method is called by environment, you don't need it.
-	 * @return runnable implementation
-	 */
-	public Runnable getRobotRunnable() {
-		return listener;
-	}
-
-	/**
-	 * JuniorRobot is listening to basic events internaly.
+	 * JuniorRobot is listening to basic events internally.
 	 * This method is called by environment, you don't need it.
 	 * @return listener to robot events
 	 */
 	public IBasicEvents getBasicEventListener() {
-		return listener;
+		return eventHandler;
 	}
 
 	/**
 	 * Contains the program that controls the behaviour of this robot.
 	 * This method is automatically re-called when it has returned.
 	 */
-	public void run() {}
+	public void run() {
+		if (eventHandler != null) {
+			eventHandler.run();
+		}
+	}
 
 	/**
 	 * Moves this robot forward by pixels.
@@ -771,12 +766,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot, Runnable {
 	 */
 	public void onHitWall() {}
 
-	private RobotEventsListener listener;
 
+	private final RobotEventsHandler eventHandler = new RobotEventsHandler(this);
 
-	private JuniorRobot() {
-		listener = new RobotEventsListener(this);
-	}
 
 	private void updateJuniorRobotFields() {
 		others = getPeer().getOthers();
@@ -817,9 +809,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot, Runnable {
 	}
 
 
-	private class RobotEventsListener implements IBasicEvents, Runnable {
+	private class RobotEventsHandler implements IBasicEvents, Runnable {
 
-		public RobotEventsListener(JuniorRobot junior) {
+		public RobotEventsHandler(JuniorRobot junior) {
 			this.junior = junior;
 		}
 		public JuniorRobot junior;

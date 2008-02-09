@@ -16,13 +16,7 @@ import robocode.peer.RobotPeer;
 /**
  * @author Pavel Savara (original)
  */
-public interface IBasicRobot {
-    /**
-     * This method is called by the game.
-     * @return runnable to implementation
-     */
-    Runnable getRobotRunnable();
-
+public interface IBasicRobot extends Runnable {
     /**
      * This method is called by the game.
      * @return listener to robot events

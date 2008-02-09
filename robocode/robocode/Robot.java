@@ -64,21 +64,12 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  */
-public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents, Runnable {
+public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents {
 
 	/**
 	 * Constructs a new robot.
 	 */
 	public Robot() {}
-
-	/**
-	 * Robot implements runnable.
-	 * This method is called by environment, you don't need it.
-	 * @return runnable implementation
-	 */
-	public Runnable getRobotRunnable() {
-		return this;
-	}
 
 	/**
 	 * Robot is listening to basic events.
