@@ -1600,33 +1600,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		lastHeading = heading;
 	}
 
-	/**
-	 * Deprecated, please use JuniorRobot#updateJuniorRobotFields intead
-	 */
-	@Deprecated
-	public void updateJuniorRobotFields() {
-		// this is only test for inheritance from JuniorRobotleft in the game, the method id deprecated, do not reuse
-		if (!(robot instanceof JuniorRobot)) {
-			return;
-		}
-
-		JuniorRobot jr = (JuniorRobot) robot;
-
-		jr.others = getOthers();
-
-		jr.energy = Math.max(1, (int) (getEnergy() + 0.5));
-
-		jr.robotX = (int) (getX() + 0.5);
-		jr.robotY = (int) (getY() + 0.5);
-
-		jr.heading = (int) (toDegrees(getHeading()) + 0.5);
-
-		jr.gunHeading = (int) (toDegrees(getGunHeading()) + 0.5);
-		jr.gunBearing = (int) (toDegrees(normalRelativeAngle(getGunHeading() - getHeading())) + 0.5);
-
-		jr.gunReady = (getGunHeat() <= 0);
-	}
-
 	public synchronized void setJuniorFire(double power) {
 		juniorFirePower = power;
 	}
