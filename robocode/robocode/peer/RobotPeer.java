@@ -373,7 +373,8 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
 
 			// Update energy, but do not reset inactiveTurnCount
-			if (robot instanceof IAdvancedRobot) {
+			// Everyone who will be smart enough to work with interfaces, should be smart enough to not hit the walls.
+			if ((!(robot instanceof JuniorRobot) && !(robot instanceof Robot)) || robot instanceof IAdvancedRobot) {
 				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
 			}
 
