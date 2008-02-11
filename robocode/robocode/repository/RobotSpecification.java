@@ -46,8 +46,12 @@ public class RobotSpecification extends FileSpecification {
 	protected boolean robotJavaSourceIncluded;
 	protected String robotClassPath;
 
-	private boolean teamRobot;
-	private boolean droid;
+	private boolean isDroid;
+	private boolean isJuniorRobot;
+	private boolean isStandardRobot;
+	private boolean isSystemRobot;
+	private boolean isAdvancedRobot;
+	private boolean isTeamRobot;
 
 	// Used in RobotRepositoryManager
 	protected RobotSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
@@ -177,7 +181,7 @@ public class RobotSpecification extends FileSpecification {
 	/**
 	 * Sets the robotName.
 	 *
-	 * @param robotName The robotName to set
+	 * @param name The robotName to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -269,7 +273,7 @@ public class RobotSpecification extends FileSpecification {
 	/**
 	 * Sets the robotClasspath.
 	 *
-	 * @param robotClasspath The robotClasspath to set
+	 * @param robotClassPath The robotClasspath to set
 	 */
 	public void setRobotClassPath(String robotClassPath) {
 		this.robotClassPath = robotClassPath;
@@ -308,19 +312,52 @@ public class RobotSpecification extends FileSpecification {
 		this.uid = uid;
 	}
 
-	public boolean isTeamRobot() {
-		return teamRobot;
-	}
-
 	public boolean isDroid() {
-		return droid;
+		return isDroid;
 	}
 
-	public void setTeamRobot(boolean teamRobot) {
-		this.teamRobot = teamRobot;
+	public void setDroid(boolean value) {
+		this.isDroid = value;
 	}
 
-	public void setDroid(boolean droid) {
-		this.droid = droid;
+	public boolean isTeamRobot() {
+		return isTeamRobot;
 	}
+
+	public void setTeamRobot(boolean value) {
+		this.isTeamRobot = value;
+	}
+
+	public boolean isAdvancedRobot() {
+		return isAdvancedRobot;
+	}
+
+	public void setAdvancedRobot(boolean value) {
+		this.isAdvancedRobot = value;
+	}
+
+	public boolean isStandardRobot() {
+		return isStandardRobot;
+	}
+
+	public void setStandardRobot(boolean value) {
+		this.isStandardRobot = value;
+	}
+
+	public boolean isSystemRobot() {
+		return isSystemRobot;
+	}
+
+	public void setSystemRobot(boolean value) {
+		this.isSystemRobot = value;
+	}
+
+	public boolean isJuniorRobot() {
+		return isJuniorRobot;
+	}
+
+	public void setJuniorRobot(boolean value) {
+		this.isJuniorRobot = value;
+	}
+
 }

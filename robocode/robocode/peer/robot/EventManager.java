@@ -438,7 +438,7 @@ public class EventManager {
 
 	public void setRobot(IBasicRobot r) {
 		this.robot = r;
-		if (r instanceof IAdvancedRobot) {
+		if (robotPeer.isAdvancedRobot()) {
 			useFireAssist = false;
 		}
 	}
@@ -551,8 +551,13 @@ public class EventManager {
 		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			IBasicEvents listener = robot.getBasicEventListener();
-
+			IAdvancedEvents listener = null;
+			if (robotPeer.isAdvancedRobot()) {
+				listener = ((IAdvancedRobot)robot).getAdvancedEventListener();
+			}
+			else if (robotPeer.isJuniorRobot()){
+				listener = (IAdvancedEvents)((JuniorRobot)robot).getBasicEventListener();
+			}
 			if (listener != null) {
 				listener.onCustomEvent(e);
 			}
@@ -634,7 +639,7 @@ public class EventManager {
 	public void onSkippedTurn(SkippedTurnEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof IAdvancedRobot) {
+		if (robot != null && robotPeer.isAdvancedRobot()) {
 			IAdvancedEvents listener = ((IAdvancedRobot)robot).getAdvancedEventListener();
 
 			if (listener != null) {
@@ -646,7 +651,7 @@ public class EventManager {
 	public void onMessageReceived(MessageEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof ITeamRobot) {
+		if (robot != null && robotPeer.isTeamRobot()) {
 			ITeamEvents listener = ((ITeamRobot)robot).getTeamEventListener();
 
 			if (listener != null) {
@@ -670,7 +675,7 @@ public class EventManager {
 	public void onStatus(StatusEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof IRobot) {
+		if (robot != null && robotPeer.isSystemRobot()) {
 			ISystemEvents listener = ((IRobot)robot).getSystemEventListener();
 
 			if (listener != null) {
@@ -740,7 +745,7 @@ public class EventManager {
 				} else if (currentEvent instanceof ScannedRobotEvent) {
 					if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
 							&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
-							&& !(getRobot() instanceof IAdvancedRobot)) {
+							&& !(robotPeer.isAdvancedRobot())) {
 						fireAssistAngle = Utils.normalAbsoluteAngle(
 								robotPeer.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
 						if (useFireAssist) {

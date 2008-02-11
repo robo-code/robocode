@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.security.AccessControlException;
 
 import javax.swing.JOptionPane;
 
@@ -51,6 +52,9 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
 import robocode.robotinterfaces.*;
 import robocode.Droid;
+import robocode.JuniorRobot;
+import robocode.Robot;
+import robocode.AdvancedRobot;
 
 
 /**
@@ -410,10 +414,29 @@ public class RobotRepositoryManager {
 							robotSpecification.setDroid(true);
 						}
     
+						if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setAdvancedRobot(true);
+						}
+
 						if (ITeamRobot.class.isAssignableFrom(robotClass)) {
 							robotSpecification.setTeamRobot(true);
 						}
-    
+
+						if (IRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setSystemRobot(true);
+						}
+
+						if (Robot.class.isAssignableFrom(robotClass) && !robotSpecification.isAdvancedRobot()) {
+							robotSpecification.setStandardRobot(true);
+						}
+
+						if (JuniorRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setJuniorRobot(true);
+							if (robotSpecification.isAdvancedRobot()){
+								throw new AccessControlException(robotSpecification.getName() + ": Junior robot should not implement IAdvancedRobot interface.");
+							}
+						}
+
 						if (IBasicRobot.class.isAssignableFrom(robotClass)) {
 							updateNoDuplicates(robotSpecification);
 							return;

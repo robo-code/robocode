@@ -13,6 +13,7 @@ package robocode.robotinterfaces;
 
 
 import robocode.SkippedTurnEvent;
+import robocode.CustomEvent;
 
 
 /**
@@ -39,4 +40,17 @@ public interface IAdvancedEvents {
 	 * @see robocode.Event
 	 */
 	void onSkippedTurn(SkippedTurnEvent event);
+
+	/**
+	 * This method is called when a custom condition is met.
+	 * <p>
+	 * See the sample robots for examples of use.
+	 *
+	 * @param event the custom event that occured
+	 *
+	 * @see robocode.AdvancedRobot#addCustomEvent
+	 * @see robocode.CustomEvent
+	 * @see robocode.Event
+	 */
+	void onCustomEvent(CustomEvent event);
 }

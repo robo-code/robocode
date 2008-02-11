@@ -536,7 +536,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			String subPkg = pkg.substring(9);
 
-			// Only access to robocode.util is allowed
+			// Only access to robocode.util or robocode.robotinterfaces is allowed
 			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces"))) {
 				RobotPeer r = threadManager.getRobotPeer(Thread.currentThread());
 

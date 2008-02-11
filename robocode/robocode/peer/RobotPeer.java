@@ -150,6 +150,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private Arc2D scanArc;
 
 	private boolean isDroid;
+	private boolean isJuniorRobot;
+	private boolean isStandardRobot;
+	private boolean isSystemRobot;
+	private boolean isAdvancedRobot;
+	private boolean isTeamRobot;
 	private boolean isIORobot;
 	private boolean isRunning;
 	private boolean isStopped;
@@ -255,6 +260,61 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void setDroid(boolean droid) {
 		this.isDroid = droid;
+	}
+
+	/**
+	 * @return When true, this robot is inherited from JunirRobot base class
+	 */
+	public boolean isJuniorRobot() {
+		return isJuniorRobot;
+	}
+
+	public void setJuniorRobot(boolean value) {
+		this.isJuniorRobot = value;
+	}
+
+	/**
+	 * @return When true, this robot is inherited from Robot base class but not from AdvancedRobot
+	 */
+	public boolean isStandardRobot() {
+		return isStandardRobot;
+	}
+
+	public void setStandardRobot(boolean value) {
+		this.isStandardRobot = value;
+	}
+
+	/**
+	 * @return When true, this robot is implementing IRobot interface
+	 */
+	public boolean isSystemRobot() {
+		return isSystemRobot;
+	}
+
+	public void setSystemRobot(boolean value) {
+		this.isSystemRobot = value;
+	}
+
+	/**
+	 * @return When true, this robot is implementing IAdvancedRobot interface
+	 */
+	public boolean isAdvancedRobot() {
+		return isAdvancedRobot;
+	}
+
+	public void setAdvancedRobot(boolean value) {
+		this.isAdvancedRobot = value;
+	}
+
+	/**
+	 * @return When true, this robot is implementing ITeamRobot interface
+	 */
+	public boolean isTeamRobot() {
+		return isTeamRobot;
+	}
+
+	public void setTeamRobot(boolean value) {
+		this.isTeamRobot = value;
 	}
 
 	public final void move(double distance) {
@@ -373,8 +433,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
 
 			// Update energy, but do not reset inactiveTurnCount
-			// Everyone who will be smart enough to work with interfaces, should be smart enough to not hit the walls.
-			if ((!(robot instanceof JuniorRobot) && !(robot instanceof Robot)) || robot instanceof IAdvancedRobot) {
+			if (isAdvancedRobot) {
 				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
 			}
 

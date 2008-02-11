@@ -35,7 +35,7 @@ import robocode.robotinterfaces.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class TeamRobot extends AdvancedRobot implements IAdvancedRobot, ITeamEvents {
+public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 
 	/**
 	 * Checks if a given robot name is the name of one of your teammates.

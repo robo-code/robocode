@@ -814,7 +814,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	}
 
 
-	private final class RobotEventsHandler implements IBasicEvents, Runnable {
+	private final class RobotEventsHandler implements IBasicEvents, IAdvancedEvents, Runnable {
 
 		public RobotEventsHandler(JuniorRobot junior) {
 			this.junior = junior;
@@ -834,19 +834,22 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			}
 		}
 
-		public void onBulletHit(BulletHitEvent event) {// too complicated for junior ?
+		public void onBulletHit(BulletHitEvent event) {
 		}
 
-		public void onBulletHitBullet(BulletHitBulletEvent event) {// too complicated for junior ?
+		public void onBulletHitBullet(BulletHitBulletEvent event) {
 		}
 
-		public void onBulletMissed(BulletMissedEvent event) {// too complicated for junior ?
+		public void onBulletMissed(BulletMissedEvent event) {
 		}
 
-		public void onRobotDeath(RobotDeathEvent event) {// too complicated for junior ?
+		public void onRobotDeath(RobotDeathEvent event) {
 		}
 
-		public void onWin(WinEvent event) {// too complicated for junior ?
+		public void onWin(WinEvent event) {
+		}
+
+		public void onSkippedTurn(SkippedTurnEvent event) {
 		}
 
 		public void onDeath(DeathEvent event) {

@@ -916,19 +916,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	public void onWin(WinEvent event) {}
 
 	/**
-	 * This method is called when a custom condition is met.
-	 * <p>
-	 * See the sample robots for examples of use.
-	 *
-	 * @param event the custom event that occured
-	 *
-	 * @see AdvancedRobot#addCustomEvent
-	 * @see CustomEvent
-	 * @see Event
-	 */
-	public void onCustomEvent(CustomEvent event) {}
-
-	/**
 	 * Immediately resumes the movement you stopped by stop(), if any.
 	 * <p>
 	 * This call executes immediately, and does not return until it is complete.
