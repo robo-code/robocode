@@ -72,6 +72,9 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.io.File;
+import java.io.Serializable;
+import java.io.IOException;
 
 import robocode.*;
 import robocode.robotinterfaces.*;
@@ -96,7 +99,7 @@ import robocode.util.BoundingRectangle;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobotPeer implements Runnable, ContestantPeer {
+public class RobotPeer implements IRobotPeer, Runnable, ContestantPeer {
 
 	// Robot States: all states last one turn, except ALIVE and DEAD
 	public static final int
@@ -506,6 +509,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return radarHeading;
 	}
 
+	public double getGunCoolingRate() {
+		return battle.getGunCoolingRate();
+	}
+
 	public synchronized double getX() {
 		return x;
 	}
@@ -587,6 +594,24 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				: arc.intersects(rect);
 	}
 
+	public void scanReset()
+	{
+		boolean reset = false;
+		boolean resetValue = false;
+
+		if (getEventManager().getCurrentTopEventPriority() == getEventManager().getScannedRobotEventPriority()) {
+			reset = true;
+			resetValue = getEventManager().getInterruptible(getEventManager().getScannedRobotEventPriority());
+			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), true);
+		}
+
+		setScan(true);
+		tick();
+		if (reset) {
+			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), resetValue);
+		}
+	}
+	
 	public void scan() {
 		if (isDroid) {
 			return;
@@ -1316,6 +1341,59 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized void setScan(boolean scan) {
 		this.scan = scan;
+	}
+
+	public File getDataDirectory() {
+		setIORobot(true);
+		return getRobotFileSystemManager().getWritableDirectory();
+	}
+
+	public File getDataFile(String filename) {
+		setIORobot(true);
+		return new File(getRobotFileSystemManager().getWritableDirectory(), filename);
+	}
+
+	public long getDataQuotaAvailable() {
+		return getRobotFileSystemManager().getMaxQuota() - getRobotFileSystemManager().getQuotaUsed();
+	}
+
+	public void sendMessage(String name, Serializable message) throws IOException {
+		if (getMessageManager() == null) {
+			throw new IOException("You are not on a team.");
+		}
+		getMessageManager().sendMessage(name, message);
+	}
+
+	public void broadcastMessage(Serializable message) throws IOException {
+		if (getMessageManager() == null) {
+			throw new IOException("You are not on a team.");
+		}
+		getMessageManager().sendMessage(null, message);
+	}
+
+	public String[] getTeammates() {
+		robocode.peer.TeamPeer teamPeer = getTeamPeer();
+
+		if (teamPeer == null) {
+			return null;
+		}
+		String s[] = new String[teamPeer.size() - 1];
+
+		int index = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			if (teammate != this) {
+				s[index++] = teammate.getName();
+			}
+		}
+		return s;
+	}
+
+	public boolean isTeammate(String name) {
+		if (getTeamPeer() == null) {
+			return false;
+		}
+		return getTeamPeer().contains(name);
 	}
 
 	/**

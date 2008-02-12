@@ -54,10 +54,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	public boolean isTeammate(String name) {
 		if (peer != null) {
 			peer.getCall();
-			if (peer.getTeamPeer() == null) {
-				return false;
-			}
-			return peer.getTeamPeer().contains(name);
+			return peer.isTeammate(name);
 		}
 		uninitializedException();
 		return false;
@@ -87,21 +84,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	public String[] getTeammates() {
 		if (peer != null) {
 			peer.getCall();
-			robocode.peer.TeamPeer teamPeer = peer.getTeamPeer();
-
-			if (teamPeer == null) {
-				return null;
-			}
-			String s[] = new String[teamPeer.size() - 1];
-
-			int index = 0;
-
-			for (RobotPeer teammate : teamPeer) {
-				if (teammate != peer) {
-					s[index++] = teammate.getName();
-				}
-			}
-			return s;
+			return peer.getTeammates();
 		}
 		uninitializedException();
 		return null;
@@ -122,10 +105,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	public void broadcastMessage(Serializable message) throws IOException {
 		if (peer != null) {
 			peer.setCall();
-			if (peer.getMessageManager() == null) {
-				throw new IOException("You are not on a team.");
-			}
-			peer.getMessageManager().sendMessage(null, message);
+			peer.broadcastMessage(message);
 		} else {
 			uninitializedException();
 		}
@@ -147,10 +127,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	public void sendMessage(String name, Serializable message) throws IOException {
 		if (peer != null) {
 			peer.setCall();
-			if (peer.getMessageManager() == null) {
-				throw new IOException("You are not on a team.");
-			}
-			peer.getMessageManager().sendMessage(name, message);
+			peer.sendMessage(name, message);
 		} else {
 			uninitializedException();
 		}

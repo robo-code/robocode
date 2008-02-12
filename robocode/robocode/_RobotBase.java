@@ -14,6 +14,7 @@ package robocode;
 
 import robocode.exception.RobotException;
 import robocode.peer.RobotPeer;
+import robocode.peer.IRobotPeer;
 
 
 /**
@@ -36,7 +37,7 @@ import robocode.peer.RobotPeer;
  */
 public abstract class _RobotBase {
 
-	RobotPeer peer;
+	IRobotPeer peer;
 
 	/**
 	 * The output stream your robot should use to print.
@@ -85,14 +86,14 @@ public abstract class _RobotBase {
 	 * game mechanics and rules, and makes sure your robot abides by them.
 	 * Do not call this method! Your robot will simply stop interacting with the game.
 	 */
-	public final void setPeer(RobotPeer peer) {
+	public final void setPeer(IRobotPeer peer) {
 		this.peer = peer;
 	}
 
 	/**
 	 * @return RobotPeer, the object that deals with game mechanics and rules. 
 	 */
-	public final RobotPeer getPeer() {
+	public final IRobotPeer getPeer() {
 		return peer;
 	}
 

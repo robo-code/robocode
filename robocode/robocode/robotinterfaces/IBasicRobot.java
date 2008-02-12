@@ -12,6 +12,7 @@
 package robocode.robotinterfaces;
 
 import robocode.peer.RobotPeer;
+import robocode.peer.IRobotPeer;
 
 /**
  * @author Pavel Savara (original)
@@ -34,13 +35,13 @@ public interface IBasicRobot extends Runnable {
      * game mechanics and rules, and makes sure your robot abides by them.
      * Do not call this method! Your robot will simply stop interacting with the game.
      */
-    void setPeer(RobotPeer peer);
+    void setPeer(IRobotPeer peer);
 
     /**
      * Returns RobotPeer. RobotPeer is the object that deals with
      * game mechanics and rules, and makes sure your robot abides by them.
      */
-    RobotPeer getPeer();
+    IRobotPeer getPeer();
 
     /**
      * This method is called by the game.

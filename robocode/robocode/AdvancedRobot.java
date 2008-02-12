@@ -554,8 +554,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public File getDataDirectory() {
 		if (peer != null) {
 			peer.getCall();
-			peer.setIORobot(true);
-			return peer.getRobotFileSystemManager().getWritableDirectory();
+			return peer.getDataDirectory();
 		}
 		uninitializedException();
 		return null; // never called
@@ -583,8 +582,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public File getDataFile(String filename) {
 		if (peer != null) {
 			peer.getCall();
-			peer.setIORobot(true);
-			return new File(peer.getRobotFileSystemManager().getWritableDirectory(), filename);
+			return peer.getDataFile(filename);
 		}
 		uninitializedException();
 		return null; // never called
@@ -601,7 +599,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public long getDataQuotaAvailable() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getRobotFileSystemManager().getMaxQuota() - peer.getRobotFileSystemManager().getQuotaUsed();
+			return peer.getDataQuotaAvailable();
 		}
 		uninitializedException();
 		return 0; // never called

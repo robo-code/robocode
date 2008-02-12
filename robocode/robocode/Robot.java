@@ -531,7 +531,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	public double getGunCoolingRate() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getBattle().getGunCoolingRate();
+			return peer.getGunCoolingRate();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -604,15 +604,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	public int getOthers() {
 		if (peer != null) {
 			peer.getCall();
-			// peer.getOthers() is synchronized, and it calls a synchronized method in Battle, so in
-			// order to return successfully, we need to be able to get a lock on both peer and the
-			// Battle.  Since the battle has synchronized methods which call synchronized methods in
-			// RobotPeer, the Battle thread locks these two objects in the opposite order often, so
-			// in order to avoid deadlock, we need to make sure the battle is free before calling this
-			// method.
-			synchronized (peer.getBattle()) {
-				return peer.getOthers();
-			}
+			return peer.getOthers();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -952,23 +944,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void scan() {
 		if (peer != null) {
-			boolean reset = false;
-			boolean resetValue = false;
-
-			if (peer.getEventManager().getCurrentTopEventPriority()
-					== peer.getEventManager().getScannedRobotEventPriority()) {
-				reset = true;
-				resetValue = peer.getEventManager().getInterruptible(
-						peer.getEventManager().getScannedRobotEventPriority());
-				peer.getEventManager().setInterruptible(peer.getEventManager().getScannedRobotEventPriority(), true);
-			}
-
-			peer.setScan(true);
-			peer.tick();
-			if (reset) {
-				peer.getEventManager().setInterruptible(peer.getEventManager().getScannedRobotEventPriority(),
-						resetValue);
-			}
+			peer.scanReset();
 		} else {
 			uninitializedException();
 		}

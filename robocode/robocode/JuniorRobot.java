@@ -775,7 +775,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	private final RobotEventsHandler eventHandler = new RobotEventsHandler(this);
 
 
-	private final void updateJuniorRobotFields() {
+	private void updateJuniorRobotFields() {
 		others = getPeer().getOthers();
 		energy = Math.max(1, (int) (getPeer().getEnergy() + 0.5));
 		robotX = (int) (getPeer().getX() + 0.5);
@@ -786,7 +786,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		gunReady = (getPeer().getGunHeat() <= 0);
 	}
 
-	private final void addCustomEvent(Condition condition) {
+	private void addCustomEvent(Condition condition) {
 		if (condition == null) {
 			throw new NullPointerException("the condition cannot be null");
 		}
