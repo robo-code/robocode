@@ -80,6 +80,8 @@ import java.util.List;
 import robocode.*;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IRobotPeer;
+import robocode.robotinterfaces.peer.IRobotPeerAdvanced;
+import robocode.robotinterfaces.peer.IRobotPeerJunior;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
@@ -101,7 +103,7 @@ import robocode.util.BoundingRectangle;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobotPeer implements IRobotPeer, Runnable, ContestantPeer {
+public class RobotPeer implements IRobotPeerAdvanced, IRobotPeerJunior, Runnable, ContestantPeer {
 
 	// Robot States: all states last one turn, except ALIVE and DEAD
 	public static final int

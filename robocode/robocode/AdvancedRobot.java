@@ -25,6 +25,7 @@ package robocode;
 
 
 import robocode.robotinterfaces.*;
+import robocode.robotinterfaces.peer.*;
 
 import java.io.File;
 import java.util.Vector;
@@ -95,7 +96,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setAhead(double distance) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setMove(distance);
+			((IRobotPeerAdvanced)peer).setMove(distance);
 		} else {
 			uninitializedException();
 		}
@@ -132,7 +133,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setBack(double distance) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setMove(-distance);
+			((IRobotPeerAdvanced)peer).setMove(-distance);
 		} else {
 			uninitializedException();
 		}
@@ -169,7 +170,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setTurnLeft(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnChassis(-Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnChassis(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -206,7 +207,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setTurnRight(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnChassis(Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnChassis(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -359,7 +360,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 		}
 		if (peer != null) {
 			peer.setCall();
-			peer.addCustomEvent(condition);
+			((IRobotPeerAdvanced)peer).addCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -371,7 +372,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void clearAllEvents() {
 		if (peer != null) {
 			peer.setCall();
-			peer.clearAllEvents();
+			((IRobotPeerAdvanced)peer).clearAllEvents();
 		} else {
 			uninitializedException();
 		}
@@ -452,7 +453,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<Event> getAllEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<Event>(peer.getAllEvents());
+			return new Vector<Event>(((IRobotPeerAdvanced)peer).getAllEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -479,7 +480,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<BulletHitBulletEvent>(peer.getBulletHitBulletEvents());
+			return new Vector<BulletHitBulletEvent>(((IRobotPeerAdvanced)peer).getBulletHitBulletEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -505,7 +506,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<BulletHitEvent> getBulletHitEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<BulletHitEvent>(peer.getBulletHitEvents());
+			return new Vector<BulletHitEvent>(((IRobotPeerAdvanced)peer).getBulletHitEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -532,7 +533,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<BulletMissedEvent> getBulletMissedEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<BulletMissedEvent>(peer.getBulletMissedEvents());
+			return new Vector<BulletMissedEvent>(((IRobotPeerAdvanced)peer).getBulletMissedEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -554,7 +555,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public File getDataDirectory() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getDataDirectory();
+			return ((IRobotPeerAdvanced)peer).getDataDirectory();
 		}
 		uninitializedException();
 		return null; // never called
@@ -582,7 +583,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public File getDataFile(String filename) {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getDataFile(filename);
+			return ((IRobotPeerAdvanced)peer).getDataFile(filename);
 		}
 		uninitializedException();
 		return null; // never called
@@ -599,7 +600,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public long getDataQuotaAvailable() {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getDataQuotaAvailable();
+			return ((IRobotPeerAdvanced)peer).getDataQuotaAvailable();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -623,7 +624,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public int getEventPriority(String eventClass) {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventPriority(eventClass);
+			return ((IRobotPeerAdvanced)peer).getEventPriority(eventClass);
 		}
 		uninitializedException();
 		return 0; // never called
@@ -667,7 +668,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<HitByBulletEvent> getHitByBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<HitByBulletEvent>(peer.getHitByBulletEvents());
+			return new Vector<HitByBulletEvent>(((IRobotPeerAdvanced)peer).getHitByBulletEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -693,7 +694,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<HitRobotEvent> getHitRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<HitRobotEvent>(peer.getHitRobotEvents());
+			return new Vector<HitRobotEvent>(((IRobotPeerAdvanced)peer).getHitRobotEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -719,7 +720,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<HitWallEvent> getHitWallEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<HitWallEvent>(peer.getHitWallEvents());
+			return new Vector<HitWallEvent>(((IRobotPeerAdvanced)peer).getHitWallEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -763,7 +764,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<RobotDeathEvent> getRobotDeathEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<RobotDeathEvent>(peer.getRobotDeathEvents());
+			return new Vector<RobotDeathEvent>(((IRobotPeerAdvanced)peer).getRobotDeathEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -790,7 +791,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<ScannedRobotEvent>(peer.getScannedRobotEvents());
+			return new Vector<ScannedRobotEvent>(((IRobotPeerAdvanced)peer).getScannedRobotEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -890,7 +891,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 		}
 		if (peer != null) {
 			peer.setCall();
-			peer.removeCustomEvent(condition);
+			((IRobotPeerAdvanced)peer).removeCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -946,7 +947,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setEventPriority(String eventClass, int priority) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setEventPriority(eventClass, priority);
+			((IRobotPeerAdvanced)peer).setEventPriority(eventClass, priority);
 		} else {
 			uninitializedException();
 		}
@@ -978,7 +979,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setInterruptible(boolean interruptible) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setInterruptible(interruptible);
+			((IRobotPeerAdvanced)peer).setInterruptible(interruptible);
 		} else {
 			uninitializedException();
 		}
@@ -994,7 +995,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setMaxTurnRate(double newMaxTurnRate) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setMaxTurnRate(newMaxTurnRate);
+			((IRobotPeerAdvanced)peer).setMaxTurnRate(newMaxTurnRate);
 		} else {
 			uninitializedException();
 		}
@@ -1010,7 +1011,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setMaxVelocity(double newMaxVelocity) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setMaxVelocity(newMaxVelocity);
+			((IRobotPeerAdvanced)peer).setMaxVelocity(newMaxVelocity);
 		} else {
 			uninitializedException();
 		}
@@ -1029,7 +1030,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setResume() {
 		if (peer != null) {
 			peer.setCall();
-			peer.setResume();
+			((IRobotPeerAdvanced)peer).setResume();
 		} else {
 			uninitializedException();
 		}
@@ -1073,7 +1074,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setStop(boolean overwrite) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setStop(overwrite);
+			((IRobotPeerAdvanced)peer).setStop(overwrite);
 		} else {
 			uninitializedException();
 		}
@@ -1112,7 +1113,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setTurnGunLeft(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnGun(-Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnGun(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1151,7 +1152,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setTurnGunRight(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnGun(Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnGun(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1191,7 +1192,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setTurnRadarLeft(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnRadar(-Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1231,7 +1232,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setTurnRadarRight(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnRadar(Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1248,7 +1249,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void waitFor(Condition condition) {
 		if (peer != null) {
-			peer.waitFor(condition);
+			((IRobotPeerAdvanced)peer).waitFor(condition);
 		} else {
 			uninitializedException();
 		}

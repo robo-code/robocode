@@ -14,19 +14,35 @@ package robocode.robotinterfaces.peer;
 import robocode.*;
 
 import java.util.List;
+import java.io.File;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerEvents {
+public interface IRobotPeerAdvanced extends IRobotPeerStandard {
+
+	//asynchronous actions
+	void setResume();
+	void setStop(boolean overwrite);
+	void setMove(double distance);
+	void setTurnChassis(double radians);
+	void setTurnGun(double radians);
+	void setTurnRadar(double radians);
+
+	//blockig actions
+	void waitFor(Condition condition);
+
+	//fast setters
+	void setMaxTurnRate(double newTurnRate);
+	void setMaxVelocity(double newVelocity);
+
+	//events manipulation
 	void setInterruptible(boolean interruptable);
 	void setEventPriority(String eventClass, int priority);
 	int getEventPriority(String eventClass);
-
 	void removeCustomEvent(Condition condition);
 	void addCustomEvent(Condition condition);
 	void clearAllEvents();
-
 	java.util.List<Event> getAllEvents();
 	List<BulletMissedEvent> getBulletMissedEvents();
 	List<BulletHitBulletEvent> getBulletHitBulletEvents();
@@ -36,4 +52,9 @@ public interface IRobotPeerEvents {
 	List<HitWallEvent> getHitWallEvents();
 	List<RobotDeathEvent> getRobotDeathEvents();
 	List<ScannedRobotEvent> getScannedRobotEvents();
+
+	//data
+	File getDataDirectory();
+	File getDataFile(String filename);
+	long getDataQuotaAvailable();
 }

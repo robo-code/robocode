@@ -32,6 +32,7 @@ package robocode;
 
 
 import robocode.robotinterfaces.*;
+import robocode.robotinterfaces.peer.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -916,7 +917,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void resume() {
 		if (peer != null) {
-			peer.resume();
+			((IRobotPeerStandard)peer).resume();
 		} else {
 			uninitializedException();
 		}
@@ -944,7 +945,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void scan() {
 		if (peer != null) {
-			peer.scanReset();
+			((IRobotPeerStandard)peer).scanReset();
 		} else {
 			uninitializedException();
 		}
@@ -990,7 +991,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	public void setAdjustGunForRobotTurn(boolean independent) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setAdjustGunForBodyTurn(independent);
+			((IRobotPeerStandard)peer).setAdjustGunForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -1035,7 +1036,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	public void setAdjustRadarForGunTurn(boolean independent) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setAdjustRadarForGunTurn(independent);
+			((IRobotPeerStandard)peer).setAdjustRadarForGunTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -1385,12 +1386,13 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 * there is already movement saved from a previous stop, you can overwrite
 	 * it by calling stop(true).
 	 *
+	 * @param overwrite If there is already movement saved from a previous stop, you can overwrite it by calling stop(true).
 	 * @see #resume
 	 * @see #stop
 	 */
 	public void stop(boolean overwrite) {
 		if (peer != null) {
-			peer.stop(overwrite);
+			((IRobotPeerStandard)peer).stop(overwrite);
 		} else {
 			uninitializedException();
 		}
@@ -1486,7 +1488,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void turnRadarLeft(double degrees) {
 		if (peer != null) {
-			peer.turnRadar(-Math.toRadians(degrees));
+			((IRobotPeerStandard)peer).turnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1518,7 +1520,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void turnRadarRight(double degrees) {
 		if (peer != null) {
-			peer.turnRadar(Math.toRadians(degrees));
+			((IRobotPeerStandard)peer).turnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1576,7 +1578,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	public void setAdjustRadarForRobotTurn(boolean independent) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setAdjustRadarForBodyTurn(independent);
+			((IRobotPeerStandard)peer).setAdjustRadarForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}

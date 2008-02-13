@@ -44,8 +44,4 @@ public interface IRobotPeerGetters {
 	int getOthers();
 	int getNumRounds();
 	int getRoundNum();
-
-	//counters
-	void getCall();
-	void setCall();
 }

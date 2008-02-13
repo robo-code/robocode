@@ -14,9 +14,33 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+import robocode.Bullet;
+
+import java.awt.*;
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeer extends IRobotPeerGetters, IRobotPeerBlockingAdvanced, IRobotPeerSettersAdvanced, IRobotPeerAsyncAdvanced, IRobotPeerTeam, IRobotPeerEventsTeam, IRobotPeerData {
+public interface IRobotPeer extends  IRobotPeerGetters {
+	//asynchronous actions
+	Bullet setFire(double power);
+
+	//blocking actions
+	void tick();
+	void move(double distance);
+	void turnChassis(double radians);
+	void turnAndMoveChassis(double distance, double radians);
+	void turnGun(double radians);
+
+	//fast setters
+	void setBodyColor(Color color);
+	void setGunColor(Color color);
+	void setRadarColor(Color color);
+	void setBulletColor(Color color);
+	void setScanColor(Color color);
+
+	//counters
+	void getCall();
+	void setCall();
 }
 

@@ -24,6 +24,7 @@ import java.awt.Color;
 import static robocode.util.Utils.normalRelativeAngle;
 import robocode.util.Utils;
 import robocode.robotinterfaces.*;
+import robocode.robotinterfaces.peer.*;
 
 
 /**
@@ -786,18 +787,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		gunReady = (getPeer().getGunHeat() <= 0);
 	}
 
-	private void addCustomEvent(Condition condition) {
-		if (condition == null) {
-			throw new NullPointerException("the condition cannot be null");
-		}
-		if (peer != null) {
-			peer.setCall();
-			peer.addCustomEvent(condition);
-		} else {
-			uninitializedException();
-		}
-	}
-
 	private final class GunReadyCondition extends Condition {
 		@Override
 		public boolean test() {
@@ -831,8 +820,20 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			addCustomEvent(new GunReadyCondition());
 			addCustomEvent(new GunFireCondition());
 
-			for (;;) {
+			while(true) {
 				junior.run();
+			}
+		}
+
+		private void addCustomEvent(Condition condition) {
+			if (condition == null) {
+				throw new NullPointerException("the condition cannot be null");
+			}
+			if (peer != null) {
+				peer.setCall();
+				((IRobotPeerJunior)peer).addCustomEvent(condition);
+			} else {
+				uninitializedException();
 			}
 		}
 

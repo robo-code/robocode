@@ -17,6 +17,10 @@
  *******************************************************************************/
 package robocode;
 
+import robocode.robotinterfaces.peer.IRobotPeerAdvanced;
+import robocode.robotinterfaces.peer.IRobotPeer;
+import robocode.robotinterfaces.peer.IRobotPeerJunior;
+
 
 /**
  * This class is used by the system, as well as being a placeholder for all deprecated
@@ -33,7 +37,7 @@ package robocode;
  */
 public class _AdvancedRobot extends Robot {
 
-	protected _AdvancedRobot() {}
+	protected _AdvancedRobot() { }
 
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnGunLeft(double)
@@ -43,7 +47,7 @@ public class _AdvancedRobot extends Robot {
 	public void setTurnGunLeftDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnGun(-Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnGun(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -57,7 +61,7 @@ public class _AdvancedRobot extends Robot {
 	public void setTurnGunRightDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnGun(Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnGun(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -80,7 +84,7 @@ public class _AdvancedRobot extends Robot {
 	public void setTurnRightDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnChassis(Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnChassis(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -94,7 +98,7 @@ public class _AdvancedRobot extends Robot {
 	public void setTurnRadarLeftDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnChassis(-Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnChassis(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -108,7 +112,7 @@ public class _AdvancedRobot extends Robot {
 	public void setTurnLeftDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnChassis(-Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnChassis(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -186,7 +190,7 @@ public class _AdvancedRobot extends Robot {
 	public void setTurnRadarRightDegrees(double degrees) {
 		if (peer != null) {
 			peer.setCall();
-			peer.setTurnRadar(Math.toRadians(degrees));
+			((IRobotPeerAdvanced)peer).setTurnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}

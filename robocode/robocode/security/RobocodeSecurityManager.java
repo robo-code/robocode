@@ -537,7 +537,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 			String subPkg = pkg.substring(9);
 
 			// Only access to robocode.util or robocode.robotinterfaces is allowed
-			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces"))) {
+			//TODO ZAMO || subPkg.equals("robotinterfaces.peer")
+			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces") )) {
 				RobotPeer r = threadManager.getRobotPeer(Thread.currentThread());
 
 				if (r != null) {

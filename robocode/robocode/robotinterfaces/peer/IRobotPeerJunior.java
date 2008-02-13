@@ -11,11 +11,16 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+import robocode.Bullet;
+import robocode.Condition;
+
+import java.awt.*;
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerSetters extends IRobotPeerSettersJunior {
-	void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn);
-	void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn);
-	void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn);
+public interface IRobotPeerJunior extends IRobotPeer {
+
+	//TODO ZAMO
+	void addCustomEvent(Condition condition);
 }

@@ -11,13 +11,19 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
-import java.io.File;
-
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerData {
-	File getDataDirectory();
-	File getDataFile(String filename);
-	long getDataQuotaAvailable();
+public interface IRobotPeerStandard extends IRobotPeer {
+
+	//blocking actions
+	void stop(boolean overwrite);
+	void resume();
+	void scanReset();
+	void turnRadar(double radians);
+
+	//fast setters
+	void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn);
+	void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn);
+	void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn);
 }
