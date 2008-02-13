@@ -78,6 +78,7 @@ import java.io.IOException;
 
 import robocode.*;
 import robocode.robotinterfaces.*;
+import robocode.robotinterfaces.peer.IRobotPeer;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;

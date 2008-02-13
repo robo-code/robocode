@@ -18,10 +18,7 @@
 package sample;
 
 import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.IAdvancedEvents;
-import robocode.robotinterfaces.ISystemEvents;
-import robocode.robotinterfaces.IBasicEvents;
-import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.peer.*;
 import robocode.ScannedRobotEvent;
 import robocode.HitByBulletEvent;
 import robocode.AdvancedRobot;
@@ -80,11 +77,11 @@ abstract class MasterBase {
         return helperRobot;
     }
 
-    public void setPeer(RobotPeer robotPeer) {
+    public void setPeer(IRobotPeer robotPeer) {
         helperRobot.setPeer(robotPeer);
     }
 
-    public RobotPeer getPeer() {
+    public IRobotPeer getPeer() {
         return helperRobot.getPeer();
     }
 

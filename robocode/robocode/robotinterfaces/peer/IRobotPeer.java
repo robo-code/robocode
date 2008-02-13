@@ -5,15 +5,21 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
+ * This is private interface. You should build any external component (or robot)
+ * based on it's current methods because it will change in the future.
+ *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package robocode.robotinterfaces.peer;
 
 import robocode.*;
 import robocode.Event;
 import robocode.peer.robot.IEventManager;
+import robocode.peer.robot.RobotStatistics;
+import robocode.peer.ContestantPeer;
+import robocode.peer.TeamPeer;
 
 import java.awt.*;
 import java.util.*;
@@ -24,7 +30,7 @@ import java.io.IOException;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeer {
+public interface IRobotPeer extends ContestantPeer {
 	void setJuniorFire(double power);
 	double getJuniorFirePower();
 
@@ -36,6 +42,9 @@ public interface IRobotPeer {
 
 	String[] getTeammates();
 	boolean isTeammate(String name);
+
+	RobotStatistics getRobotStatistics();
+	TeamPeer getTeamPeer();
 
 	//void death();
 	void move(double distance);

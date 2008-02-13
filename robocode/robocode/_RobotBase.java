@@ -13,8 +13,7 @@ package robocode;
 
 
 import robocode.exception.RobotException;
-import robocode.peer.RobotPeer;
-import robocode.peer.IRobotPeer;
+import robocode.robotinterfaces.peer.IRobotPeer;
 
 
 /**
