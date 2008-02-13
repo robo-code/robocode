@@ -359,7 +359,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 		}
 		if (peer != null) {
 			peer.setCall();
-			peer.getEventManager().addCustomEvent(condition);
+			peer.addCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -371,7 +371,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void clearAllEvents() {
 		if (peer != null) {
 			peer.setCall();
-			peer.getEventManager().clearAllEvents(false);
+			peer.clearAllEvents();
 		} else {
 			uninitializedException();
 		}
@@ -452,7 +452,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<Event> getAllEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<Event>(peer.getEventManager().getAllEvents());
+			return new Vector<Event>(peer.getAllEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -479,7 +479,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<BulletHitBulletEvent>(peer.getEventManager().getBulletHitBulletEvents());
+			return new Vector<BulletHitBulletEvent>(peer.getBulletHitBulletEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -505,7 +505,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<BulletHitEvent> getBulletHitEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<BulletHitEvent>(peer.getEventManager().getBulletHitEvents());
+			return new Vector<BulletHitEvent>(peer.getBulletHitEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -532,7 +532,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<BulletMissedEvent> getBulletMissedEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<BulletMissedEvent>(peer.getEventManager().getBulletMissedEvents());
+			return new Vector<BulletMissedEvent>(peer.getBulletMissedEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -623,7 +623,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public int getEventPriority(String eventClass) {
 		if (peer != null) {
 			peer.getCall();
-			return peer.getEventManager().getEventPriority(eventClass);
+			return peer.getEventPriority(eventClass);
 		}
 		uninitializedException();
 		return 0; // never called
@@ -667,7 +667,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<HitByBulletEvent> getHitByBulletEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<HitByBulletEvent>(peer.getEventManager().getHitByBulletEvents());
+			return new Vector<HitByBulletEvent>(peer.getHitByBulletEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -693,7 +693,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<HitRobotEvent> getHitRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<HitRobotEvent>(peer.getEventManager().getHitRobotEvents());
+			return new Vector<HitRobotEvent>(peer.getHitRobotEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -719,7 +719,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<HitWallEvent> getHitWallEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<HitWallEvent>(peer.getEventManager().getHitWallEvents());
+			return new Vector<HitWallEvent>(peer.getHitWallEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -763,7 +763,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<RobotDeathEvent> getRobotDeathEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<RobotDeathEvent>(peer.getEventManager().getRobotDeathEvents());
+			return new Vector<RobotDeathEvent>(peer.getRobotDeathEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -790,7 +790,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<ScannedRobotEvent>(peer.getEventManager().getScannedRobotEvents());
+			return new Vector<ScannedRobotEvent>(peer.getScannedRobotEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -890,7 +890,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 		}
 		if (peer != null) {
 			peer.setCall();
-			peer.getEventManager().removeCustomEvent(condition);
+			peer.removeCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -946,7 +946,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setEventPriority(String eventClass, int priority) {
 		if (peer != null) {
 			peer.setCall();
-			peer.getEventManager().setEventPriority(eventClass, priority);
+			peer.setEventPriority(eventClass, priority);
 		} else {
 			uninitializedException();
 		}

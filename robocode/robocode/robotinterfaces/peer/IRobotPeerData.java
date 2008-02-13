@@ -5,18 +5,19 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
- * This is private interface. You should build any external component (or robot)
- * based on it's current methods because it will change in the future.
- *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+import java.io.File;
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeer extends IRobotPeerGetters, IRobotPeerBlockingAdvanced, IRobotPeerSettersAdvanced, IRobotPeerAsyncAdvanced, IRobotPeerTeam, IRobotPeerEventsTeam, IRobotPeerData {
+public interface IRobotPeerData {
+	File getDataDirectory();
+	File getDataFile(String filename);
+	long getDataQuotaAvailable();
 }
-

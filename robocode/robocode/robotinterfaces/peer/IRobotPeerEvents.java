@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.robot;
+package robocode.robotinterfaces.peer;
 
 import robocode.*;
 
@@ -18,13 +18,14 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public interface IEventManager {
-	void addCustomEvent(Condition condition);
-	void removeCustomEvent(Condition condition);
-	void clearAllEvents(boolean includingSystemEvents);
-
+public interface IRobotPeerEvents {
+	void setInterruptible(boolean interruptable);
 	void setEventPriority(String eventClass, int priority);
 	int getEventPriority(String eventClass);
+
+	void removeCustomEvent(Condition condition);
+	void addCustomEvent(Condition condition);
+	void clearAllEvents();
 
 	java.util.List<Event> getAllEvents();
 	List<BulletMissedEvent> getBulletMissedEvents();
@@ -35,7 +36,4 @@ public interface IEventManager {
 	List<HitWallEvent> getHitWallEvents();
 	List<RobotDeathEvent> getRobotDeathEvents();
 	List<ScannedRobotEvent> getScannedRobotEvents();
-
-	//team
-	List<MessageEvent> getMessageEvents();
 }

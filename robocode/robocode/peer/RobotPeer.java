@@ -75,6 +75,7 @@ import java.lang.reflect.Modifier;
 import java.io.File;
 import java.io.Serializable;
 import java.io.IOException;
+import java.util.List;
 
 import robocode.*;
 import robocode.robotinterfaces.*;
@@ -227,8 +228,6 @@ public class RobotPeer implements IRobotPeer, Runnable, ContestantPeer {
 	private boolean testingCondition;
 
 	private BulletPeer newBullet;
-
-	private double juniorFirePower;
 
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
@@ -1605,6 +1604,62 @@ public class RobotPeer implements IRobotPeer, Runnable, ContestantPeer {
 		eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
 	}
 
+	public void setEventPriority(String eventClass, int priority) {
+		eventManager.setEventPriority(eventClass, priority);
+	}
+
+	public int getEventPriority(String eventClass) {
+		return eventManager.getEventPriority(eventClass);
+	}
+
+	public void removeCustomEvent(Condition condition) {
+		eventManager.removeCustomEvent(condition);
+	}
+
+	public void addCustomEvent(Condition condition) {
+		eventManager.addCustomEvent(condition);
+	}
+
+	public void clearAllEvents() {
+		eventManager.clearAllEvents(false);
+	}
+
+	public List<Event> getAllEvents() {
+		return eventManager.getAllEvents();
+	}
+
+	public List<BulletMissedEvent> getBulletMissedEvents() {
+		return eventManager.getBulletMissedEvents();
+	}
+
+	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
+		return eventManager.getBulletHitBulletEvents();
+	}
+
+	public List<BulletHitEvent> getBulletHitEvents() {
+		return eventManager.getBulletHitEvents();
+	}
+
+	public List<HitByBulletEvent> getHitByBulletEvents() {
+		return eventManager.getHitByBulletEvents();
+	}
+
+	public List<HitRobotEvent> getHitRobotEvents() {
+		return eventManager.getHitRobotEvents();
+	}
+
+	public List<HitWallEvent> getHitWallEvents() {
+		return eventManager.getHitWallEvents();
+	}
+
+	public List<RobotDeathEvent> getRobotDeathEvents() {
+		return eventManager.getRobotDeathEvents();
+	}
+
+	public List<ScannedRobotEvent> getScannedRobotEvents() {
+		return eventManager.getScannedRobotEvents();
+	}
+
 	public void setSkippedTurns(int newSkippedTurns) {
 		skippedTurns = newSkippedTurns;
 	}
@@ -1737,14 +1792,6 @@ public class RobotPeer implements IRobotPeer, Runnable, ContestantPeer {
 
 	private synchronized void setLastHeading() {
 		lastHeading = heading;
-	}
-
-	public synchronized void setJuniorFire(double power) {
-		juniorFirePower = power;
-	}
-
-	public synchronized double getJuniorFirePower() {
-		return juniorFirePower;
 	}
 
 	/**
@@ -1892,5 +1939,9 @@ public class RobotPeer implements IRobotPeer, Runnable, ContestantPeer {
 		// Restore the saved max. velocity and max. turn rate
 		setMaxVelocity(savedMaxVelocity);
 		setMaxTurnRate(savedMaxTurnRate);
+	}
+
+	public List<MessageEvent> getMessageEvents() {
+		return eventManager.getMessageEvents();
 	}
 }

@@ -155,7 +155,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	public Vector<MessageEvent> getMessageEvents() {
 		if (peer != null) {
 			peer.getCall();
-			return new Vector<MessageEvent>(peer.getEventManager().getMessageEvents());
+			return new Vector<MessageEvent>(peer.getMessageEvents());
 		}
 		uninitializedException();
 		return null; // never called

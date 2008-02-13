@@ -181,7 +181,7 @@ public class Battle implements Runnable {
 	private int activeRobots;
 
 	// Death events
-	private List<IRobotPeer> deathEvents = new CopyOnWriteArrayList<IRobotPeer>();
+	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
 
 	// Objects in the battle
 	private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
@@ -515,7 +515,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public void generateDeathEvents(IRobotPeer r) {
+	public void generateDeathEvents(RobotPeer r) {
 		deathEvents.add(r);
 	}
 
@@ -1199,7 +1199,7 @@ public class Battle implements Runnable {
 		if (deathEvents.size() > 0) {
 			for (RobotPeer r : robots) {
 				if (!r.isDead()) {
-					for (IRobotPeer de : deathEvents) {
+					for (RobotPeer de : deathEvents) {
 						r.getEventManager().add(new RobotDeathEvent(de.getName()));
 						if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
 							r.getRobotStatistics().scoreSurvival();
@@ -1209,7 +1209,7 @@ public class Battle implements Runnable {
 			}
 		}
 		// Compute scores for dead robots
-		for (IRobotPeer r : deathEvents) {
+		for (RobotPeer r : deathEvents) {
 			if (r.getTeamPeer() == null) {
 				r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
 			} else {
@@ -1298,7 +1298,7 @@ public class Battle implements Runnable {
 		return battleOver;
 	}
 
-	public int getActiveContestantCount(IRobotPeer peer) {
+	public int getActiveContestantCount(RobotPeer peer) {
 		int count = 0;
 
 		for (ContestantPeer c : contestants) {

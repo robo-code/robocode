@@ -5,9 +5,6 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
- * This is private interface. You should build any external component (or robot)
- * based on it's current methods because it will change in the future.
- *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
@@ -17,6 +14,11 @@ package robocode.robotinterfaces.peer;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeer extends IRobotPeerGetters, IRobotPeerBlockingAdvanced, IRobotPeerSettersAdvanced, IRobotPeerAsyncAdvanced, IRobotPeerTeam, IRobotPeerEventsTeam, IRobotPeerData {
+public interface IRobotPeerAsyncAdvanced extends IRobotPeerAsync{
+	void setResume();
+	void setStop(boolean overwrite);
+	void setMove(double distance);
+	void setTurnChassis(double radians);
+	void setTurnGun(double radians);
+	void setTurnRadar(double radians);
 }
-

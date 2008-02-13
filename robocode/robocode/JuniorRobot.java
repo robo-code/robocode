@@ -641,7 +641,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void fire(double power) {
 		if (peer != null) {
-			peer.setJuniorFire(power);
+			eventHandler.juniorFirePower=power;
 			peer.tick();
 		} else {
 			uninitializedException();
@@ -792,7 +792,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 		if (peer != null) {
 			peer.setCall();
-			peer.getEventManager().addCustomEvent(condition);
+			peer.addCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -815,6 +815,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 
 	private final class RobotEventsHandler implements IBasicEvents, IAdvancedEvents, Runnable {
+
+		private double juniorFirePower;
 
 		public RobotEventsHandler(JuniorRobot junior) {
 			this.junior = junior;
@@ -902,13 +904,12 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			if (c instanceof GunReadyCondition) {
 				junior.gunReady = true;
 			} else if (c instanceof GunFireCondition) {
-				double firePower = junior.getPeer().getJuniorFirePower(); 
 
-				if (firePower > 0) {
-					if (junior.getPeer().setFire(firePower) != null) {
+				if (juniorFirePower > 0) {
+					if (junior.getPeer().setFire(juniorFirePower) != null) {
 						junior.gunReady = false;
 					}
-					junior.getPeer().setJuniorFire(0);
+					juniorFirePower =0;
 				}
 			}
 		}
