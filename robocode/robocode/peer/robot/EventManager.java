@@ -551,15 +551,17 @@ public class EventManager implements IEventManager {
 		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			IAdvancedEvents listener = null;
 			if (robotPeer.isAdvancedRobot()) {
-				listener = ((IAdvancedRobot)robot).getAdvancedEventListener();
+				IAdvancedEvents listener = ((IAdvancedRobot)robot).getAdvancedEventListener();
+				if (listener != null) {
+					listener.onCustomEvent(e);
+				}
 			}
 			else if (robotPeer.isJuniorRobot()){
-				listener = (IAdvancedEvents)((JuniorRobot)robot).getBasicEventListener();
-			}
-			if (listener != null) {
-				listener.onCustomEvent(e);
+				IBasicEvents basicListener = robot.getBasicEventListener();
+				if (basicListener != null && basicListener instanceof IJuniorEvents) {
+					((IJuniorEvents) basicListener).onJuniorEvent(e);
+				}
 			}
 		}
 	}

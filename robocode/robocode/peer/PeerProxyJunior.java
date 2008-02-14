@@ -13,17 +13,8 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.robotinterfaces.peer.IRobotPeer;
 import robocode.robotinterfaces.peer.IRobotPeerJunior;
-import robocode.peer.robot.IEventManager;
-import robocode.peer.robot.RobotStatistics;
-import robocode.Bullet;
-import robocode.Condition;
-
-import java.io.Serializable;
-import java.io.IOException;
-import java.io.File;
-import java.awt.*;
+import robocode.robotinterfaces.peer.IRobotPeer;
 
 /**
  * @author Pavel Savara (original)
@@ -33,9 +24,9 @@ public class PeerProxyJunior extends PeerProxy implements IRobotPeerJunior {
 	public PeerProxyJunior(IRobotPeer peer) {
 		super(peer);
 	}
-	
-	public void addCustomEvent(Condition condition) {
+
+	public void addJuniorEvents() {
 		peer.setCall();
-		((IRobotPeerJunior)peer).addCustomEvent(condition);
+		((IRobotPeerJunior)peer).addJuniorEvents();
 	}
 }

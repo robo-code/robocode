@@ -785,23 +785,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		gunReady = (getPeer().getGunHeat() <= 0);
 	}
 
-	private final class GunReadyCondition extends Condition {
-		@Override
-		public boolean test() {
-			return (getPeer().getGunHeat() <= 0);
-		}
-	}
-
-
-	private final class GunFireCondition extends Condition {
-		@Override
-		public boolean test() {
-			return (getPeer().getGunHeat() <= 0 && getPeer().getGunTurnRemaining() == 0);
-		}
-	}
-
-
-	private final class RobotEventsHandler implements IBasicEvents, IAdvancedEvents, Runnable {
+	private final class RobotEventsHandler implements IBasicEvents, IJuniorEvents, Runnable {
 
 		private double juniorFirePower;
 
@@ -815,22 +799,10 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			junior.fieldHeight = (int) (junior.getPeer().getBattleFieldHeight() + 0.5);
 			junior.updateJuniorRobotFields();
 
-			addCustomEvent(new GunReadyCondition());
-			addCustomEvent(new GunFireCondition());
+			((IRobotPeerJunior)getPeer()).addJuniorEvents();
 
 			while(true) {
 				junior.run();
-			}
-		}
-
-		private void addCustomEvent(Condition condition) {
-			if (condition == null) {
-				throw new NullPointerException("the condition cannot be null");
-			}
-			if (peer != null) {
-				((IRobotPeerJunior)peer).addCustomEvent(condition);
-			} else {
-				uninitializedException();
 			}
 		}
 
@@ -896,7 +868,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			junior.onScannedRobot();
 		}
 
-		public void onCustomEvent(CustomEvent event) {
+		public void onJuniorEvent(CustomEvent event) {
 			Condition c = event.getCondition();
 
 			if (c instanceof GunReadyCondition) {

@@ -9,16 +9,13 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.robotinterfaces.peer;
+package robocode.robotinterfaces;
 
-import robocode.Bullet;
-import robocode.Condition;
-
-import java.awt.*;
+import robocode.CustomEvent;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerJunior extends IRobotPeer {
-	void addJuniorEvents();
+public interface IJuniorEvents {
+	void onJuniorEvent(CustomEvent event);
 }

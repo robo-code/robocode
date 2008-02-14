@@ -9,16 +9,22 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.robotinterfaces.peer;
+package robocode;
 
-import robocode.Bullet;
-import robocode.Condition;
-
-import java.awt.*;
+import robocode.robotinterfaces.peer.IRobotPeerJunior;
 
 /**
- * @author Pavel Savara (original)
+ * @author Pavel Savara (refactoring)
  */
-public interface IRobotPeerJunior extends IRobotPeer {
-	void addJuniorEvents();
+public class GunFireCondition extends Condition {
+	private IRobotPeerJunior peer;
+
+	public GunFireCondition(IRobotPeerJunior peer) {
+		this.peer=peer;
+	}
+	
+	@Override
+	public boolean test() {
+		return (peer.getGunHeat() <= 0 && peer.getGunTurnRemaining() == 0);
+	}
 }

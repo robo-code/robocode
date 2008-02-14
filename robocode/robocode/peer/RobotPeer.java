@@ -1959,4 +1959,9 @@ public class RobotPeer implements IRobotPeerAdvanced, IRobotPeerJunior, Runnable
 	public List<MessageEvent> getMessageEvents() {
 		return eventManager.getMessageEvents();
 	}
+
+	public void addJuniorEvents() {
+		addCustomEvent(new GunReadyCondition(this));
+		addCustomEvent(new GunFireCondition(this));
+	}
 }
