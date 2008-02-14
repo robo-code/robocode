@@ -183,7 +183,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getBattleFieldHeight() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getBattleFieldHeight();
 		}
 		uninitializedException();
@@ -197,7 +196,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getBattleFieldWidth() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getBattleFieldWidth();
 		}
 		uninitializedException();
@@ -215,7 +213,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getHeading() {
 		if (peer != null) {
-			peer.getCall();
 			double rv = 180.0 * peer.getHeading() / Math.PI;
 
 			while (rv < 0) {
@@ -239,7 +236,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getHeight() {
 		if (peer != null) {
-			peer.getCall();
 		} else {
 			uninitializedException();
 		}
@@ -255,7 +251,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getWidth() {
 		if (peer != null) {
-			peer.getCall();
 		} else {
 			uninitializedException();
 		}
@@ -269,7 +264,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public String getName() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getName();
 		}
 		uninitializedException();
@@ -286,7 +280,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getX() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getX();
 		}
 		uninitializedException();
@@ -303,7 +296,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getY() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getY();
 		}
 		uninitializedException();
@@ -531,7 +523,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getGunCoolingRate() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getGunCoolingRate();
 		}
 		uninitializedException();
@@ -549,7 +540,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getGunHeading() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getGunHeading() * 180.0 / Math.PI;
 		}
 		uninitializedException();
@@ -576,7 +566,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getGunHeat() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getGunHeat();
 		}
 		uninitializedException();
@@ -590,7 +579,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public int getNumRounds() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getNumRounds();
 		}
 		uninitializedException();
@@ -604,7 +592,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public int getOthers() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getOthers();
 		}
 		uninitializedException();
@@ -622,7 +609,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getRadarHeading() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getRadarHeading() * 180.0 / Math.PI;
 		}
 		uninitializedException();
@@ -639,7 +625,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public int getRoundNum() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getRoundNum();
 		}
 		uninitializedException();
@@ -658,7 +643,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public long getTime() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getTime();
 		}
 		uninitializedException();
@@ -677,7 +661,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getVelocity() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getVelocity();
 		}
 		uninitializedException();
@@ -990,7 +973,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setAdjustGunForRobotTurn(boolean independent) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerStandard)peer).setAdjustGunForBodyTurn(independent);
 		} else {
 			uninitializedException();
@@ -1035,7 +1017,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setAdjustRadarForGunTurn(boolean independent) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerStandard)peer).setAdjustRadarForGunTurn(independent);
 		} else {
 			uninitializedException();
@@ -1074,7 +1055,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setColors(Color bodyColor, Color gunColor, Color radarColor) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(bodyColor);
 			peer.setGunColor(gunColor);
 			peer.setRadarColor(radarColor);
@@ -1121,7 +1101,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setColors(Color bodyColor, Color gunColor, Color radarColor, Color bulletColor, Color scanArcColor) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(bodyColor);
 			peer.setGunColor(gunColor);
 			peer.setRadarColor(radarColor);
@@ -1166,7 +1145,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setAllColors(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(color);
 			peer.setGunColor(color);
 			peer.setRadarColor(color);
@@ -1208,7 +1186,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setBodyColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(color);
 		} else {
 			uninitializedException();
@@ -1246,7 +1223,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setGunColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setGunColor(color);
 		} else {
 			uninitializedException();
@@ -1284,7 +1260,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setRadarColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setRadarColor(color);
 		} else {
 			uninitializedException();
@@ -1322,7 +1297,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setBulletColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBulletColor(color);
 		} else {
 			uninitializedException();
@@ -1360,7 +1334,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setScanColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setScanColor(color);
 		} else {
 			uninitializedException();
@@ -1533,7 +1506,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getEnergy() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getEnergy();
 		}
 		uninitializedException();
@@ -1577,7 +1549,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setAdjustRadarForRobotTurn(boolean independent) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerStandard)peer).setAdjustRadarForBodyTurn(independent);
 		} else {
 			uninitializedException();

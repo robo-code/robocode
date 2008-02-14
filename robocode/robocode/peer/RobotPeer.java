@@ -76,6 +76,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.io.IOException;
 import java.util.List;
+import java.security.AccessControlException;
 
 import robocode.*;
 import robocode.robotinterfaces.*;
@@ -320,6 +321,18 @@ public class RobotPeer implements IRobotPeerAdvanced, IRobotPeerJunior, Runnable
 
 	public void setTeamRobot(boolean value) {
 		this.isTeamRobot = value;
+	}
+
+	public IRobotPeer CreateProxy() {
+		if (isJuniorRobot)
+			return new PeerProxyJunior(this); 
+		if (isTeamRobot)
+			return new PeerProxyTeam(this); 
+		if (isAdvancedRobot)
+			return new PeerProxyAdvanced(this);
+		if (isStandardRobot)
+			return new PeerProxyStandard(this);
+		throw new AccessControlException("Unknow robot type");
 	}
 
 	public final void move(double distance) {

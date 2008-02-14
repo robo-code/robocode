@@ -419,6 +419,7 @@ public class Battle implements Runnable {
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
+		
 		RobotPeer robotPeer = new RobotPeer(robotClassManager,
 				battleManager.getManager().getProperties().getRobotFilesystemQuota());
 		TeamPeer teamManager = robotClassManager.getTeamManager();
@@ -1491,33 +1492,33 @@ public class Battle implements Runnable {
 				return;
 			}
 			// Loading robots
-			for (RobotPeer r : robots) {
-				r.setRobot(null);
+			for (RobotPeer robotPeer : robots) {
+				robotPeer.setRobot(null);
 				Class<?> robotClass = null;
 
 				try {
-					manager.getThreadManager().setLoadingRobot(r);
-					robotClass = r.getRobotClassManager().getRobotClass();
+					manager.getThreadManager().setLoadingRobot(robotPeer);
+					robotClass = robotPeer.getRobotClassManager().getRobotClass();
 					if (robotClass == null) {
-						r.getOut().println("SYSTEM: Skipping robot: " + r.getName());
+						robotPeer.getOut().println("SYSTEM: Skipping robot: " + robotPeer.getName());
 						continue;
 					}
 					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
-					bot.setOut(r.getOut());
-					r.setRobot(bot);
-					r.getRobot().setPeer(r);
-					r.getRobot().setOut(r.getOut());
+					bot.setOut(robotPeer.getOut());
+					robotPeer.setRobot(bot);
+					robotPeer.getRobot().setPeer(robotPeer.CreateProxy());
+					robotPeer.getRobot().setOut(robotPeer.getOut());
 				} catch (IllegalAccessException e) {
-					r.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
-					r.getOut().println("SYSTEM: Is your constructor marked public?");
+					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
+					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
 				} catch (Throwable e) {
-					r.getOut().println("SYSTEM: An error occurred during initialization of " + r.getRobotClassManager());
-					r.getOut().println("SYSTEM: " + e);
-					e.printStackTrace(r.getOut());
+					robotPeer.getOut().println("SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
+					robotPeer.getOut().println("SYSTEM: " + e);
+					e.printStackTrace(robotPeer.getOut());
 				}
 				if (roundNum > 0) {
-					initializeRobotPosition(r);
+					initializeRobotPosition(robotPeer);
 				}
 			} // for
 			manager.getThreadManager().setLoadingRobot(null);

@@ -54,7 +54,6 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 */
 	public boolean isTeammate(String name) {
 		if (peer != null) {
-			peer.getCall();
 			return ((IRobotPeerTeam)peer).isTeammate(name);
 		}
 		uninitializedException();
@@ -84,7 +83,6 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 */
 	public String[] getTeammates() {
 		if (peer != null) {
-			peer.getCall();
 			return ((IRobotPeerTeam)peer).getTeammates();
 		}
 		uninitializedException();
@@ -105,7 +103,6 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 */
 	public void broadcastMessage(Serializable message) throws IOException {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerTeam)peer).broadcastMessage(message);
 		} else {
 			uninitializedException();
@@ -127,7 +124,6 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 */
 	public void sendMessage(String name, Serializable message) throws IOException {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerTeam)peer).sendMessage(name, message);
 		} else {
 			uninitializedException();
@@ -155,7 +151,6 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 */
 	public Vector<MessageEvent> getMessageEvents() {
 		if (peer != null) {
-			peer.getCall();
 			return new Vector<MessageEvent>(((IRobotPeerTeam)peer).getMessageEvents());
 		}
 		uninitializedException();

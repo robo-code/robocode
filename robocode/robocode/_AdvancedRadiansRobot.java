@@ -48,7 +48,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getHeadingRadians() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getHeading();
 		}
 		uninitializedException();
@@ -85,7 +84,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnLeftRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnChassis(-radians);
 		} else {
 			uninitializedException();
@@ -122,7 +120,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnRightRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnChassis(radians);
 		} else {
 			uninitializedException();
@@ -254,7 +251,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnGunLeftRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnGun(-radians);
 		} else {
 			uninitializedException();
@@ -293,7 +289,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnGunRightRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnGun(radians);
 		} else {
 			uninitializedException();
@@ -333,7 +328,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnRadarLeftRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnRadar(-radians);
 		} else {
 			uninitializedException();
@@ -373,7 +367,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnRadarRightRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnRadar(radians);
 		} else {
 			uninitializedException();
@@ -519,7 +512,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getGunTurnRemainingRadians() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getGunTurnRemaining();
 		}
 		uninitializedException();
@@ -537,7 +529,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getRadarTurnRemainingRadians() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getRadarTurnRemaining();
 		}
 		uninitializedException();
@@ -555,7 +546,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getTurnRemainingRadians() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getTurnRemaining();
 		}
 		uninitializedException();

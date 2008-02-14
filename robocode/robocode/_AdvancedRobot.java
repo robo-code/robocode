@@ -46,7 +46,6 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnGunLeftDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnGun(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
@@ -60,7 +59,6 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnGunRightDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnGun(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
@@ -83,7 +81,6 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRightDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnChassis(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
@@ -97,7 +94,6 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRadarLeftDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnChassis(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
@@ -111,7 +107,6 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnLeftDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnChassis(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
@@ -189,7 +184,6 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRadarRightDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
 			((IRobotPeerAdvanced)peer).setTurnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();

@@ -68,7 +68,6 @@ public abstract class _Robot extends _RobotBase {
 	@Deprecated
 	public int getNumBattles() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getNumRounds();
 		}
 		uninitializedException();
@@ -81,7 +80,6 @@ public abstract class _Robot extends _RobotBase {
 	@Deprecated
 	public int getBattleNum() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getRoundNum();
 		}
 		uninitializedException();

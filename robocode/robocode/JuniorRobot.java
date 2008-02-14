@@ -694,7 +694,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void setColors(int bodyColor, int gunColor, int radarColor) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(new Color(bodyColor));
 			peer.setGunColor(new Color(gunColor));
 			peer.setRadarColor(new Color(radarColor));
@@ -717,7 +716,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void setColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(new Color(bodyColor));
 			peer.setGunColor(new Color(gunColor));
 			peer.setRadarColor(new Color(radarColor));
@@ -830,7 +828,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 				throw new NullPointerException("the condition cannot be null");
 			}
 			if (peer != null) {
-				peer.setCall();
 				((IRobotPeerJunior)peer).addCustomEvent(condition);
 			} else {
 				uninitializedException();
