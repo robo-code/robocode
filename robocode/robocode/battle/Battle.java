@@ -110,7 +110,6 @@ import java.util.regex.Pattern;
 import robocode.*;
 import robocode.repository.RobotSpecification;
 import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.IRobotPeer;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
@@ -666,9 +665,9 @@ public class Battle implements Runnable {
 
 					RobotSpecification robotSpecification = classManager.getRobotSpecification();
 					r.setJuniorRobot(robotSpecification.isJuniorRobot());
-					r.setStandardRobot(robotSpecification.isStandardRobot());
+					r.setClassicRobot(robotSpecification.isClassicRobot());
 					r.setAdvancedRobot(robotSpecification.isAdvancedRobot());
-					r.setSystemRobot(robotSpecification.isSystemRobot());
+					r.setInteractiveRobot(robotSpecification.isInteractiveRobot());
 					r.setTeamRobot(robotSpecification.isTeamRobot());
 					r.setDroid(robotSpecification.isDroid());
 
@@ -1832,11 +1831,11 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.isSystemRobot()) {
-					IRobot robot = (IRobot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.isInteractiveRobot()) {
+					IInteractiveRobot robot = (IInteractiveRobot) r.getRobot();
 
 					try {
-						ISystemEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getSystemEventListener();
 
 						if (listener != null) {
 							listener.onMouseClicked(me);
@@ -1855,11 +1854,11 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.isSystemRobot()) {
-					IRobot robot = (IRobot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.isInteractiveRobot()) {
+					IInteractiveRobot robot = (IInteractiveRobot) r.getRobot();
 
 					try {
-						ISystemEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getSystemEventListener();
 
 						if (listener != null) {
 							listener.onMouseEntered(me);
@@ -1878,11 +1877,11 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.isSystemRobot()) {
-					IRobot robot = (IRobot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.isInteractiveRobot()) {
+					IInteractiveRobot robot = (IInteractiveRobot) r.getRobot();
 
 					try {
-						ISystemEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getSystemEventListener();
 
 						if (listener != null) {
 							listener.onMouseExited(me);
@@ -1901,11 +1900,11 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.isSystemRobot()) {
-					IRobot robot = (IRobot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.isInteractiveRobot()) {
+					IInteractiveRobot robot = (IInteractiveRobot) r.getRobot();
 
 					try {
-						ISystemEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getSystemEventListener();
 
 						if (listener != null) {
 							listener.onMousePressed(me);
@@ -1924,11 +1923,11 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.isSystemRobot()) {
-					IRobot robot = (IRobot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.isInteractiveRobot()) {
+					IInteractiveRobot robot = (IInteractiveRobot) r.getRobot();
 
 					try {
-						ISystemEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getSystemEventListener();
 
 						if (listener != null) {
 							listener.onMouseReleased(me);
@@ -1947,11 +1946,11 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 			
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.isSystemRobot()) {
-					IRobot robot = (IRobot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.isInteractiveRobot()) {
+					IInteractiveRobot robot = (IInteractiveRobot) r.getRobot();
 
 					try {
-						ISystemEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getSystemEventListener();
 
 						if (listener != null) {
 							listener.onMouseMoved(me);
@@ -1970,11 +1969,11 @@ public class Battle implements Runnable {
 			MouseEvent me = mirroredMouseEvent(e);
 			
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.isSystemRobot()) {
-					IRobot robot = (IRobot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.isInteractiveRobot()) {
+					IInteractiveRobot robot = (IInteractiveRobot) r.getRobot();
 
 					try {
-						ISystemEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getSystemEventListener();
 
 						if (listener != null) {
 							listener.onMouseDragged(me);
@@ -1993,11 +1992,11 @@ public class Battle implements Runnable {
 			MouseWheelEvent mwe = mirroredMouseWheelEvent(e);
 
 			for (RobotPeer r : robots) {
-				if (r.isAlive() && r.getRobot() != null && r.isSystemRobot()) {
-					IRobot robot = (IRobot) r.getRobot();
+				if (r.isAlive() && r.getRobot() != null && r.isInteractiveRobot()) {
+					IInteractiveRobot robot = (IInteractiveRobot) r.getRobot();
 
 					try {
-						ISystemEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getSystemEventListener();
 
 						if (listener != null) {
 							listener.onMouseWheelMoved(mwe);
@@ -2070,17 +2069,17 @@ public class Battle implements Runnable {
 
 		public boolean dispatchKeyEvent(KeyEvent e) {
 			if (battle != null && battle.isRunning()) {
-				IRobot robot;
+				IInteractiveRobot robot;
 
 				for (RobotPeer r : robots) {
-					if (!(r.isAlive() && r.isSystemRobot())) {
+					if (!(r.isAlive() && r.isInteractiveRobot())) {
 						continue;
 					}
-					robot = (IRobot) r.getRobot();
+					robot = (IInteractiveRobot) r.getRobot();
 					if (robot == null) {
 						continue;
 					}
-					ISystemEvents listener = robot.getSystemEventListener();
+					IInteractiveEvents listener = robot.getSystemEventListener();
 					if (listener != null) {
 						continue;
 					}

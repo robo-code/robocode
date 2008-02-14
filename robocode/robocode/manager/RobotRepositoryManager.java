@@ -54,7 +54,6 @@ import robocode.robotinterfaces.*;
 import robocode.Droid;
 import robocode.JuniorRobot;
 import robocode.Robot;
-import robocode.AdvancedRobot;
 
 
 /**
@@ -414,23 +413,23 @@ public class RobotRepositoryManager {
 							robotSpecification.setDroid(true);
 						}
     
-						if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
-							robotSpecification.setAdvancedRobot(true);
-						}
-
 						if (ITeamRobot.class.isAssignableFrom(robotClass)) {
 							robotSpecification.setTeamRobot(true);
 						}
 
-						if (IRobot.class.isAssignableFrom(robotClass)) {
-							robotSpecification.setSystemRobot(true);
+						if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setAdvancedRobot(true);
+						}
+
+						if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setInteractiveRobot(true);
 						}
 
 						if (Robot.class.isAssignableFrom(robotClass) && !robotSpecification.isAdvancedRobot()) {
-							robotSpecification.setStandardRobot(true);
+							robotSpecification.setClassicRobot(true);
 						}
 
-						if (JuniorRobot.class.isAssignableFrom(robotClass)) {
+						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
 							robotSpecification.setJuniorRobot(true);
 							if (robotSpecification.isAdvancedRobot()){
 								throw new AccessControlException(robotSpecification.getName() + ": Junior robot should not implement IAdvancedRobot interface.");

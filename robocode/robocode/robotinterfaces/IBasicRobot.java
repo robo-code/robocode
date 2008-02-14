@@ -16,7 +16,7 @@ import robocode.robotinterfaces.peer.IRobotPeer;
 /**
  * @author Pavel Savara (original)
  */
-public interface IBasicRobot extends Runnable {
+public interface IBasicRobot {
     /**
      * This method is called by the game.
      * @return runnable to implementation

@@ -23,7 +23,7 @@ import java.awt.event.MouseWheelEvent;
 /**
  * @author Pavel Savara (original)
  */
-public interface ISystemEvents {
+public interface IInteractiveEvents {
     
 	/**
 	 * This method is called every time the robot is painted. You should

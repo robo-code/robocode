@@ -48,8 +48,8 @@ public class RobotSpecification extends FileSpecification {
 
 	private boolean isDroid;
 	private boolean isJuniorRobot;
-	private boolean isStandardRobot;
-	private boolean isSystemRobot;
+	private boolean isClassicRobot;
+	private boolean isInteractiveRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
 
@@ -336,20 +336,20 @@ public class RobotSpecification extends FileSpecification {
 		this.isAdvancedRobot = value;
 	}
 
-	public boolean isStandardRobot() {
-		return isStandardRobot;
+	public boolean isClassicRobot() {
+		return isClassicRobot;
 	}
 
-	public void setStandardRobot(boolean value) {
-		this.isStandardRobot = value;
+	public void setClassicRobot(boolean value) {
+		this.isClassicRobot = value;
 	}
 
-	public boolean isSystemRobot() {
-		return isSystemRobot;
+	public boolean isInteractiveRobot() {
+		return isInteractiveRobot;
 	}
 
-	public void setSystemRobot(boolean value) {
-		this.isSystemRobot = value;
+	public void setInteractiveRobot(boolean value) {
+		this.isInteractiveRobot = value;
 	}
 
 	public boolean isJuniorRobot() {

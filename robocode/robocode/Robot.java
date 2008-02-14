@@ -65,7 +65,7 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  */
-public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents {
+public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, IInteractiveEvents {
 
 	/**
 	 * Constructs a new robot.
@@ -95,7 +95,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 * This method is called by environment, you don't need it.
 	 * @return listener to system events
 	 */
-	public ISystemEvents getSystemEventListener() {
+	public IInteractiveEvents getSystemEventListener() {
 		return this;
 	}
 

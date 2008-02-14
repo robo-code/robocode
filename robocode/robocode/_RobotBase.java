@@ -34,7 +34,7 @@ import robocode.robotinterfaces.peer.IRobotPeer;
  * 
  * @since 1.4
  */
-public abstract class _RobotBase {
+public abstract class _RobotBase implements Runnable {
 
 	IRobotPeer peer;
 

@@ -675,8 +675,8 @@ public class EventManager implements IEventManager {
 	public void onStatus(StatusEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isSystemRobot()) {
-			ISystemEvents listener = ((IRobot)robot).getSystemEventListener();
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			IInteractiveEvents listener = ((IInteractiveRobot)robot).getSystemEventListener();
 
 			if (listener != null) {
 				listener.onStatus(e);

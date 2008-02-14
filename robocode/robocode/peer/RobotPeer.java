@@ -159,8 +159,8 @@ public class RobotPeer implements IRobotPeerAdvanced, IRobotPeerJunior, Runnable
 
 	private boolean isDroid;
 	private boolean isJuniorRobot;
-	private boolean isStandardRobot;
-	private boolean isSystemRobot;
+	private boolean isClassicRobot;
+	private boolean isInteractiveRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
 	private boolean isIORobot;
@@ -282,23 +282,23 @@ public class RobotPeer implements IRobotPeerAdvanced, IRobotPeerJunior, Runnable
 	/**
 	 * @return When true, this robot is inherited from Robot base class but not from AdvancedRobot
 	 */
-	public boolean isStandardRobot() {
-		return isStandardRobot;
+	public boolean isClassicRobot() {
+		return isClassicRobot;
 	}
 
-	public void setStandardRobot(boolean value) {
-		this.isStandardRobot = value;
+	public void setClassicRobot(boolean value) {
+		this.isClassicRobot = value;
 	}
 
 	/**
 	 * @return When true, this robot is implementing IRobot interface
 	 */
-	public boolean isSystemRobot() {
-		return isSystemRobot;
+	public boolean isInteractiveRobot() {
+		return isInteractiveRobot;
 	}
 
-	public void setSystemRobot(boolean value) {
-		this.isSystemRobot = value;
+	public void setInteractiveRobot(boolean value) {
+		this.isInteractiveRobot = value;
 	}
 
 	/**
@@ -324,14 +324,14 @@ public class RobotPeer implements IRobotPeerAdvanced, IRobotPeerJunior, Runnable
 	}
 
 	public IRobotPeer CreateProxy() {
-		if (isJuniorRobot)
-			return new PeerProxyJunior(this); 
 		if (isTeamRobot)
 			return new PeerProxyTeam(this); 
 		if (isAdvancedRobot)
 			return new PeerProxyAdvanced(this);
-		if (isStandardRobot)
+		if (isInteractiveRobot)
 			return new PeerProxyStandard(this);
+		if (isJuniorRobot)
+			return new PeerProxyJunior(this);
 		throw new AccessControlException("Unknow robot type");
 	}
 

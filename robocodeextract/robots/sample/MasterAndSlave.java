@@ -65,7 +65,7 @@ abstract class MasterBase {
         return helperRobot;
     }
 
-    public ISystemEvents getSystemEventListener() {
+    public IInteractiveEvents getSystemEventListener() {
         return helperRobot;
     }
 

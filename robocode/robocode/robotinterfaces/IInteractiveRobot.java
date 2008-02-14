@@ -15,12 +15,12 @@ package robocode.robotinterfaces;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobot extends IBasicRobot {
+public interface IInteractiveRobot extends IBasicRobot {
 
 	/**
 	 * This method is called by the game.
 	 * @return listener to system events
 	 */
-	ISystemEvents getSystemEventListener();
+	IInteractiveEvents getSystemEventListener();
 
 }

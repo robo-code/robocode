@@ -15,7 +15,7 @@ package robocode.robotinterfaces;
 /**
  * @author Pavel Savara (original)
  */
-public interface IAdvancedRobot extends IRobot {
+public interface IAdvancedRobot extends IInteractiveRobot {
 
     /**
      * This method is called by the game.
