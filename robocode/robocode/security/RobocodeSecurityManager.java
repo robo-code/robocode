@@ -20,7 +20,9 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
- *******************************************************************************/
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
+*******************************************************************************/
 package robocode.security;
 
 
@@ -545,11 +547,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				if (r != null) {
 					r.setEnergy(0);
-
-					throw new AccessControlException(
-							"Preventing " + Thread.currentThread().getName()
-							+ " from access to the internal Robocode pakage: " + pkg);
 				}
+				throw new AccessControlException(
+						"Preventing " + Thread.currentThread().getName()
+						+ " from access to the internal Robocode pakage: " + pkg);
 			}
 		}
 	}

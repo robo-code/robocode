@@ -842,7 +842,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @param event the custom event that occured
 	 *
-	 * @see AdvancedRobot#addCustomEvent
+	 * @see #addCustomEvent
 	 * @see CustomEvent
 	 * @see Event
 	 */
@@ -1281,7 +1281,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * This method is called by environment, you don't need it.
 	 * @return listener to advanced events
 	 */
-	public IAdvancedEvents getAdvancedEventListener() {
+	public final IAdvancedEvents getAdvancedEventListener() {
 		return this; // we are listening
 	}
 }

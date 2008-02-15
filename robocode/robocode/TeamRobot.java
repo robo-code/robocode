@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.Vector;
 
 import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.ITeamRobotPeer;
+import robocode.robotinterfaces.peer.*;
 
 
 /**
@@ -180,7 +180,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 * This method is called by environment, you don't need it.
 	 * @return listener to team events
 	 */
-	public ITeamEvents getTeamEventListener() {
+	public final ITeamEvents getTeamEventListener() {
 		return this;
 	}
 }

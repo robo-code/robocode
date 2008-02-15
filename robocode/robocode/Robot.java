@@ -77,7 +77,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * This method is called by environment, you don't need it.
 	 * @return runnable implementation
 	 */
-	public Runnable getRobotRunnable() {
+	public final Runnable getRobotRunnable() {
 		return this;
 	}
 
@@ -86,7 +86,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * This method is called by environment, you don't need it.
 	 * @return listener to robot events
 	 */
-	public IBasicEvents getBasicEventListener() {
+	public final IBasicEvents getBasicEventListener() {
 		return this;
 	}
 
@@ -95,7 +95,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * This method is called by environment, you don't need it.
 	 * @return listener to system events
 	 */
-	public IInteractiveEvents getSystemEventListener() {
+	public final IInteractiveEvents getSystemEventListener() {
 		return this;
 	}
 
