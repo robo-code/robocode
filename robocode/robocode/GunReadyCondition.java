@@ -11,7 +11,9 @@
  *******************************************************************************/
 package robocode;
 
+
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
+
 
 /**
  * @author Pavel Savara (refactoring)
@@ -20,7 +22,7 @@ public class GunReadyCondition extends Condition {
 	private IJuniorRobotPeer peer;
 
 	public GunReadyCondition(IJuniorRobotPeer peer) {
-		this.peer=peer;
+		this.peer = peer;
 	}
 
 	@Override

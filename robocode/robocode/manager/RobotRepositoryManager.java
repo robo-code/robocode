@@ -407,7 +407,7 @@ public class RobotRepositoryManager {
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
-                if (robotSpecification.getValid()) {
+				if (robotSpecification.getValid()) {
 					if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 						if (Droid.class.isAssignableFrom(robotClass)) {
 							robotSpecification.setDroid(true);
@@ -431,8 +431,10 @@ public class RobotRepositoryManager {
 
 						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
 							robotSpecification.setJuniorRobot(true);
-							if (robotSpecification.isAdvancedRobot()){
-								throw new AccessControlException(robotSpecification.getName() + ": Junior robot should not implement IAdvancedRobot interface.");
+							if (robotSpecification.isAdvancedRobot()) {
+								throw new AccessControlException(
+										robotSpecification.getName()
+												+ ": Junior robot should not implement IAdvancedRobot interface.");
 							}
 						}
 

@@ -17,9 +17,9 @@ package robocode.robotinterfaces;
  */
 public interface IAdvancedRobot extends IInteractiveRobot {
 
-    /**
-     * This method is called by the game.
-     * @return listener to advanced events
-     */
-    IAdvancedEvents getAdvancedEventListener();
+	/**
+	 * This method is called by the game.
+	 * @return listener to advanced events
+	 */
+	IAdvancedEvents getAdvancedEventListener();
 }

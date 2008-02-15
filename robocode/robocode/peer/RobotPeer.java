@@ -324,14 +324,18 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	public IBasicRobotPeer CreateProxy() {
-		if (isTeamRobot)
+		if (isTeamRobot) {
 			return new TeamRobotPeerProxy(this);
-		if (isAdvancedRobot)
+		}
+		if (isAdvancedRobot) {
 			return new AdvancedRobotPeerProxy(this);
-		if (isInteractiveRobot)
+		}
+		if (isInteractiveRobot) {
 			return new StandardRobotPeerProxy(this);
-		if (isJuniorRobot)
+		}
+		if (isJuniorRobot) {
 			return new JuniorRobotPeerProxy(this);
+		}
 		throw new AccessControlException("Unknow robot type");
 	}
 
@@ -609,8 +613,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 				: arc.intersects(rect);
 	}
 
-	public void scanReset()
-	{
+	public void scanReset() {
 		boolean reset = false;
 		boolean resetValue = false;
 

@@ -11,10 +11,12 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.Bullet;
 
 import java.awt.*;
+
 
 /**
  * @author Pavel Savara (original)
@@ -23,15 +25,15 @@ public class BasicRobotPeerProxy implements IBasicRobotPeer {
 	IBasicRobotPeer peer;
 	
 	public BasicRobotPeerProxy(IBasicRobotPeer peer) {
-		this.peer=peer;
+		this.peer = peer;
 	}
 
-	//asynchronous actions
+	// asynchronous actions
 	public Bullet setFire(double power) {
 		return peer.setFire(power);
 	}
 
-	//blocking actions
+	// blocking actions
 	public void tick() {
 		peer.tick();
 	}
@@ -52,7 +54,7 @@ public class BasicRobotPeerProxy implements IBasicRobotPeer {
 		peer.turnGun(radians);
 	}
 
-	//fast setters
+	// fast setters
 	public void setBodyColor(Color color) {
 		peer.setCall();
 		peer.setBodyColor(color);
@@ -78,7 +80,7 @@ public class BasicRobotPeerProxy implements IBasicRobotPeer {
 		peer.setScanColor(color);
 	}
 
-	//counters
+	// counters
 	public void getCall() {
 		peer.getCall();
 	}

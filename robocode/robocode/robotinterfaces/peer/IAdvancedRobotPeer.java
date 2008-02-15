@@ -11,17 +11,19 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+
 import robocode.*;
 
 import java.util.List;
 import java.io.File;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 
-	//asynchronous actions
+	// asynchronous actions
 	void setResume();
 	void setStop(boolean overwrite);
 	void setMove(double distance);
@@ -29,14 +31,14 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	void setTurnGun(double radians);
 	void setTurnRadar(double radians);
 
-	//blockig actions
+	// blockig actions
 	void waitFor(Condition condition);
 
-	//fast setters
+	// fast setters
 	void setMaxTurnRate(double newTurnRate);
 	void setMaxVelocity(double newVelocity);
 
-	//events manipulation
+	// events manipulation
 	void setInterruptible(boolean interruptable);
 	void setEventPriority(String eventClass, int priority);
 	int getEventPriority(String eventClass);
@@ -53,7 +55,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	List<RobotDeathEvent> getRobotDeathEvents();
 	List<ScannedRobotEvent> getScannedRobotEvents();
 
-	//data
+	// data
 	File getDataDirectory();
 	File getDataFile(String filename);
 	long getDataQuotaAvailable();

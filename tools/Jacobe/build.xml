@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!--  Apache Ant build script for building the Robocode setup file          -->
+<!-- ====================================================================== -->
+
+<project name="build" default="jacobe">
+  <description>Apache Ant build script for beautifying sources </description>
+
+  <!-- ====================================== -->
+  <!-- Global properties                      -->
+  <!-- ====================================== -->
+
+  <!-- The source folders -->
+  <property name="src.robocode" location="../../robocode"/>
+
+  <!-- ====================================== -->
+  <!-- Default Excludes                       -->
+  <!-- ====================================== -->
+
+  <defaultexcludes add="build.xml"/>	 <!-- Ant build scripts -->
+  <defaultexcludes add="**/.*/**"/>      <!-- Eclipse configuration folders -->
+  <defaultexcludes add="**/*.bak"/>      <!-- Windows backup files -->
+  <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
+  <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
+  <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
+  <defaultexcludes add="**/_*.java"/>    <!-- Java files to hide in Javadoc -->
+
+  <!-- ====================================== -->
+  <!-- Jacobe beautify                         -->
+  <!-- ====================================== -->
+  <taskdef name="jacobe" classname="com.tiobe.jacobe.JacobeTask" classpath="jacobe.jar"/>
+  
+  <target name="jacobe">
+	<jacobe input="${src.robocode}" cfg="robocode.cfg" overwrite="true" nobackup="true"/>
+  </target>
+
+
+</project>

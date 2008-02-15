@@ -17,9 +17,9 @@ package robocode.robotinterfaces;
  */
 public interface ITeamRobot extends IAdvancedRobot {
 
-    /**
-     * This method is called by the game.
-     * @return listener to team events
-     */
-    ITeamEvents getTeamEventListener();
+	/**
+	 * This method is called by the game.
+	 * @return listener to team events
+	 */
+	ITeamEvents getTeamEventListener();
 }

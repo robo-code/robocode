@@ -13,8 +13,10 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+
 
 /**
  * @author Pavel Savara (original)
@@ -27,6 +29,6 @@ public class JuniorRobotPeerProxy extends BasicRobotPeerProxy implements IJunior
 
 	public void addJuniorEvents() {
 		peer.setCall();
-		((IJuniorRobotPeer)peer).addJuniorEvents();
+		((IJuniorRobotPeer) peer).addJuniorEvents();
 	}
 }

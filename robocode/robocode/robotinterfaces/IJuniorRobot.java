@@ -11,8 +11,8 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IJuniorRobot extends IBasicRobot {
-}
+public interface IJuniorRobot extends IBasicRobot {}

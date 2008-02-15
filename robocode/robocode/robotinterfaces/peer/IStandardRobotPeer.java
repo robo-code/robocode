@@ -11,18 +11,19 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IStandardRobotPeer extends IBasicRobotPeer {
 
-	//blocking actions
+	// blocking actions
 	void stop(boolean overwrite);
 	void resume();
 	void scanReset();
 	void turnRadar(double radians);
 
-	//fast setters
+	// fast setters
 	void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn);
 	void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn);
 	void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn);

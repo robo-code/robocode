@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.MessageEvent;
@@ -18,6 +19,7 @@ import robocode.MessageEvent;
 import java.io.Serializable;
 import java.io.IOException;
 import java.util.List;
+
 
 /**
  * @author Pavel Savara (original)
@@ -27,30 +29,30 @@ public class TeamRobotPeerProxy extends AdvancedRobotPeerProxy implements ITeamR
 		super(peer);
 	}
 
-	//team
+	// team
 	public String[] getTeammates() {
 		peer.getCall();
-		return ((ITeamRobotPeer)peer).getTeammates();
+		return ((ITeamRobotPeer) peer).getTeammates();
 	}
 
 	public boolean isTeammate(String name) {
 		peer.getCall();
-		return ((ITeamRobotPeer)peer).isTeammate(name);
+		return ((ITeamRobotPeer) peer).isTeammate(name);
 	}
 
 	public void sendMessage(String name, Serializable message) throws IOException {
 		peer.setCall();
-		((ITeamRobotPeer)peer).sendMessage(name, message);
+		((ITeamRobotPeer) peer).sendMessage(name, message);
 	}
 
 	public void broadcastMessage(Serializable message) throws IOException {
 		peer.setCall();
-		((ITeamRobotPeer)peer).broadcastMessage(message);
+		((ITeamRobotPeer) peer).broadcastMessage(message);
 	}
 
-	//events
+	// events
 	public List<MessageEvent> getMessageEvents() {
 		peer.getCall();
-		return ((ITeamRobotPeer)peer).getMessageEvents();
+		return ((ITeamRobotPeer) peer).getMessageEvents();
 	}
 }

@@ -642,7 +642,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void fire(double power) {
 		if (peer != null) {
-			eventHandler.juniorFirePower=power;
+			eventHandler.juniorFirePower = power;
 			peer.tick();
 		} else {
 			uninitializedException();
@@ -770,9 +770,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void onHitWall() {}
 
-
 	private final RobotEventsHandler eventHandler = new RobotEventsHandler(this);
-
 
 	private void updateJuniorRobotFields() {
 		others = peer.getOthers();
@@ -799,30 +797,24 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			junior.fieldHeight = (int) (junior.peer.getBattleFieldHeight() + 0.5);
 			junior.updateJuniorRobotFields();
 
-			((IJuniorRobotPeer)peer).addJuniorEvents();
+			((IJuniorRobotPeer) peer).addJuniorEvents();
 
-			while(true) {
+			while (true) {
 				junior.run();
 			}
 		}
 
-		public void onBulletHit(BulletHitEvent event) {
-		}
+		public void onBulletHit(BulletHitEvent event) {}
 
-		public void onBulletHitBullet(BulletHitBulletEvent event) {
-		}
+		public void onBulletHitBullet(BulletHitBulletEvent event) {}
 
-		public void onBulletMissed(BulletMissedEvent event) {
-		}
+		public void onBulletMissed(BulletMissedEvent event) {}
 
-		public void onRobotDeath(RobotDeathEvent event) {
-		}
+		public void onRobotDeath(RobotDeathEvent event) {}
 
-		public void onWin(WinEvent event) {
-		}
+		public void onWin(WinEvent event) {}
 
-		public void onSkippedTurn(SkippedTurnEvent event) {
-		}
+		public void onSkippedTurn(SkippedTurnEvent event) {}
 
 		public void onDeath(DeathEvent event) {
 			others = peer.getOthers();
@@ -879,7 +871,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 					if (junior.peer.setFire(juniorFirePower) != null) {
 						junior.gunReady = false;
 					}
-					juniorFirePower =0;
+					juniorFirePower = 0;
 				}
 			}
 		}

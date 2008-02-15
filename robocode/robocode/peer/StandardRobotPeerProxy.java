@@ -11,8 +11,10 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+
 
 /**
  * @author Pavel Savara (original)
@@ -22,36 +24,37 @@ public class StandardRobotPeerProxy extends BasicRobotPeerProxy implements IStan
 	public StandardRobotPeerProxy(IBasicRobotPeer peer) {
 		super(peer);
 	}
-	//blocking actions
+
+	// blocking actions
 	public void stop(boolean overwrite) {
-		((IStandardRobotPeer)peer).stop(overwrite);
+		((IStandardRobotPeer) peer).stop(overwrite);
 	}
 
 	public void resume() {
-		((IStandardRobotPeer)peer).resume();
+		((IStandardRobotPeer) peer).resume();
 	}
 
 	public void scanReset() {
-		((IStandardRobotPeer)peer).scanReset();
+		((IStandardRobotPeer) peer).scanReset();
 	}
 
 	public void turnRadar(double radians) {
-		((IStandardRobotPeer)peer).turnRadar(radians);
+		((IStandardRobotPeer) peer).turnRadar(radians);
 	}
 
-	//fast setters
+	// fast setters
 	public void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
 		peer.setCall();
-		((IStandardRobotPeer)peer).setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
+		((IStandardRobotPeer) peer).setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
 	}
 
 	public void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
 		peer.setCall();
-		((IStandardRobotPeer)peer).setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
+		((IStandardRobotPeer) peer).setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
 	}
 
 	public void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
 		peer.setCall();
-		((IStandardRobotPeer)peer).setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
+		((IStandardRobotPeer) peer).setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
 	}
 }

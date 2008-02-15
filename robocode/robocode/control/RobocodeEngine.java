@@ -124,7 +124,8 @@ public class RobocodeEngine {
 		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
 		Policy.setPolicy(securityPolicy);
-		System.setSecurityManager(new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, false));
+		System.setSecurityManager(
+				new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, false));
 		RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
 
 		ThreadGroup tg = Thread.currentThread().getThreadGroup();

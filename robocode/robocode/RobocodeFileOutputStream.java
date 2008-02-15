@@ -86,6 +86,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 
 		this.name = name;
 		RobotPeer r = threadManager.getRobotPeer(c);
+
 		if (r == null) {
 			Logger.log("RobotPeer is null");
 			return;

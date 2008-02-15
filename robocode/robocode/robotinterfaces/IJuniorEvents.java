@@ -11,7 +11,9 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
+
 import robocode.CustomEvent;
+
 
 /**
  * @author Pavel Savara (original)

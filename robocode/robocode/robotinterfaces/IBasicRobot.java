@@ -11,34 +11,37 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
+
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IBasicRobot {
-    /**
-     * This method is called by the game.
-     * @return runnable to implementation
-     */
-    Runnable getRobotRunnable();
 
-    /**
-     * This method is called by the game.
-     * @return listener to robot events
-     */
-    IBasicEvents getBasicEventListener();
+	/**
+	 * This method is called by the game.
+	 * @return runnable to implementation
+	 */
+	Runnable getRobotRunnable();
 
-    /**
-     * This method is called by the game. RobotPeer is the object that deals with
-     * game mechanics and rules, and makes sure your robot abides by them.
-     * Do not call this method! Your robot will simply stop interacting with the game.
-     */
-    void setPeer(IBasicRobotPeer peer);
+	/**
+	 * This method is called by the game.
+	 * @return listener to robot events
+	 */
+	IBasicEvents getBasicEventListener();
 
-    /**
-     * This method is called by the game.
-     * Do not call this method!
-     */
-    void setOut(java.io.PrintStream out);
+	/**
+	 * This method is called by the game. RobotPeer is the object that deals with
+	 * game mechanics and rules, and makes sure your robot abides by them.
+	 * Do not call this method! Your robot will simply stop interacting with the game.
+	 */
+	void setPeer(IBasicRobotPeer peer);
+
+	/**
+	 * This method is called by the game.
+	 * Do not call this method!
+	 */
+	void setOut(java.io.PrintStream out);
 }

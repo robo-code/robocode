@@ -69,11 +69,10 @@ public final class AboutBox extends JDialog {
 			+ "Titus Chen (bugfixes for robot teleportation, bad wall collision detection, team ranking,<br>"
 			+ "replay scores and robot color flickering),<br>"
 			+ "Robert D. Maupin (code optimizations regarding newer Java collections),<br>"
-			+ "Ascander Jr (graphics for ground tiles),<br>"
-			+ "Stefan Westen (onPaint method from RobocodeSG),<br>"
+			+ "Ascander Jr (graphics for ground tiles),<br>" + "Stefan Westen (onPaint method from RobocodeSG),<br>"
 			+ "Nathaniel Troutman (fixing memory leaks due to circular references)<br>"
-			+ "Aaron Rotenberg (for the Robot Cache Cleaner utility),<br>"
-			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
+			+ "Aaron Rotenberg (for the Robot Cache Cleaner utility),<br>" + "<br>You are using Java " + TAG_JAVA_VERSION
+			+ " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
 	// Robocode version
 	private String robocodeVersion;

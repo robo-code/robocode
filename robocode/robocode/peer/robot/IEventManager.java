@@ -11,9 +11,11 @@
  *******************************************************************************/
 package robocode.peer.robot;
 
+
 import robocode.*;
 
 import java.util.List;
+
 
 /**
  * @author Pavel Savara (original)
@@ -36,6 +38,6 @@ public interface IEventManager {
 	List<RobotDeathEvent> getRobotDeathEvents();
 	List<ScannedRobotEvent> getScannedRobotEvents();
 
-	//team
+	// team
 	List<MessageEvent> getMessageEvents();
 }

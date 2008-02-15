@@ -11,22 +11,24 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+
 import robocode.MessageEvent;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public interface ITeamRobotPeer extends IAdvancedRobotPeer {
-	//team
+	// team
 	String[] getTeammates();
 	boolean isTeammate(String name);
 	void sendMessage(String name, Serializable message) throws IOException;
 	void broadcastMessage(Serializable message) throws IOException;
 
-	//events
+	// events
 	List<MessageEvent> getMessageEvents();
 }

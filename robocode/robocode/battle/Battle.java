@@ -664,6 +664,7 @@ public class Battle implements Runnable {
 					r.getRobotFileSystemManager().initializeQuota();
 
 					RobotSpecification robotSpecification = classManager.getRobotSpecification();
+
 					r.setJuniorRobot(robotSpecification.isJuniorRobot());
 					r.setClassicRobot(robotSpecification.isClassicRobot());
 					r.setAdvancedRobot(robotSpecification.isAdvancedRobot());
@@ -1512,7 +1513,8 @@ public class Battle implements Runnable {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
 				} catch (Throwable e) {
-					robotPeer.getOut().println("SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
+					robotPeer.getOut().println(
+							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
 					robotPeer.getOut().println("SYSTEM: " + e);
 					e.printStackTrace(robotPeer.getOut());
 				}
@@ -2080,6 +2082,7 @@ public class Battle implements Runnable {
 						continue;
 					}
 					IInteractiveEvents listener = robot.getSystemEventListener();
+
 					if (listener != null) {
 						continue;
 					}

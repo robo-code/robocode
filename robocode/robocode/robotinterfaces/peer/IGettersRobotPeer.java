@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+
 /**
  * @author Pavel Savara (original)
  */

@@ -552,13 +552,14 @@ public class EventManager implements IEventManager {
 
 		if (robot != null) {
 			if (robotPeer.isAdvancedRobot()) {
-				IAdvancedEvents listener = ((IAdvancedRobot)robot).getAdvancedEventListener();
+				IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+
 				if (listener != null) {
 					listener.onCustomEvent(e);
 				}
-			}
-			else if (robotPeer.isJuniorRobot()){
+			} else if (robotPeer.isJuniorRobot()) {
 				IBasicEvents basicListener = robot.getBasicEventListener();
+
 				if (basicListener != null && basicListener instanceof IJuniorEvents) {
 					((IJuniorEvents) basicListener).onJuniorEvent(e);
 				}
@@ -642,7 +643,7 @@ public class EventManager implements IEventManager {
 		IBasicRobot robot = getRobot();
 
 		if (robot != null && robotPeer.isAdvancedRobot()) {
-			IAdvancedEvents listener = ((IAdvancedRobot)robot).getAdvancedEventListener();
+			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
 			if (listener != null) {
 				listener.onSkippedTurn(e);
@@ -654,7 +655,7 @@ public class EventManager implements IEventManager {
 		IBasicRobot robot = getRobot();
 
 		if (robot != null && robotPeer.isTeamRobot()) {
-			ITeamEvents listener = ((ITeamRobot)robot).getTeamEventListener();
+			ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
 
 			if (listener != null) {
 				listener.onMessageReceived(e);
@@ -678,7 +679,7 @@ public class EventManager implements IEventManager {
 		IBasicRobot robot = getRobot();
 
 		if (robot != null && robotPeer.isInteractiveRobot()) {
-			IInteractiveEvents listener = ((IInteractiveRobot)robot).getSystemEventListener();
+			IInteractiveEvents listener = ((IInteractiveRobot) robot).getSystemEventListener();
 
 			if (listener != null) {
 				listener.onStatus(e);

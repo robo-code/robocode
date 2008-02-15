@@ -14,32 +14,34 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+
 import robocode.Bullet;
 
 import java.awt.*;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IBasicRobotPeer extends IGettersRobotPeer {
-	//asynchronous actions
+	// asynchronous actions
 	Bullet setFire(double power);
 
-	//blocking actions
+	// blocking actions
 	void tick();
 	void move(double distance);
 	void turnChassis(double radians);
 	void turnAndMoveChassis(double distance, double radians);
 	void turnGun(double radians);
 
-	//fast setters
+	// fast setters
 	void setBodyColor(Color color);
 	void setGunColor(Color color);
 	void setRadarColor(Color color);
 	void setBulletColor(Color color);
 	void setScanColor(Color color);
 
-	//counters
+	// counters
 	void getCall();
 	void setCall();
 }

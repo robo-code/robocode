@@ -266,6 +266,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		}
 
 		FileWriter writer = null;
+
 		try {
 			writer = new FileWriter(new File(fileName));
 			getEditorPane().write(writer);

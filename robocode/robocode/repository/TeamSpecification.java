@@ -115,6 +115,7 @@ public class TeamSpecification extends FileSpecification {
 		members = props.getProperty(TEAM_MEMBERS);
 		try {
 			String team_webpage = props.getProperty(TEAM_WEBPAGE);
+
 			if (team_webpage != null) {
 				webpage = new URL(team_webpage);
 			}
