@@ -13,7 +13,7 @@ package robocode;
 
 
 import robocode.exception.RobotException;
-import robocode.robotinterfaces.peer.IRobotPeer;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 
 /**
@@ -36,7 +36,7 @@ import robocode.robotinterfaces.peer.IRobotPeer;
  */
 public abstract class _RobotBase implements Runnable {
 
-	IRobotPeer peer;
+	IBasicRobotPeer peer;
 
 	/**
 	 * The output stream your robot should use to print.
@@ -63,37 +63,12 @@ public abstract class _RobotBase implements Runnable {
 	}
 
 	/**
-	 * The output stream your robot should use to print.
-	 * <p>
-	 * You can view the print-outs by clicking the button for your robot in the
-	 * right side of the battle window.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   // Print out a line each time my robot hits another robot
-	 *   public void onHitRobot(HitRobotEvent e) {
-	 *       getOut.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
-	 *   }
-	 * </pre>
-	 */
-	public final java.io.PrintStream getOut() {
-		return out;
-	}
-
-	/**
 	 * This method is called by the game. RobotPeer is the object that deals with
 	 * game mechanics and rules, and makes sure your robot abides by them.
 	 * Do not call this method! Your robot will simply stop interacting with the game.
 	 */
-	public final void setPeer(IRobotPeer peer) {
+	public final void setPeer(IBasicRobotPeer peer) {
 		this.peer = peer;
-	}
-
-	/**
-	 * @return RobotPeer, the object that deals with game mechanics and rules. 
-	 */
-	public final IRobotPeer getPeer() {
-		return peer;
 	}
 
 	/**

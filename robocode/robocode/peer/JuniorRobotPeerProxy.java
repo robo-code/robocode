@@ -5,20 +5,28 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
+ * This is temporary implementation of the interface. You should not build any external component on top of it.
+ *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.robotinterfaces.peer;
+package robocode.peer;
 
-import robocode.Bullet;
-import robocode.Condition;
-
-import java.awt.*;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerJunior extends IRobotPeer {
-	void addJuniorEvents();
+public class JuniorRobotPeerProxy extends BasicRobotPeerProxy implements IJuniorRobotPeer {
+
+	public JuniorRobotPeerProxy(IBasicRobotPeer peer) {
+		super(peer);
+	}
+
+	public void addJuniorEvents() {
+		peer.setCall();
+		((IJuniorRobotPeer)peer).addJuniorEvents();
+	}
 }

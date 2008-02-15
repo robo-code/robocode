@@ -11,47 +11,47 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.robotinterfaces.peer.IRobotPeerStandard;
-import robocode.robotinterfaces.peer.IRobotPeer;
+import robocode.robotinterfaces.peer.IStandardRobotPeer;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 /**
  * @author Pavel Savara (original)
  */
-public class PeerProxyStandard extends PeerProxy implements IRobotPeerStandard {
+public class StandardRobotPeerProxy extends BasicRobotPeerProxy implements IStandardRobotPeer {
 
-	public PeerProxyStandard(IRobotPeer peer) {
+	public StandardRobotPeerProxy(IBasicRobotPeer peer) {
 		super(peer);
 	}
 	//blocking actions
 	public void stop(boolean overwrite) {
-		((IRobotPeerStandard)peer).stop(overwrite);
+		((IStandardRobotPeer)peer).stop(overwrite);
 	}
 
 	public void resume() {
-		((IRobotPeerStandard)peer).resume();
+		((IStandardRobotPeer)peer).resume();
 	}
 
 	public void scanReset() {
-		((IRobotPeerStandard)peer).scanReset();
+		((IStandardRobotPeer)peer).scanReset();
 	}
 
 	public void turnRadar(double radians) {
-		((IRobotPeerStandard)peer).turnRadar(radians);
+		((IStandardRobotPeer)peer).turnRadar(radians);
 	}
 
 	//fast setters
 	public void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
 		peer.setCall();
-		((IRobotPeerStandard)peer).setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
+		((IStandardRobotPeer)peer).setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
 	}
 
 	public void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
 		peer.setCall();
-		((IRobotPeerStandard)peer).setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
+		((IStandardRobotPeer)peer).setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
 	}
 
 	public void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
 		peer.setCall();
-		((IRobotPeerStandard)peer).setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
+		((IStandardRobotPeer)peer).setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
 	}
 }

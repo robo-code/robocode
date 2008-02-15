@@ -2,7 +2,6 @@ package sample;
 
 
 import robocode.*;
-import robocode.robotinterfaces.peer.IRobotPeerAdvanced;
 
 
 /**

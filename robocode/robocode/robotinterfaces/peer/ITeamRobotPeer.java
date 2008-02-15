@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerTeam extends IRobotPeerAdvanced {
+public interface ITeamRobotPeer extends IAdvancedRobotPeer {
 	//team
 	String[] getTeammates();
 	boolean isTeammate(String name);

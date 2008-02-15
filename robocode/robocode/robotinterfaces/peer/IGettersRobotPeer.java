@@ -14,7 +14,7 @@ package robocode.robotinterfaces.peer;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerGetters {
+public interface IGettersRobotPeer {
 
 	// AdvancedRobot calls below
 	double getRadarTurnRemaining();

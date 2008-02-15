@@ -14,19 +14,21 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package sample;
+package samplealiens;
 
-import robocode.*;
+import robocode.AdvancedRobot;
+import robocode.HitByBulletEvent;
+import robocode.ScannedRobotEvent;
 
 /**
  * This is just dummy proxy, it's hiding the Eminence and
- * giving it more freedom to inherit from Monk rather than from Robot. 
+ * giving it more freedom to inherit from Monk rather than from Robot.
  */
 public class ProxyOfGreyEminence extends AdvancedRobot {
     private GreyEminence monk;
     public ProxyOfGreyEminence()
     {
-        monk=new GreyEminence(this); 
+        monk=new GreyEminence(this);
     }
 
     public void onHitByBullet(HitByBulletEvent event) {
@@ -45,9 +47,9 @@ public class ProxyOfGreyEminence extends AdvancedRobot {
 
 /**
  * Monk of a order. Implements anything too boring for Eminence.
- * The infractructure base class. 
+ * The infractructure base class.
  */
-abstract class RegullarMonk 
+abstract class RegullarMonk
 {
 }
 

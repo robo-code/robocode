@@ -11,8 +11,8 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.robotinterfaces.peer.IRobotPeerTeam;
-import robocode.robotinterfaces.peer.IRobotPeer;
+import robocode.robotinterfaces.peer.ITeamRobotPeer;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.MessageEvent;
 
 import java.io.Serializable;
@@ -22,35 +22,35 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public class PeerProxyTeam extends PeerProxyAdvanced implements IRobotPeerTeam {
-	public PeerProxyTeam(IRobotPeer peer) {
+public class TeamRobotPeerProxy extends AdvancedRobotPeerProxy implements ITeamRobotPeer {
+	public TeamRobotPeerProxy(IBasicRobotPeer peer) {
 		super(peer);
 	}
 
 	//team
 	public String[] getTeammates() {
 		peer.getCall();
-		return ((IRobotPeerTeam)peer).getTeammates(); 
+		return ((ITeamRobotPeer)peer).getTeammates();
 	}
 
 	public boolean isTeammate(String name) {
 		peer.getCall();
-		return ((IRobotPeerTeam)peer).isTeammate(name); 
+		return ((ITeamRobotPeer)peer).isTeammate(name);
 	}
 
 	public void sendMessage(String name, Serializable message) throws IOException {
 		peer.setCall();
-		((IRobotPeerTeam)peer).sendMessage(name, message); 
+		((ITeamRobotPeer)peer).sendMessage(name, message);
 	}
 
 	public void broadcastMessage(Serializable message) throws IOException {
 		peer.setCall();
-		((IRobotPeerTeam)peer).broadcastMessage(message); 
+		((ITeamRobotPeer)peer).broadcastMessage(message);
 	}
 
 	//events
 	public List<MessageEvent> getMessageEvents() {
 		peer.getCall();
-		return ((IRobotPeerTeam)peer).getMessageEvents(); 
+		return ((ITeamRobotPeer)peer).getMessageEvents();
 	}
 }

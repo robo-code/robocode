@@ -5,26 +5,26 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
- * This sample is showing how to implement robot with robot interfaces rather than
- * on top of standard base classes only.
- * Slave derived from standard base class is there there only to forward calls to RobotPeer.
- * MasterBase is just helper base class.
- * Master is final robot.
- *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package sample;
+package samplealiens;
 
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
+import robocode.robotinterfaces.IAdvancedRobot;
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.IInteractiveEvents;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.ScannedRobotEvent;
 import robocode.HitByBulletEvent;
 import robocode.AdvancedRobot;
 
 import java.io.PrintStream;
 
+/**
+ * @author Pavel Savara (original)
+ */
 public class MasterAndSlave extends MasterBase implements IAdvancedRobot {
 
     /**
@@ -47,6 +47,33 @@ public class MasterAndSlave extends MasterBase implements IAdvancedRobot {
 
     public void onHitByBullet(HitByBulletEvent e) {
         turnLeft(90 - e.getBearing());
+    }
+}
+
+/**
+ * This is robot derived from AdvancedRobot.
+ * Only reason to use this inheritance and this class is that external robots are unable to call RobotPeer directly
+ */
+class Slave extends AdvancedRobot
+{
+    MasterBase parent;
+
+    public Slave(MasterBase parent)
+    {
+        this.parent=parent;
+    }
+
+    public void run()
+    {
+        parent.run();
+    }
+
+    public void onScannedRobot(ScannedRobotEvent e) {
+        parent.onScannedRobot(e);
+    }
+
+    public void onHitByBullet(HitByBulletEvent e) {
+        parent.onHitByBullet(e);
     }
 }
 
@@ -77,20 +104,12 @@ abstract class MasterBase {
         return helperRobot;
     }
 
-    public void setPeer(IRobotPeer robotPeer) {
+    public void setPeer(IBasicRobotPeer robotPeer) {
         helperRobot.setPeer(robotPeer);
-    }
-
-    public IRobotPeer getPeer() {
-        return helperRobot.getPeer();
     }
 
     public void setOut(PrintStream printStream) {
         helperRobot.setOut(printStream);
-    }
-
-    public PrintStream getOut() {
-        return helperRobot.getOut(); 
     }
 
     public void turnGunRight(double degrees) {
@@ -116,31 +135,4 @@ abstract class MasterBase {
     public void onScannedRobot(ScannedRobotEvent e) { }
     public void onHitByBullet(HitByBulletEvent e) { }
     public void run() { }
-}
-
-/**
- * This is robot derived from AdvancedRobot.
- * Only reason to use this inheritance and this class is that external robots are unable to call RobotPeer directly
- */
-class Slave extends AdvancedRobot
-{
-    MasterBase parent;
-
-    public Slave(MasterBase parent)
-    {
-        this.parent=parent;
-    }
-
-    public void run()
-    {
-        parent.run();
-    }
-
-    public void onScannedRobot(ScannedRobotEvent e) {
-        parent.onScannedRobot(e);
-    }
-
-    public void onHitByBullet(HitByBulletEvent e) {
-        parent.onHitByBullet(e);
-    }
 }

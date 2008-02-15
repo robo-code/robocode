@@ -900,7 +900,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void resume() {
 		if (peer != null) {
-			((IRobotPeerStandard)peer).resume();
+			((IStandardRobotPeer)peer).resume();
 		} else {
 			uninitializedException();
 		}
@@ -928,7 +928,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void scan() {
 		if (peer != null) {
-			((IRobotPeerStandard)peer).scanReset();
+			((IStandardRobotPeer)peer).scanReset();
 		} else {
 			uninitializedException();
 		}
@@ -973,7 +973,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void setAdjustGunForRobotTurn(boolean independent) {
 		if (peer != null) {
-			((IRobotPeerStandard)peer).setAdjustGunForBodyTurn(independent);
+			((IStandardRobotPeer)peer).setAdjustGunForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -1017,7 +1017,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void setAdjustRadarForGunTurn(boolean independent) {
 		if (peer != null) {
-			((IRobotPeerStandard)peer).setAdjustRadarForGunTurn(independent);
+			((IStandardRobotPeer)peer).setAdjustRadarForGunTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -1365,7 +1365,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void stop(boolean overwrite) {
 		if (peer != null) {
-			((IRobotPeerStandard)peer).stop(overwrite);
+			((IStandardRobotPeer)peer).stop(overwrite);
 		} else {
 			uninitializedException();
 		}
@@ -1461,7 +1461,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void turnRadarLeft(double degrees) {
 		if (peer != null) {
-			((IRobotPeerStandard)peer).turnRadar(-Math.toRadians(degrees));
+			((IStandardRobotPeer)peer).turnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1493,7 +1493,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void turnRadarRight(double degrees) {
 		if (peer != null) {
-			((IRobotPeerStandard)peer).turnRadar(Math.toRadians(degrees));
+			((IStandardRobotPeer)peer).turnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1549,7 +1549,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void setAdjustRadarForRobotTurn(boolean independent) {
 		if (peer != null) {
-			((IRobotPeerStandard)peer).setAdjustRadarForBodyTurn(independent);
+			((IStandardRobotPeer)peer).setAdjustRadarForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}

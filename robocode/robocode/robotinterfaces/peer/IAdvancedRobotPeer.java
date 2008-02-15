@@ -19,7 +19,7 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerAdvanced extends IRobotPeerStandard {
+public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 
 	//asynchronous actions
 	void setResume();

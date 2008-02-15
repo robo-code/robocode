@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package sample;
+package samplealiens;
 
 import robocode.*;
 import robocode.robotinterfaces.*;
@@ -23,7 +23,7 @@ import java.io.PrintStream;
 public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
 
 	PrintStream out;
-	IRobotPeerStandard peer;
+	IStandardRobotPeer peer;
 	public IInteractiveEvents getSystemEventListener() {
 		return null;
 	}
@@ -36,20 +36,16 @@ public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
 		return this;
 	}
 
-	public void setPeer(IRobotPeer iRobotPeer) {
-		peer=(IRobotPeerStandard)iRobotPeer;
+	public void setPeer(IBasicRobotPeer iRobotPeer) {
+		peer=(IStandardRobotPeer)iRobotPeer;
 	}
 
-	public IRobotPeer getPeer() {
+	public IBasicRobotPeer getPeer() {
 		return peer;
 	}
 
 	public void setOut(PrintStream printStream) {
 		out=printStream;
-	}
-
-	public PrintStream getOut() {
-		return out;
 	}
 
 	public void run() {
@@ -91,6 +87,5 @@ public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
 	}
 
 	public void onWin(WinEvent event) {
-
 	}
 }

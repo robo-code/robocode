@@ -11,15 +11,15 @@
  *******************************************************************************/
 package robocode;
 
-import robocode.robotinterfaces.peer.IRobotPeerJunior;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
 /**
  * @author Pavel Savara (refactoring)
  */
 public class GunReadyCondition extends Condition {
-	private IRobotPeerJunior peer;
+	private IJuniorRobotPeer peer;
 
-	public GunReadyCondition(IRobotPeerJunior peer) {
+	public GunReadyCondition(IJuniorRobotPeer peer) {
 		this.peer=peer;
 	}
 

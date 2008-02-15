@@ -80,9 +80,9 @@ import java.security.AccessControlException;
 
 import robocode.*;
 import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.IRobotPeer;
-import robocode.robotinterfaces.peer.IRobotPeerAdvanced;
-import robocode.robotinterfaces.peer.IRobotPeerJunior;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
@@ -104,7 +104,7 @@ import robocode.util.BoundingRectangle;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobotPeer implements IRobotPeerAdvanced, IRobotPeerJunior, Runnable, ContestantPeer {
+public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
 
 	// Robot States: all states last one turn, except ALIVE and DEAD
 	public static final int
@@ -323,15 +323,15 @@ public class RobotPeer implements IRobotPeerAdvanced, IRobotPeerJunior, Runnable
 		this.isTeamRobot = value;
 	}
 
-	public IRobotPeer CreateProxy() {
+	public IBasicRobotPeer CreateProxy() {
 		if (isTeamRobot)
-			return new PeerProxyTeam(this); 
+			return new TeamRobotPeerProxy(this);
 		if (isAdvancedRobot)
-			return new PeerProxyAdvanced(this);
+			return new AdvancedRobotPeerProxy(this);
 		if (isInteractiveRobot)
-			return new PeerProxyStandard(this);
+			return new StandardRobotPeerProxy(this);
 		if (isJuniorRobot)
-			return new PeerProxyJunior(this);
+			return new JuniorRobotPeerProxy(this);
 		throw new AccessControlException("Unknow robot type");
 	}
 

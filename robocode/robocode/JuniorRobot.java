@@ -775,14 +775,14 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 
 	private void updateJuniorRobotFields() {
-		others = getPeer().getOthers();
-		energy = Math.max(1, (int) (getPeer().getEnergy() + 0.5));
-		robotX = (int) (getPeer().getX() + 0.5);
-		robotY = (int) (getPeer().getY() + 0.5);
-		heading = (int) (toDegrees(getPeer().getHeading()) + 0.5);
-		gunHeading = (int) (toDegrees(getPeer().getGunHeading()) + 0.5);
-		gunBearing = (int) (toDegrees(normalRelativeAngle(getPeer().getGunHeading() - getPeer().getHeading())) + 0.5);
-		gunReady = (getPeer().getGunHeat() <= 0);
+		others = peer.getOthers();
+		energy = Math.max(1, (int) (peer.getEnergy() + 0.5));
+		robotX = (int) (peer.getX() + 0.5);
+		robotY = (int) (peer.getY() + 0.5);
+		heading = (int) (toDegrees(peer.getHeading()) + 0.5);
+		gunHeading = (int) (toDegrees(peer.getGunHeading()) + 0.5);
+		gunBearing = (int) (toDegrees(normalRelativeAngle(peer.getGunHeading() - peer.getHeading())) + 0.5);
+		gunReady = (peer.getGunHeat() <= 0);
 	}
 
 	private final class RobotEventsHandler implements IBasicEvents, IJuniorEvents, Runnable {
@@ -795,11 +795,11 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		public JuniorRobot junior;
 
 		public void run() {
-			junior.fieldWidth = (int) (junior.getPeer().getBattleFieldWidth() + 0.5);
-			junior.fieldHeight = (int) (junior.getPeer().getBattleFieldHeight() + 0.5);
+			junior.fieldWidth = (int) (junior.peer.getBattleFieldWidth() + 0.5);
+			junior.fieldHeight = (int) (junior.peer.getBattleFieldHeight() + 0.5);
 			junior.updateJuniorRobotFields();
 
-			((IRobotPeerJunior)getPeer()).addJuniorEvents();
+			((IJuniorRobotPeer)peer).addJuniorEvents();
 
 			while(true) {
 				junior.run();
@@ -825,12 +825,12 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 
 		public void onDeath(DeathEvent event) {
-			others = getPeer().getOthers();
+			others = peer.getOthers();
 		}
 
 		public void onHitByBullet(HitByBulletEvent event) {
 			junior.updateJuniorRobotFields();
-			double angle = junior.getPeer().getHeading() + event.getBearingRadians();
+			double angle = junior.peer.getHeading() + event.getBearingRadians();
 
 			junior.hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
 			junior.hitByBulletBearing = (int) (event.getBearing() + 0.5);
@@ -839,7 +839,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 		public void onHitRobot(HitRobotEvent event) {
 			junior.updateJuniorRobotFields();
-			double angle = junior.getPeer().getHeading() + event.getBearingRadians();
+			double angle = junior.peer.getHeading() + event.getBearingRadians();
 
 			junior.hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
 			junior.hitRobotBearing = (int) (event.getBearing() + 0.5);
@@ -848,7 +848,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 		public void onHitWall(HitWallEvent event) {
 			junior.updateJuniorRobotFields();
-			double angle = junior.getPeer().getHeading() + event.getBearingRadians();
+			double angle = junior.peer.getHeading() + event.getBearingRadians();
 
 			junior.hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
 			junior.hitWallBearing = (int) (event.getBearing() + 0.5);
@@ -859,7 +859,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			junior.scannedDistance = (int) (event.getDistance() + 0.5);
 			junior.scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
 			junior.scannedAngle = (int) (Math.toDegrees(
-					Utils.normalAbsoluteAngle(junior.getPeer().getHeading() + event.getBearingRadians()))
+					Utils.normalAbsoluteAngle(junior.peer.getHeading() + event.getBearingRadians()))
 							+ 0.5);
 			junior.scannedBearing = (int) (event.getBearing() + 0.5);
 			junior.scannedHeading = (int) (event.getHeading() + 0.5);
@@ -876,7 +876,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			} else if (c instanceof GunFireCondition) {
 
 				if (juniorFirePower > 0) {
-					if (junior.getPeer().setFire(juniorFirePower) != null) {
+					if (junior.peer.setFire(juniorFirePower) != null) {
 						junior.gunReady = false;
 					}
 					juniorFirePower =0;

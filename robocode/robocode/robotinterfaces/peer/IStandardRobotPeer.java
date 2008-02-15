@@ -14,7 +14,7 @@ package robocode.robotinterfaces.peer;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerStandard extends IRobotPeer {
+public interface IStandardRobotPeer extends IBasicRobotPeer {
 
 	//blocking actions
 	void stop(boolean overwrite);

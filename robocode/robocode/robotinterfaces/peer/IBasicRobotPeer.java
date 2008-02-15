@@ -21,7 +21,7 @@ import java.awt.*;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeer extends  IRobotPeerGetters {
+public interface IBasicRobotPeer extends IGettersRobotPeer {
 	//asynchronous actions
 	Bullet setFire(double power);
 
