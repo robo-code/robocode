@@ -1,0 +1,153 @@
+<html>
+<body>
+<p>
+Control API used for controlling Robocode from an external application.
+
+<h2>Example</h2>
+<p>
+Here is a simple application that runs a battle in Robocode for 5 rounds
+on the default battlefield of 800x600 pixels. The robots selected for the
+battle are sample.RamFire and sample.Corners.
+
+<pre>
+import robocode.control.*;
+
+/**
+ * Application that runs two sample robots in Robocode.
+ * 
+ * @author Flemming N. Larsen
+ */
+public class RobocodeRunner {
+
+    public static void main(String[] args) {
+
+        // Listener that used for receiving battle events
+        BattleListener battleListener = new BattleListener();
+
+        // Instantiate Robocode with our battle listener
+        RobocodeEngine engine = new RobocodeEngine(battleListener);
+
+        // If application is not started from the Robocode home folder, the home folder
+        // must be specified in order to locate the robot repository etc.
+//        RobocodeEngine engine = new RobocodeEngine(new java.io.File("C:/Robocode"), battleListener);
+
+        // Show the battles
+        engine.setVisible(true);
+
+        // The robots selected for the battle
+        final String[] ROBOTS = { "sample.RamFire", "sample.Corners" };
+
+        // Robocode needs the robot specifications from the robot repository
+        RobotSpecification[] selectedRobots = new RobotSpecification[ROBOTS.length];
+
+        // Find the robot specifications we need for the battle
+
+        // Go thru all robots in the robot repository and add the robot specification
+        // to the list of selected robots if it is one of our selected robots
+        int i = 0;
+        for (RobotSpecification robotSpec : engine.getLocalRepository()) {
+            String name = robotSpec.getClassName();
+            for (String robot : ROBOTS) {
+                if (robot.equals(name)) {
+                    selectedRobots[i++] = robotSpec;
+                    break;
+                }
+            }
+        }
+
+        // Setup the battle specifications
+
+        // Run 5 battles
+        final int NUM_ROUNDS = 5;
+        // Use the default battlefield (800x600). Can be changed by specifying width and height
+        // as input parameters
+        final BattlefieldSpecification BATTLE_FIELD = new BattlefieldSpecification(); // default 800x600
+
+        // Create the battle specification
+        BattleSpecification battleSpec = new BattleSpecification(NUM_ROUNDS, BATTLE_FIELD, selectedRobots);
+
+        // Run the battle based on our battle specification (5 rounds, 800x600, selected robots)
+        engine.runBattle(battleSpec);
+
+        // Wait for the battle to complete
+        synchronized (battleListener) {
+            while (!battleListener.battleComplete) {
+                try {
+                    battleListener.wait();
+                } catch (InterruptedException e) {}
+            }
+        }
+
+        // Close Robocode
+        engine.close();
+
+        // Make sure that the Java VM is shut down properly
+        System.exit(0);
+    }
+}
+
+/**
+ * BattleListener which listens to battle events from Robocode.
+ *
+ * @author Flemming N. Larsen
+ */
+class BattleListener implements RobocodeListener {
+
+    // Flag specifying if the battle is complete
+    boolean battleComplete;
+
+    /**
+     * Called when the battle is aborted.
+     * 
+     * @param battleSpec the battle specification used for starting this battle
+     */
+    public void battleAborted(BattleSpecification battleSpec) {
+        System.out.println("-- Battle was aborted --");
+
+        // Notify that the battle is complete
+        notifyBattleComplete();
+    }
+
+    /**
+     * Called when the battle has completed.
+     * 
+     * @param battleSpec the battle specification used for starting this battle
+     * @param results the list of results for each robot
+     */
+    public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {
+        System.out.println("-- Battle has completed --");
+
+        // Notify that the battle is complete
+        notifyBattleComplete();
+
+        // Print out the results for each robot
+        System.out.println("\n-- Battle results --");
+        for (RobotResults result : results) {
+            System.out.println("  " + result.getRobot().getName() + ": " + result.getScore());
+        }
+    }
+
+    /**
+     * Called when Robocode sends a message regarding the battle.
+     * 
+     * @param message the message from Robocode
+     */
+    public void battleMessage(String message) {
+        System.out.println(">" + message);
+    }
+
+    /**
+     * Notify that the battle has been completed.
+     */
+    private synchronized void notifyBattleComplete() {
+    	// Set the flag that the battle is complete
+    	battleComplete = true;
+
+    	// Notify all that waits for the battle to complete
+    	notifyAll();
+    }
+}
+</pre>
+ 
+</body>
+</html>

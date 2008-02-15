@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!--  Apache Ant build script for building Codesize                         -->
+<!-- ====================================================================== -->
+
+<project name="codesize" default="build">
+  <description>Apache Ant build script for building Codesize</description>
+
+  <property name="version" value="1.1"/>
+
+  <!-- The build folder -->
+  <property name="build" location="build"/>
+
+  <!-- Enable debug information when compiling -->
+  <property name="debug" value="off"/>
+
+  <!-- ====================================== -->
+  <!-- Target: build                          -->
+  <!-- ====================================== -->
+  <target
+      name="build"
+      description="build Codesize"
+  	  depends="codesize.jar">
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: clean                          -->
+  <!-- ====================================== -->
+
+  <!-- Clean up all build files -->
+  <target
+      name="clean"
+      description="Clean up build files">
+
+    <echo message="Cleaning up build files..."/>
+
+    <!-- Delete the folder containing all build files -->
+    <delete dir="${build}"/>
+  </target>
+
+  <!-- ====================================== -->
+  <!-- Target: compile.codesize               -->
+  <!-- ====================================== -->
+  <target
+      name="compile.codesize"
+      description="Compile Codesize"
+      unless="codesize.uptodate"> 
+
+    <echo message="Compiling Codesize..."/>
+
+    <!-- Compile Codesize -->
+    <compile srcdir="." destdir="${build}"/>
+
+    <!-- Flag that Codesize has been built -->
+    <touch file="${build}/.codesize_build"/>
+  </target>
+
+  <uptodate property="codesize.uptodate" targetfile="${build}/.codesize_build">
+    <srcfiles dir="."/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: javadoc                        -->
+  <!-- ====================================== -->
+  <target
+      name="javadoc"
+      description="Generate javadoc"
+      unless="javadoc.uptodate">
+
+    <echo message="Generating javadoc..."/>
+
+    <!-- Generate the javadoc documentation -->
+    <javadoc
+        destdir="${build}/docs"
+        sourcepath="codesize"
+        windowtitle="Codesize ${version}"
+    	link="http://java.sun.com/j2se/1.5.0/docs/api">
+      <fileset dir="codesize"/>
+    </javadoc>
+    
+    <!-- Flag that javadoc has been built -->
+    <touch file="${build}/.javadoc_build"/>
+  </target>
+
+  <uptodate property="javadoc.uptodate" targetfile="${build}/.javadoc_build">
+    <srcfiles dir="." includes="**/*.java"/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Target: codesize.jar                   -->
+  <!-- ====================================== -->
+  <target
+      name="codesize.jar"
+      description="Build codesize.jar"
+      depends="compile.codesize,javadoc"
+      unless="codesize.jar.uptodate">
+
+    <echo message="Building codesize.jar..."/>
+
+  	<mkdir dir="${build}/libs"/>
+
+  	<!-- Make timestamp -->
+  	<tstamp/>
+  	
+    <!-- Create the codesize.jar file -->
+    <jar destfile="${build}/libs/codesize.jar">
+      <!-- Specify files to include -->
+      <fileset dir="${build}" includes="codesize/**"/>  <!-- Codesize class files -->
+        <fileset dir="${build}" includes="docs/**"/>    <!-- Javadoc documentation -->
+      <fileset dir="${build}" includes="org/**"/>       <!-- Apache BCEL class files -->
+      <fileset file="LICENSE.txt"/>                     <!-- Apache BCEL LICENSE.txt file -->
+      <fileset file="NOTICE.txt"/>                      <!-- Apache BCEL NOTICE.txt file -->
+      <!-- Set the main class of the manifest -->
+      <manifest>
+        <attribute name="Implementation-Title" value="Codesize"/>
+	    <attribute name="Implementation-Version" value="v${version}, ${TODAY}"/> 
+	    <attribute name="Implementation-Vendor" value="Christian Schnell, Flemming N. Larsen"/>
+      	<attribute name="Main-Class" value="codesize.Codesize"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <uptodate property="codesize.jar.uptodate" targetfile="${build}/libs/codesize.jar">
+    <srcfiles dir="."/>
+  </uptodate>
+
+  <!-- ====================================== -->
+  <!-- Macro: compile                         -->
+  <!-- ====================================== -->
+  <macrodef name="compile">
+    <attribute name="srcdir"/>
+    <attribute name="destdir"/>
+    <attribute name="classpath" default=""/>
+    <sequential>
+      <!-- Create folder for class files -->
+      <mkdir dir="@{destdir}"/>
+      <!-- Compile the sources -->
+      <javac
+          srcdir="@{srcdir}"
+          destdir="@{destdir}"
+          classpath="@{classpath}"
+          source="1.5"
+          target="1.5"
+          debug="${debug}"
+          debuglevel="lines,vars,source"
+          optimize="true"
+          includes="**/*.java"
+      />
+    </sequential>
+  </macrodef>
+
+</project>
