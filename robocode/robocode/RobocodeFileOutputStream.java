@@ -92,7 +92,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 			return;
 		}
 
-		if (!(r.getRobot() instanceof AdvancedRobot)) {
+		if (!r.isAdvancedRobot()) {
 			throw new RobotException("Only robots that extend AdvancedRobot may write to the filesystem.");
 		}
 
