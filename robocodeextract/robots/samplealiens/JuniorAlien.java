@@ -72,7 +72,7 @@ public class JuniorAlien implements IJuniorRobot, IJuniorEvents, IBasicEvents, R
 	}
 
 	public void onHitByBullet(HitByBulletEvent event) {
-		peer.turnChassis(Math.PI/2 - event.getBearing());
+		peer.turnChassis(Math.PI/2 + event.getBearingRadians());
 	}
 
 	public void onScannedRobot(ScannedRobotEvent event) {
