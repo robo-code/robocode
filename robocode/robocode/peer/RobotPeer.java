@@ -80,9 +80,7 @@ import java.security.AccessControlException;
 
 import robocode.*;
 import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
+import robocode.robotinterfaces.peer.*;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
@@ -323,7 +321,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		this.isTeamRobot = value;
 	}
 
-	public IBasicRobotPeer CreateProxy() {
+	public IBasicRobotPeer createProxy() {
 		if (isTeamRobot) {
 			return new TeamRobotPeerProxy(this);
 		}
@@ -564,6 +562,9 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 			eventManager.processEvents();
 
 			if (robot != null) {
+				robot.setOut(getOut());
+				robot.setPeer(createProxy());
+
 				Runnable runnable = robot.getRobotRunnable();
 
 				if (runnable != null) {

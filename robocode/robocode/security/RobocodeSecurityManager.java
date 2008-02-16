@@ -88,7 +88,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		super.checkAccess(t);
 		Thread c = Thread.currentThread();
 
-		if (isSafeThread(c) && getSecurityContext().equals(safeSecurityContext)) {
+		if (isSafeThread(c) && isSafeContext()) {
 			return;
 		}
 
@@ -133,7 +133,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		Thread c = Thread.currentThread();
 
-		if (isSafeThread(c) && getSecurityContext().equals(safeSecurityContext)) {
+		if (isSafeThread(c) && isSafeContext()) {
 			return;
 		}
 		ThreadGroup cg = c.getThreadGroup();
@@ -201,7 +201,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// First, if we're running in Robocode's security context,
 		// AND the thread is a safe thread, permission granted.
 		// Essentially this optimizes the security manager for Robocode.
-		if (getSecurityContext().equals(safeSecurityContext)) {
+		if (isSafeContext()) {
 			return;
 		}
 
@@ -451,6 +451,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 		return false;
 	}
 
+	private boolean isSafeContext() {
+		return getSecurityContext().equals(safeSecurityContext);
+	}
+
 	private synchronized void removeRobocodeOutputStream() {
 		outputStreamThreads.remove(Thread.currentThread());
 	}
@@ -530,11 +534,15 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		super.checkPackageAccess(pkg);
 
-		// Accept if running in Robocode's security context
-		if (getSecurityContext().equals(safeSecurityContext)) {
+		if (isSafeContext()) {
 			return;
 		}
 
+		Thread c = Thread.currentThread();
+		if (isSafeThread(c)) {
+			return;
+		}
+		                                            
 		// Access to robocode sub package?
 		if (pkg.startsWith("robocode.")) {
 
@@ -543,8 +551,12 @@ public class RobocodeSecurityManager extends SecurityManager {
 			// Only access to robocode.util or robocode.robotinterfaces is allowed
 			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
 					|| (experimental && subPkg.equals("robotinterfaces.peer")))) {
-				RobotPeer r = threadManager.getRobotPeer(Thread.currentThread());
 
+
+				RobotPeer r = threadManager.getRobotPeer(c);
+				if (r == null) {
+					r = threadManager.getLoadingRobotPeer(c);
+				}
 				if (r != null) {
 					r.setEnergy(0);
 				}
