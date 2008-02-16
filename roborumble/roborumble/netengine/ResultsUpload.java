@@ -93,6 +93,7 @@ public class ResultsUpload {
 
 		try {
 			FileReader fr = new FileReader(resultsfile);
+
 			br = new BufferedReader(fr);
 			String record;
 

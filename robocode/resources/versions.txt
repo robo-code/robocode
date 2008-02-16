@@ -1,3 +1,16 @@
+Version 1.5.4
+(02/15/2008)
+-------------
+o Bugfix:
+  -- The CPU constant was way too little compared to version 1.4.9
+     -- This is a critical bug when Robocode is used for competitions
+     -- Now the CPU calculation has been improved, where a heavy math benchmark
+        has been adopted from Robert D. Maupin (AKA Chase-san)
+     -- The method for determining if a robot has exceeded it's CPU time limit
+        has been improved to use nano second precision, to get rid of an issue
+        with millisecond granularity. This method was created by Julian Kent
+        (AKA Skilgannon)  
+
 Version 1.5.3
 (01/30/2008)
 -------------
@@ -85,7 +98,7 @@ o New features
      snapshot of the current robot state at that specific time/turn
      -- This new method makes it possible to map a specific robot field to a
         specific time
-  -- Added the Robot Cache Cleaner tool created by Aaron Rotenberg (aka AaronR)
+  -- Added the Robot Cache Cleaner tool created by Aaron Rotenberg (AKA AaronR)
      -- Used for cleaning the cache files for the robots, which is very useful with
         the RoboRumble client, where most problems can be solved by cleaning the
         robot cache files
@@ -325,7 +338,7 @@ o Bugfix
      version 1.4. ConcurrentModificationException in robots could occur on some
      systems, which in worst case could cause a robot to loose battles or in
      best case give a robot a lesser score
-  -- Thank goes to Helge Rhodin (aka Krabb) for help with solving the bug!
+  -- Thank goes to Helge Rhodin (AKA Krabb) for help with solving the bug!
 
 Version 1.4
 (08/14/2007)
@@ -495,7 +508,7 @@ o RoboRumble@Home client, originally developed by Albert Prez, is now built-in
      version of Robocode and which has been ported to Java 5
   -- Configuration files has been updated, and are available in the 'roborumble' folder
   -- Issues with downloading robots from the Robocode Repository site has been fixed
-o Special thanks goes to Gert Heijenk (aka GrubbmGait)
+o Special thanks goes to Gert Heijenk (AKA GrubbmGait)
   -- Gert did a tremendous job with lots of alpha testing regarding the new RoboRumble@Home
      built into Robocode! :-D  
 o The codesize tool by Christian D. Schnell has been added
@@ -643,7 +656,7 @@ o Fixed incosistency with .jar files located in the robot folder
      root of the robot folder, and also the sub folders. When running Robocode the
      first time without these files, Robots from the sub folders were shown
      (if available), but not the following times when Robocode was started up.
-  -- This fix was done by Robert D. Maupin (aka Chase-san)
+  -- This fix was done by Robert D. Maupin (AKA Chase-san)
 
 Version 1.2.3B
 (01/14/2007)
@@ -662,7 +675,7 @@ Version 1.2.3A
 o Bugfix
   -- Removed a ConcurrentModificationException that occured when processing robot events
 o Internal Robocde improvements
-  -- Robert D. Maupin (aka Chase-san) replaced all old type Java containers like Vector
+  -- Robert D. Maupin (AKA Chase-san) replaced all old type Java containers like Vector
      Hashtable, Enumeration with the newer and faster types like ArrayList, HashMap, and
      set
   -- This improves the performance a bit, especially when running in "minimized" mode

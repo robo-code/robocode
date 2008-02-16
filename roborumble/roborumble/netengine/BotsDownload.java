@@ -457,6 +457,7 @@ public class BotsDownload {
 			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") != -1) {
 					String name = record.substring(0, record.indexOf(",")).replace(' ', '_');
+
 					namesall.put(name, name);
 				}
 			}

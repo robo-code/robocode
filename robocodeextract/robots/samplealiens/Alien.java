@@ -11,16 +11,18 @@
  *******************************************************************************/
 package samplealiens;
 
+
 import robocode.*;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.*;
 
 import java.io.PrintStream;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
+public class Alien implements IInteractiveRobot, IBasicEvents, Runnable {
 
 	PrintStream out;
 	IStandardRobotPeer peer;
@@ -37,7 +39,7 @@ public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
 	}
 
 	public void setPeer(IBasicRobotPeer iRobotPeer) {
-		peer=(IStandardRobotPeer)iRobotPeer;
+		peer = (IStandardRobotPeer) iRobotPeer;
 	}
 
 	public IBasicRobotPeer getPeer() {
@@ -45,15 +47,15 @@ public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
 	}
 
 	public void setOut(PrintStream printStream) {
-		out=printStream;
+		out = printStream;
 	}
 
 	public void run() {
 		while (true) {
 			peer.move(100); // Move ahead 100
-			peer.turnGun(Math.PI*2); // Spin gun around
+			peer.turnGun(Math.PI * 2); // Spin gun around
 			peer.move(-100); // Move back 100
-			peer.turnGun(Math.PI*2); // Spin gun around
+			peer.turnGun(Math.PI * 2); // Spin gun around
 		}
 	}
 
@@ -62,30 +64,22 @@ public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
 	}
 
 	public void onHitByBullet(HitByBulletEvent event) {
-		peer.turnChassis(Math.PI/2 + event.getBearingRadians());
+		peer.turnChassis(Math.PI / 2 + event.getBearingRadians());
 	}
 
-	public void onBulletHit(BulletHitEvent event) {
-	}
+	public void onBulletHit(BulletHitEvent event) {}
 
-	public void onBulletHitBullet(BulletHitBulletEvent event) {
-	}
+	public void onBulletHitBullet(BulletHitBulletEvent event) {}
 
-	public void onBulletMissed(BulletMissedEvent event) {
-	}
+	public void onBulletMissed(BulletMissedEvent event) {}
 
-	public void onDeath(DeathEvent event) {
-	}
+	public void onDeath(DeathEvent event) {}
 
-	public void onHitRobot(HitRobotEvent event) {
-	}
+	public void onHitRobot(HitRobotEvent event) {}
 
-	public void onHitWall(HitWallEvent event) {
-	}
+	public void onHitWall(HitWallEvent event) {}
 
-	public void onRobotDeath(RobotDeathEvent event) {
-	}
+	public void onRobotDeath(RobotDeathEvent event) {}
 
-	public void onWin(WinEvent event) {
-	}
+	public void onWin(WinEvent event) {}
 }
