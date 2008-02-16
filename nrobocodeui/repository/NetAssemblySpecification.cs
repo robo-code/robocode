@@ -39,8 +39,12 @@ namespace nrobocodeui.repository
 
         protected bool robotJavaSourceIncluded;
         protected String robotClassPath;
-        private bool teamRobot;
         private bool droid;
+        private bool teamRobot;
+        private bool advancedRobot;
+        private bool juniorRobot;
+        private bool interactiveRobot;
+        private bool classicRobot;
 
         public NetAssemblySpecification(File file, java.io.File rootDir, String prefix, bool developmentVersion)
         {
@@ -134,7 +138,7 @@ namespace nrobocodeui.repository
             if (type == null)
                 return false;
 
-            if (!typeof(IRobot).IsAssignableFrom(type))
+            if (!typeof(IBasicRobot).IsAssignableFrom(type))
                 return false;
             return true;
         }
@@ -181,24 +185,9 @@ namespace nrobocodeui.repository
             //TODO ZAMO
         }
 
-        public void setDroid(bool droid)
-        {
-            this.droid = droid;
-        }
-
-        public bool isDroid()
-        {
-            return droid;
-        }
-
         public string getRobotClassPath()
         {
             return robotClassPath;
-        }
-
-        public void setTeamRobot(bool b)
-        {
-            teamRobot = b;
         }
 
         public bool getRobotJavaSourceIncluded()
@@ -221,5 +210,66 @@ namespace nrobocodeui.repository
             //case sensitive compare to
             return base.compareTo(obj);
         }
+
+        public void setDroid(bool d)
+        {
+            this.droid = droid;
+        }
+
+        public bool isDroid()
+        {
+            return droid;
+        }
+
+        public void setAdvancedRobot(bool b)
+        {
+            advancedRobot = b;
+        }
+
+        public void setClassicRobot(bool b)
+        {
+            classicRobot = b;
+        }
+
+        public void setInteractiveRobot(bool b)
+        {
+            interactiveRobot = b;
+        }
+
+        public void setJuniorRobot(bool b)
+        {
+            juniorRobot = b;
+        }
+
+        public void setTeamRobot(bool b)
+        {
+            teamRobot = b;
+        }
+
+        public bool isAdvancedRobot()
+        {
+            return advancedRobot;
+        }
+
+        public bool isClassicRobot()
+        {
+            return classicRobot;
+        }
+
+        public bool isInteractiveRobot()
+        {
+            return interactiveRobot;
+        }
+
+        public bool isJuniorRobot()
+        {
+            return juniorRobot;
+        }
+
+        public bool isTeamRobot()
+        {
+            return teamRobot;
+        }
+
     }
 }

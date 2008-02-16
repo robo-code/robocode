@@ -228,6 +228,7 @@ public class Robocode {
 
 		// For John Burkey at Apple
 		boolean securityOn = true;
+		boolean experimentalOn = false;
 
 		if (System.getProperty("NOSECURITY", "false").equals("true")) {
 			manager.getWindowManager().getRobocodeFrame().messageWarning(
@@ -235,9 +236,15 @@ public class Robocode {
 					+ "You should only run robots which you trust!");
 			securityOn = false;
 		}
+		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+			manager.getWindowManager().getRobocodeFrame().messageWarning(
+					"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
+					+ "You should only run robots which you trust!");
+			experimentalOn = true;
+		}
 		if (securityOn) {
 			System.setSecurityManager(
-					new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true));
+					new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, experimentalOn));
 
 			RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
 

@@ -1,3 +1,5 @@
+Just run ant script in this directory, or folow this:
+
 Code beatifier described by Fnl:
 
 I use Jacobe, which is quite good for Java, and follows the right Java code
@@ -22,5 +24,5 @@ Browse and select to your Jacobe executable. Browse and select the
 robocode.cfg file. All checkmark should be cleared, except for "overwrite
 original files". (otherwise backup files are created). Now you are ready.
 
-Or follow this and use ant task
+Or look at 
 http://www.tiobe.com/downloads/jacobe_task_doc.htm

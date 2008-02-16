@@ -9,34 +9,26 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.robotinterfaces;
+package robocode.robotinterfaces.peer;
 
 
 import robocode.MessageEvent;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface ITeamEvents {
+public interface ITeamRobotPeer extends IAdvancedRobotPeer {
+	// team
+	String[] getTeammates();
+	boolean isTeammate(String name);
+	void sendMessage(String name, Serializable message) throws IOException;
+	void broadcastMessage(Serializable message) throws IOException;
 
-	/**
-	 * This method is called when your robot receives a message from a teammate.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onMessageReceived(MessageEvent event) {
-	 *       out.println(event.getSender() + " sent me: " + event.getMessage());
-	 *   }
-	 * </pre>
-	 *
-	 * @param event the event sent by the game
-	 *
-	 * @see robocode.MessageEvent
-	 * @see robocode.Event
-	 */
-	void onMessageReceived(MessageEvent event);
-
+	// events
+	List<MessageEvent> getMessageEvents();
 }

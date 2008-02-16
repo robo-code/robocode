@@ -32,6 +32,7 @@ package robocode;
 
 
 import robocode.robotinterfaces.*;
+import robocode.robotinterfaces.peer.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -64,7 +65,7 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  */
-public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents, Runnable {
+public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, IInteractiveEvents {
 
 	/**
 	 * Constructs a new robot.
@@ -76,7 +77,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 * This method is called by environment, you don't need it.
 	 * @return runnable implementation
 	 */
-	public Runnable getRobotRunnable() {
+	public final Runnable getRobotRunnable() {
 		return this;
 	}
 
@@ -85,7 +86,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 * This method is called by environment, you don't need it.
 	 * @return listener to robot events
 	 */
-	public IBasicEvents getBasicEventListener() {
+	public final IBasicEvents getBasicEventListener() {
 		return this;
 	}
 
@@ -94,26 +95,8 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 * This method is called by environment, you don't need it.
 	 * @return listener to system events
 	 */
-	public ISystemEvents getSystemEventListener() {
+	public final IInteractiveEvents getSystemEventListener() {
 		return this;
-	}
-
-	/**
-	 * Robot is not listening to advanced events.
-	 * This method is called by environment, you don't need it.
-	 * @return null
-	 */
-	public IAdvancedEvents getAdvancedEventListener() {
-		return null;  //we do not listen to advanced events
-	}
-
-	/**
-	 * Robot is not listening to team events.
-	 * This method is called by environment, you don't need it.
-	 * @return null
-	 */
-	public ITeamEvents getTeamEventListener() {
-		return null;  //we do not listen to team events
 	}
 
 	/**
@@ -200,7 +183,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getBattleFieldHeight() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getBattleFieldHeight();
 		}
 		uninitializedException();
@@ -214,7 +196,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getBattleFieldWidth() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getBattleFieldWidth();
 		}
 		uninitializedException();
@@ -232,7 +213,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getHeading() {
 		if (peer != null) {
-			peer.getCall();
 			double rv = 180.0 * peer.getHeading() / Math.PI;
 
 			while (rv < 0) {
@@ -255,9 +235,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 * @see #getWidth
 	 */
 	public double getHeight() {
-		if (peer != null) {
-			peer.getCall();
-		} else {
+		if (peer == null) {
 			uninitializedException();
 		}
 		return robocode.peer.RobotPeer.HEIGHT;
@@ -271,9 +249,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 * @see #getHeight
 	 */
 	public double getWidth() {
-		if (peer != null) {
-			peer.getCall();
-		} else {
+		if (peer == null) {
 			uninitializedException();
 		}
 		return robocode.peer.RobotPeer.WIDTH;
@@ -286,7 +262,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public String getName() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getName();
 		}
 		uninitializedException();
@@ -303,7 +278,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getX() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getX();
 		}
 		uninitializedException();
@@ -320,7 +294,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getY() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getY();
 		}
 		uninitializedException();
@@ -548,8 +521,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getGunCoolingRate() {
 		if (peer != null) {
-			peer.getCall();
-			return peer.getBattle().getGunCoolingRate();
+			return peer.getGunCoolingRate();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -566,7 +538,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getGunHeading() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getGunHeading() * 180.0 / Math.PI;
 		}
 		uninitializedException();
@@ -593,7 +564,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getGunHeat() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getGunHeat();
 		}
 		uninitializedException();
@@ -607,7 +577,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public int getNumRounds() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getNumRounds();
 		}
 		uninitializedException();
@@ -621,16 +590,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public int getOthers() {
 		if (peer != null) {
-			peer.getCall();
-			// peer.getOthers() is synchronized, and it calls a synchronized method in Battle, so in
-			// order to return successfully, we need to be able to get a lock on both peer and the
-			// Battle.  Since the battle has synchronized methods which call synchronized methods in
-			// RobotPeer, the Battle thread locks these two objects in the opposite order often, so
-			// in order to avoid deadlock, we need to make sure the battle is free before calling this
-			// method.
-			synchronized (peer.getBattle()) {
-				return peer.getOthers();
-			}
+			return peer.getOthers();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -647,7 +607,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getRadarHeading() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getRadarHeading() * 180.0 / Math.PI;
 		}
 		uninitializedException();
@@ -664,7 +623,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public int getRoundNum() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getRoundNum();
 		}
 		uninitializedException();
@@ -683,7 +641,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public long getTime() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getTime();
 		}
 		uninitializedException();
@@ -702,7 +659,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getVelocity() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getVelocity();
 		}
 		uninitializedException();
@@ -934,19 +890,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	public void onWin(WinEvent event) {}
 
 	/**
-	 * This method is called when a custom condition is met.
-	 * <p>
-	 * See the sample robots for examples of use.
-	 *
-	 * @param event the custom event that occured
-	 *
-	 * @see AdvancedRobot#addCustomEvent
-	 * @see CustomEvent
-	 * @see Event
-	 */
-	public void onCustomEvent(CustomEvent event) {}
-
-	/**
 	 * Immediately resumes the movement you stopped by stop(), if any.
 	 * <p>
 	 * This call executes immediately, and does not return until it is complete.
@@ -955,7 +898,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void resume() {
 		if (peer != null) {
-			peer.resume();
+			((IStandardRobotPeer) peer).resume();
 		} else {
 			uninitializedException();
 		}
@@ -983,23 +926,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void scan() {
 		if (peer != null) {
-			boolean reset = false;
-			boolean resetValue = false;
-
-			if (peer.getEventManager().getCurrentTopEventPriority()
-					== peer.getEventManager().getScannedRobotEventPriority()) {
-				reset = true;
-				resetValue = peer.getEventManager().getInterruptible(
-						peer.getEventManager().getScannedRobotEventPriority());
-				peer.getEventManager().setInterruptible(peer.getEventManager().getScannedRobotEventPriority(), true);
-			}
-
-			peer.setScan(true);
-			peer.tick();
-			if (reset) {
-				peer.getEventManager().setInterruptible(peer.getEventManager().getScannedRobotEventPriority(),
-						resetValue);
-			}
+			((IStandardRobotPeer) peer).scanReset();
 		} else {
 			uninitializedException();
 		}
@@ -1044,8 +971,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setAdjustGunForRobotTurn(boolean independent) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setAdjustGunForBodyTurn(independent);
+			((IStandardRobotPeer) peer).setAdjustGunForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -1089,8 +1015,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setAdjustRadarForGunTurn(boolean independent) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setAdjustRadarForGunTurn(independent);
+			((IStandardRobotPeer) peer).setAdjustRadarForGunTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -1128,7 +1053,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setColors(Color bodyColor, Color gunColor, Color radarColor) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(bodyColor);
 			peer.setGunColor(gunColor);
 			peer.setRadarColor(radarColor);
@@ -1175,7 +1099,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setColors(Color bodyColor, Color gunColor, Color radarColor, Color bulletColor, Color scanArcColor) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(bodyColor);
 			peer.setGunColor(gunColor);
 			peer.setRadarColor(radarColor);
@@ -1220,7 +1143,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setAllColors(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(color);
 			peer.setGunColor(color);
 			peer.setRadarColor(color);
@@ -1262,7 +1184,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setBodyColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBodyColor(color);
 		} else {
 			uninitializedException();
@@ -1300,7 +1221,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setGunColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setGunColor(color);
 		} else {
 			uninitializedException();
@@ -1338,7 +1258,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setRadarColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setRadarColor(color);
 		} else {
 			uninitializedException();
@@ -1376,7 +1295,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setBulletColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setBulletColor(color);
 		} else {
 			uninitializedException();
@@ -1414,7 +1332,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setScanColor(Color color) {
 		if (peer != null) {
-			peer.setCall();
 			peer.setScanColor(color);
 		} else {
 			uninitializedException();
@@ -1440,12 +1357,13 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 * there is already movement saved from a previous stop, you can overwrite
 	 * it by calling stop(true).
 	 *
+	 * @param overwrite If there is already movement saved from a previous stop, you can overwrite it by calling stop(true).
 	 * @see #resume
 	 * @see #stop
 	 */
 	public void stop(boolean overwrite) {
 		if (peer != null) {
-			peer.stop(overwrite);
+			((IStandardRobotPeer) peer).stop(overwrite);
 		} else {
 			uninitializedException();
 		}
@@ -1541,7 +1459,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void turnRadarLeft(double degrees) {
 		if (peer != null) {
-			peer.turnRadar(-Math.toRadians(degrees));
+			((IStandardRobotPeer) peer).turnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1573,7 +1491,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void turnRadarRight(double degrees) {
 		if (peer != null) {
-			peer.turnRadar(Math.toRadians(degrees));
+			((IStandardRobotPeer) peer).turnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1586,7 +1504,6 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public double getEnergy() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getEnergy();
 		}
 		uninitializedException();
@@ -1630,8 +1547,7 @@ public class Robot extends _Robot implements IRobot, IBasicEvents, ISystemEvents
 	 */
 	public void setAdjustRadarForRobotTurn(boolean independent) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setAdjustRadarForBodyTurn(independent);
+			((IStandardRobotPeer) peer).setAdjustRadarForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}

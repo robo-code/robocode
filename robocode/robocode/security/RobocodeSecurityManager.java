@@ -20,6 +20,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.security;
 
@@ -46,6 +48,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	private final ThreadManager threadManager;
 	private final Object safeSecurityContext;
 	private final boolean enabled;
+	private final boolean experimental;
 
 	private final Map<Thread, RobocodeFileOutputStream> outputStreamThreads = Collections.synchronizedMap(
 			new HashMap<Thread, RobocodeFileOutputStream>());
@@ -57,11 +60,12 @@ public class RobocodeSecurityManager extends SecurityManager {
 	/**
 	 * RobocodeSecurityManager constructor
 	 */
-	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled) {
+	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
 		safeThreads.add(safeThread);
 		this.threadManager = threadManager;
 		this.enabled = enabled;
+		this.experimental = experimental;
 		safeSecurityContext = getSecurityContext();
 	}
 
@@ -536,16 +540,17 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			String subPkg = pkg.substring(9);
 
-			// Only access to robocode.util is allowed
-			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces"))) {
+			// Only access to robocode.util or robocode.robotinterfaces is allowed
+			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
+					|| (experimental && subPkg.equals("robotinterfaces.peer")))) {
 				RobotPeer r = threadManager.getRobotPeer(Thread.currentThread());
 
 				if (r != null) {
 					r.setEnergy(0);
-
+					//TODO ZAMO
 					throw new AccessControlException(
-							"Preventing " + Thread.currentThread().getName()
-							+ " from access to the internal Robocode pakage: " + pkg);
+							"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "
+							+ pkg);
 				}
 			}
 		}

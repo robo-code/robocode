@@ -20,9 +20,7 @@ import java.net.URL;
  */
 public interface IRobotSpecification extends IFileSpecification {
 	void setUid(String uid);
-	void setDroid(boolean value);
 	String getRobotClassPath();
-	void setTeamRobot(boolean value);
 	boolean getRobotJavaSourceIncluded();
 	boolean getNeedsExternalLoader();
 	void setRobotDescription(String d);
@@ -34,4 +32,17 @@ public interface IRobotSpecification extends IFileSpecification {
 	void setRobotVersion(String v);
 	Object clone(); 
 	String getThisFileName();
+
+	boolean isAdvancedRobot();
+	boolean isClassicRobot();
+	boolean isInteractiveRobot();
+	boolean isJuniorRobot();
+	boolean isTeamRobot();
+	boolean isDroid();
+	void setAdvancedRobot(boolean value);
+	void setClassicRobot(boolean value);
+	void setInteractiveRobot(boolean value);
+	void setJuniorRobot(boolean value);
+	void setTeamRobot(boolean value);
+	void setDroid(boolean value);
 }

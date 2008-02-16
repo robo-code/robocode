@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../build/build/libs/codesize.jar!/" />
+          <root url="jar://$MODULE_DIR$/../robocodeextract/libs/codesize.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -46,8 +46,12 @@ public class RobotSpecification extends FileSpecification implements IRobotSpeci
 	protected boolean robotJavaSourceIncluded;
 	protected String robotClassPath;
 
-	private boolean teamRobot;
-	private boolean droid;
+	private boolean isDroid;
+	private boolean isJuniorRobot;
+	private boolean isClassicRobot;
+	private boolean isInteractiveRobot;
+	private boolean isAdvancedRobot;
+	private boolean isTeamRobot;
 
 	// Used in RobotRepositoryManager
 	protected RobotSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
@@ -313,19 +317,52 @@ public class RobotSpecification extends FileSpecification implements IRobotSpeci
 		this.uid = uid;
 	}
 
-	public boolean isTeamRobot() {
-		return teamRobot;
-	}
-
 	public boolean isDroid() {
-		return droid;
+		return isDroid;
 	}
 
-	public void setTeamRobot(boolean teamRobot) {
-		this.teamRobot = teamRobot;
+	public void setDroid(boolean value) {
+		this.isDroid = value;
 	}
 
-	public void setDroid(boolean droid) {
-		this.droid = droid;
+	public boolean isTeamRobot() {
+		return isTeamRobot;
 	}
+
+	public void setTeamRobot(boolean value) {
+		this.isTeamRobot = value;
+	}
+
+	public boolean isAdvancedRobot() {
+		return isAdvancedRobot;
+	}
+
+	public void setAdvancedRobot(boolean value) {
+		this.isAdvancedRobot = value;
+	}
+
+	public boolean isClassicRobot() {
+		return isClassicRobot;
+	}
+
+	public void setClassicRobot(boolean value) {
+		this.isClassicRobot = value;
+	}
+
+	public boolean isInteractiveRobot() {
+		return isInteractiveRobot;
+	}
+
+	public void setInteractiveRobot(boolean value) {
+		this.isInteractiveRobot = value;
+	}
+
+	public boolean isJuniorRobot() {
+		return isJuniorRobot;
+	}
+
+	public void setJuniorRobot(boolean value) {
+		this.isJuniorRobot = value;
+	}
+
 }

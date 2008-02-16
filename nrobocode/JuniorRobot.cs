@@ -16,13 +16,14 @@ using java.lang;
 using nrobocode.utils;
 using robocode.peer;
 using robocode.robotinterfaces;
+using robocode.robotinterfaces.peer;
 
 namespace nrobocode
 {
     /// <summary>
     /// .NET Friendly base for junior robot
     /// </summary>
-    public abstract class JuniorRobot : IRobot
+    public abstract class JuniorRobot : IJuniorRobot
     {
         #region Java JuniorRobot
 
@@ -33,12 +34,6 @@ namespace nrobocode
             public JR(JuniorRobot owner)
             {
                 this.owner = owner;
-            }
-
-            public override void setOut(PrintStream output)
-            {
-                base.setOut(output);
-                myOut = new JavaConsole(output);
             }
 
             public override void onHitByBullet()
@@ -63,6 +58,7 @@ namespace nrobocode
 
             public override void run()
             {
+                myOut = new JavaConsole(@out);
                 owner.Run();
             }
 
@@ -80,49 +76,28 @@ namespace nrobocode
 
         #region IJuniorRobot Members
 
-        Runnable IRobot.getRobotRunnable()
+        Runnable IBasicRobot.getRobotRunnable()
         {
             return robot;
         }
 
-        IAdvancedEvents IRobot.getAdvancedEventListener()
-        {
-            return null;
-        }
+        #region IBasicRobot Members
 
-        IBasicEvents IRobot.getBasicEventListener()
+        #endregion
+
+        IBasicEvents IBasicRobot.getBasicEventListener()
         {
             return robot.getBasicEventListener();
         }
 
-        ITeamEvents IRobot.getTeamEventListener()
-        {
-            return null;
-        }
-
-        ISystemEvents IRobot.getSystemEventListener()
-        {
-            return null;
-        }
-
-        void IRobot.setPeer(RobotPeer rp)
-        {
-            robot.setPeer(rp);
-        }
-
-        RobotPeer IRobot.getPeer()
-        {
-            return robot.getPeer();
-        }
-
-        void IRobot.setOut(PrintStream ps)
+        void IBasicRobot.setOut(PrintStream ps)
         {
             robot.setOut(ps);
         }
 
-        PrintStream IRobot.getOut()
+        void IBasicRobot.setPeer(IBasicRobotPeer rp)
         {
-            return robot.getOut();
+            robot.setPeer(rp);
         }
 
         #endregion

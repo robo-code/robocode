@@ -18,6 +18,9 @@
 package robocode;
 
 
+import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
+
+
 /**
  * This class is used by the system, as well as being a placeholder for all deprecated
  * (meaning, you should not use them) calls for AdvancedRobot.
@@ -42,8 +45,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnGunLeftDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnGun(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnGun(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -56,8 +58,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnGunRightDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnGun(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnGun(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -79,8 +80,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRightDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnChassis(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnChassis(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -93,8 +93,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRadarLeftDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnChassis(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnChassis(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -107,8 +106,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnLeftDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnChassis(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnChassis(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -185,8 +183,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRadarRightDegrees(double degrees) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnRadar(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}

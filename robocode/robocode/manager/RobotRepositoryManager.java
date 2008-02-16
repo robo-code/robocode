@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.security.AccessControlException;
 
 import javax.swing.JOptionPane;
 
@@ -48,10 +49,11 @@ import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
-import robocode.ui.IRepositoryPlugin;
-import robocode.robotinterfaces.ITeamEvents;
-import robocode.robotinterfaces.IRobot;
+import robocode.robotinterfaces.*;
 import robocode.Droid;
+import robocode.JuniorRobot;
+import robocode.Robot;
+import robocode.ui.IRepositoryPlugin;
 
 
 /**
@@ -432,8 +434,6 @@ public class RobotRepositoryManager {
 
 		String key = fileSpecification.getFilePath();
 
-		boolean updated = false;
-
 		if (fileSpecification instanceof IRobotSpecification) {
 			IRobotSpecification robotSpecification = (IRobotSpecification) fileSpecification;
 
@@ -444,21 +444,43 @@ public class RobotRepositoryManager {
 
 				robotSpecification.setUid(robotClassManager.getUid());
 
-				if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
-					if (Droid.class.isAssignableFrom(robotClass)) {
-						robotSpecification.setDroid(true);
-					}
+				if (robotSpecification.getValid()) {
+					if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
+						if (Droid.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setDroid(true);
+						}
+    
+						if (ITeamRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setTeamRobot(true);
+						}
 
-					if (ITeamEvents.class.isAssignableFrom(robotClass)) {
-						robotSpecification.setTeamRobot(true);
-					}
+						if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setAdvancedRobot(true);
+						}
 
-					if (IRobot.class.isAssignableFrom(robotClass)) {
-						updateNoDuplicates(robotSpecification);
-						return;
+						if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setInteractiveRobot(true);
+						}
+
+						if (Robot.class.isAssignableFrom(robotClass) && !robotSpecification.isAdvancedRobot()) {
+							robotSpecification.setClassicRobot(true);
+						}
+
+						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
+							robotSpecification.setJuniorRobot(true);
+							if (robotSpecification.isAdvancedRobot()) {
+								throw new AccessControlException(
+										robotSpecification.getName()
+												+ ": Junior robot should not implement IAdvancedRobot interface.");
+							}
+						}
+
+						if (IBasicRobot.class.isAssignableFrom(robotClass)) {
+							updateNoDuplicates(robotSpecification);
+							return;
+						}
 					}
 				}
-
 				getRobotDatabase().put(key, new ClassSpecification(robotSpecification));
 			} catch (Throwable t) {
 				getRobotDatabase().put(key, robotSpecification);

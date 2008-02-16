@@ -17,6 +17,9 @@
 package robocode;
 
 
+import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
+
+
 /**
  * This class is used by the system as a placeholder for all *Radians calls in
  * AdvancedRobot. You may refer to this class for documentation only.
@@ -46,7 +49,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getHeadingRadians() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getHeading();
 		}
 		uninitializedException();
@@ -83,8 +85,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnLeftRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnChassis(-radians);
+			((IAdvancedRobotPeer) peer).setTurnChassis(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -120,8 +121,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnRightRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnChassis(radians);
+			((IAdvancedRobotPeer) peer).setTurnChassis(radians);
 		} else {
 			uninitializedException();
 		}
@@ -252,8 +252,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnGunLeftRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnGun(-radians);
+			((IAdvancedRobotPeer) peer).setTurnGun(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -291,8 +290,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnGunRightRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnGun(radians);
+			((IAdvancedRobotPeer) peer).setTurnGun(radians);
 		} else {
 			uninitializedException();
 		}
@@ -331,8 +329,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnRadarLeftRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnRadar(-radians);
+			((IAdvancedRobotPeer) peer).setTurnRadar(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -371,8 +368,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnRadarRightRadians(double radians) {
 		if (peer != null) {
-			peer.setCall();
-			peer.setTurnRadar(radians);
+			((IAdvancedRobotPeer) peer).setTurnRadar(radians);
 		} else {
 			uninitializedException();
 		}
@@ -468,7 +464,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void turnRadarLeftRadians(double radians) {
 		if (peer != null) {
-			peer.turnRadar(-radians);
+			((IAdvancedRobotPeer) peer).turnRadar(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -500,7 +496,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void turnRadarRightRadians(double radians) {
 		if (peer != null) {
-			peer.turnRadar(radians);
+			((IAdvancedRobotPeer) peer).turnRadar(radians);
 		} else {
 			uninitializedException();
 		}
@@ -517,7 +513,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getGunTurnRemainingRadians() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getGunTurnRemaining();
 		}
 		uninitializedException();
@@ -535,7 +530,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getRadarTurnRemainingRadians() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getRadarTurnRemaining();
 		}
 		uninitializedException();
@@ -553,7 +547,6 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getTurnRemainingRadians() {
 		if (peer != null) {
-			peer.getCall();
 			return peer.getTurnRemaining();
 		}
 		uninitializedException();

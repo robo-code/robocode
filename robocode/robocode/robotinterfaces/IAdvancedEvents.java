@@ -11,13 +11,16 @@
  *******************************************************************************/
 package robocode.robotinterfaces;
 
+
 import robocode.SkippedTurnEvent;
 import robocode.CustomEvent;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IAdvancedEvents {
+
 	/**
 	 * This method is called if the robot is using too much time between
 	 * actions. When this event occur, the robot's turn is skipped, meaning that
@@ -37,4 +40,17 @@ public interface IAdvancedEvents {
 	 * @see robocode.Event
 	 */
 	void onSkippedTurn(SkippedTurnEvent event);
+
+	/**
+	 * This method is called when a custom condition is met.
+	 * <p>
+	 * See the sample robots for examples of use.
+	 *
+	 * @param event the custom event that occured
+	 *
+	 * @see robocode.AdvancedRobot#addCustomEvent
+	 * @see robocode.CustomEvent
+	 * @see robocode.Event
+	 */
+	void onCustomEvent(CustomEvent event);
 }
