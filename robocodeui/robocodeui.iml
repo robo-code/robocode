@@ -7,16 +7,8 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../build/build/libs/codesize.jar!/" />
-          <root url="jar://$MODULE_DIR$/../build/build/libs/robocode.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="module" module-name="codesize" />
+    <orderEntry type="module" module-name="robocode" />
     <orderEntryProperties />
   </component>
 </module>
