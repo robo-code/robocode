@@ -81,6 +81,11 @@
  *       been extended to cleanup all robots, but also all classes that this
  *       class refers to in order to avoid circular references. In addition,
  *       cleanup has been added to the KeyEventHandler
+ *     Julian Kent
+ *     - Fix: Method for using only nano second precision when using
+ *       RobotPeer.wait(0, nanoSeconds) in order to prevent the millisecond
+ *       granularity issue, which is typically were coarse compared to the one
+ *       with nano seconds 
  *     Pavel Savara
  *     - Re-work of robot interfaces
  *******************************************************************************/
@@ -134,6 +139,7 @@ import robocode.ui.IRobocodeFrame;
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Julian Kent (contributor)
  */
 public class Battle implements Runnable {
 
@@ -417,7 +423,6 @@ public class Battle implements Runnable {
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
-		
 		RobotPeer robotPeer = new RobotPeer(robotClassManager,
 				battleManager.getManager().getProperties().getRobotFilesystemQuota());
 		TeamPeer teamManager = robotClassManager.getTeamManager();
@@ -1156,7 +1161,14 @@ public class Battle implements Runnable {
 							try {
 								long waitTime = manager.getCpuManager().getCpuConstant();
 
-								r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
+								int millisWait = (int) (waitTime / 1000000);
+
+								for (int i = millisWait; i > 0 && !r.isSleeping(); i--) {
+									r.wait(0, 999999);
+								}
+								if (!r.isSleeping()) {
+									r.wait(0, (int) (waitTime % 1000000));
+								}
 							} catch (InterruptedException e) {
 								// ?
 								log("Wait for " + r + " interrupted.");

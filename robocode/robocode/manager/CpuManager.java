@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,8 @@
  *       robots from skipping turns as the granularity might be coarse
  *     - Changed CPU constant to be measured in nanoseconds instead of
  *       milliseconds
+ *     Robert D. Maupin
+ *     - The "heavy math" algorithm for calculation the CPU constant
  *******************************************************************************/
 package robocode.manager;
 
@@ -27,13 +29,15 @@ import robocode.io.Logger;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Robert Maupin (contributor)
  */
 public class CpuManager {
-	private final static int APPROXIMATE_CYCLES_ALLOWED = 1000;
-	private final static long TEST_PERIOD_NANOSECS = 1000000000L; // 1 second
+	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
+	private final static int TEST_PERIOD_MILLIS = 5000;
 
 	private long cpuConstant = -1;
 	private RobocodeManager manager;
+
 
 	public CpuManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -62,15 +66,17 @@ public class CpuManager {
 	}
 	
 	private void setCpuConstant() {
-		long start = System.nanoTime();
 		long count = 0;
 		double d = 0;
 
-		while (System.nanoTime() - start < TEST_PERIOD_NANOSECS && d >= 0) {
-			d = Math.random() * Math.random();
+		long start = System.currentTimeMillis();
+
+		while (System.currentTimeMillis() - start < TEST_PERIOD_MILLIS) {
+			d += Math.hypot(Math.sqrt(Math.abs(Math.log(Math.atan(Math.random())))),
+					Math.cbrt(Math.abs(Math.random()*10)))/Math.exp(Math.random());
 			count++;
 		}
 
-		cpuConstant = Math.max(1, APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_NANOSECS / count);
+		cpuConstant = Math.max(1, (long)(1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));
 	}
 }
