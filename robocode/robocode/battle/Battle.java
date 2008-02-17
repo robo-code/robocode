@@ -133,6 +133,8 @@ import robocode.security.RobocodeClassLoader;
 
 
 /**
+ * The <code>Battle</code> class is used for controlling a battle.
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
@@ -140,6 +142,7 @@ import robocode.security.RobocodeClassLoader;
  * @author Titus Chen (contributor)
  * @author Nathaniel Troutman (contributor)
  * @author Julian Kent (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class Battle implements Runnable {
 
@@ -2070,8 +2073,8 @@ public class Battle implements Runnable {
 	}
 
 	private final class KeyEventHandler implements KeyEventDispatcher {
-		private Battle battle = null;
-		private List<RobotPeer> robots = null;
+		private Battle battle;
+		private List<RobotPeer> robots;
 
 		public KeyEventHandler(Battle battle, List<RobotPeer> robots) {
 			this.battle = battle;
@@ -2092,7 +2095,7 @@ public class Battle implements Runnable {
 					}
 					IInteractiveEvents listener = robot.getSystemEventListener();
 
-					if (listener != null) {
+					if (listener == null) {
 						continue;
 					}
 					KeyEvent ke = cloneKeyEvent(e);
