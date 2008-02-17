@@ -9,22 +9,25 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.ui;
+package robocodeui.security;
 
-
-import robocode.Robocode;
-
+import robocode.ui.ISecurityExtension;
+import robocode.manager.RobocodeManager;
+import robocode.security.RobocodeSecurityManager;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IWindowManager extends ILoadableManager {
-	IRobocodeFrame getRobocodeFrame();
-	void showResultsDialog();
-	void showSplashScreen();
-	void showRobocodeFrame(boolean value);
+public class SecurityExtension implements ISecurityExtension {
+	private RobocodeManager manager;
+	private RobocodeSecurityManager securityManager ;
 
-	void setLookAndFeel();
-	boolean initializeDisplay();
-	void runDisplay(Robocode robocode);
+	public void initialize() {
+		securityManager = (RobocodeSecurityManager) System.getSecurityManager();
+		securityManager.addSafeContext();
+	}
+
+	public void setRobocodeManager(RobocodeManager robocodeManager) {
+		manager = robocodeManager;
+	}
 }

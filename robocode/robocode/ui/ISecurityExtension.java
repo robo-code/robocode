@@ -11,20 +11,9 @@
  *******************************************************************************/
 package robocode.ui;
 
-
-import robocode.Robocode;
-
-
 /**
  * @author Pavel Savara (original)
  */
-public interface IWindowManager extends ILoadableManager {
-	IRobocodeFrame getRobocodeFrame();
-	void showResultsDialog();
-	void showSplashScreen();
-	void showRobocodeFrame(boolean value);
-
-	void setLookAndFeel();
-	boolean initializeDisplay();
-	void runDisplay(Robocode robocode);
+public interface ISecurityExtension extends ILoadableManager{
+	void initialize();
 }

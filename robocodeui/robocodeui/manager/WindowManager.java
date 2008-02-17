@@ -459,7 +459,11 @@ public class WindowManager implements IWindowManager {
 	 * system's LAF. If this fails, it try to use the cross platform LAF.
 	 * If this also fails, the LAF will not be changed.
 	 */
-	public static void setLookAndFeel() {
+	public void setLookAndFeel() {
+		setLookAndFeelStatic();
+	}
+
+	public static void setLookAndFeelStatic() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable t) {

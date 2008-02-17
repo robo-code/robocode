@@ -168,7 +168,7 @@ public class RobocodeEngine {
 			manager.setEnableGUI(true);
 
 			// Set the Look and Feel (LAF)
-			manager.getWindowManager().initializeDisplay();
+			manager.getWindowManager().setLookAndFeel();
 			// TODO ZAMO .NET UI EDT
 		}
 

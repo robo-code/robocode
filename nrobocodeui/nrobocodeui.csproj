@@ -93,6 +93,7 @@
     <Compile Include="repository\NetAssemblySpecification.cs" />
     <Compile Include="repository\NetRepositoryPlugin.cs" />
     <Compile Include="security\NetRobocodeClassLoader.cs" />
+    <Compile Include="security\SecurityExtension.cs" />
     <Compile Include="sound\SoundManager.cs" />
     <Compile Include="utils\Delegates.cs" />
     <Compile Include="utils\Radians.cs" />

@@ -1503,16 +1503,13 @@ public class Battle implements Runnable {
 					}
 					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
-					bot.setOut(robotPeer.getOut());
 					robotPeer.setRobot(bot);
-					robotPeer.getRobot().setPeer(robotPeer.CreateProxy());
-					robotPeer.getRobot().setOut(robotPeer.getOut());
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
 				} catch (Throwable e) {
-					robotPeer.getOut().println(
-							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
+					robotPeer.getOut().println("SYSTEM: An error occurred during initialization of "
+							+ robotPeer.getRobotClassManager());
 					robotPeer.getOut().println("SYSTEM: " + e);
 					e.printStackTrace(robotPeer.getOut());
 				}
@@ -2134,7 +2131,7 @@ public class Battle implements Runnable {
 	private class UnsafeLoadRobotsThread extends Thread {
 
 		public UnsafeLoadRobotsThread() {
-			super(new ThreadGroup("Robot Loader Group"), "IRobot Loader");
+			super(new ThreadGroup("Robot Loader Group"), "Robot Loader");
 			setDaemon(true);
 		}
 

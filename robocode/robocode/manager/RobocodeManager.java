@@ -56,6 +56,7 @@ public class RobocodeManager {
 	private IWindowManager windowManager;
 	private IVersionManager versionManager;
 	private ISoundManager soundManager;
+	private ISecurityExtension securityExtension;
 	private IRepositoryPlugin[] repositoryPlugins;
 
 	private boolean slave;
@@ -228,6 +229,18 @@ public class RobocodeManager {
 	}
 
 	/**
+	 * Gets the Sound Manager.
+	 *
+	 * @return Returns a SoundManager
+	 */
+	public ISecurityExtension getSecurityExtension() {
+		if (securityExtension == null) {
+			securityExtension = (ISecurityExtension) loadManager("robocodeui.security.SecurityExtension");
+		}
+		return securityExtension;
+	}
+
+	/**
 	 * Gets the Look and Manager.
 	 *
 	 * @return Returns a list of Repository Plugins 
@@ -259,7 +272,7 @@ public class RobocodeManager {
 		if (isRunningIKVM() && robotClassManager.getRobotSpecification().getNeedsExternalLoader()) {
 			robocodeClassLoader = (IRobocodeClassLoader) loadManager("robocodeui.security.NetRobocodeClassLoader");
 		} else {
-			robocodeClassLoader = new RobocodeClassLoader(getClass().getClassLoader());
+			robocodeClassLoader = new RobocodeClassLoader(robotClassManager.getClass().getClassLoader());
 		}
 		robocodeClassLoader.init(robotClassManager);
 		return robocodeClassLoader;

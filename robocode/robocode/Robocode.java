@@ -41,6 +41,8 @@ import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
+import robocode.ui.ISecurityExtension;
+import robocode.ui.IWindowManager;
 
 
 /**
@@ -58,6 +60,7 @@ public class Robocode {
 		boolean minimize = false;
 		String battleFilename = null;
 		String resultsFilename = null;
+		boolean runInThisThread = true;
 		int tps = 0;
 	}
 
@@ -73,27 +76,18 @@ public class Robocode {
 	 *
 	 * @param args an array of command-line arguments
 	 */
-	public static void main(String[] args) throws Throwable {
-		boolean runInThisThread = true;
+	public static void main(String[] args) {
 		Robocode robocode = new Robocode();
 
 		try {
 			robocode.initialize(args);
-			if (robocode.manager.isGUIEnabled()) {
-				runInThisThread = robocode.manager.getWindowManager().initializeDisplay();
+			if (robocode.setup.runInThisThread) {
+				run(robocode);
+			} else {
+				robocode.manager.getWindowManager().runDisplay(robocode);
 			}
 		} catch (Throwable e) {
 			Logger.log(e);
-		}
-		if (runInThisThread) {
-			try {
-				run(robocode);
-			} catch (Throwable e) {
-				Logger.log(e);
-			}
-		} else {
-			// TODO One nice day we could start catching exceptions here, but now we are debugging
-			robocode.manager.getWindowManager().runDisplay(robocode);
 		}
 	}
 
@@ -108,6 +102,11 @@ public class Robocode {
 		}
 
 		LoadSetup(args, setup);
+		if (manager.isGUIEnabled()) {
+			IWindowManager wm = manager.getWindowManager();
+			wm.setLookAndFeel();
+			setup.runInThisThread = wm.initializeDisplay();
+		}
 		InitStreams();
 		InitSecurity();
 	}
@@ -231,17 +230,12 @@ public class Robocode {
 		boolean experimentalOn = false;
 
 		if (System.getProperty("NOSECURITY", "false").equals("true")) {
-			manager.getWindowManager().getRobocodeFrame().messageWarning(
-					"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-					+ "You should only run robots which you trust!");
 			securityOn = false;
 		}
 		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-			manager.getWindowManager().getRobocodeFrame().messageWarning(
-					"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
-					+ "You should only run robots which you trust!");
 			experimentalOn = true;
 		}
+
 		if (securityOn) {
 			System.setSecurityManager(
 					new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, experimentalOn));
@@ -254,6 +248,20 @@ public class Robocode {
 				((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
 				tg = tg.getParent();
 			}
+			ISecurityExtension extension = manager.getSecurityExtension();
+			if (extension!=null){
+				extension.initialize();
+			}
+		}
+		if (!securityOn) {
+			manager.getWindowManager().getRobocodeFrame().messageWarning(
+					"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
+					+ "You should only run robots which you trust!");
+		}
+		if (experimentalOn) {
+			manager.getWindowManager().getRobocodeFrame().messageWarning(
+					"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
+					+ "You should only run robots which you trust!");
 		}
 	}
 

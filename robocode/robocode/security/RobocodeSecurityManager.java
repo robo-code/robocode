@@ -22,7 +22,7 @@
  *       synchronized List and HashMap
  *     Pavel Savara
  *     - Re-work of robot interfaces
- *******************************************************************************/
+*******************************************************************************/
 package robocode.security;
 
 
@@ -46,7 +46,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	private final PrintStream syserr = System.err;
 
 	private final ThreadManager threadManager;
-	private final Object safeSecurityContext;
+	private final List<Object> safeSecurityContexts = Collections.synchronizedList(new ArrayList<Object>());
 	private final boolean enabled;
 	private final boolean experimental;
 
@@ -55,7 +55,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
 	private final List<ThreadGroup> safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 
-	private Thread battleThread;
+	private Thread battleThread=null;
 
 	/**
 	 * RobocodeSecurityManager constructor
@@ -66,11 +66,16 @@ public class RobocodeSecurityManager extends SecurityManager {
 		this.threadManager = threadManager;
 		this.enabled = enabled;
 		this.experimental = experimental;
-		safeSecurityContext = getSecurityContext();
+		safeSecurityContexts.add(getSecurityContext());
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
 		outputStreamThreads.put(Thread.currentThread(), o);
+	}
+
+	public void addSafeContext() {
+		checkPermission(new RobocodePermission("addSafeContext"));
+		safeSecurityContexts.add(getSecurityContext());
 	}
 
 	public void addSafeThread(Thread safeThread) {
@@ -88,7 +93,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		super.checkAccess(t);
 		Thread c = Thread.currentThread();
 
-		if (isSafeThread(c) && getSecurityContext().equals(safeSecurityContext)) {
+		if (isSafeThread(c) && isSafeContext()) {
 			return;
 		}
 
@@ -133,7 +138,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		Thread c = Thread.currentThread();
 
-		if (isSafeThread(c) && getSecurityContext().equals(safeSecurityContext)) {
+		if (isSafeThread(c) && isSafeContext()) {
 			return;
 		}
 		ThreadGroup cg = c.getThreadGroup();
@@ -201,7 +206,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// First, if we're running in Robocode's security context,
 		// AND the thread is a safe thread, permission granted.
 		// Essentially this optimizes the security manager for Robocode.
-		if (getSecurityContext().equals(safeSecurityContext)) {
+		if (isSafeContext()) {
 			return;
 		}
 
@@ -451,6 +456,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 		return false;
 	}
 
+	private boolean isSafeContext() {
+		return safeSecurityContexts.contains(getSecurityContext());
+	}
+
 	private synchronized void removeRobocodeOutputStream() {
 		outputStreamThreads.remove(Thread.currentThread());
 	}
@@ -530,11 +539,15 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		super.checkPackageAccess(pkg);
 
-		// Accept if running in Robocode's security context
-		if (getSecurityContext().equals(safeSecurityContext)) {
+		if (isSafeContext()) {
 			return;
 		}
 
+		Thread c = Thread.currentThread();
+		if (isSafeThread(c)) {
+			return;
+		}
+		                                            
 		// Access to robocode sub package?
 		if (pkg.startsWith("robocode.")) {
 
@@ -543,15 +556,18 @@ public class RobocodeSecurityManager extends SecurityManager {
 			// Only access to robocode.util or robocode.robotinterfaces is allowed
 			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
 					|| (experimental && subPkg.equals("robotinterfaces.peer")))) {
-				RobotPeer r = threadManager.getRobotPeer(Thread.currentThread());
 
+
+				RobotPeer r = threadManager.getRobotPeer(c);
+				if (r == null) {
+					r = threadManager.getLoadingRobotPeer(c);
+				}
 				if (r != null) {
 					r.setEnergy(0);
-					//TODO ZAMO
-					throw new AccessControlException(
-							"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "
-							+ pkg);
 				}
+				throw new AccessControlException(
+						"Preventing " + Thread.currentThread().getName()
+						+ " from access to the internal Robocode pakage: " + pkg);
 			}
 		}
 	}

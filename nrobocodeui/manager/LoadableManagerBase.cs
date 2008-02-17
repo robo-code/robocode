@@ -28,7 +28,6 @@ namespace nrobocodeui.manager
         private RobocodeManager robocodeManager;
         public virtual void setRobocodeManager(RobocodeManager rm)
         {
-            Console.WriteLine("setRobocodeManager");
             robocodeManager = rm;
         }
     }
