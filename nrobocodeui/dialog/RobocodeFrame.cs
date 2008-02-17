@@ -141,7 +141,7 @@ namespace nrobocodeui.dialog
             rb.Text = rp.getName();
             rb.Size = new Size(100, 20);
             fpRobotButtons.Controls.Add(rb);
-            //TODO event handler
+            rb.Click += robotButton_Click;
         }
 
         public void validate()
@@ -274,6 +274,18 @@ namespace nrobocodeui.dialog
         private void nextTurnButton_Click(object sender, EventArgs e)
         {
             manager.getBattleManager().nextTurn();
+        }
+
+        private void robotButton_Click(object sender, EventArgs e)
+        {
+            Button rb = sender as Button;
+            if (rb!=null && rb.Tag is RobotPeer)
+            {
+                RobotPeer robotPeer = rb.Tag as RobotPeer;
+                RobotDialog rd = new RobotDialog();
+                rd.setRobotPeer(robotPeer);
+                rd.Show();
+            }
         }
 
         #endregion

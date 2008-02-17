@@ -74,6 +74,12 @@
     <Compile Include="dialog\NewBattleDialog.Designer.cs">
       <DependentUpon>NewBattleDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="dialog\RobotDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dialog\RobotDialog.Designer.cs">
+      <DependentUpon>RobotDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="dialog\SliderToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -133,6 +139,9 @@
     <EmbeddedResource Include="dialog\NewBattleDialog.resx">
       <DependentUpon>NewBattleDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dialog\RobotDialog.resx">
+      <DependentUpon>RobotDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dialog\SliderToolStrip.resx">
       <DependentUpon>SliderToolStrip.cs</DependentUpon>
