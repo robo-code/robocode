@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Forms;
 using java.io;
-using java.nio;
 using robocode.io;
-using robocode.manager;
 using robocode.peer;
 
 namespace nrobocodeui.dialog
@@ -16,51 +15,53 @@ namespace nrobocodeui.dialog
         }
 
 
-        private RobocodeManager manager;
-        private RobotPeer robotPeer;
         private BufferedPipedInputStream stream;
 
         public void setRobotPeer(RobotPeer robotPeer) 
         {
-            this.robotPeer = robotPeer;
             stream = robotPeer.getOut().getInputStream();
-            this.Text = robotPeer.getName();
+            Text = robotPeer.getName();
         }
 
-        CharBuffer cb = CharBuffer.allocate(10000);
+        StringBuilder sb = new StringBuilder();
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void RobotDialog_Load(object sender, EventArgs e)
         {
-            //TODO I'm too lazy now to do it better way, sorry
+            backgroundWorker.RunWorkerAsync();
+        }
+
+        private void RobotDialog_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            backgroundWorker.CancelAsync();
+        }
+
+        private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
             try
             {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-                string line;
 
-                cb.clear();
-                while (reader.ready())
+                string line = reader.readLine();
+                while (line != null)
                 {
-                    reader.read(cb);
+                    sb.AppendLine(line);
+                    line = reader.readLine();
+                    
+                    BeginInvoke(new utils.Action<string>(UpdateText), new object[]{sb.ToString()});
                 }
 
-                console.Text = cb.toString();
-                console.Select(console.Text.Length, 0);
-                console.ScrollToCaret();
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 //swalow
             }
         }
 
-        private void RobotDialog_Activated(object sender, EventArgs e)
+        private void UpdateText(string text)
         {
-            timer.Enabled = true;
-        }
-
-        private void RobotDialog_Deactivate(object sender, EventArgs e)
-        {
-            timer.Enabled = false;
+            console.Text = text;
+            console.Select(text.Length, 0);
+            console.ScrollToCaret();
         }
 
     }

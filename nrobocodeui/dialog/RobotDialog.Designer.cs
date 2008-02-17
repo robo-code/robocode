@@ -28,11 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RobotDialog));
             this.buttonPanel = new System.Windows.Forms.Panel();
             this.console = new System.Windows.Forms.TextBox();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // buttonPanel
@@ -56,10 +55,9 @@
             this.console.Size = new System.Drawing.Size(502, 358);
             this.console.TabIndex = 1;
             // 
-            // timer
+            // backgroundWorker
             // 
-            this.timer.Interval = 500;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
             // 
             // RobotDialog
             // 
@@ -71,8 +69,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RobotDialog";
             this.Text = "RobotDialog";
-            this.Deactivate += new System.EventHandler(this.RobotDialog_Deactivate);
-            this.Activated += new System.EventHandler(this.RobotDialog_Activated);
+            this.Load += new System.EventHandler(this.RobotDialog_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RobotDialog_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -82,6 +80,6 @@
 
         private System.Windows.Forms.Panel buttonPanel;
         private System.Windows.Forms.TextBox console;
-        private System.Windows.Forms.Timer timer;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }
