@@ -1,6 +1,6 @@
 .NET UI
 - Solve deadlocks and sychonization issues
-- finish BattleView, bullets, scan arcs
+- finish BattleView, scan arcs
 - implement dialogs
 - solve issues with multiple concurent sounds, now exhaust resources
 - finish and test .NET packaging to msi
@@ -17,7 +17,6 @@
 - ikvmc -> .NET roborumble.exe
 
 Java Core
-- more IRObot refactorings
 - re-think interfaces to UI, move methods, write JavaDoc
 - beautify my code
 - test roborumble
