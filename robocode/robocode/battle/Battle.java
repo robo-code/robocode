@@ -113,8 +113,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import robocode.*;
-import robocode.repository.RobotSpecification;
-import robocode.repository.IRobotSpecification;
+import robocode.repository.IRobotFileSpecification;
 import robocode.robotinterfaces.*;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
@@ -666,14 +665,14 @@ public class Battle implements Runnable {
 
 					r.getRobotFileSystemManager().initializeQuota();
 
-					IRobotSpecification robotSpecification = classManager.getRobotSpecification();
+					IRobotFileSpecification robotFileSpecification = classManager.getRobotSpecification();
 
-					r.setJuniorRobot(robotSpecification.isJuniorRobot());
-					r.setClassicRobot(robotSpecification.isClassicRobot());
-					r.setAdvancedRobot(robotSpecification.isAdvancedRobot());
-					r.setInteractiveRobot(robotSpecification.isInteractiveRobot());
-					r.setTeamRobot(robotSpecification.isTeamRobot());
-					r.setDroid(robotSpecification.isDroid());
+					r.setJuniorRobot(robotFileSpecification.isJuniorRobot());
+					r.setClassicRobot(robotFileSpecification.isClassicRobot());
+					r.setAdvancedRobot(robotFileSpecification.isAdvancedRobot());
+					r.setInteractiveRobot(robotFileSpecification.isInteractiveRobot());
+					r.setTeamRobot(robotFileSpecification.isTeamRobot());
+					r.setDroid(robotFileSpecification.isDroid());
 
 					initializeRobotPosition(r);
 

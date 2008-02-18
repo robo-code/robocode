@@ -23,7 +23,6 @@ package roborumble.battlesengine;
 
 
 import robocode.control.*;
-import robocode.repository.RobotSpecification;
 
 import java.util.*;
 import java.io.*;
@@ -70,7 +69,7 @@ public class BattlesRunner {
 		AtHomeListener listener = new AtHomeListener();
 		RobocodeEngine engine = new RobocodeEngine(listener);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
-		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotBattleSpecification[2]));
+		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
 
 		// Read input file
 		ArrayList<String> robots = new ArrayList<String>();
@@ -150,7 +149,7 @@ public class BattlesRunner {
 		AtHomeListener listener = new AtHomeListener();
 		RobocodeEngine engine = new RobocodeEngine(listener);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
-		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotBattleSpecification[2]));
+		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
 
 		// Read input file
 		ArrayList<String> robots = new ArrayList<String>();
@@ -241,19 +240,19 @@ public class BattlesRunner {
 	}
 
 	private void runBattle(RobocodeEngine engine, BattleSpecification battle, String selectedRobotList) {
-		RobotBattleSpecification[] repository = engine.getLocalRepository();
+		RobotSpecification[] repository = engine.getLocalRepository();
 
-		HashMap<String, RobotBattleSpecification> robotSpecMap = new HashMap<String, RobotBattleSpecification>();
+		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
 
-		for (RobotBattleSpecification spec : repository) {
+		for (RobotSpecification spec : repository) {
 			robotSpecMap.put(spec.getNameAndVersion(), spec);
 		}
 
 		String[] selectedRobots = selectedRobotList.split(",");
 
-		List<RobotBattleSpecification> selectedRobotSpecs = new ArrayList<RobotBattleSpecification>();
+		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
 
-		RobotBattleSpecification spec;
+		RobotSpecification spec;
 		
 		for (String robot : selectedRobots) {
 			spec = robotSpecMap.get(robot);
@@ -263,6 +262,6 @@ public class BattlesRunner {
 		}
 		engine.runBattle(
 				new BattleSpecification(battle.getNumRounds(), battle.getBattlefield(),
-				selectedRobotSpecs.toArray(new RobotBattleSpecification[1])));
+				selectedRobotSpecs.toArray(new RobotSpecification[1])));
 	}
 }

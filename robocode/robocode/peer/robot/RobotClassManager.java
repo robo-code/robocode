@@ -31,9 +31,9 @@ import robocode.io.Logger;
 import robocode.manager.NameManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.TeamPeer;
-import robocode.repository.IRobotSpecification;
+import robocode.repository.IRobotFileSpecification;
 import robocode.security.IRobocodeClassLoader;
-import robocode.control.RobotBattleSpecification;
+import robocode.control.RobotSpecification;
 
 
 /**
@@ -43,13 +43,13 @@ import robocode.control.RobotBattleSpecification;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobotClassManager {
-	private IRobotSpecification robotSpecification;
+	private IRobotFileSpecification robotFileSpecification;
 	private Class<?> robotClass;
 	private Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
 
 	private IRobocodeClassLoader robotClassLoader = null;
 	// only used if we're being controlled by RobocodeEngine:
-	private RobotBattleSpecification controlRobotSpecification;
+	private RobotSpecification controlRobotSpecification;
 
 	private String fullClassName;
 	private TeamPeer teamManager;
@@ -60,13 +60,13 @@ public class RobotClassManager {
 	/**
 	 * RobotClassHandler constructor
 	 */
-	public RobotClassManager(IRobotSpecification robotSpecification, RobocodeManager manager) {
-		this(robotSpecification, null, manager);
+	public RobotClassManager(IRobotFileSpecification robotFileSpecification, RobocodeManager manager) {
+		this(robotFileSpecification, null, manager);
 	}
 
-	public RobotClassManager(IRobotSpecification robotSpecification, TeamPeer teamManager, RobocodeManager manager) {
-		this.robotSpecification = robotSpecification;
-		this.fullClassName = robotSpecification.getName();
+	public RobotClassManager(IRobotFileSpecification robotFileSpecification, TeamPeer teamManager, RobocodeManager manager) {
+		this.robotFileSpecification = robotFileSpecification;
+		this.fullClassName = robotFileSpecification.getName();
 		this.teamManager = teamManager;
 		this.manager = manager;
 	}
@@ -76,7 +76,7 @@ public class RobotClassManager {
 	}
 
 	public NameManager getClassNameManager() {
-		return robotSpecification.getNameManager();
+		return robotFileSpecification.getNameManager();
 	}
 
 	public void addReferencedClasses(List<String> refClasses) {
@@ -125,8 +125,8 @@ public class RobotClassManager {
 		return robotClassLoader;
 	}
 
-	public IRobotSpecification getRobotSpecification() {
-		return robotSpecification;
+	public IRobotFileSpecification getRobotSpecification() {
+		return robotFileSpecification;
 	}
 
 	public void loadUnresolvedClasses() throws ClassNotFoundException {
@@ -158,20 +158,20 @@ public class RobotClassManager {
 	}
 
 	/**
-	 * Gets the robotSpecification.
+	 * Gets the robotFileSpecification.
 	 *
-	 * @return Returns a RobotSpecification
+	 * @return Returns a RobotFileSpecification
 	 */
-	public RobotBattleSpecification getControlRobotSpecification() {
+	public RobotSpecification getControlRobotSpecification() {
 		return controlRobotSpecification;
 	}
 
 	/**
-	 * Sets the robotSpecification.
+	 * Sets the robotFileSpecification.
 	 *
-	 * @param controlRobotSpecification The robotSpecification to set
+	 * @param controlRobotSpecification The robotFileSpecification to set
 	 */
-	public void setControlRobotSpecification(RobotBattleSpecification controlRobotSpecification) {
+	public void setControlRobotSpecification(RobotSpecification controlRobotSpecification) {
 		this.controlRobotSpecification = controlRobotSpecification;
 	}
 
@@ -221,6 +221,6 @@ public class RobotClassManager {
 			referencedClasses.clear();
 		}
 
-		robotSpecification = null;
+		robotFileSpecification = null;
 	}
 }

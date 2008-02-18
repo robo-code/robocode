@@ -73,7 +73,7 @@ public class FileSpecificationDatabase implements Serializable {
 		while (i.hasNext()) {
 			Object o = i.next();
 
-			if (o instanceof IRobotSpecification || o instanceof TeamSpecification) {
+			if (o instanceof IRobotFileSpecification || o instanceof TeamSpecification) {
 				IFileSpecification spec = (IFileSpecification) o;
 
 				if (spec.isDuplicate()) {
@@ -103,7 +103,7 @@ public class FileSpecificationDatabase implements Serializable {
 		while (i.hasNext()) {
 			Object o = i.next();
 
-			if (o instanceof IRobotSpecification || o instanceof TeamSpecification) {
+			if (o instanceof IRobotFileSpecification || o instanceof TeamSpecification) {
 				IFileSpecification spec = (IFileSpecification) o;
 
 				if (spec.isDuplicate()) {
@@ -171,7 +171,7 @@ public class FileSpecificationDatabase implements Serializable {
 		hash.remove(key);
 
 		// No concept of duplicates for classes
-		if (!(removedSpecification instanceof IRobotSpecification)) {
+		if (!(removedSpecification instanceof IRobotFileSpecification)) {
 			return;
 		}
 		// If it's already a dupe we're removing, return
@@ -193,8 +193,8 @@ public class FileSpecificationDatabase implements Serializable {
 		while (i.hasNext()) {
 			Object o = i.next();
 
-			if (o instanceof IRobotSpecification) {
-				IRobotSpecification spec = (IRobotSpecification) o;
+			if (o instanceof IRobotFileSpecification) {
+				IRobotFileSpecification spec = (IRobotFileSpecification) o;
 
 				if (spec.isDevelopmentVersion()) {
 					continue;

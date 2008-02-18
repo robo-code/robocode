@@ -18,7 +18,7 @@ import java.net.URL;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotSpecification extends IFileSpecification {
+public interface IRobotFileSpecification extends IFileSpecification {
 	void setUid(String uid);
 	String getRobotClassPath();
 	boolean getRobotJavaSourceIncluded();

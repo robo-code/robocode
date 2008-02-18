@@ -443,7 +443,7 @@ public abstract class FileSpecification implements IFileSpecification {
 
 	public NameManager getNameManager() {
 		if (nameManager == null) {
-			if (this instanceof IRobotSpecification) {
+			if (this instanceof IRobotFileSpecification) {
 				nameManager = new NameManager(name, version, developmentVersion, false);
 			} else if (this instanceof TeamSpecification) {
 				nameManager = new NameManager(name, version, developmentVersion, true);

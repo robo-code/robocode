@@ -26,7 +26,7 @@ public class RobotResults implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private RobotBattleSpecification robot;
+	private RobotSpecification robot;
 	private int rank;
 	private double score;
 	private double survival;
@@ -40,7 +40,7 @@ public class RobotResults implements java.io.Serializable {
 	private int thirds;
 
 	public RobotResults(
-			RobotBattleSpecification robot,
+			RobotSpecification robot,
 			int rank,
 			double score,
 			double survival,
@@ -72,7 +72,7 @@ public class RobotResults implements java.io.Serializable {
 	 *
 	 * @return the robot these results are for.
 	 */
-	public RobotBattleSpecification getRobot() {
+	public RobotSpecification getRobot() {
 		return robot;
 	}
 

@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Added setSelectedRobots(RobotSpecification[])
+ *     - Added setSelectedRobots(RobotFileSpecification[])
  *     - Added property for specifying initial positions and headings of the
  *       selected robots
  *******************************************************************************/
@@ -21,7 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import robocode.control.RobotBattleSpecification;
+import robocode.control.RobotSpecification;
 
 
 /**
@@ -168,9 +168,9 @@ public class BattleProperties {
 	 *
 	 * @param robots The robots to set
 	 */
-	public void setSelectedRobots(RobotBattleSpecification[] robots) {
+	public void setSelectedRobots(RobotSpecification[] robots) {
 		String robotString = "";
-		RobotBattleSpecification robot;
+		RobotSpecification robot;
 
 		for (int i = 0; i < robots.length; i++) {
 			robot = robots[i];

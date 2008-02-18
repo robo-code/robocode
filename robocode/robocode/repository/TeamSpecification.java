@@ -217,11 +217,11 @@ public class TeamSpecification extends FileSpecification {
 		props.setProperty(TEAM_MEMBERS, members);
 	}
 
-	public void addMember(IRobotSpecification robotSpecification) {
+	public void addMember(IRobotFileSpecification robotFileSpecification) {
 		if (members == null || members.length() == 0) {
-			members = robotSpecification.getFullClassNameWithVersion();
+			members = robotFileSpecification.getFullClassNameWithVersion();
 		} else {
-			members += "," + robotSpecification.getFullClassNameWithVersion();
+			members += "," + robotFileSpecification.getFullClassNameWithVersion();
 		}
 		props.setProperty(TEAM_MEMBERS, members);
 	}

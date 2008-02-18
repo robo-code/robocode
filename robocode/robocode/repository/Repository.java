@@ -47,7 +47,7 @@ public class Repository {
 			if (spec.isDuplicate()) {
 				continue;
 			}
-			if (!(spec instanceof IRobotSpecification)) {
+			if (!(spec instanceof IRobotFileSpecification)) {
 				if (onlyRobots) {
 					continue;
 				}
@@ -59,22 +59,22 @@ public class Repository {
 					continue;
 				}
 			} else {
-				IRobotSpecification robotSpec = (IRobotSpecification) spec;
+				IRobotFileSpecification robotFileSpecification = (IRobotFileSpecification) spec;
 
-				if (onlyWithSource && !robotSpec.getRobotJavaSourceIncluded()) {
+				if (onlyWithSource && !robotFileSpecification.getRobotJavaSourceIncluded()) {
 					continue;
 				}
-				if (onlyWithPackage && robotSpec.getFullPackage() == null) {
+				if (onlyWithPackage && robotFileSpecification.getFullPackage() == null) {
 					continue;
 				}
-				if (onlyDevelopment && !robotSpec.isDevelopmentVersion()) {
+				if (onlyDevelopment && !robotFileSpecification.isDevelopmentVersion()) {
 					continue;
 				}
-				if (onlyNotDevelopment && robotSpec.isDevelopmentVersion()) {
+				if (onlyNotDevelopment && robotFileSpecification.isDevelopmentVersion()) {
 					continue;
 				}
-				if (onlyDevelopment && robotSpec.getFullPackage() != null
-						&& (robotSpec.getFullPackage().equals("sample") || robotSpec.getFullPackage().equals("sampleteam"))) {
+				if (onlyDevelopment && robotFileSpecification.getFullPackage() != null
+						&& (robotFileSpecification.getFullPackage().equals("sample") || robotFileSpecification.getFullPackage().equals("sampleteam"))) {
 					continue;
 				}
 			}

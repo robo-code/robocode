@@ -18,7 +18,7 @@
  *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Changed to use FileUtil.getRobotsDir()
  *     - Modified getLocalRepository() to support teams by using
- *       FileSpecification instead of RobotSpecification
+ *       FileSpecification instead of RobotFileSpecification
  *     - System.out, System.err, and System.in is now only set once, as new
  *       instances of the RobocodeEngine causes memory leaks with
  *       System.setOut() and System.setErr()
@@ -183,14 +183,14 @@ public class RobocodeEngine {
 	 * 
 	 * @return An array of all available robots.
 	 */
-	public RobotBattleSpecification[] getLocalRepository() {
+	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
 		List<IFileSpecification> list = robotRepository.getRobotSpecificationsList(false, false, false, false, false,
 				false);
-		RobotBattleSpecification robotSpecs[] = new RobotBattleSpecification[list.size()];
+		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
-			robotSpecs[i] = new RobotBattleSpecification(list.get(i));
+			robotSpecs[i] = new RobotSpecification(list.get(i));
 		}
 		return robotSpecs;
 	}

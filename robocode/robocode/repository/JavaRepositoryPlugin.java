@@ -50,11 +50,11 @@ public class JavaRepositoryPlugin implements IRepositoryPlugin {
 			newSpec = new JarSpecification(f, rootDir, prefix, developmentVersion, repositoryManager);
 
 		} else if (fileType.equals(".java") || (fileType.equals(".class") || fileType.equals(".properties"))) {
-			// Otherwise, create a plain RobotSpecification as a ClassSpecification,
+			// Otherwise, create a plain RobotFileSpecification as a ClassSpecification,
 			// that is a specification based on the robot classes
-			newSpec = new RobotSpecification(f, rootDir, prefix, developmentVersion);
+			newSpec = new RobotFileSpecification(f, rootDir, prefix, developmentVersion);
 			if (!(developmentVersion || newSpec.getValid())) {
-				newSpec = new ClassSpecification((RobotSpecification) newSpec);
+				newSpec = new ClassSpecification((RobotFileSpecification) newSpec);
 			}
 		}
 
