@@ -2089,7 +2089,7 @@ public class Battle implements Runnable {
 					}
 					IInteractiveEvents listener = robot.getSystemEventListener();
 
-					if (listener != null) {
+					if (listener == null) {
 						continue;
 					}
 					KeyEvent ke = cloneKeyEvent(e);
