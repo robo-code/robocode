@@ -34,7 +34,7 @@ import robocode.io.Logger;
  * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
-public class RobotSpecification extends FileSpecification {
+public class RobotFileSpecification extends FileSpecification {
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
 	private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
@@ -56,7 +56,7 @@ public class RobotSpecification extends FileSpecification {
 	private boolean isDroid;
 
 	// Used in RobotRepositoryManager
-	protected RobotSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
+	protected RobotFileSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
 		valid = true;
 		String filename = f.getName();
 		String filepath = f.getPath();

@@ -18,7 +18,7 @@
  *       methods that have been (re)moved from the robocode.util.Utils class
  *     - Changed to use FileUtil.getRobotsDir()
  *     - Modified getLocalRepository() to support teams by using
- *       FileSpecification instead of RobotSpecification
+ *       FileSpecification instead of RobotFileSpecification
  *     - System.out, System.err, and System.in is now only set once, as new
  *       instances of the RobocodeEngine causes memory leaks with
  *       System.setOut() and System.setErr()

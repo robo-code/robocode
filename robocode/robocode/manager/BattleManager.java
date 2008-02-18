@@ -76,7 +76,7 @@ import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
-import robocode.repository.RobotSpecification;
+import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
 
@@ -169,8 +169,8 @@ public class BattleManager {
 
 				for (FileSpecification fileSpec : robotSpecificationsList) {
 					if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-						if (fileSpec instanceof RobotSpecification) {
-							battlingRobotsList.add(new RobotClassManager((RobotSpecification) fileSpec));
+						if (fileSpec instanceof RobotFileSpecification) {
+							battlingRobotsList.add(new RobotClassManager((RobotFileSpecification) fileSpec));
 							break;
 						} else if (fileSpec instanceof TeamSpecification) {
 							TeamSpecification currentTeam = (TeamSpecification) fileSpec;
@@ -180,7 +180,7 @@ public class BattleManager {
 
 							while (teamTokenizer.hasMoreTokens()) {
 								bot = teamTokenizer.nextToken();
-								RobotSpecification match = null;
+								RobotFileSpecification match = null;
 
 								for (FileSpecification teamFileSpec : robotSpecificationsList) {
 									// Teams cannot include teams
@@ -189,7 +189,7 @@ public class BattleManager {
 									}
 									if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
 										// Found team member
-										match = (RobotSpecification) teamFileSpec;
+										match = (RobotFileSpecification) teamFileSpec;
 										if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
 												|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
 											break;
@@ -236,8 +236,8 @@ public class BattleManager {
 
 			for (FileSpecification fileSpec : robotSpecificationsList) {
 				if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-					if (fileSpec instanceof RobotSpecification) {
-						RobotClassManager rcm = new RobotClassManager((RobotSpecification) fileSpec);
+					if (fileSpec instanceof RobotFileSpecification) {
+						RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec);
 
 						rcm.setControlRobotSpecification(battleRobotSpec);
 						battlingRobotsList.add(rcm);
@@ -251,7 +251,7 @@ public class BattleManager {
 
 						while (teamTokenizer.hasMoreTokens()) {
 							bot = teamTokenizer.nextToken();
-							RobotSpecification match = null;
+							RobotFileSpecification match = null;
 
 							for (FileSpecification teamFileSpec : robotSpecificationsList) {
 								// Teams cannot include teams
@@ -260,7 +260,7 @@ public class BattleManager {
 								}
 								if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
 									// Found team member
-									match = (RobotSpecification) teamFileSpec;
+									match = (RobotFileSpecification) teamFileSpec;
 									if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
 											|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
 										found = true;

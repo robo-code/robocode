@@ -12,7 +12,7 @@
  *     - Code cleanup
  *     - Added the getNameAndVersion() method
  *     - Changed to use the FileSpecification as local specification instead of
- *       RobotSpecification. This change was done in order to support teams
+ *       RobotFileSpecification. This change was done in order to support teams
  *     - This class now implements java.io.Serializable
  *******************************************************************************/
 package robocode.control;

@@ -41,7 +41,7 @@ import java.util.Map;
 
 import robocode.packager.ClassAnalyzer;
 import robocode.peer.robot.RobotClassManager;
-import robocode.repository.RobotSpecification;
+import robocode.repository.RobotFileSpecification;
 
 
 /**
@@ -54,7 +54,7 @@ import robocode.repository.RobotSpecification;
 public class RobocodeClassLoader extends ClassLoader {
 	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
 
-	private RobotSpecification robotSpecification;
+	private RobotFileSpecification robotFileSpecification;
 	private RobotClassManager robotClassManager;
 	private String rootPackageDirectory;
 	private String rootDirectory;
@@ -70,7 +70,7 @@ public class RobocodeClassLoader extends ClassLoader {
 	public RobocodeClassLoader(ClassLoader parent, RobotClassManager robotClassManager) {
 		super(parent);
 		this.robotClassManager = robotClassManager;
-		this.robotSpecification = robotClassManager.getRobotSpecification();
+		this.robotFileSpecification = robotClassManager.getRobotSpecification();
 
 		// Deep within the class loader is a vector of classes, and is VM
 		// implementation specific, so its not in every VM. However, if a VM
@@ -145,7 +145,7 @@ public class RobocodeClassLoader extends ClassLoader {
 
 		String filename = name.replace('.', File.separatorChar) + ".class";
 
-		String classPath = robotSpecification.getRobotClassPath();
+		String classPath = robotFileSpecification.getRobotClassPath();
 
 		if (classPath.indexOf(File.pathSeparator) >= 0) {
 			throw new ClassNotFoundException(
@@ -247,6 +247,6 @@ public class RobocodeClassLoader extends ClassLoader {
 		}
 
 		robotClassManager = null;
-		robotSpecification = null;
+		robotFileSpecification = null;
 	}
 }

@@ -95,9 +95,9 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		} else if (fileType.equals(".jar") || fileType.equals(".zip")) {
 			newSpec = new JarSpecification(f, rootDir, prefix, developmentVersion);
 		} else {
-			newSpec = new RobotSpecification(f, rootDir, prefix, developmentVersion);
+			newSpec = new RobotFileSpecification(f, rootDir, prefix, developmentVersion);
 			if (!(developmentVersion || newSpec.getValid())) {
-				newSpec = new ClassSpecification((RobotSpecification) newSpec);
+				newSpec = new ClassSpecification((RobotFileSpecification) newSpec);
 			}
 		}
 		newSpec.developmentVersion = developmentVersion;
@@ -485,7 +485,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	public NameManager getNameManager() {
 		if (nameManager == null) {
-			if (this instanceof RobotSpecification) {
+			if (this instanceof RobotFileSpecification) {
 				nameManager = new NameManager(name, version, developmentVersion, false);
 			} else if (this instanceof TeamSpecification) {
 				nameManager = new NameManager(name, version, developmentVersion, true);
