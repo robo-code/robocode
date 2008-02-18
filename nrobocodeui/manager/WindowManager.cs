@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using nrobocodeui.dialog;
 using nrobocodeui.manager;
 using robocode;
+using robocode.security;
 using robocode.ui;
 
 namespace nrobocodeui.manager
@@ -57,6 +58,11 @@ namespace nrobocodeui.manager
             
         }
 
+        public void setLookAndFeel()
+        {
+
+        }
+
         public void OnDisplayLoaded()
         {
             battleWorker = new Thread(RunBattle);
@@ -67,6 +73,14 @@ namespace nrobocodeui.manager
         {
             try
             {
+                /*if (robocode.setup.securityOption)
+                {
+                    RobocodeSecurityManager rsm = java.lang.System.getSecurityManager() as RobocodeSecurityManager;
+                    if (rsm != null)
+                    {
+                        rsm.addSafeThreadGroups();
+                    }
+                }*/
                 Robocode.run(robocode);
             }
             catch(Exception ex)

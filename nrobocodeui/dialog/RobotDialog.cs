@@ -27,6 +27,7 @@ namespace nrobocodeui.dialog
 
         private void RobotDialog_Load(object sender, EventArgs e)
         {
+            backgroundWorker.WorkerSupportsCancellation = true;
             backgroundWorker.RunWorkerAsync();
         }
 
@@ -44,6 +45,8 @@ namespace nrobocodeui.dialog
                 string line = reader.readLine();
                 while (line != null)
                 {
+                    if (backgroundWorker.CancellationPending)
+                        break;
                     sb.AppendLine(line);
                     line = reader.readLine();
                     

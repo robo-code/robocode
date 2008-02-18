@@ -22,7 +22,14 @@ namespace nrobocode
         [STAThread]
         public static void Main(string[] args)
         {
-            robocode.Robocode.main(args);
+            try
+            {
+                robocode.Robocode.main(args);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }

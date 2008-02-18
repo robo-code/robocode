@@ -78,7 +78,7 @@ namespace nrobocode
 
         Runnable IBasicRobot.getRobotRunnable()
         {
-            return robot;
+            return robot.getRobotRunnable();
         }
 
         #region IBasicRobot Members
