@@ -235,8 +235,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/autoextract/autoextract.iml" filepath="$PROJECT_DIR$/autoextract/autoextract.iml" />
       <module fileurl="file://$PROJECT_DIR$/build/build.iml" filepath="$PROJECT_DIR$/build/build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/codesize/codesize.iml" filepath="$PROJECT_DIR$/codesize/codesize.iml" />
-      <module fileurl="file://$PROJECT_DIR$/installapplet/installapplet.iml" filepath="$PROJECT_DIR$/installapplet/installapplet.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode/robocode.iml" filepath="$PROJECT_DIR$/robocode/robocode.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocodeextract/robocodeextract.iml" filepath="$PROJECT_DIR$/robocodeextract/robocodeextract.iml" />
       <module fileurl="file://$PROJECT_DIR$/roborumble/roborumble.iml" filepath="$PROJECT_DIR$/roborumble/roborumble.iml" />

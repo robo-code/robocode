@@ -674,7 +674,6 @@ public class Battle implements Runnable {
 					RobotSpecification robotSpecification = classManager.getRobotSpecification();
 
 					r.setJuniorRobot(robotSpecification.isJuniorRobot());
-					r.setClassicRobot(robotSpecification.isClassicRobot());
 					r.setAdvancedRobot(robotSpecification.isAdvancedRobot());
 					r.setInteractiveRobot(robotSpecification.isInteractiveRobot());
 					r.setTeamRobot(robotSpecification.isTeamRobot());

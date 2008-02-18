@@ -50,7 +50,6 @@ public class RobotSpecification extends FileSpecification {
 	protected String robotClassPath;
 
 	private boolean isJuniorRobot;
-	private boolean isClassicRobot;
 	private boolean isInteractiveRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
@@ -337,14 +336,6 @@ public class RobotSpecification extends FileSpecification {
 
 	public void setAdvancedRobot(boolean value) {
 		this.isAdvancedRobot = value;
-	}
-
-	public boolean isClassicRobot() {
-		return isClassicRobot;
-	}
-
-	public void setClassicRobot(boolean value) {
-		this.isClassicRobot = value;
 	}
 
 	public boolean isInteractiveRobot() {

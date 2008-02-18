@@ -425,9 +425,9 @@ public class RobotRepositoryManager {
 							robotSpecification.setInteractiveRobot(true);
 						}
 
-						if (Robot.class.isAssignableFrom(robotClass) && !robotSpecification.isAdvancedRobot()) {
+						/*if (Robot.class.isAssignableFrom(robotClass) && !robotSpecification.isAdvancedRobot()) {
 							robotSpecification.setClassicRobot(true);
-						}
+						}*/
 
 						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
 							robotSpecification.setJuniorRobot(true);

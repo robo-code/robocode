@@ -160,7 +160,6 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	private Arc2D scanArc;
 
 	private boolean isJuniorRobot;
-	private boolean isClassicRobot;
 	private boolean isInteractiveRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
@@ -272,7 +271,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	/**
 	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robotinterfaces.IJuniorRobot}; <code>false</code> otherwise.
+	 * {@link IJuniorRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;
@@ -284,20 +283,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	/**
 	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robotinterfaces.IBasicRobot}, but not the
-	 * {@line robotinterfaces.IAdvancedRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isClassicRobot() {
-		return isClassicRobot;
-	}
-
-	public void setClassicRobot(boolean value) {
-		this.isClassicRobot = value;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robotinterfaces.IInteractiveRobot}; <code>false</code> otherwise.
+	 * {@link IInteractiveRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isInteractiveRobot() {
 		return isInteractiveRobot;
@@ -309,7 +295,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	/**
 	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robotinterfaces.IAdvancedRobot}; <code>false</code> otherwise.
+	 * {@link IAdvancedRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isAdvancedRobot() {
 		return isAdvancedRobot;
@@ -321,7 +307,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	/**
 	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robotinterfaces.ITeamRobot}; <code>false</code> otherwise.
+	 * {@link ITeamRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isTeamRobot() {
 		return isTeamRobot;
