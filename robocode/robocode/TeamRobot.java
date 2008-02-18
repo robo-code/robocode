@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
  *     - Updated Javadoc
  *     - The uninitializedException() method does not need a method name as input
  *       parameter anymore
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode;
 
@@ -34,6 +36,7 @@ import robocode.robotinterfaces.peer.*;
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 
@@ -76,9 +79,9 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 *   }
 	 * </pre>
 	 *
-	 * @return a String array containing the names of all your teammates, or
-	 *     <code>null</code> if there is no teammates. The length of the String
-	 *     array is equal to the number of teammates
+	 * @return a String array containing the names of all your team mates, or
+	 *     <code>null</code> if there is no team mates. The length of the String
+	 *     array is equal to the number of team mates
 	 */
 	public String[] getTeammates() {
 		if (peer != null) {
@@ -89,7 +92,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	}
 
 	/**
-	 * Broadcasts a message to all teammates.
+	 * Broadcasts a message to all team mates.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -98,7 +101,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 *   }
 	 * </pre>
 	 *
-	 * @param message the message to broadcast to all teammates
+	 * @param message the message to broadcast to all team mates
 	 */
 	public void broadcastMessage(Serializable message) throws IOException {
 		if (peer != null) {
@@ -109,7 +112,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	}
 
 	/**
-	 * Sends a message to one (or more) teammates.
+	 * Sends a message to one (or more) team mates.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -157,7 +160,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	}
 
 	/**
-	 * This method is called when your robot receives a message from a teammate.
+	 * This method is called when your robot receives a message from a team mate.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
 	 * <p>
@@ -176,8 +179,12 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	public void onMessageReceived(MessageEvent event) {}
 
 	/**
-	 * TeamRobot is listening to team events.
-	 * This method is called by environment, you don't need it.
+	 * This method is implemented by {@link TeamRobot} in order to receive team
+	 * events. This method is called by the game, and should not be used in
+	 * robots.
+	 *
+	 * @since 1.6
+	 *
 	 * @return listener to team events
 	 */
 	public final ITeamEvents getTeamEventListener() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import java.util.Vector;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRobot, IAdvancedEvents {
 
@@ -1277,8 +1278,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void onSkippedTurn(SkippedTurnEvent event) {}
 
 	/**
-	 * AdvancedRobot is listening to advanced events.
-	 * This method is called by environment, you don't need it.
+	 * This method is implemented by {@link AdvancedRobot} in order to receive
+	 * advanced robot events. This method is called by the game, and should not
+	 * be used in robots.
+	 *
+	 * @since 1.6
+	 *
 	 * @return listener to advanced events
 	 */
 	public final IAdvancedEvents getAdvancedEventListener() {

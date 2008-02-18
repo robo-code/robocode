@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,7 @@ import robocode.robotinterfaces.peer.*;
  *
  * @author Nutch Poovarawan from Cubic Creative (designer)
  * @author Flemming N. Larsen (implementor)
+ * @author Pavel Savara (contributor)
  * 
  * @since 1.4
  */
@@ -310,21 +311,27 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public int hitWallBearing = -1;
 
 	/**
-	 * JuniorRobot implements runnable internally.
-	 * This method is called by environment, you don't need it.
-	 * @return runnable implementation
+	 * JuniorRobot implements <code>Runnable</code> internally.
+	 * This method is called by the game and should not be used by robots.
+	 *
+	 * @return a <code>Runnable</code> implementation.
+	 *
+	 * @since 1.6
 	 */
 	public final Runnable getRobotRunnable() {
-		return eventHandler;
+		return getEventHandler();
 	}
 
 	/**
 	 * JuniorRobot is listening to basic events internally.
-	 * This method is called by environment, you don't need it.
-	 * @return listener to robot events
+	 * This method is called by the game and should not be used by robots.
+	 *
+	 * @return listener to basic robot events.
+	 *
+	 * @since 1.6
 	 */
 	public final IBasicEvents getBasicEventListener() {
-		return eventHandler;
+		return getEventHandler();
 	}
 
 	/**
@@ -638,11 +645,12 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * suspend until the gun is ready to fire, and then fire a bullet.
 	 *
 	 * @param power between 0.1 and 3
+	 *
 	 * @see #gunReady
 	 */
 	public void fire(double power) {
 		if (peer != null) {
-			eventHandler.juniorFirePower = power;
+			getEventHandler().juniorFirePower = power;
 			peer.tick();
 		} else {
 			uninitializedException();
@@ -770,9 +778,25 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void onHitWall() {}
 
-	private final RobotEventsHandler eventHandler = new RobotEventsHandler(this);
+	/**
+	 * The robot event handler for this robot.
+	 */
+	private EventHandler eventHandler;
 
-	private void updateJuniorRobotFields() {
+	/**
+	 * Returns the event handler of this robot.
+	 */
+	private final EventHandler getEventHandler() {
+		if (eventHandler == null) {
+			eventHandler = new EventHandler(this);
+		}
+		return eventHandler;
+	}
+
+	/**
+	 * Updates all the public fields of this JuniorRobot.
+	 */
+	private final void updateJuniorRobotFields() {
 		others = peer.getOthers();
 		energy = Math.max(1, (int) (peer.getEnergy() + 0.5));
 		robotX = (int) (peer.getX() + 0.5);
@@ -783,14 +807,19 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		gunReady = (peer.getGunHeat() <= 0);
 	}
 
-	private final class RobotEventsHandler implements IBasicEvents, IJuniorEvents, Runnable {
+	/**
+	 * The JuniorRobot event handler, which implements the basic robot events,
+	 * JuniorRobot event, and Runnable. 
+	 */
+	private final class EventHandler implements IBasicEvents, IJuniorEvents, Runnable {
+
+		private final JuniorRobot junior;
 
 		private double juniorFirePower;
 
-		public RobotEventsHandler(JuniorRobot junior) {
+		public EventHandler(JuniorRobot junior) {
 			this.junior = junior;
 		}
-		public JuniorRobot junior;
 
 		public void run() {
 			junior.fieldWidth = (int) (junior.peer.getBattleFieldWidth() + 0.5);

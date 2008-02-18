@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,8 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Re-work of robot interfaces, added setOut()
  *******************************************************************************/
 package robocode;
 
@@ -31,6 +33,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  * @see TeamRobot
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * 
  * @since 1.4
  */
@@ -55,8 +58,11 @@ public abstract class _RobotBase implements Runnable {
 	public java.io.PrintStream out;
 
 	/**
-	 * This method is called by the game.
+	 * This method is called by the game when setting the output stream for your
+	 * robot.
 	 * Do not call this method!
+	 *
+	 * @since 1.6
 	 */
 	public final void setOut(java.io.PrintStream out) {
 		this.out = out;

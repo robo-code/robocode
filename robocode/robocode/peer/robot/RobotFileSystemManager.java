@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -77,7 +77,7 @@ public class RobotFileSystemManager {
 			return;
 		}
 		if (!quotaMessagePrinted) {
-			robotPeer.out.println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
+			robotPeer.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
 			quotaMessagePrinted = true;
 		}
 		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");

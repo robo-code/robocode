@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -64,6 +64,7 @@ import java.awt.event.MouseWheelEvent;
  * @author Flemming N. Larsen (contributor)
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, IInteractiveEvents {
 
@@ -73,27 +74,36 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	public Robot() {}
 
 	/**
-	 * Robot implements runnable.
-	 * This method is called by environment, you don't need it.
-	 * @return runnable implementation
+	 * Robot implements <code>Runnable</code> internally.
+	 * This method is called by the game and should not be used by robots.
+	 *
+	 * @return a <code>Runnable</code> implementation.
+	 *
+	 * @since 1.6
 	 */
 	public final Runnable getRobotRunnable() {
 		return this;
 	}
 
 	/**
-	 * Robot is listening to basic events.
-	 * This method is called by environment, you don't need it.
-	 * @return listener to robot events
+	 * Robot is listening to basic events internally.
+	 * This method is called by the game and should not be used by robots.
+	 *
+	 * @return listener to basic robot events.
+	 *
+	 * @since 1.6
 	 */
 	public final IBasicEvents getBasicEventListener() {
 		return this;
 	}
 
 	/**
-	 * Robot is listening to system events.
-	 * This method is called by environment, you don't need it.
-	 * @return listener to system events
+	 * Robot is listening to system events internally.
+	 * This method is called by the game and should not be used by robots.
+	 *
+	 * @return listener to system events.
+	 *
+	 * @since 1.6
 	 */
 	public final IInteractiveEvents getSystemEventListener() {
 		return this;

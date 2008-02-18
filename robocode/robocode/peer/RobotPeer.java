@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -95,12 +95,16 @@ import robocode.util.BoundingRectangle;
 
 
 /**
+ * RobotPeer is an object that deals with game mechanics and rules, and makes
+ * sure that robots abides the rules.
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  * @author Titus Chen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
 
@@ -125,7 +129,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	IBasicRobot robot;
 
-	public RobotOutputStream out;
+	private RobotOutputStream out;
 
 	private double energy;
 	private double velocity;
@@ -155,12 +159,12 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	private Arc2D scanArc;
 
-	private boolean isDroid;
 	private boolean isJuniorRobot;
 	private boolean isClassicRobot;
 	private boolean isInteractiveRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
+	private boolean isDroid;
 	private boolean isIORobot;
 	private boolean isRunning;
 	private boolean isStopped;
@@ -267,7 +271,8 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is inherited from JunirRobot base class
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link robotinterfaces.IJuniorRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;
@@ -278,7 +283,9 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is inherited from Robot base class but not from AdvancedRobot
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link robotinterfaces.IBasicRobot}, but not the
+	 * {@line robotinterfaces.IAdvancedRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isClassicRobot() {
 		return isClassicRobot;
@@ -289,7 +296,8 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is implementing IRobot interface
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link robotinterfaces.IInteractiveRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isInteractiveRobot() {
 		return isInteractiveRobot;
@@ -300,7 +308,8 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is implementing IAdvancedRobot interface
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link robotinterfaces.IAdvancedRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isAdvancedRobot() {
 		return isAdvancedRobot;
@@ -311,7 +320,8 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is implementing ITeamRobot interface
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link robotinterfaces.ITeamRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isTeamRobot() {
 		return isTeamRobot;
@@ -321,6 +331,9 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		this.isTeamRobot = value;
 	}
 
+	/**
+	 * Creates and returns a new robot peer proxy  
+	 */
 	public IBasicRobotPeer createProxy() {
 		if (isTeamRobot) {
 			return new TeamRobotPeerProxy(this);
@@ -334,7 +347,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		if (isJuniorRobot) {
 			return new JuniorRobotPeerProxy(this);
 		}
-		throw new AccessControlException("Unknow robot type");
+		throw new AccessControlException("Unknown robot type");
 	}
 
 	public final void move(double distance) {

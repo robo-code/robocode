@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -69,11 +69,12 @@ public final class AboutBox extends JDialog {
 			+ "Titus Chen (bugfixes for robot teleportation, bad wall collision detection, team ranking,<br>"
 			+ "replay scores and robot color flickering),<br>"
 			+ "Robert D. Maupin (optimizations with collections and improved CPU constant benchmark),<br>"
-			+ "Ascander Jr (graphics for ground tiles),<br>" + "Stefan Westen (onPaint method from RobocodeSG),<br>"
+			+ "Ascander Jr (graphics for ground tiles),<br>"
+			+ "Stefan Westen (onPaint method from RobocodeSG),<br>"
 			+ "Nathaniel Troutman (fixing memory leaks due to circular references)<br>"
 			+ "Aaron Rotenberg (for the Robot Cache Cleaner utility),<br>"
-			+ "Julian Kent (nano precision timing of allowed robot time),</br>" + "<br>You are using Java " + TAG_JAVA_VERSION
-			+ " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
+			+ "Julian Kent (nano precision timing of allowed robot time),</br>"
+			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
 	// Robocode version
 	private String robocodeVersion;

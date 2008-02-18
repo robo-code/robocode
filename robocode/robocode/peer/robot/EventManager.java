@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,6 +57,7 @@ import robocode.util.Utils;
  * @author Matthew Reeder (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class EventManager implements IEventManager {
 	private RobotPeer robotPeer = null;
@@ -154,12 +155,14 @@ public class EventManager implements IEventManager {
 	 * @see #onBulletHitBullet
 	 * @see #onBulletMissed
 	 * @see #onHitByBullet
+	 * @see #onHitByRobot
 	 * @see #onHitRobot
 	 * @see #onHitWall
 	 * @see #onSkippedTurn
 	 * @see robocode.BulletHitEvent
 	 * @see robocode.BulletMissedEvent
 	 * @see robocode.HitByBulletEvent
+	 * @see robocode.HitByRobotEvent
 	 * @see robocode.HitRobotEvent
 	 * @see robocode.HitWallEvent
 	 * @see robocode.SkippedTurnEvent
