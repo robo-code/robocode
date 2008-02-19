@@ -23,6 +23,8 @@ import java.awt.Color;
 
 import static robocode.util.Utils.normalRelativeAngle;
 import robocode.util.Utils;
+import robocode.peer.GunFireCondition;
+import robocode.peer.GunReadyCondition;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.*;
 

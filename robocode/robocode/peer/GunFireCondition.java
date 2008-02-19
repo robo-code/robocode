@@ -6,27 +6,31 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
-package robocode;
+package robocode.peer;
 
 
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
+import robocode.Condition;
+import robocode.robotinterfaces.peer.IGettersRobotPeer;
 
 
 /**
- * @author Pavel Savara (refactoring)
+ * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  */
-public class GunReadyCondition extends Condition {
-	private IJuniorRobotPeer peer;
+public class GunFireCondition extends Condition {
+	private IGettersRobotPeer peer;
 
-	public GunReadyCondition(IJuniorRobotPeer peer) {
+	public GunFireCondition(IGettersRobotPeer peer) {
 		this.peer = peer;
 	}
-
+	
 	@Override
 	public boolean test() {
-		return (peer.getGunHeat() <= 0);
+		return (peer.getGunHeat() <= 0 && peer.getGunTurnRemaining() == 0);
 	}
 }
