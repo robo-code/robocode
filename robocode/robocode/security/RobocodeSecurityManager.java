@@ -75,17 +75,33 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	public void addSafeContext() {
 		checkPermission(new RobocodePermission("addSafeContext"));
-		safeSecurityContexts.add(getSecurityContext());
+		Object context = getSecurityContext();
+		if (!safeSecurityContexts.contains(context)) {
+			safeSecurityContexts.add(0, context);
+		}
 	}
 
 	public void addSafeThread(Thread safeThread) {
 		checkPermission(new RobocodePermission("addSafeThread"));
-		safeThreads.add(safeThread);
+		if (!safeThreads.contains(safeThread)){
+			safeThreads.add(0, safeThread);
+		}
+	}
+
+	public void addSafeThreadGroups() {
+		ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+		while (tg != null) {
+			addSafeThreadGroup(tg);
+			tg = tg.getParent();
+		}
 	}
 
 	public void addSafeThreadGroup(ThreadGroup safeThreadGroup) {
 		checkPermission(new RobocodePermission("addSafeThreadGroup"));
-		safeThreadGroups.add(safeThreadGroup);
+		if (!safeThreadGroups.contains(safeThreadGroup)){
+			safeThreadGroups.add(0, safeThreadGroup);
+		}
 	}
 
 	@Override
@@ -456,7 +472,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		return false;
 	}
 
-	private boolean isSafeContext() {
+	public boolean isSafeContext() {
 		return safeSecurityContexts.contains(getSecurityContext());
 	}
 

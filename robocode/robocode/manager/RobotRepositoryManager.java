@@ -98,7 +98,7 @@ public class RobotRepositoryManager {
 	private FileSpecificationDatabase getRobotDatabase() {
 		if (robotDatabase == null) {
 			if (manager.isGUIEnabled()) {
-				manager.getWindowManager().getRobocodeFrame().setStatus("Reading robot database");
+				manager.getWindowManager().setStatus("Reading robot database");
 			}
 			robotDatabase = new FileSpecificationDatabase();
 			try {
@@ -122,7 +122,7 @@ public class RobotRepositoryManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("Refreshing robot database");
+			manager.getWindowManager().setStatus("Refreshing robot database");
 		}
 
 		updatedJarList.clear();
@@ -140,7 +140,7 @@ public class RobotRepositoryManager {
 		// Clean up cache -- delete nonexistent jar directories
 		cleanupCache();
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("Cleaning up robot database");
+			manager.getWindowManager().setStatus("Cleaning up robot database");
 		}
 		cleanupDatabase();
 
@@ -162,7 +162,7 @@ public class RobotRepositoryManager {
 		File f = getRobotsDirectory();
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("Reading: " + f.getName());
+			manager.getWindowManager().setStatus("Reading: " + f.getName());
 		}
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", true);
@@ -182,7 +182,7 @@ public class RobotRepositoryManager {
 
 		f = getRobotCache();
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("Reading: " + getRobotCache());
+			manager.getWindowManager().setStatus("Reading: " + getRobotCache());
 		}
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", false);
@@ -192,13 +192,13 @@ public class RobotRepositoryManager {
 
 		if (write) {
 			if (manager.isGUIEnabled()) {
-				manager.getWindowManager().getRobocodeFrame().setStatus("Saving robot database");
+				manager.getWindowManager().setStatus("Saving robot database");
 			}
 			saveRobotDatabase();
 		}
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("Adding robots to repository");
+			manager.getWindowManager().setStatus("Adding robots to repository");
 		}
 
 		for (IFileSpecification fs : fileSpecificationList) {
@@ -223,11 +223,11 @@ public class RobotRepositoryManager {
 					JOptionPane.OK_OPTION);
 		}
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("Sorting repository");
+			manager.getWindowManager().setStatus("Sorting repository");
 		}
 		repository.sortRobotSpecifications();
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("");
+			manager.getWindowManager().setStatus("");
 		}
 
 		return repository;
@@ -250,7 +250,7 @@ public class RobotRepositoryManager {
 						continue;
 					}
 					if (manager.isGUIEnabled()) {
-						manager.getWindowManager().getRobocodeFrame().setStatus("Cleaning up cache: Removing " + file);
+						manager.getWindowManager().setStatus("Cleaning up cache: Removing " + file);
 					}
 					FileUtil.deleteDir(file);
 				}
@@ -501,7 +501,7 @@ public class RobotRepositoryManager {
 		String key = spec.getFilePath();
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("Updating database: " + spec.getName());
+			manager.getWindowManager().setStatus("Updating database: " + spec.getName());
 		}
 		if (!spec.isDevelopmentVersion()
 				&& getRobotDatabase().contains(spec.getFullClassName(), spec.getVersion(), false)) {
@@ -593,7 +593,7 @@ public class RobotRepositoryManager {
 			} catch (IOException e) {}
 		}
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().setStatus("Extracting .jar: " + jarSpecification.getFileName());
+			manager.getWindowManager().setStatus("Extracting .jar: " + jarSpecification.getFileName());
 		}
 
 		File dest;
@@ -647,7 +647,7 @@ public class RobotRepositoryManager {
 
 			while (entry != null) {
 				if (manager.isGUIEnabled()) {
-					manager.getWindowManager().getRobocodeFrame().setStatus(statusPrefix + " (" + entry.getName() + ")");
+					manager.getWindowManager().setStatus(statusPrefix + " (" + entry.getName() + ")");
 				}
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
@@ -667,7 +667,7 @@ public class RobotRepositoryManager {
 							always = true;
 						} else if (r == 2) {
 							if (manager.isGUIEnabled()) {
-								manager.getWindowManager().getRobocodeFrame().setStatus(entry.getName() + " skipped.");
+								manager.getWindowManager().setStatus(entry.getName() + " skipped.");
 							}
 							entry = jarIS.getNextJarEntry();
 							continue;

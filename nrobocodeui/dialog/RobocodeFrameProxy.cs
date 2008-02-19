@@ -35,35 +35,7 @@ namespace nrobocodeui.dialog
             return frame.BattleViewProxy;
         }
 
-        public void setStatus(string value)
-        {
-            synchronizer.Invoke(new Action<string>(frame.setStatus), new object[] { value });
-        }
-
-        public void setTitle(string value)
-        {
-            synchronizer.Invoke(new Action<string>(frame.setTitle), new object[] { value });
-        }
-
-        public void messageError(string value)
-        {
-            synchronizer.Invoke(new Action<string>(frame.messageWarning), new object[] { value });
-        }
-
-        public void messageWarning(string value)
-        {
-            synchronizer.Invoke(new Action<string>(frame.messageWarning), new object[] { value });
-        }
-
-        public void setEnableBattleSaveAsMenuItem(bool value)
-        {
-            synchronizer.Invoke(new Action<bool>(frame.setEnableBattleSaveAsMenuItem), new object[] { value });
-        }
-
-        public void setEnableBattleSaveMenuItem(bool value)
-        {
-            synchronizer.Invoke(new Action<bool>(frame.setEnableBattleSaveMenuItem), new object[] { value });
-        }
+        #region Block
 
         public string saveBattleDialog(string file)
         {
@@ -75,39 +47,68 @@ namespace nrobocodeui.dialog
             synchronizer.Invoke(new Action<bool>(frame.setIconified), new object[] { value });
         }
 
-        public void setEnableStopButton(bool value)
-        {
-            synchronizer.Invoke(new Action<bool>(frame.setEnableStopButton), new object[] { value });
-        }
-
-        public void setEnableRestartButton(bool value)
-        {
-            synchronizer.Invoke(new Action<bool>(frame.setEnableRestartButton), new object[] { value });
-        }
-
-        public void setEnableReplayButton(bool value)
-        {
-            synchronizer.Invoke(new Action<bool>(frame.setEnableReplayButton), new object[] { value });
-        }
-
         public void validate()
         {
             synchronizer.Invoke(new Action(frame.validate), new object[] {});
         }
 
+        #endregion
+
+        #region Send
+
+        public void setStatus(string value)
+        {
+            synchronizer.BeginInvoke(new Action<string>(frame.setStatus), new object[] { value });
+        }
+
+        public void setTitle(string value)
+        {
+            synchronizer.BeginInvoke(new Action<string>(frame.setTitle), new object[] { value });
+        }
+
+        public void setEnableBattleSaveAsMenuItem(bool value)
+        {
+            synchronizer.BeginInvoke(new Action<bool>(frame.setEnableBattleSaveAsMenuItem), new object[] { value });
+        }
+
+        public void setEnableBattleSaveMenuItem(bool value)
+        {
+            synchronizer.BeginInvoke(new Action<bool>(frame.setEnableBattleSaveMenuItem), new object[] { value });
+        }
+
+        public void setEnableStopButton(bool value)
+        {
+            synchronizer.BeginInvoke(new Action<bool>(frame.setEnableStopButton), new object[] { value });
+        }
+
+        public void setEnableRestartButton(bool value)
+        {
+            synchronizer.BeginInvoke(new Action<bool>(frame.setEnableRestartButton), new object[] { value });
+        }
+
+        public void setEnableReplayButton(bool value)
+        {
+            synchronizer.BeginInvoke(new Action<bool>(frame.setEnableReplayButton), new object[] { value });
+        }
+
         public void clearRobotButtons()
         {
-            synchronizer.Invoke(new Action(frame.clearRobotButtons), new object[] { });
+            synchronizer.BeginInvoke(new Action(frame.clearRobotButtons), new object[] { });
         }
 
         public void addRobotButton(IRobotDialogManager irdm, RobotPeer rp)
         {
-            synchronizer.Invoke(new Action<IRobotDialogManager, RobotPeer>(frame.addRobotButton), new object[] { irdm, rp });
+            synchronizer.BeginInvoke(new Action<IRobotDialogManager, RobotPeer>(frame.addRobotButton), new object[] { irdm, rp });
         }
+
+        #endregion
+
+        #region Immediate
 
         public bool isIconified()
         {
-            return (bool)synchronizer.Invoke(new Delegate<bool>(frame.isIconified), new object[] { });
+            //return (bool)synchronizer.Invoke(new Delegate<bool>(frame.isIconified), new object[] { });
+            return frame.isIconified();
         }
 
 
@@ -118,5 +119,7 @@ namespace nrobocodeui.dialog
         public void showRobocodeFrame(bool b)
         {
         }
+
+        #endregion
     }
 }

@@ -56,16 +56,18 @@ import robocode.ui.IWindowManager;
  */
 public class Robocode {
 
-	private class Setup {
-		boolean minimize = false;
-		String battleFilename = null;
-		String resultsFilename = null;
-		boolean runInThisThread = true;
-		int tps = 0;
+	public class Setup {
+		public boolean minimize = false;
+		public String battleFilename = null;
+		public String resultsFilename = null;
+		public boolean runInThisThread = true;
+		public boolean securityOption = true;
+		public boolean experimentalOption = false;
+		public int tps = 0;
 	}
 
 	private RobocodeManager manager;
-	private Setup setup;
+	public Setup setup;
 
 	/**
 	 * Use the command-line to start Robocode.
@@ -226,40 +228,33 @@ public class Robocode {
 		Policy.setPolicy(securityPolicy);
 
 		// For John Burkey at Apple
-		boolean securityOn = true;
-		boolean experimentalOn = false;
 
 		if (System.getProperty("NOSECURITY", "false").equals("true")) {
-			securityOn = false;
+			setup.securityOption = false;
 		}
 		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-			experimentalOn = true;
+			setup.experimentalOption = true;
 		}
 
-		if (securityOn) {
-			System.setSecurityManager(
-					new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, experimentalOn));
+		if (setup.securityOption) {
+			RobocodeSecurityManager robocodeSecurityManager = new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, setup.experimentalOption);
+			System.setSecurityManager(robocodeSecurityManager);
+			robocodeSecurityManager.addSafeThreadGroups();
 
 			RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
 
-			ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-			while (tg != null) {
-				((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
-				tg = tg.getParent();
-			}
 			ISecurityExtension extension = manager.getSecurityExtension();
 			if (extension!=null){
 				extension.initialize();
 			}
 		}
-		if (!securityOn) {
-			manager.getWindowManager().getRobocodeFrame().messageWarning(
+		if (!setup.securityOption) {
+			manager.getWindowManager().messageWarning(
 					"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
 					+ "You should only run robots which you trust!");
 		}
-		if (experimentalOn) {
-			manager.getWindowManager().getRobocodeFrame().messageWarning(
+		if (setup.experimentalOption) {
+			manager.getWindowManager().messageWarning(
 					"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
 					+ "You should only run robots which you trust!");
 		}

@@ -54,7 +54,7 @@ public class CpuManager {
 	}
 	
 	public void calculateCpuConstant() {
-		manager.getWindowManager().getRobocodeFrame().setStatus("Estimating CPU speed, please wait...");
+		manager.getWindowManager().setStatus("Estimating CPU speed, please wait...");
 
 		setCpuConstant();
 
@@ -62,7 +62,7 @@ public class CpuManager {
 		manager.getProperties().setCpuConstant(cpuConstant);
 		manager.saveProperties();
 
-		manager.getWindowManager().getRobocodeFrame().setStatus("");
+		manager.getWindowManager().setStatus("");
 	}
 	
 	private void setCpuConstant() {

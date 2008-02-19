@@ -693,18 +693,6 @@ public class RobocodeFrame extends JFrame implements IRobocodeFrame {
 		}
 	}
 
-	public void setStatus(String s) {
-		WindowUtil.setStatus(s);
-	}
-
-	public void messageError(String s) {
-		WindowUtil.messageError(s);
-	}
-
-	public void messageWarning(String s) {
-		WindowUtil.messageWarning(s);
-	}
-
 	/**
 	 * Gets the iconified.
 	 *

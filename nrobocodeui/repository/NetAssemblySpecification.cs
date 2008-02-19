@@ -25,7 +25,7 @@ using String=System.String;
 
 namespace nrobocodeui.repository
 {
-    public class NetAssemblySpecification : FileSpecification, IRobotSpecification
+    public class NetAssemblySpecification : FileSpecification, IRobotFileSpecification
     {
 	    private static String ROBOT_DESCRIPTION = "robot.description";
 	    private static String ROBOT_AUTHOR_NAME = "robot.author.name";

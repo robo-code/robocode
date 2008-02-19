@@ -475,4 +475,16 @@ public class WindowManager implements IWindowManager {
 	public void setRobocodeManager(RobocodeManager robocodeManager) {
 		manager = robocodeManager;
 	}
+
+	public void setStatus(String s) {
+		WindowUtil.setStatus(s);
+	}
+
+	public void messageError(String s) {
+		WindowUtil.messageError(s);
+	}
+
+	public void messageWarning(String s) {
+		WindowUtil.messageWarning(s);
+	}
 }

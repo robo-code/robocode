@@ -57,24 +57,32 @@ namespace nrobocodeui.battleview
             synchronizer.Invoke(new Action(battleView.update), new object[] { });
         }
 
+        #region Fast
+
         public bool isDisplayTPS()
         {
-            return (bool)synchronizer.Invoke(new Delegate<bool>(battleView.isDisplayTPS), new object[] { });
+            //return (bool)synchronizer.Invoke(new Delegate<bool>(battleView.isDisplayTPS), new object[] { });
+            return battleView.isDisplayTPS();
         }
 
         public bool isDisplayFPS()
         {
-            return (bool)synchronizer.Invoke(new Delegate<bool>(battleView.isDisplayFPS), new object[] { });
+            //return (bool)synchronizer.Invoke(new Delegate<bool>(battleView.isDisplayFPS), new object[] { });
+            return battleView.isDisplayFPS();
         }
 
         public int getWidth()
         {
-            return (int)synchronizer.Invoke(new Delegate<int>(battleView.getWidth), new object[] { });
+            //return (int)synchronizer.Invoke(new Delegate<int>(battleView.getWidth), new object[] { });
+            return battleView.getWidth();
         }
 
         public int getHeight()
         {
-            return (int)synchronizer.Invoke(new Delegate<int>(battleView.getHeight), new object[] { });
+            //return (int)synchronizer.Invoke(new Delegate<int>(battleView.getHeight), new object[] { });
+            return battleView.getHeight();
         }
+
+        #endregion
     }
 }

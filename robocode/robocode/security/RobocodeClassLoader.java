@@ -170,8 +170,10 @@ public class RobocodeClassLoader extends ClassLoader implements IRobocodeClassLo
 				// "code source" is simply the robot itself.
 				Permissions p = new Permissions();
 
-				protectionDomain = new ProtectionDomain(
-						new CodeSource(f.toURL(), (java.security.cert.Certificate[]) null), p);
+				CodeSource source = new CodeSource(f.toURL(), (java.security.cert.Certificate[]) null);
+				
+				protectionDomain = new ProtectionDomain(source, p);
+				//TODO ZAMO protectionDomain = new ProtectionDomain(source, p ,this ,null);
 			} catch (MalformedURLException e) {
 				throw new ClassNotFoundException("Unable to build protection domain.");
 			}

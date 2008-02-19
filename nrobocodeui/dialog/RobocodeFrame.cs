@@ -86,16 +86,6 @@ namespace nrobocodeui.dialog
             return SaveBattleAs(file);
         }
 
-        public void messageError(string str)
-        {
-            MessageBox.Show(str, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        public void messageWarning(string str)
-        {
-            MessageBox.Show(str, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
         public void setIconified(bool b)
         {
             if (b)
@@ -131,6 +121,13 @@ namespace nrobocodeui.dialog
 
         public void clearRobotButtons()
         {
+            foreach (Button rb in fpRobotButtons.Controls)
+            {
+                if (rb != null && rb.Tag is RobotDialog)
+                {
+                    ((RobotDialog)rb.Tag).Close();
+                }
+            }
             fpRobotButtons.Controls.Clear();
         }
 
@@ -283,8 +280,13 @@ namespace nrobocodeui.dialog
             {
                 RobotPeer robotPeer = rb.Tag as RobotPeer;
                 RobotDialog rd = new RobotDialog();
-                rd.setRobotPeer(robotPeer);
+                rd.setRobotPeer(robotPeer, rb);
                 rd.Show();
+                rb.Tag = rd;
+            }
+            if (rb != null && rb.Tag is RobotDialog)
+            {
+                ((RobotDialog)rb.Tag).Activate();
             }
         }
 

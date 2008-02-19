@@ -16,11 +16,15 @@ namespace nrobocodeui.dialog
 
 
         private BufferedPipedInputStream stream;
+        private Button bt;
+        private RobotPeer robotPeer;
 
-        public void setRobotPeer(RobotPeer robotPeer) 
+        public void setRobotPeer(RobotPeer robotPeer, Button bt) 
         {
             stream = robotPeer.getOut().getInputStream();
             Text = robotPeer.getName();
+            this.bt = bt;
+            this.robotPeer = robotPeer;
         }
 
         StringBuilder sb = new StringBuilder();
@@ -34,6 +38,7 @@ namespace nrobocodeui.dialog
         private void RobotDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
             backgroundWorker.CancelAsync();
+            bt.Tag = robotPeer;
         }
 
         private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)

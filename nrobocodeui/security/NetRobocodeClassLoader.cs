@@ -31,14 +31,14 @@ namespace nrobocodeui.security
             robotClassManager = rcm;
         }
 
-        public bool couldLoad(IRobotSpecification irs)
+        public bool couldLoad(IRobotFileSpecification irs)
         {
             return (irs is NetAssemblySpecification);
         }
 
         public Class loadRobotClass(string str, bool b)
         {
-            IRobotSpecification specification = robotClassManager.getRobotSpecification();
+            IRobotFileSpecification specification = robotClassManager.getRobotSpecification();
 
             //TODO ZAMO security
             Assembly assembly = Assembly.LoadFile(specification.getFilePath());

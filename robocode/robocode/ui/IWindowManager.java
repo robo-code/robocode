@@ -27,4 +27,8 @@ public interface IWindowManager extends ILoadableManager {
 	void setLookAndFeel();
 	boolean initializeDisplay();
 	void runDisplay(Robocode robocode);
+
+	void setStatus(String status);
+	void messageError(String message);
+	void messageWarning(String message);
 }

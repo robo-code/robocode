@@ -26,7 +26,7 @@ namespace nrobocodeui.manager
     /// </summary>
     public class WindowManager : LoadableManagerBase, IWindowManager
     {
-        private RobocodeFrameProxy  frameProxy;
+        private RobocodeFrameProxy frameProxy;
         private RobocodeFrame frame;
         private Thread battleWorker;
         private Robocode robocode;
@@ -99,12 +99,46 @@ namespace nrobocodeui.manager
         {
         }
 
+        private SplashScreen splashScreen=null;
         public void showSplashScreen()
         {
+		    splashScreen = new SplashScreen();
+            splashScreen.Show(getRobocodeFrame() as Form);
+            splashScreen.Update();
+
+            RobocodeManager.getRobotRepositoryManager().getRobotRepository();
+
+            RobocodeManager.getImageManager();
+            RobocodeManager.getCpuManager().getCpuConstant();
+
+		    splashScreen.Close();
+        }
+
+        public void setStatus(string str)
+        {
+            if (splashScreen!=null)
+            {
+                splashScreen.setStatus(str);
+            }
+            else
+            {
+                frameProxy.setStatus(str);
+            }
         }
 
         public void showRobocodeFrame(bool b)
         {
+            frameProxy.setIconified(!b);
+        }
+
+        public void messageError(string str)
+        {
+            MessageBox.Show(str, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public void messageWarning(string str)
+        {
+            MessageBox.Show(str, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

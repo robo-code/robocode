@@ -14,6 +14,7 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 using robocode.battle;
+using robocode.security;
 
 namespace nrobocodeui.dialog
 {
@@ -46,6 +47,11 @@ namespace nrobocodeui.dialog
 
         public void run()
         {
+            /*RobocodeSecurityManager rsm = java.lang.System.getSecurityManager() as RobocodeSecurityManager;
+            if (rsm != null)
+            {
+                rsm.addSafeContext();
+            }*/
             manager.getBattleManager().startNewBattle(battleProperties, false, false);
         }
     

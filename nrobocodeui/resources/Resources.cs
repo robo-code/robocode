@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using nrobocodeui.Properties;
 
 namespace nrobocodeui.resources
 {

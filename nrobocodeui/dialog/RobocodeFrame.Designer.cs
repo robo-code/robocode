@@ -446,7 +446,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(517, 45);
+            this.toolStrip1.Size = new System.Drawing.Size(486, 45);
             this.toolStrip1.TabIndex = 20;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -570,6 +570,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "RobocodeFrame";
             this.Text = "Robocode";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.RobocodeFrame_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

@@ -21,10 +21,6 @@ import java.io.File;
  * @author Pavel Savara (original)
  */
 public interface IRobocodeFrame {
-	void setStatus(String status);
-	void messageError(String message);
-	void messageWarning(String message);
-
 	boolean isIconified();
 	void setIconified(boolean value);
 	void clearRobotButtons();
