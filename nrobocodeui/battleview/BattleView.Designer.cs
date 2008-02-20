@@ -37,6 +37,15 @@ namespace nrobocodeui.battleview
             this.BackColor = System.Drawing.Color.Black;
             this.DoubleBuffered = true;
             this.Name = "BattleView";
+            this.MouseLeave += new System.EventHandler(this.BattleView_MouseLeave);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BattleView_MouseMove);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.BattleView_KeyUp);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BattleView_MouseClick);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BattleView_MouseDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BattleView_KeyPress);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BattleView_MouseUp);
+            this.MouseEnter += new System.EventHandler(this.BattleView_MouseEnter);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BattleView_KeyDown);
             this.ResumeLayout(false);
 
         }

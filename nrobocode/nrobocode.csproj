@@ -45,11 +45,31 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\BulletHitBulletEvent.cs" />
+    <Compile Include="Events\BulletHitEvent.cs" />
+    <Compile Include="Events\BulletMissedEvent.cs" />
+    <Compile Include="Events\DeathEvent.cs" />
+    <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\FakeComponent.cs" />
+    <Compile Include="Events\HitByBulletEvent.cs" />
+    <Compile Include="Events\HitRobotEvent.cs" />
+    <Compile Include="Events\HitWallEvent.cs" />
+    <Compile Include="Events\KeyEvent.cs" />
+    <Compile Include="Events\KeyPressEvent.cs" />
+    <Compile Include="Events\MouseEvent.cs" />
+    <Compile Include="Events\MouseWheelEvent.cs" />
+    <Compile Include="Events\RobotDeathEvent.cs" />
+    <Compile Include="Events\ScannedRobotEvent.cs" />
+    <Compile Include="Events\StatusEvent.cs" />
+    <Compile Include="Events\WinEvent.cs" />
     <Compile Include="JuniorRobot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Robot.cs" />
     <Compile Include="robot\AuthorNameAttribute.cs" />
     <Compile Include="robot\AuthorEmailAttribute.cs" />
     <Compile Include="robot\AuthorWebSitelAttribute.cs" />

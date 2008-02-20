@@ -166,29 +166,6 @@ namespace nrobocodeui.battleview
 
         #endregion
 
-        #region Events
-
-        protected override void OnClientSizeChanged(EventArgs e)
-        {
-            base.OnClientSizeChanged(e);
-            SetScale();
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            if (battle != null && battle.isRunning())
-            {
-                //TODO ? update();
-                DrawBattle(e.Graphics);
-            }
-            else
-            {
-                paintRobocodeLogo(e.Graphics);
-            }
-        }
-
-        #endregion
-
         #region Draw root
 
         private void DrawBattle(Graphics g)
@@ -210,8 +187,7 @@ namespace nrobocodeui.battleview
             float dy = (float)(getHeight() - scale * battleField.getHeight()) / 2;
 
             // Translate and scale the Graphics context
-            Matrix at;
-            at = new Matrix();
+            Matrix at = new Matrix();
             at.Translate(dx, dy);
             at.Scale((float)scale, (float)scale);
             g.Transform = at;
@@ -247,7 +223,6 @@ namespace nrobocodeui.battleview
             List robots = battle.getRobots();
             object[] robotPeers = robots.toArray();
 
-    		float x, y;
             Matrix at;
     		int battleFieldHeight = battle.getBattleField().getHeight();
 
@@ -260,8 +235,8 @@ namespace nrobocodeui.battleview
                 {
 			        if (r.isDead())
                     {
-				        x = (float)r.getX();
-				        y = (float)(battleFieldHeight - r.getY());
+				        float x = (float)r.getX();
+				        float y = (float)(battleFieldHeight - r.getY());
 
                         at = new Matrix();
                         at.Translate(x, y);
@@ -287,8 +262,7 @@ namespace nrobocodeui.battleview
                 float y = battleField.getHeight() - (float)robot.getY();
                 bool droid = robot.isDroid();
 
-                Matrix at;
-                at = new Matrix();
+                Matrix at = new Matrix();
                 at.Translate(x, y);
                 at.Rotate(Radians.ToDegrees(robot.getHeading()));
 
@@ -369,8 +343,8 @@ namespace nrobocodeui.battleview
 
         private Bitmap groundImage;
         private int[,] groundTiles;
-        private int groundTileWidth = 64;
-        private int groundTileHeight = 64;
+        private const int groundTileWidth = 64;
+        private const int groundTileHeight = 64;
 
         private void CreateGroundImage()
         {
@@ -427,15 +401,14 @@ namespace nrobocodeui.battleview
 
 		    g.Clip = new Region();
 
-		    float x, y;
-            Matrix at;
+	        Matrix at;
 
             int battleFieldHeight = battle.getBattleField().getHeight();
 
             foreach (BulletPeer bullet in battle.getBullets().toArray())
             {
-			    x = (float)bullet.getPaintX();
-                y = (float)(battleFieldHeight - bullet.getPaintY());
+                float x = (float)bullet.getPaintX();
+                float y = (float)(battleFieldHeight - bullet.getPaintY());
 
                 at = new Matrix();
                 at.Translate(x, y);
@@ -452,16 +425,7 @@ namespace nrobocodeui.battleview
 
                     java.awt.Color color = bullet.getColor();
 
-                    Color bulletColor;
-                    if (color == null)
-                    {
-                        bulletColor = Color.White;
-				    }
-                    else
-                    {
-                        bulletColor = Color.FromArgb(color.getRGB());
-                    }
-
+                    Color bulletColor = color == null ? Color.White : Color.FromArgb(color.getRGB());
 
                     g.FillEllipse(new SolidBrush(bulletColor), bulletArea.GetBounds(g));
 
@@ -592,6 +556,193 @@ namespace nrobocodeui.battleview
             Bitmap logo = resources.images.robocode_logo;
             g.DrawImage(logo, (Width - logo.Width) / 2, (Height - logo.Height) / 2);
         }
+
+        #endregion
+
+        #region Events
+
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            try
+            {
+                base.OnClientSizeChanged(e);
+                SetScale();
+            }
+            catch(Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            try
+            {
+                if (battle != null && battle.isRunning())
+                {
+                    //TODO ? update();
+                    DrawBattle(e.Graphics);
+                }
+                else
+                {
+                    paintRobocodeLogo(e.Graphics);
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_MouseEnter(object sender, EventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    MouseEventArgs src = new MouseEventArgs(System.Windows.Forms.MouseButtons.None, 0, 0, 0, 0);
+                    battle.mouseEntered(new nrobocode.Events.MouseEvent(src, java.awt.@event.MouseEvent.MOUSE_ENTERED));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_MouseLeave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    MouseEventArgs src = new MouseEventArgs(System.Windows.Forms.MouseButtons.None, 0, 0, 0, 0);
+                    battle.mouseExited(new nrobocode.Events.MouseEvent(src, java.awt.@event.MouseEvent.MOUSE_EXITED));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    battle.mouseClicked(new nrobocode.Events.MouseEvent(e, java.awt.@event.MouseEvent.MOUSE_CLICKED));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_MouseMove(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    battle.mouseMoved(new nrobocode.Events.MouseEvent(e, java.awt.@event.MouseEvent.MOUSE_MOVED));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    battle.mousePressed(new nrobocode.Events.MouseEvent(e, java.awt.@event.MouseEvent.MOUSE_PRESSED));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    battle.mouseReleased(new nrobocode.Events.MouseEvent(e, java.awt.@event.MouseEvent.MOUSE_RELEASED));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    battle.processKeyEvent(new nrobocode.Events.KeyEvent(e, true));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    battle.processKeyEvent(new nrobocode.Events.KeyPressEvent(e));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void BattleView_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (battle != null)
+                {
+                    battle.processKeyEvent(new nrobocode.Events.KeyEvent(e, false));
+                }
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        //TODO Drag event ?
 
         #endregion
     }

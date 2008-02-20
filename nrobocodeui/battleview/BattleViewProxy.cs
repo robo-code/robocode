@@ -16,70 +16,116 @@ namespace nrobocodeui.battleview
         {
             this.battleView = battleView;
             this.synchronizer = synchronizer;
+            closing = false;
         }
 
         private IBattleView battleView;
         private ISynchronizeInvoke synchronizer;
+        private bool closing;
 
+        public void OnClosing()
+        {
+            ISynchronizeInvoke s = synchronizer;
+            closing = true;
+        }
 
         public void setBattleField(BattleField value)
         {
-            synchronizer.Invoke(new System.Action<BattleField>(battleView.setBattleField), new object[] { value });
+            if (closing)
+                return;
+            //lock (synchronizer)
+            {
+                synchronizer.Invoke(new System.Action<BattleField>(battleView.setBattleField), new object[] {value});
+            }
         }
 
         public void setVisible(bool value)
         {
-            synchronizer.Invoke(new System.Action<bool>(battleView.setVisible), new object[] { value });
+            if (closing)
+                return;
+            //lock (synchronizer)
+            {
+                synchronizer.Invoke(new System.Action<bool>(battleView.setVisible), new object[] {value});
+            }
         }
 
         public void setInitialized(bool value)
         {
-            synchronizer.Invoke(new System.Action<bool>(battleView.setInitialized), new object[] { value });
+            if (closing)
+                return;
+            //lock (synchronizer)
+            {
+                synchronizer.Invoke(new System.Action<bool>(battleView.setInitialized), new object[] {value});
+            }
         }
 
         public void setBattle(Battle value)
         {
-            synchronizer.Invoke(new System.Action<Battle>(battleView.setBattle), new object[] { value });
+            if (closing)
+                return;
+            //lock (synchronizer)
+            {
+                synchronizer.Invoke(new System.Action<Battle>(battleView.setBattle), new object[] {value});
+            }
         }
 
         public void repaint()
         {
-            synchronizer.Invoke(new Action(battleView.repaint), new object[]{});
+            if (closing)
+                return;
+            //lock (synchronizer)
+            {
+                synchronizer.Invoke(new Action(battleView.repaint), new object[] {});
+            }
         }
 
         public void setDisplayOptions()
         {
-            synchronizer.Invoke(new Action(battleView.setDisplayOptions), new object[] { });
+            if (closing)
+                return;
+            //lock (synchronizer)
+            {
+                synchronizer.Invoke(new Action(battleView.setDisplayOptions), new object[] {});
+            }
         }
 
         public void update()
         {
-            synchronizer.Invoke(new Action(battleView.update), new object[] { });
+            if (closing)
+                return;
+            //lock (synchronizer)
+            {
+                synchronizer.Invoke(new Action(battleView.update), new object[] {});
+            }
         }
 
         #region Fast
 
         public bool isDisplayTPS()
         {
-            //return (bool)synchronizer.Invoke(new Delegate<bool>(battleView.isDisplayTPS), new object[] { });
+            if (closing)
+                return false;
             return battleView.isDisplayTPS();
         }
 
         public bool isDisplayFPS()
         {
-            //return (bool)synchronizer.Invoke(new Delegate<bool>(battleView.isDisplayFPS), new object[] { });
+            if (closing)
+                return false;
             return battleView.isDisplayFPS();
         }
 
         public int getWidth()
         {
-            //return (int)synchronizer.Invoke(new Delegate<int>(battleView.getWidth), new object[] { });
+            if (closing)
+                return 0;
             return battleView.getWidth();
         }
 
         public int getHeight()
         {
-            //return (int)synchronizer.Invoke(new Delegate<int>(battleView.getHeight), new object[] { });
+            if (closing)
+                return 0;
             return battleView.getHeight();
         }
 

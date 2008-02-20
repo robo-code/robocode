@@ -572,6 +572,7 @@
             this.Text = "Robocode";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.RobocodeFrame_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RobocodeFrame_FormClosing);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);

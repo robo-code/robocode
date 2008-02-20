@@ -140,6 +140,32 @@ namespace nrobocodeui.repository
 
             if (!typeof(IBasicRobot).IsAssignableFrom(type))
                 return false;
+
+            if (typeof(Droid).IsAssignableFrom(type))
+            {
+                droid = true;
+            }
+            if (typeof(IJuniorRobot).IsAssignableFrom(type))
+            {
+                juniorRobot = true;
+            }
+            else if (typeof(ITeamRobot).IsAssignableFrom(type))
+            {
+                teamRobot = true;
+            }
+            else if (typeof(IAdvancedRobot).IsAssignableFrom(type))
+            {
+                advancedRobot = true;
+            }
+            else if (typeof(IInteractiveRobot).IsAssignableFrom(type))
+            {
+                interactiveRobot = true;
+            }
+            else
+            {
+                return false;
+            }
+
             return true;
         }
 

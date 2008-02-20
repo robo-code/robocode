@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstJuniorRobot", "nsamp
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ninstall", "ninstall\ninstall.vdproj", "{1CBA218F-E37F-4058-8C01-9098BFBC2374}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interactive", "nsamples\Interactive\Interactive.csproj", "{FCDBBC70-3F65-41DF-B585-AE2C6F2503E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{1CBA218F-E37F-4058-8C01-9098BFBC2374}.Debug|Any CPU.ActiveCfg = Debug
 		{1CBA218F-E37F-4058-8C01-9098BFBC2374}.Release|Any CPU.ActiveCfg = Release
 		{1CBA218F-E37F-4058-8C01-9098BFBC2374}.Release|Any CPU.Build.0 = Release
+		{FCDBBC70-3F65-41DF-B585-AE2C6F2503E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCDBBC70-3F65-41DF-B585-AE2C6F2503E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCDBBC70-3F65-41DF-B585-AE2C6F2503E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCDBBC70-3F65-41DF-B585-AE2C6F2503E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,7 +26,6 @@ namespace nrobocodeui.manager
     /// </summary>
     public class WindowManager : LoadableManagerBase, IWindowManager
     {
-        private RobocodeFrameProxy frameProxy;
         private RobocodeFrame frame;
         private Thread battleWorker;
         private Robocode robocode;
@@ -37,7 +36,6 @@ namespace nrobocodeui.manager
             Application.SetCompatibleTextRenderingDefault(false);
 
             frame = new RobocodeFrame(RobocodeManager);
-            frameProxy = new RobocodeFrameProxy(frame, frame);
 
             return false;
         }
@@ -53,6 +51,7 @@ namespace nrobocodeui.manager
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             
@@ -92,7 +91,7 @@ namespace nrobocodeui.manager
 
         public IRobocodeFrame getRobocodeFrame()
         {
-            return frameProxy;
+            return frame.FrameProxy;
         }
 
         public void showResultsDialog()
@@ -122,13 +121,13 @@ namespace nrobocodeui.manager
             }
             else
             {
-                frameProxy.setStatus(str);
+                frame.FrameProxy.setStatus(str);
             }
         }
 
         public void showRobocodeFrame(bool b)
         {
-            frameProxy.setIconified(!b);
+            frame.FrameProxy.setIconified(!b);
         }
 
         public void messageError(string str)
@@ -140,5 +139,12 @@ namespace nrobocodeui.manager
         {
             MessageBox.Show(str, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+
+        public static void HandleException(Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            Console.WriteLine(ex.StackTrace);
+        }
+
     }
 }

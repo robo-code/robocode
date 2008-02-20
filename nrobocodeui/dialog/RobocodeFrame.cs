@@ -29,6 +29,8 @@ namespace nrobocodeui.dialog
         public RobocodeFrame(RobocodeManager manager)
         {
             this.manager = manager;
+            frameProxy = new RobocodeFrameProxy(this, this);
+
             InitializeComponent();
             Size=new Size(971, 717);
             battleView.InitBattleView(manager, this);
@@ -42,6 +44,7 @@ namespace nrobocodeui.dialog
 
         #region Private members
 
+        private RobocodeFrameProxy frameProxy;
         private FormWindowState lastState = FormWindowState.Normal;
         private RobocodeManager manager;
 
@@ -54,6 +57,14 @@ namespace nrobocodeui.dialog
             get
             {
                 return battleView.BattleViewProxy;
+            }
+        }
+
+        public RobocodeFrameProxy FrameProxy
+        {
+            get
+            {
+                return frameProxy;
             }
         }
 
@@ -204,27 +215,67 @@ namespace nrobocodeui.dialog
 
         private void OpenFileMenuItem_Click(object sender, EventArgs e)
         {
-            OpenBattle();
+            try
+            {
+                OpenBattle();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
         private void saveMenuItem_Click(object sender, EventArgs e)
         {
-            manager.getBattleManager().saveBattle();
+            try
+            {
+                manager.getBattleManager().saveBattle();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
         private void SaveAsMenuItem_Click(object sender, EventArgs e)
         {
-            manager.getBattleManager().saveBattleAs();
+            try
+            {
+                manager.getBattleManager().saveBattleAs();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
         private void ExitMenuItem_Click(object sender, EventArgs e)
         {
-            Close();
+            try
+            {
+                Close();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
         private void RobocodeFrame_Load(object sender, EventArgs e)
         {
-            ((WindowManager)manager.getWindowManager()).OnDisplayLoaded();
+            try
+            {
+                ((WindowManager)manager.getWindowManager()).OnDisplayLoaded();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
 
@@ -235,58 +286,120 @@ namespace nrobocodeui.dialog
 
         private void speedSlider_Scroll(object sender, EventArgs e)
         {
-            int tps = speedSlider.Value;
-            if (tps == speedSlider.Maximum)
+            try
             {
-                tps = 10000;
+                int tps = speedSlider.Value;
+                if (tps == speedSlider.Maximum)
+                {
+                    tps = 10000;
+                }
+                manager.getProperties().setOptionsBattleDesiredTPS(tps);
+                speedSlider.Text = "  " + tps;
             }
-            manager.getProperties().setOptionsBattleDesiredTPS(tps);
-            speedSlider.Text= "  " + tps;
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
         private void pauseDebugButton_Click(object sender, EventArgs e)
         {
-            BattleManager battleManager = manager.getBattleManager();
+            try
+            {
+                BattleManager battleManager = manager.getBattleManager();
 
-            if (battleManager.isPaused())
-            {
-                battleManager.resumeBattle();
+                if (battleManager.isPaused())
+                {
+                    battleManager.resumeBattle();
+                }
+                else
+                {
+                    battleManager.pauseBattle();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                battleManager.pauseBattle();
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
             }
         }
 
         private void stopButton_Click(object sender, EventArgs e)
         {
-            manager.getBattleManager().stop();
+            try
+            {
+                manager.getBattleManager().stop();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
         private void restartButton_Click(object sender, EventArgs e)
         {
-            manager.getBattleManager().restart();
+            try
+            {
+                manager.getBattleManager().restart();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
         private void nextTurnButton_Click(object sender, EventArgs e)
         {
-            manager.getBattleManager().nextTurn();
+            try
+            {
+                manager.getBattleManager().nextTurn();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
         }
 
         private void robotButton_Click(object sender, EventArgs e)
         {
-            Button rb = sender as Button;
-            if (rb!=null && rb.Tag is RobotPeer)
+            try
             {
-                RobotPeer robotPeer = rb.Tag as RobotPeer;
-                RobotDialog rd = new RobotDialog();
-                rd.setRobotPeer(robotPeer, rb);
-                rd.Show();
-                rb.Tag = rd;
+                Button rb = sender as Button;
+                if (rb != null && rb.Tag is RobotPeer)
+                {
+                    RobotPeer robotPeer = rb.Tag as RobotPeer;
+                    RobotDialog rd = new RobotDialog();
+                    rd.setRobotPeer(robotPeer, rb);
+                    rd.Show();
+                    rb.Tag = rd;
+                }
+                if (rb != null && rb.Tag is RobotDialog)
+                {
+                    ((RobotDialog)rb.Tag).Activate();
+                }
             }
-            if (rb != null && rb.Tag is RobotDialog)
+            catch (Exception ex)
             {
-                ((RobotDialog)rb.Tag).Activate();
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
+            }
+        }
+
+        private void RobocodeFrame_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                battleView.BattleViewProxy.OnClosing();
+                frameProxy.OnClosing();
+            }
+            catch (Exception ex)
+            {
+                //should not pass exceptions to UI thread
+                WindowManager.HandleException(ex);
             }
         }
 

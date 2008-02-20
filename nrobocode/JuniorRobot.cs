@@ -14,7 +14,6 @@ using System.IO;
 using java.io;
 using java.lang;
 using nrobocode.utils;
-using robocode.peer;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 
@@ -104,7 +103,7 @@ namespace nrobocode
 
         #region Constructor
 
-        public JuniorRobot()
+        protected JuniorRobot()
         {
             robot = new JR(this);
         }

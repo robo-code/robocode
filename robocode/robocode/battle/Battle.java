@@ -2077,59 +2077,9 @@ public class Battle implements Runnable {
 
 		public boolean dispatchKeyEvent(KeyEvent e) {
 			if (battle != null && battle.isRunning()) {
-				IInteractiveRobot robot;
-
-				for (RobotPeer robotPeer : robots) {
-					if (!(robotPeer.isAlive() && robotPeer.isInteractiveRobot())) {
-						continue;
-					}
-					robot = (IInteractiveRobot) robotPeer.getRobot();
-					if (robot == null) {
-						continue;
-					}
-					IInteractiveEvents listener = robot.getSystemEventListener();
-
-					if (listener == null) {
-						continue;
-					}
-					KeyEvent ke = cloneKeyEvent(e);
-
-					switch (e.getID()) {
-					case KeyEvent.KEY_TYPED:
-						try {
-							listener.onKeyTyped(ke);
-						} catch (Exception e2) {
-							robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyTyped(KeyEvent):");
-							e2.printStackTrace(robotPeer.getOut());
-						}
-						break;
-
-					case KeyEvent.KEY_PRESSED:
-						try {
-							listener.onKeyPressed(ke);
-						} catch (Exception e2) {
-							robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyPressed(KeyEvent):");
-							e2.printStackTrace(robotPeer.getOut());
-						}
-						break;
-
-					case KeyEvent.KEY_RELEASED:
-						try {
-							listener.onKeyReleased(ke);
-						} catch (Exception e2) {
-							robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyReleased(KeyEvent):");
-							e2.printStackTrace(robotPeer.getOut());
-						}
-						break;
-					}
-				}
+				processKeyEvent(e);
 			}
 			return false;
-		}
-
-		private KeyEvent cloneKeyEvent(final KeyEvent e) {
-			return new KeyEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
-					e.getKeyChar(), e.getKeyLocation());
 		}
 
 		public void cleanup() {
@@ -2138,6 +2088,59 @@ public class Battle implements Runnable {
 		}
 	}
 
+	private KeyEvent cloneKeyEvent(final KeyEvent e) {
+		return new KeyEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
+				e.getKeyChar(), e.getKeyLocation());
+	}
+
+	public void processKeyEvent(KeyEvent e) {
+		IInteractiveRobot robot;
+
+		for (RobotPeer robotPeer : robots) {
+			if (!(robotPeer.isAlive() && robotPeer.isInteractiveRobot())) {
+				continue;
+			}
+			robot = (IInteractiveRobot) robotPeer.getRobot();
+			if (robot == null) {
+				continue;
+			}
+			IInteractiveEvents listener = robot.getSystemEventListener();
+
+			if (listener == null) {
+				continue;
+			}
+			KeyEvent ke = cloneKeyEvent(e);
+
+			switch (e.getID()) {
+			case KeyEvent.KEY_TYPED:
+				try {
+					listener.onKeyTyped(ke);
+				} catch (Exception e2) {
+					robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyTyped(KeyEvent):");
+					e2.printStackTrace(robotPeer.getOut());
+				}
+				break;
+
+			case KeyEvent.KEY_PRESSED:
+				try {
+					listener.onKeyPressed(ke);
+				} catch (Exception e2) {
+					robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyPressed(KeyEvent):");
+					e2.printStackTrace(robotPeer.getOut());
+				}
+				break;
+
+			case KeyEvent.KEY_RELEASED:
+				try {
+					listener.onKeyReleased(ke);
+				} catch (Exception e2) {
+					robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyReleased(KeyEvent):");
+					e2.printStackTrace(robotPeer.getOut());
+				}
+				break;
+			}
+		}
+	}
 
 	private class UnsafeLoadRobotsThread extends Thread {
 
