@@ -7,26 +7,26 @@
 // 
 // Contributors:
 // Pavel Savara
-// - Initial implementation
+//  - Initial implementation
 // *****************************************************************************
-
 using System;
+using robocode;
 
 namespace nrobocode
 {
     /// <summary>
     /// This is helper class to dumb VS Express
     /// </summary>
-    class Starter
+    internal class Starter
     {
         [STAThread]
         public static void Main(string[] args)
         {
             try
             {
-                robocode.Robocode.main(args);
+                Robocode.main(args);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }

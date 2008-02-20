@@ -7,16 +7,13 @@
 // 
 // Contributors:
 // Pavel Savara
-// - Initial implementation
+//  - Initial implementation
 // *****************************************************************************
-
 using System;
 using System.Threading;
 using System.Windows.Forms;
 using nrobocodeui.dialog;
-using nrobocodeui.manager;
 using robocode;
-using robocode.security;
 using robocode.ui;
 
 namespace nrobocodeui.manager
@@ -28,7 +25,7 @@ namespace nrobocodeui.manager
     {
         private RobocodeFrame frame;
         private Thread battleWorker;
-        private Robocode robocode;
+        private Robocode robocodeMain;
 
         public bool initializeDisplay()
         {
@@ -42,7 +39,7 @@ namespace nrobocodeui.manager
 
         public void runDisplay(Robocode robocode)
         {
-            this.robocode = robocode;
+            this.robocodeMain = robocode;
             try
             {
                 //will block until end of game
@@ -54,12 +51,10 @@ namespace nrobocodeui.manager
                 Console.WriteLine(ex.StackTrace);
                 throw;
             }
-            
         }
 
         public void setLookAndFeel()
         {
-
         }
 
         public void OnDisplayLoaded()
@@ -72,7 +67,7 @@ namespace nrobocodeui.manager
         {
             try
             {
-                /*if (robocode.setup.securityOption)
+                /*if (robocodeMain.setup.securityOption)
                 {
                     RobocodeSecurityManager rsm = java.lang.System.getSecurityManager() as RobocodeSecurityManager;
                     if (rsm != null)
@@ -80,9 +75,9 @@ namespace nrobocodeui.manager
                         rsm.addSafeThreadGroups();
                     }
                 }*/
-                Robocode.run(robocode);
+                Robocode.run(robocodeMain);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 throw;
@@ -98,10 +93,11 @@ namespace nrobocodeui.manager
         {
         }
 
-        private SplashScreen splashScreen=null;
+        private SplashScreen splashScreen = null;
+
         public void showSplashScreen()
         {
-		    splashScreen = new SplashScreen();
+            splashScreen = new SplashScreen();
             splashScreen.Show(getRobocodeFrame() as Form);
             splashScreen.Update();
 
@@ -110,12 +106,12 @@ namespace nrobocodeui.manager
             RobocodeManager.getImageManager();
             RobocodeManager.getCpuManager().getCpuConstant();
 
-		    splashScreen.Close();
+            splashScreen.Close();
         }
 
         public void setStatus(string str)
         {
-            if (splashScreen!=null)
+            if (splashScreen != null)
             {
                 splashScreen.setStatus(str);
             }
@@ -145,6 +141,5 @@ namespace nrobocodeui.manager
             Console.WriteLine(ex.ToString());
             Console.WriteLine(ex.StackTrace);
         }
-
     }
 }

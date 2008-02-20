@@ -7,20 +7,22 @@
 // 
 // Contributors:
 // Pavel Savara
-// - Initial implementation
+//  - Initial implementation
 // *****************************************************************************
-
 using System;
 using System.IO;
+using System.Windows.Forms;
 using java.awt;
 using java.io;
 using java.lang;
+using nrobocode.Events;
 using nrobocode.utils;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using BulletHitBulletEvent=robocode.BulletHitBulletEvent;
 using BulletHitEvent=robocode.BulletHitEvent;
 using BulletMissedEvent=robocode.BulletMissedEvent;
+using Color=System.Drawing.Color;
 using DeathEvent=robocode.DeathEvent;
 using HitByBulletEvent=robocode.HitByBulletEvent;
 using HitRobotEvent=robocode.HitRobotEvent;
@@ -93,7 +95,7 @@ namespace nrobocode
 
             public override void onKeyTyped(KeyEvent evnt)
             {
-                Events.KeyPressEvent ke = evnt as Events.KeyPressEvent;
+                KeyPressEvent ke = evnt as KeyPressEvent;
                 if (ke != null)
                     owner.OnKeyTyped(ke.realEvent);
             }
@@ -211,7 +213,7 @@ namespace nrobocode
             #endregion
         }
 
-        private JR robot;
+        private JR slave;
 
         #endregion
 
@@ -219,27 +221,27 @@ namespace nrobocode
 
         IInteractiveEvents IInteractiveRobot.getSystemEventListener()
         {
-            return robot.getSystemEventListener();
+            return slave.getSystemEventListener();
         }
 
         IBasicEvents IBasicRobot.getBasicEventListener()
         {
-            return robot.getBasicEventListener();
+            return slave.getBasicEventListener();
         }
 
         Runnable IBasicRobot.getRobotRunnable()
         {
-            return robot.getRobotRunnable();
+            return slave.getRobotRunnable();
         }
 
         void IBasicRobot.setOut(PrintStream ps)
         {
-            robot.setOut(ps);
+            slave.setOut(ps);
         }
 
         void IBasicRobot.setPeer(IBasicRobotPeer rp)
         {
-            robot.setPeer(rp);
+            slave.setPeer(rp);
         }
 
         #endregion
@@ -248,7 +250,7 @@ namespace nrobocode
 
         protected Robot()
         {
-            robot = new JR(this);
+            slave = new JR(this);
         }
 
         #endregion
@@ -272,7 +274,7 @@ namespace nrobocode
         /// </summary>
         public TextWriter Out
         {
-            get { return robot.Out; }
+            get { return slave.Out; }
         }
 
         #endregion
@@ -283,47 +285,47 @@ namespace nrobocode
         {
         }
 
-        public virtual void OnKeyPressed(System.Windows.Forms.KeyEventArgs ke)
+        public virtual void OnKeyPressed(KeyEventArgs ke)
         {
         }
 
-        public virtual void OnKeyReleased(System.Windows.Forms.KeyEventArgs ke)
+        public virtual void OnKeyReleased(KeyEventArgs ke)
         {
         }
 
-        public virtual void OnKeyTyped(System.Windows.Forms.KeyPressEventArgs ke)
+        public virtual void OnKeyTyped(KeyPressEventArgs ke)
         {
         }
 
-        public virtual void OnMouseClicked(System.Windows.Forms.MouseEventArgs me)
+        public virtual void OnMouseClicked(MouseEventArgs me)
         {
         }
 
-        public virtual void OnMouseEntered(System.Windows.Forms.MouseEventArgs me)
+        public virtual void OnMouseEntered(MouseEventArgs me)
         {
         }
 
-        public virtual void OnMouseExited(System.Windows.Forms.MouseEventArgs me)
+        public virtual void OnMouseExited(MouseEventArgs me)
         {
         }
 
-        public virtual void OnMousePressed(System.Windows.Forms.MouseEventArgs me)
+        public virtual void OnMousePressed(MouseEventArgs me)
         {
         }
 
-        public virtual void OnMouseReleased(System.Windows.Forms.MouseEventArgs me)
+        public virtual void OnMouseReleased(MouseEventArgs me)
         {
         }
 
-        public virtual void OnMouseMoved(System.Windows.Forms.MouseEventArgs me)
+        public virtual void OnMouseMoved(MouseEventArgs me)
         {
         }
 
-        public virtual void OnMouseDragged(System.Windows.Forms.MouseEventArgs me)
+        public virtual void OnMouseDragged(MouseEventArgs me)
         {
         }
 
-        public virtual void OnMouseWheelMoved(System.Windows.Forms.MouseEventArgs me)
+        public virtual void OnMouseWheelMoved(MouseEventArgs me)
         {
         }
 
@@ -379,14 +381,15 @@ namespace nrobocode
 
         #region Fast Actions
 
-        public void SetColors(System.Drawing.Color bodyColor, System.Drawing.Color gunColor, System.Drawing.Color radarColor)
+        public void SetColors(Color bodyColor, Color gunColor, Color radarColor)
         {
-            robot.setColors(new Color(bodyColor.ToArgb()), new Color(gunColor.ToArgb()), new Color(radarColor.ToArgb()));
+            slave.setColors(new java.awt.Color(bodyColor.ToArgb()), new java.awt.Color(gunColor.ToArgb()),
+                                      new java.awt.Color(radarColor.ToArgb()));
         }
 
-        public void SetBulletColor(System.Drawing.Color color)
+        public void SetBulletColor(Color color)
         {
-            robot.setBulletColor(new Color(color.ToArgb()));
+            slave.setBulletColor(new java.awt.Color(color.ToArgb()));
         }
 
         #endregion
@@ -395,7 +398,7 @@ namespace nrobocode
 
         public void Wait()
         {
-            robot.wait();
+            slave.wait();
         }
 
         #endregion

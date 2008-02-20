@@ -1,4 +1,4 @@
-﻿// ****************************************************************************
+// ****************************************************************************
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Common Public License v1.0
@@ -7,18 +7,18 @@
 // 
 // Contributors:
 // Pavel Savara
-// - Initial implementation
+//  - Initial implementation
 // *****************************************************************************
-
 using System.IO;
 using System.Text;
 using java.io;
 
 namespace nrobocode.utils
 {
-    class JavaConsole :  TextWriter
+    internal class JavaConsole : TextWriter
     {
         private PrintStream stream;
+
         public JavaConsole(PrintStream stream)
         {
             this.stream = stream;

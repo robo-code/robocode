@@ -1,4 +1,4 @@
-﻿// ****************************************************************************
+// ****************************************************************************
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Common Public License v1.0
@@ -7,9 +7,8 @@
 // 
 // Contributors:
 // Pavel Savara
-// - Initial implementation
+//  - Initial implementation
 // *****************************************************************************
-
 using System.IO;
 using java.io;
 using java.lang;
@@ -69,7 +68,7 @@ namespace nrobocode
             }
         }
 
-        private JR robot;
+        private JR slave;
 
         #endregion
 
@@ -77,7 +76,7 @@ namespace nrobocode
 
         Runnable IBasicRobot.getRobotRunnable()
         {
-            return robot.getRobotRunnable();
+            return slave.getRobotRunnable();
         }
 
         #region IBasicRobot Members
@@ -86,17 +85,17 @@ namespace nrobocode
 
         IBasicEvents IBasicRobot.getBasicEventListener()
         {
-            return robot.getBasicEventListener();
+            return slave.getBasicEventListener();
         }
 
         void IBasicRobot.setOut(PrintStream ps)
         {
-            robot.setOut(ps);
+            slave.setOut(ps);
         }
 
         void IBasicRobot.setPeer(IBasicRobotPeer rp)
         {
-            robot.setPeer(rp);
+            slave.setPeer(rp);
         }
 
         #endregion
@@ -105,7 +104,7 @@ namespace nrobocode
 
         protected JuniorRobot()
         {
-            robot = new JR(this);
+            slave = new JR(this);
         }
 
         #endregion
@@ -174,7 +173,7 @@ namespace nrobocode
         /// </summary>
         public int Energy
         {
-            get { return robot.energy; }
+            get { return slave.energy; }
         }
 
         /// <summary>
@@ -182,7 +181,7 @@ namespace nrobocode
         /// </summary>
         public int FieldWidth
         {
-            get { return robot.fieldWidth; }
+            get { return slave.fieldWidth; }
         }
 
         /// <summary>
@@ -190,7 +189,7 @@ namespace nrobocode
         /// </summary>
         public int FieldHeight
         {
-            get { return robot.fieldHeight; }
+            get { return slave.fieldHeight; }
         }
 
         /// <summary>
@@ -198,7 +197,7 @@ namespace nrobocode
         /// </summary>
         public int Others
         {
-            get { return robot.others; }
+            get { return slave.others; }
         }
 
 
@@ -206,14 +205,14 @@ namespace nrobocode
         /// <see cref="RobotY"/>
         public int RobotX
         {
-            get { return robot.robotX; }
+            get { return slave.robotX; }
         }
 
         /// Current vertical location of this robot (in pixels).
         /// <see cref="RobotX"/>
         public int RobotY
         {
-            get { return robot.robotY; }
+            get { return slave.robotY; }
         }
 
 
@@ -227,7 +226,7 @@ namespace nrobocode
         /// <see cref="TurnBackRight(int, int)"/>
         public int Heading
         {
-            get { return robot.heading; }
+            get { return slave.heading; }
         }
 
 
@@ -239,7 +238,7 @@ namespace nrobocode
         /// <see cref="BearGunTo(int)"/>
         public int GunHeading
         {
-            get { return robot.gunHeading; }
+            get { return slave.gunHeading; }
         }
 
 
@@ -251,7 +250,7 @@ namespace nrobocode
         /// <see cref="BearGunTo(int)"/>
         public int GunBearing
         {
-            get { return robot.gunBearing; }
+            get { return slave.gunBearing; }
         }
 
 
@@ -262,7 +261,7 @@ namespace nrobocode
         /// <see cref="Fire(double)"/>
         public bool GunReady
         {
-            get { return robot.gunReady; }
+            get { return slave.gunReady; }
         }
 
 
@@ -277,7 +276,7 @@ namespace nrobocode
         /// <see cref="ScannedHeading"/>
         public int ScannedDistance
         {
-            get { return robot.scannedDistance; }
+            get { return slave.scannedDistance; }
         }
 
 
@@ -292,7 +291,7 @@ namespace nrobocode
         /// <see cref="ScannedHeading"/>
         public int ScannedAngle
         {
-            get { return robot.scannedAngle; }
+            get { return slave.scannedAngle; }
         }
 
 
@@ -308,7 +307,7 @@ namespace nrobocode
         /// <see cref="ScannedHeading"/>
         public int ScannedBearing
         {
-            get { return robot.scannedBearing; }
+            get { return slave.scannedBearing; }
         }
 
 
@@ -326,7 +325,7 @@ namespace nrobocode
         /// <see cref="ScannedHeading"/>
         public int ScannedVelocity
         {
-            get { return robot.scannedVelocity; }
+            get { return slave.scannedVelocity; }
         }
 
 
@@ -341,7 +340,7 @@ namespace nrobocode
         /// <see cref="ScannedVelocity"/>
         public int ScannedHeading
         {
-            get { return robot.scannedHeading; }
+            get { return slave.scannedHeading; }
         }
 
 
@@ -355,7 +354,7 @@ namespace nrobocode
         /// <see cref="ScannedVelocity"/>
         public int ScannedEnergy
         {
-            get { return robot.scannedEnergy; }
+            get { return slave.scannedEnergy; }
         }
 
 
@@ -366,7 +365,7 @@ namespace nrobocode
         /// <see cref="HitByBulletBearing"/>
         public int HitByBulletAngle
         {
-            get { return robot.hitByBulletAngle; }
+            get { return slave.hitByBulletAngle; }
         }
 
 
@@ -378,7 +377,7 @@ namespace nrobocode
         /// <see cref="HitByBulletAngle"/>
         public int HitByBulletBearing
         {
-            get { return robot.hitByBulletBearing; }
+            get { return slave.hitByBulletBearing; }
         }
 
 
@@ -389,7 +388,7 @@ namespace nrobocode
         /// <see cref="HitRobotBearing"/>
         public int HitRobotAngle
         {
-            get { return robot.hitRobotAngle; }
+            get { return slave.hitRobotAngle; }
         }
 
 
@@ -401,7 +400,7 @@ namespace nrobocode
         /// <see cref="HitRobotAngle"/>
         public int HitRobotBearing
         {
-            get { return robot.hitRobotBearing; }
+            get { return slave.hitRobotBearing; }
         }
 
 
@@ -412,7 +411,7 @@ namespace nrobocode
         /// <see cref="HitWallBearing"/>
         public int HitWallAngle
         {
-            get { return robot.hitWallAngle; }
+            get { return slave.hitWallAngle; }
         }
 
 
@@ -424,7 +423,7 @@ namespace nrobocode
         /// <see cref="HitWallAngle"/>
         public int HitWallBearing
         {
-            get { return robot.hitWallBearing; }
+            get { return slave.hitWallBearing; }
         }
 
         /// <summary>
@@ -444,7 +443,7 @@ namespace nrobocode
         /// </summary>
         public TextWriter Out
         {
-            get { return robot.Out; }
+            get { return slave.Out; }
         }
 
         #endregion
@@ -453,7 +452,7 @@ namespace nrobocode
 
         public void SetColors(Color bodyColor, Color gunColor, Color radarColor)
         {
-            robot.setColors((int)bodyColor, (int)gunColor, (int)radarColor);
+            slave.setColors((int)bodyColor, (int)gunColor, (int)radarColor);
         }
 
         #endregion
@@ -462,87 +461,87 @@ namespace nrobocode
 
         public void Ahead(int distance)
         {
-            robot.ahead(distance);
+            slave.ahead(distance);
         }
 
         public void Back(int distance)
         {
-            robot.back(distance);
+            slave.back(distance);
         }
 
         public void BearGunTo(int angle)
         {
-            robot.bearGunTo(angle);
+            slave.bearGunTo(angle);
         }
 
         public void DoNothing()
         {
-            robot.doNothing();
+            slave.doNothing();
         }
 
         public void DoNothing(int turns)
         {
-            robot.doNothing(turns);
+            slave.doNothing(turns);
         }
 
         public void Fire()
         {
-            robot.fire();
+            slave.fire();
         }
 
         public void Fire(double power)
         {
-            robot.fire(power);
+            slave.fire(power);
         }
 
         public void TurnAheadLeft(int distance, int degrees)
         {
-            robot.turnAheadLeft(distance, degrees);
+            slave.turnAheadLeft(distance, degrees);
         }
 
         public void TurnAheadRight(int distance, int degrees)
         {
-            robot.turnAheadRight(distance, degrees);
+            slave.turnAheadRight(distance, degrees);
         }
 
         public void TurnBackLeft(int distance, int degrees)
         {
-            robot.turnBackLeft(distance, degrees);
+            slave.turnBackLeft(distance, degrees);
         }
 
         public void TurnBackRight(int distance, int degrees)
         {
-            robot.turnBackRight(distance, degrees);
+            slave.turnBackRight(distance, degrees);
         }
 
         public void TurnGunLeft(int degrees)
         {
-            robot.turnGunLeft(degrees);
+            slave.turnGunLeft(degrees);
         }
 
         public void TurnGunRight(int degrees)
         {
-            robot.turnGunRight(degrees);
+            slave.turnGunRight(degrees);
         }
 
         public void TurnGunTo(int angle)
         {
-            robot.turnGunTo(angle);
+            slave.turnGunTo(angle);
         }
 
         public void TurnLeft(int degrees)
         {
-            robot.turnLeft(degrees);
+            slave.turnLeft(degrees);
         }
 
         public void TurnRight(int degrees)
         {
-            robot.turnRight(degrees);
+            slave.turnRight(degrees);
         }
 
         public void TurnTo(int angle)
         {
-            robot.turnTo(angle);
+            slave.turnTo(angle);
         }
 
         #endregion
