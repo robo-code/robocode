@@ -39,7 +39,6 @@ public class CpuManager {
 	private long cpuConstant = -1;
 	private RobocodeManager manager;
 
-
 	public CpuManager(RobocodeManager manager) {
 		this.manager = manager;
 	}
@@ -74,10 +73,11 @@ public class CpuManager {
 
 		while (System.currentTimeMillis() - start < TEST_PERIOD_MILLIS) {
 			d += Math.hypot(Math.sqrt(Math.abs(Math.log(Math.atan(Math.random())))),
-					Math.cbrt(Math.abs(Math.random()*10)))/Math.exp(Math.random());
+					Math.cbrt(Math.abs(Math.random() * 10)))
+					/ Math.exp(Math.random());
 			count++;
 		}
 
-		cpuConstant = Math.max(1, (long)(1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));
+		cpuConstant = Math.max(1, (long) (1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));
 	}
 }

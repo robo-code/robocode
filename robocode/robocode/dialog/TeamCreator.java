@@ -92,7 +92,8 @@ public class TeamCreator extends JDialog implements WizardListener {
 			teamCreatorContentPane.add(getWizardPanel(), BorderLayout.CENTER);
 			getWizardPanel().getWizardController().setFinishButtonTextAndMnemonic("Create Team!", 'C', 0);
 			teamCreatorContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK),
+					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			teamCreatorContentPane.registerKeyboardAction(eventHandler, "Refresh",
 					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK), JComponent.WHEN_FOCUSED);
 		}
@@ -198,6 +199,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 		teamSpec.setRobocodeVersion(manager.getVersionManager().getVersion());
 
 		FileOutputStream out = null;
+
 		try {
 			out = new FileOutputStream(f);
 			teamSpec.store(out, "Robocode robot team");

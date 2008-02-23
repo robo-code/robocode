@@ -44,6 +44,7 @@ public class FileTransfer {
 		FILE_NOT_FOUND
 	}
 
+
 	/**
 	 * Daemon worker thread containing a 'finish' flag for waiting and notifying
 	 * when the thread has finished it's job.
@@ -381,6 +382,7 @@ public class FileTransfer {
 			}
 		}
 	}
+
 
 	/**
 	 * Worker thread used for getting the response code of an already open HTTP

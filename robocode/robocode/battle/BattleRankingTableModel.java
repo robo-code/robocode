@@ -131,11 +131,13 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalScore() + current + 0.5);
 		}
+
 		case 3: {
 			double current = battle.isRunning() ? statistics.getCurrentSurvivalScore() : 0;
 
 			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalSurvivalScore() + current + 0.5);
 		}
+
 		case 4:
 			return (int) (statistics.getTotalLastSurvivorBonus() + 0.5);
 
@@ -144,21 +146,25 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletDamageScore() + current + 0.5);
 		}
+
 		case 6: {
 			double current = battle.isRunning() ? statistics.getCurrentBulletKillBonus() : 0;
 
 			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletKillBonus() + current + 0.5);
 		}
+
 		case 7: {
 			double current = battle.isRunning() ? statistics.getCurrentRammingDamageScore() : 0;
 
 			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingDamageScore() + current + 0.5);
 		}
+
 		case 8: {
 			double current = battle.isRunning() ? statistics.getCurrentRammingKillBonus() : 0;
 
 			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingKillBonus() + current + 0.5);
 		}
+
 		case 9:
 			return "" + statistics.getTotalFirsts();
 

@@ -216,7 +216,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 			robotPackagerContentPane.add(getWizardPanel(), BorderLayout.CENTER);
 			getWizardPanel().getWizardController().setFinishButtonTextAndMnemonic("Package!", 'P', 0);
 			robotPackagerContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK),
+					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			robotPackagerContentPane.registerKeyboardAction(eventHandler, "Refresh",
 					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK), JComponent.WHEN_FOCUSED);
 		}
@@ -473,7 +474,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public void outputSizeClass() {
 		// Codesize must be called within a safe thread to prevent security exception
 		
-		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager)System.getSecurityManager();
+		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager) System.getSecurityManager();
 
 		Thread thread = new Thread() {
 			@Override
