@@ -1,41 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ====================================================================== -->
-<!--  Apache Ant build script for building the Robocode setup file          -->
+<!--  Apache Ant build script for code beautifying Robocode sources         -->
 <!-- ====================================================================== -->
 
-<project name="build" default="jacobe">
-  <description>Apache Ant build script for beautifying sources </description>
+<project name="beautifier" default="jacobe">
+  <description>Apache Ant build script for code beautifying Robocode sources</description>
 
   <!-- ====================================== -->
-  <!-- Global properties                      -->
-  <!-- ====================================== -->
-
-  <!-- The source folders -->
-  <property name="src.robocode" location="../../robocode"/>
-  <property name="src.robocodeui" location="../../robocodeui"/>
-
-  <!-- ====================================== -->
-  <!-- Default Excludes                       -->
-  <!-- ====================================== -->
-
-  <defaultexcludes add="build.xml"/>	 <!-- Ant build scripts -->
-  <defaultexcludes add="**/.*/**"/>      <!-- Eclipse configuration folders -->
-  <defaultexcludes add="**/*.bak"/>      <!-- Windows backup files -->
-  <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
-  <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
-  <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
-  <defaultexcludes add="**/_*.java"/>    <!-- Java files to hide in Javadoc -->
-
-  <!-- ====================================== -->
-  <!-- Jacobe beautify                         -->
+  <!-- Jacobe Code Beautifying                -->
   <!-- ====================================== -->
   <taskdef name="jacobe" classname="com.tiobe.jacobe.JacobeTask" classpath="jacobe.jar"/>
   
   <target name="jacobe">
-	<jacobe input="${src.robocode}" cfg="robocode.cfg" overwrite="true" nobackup="true"/>
-	<jacobe input="${src.robocodeui}" cfg="robocode.cfg" overwrite="true" nobackup="true"/>
+  	<beautify dir="../../autoextract"/>
+  	<beautify dir="../../robocode"/>
+  	<beautify dir="../../robocodeextract"/>
+  	<beautify dir="../../roborumble"/>
   </target>
 
+  <macrodef name="beautify">
+    <attribute name="dir"/>
+    <sequential>
+      <jacobe input="@{dir}" cfg="robocode.cfg" overwrite="true" nobackup="true"/>
+    </sequential>
+  </macrodef>
 
 </project>

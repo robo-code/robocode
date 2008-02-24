@@ -930,7 +930,10 @@ public class Battle implements Runnable {
 			if (delay > 0) {
 				try {
 					Thread.sleep(delay);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					// Set the thread status back to being interrupted
+					Thread.currentThread().interrupt();
+				}
 			}
 
 			// Update title when second has passed
@@ -1104,7 +1107,10 @@ public class Battle implements Runnable {
 			if (delay > 0) {
 				try {
 					Thread.sleep(delay);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					// Set the thread status back to being interrupted
+					Thread.currentThread().interrupt();					
+				}
 			}
 
 			// Update title when second has passed
@@ -1121,7 +1127,10 @@ public class Battle implements Runnable {
 			updateTitle();
 			try {
 				Thread.sleep(500);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 			return true;
 		}
 		return false;
@@ -1383,7 +1392,10 @@ public class Battle implements Runnable {
 			// waiting for loader to start
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		for (RobotPeer r : robots) {
@@ -1403,7 +1415,10 @@ public class Battle implements Runnable {
 		while (!isRobotsLoaded()) {
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		for (RobotPeer r : robots) {
@@ -1640,7 +1655,7 @@ public class Battle implements Runnable {
 	 * 
 	 * @return Returns a int
 	 */
-	public int getActiveRobots() {
+	public synchronized int getActiveRobots() {
 		return activeRobots;
 	}
 
@@ -2067,8 +2082,8 @@ public class Battle implements Runnable {
 	}
 
 	private final class KeyEventHandler implements KeyEventDispatcher {
-		private Battle battle = null;
-		private List<RobotPeer> robots = null;
+		private Battle battle;
+		private List<RobotPeer> robots;
 
 		public KeyEventHandler(Battle battle, List<RobotPeer> robots) {
 			this.battle = battle;

@@ -66,6 +66,7 @@ public class CompetitionsSelector {
 			File f = new File(repository + bot1name + ".jar");
 
 			Item s1 = Codesize.processZipFile(f);
+
 			if (s1 != null) {
 				size1 = s1.getCodeSize();
 			}
@@ -78,6 +79,7 @@ public class CompetitionsSelector {
 			File f = new File(repository + bot2name + ".jar");
 
 			Item s2 = Codesize.processZipFile(f);
+
 			if (s2 != null) {
 				size2 = s2.getCodeSize();
 			}

@@ -52,6 +52,9 @@ public class BrowserManager {
 
 		try {
 			Thread.sleep(1000);
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {
+			// Set the thread status back to being interrupted
+			Thread.currentThread().interrupt();
+		}
 	}
 }

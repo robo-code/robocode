@@ -77,6 +77,7 @@ public class BattlesRunner {
 
 		try {
 			FileReader fr = new FileReader(inputfile);
+
 			br = new BufferedReader(fr);
 			String record;
 
@@ -157,6 +158,7 @@ public class BattlesRunner {
 		
 		try {
 			FileReader fr = new FileReader(inputfile);
+
 			br = new BufferedReader(fr);
 			String record;
 
