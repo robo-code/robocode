@@ -132,7 +132,7 @@ public class RobocodeProperties {
 	private Date versionChecked;
 	private long robotFilesystemQuota = 200000;
 	private long consoleQuota = 8192;
-	private long cpuConstant = 200000000;
+	private long cpuConstant = -1;
 
 	// Number of Rounds
 	private int numberOfRounds = 10;

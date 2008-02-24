@@ -928,7 +928,10 @@ public class Battle implements Runnable {
 			if (delay > 0) {
 				try {
 					Thread.sleep(delay);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					// Set the thread status back to being interrupted
+					Thread.currentThread().interrupt();
+				}
 			}
 
 			// Update title when second has passed
@@ -1102,7 +1105,10 @@ public class Battle implements Runnable {
 			if (delay > 0) {
 				try {
 					Thread.sleep(delay);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					// Set the thread status back to being interrupted
+					Thread.currentThread().interrupt();					
+				}
 			}
 
 			// Update title when second has passed
@@ -1119,7 +1125,10 @@ public class Battle implements Runnable {
 			updateTitle();
 			try {
 				Thread.sleep(500);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 			return true;
 		}
 		return false;
@@ -1380,7 +1389,10 @@ public class Battle implements Runnable {
 			// waiting for loader to start
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		for (RobotPeer r : robots) {
@@ -1400,7 +1412,10 @@ public class Battle implements Runnable {
 		while (!isRobotsLoaded()) {
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		for (RobotPeer r : robots) {

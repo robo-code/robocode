@@ -1,3 +1,9 @@
+Version 1.5.5
+(02/24/2008)
+-------------
+o Bugfix:
+  -- The CPU constant was not calculated the first time Robocode was started up.
+
 Version 1.5.4
 (02/15/2008)
 -------------
