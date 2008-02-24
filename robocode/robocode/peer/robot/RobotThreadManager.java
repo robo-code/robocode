@@ -143,7 +143,11 @@ public class RobotThreadManager {
 			}
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+				break; // We are in a loop
+			}
 		}
 
 		if (runThread.isAlive()) {
