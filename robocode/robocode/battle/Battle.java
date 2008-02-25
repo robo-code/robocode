@@ -1863,7 +1863,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseClicked(me);
@@ -1886,7 +1886,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseEntered(me);
@@ -1909,7 +1909,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseExited(me);
@@ -1932,7 +1932,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMousePressed(me);
@@ -1955,7 +1955,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseReleased(me);
@@ -1978,7 +1978,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseMoved(me);
@@ -2001,7 +2001,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseDragged(me);
@@ -2024,7 +2024,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseWheelMoved(mwe);
@@ -2107,7 +2107,7 @@ public class Battle implements Runnable {
 					if (robot == null) {
 						continue;
 					}
-					IInteractiveEvents listener = robot.getSystemEventListener();
+					IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 					if (listener == null) {
 						continue;

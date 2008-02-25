@@ -21,6 +21,5 @@ public interface IInteractiveRobot extends IBasicRobot {
 	 * This method is called by the game.
 	 * @return listener to system events
 	 */
-	IInteractiveEvents getSystemEventListener();
-
+	IInteractiveEvents getInteractiveEventListener();
 }

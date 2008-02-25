@@ -25,7 +25,6 @@ import java.awt.Graphics2D;
 import static robocode.util.Utils.normalRelativeAngle;
 import robocode.util.Utils;
 import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
 
 
 /**

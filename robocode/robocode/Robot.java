@@ -98,14 +98,14 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * Robot is listening to system events internally.
+	 * Robot is listening to interactive events internally.
 	 * This method is called by the game and should not be used by robots.
 	 *
-	 * @return listener to system events.
+	 * @return listener to interactive events.
 	 *
 	 * @since 1.6
 	 */
-	public final IInteractiveEvents getSystemEventListener() {
+	public final IInteractiveEvents getInteractiveEventListener() {
 		return this;
 	}
 
