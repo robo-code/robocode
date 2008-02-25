@@ -12,23 +12,21 @@
 package samplealiens;
 
 
+import java.awt.Graphics2D;
+import java.io.PrintStream;
+
 import robocode.*;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.*;
-
-import java.io.PrintStream;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class Alien implements IInteractiveRobot, IBasicEvents, Runnable {
+public class Alien implements IBasicEvents, Runnable {
 
 	PrintStream out;
 	IStandardRobotPeer peer;
-	public IInteractiveEvents getSystemEventListener() {
-		return null;
-	}
 
 	public Runnable getRobotRunnable() {
 		return this;
@@ -59,29 +57,31 @@ public class Alien implements IInteractiveRobot, IBasicEvents, Runnable {
 		}
 	}
 
-	public void onScannedRobot(ScannedRobotEvent event) {
+	public void onScannedRobot(ScannedRobotEvent e) {
 		peer.setFire(1);
 	}
 
-	public void onHitByBullet(HitByBulletEvent event) {
-		peer.turnChassis(Math.PI / 2 + event.getBearingRadians());
+	public void onHitByBullet(HitByBulletEvent e) {
+		peer.turnChassis(Math.PI / 2 + e.getBearingRadians());
 	}
 
 	public void onStatus(StatusEvent e) {}
 
-	public void onBulletHit(BulletHitEvent event) {}
+	public void onBulletHit(BulletHitEvent e) {}
 
-	public void onBulletHitBullet(BulletHitBulletEvent event) {}
+	public void onBulletHitBullet(BulletHitBulletEvent e) {}
 
-	public void onBulletMissed(BulletMissedEvent event) {}
+	public void onBulletMissed(BulletMissedEvent e) {}
 
-	public void onDeath(DeathEvent event) {}
+	public void onDeath(DeathEvent e) {}
 
-	public void onHitRobot(HitRobotEvent event) {}
+	public void onHitRobot(HitRobotEvent e) {}
 
-	public void onHitWall(HitWallEvent event) {}
+	public void onHitWall(HitWallEvent e) {}
 
-	public void onRobotDeath(RobotDeathEvent event) {}
+	public void onRobotDeath(RobotDeathEvent e) {}
 
-	public void onWin(WinEvent event) {}
+	public void onWin(WinEvent e) {}
+
+	public void onPaint(Graphics2D g) {}
 }

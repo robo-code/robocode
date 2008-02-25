@@ -20,6 +20,7 @@ import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 
 import static robocode.util.Utils.normalRelativeAngle;
 import robocode.util.Utils;
@@ -834,8 +835,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 		public void onWin(WinEvent event) {}
 
-		public void onSkippedTurn(SkippedTurnEvent event) {}
-
 		public void onDeath(DeathEvent event) {
 			others = peer.getOthers();
 		}
@@ -892,5 +891,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 				}
 			}
 		}
+
+		public void onPaint(Graphics2D g) {}
 	}
 }

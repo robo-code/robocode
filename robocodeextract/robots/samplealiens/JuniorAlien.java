@@ -12,11 +12,12 @@
 package samplealiens;
 
 
+import java.awt.Graphics2D;
+import java.io.PrintStream;
+
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.*;
 import robocode.*;
-
-import java.io.PrintStream;
 
 
 /**
@@ -46,31 +47,33 @@ public class JuniorAlien implements IJuniorRobot, IJuniorEvents, IBasicEvents, R
 		this.out = printStream;
 	}
 
-	public void onJuniorEvent(CustomEvent event) {}
+	public void onJuniorEvent(CustomEvent e) {}
 
 	public void onStatus(StatusEvent e) {}
 
-	public void onBulletHit(BulletHitEvent event) {}
+	public void onBulletHit(BulletHitEvent e) {}
 
-	public void onBulletHitBullet(BulletHitBulletEvent event) {}
+	public void onBulletHitBullet(BulletHitBulletEvent e) {}
 
-	public void onBulletMissed(BulletMissedEvent event) {}
+	public void onBulletMissed(BulletMissedEvent e) {}
 
-	public void onDeath(DeathEvent event) {}
+	public void onDeath(DeathEvent e) {}
 
-	public void onHitRobot(HitRobotEvent event) {}
+	public void onHitRobot(HitRobotEvent e) {}
 
-	public void onHitWall(HitWallEvent event) {}
+	public void onHitWall(HitWallEvent e) {}
 
-	public void onRobotDeath(RobotDeathEvent event) {}
+	public void onRobotDeath(RobotDeathEvent e) {}
 
-	public void onWin(WinEvent event) {}
+	public void onWin(WinEvent e) {}
 
-	public void onHitByBullet(HitByBulletEvent event) {
-		peer.turnChassis(Math.PI / 2 + event.getBearingRadians());
+	public void onPaint(Graphics2D g) {}
+
+	public void onHitByBullet(HitByBulletEvent e) {
+		peer.turnChassis(Math.PI / 2 + e.getBearingRadians());
 	}
 
-	public void onScannedRobot(ScannedRobotEvent event) {
+	public void onScannedRobot(ScannedRobotEvent e) {
 		peer.setFire(1);
 	}
 
