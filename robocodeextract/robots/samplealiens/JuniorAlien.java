@@ -48,6 +48,8 @@ public class JuniorAlien implements IJuniorRobot, IJuniorEvents, IBasicEvents, R
 
 	public void onJuniorEvent(CustomEvent event) {}
 
+	public void onStatus(StatusEvent e) {}
+
 	public void onBulletHit(BulletHitEvent event) {}
 
 	public void onBulletHitBullet(BulletHitBulletEvent event) {}

@@ -30,11 +30,15 @@ import robocode.robotinterfaces.peer.*;
 
 
 /**
- * This is the simplest robot type, which is simpler than the Robot and
- * AdvancedRobot classes. The JuniorRobot has a simplified model, in purpose of
- * teaching programming skills to inexperienced in programming students.
- * The simplified robot model will keep player from overwhelming of Robocode's
- * rules, programming syntax and programming concept.
+ * This is the simplest robot type, which is simpler than the {@link Robot} and
+ * {@link AdvancedRobot} classes. The JuniorRobot has a simplified model, in
+ * purpose of teaching programming skills to inexperienced in programming
+ * students. The simplified robot model will keep player from overwhelming of
+ * Robocode's rules, programming syntax and programming concept.
+ * <p>
+ * Instead of using getters and setters, public fields are provided for
+ * receiving information like the last scanned robot, the coordinate of the
+ * robot etc.
  * <p>
  * All methods on this class are blocking calls, i.e. they do not return before
  * their action has been completed and will at least take one turn to execute.
@@ -354,8 +358,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void ahead(int distance) {
 		if (peer != null) {
 			peer.move(distance);
-
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -407,8 +409,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void turnRight(int degrees) {
 		if (peer != null) {
 			peer.turnChassis(toRadians(degrees));
-
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -432,8 +432,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void turnTo(int angle) {
 		if (peer != null) {
 			peer.turnChassis(normalRelativeAngle(toRadians(angle) - peer.getHeading()));
-
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -490,7 +488,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void turnAheadRight(int distance, int degrees) {
 		if (peer != null) {
 			peer.turnAndMoveChassis(distance, toRadians(degrees));
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -577,8 +574,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void turnGunRight(int degrees) {
 		if (peer != null) {
 			peer.turnGun(toRadians(degrees));
-
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -600,8 +595,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void turnGunTo(int angle) {
 		if (peer != null) {
 			peer.turnGun(normalRelativeAngle(toRadians(angle) - peer.getGunHeading()));
-	
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -622,8 +615,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void bearGunTo(int angle) {
 		if (peer != null) {
 			peer.turnGun(normalRelativeAngle(peer.getHeading() + toRadians(angle) - peer.getGunHeading()));
-	
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -796,20 +787,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	}
 
 	/**
-	 * Updates all the public fields of this JuniorRobot.
-	 */
-	private final void updateJuniorRobotFields() {
-		others = peer.getOthers();
-		energy = Math.max(1, (int) (peer.getEnergy() + 0.5));
-		robotX = (int) (peer.getX() + 0.5);
-		robotY = (int) (peer.getY() + 0.5);
-		heading = (int) (toDegrees(peer.getHeading()) + 0.5);
-		gunHeading = (int) (toDegrees(peer.getGunHeading()) + 0.5);
-		gunBearing = (int) (toDegrees(normalRelativeAngle(peer.getGunHeading() - peer.getHeading())) + 0.5);
-		gunReady = (peer.getGunHeat() <= 0);
-	}
-
-	/**
 	 * The JuniorRobot event handler, which implements the basic robot events,
 	 * JuniorRobot event, and Runnable. 
 	 */
@@ -826,13 +803,25 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		public void run() {
 			junior.fieldWidth = (int) (junior.peer.getBattleFieldWidth() + 0.5);
 			junior.fieldHeight = (int) (junior.peer.getBattleFieldHeight() + 0.5);
-			junior.updateJuniorRobotFields();
 
 			((IJuniorRobotPeer) peer).addJuniorEvents();
 
 			while (true) {
 				junior.run();
 			}
+		}
+
+		public void onStatus(StatusEvent e) {
+			final RobotStatus s = e.getStatus();
+
+			others = junior.peer.getOthers();
+			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
+			robotX = (int) (s.getX() + 0.5);
+			robotY = (int) (s.getY() + 0.5);
+			heading = (int) (toDegrees(s.getHeading()) + 0.5);
+			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
+			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
+			gunReady = (s.getGunHeat() <= 0);
 		}
 
 		public void onBulletHit(BulletHitEvent event) {}
@@ -852,7 +841,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 
 		public void onHitByBullet(HitByBulletEvent event) {
-			junior.updateJuniorRobotFields();
 			double angle = junior.peer.getHeading() + event.getBearingRadians();
 
 			junior.hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
@@ -861,7 +849,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 
 		public void onHitRobot(HitRobotEvent event) {
-			junior.updateJuniorRobotFields();
 			double angle = junior.peer.getHeading() + event.getBearingRadians();
 
 			junior.hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
@@ -870,7 +857,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 
 		public void onHitWall(HitWallEvent event) {
-			junior.updateJuniorRobotFields();
 			double angle = junior.peer.getHeading() + event.getBearingRadians();
 
 			junior.hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);

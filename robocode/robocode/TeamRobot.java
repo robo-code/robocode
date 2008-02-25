@@ -28,7 +28,8 @@ import robocode.robotinterfaces.peer.*;
 
 
 /**
- * An advanced type of robot that supports messages between teammates.
+ * An an advanced type of robot that supports sending messages* between team
+ * mates that participates in a team.
  * <p>
  * If you have not already, you should create a {@link Robot} first.
  *

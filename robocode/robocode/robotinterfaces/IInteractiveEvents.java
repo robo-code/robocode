@@ -232,25 +232,4 @@ public interface IInteractiveEvents {
 	 * @since 1.3.4
 	 */
 	public void onMouseWheelMoved(MouseWheelEvent e);
-
-	/**
-	 * This method is called every turn to provide the current robot status as
-	 * a complete snapshot of the robot's state at that specific time.
-	 * <p>
-	 * The main benefit of this method is that you'll automatically receive all
-	 * the current data values of the robot like e.g. the x and y coordinate,
-	 * heading, gun heat etc., which are grouped into the exact same time/turn.
-	 * <p>
-	 * This is the only way to map the robots data values to a specific time.
-	 * For example, it is not possible to determine the exact time of the
-	 * robot's heading by calling first calling getTime() and then getHeading()
-	 * afterwards, as the time MIGHT change after between the getTime() and
-	 * getHeading() call.
-	 *
-	 * @param e the event containing the robot status and the time it was
-	 *    provided.
-	 *
-	 * @since 1.5
-	 */
-	public void onStatus(StatusEvent e);
 }

@@ -514,6 +514,18 @@ public class EventManager implements IEventManager {
 		return fireAssistValid;
 	}
 
+	public void onStatus(StatusEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null) {
+				listener.onStatus(e);
+			}
+		}
+	}
+
 	public void onBulletHit(BulletHitEvent e) {
 		IBasicRobot robot = getRobot();
 
@@ -674,18 +686,6 @@ public class EventManager implements IEventManager {
 
 			if (listener != null) {
 				listener.onWin(e);
-			}
-		}
-	}
-
-	public void onStatus(StatusEvent e) {
-		IBasicRobot robot = getRobot();
-
-		if (robot != null && robotPeer.isInteractiveRobot()) {
-			IInteractiveEvents listener = ((IInteractiveRobot) robot).getSystemEventListener();
-
-			if (listener != null) {
-				listener.onStatus(e);
 			}
 		}
 	}

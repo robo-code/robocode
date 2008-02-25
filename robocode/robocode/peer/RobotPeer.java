@@ -557,12 +557,14 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		setRunning(true);
 
 		try {
-			// Process all events for the first turn
-			eventManager.processEvents();
-
 			if (robot != null) {
 				robot.setOut(getOut());
 				robot.setPeer(createProxy());
+
+				// Process all events for the first turn.
+				// This is done as the first robot status event must occur before the robot
+				// has started running.
+				eventManager.processEvents();
 
 				Runnable runnable = robot.getRobotRunnable();
 

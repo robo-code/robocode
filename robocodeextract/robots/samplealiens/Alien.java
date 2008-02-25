@@ -67,6 +67,8 @@ public class Alien implements IInteractiveRobot, IBasicEvents, Runnable {
 		peer.turnChassis(Math.PI / 2 + event.getBearingRadians());
 	}
 
+	public void onStatus(StatusEvent e) {}
+
 	public void onBulletHit(BulletHitEvent event) {}
 
 	public void onBulletHitBullet(BulletHitBulletEvent event) {}
