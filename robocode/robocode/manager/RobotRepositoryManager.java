@@ -428,7 +428,7 @@ public class RobotRepositoryManager {
 							robotFileSpecification.setClassicRobot(true);
 						}*/
 
-						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
+						if (robocode.JuniorRobot.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setJuniorRobot(true);
 							if (robotFileSpecification.isAdvancedRobot()) {
 								throw new AccessControlException(

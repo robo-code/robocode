@@ -572,12 +572,6 @@ public class EventManager implements IEventManager {
 				if (listener != null) {
 					listener.onCustomEvent(e);
 				}
-			} else if (robotPeer.isJuniorRobot()) {
-				IBasicEvents basicListener = robot.getBasicEventListener();
-
-				if (basicListener != null && basicListener instanceof IJuniorEvents) {
-					((IJuniorEvents) basicListener).onJuniorEvent(e);
-				}
 			}
 		}
 	}

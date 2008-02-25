@@ -24,8 +24,6 @@ import java.awt.Graphics2D;
 
 import static robocode.util.Utils.normalRelativeAngle;
 import robocode.util.Utils;
-import robocode.peer.GunFireCondition;
-import robocode.peer.GunReadyCondition;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.*;
 
@@ -52,7 +50,7 @@ import robocode.robotinterfaces.peer.*;
  * 
  * @since 1.4
  */
-public class JuniorRobot extends _RobotBase implements IJuniorRobot {
+public class JuniorRobot extends _RobotBase implements IBasicRobot {
 
 	/** The color black (0x000000) */
 	public final static int	black = 0x000000;
@@ -782,7 +780,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	private final EventHandler getEventHandler() {
 		if (eventHandler == null) {
-			eventHandler = new EventHandler(this);
+			eventHandler = new EventHandler();
 		}
 		return eventHandler;
 	}
@@ -791,31 +789,23 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * The JuniorRobot event handler, which implements the basic robot events,
 	 * JuniorRobot event, and Runnable. 
 	 */
-	private final class EventHandler implements IBasicEvents, IJuniorEvents, Runnable {
-
-		private final JuniorRobot junior;
+	private final class EventHandler implements IBasicEvents, Runnable {
 
 		private double juniorFirePower;
 
-		public EventHandler(JuniorRobot junior) {
-			this.junior = junior;
-		}
-
 		public void run() {
-			junior.fieldWidth = (int) (junior.peer.getBattleFieldWidth() + 0.5);
-			junior.fieldHeight = (int) (junior.peer.getBattleFieldHeight() + 0.5);
-
-			((IJuniorRobotPeer) peer).addJuniorEvents();
+			fieldWidth = (int) (peer.getBattleFieldWidth() + 0.5);
+			fieldHeight = (int) (peer.getBattleFieldHeight() + 0.5);
 
 			while (true) {
-				junior.run();
+				JuniorRobot.this.run();
 			}
 		}
 
 		public void onStatus(StatusEvent e) {
 			final RobotStatus s = e.getStatus();
 
-			others = junior.peer.getOthers();
+			others = peer.getOthers();
 			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
 			robotX = (int) (s.getX() + 0.5);
 			robotY = (int) (s.getY() + 0.5);
@@ -823,6 +813,14 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
 			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
 			gunReady = (s.getGunHeat() <= 0);
+
+			// Auto fire  
+			if (juniorFirePower > 0 && gunReady && (peer.getGunTurnRemaining() == 0)) {
+				if (peer.setFire(juniorFirePower) != null) {
+					gunReady = false;
+					juniorFirePower = 0;
+				}
+			}
 		}
 
 		public void onBulletHit(BulletHitEvent event) {}
@@ -840,56 +838,40 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 
 		public void onHitByBullet(HitByBulletEvent event) {
-			double angle = junior.peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getHeading() + event.getBearingRadians();
 
-			junior.hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			junior.hitByBulletBearing = (int) (event.getBearing() + 0.5);
-			junior.onHitByBullet();
+			hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitByBulletBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitByBullet();
 		}
 
 		public void onHitRobot(HitRobotEvent event) {
-			double angle = junior.peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getHeading() + event.getBearingRadians();
 
-			junior.hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			junior.hitRobotBearing = (int) (event.getBearing() + 0.5);
-			junior.onHitRobot();
+			hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitRobotBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitRobot();
 		}
 
 		public void onHitWall(HitWallEvent event) {
-			double angle = junior.peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getHeading() + event.getBearingRadians();
 
-			junior.hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			junior.hitWallBearing = (int) (event.getBearing() + 0.5);
-			junior.onHitWall();
+			hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitWallBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitWall();
 		}
 
 		public void onScannedRobot(ScannedRobotEvent event) {
-			junior.scannedDistance = (int) (event.getDistance() + 0.5);
-			junior.scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
-			junior.scannedAngle = (int) (Math.toDegrees(
-					Utils.normalAbsoluteAngle(junior.peer.getHeading() + event.getBearingRadians()))
+			scannedDistance = (int) (event.getDistance() + 0.5);
+			scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
+			scannedAngle = (int) (Math.toDegrees(
+					Utils.normalAbsoluteAngle(peer.getHeading() + event.getBearingRadians()))
 							+ 0.5);
-			junior.scannedBearing = (int) (event.getBearing() + 0.5);
-			junior.scannedHeading = (int) (event.getHeading() + 0.5);
-			junior.scannedVelocity = (int) (event.getVelocity() + 0.5);
+			scannedBearing = (int) (event.getBearing() + 0.5);
+			scannedHeading = (int) (event.getHeading() + 0.5);
+			scannedVelocity = (int) (event.getVelocity() + 0.5);
             
-			junior.onScannedRobot();
-		}
-
-		public void onJuniorEvent(CustomEvent event) {
-			Condition c = event.getCondition();
-
-			if (c instanceof GunReadyCondition) {
-				junior.gunReady = true;
-			} else if (c instanceof GunFireCondition) {
-
-				if (juniorFirePower > 0) {
-					if (junior.peer.setFire(juniorFirePower) != null) {
-						junior.gunReady = false;
-					}
-					juniorFirePower = 0;
-				}
-			}
+			JuniorRobot.this.onScannedRobot();
 		}
 
 		public void onPaint(Graphics2D g) {}
