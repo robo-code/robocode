@@ -18,7 +18,14 @@ import java.awt.event.MouseWheelEvent;
 
 
 /**
+ * An event interface for receiving interactive events with a
+ * {@link IInteractiveRobot}.
+ *
+ * @see IInteractiveRobot
+ *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6
  */
 public interface IInteractiveEvents {
     
@@ -30,8 +37,6 @@ public interface IInteractiveEvents {
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 * @see #onKeyReleased(java.awt.event.KeyEvent)
 	 * @see #onKeyTyped(java.awt.event.KeyEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onKeyPressed(KeyEvent e);
 
@@ -43,8 +48,6 @@ public interface IInteractiveEvents {
 	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent)
 	 * @see #onKeyPressed(KeyEvent)
 	 * @see #onKeyTyped(KeyEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onKeyReleased(KeyEvent e);
 
@@ -56,8 +59,6 @@ public interface IInteractiveEvents {
 	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent)
 	 * @see #onKeyPressed(KeyEvent)
 	 * @see #onKeyReleased(KeyEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onKeyTyped(KeyEvent e);
 
@@ -74,8 +75,6 @@ public interface IInteractiveEvents {
 	 * @see #onMouseExited(java.awt.event.MouseEvent)
 	 * @see #onMouseDragged(java.awt.event.MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onMouseClicked(MouseEvent e);
 
@@ -92,8 +91,6 @@ public interface IInteractiveEvents {
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onMouseEntered(MouseEvent e);
 
@@ -110,8 +107,6 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onMouseExited(MouseEvent e);
 
@@ -128,8 +123,6 @@ public interface IInteractiveEvents {
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onMousePressed(MouseEvent e);
 
@@ -146,8 +139,6 @@ public interface IInteractiveEvents {
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onMouseReleased(MouseEvent e);
 
@@ -164,8 +155,6 @@ public interface IInteractiveEvents {
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onMouseMoved(MouseEvent e);
 
@@ -182,8 +171,6 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onMouseDragged(MouseEvent e);
 
@@ -200,8 +187,6 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 *
-	 * @since 1.3.4
 	 */
 	public void onMouseWheelMoved(MouseWheelEvent e);
 }

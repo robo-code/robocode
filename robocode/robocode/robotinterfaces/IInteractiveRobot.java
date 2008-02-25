@@ -13,12 +13,31 @@ package robocode.robotinterfaces;
 
 
 /**
+ * An robot interface to create an interactive type of robot like
+ * {@link robocode.Robot} and {@link robocode.AdvancedRobot} that is able to
+ * receive interactive events from the keyboard or mouse.
+ * If a robot is directly inherited from this class it will behave as similar to
+ * a {@link IBasicRobot}. If you need it to behave similar to a
+ * {@link IAdvancedRobot} or {@link ITeamRobot}, you should inherit from these
+ * interfaces instead, as these are inherited from this interface.
+ *
+ * @see robocode.Robot
+ * @see robocode.AdvancedRobot
+ * @see IBasicRobot
+ * @see IAdvancedRobot
+ * @see ITeamRobot
+ *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6
  */
 public interface IInteractiveRobot extends IBasicRobot {
 
 	/**
-	 * This method is called by the game.
+	 * This method is called by the game to notify this robot about interactive
+	 * events, i.e. keyboard and mouse events. Hence, this method must be
+	 * implemented so it returns your {@link ISystemEvents} listener.
+	 *
 	 * @return listener to system events
 	 */
 	IInteractiveEvents getInteractiveEventListener();

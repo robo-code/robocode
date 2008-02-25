@@ -16,12 +16,19 @@ import robocode.MessageEvent;
 
 
 /**
+ * An event interface for receiving robot team events with a
+ * {@link ITeamRobot}.<br>
+ *
+ * @see ITeamRobot
+ *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6
  */
 public interface ITeamEvents {
 
 	/**
-	 * This method is called when your robot receives a message from a teammate.
+	 * This method is called when your robot receives a message from a team mate.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
 	 * <p>
@@ -32,11 +39,10 @@ public interface ITeamEvents {
 	 *   }
 	 * </pre>
 	 *
-	 * @param event the event sent by the game
+	 * @param event the message event sent by the game
 	 *
 	 * @see robocode.MessageEvent
 	 * @see robocode.Event
 	 */
 	void onMessageReceived(MessageEvent event);
-
 }

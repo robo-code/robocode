@@ -17,7 +17,14 @@ import robocode.CustomEvent;
 
 
 /**
+ * An event interface for receiving advanced robot events with a
+ * {@link IAdvancedRobot}.
+ *
+ * @see IAdvancedRobot
+ *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6
  */
 public interface IAdvancedEvents {
 
@@ -46,7 +53,7 @@ public interface IAdvancedEvents {
 	 * <p>
 	 * See the sample robots for examples of use.
 	 *
-	 * @param event the custom event that occured
+	 * @param event the custom event that occurred
 	 *
 	 * @see robocode.AdvancedRobot#addCustomEvent
 	 * @see robocode.CustomEvent
