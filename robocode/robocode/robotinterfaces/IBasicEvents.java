@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -24,6 +26,7 @@ import robocode.*;
  * @see IBasicRobot
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
  *
  * @since 1.6
  */
@@ -133,7 +136,7 @@ public interface IBasicEvents {
 	 * @see robocode.HitByBulletEvent
 	 * @see robocode.Event
 	 */
-	public void onHitByBullet(HitByBulletEvent event);
+	void onHitByBullet(HitByBulletEvent event);
 
 	/**
 	 * This method is called when your robot collides with another robot.

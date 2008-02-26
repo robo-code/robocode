@@ -49,6 +49,10 @@ public class MasterAndSlave extends MasterBase implements IAdvancedRobot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		turnLeft(90 - e.getBearing());
 	}
+
+	public IInteractiveEvents getInteractiveEventListener() {
+		return null;
+	}
 }
 
 

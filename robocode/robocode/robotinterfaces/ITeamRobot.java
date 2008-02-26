@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -25,6 +27,7 @@ package robocode.robotinterfaces;
  * @see ITeamRobot
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
  *
  * @since 1.6
  */
@@ -35,7 +38,8 @@ public interface ITeamRobot extends IAdvancedRobot {
 	 * events. Hence, this method must be implemented so it returns your
 	 * {@link ITeamEvents} listener.
 	 *
-	 * @return listener to team events
+	 * @return listener to team events or <code>null</code> if this robot
+	 *    should not receive the notifications.
 	 */
 	ITeamEvents getTeamEventListener();
 }

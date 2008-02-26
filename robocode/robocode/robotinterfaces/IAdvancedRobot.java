@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -24,6 +26,7 @@ package robocode.robotinterfaces;
  * @see ITeamRobot
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
  *
  * @since 1.6
  */
@@ -34,7 +37,8 @@ public interface IAdvancedRobot extends IInteractiveRobot {
 	 * robot event. Hence, this method must be implemented so it returns your
 	 * {@link IAdvancedEvents} listener.
 	 *
-	 * @return listener to advanced events
+	 * @return listener to advanced events or <code>null</code> if this robot
+	 *    should not receive the notifications.
 	 */
 	IAdvancedEvents getAdvancedEventListener();
 }

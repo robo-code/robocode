@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -24,6 +26,7 @@ import java.awt.event.MouseWheelEvent;
  * @see IInteractiveRobot
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
  *
  * @since 1.6
  */
@@ -38,7 +41,7 @@ public interface IInteractiveEvents {
 	 * @see #onKeyReleased(java.awt.event.KeyEvent)
 	 * @see #onKeyTyped(java.awt.event.KeyEvent)
 	 */
-	public void onKeyPressed(KeyEvent e);
+	void onKeyPressed(KeyEvent e);
 
 	/**
 	 * This method is called when a key has been released.
@@ -49,7 +52,7 @@ public interface IInteractiveEvents {
 	 * @see #onKeyPressed(KeyEvent)
 	 * @see #onKeyTyped(KeyEvent)
 	 */
-	public void onKeyReleased(KeyEvent e);
+	void onKeyReleased(KeyEvent e);
 
 	/**
 	 * This method is called when a key has been typed (pressed and released).
@@ -60,7 +63,7 @@ public interface IInteractiveEvents {
 	 * @see #onKeyPressed(KeyEvent)
 	 * @see #onKeyReleased(KeyEvent)
 	 */
-	public void onKeyTyped(KeyEvent e);
+	void onKeyTyped(KeyEvent e);
 
 	/**
 	 * This method is called when a mouse button has been clicked (pressed and released).
@@ -76,7 +79,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseDragged(java.awt.event.MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
-	public void onMouseClicked(MouseEvent e);
+	void onMouseClicked(MouseEvent e);
 
 	/**
 	 * This method is called when the mouse has entered the battle view.
@@ -92,7 +95,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
-	public void onMouseEntered(MouseEvent e);
+	void onMouseEntered(MouseEvent e);
 
 	/**
 	 * This method is called when the mouse has exited the battle view.
@@ -108,7 +111,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
-	public void onMouseExited(MouseEvent e);
+	void onMouseExited(MouseEvent e);
 
 	/**
 	 * This method is called when a mouse button has been pressed.
@@ -124,7 +127,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
-	public void onMousePressed(MouseEvent e);
+	void onMousePressed(MouseEvent e);
 
 	/**
 	 * This method is called when a mouse button has been released.
@@ -140,7 +143,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
-	public void onMouseReleased(MouseEvent e);
+	void onMouseReleased(MouseEvent e);
 
 	/**
 	 * This method is called when the mouse has been moved.
@@ -156,7 +159,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseDragged(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
-	public void onMouseMoved(MouseEvent e);
+	void onMouseMoved(MouseEvent e);
 
 	/**
 	 * This method is called when a mouse button has been pressed and then dragged.
@@ -172,7 +175,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
-	public void onMouseDragged(MouseEvent e);
+	void onMouseDragged(MouseEvent e);
 
 	/**
 	 * This method is called when the mouse wheel has been rotated.
@@ -188,5 +191,5 @@ public interface IInteractiveEvents {
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
 	 */
-	public void onMouseWheelMoved(MouseWheelEvent e);
+	void onMouseWheelMoved(MouseWheelEvent e);
 }

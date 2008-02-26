@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -22,6 +24,7 @@ import robocode.MessageEvent;
  * @see ITeamRobot
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
  *
  * @since 1.6
  */

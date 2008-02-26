@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -28,6 +30,7 @@ package robocode.robotinterfaces;
  * @see ITeamRobot
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
  *
  * @since 1.6
  */
@@ -38,7 +41,8 @@ public interface IInteractiveRobot extends IBasicRobot {
 	 * events, i.e. keyboard and mouse events. Hence, this method must be
 	 * implemented so it returns your {@link ISystemEvents} listener.
 	 *
-	 * @return listener to system events
+	 * @return listener to interactive events or <code>null</code> if this robot
+	 *    should not receive the notifications.
 	 */
 	IInteractiveEvents getInteractiveEventListener();
 }

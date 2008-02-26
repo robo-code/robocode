@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -28,6 +30,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  * @see ITeamRobot
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
  *
  * @since 1.6
  */
@@ -48,7 +51,8 @@ public interface IBasicRobot {
 	 * robot event. Hence, this method must be implemented so it returns your
 	 * {@link IBasicEvents} listener.
 	 *
-	 * @return listener to basic events
+	 * @return listener to basic events or <code>null</code> if this robot
+	 *    should not receive the notifications.
 	 */
 	IBasicEvents getBasicEventListener();
 

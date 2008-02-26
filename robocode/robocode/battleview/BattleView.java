@@ -21,7 +21,6 @@ import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-import robocode.Robot;
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
@@ -34,6 +33,8 @@ import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.ExplosionPeer;
 import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
 import robocode.util.GraphicsState;
 
 
@@ -460,10 +461,6 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotPeer robotPeer) {
-		if (!(robotPeer.getRobot() instanceof Robot)) {
-			return;
-		}
-
 		// Save the graphics state
 		GraphicsState gfxState = new GraphicsState();
 
@@ -471,22 +468,25 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		Robot robot = (Robot) robotPeer.getRobot();
-		
+		IBasicRobot robot = robotPeer.getRobot();
+		IBasicEvents basicEvents = robot.getBasicEventListener();
+
 		// Do the painting
 		try {
-			if (robotPeer.isSGPaintEnabled()) {
-				robot.onPaint(g);
-			} else {
-				mirroredGraphics.bind(g, battleField.getHeight());
-				robot.onPaint(mirroredGraphics);
-				mirroredGraphics.release();
+			if (basicEvents != null) {
+				if (robotPeer.isSGPaintEnabled()) {
+					basicEvents.onPaint(g);
+				} else {
+					mirroredGraphics.bind(g, battleField.getHeight());
+					basicEvents.onPaint(mirroredGraphics);
+					mirroredGraphics.release();
+				}
 			}
 		} catch (Exception e) {
 			// Make sure that Robocode is not halted by an exception caused by letting the robot paint
 
-			robot.out.println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-			e.printStackTrace(robot.out);
+			robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
+			e.printStackTrace(robotPeer.getOut());
 		}
 
 		// Restore the graphics state
