@@ -13,7 +13,7 @@ package robocode.robotinterfaces;
 
 
 /**
- * An robot interface to create an interactive type of robot like
+ * A robot interface for creating an interactive type of robot like
  * {@link robocode.Robot} and {@link robocode.AdvancedRobot} that is able to
  * receive interactive events from the keyboard or mouse.
  * If a robot is directly inherited from this class it will behave as similar to

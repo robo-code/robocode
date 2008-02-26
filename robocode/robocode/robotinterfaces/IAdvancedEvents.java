@@ -17,7 +17,7 @@ import robocode.CustomEvent;
 
 
 /**
- * An event interface for receiving advanced robot events with a
+ * An event interface for receiving advanced robot events with an
  * {@link IAdvancedRobot}.
  *
  * @see IAdvancedRobot

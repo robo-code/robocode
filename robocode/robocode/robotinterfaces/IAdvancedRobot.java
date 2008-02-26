@@ -13,7 +13,7 @@ package robocode.robotinterfaces;
 
 
 /**
- * An robot interface to create a more advanced type of robot like
+ * A robot interface for creating a more advanced type of robot like
  * {@link robocode.AdvancedRobot} that is able to handle advanced robot events.
  * An advanced robot allows non-blocking calls, custom events, get notifications
  * about skipped turns, and also allow writes to the file system.

@@ -16,10 +16,10 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 
 /**
- * An robot interface to create a basic type of robot like {@link robocode.Robot}
+ * A robot interface for creating a basic type of robot like {@link robocode.Robot}
  * that is able to receive common robot events, but not interactive events as
  * with the {@link robocode.Robot} class.
- * An basic robot allows blocking calls only and cannot handle custom events nor
+ * A basic robot allows blocking calls only and cannot handle custom events nor
  * writes to the file system like an advanced robot.
  *
  * @see robocode.Robot

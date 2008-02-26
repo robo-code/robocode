@@ -18,7 +18,7 @@ import robocode.*;
 
 
 /**
- * An event interface for receiving basic robot events with a
+ * An event interface for receiving basic robot events with an
  * {@link IBasicRobot}.
  *
  * @see IBasicRobot

@@ -13,7 +13,7 @@ package robocode.robotinterfaces;
 
 
 /**
- * An robot interface to create a team robot like {@link robocode.TeamRobot}
+ * A robot interface for creating a team robot like {@link robocode.TeamRobot}
  * that is able to receive team events.
  * A team robot is an advanced type of robot that supports sending messages
  * between team mates that participates in a team.

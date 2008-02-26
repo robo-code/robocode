@@ -18,7 +18,7 @@ import java.awt.event.MouseWheelEvent;
 
 
 /**
- * An event interface for receiving interactive events with a
+ * An event interface for receiving interactive events with an
  * {@link IInteractiveRobot}.
  *
  * @see IInteractiveRobot
