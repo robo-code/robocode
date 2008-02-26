@@ -389,6 +389,7 @@
         <include name="robocode/*.java"/>
       	<include name="robocode/util/Utils.java"/>
       	<include name="robocode/control/*.java"/>
+        <include name="robocode/robotinterfaces/*.java"/>
       </fileset>
       <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
     </javadoc>
