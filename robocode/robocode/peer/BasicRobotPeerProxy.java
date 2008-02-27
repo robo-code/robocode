@@ -46,10 +46,6 @@ public class BasicRobotPeerProxy implements IBasicRobotPeer {
 		peer.turnChassis(radians);
 	}
 
-	public void turnAndMoveChassis(double distance, double radians) {
-		peer.turnAndMoveChassis(distance, radians);
-	}
-
 	public void turnGun(double radians) {
 		peer.turnGun(radians);
 	}

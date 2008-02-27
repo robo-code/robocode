@@ -25,6 +25,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  * writes to the file system like an advanced robot.
  *
  * @see robocode.Robot
+ * @see IJuniorRobot
  * @see IInteractiveRobot
  * @see IAdvancedRobot
  * @see ITeamRobot

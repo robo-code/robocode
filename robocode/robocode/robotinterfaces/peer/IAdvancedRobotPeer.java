@@ -31,7 +31,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	void setTurnGun(double radians);
 	void setTurnRadar(double radians);
 
-	// blockig actions
+	// blocking actions
 	void waitFor(Condition condition);
 
 	// fast setters

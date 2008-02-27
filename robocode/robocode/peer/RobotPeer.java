@@ -106,7 +106,7 @@ import robocode.util.BoundingRectangle;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements ITeamRobotPeer, Runnable, ContestantPeer {
+public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
 
 	// Robot States: all states last one turn, except ALIVE and DEAD
 	public static final int
@@ -327,8 +327,11 @@ public class RobotPeer implements ITeamRobotPeer, Runnable, ContestantPeer {
 		if (isAdvancedRobot) {
 			return new AdvancedRobotPeerProxy(this);
 		}
-		if (isInteractiveRobot || isJuniorRobot) {
+		if (isInteractiveRobot) {
 			return new StandardRobotPeerProxy(this);
+		}
+		if (isJuniorRobot) {
+			return new JuniorRobotPeerProxy(this);
 		}
 		throw new AccessControlException("Unknown robot type");
 	}

@@ -24,7 +24,9 @@ import java.awt.Graphics2D;
 
 import static robocode.util.Utils.normalRelativeAngle;
 import robocode.util.Utils;
-import robocode.robotinterfaces.*;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
 
 /**
@@ -485,7 +487,7 @@ public class JuniorRobot extends _RobotBase implements IBasicRobot {
 	 */
 	public void turnAheadRight(int distance, int degrees) {
 		if (peer != null) {
-			peer.turnAndMoveChassis(distance, toRadians(degrees));
+			((IJuniorRobotPeer) peer).turnAndMoveChassis(distance, toRadians(degrees));
 		} else {
 			uninitializedException();
 		}

@@ -31,7 +31,6 @@ public interface IBasicRobotPeer extends IGettersRobotPeer {
 	void tick();
 	void move(double distance);
 	void turnChassis(double radians);
-	void turnAndMoveChassis(double distance, double radians);
 	void turnGun(double radians);
 
 	// fast setters

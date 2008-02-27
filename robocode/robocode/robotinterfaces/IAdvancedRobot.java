@@ -22,6 +22,7 @@ package robocode.robotinterfaces;
  *
  * @see robocode.AdvancedRobot
  * @see IBasicRobot
+ * @see IJuniorRobot
  * @see IInteractiveRobot
  * @see ITeamRobot
  *
