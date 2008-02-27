@@ -25,7 +25,7 @@ import java.awt.Graphics2D;
 import static robocode.util.Utils.normalRelativeAngle;
 import robocode.util.Utils;
 import robocode.robotinterfaces.IBasicEvents;
-import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IJuniorRobot;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
 
@@ -51,7 +51,7 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
  * 
  * @since 1.4
  */
-public class JuniorRobot extends _RobotBase implements IBasicRobot {
+public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 	/** The color black (0x000000) */
 	public final static int	black = 0x000000;
