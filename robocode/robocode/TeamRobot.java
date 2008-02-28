@@ -39,7 +39,7 @@ import robocode.robotinterfaces.peer.*;
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
  */
-public class TeamRobot extends AdvancedRobot implements ITeamEvents {
+public class TeamRobot extends AdvancedRobot implements ITeamEvents, ITeamRobot {
 
 	/**
 	 * Checks if a given robot name is the name of one of your teammates.
@@ -54,6 +54,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 *   }
 	 * </pre>
 	 * @param name the robot name to check
+	 * @return boolean value
 	 */
 	public boolean isTeammate(String name) {
 		if (peer != null) {
@@ -103,6 +104,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 * </pre>
 	 *
 	 * @param message the message to broadcast to all team mates
+	 * @throws java.io.IOException
 	 */
 	public void broadcastMessage(Serializable message) throws IOException {
 		if (peer != null) {
@@ -124,6 +126,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents {
 	 *
 	 * @param name the name of the intended recipient of the message
 	 * @param message the message to send
+	 * @throws java.io.IOException
 	 */
 	public void sendMessage(String name, Serializable message) throws IOException {
 		if (peer != null) {
