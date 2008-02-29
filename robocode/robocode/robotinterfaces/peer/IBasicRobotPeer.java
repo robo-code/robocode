@@ -23,7 +23,37 @@ import java.awt.*;
 /**
  * @author Pavel Savara (original)
  */
-public interface IBasicRobotPeer extends IGettersRobotPeer {
+public interface IBasicRobotPeer {
+
+	// Junior calls below
+	double getHeading();
+	double getGunHeading();
+	double getGunTurnRemaining();
+	double getEnergy();
+	double getGunHeat();
+	double getBattleFieldHeight();
+	double getBattleFieldWidth();
+	double getX();
+	double getY();
+	int getOthers();
+	int getNumRounds();
+	int getRoundNum();
+
+	// Robot calls below
+	double getVelocity();
+	double getRadarHeading();
+	double getGunCoolingRate();
+	String getName();
+	long getTime();
+
+	// AdvancedRobot calls below
+	double getRadarTurnRemaining();
+	double getDistanceRemaining();
+	double getTurnRemaining();
+	boolean isAdjustGunForBodyTurn();
+	boolean isAdjustRadarForGunTurn();
+	boolean isAdjustRadarForBodyTurn();
+
 	// asynchronous actions
 	Bullet setFire(double power);
 
