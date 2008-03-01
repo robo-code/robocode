@@ -37,7 +37,7 @@
  *     - Added features to support the new JuniorRobot class
  *     - Added cleanupStaticFields() for clearing static fields on robots
  *     - Added getMaxTurnRate()
- *     - Added turnAndMoveChassis() in order to support the turnAheadLeft(),
+ *     - Added turnAndMove() in order to support the turnAheadLeft(),
  *       turnAheadRight(), turnBackLeft(), and turnBackRight() for the
  *       JuniorRobot, which moves the robot in a perfect curve that follows a
  *       circle
@@ -837,14 +837,14 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		} while (getGunTurnRemaining() != 0);
 	}
 
-	public synchronized final void setTurnChassis(double radians) {
+	public synchronized final void setTurnBody(double radians) {
 		if (energy > 0) {
 			turnRemaining = radians;
 		}
 	}
 
-	public final void turnChassis(double radians) {
-		setTurnChassis(radians);
+	public final void turnBody(double radians) {
+		setTurnBody(radians);
 		do {
 			execute(); // Always tick at least once
 		} while (getTurnRemaining() != 0);
@@ -1877,9 +1877,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 	}
 
-	public void turnAndMoveChassis(double distance, double radians) {
+	public void turnAndMove(double distance, double radians) {
 		if (distance == 0) {
-			turnChassis(radians);
+			turnBody(radians);
 			return;
 		}
 
@@ -1939,15 +1939,15 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			turns += (int) ((absDistance - accDist - decDist) / maxVelocity + 1);
 		}
 
-		// -- Move and turn chassis in a curve --
+		// -- Move and turn in a curve --
 
 		// Set the calculated max. velocity
 		setMaxVelocity(maxVelocity);
 
 		// Set the robot to move the specified distance
 		setMove(distance);
-		// Set the robot to turn its chassis to the specified amount of radians
-		setTurnChassis(radians);
+		// Set the robot to turn its body to the specified amount of radians
+		setTurnBody(radians);
 
 		// Loop thru the number of turns it will take to move the distance and adjust
 		// the max. turn rate so it fit the current velocity of the robot 

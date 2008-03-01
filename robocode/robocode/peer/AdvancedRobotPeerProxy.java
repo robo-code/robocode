@@ -60,9 +60,9 @@ public class AdvancedRobotPeerProxy extends StandardRobotPeerProxy implements IA
 		((IAdvancedRobotPeer) peer).setMove(distance);
 	}
 
-	public void setTurnChassis(double radians) {
+	public void setTurnBody(double radians) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setTurnChassis(radians);
+		((IAdvancedRobotPeer) peer).setTurnBody(radians);
 	}
 
 	public void setTurnGun(double radians) {

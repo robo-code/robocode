@@ -412,7 +412,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnRight(int degrees) {
 		if (peer != null) {
-			peer.turnChassis(toRadians(degrees));
+			peer.turnBody(toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -435,7 +435,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnTo(int angle) {
 		if (peer != null) {
-			peer.turnChassis(normalRelativeAngle(toRadians(angle) - peer.getHeading()));
+			peer.turnBody(normalRelativeAngle(toRadians(angle) - peer.getHeading()));
 		} else {
 			uninitializedException();
 		}
@@ -491,7 +491,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnAheadRight(int distance, int degrees) {
 		if (peer != null) {
-			((IJuniorRobotPeer) peer).turnAndMoveChassis(distance, toRadians(degrees));
+			((IJuniorRobotPeer) peer).turnAndMove(distance, toRadians(degrees));
 		} else {
 			uninitializedException();
 		}

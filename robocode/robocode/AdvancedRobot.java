@@ -248,7 +248,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setTurnLeft(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnChassis(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnBody(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -284,7 +284,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setTurnRight(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnChassis(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnBody(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}

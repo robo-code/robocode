@@ -27,7 +27,7 @@ public class JuniorRobotPeerProxy extends BasicRobotPeerProxy implements IJunior
 		super(peer);
 	}
 
-	public void turnAndMoveChassis(double distance, double radians) {
-		((IJuniorRobotPeer) peer).turnAndMoveChassis(distance, radians);
+	public void turnAndMove(double distance, double radians) {
+		((IJuniorRobotPeer) peer).turnAndMove(distance, radians);
 	}
 }

@@ -93,7 +93,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnLeftRadians(double radians) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnChassis(-radians);
+			((IAdvancedRobotPeer) peer).setTurnBody(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -129,7 +129,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnRightRadians(double radians) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnChassis(radians);
+			((IAdvancedRobotPeer) peer).setTurnBody(radians);
 		} else {
 			uninitializedException();
 		}
@@ -159,7 +159,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void turnLeftRadians(double radians) {
 		if (peer != null) {
-			peer.turnChassis(-radians);
+			peer.turnBody(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -188,7 +188,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void turnRightRadians(double radians) {
 		if (peer != null) {
-			peer.turnChassis(radians);
+			peer.turnBody(radians);
 		} else {
 			uninitializedException();
 		}

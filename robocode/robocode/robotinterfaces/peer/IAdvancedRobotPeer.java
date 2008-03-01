@@ -156,7 +156,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 */
 	void setMove(double distance);
 
-	void setTurnChassis(double radians);
+	void setTurnBody(double radians);
 	void setTurnGun(double radians);
 	void setTurnRadar(double radians);
 

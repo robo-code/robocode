@@ -27,5 +27,5 @@ package robocode.robotinterfaces.peer;
 */
 public interface IJuniorRobotPeer extends IBasicRobotPeer {
 
-	void turnAndMoveChassis(double distance, double radians);
+	void turnAndMove(double distance, double radians);
 }

@@ -296,8 +296,43 @@ public interface IBasicRobotPeer {
 	 * </pre>
 	 */
 	void execute();
+
+	/**
+	 * Immediately moves your robot forward or backward by distance measured in
+	 * pixels.
+	 * <p>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the remaining distance to move is 0.
+	 * <p>
+	 * If the robot collides with a wall, the move is complete, meaning that the
+	 * robot will not move any further. If the robot collides with another
+	 * robot, the move is complete if you are heading toward the other robot.
+	 * <p>
+	 * Note that both positive and negative values can be given as input, where
+	 * positive values means that the robot is set to move forward, and negative
+	 * values means that the robot is set to move backward.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Move the robot 100 pixels forward
+	 *   ahead(100);
+	 *
+	 *   // Afterwards, move the robot 50 pixels backward
+	 *   ahead(-50);
+	 * </pre>
+	 *
+	 * @param distance the distance to move measured in pixels.
+	 *    If {@code distance} > 0 the robot is set to move forward.
+	 *    If {@code distance} < 0 the robot is set to move backward.
+	 *    If {@code distance} = 0 the robot will not move anywhere, but just
+	 *    finish its turn.
+	 *
+	 * @see robocode.robotinterfaces.IBasicEvents#onHitWall(robocode.HitWallEvent)
+	 * @see robocode.robotinterfaces.IBasicEvents#onHitRobot(robocode.HitRobotEvent)
+	 */
 	void move(double distance);
-	void turnChassis(double radians);
+
+	void turnBody(double radians);
 	void turnGun(double radians);
 
 	// asynchronous actions
