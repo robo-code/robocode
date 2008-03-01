@@ -52,10 +52,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently moving forwards. Negative values means
-	 * that the robot is currently moving backwards.
+	 * that the robot is currently moving backwards. If the returned value is 0,
+	 * the robot currently stands still.
 	 *
 	 * @return the distance remaining in the robot's current move measured in
 	 *    pixels.
+	 *
+	 * @see #getTurnRemaining()
+	 * @see #getGunTurnRemaining()
+	 * @see #getRadarTurnRemaining()
 	 */
 	public double getDistanceRemaining() {
 		if (peer != null) {
@@ -66,15 +71,84 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * Returns the angle remaining in the robots's turn, in degrees.
+	 * <p>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the robot is currently turning to the right. Negative values
+	 * means that the robot is currently turning to the left. If the returned
+	 * value is 0, the robot is currently not turning.
+	 *
+	 * @return the angle remaining in the robots's turn, in degrees
+	 *
+	 * @see #getDistanceRemaining()
+	 * @see #getGunTurnRemaining()
+	 * @see #getRadarTurnRemaining()
+	 */
+	public double getTurnRemaining() {
+		if (peer != null) {
+			return Math.toDegrees(peer.getTurnRemaining());
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the angle remaining in the gun's turn, in degrees.
+	 * <p>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the gun is currently turning to the right. Negative values
+	 * means that the gun is currently turning to the left. If the returned
+	 * value is 0, the gun is currently not turning.
+	 *
+	 * @return the angle remaining in the gun's turn, in degrees
+	 *
+	 * @see #getDistanceRemaining()
+	 * @see #getTurnRemaining()
+	 * @see #getRadarTurnRemaining()
+	 */
+	public double getGunTurnRemaining() {
+		if (peer != null) {
+			return Math.toDegrees(peer.getGunTurnRemaining());
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the angle remaining in the radar's turn, in degrees.
+	 * <p>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the radar is currently turning to the right. Negative values
+	 * means that the radar is currently turning to the left. If the returned
+	 * value is 0, the radar is currently not turning.
+	 *
+	 * @return the angle remaining in the radar's turn, in degrees
+	 *
+	 * @see #getDistanceRemaining()
+	 * @see #getGunTurnRemaining()
+	 * @see #getRadarTurnRemaining()
+	 */
+	public double getRadarTurnRemaining() {
+		if (peer != null) {
+			return Math.toDegrees(peer.getRadarTurnRemaining());
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
 	 * Sets the robot to move ahead (forward) by distance measured in pixels
 	 * when the next execution takes place.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
-	 * execute() or take an action that executes.
+	 * {@link #execute()} or take an action that executes.
 	 * <p>
-	 * Note that both positive and negative values can be given as input,
-	 * where negative values means that the robot is set to move backward
-	 * instead of forward.
+	 * Note that both positive and negative values can be given as input, where
+	 * positive values means that the robot is set to move ahead, and negative
+	 * values means that the robot is set to move back. If 0 is given as input,
+	 * the robot will stop its movement, but will have to decelerate
+	 * till it stands still, and will thus not be able to stop its movement
+	 * immediately, but eventually.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -90,8 +164,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param distance the distance to move ahead measured in pixels.
-	 *    If this value is negative, the robot will move back instead of ahead.
+	 * @param distance the distance to move measured in pixels.
+	 *    If {@code distance} > 0 the robot is set to move ahead.
+	 *    If {@code distance} < 0 the robot is set to move back.
+	 *    If {@code distance} = 0 the robot is set to stop its movement.
 	 */
 	public void setAhead(double distance) {
 		if (peer != null) {
@@ -106,11 +182,14 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * execution takes place.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
-	 * execute() or take an action that executes.
+	 * {@link #execute()} or take an action that executes.
 	 * <p>
-	 * Note that both positive and negative values can be given as input,
-	 * where negative values means that the robot is set to move forward
-	 * instead of backward.
+	 * Note that both positive and negative values can be given as input, where
+	 * positive values means that the robot is set to move back, and negative
+	 * values means that the robot is set to move ahead. If 0 is given as input,
+	 * the robot will stop its movement, but will have to decelerate
+	 * till it stands still, and will thus not be able to stop its movement
+	 * immediately, but eventually.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -126,8 +205,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param distance the distance to move back measured in pixels.
-	 *    If this value is negative, the robot will move ahead instead of back.
+	 * @param distance the distance to move measured in pixels.
+	 *    If {@code distance} > 0 the robot is set to move back.
+	 *    If {@code distance} < 0 the robot is set to move ahead.
+	 *    If {@code distance} = 0 the robot is set to stop its movement.
 	 */
 	public void setBack(double distance) {
 		if (peer != null) {
@@ -615,23 +696,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Returns the angle remaining in the gun's turn, in degrees.
-	 * <p>
-	 * This call returns both positive and negative values. Positive values
-	 * means that the gun is currently turning to the right. Negative values
-	 * means that the gun is currently turning to the left.
-	 *
-	 * @return the angle remaining in the gun's turn, in degrees
-	 */
-	public double getGunTurnRemaining() {
-		if (peer != null) {
-			return Math.toDegrees(peer.getGunTurnRemaining());
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
 	 * Returns a vector containing all HitByBulletEvents currently in the
 	 * robot's queue. You might, for example, call this while processing
 	 * another event.
@@ -708,23 +772,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Returns the angle remaining in the radar's turn, in degrees.
-	 * <p>
-	 * This call returns both positive and negative values. Positive values
-	 * means that the radar is currently turning to the right. Negative values
-	 * means that the radar is currently turning to the left.
-	 *
-	 * @return the angle remaining in the radar's turn, in degrees
-	 */
-	public double getRadarTurnRemaining() {
-		if (peer != null) {
-			return Math.toDegrees(peer.getRadarTurnRemaining());
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
 	 * Returns a vector containing all RobotDeathEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
 	 * <p>
@@ -776,23 +823,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Returns the angle remaining in the robots's turn, in degrees.
-	 * <p>
-	 * This call returns both positive and negative values. Positive values
-	 * means that the robot is currently turning to the right. Negative values
-	 * means that the robot is currently turning to the left.
-	 *
-	 * @return the angle remaining in the robots's turn, in degrees
-	 */
-	public double getTurnRemaining() {
-		if (peer != null) {
-			return Math.toDegrees(peer.getTurnRemaining());
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
 	 * Checks if the gun is set to adjust for the robot turning, i.e. to turn
 	 * independent from the robot's body turn.
 	 * <p>
@@ -804,11 +834,37 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    turning; {@code false} if the gun is set to turn with the robot
 	 *    turning
 	 *
-	 * @see #setAdjustGunForRobotTurn
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 * @see #isAdjustRadarForRobotTurn()
+	 * @see #isAdjustRadarForGunTurn()
 	 */
 	public boolean isAdjustGunForRobotTurn() {
 		if (peer != null) {
-			return peer.isAdjustGunForBodyTurn();
+			return ((IAdvancedRobotPeer)peer).isAdjustGunForBodyTurn();
+		}
+		uninitializedException();
+		return false; // never called
+	}
+
+	/**
+	 * Checks if the radar is set to adjust for the robot turning, i.e. to turn
+	 * independent from the robot's body turn.
+	 * <p>
+	 * This call returns {@code true} if the radar is set to turn independent of
+	 * the turn of the robot. Otherwise, {@code false} is returned, meaning that
+	 * the radar is set to turn with the robot's turn.
+	 *
+	 * @return {@code true} if the radar is set to turn independent of the robot
+	 *    turning; {@code false} if the radar is set to turn with the robot
+	 *    turning
+	 *
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #isAdjustGunForRobotTurn()
+	 * @see #isAdjustRadarForGunTurn()
+	 */
+	public boolean isAdjustRadarForRobotTurn() {
+		if (peer != null) {
+			return ((IAdvancedRobotPeer)peer).isAdjustRadarForBodyTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -826,26 +882,20 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    turning; {@code false} if the radar is set to turn with the gun
 	 *    turning
 	 *
-	 * @see #setAdjustRadarForGunTurn
+	 * @see #setAdjustRadarForGunTurn(boolean)
+	 * @see #isAdjustGunForRobotTurn()
+	 * @see #isAdjustRadarForRobotTurn()
 	 */
 	public boolean isAdjustRadarForGunTurn() {
 		if (peer != null) {
-			return peer.isAdjustRadarForGunTurn();
+			return ((IAdvancedRobotPeer)peer).isAdjustRadarForGunTurn();
 		}
 		uninitializedException();
 		return false; // never called
 	}
 
 	/**
-	 * This method is called when a custom condition is met.
-	 * <p>
-	 * See the sample robots for examples of use.
-	 *
-	 * @param event the custom event that occured
-	 *
-	 * @see #addCustomEvent
-	 * @see CustomEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onCustomEvent(CustomEvent event) {}
 
@@ -988,14 +1038,18 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Sets the robot to resume the movement stopped by stop() or setStop(),
-	 * if any.
+	 * Sets the robot to resume the movement stopped by {@link Robot#stop()
+	 * stop()} or {@link #setStop()}, if any.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
-	 * execute() or take an action that executes.
+	 * {@link #execute()} or take an action that executes.
 	 *
-	 * @see #setStop
-	 * @see Robot#stop
+	 * @see Robot#resume() resume()
+	 * @see Robot#stop() stop()
+	 * @see Robot#stop(boolean) stop(boolean)
+	 * @see #setStop()
+	 * @see #setStop(boolean)
+	 * @see #execute()
 	 */
 	public void setResume() {
 		if (peer != null) {
@@ -1006,39 +1060,43 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * This call is identical to {@link Robot#stop()}, but returns immediately,
-	 * and will not execute until you call execute() or take an action that
-	 * executes.
+	 * This call is identical to {@link Robot#stop() stop()}, but returns
+	 * immediately, and will not execute until you call {@link #execute()} or
+	 * take an action that executes.
 	 * <p>
 	 * If there is already movement saved from a previous stop, this will have
 	 * no effect.
 	 * <p>
-	 * This call is equivalent to calling setStop(false);
+	 * This call is equivalent to calling {@code setStop(false)};
 	 *
+	 * @see Robot#stop() stop()
+	 * @see Robot#stop(boolean) stop()
+	 * @see Robot#resume() resume()
+	 * @see #setResume()
 	 * @see #setStop(boolean)
-	 * @see #setResume
-	 * @see Robot#stop()
-	 * @see Robot#resume
+	 * @see #execute()
 	 */
 	public void setStop() {
 		setStop(false);
 	}
 
 	/**
-	 * This call is identical to {@link Robot#stop(boolean)}, but returns
-	 * immediately, and will not execute until you call execute() or take an
-	 * action that executes.
+	 * This call is identical to {@link Robot#stop(boolean) stop(boolean)}, but
+	 * returns immediately, and will not execute until you call
+	 * {@link #execute()} or take an action that executes.
 	 * <p>
 	 * If there is already movement saved from a previous stop, you can
-	 * overwrite it by calling setStop(true).
+	 * overwrite it by calling {@code setStop(true)}.
 	 *
 	 * @param overwrite {@code true} if the movement saved from a previous stop
-	 *    should be owerwritten; {@code false} otherwise
+	 *    should be overwritten; {@code false} otherwise.
 	 *
+	 * @see Robot#stop() stop()
+	 * @see Robot#stop(boolean) stop(boolean)
+	 * @see Robot#resume() resume()
+	 * @see #setResume()
 	 * @see #setStop()
-	 * @see #setResume
-	 * @see Robot#stop()
-	 * @see Robot#resume
+	 * @see #execute()
 	 */
 	public void setStop(boolean overwrite) {
 		if (peer != null) {
@@ -1220,28 +1278,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Checks if the radar is set to adjust for the robot turning, i.e. to turn
-	 * independent from the robot's body turn.
-	 * <p>
-	 * This call returns {@code true} if the radar is set to turn independent of
-	 * the turn of the robot. Otherwise, {@code false} is returned, meaning that
-	 * the radar is set to turn with the robot's turn.
-	 *
-	 * @return {@code true} if the radar is set to turn independent of the robot
-	 *    turning; {@code false} if the radar is set to turn with the robot
-	 *    turning
-	 *
-	 * @see #setAdjustRadarForRobotTurn
-	 */
-	public boolean isAdjustRadarForRobotTurn() {
-		if (peer != null) {
-			return peer.isAdjustRadarForBodyTurn();
-		}
-		uninitializedException();
-		return false; // never called
-	}
-
-	/**
 	 * This method is called if your robot dies.
 	 * <p>
 	 * You should override it in your robot if you want to be informed of this
@@ -1258,35 +1294,16 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void onDeath(DeathEvent event) {}
 
 	/**
-	 * This method is called if the robot is using too much time between
-	 * actions. When this event occur, the robot's turn is skipped, meaning that
-	 * it cannot take action anymore in this turn.
-	 * <p>
-	 * If you receive 30 skipped turn event, your robot will be removed from the
-	 * round and loose the round.
-	 * <p>
-	 * You will only receive this event after taking an action. So a robot in an
-	 * infinite loop will not receive any events, and will simply be stopped.
-	 * <p>
-	 * No correctly working, reasonable robot should ever receive this event.
-	 *
-	 * @param event the skipped turn event set by the game
-	 *
-	 * @see SkippedTurnEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onSkippedTurn(SkippedTurnEvent event) {}
 
 	/**
-	 * This method is implemented by {@link AdvancedRobot} in order to receive
-	 * advanced robot events. This method is called by the game, and should not
-	 * be used in robots.
-	 *
-	 * @since 1.6
-	 *
-	 * @return listener to advanced events
+	 * Do not call this method!
+	 * <p>
+	 * {@inheritDoc}
 	 */
 	public final IAdvancedEvents getAdvancedEventListener() {
-		return this; // we are listening
+		return this; // this robot is listening
 	}
 }

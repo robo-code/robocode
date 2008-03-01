@@ -39,7 +39,7 @@ import robocode.robotinterfaces.peer.*;
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
  */
-public class TeamRobot extends AdvancedRobot implements ITeamEvents, ITeamRobot {
+public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents {
 
 	/**
 	 * Checks if a given robot name is the name of one of your teammates.
@@ -164,34 +164,16 @@ public class TeamRobot extends AdvancedRobot implements ITeamEvents, ITeamRobot 
 	}
 
 	/**
-	 * This method is called when your robot receives a message from a team mate.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onMessageReceived(MessageEvent event) {
-	 *       out.println(event.getSender() + " sent me: " + event.getMessage());
-	 *   }
-	 * </pre>
-	 *
-	 * @param event the event sent by the game
-	 *
-	 * @see MessageEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onMessageReceived(MessageEvent event) {}
 
 	/**
-	 * This method is implemented by {@link TeamRobot} in order to receive team
-	 * events. This method is called by the game, and should not be used in
-	 * robots.
-	 *
-	 * @since 1.6
-	 *
-	 * @return listener to team events
+	 * Do not call this method!
+	 * <p>
+	 * {@inheritDoc}
 	 */
 	public final ITeamEvents getTeamEventListener() {
-		return this;
+		return this; // this robot is listening
 	}
 }

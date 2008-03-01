@@ -50,6 +50,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
 	 * @return the direction that the robot's body is facing, in radians.
+	 *
+	 * @see #getHeadingDegrees()
+	 * @see #getGunHeadingRadians()
+	 * @see #getRadarHeadingRadians()
 	 */
 	public double getHeadingRadians() {
 		if (peer != null) {
@@ -198,6 +202,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
 	 * @return the direction that the robot's gun is facing, in radians.
+	 *
+	 * @see #getGunHeadingDegrees()
+	 * @see #getHeadingRadians()
+	 * @see #getRadarHeadingRadians()
 	 */
 	public double getGunHeadingRadians() {
 		if (peer != null) {
@@ -215,6 +223,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
 	 * @return the direction that the robot's radar is facing, in radians.
+	 *
+	 * @see #getRadarHeadingDegrees()
+	 * @see #getHeadingRadians()
+	 * @see #getGunHeadingRadians()
 	 */
 	public double getRadarHeadingRadians() {
 		if (peer != null) {

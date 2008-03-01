@@ -11,57 +11,278 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
 
 import robocode.Bullet;
+import robocode.Rules;
 
 import java.awt.*;
 
 
 /**
+ * The basic robot peer for all robot types.
+ * <p>
+ * A robot peer is the object that deals with game mechanics and rules, and
+ * makes sure your robot abides by them.
+ *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
+ *
+ * @since 1.6
  */
 public interface IBasicRobotPeer {
 
-	// Junior calls below
-	double getHeading();
-	double getGunHeading();
-	double getGunTurnRemaining();
-	double getEnergy();
-	double getGunHeat();
-	double getBattleFieldHeight();
-	double getBattleFieldWidth();
-	double getX();
-	double getY();
-	int getOthers();
-	int getNumRounds();
-	int getRoundNum();
-
-	// Robot calls below
-	double getVelocity();
-	double getRadarHeading();
-	double getGunCoolingRate();
+	/**
+	 * Returns the robot's name.
+	 *
+	 * @return the robot's name.
+	 */
 	String getName();
+
+	/**
+	 * Returns the game time of the current round, where the time is equal to
+	 * the current turn in the round.
+	 * <p>
+	 * A battle consists of multiple rounds.
+	 * <p>
+	 * Time is reset to 0 at the beginning of every round.
+	 *
+	 * @return the game time/turn of the current round.
+	 */
 	long getTime();
 
-	// AdvancedRobot calls below
-	double getRadarTurnRemaining();
-	double getDistanceRemaining();
-	double getTurnRemaining();
-	boolean isAdjustGunForBodyTurn();
-	boolean isAdjustRadarForGunTurn();
-	boolean isAdjustRadarForBodyTurn();
+	/**
+	 * Returns the robot's current energy.
+	 *
+	 * @return the robot's current energy.
+	 */
+	double getEnergy();
 
-	// asynchronous actions
-	Bullet setFire(double power);
+	/**
+	 * Returns the X position of the robot. (0,0) is at the bottom left of the
+	 * battlefield.
+	 *
+	 * @return the X position of the robot.
+	 *
+	 * @see #getY()
+	 */
+	double getX();
+
+	/**
+	 * Returns the Y position of the robot. (0,0) is at the bottom left of the
+	 * battlefield.
+	 *
+	 * @return the Y position of the robot.
+	 *
+	 * @see #getX()
+	 */
+	double getY();
+
+	/**
+	 * Returns the velocity of the robot measured in pixels/turn.
+	 * <p>
+	 * The maximum velocity of a robot is defined by
+	 * {@link Rules#MAX_VELOCITY} (8 pixels / turn).
+	 *
+	 * @return the velocity of the robot measured in pixels/turn.
+	 *
+	 * @see Rules#MAX_VELOCITY
+	 */
+	double getVelocity();
+
+	/**
+	 * Returns the direction that the robot's body is facing, in degrees.
+	 * The value returned will be between 0 and 360 (is excluded).
+	 * <p>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * 90 means East, 180 means South, and 270 means West.
+	 *
+	 * @return the direction that the robot's body is facing, in degrees.
+	 *
+	 * @see #getGunHeading()
+	 * @see #getRadarHeading()
+	 */
+	double getHeading();
+
+	/**
+	 * Returns the direction that the robot's gun is facing, in degrees.
+	 * The value returned will be between 0 and 360 (is excluded).
+	 * <p>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * 90 means East, 180 means South, and 270 means West.
+	 *
+	 * @return the direction that the robot's gun is facing, in degrees.
+	 *
+	 * @see #getHeading()
+	 * @see #getRadarHeading()
+	 */
+	double getGunHeading();
+
+	/**
+	 * Returns the direction that the robot's radar is facing, in degrees.
+	 * The value returned will be between 0 and 360 (is excluded).
+	 * <p>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * 90 means East, 180 means South, and 270 means West.
+	 *
+	 * @return the direction that the robot's radar is facing, in degrees.
+	 *
+	 * @see #getHeading()
+	 * @see #getGunHeading()
+	 */
+	double getRadarHeading();
+	
+	/**
+	 * Returns the current heat of the gun. The gun cannot fire unless this is
+	 * 0. (Calls to fire will succeed, but will not actually fire unless
+	 * getGunHeat() == 0).
+	 * <p>
+	 * The amount of gun heat generated when the gun is fired is
+	 * 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
+	 * by {@link #getGunCoolingRate()}, which is a battle setup.
+	 * <p>
+	 * Note that all guns are "hot" at the start of each round, where the gun
+	 * heat is 3.
+	 *
+	 * @return the current gun heat
+	 *
+	 * @see #getGunCoolingRate()
+	 * @see #setFire(double)
+	 */
+	double getGunHeat();
+
+	/**
+	 * Returns the width of the current battlefield measured in pixels.
+	 *
+	 * @return the width of the current battlefield measured in pixels.
+	 */
+	double getBattleFieldWidth();
+
+	/**
+	 * Returns the height of the current battlefield measured in pixels.
+	 *
+	 * @return the height of the current battlefield measured in pixels.
+	 */
+	double getBattleFieldHeight();
+
+	/**
+	 * Returns how many opponents that are left in the current round.
+	 *
+	 * @return how many opponents that are left in the current round.
+	 */
+	int getOthers();
+
+	/**
+	 * Returns the number of rounds in the current battle.
+	 *
+	 * @return the number of rounds in the current battle
+	 *
+	 * @see #getRoundNum()
+	 */
+	int getNumRounds();
+
+	/**
+	 * Returns the number of the current round (0 to {@link #getNumRounds()} - 1)
+	 * in the battle.
+	 *
+	 * @return the number of the current round in the battle
+	 *
+	 * @see #getNumRounds()
+	 */
+	int getRoundNum();
+
+	/**
+	 * Returns the rate at which the gun will cool down, i.e. the amount of heat
+	 * the gun heat will drop per turn.
+	 * <p>
+	 * The gun cooling rate is default 0.1 / turn, but can be changed by the
+	 * battle setup. So don't count on the cooling rate being 0.1!
+	 *
+	 * @return the gun cooling rate
+	 *
+	 * @see #getGunHeat()
+	 * @see #setFire(double)
+	 */
+	double getGunCoolingRate();
+
+	/**
+	 * Returns the distance remaining in the robot's current move measured in
+	 * pixels.
+	 * <p>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the robot is currently moving forwards. Negative values means
+	 * that the robot is currently moving backwards. If the returned value is 0,
+	 * the robot currently stands still.
+	 *
+	 * @return the distance remaining in the robot's current move measured in
+	 *    pixels.
+	 *
+	 * @see #getTurnRemaining()
+	 * @see #getGunTurnRemaining()
+	 * @see #getRadarTurnRemaining()
+	 */
+	double getDistanceRemaining();
+
+	/**
+	 * Returns the angle remaining in the robots's turn, in degrees.
+	 * <p>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the robot is currently turning to the right. Negative values
+	 * means that the robot is currently turning to the left. If the returned
+	 * value is 0, the robot is currently not turning.
+	 *
+	 * @return the angle remaining in the robots's turn, in degrees
+	 *
+	 * @see #getDistanceRemaining()
+	 * @see #getGunTurnRemaining()
+	 * @see #getRadarTurnRemaining()
+	 */
+	double getTurnRemaining();
+
+	/**
+	 * Returns the angle remaining in the gun's turn, in degrees.
+	 * <p>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the gun is currently turning to the right. Negative values
+	 * means that the gun is currently turning to the left. If the returned
+	 * value is 0, the gun is currently not turning.
+	 *
+	 * @return the angle remaining in the gun's turn, in degrees
+	 *
+	 * @see #getDistanceRemaining()
+	 * @see #getTurnRemaining()
+	 * @see #getRadarTurnRemaining()
+	 */
+	double getGunTurnRemaining();
+
+	/**
+	 * Returns the angle remaining in the radar's turn, in degrees.
+	 * <p>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the radar is currently turning to the right. Negative values
+	 * means that the radar is currently turning to the left. If the returned
+	 * value is 0, the radar is currently not turning.
+	 *
+	 * @return the angle remaining in the radar's turn, in degrees
+	 *
+	 * @see #getDistanceRemaining()
+	 * @see #getGunTurnRemaining()
+	 * @see #getRadarTurnRemaining()
+	 */
+	double getRadarTurnRemaining();
 
 	// blocking actions
 	void tick();
 	void move(double distance);
 	void turnChassis(double radians);
 	void turnGun(double radians);
+
+	// asynchronous actions
+	Bullet setFire(double power);
 
 	// fast setters
 	void setBodyColor(Color color);
@@ -74,4 +295,3 @@ public interface IBasicRobotPeer {
 	void getCall();
 	void setCall();
 }
-

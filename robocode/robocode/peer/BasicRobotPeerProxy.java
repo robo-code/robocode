@@ -101,21 +101,6 @@ public class BasicRobotPeerProxy implements IBasicRobotPeer {
 		return peer.getTurnRemaining();
 	}
 
-	public boolean isAdjustGunForBodyTurn() {
-		peer.getCall();
-		return peer.isAdjustGunForBodyTurn();
-	}
-
-	public boolean isAdjustRadarForGunTurn() {
-		peer.getCall();
-		return peer.isAdjustRadarForGunTurn();
-	}
-
-	public boolean isAdjustRadarForBodyTurn() {
-		peer.getCall();
-		return peer.isAdjustRadarForBodyTurn();
-	}
-
 	// Robot calls below
 	public double getVelocity() {
 		peer.getCall();

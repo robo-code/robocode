@@ -40,10 +40,12 @@ public interface IInteractiveRobot extends IBasicRobot {
 	/**
 	 * This method is called by the game to notify this robot about interactive
 	 * events, i.e. keyboard and mouse events. Hence, this method must be
-	 * implemented so it returns your {@link ISystemEvents} listener.
+	 * implemented so it returns your {@link IInteractiveEvents} listener.
 	 *
-	 * @return listener to interactive events or <code>null</code> if this robot
+	 * @return listener to interactive events or {@code null} if this robot
 	 *    should not receive the notifications.
+	 *
+	 * @since 1.6
 	 */
 	IInteractiveEvents getInteractiveEventListener();
 }

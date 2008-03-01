@@ -23,7 +23,7 @@ import robocode.robotinterfaces.peer.*;
 /**
  * @author Pavel Savara (original)
  */
-public class Alien implements IBasicEvents, Runnable {
+public class Alien implements IBasicEvents, IBasicRobot, Runnable {
 
 	PrintStream out;
 	IStandardRobotPeer peer;

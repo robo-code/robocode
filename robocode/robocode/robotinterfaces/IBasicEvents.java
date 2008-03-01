@@ -33,21 +33,24 @@ import robocode.*;
 public interface IBasicEvents {
 
 	/**
-	 * This method is called every turn to provide the current robot status as
-	 * a complete snapshot of the robot's state at that specific time.
+	 * This method is called every turn in a battle round in order to provide
+	 * the robot status as a complete snapshot of the robot's current state at
+	 * that specific time.
 	 * <p>
 	 * The main benefit of this method is that you'll automatically receive all
-	 * the current data values of the robot like e.g. the x and y coordinate,
+	 * current data values of the robot like e.g. the x and y coordinate,
 	 * heading, gun heat etc., which are grouped into the exact same time/turn.
 	 * <p>
 	 * This is the only way to map the robots data values to a specific time.
 	 * For example, it is not possible to determine the exact time of the
-	 * robot's heading by calling first calling getTime() and then getHeading()
-	 * afterwards, as the time MIGHT change after between the getTime() and
-	 * getHeading() call.
+	 * robot's heading by calling first calling {@link robocode.Robot#getTime()}
+	 * and then {@link robocode.Robot#getHeading()} afterwards, as the time
+	 * <em>might</em> change after between the {@link robocode.Robot#getTime()}
+	 * and {@link robocode.Robot#getHeading()} call.
 	 *
-	 * @param e the event containing the robot status and the time it was
-	 *    provided.
+	 * @param e the event containing the robot status at the time it occurred.
+	 *    
+	 * @since 1.5
 	 */
 	void onStatus(StatusEvent e);
 
@@ -237,7 +240,7 @@ public interface IBasicEvents {
 	 *    fire() will fire directly at the robot.
 	 *  In essence, this means that if you can see a robot, and it doesn't move,
 	 *  then fire will hit it.
-	 *  <br>
+	 *  <p>
 	 *  AdvancedRobots will NOT be assisted in this manner, and are expected to
 	 *  examine the event to determine if fire() would hit. (i.e. you are
 	 *  spinning your gun around, but by the time you get the event, your gun is
@@ -287,11 +290,13 @@ public interface IBasicEvents {
 	 * <p>
 	 * Also note that the coordinate system for the graphical context where you
 	 * paint items fits for the Robocode coordinate system where (0, 0) is at
-	 * the buttom left corner of the battlefield, where X is towards right and Y
+	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
 	 *
 	 * @param g the graphics context to use for painting graphical items for the
 	 *    robot
+	 *
+	 * @since 1.1
 	 */
 	void onPaint(Graphics2D g);
 }

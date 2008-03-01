@@ -38,12 +38,15 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 public interface IBasicRobot {
 
 	/**
-	 * This method is called by the game to invoke the <code>run()</code> method
-	 * of your robot, where the program of your robot is implemented.
+	 * This method is called by the game to invoke the
+	 * {@link java.lang.Runnable#run()} method of your robot, where the program
+	 * of your robot is implemented.
 	 *
-	 * @see java.lang.Runnable
+	 * @see java.lang.Runnable#run()
 	 *
 	 * @return a runnable implementation
+	 *
+	 * @since 1.6
 	 */
 	Runnable getRobotRunnable();
 
@@ -52,23 +55,29 @@ public interface IBasicRobot {
 	 * robot event. Hence, this method must be implemented so it returns your
 	 * {@link IBasicEvents} listener.
 	 *
-	 * @return listener to basic events or <code>null</code> if this robot
-	 *    should not receive the notifications.
+	 * @return listener to basic events or {@code null} if this robot should
+	 *    not receive the notifications.
+	 *
+	 * @since 1.6
 	 */
 	IBasicEvents getBasicEventListener();
 
 	/**
-	 * This method is called by the game. A robot peer is the object that deals
-	 * with game mechanics and rules, and makes sure your robot abides by them.
 	 * Do not call this method! Your robot will simply stop interacting with
 	 * the game.
+	 * <p>
+	 * This method is called by the game. A robot peer is the object that deals
+	 * with game mechanics and rules, and makes sure your robot abides by them.
 	 */
 	void setPeer(IBasicRobotPeer peer);
 
 	/**
+	 * Do not call this method!
+	 * <p>
 	 * This method is called by the game when setting the output stream for your
 	 * robot.
-	 * Do not call this method!
+	 *
+	 * @since 1.6
 	 */
 	void setOut(java.io.PrintStream out);
 }

@@ -317,31 +317,35 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public int hitWallBearing = -1;
 
 	/**
-	 * JuniorRobot implements <code>Runnable</code> internally.
-	 * This method is called by the game and should not be used by robots.
-	 *
-	 * @return a <code>Runnable</code> implementation.
-	 *
-	 * @since 1.6
+	 * Do not call this method!
+	 * <p>
+	 * {@inheritDoc}
 	 */
 	public final Runnable getRobotRunnable() {
 		return getEventHandler();
 	}
 
 	/**
-	 * JuniorRobot is listening to basic events internally.
-	 * This method is called by the game and should not be used by robots.
-	 *
-	 * @return listener to basic robot events.
-	 *
-	 * @since 1.6
+	 * Do not call this method!
+	 * <p>
+	 * {@inheritDoc}
 	 */
 	public final IBasicEvents getBasicEventListener() {
 		return getEventHandler();
 	}
 
 	/**
-	 * Contains the program that controls the behaviour of this robot.
+	 * The main method in every robot. You must override this to set up your
+	 * robot's basic behavior.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // A basic robot that moves around in a square
+	 *   public void run() {
+	 *       ahead(100);
+	 *       turnRight(90);
+	 *   }
+	 * </pre>
 	 * This method is automatically re-called when it has returned.
 	 */
 	public void run() {}
@@ -440,8 +444,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Moves this robot forward by pixels and turns this robot left by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
-	 * circle, and the moving and turning will end at the same time.<br>
-	 * <br>
+	 * circle, and the moving and turning will end at the same time.
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance. 
@@ -466,8 +470,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Moves this robot forward by pixels and turns this robot right by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
-	 * circle, and the moving and turning will end at the same time.<br>
-	 * <br>
+	 * circle, and the moving and turning will end at the same time.
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance. 
@@ -496,8 +500,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Moves this robot backward by pixels and turns this robot left by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
-	 * circle, and the moving and turning will end at the same time.<br>
-	 * <br>
+	 * circle, and the moving and turning will end at the same time.
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance. 
@@ -522,8 +526,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Moves this robot backward by pixels and turns this robot right by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
-	 * circle, and the moving and turning will end at the same time.<br>
-	 * <br>
+	 * circle, and the moving and turning will end at the same time.
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance. 

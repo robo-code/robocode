@@ -15,6 +15,7 @@ package robocode;
 
 
 import robocode.exception.RobotException;
+import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 
@@ -37,7 +38,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  * 
  * @since 1.4
  */
-public abstract class _RobotBase implements Runnable {
+public abstract class _RobotBase implements IBasicRobot, Runnable {
 
 	IBasicRobotPeer peer;
 
@@ -58,20 +59,14 @@ public abstract class _RobotBase implements Runnable {
 	public java.io.PrintStream out;
 
 	/**
-	 * This method is called by the game when setting the output stream for your
-	 * robot.
-	 * Do not call this method!
-	 *
-	 * @since 1.6
+	 * {@inheritDoc}
 	 */
 	public final void setOut(java.io.PrintStream out) {
 		this.out = out;
 	}
 
 	/**
-	 * This method is called by the game. RobotPeer is the object that deals with
-	 * game mechanics and rules, and makes sure your robot abides by them.
-	 * Do not call this method! Your robot will simply stop interacting with the game.
+	 * {@inheritDoc}
 	 */
 	public final void setPeer(IBasicRobotPeer peer) {
 		this.peer = peer;

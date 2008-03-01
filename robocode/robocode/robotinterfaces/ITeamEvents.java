@@ -19,7 +19,7 @@ import robocode.MessageEvent;
 
 /**
  * An event interface for receiving robot team events with an
- * {@link ITeamRobot}.<br>
+ * {@link ITeamRobot}.
  *
  * @see ITeamRobot
  *

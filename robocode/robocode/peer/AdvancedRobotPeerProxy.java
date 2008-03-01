@@ -29,6 +29,21 @@ public class AdvancedRobotPeerProxy extends StandardRobotPeerProxy implements IA
 		super(peer);
 	}
 
+	public boolean isAdjustGunForBodyTurn() {
+		peer.getCall();
+		return ((IAdvancedRobotPeer) peer).isAdjustGunForBodyTurn();
+	}
+
+	public boolean isAdjustRadarForGunTurn() {
+		peer.getCall();
+		return ((IAdvancedRobotPeer) peer).isAdjustRadarForGunTurn();
+	}
+
+	public boolean isAdjustRadarForBodyTurn() {
+		peer.getCall();
+		return ((IAdvancedRobotPeer) peer).isAdjustRadarForBodyTurn();
+	}
+
 	// asynchronous actions
 	public void setResume() {
 		peer.setCall();
