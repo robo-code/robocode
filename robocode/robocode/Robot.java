@@ -382,7 +382,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void doNothing() {
 		if (peer != null) {
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -439,7 +439,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	public void fire(double power) {
 		if (peer != null) {
 			peer.setFire(power);
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -497,7 +497,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 		if (peer != null) {
 			Bullet b = peer.setFire(power);
 
-			peer.tick();
+			peer.execute();
 			return b;
 		}
 		uninitializedException();

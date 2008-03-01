@@ -36,7 +36,7 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 * @param overwrite If there is already movement saved from a previous stop,
 	 *    you can overwrite it by calling {@code stop(true)}.
 	 *
-	 * @see #resume
+	 * @see #resume()
 	 */
 	void stop(boolean overwrite);
 

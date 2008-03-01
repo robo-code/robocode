@@ -648,7 +648,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void fire(double power) {
 		if (peer != null) {
 			getEventHandler().juniorFirePower = power;
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -661,7 +661,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void doNothing() {
 		if (peer != null) {
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -680,7 +680,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 		if (peer != null) {
 			for (int i = 0; i < turns; i++) {
-				peer.tick();
+				peer.execute();
 			}
 		} else {
 			uninitializedException();

@@ -12,8 +12,8 @@
  *     - Code cleanup
  *     - Bugfix: updateMovement() checked for distanceRemaining > 1 instead of
  *       distanceRemaining > 0 if slowingDown and moveDirection == -1
- *     - Bugfix: Substituted wait(10000) with wait() in tick() method, so that
- *       robots do not hang when game is paused
+ *     - Bugfix: Substituted wait(10000) with wait() in execute() method, so
+ *       that robots do not hang when game is paused
  *     - Bugfix: Teleportation when turning the robot to 0 degrees while forcing
  *       the robot towards the bottom
  *     - Added setPaintEnabled() and isPaintEnabled()
@@ -339,7 +339,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public final void move(double distance) {
 		setMove(distance);
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (getDistanceRemaining() != 0);
 	}
 
@@ -573,7 +573,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 				}
 			}
 			for (;;) {
-				tick();
+				execute();
 			}
 		} catch (DeathException e) {
 			out.println("SYSTEM: " + getName() + " has died");
@@ -626,7 +626,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 
 		setScan(true);
-		tick();
+		execute();
 		if (reset) {
 			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), resetValue);
 		}
@@ -758,7 +758,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		y = newY;
 	}
 
-	public final void tick() {
+	public final void execute() {
 		if (newBullet != null) {
 			battle.addBullet(newBullet);
 			newBullet = null;
@@ -833,7 +833,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public final void turnGun(double radians) {
 		setTurnGun(radians);
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (getGunTurnRemaining() != 0);
 	}
 
@@ -846,7 +846,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public final void turnChassis(double radians) {
 		setTurnChassis(radians);
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (getTurnRemaining() != 0);
 	}
 
@@ -857,7 +857,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public final void turnRadar(double radians) {
 		setTurnRadar(radians);
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (getRadarTurnRemaining() != 0);
 	}
 
@@ -1267,7 +1267,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public final void resume() {
 		setResume();
-		tick();
+		execute();
 	}
 
 	public synchronized void setMaxTurnRate(double newTurnRate) {
@@ -1335,13 +1335,13 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public final void stop(boolean overwrite) {
 		setStop(overwrite);
-		tick();
+		execute();
 	}
 
 	public synchronized void waitFor(Condition condition) {
 		waitCondition = condition;
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (!condition.test());
 
 		waitCondition = null;
@@ -1953,7 +1953,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		// the max. turn rate so it fit the current velocity of the robot 
 		for (int t = turns; t >= 0; t--) {
 			setMaxTurnRate(getVelocity() * radians / absDistance);
-			tick(); // Perform next turn
+			execute(); // Perform next turn
 		}
 
 		// Restore the saved max. velocity and max. turn rate

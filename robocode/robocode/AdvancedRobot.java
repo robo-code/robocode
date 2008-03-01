@@ -455,11 +455,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Executes any pending actions, or continues executing actions that are
 	 * in process. This call returns after the actions have been started.
 	 * <p>
-	 * Note that Advanced robots <em>must</em> call this function in order to
-	 * execute pending set<em>XXX</em> calls like e.g.
-	 * {@link #setAhead(double)}, {@link #setFire(double)},
-	 * {@link #setTurnLeft(double)} etc. Otherwise, these calls will never get
-	 * executed.
+	 * Note that advanced robots <em>must</em> call this function in order to
+	 * execute pending set* calls like e.g. {@link #setAhead(double)},
+	 * {@link #setFire(double)}, {@link #setTurnLeft(double)} etc. Otherwise,
+	 * these calls will never get executed.
 	 * <p>
 	 * In this example the robot will move while turning:
 	 * <pre>
@@ -474,7 +473,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void execute() {
 		if (peer != null) {
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}

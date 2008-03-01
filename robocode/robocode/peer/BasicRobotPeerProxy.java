@@ -34,8 +34,8 @@ public class BasicRobotPeerProxy implements IBasicRobotPeer {
 	}
 
 	// blocking actions
-	public void tick() {
-		peer.tick();
+	public void execute() {
+		peer.execute();
 	}
 
 	public void move(double distance) {

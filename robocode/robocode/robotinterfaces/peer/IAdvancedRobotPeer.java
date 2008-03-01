@@ -46,18 +46,52 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *    turning; {@code false} if the gun is set to turn with the robot
 	 *    turning
 	 *
-	 * @see #setAdjustGunForRobotTurn(boolean)
-	 * @see #isAdjustRadarForRobotTurn()
+	 * @see #setAdjustGunForBodyTurn(boolean)
+	 * @see #isAdjustRadarForBodyTurn()
 	 * @see #isAdjustRadarForGunTurn()
 	 */
 	boolean isAdjustGunForBodyTurn();
+
+	/**
+	 * Checks if the radar is set to adjust for the robot turning, i.e. to turn
+	 * independent from the robot's body turn.
+	 * <p>
+	 * This call returns {@code true} if the radar is set to turn independent of
+	 * the turn of the robot. Otherwise, {@code false} is returned, meaning that
+	 * the radar is set to turn with the robot's turn.
+	 *
+	 * @return {@code true} if the radar is set to turn independent of the robot
+	 *    turning; {@code false} if the radar is set to turn with the robot
+	 *    turning
+	 *
+	 * @see #setAdjustRadarForBodyTurn(boolean)
+	 * @see #isAdjustGunForBodyTurn()
+	 * @see #isAdjustRadarForGunTurn()
+	 */
 	boolean isAdjustRadarForGunTurn();
+
+	/**
+	 * Checks if the radar is set to adjust for the gun turning, i.e. to turn
+	 * independent from the gun's turn.
+	 * <p>
+	 * This call returns {@code true} if the radar is set to turn independent of
+	 * the turn of the gun. Otherwise, {@code false} is returned, meaning that
+	 * the radar is set to turn with the gun's turn.
+	 *
+	 * @return {@code true} if the radar is set to turn independent of the gun
+	 *    turning; {@code false} if the radar is set to turn with the gun
+	 *    turning
+	 *
+	 * @see #setAdjustRadarForGunTurn(boolean)
+	 * @see #isAdjustGunForBodyTurn()
+	 * @see #isAdjustRadarForBodyTurn()
+	 */
 	boolean isAdjustRadarForBodyTurn();
 
 	/**
 	 * This call is identical to {@link IStandardRobotPeer#stop(boolean)
 	 * stop(boolean)}, but returns immediately, and will not execute until you
-	 * call {@link IBasicRobotPeer#tick() tick()} or take an action that executes.
+	 * call {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
 	 * <p>
 	 * If there is already movement saved from a previous stop, you can
 	 * overwrite it by calling {@code setStop(true)}.
@@ -68,7 +102,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * @see IStandardRobotPeer#stop(boolean) stop(boolean)
 	 * @see IStandardRobotPeer#resume() resume()
 	 * @see #setResume()
-	 * @see IBasicRobotPeer#tick() tick()
+	 * @see IBasicRobotPeer#execute() execute()
 	 */
 	void setStop(boolean overwrite);
 
@@ -78,12 +112,12 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * {@link #setStop(boolean)}, if any.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
-	 * {@link IBasicRobotPeer#tick() tick()} or take an action that executes.
+	 * {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
 	 *
 	 * @see IStandardRobotPeer#resume() resume()
 	 * @see IStandardRobotPeer#stop(boolean) stop(boolean)
 	 * @see #setStop(boolean)
-	 * @see IBasicRobotPeer#tick() tick()
+	 * @see IBasicRobotPeer#execute() execute()
 	 */
 	void setResume();
 
@@ -92,7 +126,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * when the next execution takes place.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
-	 * {@link IBasicRobotPeer#tick() tick()} or take an action that executes.
+	 * {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
 	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot is set to move forward, and negative
@@ -112,7 +146,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *
 	 *   ...
 	 *   // Executes the last setMove()
-	 *   tick();
+	 *   execute();
 	 * </pre>
 	 *
 	 * @param distance the distance to move measured in pixels.

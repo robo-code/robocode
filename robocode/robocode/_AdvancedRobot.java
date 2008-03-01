@@ -145,7 +145,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void endTurn() {
 		if (peer != null) {
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
