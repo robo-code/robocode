@@ -167,44 +167,44 @@ public class BulletPeer {
 	}
 
 	private void checkRobotCollision() {
-		RobotPeer r;
+		RobotPeer robotPeer;
 		List<RobotPeer> robots = battle.getRobots();
 
 		for (int i = 0; i < robots.size(); i++) {
-			r = robots.get(i);
+			robotPeer = robots.get(i);
 
-			if (!(r == null || r == owner || r.isDead()) && r.getBoundingBox().intersectsLine(boundingLine)) {
+			if (!(robotPeer == null || robotPeer == owner || robotPeer.isDead()) && robotPeer.getBoundingBox().intersectsLine(boundingLine)) {
 				double damage = Rules.getBulletDamage(power);
 
 				double score = damage;
 
-				if (score > r.getEnergy()) {
-					score = r.getEnergy();
+				if (score > robotPeer.getEnergy()) {
+					score = robotPeer.getEnergy();
 				}
-				r.setEnergy(r.getEnergy() - damage);
+				robotPeer.setEnergy(robotPeer.getEnergy() - damage);
 
 				owner.getRobotStatistics().scoreBulletDamage(i, score);
 
-				if (r.getEnergy() <= 0) {
-					if (r.isAlive()) {
-						r.kill();
+				if (robotPeer.getEnergy() <= 0) {
+					if (robotPeer.isAlive()) {
+						robotPeer.kill();
 						owner.getRobotStatistics().scoreBulletKill(i);
 					}
 				}
 				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 
-				r.getEventManager().add(
-						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
+				robotPeer.getEventManager().add(
+						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getHeading()),
 						getBullet()));
 
 				state = STATE_HIT_VICTIM;
-				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
+				owner.getEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet));
 				frame = 0;
-				victim = r;
+				victim = robotPeer;
 
 				double newX, newY;
 				
-				if (r.getBoundingBox().contains(lastX, lastY)) {
+				if (robotPeer.getBoundingBox().contains(lastX, lastY)) {
 					newX = lastX;
 					newY = lastY;
 
@@ -215,8 +215,8 @@ public class BulletPeer {
 					newY = y;
 				}
 
-				deltaX = newX - r.getX();
-				deltaY = newY - r.getY();
+				deltaX = newX - robotPeer.getX();
+				deltaY = newY - robotPeer.getY();
 
 				break;
 			}

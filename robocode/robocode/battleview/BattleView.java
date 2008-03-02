@@ -356,9 +356,9 @@ public class BattleView extends Canvas {
 	
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
-			for (RobotPeer r : battle.getRobots()) {
-				if (r.isAlive()) {
-					drawScanArc(g, r);
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive()) {
+					drawScanArc(g, robotPeer);
 				}
 			}
 		}
@@ -372,10 +372,10 @@ public class BattleView extends Canvas {
 		if (drawGround && drawExplosionDebris && battle.isRobotsLoaded()) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
-			for (RobotPeer r : battle.getRobots()) {
-				if (r.isDead()) {
-					x = r.getX();
-					y = battleFieldHeight - r.getY();
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isDead()) {
+					x = robotPeer.getX();
+					y = battleFieldHeight - robotPeer.getY();
 
 					at = AffineTransform.getTranslateInstance(x, y);
 
@@ -385,32 +385,32 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		for (RobotPeer r : battle.getRobots()) {
-			if (r.isAlive()) {
-				x = r.getX();
-				y = battleFieldHeight - r.getY();
+		for (RobotPeer robotPeer : battle.getRobots()) {
+			if (robotPeer.isAlive()) {
+				x = robotPeer.getX();
+				y = battleFieldHeight - robotPeer.getY();
 
 				at = AffineTransform.getTranslateInstance(x, y);
-				at.rotate(r.getHeading());
+				at.rotate(robotPeer.getHeading());
 
-				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(r.getBodyColor());
+				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(robotPeer.getBodyColor());
 
 				robotRenderImage.setTransform(at);
 				robotRenderImage.paint(g);
 
 				at = AffineTransform.getTranslateInstance(x, y);
-				at.rotate(r.getGunHeading());
+				at.rotate(robotPeer.getGunHeading());
 
-				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(r.getGunColor());
+				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(robotPeer.getGunColor());
 
 				gunRenderImage.setTransform(at);
 				gunRenderImage.paint(g);
 
-				if (!r.isDroid()) {
+				if (!robotPeer.isDroid()) {
 					at = AffineTransform.getTranslateInstance(x, y);
-					at.rotate(r.getRadarHeading());
+					at.rotate(robotPeer.getRadarHeading());
 
-					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(r.getRadarColor());
+					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(robotPeer.getRadarColor());
 
 					radarRenderImage.setTransform(at);
 					radarRenderImage.paint(g);
@@ -424,24 +424,24 @@ public class BattleView extends Canvas {
 
 		g.setClip(null);
 
-		for (RobotPeer r : battle.getRobots()) {
-			if (r.isDead()) {
+		for (RobotPeer robotPeer : battle.getRobots()) {
+			if (robotPeer.isDead()) {
 				continue;
 			}
-			int x = (int) r.getX();
-			int y = battle.getBattleField().getHeight() - (int) r.getY();
+			int x = (int) robotPeer.getX();
+			int y = battle.getBattleField().getHeight() - (int) robotPeer.getY();
 
-			if (drawRobotEnergy && r.getRobot() != null) {
+			if (drawRobotEnergy && robotPeer.getRobot() != null) {
 				g.setColor(Color.white);
-				int ll = (int) r.getEnergy();
-				int rl = (int) ((r.getEnergy() - ll + .001) * 10.0);
+				int ll = (int) robotPeer.getEnergy();
+				int rl = (int) ((robotPeer.getEnergy() - ll + .001) * 10.0);
 
 				if (rl == 10) {
 					rl = 9;
 				}
 				String energyString = ll + "." + rl;
 
-				if (r.getEnergy() == 0 && r.isAlive()) {
+				if (robotPeer.getEnergy() == 0 && robotPeer.isAlive()) {
 					energyString = "Disabled";
 				}
 				centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2, smallFont,
@@ -449,11 +449,11 @@ public class BattleView extends Canvas {
 			}
 			if (drawRobotName) {
 				g.setColor(Color.white);
-				centerString(g, r.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
+				centerString(g, robotPeer.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
 						smallFont, smallFontMetrics);
 			}
-			if (r.isPaintEnabled() && r.getRobot() != null) {
-				drawRobotPaint(g, r);
+			if (robotPeer.isPaintEnabled() && robotPeer.getRobot() != null) {
+				drawRobotPaint(g, robotPeer);
 			}
 		}
 

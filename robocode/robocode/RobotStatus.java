@@ -41,22 +41,22 @@ public class RobotStatus {
 	 * Creates a new RobotStatus based a a RobotPeer.
 	 * This constructor is called internally from the game.
 	 *
-	 * @param r the RobotPeer containing the states we must make a snapshot of
+	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
 	 */
-	public RobotStatus(RobotPeer r) {
-		synchronized (r) {
-			energy = r.getEnergy();
-			x = r.getX();
-			y = r.getY();
-			heading = r.getHeading();
-			gunHeading = r.getGunHeading();
-			radarHeading = r.getRadarHeading();
-			velocity = r.getVelocity();
-			turnRemaining = r.getTurnRemaining();
-			radarTurnRemaining = r.getRadarTurnRemaining();
-			gunTurnRemaining = r.getGunTurnRemaining();
-			distanceRemaining = r.getDistanceRemaining();
-			gunHeat = r.getGunHeat();
+	public RobotStatus(RobotPeer robotPeer) {
+		synchronized (robotPeer) {
+			energy = robotPeer.getEnergy();
+			x = robotPeer.getX();
+			y = robotPeer.getY();
+			heading = robotPeer.getHeading();
+			gunHeading = robotPeer.getGunHeading();
+			radarHeading = robotPeer.getRadarHeading();
+			velocity = robotPeer.getVelocity();
+			turnRemaining = robotPeer.getTurnRemaining();
+			radarTurnRemaining = robotPeer.getRadarTurnRemaining();
+			gunTurnRemaining = robotPeer.getGunTurnRemaining();
+			distanceRemaining = robotPeer.getDistanceRemaining();
+			gunHeat = robotPeer.getGunHeat();
 		}
 	}
 

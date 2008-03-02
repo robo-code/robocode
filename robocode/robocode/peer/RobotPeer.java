@@ -657,16 +657,16 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		scanArc.setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
-		for (RobotPeer r : battle.getRobots()) {
-			if (!(r == null || r == this || r.isDead()) && intersects(scanArc, r.boundingBox)) {
-				double dx = r.getX() - getX();
-				double dy = r.getY() - getY();
+		for (RobotPeer robotPeer : battle.getRobots()) {
+			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead()) && intersects(scanArc, robotPeer.boundingBox)) {
+				double dx = robotPeer.getX() - getX();
+				double dy = robotPeer.getY() - getY();
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 
 				eventManager.add(
-						new ScannedRobotEvent(r.getName(), r.getEnergy(), normalRelativeAngle(angle - getHeading()), dist,
-						r.getHeading(), r.getVelocity()));
+						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(), normalRelativeAngle(angle - getHeading()), dist,
+						robotPeer.getHeading(), robotPeer.getVelocity()));
 			}
 		}
 	}

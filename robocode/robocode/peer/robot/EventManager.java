@@ -97,9 +97,9 @@ public class EventManager implements IEventManager {
 	/**
 	 * EventManager constructor comment.
 	 */
-	public EventManager(RobotPeer r) {
+	public EventManager(RobotPeer robotPeer) {
 		super();
-		this.robotPeer = r;
+		this.robotPeer = robotPeer;
 		eventQueue = new EventQueue(this);
 		reset();
 	}

@@ -85,18 +85,18 @@ public class RobocodeFileOutputStream extends OutputStream {
 		Thread c = Thread.currentThread();
 
 		this.name = name;
-		RobotPeer r = threadManager.getRobotPeer(c);
+		RobotPeer robotPeer = threadManager.getRobotPeer(c);
 
-		if (r == null) {
+		if (robotPeer == null) {
 			Logger.log("RobotPeer is null");
 			return;
 		}
 
-		if (!r.isAdvancedRobot()) {
+		if (!robotPeer.isAdvancedRobot()) {
 			throw new RobotException("Only advanced robots may write to the filesystem");
 		}
 
-		this.fileSystemManager = r.getRobotFileSystemManager();
+		this.fileSystemManager = robotPeer.getRobotFileSystemManager();
 
 		// First, we see if the file exists:
 		File f = new File(name);

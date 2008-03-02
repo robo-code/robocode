@@ -41,10 +41,10 @@ public class ThreadManager {
 		super();
 	}
 
-	public void addThreadGroup(ThreadGroup g, RobotPeer r) {
+	public void addThreadGroup(ThreadGroup g, RobotPeer robotPeer) {
 		if (!groups.contains(g)) {
 			groups.add(g);
-			robots.add(r);
+			robots.add(robotPeer);
 		}
 	}
 
@@ -80,9 +80,9 @@ public class ThreadManager {
 		robots.clear();
 	}
 
-	public synchronized void setLoadingRobot(RobotPeer newLoadingRobot) {
+	public synchronized void setLoadingRobot(RobotPeer newLoadingRobotPeer) {
 		if (robotLoaderThread != null && robotLoaderThread.equals(Thread.currentThread())) {
-			loadingRobot = newLoadingRobot;
+			loadingRobot = newLoadingRobotPeer;
 		}
 	}
 

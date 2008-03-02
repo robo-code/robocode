@@ -52,8 +52,8 @@ public class RobotDialogManager {
 		for (String name : keys) {
 			boolean found = false;
 
-			for (RobotPeer r : robots) {
-				if (r.getName().equals(name)) {
+			for (RobotPeer robotPeer : robots) {
+				if (robotPeer.getName().equals(name)) {
 					found = true;
 					break;
 				}

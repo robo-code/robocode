@@ -30,12 +30,12 @@ public class StatusEvent extends Event {
 	 * Creates a new RobotStatus based a a RobotPeer.
 	 * This constructor is called internally from the game.
 	 *
-	 * @param r the RobotPeer containing the states we must make a snapshot of
+	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
 	 */
-	public StatusEvent(RobotPeer r) {
+	public StatusEvent(RobotPeer robotPeer) {
 		super();
 
-		status = new RobotStatus(r);
+		status = new RobotStatus(robotPeer);
 	}
 
 	/**

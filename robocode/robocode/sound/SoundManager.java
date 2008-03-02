@@ -224,15 +224,15 @@ public class SoundManager {
 	/**
 	 * Plays a robot sound depending on the robot's state
 	 *
-	 * @param rp the robot peer
+	 * @param robotPeer the robot peer
 	 */
-	public void playRobotSound(RobotPeer rp) {
+	public void playRobotSound(RobotPeer robotPeer) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) rp.getX(), rp.getBattle().getBattleField().getWidth());
+			pan = calcPan((float) robotPeer.getX(), robotPeer.getBattle().getBattleField().getWidth());
 		}
-		switch (rp.getState()) {
+		switch (robotPeer.getState()) {
 		case RobotPeer.STATE_HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
 				playSound("robot collision", pan);
