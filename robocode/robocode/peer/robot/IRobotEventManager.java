@@ -20,15 +20,15 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public interface IEventManager {
-	void addCustomEvent(Condition condition);
+public interface IRobotEventManager {
+    void addCustomEvent(Condition condition);
 	void removeCustomEvent(Condition condition);
 	void clearAllEvents(boolean includingSystemEvents);
 
 	void setEventPriority(String eventClass, int priority);
 	int getEventPriority(String eventClass);
 
-	java.util.List<Event> getAllEvents();
+    java.util.List<Event> getAllEvents();
 	List<BulletMissedEvent> getBulletMissedEvents();
 	List<BulletHitBulletEvent> getBulletHitBulletEvents();
 	List<BulletHitEvent> getBulletHitEvents();
@@ -40,4 +40,14 @@ public interface IEventManager {
 
 	// team
 	List<MessageEvent> getMessageEvents();
+
+    //peer
+    void processEvents();
+    void setInterruptible(int priority, boolean interruptable);
+    int getCurrentTopEventPriority();
+    int getScannedRobotEventPriority();
+    boolean getInterruptible(int priority);
+    boolean isFireAssistValid();
+    double getFireAssistAngle();
+    void setFireAssistValid(boolean newFireAssistValid);
 }

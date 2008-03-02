@@ -795,7 +795,7 @@ public class Battle implements Runnable {
 
 			// New turn: flush any old events
 			for (RobotPeer r : robots) {
-				r.getEventManager().clear(currentTime - 1);
+				r.getBattleEventManager().clearOld(currentTime - 1);
 			}
 
 			currentTime++;
@@ -869,7 +869,7 @@ public class Battle implements Runnable {
 			// Add status events for the current turn to all robots that are alive 
 			for (RobotPeer r : robots) {
 				if (!r.isDead()) {
-					r.getEventManager().add(new StatusEvent(r));
+					r.getBattleEventManager().add(new StatusEvent(r));
 				}
 			}
 			
@@ -1193,7 +1193,7 @@ public class Battle implements Runnable {
 					} else {
 						r.setSkippedTurns(r.getSkippedTurns() + 1);
 
-						r.getEventManager().add(new SkippedTurnEvent());
+						r.getBattleEventManager().add(new SkippedTurnEvent());
 
 						// Actually, Robocode is never deterministic due to Robots
 						// using calls to Math.random()... but the point is,
@@ -1224,7 +1224,7 @@ public class Battle implements Runnable {
 			for (RobotPeer r : robots) {
 				if (!r.isDead()) {
 					for (RobotPeer de : deathEvents) {
-						r.getEventManager().add(new RobotDeathEvent(de.getName()));
+						r.getBattleEventManager().add(new RobotDeathEvent(de.getName()));
 						if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
 							r.getRobotStatistics().scoreSurvival();
 						}
@@ -1269,7 +1269,7 @@ public class Battle implements Runnable {
 					List<MessageEvent> messageEvents = r.getMessageManager().getMessageEvents();
 
 					for (MessageEvent me : messageEvents) {
-						r.getEventManager().add(me);
+						r.getBattleEventManager().add(me);
 					}
 					messageEvents.clear();
 				}
@@ -1455,7 +1455,7 @@ public class Battle implements Runnable {
 						log(".", false);
 
 						// Add StatusEvent for the first turn
-						r.getEventManager().add(new StatusEvent(r));
+						r.getBattleEventManager().add(new StatusEvent(r));
 
 						// Start the robot thread
 						r.getRobotThreadManager().start();
@@ -1858,7 +1858,7 @@ public class Battle implements Runnable {
 		if (isRunning()) {
 			for (RobotPeer robotPeer : robots) {
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.getEventManager().add(new MouseClickedEvent(mirroredMouseEvent(e)));
+                    robotPeer.getBattleEventManager().add(new MouseClickedEvent(mirroredMouseEvent(e)));
                 }
 			}
 		}
@@ -1868,7 +1868,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (RobotPeer robotPeer : robots) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.getEventManager().add(new MouseEnteredEvent(mirroredMouseEvent(e)));
+                    robotPeer.getBattleEventManager().add(new MouseEnteredEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1878,7 +1878,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (RobotPeer robotPeer : robots) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.getEventManager().add(new MouseExitedEvent(mirroredMouseEvent(e)));
+                    robotPeer.getBattleEventManager().add(new MouseExitedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1888,7 +1888,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (RobotPeer robotPeer : robots) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.getEventManager().add(new MousePressedEvent(mirroredMouseEvent(e)));
+                    robotPeer.getBattleEventManager().add(new MousePressedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1898,7 +1898,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (RobotPeer robotPeer : robots) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.getEventManager().add(new MouseReleasedEvent(mirroredMouseEvent(e)));
+                    robotPeer.getBattleEventManager().add(new MouseReleasedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1908,7 +1908,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (RobotPeer robotPeer : robots) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.getEventManager().add(new MouseMovedEvent(mirroredMouseEvent(e)));
+                    robotPeer.getBattleEventManager().add(new MouseMovedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1918,7 +1918,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (RobotPeer robotPeer : robots) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.getEventManager().add(new MouseDraggedEvent(mirroredMouseEvent(e)));
+                    robotPeer.getBattleEventManager().add(new MouseDraggedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1928,7 +1928,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (RobotPeer robotPeer : robots) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.getEventManager().add(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
+                    robotPeer.getBattleEventManager().add(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
                 }
             }
         }
@@ -1998,15 +1998,15 @@ public class Battle implements Runnable {
                         KeyEvent clone = cloneKeyEvent(e);
                         switch (e.getID()) {
                         case KeyEvent.KEY_TYPED:
-                            robotPeer.getEventManager().add(new KeyTypedEvent(clone));
+                            robotPeer.getBattleEventManager().add(new KeyTypedEvent(clone));
                             break;
 
                         case KeyEvent.KEY_PRESSED:
-                            robotPeer.getEventManager().add(new KeyPressedEvent(clone));
+                            robotPeer.getBattleEventManager().add(new KeyPressedEvent(clone));
                             break;
 
                         case KeyEvent.KEY_RELEASED:
-                            robotPeer.getEventManager().add(new KeyReleasedEvent(clone));
+                            robotPeer.getBattleEventManager().add(new KeyReleasedEvent(clone));
                             break;
                         }
                     }

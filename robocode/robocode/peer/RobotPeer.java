@@ -106,26 +106,7 @@ import robocode.util.BoundingRectangle;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IContestantPeer {
-
-	// Robot States: all states last one turn, except ALIVE and DEAD
-	public static final int
-			STATE_ACTIVE = 0,
-			STATE_HIT_WALL = 1,
-			STATE_HIT_ROBOT = 2,
-			STATE_DEAD = 3;
-
-	public static final int
-			WIDTH = 40,
-			HEIGHT = 40;
-
-	private static final int
-			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
-			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
-
-	private static final long
-			MAX_SET_CALL_COUNT = 10000,
-			MAX_GET_CALL_COUNT = 10000;
+public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IContestantPeer {
 
 	IBasicRobot robot;
 
@@ -183,8 +164,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 	private boolean scan;
 
 	private Battle battle;
-
-	private EventManager eventManager;
 
 	private Condition waitCondition;
 
@@ -380,9 +359,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 							statistics.scoreRammingKill(i);
 						}
 					}
-					eventManager.add(
+					getBattleEventManager().add(
 							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
-					r.eventManager.add(
+					r.getBattleEventManager().add(
 							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getHeading()), energy, false));
 				}
 			}
@@ -422,7 +401,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 		}
 
 		if (hitWall) {
-			eventManager.add(new HitWallEvent(angle));
+			getBattleEventManager().add(new HitWallEvent(angle));
 
 			// only fix both x and y values if hitting wall at an angle
 			if ((heading % (Math.PI / 2)) != 0) {
@@ -564,7 +543,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 				// Process all events for the first turn.
 				// This is done as the first robot status event must occur before the robot
 				// has started running.
-				eventManager.processEvents();
+				getRobotEventManager().processEvents();
 
 				Runnable runnable = robot.getRobotRunnable();
 
@@ -619,16 +598,17 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 		boolean reset = false;
 		boolean resetValue = false;
 
-		if (getEventManager().getCurrentTopEventPriority() == getEventManager().getScannedRobotEventPriority()) {
+        IRobotEventManager robotEventManager = getRobotEventManager();
+        if (robotEventManager.getCurrentTopEventPriority() == robotEventManager.getScannedRobotEventPriority()) {
 			reset = true;
-			resetValue = getEventManager().getInterruptible(getEventManager().getScannedRobotEventPriority());
-			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), true);
+			resetValue = robotEventManager.getInterruptible(robotEventManager.getScannedRobotEventPriority());
+			robotEventManager.setInterruptible(robotEventManager.getScannedRobotEventPriority(), true);
 		}
 
 		setScan(true);
 		execute();
 		if (reset) {
-			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), resetValue);
+			robotEventManager.setInterruptible(robotEventManager.getScannedRobotEventPriority(), resetValue);
 		}
 	}
 	
@@ -664,7 +644,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 
-				eventManager.add(
+				getBattleEventManager().add(
 						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(), normalRelativeAngle(angle - getHeading()), dist,
 						robotPeer.getHeading(), robotPeer.getVelocity()));
 			}
@@ -707,7 +687,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 	public synchronized void kill() {
 		battle.resetInactiveTurnCount(10.0);
 		if (isAlive()) {
-			eventManager.add(new DeathEvent());
+			getBattleEventManager().add(new DeathEvent());
 			if (isTeamLeader()) {
 				for (RobotPeer teammate : teamPeer) {
 					if (!(teammate.isDead() || teammate == this)) {
@@ -811,7 +791,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 			notifyAll();
 		}
 
-		eventManager.setFireAssistValid(false);
+		getRobotEventManager().setFireAssistValid(false);
 
 		if (isDead()) {
 			setHalt(true);
@@ -823,7 +803,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 		// and therefore not be able to reset the counter.
 		out.resetCounter();
 
-		eventManager.processEvents();
+		getRobotEventManager().processEvents();
 	}
 
 	public synchronized final void setTurnGun(double radians) {
@@ -1238,7 +1218,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 		scanArc.setAngleExtent(0);
 		scanArc.setFrame(-100, -100, 1, 1);
 
-		eventManager.reset();
+		getBattleEventManager().reset();
 
 		setMaxVelocity(Double.MAX_VALUE);
 		setMaxTurnRate(Double.MAX_VALUE);
@@ -1302,7 +1282,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 			if (robot instanceof ITeamRobot) {
 				messageManager = new RobotMessageManager(this);
 			}
-			eventManager.setRobot(newRobot);
+			getBattleEventManager().setRobot(newRobot);
 		}
 	}
 
@@ -1329,7 +1309,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 		isWinner = newWinner;
 		if (isWinner) {
 			out.println("SYSTEM: " + getName() + " wins the round.");
-			eventManager.add(new WinEvent());
+			getBattleEventManager().add(new WinEvent());
 		}
 	}
 
@@ -1345,10 +1325,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 		} while (!condition.test());
 
 		waitCondition = null;
-	}
-
-	public EventManager getEventManager() {
-		return eventManager;
 	}
 
 	public synchronized double getLastGunHeading() {
@@ -1424,7 +1400,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 		this.robotClassManager = robotClassManager;
 		robotThreadManager = new RobotThreadManager(this);
 		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
-		eventManager = new EventManager(this);
+		setEventManager(new EventManager(this));
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
 		teamPeer = robotClassManager.getTeamManager();
@@ -1452,8 +1428,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 
 		bullet.setPower(firePower);
 		bullet.setVelocity(Rules.getBulletSpeed(firePower));
-		if (eventManager.isFireAssistValid()) {
-			bullet.setHeading(eventManager.getFireAssistAngle());
+		if (getRobotEventManager().isFireAssistValid()) {
+			bullet.setHeading(getRobotEventManager().getFireAssistAngle());
 		} else {
 			bullet.setHeading(getGunHeading());
 		}
@@ -1621,63 +1597,63 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 	}
 
 	public synchronized void setInterruptible(boolean interruptable) {
-		eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
+		getRobotEventManager().setInterruptible(getRobotEventManager().getCurrentTopEventPriority(), interruptable);
 	}
 
 	public void setEventPriority(String eventClass, int priority) {
-		eventManager.setEventPriority(eventClass, priority);
+		getRobotEventManager().setEventPriority(eventClass, priority);
 	}
 
 	public int getEventPriority(String eventClass) {
-		return eventManager.getEventPriority(eventClass);
+		return getRobotEventManager().getEventPriority(eventClass);
 	}
 
 	public void removeCustomEvent(Condition condition) {
-		eventManager.removeCustomEvent(condition);
+		getRobotEventManager().removeCustomEvent(condition);
 	}
 
 	public void addCustomEvent(Condition condition) {
-		eventManager.addCustomEvent(condition);
+		getRobotEventManager().addCustomEvent(condition);
 	}
 
 	public void clearAllEvents() {
-		eventManager.clearAllEvents(false);
+		getRobotEventManager().clearAllEvents(false);
 	}
 
 	public List<Event> getAllEvents() {
-		return eventManager.getAllEvents();
+		return getRobotEventManager().getAllEvents();
 	}
 
 	public List<BulletMissedEvent> getBulletMissedEvents() {
-		return eventManager.getBulletMissedEvents();
+		return getRobotEventManager().getBulletMissedEvents();
 	}
 
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
-		return eventManager.getBulletHitBulletEvents();
+		return getRobotEventManager().getBulletHitBulletEvents();
 	}
 
 	public List<BulletHitEvent> getBulletHitEvents() {
-		return eventManager.getBulletHitEvents();
+		return getRobotEventManager().getBulletHitEvents();
 	}
 
 	public List<HitByBulletEvent> getHitByBulletEvents() {
-		return eventManager.getHitByBulletEvents();
+		return getRobotEventManager().getHitByBulletEvents();
 	}
 
 	public List<HitRobotEvent> getHitRobotEvents() {
-		return eventManager.getHitRobotEvents();
+		return getRobotEventManager().getHitRobotEvents();
 	}
 
 	public List<HitWallEvent> getHitWallEvents() {
-		return eventManager.getHitWallEvents();
+		return getRobotEventManager().getHitWallEvents();
 	}
 
 	public List<RobotDeathEvent> getRobotDeathEvents() {
-		return eventManager.getRobotDeathEvents();
+		return getRobotEventManager().getRobotDeathEvents();
 	}
 
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
-		return eventManager.getScannedRobotEvents();
+		return getRobotEventManager().getScannedRobotEvents();
 	}
 
 	public void setSkippedTurns(int newSkippedTurns) {
@@ -1819,9 +1795,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 	 */
 	public void cleanup() {
 		// Cleanup and remove the event manager
-		if (eventManager != null) {
-			eventManager.cleanup();
-			eventManager = null;
+		if (getBattleEventManager() != null) {
+			getBattleEventManager().cleanup();
+			setEventManager(null);
 		}
 
 		// Cleanup and remove class manager
@@ -1962,6 +1938,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IC
 	}
 
 	public List<MessageEvent> getMessageEvents() {
-		return eventManager.getMessageEvents();
+		return getRobotEventManager().getMessageEvents();
 	}
 }

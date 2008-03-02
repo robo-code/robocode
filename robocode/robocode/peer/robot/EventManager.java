@@ -59,7 +59,7 @@ import robocode.util.Utils;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class EventManager implements IEventManager {
+public class EventManager implements IRobotEventManager, IBattleEventManager {
 	private RobotPeer robotPeer = null;
 
 	private final int MAX_PRIORITY = 100;
@@ -136,7 +136,7 @@ public class EventManager implements IEventManager {
 		eventQueue.clear(includingSystemEvents);
 	}
 
-	public void clear(long clearTime) {
+	public void clearOld(long clearTime) {
 		eventQueue.clear(clearTime);
 	}
         
