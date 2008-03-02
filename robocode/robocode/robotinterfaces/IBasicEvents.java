@@ -48,11 +48,11 @@ public interface IBasicEvents {
 	 * <em>might</em> change after between the {@link robocode.Robot#getTime()}
 	 * and {@link robocode.Robot#getHeading()} call.
 	 *
-	 * @param e the event containing the robot status at the time it occurred.
+	 * @param event the event containing the robot status at the time it occurred.
 	 *    
 	 * @since 1.5
 	 */
-	void onStatus(StatusEvent e);
+	void onStatus(StatusEvent event);
 
 	/**
 	 * This method is called when one of your bullets hits another robot.

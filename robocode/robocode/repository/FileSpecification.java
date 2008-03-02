@@ -322,7 +322,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the thisFilename.
 	 *
-	 * @param thisFilename The thisFilename to set
+	 * @param thisFileName The thisFilename to set
 	 */
 	public void setThisFileName(String thisFileName) {
 		this.thisFileName = thisFileName;
@@ -358,7 +358,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the propertiesFilename.
 	 *
-	 * @param propertiesFilename The propertiesFilename to set
+	 * @param propertiesFileName The propertiesFilename to set
 	 */
 	public void setPropertiesFileName(String propertiesFileName) {
 		this.propertiesFileName = propertiesFileName;
@@ -376,7 +376,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the filename.
 	 *
-	 * @param filename The filename to set
+	 * @param fileName The filename to set
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
