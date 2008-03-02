@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.repository;
 
@@ -29,6 +31,7 @@ import robocode.io.Logger;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class RobotFileSpecification extends FileSpecification implements IRobotFileSpecification {
@@ -46,12 +49,11 @@ public class RobotFileSpecification extends FileSpecification implements IRobotF
 	protected boolean robotJavaSourceIncluded;
 	protected String robotClassPath;
 
-	private boolean isDroid;
 	private boolean isJuniorRobot;
-	private boolean isClassicRobot;
 	private boolean isInteractiveRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
+	private boolean isDroid;
 
 	// Used in RobotRepositoryManager
 	protected RobotFileSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
@@ -339,14 +341,6 @@ public class RobotFileSpecification extends FileSpecification implements IRobotF
 
 	public void setAdvancedRobot(boolean value) {
 		this.isAdvancedRobot = value;
-	}
-
-	public boolean isClassicRobot() {
-		return isClassicRobot;
-	}
-
-	public void setClassicRobot(boolean value) {
-		this.isClassicRobot = value;
 	}
 
 	public boolean isInteractiveRobot() {

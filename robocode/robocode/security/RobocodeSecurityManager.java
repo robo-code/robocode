@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@
  *       synchronized List and HashMap
  *     Pavel Savara
  *     - Re-work of robot interfaces
-*******************************************************************************/
+ *******************************************************************************/
 package robocode.security;
 
 
@@ -41,6 +41,7 @@ import robocode.peer.robot.RobotFileSystemManager;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobocodeSecurityManager extends SecurityManager {
 	private final PrintStream syserr = System.err;
@@ -397,11 +398,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (perm instanceof RobocodePermission) {
 
 			if (perm.getName().equals("System.out") || perm.getName().equals("System.err")) {
-				r.out.println("SYSTEM:  You cannot write to System.out or System.err.");
-				r.out.println("SYSTEM:  Please use out.println instead of System.out.println");
+				r.getOut().println("SYSTEM:  You cannot write to System.out or System.err.");
+				r.getOut().println("SYSTEM:  Please use out.println instead of System.out.println");
 				throw new AccessControlException("Preventing " + r.getName() + " from access: " + perm);
 			} else if (perm.getName().equals("System.in")) {
-				r.out.println("SYSTEM:  You cannot read from System.in.");
+				r.getOut().println("SYSTEM:  You cannot read from System.in.");
 				throw new AccessControlException("Preventing " + r.getName() + " from access: " + perm);
 
 			}
@@ -441,7 +442,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			File dir = r.getRobotFileSystemManager().getWritableDirectory();
 
 			addRobocodeOutputStream(o); // it's gone already...
-			r.out.println("SYSTEM: Creating a data directory for you.");
+			r.getOut().println("SYSTEM: Creating a data directory for you.");
 			dir.mkdir();
 			addRobocodeOutputStream(o); // one more time...
 			fos = new FileOutputStream(o.getName(), append);
@@ -505,7 +506,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			throw new AccessControlException("Cannot call threadOut from unknown thread.");
 		}
 
-		r.out.println(s);
+		r.getOut().println(s);
 	}
 
 	public PrintStream getRobotOutputStream() {
@@ -582,8 +583,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 					r.setEnergy(0);
 				}
 				throw new AccessControlException(
-						"Preventing " + Thread.currentThread().getName()
-						+ " from access to the internal Robocode pakage: " + pkg);
+						"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "
+						+ pkg);
 			}
 		}
 	}

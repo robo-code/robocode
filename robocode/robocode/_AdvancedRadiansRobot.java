@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
  *     - Updated Javadoc
  *     - The uninitializedException() method does not need a method name as input
  *       parameter anymore
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode;
 
@@ -33,6 +35,8 @@ import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
  * @see AdvancedRobot
  *
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
@@ -46,6 +50,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
 	 * @return the direction that the robot's body is facing, in radians.
+	 *
+	 * @see #getHeadingDegrees()
+	 * @see #getGunHeadingRadians()
+	 * @see #getRadarHeadingRadians()
 	 */
 	public double getHeadingRadians() {
 		if (peer != null) {
@@ -85,7 +93,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnLeftRadians(double radians) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnChassis(-radians);
+			((IAdvancedRobotPeer) peer).setTurnBody(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -121,7 +129,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void setTurnRightRadians(double radians) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnChassis(radians);
+			((IAdvancedRobotPeer) peer).setTurnBody(radians);
 		} else {
 			uninitializedException();
 		}
@@ -151,7 +159,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void turnLeftRadians(double radians) {
 		if (peer != null) {
-			peer.turnChassis(-radians);
+			peer.turnBody(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -180,7 +188,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public void turnRightRadians(double radians) {
 		if (peer != null) {
-			peer.turnChassis(radians);
+			peer.turnBody(radians);
 		} else {
 			uninitializedException();
 		}
@@ -194,6 +202,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
 	 * @return the direction that the robot's gun is facing, in radians.
+	 *
+	 * @see #getGunHeadingDegrees()
+	 * @see #getHeadingRadians()
+	 * @see #getRadarHeadingRadians()
 	 */
 	public double getGunHeadingRadians() {
 		if (peer != null) {
@@ -211,6 +223,10 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
 	 * @return the direction that the robot's radar is facing, in radians.
+	 *
+	 * @see #getRadarHeadingDegrees()
+	 * @see #getHeadingRadians()
+	 * @see #getGunHeadingRadians()
 	 */
 	public double getRadarHeadingRadians() {
 		if (peer != null) {

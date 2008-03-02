@@ -46,7 +46,7 @@ namespace nrobocode
 
         private class JR : robocode.Robot
         {
-            private Robot owner;
+            private readonly Robot owner;
 
             public JR(Robot owner)
             {
@@ -213,15 +213,15 @@ namespace nrobocode
             #endregion
         }
 
-        private JR slave;
+        private readonly JR slave;
 
         #endregion
 
         #region IInteractiveRobot Members
 
-        IInteractiveEvents IInteractiveRobot.getSystemEventListener()
+        IInteractiveEvents IInteractiveRobot.getInteractiveEventListener()
         {
-            return slave.getSystemEventListener();
+            return slave.getInteractiveEventListener();
         }
 
         IBasicEvents IBasicRobot.getBasicEventListener()

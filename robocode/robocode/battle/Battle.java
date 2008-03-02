@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -132,6 +132,8 @@ import robocode.ui.IRobocodeFrame;
 
 
 /**
+ * The <code>Battle</code> class is used for controlling a battle.
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
@@ -139,6 +141,7 @@ import robocode.ui.IRobocodeFrame;
  * @author Titus Chen (contributor)
  * @author Nathaniel Troutman (contributor)
  * @author Julian Kent (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class Battle implements Runnable {
 
@@ -668,7 +671,6 @@ public class Battle implements Runnable {
 					IRobotFileSpecification robotFileSpecification = classManager.getRobotSpecification();
 
 					r.setJuniorRobot(robotFileSpecification.isJuniorRobot());
-					r.setClassicRobot(robotFileSpecification.isClassicRobot());
 					r.setAdvancedRobot(robotFileSpecification.isAdvancedRobot());
 					r.setInteractiveRobot(robotFileSpecification.isInteractiveRobot());
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
@@ -1858,7 +1860,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseClicked(me);
@@ -1881,7 +1883,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseEntered(me);
@@ -1904,7 +1906,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseExited(me);
@@ -1927,7 +1929,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMousePressed(me);
@@ -1950,7 +1952,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseReleased(me);
@@ -1973,7 +1975,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseMoved(me);
@@ -1996,7 +1998,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseDragged(me);
@@ -2019,7 +2021,7 @@ public class Battle implements Runnable {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
 
 					try {
-						IInteractiveEvents listener = robot.getSystemEventListener();
+						IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 						if (listener != null) {
 							listener.onMouseWheelMoved(mwe);
@@ -2119,7 +2121,7 @@ public class Battle implements Runnable {
 			if (robot == null) {
 				continue;
 			}
-			IInteractiveEvents listener = robot.getSystemEventListener();
+			IInteractiveEvents listener = robot.getInteractiveEventListener();
 
 			if (listener == null) {
 				continue;

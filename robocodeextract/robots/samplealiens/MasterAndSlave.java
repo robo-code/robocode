@@ -11,6 +11,7 @@
  *******************************************************************************/
 package samplealiens;
 
+
 import robocode.robotinterfaces.IAdvancedRobot;
 import robocode.robotinterfaces.IAdvancedEvents;
 import robocode.robotinterfaces.IInteractiveEvents;
@@ -22,117 +23,121 @@ import robocode.AdvancedRobot;
 
 import java.io.PrintStream;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public class MasterAndSlave extends MasterBase implements IAdvancedRobot {
 
-    /**
-     * This is not showing any aditional qualities over normal MyFirst robot.
-     * But it could, because architecture is no more tied by inheritance from Robot base class.
-     */
-    public void run()
-    {
-        while(true) {
-            ahead(100); // Move ahead 100
-            turnGunRight(360); // Spin gun around
-            back(100); // Move back 100
-            turnGunRight(360); // Spin gun around
-        }
-    }
+	/**
+	 * This is not showing any aditional qualities over normal MyFirst robot.
+	 * But it could, because architecture is no more tied by inheritance from Robot base class.
+	 */
+	public void run() {
+		while (true) {
+			ahead(100); // Move ahead 100
+			turnGunRight(360); // Spin gun around
+			back(100); // Move back 100
+			turnGunRight(360); // Spin gun around
+		}
+	}
 
-    public void onScannedRobot(ScannedRobotEvent e) {
-        fire(1);
-    }
+	public void onScannedRobot(ScannedRobotEvent e) {
+		fire(1);
+	}
 
-    public void onHitByBullet(HitByBulletEvent e) {
-        turnLeft(90 - e.getBearing());
-    }
+	public void onHitByBullet(HitByBulletEvent e) {
+		turnLeft(90 - e.getBearing());
+	}
+
+	public IInteractiveEvents getInteractiveEventListener() {
+		return null;
+	}
 }
+
 
 /**
  * This is robot derived from AdvancedRobot.
  * Only reason to use this inheritance and this class is that external robots are unable to call RobotPeer directly
  */
-class Slave extends AdvancedRobot
-{
-    MasterBase parent;
+class Slave extends AdvancedRobot {
+	MasterBase parent;
 
-    public Slave(MasterBase parent)
-    {
-        this.parent=parent;
-    }
+	public Slave(MasterBase parent) {
+		this.parent = parent;
+	}
 
-    public void run()
-    {
-        parent.run();
-    }
+	public void run() {
+		parent.run();
+	}
 
-    public void onScannedRobot(ScannedRobotEvent e) {
-        parent.onScannedRobot(e);
-    }
+	public void onScannedRobot(ScannedRobotEvent e) {
+		parent.onScannedRobot(e);
+	}
 
-    public void onHitByBullet(HitByBulletEvent e) {
-        parent.onHitByBullet(e);
-    }
+	public void onHitByBullet(HitByBulletEvent e) {
+		parent.onHitByBullet(e);
+	}
 }
+
 
 /**
  * Infrastructure base class, for helpers and boring implementation details
  */
 abstract class MasterBase {
 
-    public MasterBase()
-    {
-        helperRobot=new Slave(this);
-    }
+	public MasterBase() {
+		helperRobot = new Slave(this);
+	}
 
-    private AdvancedRobot helperRobot;
-    public IAdvancedEvents getAdvancedEventListener() {
-        return helperRobot;
-    }
+	private AdvancedRobot helperRobot;
+	public IAdvancedEvents getAdvancedEventListener() {
+		return helperRobot;
+	}
 
-    public IInteractiveEvents getSystemEventListener() {
-        return helperRobot;
-    }
+	public IInteractiveEvents getSystemEventListener() {
+		return helperRobot;
+	}
 
-    public Runnable getRobotRunnable() {
-        return helperRobot;
-    }
+	public Runnable getRobotRunnable() {
+		return helperRobot;
+	}
 
-    public IBasicEvents getBasicEventListener() {
-        return helperRobot;
-    }
+	public IBasicEvents getBasicEventListener() {
+		return helperRobot;
+	}
 
-    public void setPeer(IBasicRobotPeer robotPeer) {
-        helperRobot.setPeer(robotPeer);
-    }
+	public void setPeer(IBasicRobotPeer robotPeer) {
+		helperRobot.setPeer(robotPeer);
+	}
 
-    public void setOut(PrintStream printStream) {
-        helperRobot.setOut(printStream);
-    }
+	public void setOut(PrintStream printStream) {
+		helperRobot.setOut(printStream);
+	}
 
-    public void turnGunRight(double degrees) {
-        helperRobot.turnGunRight(degrees);
-    }
+	public void turnGunRight(double degrees) {
+		helperRobot.turnGunRight(degrees);
+	}
 
-    public void turnLeft(double degrees) {
-        helperRobot.turnLeft(degrees);
-    }
+	public void turnLeft(double degrees) {
+		helperRobot.turnLeft(degrees);
+	}
 
-    public void ahead(double distance) {
-        helperRobot.ahead(distance);
-    }
+	public void ahead(double distance) {
+		helperRobot.ahead(distance);
+	}
 
-    public void back(double distance) {
-        helperRobot.back(distance);
-    }
+	public void back(double distance) {
+		helperRobot.back(distance);
+	}
 
-    public void fire(double power) {
-        helperRobot.fire(power);
-    }
+	public void fire(double power) {
+		helperRobot.fire(power);
+	}
 
-    public void onScannedRobot(ScannedRobotEvent e) { }
-    public void onHitByBullet(HitByBulletEvent e) { }
-    public void run() { }
+	public void onScannedRobot(ScannedRobotEvent e) {}
+
+	public void onHitByBullet(HitByBulletEvent e) {}
+
+	public void run() {}
 }

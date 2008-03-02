@@ -34,20 +34,16 @@ public class BasicRobotPeerProxy implements IBasicRobotPeer {
 	}
 
 	// blocking actions
-	public void tick() {
-		peer.tick();
+	public void execute() {
+		peer.execute();
 	}
 
 	public void move(double distance) {
 		peer.move(distance);
 	}
 
-	public void turnChassis(double radians) {
-		peer.turnChassis(radians);
-	}
-
-	public void turnAndMoveChassis(double distance, double radians) {
-		peer.turnAndMoveChassis(distance, radians);
+	public void turnBody(double radians) {
+		peer.turnBody(radians);
 	}
 
 	public void turnGun(double radians) {
@@ -103,21 +99,6 @@ public class BasicRobotPeerProxy implements IBasicRobotPeer {
 	public double getTurnRemaining() {
 		peer.getCall();
 		return peer.getTurnRemaining();
-	}
-
-	public boolean isAdjustGunForBodyTurn() {
-		peer.getCall();
-		return peer.isAdjustGunForBodyTurn();
-	}
-
-	public boolean isAdjustRadarForGunTurn() {
-		peer.getCall();
-		return peer.isAdjustRadarForGunTurn();
-	}
-
-	public boolean isAdjustRadarForBodyTurn() {
-		peer.getCall();
-		return peer.isAdjustRadarForBodyTurn();
 	}
 
 	// Robot calls below

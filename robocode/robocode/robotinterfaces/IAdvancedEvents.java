@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -17,7 +19,15 @@ import robocode.CustomEvent;
 
 
 /**
+ * An event interface for receiving advanced robot events with an
+ * {@link IAdvancedRobot}.
+ *
+ * @see IAdvancedRobot
+ *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
+ *
+ * @since 1.6
  */
 public interface IAdvancedEvents {
 
@@ -32,7 +42,8 @@ public interface IAdvancedEvents {
 	 * You will only receive this event after taking an action. So a robot in an
 	 * infinite loop will not receive any events, and will simply be stopped.
 	 * <p>
-	 * No correctly working, reasonable robot should ever receive this event.
+	 * No correctly working, reasonable robot should ever receive this event
+	 * unless it is using too many CPU cycles.
 	 *
 	 * @param event the skipped turn event set by the game
 	 *
@@ -44,9 +55,10 @@ public interface IAdvancedEvents {
 	/**
 	 * This method is called when a custom condition is met.
 	 * <p>
-	 * See the sample robots for examples of use.
+	 * See the sample robots for examples of use, e.g. the {@code sample.Target}
+	 * robot.
 	 *
-	 * @param event the custom event that occured
+	 * @param event the custom event that occurred
 	 *
 	 * @see robocode.AdvancedRobot#addCustomEvent
 	 * @see robocode.CustomEvent

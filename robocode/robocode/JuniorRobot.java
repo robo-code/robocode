@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,19 +20,25 @@ import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 
 import static robocode.util.Utils.normalRelativeAngle;
 import robocode.util.Utils;
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IJuniorRobot;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
 
 /**
- * This is the simplest robot type, which is simpler than the Robot and
- * AdvancedRobot classes. The JuniorRobot has a simplified model, in purpose of
- * teaching programming skills to inexperienced in programming students.
- * The simplified robot model will keep player from overwhelming of Robocode's
- * rules, programming syntax and programming concept.
+ * This is the simplest robot type, which is simpler than the {@link Robot} and
+ * {@link AdvancedRobot} classes. The JuniorRobot has a simplified model, in
+ * purpose of teaching programming skills to inexperienced in programming
+ * students. The simplified robot model will keep player from overwhelming of
+ * Robocode's rules, programming syntax and programming concept.
+ * <p>
+ * Instead of using getters and setters, public fields are provided for
+ * receiving information like the last scanned robot, the coordinate of the
+ * robot etc.
  * <p>
  * All methods on this class are blocking calls, i.e. they do not return before
  * their action has been completed and will at least take one turn to execute.
@@ -41,6 +47,7 @@ import robocode.robotinterfaces.peer.*;
  *
  * @author Nutch Poovarawan from Cubic Creative (designer)
  * @author Flemming N. Larsen (implementor)
+ * @author Pavel Savara (contributor)
  * 
  * @since 1.4
  */
@@ -310,25 +317,35 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public int hitWallBearing = -1;
 
 	/**
-	 * JuniorRobot implements runnable internally.
-	 * This method is called by environment, you don't need it.
-	 * @return runnable implementation
+	 * Do not call this method!
+	 * <p>
+	 * {@inheritDoc}
 	 */
 	public final Runnable getRobotRunnable() {
-		return eventHandler;
+		return getEventHandler();
 	}
 
 	/**
-	 * JuniorRobot is listening to basic events internally.
-	 * This method is called by environment, you don't need it.
-	 * @return listener to robot events
+	 * Do not call this method!
+	 * <p>
+	 * {@inheritDoc}
 	 */
 	public final IBasicEvents getBasicEventListener() {
-		return eventHandler;
+		return getEventHandler();
 	}
 
 	/**
-	 * Contains the program that controls the behaviour of this robot.
+	 * The main method in every robot. You must override this to set up your
+	 * robot's basic behavior.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // A basic robot that moves around in a square
+	 *   public void run() {
+	 *       ahead(100);
+	 *       turnRight(90);
+	 *   }
+	 * </pre>
 	 * This method is automatically re-called when it has returned.
 	 */
 	public void run() {}
@@ -345,8 +362,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void ahead(int distance) {
 		if (peer != null) {
 			peer.move(distance);
-
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -397,9 +412,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnRight(int degrees) {
 		if (peer != null) {
-			peer.turnChassis(toRadians(degrees));
-
-			updateJuniorRobotFields();
+			peer.turnBody(toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -422,9 +435,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnTo(int angle) {
 		if (peer != null) {
-			peer.turnChassis(normalRelativeAngle(toRadians(angle) - peer.getHeading()));
-
-			updateJuniorRobotFields();
+			peer.turnBody(normalRelativeAngle(toRadians(angle) - peer.getHeading()));
 		} else {
 			uninitializedException();
 		}
@@ -433,8 +444,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Moves this robot forward by pixels and turns this robot left by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
-	 * circle, and the moving and turning will end at the same time.<br>
-	 * <br>
+	 * circle, and the moving and turning will end at the same time.
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance. 
@@ -459,8 +470,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Moves this robot forward by pixels and turns this robot right by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
-	 * circle, and the moving and turning will end at the same time.<br>
-	 * <br>
+	 * circle, and the moving and turning will end at the same time.
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance. 
@@ -480,8 +491,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnAheadRight(int distance, int degrees) {
 		if (peer != null) {
-			peer.turnAndMoveChassis(distance, toRadians(degrees));
-			updateJuniorRobotFields();
+			((IJuniorRobotPeer) peer).turnAndMove(distance, toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -490,8 +500,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Moves this robot backward by pixels and turns this robot left by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
-	 * circle, and the moving and turning will end at the same time.<br>
-	 * <br>
+	 * circle, and the moving and turning will end at the same time.
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance. 
@@ -516,8 +526,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * Moves this robot backward by pixels and turns this robot right by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
-	 * circle, and the moving and turning will end at the same time.<br>
-	 * <br>
+	 * circle, and the moving and turning will end at the same time.
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance. 
@@ -568,8 +578,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void turnGunRight(int degrees) {
 		if (peer != null) {
 			peer.turnGun(toRadians(degrees));
-
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -591,8 +599,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void turnGunTo(int angle) {
 		if (peer != null) {
 			peer.turnGun(normalRelativeAngle(toRadians(angle) - peer.getGunHeading()));
-	
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -613,8 +619,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public void bearGunTo(int angle) {
 		if (peer != null) {
 			peer.turnGun(normalRelativeAngle(peer.getHeading() + toRadians(angle) - peer.getGunHeading()));
-	
-			updateJuniorRobotFields();
 		} else {
 			uninitializedException();
 		}
@@ -638,12 +642,13 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * suspend until the gun is ready to fire, and then fire a bullet.
 	 *
 	 * @param power between 0.1 and 3
+	 *
 	 * @see #gunReady
 	 */
 	public void fire(double power) {
 		if (peer != null) {
-			eventHandler.juniorFirePower = power;
-			peer.tick();
+			getEventHandler().juniorFirePower = power;
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -656,7 +661,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void doNothing() {
 		if (peer != null) {
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -675,7 +680,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 		if (peer != null) {
 			for (int i = 0; i < turns; i++) {
-				peer.tick();
+				peer.execute();
 			}
 		} else {
 			uninitializedException();
@@ -770,37 +775,56 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void onHitWall() {}
 
-	private final RobotEventsHandler eventHandler = new RobotEventsHandler(this);
+	/**
+	 * The robot event handler for this robot.
+	 */
+	private EventHandler eventHandler;
 
-	private void updateJuniorRobotFields() {
-		others = peer.getOthers();
-		energy = Math.max(1, (int) (peer.getEnergy() + 0.5));
-		robotX = (int) (peer.getX() + 0.5);
-		robotY = (int) (peer.getY() + 0.5);
-		heading = (int) (toDegrees(peer.getHeading()) + 0.5);
-		gunHeading = (int) (toDegrees(peer.getGunHeading()) + 0.5);
-		gunBearing = (int) (toDegrees(normalRelativeAngle(peer.getGunHeading() - peer.getHeading())) + 0.5);
-		gunReady = (peer.getGunHeat() <= 0);
+	/**
+	 * Returns the event handler of this robot.
+	 */
+	private final EventHandler getEventHandler() {
+		if (eventHandler == null) {
+			eventHandler = new EventHandler();
+		}
+		return eventHandler;
 	}
 
-	private final class RobotEventsHandler implements IBasicEvents, IJuniorEvents, Runnable {
+	/**
+	 * The JuniorRobot event handler, which implements the basic robot events,
+	 * JuniorRobot event, and Runnable. 
+	 */
+	private final class EventHandler implements IBasicEvents, Runnable {
 
 		private double juniorFirePower;
 
-		public RobotEventsHandler(JuniorRobot junior) {
-			this.junior = junior;
-		}
-		public JuniorRobot junior;
-
 		public void run() {
-			junior.fieldWidth = (int) (junior.peer.getBattleFieldWidth() + 0.5);
-			junior.fieldHeight = (int) (junior.peer.getBattleFieldHeight() + 0.5);
-			junior.updateJuniorRobotFields();
-
-			((IJuniorRobotPeer) peer).addJuniorEvents();
+			fieldWidth = (int) (peer.getBattleFieldWidth() + 0.5);
+			fieldHeight = (int) (peer.getBattleFieldHeight() + 0.5);
 
 			while (true) {
-				junior.run();
+				JuniorRobot.this.run();
+			}
+		}
+
+		public void onStatus(StatusEvent e) {
+			final RobotStatus s = e.getStatus();
+
+			others = peer.getOthers();
+			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
+			robotX = (int) (s.getX() + 0.5);
+			robotY = (int) (s.getY() + 0.5);
+			heading = (int) (toDegrees(s.getHeading()) + 0.5);
+			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
+			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
+			gunReady = (s.getGunHeat() <= 0);
+
+			// Auto fire  
+			if (juniorFirePower > 0 && gunReady && (peer.getGunTurnRemaining() == 0)) {
+				if (peer.setFire(juniorFirePower) != null) {
+					gunReady = false;
+					juniorFirePower = 0;
+				}
 			}
 		}
 
@@ -814,66 +838,47 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 		public void onWin(WinEvent event) {}
 
-		public void onSkippedTurn(SkippedTurnEvent event) {}
-
 		public void onDeath(DeathEvent event) {
 			others = peer.getOthers();
 		}
 
 		public void onHitByBullet(HitByBulletEvent event) {
-			junior.updateJuniorRobotFields();
-			double angle = junior.peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getHeading() + event.getBearingRadians();
 
-			junior.hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			junior.hitByBulletBearing = (int) (event.getBearing() + 0.5);
-			junior.onHitByBullet();
+			hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitByBulletBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitByBullet();
 		}
 
 		public void onHitRobot(HitRobotEvent event) {
-			junior.updateJuniorRobotFields();
-			double angle = junior.peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getHeading() + event.getBearingRadians();
 
-			junior.hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			junior.hitRobotBearing = (int) (event.getBearing() + 0.5);
-			junior.onHitRobot();
+			hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitRobotBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitRobot();
 		}
 
 		public void onHitWall(HitWallEvent event) {
-			junior.updateJuniorRobotFields();
-			double angle = junior.peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getHeading() + event.getBearingRadians();
 
-			junior.hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			junior.hitWallBearing = (int) (event.getBearing() + 0.5);
-			junior.onHitWall();
+			hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitWallBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitWall();
 		}
 
 		public void onScannedRobot(ScannedRobotEvent event) {
-			junior.scannedDistance = (int) (event.getDistance() + 0.5);
-			junior.scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
-			junior.scannedAngle = (int) (Math.toDegrees(
-					Utils.normalAbsoluteAngle(junior.peer.getHeading() + event.getBearingRadians()))
+			scannedDistance = (int) (event.getDistance() + 0.5);
+			scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
+			scannedAngle = (int) (Math.toDegrees(
+					Utils.normalAbsoluteAngle(peer.getHeading() + event.getBearingRadians()))
 							+ 0.5);
-			junior.scannedBearing = (int) (event.getBearing() + 0.5);
-			junior.scannedHeading = (int) (event.getHeading() + 0.5);
-			junior.scannedVelocity = (int) (event.getVelocity() + 0.5);
+			scannedBearing = (int) (event.getBearing() + 0.5);
+			scannedHeading = (int) (event.getHeading() + 0.5);
+			scannedVelocity = (int) (event.getVelocity() + 0.5);
             
-			junior.onScannedRobot();
+			JuniorRobot.this.onScannedRobot();
 		}
 
-		public void onJuniorEvent(CustomEvent event) {
-			Condition c = event.getCondition();
-
-			if (c instanceof GunReadyCondition) {
-				junior.gunReady = true;
-			} else if (c instanceof GunFireCondition) {
-
-				if (juniorFirePower > 0) {
-					if (junior.peer.setFire(juniorFirePower) != null) {
-						junior.gunReady = false;
-					}
-					juniorFirePower = 0;
-				}
-			}
-		}
+		public void onPaint(Graphics2D g) {}
 	}
 }

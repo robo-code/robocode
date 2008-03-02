@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -64,6 +64,7 @@ import java.awt.event.MouseWheelEvent;
  * @author Flemming N. Larsen (contributor)
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, IInteractiveEvents {
 
@@ -73,29 +74,23 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	public Robot() {}
 
 	/**
-	 * Robot implements runnable.
-	 * This method is called by environment, you don't need it.
-	 * @return runnable implementation
+	 * {@inheritDoc}}
 	 */
 	public final Runnable getRobotRunnable() {
 		return this;
 	}
 
 	/**
-	 * Robot is listening to basic events.
-	 * This method is called by environment, you don't need it.
-	 * @return listener to robot events
+	 * {@inheritDoc}}
 	 */
 	public final IBasicEvents getBasicEventListener() {
 		return this;
 	}
 
 	/**
-	 * Robot is listening to system events.
-	 * This method is called by environment, you don't need it.
-	 * @return listener to system events
+	 * {@inheritDoc}}
 	 */
-	public final IInteractiveEvents getSystemEventListener() {
+	public final IInteractiveEvents getInteractiveEventListener() {
 		return this;
 	}
 
@@ -177,19 +172,6 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * Returns the height of the current battlefield measured in pixels.
-	 *
-	 * @return the height of the current battlefield measured in pixels.
-	 */
-	public double getBattleFieldHeight() {
-		if (peer != null) {
-			return peer.getBattleFieldHeight();
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
 	 * Returns the width of the current battlefield measured in pixels.
 	 *
 	 * @return the width of the current battlefield measured in pixels.
@@ -203,6 +185,19 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
+	 * Returns the height of the current battlefield measured in pixels.
+	 *
+	 * @return the height of the current battlefield measured in pixels.
+	 */
+	public double getBattleFieldHeight() {
+		if (peer != null) {
+			return peer.getBattleFieldHeight();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
 	 * Returns the direction that the robot's body is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
 	 * <p>
@@ -210,6 +205,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
 	 * @return the direction that the robot's body is facing, in degrees.
+	 *
+	 * @see #getGunHeading()
+	 * @see #getRadarHeading()
 	 */
 	public double getHeading() {
 		if (peer != null) {
@@ -256,9 +254,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * Returns the robot's name
+	 * Returns the robot's name.
 	 *
-	 * @return the robot's name
+	 * @return the robot's name.
 	 */
 	public String getName() {
 		if (peer != null) {
@@ -272,9 +270,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Returns the X position of the robot. (0,0) is at the bottom left of the
 	 * battlefield.
 	 *
-	 * @return the X position of the robot
+	 * @return the X position of the robot.
 	 *
-	 * @see #getY
+	 * @see #getY()
 	 */
 	public double getX() {
 		if (peer != null) {
@@ -288,9 +286,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Returns the Y position of the robot. (0,0) is at the bottom left of the
 	 * battlefield.
 	 *
-	 * @return the Y position of the robot
+	 * @return the Y position of the robot.
 	 *
-	 * @see #getX
+	 * @see #getX()
 	 */
 	public double getY() {
 		if (peer != null) {
@@ -336,12 +334,16 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *   turnLeft(-90);
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's body to the left
-	 *    If this value is negative, the robot's body is set to turn to the right
+	 * @param degrees the amount of degrees to turn the robot's body to the left.
+	 *    If {@code degrees} > 0 the robot will turn left.
+	 *    If {@code degrees} < 0 the robot will turn right.
+	 *    If {@code degrees} = 0 the robot will not turn, but just execute.
+	 *
+	 * @see #turnRight(double) 
 	 */
 	public void turnLeft(double degrees) {
 		if (peer != null) {
-			peer.turnChassis(-Math.toRadians(degrees));
+			peer.turnBody(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -365,12 +367,16 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *   turnRight(-90);
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's body to the right
-	 *    If this value is negative, the robot's body is set to turn to the left
+	 * @param degrees the amount of degrees to turn the robot's body to the right.
+	 *    If {@code degrees} > 0 the robot will turn right.
+	 *    If {@code degrees} < 0 the robot will turn left.
+	 *    If {@code degrees} = 0 the robot will not turn, but just execute.
+	 *
+	 * @see #turnLeft(double) 
 	 */
 	public void turnRight(double degrees) {
 		if (peer != null) {
-			peer.turnChassis(Math.toRadians(degrees));
+			peer.turnBody(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -384,7 +390,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void doNothing() {
 		if (peer != null) {
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -441,7 +447,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	public void fire(double power) {
 		if (peer != null) {
 			peer.setFire(power);
-			peer.tick();
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -499,7 +505,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 		if (peer != null) {
 			Bullet b = peer.setFire(power);
 
-			peer.tick();
+			peer.execute();
 			return b;
 		}
 		uninitializedException();
@@ -515,9 +521,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @return the gun cooling rate
 	 *
-	 * @see #getGunHeat
-	 * @see #fire
-	 * @see #fireBullet
+	 * @see #getGunHeat()
+	 * @see #fire()
+	 * @see #fireBullet(double)
 	 */
 	public double getGunCoolingRate() {
 		if (peer != null) {
@@ -535,6 +541,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
 	 * @return the direction that the robot's gun is facing, in degrees.
+	 *
+	 * @see #getHeading()
+	 * @see #getRadarHeading()
 	 */
 	public double getGunHeading() {
 		if (peer != null) {
@@ -558,9 +567,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @return the current gun heat
 	 *
-	 * @see #getGunCoolingRate
-	 * @see #fire
-	 * @see #fireBullet
+	 * @see #getGunCoolingRate()
+	 * @see #fire()
+	 * @see #fireBullet()
 	 */
 	public double getGunHeat() {
 		if (peer != null) {
@@ -574,6 +583,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Returns the number of rounds in the current battle.
 	 *
 	 * @return the number of rounds in the current battle
+	 *
+	 * @see #getRoundNum()
 	 */
 	public int getNumRounds() {
 		if (peer != null) {
@@ -584,9 +595,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * Returns how many opponents are left in the current round.
+	 * Returns how many opponents that are left in the current round.
 	 *
-	 * @return how many opponents are left in the current round.
+	 * @return how many opponents that are left in the current round.
 	 */
 	public int getOthers() {
 		if (peer != null) {
@@ -604,6 +615,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
 	 * @return the direction that the robot's radar is facing, in degrees.
+	 *
+	 * @see #getHeading()
+	 * @see #getGunHeading()
 	 */
 	public double getRadarHeading() {
 		if (peer != null) {
@@ -619,7 +633,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @return the number of the current round in the battle
 	 *
-	 * @see #getNumRounds
+	 * @see #getNumRounds()
 	 */
 	public int getRoundNum() {
 		if (peer != null) {
@@ -637,7 +651,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * <p>
 	 * Time is reset to 0 at the beginning of every round.
 	 *
-	 * @return the game time/turn of the current round
+	 * @return the game time/turn of the current round.
 	 */
 	public long getTime() {
 		if (peer != null) {
@@ -653,7 +667,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * The maximum velocity of a robot is defined by {@link Rules#MAX_VELOCITY}
 	 * (8 pixels / turn).
 	 *
-	 * @return the velocity of the robot measured in pixels/turn
+	 * @return the velocity of the robot measured in pixels/turn.
 	 *
 	 * @see Rules#MAX_VELOCITY
 	 */
@@ -666,243 +680,54 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * This method is called when one of your bullets hits another robot.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onBulletHit(BulletHitEvent event) {
-	 *       out.println("I hit " + event.getName() + "!");
-	 *   }
-	 * </pre>
-	 *
-	 * @param event the bullet-hit event set by the game
-	 * @see BulletHitEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onBulletHit(BulletHitEvent event) {}
 
 	/**
-	 * This method is called when one of your bullets hits another bullet.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onBulletHitBullet(BulletHitBulletEvent event) {
-	 *       out.println("I hit a bullet fired by " + event.getBullet().getName() + "!");
-	 *   }
-	 * </pre>
-	 *
-	 * @param event the bullet-hit-bullet event set by the game
-	 * @see BulletHitBulletEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onBulletHitBullet(BulletHitBulletEvent event) {}
 
 	/**
-	 * This method is called when one of your bullets misses, i.e. hits a wall.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onBulletHit(BulletMissedEvent event) {
-	 *       out.println("Drat, I missed.");
-	 *   }
-	 * </pre>
-	 *
-	 * @param event the bullet-missed event set by the game
-	 * @see BulletMissedEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onBulletMissed(BulletMissedEvent event) {}
 
 	/**
-	 * This method is called if your robot dies.
-	 * <p>
-	 * You should override it in your robot if you want to be informed of this
-	 * event. Actions will have no effect if called from this section. The
-	 * intent is to allow you to perform calculations or print something out
-	 * when the robot is killed.
-	 *
-	 * @param event the death event set by the game
-	 *
-	 * @see DeathEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onDeath(DeathEvent event) {}
 
 	/**
-	 * This method is called when your robot is hit by a bullet.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onHitByBullet(HitByBulletEvent event) {
-	 *       out.println(event.getRobotName() + " hit me!");
-	 *   }
-	 * </pre>
-	 *
-	 * @param event the hit-by-bullet event set by the game
-	 * @see HitByBulletEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onHitByBullet(HitByBulletEvent event) {}
 
 	/**
-	 * This method is called when your robot collides with another robot.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onHitRobot(HitRobotEvent event) {
-	 *       if (event.getBearing() > -90 && event.getBearing() <= 90) {
-	 *           back(100);
-	 *       } else {
-	 *           ahead(100);
-	 *       }
-	 *   }
-	 *
-	 *   -- or perhaps, for a more advanced robot --
-	 *
-	 *   public void onHitRobot(HitRobotEvent event) {
-	 *       if (event.getBearing() > -90 && event.getBearing() <= 90) {
-	 *           setBack(100);
-	 *       } else {
-	 *           setAhead(100);
-	 *       }
-	 *   }
-	 * </pre>
-	 *
-	 * The angle is relative to your robot's facing. So 0 is straight ahead of
-	 * you.
-	 * <p>
-	 * This event can be generated if another robot hits you, in which case
-	 * {@link HitRobotEvent#isMyFault() event.isMyFault()} will return
-	 * {@code false}. In this case, you will not be automatically stopped by the
-	 * game -- but if you continue moving toward the robot you will hit it (and
-	 * generate another event). If you are moving away, then you won't hit it.
-	 *
-	 * @param event the hit-robot event set by the game
-	 * @see HitRobotEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onHitRobot(HitRobotEvent event) {}
 
 	/**
-	 * This method is called when your robot collides with a wall.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 * <p>
-	 * The wall at the top of the screen is 0 degrees, right is 90 degrees,
-	 * bottom is 180 degrees, left is 270 degrees. But this event is relative to
-	 * your heading, so: The bearing is such that turnRight(e.getBearing()) will
-	 * point you perpendicular to the wall.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onHitWall(HitWallEvent event) {
-	 *       out.println("Ouch, I hit a wall bearing " + event.getBearing() + " degrees.");
-	 *   }
-	 * </pre>
-	 *
-	 * @param event the hit-wall event set by the game
-	 * @see HitWallEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onHitWall(HitWallEvent event) {}
 
 	/**
-	 * This method is called when another robot dies.
-	 * You should override it in your robot if you want to be informed of this
-	 * event.
-	 *
-	 * @param event The robot-death event set by the game
-	 * @see RobotDeathEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onRobotDeath(RobotDeathEvent event) {}
 
 	/**
-	 * This method is called when your robot sees another robot, i.e. when the
-	 * robot's radar scan "hits" another robot.
-	 * You should override it in your robot if you want to be informed of this
-	 * event. (Almost all robots should override this!)
-	 * <p>
-	 * This event is automatically called if there is a robot in range of your
-	 * radar.
-	 * <p>
-	 * Note that the robot's radar can only see robot within the range defined
-	 * by {@link Rules#equals(Object)} (1200 pixels).
-	 * <p>
-	 * Also not that the bearing of the scanned robot is relative to your
-	 * robot's heading.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   public void onScannedRobot(ScannedRobotEvent event) {
-	 *       // Assuming radar and gun are aligned...
-	 *       if (event.getDistance() < 100) {
-	 *           fire(3);
-	 *       } else {
-	 *           fire(1);
-	 *       }
-	 *   }
-	 * </pre>
-	 *
-	 * Note:
-	 *  The game assists Robots in firing, as follows:
-	 *  If the gun and radar are aligned (and were aligned last turn),
-	 *    and the event is current,
-	 *    and you call fire() before taking any other actions,
-	 *    fire() will fire directly at the robot.
-	 *  In essence, this means that if you can see a robot, and it doesn't move,
-	 *  then fire will hit it.
-	 *  <br>
-	 *  AdvancedRobots will NOT be assisted in this manner, and are expected to
-	 *  examine the event to determine if fire() would hit. (i.e. you are
-	 *  spinning your gun around, but by the time you get the event, your gun is
-	 *  5 degrees past the robot).
-	 *
-	 * @param event the scanned-robot event set by the game
-	 *
-	 * @see #scan
-	 * @see ScannedRobotEvent
-	 * @see Event
-	 * @see #turnRadarLeft
-	 * @see #turnRadarRight
+	 * {@inheritDoc}
 	 */
 	public void onScannedRobot(ScannedRobotEvent event) {}
 
 	/**
-	 * This method is called if your robot wins a battle.
-	 * <p>
-	 * Your robot could perform a victory dance here! :-)
-	 *
-	 * @param event the win event set by the game
-	 * @see WinEvent
-	 * @see Event
+	 * {@inheritDoc}
 	 */
 	public void onWin(WinEvent event) {}
-
-	/**
-	 * Immediately resumes the movement you stopped by stop(), if any.
-	 * <p>
-	 * This call executes immediately, and does not return until it is complete.
-	 *
-	 * @see #stop
-	 */
-	public void resume() {
-		if (peer != null) {
-			((IStandardRobotPeer) peer).resume();
-		} else {
-			uninitializedException();
-		}
-	}
 
 	/**
 	 * Scans for other robots. This method is called automatically by the game,
@@ -972,6 +797,49 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	public void setAdjustGunForRobotTurn(boolean independent) {
 		if (peer != null) {
 			((IStandardRobotPeer) peer).setAdjustGunForBodyTurn(independent);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the radar to turn independent from the robot's turn.
+	 * <p>
+	 * Ok, so this needs some explanation: The radar is mounted on the gun, and
+	 * the gun is mounted on the robot's body. So, normally, if the robot turns
+	 * 90 degrees to the right, the gun turns, as does the radar. Hence, if the
+	 * robot turns 90 degrees to the right, then the gun and radar will turn with
+	 * it as the radar is mounted on top of the gun. To compensate for this, you
+	 * can call setAdjustRadarForRobotTurn(true). When this is set, the radar will
+	 * turn independent from the robot's turn, i.e. the radar will compensate for
+	 * the robot's turn.
+	 * <p>
+	 * Example, assuming the robot, gun, and radar all start out facing up (0
+	 * degrees):
+	 * <pre>
+	 *   // Set radar to turn with the robots's turn
+	 *   setAdjustRadarForRobotTurn(false); // This is the default
+	 *   turnRight(90);
+	 *   // At this point, the body, gun, and radar are all facing right (90 degrees);
+	 *
+	 *   -- or --
+	 *
+	 *   // Set radar to turn independent from the robot's turn
+	 *   setAdjustRadarForRobotTurn(true);
+	 *   turnRight(90);
+	 *   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
+	 * </pre>
+	 *
+	 * @param independent {@code true} if the radar must turn independent from
+	 *    the robots's turn; {@code false} if the radar must turn with the robot's
+	 *    turn.
+	 *
+	 * @see #setAdjustGunForRobotTurn
+	 * @see #setAdjustRadarForGunTurn
+	 */
+	public void setAdjustRadarForRobotTurn(boolean independent) {
+		if (peer != null) {
+			((IStandardRobotPeer) peer).setAdjustRadarForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -1339,13 +1207,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * Immediately stops all movement, and saves it for a call to resume(). If
-	 * there is already movement saved from a previous stop, this will have no
-	 * effect.
+	 * Immediately stops all movement, and saves it for a call to
+	 * {@link #resume()}. If there is already movement saved from a previous
+	 * stop, this will have no effect.
 	 * <p>
-	 * This method is equivalent to stop(false).
+	 * This method is equivalent to {@code #stop(false)}.
 	 *
-	 * @see #resume
+	 * @see #resume()
 	 * @see #stop(boolean)
 	 */
 	public void stop() {
@@ -1353,17 +1221,35 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * Immediately stops all movement, and saves it for a call to resume(). If
-	 * there is already movement saved from a previous stop, you can overwrite
-	 * it by calling stop(true).
+	 * Immediately stops all movement, and saves it for a call to
+	 * {@link #resume()}. If there is already movement saved from a previous
+	 * stop, you can overwrite it by calling {@code stop(true)}.
 	 *
-	 * @param overwrite If there is already movement saved from a previous stop, you can overwrite it by calling stop(true).
-	 * @see #resume
-	 * @see #stop
+	 * @param overwrite If there is already movement saved from a previous stop,
+	 *    you can overwrite it by calling {@code stop(true)}.
+	 *
+	 * @see #resume()
+	 * @see #stop()
 	 */
 	public void stop(boolean overwrite) {
 		if (peer != null) {
 			((IStandardRobotPeer) peer).stop(overwrite);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Immediately resumes the movement you stopped by {@link #stop()}, if any.
+	 * <p>
+	 * This call executes immediately, and does not return until it is complete.
+	 *
+	 * @see #stop()
+	 * @see #stop(boolean)
+	 */
+	public void resume() {
+		if (peer != null) {
+			((IStandardRobotPeer) peer).resume();
 		} else {
 			uninitializedException();
 		}
@@ -1388,10 +1274,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *   turnGunLeft(-90);
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's gun to the left
-	 *    If this value is negative, the robot's gun is set to turn to the right
+	 * @param degrees the amount of degrees to turn the robot's gun to the left.
+	 *    If {@code degrees} > 0 the robot's gun will turn left.
+	 *    If {@code degrees} < 0 the robot's gun will turn right.
+	 *    If {@code degrees} = 0 the robot's gun will not turn, but just execute.
 	 *
-	 * @see #setAdjustGunForRobotTurn
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 * @see #turnGunRight(double)
 	 */
 	public void turnGunLeft(double degrees) {
 		if (peer != null) {
@@ -1419,10 +1308,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *   turnGunRight(-90);
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's gun to the right
-	 *    If this value is negative, the robot's gun is set to turn to the left
+	 * @param degrees the amount of degrees to turn the robot's gun to the right.
+	 *    If {@code degrees} > 0 the robot's gun will turn right.
+	 *    If {@code degrees} < 0 the robot's gun will turn left.
+	 *    If {@code degrees} = 0 the robot's gun will not turn, but just execute.
 	 *
-	 * @see #setAdjustGunForRobotTurn
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 * @see #turnGunLeft(double)
 	 */
 	public void turnGunRight(double degrees) {
 		if (peer != null) {
@@ -1451,11 +1343,14 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *   turnRadarLeft(-90);
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's radar to the left
-	 *    If this value is negative, the robot's radar is set to turn to the right
+	 * @param degrees the amount of degrees to turn the robot's radar to the left.
+	 *    If {@code degrees} > 0 the robot's radar will turn left.
+	 *    If {@code degrees} < 0 the robot's radar will turn right.
+	 *    If {@code degrees} = 0 the robot's radar will not turn, but just execute.
 	 *
-	 * @see #setAdjustRadarForRobotTurn
-	 * @see #setAdjustRadarForGunTurn
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
+	 * @see #turnRadarRight(double)
 	 */
 	public void turnRadarLeft(double degrees) {
 		if (peer != null) {
@@ -1483,11 +1378,14 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *   turnRadarRight(-90);
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's radar to the right
-	 *    If this value is negative, the robot's radar is set to turn to the left
+	 * @param degrees the amount of degrees to turn the robot's radar to the right.
+	 *    If {@code degrees} > 0 the robot's radar will turn right.
+	 *    If {@code degrees} < 0 the robot's radar will turn left.
+	 *    If {@code degrees} = 0 the robot's radar will not turn, but just execute.
 	 *
-	 * @see #setAdjustRadarForRobotTurn
-	 * @see #setAdjustRadarForGunTurn
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
+	 * @see #turnRadarLeft(double)
 	 */
 	public void turnRadarRight(double degrees) {
 		if (peer != null) {
@@ -1500,7 +1398,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	/**
 	 * Returns the robot's current energy.
 	 *
-	 * @return the robot's current energy
+	 * @return the robot's current energy.
 	 */
 	public double getEnergy() {
 		if (peer != null) {
@@ -1511,275 +1409,67 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * Sets the radar to turn independent from the robot's turn.
-	 * <p>
-	 * Ok, so this needs some explanation: The radar is mounted on the gun, and
-	 * the gun is mounted on the robot's body. So, normally, if the robot turns
-	 * 90 degrees to the right, the gun turns, as does the radar. Hence, if the
-	 * robot turns 90 degrees to the right, then the gun and radar will turn with
-	 * it as the radar is mounted on top of the gun. To compensate for this, you
-	 * can call setAdjustRadarForRobotTurn(true). When this is set, the radar will
-	 * turn independent from the robot's turn, i.e. the radar will compensate for
-	 * the robot's turn.
-	 * <p>
-	 * Example, assuming the robot, gun, and radar all start out facing up (0
-	 * degrees):
-	 * <pre>
-	 *   // Set radar to turn with the robots's turn
-	 *   setAdjustRadarForRobotTurn(false); // This is the default
-	 *   turnRight(90);
-	 *   // At this point, the body, gun, and radar are all facing right (90 degrees);
-	 *
-	 *   -- or --
-	 *
-	 *   // Set radar to turn independent from the robot's turn
-	 *   setAdjustRadarForRobotTurn(true);
-	 *   turnRight(90);
-	 *   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
-	 * </pre>
-	 *
-	 * @param independent {@code true} if the radar must turn independent from
-	 *    the robots's turn; {@code false} if the radar must turn with the robot's
-	 *    turn.
-	 *
-	 * @see #setAdjustGunForRobotTurn
-	 * @see #setAdjustRadarForGunTurn
-	 */
-	public void setAdjustRadarForRobotTurn(boolean independent) {
-		if (peer != null) {
-			((IStandardRobotPeer) peer).setAdjustRadarForBodyTurn(independent);
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * This method is called every time the robot is painted. You should
-	 * override this method if you want to draw items for your robot on the
-	 * battle field, e.g. targets, virtual bullets etc.
-	 * <p>
-	 * This method is very useful for debugging your robot.
-	 * <p>
-	 * Note that the robot will only be painted if the "Paint" is enabled on the
-	 * robot's console window; otherwise the robot will never get painted (the
-	 * reason being that all robots might have graphical items that must be
-	 * painted, and then you might not be able to tell what graphical items that
-	 * have been painted for your robot).
-	 * <p>
-	 * Also note that the coordinate system for the graphical context where you
-	 * paint items fits for the Robocode coordinate system where (0, 0) is at
-	 * the buttom left corner of the battlefield, where X is towards right and Y
-	 * is upwards.
-	 *
-	 * @param g the graphics context to use for painting graphical items for the
-	 *    robot
-	 *
-	 * @since 1.1
+	 * {@inheritDoc}
 	 */
 	public void onPaint(Graphics2D g) {}
 
 	/**
-	 * This method is called when a key has been pressed.
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use key events.
-	 * 
-	 * @see java.awt.event.KeyListener#keyPressed(KeyEvent)
-	 * @see #onKeyReleased(KeyEvent)
-	 * @see #onKeyTyped(KeyEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onKeyPressed(KeyEvent e) {}
 
 	/**
-	 * This method is called when a key has been released.
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use key events.
-	 * 
-	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent)
-	 * @see #onKeyPressed(KeyEvent)
-	 * @see #onKeyTyped(KeyEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onKeyReleased(KeyEvent e) {}
 
 	/**
-	 * This method is called when a key has been typed (pressed and released).
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use key events.
-	 * 
-	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent)
-	 * @see #onKeyPressed(KeyEvent)
-	 * @see #onKeyReleased(KeyEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onKeyTyped(KeyEvent e) {}
 
 	/**
-	 * This method is called when a mouse button has been clicked (pressed and released).
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use mouse events.
-	 * 
-	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
-	 * @see #onMouseMoved(MouseEvent)
-	 * @see #onMousePressed(MouseEvent)
-	 * @see #onMouseReleased(MouseEvent)
-	 * @see #onMouseEntered(MouseEvent)
-	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(MouseWheelEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onMouseClicked(MouseEvent e) {}
 
 	/**
-	 * This method is called when the mouse has entered the battle view.
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use mouse events.
-	 * 
-	 * @see java.awt.event.MouseListener#mouseEntered(MouseEvent)
-	 * @see #onMouseMoved(MouseEvent)
-	 * @see #onMousePressed(MouseEvent)
-	 * @see #onMouseReleased(MouseEvent)
-	 * @see #onMouseClicked(MouseEvent)
-	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(MouseWheelEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onMouseEntered(MouseEvent e) {}
 
 	/**
-	 * This method is called when the mouse has exited the battle view.
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use mouse events.
-	 * 
-	 * @see java.awt.event.MouseListener#mouseExited(MouseEvent)
-	 * @see #onMouseMoved(MouseEvent)
-	 * @see #onMousePressed(MouseEvent)
-	 * @see #onMouseReleased(MouseEvent)
-	 * @see #onMouseClicked(MouseEvent)
-	 * @see #onMouseEntered(MouseEvent)
-	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(MouseWheelEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onMouseExited(MouseEvent e) {}
 
 	/**
-	 * This method is called when a mouse button has been pressed. 
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use mouse events.
-	 * 
-	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent)
-	 * @see #onMouseMoved(MouseEvent)
-	 * @see #onMouseReleased(MouseEvent)
-	 * @see #onMouseClicked(MouseEvent)
-	 * @see #onMouseEntered(MouseEvent)
-	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(MouseWheelEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onMousePressed(MouseEvent e) {}
 
 	/**
-	 * This method is called when a mouse button has been released. 
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use mouse events.
-	 * 
-	 * @see java.awt.event.MouseListener#mouseReleased(MouseEvent)
-	 * @see #onMouseMoved(MouseEvent)
-	 * @see #onMousePressed(MouseEvent)
-	 * @see #onMouseClicked(MouseEvent)
-	 * @see #onMouseEntered(MouseEvent)
-	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(MouseWheelEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onMouseReleased(MouseEvent e) {}
 
 	/**
-	 * This method is called when the mouse has been moved. 
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use mouse events.
-	 * 
-	 * @see java.awt.event.MouseMotionListener#mouseMoved(MouseEvent)
-	 * @see #onMousePressed(MouseEvent)
-	 * @see #onMouseReleased(MouseEvent)
-	 * @see #onMouseClicked(MouseEvent)
-	 * @see #onMouseEntered(MouseEvent)
-	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(MouseWheelEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onMouseMoved(MouseEvent e) {}
 
 	/**
-	 * This method is called when a mouse button has been pressed and then dragged. 
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use mouse events.
-	 * 
-	 * @see java.awt.event.MouseMotionListener#mouseDragged(MouseEvent)
-	 * @see #onMouseMoved(MouseEvent)
-	 * @see #onMousePressed(MouseEvent)
-	 * @see #onMouseReleased(MouseEvent)
-	 * @see #onMouseClicked(MouseEvent)
-	 * @see #onMouseEntered(MouseEvent)
-	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseWheelMoved(MouseWheelEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onMouseDragged(MouseEvent e) {}
 
 	/**
-	 * This method is called when the mouse wheel has been rotated. 
-	 * <p>
-	 * See the sample.Interactive robot for an example of how to use mouse events.
-	 * 
-	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(MouseWheelEvent)
-	 * @see #onMouseMoved(MouseEvent)
-	 * @see #onMousePressed(MouseEvent)
-	 * @see #onMouseReleased(MouseEvent)
-	 * @see #onMouseClicked(MouseEvent)
-	 * @see #onMouseEntered(MouseEvent)
-	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseDragged(MouseEvent)
-	 * 
-	 * @since 1.3.4
+	 * {@inheritDoc}
 	 */
 	public void onMouseWheelMoved(MouseWheelEvent e) {} 
 
 	/**
-	 * This method is called every turn to provide the current robot status as
-	 * a complete snapshot of the robot's state at that specific time.
-	 * <p>
-	 * The main benefit of this method is that you'll automatically receive all
-	 * the current data values of the robot like e.g. the x and y coordinate,
-	 * heading, gun heat etc., which are grouped into the exact same time/turn.
-	 * <p>
-	 * This is the only way to map the robots data values to a specific time.
-	 * For example, it is not possible to determine the exact time of the
-	 * robot's heading by calling first calling getTime() and then getHeading()
-	 * afterwards, as the time MIGHT change after between the getTime() and
-	 * getHeading() call.  
-	 *
-	 * @param e the event containing the robot status and the time it was
-	 *    provided.
-	 *    
-	 * @since 1.5
+	 * {@inheritDoc}
 	 */
 	public void onStatus(StatusEvent e) {}
-
 }

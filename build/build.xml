@@ -77,7 +77,6 @@
   <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
   <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
   <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
-  <defaultexcludes add="**/_*.java"/>    <!-- Java files to hide in Javadoc -->
 
   <!-- ====================================== -->
   <!-- Target: init                           -->
@@ -479,6 +478,8 @@
         <include name="robocode/*.java"/>
       	<include name="robocode/util/Utils.java"/>
       	<include name="robocode/control/*.java"/>
+        <include name="robocode/robotinterfaces/*.java"/>
+        <include name="robocode/robotinterfaces/peer/*.java"/>
       </fileset>
       <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
     </javadoc>

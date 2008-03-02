@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,7 @@ import robocode.ui.IRepositoryPlugin;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotRepositoryManager {
 	private FileSpecificationDatabase robotDatabase;
@@ -461,9 +462,9 @@ public class RobotRepositoryManager {
 							robotFileSpecification.setInteractiveRobot(true);
 						}
 
-						if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
+						/*if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
 							robotFileSpecification.setClassicRobot(true);
-						}
+						}*/
 
 						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setJuniorRobot(true);

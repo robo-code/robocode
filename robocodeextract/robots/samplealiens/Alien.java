@@ -11,22 +11,22 @@
  *******************************************************************************/
 package samplealiens;
 
+
+import java.awt.Graphics2D;
+import java.io.PrintStream;
+
 import robocode.*;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.*;
 
-import java.io.PrintStream;
 
 /**
  * @author Pavel Savara (original)
  */
-public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
+public class Alien implements IBasicEvents, IBasicRobot, Runnable {
 
 	PrintStream out;
 	IStandardRobotPeer peer;
-	public IInteractiveEvents getSystemEventListener() {
-		return null;
-	}
 
 	public Runnable getRobotRunnable() {
 		return this;
@@ -37,7 +37,7 @@ public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
 	}
 
 	public void setPeer(IBasicRobotPeer iRobotPeer) {
-		peer=(IStandardRobotPeer)iRobotPeer;
+		peer = (IStandardRobotPeer) iRobotPeer;
 	}
 
 	public IBasicRobotPeer getPeer() {
@@ -45,47 +45,43 @@ public class Alien implements IInteractiveRobot, IBasicEvents , Runnable {
 	}
 
 	public void setOut(PrintStream printStream) {
-		out=printStream;
+		out = printStream;
 	}
 
 	public void run() {
 		while (true) {
 			peer.move(100); // Move ahead 100
-			peer.turnGun(Math.PI*2); // Spin gun around
+			peer.turnGun(Math.PI * 2); // Spin gun around
 			peer.move(-100); // Move back 100
-			peer.turnGun(Math.PI*2); // Spin gun around
+			peer.turnGun(Math.PI * 2); // Spin gun around
 		}
 	}
 
-	public void onScannedRobot(ScannedRobotEvent event) {
+	public void onScannedRobot(ScannedRobotEvent e) {
 		peer.setFire(1);
 	}
 
-	public void onHitByBullet(HitByBulletEvent event) {
-		peer.turnChassis(Math.PI/2 + event.getBearingRadians());
+	public void onHitByBullet(HitByBulletEvent e) {
+		peer.turnBody(Math.PI / 2 + e.getBearingRadians());
 	}
 
-	public void onBulletHit(BulletHitEvent event) {
-	}
+	public void onStatus(StatusEvent e) {}
 
-	public void onBulletHitBullet(BulletHitBulletEvent event) {
-	}
+	public void onBulletHit(BulletHitEvent e) {}
 
-	public void onBulletMissed(BulletMissedEvent event) {
-	}
+	public void onBulletHitBullet(BulletHitBulletEvent e) {}
 
-	public void onDeath(DeathEvent event) {
-	}
+	public void onBulletMissed(BulletMissedEvent e) {}
 
-	public void onHitRobot(HitRobotEvent event) {
-	}
+	public void onDeath(DeathEvent e) {}
 
-	public void onHitWall(HitWallEvent event) {
-	}
+	public void onHitRobot(HitRobotEvent e) {}
 
-	public void onRobotDeath(RobotDeathEvent event) {
-	}
+	public void onHitWall(HitWallEvent e) {}
 
-	public void onWin(WinEvent event) {
-	}
+	public void onRobotDeath(RobotDeathEvent e) {}
+
+	public void onWin(WinEvent e) {}
+
+	public void onPaint(Graphics2D g) {}
 }

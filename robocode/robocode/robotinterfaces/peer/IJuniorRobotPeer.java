@@ -8,13 +8,24 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
 
 /**
+ * The junior robot peer for junior robot types like {@link robocode.JuniorRobot}.
+ * <p>
+ * A robot peer is the object that deals with game mechanics and rules, and
+ * makes sure your robot abides by them.
+ *
  * @author Pavel Savara (original)
- */
+ * @author Flemming N. Larsen (javadoc)
+ *
+ * @since 1.6
+*/
 public interface IJuniorRobotPeer extends IBasicRobotPeer {
-	void addJuniorEvents();
+
+	void turnAndMove(double distance, double radians);
 }

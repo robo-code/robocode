@@ -158,18 +158,18 @@ public class RobotClassManager {
 	}
 
 	/**
-	 * Gets the robotFileSpecification.
+	 * Gets the robotSpecification.
 	 *
-	 * @return Returns a RobotFileSpecification
+	 * @return Returns a RobotSpecification
 	 */
 	public RobotSpecification getControlRobotSpecification() {
 		return controlRobotSpecification;
 	}
 
 	/**
-	 * Sets the robotFileSpecification.
+	 * Sets the robotSpecification.
 	 *
-	 * @param controlRobotSpecification The robotFileSpecification to set
+	 * @param robotSpecification The robotSpecification to set
 	 */
 	public void setControlRobotSpecification(RobotSpecification controlRobotSpecification) {
 		this.controlRobotSpecification = controlRobotSpecification;

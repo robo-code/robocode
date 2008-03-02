@@ -16,11 +16,12 @@ import robocode.robotinterfaces.peer.*;
 import robocode.*;
 
 import java.io.PrintStream;
+import java.awt.*;
 
 /**
  * @author Pavel Savara (original)
  */
-public class JuniorAlien implements IJuniorRobot, IJuniorEvents, IBasicEvents, Runnable {
+public class JuniorAlien implements IJuniorRobot, IBasicEvents, Runnable {
 	PrintStream out;
 	IJuniorRobotPeer peer;
 
@@ -47,7 +48,10 @@ public class JuniorAlien implements IJuniorRobot, IJuniorEvents, IBasicEvents, R
 	public void onJuniorEvent(CustomEvent event) {
 	}
 
-	public void onBulletHit(BulletHitEvent event) {
+    public void onStatus(StatusEvent e) {
+    }
+
+    public void onBulletHit(BulletHitEvent event) {
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent event) {
@@ -71,8 +75,11 @@ public class JuniorAlien implements IJuniorRobot, IJuniorEvents, IBasicEvents, R
 	public void onWin(WinEvent event) {
 	}
 
-	public void onHitByBullet(HitByBulletEvent event) {
-		peer.turnChassis(Math.PI/2 + event.getBearingRadians());
+    public void onPaint(Graphics2D g) {
+    }
+
+    public void onHitByBullet(HitByBulletEvent event) {
+		peer.turnBody(Math.PI/2 + event.getBearingRadians());
 	}
 
 	public void onScannedRobot(ScannedRobotEvent event) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *     - Code cleanup
  *     - Bugfix: updateMovement() checked for distanceRemaining > 1 instead of
  *       distanceRemaining > 0 if slowingDown and moveDirection == -1
- *     - Bugfix: Substituted wait(10000) with wait() in tick() method, so that
- *       robots do not hang when game is paused
+ *     - Bugfix: Substituted wait(10000) with wait() in execute() method, so
+ *       that robots do not hang when game is paused
  *     - Bugfix: Teleportation when turning the robot to 0 degrees while forcing
  *       the robot towards the bottom
  *     - Added setPaintEnabled() and isPaintEnabled()
@@ -37,7 +37,7 @@
  *     - Added features to support the new JuniorRobot class
  *     - Added cleanupStaticFields() for clearing static fields on robots
  *     - Added getMaxTurnRate()
- *     - Added turnAndMoveChassis() in order to support the turnAheadLeft(),
+ *     - Added turnAndMove() in order to support the turnAheadLeft(),
  *       turnAheadRight(), turnBackLeft(), and turnBackRight() for the
  *       JuniorRobot, which moves the robot in a perfect curve that follows a
  *       circle
@@ -95,14 +95,18 @@ import robocode.util.BoundingRectangle;
 
 
 /**
+ * RobotPeer is an object that deals with game mechanics and rules, and makes
+ * sure that robots abides the rules.
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  * @author Titus Chen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
+public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
 
 	// Robot States: all states last one turn, except ALIVE and DEAD
 	public static final int
@@ -125,7 +129,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	IBasicRobot robot;
 
-	public RobotOutputStream out;
+	private RobotOutputStream out;
 
 	private double energy;
 	private double velocity;
@@ -155,12 +159,11 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	private Arc2D scanArc;
 
-	private boolean isDroid;
 	private boolean isJuniorRobot;
-	private boolean isClassicRobot;
 	private boolean isInteractiveRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
+	private boolean isDroid;
 	private boolean isIORobot;
 	private boolean isRunning;
 	private boolean isStopped;
@@ -267,7 +270,8 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is inherited from JunirRobot base class
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link IJuniorRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;
@@ -278,18 +282,8 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is inherited from Robot base class but not from AdvancedRobot
-	 */
-	public boolean isClassicRobot() {
-		return isClassicRobot;
-	}
-
-	public void setClassicRobot(boolean value) {
-		this.isClassicRobot = value;
-	}
-
-	/**
-	 * @return When true, this robot is implementing IRobot interface
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link IInteractiveRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isInteractiveRobot() {
 		return isInteractiveRobot;
@@ -300,7 +294,8 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is implementing IAdvancedRobot interface
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link IAdvancedRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isAdvancedRobot() {
 		return isAdvancedRobot;
@@ -311,7 +306,8 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	}
 
 	/**
-	 * @return When true, this robot is implementing ITeamRobot interface
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link ITeamRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isTeamRobot() {
 		return isTeamRobot;
@@ -321,6 +317,9 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		this.isTeamRobot = value;
 	}
 
+	/**
+	 * Creates and returns a new robot peer proxy  
+	 */
 	public IBasicRobotPeer createProxy() {
 		if (isTeamRobot) {
 			return new TeamRobotPeerProxy(this);
@@ -334,13 +333,13 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		if (isJuniorRobot) {
 			return new JuniorRobotPeerProxy(this);
 		}
-		throw new AccessControlException("Unknow robot type");
+		throw new AccessControlException("Unknown robot type");
 	}
 
 	public final void move(double distance) {
 		setMove(distance);
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (getDistanceRemaining() != 0);
 	}
 
@@ -558,12 +557,14 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		setRunning(true);
 
 		try {
-			// Process all events for the first turn
-			eventManager.processEvents();
-
 			if (robot != null) {
 				robot.setOut(getOut());
 				robot.setPeer(createProxy());
+
+				// Process all events for the first turn.
+				// This is done as the first robot status event must occur before the robot
+				// has started running.
+				eventManager.processEvents();
 
 				Runnable runnable = robot.getRobotRunnable();
 
@@ -572,7 +573,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 				}
 			}
 			for (;;) {
-				tick();
+				execute();
 			}
 		} catch (DeathException e) {
 			out.println("SYSTEM: " + getName() + " has died");
@@ -625,7 +626,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		}
 
 		setScan(true);
-		tick();
+		execute();
 		if (reset) {
 			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), resetValue);
 		}
@@ -757,7 +758,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		y = newY;
 	}
 
-	public final void tick() {
+	public final void execute() {
 		if (newBullet != null) {
 			battle.addBullet(newBullet);
 			newBullet = null;
@@ -832,20 +833,20 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	public final void turnGun(double radians) {
 		setTurnGun(radians);
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (getGunTurnRemaining() != 0);
 	}
 
-	public synchronized final void setTurnChassis(double radians) {
+	public synchronized final void setTurnBody(double radians) {
 		if (energy > 0) {
 			turnRemaining = radians;
 		}
 	}
 
-	public final void turnChassis(double radians) {
-		setTurnChassis(radians);
+	public final void turnBody(double radians) {
+		setTurnBody(radians);
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (getTurnRemaining() != 0);
 	}
 
@@ -856,7 +857,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 	public final void turnRadar(double radians) {
 		setTurnRadar(radians);
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (getRadarTurnRemaining() != 0);
 	}
 
@@ -1266,7 +1267,7 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	public final void resume() {
 		setResume();
-		tick();
+		execute();
 	}
 
 	public synchronized void setMaxTurnRate(double newTurnRate) {
@@ -1334,13 +1335,13 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	public final void stop(boolean overwrite) {
 		setStop(overwrite);
-		tick();
+		execute();
 	}
 
 	public synchronized void waitFor(Condition condition) {
 		waitCondition = condition;
 		do {
-			tick(); // Always tick at least once
+			execute(); // Always tick at least once
 		} while (!condition.test());
 
 		waitCondition = null;
@@ -1876,9 +1877,9 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 		}
 	}
 
-	public void turnAndMoveChassis(double distance, double radians) {
+	public void turnAndMove(double distance, double radians) {
 		if (distance == 0) {
-			turnChassis(radians);
+			turnBody(radians);
 			return;
 		}
 
@@ -1938,21 +1939,21 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 			turns += (int) ((absDistance - accDist - decDist) / maxVelocity + 1);
 		}
 
-		// -- Move and turn chassis in a curve --
+		// -- Move and turn in a curve --
 
 		// Set the calculated max. velocity
 		setMaxVelocity(maxVelocity);
 
 		// Set the robot to move the specified distance
 		setMove(distance);
-		// Set the robot to turn its chassis to the specified amount of radians
-		setTurnChassis(radians);
+		// Set the robot to turn its body to the specified amount of radians
+		setTurnBody(radians);
 
 		// Loop thru the number of turns it will take to move the distance and adjust
 		// the max. turn rate so it fit the current velocity of the robot 
 		for (int t = turns; t >= 0; t--) {
 			setMaxTurnRate(getVelocity() * radians / absDistance);
-			tick(); // Perform next turn
+			execute(); // Perform next turn
 		}
 
 		// Restore the saved max. velocity and max. turn rate
@@ -1962,10 +1963,5 @@ public class RobotPeer implements IAdvancedRobotPeer, IJuniorRobotPeer, Runnable
 
 	public List<MessageEvent> getMessageEvents() {
 		return eventManager.getMessageEvents();
-	}
-
-	public void addJuniorEvents() {
-		addCustomEvent(new GunReadyCondition(this));
-		addCustomEvent(new GunFireCondition(this));
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,11 +8,14 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Re-work of robot interfaces, added setOut()
  *******************************************************************************/
 package robocode;
 
 
 import robocode.exception.RobotException;
+import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 
@@ -31,10 +34,11 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  * @see TeamRobot
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * 
  * @since 1.4
  */
-public abstract class _RobotBase implements Runnable {
+public abstract class _RobotBase implements IBasicRobot, Runnable {
 
 	IBasicRobotPeer peer;
 
@@ -55,17 +59,14 @@ public abstract class _RobotBase implements Runnable {
 	public java.io.PrintStream out;
 
 	/**
-	 * This method is called by the game.
-	 * Do not call this method!
+	 * {@inheritDoc}
 	 */
 	public final void setOut(java.io.PrintStream out) {
 		this.out = out;
 	}
 
 	/**
-	 * This method is called by the game. RobotPeer is the object that deals with
-	 * game mechanics and rules, and makes sure your robot abides by them.
-	 * Do not call this method! Your robot will simply stop interacting with the game.
+	 * {@inheritDoc}
 	 */
 	public final void setPeer(IBasicRobotPeer peer) {
 		this.peer = peer;

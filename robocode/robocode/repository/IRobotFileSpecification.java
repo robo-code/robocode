@@ -34,13 +34,11 @@ public interface IRobotFileSpecification extends IFileSpecification {
 	String getThisFileName();
 
 	boolean isAdvancedRobot();
-	boolean isClassicRobot();
 	boolean isInteractiveRobot();
 	boolean isJuniorRobot();
 	boolean isTeamRobot();
 	boolean isDroid();
 	void setAdvancedRobot(boolean value);
-	void setClassicRobot(boolean value);
 	void setInteractiveRobot(boolean value);
 	void setJuniorRobot(boolean value);
 	void setTeamRobot(boolean value);
