@@ -32,8 +32,8 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import robocode.manager.RobocodeManager;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
+import robocode.peer.IContestantPeer;
+import robocode.peer.IContestantStatistics;
 import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
 
@@ -62,7 +62,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		List<ContestantPeer> contestants = getContestants();
+		List<IContestantPeer> contestants = getContestants();
 
 		return (contestants != null) ? contestants.size() : 0;
 	}
@@ -112,12 +112,12 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int row, int col) {
-		List<ContestantPeer> contestants = new ArrayList<ContestantPeer>(getContestants());
+		List<IContestantPeer> contestants = new ArrayList<IContestantPeer>(getContestants());
 
 		Collections.sort(contestants);
 
-		ContestantPeer r = contestants.get(row);
-		ContestantStatistics statistics = r.getStatistics();
+		IContestantPeer r = contestants.get(row);
+		IContestantStatistics statistics = r.getStatistics();
 
 		switch (col) {
 		case 0:
@@ -179,7 +179,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		}
 	}
 
-	private List<ContestantPeer> getContestants() {
+	private List<IContestantPeer> getContestants() {
 		if (manager == null) {
 			return null;
 		}

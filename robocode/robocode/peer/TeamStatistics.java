@@ -24,7 +24,7 @@ package robocode.peer;
  * @author Luis Crespo (contributor)
  * @author Flemming N. Larsen (contributor)
  */
-public class TeamStatistics implements ContestantStatistics {
+public class TeamStatistics implements IContestantStatistics {
 
 	private TeamPeer teamPeer;
 

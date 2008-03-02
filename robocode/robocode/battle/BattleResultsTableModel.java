@@ -36,8 +36,8 @@ import java.util.Date;
 import java.util.List;
 
 import robocode.io.Logger;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
+import robocode.peer.IContestantPeer;
+import robocode.peer.IContestantStatistics;
 import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
 
@@ -129,12 +129,12 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public Object getValueAt(int row, int col) {
-		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(battle.getContestants());
+		List<IContestantPeer> orderedContestants = new ArrayList<IContestantPeer>(battle.getContestants());
 
 		Collections.sort(orderedContestants);
 
-		ContestantPeer r = orderedContestants.get(row);
-		ContestantStatistics statistics = r.getStatistics();
+		IContestantPeer r = orderedContestants.get(row);
+		IContestantStatistics statistics = r.getStatistics();
 
 		switch (col) {
 		case 0: {

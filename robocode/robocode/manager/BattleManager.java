@@ -70,8 +70,8 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
+import robocode.peer.IContestantPeer;
+import robocode.peer.IContestantStatistics;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
@@ -545,17 +545,17 @@ public class BattleManager {
 			return;
 		}
 
-		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(battle.getContestants());
+		List<IContestantPeer> orderedPeers = new ArrayList<IContestantPeer>(battle.getContestants());
 
 		Collections.sort(orderedPeers);
 
 		RobotResults results[] = new RobotResults[orderedPeers.size()];
 
 		for (int i = 0; i < results.length; i++) {
-			ContestantPeer peer = orderedPeers.get(i);
+			IContestantPeer peer = orderedPeers.get(i);
 			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
 
-			ContestantStatistics stats = peer.getStatistics();
+			IContestantStatistics stats = peer.getStatistics();
 
 			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
 					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),

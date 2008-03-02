@@ -193,7 +193,7 @@ public class Battle implements Runnable {
 
 	// Objects in the battle
 	private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
-	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
+	private List<IContestantPeer> contestants = new CopyOnWriteArrayList<IContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
 
 	// Results related items
@@ -459,13 +459,13 @@ public class Battle implements Runnable {
 		robots.add(robotPeer);
 	}
 
-	private void addContestant(ContestantPeer c) {
+	private void addContestant(IContestantPeer c) {
 		if (!contestants.contains(c)) {
 			contestants.add(c);
 		}
 	}
 
-	public List<ContestantPeer> getContestants() {
+	public List<IContestantPeer> getContestants() {
 		return contestants;
 	}
 
@@ -1233,20 +1233,20 @@ public class Battle implements Runnable {
 			}
 		}
 		// Compute scores for dead robots
-		for (RobotPeer r : deathEvents) {
-			if (r.getTeamPeer() == null) {
-				r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
+		for (RobotPeer de : deathEvents) {
+			if (de.getTeamPeer() == null) {
+				de.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(de));
 			} else {
 				boolean teammatesalive = false;
 
 				for (RobotPeer tm : robots) {
-					if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
+					if (tm.getTeamPeer() == de.getTeamPeer() && (!tm.isDead())) {
 						teammatesalive = true;
 						break;
 					}
 				}
 				if (!teammatesalive) {
-					r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
+					de.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(de));
 				}
 			}
 		}
@@ -1325,7 +1325,7 @@ public class Battle implements Runnable {
 	public int getActiveContestantCount(RobotPeer peer) {
 		int count = 0;
 
-		for (ContestantPeer c : contestants) {
+		for (IContestantPeer c : contestants) {
 			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
 				count++;
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {

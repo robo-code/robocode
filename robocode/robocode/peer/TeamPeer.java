@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
-public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
+public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 
 	private String name;
 	private RobotPeer teamLeader;
@@ -39,7 +39,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		this.teamStatistics = new TeamStatistics(this);
 	}
 
-	public int compareTo(ContestantPeer cp) {
+	public int compareTo(IContestantPeer cp) {
 		double score1 = teamStatistics.getTotalScore();
 		double score2 = cp.getStatistics().getTotalScore();
 
@@ -50,7 +50,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
 	}
 
-	public ContestantStatistics getStatistics() {
+	public IContestantStatistics getStatistics() {
 		return teamStatistics;
 	}
 

@@ -106,7 +106,7 @@ import robocode.util.BoundingRectangle;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
+public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IContestantPeer {
 
 	// Robot States: all states last one turn, except ALIVE and DEAD
 	public static final int
@@ -1171,7 +1171,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		this.halt = halt;
 	}
 
-	public int compareTo(ContestantPeer cp) {
+	public int compareTo(IContestantPeer cp) {
 		double score1 = statistics.getTotalScore();
 		double score2 = cp.getStatistics().getTotalScore();
 
@@ -1538,7 +1538,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return statistics;
 	}
 
-	public ContestantStatistics getStatistics() {
+	public IContestantStatistics getStatistics() {
 		return statistics;
 	}
 

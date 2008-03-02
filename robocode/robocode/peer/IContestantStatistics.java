@@ -22,7 +22,7 @@ package robocode.peer;
  * @author Luis Crespo (contributor)
  * @author Flemming N. Larsen (contributor)
  */
-public interface ContestantStatistics {
+public interface IContestantStatistics {
 	public double getTotalScore();
 	public double getTotalSurvivalScore();
 	public double getTotalLastSurvivorBonus();

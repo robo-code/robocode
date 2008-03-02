@@ -52,7 +52,7 @@ import robocode.peer.TeamPeer;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobotStatistics implements robocode.peer.ContestantStatistics {
+public class RobotStatistics implements robocode.peer.IContestantStatistics {
 
 	private RobotPeer robotPeer;
 	private TeamPeer teamPeer;
