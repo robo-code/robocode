@@ -804,7 +804,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onKeyPressed(e.getInnerEvent());
+                    listener.onKeyReleased(e.getInnerEvent());
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyReleasedEvent(MouseEvent):");

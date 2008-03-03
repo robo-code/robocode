@@ -68,6 +68,7 @@ import static robocode.util.Utils.normalNearAbsoluteAngle;
 import static robocode.util.Utils.normalRelativeAngle;
 
 import java.awt.Color;
+import java.awt.event.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
@@ -79,6 +80,8 @@ import java.util.List;
 import java.security.AccessControlException;
 
 import robocode.*;
+import robocode.KeyEvent;
+import robocode.MouseEvent;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.*;
 import robocode.battle.Battle;
@@ -172,6 +175,8 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 
 	private boolean halt;
 	private boolean inCollision;
+    private boolean interactiveTested=false;
+    private boolean isInteractive;
 
 	private String name;
 	private String shortName;
@@ -476,7 +481,64 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return state == STATE_DEAD;
 	}
 
-	public synchronized boolean isAlive() {
+    /**
+     * Robot class is forcing IInteractiveEvents into robot inheritance tree.
+     * This method is optimizing it away in case that inherited "client" robot
+     * is not overriding any of interactive methods/event handlers
+     * @return true if the robot is IInteractiveRobot not inherited from Robot or
+     * is Robot descendant with any interactive handlers overriden 
+     */
+    public boolean isInteractiveListener() {
+        if (!interactiveTested) {
+            interactiveTested=true;
+
+            if (!isInteractiveRobot()){
+                isInteractive = false;
+                return isInteractive;
+            }
+            IInteractiveRobot r=(IInteractiveRobot)getRobot();
+            if (r==null){
+                isInteractive = false;
+                return isInteractive;
+            }
+            if (!Robot.class.isAssignableFrom(r.getClass())){
+                isInteractive = true;
+                return isInteractive;
+            }
+            isInteractive = testInteractiveHandler(r, "onKeyPressed", java.awt.event.KeyEvent.class)
+                    || testInteractiveHandler(r, "onKeyReleased", java.awt.event.KeyEvent.class)
+                    || testInteractiveHandler(r, "onKeyTyped", java.awt.event.KeyEvent.class)
+                    || testInteractiveHandler(r, "onMouseClicked", java.awt.event.MouseEvent.class)
+                    || testInteractiveHandler(r, "onMouseEntered", java.awt.event.MouseEvent.class)
+                    || testInteractiveHandler(r, "onMouseExited", java.awt.event.MouseEvent.class)
+                    || testInteractiveHandler(r, "onMousePressed", java.awt.event.MouseEvent.class)
+                    || testInteractiveHandler(r, "onMouseReleased", java.awt.event.MouseEvent.class)
+                    || testInteractiveHandler(r, "onMouseMoved", java.awt.event.MouseEvent.class)
+                    || testInteractiveHandler(r, "onMouseDragged", java.awt.event.MouseEvent.class)
+                    || testInteractiveHandler(r, "onMouseWheelMoved", MouseWheelEvent.class)
+                    || testInteractiveHandler(r, "onKeyTyped", java.awt.event.MouseEvent.class)
+                    ;
+        }
+        return isInteractive;
+    }
+
+    private boolean testInteractiveHandler(IInteractiveRobot r, String name, Class eventClass) {
+        Class c = r.getClass();
+        do
+        {
+            try {
+                if (c.getDeclaredMethod(name, eventClass)!=null){
+                    return true;
+                }
+
+            } catch (NoSuchMethodException e) {
+            }
+            c = c.getSuperclass();
+        }while(c!=Robot.class);
+        return false;
+    }
+
+    public synchronized boolean isAlive() {
 		return state != STATE_DEAD;
 	}
 

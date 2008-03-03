@@ -25,6 +25,7 @@ public interface IDisplayRobotPeer {
     boolean isDead();
     boolean isDroid();
     boolean isInteractiveRobot();
+    boolean isInteractiveListener();
     boolean isDuplicate();
     boolean isPaintEnabled();
     boolean isSGPaintEnabled();

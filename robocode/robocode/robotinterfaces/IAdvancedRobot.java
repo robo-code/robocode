@@ -31,7 +31,7 @@ package robocode.robotinterfaces;
  *
  * @since 1.6
  */
-public interface IAdvancedRobot extends IInteractiveRobot {
+public interface IAdvancedRobot extends IBasicRobot {
 
 	/**
 	 * This method is called by the game to notify this robot about advanced
