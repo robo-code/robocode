@@ -30,6 +30,8 @@ package robocode.peer;
 import robocode.battle.Battle;
 import robocode.battle.record.BulletRecord;
 
+import java.util.List;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -41,7 +43,7 @@ public class ExplosionPeer extends BulletPeer {
 
 	private static final int EXPLOSION_LENGTH = 71;
 
-	public ExplosionPeer(RobotPeer owner, Battle battle) {
+	public ExplosionPeer(IBattleRobotPeer owner, Battle battle) {
 		super(owner, battle);
 
 		x = owner.getX();
@@ -52,7 +54,7 @@ public class ExplosionPeer extends BulletPeer {
 		explosionImageIndex = 1;
 	}
 
-	public ExplosionPeer(RobotPeer owner, Battle battle, BulletRecord br) {
+	public ExplosionPeer(IBattleRobotPeer owner, Battle battle, BulletRecord br) {
 		super(owner, battle, br);
 
 		victim = owner;
@@ -62,7 +64,7 @@ public class ExplosionPeer extends BulletPeer {
 	}
 
 	@Override
-	public synchronized final void update() {
+	public synchronized final void update(List<IBattleRobotPeer> robots) {
 		x = owner.getX();
 		y = owner.getY();
 

@@ -33,6 +33,7 @@ import javax.swing.*;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.RobotPeer;
+import robocode.peer.IDisplayRobotPeer;
 
 
 /**
@@ -42,7 +43,7 @@ import robocode.peer.RobotPeer;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
-	private RobotPeer robotPeer;
+	private IDisplayRobotPeer robotPeer;
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
@@ -116,7 +117,7 @@ public class RobotDialog extends JFrame {
 	 *
 	 * @param robotPeer the robot peer of this dialog
 	 */
-	public void setRobotPeer(RobotPeer robotPeer) {
+	public void setRobotPeer(IDisplayRobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
 		getConsoleScrollPane().setText("");
 		if (robotPeer != null && robotPeer.getOut() != null) {

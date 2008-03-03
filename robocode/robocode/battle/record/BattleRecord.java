@@ -20,6 +20,7 @@ import java.util.List;
 
 import robocode.battlefield.BattleField;
 import robocode.peer.RobotPeer;
+import robocode.peer.IBattleRobotPeer;
 
 
 /**
@@ -48,14 +49,14 @@ public class BattleRecord {
 	 * @param battleField size of battle field
 	 * @param robots robots participating in the battle
 	 */
-	public BattleRecord(BattleField battleField, List<RobotPeer> robots) {
+	public BattleRecord(BattleField battleField, List<IBattleRobotPeer> robots) {
 		battleFieldWidth = battleField.getWidth();
 		battleFieldHeight = battleField.getHeight();
 
 		robotNames = new String[robots.size()];
 		int i = 0;
 
-		for (RobotPeer r : robots) {
+		for (IBattleRobotPeer r : robots) {
 			robotNames[i++] = r.getName();
 		}
 	}

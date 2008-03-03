@@ -22,9 +22,9 @@ import java.awt.*;
  * @author Pavel Savara (original)
  */
 public class BasicRobotPeerProxy implements IBasicRobotPeer {
-	IBasicRobotPeer peer;
+	IRobotRobotPeer peer;
 	
-	public BasicRobotPeerProxy(IBasicRobotPeer peer) {
+	public BasicRobotPeerProxy(IRobotRobotPeer peer) {
 		this.peer = peer;
 	}
 

@@ -13,6 +13,7 @@ package robocode;
 
 
 import robocode.peer.RobotPeer;
+import robocode.peer.IBattleRobotPeer;
 
 
 /**
@@ -43,7 +44,7 @@ public class RobotStatus {
 	 *
 	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
 	 */
-	public RobotStatus(RobotPeer robotPeer) {
+	public RobotStatus(IBattleRobotPeer robotPeer) {
 		synchronized (robotPeer) {
 			energy = robotPeer.getEnergy();
 			x = robotPeer.getX();

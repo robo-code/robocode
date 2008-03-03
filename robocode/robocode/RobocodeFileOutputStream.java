@@ -23,9 +23,11 @@ import robocode.exception.RobotException;
 import robocode.io.Logger;
 import robocode.manager.ThreadManager;
 import robocode.peer.RobotPeer;
+import robocode.peer.IRobotRobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.security.RobocodePermission;
 import robocode.security.RobocodeSecurityManager;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 
 /**
@@ -85,7 +87,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 		Thread c = Thread.currentThread();
 
 		this.name = name;
-		RobotPeer robotPeer = threadManager.getRobotPeer(c);
+		IRobotRobotPeer robotPeer = (IRobotRobotPeer)threadManager.getRobotPeer(c);
 
 		if (robotPeer == null) {
 			Logger.log("RobotPeer is null");

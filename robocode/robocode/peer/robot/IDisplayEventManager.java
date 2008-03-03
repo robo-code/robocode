@@ -12,16 +12,10 @@
 package robocode.peer.robot;
 
 import robocode.Event;
-import robocode.peer.TeamPeer;
-import robocode.robotinterfaces.IBasicRobot;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleEventManager {
+public interface IDisplayEventManager {
     boolean add(Event e);
-    void clearOld(long clearTime);
-    void cleanup();
-    void reset();
-    void setRobot(IBasicRobot r);
 }

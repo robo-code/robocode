@@ -42,6 +42,7 @@ import java.util.List;
 import robocode.control.RobotResults;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
+import robocode.peer.IBattleRobotPeer;
 
 
 /**
@@ -54,10 +55,10 @@ import robocode.peer.TeamPeer;
  */
 public class RobotStatistics implements robocode.peer.IContestantStatistics {
 
-	private RobotPeer robotPeer;
+	private IBattleRobotPeer robotPeer;
 	private TeamPeer teamPeer;
 
-	private List<RobotPeer> robots;
+	private List<IBattleRobotPeer> robots;
 
 	private boolean isActive;
 
@@ -82,13 +83,13 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 	private int totalSeconds;
 	private int totalThirds;
 
-	public RobotStatistics(RobotPeer robotPeer) {
+	public RobotStatistics(IBattleRobotPeer robotPeer) {
 		super();
 		this.robotPeer = robotPeer;
 		this.teamPeer = robotPeer.getTeamPeer();
 	}
 
-	public RobotStatistics(RobotPeer robotPeer, RobotResults results) {
+	public RobotStatistics(IBattleRobotPeer robotPeer, RobotResults results) {
 		this(robotPeer);
 
 		totalScore = results.getScore();
@@ -103,8 +104,8 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 		totalThirds = results.getThirds();
 	}
 
-	public void initialize() {
-		robots = robotPeer.getBattle().getRobots();
+	public void initialize(List<IBattleRobotPeer> robots) {
+		this.robots = robots;
 
 		resetScores();
 
@@ -307,8 +308,8 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 		isActive = false;
 	}
 
-	public RobotResults getResults(int rank) {
-		if (robotPeer.getBattle().isRunning()) {
+	public RobotResults getResults(int rank, boolean isRunning) {
+		if (isRunning) {
 			return new RobotResults(null, rank, totalScore + getCurrentScore(), totalSurvivalScore + survivalScore,
 					totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore, totalBulletKillBonus + bulletKillBonus,
 					totalRammingDamageScore + rammingDamageScore, totalRammingKillBonus + rammingKillBonus, totalFirsts,

@@ -9,19 +9,16 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.robot;
+package robocode.peer;
 
-import robocode.Event;
-import robocode.peer.TeamPeer;
-import robocode.robotinterfaces.IBasicRobot;
+import robocode.peer.robot.RobotFileSystemManager;
+import robocode.robotinterfaces.peer.ITeamRobotPeer;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleEventManager {
-    boolean add(Event e);
-    void clearOld(long clearTime);
-    void cleanup();
-    void reset();
-    void setRobot(IBasicRobot r);
+public interface IRobotRobotPeer extends ITeamRobotPeer, IJuniorRobotPeer {
+    boolean isAdvancedRobot();
+    RobotFileSystemManager getRobotFileSystemManager();
 }

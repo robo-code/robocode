@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import robocode.peer.RobotPeer;
+import robocode.peer.IBattleRobotPeer;
 
 
 /**
@@ -48,7 +49,7 @@ public class ThreadManager {
 		}
 	}
 
-	public synchronized RobotPeer getLoadingRobot() {
+	public synchronized IBattleRobotPeer getLoadingRobot() {
 		return loadingRobot;
 	}
 

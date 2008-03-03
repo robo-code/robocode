@@ -14,6 +14,7 @@ package robocode.peer;
 import robocode.peer.robot.IBattleEventManager;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.IRobotEventManager;
+import robocode.peer.robot.IDisplayEventManager;
 
 /**
  * @author Pavel Savara (original)
@@ -39,18 +40,96 @@ public class RobotPeerData {
             MAX_GET_CALL_COUNT = 10000;
 
 
+    private boolean isJuniorRobot;
+    private boolean isInteractiveRobot;
+    private boolean isAdvancedRobot;
+    private boolean isTeamRobot;
+    private boolean isDroid;
+
     private EventManager eventManager;
 
-    protected void setEventManager(EventManager eventManager) {
-        this.eventManager=eventManager;
+    //////////////////////////////////////
+    // Display access 
+    //////////////////////////////////////
+
+    public IDisplayEventManager getDisplayEventManager() {
+        return eventManager;
     }
 
-    public IRobotEventManager getRobotEventManager() {
-        return eventManager;
+    //////////////////////////////////////
+    // Battle access 
+    //////////////////////////////////////
+    protected void setEventManager(EventManager eventManager) {
+        this.eventManager=eventManager;
     }
 
     public IBattleEventManager getBattleEventManager() {
         return eventManager;
     }
+
+    public boolean isDroid() {
+        return isDroid;
+    }
+
+    public void setDroid(boolean droid) {
+        this.isDroid = droid;
+    }
+
+    /**
+     * Returns <code>true</code> if the robot is implementing the
+     * {@link robocode.robotinterfaces.IJuniorRobot}; <code>false</code> otherwise.
+     */
+    public boolean isJuniorRobot() {
+        return isJuniorRobot;
+    }
+
+    public void setJuniorRobot(boolean value) {
+        this.isJuniorRobot = value;
+    }
+
+    /**
+     * Returns <code>true</code> if the robot is implementing the
+     * {@link robocode.robotinterfaces.IInteractiveRobot}; <code>false</code> otherwise.
+     */
+    public boolean isInteractiveRobot() {
+        return isInteractiveRobot;
+    }
+
+    public void setInteractiveRobot(boolean value) {
+        this.isInteractiveRobot = value;
+    }
+
+    /**
+     * Returns <code>true</code> if the robot is implementing the
+     * {@link robocode.robotinterfaces.IAdvancedRobot}; <code>false</code> otherwise.
+     */
+    public boolean isAdvancedRobot() {
+        return isAdvancedRobot;
+    }
+
+    public void setAdvancedRobot(boolean value) {
+        this.isAdvancedRobot = value;
+    }
+
+    /**
+     * Returns <code>true</code> if the robot is implementing the
+     * {@link robocode.robotinterfaces.ITeamRobot}; <code>false</code> otherwise.
+     */
+    public boolean isTeamRobot() {
+        return isTeamRobot;
+    }
+
+    public void setTeamRobot(boolean value) {
+        this.isTeamRobot = value;
+    }
+
+    //////////////////////////////////////
+    // Robot access
+    //////////////////////////////////////
+
+    public IRobotEventManager getRobotEventManager() {
+        return eventManager;
+    }
+
 
 }

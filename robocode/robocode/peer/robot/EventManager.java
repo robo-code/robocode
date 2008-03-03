@@ -59,7 +59,7 @@ import robocode.util.Utils;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class EventManager implements IRobotEventManager, IBattleEventManager {
+public class EventManager implements IRobotEventManager, IBattleEventManager, IDisplayEventManager {
 	private RobotPeer robotPeer = null;
 
 	private final int MAX_PRIORITY = 100;

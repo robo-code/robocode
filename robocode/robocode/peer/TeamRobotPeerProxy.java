@@ -25,34 +25,34 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public class TeamRobotPeerProxy extends AdvancedRobotPeerProxy implements ITeamRobotPeer {
-	public TeamRobotPeerProxy(IBasicRobotPeer peer) {
+	public TeamRobotPeerProxy(IRobotRobotPeer peer) {
 		super(peer);
 	}
 
 	// team
 	public String[] getTeammates() {
 		peer.getCall();
-		return ((ITeamRobotPeer) peer).getTeammates();
+		return peer.getTeammates();
 	}
 
 	public boolean isTeammate(String name) {
 		peer.getCall();
-		return ((ITeamRobotPeer) peer).isTeammate(name);
+		return peer.isTeammate(name);
 	}
 
 	public void sendMessage(String name, Serializable message) throws IOException {
 		peer.setCall();
-		((ITeamRobotPeer) peer).sendMessage(name, message);
+		peer.sendMessage(name, message);
 	}
 
 	public void broadcastMessage(Serializable message) throws IOException {
 		peer.setCall();
-		((ITeamRobotPeer) peer).broadcastMessage(message);
+		peer.broadcastMessage(message);
 	}
 
 	// events
 	public List<MessageEvent> getMessageEvents() {
 		peer.getCall();
-		return ((ITeamRobotPeer) peer).getMessageEvents();
+		return peer.getMessageEvents();
 	}
 }

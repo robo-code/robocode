@@ -15,6 +15,7 @@ package robocode.battle.record;
 import static robocode.gfx.ColorUtil.toRGB565;
 
 import robocode.peer.RobotPeer;
+import robocode.peer.IBattleRobotPeer;
 
 
 /**
@@ -63,10 +64,10 @@ public class RobotRecord {
 	/**
 	 * Constructs a new robot record.
 	 *
-	 * @param owner index of the robot
+	 * @param index owner index of the robot
 	 * @param robot the robot peer that is copied into this record
 	 */
-	public RobotRecord(int index, RobotPeer robot) {
+	public RobotRecord(int index, IBattleRobotPeer robot) {
 		this.index = (byte) index;
 		x = (short) (robot.getX() + 0.5);
 		y = (short) (robot.getY() + 0.5);

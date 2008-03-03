@@ -30,6 +30,7 @@ import javax.swing.SwingConstants;
 
 import robocode.manager.RobotDialogManager;
 import robocode.peer.RobotPeer;
+import robocode.peer.IDisplayRobotPeer;
 
 
 /**
@@ -38,7 +39,7 @@ import robocode.peer.RobotPeer;
  */
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
-	private RobotPeer robotPeer;
+	private IDisplayRobotPeer robotPeer;
 	private RobotDialog robotDialog;
 	private RobotDialogManager robotDialogManager;
 	private String robotName;
@@ -46,7 +47,7 @@ public class RobotButton extends JButton implements ActionListener {
 	/**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, RobotPeer robotPeer) {
+	public RobotButton(RobotDialogManager robotDialogManager, IDisplayRobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
 		this.robotDialogManager = robotDialogManager;
 		robotName = robotPeer.getName();
@@ -78,7 +79,7 @@ public class RobotButton extends JButton implements ActionListener {
 	 */
 	private void initialize() {
 		setText(robotPeer.getShortName());
-		setToolTipText(robotPeer.getRobotClassManager().getClassNameManager().getUniqueFullClassNameWithVersion());
+		setToolTipText(robotPeer.getUniqueFullClassNameWithVersion());
 		addActionListener(this);
 		setPreferredSize(new Dimension(110, 25));
 		setMinimumSize(new Dimension(110, 25));

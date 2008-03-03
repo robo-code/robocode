@@ -79,12 +79,12 @@ public class BulletPeer {
 
 	private static final int RADIUS = 3;
 	
-	protected final RobotPeer owner;
+	protected final IBattleRobotPeer owner;
 	protected final Battle battle;
 	private final BattleField battleField;
 
 	private Bullet bullet;
-	protected RobotPeer victim;
+	protected IBattleRobotPeer victim;
 
 	protected int state;
 
@@ -113,7 +113,7 @@ public class BulletPeer {
 	/**
 	 * BulletPeer constructor
 	 */
-	public BulletPeer(RobotPeer owner, Battle battle) {
+	public BulletPeer(IBattleRobotPeer owner, Battle battle) {
 		super();
 
 		this.owner = owner;
@@ -124,7 +124,7 @@ public class BulletPeer {
 		color = owner.getBulletColor(); // Store current bullet color set on robot
 	}
 
-	public BulletPeer(RobotPeer owner, Battle battle, BulletRecord br) {
+	public BulletPeer(IBattleRobotPeer owner, Battle battle, BulletRecord br) {
 		this(owner, battle);
 
 		x = br.x;
@@ -166,9 +166,8 @@ public class BulletPeer {
 		return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1);
 	}
 
-	private void checkRobotCollision() {
-		RobotPeer robotPeer;
-		List<RobotPeer> robots = battle.getRobots();
+	private void checkRobotCollision(List<IBattleRobotPeer> robots) {
+		IBattleRobotPeer robotPeer;
 
 		for (int i = 0; i < robots.size(); i++) {
 			robotPeer = robots.get(i);
@@ -247,7 +246,7 @@ public class BulletPeer {
 		return heading;
 	}
 
-	public RobotPeer getOwner() {
+	public IBattleRobotPeer getOwner() {
 		return owner;
 	}
 
@@ -259,7 +258,7 @@ public class BulletPeer {
 		return velocity;
 	}
 
-	public synchronized RobotPeer getVictim() {
+	public synchronized IBattleRobotPeer getVictim() {
 		return victim;
 	}
 
@@ -319,13 +318,13 @@ public class BulletPeer {
 		state = newState;
 	}
 
-	public synchronized void update() {
+	public synchronized void update(List<IBattleRobotPeer> robots) {
 		if (isActive()) {
 			updateMovement();
 
 			checkBulletCollision();
 			if (isActive()) {
-				checkRobotCollision();
+				checkRobotCollision(robots);
 			}
 			if (isActive()) {
 				checkWallCollision();

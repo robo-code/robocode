@@ -37,6 +37,7 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
+import robocode.peer.IBattleRobotPeer;
 
 
 /**
@@ -226,11 +227,11 @@ public class SoundManager {
 	 *
 	 * @param robotPeer the robot peer
 	 */
-	public void playRobotSound(RobotPeer robotPeer) {
+	public void playRobotSound(IBattleRobotPeer robotPeer) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) robotPeer.getX(), robotPeer.getBattle().getBattleField().getWidth());
+			pan = calcPan((float) robotPeer.getX(), (float)robotPeer.getBattleFieldWidth());
 		}
 		switch (robotPeer.getState()) {
 		case RobotPeer.STATE_HIT_ROBOT:

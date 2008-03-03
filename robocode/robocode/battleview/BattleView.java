@@ -33,6 +33,7 @@ import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.ExplosionPeer;
 import robocode.peer.RobotPeer;
+import robocode.peer.IDisplayRobotPeer;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.util.GraphicsState;
@@ -356,7 +357,7 @@ public class BattleView extends Canvas {
 	
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
 				if (robotPeer.isAlive()) {
 					drawScanArc(g, robotPeer);
 				}
@@ -372,7 +373,7 @@ public class BattleView extends Canvas {
 		if (drawGround && drawExplosionDebris && battle.isRobotsLoaded()) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
 				if (robotPeer.isDead()) {
 					x = robotPeer.getX();
 					y = battleFieldHeight - robotPeer.getY();
@@ -385,7 +386,7 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		for (RobotPeer robotPeer : battle.getRobots()) {
+		for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
 			if (robotPeer.isAlive()) {
 				x = robotPeer.getX();
 				y = battleFieldHeight - robotPeer.getY();
@@ -424,14 +425,14 @@ public class BattleView extends Canvas {
 
 		g.setClip(null);
 
-		for (RobotPeer robotPeer : battle.getRobots()) {
+		for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
 			if (robotPeer.isDead()) {
 				continue;
 			}
 			int x = (int) robotPeer.getX();
 			int y = battle.getBattleField().getHeight() - (int) robotPeer.getY();
 
-			if (drawRobotEnergy && robotPeer.getRobot() != null) {
+			if (drawRobotEnergy && robotPeer.isAlive()) {
 				g.setColor(Color.white);
 				int ll = (int) robotPeer.getEnergy();
 				int rl = (int) ((robotPeer.getEnergy() - ll + .001) * 10.0);
@@ -452,7 +453,7 @@ public class BattleView extends Canvas {
 				centerString(g, robotPeer.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
 						smallFont, smallFontMetrics);
 			}
-			if (robotPeer.isPaintEnabled() && robotPeer.getRobot() != null) {
+			if (robotPeer.isPaintEnabled() && robotPeer.isAlive()) {
 				drawRobotPaint(g, robotPeer);
 			}
 		}
@@ -460,38 +461,43 @@ public class BattleView extends Canvas {
 		g.setClip(savedClip);
 	}
 
-	private void drawRobotPaint(Graphics2D g, RobotPeer robotPeer) {
-		// Save the graphics state
-		GraphicsState gfxState = new GraphicsState();
+	private void drawRobotPaint(Graphics2D g, IDisplayRobotPeer robotPeer) {
+        //TODO ZAMO, security hole ?
+        //TODO ZAMO, synchronization issue ?
+        IBasicRobot robot = ((RobotPeer)robotPeer).getRobot();
+        if (robot!=null)
+        {
+            // Save the graphics state
+            GraphicsState gfxState = new GraphicsState();
 
-		gfxState.save(g);
+            gfxState.save(g);
 
-		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
+            g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		IBasicRobot robot = robotPeer.getRobot();
-		IBasicEvents basicEvents = robot.getBasicEventListener();
 
-		// Do the painting
-		try {
-			if (basicEvents != null) {
-				if (robotPeer.isSGPaintEnabled()) {
-					basicEvents.onPaint(g);
-				} else {
-					mirroredGraphics.bind(g, battleField.getHeight());
-					basicEvents.onPaint(mirroredGraphics);
-					mirroredGraphics.release();
-				}
-			}
-		} catch (Exception e) {
-			// Make sure that Robocode is not halted by an exception caused by letting the robot paint
+            // Do the painting
+            try {
+                IBasicEvents listener = robot.getBasicEventListener();
+                if (listener != null) {
+                    if (robotPeer.isSGPaintEnabled()) {
+                        listener.onPaint(g);
+                    } else {
+                        mirroredGraphics.bind(g, battleField.getHeight());
+                        listener.onPaint(mirroredGraphics);
+                        mirroredGraphics.release();
+                    }
+                }
+            } catch (Exception e) {
+                // Make sure that Robocode is not halted by an exception caused by letting the robot paint
 
-			robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-			e.printStackTrace(robotPeer.getOut());
-		}
+                robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
+                e.printStackTrace(robotPeer.getOut());
+            }
 
-		// Restore the graphics state
-		gfxState.restore(g);
-	}
+            // Restore the graphics state
+            gfxState.restore(g);
+        }
+    }
 
 	private void drawBullets(Graphics2D g) {
 		Shape savedClip = g.getClip();
@@ -580,7 +586,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private Rectangle drawScanArc(Graphics2D g, RobotPeer robot) {
+	private Rectangle drawScanArc(Graphics2D g, IDisplayRobotPeer robot) {
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
 
 		Arc2D.Double scanArc = (Arc2D.Double) robot.getScanArc().clone();

@@ -13,6 +13,7 @@ package robocode;
 
 
 import robocode.peer.RobotPeer;
+import robocode.peer.IBattleRobotPeer;
 
 
 /**
@@ -32,7 +33,7 @@ public class StatusEvent extends Event {
 	 *
 	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
 	 */
-	public StatusEvent(RobotPeer robotPeer) {
+	public StatusEvent(IBattleRobotPeer robotPeer) {
 		super();
 
 		status = new RobotStatus(robotPeer);

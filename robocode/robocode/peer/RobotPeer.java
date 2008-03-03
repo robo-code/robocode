@@ -106,7 +106,7 @@ import robocode.util.BoundingRectangle;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IContestantPeer {
+public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IContestantPeer, IBattleRobotPeer, IDisplayRobotPeer, IRobotRobotPeer {
 
 	IBasicRobot robot;
 
@@ -140,11 +140,6 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 
 	private Arc2D scanArc;
 
-	private boolean isJuniorRobot;
-	private boolean isInteractiveRobot;
-	private boolean isAdvancedRobot;
-	private boolean isTeamRobot;
-	private boolean isDroid;
 	private boolean isIORobot;
 	private boolean isRunning;
 	private boolean isStopped;
@@ -240,76 +235,21 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return testingCondition;
 	}
 
-	public boolean isDroid() {
-		return isDroid;
-	}
-
-	public void setDroid(boolean droid) {
-		this.isDroid = droid;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link IJuniorRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isJuniorRobot() {
-		return isJuniorRobot;
-	}
-
-	public void setJuniorRobot(boolean value) {
-		this.isJuniorRobot = value;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link IInteractiveRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isInteractiveRobot() {
-		return isInteractiveRobot;
-	}
-
-	public void setInteractiveRobot(boolean value) {
-		this.isInteractiveRobot = value;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link IAdvancedRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isAdvancedRobot() {
-		return isAdvancedRobot;
-	}
-
-	public void setAdvancedRobot(boolean value) {
-		this.isAdvancedRobot = value;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link ITeamRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isTeamRobot() {
-		return isTeamRobot;
-	}
-
-	public void setTeamRobot(boolean value) {
-		this.isTeamRobot = value;
-	}
 
 	/**
 	 * Creates and returns a new robot peer proxy  
 	 */
 	public IBasicRobotPeer createProxy() {
-		if (isTeamRobot) {
+		if (isTeamRobot()) {
 			return new TeamRobotPeerProxy(this);
 		}
-		if (isAdvancedRobot) {
+		if (isAdvancedRobot()) {
 			return new AdvancedRobotPeerProxy(this);
 		}
-		if (isInteractiveRobot) {
+		if (isInteractiveRobot()) {
 			return new StandardRobotPeerProxy(this);
 		}
-		if (isJuniorRobot) {
+		if (isJuniorRobot()) {
 			return new JuniorRobotPeerProxy(this);
 		}
 		throw new AccessControlException("Unknown robot type");
@@ -322,13 +262,13 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		} while (getDistanceRemaining() != 0);
 	}
 
-	private void checkRobotCollision() {
+	private void checkRobotCollision(List<IBattleRobotPeer> robots) {
 		inCollision = false;
 
-		for (int i = 0; i < battle.getRobots().size(); i++) {
-			RobotPeer r = battle.getRobots().get(i);
+		for (int i = 0; i < robots.size(); i++) {
+			IBattleRobotPeer r = robots.get(i);
 
-			if (!(r == null || r == this || r.isDead()) && boundingBox.intersects(r.boundingBox)) {
+			if (!(r == null || r == this || r.isDead()) && boundingBox.intersects(r.getBoundingBox())) {
 				// Bounce back
 				double angle = atan2(r.getX() - x, r.getY() - y);
 
@@ -431,7 +371,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
 
 			// Update energy, but do not reset inactiveTurnCount
-			if (isAdvancedRobot) {
+			if (isAdvancedRobot()) {
 				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
 			}
 
@@ -484,7 +424,15 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 				: robotClassManager.getClassNameManager().getUniqueShortClassNameWithVersion();
 	}
 
-	public String getVeryShortName() {
+    public String getFullClassNameWithVersion() {
+        return getRobotClassManager().getClassNameManager().getFullClassNameWithVersion(); 
+    }
+
+    public String getUniqueFullClassNameWithVersion() {
+        return getRobotClassManager().getClassNameManager().getUniqueFullClassNameWithVersion();
+    }
+
+    public String getVeryShortName() {
 		return (shortName != null)
 				? shortName
 				: robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
@@ -612,8 +560,8 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 	
-	public void scan() {
-		if (isDroid) {
+	public void scan(List<IBattleRobotPeer> robots) {
+		if (isDroid()) {
 			return;
 		}
 
@@ -637,8 +585,8 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		scanArc.setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
-		for (RobotPeer robotPeer : battle.getRobots()) {
-			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead()) && intersects(scanArc, robotPeer.boundingBox)) {
+		for (IBattleRobotPeer robotPeer : robots) {
+			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead()) && intersects(scanArc, robotPeer.getBoundingBox())) {
 				double dx = robotPeer.getX() - getX();
 				double dy = robotPeer.getY() - getY();
 				double angle = atan2(dx, dy);
@@ -841,7 +789,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		} while (getRadarTurnRemaining() != 0);
 	}
 
-	public final synchronized void update() {
+	public final synchronized void update(List<IBattleRobotPeer> battleRobots) {
 		// Reset robot state to active if it is not dead
 		if (isAlive()) {
 			state = STATE_ACTIVE;
@@ -868,7 +816,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		checkWallCollision();
 
 		// Now check for robot collision
-		checkRobotCollision();
+		checkRobotCollision(battleRobots);
 
 		// Scan false means robot did not call scan() manually.
 		// But if we're moving, scan
@@ -1151,7 +1099,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		this.halt = halt;
 	}
 
-	public int compareTo(IContestantPeer cp) {
+    public int compareTo(IContestantPeer cp) {
 		double score1 = statistics.getTotalScore();
 		double score2 = cp.getStatistics().getTotalScore();
 
@@ -1182,7 +1130,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return velocity;
 	}
 
-	public synchronized void initialize(double x, double y, double heading) {
+	public synchronized void initialize(double x, double y, double heading, List<IBattleRobotPeer> battleRobots) {
 		state = STATE_ACTIVE;
 
 		isWinner = false;
@@ -1194,11 +1142,11 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 
 		acceleration = velocity = 0;
 
-		if (isTeamLeader() && isDroid) {
+		if (isTeamLeader() && isDroid()) {
 			energy = 220;
 		} else if (isTeamLeader()) {
 			energy = 200;
-		} else if (isDroid) {
+		} else if (isDroid()) {
 			energy = 120;
 		} else {
 			energy = 100;
@@ -1223,7 +1171,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		setMaxVelocity(Double.MAX_VALUE);
 		setMaxTurnRate(Double.MAX_VALUE);
 
-		statistics.initialize();
+		statistics.initialize(battleRobots);
 
 		out.resetCounter();
 
@@ -1772,7 +1720,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		state = newState;
 	}
 
-	public synchronized void set(RobotRecord rr) {
+	public synchronized void setRecord(RobotRecord rr) {
 		x = rr.x;
 		y = rr.y;
 		energy = (double) rr.energy / 10;
