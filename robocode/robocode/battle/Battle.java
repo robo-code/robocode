@@ -457,8 +457,8 @@ public class Battle implements Runnable {
 		if (count > 0) {
 			robotPeer.setDuplicate(count);
 		}
-		displayRobots.add(robotPeer);
-        battleRobots.add(robotPeer);
+		displayRobots.add(new DisplayRobotPeerProxy(robotPeer));
+        battleRobots.add(new BattleRobotPeerProxy(robotPeer));
 	}
 
 	private void addContestant(IContestantPeer c) {

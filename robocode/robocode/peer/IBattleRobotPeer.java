@@ -23,6 +23,8 @@ import java.awt.*;
  * @author Pavel Savara (original)
  */
 public interface IBattleRobotPeer extends IContestantPeer {
+
+    
     String getName();
     RobotOutputStream getOut();
     RobotThreadManager getRobotThreadManager();

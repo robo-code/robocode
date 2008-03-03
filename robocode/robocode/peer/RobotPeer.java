@@ -96,6 +96,10 @@ import robocode.manager.NameManager;
 import robocode.peer.robot.*;
 import robocode.util.BoundingRectangle;
 
+import javax.management.monitor.Monitor;
+
+import sun.misc.Lock;
+
 
 /**
  * RobotPeer is an object that deals with game mechanics and rules, and makes
@@ -232,11 +236,11 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		this.isIORobot = ioRobot;
 	}
 
-	public synchronized void setTestingCondition(boolean testingCondition) {
+	public void setTestingCondition(boolean testingCondition) {
 		this.testingCondition = testingCondition;
 	}
 
-	public synchronized boolean getTestingCondition() {
+	public boolean getTestingCondition() {
 		return testingCondition;
 	}
 
@@ -411,11 +415,11 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return boundingBox;
 	}
 
-	public synchronized double getGunHeading() {
+	public double getGunHeading() {
 		return gunHeading;
 	}
 
-	public synchronized double getHeading() {
+	public double getHeading() {
 		return heading;
 	}
 
@@ -453,7 +457,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return battle.getActiveRobots() - (isAlive() ? 1 : 0);
 	}
 
-	public synchronized double getRadarHeading() {
+	public double getRadarHeading() {
 		return radarHeading;
 	}
 
@@ -461,23 +465,23 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return battle.getGunCoolingRate();
 	}
 
-	public synchronized double getX() {
+	public double getX() {
 		return x;
 	}
 
-	public synchronized double getY() {
+	public double getY() {
 		return y;
 	}
 
-	public synchronized boolean isAdjustGunForBodyTurn() {
+	public boolean isAdjustGunForBodyTurn() {
 		return isAdjustGunForBodyTurn;
 	}
 
-	public synchronized boolean isAdjustRadarForGunTurn() {
+	public boolean isAdjustRadarForGunTurn() {
 		return isAdjustRadarForGunTurn;
 	}
 
-	public synchronized boolean isDead() {
+	public boolean isDead() {
 		return state == STATE_DEAD;
 	}
 
@@ -538,7 +542,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
         return false;
     }
 
-    public synchronized boolean isAlive() {
+    public boolean isAlive() {
 		return state != STATE_DEAD;
 	}
 
@@ -661,18 +665,18 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 
-	public synchronized void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
+	public void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
 		isAdjustGunForBodyTurn = newAdjustGunForBodyTurn;
 	}
 
-	public synchronized void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
+	public void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
 		isAdjustRadarForGunTurn = newAdjustRadarForGunTurn;
 		if (!isAdjustRadarForBodyTurnSet) {
 			isAdjustRadarForBodyTurn = newAdjustRadarForGunTurn;
 		}
 	}
 
-	public final synchronized void setMove(double distance) {
+	public final void setMove(double distance) {
 		if (energy == 0) {
 			return;
 		}
@@ -694,7 +698,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		battleField = battle.getBattleField();
 	}
 
-	public synchronized void kill() {
+	public void kill() {
 		battle.resetInactiveTurnCount(10.0);
 		if (isAlive()) {
 			getBattleEventManager().add(new DeathEvent());
@@ -724,27 +728,27 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		state = STATE_DEAD;
 	}
 
-	public synchronized void preInitialize() {
+	public void preInitialize() {
 		state = STATE_DEAD;
 	}
 
-	public synchronized void setGunHeading(double newGunHeading) {
+	public void setGunHeading(double newGunHeading) {
 		gunHeading = newGunHeading;
 	}
 
-	public synchronized void setHeading(double heading) {
+	public void setHeading(double heading) {
 		this.heading = heading;
 	}
 
-	public synchronized void setRadarHeading(double newRadarHeading) {
+	public void setRadarHeading(double newRadarHeading) {
 		radarHeading = newRadarHeading;
 	}
 
-	public synchronized void setX(double newX) {
+	public void setX(double newX) {
 		x = newX;
 	}
 
-	public synchronized void setY(double newY) {
+	public void setY(double newY) {
 		y = newY;
 	}
 
@@ -816,7 +820,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		getRobotEventManager().processEvents();
 	}
 
-	public synchronized final void setTurnGun(double radians) {
+	public final void setTurnGun(double radians) {
 		this.gunTurnRemaining = radians;
 	}
 
@@ -827,7 +831,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		} while (getGunTurnRemaining() != 0);
 	}
 
-	public synchronized final void setTurnBody(double radians) {
+	public final void setTurnBody(double radians) {
 		if (energy > 0) {
 			turnRemaining = radians;
 		}
@@ -840,7 +844,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		} while (getTurnRemaining() != 0);
 	}
 
-	public synchronized final void setTurnRadar(double radians) {
+	public final void setTurnRadar(double radians) {
 		this.radarTurnRemaining = radians;
 	}
 
@@ -851,7 +855,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		} while (getRadarTurnRemaining() != 0);
 	}
 
-	public final synchronized void update(List<IBattleRobotPeer> battleRobots) {
+	public final void update(List<IBattleRobotPeer> battleRobots) {
 		// Reset robot state to active if it is not dead
 		if (isAlive()) {
 			state = STATE_ACTIVE;
@@ -888,7 +892,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 
-	public synchronized void updateBoundingBox() {
+	public void updateBoundingBox() {
 		boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
 	}
 
@@ -1143,7 +1147,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		radarHeading = normalAbsoluteAngle(radarHeading);
 	}
 
-	public synchronized void wakeup() {
+	public void wakeup() {
 		if (isSleeping) {
 			// Wake up the thread
 			notifyAll();
@@ -1153,11 +1157,11 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 
-	private synchronized boolean getHalt() {
+	private boolean getHalt() {
 		return halt;
 	}
 	
-	public synchronized void setHalt(boolean halt) {
+	public void setHalt(boolean halt) {
 		this.halt = halt;
 	}
 
@@ -1188,11 +1192,11 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return battle.getCurrentTime();
 	}
 
-	public synchronized double getVelocity() {
+	public double getVelocity() {
 		return velocity;
 	}
 
-	public synchronized void initialize(double x, double y, double heading, List<IBattleRobotPeer> battleRobots) {
+	public void initialize(double x, double y, double heading, List<IBattleRobotPeer> battleRobots) {
 		state = STATE_ACTIVE;
 
 		isWinner = false;
@@ -1260,7 +1264,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		execute();
 	}
 
-	public synchronized void setMaxTurnRate(double newTurnRate) {
+	public void setMaxTurnRate(double newTurnRate) {
 		if (Double.isNaN(newTurnRate)) {
 			out.println("You cannot setMaxTurnRate to: " + newTurnRate);
 			return;
@@ -1268,7 +1272,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		maxTurnRate = min(abs(newTurnRate), Rules.MAX_TURN_RATE_RADIANS);
 	}
 
-	public synchronized void setMaxVelocity(double newVelocity) {
+	public void setMaxVelocity(double newVelocity) {
 		if (Double.isNaN(newVelocity)) {
 			out.println("You cannot setMaxVelocity to: " + newVelocity);
 			return;
@@ -1276,7 +1280,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		maxVelocity = min(abs(newVelocity), Rules.MAX_VELOCITY);
 	}
 
-	public synchronized final void setResume() {
+	public final void setResume() {
 		if (isStopped) {
 			isStopped = false;
 			distanceRemaining = saveDistanceToGo;
@@ -1296,7 +1300,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 
-	public final synchronized void setStop(boolean overwrite) {
+	public final void setStop(boolean overwrite) {
 		if (!isStopped || overwrite) {
 			this.saveDistanceToGo = distanceRemaining;
 			this.saveAngleToTurn = turnRemaining;
@@ -1311,7 +1315,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		this.radarTurnRemaining = 0;
 	}
 
-	public synchronized void setVelocity(double newVelocity) {
+	public void setVelocity(double newVelocity) {
 		velocity = newVelocity;
 	}
 
@@ -1328,7 +1332,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		execute();
 	}
 
-	public synchronized void waitFor(Condition condition) {
+	public void waitFor(Condition condition) {
 		waitCondition = condition;
 		do {
 			execute(); // Always tick at least once
@@ -1337,15 +1341,15 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		waitCondition = null;
 	}
 
-	public synchronized double getLastGunHeading() {
+	public double getLastGunHeading() {
 		return lastGunHeading;
 	}
 
-	public synchronized double getLastRadarHeading() {
+	public double getLastRadarHeading() {
 		return lastRadarHeading;
 	}
 
-	public synchronized void setScan(boolean scan) {
+	public void setScan(boolean scan) {
 		this.scan = scan;
 	}
 
@@ -1419,7 +1423,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		statistics = new RobotStatistics(this);
 	}
 
-	public synchronized Bullet setFire(double power) {
+	public Bullet setFire(double power) {
 		if (Double.isNaN(power)) {
 			out.println("SYSTEM: You cannot call fire(NaN)");
 			return null;
@@ -1451,27 +1455,27 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return bullet.getBullet();
 	}
 
-	public synchronized double getDistanceRemaining() {
+	public double getDistanceRemaining() {
 		return distanceRemaining;
 	}
 
-	public synchronized double getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 
-	public synchronized double getGunHeat() {
+	public double getGunHeat() {
 		return gunHeat;
 	}
 
-	public synchronized double getGunTurnRemaining() {
+	public double getGunTurnRemaining() {
 		return gunTurnRemaining;
 	}
 
-	public synchronized double getMaxVelocity() {
+	public double getMaxVelocity() {
 		return maxVelocity;
 	}
 
-	public synchronized double getMaxTurnRate() {
+	public double getMaxTurnRate() {
 		return maxTurnRate;
 	}
 
@@ -1479,7 +1483,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return getBattle().getNumRounds();
 	}
 
-	public synchronized RobotOutputStream getOut() {
+	public RobotOutputStream getOut() {
 		if (out == null) {
 			if (battle != null) {
 				out = new RobotOutputStream(battle.getBattleThread());
@@ -1488,7 +1492,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return out;
 	}
 
-	public synchronized double getRadarTurnRemaining() {
+	public double getRadarTurnRemaining() {
 		return radarTurnRemaining;
 	}
 
@@ -1508,7 +1512,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return getBattle().getRoundNum();
 	}
 
-	public synchronized boolean getScan() {
+	public boolean getScan() {
 		return scan;
 	}
 
@@ -1528,11 +1532,11 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return statistics;
 	}
 
-	public synchronized double getTurnRemaining() {
+	public double getTurnRemaining() {
 		return turnRemaining;
 	}
 
-	public synchronized boolean isAdjustRadarForBodyTurn() {
+	public boolean isAdjustRadarForBodyTurn() {
 		return isAdjustRadarForBodyTurn;
 	}
 
@@ -1540,7 +1544,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return checkFileQuota;
 	}
 
-	public synchronized void setCall() {
+	public void setCall() {
 		setCallCount++;
 		if (setCallCount == MAX_SET_CALL_COUNT) {
 			out.println("SYSTEM: You have made " + setCallCount + " calls to setXX methods without calling execute()");
@@ -1548,7 +1552,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 
-	public synchronized void getCall() {
+	public void getCall() {
 		getCallCount++;
 		if (getCallCount == MAX_GET_CALL_COUNT) {
 			out.println("SYSTEM: You have made " + getCallCount + " calls to getXX methods without calling execute()");
@@ -1556,7 +1560,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 
-	public synchronized void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
+	public void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
 		isAdjustRadarForBodyTurn = newAdjustRadarForBodyTurn;
 		isAdjustRadarForBodyTurnSet = true;
 	}
@@ -1566,11 +1570,11 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		checkFileQuota = newCheckFileQuota;
 	}
 
-	public synchronized void setDistanceRemaining(double new_distanceRemaining) {
+	public void setDistanceRemaining(double new_distanceRemaining) {
 		distanceRemaining = new_distanceRemaining;
 	}
 
-	public synchronized void setDuplicate(int count) {
+	public void setDuplicate(int count) {
 		isDuplicate = true;
 
 		String countString = " (" + (count + 1) + ')';
@@ -1582,15 +1586,15 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		nonVersionedName = cnm.getFullClassName() + countString;
 	}
 
-	public synchronized boolean isDuplicate() {
+	public boolean isDuplicate() {
 		return isDuplicate;
 	}
 
-	public synchronized void setEnergy(double newEnergy) {
+	public void setEnergy(double newEnergy) {
 		setEnergy(newEnergy, true);
 	}
 
-	public synchronized void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
+	public void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
 		if (resetInactiveTurnCount && (energy != newEnergy)) {
 			battle.resetInactiveTurnCount(energy - newEnergy);
 		}
@@ -1602,11 +1606,11 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 
-	public synchronized void setGunHeat(double newGunHeat) {
+	public void setGunHeat(double newGunHeat) {
 		gunHeat = newGunHeat;
 	}
 
-	public synchronized void setInterruptible(boolean interruptable) {
+	public void setInterruptible(boolean interruptable) {
 		getRobotEventManager().setInterruptible(getRobotEventManager().getCurrentTopEventPriority(), interruptable);
 	}
 
@@ -1674,14 +1678,14 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		statistics = newStatistics;
 	}
 
-	private synchronized void updateGunHeat() {
+	private void updateGunHeat() {
 		gunHeat -= battle.getGunCoolingRate();
 		if (gunHeat < 0) {
 			gunHeat = 0;
 		}
 	}
 
-	public synchronized void zap(double zapAmount) {
+	public void zap(double zapAmount) {
 		if (energy == 0) {
 			kill();
 			return;
@@ -1694,23 +1698,23 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		}
 	}
 
-	public synchronized boolean isRunning() {
+	public boolean isRunning() {
 		return isRunning;
 	}
 
-	public synchronized void setRunning(boolean running) {
+	public void setRunning(boolean running) {
 		this.isRunning = running;
 	}
 
-	public synchronized boolean isSleeping() {
+	public boolean isSleeping() {
 		return isSleeping;
 	}
 
-	public synchronized void setSetCallCount(int setCallCount) {
+	public void setSetCallCount(int setCallCount) {
 		this.setCallCount = setCallCount;
 	}
 
-	public synchronized void setGetCallCount(int getCallCount) {
+	public void setGetCallCount(int getCallCount) {
 		this.getCallCount = getCallCount;
 	}
 
@@ -1774,15 +1778,15 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		return sgPaintEnabled;
 	}
 
-	public synchronized int getState() {
+	public int getState() {
 		return state;
 	}
 
-	public synchronized void setState(int newState) {
+	public void setState(int newState) {
 		state = newState;
 	}
 
-	public synchronized void setRecord(RobotRecord rr) {
+	public void setRecord(RobotRecord rr) {
 		x = rr.x;
 		y = rr.y;
 		energy = (double) rr.energy / 10;
@@ -1796,7 +1800,7 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 		scanColor = toColor(rr.scanColor);
 	}
 
-	private synchronized void setLastHeading() {
+	private void setLastHeading() {
 		lastHeading = heading;
 	}
 
@@ -1950,4 +1954,28 @@ public class RobotPeer extends RobotPeerData implements ITeamRobotPeer, IJuniorR
 	public List<MessageEvent> getMessageEvents() {
 		return getRobotEventManager().getMessageEvents();
 	}
+
+    Thread ownerThread=null;
+    Lock l =new Lock();
+
+    public void lock() throws InterruptedException {
+        l.lock();
+        synchronized (l){
+            Thread.holdsLock()
+        }
+    }
+
+    public synchronized void myMethod() {
+        boolean hasLock = false;
+        Object o = new Object();
+
+        // Determine if current thread has lock for o
+        hasLock = Thread.holdsLock(o);     // false
+        synchronized (o) {
+            hasLock = Thread.holdsLock(o); // true
+        }
+
+        // Check if current thread has lock for current object
+        hasLock = Thread.holdsLock(this);  // true
+    }
 }
