@@ -1590,7 +1590,7 @@ public class Robot extends _Robot {
 	 * <p>
 	 * Also note that the coordinate system for the graphical context where you
 	 * paint items fits for the Robocode coordinate system where (0, 0) is at
-	 * the buttom left corner of the battlefield, where X is towards right and Y
+	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
 	 *
 	 * @param g the graphics context to use for painting graphical items for the

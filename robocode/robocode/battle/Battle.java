@@ -1176,6 +1176,7 @@ public class Battle implements Runnable {
 									r.wait(0, (int) (waitTime % 1000000));
 								}
 							} catch (InterruptedException e) {
+								// ?
 								log("Wait for " + r + " interrupted.");
 							}
 						}
@@ -1654,7 +1655,7 @@ public class Battle implements Runnable {
 	 * 
 	 * @return Returns a int
 	 */
-	public int getActiveRobots() {
+	public synchronized int getActiveRobots() {
 		return activeRobots;
 	}
 
@@ -2049,8 +2050,8 @@ public class Battle implements Runnable {
 	}
 
 	private final class KeyEventHandler implements KeyEventDispatcher {
-		private Battle battle = null;
-		private List<RobotPeer> robots = null;
+		private Battle battle;
+		private List<RobotPeer> robots;
 
 		public KeyEventHandler(Battle battle, List<RobotPeer> robots) {
 			this.battle = battle;

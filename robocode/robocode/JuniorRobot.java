@@ -96,7 +96,7 @@ public class JuniorRobot extends _RobotBase {
 
 	/**
 	 * Current horizontal location of this robot (in pixels).
-	 * 
+	 *
 	 * @see #robotY
 	 */
 	public int robotX;
@@ -147,12 +147,12 @@ public class JuniorRobot extends _RobotBase {
 	 * Flag specifying if the gun is ready to fire, i.e. gun heat <= 0.
 	 * <code>true</code> means that the gun is able to fire; <code>false</code>
 	 * means that the gun cannot fire yet as it still needs to cool down.
-	 * 
+	 *
 	 * @see #fire()
 	 * @see #fire(double)
 	 */
 	public boolean gunReady;
-
+    
 	/**
 	 * Current distance to the scanned nearest other robot (in pixels).
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
@@ -244,7 +244,7 @@ public class JuniorRobot extends _RobotBase {
 	 * Latest angle from where this robot was hit by a bullet (in degrees).
 	 * If the robot has never been hit, this field will be less than 0, i.e. -1.
 	 * This field will not be updated while {@link #onHitByBullet()} event is active.
-	 * 
+	 *
 	 * @see #onHitByBullet()
 	 * @see #hitByBulletBearing
 	 */
@@ -265,7 +265,7 @@ public class JuniorRobot extends _RobotBase {
 	 * Latest angle where this robot has hit another robot (in degrees).
 	 * If this robot has never hit another robot, this field will be less than 0, i.e. -1.
 	 * This field will not be updated while {@link #onHitRobot()} event is active.
-	 * 
+	 *
 	 * @see #onHitRobot()
 	 * @see #hitRobotBearing
 	 */

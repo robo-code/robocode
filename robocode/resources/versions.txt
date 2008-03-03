@@ -1,13 +1,15 @@
 Version 1.5.5
-(02/24/2008)
+(03/03/2008)
 -------------
-o Bugfix:
+o Bugfixes
   -- The CPU constant was not calculated the first time Robocode was started up.
+  -- Removed ^M characters from the buildJikes.sh file so that the Jikes compiler
+     can be built under Unix, Linux and Mac OS X.
 
 Version 1.5.4
 (02/15/2008)
 -------------
-o Bugfix:
+o Bugfix
   -- The CPU constant was way too little compared to version 1.4.9
      -- This is a critical bug when Robocode is used for competitions
      -- Now the CPU calculation has been improved, where a heavy math benchmark
