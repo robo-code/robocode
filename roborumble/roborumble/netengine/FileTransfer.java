@@ -162,7 +162,7 @@ public class FileTransfer {
 	 * @param sessionId an optional session id if the download is session based
 	 *
 	 * @return the download status, which is DownloadStatus.OK if the download
-	 *    completed successfully; otherwise an error occured
+	 *    completed successfully; otherwise an error occurred
 	 */
 	public final static DownloadStatus download(String url, String filename, String sessionId) {
 		HttpURLConnection con = null;
