@@ -192,8 +192,8 @@ public class Battle implements Runnable {
 	private List<IBattleRobotPeer> deathEvents = new CopyOnWriteArrayList<IBattleRobotPeer>();
 
 	// Objects in the battle
-	private List<IDisplayRobotPeer> displayRobots = new ArrayList<IDisplayRobotPeer>();
-    private List<IBattleRobotPeer> battleRobots = new ArrayList<IBattleRobotPeer>();
+	private List<IDisplayRobotPeer> displayRobots = new CopyOnWriteArrayList<IDisplayRobotPeer>();
+	private List<IBattleRobotPeer> battleRobots = new CopyOnWriteArrayList<IBattleRobotPeer>();
 	private List<IContestantPeer> contestants = new CopyOnWriteArrayList<IContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
 
