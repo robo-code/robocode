@@ -1,10 +1,14 @@
 Version 1.5.5
-(03/03/2008)
+(03/06/2008)
 -------------
 o Bugfixes
   -- The CPU constant was not calculated the first time Robocode was started up.
   -- Removed ^M characters from the buildJikes.sh file so that the Jikes compiler
      can be built under Unix, Linux and Mac OS X.
+o Changes
+  -- Fixed a security issue, where robot was able to access the internals of
+     the Robocode game thru the AWT Event Queue.
+     -- Robots that try to access the AWT Event Queue will be disabled
 
 Version 1.5.4
 (02/15/2008)
