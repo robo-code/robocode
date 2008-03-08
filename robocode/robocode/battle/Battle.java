@@ -457,8 +457,8 @@ public class Battle implements Runnable {
 		if (count > 0) {
 			robotPeer.setDuplicate(count);
 		}
-		displayRobots.add(new DisplayRobotPeerProxy(robotPeer));
-        battleRobots.add(new BattleRobotPeerProxy(robotPeer));
+		displayRobots.add(robotPeer);
+        battleRobots.add(robotPeer);
 	}
 
 	private void addContestant(IContestantPeer c) {
@@ -1859,7 +1859,7 @@ public class Battle implements Runnable {
 		if (isRunning()) {
 			for (IDisplayRobotPeer robotPeer : getDisplayRobots()) {
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() && robotPeer.isInteractiveListener()) {
-                    robotPeer.getDisplayEventManager().add(new MouseClickedEvent(mirroredMouseEvent(e)));
+                    robotPeer.onInteractiveEvent(new MouseClickedEvent(mirroredMouseEvent(e)));
                 }
 			}
 		}
@@ -1869,7 +1869,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (IDisplayRobotPeer robotPeer : getDisplayRobots()) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() && robotPeer.isInteractiveListener()) {
-                    robotPeer.getDisplayEventManager().add(new MouseEnteredEvent(mirroredMouseEvent(e)));
+                    robotPeer.onInteractiveEvent(new MouseEnteredEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1879,7 +1879,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (IDisplayRobotPeer robotPeer : getDisplayRobots()) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() && robotPeer.isInteractiveListener()) {
-                    robotPeer.getDisplayEventManager().add(new MouseExitedEvent(mirroredMouseEvent(e)));
+                    robotPeer.onInteractiveEvent(new MouseExitedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1889,7 +1889,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (IDisplayRobotPeer robotPeer : getDisplayRobots()) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() && robotPeer.isInteractiveListener()) {
-                    robotPeer.getDisplayEventManager().add(new MousePressedEvent(mirroredMouseEvent(e)));
+                    robotPeer.onInteractiveEvent(new MousePressedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1899,7 +1899,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (IDisplayRobotPeer robotPeer : getDisplayRobots()) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() && robotPeer.isInteractiveListener()) {
-                    robotPeer.getDisplayEventManager().add(new MouseReleasedEvent(mirroredMouseEvent(e)));
+                    robotPeer.onInteractiveEvent(new MouseReleasedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1909,7 +1909,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (IDisplayRobotPeer robotPeer : getDisplayRobots()) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() && robotPeer.isInteractiveListener()) {
-                    robotPeer.getDisplayEventManager().add(new MouseMovedEvent(mirroredMouseEvent(e)));
+                    robotPeer.onInteractiveEvent(new MouseMovedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1919,7 +1919,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (IDisplayRobotPeer robotPeer : getDisplayRobots()) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() && robotPeer.isInteractiveListener()) {
-                    robotPeer.getDisplayEventManager().add(new MouseDraggedEvent(mirroredMouseEvent(e)));
+                    robotPeer.onInteractiveEvent(new MouseDraggedEvent(mirroredMouseEvent(e)));
                 }
             }
         }
@@ -1929,7 +1929,7 @@ public class Battle implements Runnable {
         if (isRunning()) {
             for (IDisplayRobotPeer robotPeer : getDisplayRobots()) {
                 if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() && robotPeer.isInteractiveListener()) {
-                    robotPeer.getDisplayEventManager().add(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
+                    robotPeer.onInteractiveEvent(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
                 }
             }
         }
@@ -1999,15 +1999,15 @@ public class Battle implements Runnable {
                         KeyEvent clone = cloneKeyEvent(e);
                         switch (e.getID()) {
                         case KeyEvent.KEY_TYPED:
-                            robotPeer.getDisplayEventManager().add(new KeyTypedEvent(clone));
+                            robotPeer.onInteractiveEvent(new KeyTypedEvent(clone));
                             break;
 
                         case KeyEvent.KEY_PRESSED:
-                            robotPeer.getDisplayEventManager().add(new KeyPressedEvent(clone));
+                            robotPeer.onInteractiveEvent(new KeyPressedEvent(clone));
                             break;
 
                         case KeyEvent.KEY_RELEASED:
-                            robotPeer.getDisplayEventManager().add(new KeyReleasedEvent(clone));
+                            robotPeer.onInteractiveEvent(new KeyReleasedEvent(clone));
                             break;
                         }
                     }

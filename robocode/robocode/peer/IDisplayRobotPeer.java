@@ -11,7 +11,6 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.peer.robot.IDisplayEventManager;
 import robocode.peer.robot.RobotOutputStream;
 
 import java.awt.*;
@@ -57,6 +56,6 @@ public interface IDisplayRobotPeer {
     void d_kill();
     void d_setScan(boolean v);
     void d_setDuplicate(int d);
-    IDisplayEventManager getDisplayEventManager();
+    void onInteractiveEvent(robocode.Event e);
     void onPaint(Graphics2D g);
 }

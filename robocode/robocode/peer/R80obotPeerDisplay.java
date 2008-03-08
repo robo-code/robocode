@@ -12,6 +12,7 @@
 package robocode.peer;
 
 import robocode.robotinterfaces.IBasicEvents;
+import robocode.*;
 
 import java.awt.*;
 
@@ -31,6 +32,11 @@ public class R80obotPeerDisplay extends R70obotPeerRobot implements IDisplayRobo
     public void d_setDuplicate(int d) {
         //TODO ZAMO forward to setDup
         setDuplicate(d);
+    }
+
+    public void onInteractiveEvent(robocode.Event e){
+        //TODO ZAMO, synchronization issue
+        getDisplayEventManager().add(e);
     }
 
     public void onPaint(Graphics2D g){
