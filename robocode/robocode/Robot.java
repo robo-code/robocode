@@ -337,9 +337,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param degrees the amount of degrees to turn the robot's body to the left.
 	 *    If {@code degrees} > 0 the robot will turn left.
 	 *    If {@code degrees} < 0 the robot will turn right.
-	 *    If {@code degrees} = 0 the robot will not turn, but just execute.
+	 *    If {@code degrees} = 0 the robot will not turn, but execute.
 	 *
 	 * @see #turnRight(double) 
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarRight(double)
 	 */
 	public void turnLeft(double degrees) {
 		if (peer != null) {
@@ -370,9 +374,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param degrees the amount of degrees to turn the robot's body to the right.
 	 *    If {@code degrees} > 0 the robot will turn right.
 	 *    If {@code degrees} < 0 the robot will turn left.
-	 *    If {@code degrees} = 0 the robot will not turn, but just execute.
+	 *    If {@code degrees} = 0 the robot will not turn, but execute.
 	 *
 	 * @see #turnLeft(double) 
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarRight(double)
 	 */
 	public void turnRight(double degrees) {
 		if (peer != null) {
@@ -522,7 +530,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @return the gun cooling rate
 	 *
 	 * @see #getGunHeat()
-	 * @see #fire()
+	 * @see #fire(double)
 	 * @see #fireBullet(double)
 	 */
 	public double getGunCoolingRate() {
@@ -568,8 +576,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @return the current gun heat
 	 *
 	 * @see #getGunCoolingRate()
-	 * @see #fire()
-	 * @see #fireBullet()
+	 * @see #fire(double)
+	 * @see #fireBullet(double)
 	 */
 	public double getGunHeat() {
 		if (peer != null) {
@@ -1277,10 +1285,14 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param degrees the amount of degrees to turn the robot's gun to the left.
 	 *    If {@code degrees} > 0 the robot's gun will turn left.
 	 *    If {@code degrees} < 0 the robot's gun will turn right.
-	 *    If {@code degrees} = 0 the robot's gun will not turn, but just execute.
+	 *    If {@code degrees} = 0 the robot's gun will not turn, but execute.
 	 *
-	 * @see #setAdjustGunForRobotTurn(boolean)
 	 * @see #turnGunRight(double)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarRight(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void turnGunLeft(double degrees) {
 		if (peer != null) {
@@ -1311,10 +1323,14 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param degrees the amount of degrees to turn the robot's gun to the right.
 	 *    If {@code degrees} > 0 the robot's gun will turn right.
 	 *    If {@code degrees} < 0 the robot's gun will turn left.
-	 *    If {@code degrees} = 0 the robot's gun will not turn, but just execute.
+	 *    If {@code degrees} = 0 the robot's gun will not turn, but execute.
 	 *
-	 * @see #setAdjustGunForRobotTurn(boolean)
 	 * @see #turnGunLeft(double)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarRight(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void turnGunRight(double degrees) {
 		if (peer != null) {
@@ -1346,11 +1362,15 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param degrees the amount of degrees to turn the robot's radar to the left.
 	 *    If {@code degrees} > 0 the robot's radar will turn left.
 	 *    If {@code degrees} < 0 the robot's radar will turn right.
-	 *    If {@code degrees} = 0 the robot's radar will not turn, but just execute.
+	 *    If {@code degrees} = 0 the robot's radar will not turn, but execute.
 	 *
+	 * @see #turnRadarRight(double)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunRight(double)
 	 * @see #setAdjustRadarForRobotTurn(boolean)
 	 * @see #setAdjustRadarForGunTurn(boolean)
-	 * @see #turnRadarRight(double)
 	 */
 	public void turnRadarLeft(double degrees) {
 		if (peer != null) {
@@ -1381,11 +1401,15 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param degrees the amount of degrees to turn the robot's radar to the right.
 	 *    If {@code degrees} > 0 the robot's radar will turn right.
 	 *    If {@code degrees} < 0 the robot's radar will turn left.
-	 *    If {@code degrees} = 0 the robot's radar will not turn, but just execute.
+	 *    If {@code degrees} = 0 the robot's radar will not turn, but execute.
 	 *
+	 * @see #turnRadarLeft(double)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunRight(double)
 	 * @see #setAdjustRadarForRobotTurn(boolean)
 	 * @see #setAdjustRadarForGunTurn(boolean)
-	 * @see #turnRadarLeft(double)
 	 */
 	public void turnRadarRight(double degrees) {
 		if (peer != null) {

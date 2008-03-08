@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  *     - Changed to use the FileSpecification as local specification instead of
  *       RobotFileSpecification. This change was done in order to support teams
  *     - This class now implements java.io.Serializable
+ *     - Updated the Javadocs
  *******************************************************************************/
 package robocode.control;
 
@@ -22,8 +23,8 @@ import java.io.File;
 
 
 /**
- * Defines a robot.
- * This class is returned from {@link RobocodeEngine#getLocalRepository()}
+ * Defines the properties of a robot, which is returned from
+ * {@link RobocodeEngine#getLocalRepository()}.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -32,26 +33,55 @@ public class RobotSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private robocode.repository.FileSpecification local;
+	private robocode.repository.FileSpecification fileSpecification;
 
-	RobotSpecification(robocode.repository.FileSpecification spec) {
-		this.local = spec;
+	/**
+	 * This constructor is called by the game in order to construct a new
+	 * RobotSpecification.
+	 * 
+	 * @param fileSpecification the file specification of the robot
+	 */
+	RobotSpecification(robocode.repository.FileSpecification fileSpecification) {
+		this.fileSpecification = fileSpecification;
 	}
 
 	/**
-	 * Gets the name of this robot or team
+	 * Returns the name of this robot or team.
 	 * 
-	 * @return the name of this robot or team
+	 * @return the name of this robot or team.
+	 *
+	 * @see #getVersion()
+	 * @see #getNameAndVersion()
 	 */
 	public String getName() {
-		return local.getName();
+		return fileSpecification.getName();
 	}
 
 	/**
-	 * Gets the name and version of this robot or team
-	 * 
-	 * @return the name and version of this robot or team
-	 * 
+	 * Returns the version of this robot or team.
+	 *
+	 * @return the version of this robot or team.
+	 *
+	 * @see #getName()
+	 * @see #getNameAndVersion()
+	 */
+	public String getVersion() {
+		if (fileSpecification.getVersion() != null) {
+			if (fileSpecification.isDevelopmentVersion()) {
+				return fileSpecification.getVersion() + "*";
+			}
+		}
+		return fileSpecification.getVersion();
+	}
+
+	/**
+	 * Returns the name and version of this robot or team.
+	 *
+	 * @return the name and version of this robot or team.
+	 *
+	 * @see #getName()
+	 * @see #getVersion()
+	 *
 	 * @since 1.3
 	 */
 	public String getNameAndVersion() {
@@ -65,70 +95,58 @@ public class RobotSpecification implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the className of this robot
+	 * Returns the full class name of this robot or team.
 	 *
-	 * @return the className of this robot
+	 * @return the full class name of this robot or team.
 	 */
 	public String getClassName() {
-		return local.getFullClassName();
+		return fileSpecification.getFullClassName();
 	}
 
 	/**
-	 * Gets the version of this robot.
+	 * Returns the JAR file containing this robot or team, or {@code null} if it
+	 * does not come from a JAR file (could be class files instead).
 	 *
-	 * @return the version of this robot.
-	 */
-	public String getVersion() {
-		if (local.getVersion() != null) {
-			if (local.isDevelopmentVersion()) {
-				return local.getVersion() + "*";
-			}
-		}
-		return local.getVersion();
-	}
-
-	/**
-	 * Gets the jar file containing this robot.
-	 * This method will return null if the robot does not come from a jar
-	 * @return the jar file containing this robot
+	 * @return the JAR file containing this robot or team, or {@code null} if it
+	 * does not come from a JAR file (could be class files instead).
 	 */
 	public File getJarFile() {
-		return local.getJarFile();
+		return fileSpecification.getJarFile();
 	}
 
 	/**
-	 * Gets the description of this robot
+	 * Returns the description provided by the author of this robot.
 	 *
-	 * @return the description of this robot
+	 * @return the description provided by the author of this robot.
 	 */
 	public String getDescription() {
-		return local.getDescription();
+		return fileSpecification.getDescription();
 	}
 
 	/**
-	 * Gets the version of Robocode this robot was designed for
+	 * Returns the version of Robocode this robot was based on.
 	 *
-	 * @return the version of Robocode this robot was designed for
+	 * @return the version of Robocode this robot was based on.
 	 */
 	public String getRobocodeVersion() {
-		return local.getRobocodeVersion();
+		return fileSpecification.getRobocodeVersion();
 	}
 
 	/**
-	 * Gets this robot's webpage
+	 * Returns the web page for this robot.
 	 *
-	 * @return this robot's webpage
+	 * @return the web page for this robot.
 	 */
 	public String getWebpage() {
-		return (local.getWebpage() != null) ? local.getWebpage().toString() : null;
+		return (fileSpecification.getWebpage() != null) ? fileSpecification.getWebpage().toString() : null;
 	}
 
 	/**
-	 * Gets the name of this robot's author
+	 * Returns the name of this robot's author.
 	 *
-	 * @return the name of this robot's author
+	 * @return the name of this robot's author.
 	 */
 	public String getAuthorName() {
-		return local.getAuthorName();
+		return fileSpecification.getAuthorName();
 	}
 }

@@ -17,7 +17,8 @@ package robocode;
 /**
  * This event is sent to {@link AdvancedRobot#onCustomEvent onCustomEvent} when
  * a custom condition is met. Be sure to reset or remove the custom condition to
- * avoid having it reoccuring repeatedly.
+ * avoid having it reoccuring repeatedly (see the example for the
+ * {@link #getCondition()} method.
  *
  * @see #getCondition
  *
@@ -62,7 +63,7 @@ public class CustomEvent extends Event {
 	 *   public void onCustomEvent(CustomEvent event) {
 	 *       if (event.getCondition().getName().equals("mycondition")) {
 	 *           removeCustomEvent(event.getCondition());
-	 *           doSomethingElse();
+	 *           <i>// do something else</i>
 	 *       }
 	 *   }
 	 * </pre>

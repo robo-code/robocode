@@ -9,10 +9,11 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that has been (re)moved from the robocode.util.Utils class
  *     - Fixed potential NullPointerExceptions
- *     - Code cleanup
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
@@ -29,10 +30,12 @@ import robocode.security.RobocodeSecurityManager;
 
 
 /**
- * RobocodeFileOutputStream is used for streaming/writing data out to a file,
- * which you got by calling {@link AdvancedRobot#getDataFile(String)}.
+ * RobocodeFileOutputStream is similar to a {@link java.io.FileOutputStream}
+ * and is used for streaming/writing data out to a file, which you got
+ * previously by calling {@link AdvancedRobot#getDataFile(String)}.
  * <p>
- * You should read java.io.FileOutputStream for documentation of this class.
+ * You should read {@link java.io.FileOutputStream} for documentation of this
+ * class.
  * <p>
  * Please notice that the max. size of your data file is set to 200000
  * (~195 KB).
@@ -46,45 +49,57 @@ import robocode.security.RobocodeSecurityManager;
 public class RobocodeFileOutputStream extends OutputStream {
 	private static ThreadManager threadManager;
 	private FileOutputStream out;
-	private String name = null;
+	private String fileName;
 	private RobotFileSystemManager fileSystemManager;
 
 	/**
-	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
-	 * @see java.io.FileOutputStream
+	 * Constructs a new RobocodeFileOutputStream.
+	 * See {@link java.io.FileOutputStream#FileOutputStream(File)}
+	 * for documentation about this constructor.
+	 *
+	 * @see java.io.FileOutputStream#FileOutputStream(File)
 	 */
 	public RobocodeFileOutputStream(File file) throws IOException {
 		this(file.getPath());
 	}
 
 	/**
-	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
-	 * @see java.io.FileOutputStream
+	 * Constructs a new RobocodeFileOutputStream.
+	 * See {@link java.io.FileOutputStream#FileOutputStream(FileDescriptor)}
+	 * for documentation about this constructor.
+	 *
+	 * @see java.io.FileOutputStream#FileOutputStream(FileDescriptor)
 	 */
 	public RobocodeFileOutputStream(FileDescriptor fdObj) {
 		throw new RobotException("Creating a RobocodeFileOutputStream with a FileDescriptor is not supported.");
 	}
 
 	/**
-	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
-	 * @see java.io.FileOutputStream
+	 * Constructs a new RobocodeFileOutputStream.
+	 * See {@link java.io.FileOutputStream#FileOutputStream(String)}
+	 * for documentation about this constructor.
+	 *
+	 * @see java.io.FileOutputStream#FileOutputStream(String)
 	 */
-	public RobocodeFileOutputStream(String name) throws java.io.IOException {
-		this(name, false);
+	public RobocodeFileOutputStream(String fileName) throws java.io.IOException {
+		this(fileName, false);
 	}
 
 	/**
-	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
-	 * @see java.io.FileOutputStream
+	 * Constructs a new RobocodeFileOutputStream.
+	 * See {@link java.io.FileOutputStream#FileOutputStream(String, boolean)}
+	 * for documentation about this constructor.
+	 *
+	 * @see java.io.FileOutputStream#FileOutputStream(String, boolean)
 	 */
-	public RobocodeFileOutputStream(String name, boolean append) throws IOException {
+	public RobocodeFileOutputStream(String fileName, boolean append) throws IOException {
 		if (threadManager == null) {
 			Logger.log("RobocodeFileOutputStream.threadManager cannot be null!");
 			return;
 		}
 		Thread c = Thread.currentThread();
 
-		this.name = name;
+		this.fileName = fileName;
 		RobotPeer robotPeer = threadManager.getRobotPeer(c);
 
 		if (robotPeer == null) {
@@ -99,7 +114,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 		this.fileSystemManager = robotPeer.getRobotFileSystemManager();
 
 		// First, we see if the file exists:
-		File f = new File(name);
+		File f = new File(fileName);
 		long len;
 
 		if (f.exists()) {
@@ -124,9 +139,10 @@ public class RobocodeFileOutputStream extends OutputStream {
 	}
 
 	/**
-	 * See java.io.FileOutputStream
+	 * Closes this output stream. See {@link java.io.FileOutputStream#close()}
+	 * for documentation about this method.
 	 *
-	 * @see java.io.FileOutputStream
+	 * @see java.io.FileOutputStream#close()
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -135,9 +151,10 @@ public class RobocodeFileOutputStream extends OutputStream {
 	}
 
 	/**
-	 * See java.io.FileOutputStream
+	 * Flushes this output stream. See {@link java.io.FileOutputStream#flush()}
+	 * for documentation about this method.
 	 *
-	 * @see java.io.FileOutputStream
+	 * @see java.io.FileOutputStream#flush()
 	 */
 	@Override
 	public final void flush() throws IOException {
@@ -145,10 +162,12 @@ public class RobocodeFileOutputStream extends OutputStream {
 	}
 
 	/**
-	 * Returns the filename
+	 * Returns the filename of this output stream.
+	 *
+	 * @return the filename of this output stream.
 	 */
 	public final String getName() {
-		return name;
+		return fileName;
 	}
 
 	/**
@@ -167,9 +186,11 @@ public class RobocodeFileOutputStream extends OutputStream {
 	}
 
 	/**
-	 * See java.io.FileOutputStream
+	 * Writes a byte array to this output stream.
+	 * See {@link java.io.FileOutputStream#write(byte[])} for documentation
+	 * about this method.
 	 *
-	 * @see java.io.FileOutputStream
+	 * @see java.io.FileOutputStream#write(byte[])
 	 */
 	@Override
 	public final void write(byte[] b) throws IOException {
@@ -185,9 +206,11 @@ public class RobocodeFileOutputStream extends OutputStream {
 	}
 
 	/**
-	 * See java.io.FileOutputStream
+	 * Writes a byte array to this output stream.
+	 * See {@link java.io.FileOutputStream#write(byte[], int, int)} for
+	 * documentation about this method.
 	 *
-	 * @see java.io.FileOutputStream
+	 * @see java.io.FileOutputStream#write(byte[], int, int)
 	 */
 	@Override
 	public final void write(byte[] b, int off, int len) throws IOException {
@@ -207,9 +230,11 @@ public class RobocodeFileOutputStream extends OutputStream {
 	}
 
 	/**
-	 * See java.io.FileOutputStream
+	 * Writes a single byte to this output stream.
+	 * See {@link java.io.FileOutputStream#write(int)} for documentation about
+	 * this method.
 	 *
-	 * @see java.io.FileOutputStream
+	 * @see java.io.FileOutputStream#write(int)
 	 */
 	@Override
 	public final void write(int b) throws IOException {

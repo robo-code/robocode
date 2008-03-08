@@ -280,14 +280,16 @@ public interface IBasicRobotPeer {
 	 * in process. This call returns after the actions have been started.
 	 * <p>
 	 * Note that advanced robots <em>must</em> call this function in order to
-	 * execute pending set* calls like e.g. {@link #setAhead(double)},
-	 * {@link #setFire(double)}, {@link #setTurnLeft(double)} etc. Otherwise,
-	 * these calls will never get executed.
+	 * execute pending set* calls like e.g. {@link
+	 * IAdvancedRobotPeer#setMove(double) setMove(double)},
+	 * {@link IAdvancedRobotPeer#setFire(double) setFire(double)}, {@link
+	 * IAdvancedRobotPeer#setTurnBody(double) setTurnBody(double)} etc.
+	 * Otherwise, these calls will never get executed.
 	 * <p>
 	 * In this example the robot will move while turning:
 	 * <pre>
-	 *   setTurnRight(90);
-	 *   setAhead(100);
+	 *   setTurnBody(90);
+	 *   setMove(100);
 	 *   execute();
 	 *
 	 *   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {

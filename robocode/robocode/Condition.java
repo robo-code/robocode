@@ -22,10 +22,11 @@ import robocode.security.RobocodeSecurityManager;
 
 
 /**
- * Condition is used to define custom  AdvancedRobot#waitFor waitFor} and
- * custom events for a {@link AdvancedRobot}. The code below is taken from the
- * sample robot named Target. See Target.java for details.
- * <pre>
+ * Condition is used to define custom  {@link AdvancedRobot#waitFor(Condition)}
+ * and custom events for a {@link AdvancedRobot}. The code below is taken from
+ * the sample robot named {@code sample.Target}. See the
+ * {@code sample/Target.java} for details.
+  * <pre>
  *   addCustomEvent(
  *       new Condition("triggerhit") {
  *           public boolean test() {
@@ -36,7 +37,7 @@ import robocode.security.RobocodeSecurityManager;
  * </pre>
  * You should note that by extending Condition this way, you are actually
  * creating an inner class -- so if you distribute your robot, there will be
- * multiple class files.  (i.e. Target$1.class)
+ * multiple class files. (i.e. {@code Target$1.class})
  *
  * @see AdvancedRobot#waitFor
  * @see AdvancedRobot#addCustomEvent

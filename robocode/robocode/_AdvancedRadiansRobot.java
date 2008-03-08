@@ -88,8 +88,18 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's body to the left
-	 *    If this value is negative, the robot's body is set to turn to the right
+	 * @param radians the amount of radians to turn the robot's body to the left.
+	 *    If {@code radians} > 0 the robot is set to turn left.
+	 *    If {@code radians} < 0 the robot is set to turn right.
+	 *    If {@code radians} = 0 the robot is set to stop turning.
+	 *
+	 * @see AdvancedRobot#setTurnLeft(double) setTurnLeft(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see AdvancedRobot#setTurnRight(double) setTurnRight(double)
+	 * @see AdvancedRobot#setTurnRightRadians(double) setTurnRightRadians(double)
 	 */
 	public void setTurnLeftRadians(double radians) {
 		if (peer != null) {
@@ -124,8 +134,18 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's body to the right
-	 *    If this value is negative, the robot's body is set to turn to the left
+	 * @param radians the amount of radians to turn the robot's body to the right.
+	 *    If {@code radians} > 0 the robot is set to turn right.
+	 *    If {@code radians} < 0 the robot is set to turn left.
+	 *    If {@code radians} = 0 the robot is set to stop turning.
+	 *
+	 * @see AdvancedRobot#setTurnRight(double) setTurnRight(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see AdvancedRobot#setTurnLeft(double) setTurnLeft(double)
+	 * @see AdvancedRobot#setTurnLeftRadians(double) setTurnLeftRadians(double)
 	 */
 	public void setTurnRightRadians(double radians) {
 		if (peer != null) {
@@ -154,8 +174,23 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   turnLeftRadians(-Math.PI / 2);
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's body to the left
-	 *    If this value is negative, the robot's body is set to turn to the right
+	 * @param radians the amount of radians to turn the robot's body to the left.
+	 *    If {@code radians} > 0 the robot will turn right.
+	 *    If {@code radians} < 0 the robot will turn left.
+	 *    If {@code radians} = 0 the robot will not turn, but execute.
+	 *
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void turnLeftRadians(double radians) {
 		if (peer != null) {
@@ -183,8 +218,23 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   turnRightRadians(-Math.PI / 2);
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's body to the right
-	 *    If this value is negative, the robot's body is set to turn to the left
+	 * @param radians the amount of radians to turn the robot's body to the right.
+	 *    If {@code radians} > 0 the robot will turn right.
+	 *    If {@code radians} < 0 the robot will turn left.
+	 *    If {@code radians} = 0 the robot will not turn, but execute.
+	 *
+	 * @see #turnRight(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void turnRightRadians(double radians) {
 		if (peer != null) {
@@ -261,10 +311,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's gun to the left
-	 *    If this value is negative, the robot's gun is set to turn to the right
+	 * @param radians the amount of radians to turn the robot's gun to the left.
+	 *    If {@code radians} > 0 the robot's gun is set to turn left.
+	 *    If {@code radians} < 0 the robot's gun is set to turn right.
+	 *    If {@code radians} = 0 the robot's gun is set to stop turning.
 	 *
-	 * @see Robot#setAdjustGunForRobotTurn
+	 * @see AdvancedRobot#setTurnGunLeft(double) setTurnGunLeft(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see AdvancedRobot#setTurnGunRight(double) setTurnGunRight(double)
+	 * @see AdvancedRobot#setTurnGunRightRadians(double) setTurnGunRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void setTurnGunLeftRadians(double radians) {
 		if (peer != null) {
@@ -299,10 +358,19 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's gun to the right
-	 *    If this value is negative, the robot's gun is set to turn to the left
+	 * @param radians the amount of radians to turn the robot's gun to the right.
+	 *    If {@code radians} > 0 the robot's gun is set to turn left.
+	 *    If {@code radians} < 0 the robot's gun is set to turn right.
+	 *    If {@code radians} = 0 the robot's gun is set to stop turning.
 	 *
-	 * @see Robot#setAdjustGunForRobotTurn
+	 * @see AdvancedRobot#setTurnGunRight(double) setTurnGunRight(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see AdvancedRobot#setTurnGunLeft(double) setTurnGunLeft(double)
+	 * @see AdvancedRobot#setTurnGunLeftRadians(double) setTurnGunLeftRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void setTurnGunRightRadians(double radians) {
 		if (peer != null) {
@@ -337,11 +405,20 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's radar to the left
-	 *    If this value is negative, the robot's radar is set to turn to the right
+	 * @param radians the amount of radians to turn the robot's radar to the left.
+	 *    If {@code radians} > 0 the robot's radar is set to turn left.
+	 *    If {@code radians} < 0 the robot's radar is set to turn right.
+	 *    If {@code radians} = 0 the robot's radar is set to stop turning.
 	 *
-	 * @see Robot#setAdjustRadarForRobotTurn
-	 * @see Robot#setAdjustRadarForGunTurn
+	 * @see AdvancedRobot#setTurnRadarLeft(double) setTurnRadarLeft(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see AdvancedRobot#setTurnRadarRight(double) setTurnRadarRight(double)
+	 * @see AdvancedRobot#setTurnRadarRightRadians(double) setTurnRadarRightRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
 	 */
 	public void setTurnRadarLeftRadians(double radians) {
 		if (peer != null) {
@@ -376,11 +453,20 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's radar to the right
-	 *    If this value is negative, the robot's radar is set to turn to the left
+	 * @param radians the amount of radians to turn the robot's radar to the right.
+	 *    If {@code radians} > 0 the robot's radar is set to turn left.
+	 *    If {@code radians} < 0 the robot's radar is set to turn right.
+	 *    If {@code radians} = 0 the robot's radar is set to stop turning.
 	 *
-	 * @see Robot#setAdjustRadarForRobotTurn
-	 * @see Robot#setAdjustRadarForGunTurn
+	 * @see AdvancedRobot#setTurnRadarRight(double) setTurnRadarRight(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see AdvancedRobot#setTurnRadarLeft(double) setTurnRadarLeft(double)
+	 * @see AdvancedRobot#setTurnRadarLeftRadians(double) setTurnRadarLeftRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
 	 */
 	public void setTurnRadarRightRadians(double radians) {
 		if (peer != null) {
@@ -409,10 +495,23 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   turnGunLeftRadians(-Math.PI / 2);
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's gun to the left
-	 *    If this value is negative, the robot's gun is set to turn to the right
+	 * @param radians the amount of radians to turn the robot's gun to the left.
+	 *    If {@code radians} > 0 the robot's gun will turn left.
+	 *    If {@code radians} < 0 the robot's gun will turn right.
+	 *    If {@code radians} = 0 the robot's gun will not turn, but execute.
 	 *
-	 * @see Robot#setAdjustGunForRobotTurn
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void turnGunLeftRadians(double radians) {
 		if (peer != null) {
@@ -440,10 +539,23 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   turnGunRightRadians(-Math.PI / 2);
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's gun to the right
-	 *    If this value is negative, the robot's gun is set to turn to the left
+	 * @param radians the amount of radians to turn the robot's gun to the right.
+	 *    If {@code radians} > 0 the robot's gun will turn right.
+	 *    If {@code radians} < 0 the robot's gun will turn left.
+	 *    If {@code radians} = 0 the robot's gun will not turn, but execute.
 	 *
-	 * @see Robot#setAdjustGunForRobotTurn
+	 * @see #turnGunRight(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void turnGunRightRadians(double radians) {
 		if (peer != null) {
@@ -472,11 +584,24 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   turnRadarLeftRadians(-Math.PI / 2);
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's radar to the left
-	 *    If this value is negative, the robot's radar is set to turn to the right
+	 * @param radians the amount of radians to turn the robot's radar to the left.
+	 *    If {@code radians} > 0 the robot's radar will turn left.
+	 *    If {@code radians} < 0 the robot's radar will turn right.
+	 *    If {@code radians} = 0 the robot's radar will not turn, but execute.
 	 *
-	 * @see Robot#setAdjustRadarForRobotTurn
-	 * @see Robot#setAdjustRadarForGunTurn
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
 	 */
 	public void turnRadarLeftRadians(double radians) {
 		if (peer != null) {
@@ -504,11 +629,24 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 *   turnRadarRightRadians(-Math.PI / 2);
 	 * </pre>
 	 *
-	 * @param radians the amount of radians to turn the robot's radar to the right
-	 *    If this value is negative, the robot's radar is set to turn to the left
+	 * @param radians the amount of radians to turn the robot's radar to the right.
+	 *    If {@code radians} > 0 the robot's radar will turn right.
+	 *    If {@code radians} < 0 the robot's radar will turn left.
+	 *    If {@code radians} = 0 the robot's radar will not turn, but execute.
 	 *
-	 * @see Robot#setAdjustRadarForRobotTurn
-	 * @see Robot#setAdjustRadarForGunTurn
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
 	 */
 	public void turnRadarRightRadians(double radians) {
 		if (peer != null) {
@@ -526,6 +664,12 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * means that the gun is currently turning to the left.
 	 *
 	 * @return the angle remaining in the gun's turn, in radians
+	 *
+	 * @see AdvancedRobot#getGunTurnRemaining()
+	 * @see AdvancedRobot#getTurnRemaining() getTurnRemaining()
+	 * @see #getTurnRemainingRadians()
+	 * @see AdvancedRobot#getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians()
 	 */
 	public double getGunTurnRemainingRadians() {
 		if (peer != null) {
@@ -543,6 +687,12 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * means that the radar is currently turning to the left.
 	 *
 	 * @return the angle remaining in the radar's turn, in radians
+	 *
+	 * @see AdvancedRobot#getRadarTurnRemaining()
+	 * @see AdvancedRobot#getTurnRemaining() getTurnRemaining()
+	 * @see #getTurnRemainingRadians()
+	 * @see AdvancedRobot#getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians()
 	 */
 	public double getRadarTurnRemainingRadians() {
 		if (peer != null) {
@@ -560,6 +710,12 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 * means that the robot is currently turning to the left.
 	 *
 	 * @return the angle remaining in the robot's turn, in radians
+	 *
+	 * @see AdvancedRobot#getTurnRemaining()
+	 * @see AdvancedRobot#getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians()
+	 * @see AdvancedRobot#getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians()
 	 */
 	public double getTurnRemainingRadians() {
 		if (peer != null) {

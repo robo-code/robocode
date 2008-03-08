@@ -58,9 +58,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @return the distance remaining in the robot's current move measured in
 	 *    pixels.
 	 *
-	 * @see #getTurnRemaining()
-	 * @see #getGunTurnRemaining()
-	 * @see #getRadarTurnRemaining()
+	 * @see #getTurnRemaining() getTurnRemaining()
+	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
+	 * @see #getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
+	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
 	 */
 	public double getDistanceRemaining() {
 		if (peer != null) {
@@ -80,9 +83,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @return the angle remaining in the robots's turn, in degrees
 	 *
-	 * @see #getDistanceRemaining()
-	 * @see #getGunTurnRemaining()
-	 * @see #getRadarTurnRemaining()
+	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
+	 * @see #getDistanceRemaining() getDistanceRemaining()
+	 * @see #getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
+	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
 	 */
 	public double getTurnRemaining() {
 		if (peer != null) {
@@ -102,9 +108,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @return the angle remaining in the gun's turn, in degrees
 	 *
-	 * @see #getDistanceRemaining()
-	 * @see #getTurnRemaining()
-	 * @see #getRadarTurnRemaining()
+	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
+	 * @see #getDistanceRemaining() getDistanceRemaining()
+	 * @see #getTurnRemaining() getTurnRemaining()
+	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
+	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
 	 */
 	public double getGunTurnRemaining() {
 		if (peer != null) {
@@ -124,9 +133,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @return the angle remaining in the radar's turn, in degrees
 	 *
-	 * @see #getDistanceRemaining()
-	 * @see #getGunTurnRemaining()
-	 * @see #getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+	 * @see #getDistanceRemaining() getDistanceRemaining()
+	 * @see #getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
+	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
 	 */
 	public double getRadarTurnRemaining() {
 		if (peer != null) {
@@ -168,6 +180,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    If {@code distance} > 0 the robot is set to move ahead.
 	 *    If {@code distance} < 0 the robot is set to move back.
 	 *    If {@code distance} = 0 the robot is set to stop its movement.
+	 *
+	 * @see #ahead(double) ahead(double)
+	 * @see #back(double) back(double)
+	 * @see #setBack(double)
 	 */
 	public void setAhead(double distance) {
 		if (peer != null) {
@@ -209,6 +225,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    If {@code distance} > 0 the robot is set to move back.
 	 *    If {@code distance} < 0 the robot is set to move ahead.
 	 *    If {@code distance} = 0 the robot is set to stop its movement.
+	 *
+	 * @see #back(double) back(double)
+	 * @see #ahead(double) ahead(double)
+	 * @see #setAhead(double)
 	 */
 	public void setBack(double distance) {
 		if (peer != null) {
@@ -243,8 +263,18 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's body to the left
-	 *    If this value is negative, the robot's body is set to turn to the right
+	 * @param degrees the amount of degrees to turn the robot's body to the left.
+	 *    If {@code degrees} > 0 the robot is set to turn left.
+	 *    If {@code degrees} < 0 the robot is set to turn right.
+	 *    If {@code degrees} = 0 the robot is set to stop turning.
+	 *
+	 * @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
+	 * @see #turnLeft(double) turnLeft(double)
+	 * @see #turnLeftRadians(double) turnLeftRadians(double)
+	 * @see #turnRight(double) turnRight(double)
+	 * @see #turnRightRadians(double) turnRightRadians(double)
+	 * @see #setTurnRight(double) setTurnRight(double)
+	 * @see #setTurnRightRadians(double) setTurnRightRadians(double)
 	 */
 	public void setTurnLeft(double degrees) {
 		if (peer != null) {
@@ -279,8 +309,18 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's body to the right
-	 *    If this value is negative, the robot's body is set to turn to the left
+	 * @param degrees the amount of degrees to turn the robot's body to the right.
+	 *    If {@code degrees} > 0 the robot is set to turn right.
+	 *    If {@code degrees} < 0 the robot is set to turn left.
+	 *    If {@code degrees} = 0 the robot is set to stop turning.
+	 *
+	 * @see #setTurnRightRadians(double) setTurnRightRadians(double)
+	 * @see #turnRight(double) turnRight(double)
+	 * @see #turnRightRadians(double) turnRightRadians(double)
+	 * @see #turnLeft(double) turnLeft(double)
+	 * @see #turnLeftRadians(double) turnLeftRadians(double)
+	 * @see #setTurnLeft(double) setTurnLeft(double)
+	 * @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
 	 */
 	public void setTurnRight(double degrees) {
 		if (peer != null) {
@@ -311,7 +351,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
 	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link Robot#getGunHeat()} returns a value > 0.
+	 * {@link #getGunHeat()} returns a value > 0.
 	 * <p>
 	 * An event is generated when the bullet hits a robot, wall, or another
 	 * bullet.
@@ -329,14 +369,14 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @param power the amount of energy given to the bullet, and subtracted
 	 *     from the robot's energy.
 	 *
-	 * @see #setFireBullet
-	 * @see Robot#fire
-	 * @see Robot#fireBullet
-	 * @see Robot#getGunHeat
-	 * @see Robot#getGunCoolingRate
-	 * @see Robot#onBulletHit
-	 * @see Robot#onBulletHitBullet
-	 * @see Robot#onBulletMissed
+	 * @see #setFireBullet(double)
+	 * @see #fire(double) fire(double)
+	 * @see #fireBullet(double) fireBullet(double)
+	 * @see #getGunHeat() getGunHeat()
+	 * @see #getGunCoolingRate() getGunCoolingRate()
+	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
 	 */
 	public void setFire(double power) {
 		if (peer != null) {
@@ -367,7 +407,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
 	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link Robot#getGunHeat()} returns a value > 0.
+	 * {@link #getGunHeat()} returns a value > 0.
 	 * <p>
 	 * An event is generated when the bullet hits a robot, wall, or another
 	 * bullet.
@@ -391,15 +431,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    was actually fired, which can be used for tracking the bullet after it
 	 *    has been fired. If the bullet was not fired, {@code null} is returned.
 	 *
-	 * @see #setFire
+	 * @see #setFire(double)
 	 * @see Bullet
-	 * @see Robot#fire
-	 * @see Robot#fireBullet
-	 * @see Robot#getGunHeat
-	 * @see Robot#getGunCoolingRate
-	 * @see Robot#onBulletHit
-	 * @see Robot#onBulletHitBullet
-	 * @see Robot#onBulletMissed
+	 * @see #fire(double) fire(double)
+	 * @see #fireBullet(double) fireBullet(double)
+	 * @see #getGunHeat() getGunHeat()
+	 * @see #getGunCoolingRate() getGunCoolingRate()
+	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
 	 */
 	public Bullet setFireBullet(double power) {
 		if (peer != null) {
@@ -485,11 +525,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (Event e : getAllEvents()) {
-	 *       if (e instanceof HitRobotEvent) {
-	 *           // do something with e
-	 *       } else if (e instanceof HitByBulletEvent) {
-	 *           // do something else with e
+	 *   for (Event event : getAllEvents()) {
+	 *       if (event instanceof HitRobotEvent) {
+	 *           <i>// do something with the event</i>
+	 *       } else if (event instanceof HitByBulletEvent) {
+	 *           <i>// do something with the event</i>
 	 *       }
 	 *   }
 	 * </pre>
@@ -508,19 +548,19 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @see DeathEvent
 	 * @see WinEvent
 	 * @see MessageEvent
-	 * @see #onScannedRobot
-	 * @see #onBulletHit
-	 * @see #onBulletHitBullet
-	 * @see #onBulletMissed
-	 * @see #onHitByBullet
-	 * @see #onHitRobot
-	 * @see #onHitWall
-	 * @see #onSkippedTurn
-	 * @see #onCustomEvent
-	 * @see #onDeath
-	 * @see #onRobotDeath
-	 * @see #onWin
-	 * @see TeamRobot#onMessageReceived
+	 * @see #onScannedRobot(ScannedRobotEvent) onScannedRobot(ScannedRobotEvent)
+	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
+	 * @see #onHitByBullet(HitByBulletEvent) onHitByBullet(HitByBulletEvent)
+	 * @see #onHitRobot(HitRobotEvent) onHitRobot(HitRobotEvent)
+	 * @see #onHitWall(HitWallEvent) onHitWall(HitWallEvent)
+	 * @see #onSkippedTurn(SkippedTurnEvent) onSkippedTurn(SkippedTurnEvent)
+	 * @see #onCustomEvent(CustomEvent) onCustomEvent(CustomEvent)
+	 * @see #onDeath(DeathEvent)
+	 * @see #onRobotDeath(RobotDeathEvent) onDeath(DeathEvent)
+	 * @see #onWin(WinEvent) onWin(WinEvent)
+	 * @see TeamRobot#onMessageReceived(MessageEvent)
 	 */
 	public Vector<Event> getAllEvents() {
 		if (peer != null) {
@@ -537,15 +577,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
-	 *      // do something with e
+	 *   for (BulletHitBulletEvent event : getBulletHitBulletEvents()) {
+	 *       <i>// do something with the event</i>
 	 *   }
 	 * </pre>
 	 *
 	 * @return a vector containing all BulletHitBulletEvents currently in the
 	 *    robot's queue
 	 *
-	 * @see #onBulletHitBullet
+	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
 	 * @see BulletHitBulletEvent
 	 */
 	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
@@ -562,15 +602,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (BulletHitEvent : getBulletHitEvents()) {
-	 *      // do something with e
+	 *   for (BulletHitEvent event: getBulletHitEvents()) {
+	 *       <i>// do something with the event</i>
 	 *   }
 	 * </pre>
 	 *
 	 * @return a vector containing all BulletHitEvents currently in the robot's
 	 *    queue
 	 *
-	 * @see #onBulletHit
+	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
 	 * @see BulletHitEvent
 	 */
 	public Vector<BulletHitEvent> getBulletHitEvents() {
@@ -588,15 +628,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (BulletMissedEvent e : getBulletMissedEvents()) {
-	 *      // do something with e
+	 *   for (BulletMissedEvent event : getBulletMissedEvents()) {
+	 *       <i>// do something with the event</i>
 	 *   }
 	 * </pre>
 	 *
 	 * @return a vector containing all BulletMissedEvents currently in the
 	 *    robot's queue
 	 *
-	 * @see #onBulletMissed
+	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
 	 * @see BulletMissedEvent
 	 */
 	public Vector<BulletMissedEvent> getBulletMissedEvents() {
@@ -617,7 +657,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @return a file representing the data directory for your robot
 	 *
-	 * @see #getDataFile
+	 * @see #getDataFile(String)
 	 * @see RobocodeFileOutputStream
 	 */
 	public File getDataDirectory() {
@@ -643,7 +683,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @param filename the file name of the data file
 	 * @return a file representing the data file for your robot
 	 *
-	 * @see #getDataDirectory
+	 * @see #getDataDirectory()
 	 * @see RobocodeFileOutputStream
 	 * @see RobocodeFileWriter
 	 */
@@ -661,7 +701,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @return the amount of bytes left in the robot's data directory
 	 *
-	 * @see #getDataDirectory
+	 * @see #getDataDirectory()
 	 */
 	public long getDataQuotaAvailable() {
 		if (peer != null) {
@@ -684,7 +724,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @param eventClass the name of the event class (string)
 	 * @return the current priority of a class of events
 	 *
-	 * @see #setEventPriority
+	 * @see #setEventPriority(String, int)
 	 */
 	public int getEventPriority(String eventClass) {
 		if (peer != null) {
@@ -701,15 +741,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (HitByBulletEvent e : getHitByBulletEvents()) {
-	 *      // do something with e
+	 *   for (HitByBulletEvent event : getHitByBulletEvents()) {
+	 *       <i>// do something with the event</i>
 	 *   }
 	 * </pre>
 	 *
 	 * @return a vector containing all HitByBulletEvents currently in the
 	 *    robot's queue
 	 *
-	 * @see #onHitByBullet
+	 * @see #onHitByBullet(HitByBulletEvent) onHitByBullet(HitByBulletEvent)
 	 * @see HitByBulletEvent
 	 */
 	public Vector<HitByBulletEvent> getHitByBulletEvents() {
@@ -726,15 +766,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (HitRobotEvent e : getHitRobotEvents()) {
-	 *      // do something with e
+	 *   for (HitRobotEvent event : getHitRobotEvents()) {
+	 *       <i>// do something with the event</i>
 	 *   }
 	 * </pre>
 	 *
 	 * @return a vector containing all HitRobotEvents currently in the robot's
 	 *    queue
 	 *
-	 * @see #onHitRobot
+	 * @see #onHitRobot(HitRobotEvent) onHitRobot(HitRobotEvent)
 	 * @see HitRobotEvent
 	 */
 	public Vector<HitRobotEvent> getHitRobotEvents() {
@@ -751,15 +791,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (HitWallEvent e : getHitWallEvents()) {
-	 *      // do something with e
+	 *   for (HitWallEvent event : getHitWallEvents()) {
+	 *       <i>// do something with the event</i>
 	 *   }
 	 * </pre>
 	 *
 	 * @return a vector containing all HitWallEvents currently in the robot's
 	 *    queue
 	 *
-	 * @see #onHitWall
+	 * @see #onHitWall(HitWallEvent) onHitWall(HitWallEvent)
 	 * @see HitWallEvent
 	 */
 	public Vector<HitWallEvent> getHitWallEvents() {
@@ -776,15 +816,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (RobotDeathEvent e : getRobotDeathEvents()) {
-	 *      // do something with e
+	 *   for (RobotDeathEvent event : getRobotDeathEvents()) {
+	 *       <i>// do something with the event</i>
 	 *   }
 	 * </pre>
 	 *
 	 * @return a vector containing all RobotDeathEvents currently in the robot's
 	 *    queue
 	 *
-	 * @see #onRobotDeath
+	 * @see #onRobotDeath(RobotDeathEvent) onRobotDeath(RobotDeathEvent)
 	 * @see RobotDeathEvent
 	 */
 	public Vector<RobotDeathEvent> getRobotDeathEvents() {
@@ -802,15 +842,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   for (ScannedRobotEvent e : getScannedRobotEvents()) {
-	 *      // do something with e
+	 *   for (ScannedRobotEvent event : getScannedRobotEvents()) {
+	 *       <i>// do something with the event</i>
 	 *   }
 	 * </pre>
 	 *
 	 * @return a vector containing all ScannedRobotEvents currently in the
 	 *    robot's queue
 	 *
-	 * @see #onScannedRobot
+	 * @see #onScannedRobot(ScannedRobotEvent) onScannedRobot(ScannedRobotEvent)
 	 * @see ScannedRobotEvent
 	 */
 	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
@@ -833,7 +873,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    turning; {@code false} if the gun is set to turn with the robot
 	 *    turning
 	 *
-	 * @see #setAdjustGunForRobotTurn(boolean)
+	 * @see #setAdjustGunForRobotTurn(boolean) setAdjustGunForRobotTurn(boolean)
 	 * @see #isAdjustRadarForRobotTurn()
 	 * @see #isAdjustRadarForGunTurn()
 	 */
@@ -857,7 +897,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    turning; {@code false} if the radar is set to turn with the robot
 	 *    turning
 	 *
-	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForRobotTurn(boolean) setAdjustRadarForRobotTurn(boolean)
 	 * @see #isAdjustGunForRobotTurn()
 	 * @see #isAdjustRadarForGunTurn()
 	 */
@@ -881,7 +921,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    turning; {@code false} if the radar is set to turn with the gun
 	 *    turning
 	 *
-	 * @see #setAdjustRadarForGunTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean) setAdjustRadarForGunTurn(boolean)
 	 * @see #isAdjustGunForRobotTurn()
 	 * @see #isAdjustRadarForRobotTurn()
 	 */
@@ -907,7 +947,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *     allowed, and will cause a NullPointerException.
 	 * @throws NullPointerException if the condition parameter has been set to null.
 	 *
-	 * @see #addCustomEvent
+	 * @see #addCustomEvent(Condition)
 	 */
 	public void removeCustomEvent(Condition condition) {
 		if (condition == null) {
@@ -961,8 +1001,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    priority for
 	 * @param priority the new priority for that event class
 	 *
-	 * @see Robot#setInterruptible
-	 * 
+	 * @see #setInterruptible(boolean)
+	 *
 	 * @since 1.5, the priority of DeathEvent was changed from 100 to -1 in
 	 *    order to let robots process pending events on its event queue before
 	 *    it dies. When the robot dies, it will not be able to process events.
@@ -1037,15 +1077,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Sets the robot to resume the movement stopped by {@link Robot#stop()
-	 * stop()} or {@link #setStop()}, if any.
+	 * Sets the robot to resume the movement stopped by {@link #stop() stop()}
+	 * or {@link #setStop()}, if any.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link #execute()} or take an action that executes.
 	 *
-	 * @see Robot#resume() resume()
-	 * @see Robot#stop() stop()
-	 * @see Robot#stop(boolean) stop(boolean)
+	 * @see #resume() resume()
+	 * @see #stop() stop()
+	 * @see #stop(boolean) stop(boolean)
 	 * @see #setStop()
 	 * @see #setStop(boolean)
 	 * @see #execute()
@@ -1059,18 +1099,18 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * This call is identical to {@link Robot#stop() stop()}, but returns
-	 * immediately, and will not execute until you call {@link #execute()} or
-	 * take an action that executes.
+	 * This call is identical to {@link #stop() stop()}, but returns immediately, and
+	 * will not execute until you call {@link #execute()} or take an action that
+	 * executes.
 	 * <p>
 	 * If there is already movement saved from a previous stop, this will have
 	 * no effect.
 	 * <p>
 	 * This call is equivalent to calling {@code setStop(false)};
 	 *
-	 * @see Robot#stop() stop()
-	 * @see Robot#stop(boolean) stop()
-	 * @see Robot#resume() resume()
+	 * @see #stop() stop()
+	 * @see #stop(boolean) stop(boolean)
+	 * @see #resume() resume()
 	 * @see #setResume()
 	 * @see #setStop(boolean)
 	 * @see #execute()
@@ -1080,7 +1120,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * This call is identical to {@link Robot#stop(boolean) stop(boolean)}, but
+	 * This call is identical to {@link #stop(boolean) stop(boolean)}, but
 	 * returns immediately, and will not execute until you call
 	 * {@link #execute()} or take an action that executes.
 	 * <p>
@@ -1090,9 +1130,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @param overwrite {@code true} if the movement saved from a previous stop
 	 *    should be overwritten; {@code false} otherwise.
 	 *
-	 * @see Robot#stop() stop()
-	 * @see Robot#stop(boolean) stop(boolean)
-	 * @see Robot#resume() resume()
+	 * @see #stop() stop()
+	 * @see #stop(boolean) stop(boolean)
+	 * @see #resume() resume()
 	 * @see #setResume()
 	 * @see #setStop()
 	 * @see #execute()
@@ -1130,10 +1170,19 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's gun to the left
-	 *    If this value is negative, the robot's gun is set to turn to the right
+	 * @param degrees the amount of degrees to turn the robot's gun to the left.
+	 *    If {@code degrees} > 0 the robot's gun is set to turn left.
+	 *    If {@code degrees} < 0 the robot's gun is set to turn right.
+	 *    If {@code degrees} = 0 the robot's gun is set to stop turning.
 	 *
-	 * @see Robot#setAdjustGunForRobotTurn
+	 * @see #setTurnGunLeftRadians(double) setTurnGunLeftRadians(double)
+	 * @see #turnGunLeft(double) turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double) turnGunLeftRadians(double)
+	 * @see #turnGunRight(double) turnGunRight(double)
+	 * @see #turnGunRightRadians(double) turnGunRightRadians(double)
+	 * @see #setTurnGunRight(double) setTurnGunRight(double)
+	 * @see #setTurnGunRightRadians(double) setTurnGunRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean) setAdjustGunForRobotTurn(boolean)
 	 */
 	public void setTurnGunLeft(double degrees) {
 		if (peer != null) {
@@ -1168,10 +1217,19 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's gun to the right
-	 *    If this value is negative, the robot's gun is set to turn to the left
+	 * @param degrees the amount of degrees to turn the robot's gun to the right.
+	 *    If {@code degrees} > 0 the robot's gun is set to turn right.
+	 *    If {@code degrees} < 0 the robot's gun is set to turn left.
+	 *    If {@code degrees} = 0 the robot's gun is set to stop turning.
 	 *
-	 * @see Robot#setAdjustGunForRobotTurn
+	 * @see #setTurnGunRightRadians(double) setTurnGunRightRadians(double)
+	 * @see #turnGunRight(double) turnGunRight(double)
+	 * @see #turnGunRightRadians(double) turnGunRightRadians(double)
+	 * @see #turnGunLeft(double) turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double) turnGunLeftRadians(double)
+	 * @see #setTurnGunLeft(double) setTurnGunLeft(double)
+	 * @see #setTurnGunLeftRadians(double) setTurnGunLeftRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean) setAdjustGunForRobotTurn(boolean)
 	 */
 	public void setTurnGunRight(double degrees) {
 		if (peer != null) {
@@ -1206,11 +1264,20 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's radar to the left
-	 *    If this value is negative, the robot's radar is set to turn to the right
+	 * @param degrees the amount of degrees to turn the robot's radar to the left.
+	 *    If {@code degrees} > 0 the robot's radar is set to turn left.
+	 *    If {@code degrees} < 0 the robot's radar is set to turn right.
+	 *    If {@code degrees} = 0 the robot's radar is set to stop turning.
 	 *
-	 * @see Robot#setAdjustRadarForRobotTurn
-	 * @see Robot#setAdjustRadarForGunTurn
+	 * @see #setTurnRadarLeftRadians(double) setTurnRadarLeftRadians(double)
+	 * @see #turnRadarLeft(double) turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double) turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double) turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double) turnRadarRightRadians(double)
+	 * @see #setTurnRadarRight(double) setTurnRadarRight(double)
+	 * @see #setTurnRadarRightRadians(double) setTurnRadarRightRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean) setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean) setAdjustRadarForGunTurn(boolean)
 	 */
 	public void setTurnRadarLeft(double degrees) {
 		if (peer != null) {
@@ -1245,11 +1312,20 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   execute();
 	 * </pre>
 	 *
-	 * @param degrees the amount of degrees to turn the robot's radar to the right
-	 *    If this value is negative, the robot's radar is set to turn to the left
+	 * @param degrees the amount of degrees to turn the robot's radar to the right.
+	 *    If {@code degrees} > 0 the robot's radar is set to turn right.
+	 *    If {@code degrees} < 0 the robot's radar is set to turn left.
+	 *    If {@code degrees} = 0 the robot's radar is set to stop turning.
 	 *
-	 * @see Robot#setAdjustRadarForRobotTurn
-	 * @see Robot#setAdjustRadarForGunTurn
+	 * @see #setTurnRadarRightRadians(double) setTurnRadarRightRadians(double)
+	 * @see #turnRadarRight(double) turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double) turnRadarRightRadians(double)
+	 * @see #turnRadarLeft(double) turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double) turnRadarLeftRadians(double)
+	 * @see #setTurnRadarLeft(double) setTurnRadarLeft(double)
+	 * @see #setTurnRadarLeftRadians(double) setTurnRadarLeftRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean) setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean) setAdjustRadarForGunTurn(boolean)
 	 */
 	public void setTurnRadarRight(double degrees) {
 		if (peer != null) {

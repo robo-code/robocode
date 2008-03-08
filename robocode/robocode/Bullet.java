@@ -18,8 +18,9 @@ import robocode.peer.BulletPeer;
 
 
 /**
- * Represents a bullet. This is returned from fireBullet() and setFireBullet(),
- * and all the bullet-related events.
+ * Represents a bullet. This is returned from {@link Robot#fireBullet(double)}
+ * and {@link AdvancedRobot#setFireBullet(double)}, and all the bullet-related
+ * events.
  *
  * @see Robot#fireBullet
  * @see AdvancedRobot#setFireBullet
