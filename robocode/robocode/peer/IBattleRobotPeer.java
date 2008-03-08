@@ -28,13 +28,8 @@ import java.io.File;
  * @author Pavel Savara (original)
  */
 public interface IBattleRobotPeer extends IBattleReaderRobotPeer, IBattleWriterRobotPeer, IContestantPeer {
-    Color getBodyColor();
-    Color getGunColor();
-    Color getRadarColor();
-    Color getScanColor();
-    Color getBulletColor();
 
-    
+    IBasicRobot getRobot();    
     String getName();
     RobotOutputStream getOut();
     RobotThreadManager getRobotThreadManager();
@@ -58,6 +53,7 @@ public interface IBattleRobotPeer extends IBattleReaderRobotPeer, IBattleWriterR
     void b_setHalt(boolean h);
     void b_setDuplicate(int d);
     void b_setRecord(RobotRecord rr);
+    void adjustGunHeat(double diference);
 
     TeamPeer getTeamPeer();
     BoundingRectangle getBoundingBox();

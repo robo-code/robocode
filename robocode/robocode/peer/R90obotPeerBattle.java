@@ -11,12 +11,10 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.Rules;
-import robocode.HitWallEvent;
-import robocode.HitRobotEvent;
-import robocode.DeathEvent;
+import robocode.*;
 import robocode.battle.record.RobotRecord;
 import static robocode.util.Utils.normalRelativeAngle;
+import static robocode.util.Utils.normalAbsoluteAngle;
 
 import java.util.List;
 import static java.lang.Math.min;
@@ -29,11 +27,12 @@ import static java.lang.Math.tan;
 import static java.lang.Math.atan2;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.awt.geom.Arc2D;
 
 /**
  * @author Pavel Savara (original)
  */
-public class R90obotPeerBattle extends R88obotPeerBattleData implements IBattleRobotPeer {
+public class R90obotPeerBattle extends R88obotPeerBattleData {
     public static final int
             WIDTH = 40,
             HEIGHT = 40;
@@ -60,11 +59,11 @@ public class R90obotPeerBattle extends R88obotPeerBattleData implements IBattleR
         setVelocity(0);
         setAcceleration(0);
 
-        if (isTeamLeader() && isDroid()) {
+        if (isTeamLeader() && info.isDroid()) {
             setEnergy(220);
         } else if (isTeamLeader()) {
             setEnergy(200);
-        } else if (isDroid()) {
+        } else if (info.isDroid()) {
             setEnergy(120);
         } else {
             setEnergy(100);
@@ -100,7 +99,7 @@ public class R90obotPeerBattle extends R88obotPeerBattleData implements IBattleR
         setAdjustRadarForBodyTurn(false);
         setAdjustRadarForGunTurn(false);
         setAdjustRadarForBodyTurnSet(false);
-        setNewBullet(null);
+        setCurrentBullet(null);
 
     }
 
@@ -166,7 +165,7 @@ public class R90obotPeerBattle extends R88obotPeerBattleData implements IBattleR
                     if (!(teammate.isDead() || teammate == this)) {
                         teammate.setEnergy(teammate.getEnergy() - 30);
 
-                        BulletPeer sBullet = new BulletPeer(this, getBattle());
+                        BulletPeer sBullet = new BulletPeer((IBattleRobotPeer)this, getBattle());
 
                         sBullet.setState(BulletPeer.STATE_HIT_VICTIM);
                         sBullet.setX(teammate.getX());
@@ -180,7 +179,7 @@ public class R90obotPeerBattle extends R88obotPeerBattleData implements IBattleR
             getBattle().generateDeathEvents((RobotPeer)this);
 
             // 'fake' bullet for explosion on self
-            getBattle().addBullet(new ExplosionPeer(this, getBattle()));
+            getBattle().addBullet(new ExplosionPeer((IBattleRobotPeer)this, getBattle()));
         }
         setEnergy(0);
 
@@ -237,22 +236,6 @@ public class R90obotPeerBattle extends R88obotPeerBattleData implements IBattleR
             }
         }
     }
-
-    public void b_setHalt(boolean h) {
-        //TODO ZAMO synchronize
-        setHalt(h);
-    }
-
-    public void b_setDuplicate(int d) {
-        //TODO ZAMO synchronize
-        setDuplicate(d);
-    }
-
-    public void b_setRecord(RobotRecord rr) {
-        //TODO ZAMO synchronize
-        setRecord(rr);
-    }
-
 
     private void updateGunHeat() {
         setGunHeat(getGunHeat() - getBattle().getGunCoolingRate());
@@ -599,8 +582,8 @@ public class R90obotPeerBattle extends R88obotPeerBattleData implements IBattleR
 
                     getRobotStatistics().scoreRammingDamage(i);
 
-                    this.setEnergy(getEnergy() - Rules.ROBOT_HIT_DAMAGE);
-                    r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
+                    this.b_setEnergy(getEnergy() - Rules.ROBOT_HIT_DAMAGE);
+                    r.b_setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
 
                     if (r.getEnergy() == 0) {
                         if (r.isAlive()) {
@@ -634,6 +617,51 @@ public class R90obotPeerBattle extends R88obotPeerBattleData implements IBattleR
 
     public void updateBoundingBox() {
         getBoundingBox().setRect(getX() - WIDTH / 2 + 2, getY() - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
+    }
+
+    public void b_setState(int newState) {
+        //TODO ZAMO
+        setState(newState);
+    }
+
+    public void b_setWinner(boolean w) {
+        //TODO ZAMO
+        setWinner(w);
+    }
+
+    public void b_setEnergy(double e) {
+        //TODO ZAMO
+        setEnergy(e);
+    }
+
+    public void b_setSkippedTurns(int s) {
+        //TODO ZAMO
+        setSkippedTurns(s);
+    }
+
+    public BulletPeer b_getCurrentBullet() {
+        //TODO ZAMO synchronize
+        return getCurrentBullet();
+    }
+
+    public void b_setCurrentBullet(BulletPeer currentBullet) {
+        //TODO ZAMO synchronize
+        setCurrentBullet(currentBullet);
+    }
+
+    public void b_setHalt(boolean h) {
+        //TODO ZAMO synchronize
+        setStopping(h);
+    }
+
+    public void b_setDuplicate(int d) {
+        //TODO ZAMO synchronize
+        setDuplicate(d);
+    }
+
+    public void b_setRecord(RobotRecord rr) {
+        //TODO ZAMO synchronize
+        setRecord(rr);
     }
 
 }

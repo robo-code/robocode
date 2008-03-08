@@ -17,7 +17,7 @@
  *       that have been (re)moved from the robocode.util.Utils class
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -56,7 +56,8 @@ public class RobotClassManager {
 
 	/**
 	 * RobotClassHandler constructor
-	 */
+     * @param robotFileSpecification specification
+     */
 	public RobotClassManager(RobotFileSpecification robotFileSpecification) {
 		this(robotFileSpecification, null);
 	}
@@ -165,7 +166,7 @@ public class RobotClassManager {
 	/**
 	 * Sets the robotSpecification.
 	 *
-	 * @param robotSpecification The robotSpecification to set
+	 * @param controlRobotSpecification The robotSpecification to set
 	 */
 	public void setControlRobotSpecification(robocode.control.RobotSpecification controlRobotSpecification) {
 		this.controlRobotSpecification = controlRobotSpecification;

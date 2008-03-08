@@ -19,7 +19,7 @@
  *     - Changed the column names to be more informative and equal in width
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *     Nathaniel Troutman
  *     - Added sanity check on battle object in getRowCount()
  *******************************************************************************/

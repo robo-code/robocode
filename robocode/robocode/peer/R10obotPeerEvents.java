@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * @author Pavel Savara (original)
  */
-public class R10obotPeerEvents {
+public class R10obotPeerEvents extends R01obotPeerSynchronization {
 
     private EventManager eventManager;
     private RobotMessageManager messageManager;
@@ -125,8 +125,6 @@ public class R10obotPeerEvents {
         return getRobotEventManager().getScannedRobotEvents();
     }
     
-
-
     public List<MessageEvent> getMessageEvents() {
         return getRobotEventManager().getMessageEvents();
     }

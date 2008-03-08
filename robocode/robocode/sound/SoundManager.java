@@ -38,6 +38,7 @@ import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
 import robocode.peer.IBattleRobotPeer;
+import robocode.peer.IBattleBulletPeer;
 
 
 /**
@@ -185,16 +186,16 @@ public class SoundManager {
 	 *
 	 * @param bp the bullet peer
 	 */
-	public void playBulletSound(BulletPeer bp) {
+	public void playBulletSound(IBattleBulletPeer bp, float battleFiedsWidth) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) bp.getX(), bp.getBattleField().getWidth());
+			pan = calcPan((float) bp.getX(), battleFiedsWidth);
 		}
 		switch (bp.getState()) {
 		case BulletPeer.STATE_SHOT:
 			if (properties.getOptionsSoundEnableGunshot()) {
-				playSound("gunshot", pan, calcBulletVolume(bp), 0);
+				playSound("gunshot", pan, calcBulletVolume(bp.getPower()), 0);
 			}
 			break;
 
@@ -296,10 +297,9 @@ public class SoundManager {
 	/**
 	 * Determines volume based on the bullets's energy
 	 *
-	 * @param bp the bullet peer
 	 * @return the volume value, ranging from 0 to 1
 	 */
-	private float calcBulletVolume(BulletPeer bp) {
-		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
+	private float calcBulletVolume(double power) {
+		return (float) (power / robocode.Rules.MAX_BULLET_POWER);
 	}
 }

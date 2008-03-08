@@ -11,9 +11,49 @@
  *******************************************************************************/
 package robocode.peer;
 
+import robocode.peer.data.RobotPeerInfo;
+import robocode.peer.data.RobotPeerStatus;
+import robocode.peer.data.RobotPeerLast;
+import robocode.peer.data.RobotPeerSync;
+
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @author Pavel Savara (original)
  */
-public class R01obotPeerSynchronization {
-    protected Object syncRoot=new Object();
+public class R01obotPeerSynchronization extends RobotPeerSync {
+    //private ReentrantReadWriteLock syncRoot=new ReentrantReadWriteLock();
+    public RobotPeerSync info;
+    /*
+    public final void lockRead(){
+        info.lockRead();
+    }
+
+    public final void lockWrite(){
+        info.lockWrite();
+    }
+
+    public final void unlockRead(){
+        info.unlockRead();
+    }
+
+    public final void unlockWrite(){
+        info.unlockWrite();
+    }
+
+    public final void checkReadLock(){
+        info.checkReadLock();
+    }
+
+    public final void checkWriteLock(){
+        info.checkWriteLock();
+    }
+
+    public final void checkNoLock(){
+        info.checkNoLock();
+    }
+    */
 }

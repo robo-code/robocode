@@ -35,7 +35,7 @@ public class R32obotPeerTeam extends R31obotPeerFiles {
 
 		int index = 0;
 
-		for (RobotPeer teammate : teamPeer) {
+		for (IRobotRobotPeer teammate : teamPeer) {
 			if (teammate != (RobotPeer)this) {
 				s[index++] = teammate.getName();
 			}

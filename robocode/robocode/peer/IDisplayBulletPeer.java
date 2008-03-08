@@ -14,12 +14,5 @@ package robocode.peer;
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleWriterRobotPeer {
-    void b_setState(int newState);
-    void b_setWinner(boolean w);
-    void b_setEnergy(double e);
-    void b_setScan(boolean value);
-    void b_setSkippedTurns(int s);
-    BulletPeer b_getCurrentBullet();
-    void b_setCurrentBullet(BulletPeer currentBullet);
+public interface IDisplayBulletPeer {
 }

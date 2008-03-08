@@ -64,7 +64,8 @@ public class ExplosionPeer extends BulletPeer {
 	}
 
 	@Override
-	public synchronized final void update(List<IBattleRobotPeer> robots) {
+    //TODO ZAMO synchronizet  
+    public final void update(List<IBattleRobotPeer> robots, List<IBattleBulletPeer> allBullets) {
 		x = owner.getX();
 		y = owner.getY();
 

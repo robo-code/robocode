@@ -22,20 +22,19 @@ import java.security.AccessControlException;
 /**
  * @author Pavel Savara (original)
  */
-public class R70obotPeerRobot extends R60obotPeerRobotCommands implements IRobotRobotPeer{
+public class R70obotPeerRobot extends R60obotPeerRobotCommands {
 
     public long getTime() {
         return getBattle().getCurrentTime();
     }
 
 	public int getOthers() {
-		return getBattle().getActiveRobots() - (isAlive() ? 1 : 0);
+		return getBattle().getActiveRobots() - (info.isAlive() ? 1 : 0);
 	}
 
     public int getNumRounds() {
         return getBattle().getNumRounds();
     }
-
 
     public int getRoundNum() {
         return getBattle().getRoundNum();

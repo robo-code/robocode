@@ -10,7 +10,7 @@
  *     - Initial API and implementation
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue with the getTime() method that was
- *       synchronized before, which sometimes caused a deadlock to occur in the
+ *       synchronizet before, which sometimes caused a deadlock to occur in the
  *       code processing the hitWall event.
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
@@ -20,7 +20,7 @@
  *     - Added features to support the new JuniorRobot class
  *     - Bugfix: Fixed ConcurrentModificationExceptions due to lack of
  *       synchronization with the event queue. Now all getXXXEvents() methods
- *       are synchronized against the event queue, and the list of customEvents
+ *       are synchronizet against the event queue, and the list of customEvents
  *       is a CopyOnWriteArrayList which is fully thread-safe
  *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
  *       robots process events before they die
@@ -29,19 +29,19 @@
  *       getStatusEvents() method
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - Removed synchronization where is not necessary
  *******************************************************************************/
 package robocode.peer.robot;
 
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import robocode.*;
@@ -95,11 +95,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	private int currentTopEventPriority;
 
 	private List<Condition> customEvents = new CopyOnWriteArrayList<Condition>();
-	private EventQueue eventQueue;
-
-	private double fireAssistAngle;
-	private boolean fireAssistValid = false;
-	private boolean useFireAssist = true;
+	private final EventQueue eventQueue;
 
 	private boolean interruptible[] = new boolean[MAX_PRIORITY + 1];
 
@@ -109,7 +105,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 
 	/**
 	 * EventManager constructor comment.
-	 */
+     * @param robotPeer robot peer
+     */
 	public EventManager(RobotPeer robotPeer) {
 		super();
 		this.robotPeer = robotPeer;
@@ -181,7 +178,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see List
 	 */
 	public List<Event> getAllEvents() {
-		List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
+		List<Event> events = new ArrayList<Event>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -207,7 +204,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see List
 	 */
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
-		List<BulletHitBulletEvent> events = Collections.synchronizedList(new ArrayList<BulletHitBulletEvent>());
+		List<BulletHitBulletEvent> events = new ArrayList<BulletHitBulletEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -235,7 +232,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see List
 	 */
 	public List<BulletHitEvent> getBulletHitEvents() {
-		List<BulletHitEvent> events = Collections.synchronizedList(new ArrayList<BulletHitEvent>());
+		List<BulletHitEvent> events = new ArrayList<BulletHitEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -263,7 +260,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see List
 	 */
 	public List<BulletMissedEvent> getBulletMissedEvents() {
-		List<BulletMissedEvent> events = Collections.synchronizedList(new ArrayList<BulletMissedEvent>());
+		List<BulletMissedEvent> events = new ArrayList<BulletMissedEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -408,10 +405,6 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 		return 0;
 	}
 
-	public double getFireAssistAngle() {
-		return fireAssistAngle;
-	}
-
 	/**
 	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
@@ -428,9 +421,9 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see List
 	 */
 	public List<HitByBulletEvent> getHitByBulletEvents() {
-		List<HitByBulletEvent> events = Collections.synchronizedList(new ArrayList<HitByBulletEvent>());
+		List<HitByBulletEvent> events = new ArrayList<HitByBulletEvent>();
 
-		synchronized (eventQueue) {
+		synchronized(eventQueue) {
 			for (Event e : eventQueue) {
 				if (e instanceof HitByBulletEvent) {
 					events.add((HitByBulletEvent) e);
@@ -456,7 +449,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see List
 	 */
 	public List<HitRobotEvent> getHitRobotEvents() {
-		List<HitRobotEvent> events = Collections.synchronizedList(new ArrayList<HitRobotEvent>());
+		List<HitRobotEvent> events = new ArrayList<HitRobotEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -484,7 +477,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see List
 	 */
 	public List<HitWallEvent> getHitWallEvents() {
-		List<HitWallEvent> events = Collections.synchronizedList(new ArrayList<HitWallEvent>());
+		List<HitWallEvent> events = new ArrayList<HitWallEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -506,9 +499,6 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 
 	public void setRobot(IBasicRobot r) {
 		this.robot = r;
-		if (robotPeer.isAdvancedRobot()) {
-			useFireAssist = false;
-		}
 	}
 
 	/**
@@ -527,7 +517,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see List
 	 */
 	public List<RobotDeathEvent> getRobotDeathEvents() {
-		List<RobotDeathEvent> events = Collections.synchronizedList(new ArrayList<RobotDeathEvent>());
+		List<RobotDeathEvent> events = new ArrayList<RobotDeathEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -558,8 +548,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @see robocode.ScannedRobotEvent
 	 * @see List
 	 */
-	public List<ScannedRobotEvent> getScannedRobotEvents() {
-		List<ScannedRobotEvent> events = Collections.synchronizedList(new ArrayList<ScannedRobotEvent>());
+	public final List<ScannedRobotEvent> getScannedRobotEvents() {
+		List<ScannedRobotEvent> events = new ArrayList<ScannedRobotEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -575,10 +565,6 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 		return robotPeer.getTime();
 	}
 
-	public boolean isFireAssistValid() {
-		return fireAssistValid;
-	}
-
 	public void onStatus(StatusEvent e) {
 		IBasicRobot robot = getRobot();
 
@@ -586,8 +572,14 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onStatus(e);
-			}
+                robotPeer.unlockWrite();
+                try{
+                    listener.onStatus(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
+            }
 		}
 	}
 
@@ -598,7 +590,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onBulletHit(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onBulletHit(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -610,19 +608,31 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onBulletHitBullet(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onBulletHitBullet(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
 
-	public void onBulletMissed(BulletMissedEvent e) {
+    public void onBulletMissed(BulletMissedEvent e) {
 		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onBulletMissed(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onBulletMissed(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -635,7 +645,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onMouseClicked(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onMouseClicked(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
@@ -652,7 +668,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onMouseDragged(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onMouseDragged(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
@@ -669,7 +691,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onMouseEntered(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onMouseEntered(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
@@ -686,7 +714,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onMouseExited(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onMouseExited(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
@@ -703,7 +737,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onMouseMoved(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onMouseMoved(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
@@ -720,6 +760,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onMousePressed(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                     listener.onMousePressed(e.getInnerEvent());
                 }
             } catch (Exception e2) {
@@ -737,7 +784,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onMouseReleased(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onMouseReleased(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
@@ -754,7 +807,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onMouseWheelMoved((java.awt.event.MouseWheelEvent)e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onMouseWheelMoved((java.awt.event.MouseWheelEvent)e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
@@ -771,7 +830,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onKeyTyped(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onKeyTyped(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyTyped(MouseEvent):");
@@ -788,7 +853,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onKeyPressed(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onKeyPressed(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyPressed(MouseEvent):");
@@ -805,7 +876,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
                 if (listener != null) {
-                    listener.onKeyReleased(e.getInnerEvent());
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onKeyReleased(e.getInnerEvent());
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
                 }
             } catch (Exception e2) {
                 robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyReleasedEvent(MouseEvent):");
@@ -822,7 +899,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 				IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
 				if (listener != null) {
-					listener.onCustomEvent(e);
+                    robotPeer.unlockWrite();
+                    try{
+                        listener.onCustomEvent(e);
+                    }
+                    finally {
+                        robotPeer.lockWrite();
+                    }
 				}
 			}
 		}
@@ -835,7 +918,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onDeath(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onDeath(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -847,7 +936,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onHitByBullet(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onHitByBullet(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -859,7 +954,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onHitRobot(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onHitRobot(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -871,7 +972,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onHitWall(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onHitWall(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -883,7 +990,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onRobotDeath(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onRobotDeath(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -895,7 +1008,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onScannedRobot(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onScannedRobot(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -907,7 +1026,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
 			if (listener != null) {
-				listener.onSkippedTurn(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onSkippedTurn(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -919,7 +1044,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
 
 			if (listener != null) {
-				listener.onMessageReceived(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onMessageReceived(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -931,7 +1062,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			IBasicEvents listener = robot.getBasicEventListener();
 
 			if (listener != null) {
-				listener.onWin(e);
+                robotPeer.unlockWrite();
+                try{
+                    listener.onWin(e);
+                }
+                finally {
+                    robotPeer.lockWrite();
+                }
 			}
 		}
 	}
@@ -942,17 +1079,17 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			Condition c;
 			boolean conditionSatisfied;
 
-			// Do not turn this into a "for each" loop as this will cause a
-			// ConcurrentModificationException!
-			for (int i = 0; i < customEvents.size(); i++) {
-				c = customEvents.get(i);
-				robotPeer.setTestingCondition(true);
-				conditionSatisfied = c.test();
-				robotPeer.setTestingCondition(false);
-				if (conditionSatisfied) {
-					eventQueue.add(new CustomEvent(c));
-				}
-			}
+			// Was: (* Do not turn this into a "for each" loop as this will cause a  ConcurrentModificationException! *)
+            // NOT with CopyOnWriteArrayList 
+            for (Condition customEvent : customEvents) {
+                c = customEvent;
+                robotPeer.setTestingCondition(true);
+                conditionSatisfied = c.test();
+                robotPeer.setTestingCondition(false);
+                if (conditionSatisfied) {
+                    eventQueue.add(new CustomEvent(c));
+                }
+            }
 		}
 
 		// Process event queue here
@@ -1020,14 +1157,15 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 					if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
 							&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
 							&& !(robotPeer.isAdvancedRobot())) {
-						fireAssistAngle = Utils.normalAbsoluteAngle(
-								robotPeer.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
-						if (useFireAssist) {
-							fireAssistValid = true;
+						robotPeer.setFireAssistAngle(Utils.normalAbsoluteAngle(
+								robotPeer.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians())
+                                );
+						if (!robotPeer.isAdvancedRobot()) {
+                            robotPeer.setFireAssistValid(true);
 						}
 					}
 					onScannedRobot((ScannedRobotEvent) currentEvent);
-					fireAssistValid = false;
+                    robotPeer.setFireAssistValid(false);
 				} else if (currentEvent instanceof RobotDeathEvent) {
 					onRobotDeath((RobotDeathEvent) currentEvent);
 				} else if (currentEvent instanceof SkippedTurnEvent) {
@@ -1047,7 +1185,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 				setInterruptible(currentTopEventPriority, false);
 
 			} catch (EventInterruptedException e) {
-				fireAssistValid = false;
+                robotPeer.setFireAssistValid(false);
 			} catch (RuntimeException e) {
 				currentTopEventPriority = oldTopEventPriority;
 				throw e;
@@ -1064,11 +1202,13 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 		customEvents.remove(condition);
 	}
 
-	public synchronized void reset() {
-		currentTopEventPriority = Integer.MIN_VALUE;
-		clearAllEvents(true);
-		customEvents.clear();
-	}
+	public void reset() {
+        synchronized(eventQueue){
+            currentTopEventPriority = Integer.MIN_VALUE;
+            clearAllEvents(true);
+            customEvents.clear();
+        }
+    }
 
 	public void setEventPriority(String eventClass, int priority) {
 		if (priority < 0) {
@@ -1137,10 +1277,6 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 		}
 	}
 
-	public void setFireAssistValid(boolean newFireAssistValid) {
-		fireAssistValid = newFireAssistValid;
-	}
-
 	public void setInterruptible(int priority, boolean interruptable) {
 		if (priority < 0 || priority > 99) {
 			return;
@@ -1168,7 +1304,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @since 1.2.6
 	 */
 	public List<MessageEvent> getMessageEvents() {
-		List<MessageEvent> events = Collections.synchronizedList(new ArrayList<MessageEvent>());
+		List<MessageEvent> events = new ArrayList<MessageEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -1200,7 +1336,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 * @since 1.5
 	 */
 	public List<StatusEvent> getStatusEvents() {
-		List<StatusEvent> events = Collections.synchronizedList(new ArrayList<StatusEvent>());
+		List<StatusEvent> events = new ArrayList<StatusEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {

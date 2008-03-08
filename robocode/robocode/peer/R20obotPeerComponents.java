@@ -14,10 +14,8 @@ package robocode.peer;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.battle.Battle;
-import robocode.peer.robot.RobotClassManager;
-import robocode.peer.robot.RobotFileSystemManager;
-import robocode.peer.robot.RobotThreadManager;
-import robocode.peer.robot.RobotOutputStream;
+import robocode.peer.robot.*;
+import robocode.robotinterfaces.IBasicRobot;
 
 /**
  * Set at start never change, read only, no synchro
@@ -31,6 +29,21 @@ public class R20obotPeerComponents extends R10obotPeerEvents {
     private RobotFileSystemManager robotFileSystemManager;
     private RobotThreadManager robotThreadManager;
     private RobotOutputStream out;
+    private IBasicRobot robot;
+
+    public void setRobot(IBasicRobot newRobot) {
+        robot = newRobot;
+        if (robot != null) {
+            if (info.isTeamRobot()) {
+                setMessageManager(new RobotMessageManager((RobotPeer)this));
+            }
+            getBattleEventManager().setRobot(newRobot);
+        }
+    }
+
+    public IBasicRobot getRobot() {
+        return robot;
+    }
 
     public void initComponents(RobotClassManager robotClassManager, long fileSystemQuota){
         this.robotClassManager = robotClassManager;

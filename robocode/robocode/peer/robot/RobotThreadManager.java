@@ -171,7 +171,8 @@ public class RobotThreadManager {
 
 	@SuppressWarnings("deprecation")
 	private void stopThread(Thread t) {
-		synchronized (runThread) {
+		//TODO ZAMO synchronizet (runThread) 
+        {
 			t.stop();
 		}
 	}

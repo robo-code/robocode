@@ -19,19 +19,19 @@ import java.awt.*;
 /**
  * @author Pavel Savara (original)
  */
-public class R80obotPeerDisplay extends R70obotPeerRobot implements IDisplayRobotPeer {
+public class R80obotPeerDisplay extends R70obotPeerRobot {
     public void d_kill(){
         //TODO ZAMO synchronize
     }
 
     public void d_setScan(boolean v) {
-        //TODO ZAMO
-        setScan(v);
+        //TODO ZAMO synchronize
+        info.setScan(v);
     }
 
     public void d_setDuplicate(int d) {
-        //TODO ZAMO forward to setDup
-        setDuplicate(d);
+        //TODO ZAMO synchronize
+        info.setDuplicate(d);
     }
 
     public void onInteractiveEvent(robocode.Event e){

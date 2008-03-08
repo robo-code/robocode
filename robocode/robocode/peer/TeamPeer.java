@@ -14,7 +14,7 @@
  *       shadowed the second one
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *******************************************************************************/
 package robocode.peer;
 
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 
 	private String name;
-	private RobotPeer teamLeader;
+	private IRobotRobotPeer teamLeader;
 	private TeamStatistics teamStatistics;
 
 	public TeamPeer(String name) {
@@ -43,7 +43,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 		double score1 = teamStatistics.getTotalScore();
 		double score2 = cp.getRobotStatistics().getTotalScore();
 
-		if (teamLeader != null && teamLeader.getBattle().isRunning()) {
+		if (teamLeader != null && ((RobotPeer)teamLeader).getBattle().isRunning()) {
 			score1 += teamStatistics.getCurrentScore();
 			score2 += cp.getRobotStatistics().getCurrentScore();
 		}
@@ -58,7 +58,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 		return name;
 	}
 
-	public RobotPeer getTeamLeader() {
+	public IRobotRobotPeer getTeamLeader() {
 		return teamLeader;
 	}
 
@@ -73,7 +73,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 	@Override
 	public boolean contains(Object s) {
 		if (s != null && s instanceof String) {
-			for (RobotPeer r : this) {
+			for (IRobotRobotPeer r : this) {
 				if (s.equals(r.getName())) {
 					return true;
 				}

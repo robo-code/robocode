@@ -14,8 +14,7 @@
 package robocode;
 
 
-import robocode.peer.BulletPeer;
-
+import robocode.peer.IRobotBulletPeer;
 
 /**
  * Represents a bullet. This is returned from fireBullet() and setFireBullet(),
@@ -30,12 +29,13 @@ import robocode.peer.BulletPeer;
  * @author Mathew A. Nelson (original)
  */
 public class Bullet {
-	private BulletPeer peer;
+	private IRobotBulletPeer peer;
 
 	/**
 	 * Called by the game to create a Bullet object
-	 */
-	public Bullet(BulletPeer peer) {
+     * @param peer peer of the bullet
+     */
+	public Bullet(IRobotBulletPeer peer) {
 		this.peer = peer;
 	}
 
@@ -67,7 +67,7 @@ public class Bullet {
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getName() {
-		return peer.getOwner().getName();
+		return peer.getOwnerName();
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class Bullet {
 	 *    the bullet has not hit a robot.
 	 */
 	public String getVictim() {
-		return (peer.getVictim() != null) ? peer.getVictim().getName() : null;
+		return peer.getVictimName();
 	}
 
 	/**

@@ -32,10 +32,8 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.ExplosionPeer;
-import robocode.peer.RobotPeer;
 import robocode.peer.IDisplayRobotPeer;
-import robocode.robotinterfaces.IBasicEvents;
-import robocode.robotinterfaces.IBasicRobot;
+import robocode.peer.IBattleBulletPeer;
 import robocode.util.GraphicsState;
 
 
@@ -496,7 +494,7 @@ public class BattleView extends Canvas {
 		
 		double x, y;
 
-		for (BulletPeer bullet : battle.getBullets()) {
+		for (IBattleBulletPeer bullet : battle.getBattleBullets()) {
 			x = bullet.getPaintX();
 			y = battle.getBattleField().getHeight() - bullet.getPaintY();
 

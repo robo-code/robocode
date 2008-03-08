@@ -18,7 +18,7 @@
  *       is fully thread-safe 
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -35,6 +35,7 @@ import robocode.io.BufferedPipedOutputStream;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
+import robocode.peer.IRobotRobotPeer;
 
 
 /**

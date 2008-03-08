@@ -47,7 +47,4 @@ public interface IRobotEventManager {
     int getCurrentTopEventPriority();
     int getScannedRobotEventPriority();
     boolean getInterruptible(int priority);
-    boolean isFireAssistValid();
-    double getFireAssistAngle();
-    void setFireAssistValid(boolean newFireAssistValid);
 }

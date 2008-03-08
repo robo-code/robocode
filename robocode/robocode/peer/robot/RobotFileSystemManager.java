@@ -12,7 +12,7 @@
  *     - Ported to Java 5.0
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -60,7 +60,8 @@ public class RobotFileSystemManager {
 		}
 	}
 
-	public synchronized void adjustQuota(long len) {
+    //TODO ZAMO synchronizet  
+    public void adjustQuota(long len) {
 		quotaUsed += len;
 	}
 

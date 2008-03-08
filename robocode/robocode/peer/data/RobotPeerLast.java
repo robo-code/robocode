@@ -9,34 +9,38 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package robocode.peer.data;
 
 /**
  * @author Pavel Savara (original)
  */
-public class R52obotPeerLast extends R51obotPeerCommands {
+public class RobotPeerLast extends RobotPeerCommands {
     private double lastGunHeading;
     private double lastHeading;
     private double lastRadarHeading;
     private double lastX;
     private double lastY;
 
-    protected void updateScan() {
+    public final void updateScan() {
+        checkWriteLock();
         if (!getScan()) {
             setScan( (lastHeading != getHeading() || lastGunHeading != getGunHeading() || lastRadarHeading != getRadarHeading()
                     || lastX != getX() || lastY != getY() || getWaitCondition() != null));
         }
     }
 
-    public double getLastGunHeading() {
+    public final double getLastGunHeading() {
+        checkReadLock();
         return lastGunHeading;
     }
 
-    public double getLastRadarHeading() {
+    public final double getLastRadarHeading() {
+        checkReadLock();
         return lastRadarHeading;
     }
 
-    protected void updateLast() {
+    public final void updateLast() {
+        checkWriteLock();
         lastGunHeading=getGunHeading();
         lastHeading=getHeading();
         lastRadarHeading=getRadarHeading();
@@ -44,5 +48,4 @@ public class R52obotPeerLast extends R51obotPeerCommands {
         lastY=getY();
         lastHeading = getHeading();
     }
-
 }

@@ -11,10 +11,17 @@
  *******************************************************************************/
 package robocode.peer;
 
+import java.awt.*;
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IBattleReaderRobotPeer {
+
+    void lockRead();
+    void unlockRead();
+    void checkReadLock();
+
     int getState();
     boolean isDead();
     boolean isAlive();
@@ -24,6 +31,11 @@ public interface IBattleReaderRobotPeer {
     boolean isTeamLeader();
     boolean isIORobot();
 
+    Color getBodyColor();
+    Color getGunColor();
+    Color getRadarColor();
+    Color getScanColor();
+    Color getBulletColor();
     double getX();
     double getY();
     double getBattleFieldWidth();

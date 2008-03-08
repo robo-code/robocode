@@ -10,7 +10,7 @@
  *     - Initial implementation
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *******************************************************************************/
 package robocode.battle.record;
 

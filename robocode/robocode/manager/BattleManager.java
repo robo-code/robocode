@@ -70,10 +70,7 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
-import robocode.peer.IContestantPeer;
-import robocode.peer.IContestantStatistics;
-import robocode.peer.RobotPeer;
-import robocode.peer.TeamPeer;
+import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
@@ -553,11 +550,11 @@ public class BattleManager {
 
 		for (int i = 0; i < results.length; i++) {
 			IContestantPeer peer = orderedPeers.get(i);
-			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
+			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : (RobotPeer)((TeamPeer) peer).getTeamLeader();
 
 			IContestantStatistics stats = peer.getRobotStatistics();
 
-			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
+			results[i] = new RobotResults((robotPeer).getRobotClassManager().getControlRobotSpecification(), (i + 1),
 					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
 					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
 					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());

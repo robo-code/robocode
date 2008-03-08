@@ -29,7 +29,7 @@
  *       round
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -43,6 +43,7 @@ import robocode.control.RobotResults;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.IBattleRobotPeer;
+import robocode.peer.IRobotRobotPeer;
 
 
 /**
@@ -242,8 +243,8 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 			if (teamPeer == null) {
 				bonus = getRobotDamage()[robot] * .2;
 			} else {
-				for (RobotPeer teammate : teamPeer) {
-					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .2;
+				for (IRobotRobotPeer teammate : teamPeer) {
+					bonus += ((RobotPeer)teammate).getRobotStatistics().getRobotDamage()[robot] * .2;
 				}
 			}
 
@@ -268,8 +269,8 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 			if (teamPeer == null) {
 				bonus = getRobotDamage()[robot] * .3;
 			} else {
-				for (RobotPeer teammate : teamPeer) {
-					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .3;
+				for (IRobotRobotPeer teammate : teamPeer) {
+					bonus += ((RobotPeer)teammate).getRobotStatistics().getRobotDamage()[robot] * .3;
 				}
 			}
 			rammingKillBonus += bonus;

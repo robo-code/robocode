@@ -47,11 +47,11 @@
  *       independent UnsafeLoadRobotsThread class. In addition, the battle
  *       thread is not sharing it's run() method anymore with the
  *       UnsafeLoadRobotsThread, which has now got its own run() method
- *     - The 'running' and 'aborted' flags are now synchronized towards
+ *     - The 'running' and 'aborted' flags are now synchronizet towards
  *       'battleMonitor' instead of 'this' object
  *     - Added waitTillRunning() method so another thread can be blocked until
  *       the battle has started running
- *     - Replaced synchronizedList on lists for deathEvent, robots, bullets,
+ *     - Replaced synchronizetList on lists for deathEvent, robots, bullets,
  *       and contestants with a CopyOnWriteArrayList in order to prevent
  *       ConcurrentModificationExceptions when accessing these list via
  *       Iterators using public methods to this class
@@ -71,7 +71,7 @@
  *     - Added isRunning()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *     Titus Chen
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
@@ -127,6 +127,8 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.RobocodeProperties.PropertyListener;
 import robocode.peer.*;
+import robocode.peer.data.RobotPeerInfo;
+import robocode.peer.data.RobotPeerStatus;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.security.RobocodeClassLoader;
@@ -144,7 +146,7 @@ import robocode.security.RobocodeClassLoader;
  * @author Julian Kent (contributor)
  * @author Pavel Savara (contributor)
  */
-public class Battle implements Runnable {
+public class Battle extends BattleData implements Runnable {
 
 	// Maximum turns to display the battle when battle ended
 	private final static int TURNS_DISPLAYED_AFTER_ENDING = 35;
@@ -188,15 +190,6 @@ public class Battle implements Runnable {
 	private int endTimer;
 	private int activeRobots;
 
-	// Death events
-	private List<IBattleRobotPeer> deathEvents = new CopyOnWriteArrayList<IBattleRobotPeer>();
-
-	// Objects in the battle
-	private List<IDisplayRobotPeer> displayRobots = new CopyOnWriteArrayList<IDisplayRobotPeer>();
-	private List<IBattleRobotPeer> battleRobots = new CopyOnWriteArrayList<IBattleRobotPeer>();
-	private List<IContestantPeer> contestants = new CopyOnWriteArrayList<IContestantPeer>();
-	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
-
 	// Results related items
 	private boolean exitOnComplete;
 
@@ -227,6 +220,9 @@ public class Battle implements Runnable {
 
 	// Dummy component used to preventing robots in accessing the real source component
 	private static Component safeEventComponent;
+
+    // Death events
+    private List<IBattleRobotPeer> deathEvents = new CopyOnWriteArrayList<IBattleRobotPeer>();
 
 	/**
 	 * Battle constructor
@@ -273,7 +269,8 @@ public class Battle implements Runnable {
 	 */
 	public void run() {
 		// Notify that the battle is now running
-		synchronized (battleMonitor) {
+		//TODO ZAMO synchronizet (battleMonitor)
+        {
 			running = true;
 			battleMonitor.notifyAll();
 		}
@@ -402,7 +399,8 @@ public class Battle implements Runnable {
 		}
 
 		// Notify that the battle is over
-		synchronized (battleMonitor) {
+		//TODO ZAMO synchronizet (battleMonitor)
+        {
 			running = false;
 			battleMonitor.notifyAll();
 		}
@@ -412,7 +410,8 @@ public class Battle implements Runnable {
 	}
 
 	public void waitTillRunning() {
-		synchronized (battleMonitor) {
+		//TODO ZAMO synchronizet (battleMonitor)
+        {
 			while (!running) {
 				try {
 					battleMonitor.wait();
@@ -421,10 +420,6 @@ public class Battle implements Runnable {
 				}
 			}
 		}
-	}
-
-	public void addBullet(BulletPeer bullet) {
-		bullets.add(bullet);
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
@@ -455,21 +450,10 @@ public class Battle implements Runnable {
 			}
 		}
 		if (count > 0) {
-			robotPeer.setDuplicate(count);
+			robotPeer.b_setDuplicate(count);
 		}
-		displayRobots.add(robotPeer);
-        battleRobots.add(robotPeer);
-	}
-
-	private void addContestant(IContestantPeer c) {
-		if (!contestants.contains(c)) {
-			contestants.add(c);
-		}
-	}
-
-	public List<IContestantPeer> getContestants() {
-		return contestants;
-	}
+        addRobotPeer(robotPeer);
+    }
 
 	public void cleanup() {
 		for (IBattleRobotPeer robotPeer : getBattleRobots()) {
@@ -481,18 +465,9 @@ public class Battle implements Runnable {
 			robotPeer.cleanup();
 		}
 
-		if (contestants != null) {
-			contestants.clear();
-			contestants = null;
-		}
+        cleanupData();
 
-		if (getBattleRobots() != null) {
-			getBattleRobots().clear();
-			displayRobots =null;
-            battleRobots =null;
-		}
-
-		if (keyHandler != null) {
+        if (keyHandler != null) {
 			keyHandler.cleanup();
 			keyHandler = null;
 		}
@@ -538,10 +513,6 @@ public class Battle implements Runnable {
 		return battleThread;
 	}
 
-	public List<BulletPeer> getBullets() {
-		return bullets;
-	}
-
 	public int getCurrentTime() {
 		return currentTime;
 	}
@@ -561,14 +532,6 @@ public class Battle implements Runnable {
 	public int getNumRounds() {
 		return numRounds;
 	}
-
-    public List<IDisplayRobotPeer> getDisplayRobots() {
-        return displayRobots;
-    }
-
-    public List<IBattleRobotPeer> getBattleRobots() {
-        return battleRobots;
-    }
 
 	/**
 	 * Returns a list of all robots in random order. This method is used to gain fair play in Robocode,
@@ -649,8 +612,7 @@ public class Battle implements Runnable {
 		// Pre-load robot classes without security...
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 		// in the safe robot loader the class is linked.
-		//TODO ZAMO synchronized (robots)
-        synchronized (getBattleRobots())
+        //TODO ZAMO synchronizet (getBattleRobots())
         {
 			for (IBattleRobotPeer robotPeer : getBattleRobots()) {
 				try {
@@ -695,7 +657,8 @@ public class Battle implements Runnable {
 		return exitOnComplete;
 	}
 
-	public synchronized boolean isRobotsLoaded() {
+    //TODO ZAMO synchronizet  
+    public boolean isRobotsLoaded() {
 		return robotsLoaded;
 	}
 
@@ -710,10 +673,6 @@ public class Battle implements Runnable {
 				log(thread.getName());
 			}
 		}
-	}
-
-	public void removeBullet(BulletPeer bullet) {
-		bullets.remove(bullet);
 	}
 
 	public void resetInactiveTurnCount(double energyLoss) {
@@ -796,12 +755,31 @@ public class Battle implements Runnable {
 			currentTime++;
 			turnsThisSec++;
 
+            //gather bullets
+            for (IBattleRobotPeer robotPeer : getBattleRobots()) {
+
+                BulletPeer bullet = robotPeer.b_getCurrentBullet();
+                if (bullet != null) {
+                    robotPeer.adjustGunHeat(Rules.getGunHeat(bullet.getPower()));
+
+                    addBullet(bullet);
+                    robotPeer.b_setCurrentBullet(null);
+                }
+            }
+
 			// Update bullets
-			for (BulletPeer b : bullets) {
-				b.update(getBattleRobots());
+			for (IBattleBulletPeer b : getBattleBullets()) {
+				b.update(getBattleRobots(), getBattleBullets());
 			}
 
-			boolean zap = (inactiveTurnCount > inactivityTime);
+            //remove dead bullets
+            for (IBattleBulletPeer b : getBattleBullets()) {
+                if (b.getState() == BulletPeer.STATE_INACTIVE){
+                    removeBullet((BulletPeer)b);
+                }
+            }
+
+            boolean zap = (inactiveTurnCount > inactivityTime);
 
 			// Move all bots
 			for (IBattleRobotPeer robotPeer : getRobotsAtRandom()) {
@@ -836,7 +814,6 @@ public class Battle implements Runnable {
 				currentTurnRecord.robotStates = new ArrayList<RobotRecord>();
 
 				IBattleRobotPeer rp;
-
 				for (int i = 0; i < getBattleRobots().size(); i++) {
 					rp = getBattleRobots().get(i);
 					if (!rp.isDead()) {
@@ -847,7 +824,7 @@ public class Battle implements Runnable {
 				}
 
 				currentTurnRecord.bulletStates = new ArrayList<BulletRecord>();
-				for (BulletPeer bp : getBullets()) {
+				for (IBattleBulletPeer bp : getBattleBullets()) {
 					IBattleRobotPeer owner = bp.getOwner();
 
 					for (int i = 0; i < getBattleRobots().size(); i++) {
@@ -966,7 +943,7 @@ public class Battle implements Runnable {
 			battleRecord.rounds.add(currentRoundRecord);
 		}
 
-		bullets.clear();
+		clearBullets();
 	}
 
 	public void runReplay() {
@@ -1029,14 +1006,14 @@ public class Battle implements Runnable {
 			TurnRecord turnRecord = roundRecord.turns.get(currentTime);
 
 			for (IBattleRobotPeer robotPeer : getBattleRobots()) {
-				robotPeer.setState(RobotPeer.STATE_DEAD);
+				robotPeer.b_setState(RobotPeerStatus.STATE_DEAD);
 			}
 			for (RobotRecord rr : turnRecord.robotStates) {
 				robot = getBattleRobots().get(rr.index);
 				robot.b_setRecord(rr);
 			}
 
-			bullets.clear();
+			clearBullets();
 
 			for (BulletRecord br : turnRecord.bulletStates) {
 				robot = getBattleRobots().get(br.owner);
@@ -1045,7 +1022,7 @@ public class Battle implements Runnable {
 				} else {
 					bullet = new BulletPeer(robot, this, br);
 				}
-				bullets.add(bullet);
+				addBullet(bullet);
 			}
 
 			currentTime++;
@@ -1119,7 +1096,7 @@ public class Battle implements Runnable {
 			}
 		}
 
-		bullets.clear();
+		clearBullets();
 	}
 
 	private boolean shouldPause() {
@@ -1150,8 +1127,7 @@ public class Battle implements Runnable {
 
 	private void wakeupRobots() {
 		// Wake up all robot threads
-		//TODO ZAMO synchronized (robots)
-        synchronized (getBattleRobots())
+		//TODO ZAMO synchronizet (getBattleRobots())
         {
 			for (IBattleRobotPeer r : getRobotsAtRandom()) {
 				if (!r.isRunning()) {
@@ -1162,7 +1138,8 @@ public class Battle implements Runnable {
 				r.wakeup();
 
 				if (r.isAlive()) {
-					synchronized (r) {
+                    //TODO ZAMO                     synchronizet (r)
+                    {
 						// It's quite possible for simple robots to
 						// complete their processing before we get here,
 						// so we test if the robot is already asleep.
@@ -1186,9 +1163,9 @@ public class Battle implements Runnable {
 						}
 					}
 					if (r.isSleeping() || !r.isRunning()) {
-						r.setSkippedTurns(0);
+						r.b_setSkippedTurns(0);
 					} else {
-						r.setSkippedTurns(r.getSkippedTurns() + 1);
+						r.b_setSkippedTurns(r.getSkippedTurns() + 1);
 
 						r.getBattleEventManager().add(new SkippedTurnEvent());
 
@@ -1287,7 +1264,7 @@ public class Battle implements Runnable {
 					if (!robotPeer.isDead()) {
 						if (!robotPeer.isWinner()) {
 							robotPeer.getRobotStatistics().scoreLastSurvivor();
-							robotPeer.setWinner(true);
+							robotPeer.b_setWinner(true);
                             robotPeer.getOut().println("SYSTEM: " + robotPeer.getName() + " wins the round.");
                             robotPeer.getBattleEventManager().add(new WinEvent());
 							if (robotPeer.getTeamPeer() != null) {
@@ -1301,7 +1278,7 @@ public class Battle implements Runnable {
 					}
 				}
 				if (!leaderFirsts && winningTeam != null) {
-					winningTeam.getTeamLeader().getRobotStatistics().scoreFirsts();
+					((RobotPeer)winningTeam.getTeamLeader()).getRobotStatistics().scoreFirsts();
 				}
 			}
 
@@ -1324,7 +1301,7 @@ public class Battle implements Runnable {
 	public int getActiveContestantCount(IBattleRobotPeer peer) {
 		int count = 0;
 
-		for (IContestantPeer c : contestants) {
+		for (IContestantPeer c : getContestants()) {
 			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
 				count++;
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
@@ -1382,7 +1359,8 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public synchronized void setRobotsLoaded(boolean newRobotsLoaded) {
+    //TODO ZAMO synchronizet
+    public void setRobotsLoaded(boolean newRobotsLoaded) {
 		robotsLoaded = newRobotsLoaded;
 	}
 
@@ -1413,7 +1391,8 @@ public class Battle implements Runnable {
 		}
 
 		// Notifying loader
-		synchronized (unsafeLoaderMonitor) {
+		//TODO ZAMO synchronizet (unsafeLoaderMonitor) 
+        {
 			unsafeLoaderMonitor.notifyAll();
 		}
 		while (!isRobotsLoaded()) {
@@ -1430,12 +1409,12 @@ public class Battle implements Runnable {
 					&& r.getRobotClassManager().getClassNameManager().getFullPackage().length() > 18) {
 				r.getOut().println("SYSTEM: Your package name is too long.  16 characters maximum please.");
 				r.getOut().println("SYSTEM: Robot disabled.");
-				r.setEnergy(0);
+				r.b_setEnergy(0);
 			}
 			if (r.getRobotClassManager().getClassNameManager().getShortClassName().length() > 35) {
 				r.getOut().println("SYSTEM: Your classname is too long.  32 characters maximum please.");
 				r.getOut().println("SYSTEM: Robot disabled.");
-				r.setEnergy(0);
+				r.b_setEnergy(0);
 			}
 		}
 
@@ -1449,8 +1428,7 @@ public class Battle implements Runnable {
 				manager.getThreadManager().addThreadGroup(robotPeer.getRobotThreadManager().getThreadGroup(), (RobotPeer)robotPeer);
 				long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
-				//TODO ZAMO synchronized (r)
-                synchronized (robotPeer)
+				//TODO ZAMO synchronizet (robotPeer)
                 {
 					try {
 						log(".", false);
@@ -1478,7 +1456,8 @@ public class Battle implements Runnable {
 	}
 
 	public void stop() {
-		synchronized (battleMonitor) {
+		//TODO ZAMO synchronizet (battleMonitor) 
+        {
 			// Return immediately if the battle is not running
 			if (!running) {
 				return;
@@ -1510,7 +1489,8 @@ public class Battle implements Runnable {
 	public void unsafeLoadRobots() {
 		while (true) {
 			// Loader waiting
-			synchronized (unsafeLoaderMonitor) {
+			//TODO ZAMO synchronizet (unsafeLoaderMonitor) 
+            {
 				try {
 					setUnsafeLoaderThreadRunning(true);
 					unsafeLoaderMonitor.wait();
@@ -1661,7 +1641,9 @@ public class Battle implements Runnable {
 	 * 
 	 * @return Returns a int
 	 */
-	public synchronized int getActiveRobots() {
+
+    //TODO ZAMO synchronizet  
+    public int getActiveRobots() {
 		return activeRobots;
 	}
 
@@ -1696,7 +1678,8 @@ public class Battle implements Runnable {
 	 * 
 	 * @param activeRobots The activeRobots to set
 	 */
-	private synchronized void setActiveRobots(int activeRobots) {
+    //TODO ZAMO synchronizet  
+    private void setActiveRobots(int activeRobots) {
 		this.activeRobots = activeRobots;
 	}
 
@@ -1723,7 +1706,8 @@ public class Battle implements Runnable {
 	 * 
 	 * @return Returns a boolean
 	 */
-	public synchronized boolean isUnsafeLoaderThreadRunning() {
+    //TODO ZAMO synchronizet
+    public boolean isUnsafeLoaderThreadRunning() {
 		return unsafeLoaderThreadRunning;
 	}
 
@@ -1732,7 +1716,9 @@ public class Battle implements Runnable {
 	 * 
 	 * @param unsafeLoaderThreadRunning The unsafeLoaderThreadRunning to set
 	 */
-	public synchronized void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
+
+    //TODO ZAMO synchronizet
+    public void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
 		this.unsafeLoaderThreadRunning = unsafeLoaderThreadRunning;
 	}
 
@@ -1768,9 +1754,9 @@ public class Battle implements Runnable {
 	 */
 	private void playSounds() {
 		if (manager.isSoundEnabled()) {
-			for (BulletPeer bp : getBullets()) {
+			for (IBattleBulletPeer bp : getBattleBullets()) {
 				if (bp.getFrame() == 0) {
-					manager.getSoundManager().playBulletSound(bp);
+					manager.getSoundManager().playBulletSound(bp, battleField.getWidth());
 				}
 			}
 
@@ -1778,7 +1764,7 @@ public class Battle implements Runnable {
 
 			for (IBattleRobotPeer rp : getBattleRobots()) {
 				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
-				if (rp.getState() == RobotPeer.STATE_HIT_ROBOT) {
+				if (rp.getState() == RobotPeerStatus.STATE_HIT_ROBOT) {
 					if (playedRobotHitRobot) {
 						continue;
 					}
@@ -1796,7 +1782,8 @@ public class Battle implements Runnable {
 	 * @return true if the battle is running, false otherwise
 	 */
 	public boolean isRunning() {
-		synchronized (battleMonitor) {
+        //TODo ZAMo synchronizet (battleMonitor)
+        {
 			return running;
 		}
 	}
@@ -1807,7 +1794,8 @@ public class Battle implements Runnable {
 	 * @return true if the battle is aborted, false otherwise
 	 */
 	private boolean isAborted() {
-		synchronized (battleMonitor) {
+        //TODo ZAMO synchronizet (battleMonitor) 
+        {
 			return aborted;
 		}
 	}

@@ -34,7 +34,7 @@
  *     - Added states
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *     Titus Chen
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
@@ -64,7 +64,7 @@ import robocode.battlefield.BattleField;
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (constributor)
  */
-public class BulletPeer {
+public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplayBulletPeer {
 	// Bullet states: all states last one turn, except MOVING and DONE
 	public static final int
 			STATE_SHOT = 0,
@@ -80,7 +80,7 @@ public class BulletPeer {
 	private static final int RADIUS = 3;
 	
 	protected final IBattleRobotPeer owner;
-	protected final Battle battle;
+	//protected final Battle battle;
 	private final BattleField battleField;
 
 	private Bullet bullet;
@@ -112,12 +112,13 @@ public class BulletPeer {
 
 	/**
 	 * BulletPeer constructor
-	 */
+     * @param owner who fire the bullet
+     * @param battle root battle
+     */
 	public BulletPeer(IBattleRobotPeer owner, Battle battle) {
 		super();
 
 		this.owner = owner;
-		this.battle = battle;
 		battleField = battle.getBattleField();
 		bullet = new Bullet(this);
 		state = STATE_SHOT;
@@ -135,16 +136,16 @@ public class BulletPeer {
 		color = toColor(br.color);
 	}
 
-	private void checkBulletCollision() {
-		for (BulletPeer b : battle.getBullets()) {
-			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
+	private void checkBulletCollision(List<IBattleBulletPeer> allBullets) {
+		for (IBattleBulletPeer b : allBullets) {
+			if (!(b == null || b == this) && b.isActive() && intersect(b.getBoundingLine())) {
 				state = STATE_HIT_BULLET;
 				b.setState(state);
 				frame = 0;
 				x = lastX;
 				y = lastY;
-				owner.getBattleEventManager().add(new BulletHitBulletEvent(bullet, b.bullet));
-				b.owner.getBattleEventManager().add(new BulletHitBulletEvent(b.bullet, bullet));
+				owner.getBattleEventManager().add(new BulletHitBulletEvent(bullet, new Bullet((IRobotBulletPeer)b)));
+				b.getOwner().getBattleEventManager().add(new BulletHitBulletEvent(b.getBullet(), new Bullet(this)));
 				break;
 			}
 		}
@@ -180,7 +181,7 @@ public class BulletPeer {
 				if (score > robotPeer.getEnergy()) {
 					score = robotPeer.getEnergy();
 				}
-				robotPeer.setEnergy(robotPeer.getEnergy() - damage);
+				robotPeer.b_setEnergy(robotPeer.getEnergy() - damage);
 
 				owner.getRobotStatistics().scoreBulletDamage(i, score);
 
@@ -190,7 +191,7 @@ public class BulletPeer {
 						owner.getRobotStatistics().scoreBulletKill(i);
 					}
 				}
-				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
+				owner.b_setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 
 				robotPeer.getBattleEventManager().add(
 						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getHeading()),
@@ -238,11 +239,11 @@ public class BulletPeer {
 		return bullet;
 	}
 
-	public synchronized int getFrame() {
+	public int getFrame() {
 		return frame;
 	}
 
-	public synchronized double getHeading() {
+	public double getHeading() {
 		return heading;
 	}
 
@@ -250,39 +251,47 @@ public class BulletPeer {
 		return owner;
 	}
 
-	public synchronized double getPower() {
+	public double getPower() {
 		return power;
 	}
 
-	public synchronized double getVelocity() {
+	public double getVelocity() {
 		return velocity;
 	}
 
-	public synchronized IBattleRobotPeer getVictim() {
+    public String getVictimName() {
+        return (victim != null) ? victim.getName() : null;
+    }
+
+    public String getOwnerName() {
+        return owner.getName();
+    }
+
+    public IBattleRobotPeer getVictim() {
 		return victim;
 	}
 
-	public synchronized double getX() {
+	public double getX() {
 		return x;
 	}
 
-	public synchronized double getY() {
+	public double getY() {
 		return y;
 	}
 
-	public synchronized double getPaintX() {
+	public double getPaintX() {
 		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getX() + deltaX : x; 
 	}
 
-	public synchronized double getPaintY() {
+	public double getPaintY() {
 		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getY() + deltaY : y; 
 	}
 
-	public synchronized boolean isActive() {
+	public boolean isActive() {
 		return state <= STATE_MOVING;
 	}
 
-	public synchronized int getState() {
+	public int getState() {
 		return state;
 	}
 
@@ -290,39 +299,43 @@ public class BulletPeer {
 		return color;
 	}
 
-	public synchronized void setHeading(double newHeading) {
+	public void setHeading(double newHeading) {
 		heading = newHeading;
 	}
 
-	public synchronized void setPower(double newPower) {
+	public void setPower(double newPower) {
 		power = newPower;
 	}
 
-	public synchronized void setVelocity(double newVelocity) {
+	public void setVelocity(double newVelocity) {
 		velocity = newVelocity;
 	}
 
-	public synchronized void setVictim(RobotPeer newVictim) {
+	public void setVictim(IBattleRobotPeer newVictim) {
 		victim = newVictim;
 	}
 
-	public synchronized void setX(double newX) {
+	public void setX(double newX) {
 		x = lastX = newX;
 	}
 
-	public synchronized void setY(double newY) {
+	public void setY(double newY) {
 		y = lastY = newY;
 	}
 
-	public synchronized void setState(int newState) {
+	public void setState(int newState) {
 		state = newState;
 	}
 
-	public synchronized void update(List<IBattleRobotPeer> robots) {
+    public Line2D.Double getBoundingLine() {
+        return boundingLine;
+    }
+
+    public void update(List<IBattleRobotPeer> robots, List<IBattleBulletPeer> allBullets) {
 		if (isActive()) {
 			updateMovement();
 
-			checkBulletCollision();
+			checkBulletCollision(allBullets);
 			if (isActive()) {
 				checkRobotCollision(robots);
 			}
@@ -353,10 +366,6 @@ public class BulletPeer {
 			state = STATE_INACTIVE;
 			break;
 		}
-
-		if (state == STATE_INACTIVE) {
-			battle.removeBullet(this);
-		}
 	}
 
 	private void updateMovement() {
@@ -371,7 +380,7 @@ public class BulletPeer {
 		boundingLine.setLine(lastX, lastY, x, y);
 	}
 
-	public synchronized void nextFrame() {
+	public void nextFrame() {
 		frame++;
 	}
 

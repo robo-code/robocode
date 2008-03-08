@@ -23,12 +23,12 @@ public class R31obotPeerFiles extends R30obotPeerInfo{
     private boolean checkFileQuota;
 
     public File getDataDirectory() {
-        setIORobot(true);
+        info.setIORobot(true);
         return getRobotFileSystemManager().getWritableDirectory();
     }
 
     public File getDataFile(String filename) {
-        setIORobot(true);
+        info.setIORobot(true);
         return new File(getRobotFileSystemManager().getWritableDirectory(), filename);
     }
 

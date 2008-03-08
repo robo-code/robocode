@@ -20,6 +20,12 @@ import java.awt.geom.Arc2D;
  * @author Pavel Savara (original)
  */
 public interface IDisplayRobotPeer {
+    void lockRead();
+    void lockWrite();
+    void unlockRead();
+    void unlockWrite();
+    void checkReadLock();
+
     boolean isAlive();
     boolean isDead();
     boolean isDroid();

@@ -20,6 +20,14 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
  * @author Pavel Savara (original)
  */
 public interface IRobotRobotPeer extends ITeamRobotPeer, IJuniorRobotPeer {
+    boolean isDead();
+    void lockRead();
+    void lockWrite();
+    void unlockRead();
+    void unlockWrite();
+    void checkReadLock();
+    void checkWriteLock();
+
     boolean isAdvancedRobot();
     boolean isInteractiveRobot();
     boolean isTeamRobot();
@@ -29,6 +37,9 @@ public interface IRobotRobotPeer extends ITeamRobotPeer, IJuniorRobotPeer {
 
     void death();
     void setTestingCondition(boolean testingCondition);
+
+    void setFireAssistValid(boolean newFireAssistValid);
+    void setFireAssistAngle(double angle);
 
     RobotOutputStream getOut();
     RobotFileSystemManager getRobotFileSystemManager();

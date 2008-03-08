@@ -11,15 +11,29 @@
  *******************************************************************************/
 package robocode.peer;
 
+import robocode.Bullet;
+
+import java.util.List;
+import java.awt.*;
+import java.awt.geom.Line2D;
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleWriterRobotPeer {
-    void b_setState(int newState);
-    void b_setWinner(boolean w);
-    void b_setEnergy(double e);
-    void b_setScan(boolean value);
-    void b_setSkippedTurns(int s);
-    BulletPeer b_getCurrentBullet();
-    void b_setCurrentBullet(BulletPeer currentBullet);
+public interface IBattleBulletPeer {
+    void update(List<IBattleRobotPeer> robots, List<IBattleBulletPeer> allBullets);
+    IBattleRobotPeer getOwner();
+    double getPaintX();
+    double getPaintY();
+    int getExplosionImageIndex();
+    double getX();
+    double getY();
+    double getPower();
+    int getFrame();
+    int getState();
+    Color getColor();
+    boolean isActive();
+    Bullet getBullet();
+    void setState(int state);
+    Line2D.Double getBoundingLine();
 }

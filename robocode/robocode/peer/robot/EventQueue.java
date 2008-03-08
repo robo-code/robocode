@@ -30,7 +30,7 @@ import robocode.WinEvent;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class EventQueue extends Vector<Event> {
+public final class EventQueue extends Vector<Event> {
 
 	private final EventManager eventManager;
 
@@ -41,10 +41,13 @@ public class EventQueue extends Vector<Event> {
 
 	@Override
 	public boolean add(Event e) {
-		e.setPriority(eventManager.getEventPriority(e));
-		e.setTime(eventManager.getTime());
-		return super.add(e);
-	}
+        synchronized (this)
+        {
+            e.setPriority(eventManager.getEventPriority(e));
+            e.setTime(eventManager.getTime());
+            return super.add(e);
+        }
+    }
 
 	public void clear(boolean includingSystemEvents) {
 		if (includingSystemEvents) {

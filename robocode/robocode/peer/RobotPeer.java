@@ -50,7 +50,7 @@
  *     - Bugfix: Hit wall and teleporting problems with checkWallCollision()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -100,7 +100,9 @@ import robocode.util.BoundingRectangle;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer extends R90obotPeerBattle implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IContestantPeer, IRobotRobotPeer, IBattleRobotPeer {
+public class RobotPeer extends R90obotPeerBattle implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IContestantPeer
+        , IRobotRobotPeer, IBattleRobotPeer, IDisplayRobotPeer  
+{
 
     /**
      * RobotPeer constructor
