@@ -462,41 +462,31 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, IDisplayRobotPeer robotPeer) {
-        //TODO ZAMO, security hole ?
-        //TODO ZAMO, synchronization issue ?
-        IBasicRobot robot = ((RobotPeer)robotPeer).getRobot();
-        if (robot!=null)
-        {
-            // Save the graphics state
-            GraphicsState gfxState = new GraphicsState();
+        GraphicsState gfxState = new GraphicsState();
 
-            gfxState.save(g);
+        gfxState.save(g);
 
-            g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
+        g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
 
-            // Do the painting
-            try {
-                IBasicEvents listener = robot.getBasicEventListener();
-                if (listener != null) {
-                    if (robotPeer.isSGPaintEnabled()) {
-                        listener.onPaint(g);
-                    } else {
-                        mirroredGraphics.bind(g, battleField.getHeight());
-                        listener.onPaint(mirroredGraphics);
-                        mirroredGraphics.release();
-                    }
-                }
-            } catch (Exception e) {
-                // Make sure that Robocode is not halted by an exception caused by letting the robot paint
-
-                robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-                e.printStackTrace(robotPeer.getOut());
+        // Do the painting
+        try {
+            if (robotPeer.isSGPaintEnabled()) {
+                robotPeer.onPaint(g);
+            } else {
+                mirroredGraphics.bind(g, battleField.getHeight());
+                robotPeer.onPaint(mirroredGraphics);
+                mirroredGraphics.release();
             }
+        } catch (Exception e) {
+            // Make sure that Robocode is not halted by an exception caused by letting the robot paint
 
-            // Restore the graphics state
-            gfxState.restore(g);
+            robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
+            e.printStackTrace(robotPeer.getOut());
         }
+
+        // Restore the graphics state
+        gfxState.restore(g);
     }
 
 	private void drawBullets(Graphics2D g) {

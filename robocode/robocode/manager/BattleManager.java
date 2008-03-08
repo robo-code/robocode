@@ -555,7 +555,7 @@ public class BattleManager {
 			IContestantPeer peer = orderedPeers.get(i);
 			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
 
-			IContestantStatistics stats = peer.getStatistics();
+			IContestantStatistics stats = peer.getRobotStatistics();
 
 			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
 					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),

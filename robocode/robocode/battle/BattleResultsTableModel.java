@@ -134,14 +134,14 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		Collections.sort(orderedContestants);
 
 		IContestantPeer r = orderedContestants.get(row);
-		IContestantStatistics statistics = r.getStatistics();
+		IContestantStatistics statistics = r.getRobotStatistics();
 
 		switch (col) {
 		case 0: {
 			int place = row + 1;
 
 			while (place < getRowCount()
-					&& statistics.getTotalScore() == orderedContestants.get(place).getStatistics().getTotalScore()) {
+					&& statistics.getTotalScore() == orderedContestants.get(place).getRobotStatistics().getTotalScore()) {
 				place++;
 			}
 			return StringUtil.getPlacementString(place);

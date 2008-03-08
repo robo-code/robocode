@@ -17,6 +17,7 @@ import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.battle.record.RobotRecord;
 import robocode.util.BoundingRectangle;
+import robocode.repository.RobotFileSpecification;
 
 import java.awt.*;
 import java.util.List;
@@ -27,10 +28,6 @@ public class BattleRobotPeerProxy implements IBattleRobotPeer{
 
     public BattleRobotPeerProxy(RobotPeer peer) {
         this.peer=peer;
-    }
-
-    public IContestantStatistics getStatistics() {
-        return null;  //TODO ZAMO
     }
 
     public String getName() {
@@ -173,6 +170,10 @@ public class BattleRobotPeerProxy implements IBattleRobotPeer{
         //TODO ZAMO
     }
 
+    public void b_setScan(boolean value) {
+        //TODO ZAMO
+    }
+
     public void setScan(boolean value) {
         //TODO ZAMO
     }
@@ -213,6 +214,10 @@ public class BattleRobotPeerProxy implements IBattleRobotPeer{
         //TODO ZAMO
     }
 
+    public void initInfo(RobotFileSpecification rfs) {
+        //TODO ZAMO
+    }
+
     public void preInitialize() {
         //TODO ZAMO
     }
@@ -225,6 +230,18 @@ public class BattleRobotPeerProxy implements IBattleRobotPeer{
         //TODO ZAMO
     }
 
+    public void b_setHalt(boolean h) {
+        //TODO ZAMO
+    }
+
+    public void b_setDuplicate(int d) {
+        //TODO ZAMO
+    }
+
+    public void b_setRecord(RobotRecord rr) {
+        //TODO ZAMO
+    }
+
     public void setHalt(boolean h) {
         //TODO ZAMO
     }
@@ -233,23 +250,7 @@ public class BattleRobotPeerProxy implements IBattleRobotPeer{
         //TODO ZAMO
     }
 
-    public void setDroid(boolean droid) {
-        //TODO ZAMO
-    }
-
-    public void setJuniorRobot(boolean value) {
-        //TODO ZAMO
-    }
-
-    public void setInteractiveRobot(boolean value) {
-        //TODO ZAMO
-    }
-
-    public void setAdvancedRobot(boolean value) {
-        //TODO ZAMO
-    }
-
-    public void setTeamRobot(boolean value) {
+    public void InitInfo(RobotFileSpecification rfs) {
         //TODO ZAMO
     }
 

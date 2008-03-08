@@ -12,6 +12,7 @@
 package robocode.peer;
 
 import robocode.peer.robot.RobotFileSystemManager;
+import robocode.peer.robot.RobotOutputStream;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
@@ -20,5 +21,15 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
  */
 public interface IRobotRobotPeer extends ITeamRobotPeer, IJuniorRobotPeer {
     boolean isAdvancedRobot();
+    boolean isInteractiveRobot();
+    boolean isTeamRobot();
+
+    double getLastGunHeading();
+    double getLastRadarHeading();
+
+    void death();
+    void setTestingCondition(boolean testingCondition);
+
+    RobotOutputStream getOut();
     RobotFileSystemManager getRobotFileSystemManager();
 }

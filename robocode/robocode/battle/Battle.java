@@ -448,7 +448,7 @@ public class Battle implements Runnable {
 					robotPeer.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion())) {
 				if (count == 0) {
 					if (!rp.isDuplicate()) {
-						rp.setDuplicate(0);
+						rp.d_setDuplicate(0);
 					}
 				}
 				count++;
@@ -673,12 +673,7 @@ public class Battle implements Runnable {
 
 					RobotFileSpecification robotFileSpecification = classManager.getRobotSpecification();
 
-					robotPeer.setJuniorRobot(robotFileSpecification.isJuniorRobot());
-					robotPeer.setAdvancedRobot(robotFileSpecification.isAdvancedRobot());
-					robotPeer.setInteractiveRobot(robotFileSpecification.isInteractiveRobot());
-					robotPeer.setTeamRobot(robotFileSpecification.isTeamRobot());
-					robotPeer.setDroid(robotFileSpecification.isDroid());
-
+					robotPeer.initInfo(robotFileSpecification);
 					initializeRobotPosition(robotPeer);
 
 					if (battleView != null && !replay) {
@@ -1038,7 +1033,7 @@ public class Battle implements Runnable {
 			}
 			for (RobotRecord rr : turnRecord.robotStates) {
 				robot = getBattleRobots().get(rr.index);
-				robot.setRecord(rr);
+				robot.b_setRecord(rr);
 			}
 
 			bullets.clear();
@@ -1264,7 +1259,7 @@ public class Battle implements Runnable {
 
 					robotPeer.scan(getBattleRobots());
 					// Exit scan
-					robotPeer.setScan(false);
+					robotPeer.b_setScan(false);
 				}
 
 				if (robotPeer.getMessageManager() != null) {
@@ -1293,6 +1288,8 @@ public class Battle implements Runnable {
 						if (!robotPeer.isWinner()) {
 							robotPeer.getRobotStatistics().scoreLastSurvivor();
 							robotPeer.setWinner(true);
+                            robotPeer.getOut().println("SYSTEM: " + robotPeer.getName() + " wins the round.");
+                            robotPeer.getBattleEventManager().add(new WinEvent());
 							if (robotPeer.getTeamPeer() != null) {
 								if (robotPeer.isTeamLeader()) {
 									leaderFirsts = true;
@@ -1311,7 +1308,7 @@ public class Battle implements Runnable {
 			if (endTimer > 4 * 30) {
 				for (IBattleRobotPeer robotPeer : getBattleRobots()) {
 					if (!robotPeer.isDead()) {
-						robotPeer.setHalt(true);
+						robotPeer.b_setHalt(true);
 					}
 				}
 			}

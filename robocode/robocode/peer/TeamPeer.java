@@ -41,16 +41,16 @@ public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 
 	public int compareTo(IContestantPeer cp) {
 		double score1 = teamStatistics.getTotalScore();
-		double score2 = cp.getStatistics().getTotalScore();
+		double score2 = cp.getRobotStatistics().getTotalScore();
 
 		if (teamLeader != null && teamLeader.getBattle().isRunning()) {
 			score1 += teamStatistics.getCurrentScore();
-			score2 += cp.getStatistics().getCurrentScore();
+			score2 += cp.getRobotStatistics().getCurrentScore();
 		}
 		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
 	}
 
-	public IContestantStatistics getStatistics() {
+	public IContestantStatistics getRobotStatistics() {
 		return teamStatistics;
 	}
 

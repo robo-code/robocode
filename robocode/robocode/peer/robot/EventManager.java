@@ -48,6 +48,7 @@ import robocode.*;
 import robocode.robotinterfaces.*;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.RobotPeer;
+import robocode.peer.IRobotRobotPeer;
 import robocode.util.Utils;
 
 
@@ -60,7 +61,7 @@ import robocode.util.Utils;
  * @author Pavel Savara (contributor)
  */
 public class EventManager implements IRobotEventManager, IBattleEventManager, IDisplayEventManager {
-	private RobotPeer robotPeer = null;
+	private IRobotRobotPeer robotPeer = null;
 
 	private final int MAX_PRIORITY = 100;
 

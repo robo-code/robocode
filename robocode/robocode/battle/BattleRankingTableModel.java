@@ -117,7 +117,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		Collections.sort(contestants);
 
 		IContestantPeer r = contestants.get(row);
-		IContestantStatistics statistics = r.getStatistics();
+		IContestantStatistics statistics = r.getRobotStatistics();
 
 		switch (col) {
 		case 0:

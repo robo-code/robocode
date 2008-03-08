@@ -59,7 +59,7 @@ public class DisplayRobotPeerProxy implements IDisplayRobotPeer{
         return false;  //TODO ZAMO
     }
 
-    public void setDuplicate(int d) {
+    public void d_setDuplicate(int d) {
         //TODO ZAMO
     }
 
@@ -147,7 +147,19 @@ public class DisplayRobotPeerProxy implements IDisplayRobotPeer{
         return null;  //TODO ZAMO
     }
 
+    public void onPaint(Graphics2D g) {
+        //TODO ZAMO
+    }
+
     public RobotOutputStream getOut() {
         return null;  //TODO ZAMO
+    }//TODO synchronize
+
+    public void d_kill() {
+        //TODO ZAMO
+    }
+
+    public void d_setScan(boolean v) {
+        //TODO ZAMO
     }
 }

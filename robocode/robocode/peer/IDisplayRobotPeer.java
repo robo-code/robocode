@@ -30,7 +30,6 @@ public interface IDisplayRobotPeer {
     boolean isPaintEnabled();
     boolean isSGPaintEnabled();
 
-    void setDuplicate(int d);
     void setPaintEnabled(boolean enabled);
     void setSGPaintEnabled(boolean enabled);
 
@@ -40,7 +39,6 @@ public interface IDisplayRobotPeer {
     double getHeading();
     double getRadarHeading();
     double getGunHeading();
-
     Arc2D getScanArc();
     
     Color getBodyColor();
@@ -53,9 +51,12 @@ public interface IDisplayRobotPeer {
     String getVeryShortName();
     String getFullClassNameWithVersion();
     String getUniqueFullClassNameWithVersion();
-
-    void kill();
-
-    IDisplayEventManager getDisplayEventManager();
     RobotOutputStream getOut();
+
+    //TODO synchronize
+    void d_kill();
+    void d_setScan(boolean v);
+    void d_setDuplicate(int d);
+    IDisplayEventManager getDisplayEventManager();
+    void onPaint(Graphics2D g);
 }
