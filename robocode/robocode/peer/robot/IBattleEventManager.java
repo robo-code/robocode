@@ -12,7 +12,6 @@
 package robocode.peer.robot;
 
 import robocode.Event;
-import robocode.peer.TeamPeer;
 import robocode.robotinterfaces.IBasicRobot;
 
 /**

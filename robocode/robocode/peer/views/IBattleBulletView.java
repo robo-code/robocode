@@ -5,29 +5,28 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
- * This is temporary implementation of the interface. You should not build any external component on top of it.
- *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package robocode.peer.views;
 
+import robocode.Bullet;
+import robocode.peer.IDisplayBulletView;
 
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-
+import java.awt.geom.Line2D;
+import java.util.List;
 
 /**
  * @author Pavel Savara (original)
  */
-public class JuniorRobotPeerProxy extends BasicRobotPeerProxy implements IJuniorRobotPeer {
-
-	public JuniorRobotPeerProxy(IRobotRobotPeer peer) {
-		super(peer);
-	}
-
-	public void turnAndMove(double distance, double radians) {
-		peer.turnAndMove(distance, radians);
-	}
+public interface IBattleBulletView extends IDisplayBulletView {
+    void update(List<IBattleRobotView> robots, List<IBattleBulletView> allBullets);
+    IBattleRobotView getOwner();
+    double getX();
+    double getY();
+    boolean isActive();
+    void setState(int state);
+    Bullet getBullet();
+    Line2D.Double getBoundingLine();
 }

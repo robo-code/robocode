@@ -20,7 +20,7 @@
 package robocode;
 
 
-import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
+import robocode.robotinterfaces.peer.IAdvancedRobotView;
 
 
 /**
@@ -48,7 +48,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnGunLeftDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnGun(-Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnGun(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -61,7 +61,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnGunRightDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnGun(Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnGun(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -83,7 +83,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRightDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnBody(Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnBody(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -96,7 +96,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRadarLeftDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnRadar(-Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -109,7 +109,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnLeftDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnBody(-Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnBody(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -186,7 +186,7 @@ public class _AdvancedRobot extends Robot {
 	@Deprecated
 	public void setTurnRadarRightDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnRadar(Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}

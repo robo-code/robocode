@@ -13,17 +13,19 @@ package robocode.peer.data;
 
 import robocode.battle.record.RobotRecord;
 import static robocode.gfx.ColorUtil.toColor;
-import static robocode.util.Utils.normalNearAbsoluteAngle;
 import static robocode.util.Utils.normalAbsoluteAngle;
+import static robocode.util.Utils.normalNearAbsoluteAngle;
+import robocode.util.BoundingRectangle;
+import robocode.peer.robot.RobotStatistics;
 
-import java.awt.geom.Arc2D;
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Pavel Savara (original)
  */
-public class RobotPeerStatus extends RobotPeerInfo {
+public class RobotPeerStatus extends RobotPeerLock {
     // Robot States: all states last one turn, except ALIVE and DEAD
     public static final int
             STATE_ACTIVE = 0,
@@ -57,6 +59,19 @@ public class RobotPeerStatus extends RobotPeerInfo {
     private Color radarColor;
     private Color bulletColor;
     private Color scanColor;
+
+    private BoundingRectangle boundingBox;
+    private RobotStatistics statistics;
+
+    public final void cleanup(){
+        if (statistics!=null){
+            statistics.cleanup();
+        }
+        statistics=null;
+        boundingBox=null;
+        setCallCount=null;
+        getCallCount=null;
+    }
 
     public final Color getBodyColor() {
         checkReadLock();
@@ -123,6 +138,16 @@ public class RobotPeerStatus extends RobotPeerInfo {
         return velocity;
     }
 
+    public final double getVelocitySync() {
+        peer.lockRead();
+        try{
+            return getVelocity();
+        }
+        finally {
+            peer.unlockRead();
+        }
+    }
+
     public final boolean isWinner() {
         checkReadLock();
         return isWinner;
@@ -166,6 +191,16 @@ public class RobotPeerStatus extends RobotPeerInfo {
     public final int getSkippedTurns() {
         checkReadLock();
         return skippedTurns;
+    }
+
+    public RobotStatistics getStatistics() {
+        checkReadLock();
+        return statistics;
+    }
+
+    public BoundingRectangle getBoundingBox() {
+        checkReadLock();
+        return boundingBox;
     }
 
     public final int getSetCallCount() {
@@ -290,13 +325,13 @@ public class RobotPeerStatus extends RobotPeerInfo {
     public final void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
         checkWriteLock();
         if (resetInactiveTurnCount && (energy != newEnergy)) {
-            //TODO ZAMO getBattle().resetInactiveTurnCount(energy - newEnergy);
+            peer.getBattle().resetInactiveTurnCount(energy - newEnergy);
         }
         energy = newEnergy;
         if (energy < .01) {
             energy = 0;
-            // TODO ZAMO distanceRemaining = 0; turnRemaining = 0;
-            // TODO ZAMO resetIntentions() ?
+            // ZAMO: changed from distanceRemaining = 0; turnRemaining = 0;
+            peer.getCommands().resetIntentions();
         }
     }
 
@@ -318,6 +353,16 @@ public class RobotPeerStatus extends RobotPeerInfo {
     public final void setScan(boolean scan) {
         checkWriteLock();
         this.scan = scan;
+    }
+
+    public final void setScanSync(boolean scan) {
+        peer.lockWrite();
+        try{
+            setScan(scan);
+        }
+        finally {
+            peer.unlockWrite();
+        }
     }
 
     public final void setBodyColor(Color color) {
@@ -344,4 +389,14 @@ public class RobotPeerStatus extends RobotPeerInfo {
         checkWriteLock();
 		scanColor = color;
 	}
+
+    public void setBoundingBox(BoundingRectangle boundingBox) {
+        checkWriteLock();
+        this.boundingBox = boundingBox;
+    }
+
+    public void setStatistics(RobotStatistics statistics) {
+        checkWriteLock();
+        this.statistics = statistics;
+    }
 }

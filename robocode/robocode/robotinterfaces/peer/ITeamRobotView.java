@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @since 1.6
  */
-public interface ITeamRobotPeer extends IAdvancedRobotPeer {
+public interface ITeamRobotView extends IAdvancedRobotView {
 	// team
 	String[] getTeammates();
 	boolean isTeammate(String name);

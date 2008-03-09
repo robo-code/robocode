@@ -34,6 +34,7 @@ import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.IDisplayRobotPeer;
+import robocode.peer.views.IDisplayRobotView;
 
 
 /**
@@ -44,6 +45,7 @@ import robocode.peer.IDisplayRobotPeer;
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
 	private IDisplayRobotPeer robotPeer;
+    private IDisplayRobotView robotView;
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
@@ -115,11 +117,11 @@ public class RobotDialog extends JFrame {
 	/**
 	 * Sets the robot peer of this dialog
 	 *
-	 * @param robotPeer the robot peer of this dialog
+	 * @param robotView the robot peer of this dialog
 	 */
-	public void setRobotPeer(IDisplayRobotPeer robotPeer) {
-		this.robotPeer = robotPeer;
-		getConsoleScrollPane().setText("");
+	public void setRobotPeer(IDisplayRobotView robotView) {
+        this.robotView = robotView;
+        getConsoleScrollPane().setText("");
 		if (robotPeer != null && robotPeer.getOut() != null) {
 			getConsoleScrollPane().processStream(robotPeer.getOut().getInputStream());
 		}
@@ -311,21 +313,21 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Kill button has been activated
 	 */
 	private void killButtonActionPerformed() {
-		robotPeer.d_kill();
+		robotView.d_kill();
 	}
 
 	/**
 	 * Is called when the Paint button has been activated
 	 */
 	private void paintButtonActionPerformed() {
-		robotPeer.d_setPaintEnabled(getPaintButton().isSelected());
+		robotView.d_setPaintEnabled(getPaintButton().isSelected());
 	}
 
 	/**
 	 * Is called when the SG check box has been activated
 	 */
 	private void sgCheckBoxActionPerformed() {
-		robotPeer.d_setSGPaintEnabled(getSGCheckBox().isSelected());
+		robotView.d_setSGPaintEnabled(getSGCheckBox().isSelected());
 	}
 
 	/**

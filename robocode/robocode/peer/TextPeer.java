@@ -14,7 +14,7 @@
 package robocode.peer;
 
 
-import java.awt.Color;
+import java.awt.*;
 
 
 /**

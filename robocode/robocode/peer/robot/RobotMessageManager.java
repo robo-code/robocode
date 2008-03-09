@@ -23,19 +23,19 @@
 package robocode.peer.robot;
 
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.List;
-
 import robocode.MessageEvent;
 import robocode.io.BufferedPipedOutputStream;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
-import robocode.peer.IRobotRobotPeer;
+import robocode.peer.views.IRobotRunnableView;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -46,14 +46,16 @@ import robocode.peer.IRobotRobotPeer;
 public class RobotMessageManager {
 
 	private RobotPeer robotPeer;
-	private List<MessageEvent> messageEvents = new CopyOnWriteArrayList<MessageEvent>();
+    private IRobotRunnableView robotView; 
+    private List<MessageEvent> messageEvents = new CopyOnWriteArrayList<MessageEvent>();
 
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 
-	public RobotMessageManager(RobotPeer robotPeer) {
+    public RobotMessageManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
-		try {
+        robotView=robotPeer.getRobotRunnableView();
+        try {
 			BufferedPipedOutputStream bufOut = new BufferedPipedOutputStream(32768, false);
 
 			out = new ObjectOutputStream(bufOut);
@@ -64,7 +66,34 @@ public class RobotMessageManager {
 		}
 	}
 
-	public void sendMessage(String name, Serializable message) throws IOException {
+    public void cleanup(){
+        if (in!=null)
+        {
+            try {
+                in.close();
+            } catch (IOException e) {
+                //ignore now
+            }
+        }
+        in=null;
+        if (out!=null)
+        {
+            try {
+                out.close();
+            } catch (IOException e) {
+                //ignore now
+            }
+        }
+        out=null;
+        robotView=null;
+        robotPeer=null;
+        if (messageEvents!=null){
+            messageEvents.clear();
+        }
+        messageEvents=null;
+    }
+
+    public void sendMessage(String name, Serializable message) throws IOException {
 		TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
 
 		if (teamPeer == null) {
@@ -72,22 +101,22 @@ public class RobotMessageManager {
 		}
 
 		for (RobotPeer receiver : teamPeer) {
-			if (receiver.isAlive()) {
+            if (robotView.isAlive()) {
 				if (name == null
-						|| (receiver.getName().length() >= name.length()
-								&& receiver.getName().substring(0, name.length()).equals(name))
-								|| (receiver.getNonVersionedName().length() >= name.length()
-										&& receiver.getNonVersionedName().substring(0, name.length()).equals(name))) {
+						|| (robotView.getName().length() >= name.length()
+								&& robotView.getName().substring(0, name.length()).equals(name))
+								|| (robotView.getNonVersionedName().length() >= name.length()
+										&& robotView.getNonVersionedName().substring(0, name.length()).equals(name))) {
 					if (name == null && receiver == robotPeer) {
 						continue;
 					}
-					RobotMessageManager robotMsgMan = receiver.getMessageManager();
+					RobotMessageManager robotMsgMan = receiver.getRobotMessageManager();
 
 					if (robotMsgMan != null) {
 						synchronized (robotMsgMan.out) {
 							robotMsgMan.out.writeObject(message);
 							try {
-								robotMsgMan.addMessage(robotPeer.u_getName(), (Serializable) robotMsgMan.in.readObject());
+								robotMsgMan.addMessage(robotView.getName(), (Serializable) robotMsgMan.in.readObject());
 							} catch (ClassNotFoundException e) {
 								System.out.println("Unable to send: " + e);
 							}
@@ -100,7 +129,7 @@ public class RobotMessageManager {
 	}
 
 	public void addMessage(String sender, Serializable o) {
-		if (robotPeer.isAlive()) {
+		if (robotView.isAlive()) {
 			messageEvents.add(new MessageEvent(sender, o));
 		}
 	}

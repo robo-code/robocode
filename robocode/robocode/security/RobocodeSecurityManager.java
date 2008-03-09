@@ -58,9 +58,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private Thread battleThread;
 
-	/**
-	 * RobocodeSecurityManager constructor
-	 */
 	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
 		safeThreads.add(safeThread);
@@ -98,7 +95,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (robotPeer == null) {
 			robotPeer = threadManager.getLoadingRobotPeer(c);
 			if (robotPeer != null) {
-				throw new AccessControlException("Preventing " + robotPeer.u_getName() + " from access to thread: " + t.getName());
+				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access to thread: " + t.getName());
 			}
 			checkPermission(new RuntimePermission("modifyThread"));
 			return;
@@ -151,7 +148,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			robotPeer = threadManager.getLoadingRobotPeer(c);
 			if (robotPeer != null) {
 				throw new AccessControlException(
-						"Preventing " + robotPeer.u_getName() + " from access to threadgroup: " + g.getName());
+						"Preventing " + robotPeer.getName() + " from access to threadgroup: " + g.getName());
 			}
 			checkPermission(new RuntimePermission("modifyThreadGroup"));
 			return;
@@ -287,18 +284,18 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// If there is no readable directory, deny access.
 				if (fileSystemManager.getReadableDirectory() == null) {
-					robotPeer.u_setEnergy(0);
+					robotPeer.forceUncharge();
 					throw new AccessControlException(
-							"Preventing " + robotPeer.u_getName() + " from access: " + perm
+							"Preventing " + robotPeer.getName() + " from access: " + perm
 							+ ": Robots that are not in a package may not read any files.");
 				}
 				// If this is a readable file, return.
 				if (fileSystemManager.isReadable(fp.getName())) {
 					return;
 				} // Else disable robot
-				robotPeer.u_setEnergy(0);
+				robotPeer.forceUncharge();
 				throw new AccessControlException(
-						"Preventing " + robotPeer.u_getName() + " from access: " + perm
+						"Preventing " + robotPeer.getName() + " from access: " + perm
 						+ ": You may only read files in your own root package directory. ");
 			} // Robot wants access to write something
 			else if (fp.getActions().equals("write")) {
@@ -307,9 +304,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// There isn't one.  Deny access.
 				if (o == null) {
-					robotPeer.u_setEnergy(0);
+					robotPeer.forceUncharge();
 					throw new AccessControlException(
-							"Preventing " + robotPeer.u_getName() + " from access: " + perm + ": You must use a RobocodeOutputStream.");
+							"Preventing " + robotPeer.getName() + " from access: " + perm + ": You must use a RobocodeOutputStream.");
 				}
 				// Remove the RobocodeOutputStream so future access checks will fail.
 				removeRobocodeOutputStream();
@@ -319,10 +316,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// If there is no writable directory, deny access
 				if (fileSystemManager.getWritableDirectory() == null) {
-					robotPeer.u_setEnergy(0);
+					robotPeer.forceUncharge();
 
 					throw new AccessControlException(
-							"Preventing " + robotPeer.u_getName() + " from access: " + perm
+							"Preventing " + robotPeer.getName() + " from access: " + perm
 							+ ": Robots that are not in a package may not write any files.");
 				}
 				// If this is a writable file, permit access
@@ -335,14 +332,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 					return;
 				} // Not a writable directory.
 
-				robotPeer.u_setEnergy(0);
+				robotPeer.forceUncharge();
 				// robotPeer.out.println("I would allow access to: " + fileSystemManager.getWritableDirectory());
 				threadOut(
-						"Preventing " + robotPeer.u_getName() + " from access: " + perm
+						"Preventing " + robotPeer.getName() + " from access: " + perm
 						+ ": You may only write files in your own data directory. ");
 
 				throw new AccessControlException(
-						"Preventing " + robotPeer.u_getName() + " from access: " + perm
+						"Preventing " + robotPeer.getName() + " from access: " + perm
 						+ ": You may only write files in your own data directory. ");
 			} // Robot wants access to write something
 			else if (fp.getActions().equals("delete")) {
@@ -351,9 +348,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// If there is no writable directory, deny access
 				if (fileSystemManager.getWritableDirectory() == null) {
-					robotPeer.u_setEnergy(0);
+					robotPeer.forceUncharge();
 					throw new AccessControlException(
-							"Preventing " + robotPeer.u_getName() + " from access: " + perm
+							"Preventing " + robotPeer.getName() + " from access: " + perm
 							+ ": Robots that are not in a package may not delete any files.");
 				}
 				// If this is a writable file, permit access
@@ -367,7 +364,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 					return;
 				} // Not a writable directory.
 
-				robotPeer.u_setEnergy(0);
+				robotPeer.forceUncharge();
 				throw new AccessControlException(
 						"Preventing " + robotPeer.getName() + " from access: " + perm
 						+ ": You may only delete files in your own data directory. ");
@@ -379,19 +376,19 @@ public class RobocodeSecurityManager extends SecurityManager {
 			if (perm.getName().equals("System.out") || perm.getName().equals("System.err")) {
 				robotPeer.getOut().println("SYSTEM:  You cannot write to System.out or System.err.");
 				robotPeer.getOut().println("SYSTEM:  Please use out.println instead of System.out.println");
-				throw new AccessControlException("Preventing " + robotPeer.u_getName() + " from access: " + perm);
+				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access: " + perm);
 			} else if (perm.getName().equals("System.in")) {
 				robotPeer.getOut().println("SYSTEM:  You cannot read from System.in.");
-				throw new AccessControlException("Preventing " + robotPeer.u_getName() + " from access: " + perm);
+				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access: " + perm);
 
 			}
 
 		}
 
 		// Permission denied.
-		syserr.println("Preventing " + robotPeer.u_getName() + " from access: " + perm);
+		syserr.println("Preventing " + robotPeer.getName() + " from access: " + perm);
 
-		robotPeer.u_setEnergy(0);
+		robotPeer.forceUncharge();
 
 		if (perm instanceof java.awt.AWTPermission) {
 			if (perm.getName().equals("showWindowWithoutWarningBanner")) {
@@ -559,7 +556,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 					robotPeer = threadManager.getLoadingRobotPeer(c);
 				}
 				if (robotPeer != null) {
-					robotPeer.u_setEnergy(0);
+					robotPeer.forceUncharge();
 				}
 				throw new AccessControlException(
 						"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "

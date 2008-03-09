@@ -11,66 +11,30 @@
  *******************************************************************************/
 package robocode.peer.data;
 
-import java.util.concurrent.locks.ReentrantLock;
+import robocode.peer.IBattleRobotPeer;
 
 /**
  * @author Pavel Savara (original)
  */
 public class RobotPeerLock {
     //this implementation is for testing purposes, it could be reimplemented with ReentrantReaderWriterLock, but without check operations
-    private final ReentrantLock syncRoot=new ReentrantLock();
-    private int read=0;
-    private int write=0;
 
-    public final Object getSyncRoot(){
-        return syncRoot; 
-    }
+    protected IBattleRobotPeer peer;
 
-    public final void lockRead(){
-        syncRoot.lock();
-        read++;
-    }
-
-    public final void lockWrite(){
-        syncRoot.lock();
-        write++;
-    }
-
-    public final void unlockRead(){
-        read--;
-        syncRoot.unlock();
-    }
-
-    public final void unlockWrite(){
-        write--;
-        syncRoot.unlock();
+    public void setupInfo(IBattleRobotPeer peer){
+        this.peer=peer;
     }
 
     public final void checkReadLock(){
-        //if (!syncRoot.isWriteLockedByCurrentThread()){
-        if (!syncRoot.isHeldByCurrentThread()){
-            throw new RuntimeException("bad lock");
-        }
-        if (read<=0 && write<=0){
-            throw new RuntimeException("bad lock type read");
-        }
+        peer.checkReadLock();
     }
 
     public final void checkWriteLock(){
-        //if (!syncRoot.isWriteLockedByCurrentThread()){
-        if (!syncRoot.isHeldByCurrentThread()){
-            throw new RuntimeException("bad lock");
-        }
-        if (write<=0){
-            throw new RuntimeException("bad lock type write");
-        }
+        peer.checkWriteLock();
     }
 
     public final void checkNoLock(){
-        //if (!syncRoot.isWriteLockedByCurrentThread()){
-        if (syncRoot.isHeldByCurrentThread()){
-            throw new RuntimeException("should not lock");
-        }
+        peer.checkNoLock();
     }
 
 }

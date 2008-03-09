@@ -11,56 +11,12 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.peer.robot.RobotOutputStream;
-
-import java.awt.*;
-import java.awt.geom.Arc2D;
+import robocode.peer.robot.IDisplayEventManager;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IDisplayRobotPeer {
-    void lockRead();
-    void lockWrite();
-    void unlockRead();
-    void unlockWrite();
-    void checkReadLock();
+public interface IDisplayRobotPeer extends IRobotPeer{
 
-    boolean isAlive();
-    boolean isDead();
-    boolean isDroid();
-    boolean isInteractiveRobot();
-    boolean isInteractiveListener();
-    boolean isDuplicate();
-    boolean isPaintEnabled();
-    boolean isSGPaintEnabled();
 
-    double getEnergy();
-    double getX();
-    double getY();
-    double getHeading();
-    double getRadarHeading();
-    double getGunHeading();
-    Arc2D getScanArc();
-    
-    Color getBodyColor();
-    Color getGunColor();
-    Color getRadarColor();
-    Color getScanColor();
-    Color getBulletColor();
-    String getName();
-    String getShortName();
-    String getVeryShortName();
-    String getFullClassNameWithVersion();
-    String getUniqueFullClassNameWithVersion();
-    RobotOutputStream getOut();
-
-    //TODO synchronize
-    void d_setPaintEnabled(boolean enabled);
-    void d_setSGPaintEnabled(boolean enabled);
-    void d_kill();
-    void d_setScan(boolean v);
-    void d_setDuplicate(int d);
-    void onInteractiveEvent(robocode.Event e);
-    void onPaint(Graphics2D g);
 }

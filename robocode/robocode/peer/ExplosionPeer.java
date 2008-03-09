@@ -29,6 +29,8 @@ package robocode.peer;
 
 import robocode.battle.Battle;
 import robocode.battle.record.BulletRecord;
+import robocode.peer.views.IBattleBulletView;
+import robocode.peer.views.IBattleRobotView;
 
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class ExplosionPeer extends BulletPeer {
 
 	private static final int EXPLOSION_LENGTH = 71;
 
-	public ExplosionPeer(IBattleRobotPeer owner, Battle battle) {
+	public ExplosionPeer(IBattleRobotView owner, Battle battle) {
 		super(owner, battle);
 
 		x = owner.getX();
@@ -54,7 +56,7 @@ public class ExplosionPeer extends BulletPeer {
 		explosionImageIndex = 1;
 	}
 
-	public ExplosionPeer(IBattleRobotPeer owner, Battle battle, BulletRecord br) {
+	public ExplosionPeer(IBattleRobotView owner, Battle battle, BulletRecord br) {
 		super(owner, battle, br);
 
 		victim = owner;
@@ -65,7 +67,7 @@ public class ExplosionPeer extends BulletPeer {
 
 	@Override
     //TODO ZAMO synchronizet  
-    public final void update(List<IBattleRobotPeer> robots, List<IBattleBulletPeer> allBullets) {
+    public final void update(List<IBattleRobotView> robots, List<IBattleBulletView> allBullets) {
 		x = owner.getX();
 		y = owner.getY();
 

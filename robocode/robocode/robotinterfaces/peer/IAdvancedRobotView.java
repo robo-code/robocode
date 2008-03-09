@@ -16,8 +16,8 @@ package robocode.robotinterfaces.peer;
 
 import robocode.*;
 
-import java.util.List;
 import java.io.File;
+import java.util.List;
 
 
 /**
@@ -32,7 +32,7 @@ import java.io.File;
  *
  * @since 1.6
  */
-public interface IAdvancedRobotPeer extends IStandardRobotPeer {
+public interface IAdvancedRobotView extends IStandardRobotView {
 
 	/**
 	 * Checks if the gun is set to adjust for the robot turning, i.e. to turn
@@ -89,9 +89,9 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	boolean isAdjustRadarForBodyTurn();
 
 	/**
-	 * This call is identical to {@link IStandardRobotPeer#stop(boolean)
+	 * This call is identical to {@link IStandardRobotView#stop(boolean)
 	 * stop(boolean)}, but returns immediately, and will not execute until you
-	 * call {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
+	 * call {@link IBasicRobotView#execute() execute()} or take an action that executes.
 	 * <p>
 	 * If there is already movement saved from a previous stop, you can
 	 * overwrite it by calling {@code setStop(true)}.
@@ -99,25 +99,25 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * @param overwrite {@code true} if the movement saved from a previous stop
 	 *    should be overwritten; {@code false} otherwise.
 	 *
-	 * @see IStandardRobotPeer#stop(boolean) stop(boolean)
-	 * @see IStandardRobotPeer#resume() resume()
+	 * @see IStandardRobotView#stop(boolean) stop(boolean)
+	 * @see IStandardRobotView#resume() resume()
 	 * @see #setResume()
-	 * @see IBasicRobotPeer#execute() execute()
+	 * @see IBasicRobotView#execute() execute()
 	 */
 	void setStop(boolean overwrite);
 
 	/**
 	 * Sets the robot to resume the movement stopped by
-	 * {@link IStandardRobotPeer#stop(boolean) stop(boolean)} or
+	 * {@link IStandardRobotView#stop(boolean) stop(boolean)} or
 	 * {@link #setStop(boolean)}, if any.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
-	 * {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
+	 * {@link IBasicRobotView#execute() execute()} or take an action that executes.
 	 *
-	 * @see IStandardRobotPeer#resume() resume()
-	 * @see IStandardRobotPeer#stop(boolean) stop(boolean)
+	 * @see IStandardRobotView#resume() resume()
+	 * @see IStandardRobotView#stop(boolean) stop(boolean)
 	 * @see #setStop(boolean)
-	 * @see IBasicRobotPeer#execute() execute()
+	 * @see IBasicRobotView#execute() execute()
 	 */
 	void setResume();
 
@@ -126,7 +126,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * when the next execution takes place.
 	 * <p>
 	 * This call returns immediately, and will not execute until you call
-	 * {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
+	 * {@link IBasicRobotView#execute() execute()} or take an action that executes.
 	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot is set to move forward, and negative

@@ -12,10 +12,10 @@
 package robocode.battle.record;
 
 
+import robocode.control.RobotResults;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import robocode.control.RobotResults;
 
 
 /**

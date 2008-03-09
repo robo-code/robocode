@@ -11,8 +11,17 @@
  *******************************************************************************/
 package robocode.peer;
 
+import java.awt.*;
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IDisplayBulletPeer {
+public interface IDisplayBulletView {
+    int getState();
+    double getPower();
+    int getFrame();
+    Color getColor();
+    double getPaintX();
+    double getPaintY();
+    int getExplosionImageIndex();
 }

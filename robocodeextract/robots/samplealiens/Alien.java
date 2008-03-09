@@ -26,7 +26,7 @@ import robocode.robotinterfaces.peer.*;
 public class Alien implements IBasicEvents, IBasicRobot, Runnable {
 
 	PrintStream out;
-	IStandardRobotPeer peer;
+	IStandardRobotView peer;
 
 	public Runnable getRobotRunnable() {
 		return this;
@@ -36,11 +36,11 @@ public class Alien implements IBasicEvents, IBasicRobot, Runnable {
 		return this;
 	}
 
-	public void setPeer(IBasicRobotPeer iRobotPeer) {
-		peer = (IStandardRobotPeer) iRobotPeer;
+	public void setPeer(IBasicRobotView iRobotPeer) {
+		peer = (IStandardRobotView) iRobotPeer;
 	}
 
-	public IBasicRobotPeer getPeer() {
+	public IBasicRobotView getPeer() {
 		return peer;
 	}
 

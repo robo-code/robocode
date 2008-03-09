@@ -14,7 +14,7 @@
 package robocode;
 
 
-import robocode.peer.IRobotBulletPeer;
+import robocode.peer.views.IRobotBulletView;
 
 /**
  * Represents a bullet. This is returned from fireBullet() and setFireBullet(),
@@ -29,13 +29,13 @@ import robocode.peer.IRobotBulletPeer;
  * @author Mathew A. Nelson (original)
  */
 public class Bullet {
-	private IRobotBulletPeer peer;
+	private IRobotBulletView peer;
 
 	/**
 	 * Called by the game to create a Bullet object
      * @param peer peer of the bullet
      */
-	public Bullet(IRobotBulletPeer peer) {
+	public Bullet(IRobotBulletView peer) {
 		this.peer = peer;
 	}
 

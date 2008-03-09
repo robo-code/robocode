@@ -9,10 +9,20 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package robocode.peer.views;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleRobotPeer extends IContestantPeer , IRobotPeer{
+public interface IRobotBulletView {
+
+    double getHeading();
+    double getPower();
+    double getVelocity();
+    double getX();
+    double getY();
+    boolean isActive();
+
+    String getVictimName();
+    String getOwnerName();
 }

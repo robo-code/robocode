@@ -16,7 +16,7 @@ import robocode.robotinterfaces.IAdvancedRobot;
 import robocode.robotinterfaces.IAdvancedEvents;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IBasicEvents;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IBasicRobotView;
 import robocode.ScannedRobotEvent;
 import robocode.HitByBulletEvent;
 import robocode.AdvancedRobot;
@@ -107,7 +107,7 @@ abstract class MasterBase {
 		return helperRobot;
 	}
 
-	public void setPeer(IBasicRobotPeer robotPeer) {
+	public void setPeer(IBasicRobotView robotPeer) {
 		helperRobot.setPeer(robotPeer);
 	}
 

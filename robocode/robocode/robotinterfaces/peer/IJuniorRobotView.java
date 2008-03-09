@@ -8,32 +8,24 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
-package robocode.peer;
+package robocode.robotinterfaces.peer;
 
-import robocode.Bullet;
-
-import java.util.List;
-import java.awt.*;
-import java.awt.geom.Line2D;
 
 /**
+ * The junior robot peer for junior robot types like {@link robocode.JuniorRobot}.
+ * <p>
+ * A robot peer is the object that deals with game mechanics and rules, and
+ * makes sure your robot abides by them.
+ *
  * @author Pavel Savara (original)
- */
-public interface IBattleBulletPeer {
-    void update(List<IBattleRobotPeer> robots, List<IBattleBulletPeer> allBullets);
-    IBattleRobotPeer getOwner();
-    double getPaintX();
-    double getPaintY();
-    int getExplosionImageIndex();
-    double getX();
-    double getY();
-    double getPower();
-    int getFrame();
-    int getState();
-    Color getColor();
-    boolean isActive();
-    Bullet getBullet();
-    void setState(int state);
-    Line2D.Double getBoundingLine();
+ * @author Flemming N. Larsen (javadoc)
+ *
+ * @since 1.6
+*/
+public interface IJuniorRobotView extends IBasicRobotView {
+
+	void turnAndMove(double distance, double radians);
 }

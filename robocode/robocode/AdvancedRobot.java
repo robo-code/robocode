@@ -171,7 +171,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setAhead(double distance) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setMove(distance);
+			((IAdvancedRobotView) peer).setMove(distance);
 		} else {
 			uninitializedException();
 		}
@@ -212,7 +212,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setBack(double distance) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setMove(-distance);
+			((IAdvancedRobotView) peer).setMove(-distance);
 		} else {
 			uninitializedException();
 		}
@@ -248,7 +248,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setTurnLeft(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnBody(-Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnBody(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -284,7 +284,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setTurnRight(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnBody(Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnBody(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -434,7 +434,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 			throw new NullPointerException("the condition cannot be null");
 		}
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).addCustomEvent(condition);
+			((IAdvancedRobotView) peer).addCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -445,7 +445,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void clearAllEvents() {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).clearAllEvents();
+			((IAdvancedRobotView) peer).clearAllEvents();
 		} else {
 			uninitializedException();
 		}
@@ -524,7 +524,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<Event> getAllEvents() {
 		if (peer != null) {
-			return new Vector<Event>(((IAdvancedRobotPeer) peer).getAllEvents());
+			return new Vector<Event>(((IAdvancedRobotView) peer).getAllEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -550,7 +550,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		if (peer != null) {
-			return new Vector<BulletHitBulletEvent>(((IAdvancedRobotPeer) peer).getBulletHitBulletEvents());
+			return new Vector<BulletHitBulletEvent>(((IAdvancedRobotView) peer).getBulletHitBulletEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -575,7 +575,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<BulletHitEvent> getBulletHitEvents() {
 		if (peer != null) {
-			return new Vector<BulletHitEvent>(((IAdvancedRobotPeer) peer).getBulletHitEvents());
+			return new Vector<BulletHitEvent>(((IAdvancedRobotView) peer).getBulletHitEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -601,7 +601,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<BulletMissedEvent> getBulletMissedEvents() {
 		if (peer != null) {
-			return new Vector<BulletMissedEvent>(((IAdvancedRobotPeer) peer).getBulletMissedEvents());
+			return new Vector<BulletMissedEvent>(((IAdvancedRobotView) peer).getBulletMissedEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -622,7 +622,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public File getDataDirectory() {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer) peer).getDataDirectory();
+			return ((IAdvancedRobotView) peer).getDataDirectory();
 		}
 		uninitializedException();
 		return null; // never called
@@ -649,7 +649,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public File getDataFile(String filename) {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer) peer).getDataFile(filename);
+			return ((IAdvancedRobotView) peer).getDataFile(filename);
 		}
 		uninitializedException();
 		return null; // never called
@@ -665,7 +665,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public long getDataQuotaAvailable() {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer) peer).getDataQuotaAvailable();
+			return ((IAdvancedRobotView) peer).getDataQuotaAvailable();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -688,7 +688,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public int getEventPriority(String eventClass) {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer) peer).getEventPriority(eventClass);
+			return ((IAdvancedRobotView) peer).getEventPriority(eventClass);
 		}
 		uninitializedException();
 		return 0; // never called
@@ -714,7 +714,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<HitByBulletEvent> getHitByBulletEvents() {
 		if (peer != null) {
-			return new Vector<HitByBulletEvent>(((IAdvancedRobotPeer) peer).getHitByBulletEvents());
+			return new Vector<HitByBulletEvent>(((IAdvancedRobotView) peer).getHitByBulletEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -739,7 +739,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<HitRobotEvent> getHitRobotEvents() {
 		if (peer != null) {
-			return new Vector<HitRobotEvent>(((IAdvancedRobotPeer) peer).getHitRobotEvents());
+			return new Vector<HitRobotEvent>(((IAdvancedRobotView) peer).getHitRobotEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -764,7 +764,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<HitWallEvent> getHitWallEvents() {
 		if (peer != null) {
-			return new Vector<HitWallEvent>(((IAdvancedRobotPeer) peer).getHitWallEvents());
+			return new Vector<HitWallEvent>(((IAdvancedRobotView) peer).getHitWallEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -789,7 +789,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<RobotDeathEvent> getRobotDeathEvents() {
 		if (peer != null) {
-			return new Vector<RobotDeathEvent>(((IAdvancedRobotPeer) peer).getRobotDeathEvents());
+			return new Vector<RobotDeathEvent>(((IAdvancedRobotView) peer).getRobotDeathEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -815,7 +815,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
 		if (peer != null) {
-			return new Vector<ScannedRobotEvent>(((IAdvancedRobotPeer) peer).getScannedRobotEvents());
+			return new Vector<ScannedRobotEvent>(((IAdvancedRobotView) peer).getScannedRobotEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -839,7 +839,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public boolean isAdjustGunForRobotTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer)peer).isAdjustGunForBodyTurn();
+			return ((IAdvancedRobotView)peer).isAdjustGunForBodyTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -863,7 +863,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public boolean isAdjustRadarForRobotTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer)peer).isAdjustRadarForBodyTurn();
+			return ((IAdvancedRobotView)peer).isAdjustRadarForBodyTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -887,7 +887,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public boolean isAdjustRadarForGunTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer)peer).isAdjustRadarForGunTurn();
+			return ((IAdvancedRobotView)peer).isAdjustRadarForGunTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -914,7 +914,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 			throw new NullPointerException("the condition cannot be null");
 		}
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).removeCustomEvent(condition);
+			((IAdvancedRobotView) peer).removeCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -969,7 +969,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setEventPriority(String eventClass, int priority) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setEventPriority(eventClass, priority);
+			((IAdvancedRobotView) peer).setEventPriority(eventClass, priority);
 		} else {
 			uninitializedException();
 		}
@@ -1000,7 +1000,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	@Override
 	public void setInterruptible(boolean interruptible) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setInterruptible(interruptible);
+			((IAdvancedRobotView) peer).setInterruptible(interruptible);
 		} else {
 			uninitializedException();
 		}
@@ -1015,7 +1015,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setMaxTurnRate(double newMaxTurnRate) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setMaxTurnRate(newMaxTurnRate);
+			((IAdvancedRobotView) peer).setMaxTurnRate(newMaxTurnRate);
 		} else {
 			uninitializedException();
 		}
@@ -1030,7 +1030,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setMaxVelocity(double newMaxVelocity) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setMaxVelocity(newMaxVelocity);
+			((IAdvancedRobotView) peer).setMaxVelocity(newMaxVelocity);
 		} else {
 			uninitializedException();
 		}
@@ -1052,7 +1052,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setResume() {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setResume();
+			((IAdvancedRobotView) peer).setResume();
 		} else {
 			uninitializedException();
 		}
@@ -1099,7 +1099,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setStop(boolean overwrite) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setStop(overwrite);
+			((IAdvancedRobotView) peer).setStop(overwrite);
 		} else {
 			uninitializedException();
 		}
@@ -1137,7 +1137,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setTurnGunLeft(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnGun(-Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnGun(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1175,7 +1175,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setTurnGunRight(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnGun(Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnGun(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1214,7 +1214,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setTurnRadarLeft(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnRadar(-Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1253,7 +1253,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setTurnRadarRight(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnRadar(Math.toRadians(degrees));
+			((IAdvancedRobotView) peer).setTurnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1270,7 +1270,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void waitFor(Condition condition) {
 		if (peer != null) {
-			((IAdvancedRobotPeer) peer).waitFor(condition);
+			((IAdvancedRobotView) peer).waitFor(condition);
 		} else {
 			uninitializedException();
 		}

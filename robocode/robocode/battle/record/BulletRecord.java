@@ -13,7 +13,7 @@ package robocode.battle.record;
 
 
 import static robocode.gfx.ColorUtil.toRGB565;
-import robocode.peer.IBattleBulletPeer;
+import robocode.peer.views.IBattleBulletView;
 
 
 /**
@@ -54,7 +54,7 @@ public class BulletRecord {
 	 * @param owner index of the robot that fired the bullet
 	 * @param bullet the bullet peer that is copied into this record
 	 */
-	public BulletRecord(int owner, IBattleBulletPeer bullet) {
+	public BulletRecord(int owner, IBattleBulletView bullet) {
 		this.owner = (byte) owner;
 		x = (short) (bullet.getPaintX() + 0.5);
 		y = (short) (bullet.getPaintY() + 0.5);

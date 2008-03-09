@@ -11,7 +11,13 @@
  *******************************************************************************/
 package robocode.battle;
 
-import robocode.peer.*;
+import robocode.peer.BulletPeer;
+import robocode.peer.IContestantPeer;
+import robocode.peer.IDisplayBulletView;
+import robocode.peer.RobotPeer;
+import robocode.peer.views.IBattleBulletView;
+import robocode.peer.views.IBattleRobotView;
+import robocode.peer.views.IDisplayRobotView;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -22,11 +28,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class BattleData {
 
     // Objects in the battle
-    private List<IDisplayRobotPeer> displayRobots = new CopyOnWriteArrayList<IDisplayRobotPeer>();
-    private List<IBattleRobotPeer> battleRobots = new CopyOnWriteArrayList<IBattleRobotPeer>();
+    private List<RobotPeer> robotsPeers = new CopyOnWriteArrayList<RobotPeer>();
+    private List<IDisplayRobotView> displayRobots = new CopyOnWriteArrayList<IDisplayRobotView>();
+    private List<IBattleRobotView> battleRobots = new CopyOnWriteArrayList<IBattleRobotView>();
     private List<IContestantPeer> contestants = new CopyOnWriteArrayList<IContestantPeer>();
-    private List<IBattleBulletPeer> battleBullets = new CopyOnWriteArrayList<IBattleBulletPeer>();
-    private List<IDisplayBulletPeer> displayBullets = new CopyOnWriteArrayList<IDisplayBulletPeer>();
+    private List<IBattleBulletView> battleBullets = new CopyOnWriteArrayList<IBattleBulletView>();
+    private List<IDisplayBulletView> displayBullets = new CopyOnWriteArrayList<IDisplayBulletView>();
 
 
 
@@ -46,11 +53,11 @@ public class BattleData {
         displayBullets.add(bullet);
     }
 
-    public List<IBattleBulletPeer> getBattleBullets() {
+    public List<IBattleBulletView> getBattleBullets() {
         return battleBullets;
     }
 
-    public List<IDisplayBulletPeer> getDisplayBullets() {
+    public List<IDisplayBulletView> getDisplayBullets() {
         return displayBullets;
     }
 
@@ -64,15 +71,20 @@ public class BattleData {
     }
 
     public void addRobotPeer(RobotPeer robotPeer){
-        displayRobots.add(robotPeer);
-        battleRobots.add(robotPeer);
+        robotsPeers.add(robotPeer);
+        displayRobots.add(robotPeer.getDisplayView());
+        battleRobots.add(robotPeer.getBattleView());
     }
 
-    public List<IDisplayRobotPeer> getDisplayRobots() {
+    public List<RobotPeer> getRobotPeers(){
+        return robotsPeers;
+    }
+
+    public List<IDisplayRobotView> getDisplayRobots() {
         return displayRobots;
     }
 
-    public List<IBattleRobotPeer> getBattleRobots() {
+    public List<IBattleRobotView> getBattleRobots() {
         return battleRobots;
     }
 

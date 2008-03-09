@@ -26,7 +26,7 @@ package robocode.robotinterfaces.peer;
  *
  * @since 1.6
  */
-public interface IStandardRobotPeer extends IBasicRobotPeer {
+public interface IStandardRobotView extends IBasicRobotView {
 
 	/**
 	 * Immediately stops all movement, and saves it for a call to

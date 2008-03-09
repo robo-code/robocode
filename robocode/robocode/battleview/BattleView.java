@@ -14,13 +14,6 @@
 package robocode.battleview;
 
 
-import static java.lang.Math.*;
-
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
@@ -30,8 +23,17 @@ import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.peer.*;
+import robocode.peer.BulletPeer;
+import robocode.peer.ExplosionPeer;
+import robocode.peer.IDisplayBulletView;
+import robocode.peer.views.IDisplayRobotView;
 import robocode.util.GraphicsState;
+
+import java.awt.*;
+import java.awt.geom.*;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import static java.lang.Math.*;
 
 
 /**
@@ -159,13 +161,13 @@ public class BattleView extends Canvas {
 	}
 
     private void lockRobots(){
-        for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
+        for (IDisplayRobotView robotPeer : battle.getDisplayRobots()) {
             robotPeer.lockRead();
         }
     }
 
     private void unlockRobots(){
-        for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
+        for (IDisplayRobotView robotPeer : battle.getDisplayRobots()) {
             robotPeer.unlockRead();
         }
     }
@@ -370,7 +372,7 @@ public class BattleView extends Canvas {
 	
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
-			for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
+			for (IDisplayRobotView robotPeer : battle.getDisplayRobots()) {
 				if (robotPeer.isAlive()) {
 					drawScanArc(g, robotPeer);
 				}
@@ -386,7 +388,7 @@ public class BattleView extends Canvas {
 		if (drawGround && drawExplosionDebris && battle.isRobotsLoaded()) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
-			for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
+			for (IDisplayRobotView robotPeer : battle.getDisplayRobots()) {
 				if (robotPeer.isDead()) {
 					x = robotPeer.getX();
 					y = battleFieldHeight - robotPeer.getY();
@@ -399,7 +401,7 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
+		for (IDisplayRobotView robotPeer : battle.getDisplayRobots()) {
 			if (robotPeer.isAlive()) {
 				x = robotPeer.getX();
 				y = battleFieldHeight - robotPeer.getY();
@@ -438,7 +440,7 @@ public class BattleView extends Canvas {
 
 		g.setClip(null);
 
-		for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
+		for (IDisplayRobotView robotPeer : battle.getDisplayRobots()) {
 			if (robotPeer.isDead()) {
 				continue;
 			}
@@ -474,7 +476,7 @@ public class BattleView extends Canvas {
 		g.setClip(savedClip);
 	}
 
-	private void drawRobotPaint(Graphics2D g, IDisplayRobotPeer robotPeer) {
+	private void drawRobotPaint(Graphics2D g, IDisplayRobotView robotPeer) {
         GraphicsState gfxState = new GraphicsState();
 
         gfxState.save(g);
@@ -509,7 +511,7 @@ public class BattleView extends Canvas {
 		
 		double x, y;
 
-		for (IBattleBulletPeer bullet : battle.getBattleBullets()) {
+		for (IDisplayBulletView bullet : battle.getDisplayBullets()) {
 			x = bullet.getPaintX();
 			y = battle.getBattleField().getHeight() - bullet.getPaintY();
 
@@ -589,7 +591,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private Rectangle drawScanArc(Graphics2D g, IDisplayRobotPeer robot) {
+	private Rectangle drawScanArc(Graphics2D g, IDisplayRobotView robot) {
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
 
 		Arc2D.Double scanArc = (Arc2D.Double) robot.getScanArc().clone();

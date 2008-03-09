@@ -16,7 +16,7 @@ package robocode;
 
 import robocode.exception.RobotException;
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IBasicRobotView;
 
 
 /**
@@ -40,7 +40,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  */
 public abstract class _RobotBase implements IBasicRobot, Runnable {
 
-	IBasicRobotPeer peer;
+	IBasicRobotView peer;
 
 	/**
 	 * The output stream your robot should use to print.
@@ -68,7 +68,7 @@ public abstract class _RobotBase implements IBasicRobot, Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void setPeer(IBasicRobotPeer peer) {
+	public final void setPeer(IBasicRobotView peer) {
 		this.peer = peer;
 	}
 

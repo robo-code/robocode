@@ -37,13 +37,13 @@
 package robocode.peer.robot;
 
 
-import java.util.List;
-
 import robocode.control.RobotResults;
+import robocode.peer.IRobotRobotPeer;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
-import robocode.peer.IBattleRobotPeer;
-import robocode.peer.IRobotRobotPeer;
+import robocode.peer.views.IBattleRobotView;
+
+import java.util.List;
 
 
 /**
@@ -56,10 +56,10 @@ import robocode.peer.IRobotRobotPeer;
  */
 public class RobotStatistics implements robocode.peer.IContestantStatistics {
 
-	private IBattleRobotPeer robotPeer;
+	private IBattleRobotView owner;
 	private TeamPeer teamPeer;
 
-	private List<IBattleRobotPeer> robots;
+	private List<IBattleRobotView> robots;
 
 	private boolean isActive;
 
@@ -84,13 +84,13 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 	private int totalSeconds;
 	private int totalThirds;
 
-	public RobotStatistics(IBattleRobotPeer robotPeer) {
+	public RobotStatistics(IBattleRobotView robotPeer) {
 		super();
-		this.robotPeer = robotPeer;
+		this.owner = robotPeer;
 		this.teamPeer = robotPeer.getTeamPeer();
 	}
 
-	public RobotStatistics(IBattleRobotPeer robotPeer, RobotResults results) {
+	public RobotStatistics(IBattleRobotView robotPeer, RobotResults results) {
 		this(robotPeer);
 
 		totalScore = results.getScore();
@@ -105,7 +105,7 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 		totalThirds = results.getThirds();
 	}
 
-	public void initialize(List<IBattleRobotPeer> robots) {
+	public void initialize(List<IBattleRobotView> robots) {
 		this.robots = robots;
 
 		resetScores();
@@ -216,24 +216,24 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 			}
 			lastSurvivorBonus += 10 * enemyCount;
 
-			if (teamPeer == null || robotPeer.isTeamLeader()) {
+			if (teamPeer == null || owner.isTeamLeader()) {
 				totalFirsts++;
 			}
 		}
 	}
 
-	public void scoreBulletDamage(int robot, double damage) {
-		if (isTeammate(robot)) {
+	public void scoreBulletDamage(IBattleRobotView robot, int index, double damage) {
+		if (owner.isTeammate(robot)) {
 			return;
 		}
 		if (isActive) {
-			getRobotDamage()[robot] += damage;
+			getRobotDamage()[index] += damage;
 			bulletDamageScore += damage;
 		}
 	}
 
-	public void scoreBulletKill(int robot) {
-		if (isTeammate(robot)) {
+	public void scoreBulletKill(IBattleRobotView robot, int index) {
+		if (owner.isTeammate(robot)) {
 			return;
 		}
 
@@ -241,49 +241,49 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 			double bonus = 0;
 
 			if (teamPeer == null) {
-				bonus = getRobotDamage()[robot] * .2;
+				bonus = getRobotDamage()[index] * .2;
 			} else {
 				for (IRobotRobotPeer teammate : teamPeer) {
-					bonus += ((RobotPeer)teammate).getRobotStatistics().getRobotDamage()[robot] * .2;
+					bonus += ((RobotPeer)teammate).getBattleView().getRobotStatistics().getRobotDamage()[index] * .2;
 				}
 			}
 
 			bulletKillBonus += bonus;
 
-			robotPeer.getOut().println(
-					"SYSTEM: Bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
+			owner.getOut().println(
+					"SYSTEM: Bonus for killing " + robot.getName() + ": " + (int) (bonus + .5));
 		}
 	}
 
-	public void scoreRammingDamage(int robot) {
-		if (isActive && !isTeammate(robot)) {
-			getRobotDamage()[robot] += robocode.Rules.ROBOT_HIT_DAMAGE;
+	public void scoreRammingDamage(IBattleRobotView robot, int index) {
+		if (isActive && !owner.isTeammate(robot)) {
+			getRobotDamage()[index] += robocode.Rules.ROBOT_HIT_DAMAGE;
 			rammingDamageScore += robocode.Rules.ROBOT_HIT_BONUS;
 		}
 	}
 
-	public void scoreRammingKill(int robot) {
-		if (isActive && !isTeammate(robot)) {
+	public void scoreRammingKill(IBattleRobotView robot, int index) {
+		if (isActive && !owner.isTeammate(robot)) {
 			double bonus = 0;
 
 			if (teamPeer == null) {
-				bonus = getRobotDamage()[robot] * .3;
+				bonus = getRobotDamage()[index] * .3;
 			} else {
 				for (RobotPeer teammate : teamPeer) {
-					bonus += (teammate).getRobotStatistics().getRobotDamage()[robot] * .3;
+					bonus += (teammate).getBattleView().getRobotStatistics().getRobotDamage()[index] * .3;
 				}
 			}
 			rammingKillBonus += bonus;
 
-			robotPeer.getOut().println(
-					"SYSTEM: Ram bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
+			owner.getOut().println(
+					"SYSTEM: Ram bonus for killing " + robot.getName() + ": " + (int) (bonus + .5));
 		}
 	}
 
 	public void scoreRobotDeath(int enemiesRemaining) {
 		switch (enemiesRemaining) {
 		case 0:
-			if (!robotPeer.isWinner()) {
+			if (!owner.isWinner()) {
 				totalFirsts++;
 			}
 			break;
@@ -326,10 +326,6 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 			robotDamage = new double[robots.size()];
 		}
 		return robotDamage;
-	}
-
-	private boolean isTeammate(int robot) {
-		return (teamPeer != null && teamPeer == robots.get(robot).getTeamPeer());
 	}
 
 	public void cleanup() {// Do nothing, for now

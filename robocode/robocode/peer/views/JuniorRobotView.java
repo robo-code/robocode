@@ -5,27 +5,29 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
+ * This is temporary implementation of the interface. You should not build any external component on top of it.
+ *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
  *******************************************************************************/
-package robocode.robotinterfaces.peer;
+package robocode.peer.views;
+
+
+import robocode.peer.IRobotRobotPeer;
+import robocode.robotinterfaces.peer.IJuniorRobotView;
 
 
 /**
- * The junior robot peer for junior robot types like {@link robocode.JuniorRobot}.
- * <p>
- * A robot peer is the object that deals with game mechanics and rules, and
- * makes sure your robot abides by them.
- *
  * @author Pavel Savara (original)
- * @author Flemming N. Larsen (javadoc)
- *
- * @since 1.6
-*/
-public interface IJuniorRobotPeer extends IBasicRobotPeer {
+ */
+public class JuniorRobotView extends BasicRobotView implements IJuniorRobotView {
 
-	void turnAndMove(double distance, double radians);
+	public JuniorRobotView(IRobotRobotPeer peer) {
+		super(peer);
+	}
+
+	public void turnAndMove(double distance, double radians) {
+		i_turnAndMove(distance, radians);
+	}
 }

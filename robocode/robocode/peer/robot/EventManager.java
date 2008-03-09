@@ -40,16 +40,18 @@
 package robocode.peer.robot;
 
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import robocode.*;
+import robocode.exception.EventInterruptedException;
+import robocode.peer.IRobotRobotPeer;
+import robocode.peer.RobotPeer;
+import robocode.peer.views.BasicRobotView;
+import robocode.peer.views.IRobotRunnableView;
+import robocode.robotinterfaces.*;
+import robocode.util.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import robocode.*;
-import robocode.robotinterfaces.*;
-import robocode.exception.EventInterruptedException;
-import robocode.peer.RobotPeer;
-import robocode.peer.IRobotRobotPeer;
-import robocode.util.Utils;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -62,8 +64,9 @@ import robocode.util.Utils;
  */
 public class EventManager implements IRobotEventManager, IBattleEventManager, IDisplayEventManager {
 	private IRobotRobotPeer robotPeer = null;
+    private IRobotRunnableView robotView;
 
-	private final int MAX_PRIORITY = 100;
+    private final int MAX_PRIORITY = 100;
 
 	private final int deathEventPriority = -1; // System event -> cannot be changed!
 	private int scannedRobotEventPriority = 10;
@@ -95,7 +98,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	private int currentTopEventPriority;
 
 	private List<Condition> customEvents = new CopyOnWriteArrayList<Condition>();
-	private final EventQueue eventQueue;
+	private EventQueue eventQueue;
 
 	private boolean interruptible[] = new boolean[MAX_PRIORITY + 1];
 
@@ -110,15 +113,28 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	public EventManager(RobotPeer robotPeer) {
 		super();
 		this.robotPeer = robotPeer;
-		eventQueue = new EventQueue(this);
+        robotView=robotPeer.getRobotRunnableView();
+        eventQueue = new EventQueue(this);
 		reset();
 	}
+
+    public void cleanup() {
+        // Remove all events
+        reset();
+
+        // Remove all references to robots
+        robot = null;
+        robotPeer = null;
+        robotView = null;
+        eventQueue = null;
+        interruptible = null;
+    }
 
 	public boolean add(Event e) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				System.out.println(
-						"Not adding to " + robotPeer.getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE + " events in queue.");
+						"Not adding to " + robotView.getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE + " events in queue.");
 				return false;
 			}
 			return eventQueue.add(e);
@@ -138,15 +154,6 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 		eventQueue.clear(clearTime);
 	}
         
-	public void cleanup() {
-		// Remove all events
-		reset();
-
-		// Remove all references to robots
-		robot = null;
-		robotPeer = null;
-	}
-
 	/**
 	 * Returns a list containing all events currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
@@ -562,7 +569,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	}
 
 	public long getTime() {
-		return robotPeer.getTime();
+		return robotView.getTime();
 	}
 
 	public void onStatus(StatusEvent e) {
@@ -640,7 +647,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onMouseClickedEvent(MouseClickedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -663,7 +670,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onMouseDraggedEvent(MouseDraggedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -686,7 +693,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onMouseEnteredEvent(MouseEnteredEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -709,7 +716,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onMouseExitedEvent(MouseExitedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -732,7 +739,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onMouseMovedEvent(MouseMovedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -755,7 +762,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onMousePressedEvent(MousePressedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -779,7 +786,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onMouseReleasedEvent(MouseReleasedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -802,7 +809,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onMouseWheelMovedEvent(MouseWheelMovedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -825,7 +832,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onKeyTypedEvent(KeyTypedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -848,7 +855,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onKeyPressedEvent(KeyPressedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -871,7 +878,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
     public void onKeyReleasedEvent(KeyReleasedEvent e) {
         IBasicRobot robot = getRobot();
 
-        if (robot != null && robotPeer.isInteractiveRobot()) {
+        if (robot != null && robotView.isInteractiveRobot()) {
             try {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -895,7 +902,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			if (robotPeer.isAdvancedRobot()) {
+			if (robotView.isAdvancedRobot()) {
 				IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
 				if (listener != null) {
@@ -1022,7 +1029,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	public void onSkippedTurn(SkippedTurnEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isAdvancedRobot()) {
+		if (robot != null && robotView.isAdvancedRobot()) {
 			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
 			if (listener != null) {
@@ -1040,7 +1047,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	public void onMessageReceived(MessageEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isTeamRobot()) {
+		if (robot != null && robotView.isTeamRobot()) {
 			ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
 
 			if (listener != null) {
@@ -1083,9 +1090,9 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
             // NOT with CopyOnWriteArrayList 
             for (Condition customEvent : customEvents) {
                 c = customEvent;
-                robotPeer.setTestingCondition(true);
+                robotView.setTestingCondition(true);
                 conditionSatisfied = c.test();
-                robotPeer.setTestingCondition(false);
+                robotView.setTestingCondition(false);
                 if (conditionSatisfied) {
                     eventQueue.add(new CustomEvent(c));
                 }
@@ -1154,18 +1161,18 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
                 } else if (currentEvent instanceof KeyReleasedEvent) {
                     onKeyReleasedEvent((KeyReleasedEvent) currentEvent);
                 } else if (currentEvent instanceof ScannedRobotEvent) {
-					if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
-							&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
-							&& !(robotPeer.isAdvancedRobot())) {
-						robotPeer.setFireAssistAngle(Utils.normalAbsoluteAngle(
-								robotPeer.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians())
+					if (getTime() == currentEvent.getTime() && robotView.getGunHeading() == robotView.getRadarHeading()
+							&& robotView.getLastGunHeading() == robotView.getLastRadarHeading() && getRobot() != null
+							&& !(robotView.isAdvancedRobot())) {
+						robotView.setFireAssistAngle(Utils.normalAbsoluteAngle(
+								robotView.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians())
                                 );
-						if (!robotPeer.isAdvancedRobot()) {
-                            robotPeer.setFireAssistValid(true);
+						if (!robotView.isAdvancedRobot()) {
+                            robotView.setFireAssistValid(true);
 						}
 					}
 					onScannedRobot((ScannedRobotEvent) currentEvent);
-                    robotPeer.setFireAssistValid(false);
+                    robotView.setFireAssistValid(false);
 				} else if (currentEvent instanceof RobotDeathEvent) {
 					onRobotDeath((RobotDeathEvent) currentEvent);
 				} else if (currentEvent instanceof SkippedTurnEvent) {
@@ -1174,7 +1181,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 					onMessageReceived((MessageEvent) currentEvent);
 				} else if (currentEvent instanceof DeathEvent) {
 					onDeath((DeathEvent) currentEvent);
-					robotPeer.death();
+					BasicRobotView.death();
 				} else if (currentEvent instanceof WinEvent) {
 					onWin((WinEvent) currentEvent);
 				} else if (currentEvent instanceof CustomEvent) {
@@ -1185,7 +1192,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 				setInterruptible(currentTopEventPriority, false);
 
 			} catch (EventInterruptedException e) {
-                robotPeer.setFireAssistValid(false);
+                robotView.setFireAssistValid(false);
 			} catch (RuntimeException e) {
 				currentTopEventPriority = oldTopEventPriority;
 				throw e;

@@ -33,6 +33,7 @@ package robocode;
 
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.*;
+import robocode.peer.views.BattleRobotView;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -236,7 +237,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 		if (peer == null) {
 			uninitializedException();
 		}
-		return robocode.peer.RobotPeer.HEIGHT;
+		return BattleRobotView.HEIGHT;
 	}
 
 	/**
@@ -250,7 +251,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 		if (peer == null) {
 			uninitializedException();
 		}
-		return robocode.peer.RobotPeer.WIDTH;
+		return BattleRobotView.WIDTH;
 	}
 
 	/**
@@ -751,7 +752,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void scan() {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).scanReset();
+			((IStandardRobotView) peer).scanReset();
 		} else {
 			uninitializedException();
 		}
@@ -796,7 +797,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void setAdjustGunForRobotTurn(boolean independent) {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).setAdjustGunForBodyTurn(independent);
+			((IStandardRobotView) peer).setAdjustGunForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -839,7 +840,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void setAdjustRadarForRobotTurn(boolean independent) {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).setAdjustRadarForBodyTurn(independent);
+			((IStandardRobotView) peer).setAdjustRadarForBodyTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -883,7 +884,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void setAdjustRadarForGunTurn(boolean independent) {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).setAdjustRadarForGunTurn(independent);
+			((IStandardRobotView) peer).setAdjustRadarForGunTurn(independent);
 		} else {
 			uninitializedException();
 		}
@@ -1233,7 +1234,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void stop(boolean overwrite) {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).stop(overwrite);
+			((IStandardRobotView) peer).stop(overwrite);
 		} else {
 			uninitializedException();
 		}
@@ -1249,7 +1250,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void resume() {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).resume();
+			((IStandardRobotView) peer).resume();
 		} else {
 			uninitializedException();
 		}
@@ -1354,7 +1355,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void turnRadarLeft(double degrees) {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).turnRadar(-Math.toRadians(degrees));
+			((IStandardRobotView) peer).turnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1389,7 +1390,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public void turnRadarRight(double degrees) {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).turnRadar(Math.toRadians(degrees));
+			((IStandardRobotView) peer).turnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}

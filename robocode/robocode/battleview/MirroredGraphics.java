@@ -12,6 +12,8 @@
 package robocode.battleview;
 
 
+import robocode.util.GraphicsState;
+
 import java.awt.*;
 import java.awt.RenderingHints.Key;
 import java.awt.font.FontRenderContext;
@@ -24,8 +26,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
-
-import robocode.util.GraphicsState;
 
 
 /**

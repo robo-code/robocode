@@ -550,7 +550,7 @@ public class BattleManager {
 
 		for (int i = 0; i < results.length; i++) {
 			IContestantPeer peer = orderedPeers.get(i);
-			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : (RobotPeer)((TeamPeer) peer).getTeamLeader();
+			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
 
 			IContestantStatistics stats = peer.getRobotStatistics();
 

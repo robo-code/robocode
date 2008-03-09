@@ -28,6 +28,7 @@ import robocode.battle.Battle;
 import robocode.dialog.RobotDialog;
 import robocode.peer.RobotPeer;
 import robocode.peer.IDisplayRobotPeer;
+import robocode.peer.views.IDisplayRobotView;
 
 
 /**
@@ -46,15 +47,15 @@ public class RobotDialogManager {
 	}
 
 	public void setActiveBattle(Battle b) {
-		List<IDisplayRobotPeer> robots = b.getDisplayRobots();
+		List<IDisplayRobotView> robots = b.getDisplayRobots();
 
 		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
 
 		for (String name : keys) {
 			boolean found = false;
 
-			for (IDisplayRobotPeer robotPeer : robots) {
-				if (robotPeer.getName().equals(name)) {
+			for (IDisplayRobotView robotView : robots) {
+				if (robotView.getName().equals(name)) {
 					found = true;
 					break;
 				}

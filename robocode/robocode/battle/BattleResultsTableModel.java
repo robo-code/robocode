@@ -26,6 +26,12 @@
 package robocode.battle;
 
 
+import robocode.io.Logger;
+import robocode.peer.IContestantPeer;
+import robocode.peer.IContestantStatistics;
+import robocode.peer.TeamPeer;
+import robocode.text.StringUtil;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -34,12 +40,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import robocode.io.Logger;
-import robocode.peer.IContestantPeer;
-import robocode.peer.IContestantStatistics;
-import robocode.peer.TeamPeer;
-import robocode.text.StringUtil;
 
 
 /**

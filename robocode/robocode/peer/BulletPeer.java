@@ -43,18 +43,20 @@
 package robocode.peer;
 
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static robocode.gfx.ColorUtil.toColor;
-
-import java.awt.Color;
-import java.awt.geom.Line2D;
-import java.util.List;
-
 import robocode.*;
 import robocode.battle.Battle;
 import robocode.battle.record.BulletRecord;
 import robocode.battlefield.BattleField;
+import static robocode.gfx.ColorUtil.toColor;
+import robocode.peer.views.IBattleBulletView;
+import robocode.peer.views.IBattleRobotView;
+import robocode.peer.views.IRobotBulletView;
+
+import java.awt.*;
+import java.awt.geom.Line2D;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import java.util.List;
 
 
 /**
@@ -64,7 +66,7 @@ import robocode.battlefield.BattleField;
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (constributor)
  */
-public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplayBulletPeer {
+public class BulletPeer implements IRobotBulletView, IBattleBulletView, IDisplayBulletView {
 	// Bullet states: all states last one turn, except MOVING and DONE
 	public static final int
 			STATE_SHOT = 0,
@@ -79,12 +81,10 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
 
 	private static final int RADIUS = 3;
 	
-	protected final IBattleRobotPeer owner;
-	//protected final Battle battle;
-	private final BattleField battleField;
-
-	private Bullet bullet;
-	protected IBattleRobotPeer victim;
+    private BattleField battleField;
+    private Bullet bullet;
+	protected IBattleRobotView owner;
+	protected IBattleRobotView victim;
 
 	protected int state;
 
@@ -115,7 +115,7 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
      * @param owner who fire the bullet
      * @param battle root battle
      */
-	public BulletPeer(IBattleRobotPeer owner, Battle battle) {
+	public BulletPeer(IBattleRobotView owner, Battle battle) {
 		super();
 
 		this.owner = owner;
@@ -125,7 +125,7 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
 		color = owner.getBulletColor(); // Store current bullet color set on robot
 	}
 
-	public BulletPeer(IBattleRobotPeer owner, Battle battle, BulletRecord br) {
+	public BulletPeer(IBattleRobotView owner, Battle battle, BulletRecord br) {
 		this(owner, battle);
 
 		x = br.x;
@@ -136,15 +136,23 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
 		color = toColor(br.color);
 	}
 
-	private void checkBulletCollision(List<IBattleBulletPeer> allBullets) {
-		for (IBattleBulletPeer b : allBullets) {
+    public void cleanup(){
+        victim=null;
+        owner=null;
+        battleField=null;
+        bullet=null;
+        boundingLine=null;
+    }
+
+    private void checkBulletCollision(List<IBattleBulletView> allBullets) {
+		for (IBattleBulletView b : allBullets) {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.getBoundingLine())) {
 				state = STATE_HIT_BULLET;
 				b.setState(state);
 				frame = 0;
 				x = lastX;
 				y = lastY;
-				owner.getBattleEventManager().add(new BulletHitBulletEvent(bullet, new Bullet((IRobotBulletPeer)b)));
+				owner.getBattleEventManager().add(new BulletHitBulletEvent(bullet, new Bullet((IRobotBulletView)b)));
 				b.getOwner().getBattleEventManager().add(new BulletHitBulletEvent(b.getBullet(), new Bullet(this)));
 				break;
 			}
@@ -167,8 +175,8 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
 		return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1);
 	}
 
-	private void checkRobotCollision(List<IBattleRobotPeer> robots) {
-		IBattleRobotPeer robotPeer;
+	private void checkRobotCollision(List<IBattleRobotView> robots) {
+		IBattleRobotView robotPeer;
 
 		for (int i = 0; i < robots.size(); i++) {
 			robotPeer = robots.get(i);
@@ -183,12 +191,12 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
 				}
 				robotPeer.b_setEnergy(robotPeer.getEnergy() - damage);
 
-				owner.getRobotStatistics().scoreBulletDamage(i, score);
+				owner.getRobotStatistics().scoreBulletDamage(robotPeer, i, score);
 
 				if (robotPeer.getEnergy() <= 0) {
 					if (robotPeer.isAlive()) {
 						robotPeer.b_kill();
-						owner.getRobotStatistics().scoreBulletKill(i);
+						owner.getRobotStatistics().scoreBulletKill(robotPeer, i);
 					}
 				}
 				owner.b_setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
@@ -247,7 +255,7 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
 		return heading;
 	}
 
-	public IBattleRobotPeer getOwner() {
+	public IBattleRobotView getOwner() {
 		return owner;
 	}
 
@@ -267,7 +275,7 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
         return owner.getName();
     }
 
-    public IBattleRobotPeer getVictim() {
+    public IBattleRobotView getVictim() {
 		return victim;
 	}
 
@@ -311,7 +319,7 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
 		velocity = newVelocity;
 	}
 
-	public void setVictim(IBattleRobotPeer newVictim) {
+	public void setVictim(IBattleRobotView newVictim) {
 		victim = newVictim;
 	}
 
@@ -331,7 +339,7 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
         return boundingLine;
     }
 
-    public void update(List<IBattleRobotPeer> robots, List<IBattleBulletPeer> allBullets) {
+    public void update(List<IBattleRobotView> robots, List<IBattleBulletView> allBullets) {
 		if (isActive()) {
 			updateMovement();
 

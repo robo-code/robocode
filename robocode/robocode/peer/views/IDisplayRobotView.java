@@ -9,10 +9,29 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package robocode.peer.views;
+
+import robocode.peer.robot.RobotOutputStream;
+
+import java.awt.*;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleRobotPeer extends IContestantPeer , IRobotPeer{
+public interface IDisplayRobotView extends IReadingRobotView {
+    void lockRead();
+    void unlockRead();
+    void cleanup();
+
+    RobotOutputStream getOut();
+
+    void setScan(boolean v);
+    void setDuplicate(int d);
+
+    void d_setPaintEnabled(boolean enabled);
+    void d_setSGPaintEnabled(boolean enabled);
+    void d_kill();
+    
+    void onInteractiveEvent(robocode.Event e);
+    void onPaint(Graphics2D g);
 }

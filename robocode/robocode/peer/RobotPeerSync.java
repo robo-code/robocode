@@ -11,54 +11,66 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.peer.data.RobotPeerInfo;
-import robocode.peer.data.RobotPeerStatus;
-import robocode.peer.data.RobotPeerLast;
-import robocode.peer.data.RobotPeerSync;
-
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Pavel Savara (original)
  */
-public class R01obotPeerSynchronization
-    extends RobotPeerSync 
+public class RobotPeerSync
 {
-    public RobotPeerSync info;
-/*
-    public final Object getSyncRoot(){
-        return info.getSyncRoot();
+
+    private final ReentrantLock syncRoot=new ReentrantLock();
+    private int read=0;
+    private int write=0;
+
+    public final ReentrantLock getSyncRoot(){
+        return syncRoot;
     }
 
+
     public final void lockRead(){
-        info.lockRead();
+        syncRoot.lock();
+        read++;
     }
 
     public final void lockWrite(){
-        info.lockWrite();
+        syncRoot.lock();
+        write++;
     }
 
     public final void unlockRead(){
-        info.unlockRead();
+        read--;
+        syncRoot.unlock();
     }
 
     public final void unlockWrite(){
-        info.unlockWrite();
+        write--;
+        syncRoot.unlock();
     }
 
     public final void checkReadLock(){
-        info.checkReadLock();
+        if (!syncRoot.isHeldByCurrentThread()){
+            throw new RuntimeException("bad lock");
+        }
+        if (read<=0 && write<=0){
+            throw new RuntimeException("bad lock type read");
+        }
     }
 
     public final void checkWriteLock(){
-        info.checkWriteLock();
+        if (!syncRoot.isHeldByCurrentThread()){
+            throw new RuntimeException("bad lock");
+        }
+        if (write<=0){
+            throw new RuntimeException("bad lock type write");
+        }
     }
 
     public final void checkNoLock(){
-        info.checkNoLock();
+        if (syncRoot.isHeldByCurrentThread()){
+            throw new RuntimeException("should not lock");
+        }
     }
-    */
+    
+
 }

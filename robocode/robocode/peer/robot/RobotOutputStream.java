@@ -14,12 +14,12 @@
 package robocode.peer.robot;
 
 
-import java.io.PrintStream;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import robocode.io.BufferedPipedInputStream;
 import robocode.io.BufferedPipedOutputStream;
+
+import java.io.PrintStream;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**

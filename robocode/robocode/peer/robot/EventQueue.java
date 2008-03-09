@@ -16,13 +16,13 @@
 package robocode.peer.robot;
 
 
-import java.util.Vector;
-import java.util.Collections;
-
 import robocode.DeathEvent;
 import robocode.Event;
 import robocode.SkippedTurnEvent;
 import robocode.WinEvent;
+
+import java.util.Collections;
+import java.util.Vector;
 
 
 /**

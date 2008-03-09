@@ -14,9 +14,10 @@
 package robocode.robotinterfaces;
 
 
-import java.awt.Graphics2D;
-
 import robocode.*;
+import robocode.Event;
+
+import java.awt.*;
 
 
 /**

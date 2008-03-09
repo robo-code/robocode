@@ -15,12 +15,11 @@
 package robocode.battle.record;
 
 
+import robocode.battlefield.BattleField;
+import robocode.peer.views.IBattleRobotView;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import robocode.battlefield.BattleField;
-import robocode.peer.RobotPeer;
-import robocode.peer.IBattleRobotPeer;
 
 
 /**
@@ -49,14 +48,14 @@ public class BattleRecord {
 	 * @param battleField size of battle field
 	 * @param robots robots participating in the battle
 	 */
-	public BattleRecord(BattleField battleField, List<IBattleRobotPeer> robots) {
+	public BattleRecord(BattleField battleField, List<IBattleRobotView> robots) {
 		battleFieldWidth = battleField.getWidth();
 		battleFieldHeight = battleField.getHeight();
 
 		robotNames = new String[robots.size()];
 		int i = 0;
 
-		for (IBattleRobotPeer r : robots) {
+		for (IBattleRobotView r : robots) {
 			robotNames[i++] = r.getName();
 		}
 	}

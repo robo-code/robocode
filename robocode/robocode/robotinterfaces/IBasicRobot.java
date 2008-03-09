@@ -14,7 +14,7 @@
 package robocode.robotinterfaces;
 
 
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IBasicRobotView;
 
 
 /**
@@ -69,7 +69,7 @@ public interface IBasicRobot {
 	 * This method is called by the game. A robot peer is the object that deals
 	 * with game mechanics and rules, and makes sure your robot abides by them.
 	 */
-	void setPeer(IBasicRobotPeer peer);
+	void setPeer(IBasicRobotView peer);
 
 	/**
 	 * Do not call this method!

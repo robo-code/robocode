@@ -60,32 +60,18 @@
 package robocode.peer;
 
 
-import static java.lang.Math.*;
-import static robocode.gfx.ColorUtil.toColor;
-import static robocode.io.Logger.log;
-import static robocode.util.Utils.normalAbsoluteAngle;
-import static robocode.util.Utils.normalNearAbsoluteAngle;
-import static robocode.util.Utils.normalRelativeAngle;
-
-import java.awt.*;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.io.File;
-import java.io.Serializable;
-import java.io.IOException;
-import java.util.List;
-
-import robocode.*;
-import robocode.Event;
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
-import robocode.battle.record.RobotRecord;
-import robocode.exception.DeathException;
-import robocode.exception.DisabledException;
 import robocode.peer.robot.*;
-import robocode.util.BoundingRectangle;
+import robocode.peer.data.RobotPeerInfo;
+import robocode.peer.data.RobotPeerStatus;
+import robocode.peer.data.RobotPeerCommands;
+import robocode.peer.views.*;
+import robocode.robotinterfaces.peer.IBasicRobotView;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.battlefield.DefaultBattleField;
+import robocode.battle.Battle;
+import robocode.repository.RobotFileSpecification;
+
+import java.security.AccessControlException;
 
 
 /**
@@ -100,39 +86,224 @@ import robocode.util.BoundingRectangle;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer extends R90obotPeerBattle implements Runnable, IContestantPeer
-    , ITeamRobotPeer, IJuniorRobotPeer, IRobotRobotPeer, IBattleRobotPeer, IDisplayRobotPeer
+public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotPeer, IRobotRobotPeer, IBattleRobotPeer, IDisplayRobotPeer
 {
+    //data
+    private RobotPeerInfo info;
+    private RobotPeerStatus status;
+    private RobotPeerCommands commands;
 
-    /**
-     * RobotPeer constructor
-     */
+    //view
+    private IBasicRobotView robotView;
+    private IBattleRobotView battleView;
+    private IDisplayRobotView displayView;
+    private IRobotRunnableView robotRunableView;
+
+    //components
+    private RobotOutputStream out;
+    private IBasicRobot robot;
+    private Battle battle;
+    private RobotClassManager robotClassManager;
+    private RobotFileSystemManager robotFileSystemManager;
+    private RobotThreadManager robotThreadManager;
+    private RobotMessageManager robotMessageManager;
+    private EventManager robotEventManager;
+
     public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota) {
         super();
-        initComponents(robotClassManager, fileSystemQuota);
-        initBattle();
-        setEventManager(new EventManager(this));
-        initTeam(robotClassManager.getTeamManager());
+
+        //dummy
+        this.battle = new Battle(new DefaultBattleField(800, 600), null);
+
+        //data
+        info=new RobotPeerInfo();
+        status=new RobotPeerStatus();
+        commands=new RobotPeerCommands();
+
+        //views
+
+        //components
+        this.robotClassManager = robotClassManager;
+        this.robotThreadManager = new RobotThreadManager(this);
+        this.robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
+        this.robotEventManager =new EventManager(this);
     }
 
-    public void u_setRunning(boolean v){
-        //TODO ZAMO synchronize
-        info.setRunning(v);
+    public void setBattle(Battle newBattle) {
+        battle = newBattle;
     }
 
-    public void u_setEnergy(double e){
-        //TODO ZAMO synchronize
-        info.setEnergy(e);
+    public void setRobot(IBasicRobot newRobot) {
+       robot = newRobot;
+       if (robot != null) {
+           if (info.isTeamRobot()) {
+               robotMessageManager= new RobotMessageManager(this);
+           }
+       }
+       robotEventManager.setRobot(newRobot);
+   }
+
+   public void setInfo(RobotFileSpecification rfs){
+       info.setupInfo(rfs,this);
+       status.setupInfo(this);
+       commands.setupInfo(this);
+       if (info.isTeamRobot()) {
+           robotView =new TeamRobotView(this);
+           info.setupTeam(robotClassManager.getTeamManager());
+       }
+       else if (info.isAdvancedRobot()) {
+           robotView =new AdvancedRobotView(this);
+       }
+       else if (info.isInteractiveRobot()) {
+           robotView =new StandardRobotView(this);
+       }
+       else if (info.isJuniorRobot()) {
+           robotView =new JuniorRobotView(this);
+       }
+       else {
+            throw new AccessControlException("Unknown robot type");
+       }
+   }
+
+    public void cleanup() {
+        //data
+        info.cleanup();
+        status.cleanup();
+        commands.cleanup();
+
+        //view
+        ((BasicRobotView)robotView).cleanup();
+        robotRunableView.cleanup();
+        displayView.cleanup();
+        battleView.cleanup();
+
+        //components
+        robot=null;
+        out=null;
+        battle=null;
+
+        if (robotEventManager!=null){
+            robotEventManager.cleanup();
+        }
+        robotEventManager=null;
+        
+        if (robotMessageManager!=null){
+            robotMessageManager.cleanup();
+        }
+        robotMessageManager=null;
+
+        if (robotClassManager != null) {
+            robotClassManager.cleanup();
+        }
+        robotClassManager = null;
+
+        robotFileSystemManager = null;
+        robotThreadManager = null;
     }
 
-    public String u_getName(){
-        //TODO ZAMO synchronize
+
+    //data
+    public RobotPeerInfo getInfo() {
+        return info;
+    }
+
+    public RobotPeerStatus getStatus() {
+        return status;
+    }
+
+    public RobotPeerCommands getCommands() {
+        return commands;
+    }
+
+    //views
+    public IRobotRunnableView getRobotRunnableView() {
+        return robotRunableView;
+    }
+
+    public IDisplayRobotView getDisplayView() {
+        return displayView;
+    }
+
+    public IBattleRobotView getBattleView() {
+        return battleView;
+    }
+
+    public IBasicRobotView getRobotView() {
+        return robotView;
+    }
+
+    public void run() {
+        robotRunableView.run();
+    }
+
+    //components
+    public RobotOutputStream getOut() {
+        return out;
+    }
+
+    public IBasicRobot getRobot() {
+        return robot;
+    }
+
+    public Battle getBattle() {
+        return battle;
+    }
+
+    public RobotClassManager getRobotClassManager() {
+        return robotClassManager;
+    }
+
+    public RobotFileSystemManager getRobotFileSystemManager() {
+        return robotFileSystemManager;
+    }
+
+    public RobotThreadManager getRobotThreadManager() {
+        return robotThreadManager;
+    }
+
+    public RobotMessageManager getRobotMessageManager() {
+        return robotMessageManager;
+    }
+
+    public IRobotEventManager getRobotEventManager() {
+        return robotEventManager;
+    }
+
+    public IDisplayEventManager getDisplayEventManager() {
+        return robotEventManager;
+    }
+
+    //security
+    public void forceStop(){
+        //intentionaly not synchronized to prevent block from user code
+        status.setRunning(false);
+        status.getStatistics().setInactive();
+    }
+
+    public void forceUncharge(){
+        //intentionaly not synchronized to prevent block from user code
+        status.setEnergy(0);
+    }
+
+    public String getName() {
+        //intentionaly not synchronized to prevent block from user code
         return info.getName();
     }
 
-    public boolean u_isDead(){
-        //TODO ZAMO synchronize
-        return info.isDead();
+
+    //IContestant
+    public IContestantStatistics getRobotStatistics() {
+        return status.getStatistics();
     }
 
+    public int compareTo(IContestantPeer cp) {
+		double score1 = getRobotStatistics().getTotalScore();
+		double score2 = cp.getRobotStatistics().getTotalScore();
+
+		if (getBattle().isRunning()) {
+			score1 += getRobotStatistics().getCurrentScore();
+			score2 += cp.getRobotStatistics().getCurrentScore();
+		}
+		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+	}
 }

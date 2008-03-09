@@ -31,6 +31,7 @@ import javax.swing.SwingConstants;
 import robocode.manager.RobotDialogManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.IDisplayRobotPeer;
+import robocode.peer.views.IDisplayRobotView;
 
 
 /**
@@ -39,7 +40,7 @@ import robocode.peer.IDisplayRobotPeer;
  */
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
-	private IDisplayRobotPeer robotPeer;
+    private IDisplayRobotView robotView;
 	private RobotDialog robotDialog;
 	private RobotDialogManager robotDialogManager;
 	private String robotName;
@@ -47,17 +48,17 @@ public class RobotButton extends JButton implements ActionListener {
 	/**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, IDisplayRobotPeer robotPeer) {
-		this.robotPeer = robotPeer;
-		this.robotDialogManager = robotDialogManager;
-		robotName = robotPeer.getName();
+	public RobotButton(RobotDialogManager robotDialogManager, IDisplayRobotView robotView) {
+        this.robotView=robotView;
+        this.robotDialogManager = robotDialogManager;
+		robotName = robotView.getName();
 
 		initialize();
 		robotDialog = robotDialogManager.getRobotDialog(robotName, false);
 		if (robotDialog != null) {
-			robotDialog.setRobotPeer(robotPeer);
-			robotPeer.d_setPaintEnabled(robotDialog.isPaintEnabled());
-			robotPeer.d_setSGPaintEnabled(robotDialog.isSGPaintEnabled());
+			robotDialog.setRobotPeer(robotView);
+			robotView.d_setPaintEnabled(robotDialog.isPaintEnabled());
+			robotView.d_setSGPaintEnabled(robotDialog.isSGPaintEnabled());
 		}
 	}
 
@@ -65,7 +66,7 @@ public class RobotButton extends JButton implements ActionListener {
 		if (robotDialog == null) {
 			robotDialog = robotDialogManager.getRobotDialog(robotName, true);
 			robotDialog.setTitle(robotName);
-			robotDialog.setRobotPeer(robotPeer);
+			robotDialog.setRobotPeer(robotView);
 			if (!robotDialog.isVisible() || robotDialog.getState() != Frame.NORMAL) {
 				WindowUtil.packPlaceShow(robotDialog);
 			}
@@ -78,8 +79,8 @@ public class RobotButton extends JButton implements ActionListener {
 	 * Initialize the class.
 	 */
 	private void initialize() {
-		setText(robotPeer.getShortName());
-		setToolTipText(robotPeer.getUniqueFullClassNameWithVersion());
+		setText(robotView.getShortName());
+		setToolTipText(robotView.getUniqueFullClassNameWithVersion());
 		addActionListener(this);
 		setPreferredSize(new Dimension(110, 25));
 		setMinimumSize(new Dimension(110, 25));

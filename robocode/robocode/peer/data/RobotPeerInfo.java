@@ -11,26 +11,19 @@
  *******************************************************************************/
 package robocode.peer.data;
 
-import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.ITeamRobot;
-import robocode.robotinterfaces.IInteractiveRobot;
-import robocode.repository.RobotFileSpecification;
-import robocode.manager.NameManager;
-import robocode.peer.robot.RobotMessageManager;
-import robocode.peer.robot.RobotClassManager;
-import robocode.peer.RobotPeer;
-import robocode.peer.IBattleRobotPeer;
 import robocode.Robot;
+import robocode.manager.NameManager;
+import robocode.peer.IBattleRobotPeer;
+import robocode.peer.TeamPeer;
+import robocode.repository.RobotFileSpecification;
+import robocode.robotinterfaces.IInteractiveRobot;
 
 import java.awt.event.MouseWheelEvent;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Pavel Savara (original)
  */
 public class RobotPeerInfo extends RobotPeerLock {
-
-    protected IBattleRobotPeer peer;
 
     private boolean interactiveTested=false;
     private boolean isInteractive;
@@ -41,20 +34,43 @@ public class RobotPeerInfo extends RobotPeerLock {
     private boolean isTeamRobot;
     private boolean isDroid;
     private boolean isIORobot;
+    private boolean checkFileQuota;
     private boolean paintEnabled;
     private boolean sgPaintEnabled;
     private String name;
     private String shortName;
     private String nonVersionedName;
+    private TeamPeer teamPeer;
+
+    public void setupTeam(TeamPeer tp){
+        teamPeer=tp;
+    }
 
     public void setupInfo(RobotFileSpecification rfs, IBattleRobotPeer peer){
         checkReadLock();
-        this.peer=peer;
+        setupInfo(peer);
         isJuniorRobot=rfs.isJuniorRobot();
         isInteractiveRobot=rfs.isInteractiveRobot();
         isAdvancedRobot=rfs.isAdvancedRobot();
         isTeamRobot=rfs.isTeamRobot();
         isDroid=rfs.isDroid();
+    }
+
+    public final void cleanup(){
+        if (teamPeer!=null){
+            teamPeer.clear();
+        }
+        teamPeer=null;
+    }
+
+    public TeamPeer getTeamPeer() {
+        checkReadLock();
+        return teamPeer;
+    }
+
+    public boolean isTeamLeader() {
+        checkReadLock();
+        return (teamPeer != null && teamPeer.getTeamLeader() == peer);
     }
 
     public boolean isPaintEnabled() {
@@ -65,6 +81,11 @@ public class RobotPeerInfo extends RobotPeerLock {
     public boolean isSGPaintEnabled() {
         checkReadLock();
         return sgPaintEnabled;
+    }
+
+    public boolean isCheckFileQuota() {
+        checkReadLock();
+        return checkFileQuota;
     }
 
     public boolean isIORobot() {
@@ -228,6 +249,12 @@ public class RobotPeerInfo extends RobotPeerLock {
         nonVersionedName = cnm.getFullClassName() + countString;
     }
 
+    public void setCheckFileQuota(boolean newCheckFileQuota) {
+        checkWriteLock();
+        peer.getOut().println("CheckFileQuota on");
+        checkFileQuota = newCheckFileQuota;
+    }
+
     public void setIORobot(boolean ioRobot) {
         checkWriteLock();
         this.isIORobot = ioRobot;
@@ -242,5 +269,4 @@ public class RobotPeerInfo extends RobotPeerLock {
         checkWriteLock();
         sgPaintEnabled = enabled;
     }
-
 }

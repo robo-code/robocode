@@ -36,10 +36,9 @@ import javax.sound.sampled.Mixer;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
-import robocode.peer.RobotPeer;
-import robocode.peer.IBattleRobotPeer;
-import robocode.peer.IBattleBulletPeer;
-import robocode.peer.data.RobotPeerSync;
+import robocode.peer.views.IBattleBulletView;
+import robocode.peer.views.IBattleRobotView;
+import robocode.peer.data.RobotPeerStatus;
 
 
 /**
@@ -187,7 +186,7 @@ public class SoundManager {
 	 *
 	 * @param bp the bullet peer
 	 */
-	public void playBulletSound(IBattleBulletPeer bp, float battleFiedsWidth) {
+	public void playBulletSound(IBattleBulletView bp, float battleFiedsWidth) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
@@ -227,22 +226,22 @@ public class SoundManager {
 	/**
 	 * Plays a robot sound depending on the robot's state
 	 *
-	 * @param robotPeer the robot peer
+	 * @param robotView the robot peer
 	 */
-	public void playRobotSound(IBattleRobotPeer robotPeer) {
+	public void playRobotSound(IBattleRobotView robotView) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) robotPeer.getX(), (float)robotPeer.getBattleFieldWidth());
+			pan = calcPan((float) robotView.getX(), (float)robotView.getBattleFieldWidth());
 		}
-		switch (robotPeer.getState()) {
-		case RobotPeerSync.STATE_HIT_ROBOT:
+		switch (robotView.getState()) {
+		case RobotPeerStatus.STATE_HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
 				playSound("robot collision", pan);
 			}
 			break;
 
-		case RobotPeerSync.STATE_HIT_WALL:
+		case RobotPeerStatus.STATE_HIT_WALL:
 			if (properties.getOptionsSoundEnableWallCollision()) {
 				playSound("wall collision", pan);
 			}

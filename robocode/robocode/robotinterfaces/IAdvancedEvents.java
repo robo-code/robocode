@@ -14,8 +14,8 @@
 package robocode.robotinterfaces;
 
 
-import robocode.SkippedTurnEvent;
 import robocode.CustomEvent;
+import robocode.SkippedTurnEvent;
 
 
 /**
