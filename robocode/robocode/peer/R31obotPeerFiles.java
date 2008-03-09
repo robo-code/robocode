@@ -18,7 +18,7 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class R31obotPeerFiles extends R30obotPeerInfo{
+public class R31obotPeerFiles extends R20obotPeerComponents{
 
     private boolean checkFileQuota;
 

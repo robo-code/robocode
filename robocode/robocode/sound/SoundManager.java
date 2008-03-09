@@ -39,6 +39,7 @@ import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
 import robocode.peer.IBattleRobotPeer;
 import robocode.peer.IBattleBulletPeer;
+import robocode.peer.data.RobotPeerSync;
 
 
 /**
@@ -235,13 +236,13 @@ public class SoundManager {
 			pan = calcPan((float) robotPeer.getX(), (float)robotPeer.getBattleFieldWidth());
 		}
 		switch (robotPeer.getState()) {
-		case RobotPeer.STATE_HIT_ROBOT:
+		case RobotPeerSync.STATE_HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
 				playSound("robot collision", pan);
 			}
 			break;
 
-		case RobotPeer.STATE_HIT_WALL:
+		case RobotPeerSync.STATE_HIT_WALL:
 			if (properties.getOptionsSoundEnableWallCollision()) {
 				playSound("wall collision", pan);
 			}

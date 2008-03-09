@@ -31,7 +31,7 @@ public class R20obotPeerComponents extends R10obotPeerEvents {
     private RobotOutputStream out;
     private IBasicRobot robot;
 
-    public void setRobot(IBasicRobot newRobot) {
+    public void b_setRobot(IBasicRobot newRobot) {
         robot = newRobot;
         if (robot != null) {
             if (info.isTeamRobot()) {

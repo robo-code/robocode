@@ -11,13 +11,21 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.peer.robot.RobotStatistics;
+import robocode.peer.robot.*;
 import robocode.util.BoundingRectangle;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.repository.RobotFileSpecification;
+import robocode.battle.record.RobotRecord;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * @author Pavel Savara (original)
  */
-public class R88obotPeerBattleData extends R80obotPeerDisplay{
+public class R88obotPeerBattleData extends R80obotPeerDisplay
+{
     private RobotStatistics statistics;
     private BoundingRectangle boundingBox;
 
@@ -45,5 +53,4 @@ public class R88obotPeerBattleData extends R80obotPeerDisplay{
 	public RobotStatistics getRobotStatistics() {
 		return statistics;
 	}
-
 }

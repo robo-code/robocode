@@ -87,7 +87,7 @@ public class RobotMessageManager {
 						synchronized (robotMsgMan.out) {
 							robotMsgMan.out.writeObject(message);
 							try {
-								robotMsgMan.addMessage(robotPeer.getName(), (Serializable) robotMsgMan.in.readObject());
+								robotMsgMan.addMessage(robotPeer.u_getName(), (Serializable) robotMsgMan.in.readObject());
 							} catch (ClassNotFoundException e) {
 								System.out.println("Unable to send: " + e);
 							}

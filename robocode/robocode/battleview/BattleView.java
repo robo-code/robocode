@@ -30,10 +30,7 @@ import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.peer.BulletPeer;
-import robocode.peer.ExplosionPeer;
-import robocode.peer.IDisplayRobotPeer;
-import robocode.peer.IBattleBulletPeer;
+import robocode.peer.*;
 import robocode.util.GraphicsState;
 
 
@@ -133,7 +130,13 @@ public class BattleView extends Canvas {
 			if (offscreenGfx != null) {
 				offscreenGfx.setRenderingHints(renderingHints);
 
-				drawBattle(offscreenGfx);
+                lockRobots();
+                try{
+                    drawBattle(offscreenGfx);
+                }
+                finally {
+                    unlockRobots();
+                }
 
 				if (bufferStrategy != null) {
 					Graphics2D g = null;
@@ -154,6 +157,18 @@ public class BattleView extends Canvas {
 			}
 		}
 	}
+
+    private void lockRobots(){
+        for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
+            robotPeer.lockRead();
+        }
+    }
+
+    private void unlockRobots(){
+        for (IDisplayRobotPeer robotPeer : battle.getDisplayRobots()) {
+            robotPeer.unlockRead();
+        }
+    }
 
 	@Override
 	public void paint(Graphics g) {

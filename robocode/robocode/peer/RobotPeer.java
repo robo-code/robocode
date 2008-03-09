@@ -100,8 +100,8 @@ import robocode.util.BoundingRectangle;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer extends R90obotPeerBattle implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, IContestantPeer
-        , IRobotRobotPeer, IBattleRobotPeer, IDisplayRobotPeer  
+public class RobotPeer extends R90obotPeerBattle implements Runnable, IContestantPeer
+    , ITeamRobotPeer, IJuniorRobotPeer, IRobotRobotPeer, IBattleRobotPeer, IDisplayRobotPeer
 {
 
     /**
@@ -113,6 +113,26 @@ public class RobotPeer extends R90obotPeerBattle implements ITeamRobotPeer, IJun
         initBattle();
         setEventManager(new EventManager(this));
         initTeam(robotClassManager.getTeamManager());
+    }
+
+    public void u_setRunning(boolean v){
+        //TODO ZAMO synchronize
+        info.setRunning(v);
+    }
+
+    public void u_setEnergy(double e){
+        //TODO ZAMO synchronize
+        info.setEnergy(e);
+    }
+
+    public String u_getName(){
+        //TODO ZAMO synchronize
+        return info.getName();
+    }
+
+    public boolean u_isDead(){
+        //TODO ZAMO synchronize
+        return info.isDead();
     }
 
 }

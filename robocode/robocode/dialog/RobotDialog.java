@@ -318,14 +318,14 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Paint button has been activated
 	 */
 	private void paintButtonActionPerformed() {
-		robotPeer.setPaintEnabled(getPaintButton().isSelected());
+		robotPeer.d_setPaintEnabled(getPaintButton().isSelected());
 	}
 
 	/**
 	 * Is called when the SG check box has been activated
 	 */
 	private void sgCheckBoxActionPerformed() {
-		robotPeer.setSGPaintEnabled(getSGCheckBox().isSelected());
+		robotPeer.d_setSGPaintEnabled(getSGCheckBox().isSelected());
 	}
 
 	/**

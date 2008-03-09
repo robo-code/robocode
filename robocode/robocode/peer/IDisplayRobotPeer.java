@@ -35,9 +35,6 @@ public interface IDisplayRobotPeer {
     boolean isPaintEnabled();
     boolean isSGPaintEnabled();
 
-    void setPaintEnabled(boolean enabled);
-    void setSGPaintEnabled(boolean enabled);
-
     double getEnergy();
     double getX();
     double getY();
@@ -59,6 +56,8 @@ public interface IDisplayRobotPeer {
     RobotOutputStream getOut();
 
     //TODO synchronize
+    void d_setPaintEnabled(boolean enabled);
+    void d_setSGPaintEnabled(boolean enabled);
     void d_kill();
     void d_setScan(boolean v);
     void d_setDuplicate(int d);

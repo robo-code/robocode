@@ -24,10 +24,15 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author Pavel Savara (original)
  */
-public class R01obotPeerSynchronization extends RobotPeerSync {
-    //private ReentrantReadWriteLock syncRoot=new ReentrantReadWriteLock();
+public class R01obotPeerSynchronization
+    extends RobotPeerSync 
+{
     public RobotPeerSync info;
-    /*
+/*
+    public final Object getSyncRoot(){
+        return info.getSyncRoot();
+    }
+
     public final void lockRead(){
         info.lockRead();
     }

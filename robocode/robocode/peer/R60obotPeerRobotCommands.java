@@ -117,7 +117,9 @@ public class R60obotPeerRobotCommands extends R32obotPeerTeam {
         }
 
         // If battle is waiting for us, well, all done!
-        notifyAll();
+        synchronized (getSyncRoot()){
+            getSyncRoot().notifyAll();
+        }
     }
 
     public final void execute() {
@@ -131,7 +133,9 @@ public class R60obotPeerRobotCommands extends R32obotPeerTeam {
         initializeExec();
 
         // Notifying battle that we're asleep
-        notifyAll();
+        synchronized (getSyncRoot()){
+            getSyncRoot().notifyAll();
+        }
 
         // Sleeping and waiting for battle to wake us up.
         try {
@@ -186,7 +190,9 @@ public class R60obotPeerRobotCommands extends R32obotPeerTeam {
             // our wakeup() call, to return.
             // It's quite possible, by the way, that we'll be back in sleep (above)
             // before the battle thread actually wakes up
-            notifyAll();
+            synchronized (getSyncRoot()){
+                getSyncRoot().notifyAll();
+            }
 
             info.setFireAssistValid(false);
 
@@ -335,7 +341,7 @@ public class R60obotPeerRobotCommands extends R32obotPeerTeam {
             // -- Move and turn in a curve --
 
             // Set the calculated max. velocity
-            setMaxVelocity(maxVelocity);
+            info.setMaxVelocity(maxVelocity);
 
             // Set the robot to move the specified distance
             setMove(distance);
@@ -349,15 +355,15 @@ public class R60obotPeerRobotCommands extends R32obotPeerTeam {
         // Loop thru the number of turns it will take to move the distance and adjust
 		// the max. turn rate so it fit the current velocity of the robot
 		for (int t = turns; t >= 0; t--) {
-			setMaxTurnRate(info.getVelocitySync() * radians / absDistance);
+			info.setMaxTurnRate(info.getVelocitySync() * radians / absDistance);
 			execute(); // Perform next turn
 		}
 
         lockWrite();
         try{
             // Restore the saved max. velocity and max. turn rate
-            setMaxVelocity(savedMaxVelocity);
-            setMaxTurnRate(savedMaxTurnRate);
+            info.setMaxVelocity(savedMaxVelocity);
+            info.setMaxTurnRate(savedMaxTurnRate);
         }
         finally {
             unlockWrite();
@@ -483,59 +489,6 @@ public class R60obotPeerRobotCommands extends R32obotPeerTeam {
         }
     }
 
-
-
-
-
-
-
-
-    public final void scan(List<IBattleRobotPeer> robots) {
-        if (info.isDroid()) {
-            return;
-        }
-
-        double startAngle = getLastRadarHeading();
-        double scanRadians = getRadarHeading() - startAngle;
-
-        // Check if we passed through 360
-        if (scanRadians < -PI) {
-            scanRadians = 2 * PI + scanRadians;
-        } else if (scanRadians > PI) {
-            scanRadians = scanRadians - 2 * PI;
-        }
-
-        // In our coords, we are scanning clockwise, with +y up
-        // In java coords, we are scanning counterclockwise, with +y down
-        // All we need to do is adjust our angle by -90 for this to work.
-        startAngle -= PI / 2;
-
-        startAngle = normalAbsoluteAngle(startAngle);
-
-        getScanArc().setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
-                2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
-
-        for (IBattleRobotPeer robotPeer : robots) {
-            if (!(robotPeer == null || robotPeer == this || robotPeer.isDead()) && intersects(getScanArc(), robotPeer.getBoundingBox())) {
-                double dx = robotPeer.getX() - getX();
-                double dy = robotPeer.getY() - getY();
-                double angle = atan2(dx, dy);
-                double dist = Math.hypot(dx, dy);
-
-                getBattleEventManager().add(
-                        new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(), normalRelativeAngle(angle - getHeading()), dist,
-                        robotPeer.getHeading(), robotPeer.getVelocity()));
-            }
-        }
-    }
-
-
-
-
-
-
-
-
     public final void setResume() {
         lockWrite();
         try{
@@ -623,12 +576,5 @@ public class R60obotPeerRobotCommands extends R32obotPeerTeam {
             throw new AccessControlException("Unknown robot type");
         }
         return robotProxy;
-    }
-
-    private boolean intersects(Arc2D arc, Rectangle2D rect) {
-        return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
-                arc.getStartPoint().getY()))
-                ? true
-                : arc.intersects(rect);
     }
 }

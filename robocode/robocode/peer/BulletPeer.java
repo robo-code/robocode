@@ -187,7 +187,7 @@ public class BulletPeer implements IRobotBulletPeer, IBattleBulletPeer, IDisplay
 
 				if (robotPeer.getEnergy() <= 0) {
 					if (robotPeer.isAlive()) {
-						robotPeer.kill();
+						robotPeer.b_kill();
 						owner.getRobotStatistics().scoreBulletKill(i);
 					}
 				}

@@ -56,8 +56,8 @@ public class RobotButton extends JButton implements ActionListener {
 		robotDialog = robotDialogManager.getRobotDialog(robotName, false);
 		if (robotDialog != null) {
 			robotDialog.setRobotPeer(robotPeer);
-			robotPeer.setPaintEnabled(robotDialog.isPaintEnabled());
-			robotPeer.setSGPaintEnabled(robotDialog.isSGPaintEnabled());
+			robotPeer.d_setPaintEnabled(robotDialog.isPaintEnabled());
+			robotPeer.d_setSGPaintEnabled(robotDialog.isSGPaintEnabled());
 		}
 	}
 

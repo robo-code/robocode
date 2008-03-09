@@ -17,10 +17,14 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Pavel Savara (original)
  */
 public class RobotPeerLock {
-    //this implementation is for testing purposes, it could be reimplemented with ReentrantReaderWriterLock, but without check operations 
+    //this implementation is for testing purposes, it could be reimplemented with ReentrantReaderWriterLock, but without check operations
     private final ReentrantLock syncRoot=new ReentrantLock();
     private int read=0;
     private int write=0;
+
+    public final Object getSyncRoot(){
+        return syncRoot; 
+    }
 
     public final void lockRead(){
         syncRoot.lock();

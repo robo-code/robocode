@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 
 	private String name;
-	private IRobotRobotPeer teamLeader;
+	private RobotPeer teamLeader;
 	private TeamStatistics teamStatistics;
 
 	public TeamPeer(String name) {
@@ -58,7 +58,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 		return name;
 	}
 
-	public IRobotRobotPeer getTeamLeader() {
+	public RobotPeer getTeamLeader() {
 		return teamLeader;
 	}
 
@@ -73,7 +73,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 	@Override
 	public boolean contains(Object s) {
 		if (s != null && s instanceof String) {
-			for (IRobotRobotPeer r : this) {
+			for (RobotPeer r : this) {
 				if (s.equals(r.getName())) {
 					return true;
 				}

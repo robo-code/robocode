@@ -47,7 +47,7 @@ public class RobotPeerInfo extends RobotPeerLock {
     private String shortName;
     private String nonVersionedName;
 
-    public void initInfo(RobotFileSpecification rfs, IBattleRobotPeer peer){
+    public void setupInfo(RobotFileSpecification rfs, IBattleRobotPeer peer){
         checkReadLock();
         this.peer=peer;
         isJuniorRobot=rfs.isJuniorRobot();

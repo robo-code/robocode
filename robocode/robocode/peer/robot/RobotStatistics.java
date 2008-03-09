@@ -269,8 +269,8 @@ public class RobotStatistics implements robocode.peer.IContestantStatistics {
 			if (teamPeer == null) {
 				bonus = getRobotDamage()[robot] * .3;
 			} else {
-				for (IRobotRobotPeer teammate : teamPeer) {
-					bonus += ((RobotPeer)teammate).getRobotStatistics().getRobotDamage()[robot] * .3;
+				for (RobotPeer teammate : teamPeer) {
+					bonus += (teammate).getRobotStatistics().getRobotDamage()[robot] * .3;
 				}
 			}
 			rammingKillBonus += bonus;

@@ -34,7 +34,7 @@ import java.awt.*;
  *
  * @since 1.6
  */
-public interface IBasicRobotPeer {
+public interface IBasicRobotPeer extends IReaderRobotPeer {
 
 	/**
 	 * Returns the robot's name.
@@ -55,105 +55,6 @@ public interface IBasicRobotPeer {
 	 */
 	long getTime();
 
-	/**
-	 * Returns the robot's current energy.
-	 *
-	 * @return the robot's current energy.
-	 */
-	double getEnergy();
-
-	/**
-	 * Returns the X position of the robot. (0,0) is at the bottom left of the
-	 * battlefield.
-	 *
-	 * @return the X position of the robot.
-	 *
-	 * @see #getY()
-	 */
-	double getX();
-
-	/**
-	 * Returns the Y position of the robot. (0,0) is at the bottom left of the
-	 * battlefield.
-	 *
-	 * @return the Y position of the robot.
-	 *
-	 * @see #getX()
-	 */
-	double getY();
-
-	/**
-	 * Returns the velocity of the robot measured in pixels/turn.
-	 * <p>
-	 * The maximum velocity of a robot is defined by
-	 * {@link Rules#MAX_VELOCITY} (8 pixels / turn).
-	 *
-	 * @return the velocity of the robot measured in pixels/turn.
-	 *
-	 * @see Rules#MAX_VELOCITY
-	 */
-	double getVelocity();
-
-	/**
-	 * Returns the direction that the robot's body is facing, in degrees.
-	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p>
-	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * 90 means East, 180 means South, and 270 means West.
-	 *
-	 * @return the direction that the robot's body is facing, in degrees.
-	 *
-	 * @see #getGunHeading()
-	 * @see #getRadarHeading()
-	 */
-	double getHeading();
-
-	/**
-	 * Returns the direction that the robot's gun is facing, in degrees.
-	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p>
-	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * 90 means East, 180 means South, and 270 means West.
-	 *
-	 * @return the direction that the robot's gun is facing, in degrees.
-	 *
-	 * @see #getHeading()
-	 * @see #getRadarHeading()
-	 */
-	double getGunHeading();
-
-	/**
-	 * Returns the direction that the robot's radar is facing, in degrees.
-	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p>
-	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * 90 means East, 180 means South, and 270 means West.
-	 *
-	 * @return the direction that the robot's radar is facing, in degrees.
-	 *
-	 * @see #getHeading()
-	 * @see #getGunHeading()
-	 */
-	double getRadarHeading();
-	
-	/**
-	 * Returns the current heat of the gun. The gun cannot fire unless this is
-	 * 0. (Calls to fire will succeed, but will not actually fire unless
-	 * getGunHeat() == 0).
-	 * <p>
-	 * The amount of gun heat generated when the gun is fired is
-	 * 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
-	 * by {@link #getGunCoolingRate()}, which is a battle setup.
-	 * <p>
-	 * Note that all guns are "hot" at the start of each round, where the gun
-	 * heat is 3.
-	 *
-	 * @return the current gun heat
-	 *
-	 * @see #getGunCoolingRate()
-	 * @see #setFire(double)
-	 */
-	double getGunHeat();
 
 	/**
 	 * Returns the width of the current battlefield measured in pixels.

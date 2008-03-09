@@ -15,6 +15,7 @@ import java.util.List;
 import robocode.peer.robot.*;
 import robocode.util.BoundingRectangle;
 import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.peer.IReaderRobotPeer;
 import robocode.battle.record.RobotRecord;
 import robocode.repository.RobotFileSpecification;
 import robocode.*;
@@ -27,34 +28,80 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleRobotPeer extends IBattleReaderRobotPeer, IBattleWriterRobotPeer, IContestantPeer {
+public interface IBattleRobotPeer extends IContestantPeer {
 
-    IBasicRobot getRobot();    
+    void lockRead();
+    void lockWrite();
+    void unlockRead();
+    void unlockWrite();
+    void checkReadLock();
+    void checkWriteLock();
+
+    IBasicRobot getRobot();
     String getName();
     RobotOutputStream getOut();
     RobotThreadManager getRobotThreadManager();
-    void setStatistics(RobotStatistics newStatistics);
 
-    void kill();
-    void wakeup();
-    void zap(double z);
 
-    void scan(List<IBattleRobotPeer> robots);
-    void update(List<IBattleRobotPeer> battleRobots);
+    int getState();
+    boolean isDead();
+    boolean isAlive();
+    boolean isRunning();
+    boolean isSleeping();
+    boolean isWinner();
+    boolean isTeamLeader();
+    boolean isIORobot();
 
-    void preInitialize();
-    void initialize(double x, double y, double heading, List<IBattleRobotPeer> battleRobots);
-    void setRobot(IBasicRobot newRobot);
-    void initInfo(RobotFileSpecification rfs);
-    void updateBoundingBox();
+    Color getBodyColor();
+    Color getGunColor();
+    Color getRadarColor();
+    Color getScanColor();
+    Color getBulletColor();
+    double getX();
+    double getY();
+    double getBattleFieldWidth();
+    double getEnergy();
+    double getHeading();
+    double getRadarHeading();
+    double getGunHeading();
+    double getVelocity();
+    double getTurnRemaining();
+    double getRadarTurnRemaining();
+    double getGunTurnRemaining();
+    double getDistanceRemaining();
+    double getGunHeat();
+    boolean getScan();
+    int getSkippedTurns();
 
-    void cleanup();
-    void cleanupStaticFields();
+
+    void b_kill();
+    void b_wakeup();
+    void b_zap(double z);
+
+    void b_scan(List<IBattleRobotPeer> robots);
+    void b_update(List<IBattleRobotPeer> battleRobots);
+
+    void b_preInitialize();
+    void b_initialize(double x, double y, double heading, List<IBattleRobotPeer> battleRobots);
+    void b_setRobot(IBasicRobot newRobot);
+    void b_setupInfo(RobotFileSpecification rfs);
+    void b_updateBoundingBox();
+
+    void b_cleanup();
+    void b_cleanupStaticFields();
     void b_setHalt(boolean h);
     void b_setDuplicate(int d);
     void b_setRecord(RobotRecord rr);
-    void adjustGunHeat(double diference);
-
+    void b_adjustGunHeat(double diference);
+    void b_setState(int newState);
+    void b_setWinner(boolean w);
+    void b_setEnergy(double e);
+    void b_setScan(boolean value);
+    void b_setSkippedTurns(int s);
+    BulletPeer b_getCurrentBullet();
+    void b_setCurrentBullet(BulletPeer currentBullet);
+    void setStatistics(RobotStatistics newStatistics);
+    
     TeamPeer getTeamPeer();
     BoundingRectangle getBoundingBox();
     RobotStatistics getRobotStatistics();

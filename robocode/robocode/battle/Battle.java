@@ -127,7 +127,6 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.RobocodeProperties.PropertyListener;
 import robocode.peer.*;
-import robocode.peer.data.RobotPeerInfo;
 import robocode.peer.data.RobotPeerStatus;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
@@ -268,21 +267,6 @@ public class Battle extends BattleData implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
-		// Notify that the battle is now running
-		//TODO ZAMO synchronizet (battleMonitor)
-        {
-			running = true;
-			battleMonitor.notifyAll();
-		}
-
-		if (battleView != null) {
-			battleView.repaint();
-		}
-
-		if (manager.isSoundEnabled()) {
-			manager.getSoundManager().playBackgroundMusic();
-		}
-
 		initialize();
 
 		deterministic = true;
@@ -317,7 +301,7 @@ public class Battle extends BattleData implements Runnable {
 				if (replay) {
 					// Only run replay for a round if it has been recorded
 					if (battleRecord != null && battleRecord.rounds.size() > roundNum) {
-						runReplay();
+						replayRound();
 					}
 				} else {
 					runRound();
@@ -458,11 +442,11 @@ public class Battle extends BattleData implements Runnable {
 	public void cleanup() {
 		for (IBattleRobotPeer robotPeer : getBattleRobots()) {
 			// Clear all static field on the robot (at class level)
-			robotPeer.cleanupStaticFields();
+			robotPeer.b_cleanupStaticFields();
 			
 			// Clear the robot object by removing the reference to it
-			robotPeer.setRobot(null);
-			robotPeer.cleanup();
+			robotPeer.b_setRobot(null);
+			robotPeer.b_cleanup();
 		}
 
         cleanupData();
@@ -570,6 +554,21 @@ public class Battle extends BattleData implements Runnable {
 	}
 
 	public void initialize() {
+        // Notify that the battle is now running
+        //TODO ZAMO synchronizet (battleMonitor)
+        {
+            running = true;
+            battleMonitor.notifyAll();
+        }
+
+        if (battleView != null) {
+            battleView.repaint();
+        }
+
+        if (manager.isSoundEnabled()) {
+            manager.getSoundManager().playBackgroundMusic();
+        }
+
 		setOptions();
 
 		RobocodeProperties props = manager.getProperties();
@@ -599,7 +598,7 @@ public class Battle extends BattleData implements Runnable {
 		}
 
 		for (IBattleRobotPeer robotPeer : getBattleRobots()) {
-			robotPeer.preInitialize();
+			robotPeer.b_preInitialize();
 			if (manager.isGUIEnabled()) {
 				manager.getWindowManager().getRobocodeFrame().addRobotButton(
 						new RobotButton(manager.getRobotDialogManager(), (IDisplayRobotPeer)robotPeer));
@@ -635,7 +634,7 @@ public class Battle extends BattleData implements Runnable {
 
 					RobotFileSpecification robotFileSpecification = classManager.getRobotSpecification();
 
-					robotPeer.initInfo(robotFileSpecification);
+					robotPeer.b_setupInfo(robotFileSpecification);
 					initializeRobotPosition(robotPeer);
 
 					if (battleView != null && !replay) {
@@ -686,34 +685,38 @@ public class Battle extends BattleData implements Runnable {
 		}
 	}
 
-	public void runRound() {
+    private boolean roundOver;
+
+    private long robotStartTime;
+    private long turnStartTime;
+    private long frameStartTime;
+
+    private int currentRobotMillis;
+    private int totalRobotMillisThisSec;
+    private int totalFrameMillisThisSec;
+    private int totalTurnMillisThisSec;
+    private float estFrameTimeThisSec;
+    private float estimatedFPS;
+    private int estimatedTurnMillisThisSec;
+    private int delay;
+    private boolean resetThisSec;
+
+    public void runRound() {
 		log("Let the games begin!");
 
-		boolean battleOver = false;
-
+		roundOver = false;
 		endTimer = 0;
-
 		currentTime = 0;
 		inactiveTurnCount = 0;
-
 		turnsThisSec = 0;
 		framesThisSec = 0;
+		currentRobotMillis = 0;
+		totalRobotMillisThisSec = 0;
+		totalFrameMillisThisSec = 0;
+		estimatedFPS = 0;
+		delay = 0;
 
-		long robotStartTime;
-		int currentRobotMillis = 0;
-
-		int totalRobotMillisThisSec = 0;
-		int totalFrameMillisThisSec = 0;
-		int totalTurnMillisThisSec;
-
-		float estFrameTimeThisSec;
-		float estimatedFPS = 0;
-
-		int estimatedTurnMillisThisSec;
-
-		int delay = 0;
-
-		boolean resetThisSec = true;
+		resetThisSec = true;
 
 		if (isRecordingEnabled) {
 			currentRoundRecord = new RoundRecord();
@@ -721,383 +724,379 @@ public class Battle extends BattleData implements Runnable {
 
 		battleManager.startNewRound();
 
-		if (battleView != null) {
+        boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
+        
+        if (!minimizedMode) {
 			battleView.update();
 		}
 
-		while (!battleOver) {
-			if (shouldPause() && !battleManager.shouldStep()) {
-				resetThisSec = true;
-				continue;
-			}
-
-			// Next turn is starting
-
-			long turnStartTime = System.currentTimeMillis();
-
-			if (resetThisSec) {
-				resetThisSec = false;
-
-				startTimeThisSec = turnStartTime;
-
-				turnsThisSec = 0;
-				framesThisSec = 0;
-
-				totalRobotMillisThisSec = 0;
-				totalFrameMillisThisSec = 0;
-			}
-
-			// New turn: flush any old events
-			for (IBattleRobotPeer robotPeer : getBattleRobots()) {
-				robotPeer.getBattleEventManager().clearOld(currentTime - 1);
-			}
-
-			currentTime++;
-			turnsThisSec++;
-
-            //gather bullets
-            for (IBattleRobotPeer robotPeer : getBattleRobots()) {
-
-                BulletPeer bullet = robotPeer.b_getCurrentBullet();
-                if (bullet != null) {
-                    robotPeer.adjustGunHeat(Rules.getGunHeat(bullet.getPower()));
-
-                    addBullet(bullet);
-                    robotPeer.b_setCurrentBullet(null);
-                }
-            }
-
-			// Update bullets
-			for (IBattleBulletPeer b : getBattleBullets()) {
-				b.update(getBattleRobots(), getBattleBullets());
-			}
-
-            //remove dead bullets
-            for (IBattleBulletPeer b : getBattleBullets()) {
-                if (b.getState() == BulletPeer.STATE_INACTIVE){
-                    removeBullet((BulletPeer)b);
-                }
-            }
-
-            boolean zap = (inactiveTurnCount > inactivityTime);
-
-			// Move all bots
-			for (IBattleRobotPeer robotPeer : getRobotsAtRandom()) {
-				if (!robotPeer.isDead()) {
-					robotPeer.update(getBattleRobots());
-				}
-				if ((zap || isAborted()) && !robotPeer.isDead()) {
-					if (isAborted()) {
-						robotPeer.zap(5);
-					} else {
-						robotPeer.zap(.1);
-					}
-				}
-			}
-
-			handleDeathEvents();
-
-			performScans();
-
-			deathEvents.clear();
-
-			battleOver = checkBattleOver();
-
-			inactiveTurnCount++;
-
-			computeActiveRobots();
-
-			if (isRecordingEnabled && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
-				currentTurnRecord = new TurnRecord();
-				currentRoundRecord.turns.add(currentTurnRecord);
-
-				currentTurnRecord.robotStates = new ArrayList<RobotRecord>();
-
-				IBattleRobotPeer rp;
-				for (int i = 0; i < getBattleRobots().size(); i++) {
-					rp = getBattleRobots().get(i);
-					if (!rp.isDead()) {
-						RobotRecord rr = new RobotRecord(i, rp);
-
-						currentTurnRecord.robotStates.add(rr);
-					}
-				}
-
-				currentTurnRecord.bulletStates = new ArrayList<BulletRecord>();
-				for (IBattleBulletPeer bp : getBattleBullets()) {
-					IBattleRobotPeer owner = bp.getOwner();
-
-					for (int i = 0; i < getBattleRobots().size(); i++) {
-						if (getBattleRobots().get(i) == owner) {
-							BulletRecord br = new BulletRecord(i, bp);
-
-							currentTurnRecord.bulletStates.add(br);
-							break;
-						}
-					}
-				}
-			}
-
-			// Add status events for the current turn to all robots that are alive 
-			for (IBattleRobotPeer robotPeer : getBattleRobots()) {
-				if (!robotPeer.isDead()) {
-					robotPeer.getBattleEventManager().add(new StatusEvent(robotPeer));
-				}
-			}
-			
-			// Store the robot start time
-			robotStartTime = System.currentTimeMillis();
-
-			// Robot time!
-			wakeupRobots();
-
-			// Calculate the time spend on the robots
-			currentRobotMillis = (int) (System.currentTimeMillis() - robotStartTime);
-
-			// Set flag indication if we are running in "minimized mode"
-			boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
-
-			// Paint current battle frame
-			
-			if (!(isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode)) {
-				// Update the battle view if the frame has not been painted yet this second
-				// or if it's time to paint the next frame
-				if ((estimatedFPS * turnsThisSec / desiredTPS) >= framesThisSec) {
-					battleView.update();
-					framesThisSec++;
-				}
-
-				playSounds();
-			}
-
-			// Calculate the total time spend on robots this second
-			totalRobotMillisThisSec += currentRobotMillis;
-
-			// Calculate the total time used for the frame update
-			totalFrameMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentRobotMillis;
-
-			// Calculate the total turn time this second
-			totalTurnMillisThisSec = max(1, totalRobotMillisThisSec + totalFrameMillisThisSec);
-
-			// Estimate the time remaining this second to spend on frame updates
-			estFrameTimeThisSec = max(0, 1000 - desiredTPS * totalRobotMillisThisSec / turnsThisSec);
-
-			// Estimate the possible FPS based on the estimated frame time
-			estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
-
-			// Estimate the time that will be used on the total turn this second
-			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
-			
-			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-			if (endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode) {
-				delay = 0;
-			} else {
-				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
-			}
-
-			// Set flag for if the second has passed
-			resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
-			
-			// Check if we must limit the TPS
-			if (!(resetThisSec || minimizedMode)) {
-				resetThisSec = ((desiredTPS - turnsThisSec) == 0);
-			}
-
-			// Delay to match desired TPS
-			if (delay > 0) {
-				try {
-					Thread.sleep(delay);
-				} catch (InterruptedException e) {
-					// Set the thread status back to being interrupted
-					Thread.currentThread().interrupt();
-				}
-			}
-
-			// Update title when second has passed
-			if (resetThisSec) {
-				updateTitle();
-			}
+		while (!roundOver) {
+            runTurn();
 		}
 
-		if (isRecordingEnabled) {
-			List<IBattleRobotPeer> orderedRobots = new ArrayList<IBattleRobotPeer>(getBattleRobots());
+        recordRound();
 
-			Collections.sort(orderedRobots);
-
-			RobotResults results[] = new RobotResults[getBattleRobots().size()];
-
-			int rank;
-
-			for (int i = 0; i < getBattleRobots().size(); i++) {
-				IBattleRobotPeer r = orderedRobots.get(i);
-
-				for (rank = 0; rank < getBattleRobots().size(); rank++) {
-					if (getBattleRobots().get(rank) == r) {
-						break;
-					}
-				}
-				results[rank] = r.getRobotStatistics().getResults(i + 1, isRunning());
-			}
-
-			currentRoundRecord.results = results;
-			battleRecord.rounds.add(currentRoundRecord);
-		}
-
-		clearBullets();
+        clearBullets();
 	}
 
-	public void runReplay() {
+
+    public void replayRound() {
 		log("Replay started");
 
-		boolean replayOver = false;
+		roundOver = false;
 
 		endTimer = 0;
-
 		currentTime = 0;
-
 		turnsThisSec = 0;
 		framesThisSec = 0;
-
-		long frameStartTime;
-
-		int totalFrameMillisThisSec = 0;
-		int totalTurnMillisThisSec;
-
-		float estFrameTimeThisSec;
-		float estimatedFPS = 0;
-
-		int estimatedTurnMillisThisSec;
-
-		int delay = 0;
-
-		boolean resetThisSec = true;
+		totalFrameMillisThisSec = 0;
+		estimatedFPS = 0;
+		delay = 0;
+		resetThisSec = true;
 
 		battleManager.startNewRound();
 
-		BulletPeer bullet;
-		IBattleRobotPeer robot;
+        boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
 
-		if (battleView != null) {
+        if (!minimizedMode) {
 			battleView.update();
 		}
 
-		while (!(replayOver || isAborted())) {
-			if (shouldPause() && !battleManager.shouldStep()) {
-				resetThisSec = true;
-				continue;
-			}
-
-			// Next turn is starting
-
-			long turnStartTime = System.currentTimeMillis();
-
-			if (resetThisSec) {
-				resetThisSec = false;
-
-				startTimeThisSec = turnStartTime;
-
-				turnsThisSec = 0;
-				framesThisSec = 0;
-
-				totalFrameMillisThisSec = 0;
-			}
-
-			RoundRecord roundRecord = battleRecord.rounds.get(roundNum);
-			TurnRecord turnRecord = roundRecord.turns.get(currentTime);
-
-			for (IBattleRobotPeer robotPeer : getBattleRobots()) {
-				robotPeer.b_setState(RobotPeerStatus.STATE_DEAD);
-			}
-			for (RobotRecord rr : turnRecord.robotStates) {
-				robot = getBattleRobots().get(rr.index);
-				robot.b_setRecord(rr);
-			}
-
-			clearBullets();
-
-			for (BulletRecord br : turnRecord.bulletStates) {
-				robot = getBattleRobots().get(br.owner);
-				if (br.state == BulletPeer.STATE_EXPLODED) {
-					bullet = new ExplosionPeer(robot, this, br);
-				} else {
-					bullet = new BulletPeer(robot, this, br);
-				}
-				addBullet(bullet);
-			}
-
-			currentTime++;
-			turnsThisSec++;
-
-			replayOver = currentTime >= roundRecord.turns.size();
-
-			// Set flag indication if we are running in "minimized mode"
-			boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
-
-			// Paint current battle frame
-
-			// Store the start time before the frame update
-			frameStartTime = System.currentTimeMillis();
-
-			if (!(isAborted() || minimizedMode)) {
-				// Update the battle view if the frame has not been painted yet this second
-				// or if it's time to paint the next frame
-				if ((estimatedFPS * turnsThisSec / desiredTPS) >= framesThisSec) {
-					battleView.update();
-					framesThisSec++;
-				}
-
-				playSounds();
-			}
-
-			// Calculate the total time spend on frame updates this second
-			totalFrameMillisThisSec += (int) (System.currentTimeMillis() - frameStartTime);
-
-			// Calculate the total turn time this second
-			totalTurnMillisThisSec = max(1,
-					(int) (System.currentTimeMillis() - startTimeThisSec - totalFrameMillisThisSec));
-
-			// Estimate the time remaining this second to spend on frame updates
-			estFrameTimeThisSec = max(0, 1000 - desiredTPS * totalTurnMillisThisSec / turnsThisSec);
-
-			// Estimate the possible FPS based on the estimated frame time
-			estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
-
-			// Estimate the time that will be used on the total turn this second
-			estimatedTurnMillisThisSec = desiredTPS * totalFrameMillisThisSec / turnsThisSec;
-
-			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-			if (endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode) {
-				delay = 0;
-			} else {
-				delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
-			}
-
-			// Set flag for if the second has passed
-			resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
-			
-			// Check if we must limit the TPS
-			if (!(resetThisSec || minimizedMode)) {
-				resetThisSec = ((desiredTPS - turnsThisSec) == 0);
-			}
-
-			// Delay to match desired TPS
-			if (delay > 0) {
-				try {
-					Thread.sleep(delay);
-				} catch (InterruptedException e) {
-					// Set the thread status back to being interrupted
-					Thread.currentThread().interrupt();					
-				}
-			}
-
-			// Update title when second has passed
-			if (resetThisSec) {
-				updateTitle();
-			}
+		while (!(roundOver || isAborted())) {
+            replayTurn();
 		}
 
 		clearBullets();
 	}
+
+    private void replayTurn() {
+
+        if (shouldPause() && !battleManager.shouldStep()) {
+            resetThisSec = true;
+            return;
+        }
+
+        // Next turn is starting
+        turnStartTime = System.currentTimeMillis();
+
+        resetSec();
+
+        roundOver = replayRecord();
+
+        currentTime++;
+        turnsThisSec++;
+
+        // Set flag indication if we are running in "minimized mode"
+        boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
+
+        // Store the start time before the frame update
+        frameStartTime = System.currentTimeMillis();
+
+        // Paint current battle frame
+        displayTurn(minimizedMode);
+
+        measureTime(minimizedMode);
+
+        // Update title when second has passed
+        if (resetThisSec) {
+            updateTitle();
+        }
+    }
+
+    private void runTurn() {
+        if (shouldPause() && !battleManager.shouldStep()) {
+            resetThisSec = true;
+            return;
+        }
+
+        // Next turn is starting
+        turnStartTime = System.currentTimeMillis();
+
+        resetSec();
+
+        lockRobots();
+        try{
+            cleanRobotEvents();
+
+            currentTime++;
+            turnsThisSec++;
+
+            updateBullets();
+
+            moveRobots();
+
+            handleDeathEvents();
+
+            performScans();
+
+            deathEvents.clear();
+
+            roundOver = checkBattleOver();
+
+            inactiveTurnCount++;
+
+            computeActiveRobots();
+
+            recordTurn();
+
+            addStatusEvent();
+
+            // Store the robot start time
+            robotStartTime = System.currentTimeMillis();
+        }
+        finally {
+            unlockRobots();
+        }
+
+        // Robot time!
+        wakeupRobots();
+
+        // Calculate the time spend on the robots
+        currentRobotMillis = (int) (System.currentTimeMillis() - robotStartTime);
+
+        // Set flag indication if we are running in "minimized mode"
+        boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
+
+        // Paint current battle frame
+        displayTurn(minimizedMode);
+
+        //statistics
+        measureTime(minimizedMode);
+
+        // Update title when second has passed
+        if (resetThisSec) {
+            updateTitle();
+        }
+    }
+
+    private void lockRobots(){
+        for (IBattleRobotPeer robotPeer : getBattleRobots()) {
+            robotPeer.lockWrite();
+        }
+    }
+
+    private void unlockRobots(){
+        for (IBattleRobotPeer robotPeer : getBattleRobots()) {
+            robotPeer.unlockWrite();
+        }
+    }
+
+    private void resetSec() {
+        if (resetThisSec) {
+            resetThisSec = false;
+
+            startTimeThisSec = turnStartTime;
+
+            turnsThisSec = 0;
+            framesThisSec = 0;
+
+            totalRobotMillisThisSec = 0;
+            totalFrameMillisThisSec = 0;
+        }
+    }
+
+    private void addStatusEvent() {
+        // Add status events for the current turn to all robots that are alive
+        for (IBattleRobotPeer robotPeer : getBattleRobots()) {
+            if (!robotPeer.isDead()) {
+                robotPeer.getBattleEventManager().add(new StatusEvent(robotPeer));
+            }
+        }
+    }
+
+    private void cleanRobotEvents() {
+        // New turn: flush any old events
+        for (IBattleRobotPeer robotPeer : getBattleRobots()) {
+            robotPeer.getBattleEventManager().clearOld(currentTime - 1);
+        }
+    }
+
+    private void moveRobots() {
+        boolean zap = (inactiveTurnCount > inactivityTime);
+
+        // Move all bots
+        for (IBattleRobotPeer robotPeer : getRobotsAtRandom()) {
+            if (!robotPeer.isDead()) {
+                robotPeer.b_update(getBattleRobots());
+            }
+            if ((zap || isAborted()) && !robotPeer.isDead()) {
+                if (isAborted()) {
+                    robotPeer.b_zap(5);
+                } else {
+                    robotPeer.b_zap(.1);
+                }
+            }
+        }
+    }
+
+    private void updateBullets() {
+        //gather bullets
+        for (IBattleRobotPeer robotPeer : getBattleRobots()) {
+
+            BulletPeer bullet = robotPeer.b_getCurrentBullet();
+            if (bullet != null) {
+                robotPeer.b_adjustGunHeat(Rules.getGunHeat(bullet.getPower()));
+
+                addBullet(bullet);
+                robotPeer.b_setCurrentBullet(null);
+            }
+        }
+
+        // Update bullets
+        for (IBattleBulletPeer b : getBattleBullets()) {
+            b.update(getBattleRobots(), getBattleBullets());
+        }
+
+        //remove dead bullets
+        for (IBattleBulletPeer b : getBattleBullets()) {
+            if (b.getState() == BulletPeer.STATE_INACTIVE){
+                removeBullet((BulletPeer)b);
+            }
+        }
+    }
+
+    private void measureTime(boolean minimizedMode) {
+        // Calculate the total time spend on robots this second
+        totalRobotMillisThisSec += currentRobotMillis;
+
+        // Calculate the total time used for the frame update
+        totalFrameMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentRobotMillis;
+
+        // Calculate the total turn time this second
+        totalTurnMillisThisSec = max(1, totalRobotMillisThisSec + totalFrameMillisThisSec);
+
+        // Estimate the time remaining this second to spend on frame updates
+        estFrameTimeThisSec = max(0, 1000 - desiredTPS * totalRobotMillisThisSec / turnsThisSec);
+
+        // Estimate the possible FPS based on the estimated frame time
+        estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
+
+        // Estimate the time that will be used on the total turn this second
+        estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
+
+        // Calculate delay needed for keeping the desired TPS (Turns Per Second)
+        if (endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode) {
+            delay = 0;
+        } else {
+            delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
+        }
+
+        // Set flag for if the second has passed
+        resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
+
+        // Check if we must limit the TPS
+        if (!(resetThisSec || minimizedMode)) {
+            resetThisSec = ((desiredTPS - turnsThisSec) == 0);
+        }
+
+        // Delay to match desired TPS
+        if (delay > 0) {
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                // Set the thread status back to being interrupted
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    private void recordRound() {
+        if (isRecordingEnabled) {
+            List<IBattleRobotPeer> orderedRobots = new ArrayList<IBattleRobotPeer>(getBattleRobots());
+
+            Collections.sort(orderedRobots);
+
+            RobotResults results[] = new RobotResults[getBattleRobots().size()];
+
+            int rank;
+
+            for (int i = 0; i < getBattleRobots().size(); i++) {
+                IBattleRobotPeer r = orderedRobots.get(i);
+
+                for (rank = 0; rank < getBattleRobots().size(); rank++) {
+                    if (getBattleRobots().get(rank) == r) {
+                        break;
+                    }
+                }
+                results[rank] = r.getRobotStatistics().getResults(i + 1, isRunning());
+            }
+
+            currentRoundRecord.results = results;
+            battleRecord.rounds.add(currentRoundRecord);
+        }
+    }
+
+    private void displayTurn(boolean minimizedMode) {
+        if (!(isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode)) {
+            // Update the battle view if the frame has not been painted yet this second
+            // or if it's time to paint the next frame
+            if ((estimatedFPS * turnsThisSec / desiredTPS) >= framesThisSec) {
+                battleView.update();
+                framesThisSec++;
+            }
+
+            playSounds();
+        }
+    }
+
+    private boolean replayRecord() {
+        IBattleRobotPeer robot;
+        BulletPeer bullet;
+        RoundRecord roundRecord = battleRecord.rounds.get(roundNum);
+        TurnRecord turnRecord = roundRecord.turns.get(currentTime);
+
+        clearBullets();
+        for (IBattleRobotPeer robotPeer : getBattleRobots()) {
+            robotPeer.b_setState(RobotPeerStatus.STATE_DEAD);
+        }
+        for (RobotRecord rr : turnRecord.robotStates) {
+            robot = getBattleRobots().get(rr.index);
+            robot.b_setRecord(rr);
+        }
+        for (BulletRecord br : turnRecord.bulletStates) {
+            robot = getBattleRobots().get(br.owner);
+            if (br.state == BulletPeer.STATE_EXPLODED) {
+                bullet = new ExplosionPeer(robot, this, br);
+            } else {
+                bullet = new BulletPeer(robot, this, br);
+            }
+            addBullet(bullet);
+        }
+        return currentTime >= roundRecord.turns.size();
+    }
+
+    private void recordTurn() {
+        if (isRecordingEnabled && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
+            currentTurnRecord = new TurnRecord();
+            currentRoundRecord.turns.add(currentTurnRecord);
+
+            currentTurnRecord.robotStates = new ArrayList<RobotRecord>();
+
+            IBattleRobotPeer rp;
+            for (int i = 0; i < getBattleRobots().size(); i++) {
+                rp = getBattleRobots().get(i);
+                if (!rp.isDead()) {
+                    RobotRecord rr = new RobotRecord(i, rp);
+
+                    currentTurnRecord.robotStates.add(rr);
+                }
+            }
+
+            currentTurnRecord.bulletStates = new ArrayList<BulletRecord>();
+            for (IBattleBulletPeer bp : getBattleBullets()) {
+                IBattleRobotPeer owner = bp.getOwner();
+
+                for (int i = 0; i < getBattleRobots().size(); i++) {
+                    if (getBattleRobots().get(i) == owner) {
+                        BulletRecord br = new BulletRecord(i, bp);
+
+                        currentTurnRecord.bulletStates.add(br);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
 	private boolean shouldPause() {
 		if (battleManager.isPaused() && !isAborted()) {
@@ -1135,7 +1134,7 @@ public class Battle extends BattleData implements Runnable {
 				}
 				// This call blocks until the
 				// robot's thread actually wakes up.
-				r.wakeup();
+				r.b_wakeup();
 
 				if (r.isAlive()) {
                     //TODO ZAMO                     synchronizet (r)
@@ -1234,7 +1233,7 @@ public class Battle extends BattleData implements Runnable {
 					// Enter scan
 					System.err.flush();
 
-					robotPeer.scan(getBattleRobots());
+					robotPeer.b_scan(getBattleRobots());
 					// Exit scan
 					robotPeer.b_setScan(false);
 				}
@@ -1302,11 +1301,11 @@ public class Battle extends BattleData implements Runnable {
 		int count = 0;
 
 		for (IContestantPeer c : getContestants()) {
-			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
+			if (c instanceof RobotPeer && !((RobotPeer) c).u_isDead()) {
 				count++;
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
 				for (RobotPeer r : (TeamPeer) c) {
-					if (!r.isDead()) {
+					if (!r.u_isDead()) {
 						count++;
 						break;
 					}
@@ -1380,14 +1379,14 @@ public class Battle extends BattleData implements Runnable {
 			}
 		}
 
-		for (IBattleRobotPeer r : getBattleRobots()) {
+		for (IBattleRobotPeer robotPeer : getBattleRobots()) {
 			if (roundNum > 0) {
-				r.preInitialize();
+				robotPeer.b_preInitialize();
 			} // fake dead so robot won't display
 
-			r.getOut().println("=========================");
-			r.getOut().println("Round " + (roundNum + 1) + " of " + numRounds);
-			r.getOut().println("=========================");
+			robotPeer.getOut().println("=========================");
+			robotPeer.getOut().println("Round " + (roundNum + 1) + " of " + numRounds);
+			robotPeer.getOut().println("=========================");
 		}
 
 		// Notifying loader
@@ -1503,7 +1502,7 @@ public class Battle extends BattleData implements Runnable {
 			}
 			// Loading robots
 			for (IBattleRobotPeer robotPeer : getBattleRobots()) {
-				robotPeer.setRobot(null);
+				robotPeer.b_setRobot(null);
 				Class<?> robotClass = null;
 
 				try {
@@ -1515,7 +1514,7 @@ public class Battle extends BattleData implements Runnable {
 					}
 					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
-					robotPeer.setRobot(bot);
+					robotPeer.b_setRobot(bot);
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
@@ -1602,7 +1601,7 @@ public class Battle extends BattleData implements Runnable {
 			if (index >= 0 && index < initialRobotPositions.length) {
 				double[] pos = initialRobotPositions[index];
 
-				robot.initialize(pos[0], pos[1], pos[2], getBattleRobots());
+				robot.b_initialize(pos[0], pos[1], pos[2], getBattleRobots());
 				if (validSpot(robot)) {
 					return;
 				}
@@ -1616,7 +1615,7 @@ public class Battle extends BattleData implements Runnable {
 			y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
 			heading = 2 * PI * random();
 
-			robot.initialize(x, y, heading, getBattleRobots());
+			robot.b_initialize(x, y, heading, getBattleRobots());
 
 			if (validSpot(robot)) {
 				break;
@@ -1625,7 +1624,7 @@ public class Battle extends BattleData implements Runnable {
 	}
 
 	private boolean validSpot(IBattleRobotPeer robot) {
-		robot.updateBoundingBox();
+		robot.b_updateBoundingBox();
 		for (IBattleRobotPeer r : getBattleRobots()) {
 			if (r != null && r != robot) {
 				if (robot.getBoundingBox().intersects(r.getBoundingBox())) {

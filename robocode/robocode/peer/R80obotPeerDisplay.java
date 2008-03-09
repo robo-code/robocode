@@ -13,13 +13,27 @@ package robocode.peer;
 
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.*;
+import robocode.peer.robot.RobotOutputStream;
 
 import java.awt.*;
+import java.awt.geom.Arc2D;
 
 /**
  * @author Pavel Savara (original)
  */
-public class R80obotPeerDisplay extends R70obotPeerRobot {
+public class R80obotPeerDisplay extends R70obotPeerRobot
+{
+    //TODO synchronize
+    public void d_setPaintEnabled(boolean enabled) {
+        //TODO ZAMO
+        info.setPaintEnabled(enabled);
+    }
+
+    public void d_setSGPaintEnabled(boolean enabled) {
+        //TODO ZAMO
+        info.setSGPaintEnabled(enabled);
+    }
+
     public void d_kill(){
         //TODO ZAMO synchronize
     }

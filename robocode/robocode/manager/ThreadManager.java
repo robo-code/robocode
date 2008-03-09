@@ -49,7 +49,7 @@ public class ThreadManager {
 		}
 	}
 
-	public synchronized IBattleRobotPeer getLoadingRobot() {
+	public synchronized RobotPeer getLoadingRobot() {
 		return loadingRobot;
 	}
 
