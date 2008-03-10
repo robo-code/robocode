@@ -391,7 +391,7 @@ public class BattleView extends Canvas {
 				y = battleFieldHeight - robotPeer.getY();
 
 				at = AffineTransform.getTranslateInstance(x, y);
-				at.rotate(robotPeer.getHeading());
+				at.rotate(robotPeer.getBodyHeading());
 
 				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(robotPeer.getBodyColor());
 

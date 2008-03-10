@@ -50,6 +50,10 @@ public class BasicRobotView implements IBasicRobotPeer {
 		peer.turnGun(radians);
 	}
 
+	public Bullet fire(double power) {
+		return peer.fire(power);
+	}
+
 	// fast setters
 	public void setBodyColor(Color color) {
 		peer.setCall();
@@ -96,9 +100,9 @@ public class BasicRobotView implements IBasicRobotPeer {
 		return peer.getDistanceRemaining();
 	}
 
-	public double getTurnRemaining() {
+	public double getBodyTurnRemaining() {
 		peer.getCall();
-		return peer.getTurnRemaining();
+		return peer.getBodyTurnRemaining();
 	}
 
 	// Robot calls below
@@ -128,9 +132,9 @@ public class BasicRobotView implements IBasicRobotPeer {
 	}
 
 	// Junior calls below
-	public double getHeading() {
+	public double getBodyHeading() {
 		peer.getCall();
-		return peer.getHeading();
+		return peer.getBodyHeading();
 	}
 
 	public double getGunHeading() {

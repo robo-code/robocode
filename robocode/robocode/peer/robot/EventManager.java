@@ -747,7 +747,7 @@ public class EventManager implements IEventManager {
 							&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
 							&& !(robotPeer.isAdvancedRobot())) {
 						fireAssistAngle = Utils.normalAbsoluteAngle(
-								robotPeer.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
+								robotPeer.getBodyHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
 						if (useFireAssist) {
 							fireAssistValid = true;
 						}

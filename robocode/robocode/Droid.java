@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
@@ -15,6 +17,11 @@ package robocode;
 /**
  * Robots that implement Droid have no scanner, but an extra 20 life/energy.
  * This class is intended for use in teams.
+ *
+ * @see JuniorRobot
+ * @see Robot
+ * @see AdvancedRobot
+ * @see TeamRobot
  *
  * @author Mathew A. Nelson (original)
  */

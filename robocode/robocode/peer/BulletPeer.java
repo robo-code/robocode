@@ -194,7 +194,7 @@ public class BulletPeer {
 				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 
 				robotPeer.getEventManager().add(
-						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getHeading()),
+						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()),
 						getBullet()));
 
 				state = STATE_HIT_VICTIM;

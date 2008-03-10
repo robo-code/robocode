@@ -37,7 +37,16 @@ import java.util.Vector;
  * <p>
  * If you have not already, you should create a {@link Robot} first.
  *
+ * @see <a target="_top" href="http://robocode.sourceforge.net">
+ * robocode.sourceforge.net</a>
+ *
+ * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
+ * Building your first robot<a>
+ *
+ * @see JuniorRobot
  * @see Robot
+ * @see TeamRobot
+ * @see Droid
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -92,7 +101,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public double getTurnRemaining() {
 		if (peer != null) {
-			return Math.toDegrees(peer.getTurnRemaining());
+			return Math.toDegrees(peer.getBodyTurnRemaining());
 		}
 		uninitializedException();
 		return 0; // never called
@@ -409,20 +418,25 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link #getGunHeat()} returns a value > 0.
 	 * <p>
-	 * An event is generated when the bullet hits a robot, wall, or another
-	 * bullet.
+	 * A event is generated when the bullet hits a robot
+	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
+	 * bullet ({@link BulletHitBulletEvent}).
 	 * <p>
 	 * Example:
 	 * <pre>
+	 *   Bullet bullet = null;
+	 * 
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
-	 *       Bullet bullet = setFireBullet(Rules.MAX_BULLET_POWER);
+	 *       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
 	 *   }
 	 *   ...
 	 *   execute();
 	 *   ...
 	 *   // Get the velocity of the bullet
-	 *   double bulletVelocity = bullet.getVelocity();
+	 *   if (bullet != null) {
+	 *       double bulletVelocity = bullet.getVelocity();
+	 *   }
 	 * </pre>
 	 *
 	 * @param power the amount of energy given to the bullet, and subtracted
@@ -451,23 +465,28 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Registers a custom event to be called when a condition is met.
+	 * When you are finished with your condition or just want to remove it you
+	 * must call {@link #removeCustomEvent(Condition)}.
 	 * <p>
 	 * Example:
 	 * <pre>
-	 *   addCustomEvent(
-	 *       new Condition("triggerhit") {
-	 *           public boolean test() {
-	 *               return (getEnergy() <= trigger);
-	 *           };
-	 *       }
-	 *   );
+	 *   // Create the condition for our custom event
+	 *   Condition triggerHitCondition = new Condition("triggerhit") {
+	 *       public boolean test() {
+	 *           return (getEnergy() <= trigger);
+	 *       };
+	 *   }
+	 *
+	 *   // Add our custom event based on our condition
+	 *   <b>addCustomEvent(triggerHitCondition);</b>
 	 * </pre>
 	 *
-	 * @param condition the condition that must be met. Notice, that null is not
-	 *     allowed, and will cause a NullPointerException.
-	 * @throws NullPointerException if the condition parameter has been set to null.
+	 * @param condition the condition that must be met.
+	 * @throws NullPointerException if the condition parameter has been set to
+	 *    {@code null}.
 	 *
 	 * @see Condition
+	 * @see #removeCustomEvent(Condition)
 	 */
 	public void addCustomEvent(Condition condition) {
 		if (condition == null) {
@@ -481,7 +500,50 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Clears out any pending events immediately.
+	 * Removes a custom event that was previously added by calling
+	 * {@link #addCustomEvent(Condition)}.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Create the condition for our custom event
+	 *   Condition triggerHitCondition = new Condition("triggerhit") {
+	 *       public boolean test() {
+	 *           return (getEnergy() <= trigger);
+	 *       };
+	 *   }
+	 *
+	 *   // Add our custom event based on our condition
+	 *   addCustomEvent(triggerHitCondition);
+	 *   ...
+	 *   <i>do something with your robot</i>
+	 *   ...
+	 *   // Remove the custom event based on our condition
+	 *   <b>removeCustomEvent(triggerHitCondition);</b>
+	 * </pre>
+	 *
+	 * @param condition the condition that was previous added and that must be
+	 *    removed now.
+	 * @throws NullPointerException if the condition parameter has been set to
+	 *    {@code null}.
+	 *
+	 * @see Condition
+	 * @see #addCustomEvent(Condition)
+	 */
+	public void removeCustomEvent(Condition condition) {
+		if (condition == null) {
+			throw new NullPointerException("the condition cannot be null");
+		}
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).removeCustomEvent(condition);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Clears out any pending events in the robot's event queue immediately.
+	 *
+	 * @see #getAllEvents()
 	 */
 	public void clearAllEvents() {
 		if (peer != null) {
@@ -537,6 +599,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @return a vector containing all events currently in the robot's queue
 	 *
 	 * @see Event
+	 * @see #clearAllEvents()
 	 * @see ScannedRobotEvent
 	 * @see BulletHitBulletEvent
 	 * @see BulletMissedEvent
@@ -555,11 +618,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @see #onHitByBullet(HitByBulletEvent) onHitByBullet(HitByBulletEvent)
 	 * @see #onHitRobot(HitRobotEvent) onHitRobot(HitRobotEvent)
 	 * @see #onHitWall(HitWallEvent) onHitWall(HitWallEvent)
+	 * @see #onDeath(DeathEvent) onDeath(DeathEvent)
+	 * @see #onRobotDeath(RobotDeathEvent) onRobotDeath(DeathEvent)
+	 * @see #onWin(WinEvent) onWin(WinEvent)
 	 * @see #onSkippedTurn(SkippedTurnEvent) onSkippedTurn(SkippedTurnEvent)
 	 * @see #onCustomEvent(CustomEvent) onCustomEvent(CustomEvent)
-	 * @see #onDeath(DeathEvent)
-	 * @see #onRobotDeath(RobotDeathEvent) onDeath(DeathEvent)
-	 * @see #onWin(WinEvent) onWin(WinEvent)
 	 * @see TeamRobot#onMessageReceived(MessageEvent)
 	 */
 	public Vector<Event> getAllEvents() {
@@ -587,6 +650,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
 	 * @see BulletHitBulletEvent
+	 * @see #getAllEvents()
 	 */
 	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		if (peer != null) {
@@ -612,6 +676,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
 	 * @see BulletHitEvent
+	 * @see #getAllEvents()
 	 */
 	public Vector<BulletHitEvent> getBulletHitEvents() {
 		if (peer != null) {
@@ -638,6 +703,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
 	 * @see BulletMissedEvent
+	 * @see #getAllEvents()
 	 */
 	public Vector<BulletMissedEvent> getBulletMissedEvents() {
 		if (peer != null) {
@@ -659,6 +725,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #getDataFile(String)
 	 * @see RobocodeFileOutputStream
+	 * @see RobocodeFileWriter
 	 */
 	public File getDataDirectory() {
 		if (peer != null) {
@@ -678,9 +745,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Please notice that the max. size of your data file is set to 200000
 	 * (~195 KB).
 	 * <p>
-	 * See the sample robots for examples.
+	 * See the {@code sample.SittingDuck} to see an example of how to use this
+	 * method.
 	 *
-	 * @param filename the file name of the data file
+	 * @param filename the file name of the data file for your robot
 	 * @return a file representing the data file for your robot
 	 *
 	 * @see #getDataDirectory()
@@ -702,6 +770,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @return the amount of bytes left in the robot's data directory
 	 *
 	 * @see #getDataDirectory()
+	 * @see #getDataFile(String)
 	 */
 	public long getDataQuotaAvailable() {
 		if (peer != null) {
@@ -751,6 +820,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #onHitByBullet(HitByBulletEvent) onHitByBullet(HitByBulletEvent)
 	 * @see HitByBulletEvent
+	 * @see #getAllEvents()
 	 */
 	public Vector<HitByBulletEvent> getHitByBulletEvents() {
 		if (peer != null) {
@@ -776,6 +846,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #onHitRobot(HitRobotEvent) onHitRobot(HitRobotEvent)
 	 * @see HitRobotEvent
+	 * @see #getAllEvents()
 	 */
 	public Vector<HitRobotEvent> getHitRobotEvents() {
 		if (peer != null) {
@@ -801,6 +872,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #onHitWall(HitWallEvent) onHitWall(HitWallEvent)
 	 * @see HitWallEvent
+	 * @see #getAllEvents()
 	 */
 	public Vector<HitWallEvent> getHitWallEvents() {
 		if (peer != null) {
@@ -826,6 +898,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #onRobotDeath(RobotDeathEvent) onRobotDeath(RobotDeathEvent)
 	 * @see RobotDeathEvent
+	 * @see #getAllEvents()
 	 */
 	public Vector<RobotDeathEvent> getRobotDeathEvents() {
 		if (peer != null) {
@@ -852,6 +925,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @see #onScannedRobot(ScannedRobotEvent) onScannedRobot(ScannedRobotEvent)
 	 * @see ScannedRobotEvent
+	 * @see #getAllEvents()
 	 */
 	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
 		if (peer != null) {
@@ -939,28 +1013,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void onCustomEvent(CustomEvent event) {}
 
 	/**
-	 * Removes a custom event (specified by condition).
-	 * <p>
-	 * See the sample robots for examples of use.
-	 *
-	 * @param condition the custom event to remove. Notice, that null is not
-	 *     allowed, and will cause a NullPointerException.
-	 * @throws NullPointerException if the condition parameter has been set to null.
-	 *
-	 * @see #addCustomEvent(Condition)
-	 */
-	public void removeCustomEvent(Condition condition) {
-		if (condition == null) {
-			throw new NullPointerException("the condition cannot be null");
-		}
-		if (peer != null) {
-			((IAdvancedRobotPeer) peer).removeCustomEvent(condition);
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
 	 * Sets the priority of a class of events.
 	 * <p>
 	 * Events are sent to the onXXX handlers in order of priority.
@@ -1001,6 +1053,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *    priority for
 	 * @param priority the new priority for that event class
 	 *
+	 * @see #getEventPriority(String)
 	 * @see #setInterruptible(boolean)
 	 *
 	 * @since 1.5, the priority of DeathEvent was changed from 100 to -1 in
@@ -1021,12 +1074,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * <p>Example:
 	 * <pre>
-	 *   onScannedRobot(ScannedRobotEvent e) {
+	 *   public void onScannedRobot(ScannedRobotEvent e) {
 	 *       fire(1);
-	 *       setInterruptible(true);
+	 *       <b>setInterruptible(true);</b>
 	 *       ahead(100); // If you see a robot while moving ahead,
 	 *                   // this handler will start from the top
-	 *                   // Without setInterruptible, we wouldn't
+	 *                   // Without setInterruptible(true), we wouldn't
 	 *                   // receive scan events at all!
 	 *       // We'll only get here if we don't see a robot during the move.
 	 *       out.println("Ok, I can't see anyone");
@@ -1036,6 +1089,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @param interruptible {@code true} if the event handler should be
 	 *    interrupted if new events of the same priority occurs; {@code false}
 	 *    otherwise
+	 *
+	 * @see #setEventPriority(String, int)
+	 * @see Robot#onScannedRobot(ScannedRobotEvent) onScannedRobot(ScannedRobotEvent) 
 	 */
 	@Override
 	public void setInterruptible(boolean interruptible) {
@@ -1052,6 +1108,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @param newMaxTurnRate the new maximum turn rate of the robot measured in
 	 *    degrees. Valid values are 0 - {@link Rules#MAX_TURN_RATE}
+	 *
+	 * @see #turnRight(double) turnRight(double)
+	 * @see #turnLeft(double) turnLeft(double)
+	 * @see #setTurnRight(double)
+	 * @see #setTurnLeft(double)
+	 * @see #setMaxVelocity(double)
 	 */
 	public void setMaxTurnRate(double newMaxTurnRate) {
 		if (peer != null) {
@@ -1062,11 +1124,17 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Sets the maximum velocity of the robot measured in pixels/turn if the robot
-	 * should move slower than {@link Rules#MAX_VELOCITY} (8 pixels/turn).
+	 * Sets the maximum velocity of the robot measured in pixels/turn if the
+	 * robot should move slower than {@link Rules#MAX_VELOCITY} (8 pixels/turn).
 	 *
 	 * @param newMaxVelocity the new maximum turn rate of the robot measured in
 	 *    pixels/turn. Valid values are 0 - {@link Rules#MAX_VELOCITY}
+	 *
+	 * @see #ahead(double)
+	 * @see #setAhead(double)
+	 * @see #back(double)
+	 * @see #setBack(double)
+	 * @see #setMaxTurnRate(double)
 	 */
 	public void setMaxVelocity(double newMaxVelocity) {
 		if (peer != null) {
@@ -1336,13 +1404,17 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Does not return until a {@link Condition#test()} returns {@code true}.
+	 * Does not return until a condition is met, i.e. when a
+	 * {@link Condition#test()} returns {@code true}.
 	 * <p>
 	 * This call executes immediately.
 	 * <p>
-	 * See the example robots for usage.
+	 * See the {@code sample.Crazy} robot for how this method can be used.
 	 *
 	 * @param condition the condition that must be met before this call returns
+	 *
+	 * @see Condition
+	 * @see Condition#test()
 	 */
 	public void waitFor(Condition condition) {
 		if (peer != null) {

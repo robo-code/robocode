@@ -57,8 +57,14 @@ import java.awt.event.MouseWheelEvent;
  *
  * @see <a target="_top" href="http://robocode.sourceforge.net">
  * robocode.sourceforge.net</a>
+ *
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
  * Building your first robot<a>
+ *
+ * @see JuniorRobot
+ * @see AdvancedRobot
+ * @see TeamRobot
+ * @see Droid
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -211,7 +217,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public double getHeading() {
 		if (peer != null) {
-			double rv = 180.0 * peer.getHeading() / Math.PI;
+			double rv = 180.0 * peer.getBodyHeading() / Math.PI;
 
 			while (rv < 0) {
 				rv += 360;
@@ -356,7 +362,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	/**
 	 * Immediately turns the robot's body to the right by degrees.
 	 * This call executes immediately, and does not return until it is complete,
-	 * i.e. when the angle remaining in the radar's turn is 0.
+	 * i.e. when the angle remaining in the robot's turn is 0.
 	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot's body is set to turn left
@@ -431,8 +437,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link #getGunHeat()} returns a value > 0.
 	 * <p>
-	 * An event is generated when the bullet hits a robot, wall, or another
-	 * bullet.
+	 * A event is generated when the bullet hits a robot
+	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
+	 * bullet ({@link BulletHitBulletEvent}).
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -481,8 +488,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link #getGunHeat()} returns a value > 0.
 	 * <p>
-	 * An event is generated when the bullet hits a robot, wall, or another
-	 * bullet.
+	 * A event is generated when the bullet hits a robot
+	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
+	 * bullet ({@link BulletHitBulletEvent}).
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -491,7 +499,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *       Bullet bullet = fireBullet(Rules.MAX_BULLET_POWER);
 	 *
 	 *       // Get the velocity of the bullet
-	 *       double bulletVelocity = bullet.getVelocity();
+	 *       if (bullet != null) {
+	 *           double bulletVelocity = bullet.getVelocity();
+	 *       }
 	 *   }
 	 * </pre>
 	 *
@@ -511,10 +521,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public Bullet fireBullet(double power) {
 		if (peer != null) {
-			Bullet b = peer.setFire(power);
-
-			peer.execute();
-			return b;
+			return peer.fire(power);
 		}
 		uninitializedException();
 		return null;

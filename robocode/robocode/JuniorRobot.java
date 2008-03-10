@@ -45,6 +45,11 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
  * However, setting colors is executed immediately and does not cost a turn to
  * perform. 
  *
+ * @see Robot
+ * @see AdvancedRobot
+ * @see TeamRobot
+ * @see Droid
+ *
  * @author Nutch Poovarawan from Cubic Creative (designer)
  * @author Flemming N. Larsen (implementor)
  * @author Pavel Savara (contributor)
@@ -435,7 +440,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnTo(int angle) {
 		if (peer != null) {
-			peer.turnBody(normalRelativeAngle(toRadians(angle) - peer.getHeading()));
+			peer.turnBody(normalRelativeAngle(toRadians(angle) - peer.getBodyHeading()));
 		} else {
 			uninitializedException();
 		}
@@ -618,7 +623,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void bearGunTo(int angle) {
 		if (peer != null) {
-			peer.turnGun(normalRelativeAngle(peer.getHeading() + toRadians(angle) - peer.getGunHeading()));
+			peer.turnGun(normalRelativeAngle(peer.getBodyHeading() + toRadians(angle) - peer.getGunHeading()));
 		} else {
 			uninitializedException();
 		}
@@ -843,7 +848,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 
 		public void onHitByBullet(HitByBulletEvent event) {
-			double angle = peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
 
 			hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
 			hitByBulletBearing = (int) (event.getBearing() + 0.5);
@@ -851,7 +856,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 
 		public void onHitRobot(HitRobotEvent event) {
-			double angle = peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
 
 			hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
 			hitRobotBearing = (int) (event.getBearing() + 0.5);
@@ -859,7 +864,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 		}
 
 		public void onHitWall(HitWallEvent event) {
-			double angle = peer.getHeading() + event.getBearingRadians();
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
 
 			hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
 			hitWallBearing = (int) (event.getBearing() + 0.5);
@@ -870,7 +875,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			scannedDistance = (int) (event.getDistance() + 0.5);
 			scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
 			scannedAngle = (int) (Math.toDegrees(
-					Utils.normalAbsoluteAngle(peer.getHeading() + event.getBearingRadians()))
+					Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians()))
 							+ 0.5);
 			scannedBearing = (int) (event.getBearing() + 0.5);
 			scannedHeading = (int) (event.getHeading() + 0.5);

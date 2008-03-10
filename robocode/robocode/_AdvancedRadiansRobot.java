@@ -57,7 +57,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getHeadingRadians() {
 		if (peer != null) {
-			return peer.getHeading();
+			return peer.getBodyHeading();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -203,7 +203,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	/**
 	 * Immediately turns the robot's body to the right by radians.
 	 * This call executes immediately, and does not return until it is complete,
-	 * i.e. when the angle remaining in the radar's turn is 0.
+	 * i.e. when the angle remaining in the robot's turn is 0.
 	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot's body is set to turn left
@@ -719,7 +719,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getTurnRemainingRadians() {
 		if (peer != null) {
-			return peer.getTurnRemaining();
+			return peer.getBodyTurnRemaining();
 		}
 		uninitializedException();
 		return 0; // never called

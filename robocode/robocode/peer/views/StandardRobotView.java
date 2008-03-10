@@ -12,6 +12,7 @@
 package robocode.peer.views;
 
 
+import robocode.Bullet;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
@@ -40,6 +41,10 @@ public class StandardRobotView extends BasicRobotView implements IStandardRobotP
 
 	public void turnRadar(double radians) {
 		((IStandardRobotPeer) peer).turnRadar(radians);
+	}
+
+	public Bullet fire(double power) {
+		return peer.fire(power);
 	}
 
 	// fast setters

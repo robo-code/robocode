@@ -29,6 +29,9 @@ import static java.lang.Math.max;
  */
 public final class Rules {
 
+	// Hide the constructor in the Javadocs as it should not be used
+	private Rules() {}
+
 	/**
 	 * The acceleration of a robot, i.e. the increase of velocity when the
 	 * robot moves forward, which is 1 pixel/turn.

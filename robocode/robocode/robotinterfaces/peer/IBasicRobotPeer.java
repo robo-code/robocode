@@ -17,8 +17,7 @@
 package robocode.robotinterfaces.peer;
 
 
-import robocode.Bullet;
-import robocode.Rules;
+import robocode.*;
 
 import java.awt.*;
 
@@ -28,6 +27,11 @@ import java.awt.*;
  * <p>
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
+ *
+ * @see IStandardRobotPeer
+ * @see IAdvancedRobotPeer
+ * @see ITeamRobotPeer
+ * @see IJuniorRobotPeer
  *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (javadoc)
@@ -95,43 +99,43 @@ public interface IBasicRobotPeer {
 	double getVelocity();
 
 	/**
-	 * Returns the direction that the robot's body is facing, in degrees.
-	 * The value returned will be between 0 and 360 (is excluded).
+	 * Returns the direction that the robot's body is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
 	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * 90 means East, 180 means South, and 270 means West.
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
-	 * @return the direction that the robot's body is facing, in degrees.
+	 * @return the direction that the robot's body is facing, in radians.
 	 *
 	 * @see #getGunHeading()
 	 * @see #getRadarHeading()
 	 */
-	double getHeading();
+	double getBodyHeading();
 
 	/**
-	 * Returns the direction that the robot's gun is facing, in degrees.
-	 * The value returned will be between 0 and 360 (is excluded).
+	 * Returns the direction that the robot's gun is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
 	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * 90 means East, 180 means South, and 270 means West.
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
-	 * @return the direction that the robot's gun is facing, in degrees.
+	 * @return the direction that the robot's gun is facing, in radians.
 	 *
-	 * @see #getHeading()
+	 * @see #getBodyHeading()
 	 * @see #getRadarHeading()
 	 */
 	double getGunHeading();
 
 	/**
-	 * Returns the direction that the robot's radar is facing, in degrees.
-	 * The value returned will be between 0 and 360 (is excluded).
+	 * Returns the direction that the robot's radar is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
 	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * 90 means East, 180 means South, and 270 means West.
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
-	 * @return the direction that the robot's radar is facing, in degrees.
+	 * @return the direction that the robot's radar is facing, in radians.
 	 *
-	 * @see #getHeading()
+	 * @see #getBodyHeading()
 	 * @see #getGunHeading()
 	 */
 	double getRadarHeading();
@@ -221,57 +225,54 @@ public interface IBasicRobotPeer {
 	 * @return the distance remaining in the robot's current move measured in
 	 *    pixels.
 	 *
-	 * @see #getTurnRemaining()
+	 * @see #getBodyTurnRemaining()
 	 * @see #getGunTurnRemaining()
 	 * @see #getRadarTurnRemaining()
 	 */
 	double getDistanceRemaining();
 
 	/**
-	 * Returns the angle remaining in the robots's turn, in degrees.
+	 * Returns the angle remaining in the robot's turn, in radians.
 	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently turning to the right. Negative values
-	 * means that the robot is currently turning to the left. If the returned
-	 * value is 0, the robot is currently not turning.
+	 * means that the robot is currently turning to the left.
 	 *
-	 * @return the angle remaining in the robots's turn, in degrees
+	 * @return the angle remaining in the robot's turn, in radians
 	 *
 	 * @see #getDistanceRemaining()
 	 * @see #getGunTurnRemaining()
 	 * @see #getRadarTurnRemaining()
 	 */
-	double getTurnRemaining();
+	double getBodyTurnRemaining();
 
 	/**
-	 * Returns the angle remaining in the gun's turn, in degrees.
+	 * Returns the angle remaining in the gun's turn, in radians.
 	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the gun is currently turning to the right. Negative values
-	 * means that the gun is currently turning to the left. If the returned
-	 * value is 0, the gun is currently not turning.
+	 * means that the gun is currently turning to the left.
 	 *
-	 * @return the angle remaining in the gun's turn, in degrees
+	 * @return the angle remaining in the gun's turn, in radians
 	 *
 	 * @see #getDistanceRemaining()
-	 * @see #getTurnRemaining()
+	 * @see #getBodyTurnRemaining()
 	 * @see #getRadarTurnRemaining()
 	 */
 	double getGunTurnRemaining();
 
 	/**
-	 * Returns the angle remaining in the radar's turn, in degrees.
+	 * Returns the angle remaining in the radar's turn, in radians.
 	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the radar is currently turning to the right. Negative values
-	 * means that the radar is currently turning to the left. If the returned
-	 * value is 0, the radar is currently not turning.
+	 * means that the radar is currently turning to the left.
 	 *
-	 * @return the angle remaining in the radar's turn, in degrees
+	 * @return the angle remaining in the radar's turn, in radians
 	 *
 	 * @see #getDistanceRemaining()
+	 * @see #getBodyTurnRemaining()
 	 * @see #getGunTurnRemaining()
-	 * @see #getRadarTurnRemaining()
 	 */
 	double getRadarTurnRemaining();
 
@@ -334,10 +335,183 @@ public interface IBasicRobotPeer {
 	 */
 	void move(double distance);
 
+	/**
+	 * Immediately turns the robot's body to the right or left by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the body's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input, where
+	 * positive values means that the robot's body is set to turn right, and
+	 * negative values means that the robot's body is set to turn left.
+	 * If 0 is given as input, the robot's body will stop turning.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's body 180 degrees to the right
+	 *   turnBody(Math.PI);
+	 *
+	 *   // Afterwards, turn the robot's body 90 degrees to the left
+	 *   turnBody(-Math.PI / 2);
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's body.
+	 *    If {@code radians} > 0 the robot's body is set to turn right.
+	 *    If {@code radians} < 0 the robot's body is set to turn left.
+	 *    If {@code radians} = 0 the robot's body is set to stop turning.
+	 *
+	 * @see #turnGun(double)
+	 * @see IStandardRobotPeer#turnRadar(double) turnRadar(double)
+	 * @see #move(double)
+	 */
 	void turnBody(double radians);
+
+	/**
+	 * Immediately turns the robot's gun to the right or left by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the gun's turn is 0.
+	 * <p>
+	 * Note that both positive and negative values can be given as input, where
+	 * positive values means that the robot's gun is set to turn right, and
+	 * negative values means that the robot's gun is set to turn left.
+	 * If 0 is given as input, the robot's gun will stop turning.
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's gun 180 degrees to the right
+	 *   turnGun(Math.PI);
+	 *
+	 *   // Afterwards, turn the robot's gun 90 degrees to the left
+	 *   turnGun(-Math.PI / 2);
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's gun.
+	 *    If {@code radians} > 0 the robot's gun is set to turn right.
+	 *    If {@code radians} < 0 the robot's gun is set to turn left.
+	 *    If {@code radians} = 0 the robot's gun is set to stop turning.
+	 *
+	 * @see #turnBody(double)
+	 * @see IStandardRobotPeer#turnRadar(double) turnRadar(double)
+	 * @see #move(double)
+	 */
 	void turnGun(double radians);
 
-	// asynchronous actions
+	/**
+	 * Immediately fires a bullet. The bullet will travel in the direction the
+	 * gun is pointing.
+	 * <p>
+	 * The specified bullet power is an amount of energy that will be taken from
+	 * the robot's energy. Hence, the more power you want to spend on the
+	 * bullet, the more energy is taken from your robot.
+	 * <p>
+	 * The bullet will do (4 * power) damage if it hits another robot. If power
+	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
+	 * You will get (3 * power) back if you hit the other robot. You can call
+	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
+	 * bullet with a specific bullet power will do.
+	 * <p>
+	 * The specified bullet power should be between
+	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+	 * <p>
+	 * Note that the gun cannot fire if the gun is overheated, meaning that
+	 * {@link #getGunHeat()} returns a value > 0.
+	 * <p>
+	 * A event is generated when the bullet hits a robot
+	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
+	 * bullet ({@link BulletHitBulletEvent}).
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   // Fire a bullet with maximum power if the gun is ready
+	 *   if (getGunHeat() == 0) {
+	 *       Bullet bullet = fire(Rules.MAX_BULLET_POWER);
+	 *
+	 *       // Get the velocity of the bullet
+	 *       if (bullet != null) {
+	 *           double bulletVelocity = bullet.getVelocity();
+	 *       }
+	 *   }
+	 * </pre>
+	 *
+	 * @param power the amount of energy given to the bullet, and subtracted
+	 *     from the robot's energy.
+	 * @return a {@link Bullet} that contains information about the bullet if it
+	 *    was actually fired, which can be used for tracking the bullet after it
+	 *    has been fired. If the bullet was not fired, {@code null} is returned.
+	 *
+	 * @see #setFire(double)
+	 * @see Bullet
+	 * @see #getGunHeat
+	 * @see #getGunCoolingRate
+	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHit(BulletHitEvent)
+	 *    onBulletHit(BulletHitEvent)
+	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHitBullet(BulletHitBulletEvent)
+	 *    onBulletHitBullet(BulletHitBulletEvent)
+	 * @see robocode.robotinterfaces.IBasicEvents#onBulletMissed(BulletMissedEvent)
+	 *    onBulletMissed(BulletMissedEvent)
+	 */
+	Bullet fire(double power);
+	
+	/**
+	 * Sets the gun to fire a bullet when the next execution takes place.
+	 * The bullet will travel in the direction the gun is pointing.
+	 * <p>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p>
+	 * The specified bullet power is an amount of energy that will be taken from
+	 * the robot's energy. Hence, the more power you want to spend on the
+	 * bullet, the more energy is taken from your robot.
+	 * <p>
+	 * The bullet will do (4 * power) damage if it hits another robot. If power
+	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
+	 * You will get (3 * power) back if you hit the other robot. You can call
+	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
+	 * bullet with a specific bullet power will do.
+	 * <p>
+	 * The specified bullet power should be between
+	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+	 * <p>
+	 * Note that the gun cannot fire if the gun is overheated, meaning that
+	 * {@link #getGunHeat()} returns a value > 0.
+	 * <p>
+	 * A event is generated when the bullet hits a robot
+	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
+	 * bullet ({@link BulletHitBulletEvent}).
+	 * <p>
+	 * Example:
+	 * <pre>
+	 *   Bullet bullet = null;
+	 * 
+	 *   // Fire a bullet with maximum power if the gun is ready
+	 *   if (getGunHeat() == 0) {
+	 *       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
+	 *   }
+	 *   ...
+	 *   execute();
+	 *   ...
+	 *   // Get the velocity of the bullet
+	 *   if (bullet != null) {
+	 *       double bulletVelocity = bullet.getVelocity();
+	 *   }
+	 * </pre>
+	 *
+	 * @param power the amount of energy given to the bullet, and subtracted
+	 *     from the robot's energy.
+	 * @return a {@link Bullet} that contains information about the bullet if it
+	 *    was actually fired, which can be used for tracking the bullet after it
+	 *    has been fired. If the bullet was not fired, {@code null} is returned.
+	 *
+	 * @see #fire(double)
+	 * @see Bullet
+	 * @see #getGunHeat()
+	 * @see #getGunCoolingRate()
+	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHit(BulletHitEvent)
+	 *    onBulletHit(BulletHitEvent)
+	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHitBullet(BulletHitBulletEvent)
+	 *    onBulletHitBullet(BulletHitBulletEvent)
+	 * @see robocode.robotinterfaces.IBasicEvents#onBulletMissed(BulletMissedEvent)
+	 *    onBulletMissed(BulletMissedEvent)
+	 */
 	Bullet setFire(double power);
 
 	// fast setters

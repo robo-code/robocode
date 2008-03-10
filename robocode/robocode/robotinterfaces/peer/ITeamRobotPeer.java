@@ -27,6 +27,11 @@ import java.util.List;
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
  *
+ * @see IBasicRobotPeer
+ * @see IStandardRobotPeer
+ * @see IAdvancedRobotPeer
+ * @see IJuniorRobotPeer
+ *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (javadoc)
  *

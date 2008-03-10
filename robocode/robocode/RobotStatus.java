@@ -48,11 +48,11 @@ public class RobotStatus {
 			energy = robotPeer.getEnergy();
 			x = robotPeer.getX();
 			y = robotPeer.getY();
-			heading = robotPeer.getHeading();
+			heading = robotPeer.getBodyHeading();
 			gunHeading = robotPeer.getGunHeading();
 			radarHeading = robotPeer.getRadarHeading();
 			velocity = robotPeer.getVelocity();
-			turnRemaining = robotPeer.getTurnRemaining();
+			turnRemaining = robotPeer.getBodyTurnRemaining();
 			radarTurnRemaining = robotPeer.getRadarTurnRemaining();
 			gunTurnRemaining = robotPeer.getGunTurnRemaining();
 			distanceRemaining = robotPeer.getDistanceRemaining();

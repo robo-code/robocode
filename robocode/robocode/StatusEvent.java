@@ -27,10 +27,10 @@ public class StatusEvent extends Event {
 	private final RobotStatus status;
 
 	/**
-	 * Creates a new RobotStatus based a a RobotPeer.
-	 * This constructor is called internally from the game.
+	 * This constructor is called internally from the game in order to create
+	 * a new {@link RobotStatus}.
 	 *
-	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
+	 * @param robotPeer the RobotPeer containing the current states 
 	 */
 	public StatusEvent(RobotPeer robotPeer) {
 		super();
@@ -39,9 +39,9 @@ public class StatusEvent extends Event {
 	}
 
 	/**
-	 * Returns the robot status at the time defined by getTime().
+	 * Returns the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
 	 * 
-	 * @see #getTime()
+	 * @return the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
 	 */
 	public RobotStatus getStatus() {
 		return status;

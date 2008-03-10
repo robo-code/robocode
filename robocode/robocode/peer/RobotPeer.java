@@ -384,7 +384,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 					eventManager.add(
 							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
 					r.eventManager.add(
-							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getHeading()), energy, false));
+							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getBodyHeading()), energy, false));
 				}
 			}
 		}
@@ -492,7 +492,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return gunHeading;
 	}
 
-	public synchronized double getHeading() {
+	public synchronized double getBodyHeading() {
 		return heading;
 	}
 
@@ -666,8 +666,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 				double dist = Math.hypot(dx, dy);
 
 				eventManager.add(
-						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(), normalRelativeAngle(angle - getHeading()), dist,
-						robotPeer.getHeading(), robotPeer.getVelocity()));
+						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(), normalRelativeAngle(angle - getBodyHeading()), dist,
+						robotPeer.getBodyHeading(), robotPeer.getVelocity()));
 			}
 		}
 	}
@@ -848,7 +848,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		setTurnBody(radians);
 		do {
 			execute(); // Always tick at least once
-		} while (getTurnRemaining() != 0);
+		} while (getBodyTurnRemaining() != 0);
 	}
 
 	public synchronized final void setTurnRadar(double radians) {
@@ -1434,6 +1434,12 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		statistics = new RobotStatistics(this);
 	}
 
+	public synchronized Bullet fire(double power) {
+		Bullet bullet = setFire(power);
+		execute();
+		return bullet;
+	}
+
 	public synchronized Bullet setFire(double power) {
 		if (Double.isNaN(power)) {
 			out.println("SYSTEM: You cannot call fire(NaN)");
@@ -1543,7 +1549,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return statistics;
 	}
 
-	public synchronized double getTurnRemaining() {
+	public synchronized double getBodyTurnRemaining() {
 		return turnRemaining;
 	}
 
