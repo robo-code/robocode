@@ -91,6 +91,7 @@ import robocode.exception.RobotException;
 import robocode.exception.WinException;
 import robocode.manager.NameManager;
 import robocode.peer.robot.*;
+import robocode.peer.views.*;
 import robocode.util.BoundingRectangle;
 
 
@@ -318,20 +319,20 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	/**
-	 * Creates and returns a new robot peer proxy  
+	 * Creates and returns a new robot view  
 	 */
-	public IBasicRobotPeer createProxy() {
+	public IBasicRobotPeer getRobotView() {
 		if (isTeamRobot) {
-			return new TeamRobotPeerProxy(this);
+			return new TeamRobotView(this);
 		}
 		if (isAdvancedRobot) {
-			return new AdvancedRobotPeerProxy(this);
+			return new AdvancedRobotView(this);
 		}
 		if (isInteractiveRobot) {
-			return new StandardRobotPeerProxy(this);
+			return new StandardRobotView(this);
 		}
 		if (isJuniorRobot) {
-			return new JuniorRobotPeerProxy(this);
+			return new JuniorRobotView(this);
 		}
 		throw new AccessControlException("Unknown robot type");
 	}
@@ -559,7 +560,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		try {
 			if (robot != null) {
 				robot.setOut(getOut());
-				robot.setPeer(createProxy());
+				robot.setPeer(getRobotView());
 
 				// Process all events for the first turn.
 				// This is done as the first robot status event must occur before the robot

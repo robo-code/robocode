@@ -11,7 +11,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package robocode.peer.views;
 
 
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
@@ -21,9 +21,9 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 /**
  * @author Pavel Savara (original)
  */
-public class JuniorRobotPeerProxy extends BasicRobotPeerProxy implements IJuniorRobotPeer {
+public class JuniorRobotView extends BasicRobotView implements IJuniorRobotPeer {
 
-	public JuniorRobotPeerProxy(IBasicRobotPeer peer) {
+	public JuniorRobotView(IBasicRobotPeer peer) {
 		super(peer);
 	}
 

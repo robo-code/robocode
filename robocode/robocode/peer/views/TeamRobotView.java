@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package robocode.peer.views;
 
 
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
@@ -24,8 +24,8 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public class TeamRobotPeerProxy extends AdvancedRobotPeerProxy implements ITeamRobotPeer {
-	public TeamRobotPeerProxy(IBasicRobotPeer peer) {
+public class TeamRobotView extends AdvancedRobotView implements ITeamRobotPeer {
+	public TeamRobotView(IBasicRobotPeer peer) {
 		super(peer);
 	}
 
