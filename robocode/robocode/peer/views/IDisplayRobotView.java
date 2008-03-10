@@ -25,9 +25,6 @@ public interface IDisplayRobotView extends IReadingRobotView {
 
     RobotOutputStream getOut();
 
-    void setScan(boolean v);
-    void setDuplicate(int d);
-
     void d_setPaintEnabled(boolean enabled);
     void d_setSGPaintEnabled(boolean enabled);
     void d_kill();

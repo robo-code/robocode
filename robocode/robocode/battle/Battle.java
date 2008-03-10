@@ -419,7 +419,7 @@ public class Battle extends BattleData implements Runnable {
 
 		int count = 0;
 
-		for (IDisplayRobotView otherRobotView : getDisplayRobots()) {
+		for (IBattleRobotView otherRobotView : getBattleRobots()) {
 			if (otherRobotView.getFullClassNameWithVersion().equals(
 					robotPeer.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion())) {
 				if (count == 0) {

@@ -273,6 +273,10 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
         return robotEventManager;
     }
 
+    public IBattleEventManager getBattleEventManager() {
+        return robotEventManager;
+    }
+
     //security
     public void forceStop(){
         //intentionaly not synchronized to prevent block from user code

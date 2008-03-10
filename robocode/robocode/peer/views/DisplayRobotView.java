@@ -74,26 +74,6 @@ public class DisplayRobotView extends ReadingRobotView implements IDisplayRobotV
         }
     }
 
-    public void setScan(boolean v) {
-        peer.lockWrite();
-        try{
-            status.setScan(v);
-        }
-        finally {
-            peer.unlockWrite();
-        }
-    }
-
-    public void setDuplicate(int d) {
-        peer.lockWrite();
-        try{
-            info.setDuplicate(d);
-        }
-        finally {
-            peer.unlockWrite();
-        }
-    }
-
     public void onInteractiveEvent(robocode.Event e){
         peer.lockWrite();
         try{
