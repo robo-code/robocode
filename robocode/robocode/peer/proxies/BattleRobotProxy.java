@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 import robocode.*;
 import robocode.battle.Battle;
@@ -22,11 +22,9 @@ import robocode.peer.data.RobotPeerCommands;
 import robocode.peer.data.RobotPeerInfo;
 import robocode.peer.data.RobotPeerStatus;
 import robocode.peer.robot.*;
-import robocode.repository.RobotFileSpecification;
-import robocode.robotinterfaces.IBasicRobot;
+import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.normalAbsoluteAngle;
 import static robocode.util.Utils.normalRelativeAngle;
-import robocode.util.BoundingRectangle;
 
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
@@ -38,20 +36,20 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public class BattleRobotView extends ReadingRobotView implements IBattleRobotView {
+public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotProxy {
     private IBattleRobotPeer peer;
 
-    public BattleRobotView(IBattleRobotPeer peer) {
+    public BattleRobotProxy(IBattleRobotPeer peer) {
         super(peer);
-        this.peer=peer;
+        this.peer = peer;
     }
 
     @Override
-    public void cleanup(){
+    public void cleanup() {
         super.cleanup();
-        peer=null;
+        peer = null;
     }
-    
+
     public static final int
             WIDTH = 40,
             HEIGHT = 40;
@@ -61,9 +59,9 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
             HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
 
     public void b_preInitialize() {
-        info=new RobotPeerInfo();
-        status=new RobotPeerStatus();
-        commands=new RobotPeerCommands();
+        info = new RobotPeerInfo();
+        status = new RobotPeerStatus();
+        commands = new RobotPeerCommands();
         status.setState(RobotPeerStatus.STATE_DEAD);
 
         status.setBoundingBox(new BoundingRectangle());
@@ -71,7 +69,7 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
 
     }
 
-    public void b_initialize(double x, double y, double heading, List<IBattleRobotView> battleRobots) {
+    public void b_initialize(double x, double y, double heading, List<IBattleRobotProxy> battleRobots) {
         status.setState(RobotPeerStatus.STATE_ACTIVE);
 
         status.setWinner(false);
@@ -136,11 +134,12 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
             notifyAll();
             try {
                 wait(10000);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
     }
 
-    public final void b_update(List<IBattleRobotView> battleRobots) {
+    public final void b_update(List<IBattleRobotProxy> battleRobots) {
         // Reset robot state to active if it is not dead
         if (status.isAlive()) {
             status.setState(RobotPeerStatus.STATE_ACTIVE);
@@ -204,7 +203,7 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
                     }
                 }
             }
-            battle.generateDeathEvents((RobotPeer)peer);
+            battle.generateDeathEvents((RobotPeer) peer);
 
             // 'fake' bullet for explosion on self
             battle.addBullet(new ExplosionPeer(this, battle));
@@ -214,7 +213,7 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
         status.setState(RobotPeerStatus.STATE_DEAD);
     }
 
-    public final void b_scan(List<IBattleRobotView> robots) {
+    public final void b_scan(List<IBattleRobotProxy> robots) {
         if (info.isDroid()) {
             return;
         }
@@ -239,7 +238,7 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
         status.getScanArc().setArc(status.getX() - Rules.RADAR_SCAN_RADIUS, status.getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
                 2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
-        for (IBattleRobotView robotPeer : robots) {
+        for (IBattleRobotProxy robotPeer : robots) {
             if (!(robotPeer == null || robotPeer == this || robotPeer.isDead()) && b_intersects(status.getScanArc(), robotPeer.getBoundingBox())) {
                 double dx = robotPeer.getX() - status.getX();
                 double dy = robotPeer.getY() - status.getY();
@@ -248,7 +247,7 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
 
                 getBattleEventManager().add(
                         new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(), normalRelativeAngle(angle - status.getHeading()), dist,
-                        robotPeer.getHeading(), robotPeer.getVelocity()));
+                                robotPeer.getHeading(), robotPeer.getVelocity()));
             }
         }
     }
@@ -370,7 +369,7 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
         }
 
         // Calculate velocity
-        if (status.getVelocity() > commands.getMaxVelocity() || status.getVelocity() < - commands.getMaxVelocity()) {
+        if (status.getVelocity() > commands.getMaxVelocity() || status.getVelocity() < -commands.getMaxVelocity()) {
             commands.setAcceleration(0);
         }
 
@@ -385,8 +384,8 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
         double dx = status.getVelocity() * sin(status.getHeading());
         double dy = status.getVelocity() * cos(status.getHeading());
 
-        status.setX(status.getX()+dx);
-        status.setY(status.getY()+dy);
+        status.setX(status.getX() + dx);
+        status.setY(status.getY() + dy);
 
         boolean updateBounds = false;
 
@@ -478,7 +477,7 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
                 commands.setGunTurnRemaining(0);
             } else {
                 status.adjustGunHeading(Rules.GUN_TURN_RATE_RADIANS);
-                status.adjustRadarHeading( Rules.GUN_TURN_RATE_RADIANS);
+                status.adjustRadarHeading(Rules.GUN_TURN_RATE_RADIANS);
                 commands.setGunTurnRemaining(commands.getGunTurnRemaining() - Rules.GUN_TURN_RATE_RADIANS);
                 if (commands.isAdjustRadarForGunTurn()) {
                     commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - Rules.GUN_TURN_RATE_RADIANS);
@@ -486,15 +485,15 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
             }
         } else if (commands.getGunTurnRemaining() < 0) {
             if (commands.getGunTurnRemaining() > -Rules.GUN_TURN_RATE_RADIANS) {
-                status.adjustGunHeading( commands.getGunTurnRemaining());
-                status.adjustRadarHeading( commands.getGunTurnRemaining());
+                status.adjustGunHeading(commands.getGunTurnRemaining());
+                status.adjustRadarHeading(commands.getGunTurnRemaining());
                 if (commands.isAdjustRadarForGunTurn()) {
                     commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - commands.getGunTurnRemaining());
                 }
                 commands.setGunTurnRemaining(0);
             } else {
-                status.adjustGunHeading( Rules.GUN_TURN_RATE_RADIANS);
-                status.adjustRadarHeading( Rules.GUN_TURN_RATE_RADIANS);
+                status.adjustGunHeading(Rules.GUN_TURN_RATE_RADIANS);
+                status.adjustRadarHeading(Rules.GUN_TURN_RATE_RADIANS);
                 commands.setGunTurnRemaining(commands.getGunTurnRemaining() + Rules.GUN_TURN_RATE_RADIANS);
                 if (commands.isAdjustRadarForGunTurn()) {
                     commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() + Rules.GUN_TURN_RATE_RADIANS);
@@ -517,7 +516,7 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
                 status.adjustRadarHeading(commands.getRadarTurnRemaining());
                 commands.setRadarTurnRemaining(0);
             } else {
-                status.adjustRadarHeading(- Rules.RADAR_TURN_RATE_RADIANS);
+                status.adjustRadarHeading(-Rules.RADAR_TURN_RATE_RADIANS);
                 commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() + Rules.RADAR_TURN_RATE_RADIANS);
             }
         }
@@ -572,8 +571,8 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
                     fixx = fixy * tanHeading;
                 }
             }
-            status.setX(status.getX()+fixx);
-            status.setY(status.getY()+fixy);
+            status.setX(status.getX() + fixx);
+            status.setY(status.getY() + fixy);
 
             status.setX((HALF_WIDTH_OFFSET >= status.getX())
                     ? HALF_WIDTH_OFFSET
@@ -598,11 +597,11 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
         }
     }
 
-    private void checkRobotCollision(List<IBattleRobotView> robots) {
+    private void checkRobotCollision(List<IBattleRobotProxy> robots) {
         commands.setInCollision(false);
 
         for (int i = 0; i < robots.size(); i++) {
-            IBattleRobotView robotView = robots.get(i);
+            IBattleRobotProxy robotView = robots.get(i);
 
             if (!(robotView == null || robotView == this || robotView.isDead()) && getBoundingBox().intersects(robotView.getBoundingBox())) {
                 // Bounce back
@@ -621,8 +620,8 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
                     atFault = true;
                     status.setVelocity(0);
                     commands.setDistanceRemaining(0);
-                    status.setX(status.getX()- movedx);
-                    status.setY(status.getY()- movedy);
+                    status.setX(status.getX() - movedx);
+                    status.setY(status.getY() - movedy);
 
                     getRobotStatistics().scoreRammingDamage(robotView, i);
 
@@ -743,10 +742,10 @@ public class BattleRobotView extends ReadingRobotView implements IBattleRobotVie
     }
 
     public RobotFileSystemManager getRobotFileSystemManager() {
-        return peer.getRobotFileSystemManager(); 
+        return peer.getRobotFileSystemManager();
     }
 
-    public IDisplayRobotView getDisplayView() {
+    public IDisplayRobotProxy getDisplayView() {
         return peer.getDisplayView();
     }
 

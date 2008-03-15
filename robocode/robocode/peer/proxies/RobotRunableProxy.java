@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
@@ -21,27 +21,27 @@ import robocode.robotinterfaces.IBasicRobot;
 /**
  * @author Pavel Savara (original)
  */
-public class RobotRunableView extends ReadingRobotView implements IRobotRunnableView {
+public class RobotRunableProxy extends ReadingRobotProxy implements IRobotRunnableProxy {
     private IRobotRobotPeer peer;
 
-    public RobotRunableView(IRobotRobotPeer peer) {
+    public RobotRunableProxy(IRobotRobotPeer peer) {
         super(peer);
         this.peer = peer;
     }
 
     @Override
-    public void cleanup(){
+    public void cleanup() {
         super.cleanup();
-        peer=null;
+        peer = null;
     }
 
     public final long getTime() {
         return peer.getBattle().getCurrentTime();
     }
 
-	public final int getOthers() {
-		return peer.getBattle().getActiveRobots() - (status.isAlive() ? 1 : 0);
-	}
+    public final int getOthers() {
+        return peer.getBattle().getActiveRobots() - (status.isAlive() ? 1 : 0);
+    }
 
     public final int getNumRounds() {
         return peer.getBattle().getNumRounds();
@@ -76,15 +76,14 @@ public class RobotRunableView extends ReadingRobotView implements IRobotRunnable
     }
 
 
-
     public final void run() {
-        boolean uncharge=false;
+        boolean uncharge = false;
         try {
             Runnable runnable = initializeRun();
             if (runnable != null) {
                 runnable.run();
             }
-            for (;;) {
+            for (; ;) {
                 peer.getRobotView().execute();
             }
         } catch (DeathException e) {
@@ -92,7 +91,7 @@ public class RobotRunableView extends ReadingRobotView implements IRobotRunnable
         } catch (WinException e) {
             // Do nothing
         } catch (DisabledException e) {
-            uncharge=true;
+            uncharge = true;
             String msg = e.getMessage();
 
             if (msg == null) {
@@ -117,7 +116,7 @@ public class RobotRunableView extends ReadingRobotView implements IRobotRunnable
 
     private Runnable initializeRun() {
         peer.lockWrite();
-        try{
+        try {
             Runnable runnable = null;
             IBasicRobot robot = peer.getRobot();
             if (robot != null) {
@@ -142,8 +141,8 @@ public class RobotRunableView extends ReadingRobotView implements IRobotRunnable
 
     private void finalizeRun(boolean uncharge) {
         peer.lockWrite();
-        try{
-            if (uncharge){
+        try {
+            if (uncharge) {
                 status.setEnergy(0);
             }
             status.setRunning(false);
@@ -153,7 +152,7 @@ public class RobotRunableView extends ReadingRobotView implements IRobotRunnable
         }
 
         // If battle is waiting for us, well, all done!
-        synchronized (peer.getSyncRoot()){
+        synchronized (peer.getSyncRoot()) {
             peer.getSyncRoot().notifyAll();
         }
     }

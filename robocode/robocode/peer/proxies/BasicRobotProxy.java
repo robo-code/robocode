@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 
 import robocode.Bullet;
@@ -33,25 +33,25 @@ import static java.lang.Math.min;
 /**
  * @author Pavel Savara (original)
  */
-public class BasicRobotView implements IBasicRobotView {
+public class BasicRobotProxy implements IBasicRobotView {
 
     IRobotRobotPeer peer;
-    IRobotRunnableView view;
+    IRobotRunnableProxy view;
     RobotPeerStatus status;
     RobotPeerInfo info;
     RobotPeerCommands commands;
 
-    public BasicRobotView(IRobotRobotPeer peer) {
+    public BasicRobotProxy(IRobotRobotPeer peer) {
         this.peer = peer;
-        this.view=peer.getRobotRunnableView();
+        this.view = peer.getRobotRunnableView();
         this.info = peer.getInfo();
         this.status = peer.getStatus();
         this.commands = peer.getCommands();
     }
 
-    public final void cleanup(){
+    public final void cleanup() {
         this.peer = null;
-        this.view=null;
+        this.view = null;
         this.info = null;
         this.status = null;
         this.commands = null;
@@ -84,7 +84,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getRadarTurnRemaining() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return commands.getRadarTurnRemaining();
         }
         finally {
@@ -95,7 +95,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getDistanceRemaining() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return commands.getDistanceRemaining();
         }
         finally {
@@ -106,7 +106,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getTurnRemaining() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return commands.getTurnRemaining();
         }
         finally {
@@ -118,7 +118,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getVelocity() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return status.getVelocity();
         }
         finally {
@@ -129,7 +129,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getRadarHeading() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return status.getRadarHeading();
         }
         finally {
@@ -140,7 +140,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getGunCoolingRate() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return view.getGunCoolingRate();
         }
         finally {
@@ -151,7 +151,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final String getName() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return info.getName();
         }
         finally {
@@ -162,7 +162,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final long getTime() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return view.getTime();
         }
         finally {
@@ -174,7 +174,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getHeading() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return status.getHeading();
         }
         finally {
@@ -185,7 +185,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getGunHeading() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return status.getGunHeading();
         }
         finally {
@@ -196,7 +196,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getGunTurnRemaining() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return commands.getGunTurnRemaining();
         }
         finally {
@@ -207,7 +207,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getEnergy() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return status.getEnergy();
         }
         finally {
@@ -218,7 +218,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getGunHeat() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return status.getGunHeat();
         }
         finally {
@@ -229,7 +229,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getBattleFieldHeight() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return view.getBattleFieldHeight();
         }
         finally {
@@ -240,7 +240,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getBattleFieldWidth() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return view.getBattleFieldWidth();
         }
         finally {
@@ -251,7 +251,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getX() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return status.getX();
         }
         finally {
@@ -262,7 +262,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final double getY() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return status.getY();
         }
         finally {
@@ -273,7 +273,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final int getOthers() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return view.getOthers();
         }
         finally {
@@ -284,7 +284,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final int getNumRounds() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return view.getNumRounds();
         }
         finally {
@@ -295,7 +295,7 @@ public class BasicRobotView implements IBasicRobotView {
     public final int getRoundNum() {
         getCall();
         peer.lockRead();
-        try{
+        try {
             return view.getRoundNum();
         }
         finally {
@@ -303,11 +303,11 @@ public class BasicRobotView implements IBasicRobotView {
         }
     }
 
-	// asynchronous actions
-	public Bullet setFire(double power) {
+    // asynchronous actions
+    public Bullet setFire(double power) {
         setCall();
         peer.lockWrite();
-        try{
+        try {
             if (Double.isNaN(power)) {
                 peer.getOut().println("SYSTEM: You cannot call fire(NaN)");
                 return null;
@@ -337,98 +337,98 @@ public class BasicRobotView implements IBasicRobotView {
 
             return bullet.getBullet();
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
-	}
+    }
 
-	// blocking actions
-	public final void execute() {
-		i_exec();
-	}
+    // blocking actions
+    public final void execute() {
+        i_exec();
+    }
 
-	public final void move(double distance) {
+    public final void move(double distance) {
         peer.checkNoLock();
 
         i_setMove(distance);
         do {
             execute(); // Always tick at least once
         } while (commands.getDistanceRemainingSync() != 0);
-	}
+    }
 
-	public final void turnBody(double radians) {
+    public final void turnBody(double radians) {
         peer.checkNoLock();
 
         i_setTurnBody(radians);
         do {
             execute(); // Always tick at least once
         } while (commands.getTurnRemainingSync() != 0);
-	}
+    }
 
-	public final void turnGun(double radians) {
+    public final void turnGun(double radians) {
         peer.checkNoLock();
 
         i_setTurnGun(radians);
         do {
             execute(); // Always tick at least once
         } while (commands.getGunTurnRemainingSync() != 0);
-	}
+    }
 
-	// fast setters
-	public final void setBodyColor(Color color) {
-		setCall();
+    // fast setters
+    public final void setBodyColor(Color color) {
+        setCall();
         peer.lockWrite();
-        try{
+        try {
             status.setBodyColor(color);
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
-	}
+    }
 
-	public final void setGunColor(Color color) {
-		setCall();
+    public final void setGunColor(Color color) {
+        setCall();
         peer.lockWrite();
-        try{
+        try {
             status.setGunColor(color);
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
-	}
+    }
 
-	public final void setRadarColor(Color color) {
-		setCall();
+    public final void setRadarColor(Color color) {
+        setCall();
         peer.lockWrite();
-        try{
+        try {
             status.setRadarColor(color);
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
-	}
+    }
 
-	public final void setBulletColor(Color color) {
-		setCall();
+    public final void setBulletColor(Color color) {
+        setCall();
         peer.lockWrite();
-        try{
+        try {
             status.setBulletColor(color);
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
-	}
+    }
 
-	public final void setScanColor(Color color) {
-		setCall();
+    public final void setScanColor(Color color) {
+        setCall();
         peer.lockWrite();
-        try{
+        try {
             status.setScanColor(color);
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
-	}
+    }
 
     public static void death() {
         throw new DeathException();
@@ -440,29 +440,29 @@ public class BasicRobotView implements IBasicRobotView {
 
     protected final void i_setTurnBody(double radians) {
         peer.lockWrite();
-        try{
+        try {
             if (status.getEnergy() > 0) {
                 commands.setTurnRemaining(radians);
             }
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
     }
 
     protected final void i_setTurnGun(double radians) {
         peer.lockWrite();
-        try{
+        try {
             commands.setGunTurnRemaining(radians);
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
     }
 
     protected final void i_setMove(double distance) {
         peer.lockWrite();
-        try{
+        try {
             if (status.getEnergy() == 0) {
                 return;
             }
@@ -478,7 +478,7 @@ public class BasicRobotView implements IBasicRobotView {
             }
             commands.setSlowingDown(false);
         }
-        finally{
+        finally {
             peer.unlockWrite();
         }
     }
@@ -486,10 +486,10 @@ public class BasicRobotView implements IBasicRobotView {
     protected final void i_turnAndMove(double distance, double radians) {
         peer.checkNoLock();
 
-		if (distance == 0) {
-			turnBody(radians);
-			return;
-		}
+        if (distance == 0) {
+            turnBody(radians);
+            return;
+        }
 
         int turns;
         final double savedMaxVelocity;
@@ -497,7 +497,7 @@ public class BasicRobotView implements IBasicRobotView {
         final double absDistance;
 
         peer.lockWrite();
-        try{
+        try {
 
             // Save current max. velocity and max. turn rate so they can be restored
             savedMaxVelocity = commands.getMaxVelocity();
@@ -570,14 +570,14 @@ public class BasicRobotView implements IBasicRobotView {
         }
 
         // Loop thru the number of turns it will take to move the distance and adjust
-		// the max. turn rate so it fit the current velocity of the robot
-		for (int t = turns; t >= 0; t--) {
-			commands.setMaxTurnRate(status.getVelocitySync() * radians / absDistance);
-			execute(); // Perform next turn
-		}
+        // the max. turn rate so it fit the current velocity of the robot
+        for (int t = turns; t >= 0; t--) {
+            commands.setMaxTurnRate(status.getVelocitySync() * radians / absDistance);
+            execute(); // Perform next turn
+        }
 
         peer.lockWrite();
-        try{
+        try {
             // Restore the saved max. velocity and max. turn rate
             commands.setMaxVelocity(savedMaxVelocity);
             commands.setMaxTurnRate(savedMaxTurnRate);
@@ -585,7 +585,7 @@ public class BasicRobotView implements IBasicRobotView {
         finally {
             peer.unlockWrite();
         }
-	}
+    }
 
     protected final void i_exec() {
         // Entering tick
@@ -598,7 +598,7 @@ public class BasicRobotView implements IBasicRobotView {
         initializeExec();
 
         // Notifying battle that we're asleep
-        synchronized (peer.getSyncRoot()){
+        synchronized (peer.getSyncRoot()) {
             peer.getSyncRoot().notifyAll();
         }
 
@@ -614,7 +614,7 @@ public class BasicRobotView implements IBasicRobotView {
 
     private void initializeExec() {
         peer.lockWrite();
-        try{
+        try {
             if (commands.isTestingCondition()) {
                 throw new RobotException(
                         "You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
@@ -649,13 +649,13 @@ public class BasicRobotView implements IBasicRobotView {
 
     private void finalizeExcec() {
         peer.lockWrite();
-        try{
+        try {
             status.setSleeping(false);
             // Notify battle thread, which is waiting in
             // our wakeup() call, to return.
             // It's quite possible, by the way, that we'll be back in sleep (above)
             // before the battle thread actually wakes up
-            synchronized (peer.getSyncRoot()){
+            synchronized (peer.getSyncRoot()) {
                 peer.getSyncRoot().notifyAll();
             }
 

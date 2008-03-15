@@ -11,15 +11,6 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.battle.Battle;
-import robocode.peer.robot.IRobotEventManager;
-import robocode.peer.robot.RobotFileSystemManager;
-import robocode.peer.robot.RobotMessageManager;
-import robocode.peer.robot.RobotThreadManager;
-import robocode.peer.views.IBattleRobotView;
-import robocode.peer.views.IRobotRunnableView;
-import robocode.robotinterfaces.peer.IBasicRobotView;
-
 /**
  * @author Pavel Savara (original)
  */

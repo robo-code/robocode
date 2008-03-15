@@ -9,19 +9,36 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
-
-import java.awt.*;
+package robocode.peer.proxies;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IDisplayBulletView {
-    int getState();
-    double getPower();
-    int getFrame();
-    Color getColor();
-    double getPaintX();
-    double getPaintY();
-    int getExplosionImageIndex();
+public interface IRobotRunnableProxy extends Runnable, IReadingRobotProxy {
+
+    void cleanup();
+
+    double getGunCoolingRate();
+
+    long getTime();
+
+    double getBattleFieldHeight();
+
+    double getBattleFieldWidth();
+
+    int getOthers();
+
+    int getNumRounds();
+
+    int getRoundNum();
+
+    void setTestingCondition(boolean b);
+
+    void setFireAssistValid(boolean b);
+
+    void setFireAssistAngle(double a);
+
+    double getLastGunHeading();
+
+    double getLastRadarHeading();
 }

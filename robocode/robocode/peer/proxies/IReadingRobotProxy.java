@@ -9,11 +9,10 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
-import robocode.peer.TeamPeer;
-import robocode.peer.RobotPeer;
 import robocode.peer.IRobotPeer;
+import robocode.peer.TeamPeer;
 import robocode.util.BoundingRectangle;
 
 import java.awt.*;
@@ -22,57 +21,99 @@ import java.awt.geom.Arc2D;
 /**
  * @author Pavel Savara (original)
  */
-public interface IReadingRobotView {
+public interface IReadingRobotProxy {
     boolean isAlive();
+
     boolean isDead();
+
     boolean isDroid();
+
     boolean isTeamRobot();
+
     boolean isAdvancedRobot();
+
     boolean isInteractiveRobot();
+
     boolean isInteractiveListener();
+
     boolean isDuplicate();
+
     boolean isPaintEnabled();
+
     boolean isSGPaintEnabled();
+
     IRobotPeer getPeer();
+
     TeamPeer getTeamPeer();
 
     int getState();
+
     boolean isRunning();
+
     boolean isSleeping();
+
     boolean isWinner();
+
     boolean isTeamLeader();
+
     boolean isIORobot();
+
     double getVelocity();
+
     double getGunHeat();
+
     double getEnergy();
+
     double getX();
+
     double getY();
+
     double getHeading();
+
     double getRadarHeading();
+
     double getGunHeading();
+
     Arc2D getScanArc();
+
     boolean getScan();
+
     int getSkippedTurns();
+
     double getBattleFieldWidth();
+
     BoundingRectangle getBoundingBox();
 
     double getTurnRemaining();
+
     double getRadarTurnRemaining();
+
     double getGunTurnRemaining();
+
     double getDistanceRemaining();
 
-    boolean isTeammate(IBattleRobotView robot);
+    boolean isTeammate(IBattleRobotProxy robot);
 
 
     Color getBodyColor();
+
     Color getGunColor();
+
     Color getRadarColor();
+
     Color getScanColor();
+
     Color getBulletColor();
+
     String getName();
+
     String getShortName();
+
     String getVeryShortName();
+
     String getFullClassNameWithVersion();
+
     String getNonVersionedName();
+
     String getUniqueFullClassNameWithVersion();
 }

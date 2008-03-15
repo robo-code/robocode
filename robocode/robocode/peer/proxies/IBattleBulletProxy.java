@@ -9,20 +9,31 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
+
+import robocode.Bullet;
+import robocode.peer.IDisplayBulletProxy;
+
+import java.awt.geom.Line2D;
+import java.util.List;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotBulletView {
+public interface IBattleBulletProxy extends IDisplayBulletProxy {
+    void update(List<IBattleRobotProxy> robots, List<IBattleBulletProxy> allBullets);
 
-    double getHeading();
-    double getPower();
-    double getVelocity();
+    IBattleRobotProxy getOwner();
+
     double getX();
+
     double getY();
+
     boolean isActive();
 
-    String getVictimName();
-    String getOwnerName();
+    void setState(int state);
+
+    Bullet getBullet();
+
+    Line2D.Double getBoundingLine();
 }

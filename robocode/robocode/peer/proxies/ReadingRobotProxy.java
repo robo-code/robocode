@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 import robocode.peer.IRobotPeer;
 import robocode.peer.TeamPeer;
@@ -26,20 +26,20 @@ import java.awt.geom.Arc2D;
 /**
  * @author Pavel Savara (original)
  */
-public class ReadingRobotView implements IReadingRobotView {
+public class ReadingRobotProxy implements IReadingRobotProxy {
     private IRobotPeer peer;
     protected RobotPeerStatus status;
     protected RobotPeerInfo info;
     protected RobotPeerCommands commands;
 
-    public ReadingRobotView(IRobotPeer peer) {
+    public ReadingRobotProxy(IRobotPeer peer) {
         this.peer = peer;
         this.info = peer.getInfo();
         this.status = peer.getStatus();
         this.commands = peer.getCommands();
     }
 
-    public void cleanup(){
+    public void cleanup() {
         this.peer = null;
         this.info = null;
         this.status = null;
@@ -47,8 +47,7 @@ public class ReadingRobotView implements IReadingRobotView {
     }
 
 
-
-    public final RobotOutputStream getOut(){
+    public final RobotOutputStream getOut() {
         //TODO synch
         return peer.getOut();
     }
@@ -56,7 +55,7 @@ public class ReadingRobotView implements IReadingRobotView {
 
     public final int getState() {
         peer.lockRead();
-        try{
+        try {
             return status.getState();
         }
         finally {
@@ -64,7 +63,7 @@ public class ReadingRobotView implements IReadingRobotView {
         }
     }
 
-    public boolean isTeammate(IBattleRobotView robot) {
+    public boolean isTeammate(IBattleRobotProxy robot) {
         TeamPeer teamPeer = info.getTeamPeer();
         return (teamPeer != null && teamPeer == robot.getTeamPeer());
     }

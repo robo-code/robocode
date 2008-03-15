@@ -9,24 +9,31 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
-import robocode.Bullet;
-import robocode.peer.IDisplayBulletView;
+import robocode.peer.robot.RobotOutputStream;
 
-import java.awt.geom.Line2D;
-import java.util.List;
+import java.awt.*;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleBulletView extends IDisplayBulletView {
-    void update(List<IBattleRobotView> robots, List<IBattleBulletView> allBullets);
-    IBattleRobotView getOwner();
-    double getX();
-    double getY();
-    boolean isActive();
-    void setState(int state);
-    Bullet getBullet();
-    Line2D.Double getBoundingLine();
+public interface IDisplayRobotProxy extends IReadingRobotProxy {
+    void lockRead();
+
+    void unlockRead();
+
+    void cleanup();
+
+    RobotOutputStream getOut();
+
+    void d_setPaintEnabled(boolean enabled);
+
+    void d_setSGPaintEnabled(boolean enabled);
+
+    void d_kill();
+
+    void onInteractiveEvent(robocode.Event e);
+
+    void onPaint(Graphics2D g);
 }

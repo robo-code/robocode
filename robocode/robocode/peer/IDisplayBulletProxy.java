@@ -9,26 +9,25 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer;
+
+import java.awt.*;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotRunnableView extends Runnable, IReadingRobotView {
+public interface IDisplayBulletProxy {
+    int getState();
 
-    void cleanup();
+    double getPower();
 
-    double getGunCoolingRate();
-    long getTime();
-    double getBattleFieldHeight();
-    double getBattleFieldWidth();
-    int getOthers();
-    int getNumRounds();
-    int getRoundNum();
+    int getFrame();
 
-    void setTestingCondition(boolean b);
-    void setFireAssistValid(boolean b);
-    void setFireAssistAngle(double a);
-    double getLastGunHeading();
-    double getLastRadarHeading();
+    Color getColor();
+
+    double getPaintX();
+
+    double getPaintY();
+
+    int getExplosionImageIndex();
 }

@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 import robocode.peer.IDisplayRobotPeer;
 import robocode.robotinterfaces.IBasicEvents;
@@ -19,19 +19,19 @@ import java.awt.*;
 /**
  * @author Pavel Savara (original)
  */
-public class DisplayRobotView extends ReadingRobotView implements IDisplayRobotView {
+public class DisplayRobotProxy extends ReadingRobotProxy implements IDisplayRobotProxy {
 
     private IDisplayRobotPeer peer;
 
-    public DisplayRobotView(IDisplayRobotPeer peer) {
+    public DisplayRobotProxy(IDisplayRobotPeer peer) {
         super(peer);
         this.peer = peer;
     }
 
     @Override
-    public void cleanup(){
+    public void cleanup() {
         super.cleanup();
-        peer=null;
+        peer = null;
     }
 
 
@@ -45,7 +45,7 @@ public class DisplayRobotView extends ReadingRobotView implements IDisplayRobotV
 
     public void d_setPaintEnabled(boolean enabled) {
         peer.lockWrite();
-        try{
+        try {
             info.setPaintEnabled(enabled);
         }
         finally {
@@ -55,7 +55,7 @@ public class DisplayRobotView extends ReadingRobotView implements IDisplayRobotV
 
     public void d_setSGPaintEnabled(boolean enabled) {
         peer.lockWrite();
-        try{
+        try {
             info.setSGPaintEnabled(enabled);
         }
         finally {
@@ -63,9 +63,9 @@ public class DisplayRobotView extends ReadingRobotView implements IDisplayRobotV
         }
     }
 
-    public void d_kill(){
+    public void d_kill() {
         peer.lockWrite();
-        try{
+        try {
             //TODO ZAMO review again
             peer.getBattleView().b_kill();
         }
@@ -74,9 +74,9 @@ public class DisplayRobotView extends ReadingRobotView implements IDisplayRobotV
         }
     }
 
-    public void onInteractiveEvent(robocode.Event e){
+    public void onInteractiveEvent(robocode.Event e) {
         peer.lockWrite();
-        try{
+        try {
             peer.getDisplayEventManager().add(e);
         }
         finally {
@@ -84,7 +84,7 @@ public class DisplayRobotView extends ReadingRobotView implements IDisplayRobotV
         }
     }
 
-    public void onPaint(Graphics2D g){
+    public void onPaint(Graphics2D g) {
         //Warning: robot is called from UI thread.
         // Security hole ?
         // Synchronization issue for client robot ?

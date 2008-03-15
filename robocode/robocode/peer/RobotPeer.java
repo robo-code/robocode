@@ -60,16 +60,16 @@
 package robocode.peer;
 
 
-import robocode.peer.robot.*;
+import robocode.battle.Battle;
+import robocode.battlefield.DefaultBattleField;
+import robocode.peer.data.RobotPeerCommands;
 import robocode.peer.data.RobotPeerInfo;
 import robocode.peer.data.RobotPeerStatus;
-import robocode.peer.data.RobotPeerCommands;
-import robocode.peer.views.*;
-import robocode.robotinterfaces.peer.IBasicRobotView;
-import robocode.robotinterfaces.IBasicRobot;
-import robocode.battlefield.DefaultBattleField;
-import robocode.battle.Battle;
+import robocode.peer.proxies.*;
+import robocode.peer.robot.*;
 import robocode.repository.RobotFileSpecification;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.peer.IBasicRobotView;
 
 import java.security.AccessControlException;
 
@@ -86,8 +86,7 @@ import java.security.AccessControlException;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotPeer, IRobotRobotPeer, IBattleRobotPeer, IDisplayRobotPeer
-{
+public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotPeer, IRobotRobotPeer, IBattleRobotPeer, IDisplayRobotPeer {
     //data
     private RobotPeerInfo info;
     private RobotPeerStatus status;
@@ -95,9 +94,9 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 
     //view
     private IBasicRobotView robotView;
-    private IBattleRobotView battleView;
-    private IDisplayRobotView displayView;
-    private IRobotRunnableView robotRunableView;
+    private IBattleRobotProxy battleView;
+    private IDisplayRobotProxy displayView;
+    private IRobotRunnableProxy robotRunableView;
 
     //components
     private RobotOutputStream out;
@@ -116,9 +115,9 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
         this.battle = new Battle(new DefaultBattleField(800, 600), null);
 
         //data
-        info=new RobotPeerInfo();
-        status=new RobotPeerStatus();
-        commands=new RobotPeerCommands();
+        info = new RobotPeerInfo();
+        status = new RobotPeerStatus();
+        commands = new RobotPeerCommands();
 
         //views
 
@@ -126,7 +125,7 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
         this.robotClassManager = robotClassManager;
         this.robotThreadManager = new RobotThreadManager(this);
         this.robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
-        this.robotEventManager =new EventManager(this);
+        this.robotEventManager = new EventManager(this);
     }
 
     public void setBattle(Battle newBattle) {
@@ -134,36 +133,32 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
     }
 
     public void setRobot(IBasicRobot newRobot) {
-       robot = newRobot;
-       if (robot != null) {
-           if (info.isTeamRobot()) {
-               robotMessageManager= new RobotMessageManager(this);
-           }
-       }
-       robotEventManager.setRobot(newRobot);
-   }
+        robot = newRobot;
+        if (robot != null) {
+            if (info.isTeamRobot()) {
+                robotMessageManager = new RobotMessageManager(this);
+            }
+        }
+        robotEventManager.setRobot(newRobot);
+    }
 
-   public void setInfo(RobotFileSpecification rfs){
-       info.setupInfo(rfs,this);
-       status.setupInfo(this);
-       commands.setupInfo(this);
-       if (info.isTeamRobot()) {
-           robotView =new TeamRobotView(this);
-           info.setupTeam(robotClassManager.getTeamManager());
-       }
-       else if (info.isAdvancedRobot()) {
-           robotView =new AdvancedRobotView(this);
-       }
-       else if (info.isInteractiveRobot()) {
-           robotView =new StandardRobotView(this);
-       }
-       else if (info.isJuniorRobot()) {
-           robotView =new JuniorRobotView(this);
-       }
-       else {
+    public void setInfo(RobotFileSpecification rfs) {
+        info.setupInfo(rfs, this);
+        status.setupInfo(this);
+        commands.setupInfo(this);
+        if (info.isTeamRobot()) {
+            robotView = new TeamRobotProxy(this);
+            info.setupTeam(robotClassManager.getTeamManager());
+        } else if (info.isAdvancedRobot()) {
+            robotView = new AdvancedRobotProxy(this);
+        } else if (info.isInteractiveRobot()) {
+            robotView = new StandardRobotProxy(this);
+        } else if (info.isJuniorRobot()) {
+            robotView = new JuniorRobotProxy(this);
+        } else {
             throw new AccessControlException("Unknown robot type");
-       }
-   }
+        }
+    }
 
     public void cleanup() {
         //data
@@ -172,25 +167,25 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
         commands.cleanup();
 
         //view
-        ((BasicRobotView)robotView).cleanup();
+        ((BasicRobotProxy) robotView).cleanup();
         robotRunableView.cleanup();
         displayView.cleanup();
         battleView.cleanup();
 
         //components
-        robot=null;
-        out=null;
-        battle=null;
+        robot = null;
+        out = null;
+        battle = null;
 
-        if (robotEventManager!=null){
+        if (robotEventManager != null) {
             robotEventManager.cleanup();
         }
-        robotEventManager=null;
-        
-        if (robotMessageManager!=null){
+        robotEventManager = null;
+
+        if (robotMessageManager != null) {
             robotMessageManager.cleanup();
         }
-        robotMessageManager=null;
+        robotMessageManager = null;
 
         if (robotClassManager != null) {
             robotClassManager.cleanup();
@@ -216,15 +211,15 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
     }
 
     //views
-    public IRobotRunnableView getRobotRunnableView() {
+    public IRobotRunnableProxy getRobotRunnableView() {
         return robotRunableView;
     }
 
-    public IDisplayRobotView getDisplayView() {
+    public IDisplayRobotProxy getDisplayView() {
         return displayView;
     }
 
-    public IBattleRobotView getBattleView() {
+    public IBattleRobotProxy getBattleView() {
         return battleView;
     }
 
@@ -278,13 +273,13 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
     }
 
     //security
-    public void forceStop(){
+    public void forceStop() {
         //intentionaly not synchronized to prevent block from user code
         status.setRunning(false);
         status.getStatistics().setInactive();
     }
 
-    public void forceUncharge(){
+    public void forceUncharge() {
         //intentionaly not synchronized to prevent block from user code
         status.setEnergy(0);
     }
@@ -301,13 +296,13 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
     }
 
     public int compareTo(IContestantPeer cp) {
-		double score1 = getRobotStatistics().getTotalScore();
-		double score2 = cp.getRobotStatistics().getTotalScore();
+        double score1 = getRobotStatistics().getTotalScore();
+        double score2 = cp.getRobotStatistics().getTotalScore();
 
-		if (getBattle().isRunning()) {
-			score1 += getRobotStatistics().getCurrentScore();
-			score2 += cp.getRobotStatistics().getCurrentScore();
-		}
-		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
-	}
+        if (getBattle().isRunning()) {
+            score1 += getRobotStatistics().getCurrentScore();
+            score2 += cp.getRobotStatistics().getCurrentScore();
+        }
+        return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+    }
 }

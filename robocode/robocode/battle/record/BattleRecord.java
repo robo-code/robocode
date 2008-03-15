@@ -16,7 +16,7 @@ package robocode.battle.record;
 
 
 import robocode.battlefield.BattleField;
-import robocode.peer.views.IBattleRobotView;
+import robocode.peer.proxies.IBattleRobotProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,31 +32,31 @@ import java.util.List;
  */
 public class BattleRecord {
 
-	// Battle field size
-	public int battleFieldWidth;
-	public int battleFieldHeight;
+    // Battle field size
+    public int battleFieldWidth;
+    public int battleFieldHeight;
 
-	// Robots (index of robot is index used for robot identification)
-	public String[] robotNames;
+    // Robots (index of robot is index used for robot identification)
+    public String[] robotNames;
 
-	// List of rounds
-	public List<RoundRecord> rounds = new ArrayList<RoundRecord>();
+    // List of rounds
+    public List<RoundRecord> rounds = new ArrayList<RoundRecord>();
 
-	/**
-	 * Constructs a new battle record.
-	 *
-	 * @param battleField size of battle field
-	 * @param robots robots participating in the battle
-	 */
-	public BattleRecord(BattleField battleField, List<IBattleRobotView> robots) {
-		battleFieldWidth = battleField.getWidth();
-		battleFieldHeight = battleField.getHeight();
+    /**
+     * Constructs a new battle record.
+     *
+     * @param battleField size of battle field
+     * @param robots      robots participating in the battle
+     */
+    public BattleRecord(BattleField battleField, List<IBattleRobotProxy> robots) {
+        battleFieldWidth = battleField.getWidth();
+        battleFieldHeight = battleField.getHeight();
 
-		robotNames = new String[robots.size()];
-		int i = 0;
+        robotNames = new String[robots.size()];
+        int i = 0;
 
-		for (IBattleRobotView r : robots) {
-			robotNames[i++] = r.getName();
+        for (IBattleRobotProxy r : robots) {
+            robotNames[i++] = r.getName();
 		}
 	}
 }

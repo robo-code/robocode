@@ -9,26 +9,26 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
-
-import robocode.peer.robot.RobotOutputStream;
-
-import java.awt.*;
+package robocode.peer.proxies;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IDisplayRobotView extends IReadingRobotView {
-    void lockRead();
-    void unlockRead();
-    void cleanup();
+public interface IRobotBulletProxy {
 
-    RobotOutputStream getOut();
+    double getHeading();
 
-    void d_setPaintEnabled(boolean enabled);
-    void d_setSGPaintEnabled(boolean enabled);
-    void d_kill();
-    
-    void onInteractiveEvent(robocode.Event e);
-    void onPaint(Graphics2D g);
+    double getPower();
+
+    double getVelocity();
+
+    double getX();
+
+    double getY();
+
+    boolean isActive();
+
+    String getVictimName();
+
+    String getOwnerName();
 }

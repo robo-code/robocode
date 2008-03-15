@@ -15,13 +15,13 @@ import robocode.battle.Battle;
 import robocode.peer.data.RobotPeerCommands;
 import robocode.peer.data.RobotPeerInfo;
 import robocode.peer.data.RobotPeerStatus;
+import robocode.peer.proxies.IBattleRobotProxy;
+import robocode.peer.proxies.IDisplayRobotProxy;
+import robocode.peer.proxies.IRobotRunnableProxy;
 import robocode.peer.robot.*;
-import robocode.peer.views.IBattleRobotView;
-import robocode.peer.views.IDisplayRobotView;
-import robocode.peer.views.IRobotRunnableView;
+import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotView;
-import robocode.repository.RobotFileSpecification;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -31,36 +31,55 @@ import java.util.concurrent.locks.ReentrantLock;
 public interface IRobotPeer extends Runnable {
     //sync
     void lockRead();
+
     void lockWrite();
+
     void unlockRead();
+
     void unlockWrite();
+
     void checkReadLock();
+
     void checkWriteLock();
+
     void checkNoLock();
+
     ReentrantLock getSyncRoot();
 
     //init
     void setRobot(IBasicRobot newRobot);
+
     void setInfo(RobotFileSpecification rfs);
 
     //data
     RobotPeerInfo getInfo();
+
     RobotPeerStatus getStatus();
+
     RobotPeerCommands getCommands();
 
     //view
-    IRobotRunnableView getRobotRunnableView();
-    IDisplayRobotView getDisplayView();
-    IBattleRobotView getBattleView();
+    IRobotRunnableProxy getRobotRunnableView();
+
+    IDisplayRobotProxy getDisplayView();
+
+    IBattleRobotProxy getBattleView();
+
     IBasicRobotView getRobotView();
 
     //components
     RobotOutputStream getOut();
+
     IBasicRobot getRobot();
+
     Battle getBattle();
+
     RobotClassManager getRobotClassManager();
+
     RobotFileSystemManager getRobotFileSystemManager();
+
     RobotThreadManager getRobotThreadManager();
+
     RobotMessageManager getRobotMessageManager();
 
     //robot

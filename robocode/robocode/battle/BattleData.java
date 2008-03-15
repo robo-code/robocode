@@ -13,11 +13,11 @@ package robocode.battle;
 
 import robocode.peer.BulletPeer;
 import robocode.peer.IContestantPeer;
-import robocode.peer.IDisplayBulletView;
+import robocode.peer.IDisplayBulletProxy;
 import robocode.peer.RobotPeer;
-import robocode.peer.views.IBattleBulletView;
-import robocode.peer.views.IBattleRobotView;
-import robocode.peer.views.IDisplayRobotView;
+import robocode.peer.proxies.IBattleBulletProxy;
+import robocode.peer.proxies.IBattleRobotProxy;
+import robocode.peer.proxies.IDisplayRobotProxy;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -29,12 +29,11 @@ public class BattleData {
 
     // Objects in the battle
     private List<RobotPeer> robotsPeers = new CopyOnWriteArrayList<RobotPeer>();
-    private List<IDisplayRobotView> displayRobots = new CopyOnWriteArrayList<IDisplayRobotView>();
-    private List<IBattleRobotView> battleRobots = new CopyOnWriteArrayList<IBattleRobotView>();
+    private List<IDisplayRobotProxy> displayRobots = new CopyOnWriteArrayList<IDisplayRobotProxy>();
+    private List<IBattleRobotProxy> battleRobots = new CopyOnWriteArrayList<IBattleRobotProxy>();
     private List<IContestantPeer> contestants = new CopyOnWriteArrayList<IContestantPeer>();
-    private List<IBattleBulletView> battleBullets = new CopyOnWriteArrayList<IBattleBulletView>();
-    private List<IDisplayBulletView> displayBullets = new CopyOnWriteArrayList<IDisplayBulletView>();
-
+    private List<IBattleBulletProxy> battleBullets = new CopyOnWriteArrayList<IBattleBulletProxy>();
+    private List<IDisplayBulletProxy> displayBullets = new CopyOnWriteArrayList<IDisplayBulletProxy>();
 
 
     protected void addContestant(IContestantPeer c) {
@@ -43,21 +42,21 @@ public class BattleData {
         }
     }
 
-    protected void clearBullets(){
+    protected void clearBullets() {
         battleBullets.clear();
         displayBullets.clear();
     }
 
-    public void addBullet(BulletPeer bullet){
+    public void addBullet(BulletPeer bullet) {
         battleBullets.add(bullet);
         displayBullets.add(bullet);
     }
 
-    public List<IBattleBulletView> getBattleBullets() {
+    public List<IBattleBulletProxy> getBattleBullets() {
         return battleBullets;
     }
 
-    public List<IDisplayBulletView> getDisplayBullets() {
+    public List<IDisplayBulletProxy> getDisplayBullets() {
         return displayBullets;
     }
 
@@ -70,25 +69,25 @@ public class BattleData {
         return contestants;
     }
 
-    public void addRobotPeer(RobotPeer robotPeer){
+    public void addRobotPeer(RobotPeer robotPeer) {
         robotsPeers.add(robotPeer);
         displayRobots.add(robotPeer.getDisplayView());
         battleRobots.add(robotPeer.getBattleView());
     }
 
-    public List<RobotPeer> getRobotPeers(){
+    public List<RobotPeer> getRobotPeers() {
         return robotsPeers;
     }
 
-    public List<IDisplayRobotView> getDisplayRobots() {
+    public List<IDisplayRobotProxy> getDisplayRobots() {
         return displayRobots;
     }
 
-    public List<IBattleRobotView> getBattleRobots() {
+    public List<IBattleRobotProxy> getBattleRobots() {
         return battleRobots;
     }
 
-    protected void cleanupData(){
+    protected void cleanupData() {
         if (contestants != null) {
             contestants.clear();
             contestants = null;
@@ -96,8 +95,8 @@ public class BattleData {
 
         if (getBattleRobots() != null) {
             getBattleRobots().clear();
-            displayRobots =null;
-            battleRobots =null;
+            displayRobots = null;
+            battleRobots = null;
         }
     }
 
