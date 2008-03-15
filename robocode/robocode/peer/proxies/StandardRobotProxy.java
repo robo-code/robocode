@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 
 import robocode.Bullet;
@@ -20,9 +20,9 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 /**
  * @author Pavel Savara (original)
  */
-public class StandardRobotView extends BasicRobotView implements IStandardRobotPeer {
+public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobotPeer {
 
-	public StandardRobotView(IBasicRobotPeer peer) {
+	public StandardRobotProxy(IBasicRobotPeer peer) {
 		super(peer);
 	}
 

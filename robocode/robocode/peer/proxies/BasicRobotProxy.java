@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
@@ -21,10 +21,10 @@ import java.awt.*;
 /**
  * @author Pavel Savara (original)
  */
-public class BasicRobotView implements IBasicRobotPeer {
+public class BasicRobotProxy implements IBasicRobotPeer {
 	IBasicRobotPeer peer;
 	
-	public BasicRobotView(IBasicRobotPeer peer) {
+	public BasicRobotProxy(IBasicRobotPeer peer) {
 		this.peer = peer;
 	}
 

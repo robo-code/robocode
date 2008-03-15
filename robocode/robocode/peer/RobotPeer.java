@@ -91,7 +91,7 @@ import robocode.exception.RobotException;
 import robocode.exception.WinException;
 import robocode.manager.NameManager;
 import robocode.peer.robot.*;
-import robocode.peer.views.*;
+import robocode.peer.proxies.*;
 import robocode.util.BoundingRectangle;
 
 
@@ -323,16 +323,16 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	 */
 	public IBasicRobotPeer getRobotView() {
 		if (isTeamRobot) {
-			return new TeamRobotView(this);
+			return new TeamRobotProxy(this);
 		}
 		if (isAdvancedRobot) {
-			return new AdvancedRobotView(this);
+			return new AdvancedRobotProxy(this);
 		}
 		if (isInteractiveRobot) {
-			return new StandardRobotView(this);
+			return new StandardRobotProxy(this);
 		}
 		if (isJuniorRobot) {
-			return new JuniorRobotView(this);
+			return new JuniorRobotProxy(this);
 		}
 		throw new AccessControlException("Unknown robot type");
 	}

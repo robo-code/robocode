@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
@@ -23,9 +23,9 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class AdvancedRobotView extends StandardRobotView implements IAdvancedRobotPeer {
+public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-	public AdvancedRobotView(IBasicRobotPeer peer) {
+	public AdvancedRobotProxy(IBasicRobotPeer peer) {
 		super(peer);
 	}
 
