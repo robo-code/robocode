@@ -29,12 +29,12 @@ public class HitRobotEvent extends Event {
 
 	/**
 	 * Called by the game to create a new HitRobotEvent.
-	 * 
-	 * @param name the name of the robot you hit
+	 *
+	 * @param name    the name of the robot you hit
 	 * @param bearing the bearing to the robot that your robot hit, in radians
-	 * @param energy the amount of energy of the robot you hit
+	 * @param energy  the amount of energy of the robot you hit
 	 * @param atFault {@code true} if your robot was moving toward the other
-	 *    robot; {@code false} otherwise 
+	 *                robot; {@code false} otherwise
 	 */
 	public HitRobotEvent(String name, double bearing, double energy, boolean atFault) {
 		this.robotName = name;
@@ -99,16 +99,16 @@ public class HitRobotEvent extends Event {
 
 	/**
 	 * Checks if your robot was moving towards the robot that was hit.
-	 * <p>
+	 * <p/>
 	 * If isMyFault() returns {@code true} then your robot's movement (including
 	 * turning) will have stopped and been marked complete.
-	 * <p>
+	 * <p/>
 	 * Note: If two robots are moving toward each other and collide, they will
 	 * each receive two HitRobotEvents. The first will be the one if isMyFault()
 	 * returns {@code true}.
-	 * 
+	 *
 	 * @return {@code true} if your robot was moving towards the robot that was
-	 *    hit; {@code false} otherwise.
+	 *         hit; {@code false} otherwise.
 	 */
 	public boolean isMyFault() {
 		return atFault;

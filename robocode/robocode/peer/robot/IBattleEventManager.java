@@ -11,16 +11,22 @@
  *******************************************************************************/
 package robocode.peer.robot;
 
+
 import robocode.Event;
 import robocode.robotinterfaces.IBasicRobot;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IBattleEventManager {
-    boolean add(Event e);
-    void clearOld(long clearTime);
-    void cleanup();
-    void reset();
-    void setRobot(IBasicRobot r);
+	boolean add(Event e);
+
+	void clearOld(long clearTime);
+
+	void cleanup();
+
+	void reset();
+
+	void setRobot(IBasicRobot r);
 }

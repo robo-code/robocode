@@ -14,10 +14,10 @@
 package robocode.manager;
 
 
+import robocode.io.FileUtil;
+
 import java.io.File;
 import java.io.IOException;
-
-import robocode.io.FileUtil;
 
 
 /**

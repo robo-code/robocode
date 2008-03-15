@@ -11,30 +11,32 @@
  *******************************************************************************/
 package robocode.peer.data;
 
+
 import robocode.peer.IBattleRobotPeer;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class RobotPeerLock {
-    //this implementation is for testing purposes, it could be reimplemented with ReentrantReaderWriterLock, but without check operations
+	// this implementation is for testing purposes, it could be reimplemented with ReentrantReaderWriterLock, but without check operations
 
-    protected IBattleRobotPeer peer;
+	protected IBattleRobotPeer peer;
 
-    public void setupInfo(IBattleRobotPeer peer){
-        this.peer=peer;
-    }
+	public void setupInfo(IBattleRobotPeer peer) {
+		this.peer = peer;
+	}
 
-    public final void checkReadLock(){
-        peer.checkReadLock();
-    }
+	public final void checkReadLock() {
+		peer.checkReadLock();
+	}
 
-    public final void checkWriteLock(){
-        peer.checkWriteLock();
-    }
+	public final void checkWriteLock() {
+		peer.checkWriteLock();
+	}
 
-    public final void checkNoLock(){
-        peer.checkNoLock();
-    }
+	public final void checkNoLock() {
+		peer.checkNoLock();
+	}
 
 }

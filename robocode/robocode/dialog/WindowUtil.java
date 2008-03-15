@@ -15,13 +15,9 @@
 package robocode.dialog;
 
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.PrintWriter;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 
 /**
@@ -116,7 +112,7 @@ public class WindowUtil {
 	}
 
 	public static void error(JFrame frame, String msg) {
-		Object[] options = { "OK" };
+		Object[] options = { "OK"};
 
 		JOptionPane.showOptionDialog(frame, msg, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,
 				options, options[0]);

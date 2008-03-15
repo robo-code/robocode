@@ -11,29 +11,31 @@
  *******************************************************************************/
 package robocode.peer.proxies;
 
+
 import robocode.Bullet;
 import robocode.peer.IDisplayBulletProxy;
 
 import java.awt.geom.Line2D;
 import java.util.List;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IBattleBulletProxy extends IDisplayBulletProxy {
-    void update(List<IBattleRobotProxy> robots, List<IBattleBulletProxy> allBullets);
+	void update(List<IBattleRobotProxy> robots, List<IBattleBulletProxy> allBullets);
 
-    IBattleRobotProxy getOwner();
+	IBattleRobotProxy getOwner();
 
-    double getX();
+	double getX();
 
-    double getY();
+	double getY();
 
-    boolean isActive();
+	boolean isActive();
 
-    void setState(int state);
+	void setState(int state);
 
-    Bullet getBullet();
+	Bullet getBullet();
 
-    Line2D.Double getBoundingLine();
+	Line2D.Double getBoundingLine();
 }

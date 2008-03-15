@@ -17,16 +17,15 @@ package robocode.robotinterfaces.peer;
 /**
  * The standard robot peer for standard robot types like {@link robocode.Robot},
  * {@link robocode.AdvancedRobot}, and {@link robocode.TeamRobot}.
- * <p>
+ * <p/>
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
- * 
+ *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (javadoc)
- *
  * @since 1.6
  */
-public interface IStandardRobotView extends IBasicRobotView {
+public interface IStandardRobotPeer extends IBasicRobotPeer {
 
 	/**
 	 * Immediately stops all movement, and saves it for a call to
@@ -34,8 +33,7 @@ public interface IStandardRobotView extends IBasicRobotView {
 	 * stop, you can overwrite it by calling {@code stop(true)}.
 	 *
 	 * @param overwrite If there is already movement saved from a previous stop,
-	 *    you can overwrite it by calling {@code stop(true)}.
-	 *
+	 *                  you can overwrite it by calling {@code stop(true)}.
 	 * @see #resume()
 	 */
 	void stop(boolean overwrite);
@@ -43,7 +41,7 @@ public interface IStandardRobotView extends IBasicRobotView {
 	/**
 	 * Immediately resumes the movement you stopped by {@link #stop(boolean)},
 	 * if any.
-	 * <p>
+	 * <p/>
 	 * This call executes immediately, and does not return until it is complete.
 	 *
 	 * @see #stop(boolean)
@@ -51,10 +49,13 @@ public interface IStandardRobotView extends IBasicRobotView {
 	void resume();
 
 	void scanReset();
+
 	void turnRadar(double radians);
 
 	// fast setters
 	void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn);
+
 	void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn);
+
 	void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn);
 }

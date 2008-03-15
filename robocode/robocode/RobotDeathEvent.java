@@ -25,7 +25,7 @@ public class RobotDeathEvent extends Event {
 
 	/**
 	 * Called by the game to create a new RobotDeathEvent.
-	 * 
+	 *
 	 * @param robotName the name of the robot that died
 	 */
 	public RobotDeathEvent(String robotName) {

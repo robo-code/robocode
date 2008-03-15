@@ -19,15 +19,15 @@
 package robocode.repository;
 
 
-import java.io.*;
-import java.net.URL;
-import java.util.Properties;
-import java.util.StringTokenizer;
-
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.NameManager;
 import robocode.manager.RobotRepositoryManager;
+
+import java.io.*;
+import java.net.URL;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 
 /**
@@ -211,7 +211,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the UUID.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getUUID() {

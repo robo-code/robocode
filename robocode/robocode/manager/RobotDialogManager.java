@@ -36,60 +36,60 @@ import java.util.*;
  */
 public class RobotDialogManager {
 
-    private Map<String, RobotDialog> robotDialogHashMap = new HashMap<String, RobotDialog>();
-    private RobocodeManager manager;
+	private Map<String, RobotDialog> robotDialogHashMap = new HashMap<String, RobotDialog>();
+	private RobocodeManager manager;
 
-    public RobotDialogManager(RobocodeManager manager) {
-        super();
-        this.manager = manager;
-    }
+	public RobotDialogManager(RobocodeManager manager) {
+		super();
+		this.manager = manager;
+	}
 
-    public void setActiveBattle(Battle b) {
-        List<IDisplayRobotProxy> robots = b.getDisplayRobots();
+	public void setActiveBattle(Battle b) {
+		List<IDisplayRobotProxy> robots = b.getDisplayRobots();
 
-        Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
+		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
 
-        for (String name : keys) {
-            boolean found = false;
+		for (String name : keys) {
+			boolean found = false;
 
-            for (IDisplayRobotProxy robotView : robots) {
-                if (robotView.getName().equals(name)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                RobotDialog dialog = robotDialogHashMap.get(name);
+			for (IDisplayRobotProxy robotView : robots) {
+				if (robotView.getName().equals(name)) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				RobotDialog dialog = robotDialogHashMap.get(name);
 
-                robotDialogHashMap.remove(name);
-                dialog.dispose();
-            }
-        }
-    }
+				robotDialogHashMap.remove(name);
+				dialog.dispose();
+			}
+		}
+	}
 
-    public void reset() {
-        Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
+	public void reset() {
+		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
 
-        for (String name : keys) {
-            RobotDialog dialog = robotDialogHashMap.get(name);
+		for (String name : keys) {
+			RobotDialog dialog = robotDialogHashMap.get(name);
 
-            if (!dialog.isVisible()) {
-                robotDialogHashMap.remove(name);
-                dialog.dispose();
-            }
-        }
-    }
+			if (!dialog.isVisible()) {
+				robotDialogHashMap.remove(name);
+				dialog.dispose();
+			}
+		}
+	}
 
-    public RobotDialog getRobotDialog(String robotName, boolean create) {
-        RobotDialog dialog = robotDialogHashMap.get(robotName);
+	public RobotDialog getRobotDialog(String robotName, boolean create) {
+		RobotDialog dialog = robotDialogHashMap.get(robotName);
 
-        if (create && dialog == null) {
-            if (robotDialogHashMap.size() > 10) {
-                reset();
-            }
-            dialog = new RobotDialog(manager);
-            robotDialogHashMap.put(robotName, dialog);
-        }
-        return dialog;
-    }
+		if (create && dialog == null) {
+			if (robotDialogHashMap.size() > 10) {
+				reset();
+			}
+			dialog = new RobotDialog(manager);
+			robotDialogHashMap.put(robotName, dialog);
+		}
+		return dialog;
+	}
 }

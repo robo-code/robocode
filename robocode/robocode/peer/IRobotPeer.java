@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 import robocode.battle.Battle;
 import robocode.peer.data.RobotPeerCommands;
 import robocode.peer.data.RobotPeerInfo;
@@ -21,73 +22,74 @@ import robocode.peer.proxies.IRobotRunnableProxy;
 import robocode.peer.robot.*;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.peer.IBasicRobotView;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.util.concurrent.locks.ReentrantLock;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobotPeer extends Runnable {
-    //sync
-    void lockRead();
+	// sync
+	void lockRead();
 
-    void lockWrite();
+	void lockWrite();
 
-    void unlockRead();
+	void unlockRead();
 
-    void unlockWrite();
+	void unlockWrite();
 
-    void checkReadLock();
+	void checkReadLock();
 
-    void checkWriteLock();
+	void checkWriteLock();
 
-    void checkNoLock();
+	void checkNoLock();
 
-    ReentrantLock getSyncRoot();
+	ReentrantLock getSyncRoot();
 
-    //init
-    void setRobot(IBasicRobot newRobot);
+	// init
+	void setRobot(IBasicRobot newRobot);
 
-    void setInfo(RobotFileSpecification rfs);
+	void setInfo(RobotFileSpecification rfs);
 
-    //data
-    RobotPeerInfo getInfo();
+	// data
+	RobotPeerInfo getInfo();
 
-    RobotPeerStatus getStatus();
+	RobotPeerStatus getStatus();
 
-    RobotPeerCommands getCommands();
+	RobotPeerCommands getCommands();
 
-    //view
-    IRobotRunnableProxy getRobotRunnableView();
+	// view
+	IRobotRunnableProxy getRobotRunnableView();
 
-    IDisplayRobotProxy getDisplayView();
+	IDisplayRobotProxy getDisplayProxy();
 
-    IBattleRobotProxy getBattleView();
+	IBattleRobotProxy getBattleProxy();
 
-    IBasicRobotView getRobotView();
+	IBasicRobotPeer getRobotView();
 
-    //components
-    RobotOutputStream getOut();
+	// components
+	RobotOutputStream getOut();
 
-    IBasicRobot getRobot();
+	IBasicRobot getRobot();
 
-    Battle getBattle();
+	Battle getBattle();
 
-    RobotClassManager getRobotClassManager();
+	RobotClassManager getRobotClassManager();
 
-    RobotFileSystemManager getRobotFileSystemManager();
+	RobotFileSystemManager getRobotFileSystemManager();
 
-    RobotThreadManager getRobotThreadManager();
+	RobotThreadManager getRobotThreadManager();
 
-    RobotMessageManager getRobotMessageManager();
+	RobotMessageManager getRobotMessageManager();
 
-    //robot
-    IRobotEventManager getRobotEventManager();
+	// robot
+	IRobotEventManager getRobotEventManager();
 
-    //display
-    IDisplayEventManager getDisplayEventManager();
+	// display
+	IDisplayEventManager getDisplayEventManager();
 
-    //battle
-    IBattleEventManager getBattleEventManager();
+	// battle
+	IBattleEventManager getBattleEventManager();
 }

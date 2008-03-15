@@ -37,11 +37,7 @@ public class FileTransfer {
 	public enum DownloadStatus {
 
 		/** The download was succesful */
-		OK,
-		/** Connection problem */
-		COULD_NOT_CONNECT,
-		/** The file to download was not found */
-		FILE_NOT_FOUND
+		OK, /** Connection problem */ COULD_NOT_CONNECT, /** The file to download was not found */ FILE_NOT_FOUND
 	}
 
 

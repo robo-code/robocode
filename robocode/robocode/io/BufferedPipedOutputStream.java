@@ -61,7 +61,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 				// skipping a line!
 				if (skipLines) {
 					boolean writeIndexReached = false;
-	
+
 					while (buf[readIndex] != '\n') {
 						readIndex++;
 						if (readIndex == buf.length) {
@@ -103,11 +103,11 @@ public class BufferedPipedOutputStream extends OutputStream {
 				}
 			}
 			int result = buf[readIndex++];
-	
+
 			if (readIndex == buf.length) {
 				readIndex = 0;
 			}
-	
+
 			return result;
 		}
 	}

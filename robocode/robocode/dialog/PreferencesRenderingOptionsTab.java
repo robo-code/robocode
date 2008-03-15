@@ -12,17 +12,13 @@
 package robocode.dialog;
 
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.*;
-
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -168,7 +164,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 	private JComboBox getOptionsRenderingAntialiasingComboBox() {
 		if (optionsRenderingAntialiasingComboBox == null) {
-			optionsRenderingAntialiasingComboBox = new JComboBox(new String[] { "Default", "On", "Off" });
+			optionsRenderingAntialiasingComboBox = new JComboBox(new String[] { "Default", "On", "Off"});
 			optionsRenderingAntialiasingComboBox.addActionListener(eventHandler);
 		}
 		return optionsRenderingAntialiasingComboBox;
@@ -176,7 +172,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 	private JComboBox getOptionsRenderingTextAntialiasingComboBox() {
 		if (optionsRenderingTextAntialiasingComboBox == null) {
-			optionsRenderingTextAntialiasingComboBox = new JComboBox(new String[] { "Default", "On", "Off" });
+			optionsRenderingTextAntialiasingComboBox = new JComboBox(new String[] { "Default", "On", "Off"});
 			optionsRenderingTextAntialiasingComboBox.addActionListener(eventHandler);
 		}
 		return optionsRenderingTextAntialiasingComboBox;
@@ -184,7 +180,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 	private JComboBox getOptionsRenderingMethodComboBox() {
 		if (optionsRenderingMethodComboBox == null) {
-			optionsRenderingMethodComboBox = new JComboBox(new String[] { "Default", "Quality", "Speed" });
+			optionsRenderingMethodComboBox = new JComboBox(new String[] { "Default", "Quality", "Speed"});
 			optionsRenderingMethodComboBox.addActionListener(eventHandler);
 		}
 		return optionsRenderingMethodComboBox;
@@ -193,7 +189,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JComboBox getOptionsRenderingNoBuffersComboBox() {
 		if (optionsRenderingNoBuffersComboBox == null) {
 			optionsRenderingNoBuffersComboBox = new JComboBox(
-					new String[] { "Single buffering", "Double buffering", "Tripple buffering" });
+					new String[] { "Single buffering", "Double buffering", "Tripple buffering"});
 			optionsRenderingNoBuffersComboBox.addActionListener(eventHandler);
 		}
 		return optionsRenderingNoBuffersComboBox;
@@ -254,7 +250,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = manager.getProperties(); 
+		RobocodeProperties props = manager.getProperties();
 
 		props.setOptionsRenderingAntialiasing(optionsRenderingAntialiasingComboBox.getSelectedIndex());
 		props.setOptionsRenderingTextAntialiasing(optionsRenderingTextAntialiasingComboBox.getSelectedIndex());

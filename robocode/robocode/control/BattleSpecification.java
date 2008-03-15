@@ -36,8 +36,9 @@ public class BattleSpecification implements java.io.Serializable {
 	/**
 	 * Creates a BattleSpecification with the given number of rounds, battlefield, and robots
 	 * inactivityTime defaults to 450.  gunCoolingRate defaults to .1
-	 * @param numRounds Number of rounds in this battle
-	 * @param battlefield The battlefield
+	 *
+	 * @param numRounds           Number of rounds in this battle
+	 * @param battlefield         The battlefield
 	 * @param robotSpecifications Robots in this battle
 	 */
 	public BattleSpecification(int numRounds, BattlefieldSpecification battlefield, RobotSpecification robotSpecifications[]) {
@@ -46,11 +47,12 @@ public class BattleSpecification implements java.io.Serializable {
 
 	/**
 	 * Creates a BattleSpecification with the given number of rounds, inactivityTime, gunCoolingRate, battlefield, and robots
-	 * @param numRounds Number of rounds in this battle
+	 *
+	 * @param numRounds      Number of rounds in this battle
 	 * @param inactivityTime Number of ticks in which 10 energy must be lost
 	 * @param gunCoolingRate Gun cooling rate
-	 * @param battlefield The battlefield
-	 * @param robots Robots in this battle
+	 * @param battlefield    The battlefield
+	 * @param robots         Robots in this battle
 	 */
 	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefield, RobotSpecification[] robots) {
 		battleProperties = new BattleProperties();

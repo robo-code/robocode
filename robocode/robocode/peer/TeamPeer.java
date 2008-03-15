@@ -43,7 +43,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 		double score1 = teamStatistics.getTotalScore();
 		double score2 = cp.getRobotStatistics().getTotalScore();
 
-		if (teamLeader != null && ((RobotPeer)teamLeader).getBattle().isRunning()) {
+		if (teamLeader != null && ((RobotPeer) teamLeader).getBattle().isRunning()) {
 			score1 += teamStatistics.getCurrentScore();
 			score2 += cp.getRobotStatistics().getCurrentScore();
 		}

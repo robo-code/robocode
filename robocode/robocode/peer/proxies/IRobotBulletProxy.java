@@ -11,24 +11,25 @@
  *******************************************************************************/
 package robocode.peer.proxies;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobotBulletProxy {
 
-    double getHeading();
+	double getHeading();
 
-    double getPower();
+	double getPower();
 
-    double getVelocity();
+	double getVelocity();
 
-    double getX();
+	double getX();
 
-    double getY();
+	double getY();
 
-    boolean isActive();
+	boolean isActive();
 
-    String getVictimName();
+	String getVictimName();
 
-    String getOwnerName();
+	String getOwnerName();
 }

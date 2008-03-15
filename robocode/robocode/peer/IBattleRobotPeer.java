@@ -11,8 +11,8 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattleRobotPeer extends IContestantPeer , IRobotPeer{
-}
+public interface IBattleRobotPeer extends IContestantPeer, IRobotPeer {}

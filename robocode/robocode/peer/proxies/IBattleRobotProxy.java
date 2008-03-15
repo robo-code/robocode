@@ -14,71 +14,50 @@
 
 package robocode.peer.proxies;
 
+
 import robocode.battle.record.RobotRecord;
 import robocode.peer.BulletPeer;
 import robocode.peer.robot.*;
 
+
 public interface IBattleRobotProxy extends IReadingRobotProxy {
-    void lockWrite();
+	void lockWrite();
+	void unlockWrite();
+	void cleanup();
+    
+	RobotOutputStream getOut();
+	IBattleEventManager getBattleEventManager();
+	RobotStatistics getRobotStatistics();
+	RobotThreadManager getRobotThreadManager();
+	RobotMessageManager getBattleMessageManager();
+	RobotClassManager getRobotClassManager();
+	RobotFileSystemManager getRobotFileSystemManager();
+	IDisplayRobotProxy getDisplayView();
 
-    void unlockWrite();
+	void setupPreInitialize();
+	void setupSetDuplicate(int d);
+	void setupUpdateBoundingBox();
+    
+	void initializeLocked(double x, double y, double heading, java.util.List<IBattleRobotProxy> battleRobots);
 
-    void cleanup();
+	void battleKill();
+	void battleZap(double z);
+	void battleScan(java.util.List<IBattleRobotProxy> robots);
+	void battleUpdate(java.util.List<IBattleRobotProxy> battleRobots);
 
-    RobotOutputStream getOut();
+	BulletPeer battleGetCurrentBullet();
+	void battleSetStopping(boolean h);
+	boolean battleIsTeammate(IBattleRobotProxy robot);
+	void battleSetScan(boolean value);
+	void battleAdjustGunHeat(double diference);
+	void battleSetCurrentBullet(BulletPeer currentBullet);
+	void battleSetWinner(boolean w);
+	void battleSetEnergy(double e);
 
-    IBattleEventManager getBattleEventManager();
+	void setSkippedTurnsLocked(int s);
+	void wakeupLocked();
 
-    RobotStatistics getRobotStatistics();
-
-    RobotThreadManager getRobotThreadManager();
-
-    RobotMessageManager getBattleMessageManager();
-
-    RobotClassManager getRobotClassManager();
-
-    RobotFileSystemManager getRobotFileSystemManager();
-
-    IDisplayRobotProxy getDisplayView();
-
-    BulletPeer b_getCurrentBullet();
-
-    void setDuplicate(int d);
-
-    void setScan(boolean value);
-
-    void b_kill();
-
-    void b_wakeup();
-
-    void b_zap(double z);
-
-    void b_scan(java.util.List<IBattleRobotProxy> robots);
-
-    void b_update(java.util.List<IBattleRobotProxy> battleRobots);
-
-    void b_preInitialize();
-
-    void b_initialize(double x, double y, double heading, java.util.List<IBattleRobotProxy> battleRobots);
-
-    void b_updateBoundingBox();
-
-
-    void b_setHalt(boolean h);
-
-    void b_setRecord(RobotRecord rr);
-
-    void b_adjustGunHeat(double diference);
-
-    void b_setState(int newState);
-
-    void b_setWinner(boolean w);
-
-    void b_setEnergy(double e);
-
-    void b_setSkippedTurns(int s);
-
-    void b_setCurrentBullet(BulletPeer currentBullet);
-
-    void b_setStatistics(RobotStatistics newStatistics);
+	void replaySetStatisticsLocked(RobotStatistics newStatistics);
+	void replaySetRecordLocked(RobotRecord rr);
+	void replaySetStateLocked(int newState);
 }

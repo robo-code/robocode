@@ -51,16 +51,6 @@
 package robocode.manager;
 
 
-import static robocode.io.Logger.log;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import javax.swing.JFileChooser;
-
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
@@ -70,12 +60,23 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
-import robocode.peer.*;
+import static robocode.io.Logger.log;
+import robocode.peer.IContestantPeer;
+import robocode.peer.IContestantStatistics;
+import robocode.peer.RobotPeer;
+import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
+
+import javax.swing.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 /**
@@ -99,6 +100,7 @@ public class BattleManager {
 
 	public interface PauseResumeListener {
 		public void battlePaused();
+
 		public void battleResumed();
 	}
 

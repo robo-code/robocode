@@ -18,16 +18,14 @@
 package robocode.packager;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
+import robocode.dialog.WizardPanel;
+import robocode.repository.FileSpecification;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.List;
-
-import javax.swing.*;
-
-import robocode.dialog.WizardPanel;
-import robocode.repository.FileSpecification;
 
 
 /**

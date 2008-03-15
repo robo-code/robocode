@@ -30,11 +30,10 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import robocode.io.Logger;
+import robocode.manager.RobotRepositoryManager;
+import robocode.repository.FileSpecification;
+import robocode.repository.TeamSpecification;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -42,11 +41,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import robocode.io.Logger;
-import robocode.manager.RobotRepositoryManager;
-import robocode.repository.FileSpecification;
-import robocode.repository.TeamSpecification;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -592,7 +591,7 @@ public class RobotSelectionPanel extends WizardPanel {
 			numRoundsTextField.setAlignmentX((float) .5);
 			// Center text in textfield
 			numRoundsTextField.setHorizontalAlignment(SwingConstants.CENTER);
- 
+
 			// Add document listener
 			numRoundsTextField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -605,7 +604,7 @@ public class RobotSelectionPanel extends WizardPanel {
 				public void removeUpdate(DocumentEvent e) {
 					handleChange();
 				}
-				
+
 				private void handleChange() {
 					try {
 						int numRounds = Integer.parseInt(numRoundsTextField.getText());
@@ -614,7 +613,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 						if (numRounds != props.getNumberOfRounds()) {
 							props.setNumberOfRounds(numRounds);
-							
+
 						}
 					} catch (NumberFormatException nfe) {}
 				}

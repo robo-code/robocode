@@ -11,11 +11,12 @@
  *******************************************************************************/
 package robocode;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public final class MouseWheelMovedEvent extends MouseEvent{
-    public MouseWheelMovedEvent(java.awt.event.MouseEvent inner){
-        super(inner);
-    }
+public final class MouseWheelMovedEvent extends MouseEvent {
+	public MouseWheelMovedEvent(java.awt.event.MouseEvent inner) {
+		super(inner);
+	}
 }

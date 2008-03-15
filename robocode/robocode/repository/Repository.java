@@ -73,7 +73,8 @@ public class Repository {
 					continue;
 				}
 				if (onlyDevelopment && robotFileSpecification.getFullPackage() != null
-						&& (robotFileSpecification.getFullPackage().equals("sample") || robotFileSpecification.getFullPackage().equals("sampleteam"))) {
+						&& (robotFileSpecification.getFullPackage().equals("sample")
+						|| robotFileSpecification.getFullPackage().equals("sampleteam"))) {
 					continue;
 				}
 			}

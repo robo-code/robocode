@@ -23,26 +23,26 @@ import robocode.peer.proxies.IBattleRobotProxy;
  */
 public class StatusEvent extends Event {
 
-    private final RobotStatus status;
+	private final RobotStatus status;
 
-    /**
-     * Creates a new RobotStatus based a a RobotPeer.
-     * This constructor is called internally from the game.
-     *
-     * @param robotPeer the RobotPeer containing the states we must make a snapshot of
-     */
-    public StatusEvent(IBattleRobotProxy robotPeer) {
-        super();
+	/**
+	 * Creates a new RobotStatus based a a RobotPeer.
+	 * This constructor is called internally from the game.
+	 *
+	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
+	 */
+	public StatusEvent(IBattleRobotProxy robotPeer) {
+		super();
 
-        status = new RobotStatus(robotPeer);
-    }
+		status = new RobotStatus(robotPeer);
+	}
 
-    /**
-     * Returns the robot status at the time defined by getTime().
-     *
-     * @see #getTime()
-     */
-    public RobotStatus getStatus() {
-        return status;
+	/**
+	 * Returns the robot status at the time defined by getTime().
+	 *
+	 * @see #getTime()
+	 */
+	public RobotStatus getStatus() {
+		return status;
 	}
 }

@@ -18,15 +18,18 @@
 package robocode.dialog;
 
 
+import robocode.io.FileUtil;
+import robocode.io.Logger;
+
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import robocode.io.FileUtil;
-import robocode.io.Logger;
 
 
 /**
@@ -131,7 +134,7 @@ public class WindowPositionManager implements ComponentListener {
 			}
 		}
 	}
-	
+
 	private Rectangle fitWindowBoundsToScreen(Rectangle windowBounds) {
 		if (windowBounds == null) {
 			return null;
@@ -142,7 +145,7 @@ public class WindowPositionManager implements ComponentListener {
 		final GraphicsEnvironment gfxEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		final GraphicsDevice[] screenDevices = gfxEnv.getScreenDevices();
 
-		for (int i = screenDevices.length - 1; i >= 0; i--) { 
+		for (int i = screenDevices.length - 1; i >= 0; i--) {
 			GraphicsConfiguration[] gfxCfg = screenDevices[i].getConfigurations();
 
 			for (int j = gfxCfg.length - 1; j >= 0; j--) {
@@ -156,9 +159,9 @@ public class WindowPositionManager implements ComponentListener {
 
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-		int x = (screenSize.width - windowBounds.width) / 2; 
-		int y = (screenSize.height - windowBounds.height) / 2; 
-		
-		return new Rectangle(x, y, windowBounds.width, windowBounds.height); 
+		int x = (screenSize.width - windowBounds.width) / 2;
+		int y = (screenSize.height - windowBounds.height) / 2;
+
+		return new Rectangle(x, y, windowBounds.width, windowBounds.height);
 	}
 }

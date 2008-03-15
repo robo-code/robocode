@@ -12,7 +12,7 @@
 package robocode.manager;
 
 
-import javax.swing.UIManager;
+import javax.swing.*;
 
 
 /**

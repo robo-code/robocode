@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robocode.peer.proxies;
 
+
 import robocode.peer.IRobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.data.RobotPeerCommands;
@@ -23,236 +24,459 @@ import robocode.util.BoundingRectangle;
 import java.awt.*;
 import java.awt.geom.Arc2D;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public class ReadingRobotProxy implements IReadingRobotProxy {
-    private IRobotPeer peer;
-    protected RobotPeerStatus status;
-    protected RobotPeerInfo info;
-    protected RobotPeerCommands commands;
+	private IRobotPeer peer;
+	protected RobotPeerStatus status;
+	protected RobotPeerInfo info;
+	protected RobotPeerCommands commands;
+	protected IRobotRunnableProxy view;
 
-    public ReadingRobotProxy(IRobotPeer peer) {
-        this.peer = peer;
-        this.info = peer.getInfo();
-        this.status = peer.getStatus();
-        this.commands = peer.getCommands();
-    }
+	public ReadingRobotProxy(IRobotPeer peer) {
+		this.peer = peer;
+		this.info = peer.getInfo();
+		this.view = peer.getRobotRunnableView();
+		this.status = peer.getStatus();
+		this.commands = peer.getCommands();
+	}
 
-    public void cleanup() {
-        this.peer = null;
-        this.info = null;
-        this.status = null;
-        this.commands = null;
-    }
+	public void cleanup() {
+		this.peer = null;
+		this.info = null;
+		this.status = null;
+		this.commands = null;
+	}
 
+	public IRobotPeer getPeer() {
+		return peer;
+	}
 
-    public final RobotOutputStream getOut() {
-        //TODO synch
-        return peer.getOut();
-    }
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
+	// info
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
+	public final int getState() {
+		peer.lockRead();
+		try {
+			return status.getState();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final int getState() {
-        peer.lockRead();
-        try {
-            return status.getState();
-        }
-        finally {
-            peer.unlockRead();
-        }
-    }
+	public final boolean isDroid() {
+		peer.lockRead();
+		try {
+			return info.isDroid();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public boolean isTeammate(IBattleRobotProxy robot) {
-        TeamPeer teamPeer = info.getTeamPeer();
-        return (teamPeer != null && teamPeer == robot.getTeamPeer());
-    }
+	public boolean isTeamRobot() {
+		peer.lockRead();
+		try {
+			return info.isTeamRobot();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isDroid() {
-        return false;  //TODO ZAMO
-    }
+	public boolean isAdvancedRobot() {
+		peer.lockRead();
+		try {
+			return info.isAdvancedRobot();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public boolean isTeamRobot() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isInteractiveRobot() {
+		peer.lockRead();
+		try {
+			return info.isInteractiveRobot();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public boolean isAdvancedRobot() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isInteractiveListener() {
+		peer.lockRead();
+		try {
+			return info.isInteractiveListener();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isInteractiveRobot() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isDuplicate() {
+		peer.lockRead();
+		try {
+			return info.isDuplicate();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isInteractiveListener() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isPaintEnabled() {
+		peer.lockRead();
+		try {
+			return info.isPaintEnabled();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isDuplicate() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isSGPaintEnabled() {
+		peer.lockRead();
+		try {
+			return info.isSGPaintEnabled();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isPaintEnabled() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isTeamLeader() {
+		peer.lockRead();
+		try {
+			return info.isTeamLeader();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isSGPaintEnabled() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isIORobot() {
+		peer.lockRead();
+		try {
+			return info.isIORobot();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public IRobotPeer getPeer() {
-        return peer;
-    }
+	public final String getName() {
+		peer.lockRead();
+		try {
+			return info.getName();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final Arc2D getScanArc() {
-        return null;  //TODO ZAMO
-    }
+	public final String getShortName() {
+		peer.lockRead();
+		try {
+			return info.getShortName();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final String getShortName() {
-        return null;  //TODO ZAMO
-    }
+	public final String getVeryShortName() {
+		peer.lockRead();
+		try {
+			return info.getVeryShortName();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final String getVeryShortName() {
-        return null;  //TODO ZAMO
-    }
+	public final String getFullClassNameWithVersion() {
+		peer.lockRead();
+		try {
+			return info.getFullClassNameWithVersion();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final String getFullClassNameWithVersion() {
-        return null;  //TODO ZAMO
-    }
+	public String getNonVersionedName() {
+		peer.lockRead();
+		try {
+			return info.getNonVersionedName();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public String getNonVersionedName() {
-        return null;  //TODO ZAMO
-    }
+	public final String getUniqueFullClassNameWithVersion() {
+		peer.lockRead();
+		try {
+			return info.getUniqueFullClassNameWithVersion();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final String getUniqueFullClassNameWithVersion() {
-        return null;  //TODO ZAMO
-    }
+	public final TeamPeer getTeamPeer() {
+		peer.lockRead();
+		try {
+			return info.getTeamPeer();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isDead() {
-        return false;  //TODO ZAMO
-    }
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
+	// status
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
-    public final boolean isAlive() {
-        return false;  //TODO ZAMO
-    }
+	public final Arc2D getScanArc() {
+		peer.lockRead();
+		try {
+			return status.getScanArc();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isRunning() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isDead() {
+		peer.lockRead();
+		try {
+			return status.isDead();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isSleeping() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isAlive() {
+		peer.lockRead();
+		try {
+			return status.isAlive();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isWinner() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isRunning() {
+		peer.lockRead();
+		try {
+			return status.isRunning();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isTeamLeader() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isSleeping() {
+		peer.lockRead();
+		try {
+			return status.isSleeping();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean isIORobot() {
-        return false;  //TODO ZAMO
-    }
+	public final boolean isWinner() {
+		peer.lockRead();
+		try {
+			return status.isWinner();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final String getName() {
-        return null;  //TODO ZAMO
-    }
+	public final Color getBodyColor() {
+		peer.lockRead();
+		try {
+			return status.getBodyColor();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final Color getBodyColor() {
-        return null;  //TODO ZAMO
-    }
+	public final Color getGunColor() {
+		peer.lockRead();
+		try {
+			return status.getGunColor();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final Color getGunColor() {
-        return null;  //TODO ZAMO
-    }
+	public final Color getRadarColor() {
+		peer.lockRead();
+		try {
+			return status.getRadarColor();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final Color getRadarColor() {
-        return null;  //TODO ZAMO
-    }
+	public final Color getScanColor() {
+		peer.lockRead();
+		try {
+			return status.getScanColor();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final Color getScanColor() {
-        return null;  //TODO ZAMO
-    }
+	public final Color getBulletColor() {
+		peer.lockRead();
+		try {
+			return status.getBulletColor();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final Color getBulletColor() {
-        return null;  //TODO ZAMO
-    }
+	public final double getX() {
+		peer.lockRead();
+		try {
+			return status.getX();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getX() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getY() {
+		peer.lockRead();
+		try {
+			return status.getY();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getY() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getBattleFieldWidth() {
+		peer.lockRead();
+		try {
+			return view.getBattleFieldWidth();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getBattleFieldWidth() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getBattleFieldHeight() {
+		peer.lockRead();
+		try {
+			return view.getBattleFieldHeight();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getBattleFieldHeight() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getEnergy() {
+		peer.lockRead();
+		try {
+			return status.getEnergy();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getEnergy() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getHeading() {
+		peer.lockRead();
+		try {
+			return status.getHeading();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getHeading() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getRadarHeading() {
+		peer.lockRead();
+		try {
+			return status.getRadarHeading();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getRadarHeading() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getGunHeading() {
+		peer.lockRead();
+		try {
+			return status.getGunHeading();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getGunHeading() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getVelocity() {
+		peer.lockRead();
+		try {
+			return status.getVelocity();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getVelocity() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getGunHeat() {
+		peer.lockRead();
+		try {
+			return status.getGunHeat();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getTurnRemaining() {
-        return 0;  //TODO ZAMO
-    }
+	public final int getSkippedTurns() {
+		peer.lockRead();
+		try {
+			return status.getSkippedTurns();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getRadarTurnRemaining() {
-        return 0;  //TODO ZAMO
-    }
+	public final boolean getScan() {
+		peer.lockRead();
+		try {
+			return status.getScan();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getGunTurnRemaining() {
-        return 0;  //TODO ZAMO
-    }
+	public final BoundingRectangle getBoundingBox() {
+		peer.lockRead();
+		try {
+			return status.getBoundingBox();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final double getDistanceRemaining() {
-        return 0;  //TODO ZAMO
-    }
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
+	// commands
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
-    public final double getGunHeat() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getTurnRemaining() {
+		peer.lockRead();
+		try {
+			return commands.getTurnRemaining();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final boolean getScan() {
-        return false;  //TODO ZAMO
-    }
+	public final double getRadarTurnRemaining() {
+		peer.lockRead();
+		try {
+			return commands.getRadarTurnRemaining();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final int getSkippedTurns() {
-        return 0;  //TODO ZAMO
-    }
+	public final double getGunTurnRemaining() {
+		peer.lockRead();
+		try {
+			return commands.getGunTurnRemaining();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
-    public final TeamPeer getTeamPeer() {
-        return null;  //TODO ZAMO
-    }
-
-    public final BoundingRectangle getBoundingBox() {
-        return null;  //TODO ZAMO
-    }
-
-    public final void b_setStatistics(RobotStatistics newStatistics) {
-        //TODO ZAMO
-    }
+	public final double getDistanceRemaining() {
+		peer.lockRead();
+		try {
+			return commands.getDistanceRemaining();
+		} finally {
+			peer.unlockRead();
+		}
+	}
 }

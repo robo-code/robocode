@@ -11,8 +11,8 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotRobotPeer extends IRobotPeer {
-}
+public interface IRobotRobotPeer extends IRobotPeer {}

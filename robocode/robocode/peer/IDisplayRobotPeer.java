@@ -11,12 +11,8 @@
  *******************************************************************************/
 package robocode.peer;
 
-import robocode.peer.robot.IDisplayEventManager;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IDisplayRobotPeer extends IRobotPeer{
-
-
-}
+public interface IDisplayRobotPeer extends IRobotPeer {}

@@ -20,22 +20,21 @@
 package robocode;
 
 
-import robocode.robotinterfaces.peer.IAdvancedRobotView;
+import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 
 /**
  * This class is used by the system, as well as being a placeholder for all deprecated
  * (meaning, you should not use them) calls for AdvancedRobot.
- * <P>
+ * <p/>
  * You should create a {@link AdvancedRobot} instead.
- * <P>
+ * <p/>
  * There is no guarantee that this class will exist in future versions of Robocode.
- *
- * @see AdvancedRobot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
+ * @see AdvancedRobot
  */
 public class _AdvancedRobot extends Robot {
 
@@ -43,12 +42,12 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnGunLeft(double)
-	 *    setTurnGunLeft} instead.
+	 *             setTurnGunLeft} instead.
 	 */
 	@Deprecated
 	public void setTurnGunLeftDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnGun(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnGun(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -56,12 +55,12 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnGunRight(double)
-	 *    setTurnGunRight} instead.
+	 *             setTurnGunRight} instead.
 	 */
 	@Deprecated
 	public void setTurnGunRightDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnGun(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnGun(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -69,7 +68,7 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#turnRadarRight(double) turnRadarRight}
-	 *    instead.
+	 *             instead.
 	 */
 	@Deprecated
 	public void turnRadarRightDegrees(double degrees) {
@@ -78,12 +77,12 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnRight(double) setTurnRight}
-	 *    instead.
+	 *             instead.
 	 */
 	@Deprecated
 	public void setTurnRightDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnBody(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnBody(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -91,12 +90,12 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnRadarLeft(double)
-	 *    setTurnRadarLeft} instead.
+	 *             setTurnRadarLeft} instead.
 	 */
 	@Deprecated
 	public void setTurnRadarLeftDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnRadar(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -104,12 +103,12 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnLeft(double) setTurnLeft}
-	 *    instead.
+	 *             instead.
 	 */
 	@Deprecated
 	public void setTurnLeftDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnBody(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnBody(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -169,7 +168,7 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated This method is no longer functional.
-	 * Use {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)} instead.
+	 *             Use {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)} instead.
 	 */
 	@Deprecated
 	public int getWaitCount() {
@@ -181,12 +180,12 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnRadarRight(double)
-	 *    setTurnRadarRight} instead.
+	 *             setTurnRadarRight} instead.
 	 */
 	@Deprecated
 	public void setTurnRadarRightDegrees(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnRadar(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -218,7 +217,7 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated This method is no longer functional.
-	 * Use {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)} instead.
+	 *             Use {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)} instead.
 	 */
 	@Deprecated
 	public int getMaxWaitCount() {

@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robocode.peer.proxies;
 
+
 import robocode.peer.IRobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.util.BoundingRectangle;
@@ -18,102 +19,100 @@ import robocode.util.BoundingRectangle;
 import java.awt.*;
 import java.awt.geom.Arc2D;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IReadingRobotProxy {
-    boolean isAlive();
+	boolean isAlive();
 
-    boolean isDead();
+	boolean isDead();
 
-    boolean isDroid();
+	boolean isDroid();
 
-    boolean isTeamRobot();
+	boolean isTeamRobot();
 
-    boolean isAdvancedRobot();
+	boolean isAdvancedRobot();
 
-    boolean isInteractiveRobot();
+	boolean isInteractiveRobot();
 
-    boolean isInteractiveListener();
+	boolean isInteractiveListener();
 
-    boolean isDuplicate();
+	boolean isDuplicate();
 
-    boolean isPaintEnabled();
+	boolean isPaintEnabled();
 
-    boolean isSGPaintEnabled();
+	boolean isSGPaintEnabled();
 
-    IRobotPeer getPeer();
+	IRobotPeer getPeer();
 
-    TeamPeer getTeamPeer();
+	TeamPeer getTeamPeer();
 
-    int getState();
+	int getState();
 
-    boolean isRunning();
+	boolean isRunning();
 
-    boolean isSleeping();
+	boolean isSleeping();
 
-    boolean isWinner();
+	boolean isWinner();
 
-    boolean isTeamLeader();
+	boolean isTeamLeader();
 
-    boolean isIORobot();
+	boolean isIORobot();
 
-    double getVelocity();
+	double getVelocity();
 
-    double getGunHeat();
+	double getGunHeat();
 
-    double getEnergy();
+	double getEnergy();
 
-    double getX();
+	double getX();
 
-    double getY();
+	double getY();
 
-    double getHeading();
+	double getHeading();
 
-    double getRadarHeading();
+	double getRadarHeading();
 
-    double getGunHeading();
+	double getGunHeading();
 
-    Arc2D getScanArc();
+	Arc2D getScanArc();
 
-    boolean getScan();
+	boolean getScan();
 
-    int getSkippedTurns();
+	int getSkippedTurns();
 
-    double getBattleFieldWidth();
+	double getBattleFieldWidth();
 
-    BoundingRectangle getBoundingBox();
+	BoundingRectangle getBoundingBox();
 
-    double getTurnRemaining();
+	double getTurnRemaining();
 
-    double getRadarTurnRemaining();
+	double getRadarTurnRemaining();
 
-    double getGunTurnRemaining();
+	double getGunTurnRemaining();
 
-    double getDistanceRemaining();
+	double getDistanceRemaining();
 
-    boolean isTeammate(IBattleRobotProxy robot);
+	Color getBodyColor();
 
+	Color getGunColor();
 
-    Color getBodyColor();
+	Color getRadarColor();
 
-    Color getGunColor();
+	Color getScanColor();
 
-    Color getRadarColor();
+	Color getBulletColor();
 
-    Color getScanColor();
+	String getName();
 
-    Color getBulletColor();
+	String getShortName();
 
-    String getName();
+	String getVeryShortName();
 
-    String getShortName();
+	String getFullClassNameWithVersion();
 
-    String getVeryShortName();
+	String getNonVersionedName();
 
-    String getFullClassNameWithVersion();
-
-    String getNonVersionedName();
-
-    String getUniqueFullClassNameWithVersion();
+	String getUniqueFullClassNameWithVersion();
 }

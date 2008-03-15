@@ -12,24 +12,18 @@
 package robocode.editor;
 
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-
-import javax.swing.JComponent;
-import javax.swing.JEditorPane;
+import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 
 /**
@@ -65,7 +59,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 
 	/**
 	 * Listens for changes on the Document in its associated text pane.
-	 *
+	 * <p/>
 	 * If the number of lines has changed, it updates its view.
 	 */
 	public void changedUpdate(DocumentEvent e) {
@@ -79,7 +73,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 
 	/**
 	 * Listens for changes on the Document in its associated text pane.
-	 *
+	 * <p/>
 	 * If the number of lines has changed, it updates its view.
 	 */
 	public void insertUpdate(DocumentEvent e) {
@@ -93,7 +87,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 
 	/**
 	 * Listens for changes on the Document in its associated text pane.
-	 *
+	 * <p/>
 	 * If the number of lines has changed, it updates its view.
 	 */
 	public void removeUpdate(DocumentEvent e) {
@@ -279,7 +273,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 
 	/**
 	 * Listens for changes in caret position on the text pane.
-	 *
+	 * <p/>
 	 * Updates the code block display and stuff
 	 */
 	public void caretUpdate(CaretEvent e) {

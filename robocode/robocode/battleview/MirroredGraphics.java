@@ -55,9 +55,8 @@ public class MirroredGraphics extends Graphics2D {
 	 * When painting using this wrapper has finnished the
 	 * {@link #release() } method must be called.
 	 *
-	 * @param g the Graphics2D object to wrap
+	 * @param g      the Graphics2D object to wrap
 	 * @param height the height of the battlefield to mirror
-	 *
 	 * @see #release()
 	 */
 	public void bind(Graphics2D g, int height) {
@@ -468,7 +467,7 @@ public class MirroredGraphics extends Graphics2D {
 	 * object into a mirrored transform.
 	 *
 	 * @return the AffineTransform before calling this method, which is used for
-	 * restoring the AffineTransform later.
+	 *         restoring the AffineTransform later.
 	 */
 	private AffineTransform setToMirroredTransform() {
 		AffineTransform saveTx = g.getTransform();

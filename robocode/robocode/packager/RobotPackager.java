@@ -28,10 +28,20 @@
 package robocode.packager;
 
 
+import codesize.Codesize;
+import robocode.dialog.*;
+import robocode.io.Logger;
+import robocode.io.NoDuplicateJarOutputStream;
+import robocode.manager.RobotRepositoryManager;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.FileSpecification;
+import robocode.repository.RobotFileSpecification;
+import robocode.repository.TeamSpecification;
+import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
-import java.awt.AWTEvent;
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -47,20 +57,6 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.Manifest;
 import java.util.zip.ZipException;
-
-import javax.swing.*;
-
-import robocode.dialog.*;
-import robocode.io.Logger;
-import robocode.io.NoDuplicateJarOutputStream;
-import robocode.manager.RobotRepositoryManager;
-import robocode.peer.robot.RobotClassManager;
-import robocode.repository.FileSpecification;
-import robocode.repository.RobotFileSpecification;
-import robocode.repository.TeamSpecification;
-import robocode.security.RobocodeSecurityManager;
-
-import codesize.Codesize;
 
 
 /**
@@ -315,7 +311,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 					RobotFileSpecification robotFileSpecification = (RobotFileSpecification) fileSpecification;
 
 					if (robotFileSpecification.isDevelopmentVersion()) {
-						robotFileSpecification.setRobotDescription(getPackagerOptionsPanel().getDescriptionArea().getText());
+						robotFileSpecification.setRobotDescription(
+								getPackagerOptionsPanel().getDescriptionArea().getText());
 						robotFileSpecification.setRobotJavaSourceIncluded(
 								getPackagerOptionsPanel().getIncludeSource().isSelected());
 						robotFileSpecification.setRobotAuthorName(getPackagerOptionsPanel().getAuthorField().getText());
@@ -333,7 +330,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 							}
 						}
 						robotFileSpecification.setRobotWebpage(u);
-						robotFileSpecification.setRobocodeVersion(robotManager.getManager().getVersionManager().getVersion());
+						robotFileSpecification.setRobocodeVersion(
+								robotManager.getManager().getVersionManager().getVersion());
 
 						FileOutputStream fos2 = null;
 
@@ -473,7 +471,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	public void outputSizeClass() {
 		// Codesize must be called within a safe thread to prevent security exception
-		
+
 		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager) System.getSecurityManager();
 
 		Thread thread = new Thread() {

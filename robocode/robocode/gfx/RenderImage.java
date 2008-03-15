@@ -12,9 +12,7 @@
 package robocode.gfx;
 
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
@@ -26,10 +24,14 @@ import java.awt.geom.Area;
  */
 public class RenderImage extends RenderObject {
 
-	/** Image */
+	/**
+	 * Image
+	 */
 	protected Image image;
 
-	/** Area containing the bounds of the image to paint */
+	/**
+	 * Area containing the bounds of the image to paint
+	 */
 	protected Area boundArea;
 
 	/**
@@ -45,7 +47,7 @@ public class RenderImage extends RenderObject {
 	/**
 	 * Constructs a new <code>RenderImage</code>
 	 *
-	 * @param image the image to be rendered
+	 * @param image   the image to be rendered
 	 * @param originX the x coordinate of the origin for the rendered image
 	 * @param originY the y coordinate of the origin for the rendered image
 	 */

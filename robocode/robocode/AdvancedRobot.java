@@ -24,8 +24,9 @@
 package robocode;
 
 
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.IAdvancedRobot;
+import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 import java.io.File;
 import java.util.Vector;
@@ -34,30 +35,28 @@ import java.util.Vector;
 /**
  * A more advanced type of robot than Robot that allows non-blocking calls,
  * custom events, and writes to the filesystem.
- * <p>
+ * <p/>
  * If you have not already, you should create a {@link Robot} first.
- *
- * @see Robot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Pavel Savara (contributor)
+ * @see Robot
  */
 public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRobot, IAdvancedEvents {
 
 	/**
 	 * Returns the distance remaining in the robot's current move measured in
 	 * pixels.
-	 * <p>
+	 * <p/>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently moving forwards. Negative values means
 	 * that the robot is currently moving backwards. If the returned value is 0,
 	 * the robot currently stands still.
 	 *
 	 * @return the distance remaining in the robot's current move measured in
-	 *    pixels.
-	 *
+	 *         pixels.
 	 * @see #getTurnRemaining()
 	 * @see #getGunTurnRemaining()
 	 * @see #getRadarTurnRemaining()
@@ -72,14 +71,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Returns the angle remaining in the robots's turn, in degrees.
-	 * <p>
+	 * <p/>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently turning to the right. Negative values
 	 * means that the robot is currently turning to the left. If the returned
 	 * value is 0, the robot is currently not turning.
 	 *
 	 * @return the angle remaining in the robots's turn, in degrees
-	 *
 	 * @see #getDistanceRemaining()
 	 * @see #getGunTurnRemaining()
 	 * @see #getRadarTurnRemaining()
@@ -94,14 +92,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Returns the angle remaining in the gun's turn, in degrees.
-	 * <p>
+	 * <p/>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the gun is currently turning to the right. Negative values
 	 * means that the gun is currently turning to the left. If the returned
 	 * value is 0, the gun is currently not turning.
 	 *
 	 * @return the angle remaining in the gun's turn, in degrees
-	 *
 	 * @see #getDistanceRemaining()
 	 * @see #getTurnRemaining()
 	 * @see #getRadarTurnRemaining()
@@ -116,14 +113,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Returns the angle remaining in the radar's turn, in degrees.
-	 * <p>
+	 * <p/>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the radar is currently turning to the right. Negative values
 	 * means that the radar is currently turning to the left. If the returned
 	 * value is 0, the radar is currently not turning.
 	 *
 	 * @return the angle remaining in the radar's turn, in degrees
-	 *
 	 * @see #getDistanceRemaining()
 	 * @see #getGunTurnRemaining()
 	 * @see #getRadarTurnRemaining()
@@ -139,39 +135,39 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot to move ahead (forward) by distance measured in pixels
 	 * when the next execution takes place.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link #execute()} or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot is set to move ahead, and negative
 	 * values means that the robot is set to move back. If 0 is given as input,
 	 * the robot will stop its movement, but will have to decelerate
 	 * till it stands still, and will thus not be able to stop its movement
 	 * immediately, but eventually.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to move 50 pixels ahead
 	 *   setAhead(50);
-	 *
+	 * <p/>
 	 *   // Set the robot to move 100 pixels back
 	 *   // (overrides the previous order)
 	 *   setAhead(-100);
-	 *
+	 * <p/>
 	 *   ...
 	 *   // Executes the last setAhead()
 	 *   execute();
 	 * </pre>
 	 *
 	 * @param distance the distance to move measured in pixels.
-	 *    If {@code distance} > 0 the robot is set to move ahead.
-	 *    If {@code distance} < 0 the robot is set to move back.
-	 *    If {@code distance} = 0 the robot is set to stop its movement.
+	 *                 If {@code distance} > 0 the robot is set to move ahead.
+	 *                 If {@code distance} < 0 the robot is set to move back.
+	 *                 If {@code distance} = 0 the robot is set to stop its movement.
 	 */
 	public void setAhead(double distance) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setMove(distance);
+			((IAdvancedRobotPeer) peer).setMove(distance);
 		} else {
 			uninitializedException();
 		}
@@ -180,39 +176,39 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot to move back by distance measured in pixels when the next
 	 * execution takes place.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link #execute()} or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot is set to move back, and negative
 	 * values means that the robot is set to move ahead. If 0 is given as input,
 	 * the robot will stop its movement, but will have to decelerate
 	 * till it stands still, and will thus not be able to stop its movement
 	 * immediately, but eventually.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to move 50 pixels back
 	 *   setBack(50);
-	 *
+	 * <p/>
 	 *   // Set the robot to move 100 pixels ahead
 	 *   // (overrides the previous order)
 	 *   setBack(-100);
-	 *
+	 * <p/>
 	 *   ...
 	 *   // Executes the last setBack()
 	 *   execute();
 	 * </pre>
 	 *
 	 * @param distance the distance to move measured in pixels.
-	 *    If {@code distance} > 0 the robot is set to move back.
-	 *    If {@code distance} < 0 the robot is set to move ahead.
-	 *    If {@code distance} = 0 the robot is set to stop its movement.
+	 *                 If {@code distance} > 0 the robot is set to move back.
+	 *                 If {@code distance} < 0 the robot is set to move ahead.
+	 *                 If {@code distance} = 0 the robot is set to stop its movement.
 	 */
 	public void setBack(double distance) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setMove(-distance);
+			((IAdvancedRobotPeer) peer).setMove(-distance);
 		} else {
 			uninitializedException();
 		}
@@ -221,34 +217,34 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot's body to turn left by degrees when the next execution
 	 * takes place.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot's body is set to turn right
 	 * instead of left.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to turn 180 degrees to the left
 	 *   setTurnLeft(180);
-	 *
+	 * <p/>
 	 *   // Set the robot to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnLeft(-90);
-	 *
+	 * <p/>
 	 *   ...
 	 *   // Executes the last setTurnLeft()
 	 *   execute();
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's body to the left
-	 *    If this value is negative, the robot's body is set to turn to the right
+	 *                If this value is negative, the robot's body is set to turn to the right
 	 */
 	public void setTurnLeft(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnBody(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnBody(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -257,34 +253,34 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot's body to turn right by degrees when the next execution
 	 * takes place.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot's body is set to turn left
 	 * instead of right.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to turn 180 degrees to the right
 	 *   setTurnRight(180);
-	 *
+	 * <p/>
 	 *   // Set the robot to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnRight(-90);
-	 *
+	 * <p/>
 	 *   ...
 	 *   // Executes the last setTurnRight()
 	 *   execute();
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's body to the right
-	 *    If this value is negative, the robot's body is set to turn to the left
+	 *                If this value is negative, the robot's body is set to turn to the left
 	 */
 	public void setTurnRight(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnBody(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnBody(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -293,29 +289,29 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the gun to fire a bullet when the next execution takes place.
 	 * The bullet will travel in the direction the gun is pointing.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * The specified bullet power is an amount of energy that will be taken from
 	 * the robot's energy. Hence, the more power you want to spend on the
 	 * bullet, the more energy is taken from your robot.
-	 * <p>
+	 * <p/>
 	 * The bullet will do (4 * power) damage if it hits another robot. If power
 	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
 	 * You will get (3 * power) back if you hit the other robot. You can call
 	 * Rules#getBulletDamage(double)} for getting the damage that a
 	 * bullet with a specific bullet power will do.
-	 * <p>
+	 * <p/>
 	 * The specified bullet power should be between
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
-	 * <p>
+	 * <p/>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link Robot#getGunHeat()} returns a value > 0.
-	 * <p>
+	 * <p/>
 	 * An event is generated when the bullet hits a robot, wall, or another
 	 * bullet.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Fire a bullet with maximum power if the gun is ready
@@ -327,8 +323,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param power the amount of energy given to the bullet, and subtracted
-	 *     from the robot's energy.
-	 *
+	 *              from the robot's energy.
 	 * @see #setFireBullet
 	 * @see Robot#fire
 	 * @see Robot#fireBullet
@@ -349,29 +344,29 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the gun to fire a bullet when the next execution takes place.
 	 * The bullet will travel in the direction the gun is pointing.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * The specified bullet power is an amount of energy that will be taken from
 	 * the robot's energy. Hence, the more power you want to spend on the
 	 * bullet, the more energy is taken from your robot.
-	 * <p>
+	 * <p/>
 	 * The bullet will do (4 * power) damage if it hits another robot. If power
 	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
 	 * You will get (3 * power) back if you hit the other robot. You can call
 	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
 	 * bullet with a specific bullet power will do.
-	 * <p>
+	 * <p/>
 	 * The specified bullet power should be between
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
-	 * <p>
+	 * <p/>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link Robot#getGunHeat()} returns a value > 0.
-	 * <p>
+	 * <p/>
 	 * An event is generated when the bullet hits a robot, wall, or another
 	 * bullet.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Fire a bullet with maximum power if the gun is ready
@@ -386,11 +381,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param power the amount of energy given to the bullet, and subtracted
-	 *     from the robot's energy.
+	 *              from the robot's energy.
 	 * @return a {@link Bullet} that contains information about the bullet if it
-	 *    was actually fired, which can be used for tracking the bullet after it
-	 *    has been fired. If the bullet was not fired, {@code null} is returned.
-	 *
+	 *         was actually fired, which can be used for tracking the bullet after it
+	 *         has been fired. If the bullet was not fired, {@code null} is returned.
 	 * @see #setFire
 	 * @see Bullet
 	 * @see Robot#fire
@@ -411,7 +405,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Registers a custom event to be called when a condition is met.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   addCustomEvent(
@@ -424,9 +418,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param condition the condition that must be met. Notice, that null is not
-	 *     allowed, and will cause a NullPointerException.
+	 *                  allowed, and will cause a NullPointerException.
 	 * @throws NullPointerException if the condition parameter has been set to null.
-	 *
 	 * @see Condition
 	 */
 	public void addCustomEvent(Condition condition) {
@@ -434,7 +427,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 			throw new NullPointerException("the condition cannot be null");
 		}
 		if (peer != null) {
-			((IAdvancedRobotView) peer).addCustomEvent(condition);
+			((IAdvancedRobotPeer) peer).addCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -445,7 +438,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void clearAllEvents() {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).clearAllEvents();
+			((IAdvancedRobotPeer) peer).clearAllEvents();
 		} else {
 			uninitializedException();
 		}
@@ -454,18 +447,18 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Executes any pending actions, or continues executing actions that are
 	 * in process. This call returns after the actions have been started.
-	 * <p>
+	 * <p/>
 	 * Note that advanced robots <em>must</em> call this function in order to
 	 * execute pending set* calls like e.g. {@link #setAhead(double)},
 	 * {@link #setFire(double)}, {@link #setTurnLeft(double)} etc. Otherwise,
 	 * these calls will never get executed.
-	 * <p>
+	 * <p/>
 	 * In this example the robot will move while turning:
 	 * <pre>
 	 *   setTurnRight(90);
 	 *   setAhead(100);
 	 *   execute();
-	 *
+	 * <p/>
 	 *   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
 	 *       execute();
 	 *   }
@@ -482,7 +475,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Returns a vector containing all events currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (Event e : getAllEvents()) {
@@ -495,7 +488,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all events currently in the robot's queue
-	 *
 	 * @see Event
 	 * @see ScannedRobotEvent
 	 * @see BulletHitBulletEvent
@@ -524,7 +516,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public Vector<Event> getAllEvents() {
 		if (peer != null) {
-			return new Vector<Event>(((IAdvancedRobotView) peer).getAllEvents());
+			return new Vector<Event>(((IAdvancedRobotPeer) peer).getAllEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -534,7 +526,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Returns a vector containing all BulletHitBulletEvents currently in the
 	 * robot's queue. You might, for example, call this while processing another
 	 * event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
@@ -543,14 +535,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all BulletHitBulletEvents currently in the
-	 *    robot's queue
-	 *
+	 *         robot's queue
 	 * @see #onBulletHitBullet
 	 * @see BulletHitBulletEvent
 	 */
 	public Vector<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		if (peer != null) {
-			return new Vector<BulletHitBulletEvent>(((IAdvancedRobotView) peer).getBulletHitBulletEvents());
+			return new Vector<BulletHitBulletEvent>(((IAdvancedRobotPeer) peer).getBulletHitBulletEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -559,7 +550,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Returns a vector containing all BulletHitEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (BulletHitEvent : getBulletHitEvents()) {
@@ -568,14 +559,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all BulletHitEvents currently in the robot's
-	 *    queue
-	 *
+	 *         queue
 	 * @see #onBulletHit
 	 * @see BulletHitEvent
 	 */
 	public Vector<BulletHitEvent> getBulletHitEvents() {
 		if (peer != null) {
-			return new Vector<BulletHitEvent>(((IAdvancedRobotView) peer).getBulletHitEvents());
+			return new Vector<BulletHitEvent>(((IAdvancedRobotPeer) peer).getBulletHitEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -585,7 +575,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Returns a vector containing all BulletMissedEvents currently in the
 	 * robot's queue. You might, for example, call this while processing another
 	 * event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (BulletMissedEvent e : getBulletMissedEvents()) {
@@ -594,14 +584,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all BulletMissedEvents currently in the
-	 *    robot's queue
-	 *
+	 *         robot's queue
 	 * @see #onBulletMissed
 	 * @see BulletMissedEvent
 	 */
 	public Vector<BulletMissedEvent> getBulletMissedEvents() {
 		if (peer != null) {
-			return new Vector<BulletMissedEvent>(((IAdvancedRobotView) peer).getBulletMissedEvents());
+			return new Vector<BulletMissedEvent>(((IAdvancedRobotPeer) peer).getBulletMissedEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -611,18 +600,17 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Returns a file representing a data directory for the robot, which can be
 	 * written to using {@link RobocodeFileOutputStream} or
 	 * {@link RobocodeFileWriter}.
-	 * <p>
+	 * <p/>
 	 * The system will automatically create the directory for you, so you do not
 	 * need to create it by yourself.
 	 *
 	 * @return a file representing the data directory for your robot
-	 *
 	 * @see #getDataFile
 	 * @see RobocodeFileOutputStream
 	 */
 	public File getDataDirectory() {
 		if (peer != null) {
-			return ((IAdvancedRobotView) peer).getDataDirectory();
+			return ((IAdvancedRobotPeer) peer).getDataDirectory();
 		}
 		uninitializedException();
 		return null; // never called
@@ -631,25 +619,24 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Returns a file in your data directory that you can write to using
 	 * {@link RobocodeFileOutputStream} or {@link RobocodeFileWriter}.
-	 * <p>
+	 * <p/>
 	 * The system will automatically create the directory for you, so you do not
 	 * need to create it by yourself.
-	 * <p>
+	 * <p/>
 	 * Please notice that the max. size of your data file is set to 200000
 	 * (~195 KB).
-	 * <p>
+	 * <p/>
 	 * See the sample robots for examples.
 	 *
 	 * @param filename the file name of the data file
 	 * @return a file representing the data file for your robot
-	 *
 	 * @see #getDataDirectory
 	 * @see RobocodeFileOutputStream
 	 * @see RobocodeFileWriter
 	 */
 	public File getDataFile(String filename) {
 		if (peer != null) {
-			return ((IAdvancedRobotView) peer).getDataFile(filename);
+			return ((IAdvancedRobotPeer) peer).getDataFile(filename);
 		}
 		uninitializedException();
 		return null; // never called
@@ -660,12 +647,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * of bytes left in the data directory for the robot.
 	 *
 	 * @return the amount of bytes left in the robot's data directory
-	 *
 	 * @see #getDataDirectory
 	 */
 	public long getDataQuotaAvailable() {
 		if (peer != null) {
-			return ((IAdvancedRobotView) peer).getDataQuotaAvailable();
+			return ((IAdvancedRobotPeer) peer).getDataQuotaAvailable();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -675,7 +661,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Returns the current priority of a class of events.
 	 * An event priority is a value from 0 - 99. The higher value, the higher
 	 * priority. The default priority is 80.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   int myHitRobotPriority = getEventPriority("HitRobotEvent");
@@ -683,12 +669,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @param eventClass the name of the event class (string)
 	 * @return the current priority of a class of events
-	 *
 	 * @see #setEventPriority
 	 */
 	public int getEventPriority(String eventClass) {
 		if (peer != null) {
-			return ((IAdvancedRobotView) peer).getEventPriority(eventClass);
+			return ((IAdvancedRobotPeer) peer).getEventPriority(eventClass);
 		}
 		uninitializedException();
 		return 0; // never called
@@ -698,7 +683,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Returns a vector containing all HitByBulletEvents currently in the
 	 * robot's queue. You might, for example, call this while processing
 	 * another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (HitByBulletEvent e : getHitByBulletEvents()) {
@@ -707,14 +692,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all HitByBulletEvents currently in the
-	 *    robot's queue
-	 *
+	 *         robot's queue
 	 * @see #onHitByBullet
 	 * @see HitByBulletEvent
 	 */
 	public Vector<HitByBulletEvent> getHitByBulletEvents() {
 		if (peer != null) {
-			return new Vector<HitByBulletEvent>(((IAdvancedRobotView) peer).getHitByBulletEvents());
+			return new Vector<HitByBulletEvent>(((IAdvancedRobotPeer) peer).getHitByBulletEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -723,7 +707,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Returns a vector containing all HitRobotEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (HitRobotEvent e : getHitRobotEvents()) {
@@ -732,14 +716,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all HitRobotEvents currently in the robot's
-	 *    queue
-	 *
+	 *         queue
 	 * @see #onHitRobot
 	 * @see HitRobotEvent
 	 */
 	public Vector<HitRobotEvent> getHitRobotEvents() {
 		if (peer != null) {
-			return new Vector<HitRobotEvent>(((IAdvancedRobotView) peer).getHitRobotEvents());
+			return new Vector<HitRobotEvent>(((IAdvancedRobotPeer) peer).getHitRobotEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -748,7 +731,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Returns a vector containing all HitWallEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (HitWallEvent e : getHitWallEvents()) {
@@ -757,14 +740,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all HitWallEvents currently in the robot's
-	 *    queue
-	 *
+	 *         queue
 	 * @see #onHitWall
 	 * @see HitWallEvent
 	 */
 	public Vector<HitWallEvent> getHitWallEvents() {
 		if (peer != null) {
-			return new Vector<HitWallEvent>(((IAdvancedRobotView) peer).getHitWallEvents());
+			return new Vector<HitWallEvent>(((IAdvancedRobotPeer) peer).getHitWallEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -773,7 +755,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Returns a vector containing all RobotDeathEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (RobotDeathEvent e : getRobotDeathEvents()) {
@@ -782,14 +764,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all RobotDeathEvents currently in the robot's
-	 *    queue
-	 *
+	 *         queue
 	 * @see #onRobotDeath
 	 * @see RobotDeathEvent
 	 */
 	public Vector<RobotDeathEvent> getRobotDeathEvents() {
 		if (peer != null) {
-			return new Vector<RobotDeathEvent>(((IAdvancedRobotView) peer).getRobotDeathEvents());
+			return new Vector<RobotDeathEvent>(((IAdvancedRobotPeer) peer).getRobotDeathEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -799,7 +780,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Returns a vector containing all ScannedRobotEvents currently in the
 	 * robot's queue. You might, for example, call this while processing another
 	 * event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (ScannedRobotEvent e : getScannedRobotEvents()) {
@@ -808,14 +789,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @return a vector containing all ScannedRobotEvents currently in the
-	 *    robot's queue
-	 *
+	 *         robot's queue
 	 * @see #onScannedRobot
 	 * @see ScannedRobotEvent
 	 */
 	public Vector<ScannedRobotEvent> getScannedRobotEvents() {
 		if (peer != null) {
-			return new Vector<ScannedRobotEvent>(((IAdvancedRobotView) peer).getScannedRobotEvents());
+			return new Vector<ScannedRobotEvent>(((IAdvancedRobotPeer) peer).getScannedRobotEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -824,22 +804,21 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Checks if the gun is set to adjust for the robot turning, i.e. to turn
 	 * independent from the robot's body turn.
-	 * <p>
+	 * <p/>
 	 * This call returns {@code true} if the gun is set to turn independent of
 	 * the turn of the robot's body. Otherwise, {@code false} is returned,
 	 * meaning that the gun is set to turn with the robot's body turn.
 	 *
 	 * @return {@code true} if the gun is set to turn independent of the robot
-	 *    turning; {@code false} if the gun is set to turn with the robot
-	 *    turning
-	 *
+	 *         turning; {@code false} if the gun is set to turn with the robot
+	 *         turning
 	 * @see #setAdjustGunForRobotTurn(boolean)
 	 * @see #isAdjustRadarForRobotTurn()
 	 * @see #isAdjustRadarForGunTurn()
 	 */
 	public boolean isAdjustGunForRobotTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotView)peer).isAdjustGunForBodyTurn();
+			return ((IAdvancedRobotPeer) peer).isAdjustGunForBodyTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -848,22 +827,21 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Checks if the radar is set to adjust for the robot turning, i.e. to turn
 	 * independent from the robot's body turn.
-	 * <p>
+	 * <p/>
 	 * This call returns {@code true} if the radar is set to turn independent of
 	 * the turn of the robot. Otherwise, {@code false} is returned, meaning that
 	 * the radar is set to turn with the robot's turn.
 	 *
 	 * @return {@code true} if the radar is set to turn independent of the robot
-	 *    turning; {@code false} if the radar is set to turn with the robot
-	 *    turning
-	 *
+	 *         turning; {@code false} if the radar is set to turn with the robot
+	 *         turning
 	 * @see #setAdjustRadarForRobotTurn(boolean)
 	 * @see #isAdjustGunForRobotTurn()
 	 * @see #isAdjustRadarForGunTurn()
 	 */
 	public boolean isAdjustRadarForRobotTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotView)peer).isAdjustRadarForBodyTurn();
+			return ((IAdvancedRobotPeer) peer).isAdjustRadarForBodyTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -872,22 +850,21 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Checks if the radar is set to adjust for the gun turning, i.e. to turn
 	 * independent from the gun's turn.
-	 * <p>
+	 * <p/>
 	 * This call returns {@code true} if the radar is set to turn independent of
 	 * the turn of the gun. Otherwise, {@code false} is returned, meaning that
 	 * the radar is set to turn with the gun's turn.
 	 *
 	 * @return {@code true} if the radar is set to turn independent of the gun
-	 *    turning; {@code false} if the radar is set to turn with the gun
-	 *    turning
-	 *
+	 *         turning; {@code false} if the radar is set to turn with the gun
+	 *         turning
 	 * @see #setAdjustRadarForGunTurn(boolean)
 	 * @see #isAdjustGunForRobotTurn()
 	 * @see #isAdjustRadarForRobotTurn()
 	 */
 	public boolean isAdjustRadarForGunTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotView)peer).isAdjustRadarForGunTurn();
+			return ((IAdvancedRobotPeer) peer).isAdjustRadarForGunTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -900,13 +877,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Removes a custom event (specified by condition).
-	 * <p>
+	 * <p/>
 	 * See the sample robots for examples of use.
 	 *
 	 * @param condition the custom event to remove. Notice, that null is not
-	 *     allowed, and will cause a NullPointerException.
+	 *                  allowed, and will cause a NullPointerException.
 	 * @throws NullPointerException if the condition parameter has been set to null.
-	 *
 	 * @see #addCustomEvent
 	 */
 	public void removeCustomEvent(Condition condition) {
@@ -914,7 +890,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 			throw new NullPointerException("the condition cannot be null");
 		}
 		if (peer != null) {
-			((IAdvancedRobotView) peer).removeCustomEvent(condition);
+			((IAdvancedRobotPeer) peer).removeCustomEvent(condition);
 		} else {
 			uninitializedException();
 		}
@@ -922,54 +898,52 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Sets the priority of a class of events.
-	 * <p>
+	 * <p/>
 	 * Events are sent to the onXXX handlers in order of priority.
 	 * Higher priority events can interrupt lower priority events.
 	 * For events with the same priority, newer events are always sent first.
 	 * Valid priorities are 0 - 99, where 100 is reserved and 80 is the default
 	 * priority.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   setEventPriority("RobotDeathEvent", 15);
 	 * </pre>
-	 *
+	 * <p/>
 	 * The default priorities are, from highest to lowest:
 	 * <pre>
-	 *	 {@link WinEvent}:             100 (reserved)
-	 *	 {@link SkippedTurnEvent}:     100 (reserved)
-	 *	 {@link CustomEvent}:           80
-	 *	 {@link MessageEvent}:          75
-	 *	 {@link RobotDeathEvent}:       70
-	 *	 {@link BulletMissedEvent}:     60
-	 *	 {@link BulletHitBulletEvent}:  55
-	 *	 {@link BulletHitEvent}:        50
-	 *	 {@link HitByBulletEvent}:      40
-	 *	 {@link HitWallEvent}:          30
-	 *	 {@link HitRobotEvent}:         20
-	 *	 {@link ScannedRobotEvent}:     10
-	 *	 {@link DeathEvent}:            -1 (reserved)
+	 * 	 {@link WinEvent}:             100 (reserved)
+	 * 	 {@link SkippedTurnEvent}:     100 (reserved)
+	 * 	 {@link CustomEvent}:           80
+	 * 	 {@link MessageEvent}:          75
+	 * 	 {@link RobotDeathEvent}:       70
+	 * 	 {@link BulletMissedEvent}:     60
+	 * 	 {@link BulletHitBulletEvent}:  55
+	 * 	 {@link BulletHitEvent}:        50
+	 * 	 {@link HitByBulletEvent}:      40
+	 * 	 {@link HitWallEvent}:          30
+	 * 	 {@link HitRobotEvent}:         20
+	 * 	 {@link ScannedRobotEvent}:     10
+	 * 	 {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
-	 *
+	 * <p/>
 	 * Note that you cannot change the priority for events with the special
 	 * priority value -1 or 100 (reserved) as these event are system events.
 	 * Also note that you cannot change the priority of CustomEvent.
 	 * Instead you must change the priority of the condition(s) for your custom
-	 * event(s). 
+	 * event(s).
 	 *
 	 * @param eventClass the name of the event class (string) to set the
-	 *    priority for
-	 * @param priority the new priority for that event class
-	 *
+	 *                   priority for
+	 * @param priority   the new priority for that event class
 	 * @see Robot#setInterruptible
-	 * 
 	 * @since 1.5, the priority of DeathEvent was changed from 100 to -1 in
-	 *    order to let robots process pending events on its event queue before
-	 *    it dies. When the robot dies, it will not be able to process events.
+	 *        order to let robots process pending events on its event queue before
+	 *        it dies. When the robot dies, it will not be able to process events.
 	 */
 	public void setEventPriority(String eventClass, int priority) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setEventPriority(eventClass, priority);
+			((IAdvancedRobotPeer) peer).setEventPriority(eventClass, priority);
 		} else {
 			uninitializedException();
 		}
@@ -978,7 +952,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Call this during an event handler to allow new events of the same
 	 * priority to restart the event handler.
-	 *
+	 * <p/>
 	 * <p>Example:
 	 * <pre>
 	 *   onScannedRobot(ScannedRobotEvent e) {
@@ -994,13 +968,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param interruptible {@code true} if the event handler should be
-	 *    interrupted if new events of the same priority occurs; {@code false}
-	 *    otherwise
+	 *                      interrupted if new events of the same priority occurs; {@code false}
+	 *                      otherwise
 	 */
 	@Override
 	public void setInterruptible(boolean interruptible) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setInterruptible(interruptible);
+			((IAdvancedRobotPeer) peer).setInterruptible(interruptible);
 		} else {
 			uninitializedException();
 		}
@@ -1011,11 +985,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * should turn slower than {@link Rules#MAX_TURN_RATE} (10 degress/turn).
 	 *
 	 * @param newMaxTurnRate the new maximum turn rate of the robot measured in
-	 *    degrees. Valid values are 0 - {@link Rules#MAX_TURN_RATE}
+	 *                       degrees. Valid values are 0 - {@link Rules#MAX_TURN_RATE}
 	 */
 	public void setMaxTurnRate(double newMaxTurnRate) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setMaxTurnRate(newMaxTurnRate);
+			((IAdvancedRobotPeer) peer).setMaxTurnRate(newMaxTurnRate);
 		} else {
 			uninitializedException();
 		}
@@ -1026,11 +1000,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * should move slower than {@link Rules#MAX_VELOCITY} (8 pixels/turn).
 	 *
 	 * @param newMaxVelocity the new maximum turn rate of the robot measured in
-	 *    pixels/turn. Valid values are 0 - {@link Rules#MAX_VELOCITY}
+	 *                       pixels/turn. Valid values are 0 - {@link Rules#MAX_VELOCITY}
 	 */
 	public void setMaxVelocity(double newMaxVelocity) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setMaxVelocity(newMaxVelocity);
+			((IAdvancedRobotPeer) peer).setMaxVelocity(newMaxVelocity);
 		} else {
 			uninitializedException();
 		}
@@ -1039,7 +1013,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot to resume the movement stopped by {@link Robot#stop()
 	 * stop()} or {@link #setStop()}, if any.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link #execute()} or take an action that executes.
 	 *
@@ -1052,7 +1026,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setResume() {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setResume();
+			((IAdvancedRobotPeer) peer).setResume();
 		} else {
 			uninitializedException();
 		}
@@ -1062,10 +1036,10 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * This call is identical to {@link Robot#stop() stop()}, but returns
 	 * immediately, and will not execute until you call {@link #execute()} or
 	 * take an action that executes.
-	 * <p>
+	 * <p/>
 	 * If there is already movement saved from a previous stop, this will have
 	 * no effect.
-	 * <p>
+	 * <p/>
 	 * This call is equivalent to calling {@code setStop(false)};
 	 *
 	 * @see Robot#stop() stop()
@@ -1083,13 +1057,12 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * This call is identical to {@link Robot#stop(boolean) stop(boolean)}, but
 	 * returns immediately, and will not execute until you call
 	 * {@link #execute()} or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * If there is already movement saved from a previous stop, you can
 	 * overwrite it by calling {@code setStop(true)}.
 	 *
 	 * @param overwrite {@code true} if the movement saved from a previous stop
-	 *    should be overwritten; {@code false} otherwise.
-	 *
+	 *                  should be overwritten; {@code false} otherwise.
 	 * @see Robot#stop() stop()
 	 * @see Robot#stop(boolean) stop(boolean)
 	 * @see Robot#resume() resume()
@@ -1099,7 +1072,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void setStop(boolean overwrite) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setStop(overwrite);
+			((IAdvancedRobotPeer) peer).setStop(overwrite);
 		} else {
 			uninitializedException();
 		}
@@ -1108,36 +1081,35 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot's gun to turn left by degrees when the next execution
 	 * takes place.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot's gun is set to turn right
 	 * instead of left.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Set the gun to turn 180 degrees to the left
 	 *   setTurnGunLeft(180);
-	 *
+	 * <p/>
 	 *   // Set the gun to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnGunLeft(-90);
-	 *
+	 * <p/>
 	 *   ...
 	 *   // Executes the last setTurnGunLeft()
 	 *   execute();
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's gun to the left
-	 *    If this value is negative, the robot's gun is set to turn to the right
-	 *
+	 *                If this value is negative, the robot's gun is set to turn to the right
 	 * @see Robot#setAdjustGunForRobotTurn
 	 */
 	public void setTurnGunLeft(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnGun(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnGun(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1146,36 +1118,35 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot's gun to turn right by degrees when the next execution
 	 * takes place.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot's gun is set to turn left
 	 * instead of right.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Set the gun to turn 180 degrees to the right
 	 *   setTurnGunRight(180);
-	 *
+	 * <p/>
 	 *   // Set the gun to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnGunRight(-90);
-	 *
+	 * <p/>
 	 *   ...
 	 *   // Executes the last setTurnGunRight()
 	 *   execute();
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's gun to the right
-	 *    If this value is negative, the robot's gun is set to turn to the left
-	 *
+	 *                If this value is negative, the robot's gun is set to turn to the left
 	 * @see Robot#setAdjustGunForRobotTurn
 	 */
 	public void setTurnGunRight(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnGun(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnGun(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1184,37 +1155,36 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot's radar to turn left by degrees when the next execution
 	 * takes place.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot's radar is set to turn right
 	 * instead of left.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Set the radar to turn 180 degrees to the left
 	 *   setTurnRadarLeft(180);
-	 *
+	 * <p/>
 	 *   // Set the radar to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnRadarLeft(-90);
-	 *
+	 * <p/>
 	 *   ...
 	 *   // Executes the last setTurnRadarLeft()
 	 *   execute();
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's radar to the left
-	 *    If this value is negative, the robot's radar is set to turn to the right
-	 *
+	 *                If this value is negative, the robot's radar is set to turn to the right
 	 * @see Robot#setAdjustRadarForRobotTurn
 	 * @see Robot#setAdjustRadarForGunTurn
 	 */
 	public void setTurnRadarLeft(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnRadar(-Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnRadar(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1223,37 +1193,36 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Sets the robot's radar to turn right by degrees when the next execution
 	 * takes place.
-	 * <p>
+	 * <p/>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p>
+	 * <p/>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot's radar is set to turn left
 	 * instead of right.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Set the radar to turn 180 degrees to the right
 	 *   setTurnRadarRight(180);
-	 *
+	 * <p/>
 	 *   // Set the radar to turn 90 degrees to the right instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnRadarRight(-90);
-	 *
+	 * <p/>
 	 *   ...
 	 *   // Executes the last setTurnRadarRight()
 	 *   execute();
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's radar to the right
-	 *    If this value is negative, the robot's radar is set to turn to the left
-	 *
+	 *                If this value is negative, the robot's radar is set to turn to the left
 	 * @see Robot#setAdjustRadarForRobotTurn
 	 * @see Robot#setAdjustRadarForGunTurn
 	 */
 	public void setTurnRadarRight(double degrees) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).setTurnRadar(Math.toRadians(degrees));
+			((IAdvancedRobotPeer) peer).setTurnRadar(Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1261,16 +1230,16 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Does not return until a {@link Condition#test()} returns {@code true}.
-	 * <p>
+	 * <p/>
 	 * This call executes immediately.
-	 * <p>
+	 * <p/>
 	 * See the example robots for usage.
 	 *
 	 * @param condition the condition that must be met before this call returns
 	 */
 	public void waitFor(Condition condition) {
 		if (peer != null) {
-			((IAdvancedRobotView) peer).waitFor(condition);
+			((IAdvancedRobotPeer) peer).waitFor(condition);
 		} else {
 			uninitializedException();
 		}
@@ -1278,14 +1247,13 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * This method is called if your robot dies.
-	 * <p>
+	 * <p/>
 	 * You should override it in your robot if you want to be informed of this
 	 * event. Actions will have no effect if called from this section. The
 	 * intent is to allow you to perform calculations or print something out
 	 * when the robot is killed.
 	 *
 	 * @param event the death event set by the game
-	 *
 	 * @see DeathEvent
 	 * @see Event
 	 */
@@ -1299,7 +1267,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Do not call this method!
-	 * <p>
+	 * <p/>
 	 * {@inheritDoc}
 	 */
 	public final IAdvancedEvents getAdvancedEventListener() {

@@ -11,23 +11,23 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 
 import robocode.peer.IRobotRobotPeer;
-import robocode.robotinterfaces.peer.IJuniorRobotView;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class JuniorRobotView extends BasicRobotView implements IJuniorRobotView {
+public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPeer {
 
-	public JuniorRobotView(IRobotRobotPeer peer) {
+	public JuniorRobotProxy(IRobotRobotPeer peer) {
 		super(peer);
 	}
 
 	public void turnAndMove(double distance, double radians) {
-		i_turnAndMove(distance, radians);
+		turnAndMoveImplementation(distance, radians);
 	}
 }

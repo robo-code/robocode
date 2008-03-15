@@ -24,8 +24,11 @@
 package robocode.manager;
 
 
+import robocode.dialog.WindowUtil;
+import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -33,11 +36,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
-
-import javax.swing.JOptionPane;
-
-import robocode.dialog.WindowUtil;
-import robocode.io.FileUtil;
 
 
 /**
@@ -113,7 +111,7 @@ public final class VersionManager {
 			String curVersLine = getVersion();
 
 			boolean newVersionAvailable = false;
-			
+
 			if (newVersLine != null && curVersLine != null) {
 				Version newVersion = new Version(newVersLine);
 
@@ -317,7 +315,7 @@ class Version implements Comparable<Object> {
 				if (split2.length == 1) {
 					return -1;
 				}
-				
+
 				split1 = split1[1].split(" ", 2);
 				split2 = split2[1].split(" ", 2);
 
@@ -341,7 +339,7 @@ class Version implements Comparable<Object> {
 			split1[0] = split1[0].trim();
 			split2[0] = split2[0].trim();
 			int compare = split1[0].compareToIgnoreCase(split2[0]);
-			
+
 			if (compare == 0) {
 				if (split1.length == 1) {
 					return -1;
@@ -379,12 +377,12 @@ class Version implements Comparable<Object> {
 				return compare;
 			}
 			return compare;
-			
+
 		} else {
 			throw new IllegalArgumentException("The input object must be a String or Version object");
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return version;

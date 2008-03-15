@@ -74,7 +74,6 @@ public class Utils {
 	 *
 	 * @param angle the angle to normalize
 	 * @return the normalized angle that will be in the range of [0,2*PI[
-	 *
 	 * @see #normalAbsoluteAngle(double)
 	 * @see #isNear(double, double)
 	 */
@@ -112,7 +111,7 @@ public class Utils {
 	 * @param value1 the first double value
 	 * @param value2 the second double value
 	 * @return <code>true</code> if the two doubles are near to each other;
-	 *    <code>false</code> otherwise.
+	 *         <code>false</code> otherwise.
 	 */
 	public static boolean isNear(double value1, double value2) {
 		return (Math.abs(value1 - value2) < .00001);

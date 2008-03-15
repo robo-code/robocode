@@ -56,8 +56,9 @@ public class RobotClassManager {
 
 	/**
 	 * RobotClassHandler constructor
-     * @param robotFileSpecification specification
-     */
+	 *
+	 * @param robotFileSpecification specification
+	 */
 	public RobotClassManager(RobotFileSpecification robotFileSpecification) {
 		this(robotFileSpecification, null);
 	}

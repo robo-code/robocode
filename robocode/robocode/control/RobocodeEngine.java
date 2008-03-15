@@ -32,13 +32,6 @@
 package robocode.control;
 
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.security.Policy;
-import java.util.List;
-
 import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -50,16 +43,22 @@ import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.security.Policy;
+import java.util.List;
+
 
 /**
  * RobocodeEngine - Class for controlling Robocode.
- * 
- * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
- * 
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public class RobocodeEngine {
 	private RobocodeListener listener;
@@ -80,9 +79,9 @@ public class RobocodeEngine {
 
 	/**
 	 * Creates a new RobocodeEngine
-	 * 
+	 *
 	 * @param robocodeHome should be the root robocode directory (i.e. c:\robocode)
-	 * @param listener Your listener
+	 * @param listener     Your listener
 	 */
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
 		init(robocodeHome, listener);
@@ -90,6 +89,7 @@ public class RobocodeEngine {
 
 	/**
 	 * Creates a new RobocodeEngine using robocode.jar to determine the robocodeHome file.
+	 *
 	 * @param listener Your listener
 	 */
 	public RobocodeEngine(RobocodeListener listener) {
@@ -152,7 +152,7 @@ public class RobocodeEngine {
 
 	/**
 	 * Returns the installed version of Robocode.
-	 * 
+	 *
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
@@ -179,7 +179,7 @@ public class RobocodeEngine {
 
 	/**
 	 * Gets a list of robots available for battle.
-	 * 
+	 *
 	 * @return An array of all available robots.
 	 */
 	public RobotSpecification[] getLocalRepository() {

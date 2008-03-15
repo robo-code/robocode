@@ -28,6 +28,9 @@ package robocode.security;
 
 
 import static robocode.io.Logger.log;
+import robocode.packager.ClassAnalyzer;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.RobotFileSpecification;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -38,10 +41,6 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import robocode.packager.ClassAnalyzer;
-import robocode.peer.robot.RobotClassManager;
-import robocode.repository.RobotFileSpecification;
 
 
 /**
@@ -123,7 +122,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		if (cachedClasses.containsKey(name)) {
 			return cachedClasses.get(name);
 		}
-		
+
 		Class<?> c = null;
 		File f = null;
 

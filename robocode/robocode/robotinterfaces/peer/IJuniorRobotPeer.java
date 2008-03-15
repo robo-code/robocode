@@ -14,31 +14,17 @@
 package robocode.robotinterfaces.peer;
 
 
-import robocode.MessageEvent;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.List;
-
-
 /**
- * The team robot peer for team robots like {@link robocode.TeamRobot}.
- * <p>
+ * The junior robot peer for junior robot types like {@link robocode.JuniorRobot}.
+ * <p/>
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
  *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (javadoc)
- *
  * @since 1.6
  */
-public interface ITeamRobotView extends IAdvancedRobotView {
-	// team
-	String[] getTeammates();
-	boolean isTeammate(String name);
-	void sendMessage(String name, Serializable message) throws IOException;
-	void broadcastMessage(Serializable message) throws IOException;
+public interface IJuniorRobotPeer extends IBasicRobotPeer {
 
-	// events
-	List<MessageEvent> getMessageEvents();
+	void turnAndMove(double distance, double radians);
 }

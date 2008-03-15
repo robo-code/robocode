@@ -68,7 +68,7 @@ public class FileUtil {
 	 *
 	 * @param file the file
 	 * @return the file type of the file, e.g. ".class", ".jar" or "" if the
-	 *    file name does not contain an extension.
+	 *         file name does not contain an extension.
 	 */
 	public static String getFileType(File file) {
 		return getFileType(file.getName());
@@ -79,7 +79,7 @@ public class FileUtil {
 	 *
 	 * @param file the file name
 	 * @return the file type of the file name, e.g. ".class", ".jar" or "" if
-	 *    the file name does not contain an extension.
+	 *         the file name does not contain an extension.
 	 */
 	public static String getFileType(String fileName) {
 		int lastdot = fileName.lastIndexOf('.');
@@ -109,11 +109,11 @@ public class FileUtil {
 
 	/**
 	 * Copies a file into another file.
-	 * 
-	 * @param inFile the input file to copy
+	 *
+	 * @param inFile  the input file to copy
 	 * @param outFile the output file to copy to
 	 * @return {@code true} if the file was copies succesfully; {@code false}
-	 *    otherwise.
+	 *         otherwise.
 	 * @throws IOException
 	 */
 	public static void copy(File srcFile, File destFile) throws IOException {
@@ -129,7 +129,7 @@ public class FileUtil {
 		try {
 			in = new FileInputStream(srcFile);
 			out = new FileOutputStream(destFile);
-	
+
 			while (in.available() > 0) {
 				out.write(buf, 0, in.read(buf, 0, buf.length));
 			}
@@ -148,7 +148,7 @@ public class FileUtil {
 	 *
 	 * @param dir the file for the directory to delete
 	 * @return <code>true</code> if the directory was deleted;
-	 *    <code>false</code> otherwise if e.g. the file is not a directory
+	 *         <code>false</code> otherwise if e.g. the file is not a directory
 	 */
 	public static boolean deleteDir(File dir) {
 		if (!dir.isDirectory()) {
@@ -236,7 +236,7 @@ public class FileUtil {
 	public static File getConfigDir() {
 		return createDir(new File(cwd, "/config"));
 	}
-	
+
 	/**
 	 * Returns the Robocode configuration file.
 	 *

@@ -38,14 +38,13 @@ import robocode.security.RobocodeSecurityManager;
  * creating an inner class -- so if you distribute your robot, there will be
  * multiple class files.  (i.e. Target$1.class)
  *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Nathaniel Troutman (contributor)
  * @see AdvancedRobot#waitFor
  * @see AdvancedRobot#addCustomEvent
  * @see AdvancedRobot#removeCustomEvent
  * @see AdvancedRobot#onCustomEvent
- *
- * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
- * @author Nathaniel Troutman (contributor)
  */
 public abstract class Condition {
 
@@ -67,7 +66,7 @@ public abstract class Condition {
 	/**
 	 * Creates a new Condition with the specified name, and default priority,
 	 * which is 80.
-	 * 
+	 *
 	 * @param name the name for the new Condition
 	 */
 	public Condition(String name) {
@@ -79,7 +78,7 @@ public abstract class Condition {
 	 * A condition priority is a value from 0 - 99. The higher value, the
 	 * higher priority. The default priority is 80.
 	 *
-	 * @param name the name for the new condition
+	 * @param name     the name for the new condition
 	 * @param priority the priority of the new condition
 	 */
 	public Condition(String name, int priority) {
@@ -110,7 +109,7 @@ public abstract class Condition {
 
 	/**
 	 * Returns the name of this condition.
-	 * 
+	 *
 	 * @return the name of this condition
 	 */
 	public String getName() {
@@ -153,11 +152,11 @@ public abstract class Condition {
 	 * The game will call your test() function, and take action if it returns
 	 * {@code true}. This is valid for both {@link AdvancedRobot#waitFor} and
 	 * {@link AdvancedRobot#addCustomEvent}.
-	 * <p>
+	 * <p/>
 	 * You may not take any actions inside of test().
 	 *
 	 * @return {@code true} if the condition has been met, {@code false}
-	 *    otherwise.
+	 *         otherwise.
 	 */
 	public abstract boolean test();
 

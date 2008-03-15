@@ -43,20 +43,21 @@ public class Event implements Comparable<Event> {
 	 * Compares this event to another event regarding precedence.
 	 * The event precedence is first and foremost determined by the event time,
 	 * secondly the event priority, and lastly specific event information.
-	 * <p>
+	 * <p/>
 	 * This method will first compare the time of each event. If the event time
 	 * is the same for both events, then this method compared the priority of
 	 * each event. If the event priorities are equals, then this method will
 	 * compare the two event based on specific event information.
-	 * <p>
+	 * <p/>
 	 * This method is called by the game in order to sort the event queue of a
 	 * robot to make sure the events are listed in chronological order.
-	 * <p>
+	 * <p/>
+	 *
 	 * @param event the event to compare to this event.
 	 * @return a negative value if this event has higher precedence, i.e. must
-	 *    be listed before the specified event. A positive value if this event
-	 *    has a lower precedence, i.e. must be listed after the specified event.
-	 *    0 means that the precedence of the two events are equal.
+	 *         be listed before the specified event. A positive value if this event
+	 *         has a lower precedence, i.e. must be listed after the specified event.
+	 *         0 means that the precedence of the two events are equal.
 	 */
 	public int compareTo(Event event) {
 		// Compare the time difference which has precedence over priority.
@@ -81,7 +82,7 @@ public class Event implements Comparable<Event> {
 			return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
 		}
 		// Compare the isMyFault, if the events are HitRobotEvents
-		// The isMyFault has higher priority when it is set compared to when it is not set 
+		// The isMyFault has higher priority when it is set compared to when it is not set
 		if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
 			int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
 			int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
@@ -116,12 +117,11 @@ public class Event implements Comparable<Event> {
 	/**
 	 * Called by the game to set the priority of an event to the priority your
 	 * robot specified for this type of event (or the default priority).
-	 * <p>
+	 * <p/>
 	 * An event priority is a value from 0 - 99. The higher value, the higher
 	 * priority. The default priority is 80.
 	 *
 	 * @param newPriority the new priority of this event
-	 *
 	 * @see AdvancedRobot#setEventPriority
 	 */
 	public void setPriority(int newPriority) {
@@ -130,7 +130,7 @@ public class Event implements Comparable<Event> {
 
 	/**
 	 * Called by the game to set the time this event occurred.
-	 * 
+	 *
 	 * @param newTime the time this event occured
 	 */
 	public void setTime(long newTime) {

@@ -12,8 +12,8 @@
 package robocode.editor;
 
 
-import javax.swing.text.View;
 import javax.swing.text.Element;
+import javax.swing.text.View;
 
 
 /**
@@ -25,7 +25,7 @@ public class RobocodeViewFactory implements javax.swing.text.ViewFactory {
 	 * Creates a view from the given structural element of a
 	 * document.
 	 *
-	 * @param elem  the piece of the document to build a view of
+	 * @param elem the piece of the document to build a view of
 	 * @return the view
 	 * @see View
 	 */

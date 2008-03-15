@@ -11,11 +11,12 @@
  *******************************************************************************/
 package robocode;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public final class KeyTypedEvent extends KeyEvent{
-    public KeyTypedEvent(java.awt.event.KeyEvent inner){
-        super(inner);
-    }
+public final class KeyTypedEvent extends KeyEvent {
+	public KeyTypedEvent(java.awt.event.KeyEvent inner) {
+		super(inner);
+	}
 }

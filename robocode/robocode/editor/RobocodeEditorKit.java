@@ -12,16 +12,15 @@
 package robocode.editor;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.Writer;
-
-import javax.swing.Action;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 import javax.swing.text.ViewFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.Writer;
 
 
 /**
@@ -104,6 +103,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	/**
 	 * Insert the method's description here.
 	 * Creation date: (4/18/2001 5:05:58 PM)
+	 *
 	 * @return robocode.editor.EditWindow
 	 */
 	public EditWindow getEditWindow() {
@@ -130,10 +130,10 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @param in  The stream to read from
 	 * @param doc The destination for the insertion.
 	 * @param pos The location in the document to place the
-	 *   content >= 0.
-	 * @exception IOException on any I/O error
-	 * @exception BadLocationException if pos represents an invalid
-	 *   location within the document.
+	 *            content >= 0.
+	 * @throws IOException          on any I/O error
+	 * @throws BadLocationException if pos represents an invalid
+	 *                              location within the document.
 	 */
 	@Override
 	public void read(InputStream in, Document doc, int pos) throws IOException, BadLocationException {
@@ -144,7 +144,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * Inserts content from the given stream which is expected
 	 * to be in a format appropriate for this kind of content
 	 * handler.
-	 * <p>
+	 * <p/>
 	 * Since actual text editing is unicode based, this would
 	 * generally be the preferred way to read in the data.
 	 * Some types of content are stored in an 8-bit form however,
@@ -153,10 +153,10 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @param in  The stream to read from
 	 * @param doc The destination for the insertion.
 	 * @param pos The location in the document to place the
-	 *   content >= 0.
-	 * @exception IOException on any I/O error
-	 * @exception BadLocationException if pos represents an invalid
-	 *   location within the document.
+	 *            content >= 0.
+	 * @throws IOException          on any I/O error
+	 * @throws BadLocationException if pos represents an invalid
+	 *                              location within the document.
 	 */
 	@Override
 	public void read(Reader in, Document doc, int pos) throws IOException, BadLocationException {
@@ -171,14 +171,14 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * Writes content from a document to the given stream
 	 * in a format appropriate for this kind of content handler.
 	 *
-	 * @param out  The stream to write to
+	 * @param out The stream to write to
 	 * @param doc The source for the write.
 	 * @param pos The location in the document to fetch the
-	 *   content from >= 0.
+	 *            content from >= 0.
 	 * @param len The amount to write out >= 0.
-	 * @exception IOException on any I/O error
-	 * @exception BadLocationException if pos represents an invalid
-	 *   location within the document.
+	 * @throws IOException          on any I/O error
+	 * @throws BadLocationException if pos represents an invalid
+	 *                              location within the document.
 	 */
 	@Override
 	public void write(java.io.OutputStream out, javax.swing.text.Document doc, int pos, int len) throws java.io.IOException, javax.swing.text.BadLocationException {
@@ -188,20 +188,20 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	/**
 	 * Writes content from a document to the given stream
 	 * in a format appropriate for this kind of content handler.
-	 * <p>
+	 * <p/>
 	 * Since actual text editing is unicode based, this would
 	 * generally be the preferred way to write the data.
 	 * Some types of content are stored in an 8-bit form however,
 	 * and will favor the OutputStream.
 	 *
-	 * @param out  The stream to write to
+	 * @param out The stream to write to
 	 * @param doc The source for the write.
 	 * @param pos The location in the document to fetch the
-	 *   content >= 0.
+	 *            content >= 0.
 	 * @param len The amount to write out >= 0.
-	 * @exception IOException on any I/O error
-	 * @exception BadLocationException if pos represents an invalid
-	 *   location within the document.
+	 * @throws IOException          on any I/O error
+	 * @throws BadLocationException if pos represents an invalid
+	 *                              location within the document.
 	 */
 	@Override
 	public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {

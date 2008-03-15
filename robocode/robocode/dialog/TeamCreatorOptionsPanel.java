@@ -20,21 +20,18 @@
 package robocode.dialog;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.net.URL;
-import java.util.List;
+import robocode.repository.FileSpecification;
+import robocode.text.LimitedClassnameDocument;
+import robocode.text.LimitedDocument;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import robocode.repository.FileSpecification;
-import robocode.text.LimitedClassnameDocument;
-import robocode.text.LimitedDocument;
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.net.URL;
+import java.util.List;
 
 
 /**

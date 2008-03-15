@@ -44,8 +44,7 @@ public class RobotThreadManager {
 		if (runThread != null && runThread.isAlive()) {
 			try {
 				runThread.setPriority(Thread.MIN_PRIORITY);
-			} catch (NullPointerException e) {
-				; // Work-around: Sometimes this occurs in the Java core?!
+			} catch (NullPointerException e) {// Work-around: Sometimes this occurs in the Java core?!
 			}
 			runThread.interrupt();
 			try {
@@ -60,7 +59,7 @@ public class RobotThreadManager {
 			try {
 				runThread.join(5000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();				
+				e.printStackTrace();
 			}
 			if (runThread.isAlive()) {
 				log("Warning!  Unable to stop thread: " + runThread.getName());
@@ -78,7 +77,7 @@ public class RobotThreadManager {
 		}
 
 		if (numThreads != 0) {
-            robotPeer.forceStop();
+			robotPeer.forceStop();
 			robotPeer.getOut().println(
 					"SYSTEM:  You still have " + numThreads + " running threads.  No score will be generated.");
 		}
@@ -170,9 +169,6 @@ public class RobotThreadManager {
 
 	@SuppressWarnings("deprecation")
 	private void stopThread(Thread t) {
-		//TODO ZAMO synchronizet (runThread) 
-        {
-			t.stop();
-		}
+		t.stop();
 	}
 }

@@ -9,149 +9,144 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 
 import robocode.peer.IRobotRobotPeer;
 import robocode.peer.robot.IRobotEventManager;
-import robocode.robotinterfaces.peer.IStandardRobotView;
+import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class StandardRobotView extends BasicRobotView implements IStandardRobotView {
+public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobotPeer {
 
-	public StandardRobotView(IRobotRobotPeer peer) {
+	public StandardRobotProxy(IRobotRobotPeer peer) {
 		super(peer);
 	}
 
 	// blocking actions
 	public void stop(boolean overwrite) {
-        peer.checkNoLock();
+		peer.checkNoLock();
 
-        i_setStop(overwrite);
-        execute();
+		setStopImplementation(overwrite);
+		execute();
 	}
 
 	public void resume() {
-        peer.checkNoLock();
+		peer.checkNoLock();
 
-        i_setResume();
-        execute();
+		setResumeImplementation();
+		execute();
 	}
 
 	public void scanReset() {
-        peer.checkNoLock();
+		peer.checkNoLock();
 
-        boolean reset = false;
-        boolean resetValue = false;
+		boolean reset = false;
+		boolean resetValue = false;
 
-        IRobotEventManager robotEventManager = peer.getRobotEventManager();
-        if (robotEventManager.getCurrentTopEventPriority() == robotEventManager.getScannedRobotEventPriority()) {
-            reset = true;
-            resetValue = robotEventManager.getInterruptible(robotEventManager.getScannedRobotEventPriority());
-            robotEventManager.setInterruptible(robotEventManager.getScannedRobotEventPriority(), true);
-        }
+		IRobotEventManager robotEventManager = peer.getRobotEventManager();
 
-        status.setScanSync(true);
-        execute();
-        if (reset) {
-            robotEventManager.setInterruptible(robotEventManager.getScannedRobotEventPriority(), resetValue);
-        }
+		if (robotEventManager.getCurrentTopEventPriority() == robotEventManager.getScannedRobotEventPriority()) {
+			reset = true;
+			resetValue = robotEventManager.getInterruptible(robotEventManager.getScannedRobotEventPriority());
+			robotEventManager.setInterruptible(robotEventManager.getScannedRobotEventPriority(), true);
+		}
+
+		status.setScanSync(true);
+		execute();
+		if (reset) {
+			robotEventManager.setInterruptible(robotEventManager.getScannedRobotEventPriority(), resetValue);
+		}
 	}
 
 	public void turnRadar(double radians) {
-        peer.checkNoLock();
+		peer.checkNoLock();
 
-        i_setTurnRadar(radians);
-        do {
-            execute(); // Always tick at least once
-        } while (commands.getRadarTurnRemainingSync() != 0);
+		setTurnRadarImplementation(radians);
+		do {
+			execute(); // Always tick at least once
+		} while (commands.getRadarTurnRemainingSync() != 0);
 	}
 
 	// fast setters
 	public void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
 		setCall();
-        peer.lockWrite();
-        try{
-            commands.setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
-        }
-        finally{
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			commands.setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
 	public void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
 		setCall();
-        peer.lockWrite();
-        try{
-            commands.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
-        }
-        finally{
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			commands.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
 	public void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
 		setCall();
-        peer.lockWrite();
-        try{
-            commands.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
-        }
-        finally{
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			commands.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
-    // // // //  // // // // // // // // // // // // // // // // // // // // // // // //
-    // private implementations
-    // // // //  // // // // // // // // // // // // // // // // // // // // // // // //
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
+	// private implementations
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
-    protected final void i_setTurnRadar(double radians) {
-        peer.lockWrite();
-        try{
-            commands.setRadarTurnRemaining(radians);
-        }
-        finally{
-            peer.unlockWrite();
-        }
-    }
+	protected final void setTurnRadarImplementation(double radians) {
+		peer.lockWrite();
+		try {
+			commands.setRadarTurnRemaining(radians);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    protected final void i_setStop(boolean overwrite) {
-        peer.lockWrite();
-        try{
-            if (!commands.isStopped() || overwrite) {
-                commands.setSaveDistanceToGo(commands.getDistanceRemaining());
-                commands.setSaveAngleToTurn(commands.getTurnRemaining());
-                commands.setSaveGunAngleToTurn(commands.getGunTurnRemaining());
-                commands.setSaveRadarAngleToTurn(commands.getRadarTurnRemaining());
-            }
-            commands.setStopped(true);
-            commands.setDistanceRemaining(0);
-            commands.setTurnRemaining(0);
-            commands.setGunTurnRemaining(0);
-            commands.setRadarTurnRemaining(0);
-        }
-        finally{
-            peer.unlockWrite();
-        }
-    }
+	protected final void setStopImplementation(boolean overwrite) {
+		peer.lockWrite();
+		try {
+			if (!commands.isStopped() || overwrite) {
+				commands.setSaveDistanceToGo(commands.getDistanceRemaining());
+				commands.setSaveAngleToTurn(commands.getTurnRemaining());
+				commands.setSaveGunAngleToTurn(commands.getGunTurnRemaining());
+				commands.setSaveRadarAngleToTurn(commands.getRadarTurnRemaining());
+			}
+			commands.setStopped(true);
+			commands.setDistanceRemaining(0);
+			commands.setTurnRemaining(0);
+			commands.setGunTurnRemaining(0);
+			commands.setRadarTurnRemaining(0);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    protected final void i_setResume() {
-        peer.lockWrite();
-        try{
-            if (commands.isStopped()) {
-                commands.setStopped(false);
-                commands.setDistanceRemaining(commands.getSaveDistanceToGo());
-                commands.setTurnRemaining(commands.getSaveAngleToTurn());
-                commands.setGunTurnRemaining(commands.getSaveGunAngleToTurn());
-                commands.setRadarTurnRemaining(commands.getSaveRadarAngleToTurn());
-            }
-        }
-        finally{
-            peer.unlockWrite();
-        }
-    }
+	protected final void setResumeImplementation() {
+		peer.lockWrite();
+		try {
+			if (commands.isStopped()) {
+				commands.setStopped(false);
+				commands.setDistanceRemaining(commands.getSaveDistanceToGo());
+				commands.setTurnRemaining(commands.getSaveAngleToTurn());
+				commands.setGunTurnRemaining(commands.getSaveGunAngleToTurn());
+				commands.setRadarTurnRemaining(commands.getSaveRadarAngleToTurn());
+			}
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
 }

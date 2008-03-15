@@ -22,22 +22,16 @@
 package robocode.editor;
 
 
-import static robocode.io.Logger.log;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
-
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import robocode.dialog.ConsoleDialog;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
+import static robocode.io.Logger.log;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 
 /**
@@ -131,10 +125,10 @@ public class RobocodeCompilerFactory {
 
 					try {
 						fos = new FileOutputStream(out);
-	
+
 						int num = 0;
 						int count = 0;
-	
+
 						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
 							fos.write(buf, 0, num);
 							index += num;

@@ -37,7 +37,7 @@ public class BattlefieldSpecification implements java.io.Serializable {
 	/**
 	 * Creates a battlefield of any width and height.
 	 *
-	 * @param width Width of this battlefield
+	 * @param width  Width of this battlefield
 	 * @param height Height of this battlefield
 	 */
 	public BattlefieldSpecification(int width, int height) {

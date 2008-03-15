@@ -29,10 +29,6 @@
 package robocode;
 
 
-import java.awt.Frame;
-import java.io.File;
-import java.security.Policy;
-
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -42,15 +38,18 @@ import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
 
+import java.awt.*;
+import java.io.File;
+import java.security.Policy;
+
 
 /**
  * Robocode - A programming game involving battling AI tanks.<br>
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
  *
- * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
- *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public class Robocode {
 
@@ -178,7 +177,7 @@ public class Robocode {
 
 			if (battleFilename != null) {
 				robocode.manager.BattleManager battleManager = manager.getBattleManager();
-				
+
 				battleManager.setBattleFilename(battleFilename);
 				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.loadBattleProperties();
@@ -225,26 +224,21 @@ public class Robocode {
 
 	private void printUsage() {
 		System.out.print(
-				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n" +
-				"                [-minimize] [-nodisplay] [-nosound]]\n" +
-				"\n" +
-				"where options include:\n" +
-				"    -cwd <path>             Change the current working directory\n" +
-				"    -battle <battle file>   Run the battle specified in a battle file\n" +
-				"    -results <file>         Save results to the specified text file\n" +
-				"    -tps <tps>              Set the TPS (Turns Per Second) to use\n" +
-				"    -minimize               Run minimized when Robocode starts\n" +
-				"    -nodisplay              Run with the display / GUI disabled\n" +
-				"    -nosound                Run with sound disabled\n" +
-				"\n" +
-				"properties include:\n" +
-				"    -DWORKINGDIRECTORY=<path>  Set the working directory\n" +
-				"    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n" +
-				"    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n" +
-				"    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n" +
-				"    -Ddebug=true|false         Enable or disable System.err messages\n" +
-				"    -EXPERIMENTAL=true|false   Enable or disable new robot interfaces\n" +
-				"\n");
+				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
+						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
+						+ "    -cwd <path>             Change the current working directory\n"
+						+ "    -battle <battle file>   Run the battle specified in a battle file\n"
+						+ "    -results <file>         Save results to the specified text file\n"
+						+ "    -tps <tps>              Set the TPS (Turns Per Second) to use\n"
+						+ "    -minimize               Run minimized when Robocode starts\n"
+						+ "    -nodisplay              Run with the display / GUI disabled\n"
+						+ "    -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
+						+ "    -DWORKINGDIRECTORY=<path>  Set the working directory\n"
+						+ "    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
+						+ "    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
+						+ "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
+						+ "    -Ddebug=true|false         Enable or disable System.err messages\n"
+						+ "    -EXPERIMENTAL=true|false   Enable or disable new robot interfaces\n" + "\n");
 	}
 
 	/**

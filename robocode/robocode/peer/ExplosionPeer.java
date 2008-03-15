@@ -43,41 +43,40 @@ import java.util.List;
  */
 public class ExplosionPeer extends BulletPeer {
 
-    private static final int EXPLOSION_LENGTH = 71;
+	private static final int EXPLOSION_LENGTH = 71;
 
-    public ExplosionPeer(IBattleRobotProxy owner, Battle battle) {
-        super(owner, battle);
+	public ExplosionPeer(IBattleRobotProxy owner, Battle battle) {
+		super(owner, battle);
 
-        x = owner.getX();
-        y = owner.getY();
-        victim = owner;
-        power = 1;
-        state = STATE_EXPLODED;
-        explosionImageIndex = 1;
-    }
+		x = owner.getX();
+		y = owner.getY();
+		victim = owner;
+		power = 1;
+		state = STATE_EXPLODED;
+		explosionImageIndex = 1;
+	}
 
-    public ExplosionPeer(IBattleRobotProxy owner, Battle battle, BulletRecord br) {
-        super(owner, battle, br);
+	public ExplosionPeer(IBattleRobotProxy owner, Battle battle, BulletRecord br) {
+		super(owner, battle, br);
 
-        victim = owner;
-        power = 1;
-        state = STATE_EXPLODED;
-        explosionImageIndex = 1;
-    }
+		victim = owner;
+		power = 1;
+		state = STATE_EXPLODED;
+		explosionImageIndex = 1;
+	}
 
-    @Override
-    //TODO ZAMO synchronizet  
-    public final void update(List<IBattleRobotProxy> robots, List<IBattleBulletProxy> allBullets) {
-        x = owner.getX();
-        y = owner.getY();
+	@Override
+	public final void update(List<IBattleRobotProxy> robots, List<IBattleBulletProxy> allBullets) {
+		x = owner.getX();
+		y = owner.getY();
 
-        nextFrame();
+		nextFrame();
 
-        updateBulletState();
-    }
+		updateBulletState();
+	}
 
-    @Override
-    protected int getExplosionLength() {
-        return EXPLOSION_LENGTH;
-    }
+	@Override
+	protected int getExplosionLength() {
+		return EXPLOSION_LENGTH;
+	}
 }

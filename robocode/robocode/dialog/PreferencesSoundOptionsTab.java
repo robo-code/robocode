@@ -12,16 +12,15 @@
 package robocode.dialog;
 
 
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
+
+import javax.sound.sampled.*;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
-
-import javax.sound.sampled.*;
-import javax.swing.*;
-
-import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
 
 
 /**
@@ -441,7 +440,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 		boolean volumeSupported;
 		boolean panSupported;
-		
+
 		try {
 			Line line = mixer.getLine(lineInfo);
 
@@ -470,7 +469,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 
 			if (mi != null) {
 				String text = mi.getName();
-		
+
 				if (!"Unknown Version".equals(mi.getVersion())) {
 					text += ' ' + mi.getVersion();
 				}

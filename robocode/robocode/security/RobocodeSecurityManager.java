@@ -26,15 +26,15 @@
 package robocode.security;
 
 
-import java.io.*;
-import java.security.AccessControlException;
-import java.security.Permission;
-import java.util.*;
-
 import robocode.RobocodeFileOutputStream;
 import robocode.manager.ThreadManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
+
+import java.io.*;
+import java.security.AccessControlException;
+import java.security.Permission;
+import java.util.*;
 
 
 /**
@@ -95,7 +95,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (robotPeer == null) {
 			robotPeer = threadManager.getLoadingRobotPeer(c);
 			if (robotPeer != null) {
-				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access to thread: " + t.getName());
+				throw new AccessControlException(
+						"Preventing " + robotPeer.getName() + " from access to thread: " + t.getName());
 			}
 			checkPermission(new RuntimePermission("modifyThread"));
 			return;
@@ -214,7 +215,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// For development purposes, allow read any file if override is set.
 		if (perm instanceof FilePermission) {
 			FilePermission fp = (FilePermission) perm;
-			
+
 			if (fp.getActions().equals("read")) {
 				if (System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals("true")) {
 					return;
@@ -306,7 +307,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 				if (o == null) {
 					robotPeer.forceUncharge();
 					throw new AccessControlException(
-							"Preventing " + robotPeer.getName() + " from access: " + perm + ": You must use a RobocodeOutputStream.");
+							"Preventing " + robotPeer.getName() + " from access: " + perm
+							+ ": You must use a RobocodeOutputStream.");
 				}
 				// Remove the RobocodeOutputStream so future access checks will fail.
 				removeRobocodeOutputStream();
@@ -465,7 +467,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	public synchronized Thread getBattleThread() {
 		return battleThread;
 	}
-	
+
 	public synchronized void setBattleThread(Thread newBattleThread) {
 		checkPermission(new RobocodePermission("setBattleThread"));
 		battleThread = newBattleThread;
@@ -537,10 +539,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		Thread c = Thread.currentThread();
+
 		if (isSafeThread(c)) {
 			return;
 		}
-		                                            
+
 		// Access to robocode sub package?
 		if (pkg.startsWith("robocode.")) {
 
@@ -550,8 +553,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
 					|| (experimental && subPkg.equals("robotinterfaces.peer")))) {
 
-
 				RobotPeer robotPeer = threadManager.getRobotPeer(c);
+
 				if (robotPeer == null) {
 					robotPeer = threadManager.getLoadingRobotPeer(c);
 				}

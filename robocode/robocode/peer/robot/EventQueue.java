@@ -41,13 +41,12 @@ public final class EventQueue extends Vector<Event> {
 
 	@Override
 	public boolean add(Event e) {
-        synchronized (this)
-        {
-            e.setPriority(eventManager.getEventPriority(e));
-            e.setTime(eventManager.getTime());
-            return super.add(e);
-        }
-    }
+		synchronized (this) {
+			e.setPriority(eventManager.getEventPriority(e));
+			e.setTime(eventManager.getTime());
+			return super.add(e);
+		}
+	}
 
 	public void clear(boolean includingSystemEvents) {
 		if (includingSystemEvents) {

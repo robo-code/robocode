@@ -24,21 +24,34 @@ package robocode.peer;
  */
 public interface IContestantStatistics {
 	public double getTotalScore();
+
 	public double getTotalSurvivalScore();
+
 	public double getTotalLastSurvivorBonus();
+
 	public double getTotalBulletDamageScore();
+
 	public double getTotalBulletKillBonus();
+
 	public double getTotalRammingDamageScore();
+
 	public double getTotalRammingKillBonus();
 
 	public int getTotalFirsts();
+
 	public int getTotalSeconds();
+
 	public int getTotalThirds();
 
 	public double getCurrentScore();
+
 	public double getCurrentSurvivalScore();
+
 	public double getCurrentBulletDamageScore();
+
 	public double getCurrentBulletKillBonus();
+
 	public double getCurrentRammingDamageScore();
+
 	public double getCurrentRammingKillBonus();
 }

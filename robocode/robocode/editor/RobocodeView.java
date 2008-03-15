@@ -12,11 +12,9 @@
 package robocode.editor;
 
 
-import java.awt.Color;
-import java.awt.Shape;
-
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.*;
+import java.awt.*;
 
 
 /**

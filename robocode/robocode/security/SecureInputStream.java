@@ -71,12 +71,12 @@ public class SecureInputStream extends java.io.InputStream {
 	 * has been reached, the value <code>-1</code> is returned. This method
 	 * blocks until input data is available, the end of the stream is detected,
 	 * or an exception is thrown.
-	 *
+	 * <p/>
 	 * <p> A subclass must provide an implementation of this method.
 	 *
-	 * @return     the next byte of data, or <code>-1</code> if the end of the
-	 *             stream is reached.
-	 * @exception  IOException  if an I/O error occurs.
+	 * @return the next byte of data, or <code>-1</code> if the end of the
+	 *         stream is reached.
+	 * @throws IOException if an I/O error occurs.
 	 */
 	@Override
 	public final int read() throws java.io.IOException {

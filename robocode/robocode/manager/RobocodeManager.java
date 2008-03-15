@@ -26,15 +26,14 @@
 package robocode.manager;
 
 
-import static robocode.io.Logger.log;
-
-import java.io.*;
-
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
+import static robocode.io.Logger.log;
 import robocode.sound.SoundManager;
+
+import java.io.*;
 
 
 /**
@@ -68,7 +67,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the battleManager.
-	 * 
+	 *
 	 * @return Returns a BattleManager
 	 */
 	public BattleManager getBattleManager() {
@@ -80,7 +79,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the robotManager.
-	 * 
+	 *
 	 * @return Returns a RobotListManager
 	 */
 	public RobotRepositoryManager getRobotRepositoryManager() {
@@ -92,7 +91,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the windowManager.
-	 * 
+	 *
 	 * @return Returns a WindowManager
 	 */
 	public WindowManager getWindowManager() {
@@ -104,7 +103,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the threadManager.
-	 * 
+	 *
 	 * @return Returns a ThreadManager
 	 */
 	public ThreadManager getThreadManager() {
@@ -116,7 +115,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the robotDialogManager.
-	 * 
+	 *
 	 * @return Returns a RobotDialogManager
 	 */
 	public RobotDialogManager getRobotDialogManager() {
@@ -175,7 +174,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the imageManager.
-	 * 
+	 *
 	 * @return Returns a ImageManager
 	 */
 	public ImageManager getImageManager() {
@@ -187,7 +186,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the versionManager.
-	 * 
+	 *
 	 * @return Returns a VersionManager
 	 */
 	public VersionManager getVersionManager() {
@@ -199,7 +198,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the cpuManager.
-	 * 
+	 *
 	 * @return Returns a CpuManager
 	 */
 	public CpuManager getCpuManager() {
@@ -211,7 +210,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the Sound Manager.
-	 * 
+	 *
 	 * @return Returns a SoundManager
 	 */
 	public SoundManager getSoundManager() {
@@ -223,7 +222,7 @@ public class RobocodeManager {
 
 	/**
 	 * Gets the slave.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public boolean isSlave() {

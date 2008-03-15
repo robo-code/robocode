@@ -19,13 +19,13 @@
 package robocode.packager;
 
 
+import robocode.io.Logger;
+
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import robocode.io.Logger;
 
 
 /**

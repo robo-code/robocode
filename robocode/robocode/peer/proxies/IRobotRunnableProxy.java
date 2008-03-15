@@ -11,34 +11,35 @@
  *******************************************************************************/
 package robocode.peer.proxies;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobotRunnableProxy extends Runnable, IReadingRobotProxy {
 
-    void cleanup();
+	void cleanup();
 
-    double getGunCoolingRate();
+	double getGunCoolingRate();
 
-    long getTime();
+	long getTime();
 
-    double getBattleFieldHeight();
+	double getBattleFieldHeight();
 
-    double getBattleFieldWidth();
+	double getBattleFieldWidth();
 
-    int getOthers();
+	int getOthers();
 
-    int getNumRounds();
+	int getNumRounds();
 
-    int getRoundNum();
+	int getRoundNum();
 
-    void setTestingCondition(boolean b);
+	void setTestingCondition(boolean b);
 
-    void setFireAssistValid(boolean b);
+	void setFireAssistValid(boolean b);
 
-    void setFireAssistAngle(double a);
+	void setFireAssistAngle(double a);
 
-    double getLastGunHeading();
+	double getLastGunHeading();
 
-    double getLastRadarHeading();
+	double getLastRadarHeading();
 }

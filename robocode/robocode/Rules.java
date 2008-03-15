@@ -24,7 +24,6 @@ import static java.lang.Math.max;
  *
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (original)
- *
  * @since 1.1.4
  */
 public final class Rules {
@@ -151,7 +150,6 @@ public final class Rules {
 	 *
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in degrees/turn.
-	 *
 	 * @see #getTurnRateRadians
 	 */
 	public static double getTurnRate(double velocity) {
@@ -164,7 +162,6 @@ public final class Rules {
 	 *
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in radians/turn.
-	 *
 	 * @see #getTurnRate
 	 */
 	public static double getTurnRateRadians(double velocity) {

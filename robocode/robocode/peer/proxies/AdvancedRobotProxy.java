@@ -9,14 +9,14 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.views;
+package robocode.peer.proxies;
 
 
 import robocode.*;
 import robocode.peer.IRobotRobotPeer;
 import robocode.peer.robot.IRobotEventManager;
 import robocode.peer.robot.RobotFileSystemManager;
-import robocode.robotinterfaces.peer.IAdvancedRobotView;
+import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 import java.io.File;
 import java.util.List;
@@ -25,306 +25,283 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public class AdvancedRobotView extends StandardRobotView implements IAdvancedRobotView {
+public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-    private RobotFileSystemManager robotFileSystemManager;
-    private IRobotEventManager eventManager;
+	private RobotFileSystemManager robotFileSystemManager;
+	private IRobotEventManager eventManager;
 
-	public AdvancedRobotView(IRobotRobotPeer peer) {
+	public AdvancedRobotProxy(IRobotRobotPeer peer) {
 		super(peer);
-        robotFileSystemManager = peer.getRobotFileSystemManager();
-        eventManager=peer.getRobotEventManager();
-    }
+		robotFileSystemManager = peer.getRobotFileSystemManager();
+		eventManager = peer.getRobotEventManager();
+	}
 
 	public boolean isAdjustGunForBodyTurn() {
 		getCall();
-        peer.lockRead();
-        try{
-            return commands.isAdjustGunForBodyTurn();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		peer.lockRead();
+		try {
+			return commands.isAdjustGunForBodyTurn();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public boolean isAdjustRadarForGunTurn() {
 		getCall();
-        peer.lockRead();
-        try{
-            return commands.isAdjustRadarForGunTurn();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		peer.lockRead();
+		try {
+			return commands.isAdjustRadarForGunTurn();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public boolean isAdjustRadarForBodyTurn() {
 		getCall();
-        peer.lockRead();
-        try{
-            return commands.isAdjustRadarForBodyTurn();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		peer.lockRead();
+		try {
+			return commands.isAdjustRadarForBodyTurn();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	// asynchronous actions
 	public void setResume() {
 		setCall();
-		i_setResume();
+		setResumeImplementation();
 	}
 
 	public void setStop(boolean overwrite) {
 		setCall();
-		i_setStop(overwrite);
+		setStopImplementation(overwrite);
 	}
 
 	public void setMove(double distance) {
 		setCall();
-		i_setMove(distance);
+		setMoveImplementation(distance);
 	}
 
 	public void setTurnBody(double radians) {
 		setCall();
-		i_setTurnBody(radians);
+		setTurnBodyImplementation(radians);
 	}
 
 	public void setTurnGun(double radians) {
 		setCall();
-		i_setTurnGun(radians);
+		setTurnGunImplementation(radians);
 	}
 
 	public void setTurnRadar(double radians) {
 		setCall();
-		i_setTurnRadar(radians);
+		setTurnRadarImplementation(radians);
 	}
 
 	// blockig actions
 	public void waitFor(Condition condition) {
-        peer.checkNoLock();
+		peer.checkNoLock();
 
-        commands.setWaitConditionSync(condition);
-        do {
-            execute(); // Always tick at least once
-        } while (!condition.test());
-        commands.setWaitConditionSync(null);
+		commands.setWaitConditionSync(condition);
+		do {
+			execute(); // Always tick at least once
+		} while (!condition.test());
+		commands.setWaitConditionSync(null);
 	}
 
 	// fast setters
 	public void setMaxTurnRate(double newTurnRate) {
 		setCall();
-        peer.lockWrite();
-        try{
-            commands.setMaxTurnRate(newTurnRate);
-        }
-        finally{
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			commands.setMaxTurnRate(newTurnRate);
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
 	public void setMaxVelocity(double newVelocity) {
 		setCall();
-        peer.lockWrite();
-        try{
-            commands.setMaxVelocity(newVelocity);
-        }
-        finally{
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			commands.setMaxVelocity(newVelocity);
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
-    // read from events
-    public int getEventPriority(String eventClass) {
-        getCall();
-        try{
-            return eventManager.getEventPriority(eventClass);
-        }
-        finally{
-            peer.unlockRead();
-        }
-    }
+	// read from events
+	public int getEventPriority(String eventClass) {
+		getCall();
+		try {
+			return eventManager.getEventPriority(eventClass);
+		} finally {
+			peer.unlockRead();
+		}
+	}
 
 	public List<Event> getAllEvents() {
 		getCall();
-        try{
-            return eventManager.getAllEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		try {
+			return eventManager.getAllEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public List<BulletMissedEvent> getBulletMissedEvents() {
 		getCall();
-        try{
-            return eventManager.getBulletMissedEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		try {
+			return eventManager.getBulletMissedEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		getCall();
-        try{
-            return eventManager.getBulletHitBulletEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		try {
+			return eventManager.getBulletHitBulletEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public List<BulletHitEvent> getBulletHitEvents() {
 		getCall();
-        try{
-            return eventManager.getBulletHitEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		try {
+			return eventManager.getBulletHitEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public List<HitByBulletEvent> getHitByBulletEvents() {
 		getCall();
-        try{
-            return eventManager.getHitByBulletEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		try {
+			return eventManager.getHitByBulletEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public List<HitRobotEvent> getHitRobotEvents() {
 		getCall();
-        try{
-            return eventManager.getHitRobotEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		try {
+			return eventManager.getHitRobotEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public List<HitWallEvent> getHitWallEvents() {
 		getCall();
-        try{
-            return eventManager.getHitWallEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		try {
+			return eventManager.getHitWallEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public List<RobotDeathEvent> getRobotDeathEvents() {
 		getCall();
-        try{
-            return eventManager.getRobotDeathEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		try {
+			return eventManager.getRobotDeathEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		getCall();
-        peer.lockRead();
-        try{
-            return eventManager.getScannedRobotEvents();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		peer.lockRead();
+		try {
+			return eventManager.getScannedRobotEvents();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 
-    // write to events
-    public void setInterruptible(boolean interruptable) {
-        setCall();
-        peer.lockWrite();
-        try{
-            eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(),interruptable);
-        }
-        finally{
-            peer.unlockWrite();
-        }
-    }
+	// write to events
+	public void setInterruptible(boolean interruptable) {
+		setCall();
+		peer.lockWrite();
+		try {
+			eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    public void setEventPriority(String eventClass, int priority) {
-        setCall();
-        peer.lockWrite();
-        try{
-            eventManager.setEventPriority(eventClass, priority);
-        }
-        finally{
-            peer.unlockWrite();
-        }
-    }
+	public void setEventPriority(String eventClass, int priority) {
+		setCall();
+		peer.lockWrite();
+		try {
+			eventManager.setEventPriority(eventClass, priority);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    public void removeCustomEvent(Condition condition) {
-        setCall();
-        peer.lockWrite();
-        try{
-            eventManager.removeCustomEvent(condition);
-        }
-        finally{
-            peer.unlockWrite();
-        }
-    }
+	public void removeCustomEvent(Condition condition) {
+		setCall();
+		peer.lockWrite();
+		try {
+			eventManager.removeCustomEvent(condition);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    public void addCustomEvent(Condition condition) {
-        setCall();
-        peer.lockWrite();
-        try{
-            eventManager.addCustomEvent(condition);
-        }
-        finally{
-            peer.unlockWrite();
-        }
-    }
+	public void addCustomEvent(Condition condition) {
+		setCall();
+		peer.lockWrite();
+		try {
+			eventManager.addCustomEvent(condition);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    public void clearAllEvents() {
-        setCall();
-        peer.lockWrite();
-        try{
-            eventManager.clearAllEvents(false);
-        }
-        finally{
-            peer.unlockWrite();
-        }
-    }
+	public void clearAllEvents() {
+		setCall();
+		peer.lockWrite();
+		try {
+			eventManager.clearAllEvents(false);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
 	// data
 	public File getDataDirectory() {
 		getCall();
-        peer.lockWrite();
-        try{
-            info.setIORobot(true);
-            return robotFileSystemManager.getWritableDirectory();
-        }
-        finally{
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			info.setIORobot(true);
+			return robotFileSystemManager.getWritableDirectory();
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
 	public File getDataFile(String filename) {
 		getCall();
-        peer.lockWrite();
-        try{
-            info.setIORobot(true);
-            return new File(robotFileSystemManager.getWritableDirectory(), filename);
-        }
-        finally{
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			info.setIORobot(true);
+			return new File(robotFileSystemManager.getWritableDirectory(), filename);
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
 	public long getDataQuotaAvailable() {
 		getCall();
-        peer.lockRead();
-        try{
-            return robotFileSystemManager.getMaxQuota() - robotFileSystemManager.getQuotaUsed();
-        }
-        finally{
-            peer.unlockRead();
-        }
+		peer.lockRead();
+		try {
+			return robotFileSystemManager.getMaxQuota() - robotFileSystemManager.getQuotaUsed();
+		} finally {
+			peer.unlockRead();
+		}
 	}
 }

@@ -61,7 +61,6 @@ package robocode.peer;
 
 
 import robocode.battle.Battle;
-import robocode.battlefield.DefaultBattleField;
 import robocode.peer.data.RobotPeerCommands;
 import robocode.peer.data.RobotPeerInfo;
 import robocode.peer.data.RobotPeerStatus;
@@ -69,7 +68,7 @@ import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.peer.IBasicRobotView;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.security.AccessControlException;
 
@@ -87,222 +86,231 @@ import java.security.AccessControlException;
  * @author Pavel Savara (contributor)
  */
 public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotPeer, IRobotRobotPeer, IBattleRobotPeer, IDisplayRobotPeer {
-    //data
-    private RobotPeerInfo info;
-    private RobotPeerStatus status;
-    private RobotPeerCommands commands;
+	// data
+	private RobotPeerInfo info;
+	private RobotPeerStatus status;
+	private RobotPeerCommands commands;
 
-    //view
-    private IBasicRobotView robotView;
-    private IBattleRobotProxy battleView;
-    private IDisplayRobotProxy displayView;
-    private IRobotRunnableProxy robotRunableView;
+	// proxies
+	private IBasicRobotPeer robotProxy;
+	private IBattleRobotProxy battleProxy;
+	private IDisplayRobotProxy displayProxy;
+	private IRobotRunnableProxy robotRunableProxy;
 
-    //components
-    private RobotOutputStream out;
-    private IBasicRobot robot;
-    private Battle battle;
-    private RobotClassManager robotClassManager;
-    private RobotFileSystemManager robotFileSystemManager;
-    private RobotThreadManager robotThreadManager;
-    private RobotMessageManager robotMessageManager;
-    private EventManager robotEventManager;
+	// components
+	private RobotOutputStream out;
+	private IBasicRobot robot;
+	private Battle battle;
+	private RobotClassManager robotClassManager;
+	private RobotFileSystemManager robotFileSystemManager;
+	private RobotThreadManager robotThreadManager;
+	private RobotMessageManager robotMessageManager;
+	private EventManager robotEventManager;
 
-    public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota) {
-        super();
+	public RobotPeer(Battle battle, RobotClassManager robotClassManager, long fileSystemQuota) {
+		super();
 
-        //dummy
-        this.battle = new Battle(new DefaultBattleField(800, 600), null);
+		// dummy
+		this.battle = battle;
 
-        //data
-        info = new RobotPeerInfo();
-        status = new RobotPeerStatus();
-        commands = new RobotPeerCommands();
+		// data
+		info = new RobotPeerInfo();
+		info.setupInfo(this);
+		status = new RobotPeerStatus();
+		status.setupInfo(this);
+		commands = new RobotPeerCommands();
+		commands.setupInfo(this);
 
-        //views
+		// proxies
+		battleProxy = new BattleRobotProxy(this);
+		displayProxy = new DisplayRobotProxy(this);
+		robotRunableProxy = new RobotRunnableProxy(this);
 
-        //components
-        this.robotClassManager = robotClassManager;
-        this.robotThreadManager = new RobotThreadManager(this);
-        this.robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
-        this.robotEventManager = new EventManager(this);
-    }
+		// components
+		this.robotClassManager = robotClassManager;
+		this.robotThreadManager = new RobotThreadManager(this);
+		this.robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
+		this.robotEventManager = new EventManager(this);
+	}
 
-    public void setBattle(Battle newBattle) {
-        battle = newBattle;
-    }
+	public void setBattle(Battle newBattle) {
+		battle = newBattle;
+	}
 
-    public void setRobot(IBasicRobot newRobot) {
-        robot = newRobot;
-        if (robot != null) {
-            if (info.isTeamRobot()) {
-                robotMessageManager = new RobotMessageManager(this);
-            }
-        }
-        robotEventManager.setRobot(newRobot);
-    }
+	public void setRobot(IBasicRobot newRobot) {
+		robot = newRobot;
+		if (robot != null) {
+			if (info.isTeamRobot()) {
+				robotMessageManager = new RobotMessageManager(this);
+			}
+		}
+		robotEventManager.setRobot(newRobot);
+	}
 
-    public void setInfo(RobotFileSpecification rfs) {
-        info.setupInfo(rfs, this);
-        status.setupInfo(this);
-        commands.setupInfo(this);
-        if (info.isTeamRobot()) {
-            robotView = new TeamRobotProxy(this);
-            info.setupTeam(robotClassManager.getTeamManager());
-        } else if (info.isAdvancedRobot()) {
-            robotView = new AdvancedRobotProxy(this);
-        } else if (info.isInteractiveRobot()) {
-            robotView = new StandardRobotProxy(this);
-        } else if (info.isJuniorRobot()) {
-            robotView = new JuniorRobotProxy(this);
-        } else {
-            throw new AccessControlException("Unknown robot type");
-        }
-    }
+	public void setInfo(RobotFileSpecification rfs) {
+		info.setupInfo2(rfs);
+		if (info.isTeamRobot()) {
+			robotProxy = new TeamRobotProxy(this);
+			info.setupTeam(robotClassManager.getTeamManager());
+		} else if (info.isAdvancedRobot()) {
+			robotProxy = new AdvancedRobotProxy(this);
+		} else if (info.isInteractiveRobot()) {
+			robotProxy = new StandardRobotProxy(this);
+		} else if (info.isJuniorRobot()) {
+			robotProxy = new JuniorRobotProxy(this);
+		} else {
+			throw new AccessControlException("Unknown robot type");
+		}
+	}
 
-    public void cleanup() {
-        //data
-        info.cleanup();
-        status.cleanup();
-        commands.cleanup();
+	public void cleanup() {
+		// data
+		info.cleanup();
+		status.cleanup();
+		commands.cleanup();
 
-        //view
-        ((BasicRobotProxy) robotView).cleanup();
-        robotRunableView.cleanup();
-        displayView.cleanup();
-        battleView.cleanup();
+		// view
+		((BasicRobotProxy) robotProxy).cleanup();
+		robotRunableProxy.cleanup();
+		displayProxy.cleanup();
+		battleProxy.cleanup();
 
-        //components
-        robot = null;
-        out = null;
-        battle = null;
+		// components
+		robot = null;
+		out = null;
+		battle = null;
 
-        if (robotEventManager != null) {
-            robotEventManager.cleanup();
-        }
-        robotEventManager = null;
+		if (robotEventManager != null) {
+			robotEventManager.cleanup();
+		}
+		robotEventManager = null;
 
-        if (robotMessageManager != null) {
-            robotMessageManager.cleanup();
-        }
-        robotMessageManager = null;
+		if (robotMessageManager != null) {
+			robotMessageManager.cleanup();
+		}
+		robotMessageManager = null;
 
-        if (robotClassManager != null) {
-            robotClassManager.cleanup();
-        }
-        robotClassManager = null;
+		if (robotClassManager != null) {
+			robotClassManager.cleanup();
+		}
+		robotClassManager = null;
 
-        robotFileSystemManager = null;
-        robotThreadManager = null;
-    }
+		robotFileSystemManager = null;
+		robotThreadManager = null;
+	}
 
+	// data
+	public RobotPeerInfo getInfo() {
+		return info;
+	}
 
-    //data
-    public RobotPeerInfo getInfo() {
-        return info;
-    }
+	public RobotPeerStatus getStatus() {
+		return status;
+	}
 
-    public RobotPeerStatus getStatus() {
-        return status;
-    }
+	public RobotPeerCommands getCommands() {
+		return commands;
+	}
 
-    public RobotPeerCommands getCommands() {
-        return commands;
-    }
+	// views
+	public IRobotRunnableProxy getRobotRunnableView() {
+		return robotRunableProxy;
+	}
 
-    //views
-    public IRobotRunnableProxy getRobotRunnableView() {
-        return robotRunableView;
-    }
+	public IDisplayRobotProxy getDisplayProxy() {
+		return displayProxy;
+	}
 
-    public IDisplayRobotProxy getDisplayView() {
-        return displayView;
-    }
+	public IBattleRobotProxy getBattleProxy() {
+		return battleProxy;
+	}
 
-    public IBattleRobotProxy getBattleView() {
-        return battleView;
-    }
+	public IBasicRobotPeer getRobotView() {
+		return robotProxy;
+	}
 
-    public IBasicRobotView getRobotView() {
-        return robotView;
-    }
+	public void run() {
+		robotRunableProxy.run();
+	}
 
-    public void run() {
-        robotRunableView.run();
-    }
+	// components
+	public RobotOutputStream getOut() {
+		synchronized (getSyncRoot()) {
+			if (out == null) {
+				if (battle != null) {
+					out = new RobotOutputStream(battle.getBattleThread());
+				}
+			}
+			return out;
+		}
+	}
 
-    //components
-    public RobotOutputStream getOut() {
-        return out;
-    }
+	public IBasicRobot getRobot() {
+		return robot;
+	}
 
-    public IBasicRobot getRobot() {
-        return robot;
-    }
+	public Battle getBattle() {
+		return battle;
+	}
 
-    public Battle getBattle() {
-        return battle;
-    }
+	public RobotClassManager getRobotClassManager() {
+		return robotClassManager;
+	}
 
-    public RobotClassManager getRobotClassManager() {
-        return robotClassManager;
-    }
+	public RobotFileSystemManager getRobotFileSystemManager() {
+		return robotFileSystemManager;
+	}
 
-    public RobotFileSystemManager getRobotFileSystemManager() {
-        return robotFileSystemManager;
-    }
+	public RobotThreadManager getRobotThreadManager() {
+		return robotThreadManager;
+	}
 
-    public RobotThreadManager getRobotThreadManager() {
-        return robotThreadManager;
-    }
+	public RobotMessageManager getRobotMessageManager() {
+		return robotMessageManager;
+	}
 
-    public RobotMessageManager getRobotMessageManager() {
-        return robotMessageManager;
-    }
+	public IRobotEventManager getRobotEventManager() {
+		return robotEventManager;
+	}
 
-    public IRobotEventManager getRobotEventManager() {
-        return robotEventManager;
-    }
+	public IDisplayEventManager getDisplayEventManager() {
+		return robotEventManager;
+	}
 
-    public IDisplayEventManager getDisplayEventManager() {
-        return robotEventManager;
-    }
+	public IBattleEventManager getBattleEventManager() {
+		return robotEventManager;
+	}
 
-    public IBattleEventManager getBattleEventManager() {
-        return robotEventManager;
-    }
+	// security
+	public void forceStop() {
+		// intentionaly not synchronized to prevent block from user code
+		status.setRunning(false);
+		status.getStatistics().setInactive();
+	}
 
-    //security
-    public void forceStop() {
-        //intentionaly not synchronized to prevent block from user code
-        status.setRunning(false);
-        status.getStatistics().setInactive();
-    }
+	public void forceUncharge() {
+		// intentionaly not synchronized to prevent block from user code
+		status.setEnergy(0);
+	}
 
-    public void forceUncharge() {
-        //intentionaly not synchronized to prevent block from user code
-        status.setEnergy(0);
-    }
+	public String getName() {
+		// intentionaly not synchronized to prevent block from user code
+		return info.getName();
+	}
 
-    public String getName() {
-        //intentionaly not synchronized to prevent block from user code
-        return info.getName();
-    }
+	// IContestant
+	public IContestantStatistics getRobotStatistics() {
+		return status.getStatistics();
+	}
 
+	public int compareTo(IContestantPeer cp) {
+		double score1 = getRobotStatistics().getTotalScore();
+		double score2 = cp.getRobotStatistics().getTotalScore();
 
-    //IContestant
-    public IContestantStatistics getRobotStatistics() {
-        return status.getStatistics();
-    }
-
-    public int compareTo(IContestantPeer cp) {
-        double score1 = getRobotStatistics().getTotalScore();
-        double score2 = cp.getRobotStatistics().getTotalScore();
-
-        if (getBattle().isRunning()) {
-            score1 += getRobotStatistics().getCurrentScore();
-            score2 += cp.getRobotStatistics().getCurrentScore();
-        }
-        return (int) (score2 + 0.5) - (int) (score1 + 0.5);
-    }
+		if (getBattle().isRunning()) {
+			score1 += getRobotStatistics().getCurrentScore();
+			score2 += cp.getRobotStatistics().getCurrentScore();
+		}
+		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+	}
 }

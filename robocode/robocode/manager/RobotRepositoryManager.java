@@ -32,26 +32,24 @@
 package robocode.manager;
 
 
+import robocode.Droid;
+import robocode.dialog.WindowUtil;
+import robocode.io.FileTypeFilter;
+import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.*;
+import robocode.robotinterfaces.*;
 
+import javax.swing.*;
 import java.io.*;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import java.security.AccessControlException;
-
-import javax.swing.JOptionPane;
-
-import robocode.dialog.WindowUtil;
-import robocode.io.FileTypeFilter;
-import robocode.io.FileUtil;
-import robocode.peer.robot.RobotClassManager;
-import robocode.repository.*;
-import robocode.robotinterfaces.*;
-import robocode.Droid;
 
 
 /**
@@ -411,7 +409,7 @@ public class RobotRepositoryManager {
 						if (Droid.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setDroid(true);
 						}
-    
+
 						if (ITeamRobot.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setTeamRobot(true);
 						}
@@ -424,9 +422,9 @@ public class RobotRepositoryManager {
 							robotFileSpecification.setInteractiveRobot(true);
 						}
 
-						/*if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
-							robotFileSpecification.setClassicRobot(true);
-						}*/
+						/* if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
+						 robotFileSpecification.setClassicRobot(true);
+						 }*/
 
 						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setJuniorRobot(true);
@@ -641,13 +639,13 @@ public class RobotRepositoryManager {
 						fos = new FileOutputStream(out);
 
 						int num = 0;
-	
+
 						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
 							fos.write(buf, 0, num);
 						}
-	
+
 						FileDescriptor fd = fos.getFD();
-	
+
 						fd.sync();
 					} finally {
 						if (fos != null) {

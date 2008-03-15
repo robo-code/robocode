@@ -16,11 +16,11 @@
 package robocode.repository;
 
 
-import java.io.File;
-import java.io.IOException;
-
 import robocode.io.FileUtil;
 import robocode.io.Logger;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**

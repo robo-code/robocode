@@ -11,23 +11,25 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 import java.awt.*;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IDisplayBulletProxy {
-    int getState();
+	int getState();
 
-    double getPower();
+	double getPower();
 
-    int getFrame();
+	int getFrame();
 
-    Color getColor();
+	Color getColor();
 
-    double getPaintX();
+	double getPaintX();
 
-    double getPaintY();
+	double getPaintY();
 
-    int getExplosionImageIndex();
+	int getExplosionImageIndex();
 }

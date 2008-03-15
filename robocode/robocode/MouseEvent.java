@@ -11,16 +11,18 @@
  *******************************************************************************/
 package robocode;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public abstract class MouseEvent extends Event {
-    private java.awt.event.MouseEvent inner;
-    public MouseEvent(java.awt.event.MouseEvent inner){
-        this.inner=inner;
-    }
+	private java.awt.event.MouseEvent inner;
 
-    public java.awt.event.MouseEvent getInnerEvent() {
-        return inner;
-    }
+	public MouseEvent(java.awt.event.MouseEvent inner) {
+		this.inner = inner;
+	}
+
+	public java.awt.event.MouseEvent getInnerEvent() {
+		return inner;
+	}
 }

@@ -60,9 +60,16 @@ public class RobotFileSystemManager {
 		}
 	}
 
-    //TODO ZAMO synchronizet  
-    public void adjustQuota(long len) {
-		quotaUsed += len;
+	public synchronized void adjustQuota(long len) {
+		this.quotaUsed += len;
+	}
+
+	public synchronized void setQuotaUsed(long quotaUsed) {
+		this.quotaUsed = quotaUsed;
+	}
+
+	public synchronized long getQuotaUsed() {
+		return quotaUsed;
 	}
 
 	public void checkQuota() throws IOException {
@@ -73,7 +80,7 @@ public class RobotFileSystemManager {
 		if (numBytes < 0) {
 			throw new IndexOutOfBoundsException("checkQuota on negative numBytes!");
 		}
-		if (quotaUsed + numBytes <= maxQuota) {
+		if (getQuotaUsed() + numBytes <= maxQuota) {
 			adjustQuota(numBytes);
 			return;
 		}
@@ -86,10 +93,6 @@ public class RobotFileSystemManager {
 
 	public long getMaxQuota() {
 		return maxQuota;
-	}
-
-	public long getQuotaUsed() {
-		return quotaUsed;
 	}
 
 	public File getReadableDirectory() {
@@ -120,19 +123,19 @@ public class RobotFileSystemManager {
 		File dataDirectory = getWritableDirectory();
 
 		if (dataDirectory == null) {
-			quotaUsed = maxQuota;
+			setQuotaUsed(maxQuota);
 			return;
 		}
 		if (!dataDirectory.exists()) {
-			this.quotaUsed = 0;
+			this.setQuotaUsed(0);
 			return;
 		}
 		quotaMessagePrinted = false;
 		File[] dataFiles = dataDirectory.listFiles();
 
-		quotaUsed = 0;
+		setQuotaUsed(0);
 		for (File file : dataFiles) {
-			quotaUsed += file.length();
+			setQuotaUsed(getQuotaUsed() + file.length());
 		}
 	}
 

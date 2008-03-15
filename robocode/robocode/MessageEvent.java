@@ -30,8 +30,8 @@ public class MessageEvent extends Event {
 
 	/**
 	 * Called by the game to create a new MessageEvent.
-	 * 
-	 * @param sender the name of the sending robot
+	 *
+	 * @param sender  the name of the sending robot
 	 * @param message the message for your robot
 	 */
 	public MessageEvent(String sender, Serializable message) {

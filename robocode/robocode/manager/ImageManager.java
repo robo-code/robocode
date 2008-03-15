@@ -19,12 +19,12 @@
 package robocode.manager;
 
 
-import java.awt.Color;
-import java.awt.Image;
-import java.util.*;
-
 import robocode.gfx.ImageUtil;
 import robocode.gfx.RenderImage;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -141,6 +141,7 @@ public class ImageManager {
 	/**
 	 * Gets the body image
 	 * Loads from disk if necessary.
+	 *
 	 * @return the body image
 	 */
 	private Image getBodyImage() {
@@ -153,6 +154,7 @@ public class ImageManager {
 	/**
 	 * Gets the gun image
 	 * Loads from disk if necessary.
+	 *
 	 * @return the gun image
 	 */
 	private Image getGunImage() {
@@ -165,6 +167,7 @@ public class ImageManager {
 	/**
 	 * Gets the radar image
 	 * Loads from disk if necessary.
+	 *
 	 * @return the radar image
 	 */
 	private Image getRadarImage() {

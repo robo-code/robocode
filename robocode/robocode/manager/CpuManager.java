@@ -52,7 +52,7 @@ public class CpuManager {
 		}
 		return cpuConstant;
 	}
-	
+
 	public void calculateCpuConstant() {
 		WindowUtil.setStatus("Estimating CPU speed, please wait...");
 
@@ -64,7 +64,7 @@ public class CpuManager {
 
 		WindowUtil.setStatus("");
 	}
-	
+
 	private void setCpuConstant() {
 		long count = 0;
 		double d = 0;

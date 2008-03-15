@@ -12,8 +12,7 @@
 package robocode.gfx;
 
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 
@@ -25,13 +24,19 @@ import java.awt.geom.AffineTransform;
  */
 public class RenderObject {
 
-	/** Base transform, e.g. the initial rotation and translation */
+	/**
+	 * Base transform, e.g. the initial rotation and translation
+	 */
 	protected AffineTransform baseTransform;
 
-	/** Current transform that is concatenated with the base transform */
+	/**
+	 * Current transform that is concatenated with the base transform
+	 */
 	protected AffineTransform transform;
 
-	/** Current frame that must be rendered */
+	/**
+	 * Current frame that must be rendered
+	 */
 	protected int frame;
 
 	/**

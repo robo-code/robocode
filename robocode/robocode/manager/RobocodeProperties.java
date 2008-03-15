@@ -35,14 +35,15 @@
 package robocode.manager;
 
 
-import java.awt.RenderingHints;
+import robocode.io.Logger;
+
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import robocode.io.Logger;
+import java.util.List;
 
 
 /**
@@ -406,7 +407,8 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsRenderingTextAntialiasing.
 	 *
-	 * @param optionsRenderingTextAntialiasing The optionsRenderingTextAntialiasing to set
+	 * @param optionsRenderingTextAntialiasing
+	 *         The optionsRenderingTextAntialiasing to set
 	 */
 	public void setOptionsRenderingTextAntialiasing(int optionsRenderingTextAntialiasing) {
 		this.optionsRenderingTextAntialiasing = optionsRenderingTextAntialiasing;
@@ -622,7 +624,8 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsSoundEnableWallCollision.
 	 *
-	 * @param optionsSoundEnableWallCollision The optionsSoundEnableWallCollision to set
+	 * @param optionsSoundEnableWallCollision
+	 *         The optionsSoundEnableWallCollision to set
 	 */
 	public void setOptionsSoundEnableWallCollision(boolean optionsSoundEnableWallCollision) {
 		this.optionsSoundEnableWallCollision = optionsSoundEnableWallCollision;
@@ -641,7 +644,8 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsSoundEnableRobotCollision.
 	 *
-	 * @param optionsSoundEnableRobotCollision The optionsSoundEnableRobotCollision to set
+	 * @param optionsSoundEnableRobotCollision
+	 *         The optionsSoundEnableRobotCollision to set
 	 */
 	public void setOptionsSoundEnableRobotCollision(boolean optionsSoundEnableRobotCollision) {
 		this.optionsSoundEnableRobotCollision = optionsSoundEnableRobotCollision;
@@ -915,7 +919,7 @@ public class RobocodeProperties {
 		this.numberOfRounds = Math.max(1, numberOfRounds);
 		props.setProperty(NUMBER_OF_ROUNDS, "" + this.numberOfRounds);
 	}
-	
+
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
@@ -986,7 +990,7 @@ public class RobocodeProperties {
 		robotFilesystemQuota = Long.parseLong(props.getProperty(ROBOT_FILESYSTEM_QUOTA, "" + 200000));
 		consoleQuota = Long.parseLong(props.getProperty(CONSOLE_QUOTA, "8192"));
 		cpuConstant = Long.parseLong(props.getProperty(CPU_CONSTANT, "-1"));
-		
+
 		numberOfRounds = Integer.parseInt(props.getProperty(NUMBER_OF_ROUNDS, "10"));
 	}
 

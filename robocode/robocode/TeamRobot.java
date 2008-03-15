@@ -19,31 +19,31 @@
 package robocode;
 
 
+import robocode.robotinterfaces.ITeamEvents;
+import robocode.robotinterfaces.ITeamRobot;
+import robocode.robotinterfaces.peer.ITeamRobotPeer;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Vector;
-
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
 
 
 /**
  * An an advanced type of robot that supports sending messages* between team
  * mates that participates in a team.
- * <p>
+ * <p/>
  * If you have not already, you should create a {@link Robot} first.
- *
- * @see Robot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
+ * @see Robot
  */
 public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents {
 
 	/**
 	 * Checks if a given robot name is the name of one of your teammates.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   public void onScannedRobot(ScannedRobotEvent e) {
@@ -53,12 +53,13 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 *       fire(1);
 	 *   }
 	 * </pre>
+	 *
 	 * @param name the robot name to check
 	 * @return boolean value
 	 */
 	public boolean isTeammate(String name) {
 		if (peer != null) {
-			return ((ITeamRobotView) peer).isTeammate(name);
+			return ((ITeamRobotPeer) peer).isTeammate(name);
 		}
 		uninitializedException();
 		return false;
@@ -67,7 +68,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	/**
 	 * Returns the names of all teammates, or <code>null</code> there is no
 	 * teammates.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
@@ -82,12 +83,12 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 * </pre>
 	 *
 	 * @return a String array containing the names of all your team mates, or
-	 *     <code>null</code> if there is no team mates. The length of the String
-	 *     array is equal to the number of team mates
+	 *         <code>null</code> if there is no team mates. The length of the String
+	 *         array is equal to the number of team mates
 	 */
 	public String[] getTeammates() {
 		if (peer != null) {
-			return ((ITeamRobotView) peer).getTeammates();
+			return ((ITeamRobotPeer) peer).getTeammates();
 		}
 		uninitializedException();
 		return null;
@@ -95,7 +96,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 
 	/**
 	 * Broadcasts a message to all team mates.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
@@ -108,7 +109,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 */
 	public void broadcastMessage(Serializable message) throws IOException {
 		if (peer != null) {
-			((ITeamRobotView) peer).broadcastMessage(message);
+			((ITeamRobotPeer) peer).broadcastMessage(message);
 		} else {
 			uninitializedException();
 		}
@@ -116,7 +117,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 
 	/**
 	 * Sends a message to one (or more) team mates.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
@@ -124,13 +125,13 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 *   }
 	 * </pre>
 	 *
-	 * @param name the name of the intended recipient of the message
+	 * @param name    the name of the intended recipient of the message
 	 * @param message the message to send
 	 * @throws java.io.IOException
 	 */
 	public void sendMessage(String name, Serializable message) throws IOException {
 		if (peer != null) {
-			((ITeamRobotView) peer).sendMessage(name, message);
+			((ITeamRobotPeer) peer).sendMessage(name, message);
 		} else {
 			uninitializedException();
 		}
@@ -139,7 +140,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	/**
 	 * Returns a vector containing all MessageEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (MessageEvent e : getMessageEvents()) {
@@ -148,16 +149,14 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 * </pre>
 	 *
 	 * @return a vector containing all MessageEvents currently in the robot's
-	 *    queue
-	 *
+	 *         queue
 	 * @see #onMessageReceived
 	 * @see MessageEvent
-	 * 
 	 * @since 1.2.6
 	 */
 	public Vector<MessageEvent> getMessageEvents() {
 		if (peer != null) {
-			return new Vector<MessageEvent>(((ITeamRobotView) peer).getMessageEvents());
+			return new Vector<MessageEvent>(((ITeamRobotPeer) peer).getMessageEvents());
 		}
 		uninitializedException();
 		return null; // never called
@@ -170,7 +169,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 
 	/**
 	 * Do not call this method!
-	 * <p>
+	 * <p/>
 	 * {@inheritDoc}
 	 */
 	public final ITeamEvents getTeamEventListener() {

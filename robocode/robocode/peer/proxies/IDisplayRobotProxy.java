@@ -11,29 +11,24 @@
  *******************************************************************************/
 package robocode.peer.proxies;
 
+
 import robocode.peer.robot.RobotOutputStream;
 
 import java.awt.*;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IDisplayRobotProxy extends IReadingRobotProxy {
-    void lockRead();
+	void lockRead();
+	void unlockRead();
+	void cleanup();
 
-    void unlockRead();
+	void displaySetPaintEnabled(boolean enabled);
+	void displaySetSGPaintEnabled(boolean enabled);
+	void displayKill();
 
-    void cleanup();
-
-    RobotOutputStream getOut();
-
-    void d_setPaintEnabled(boolean enabled);
-
-    void d_setSGPaintEnabled(boolean enabled);
-
-    void d_kill();
-
-    void onInteractiveEvent(robocode.Event e);
-
-    void onPaint(Graphics2D g);
+	void onInteractiveEvent(robocode.Event e);
+	void onPaint(Graphics2D g);
 }

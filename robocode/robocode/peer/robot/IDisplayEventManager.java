@@ -11,11 +11,13 @@
  *******************************************************************************/
 package robocode.peer.robot;
 
+
 import robocode.Event;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IDisplayEventManager {
-    boolean add(Event e);
+	boolean add(Event e);
 }

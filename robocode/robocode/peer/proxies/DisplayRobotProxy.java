@@ -11,87 +11,91 @@
  *******************************************************************************/
 package robocode.peer.proxies;
 
+
 import robocode.peer.IDisplayRobotPeer;
 import robocode.robotinterfaces.IBasicEvents;
 
 import java.awt.*;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class DisplayRobotProxy extends ReadingRobotProxy implements IDisplayRobotProxy {
 
-    private IDisplayRobotPeer peer;
+	private IDisplayRobotPeer peer;
 
-    public DisplayRobotProxy(IDisplayRobotPeer peer) {
-        super(peer);
-        this.peer = peer;
-    }
+	public DisplayRobotProxy(IDisplayRobotPeer peer) {
+		super(peer);
+		this.peer = peer;
+	}
 
-    @Override
-    public void cleanup() {
-        super.cleanup();
-        peer = null;
-    }
+	@Override
+	public void cleanup() {
+		super.cleanup();
+		peer = null;
+	}
 
+	public void lockRead() {
+		peer.lockRead();
+	}
 
-    public void lockRead() {
-        peer.lockRead();
-    }
+	public void unlockRead() {
+		peer.unlockRead();
+	}
 
-    public void unlockRead() {
-        peer.unlockRead();
-    }
+	public void displaySetPaintEnabled(boolean enabled) {
+		peer.lockWrite();
+		try {
+			info.setPaintEnabled(enabled);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    public void d_setPaintEnabled(boolean enabled) {
-        peer.lockWrite();
-        try {
-            info.setPaintEnabled(enabled);
-        }
-        finally {
-            peer.unlockWrite();
-        }
-    }
+	public void displaySetSGPaintEnabled(boolean enabled) {
+		peer.lockWrite();
+		try {
+			info.setSGPaintEnabled(enabled);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    public void d_setSGPaintEnabled(boolean enabled) {
-        peer.lockWrite();
-        try {
-            info.setSGPaintEnabled(enabled);
-        }
-        finally {
-            peer.unlockWrite();
-        }
-    }
+	public void displayKill() {
+		peer.lockWrite();
+		try {
+			peer.getBattleProxy().battleKill();
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    public void d_kill() {
-        peer.lockWrite();
-        try {
-            //TODO ZAMO review again
-            peer.getBattleView().b_kill();
-        }
-        finally {
-            peer.unlockWrite();
-        }
-    }
+	public void onInteractiveEvent(robocode.Event e) {
+		peer.lockWrite();
+		try {
+			peer.getDisplayEventManager().add(e);
+		} finally {
+			peer.unlockWrite();
+		}
+	}
 
-    public void onInteractiveEvent(robocode.Event e) {
-        peer.lockWrite();
-        try {
-            peer.getDisplayEventManager().add(e);
-        }
-        finally {
-            peer.unlockWrite();
-        }
-    }
+	public void onPaint(Graphics2D g) {
+		try {
+			// TODO Warning: robot is called from UI thread.
+			// Security hole ?
+			// Synchronization issue for client robot ?
+			IBasicEvents listener = peer.getRobot().getBasicEventListener();
 
-    public void onPaint(Graphics2D g) {
-        //Warning: robot is called from UI thread.
-        // Security hole ?
-        // Synchronization issue for client robot ?
-        IBasicEvents listener = peer.getRobot().getBasicEventListener();
-        if (listener != null) {
-            listener.onPaint(g);
-        }
-    }
+			if (listener != null) {
+				listener.onPaint(g);
+			}
+		} catch (Exception e) {
+			// Make sure that Robocode is not halted by an exception caused by letting the robot paint
+
+			peer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
+			e.printStackTrace(peer.getOut());
+		}
+	}
 
 }

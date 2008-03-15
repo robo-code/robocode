@@ -11,16 +11,18 @@
  *******************************************************************************/
 package robocode;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public abstract class KeyEvent extends Event {
-    private java.awt.event.KeyEvent inner;
-    public KeyEvent(java.awt.event.KeyEvent inner){
-        this.inner=inner;
-    }
+	private java.awt.event.KeyEvent inner;
 
-    public java.awt.event.KeyEvent getInnerEvent() {
-        return inner;
-    }
+	public KeyEvent(java.awt.event.KeyEvent inner) {
+		this.inner = inner;
+	}
+
+	public java.awt.event.KeyEvent getInnerEvent() {
+		return inner;
+	}
 }

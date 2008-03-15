@@ -23,24 +23,19 @@
 package robocode.manager;
 
 
-import java.io.File;
-import java.io.IOException;
-
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.Window;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
-
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
 import robocode.dialog.*;
+import robocode.dialog.SplashScreen;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -72,7 +67,7 @@ public class WindowManager {
 
 	public void showRobocodeFrame(boolean visible) {
 		RobocodeFrame frame = getRobocodeFrame();
-		
+
 		if (visible) {
 			// Pack frame to size all components
 			WindowUtil.packCenterShow(frame);
@@ -372,8 +367,7 @@ public class WindowManager {
 	/**
 	 * Shows a web page using the browser manager.
 	 *
-	 * @param url
-	 *        The URL of the web page
+	 * @param url The URL of the web page
 	 */
 	private void showInBrowser(String url) {
 		try {

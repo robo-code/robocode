@@ -17,8 +17,6 @@
 package robocode;
 
 
-import java.io.*;
-
 import robocode.exception.RobotException;
 import robocode.io.Logger;
 import robocode.manager.ThreadManager;
@@ -27,21 +25,22 @@ import robocode.peer.robot.RobotFileSystemManager;
 import robocode.security.RobocodePermission;
 import robocode.security.RobocodeSecurityManager;
 
+import java.io.*;
+
 
 /**
  * RobocodeFileOutputStream is used for streaming/writing data out to a file,
  * which you got by calling {@link AdvancedRobot#getDataFile(String)}.
- * <p>
+ * <p/>
  * You should read java.io.FileOutputStream for documentation of this class.
- * <p>
+ * <p/>
  * Please notice that the max. size of your data file is set to 200000
  * (~195 KB).
  *
- * @see AdvancedRobot#getDataFile(String)
- * @see java.io.FileOutputStream
- *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @see AdvancedRobot#getDataFile(String)
+ * @see java.io.FileOutputStream
  */
 public class RobocodeFileOutputStream extends OutputStream {
 	private static ThreadManager threadManager;
@@ -51,6 +50,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 
 	/**
 	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
+	 *
 	 * @see java.io.FileOutputStream
 	 */
 	public RobocodeFileOutputStream(File file) throws IOException {
@@ -59,6 +59,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 
 	/**
 	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
+	 *
 	 * @see java.io.FileOutputStream
 	 */
 	public RobocodeFileOutputStream(FileDescriptor fdObj) {
@@ -67,6 +68,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 
 	/**
 	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
+	 *
 	 * @see java.io.FileOutputStream
 	 */
 	public RobocodeFileOutputStream(String name) throws java.io.IOException {
@@ -75,6 +77,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 
 	/**
 	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
+	 *
 	 * @see java.io.FileOutputStream
 	 */
 	public RobocodeFileOutputStream(String name, boolean append) throws IOException {

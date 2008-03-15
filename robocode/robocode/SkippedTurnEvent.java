@@ -26,21 +26,20 @@ package robocode;
  * </pre>
  * will cause many SkippedTurnEvents, because you are not responding to the game.
  * If you receive 30 SkippedTurnEvents, you will be removed from the round.
- *
+ * <p/>
  * Instead, you should do something such as:
  * <pre>
  *     for (int i = 0; i < 30; i++) {
  *         doNothing(); // or perhaps scan();
  *     }
  * </pre>
- *
+ * <p/>
  * This event may also be generated if you are simply doing too much processing
  * between actions, that is using too much processing power for the calculations
  * etc. in your robot.
  *
- * @see AdvancedRobot#onSkippedTurn
- *
  * @author Mathew A. Nelson (original)
+ * @see AdvancedRobot#onSkippedTurn
  */
 public class SkippedTurnEvent extends Event {
 

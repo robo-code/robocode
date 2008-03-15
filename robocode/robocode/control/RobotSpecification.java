@@ -40,7 +40,7 @@ public class RobotSpecification implements java.io.Serializable {
 
 	/**
 	 * Gets the name of this robot or team
-	 * 
+	 *
 	 * @return the name of this robot or team
 	 */
 	public String getName() {
@@ -49,9 +49,8 @@ public class RobotSpecification implements java.io.Serializable {
 
 	/**
 	 * Gets the name and version of this robot or team
-	 * 
+	 *
 	 * @return the name and version of this robot or team
-	 * 
 	 * @since 1.3
 	 */
 	public String getNameAndVersion() {
@@ -90,6 +89,7 @@ public class RobotSpecification implements java.io.Serializable {
 	/**
 	 * Gets the jar file containing this robot.
 	 * This method will return null if the robot does not come from a jar
+	 *
 	 * @return the jar file containing this robot
 	 */
 	public File getJarFile() {

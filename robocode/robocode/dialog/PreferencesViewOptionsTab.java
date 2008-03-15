@@ -24,18 +24,15 @@
 package robocode.dialog;
 
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -469,6 +466,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			public void desiredTpsChanged(int tps) {
 				PreferencesViewOptionsTab.this.desiredTpsTextField.setText("" + tps);
 			}
+
 			;
 		});
 	}

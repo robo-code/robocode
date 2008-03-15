@@ -18,12 +18,11 @@
 package robocode.manager;
 
 
+import robocode.peer.RobotPeer;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import robocode.peer.RobotPeer;
-import robocode.peer.IBattleRobotPeer;
 
 
 /**

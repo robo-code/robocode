@@ -22,7 +22,7 @@ public interface RobocodeListener {
 	/**
 	 * Called when battle is complete.  Contains array of results.
 	 *
-	 * @param battle Which battle completed
+	 * @param battle  Which battle completed
 	 * @param results Results for this battle
 	 */
 	void battleComplete(BattleSpecification battle, RobotResults[] results);
