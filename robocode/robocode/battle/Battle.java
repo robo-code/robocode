@@ -422,14 +422,14 @@ public class Battle extends BattleData implements Runnable {
 					robotPeer.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion())) {
 				if (count == 0) {
 					if (!otherRobotProxy.isDuplicate()) {
-						otherRobotProxy.setupSetDuplicate(0);
+						otherRobotProxy.setupSetDuplicateLocked(0);
 					}
 				}
 				count++;
 			}
 		}
 		if (count > 0) {
-			robotPeer.getBattleProxy().setupSetDuplicate(count);
+			robotPeer.getBattleProxy().setupSetDuplicateLocked(count);
 		}
 		addRobotPeer(robotPeer);
 	}
@@ -589,7 +589,7 @@ public class Battle extends BattleData implements Runnable {
 		for (IBattleRobotProxy robotProxy : getBattleRobots()) {
 			robotProxy.lockWrite();
 			try {
-				robotProxy.setupPreInitialize();
+				robotProxy.setupPreInitializeLocked();
 				if (manager.isGUIEnabled()) {
 					manager.getWindowManager().getRobocodeFrame().addRobotButton(
 							new RobotButton(manager.getRobotDialogManager(), robotProxy.getDisplayView()));
@@ -1134,25 +1134,27 @@ public class Battle extends BattleData implements Runnable {
 				// complete their processing before we get here,
 				// so we test if the robot is already asleep.
 
-				if (!robotProxy.isSleeping()) {
-					try {
-						long waitTime = manager.getCpuManager().getCpuConstant();
+                synchronized (robotProxy.getPeer().getSyncRoot()){
+                    if (!robotProxy.isSleeping()) {
+                        try {
+                            long waitTime = manager.getCpuManager().getCpuConstant();
 
-						int millisWait = (int) (waitTime / 1000000);
+                            int millisWait = (int) (waitTime / 1000000);
 
-						for (int i = millisWait; i > 0 && !robotProxy.isSleeping(); i--) {
-							robotProxy.getPeer().getSyncRoot().wait(0, 999999);
-						}
-						if (!robotProxy.isSleeping()) {
-							robotProxy.getPeer().getSyncRoot().wait(0, (int) (waitTime % 1000000));
-						}
-					} catch (InterruptedException e) {
-						// ?
-						log("Wait for " + robotProxy + " interrupted.");
-					}
-				}
+                            for (int i = millisWait; i > 0 && !robotProxy.isSleeping(); i--) {
+                                robotProxy.getPeer().getSyncRoot().wait(0, 999999);
+                            }
+                            if (!robotProxy.isSleeping()) {
+                                robotProxy.getPeer().getSyncRoot().wait(0, (int) (waitTime % 1000000));
+                            }
+                        } catch (InterruptedException e) {
+                            // ?
+                            log("Wait for " + robotProxy + " interrupted.");
+                        }
+                    }
+                }
 
-				if (robotProxy.isSleeping() || !robotProxy.isRunning()) {
+                if (robotProxy.isSleeping() || !robotProxy.isRunning()) {
 					robotProxy.setSkippedTurnsLocked(0);
 				} else {
 					robotProxy.setSkippedTurnsLocked(robotProxy.getSkippedTurns() + 1);
@@ -1370,7 +1372,7 @@ public class Battle extends BattleData implements Runnable {
 
 		for (IBattleRobotProxy robotProxy : getBattleRobots()) {
 			if (roundNum > 0) {
-				robotProxy.setupPreInitialize();
+				robotProxy.setupPreInitializeLocked();
 			} // fake dead so robot won't display
 
 			robotProxy.getOut().println("=========================");
@@ -1422,9 +1424,9 @@ public class Battle extends BattleData implements Runnable {
 						(RobotPeer) robotProxy.getPeer());
 				long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
-				robotProxy.lockWrite();
-				try {
-
+				//robotProxy.lockWrite();
+				//try {
+                synchronized (robotProxy.getPeer().getSyncRoot()){
 					try {
 						log(".", false);
 
@@ -1440,9 +1442,10 @@ public class Battle extends BattleData implements Runnable {
 					} catch (InterruptedException e) {
 						log("Wait for " + robotProxy + " interrupted.");
 					}
-				} finally {
-					robotProxy.unlockWrite();
-				}
+                }
+                //} finally {
+				//	robotProxy.unlockWrite();
+				//}
 
 				if (!robotProxy.isSleeping()) {
 					log(
@@ -1501,32 +1504,38 @@ public class Battle extends BattleData implements Runnable {
 			}
 			// Loading robots
 			for (IBattleRobotProxy robotProxy : getBattleRobots()) {
-				robotProxy.getPeer().setRobot(null);
-				Class<?> robotClass;
+                robotProxy.lockWrite();
+                try{
+                    robotProxy.getPeer().setRobot(null);
+                    Class<?> robotClass;
 
-				try {
-					manager.getThreadManager().setLoadingRobot((RobotPeer) robotProxy.getPeer());
-					robotClass = robotProxy.getRobotClassManager().getRobotClass();
-					if (robotClass == null) {
-						robotProxy.getOut().println("SYSTEM: Skipping robot: " + robotProxy.getName());
-						continue;
-					}
-					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
+                    try {
+                        manager.getThreadManager().setLoadingRobot((RobotPeer) robotProxy.getPeer());
+                        robotClass = robotProxy.getRobotClassManager().getRobotClass();
+                        if (robotClass == null) {
+                            robotProxy.getOut().println("SYSTEM: Skipping robot: " + robotProxy.getName());
+                            continue;
+                        }
+                        IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
-					robotProxy.getPeer().setRobot(bot);
-				} catch (IllegalAccessException e) {
-					robotProxy.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
-					robotProxy.getOut().println("SYSTEM: Is your constructor marked public?");
-				} catch (Throwable e) {
-					robotProxy.getOut().println(
-							"SYSTEM: An error occurred during initialization of " + robotProxy.getRobotClassManager());
-					robotProxy.getOut().println("SYSTEM: " + e);
-					e.printStackTrace(robotProxy.getOut());
-				}
-				if (roundNum > 0) {
-					initializeRobotPosition(robotProxy);
-				}
-			} // for
+                        robotProxy.getPeer().setRobot(bot);
+                    } catch (IllegalAccessException e) {
+                        robotProxy.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
+                        robotProxy.getOut().println("SYSTEM: Is your constructor marked public?");
+                    } catch (Throwable e) {
+                        robotProxy.getOut().println(
+                                "SYSTEM: An error occurred during initialization of " + robotProxy.getRobotClassManager());
+                        robotProxy.getOut().println("SYSTEM: " + e);
+                        e.printStackTrace(robotProxy.getOut());
+                    }
+                    if (roundNum > 0) {
+                        initializeRobotPosition(robotProxy);
+                    }
+                }
+                finally {
+                    robotProxy.unlockWrite();
+                }
+            } // for
 			manager.getThreadManager().setLoadingRobot(null);
 			setRobotsLoaded(true);
 		}
@@ -1600,8 +1609,7 @@ public class Battle extends BattleData implements Runnable {
 			if (index >= 0 && index < initialRobotPositions.length) {
 				double[] pos = initialRobotPositions[index];
 
-				robot.initializeLocked(pos[0], pos[1], pos[2], getBattleRobots());
-				if (validSpot(robot)) {
+				if (robot.initializeLocked(pos[0], pos[1], pos[2], getBattleRobots())) {
 					return;
 				}
 			}
@@ -1614,24 +1622,10 @@ public class Battle extends BattleData implements Runnable {
 			y = BattleRobotProxy.HEIGHT + random() * (battleField.getHeight() - 2 * BattleRobotProxy.HEIGHT);
 			heading = 2 * PI * random();
 
-			robot.initializeLocked(x, y, heading, getBattleRobots());
-
-			if (validSpot(robot)) {
+			if (robot.initializeLocked(x, y, heading, getBattleRobots())) {
 				break;
 			}
 		}
-	}
-
-	private boolean validSpot(IBattleRobotProxy robotProxy) {
-		robotProxy.setupUpdateBoundingBox();
-		for (IBattleRobotProxy otherRobotProxy : getBattleRobots()) {
-			if (otherRobotProxy != null && otherRobotProxy != robotProxy) {
-				if (robotProxy.getBoundingBox().intersects(otherRobotProxy.getBoundingBox())) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 
 	/**

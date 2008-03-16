@@ -20,37 +20,38 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class RobotPeerSync {
 
-	private final ReentrantLock syncRoot = new ReentrantLock();
+    private final Object syncRoot = new Object();
+	private final ReentrantLock syncLock = new ReentrantLock();
 	private int read = 0;
 	private int write = 0;
 
-	public final ReentrantLock getSyncRoot() {
+	public final Object getSyncRoot() {
 		return syncRoot;
 	}
 
 	public final void lockRead() {
-		syncRoot.lock();
+		syncLock.lock();
 		read++;
 	}
 
 	public final void lockWrite() {
-		syncRoot.lock();
+		syncLock.lock();
 		write++;
 	}
 
 	public final void unlockRead() {
 		read--;
-		syncRoot.unlock();
+		syncLock.unlock();
 	}
 
 	public final void unlockWrite() {
 		write--;
-		syncRoot.unlock();
+		syncLock.unlock();
 	}
 
 	public final void checkReadLock() {
-		if (!syncRoot.isHeldByCurrentThread()) {
-			throw new RuntimeException("bad lock");
+		if (!syncLock.isHeldByCurrentThread()) {
+			throw new RuntimeException("not locked for reading");
 		}
 		if (read <= 0 && write <= 0) {
 			throw new RuntimeException("bad lock type read");
@@ -58,8 +59,8 @@ public class RobotPeerSync {
 	}
 
 	public final void checkWriteLock() {
-		if (!syncRoot.isHeldByCurrentThread()) {
-			throw new RuntimeException("bad lock");
+		if (!syncLock.isHeldByCurrentThread()) {
+			throw new RuntimeException("not locked for writing");
 		}
 		if (write <= 0) {
 			throw new RuntimeException("bad lock type write");
@@ -67,7 +68,7 @@ public class RobotPeerSync {
 	}
 
 	public final void checkNoLock() {
-		if (syncRoot.isHeldByCurrentThread()) {
+		if (syncLock.isHeldByCurrentThread()) {
 			throw new RuntimeException("should not lock");
 		}
 	}

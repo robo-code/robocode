@@ -325,9 +325,12 @@ public class RobotPeerStatus extends RobotPeerLock {
 		state = newState;
 	}
 
+    public final void uncharge() {
+        energy = 0;
+        peer.getCommands().resetIntentions();
+    }
+
 	public final void setEnergy(double newEnergy) {
-		// checkWriteLock();
-		// intentionaly not synchronized to prevent block from user code
 		setEnergy(newEnergy, true);
 	}
 

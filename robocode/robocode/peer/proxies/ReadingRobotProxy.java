@@ -33,12 +33,10 @@ public class ReadingRobotProxy implements IReadingRobotProxy {
 	protected RobotPeerStatus status;
 	protected RobotPeerInfo info;
 	protected RobotPeerCommands commands;
-	protected IRobotRunnableProxy view;
 
 	public ReadingRobotProxy(IRobotPeer peer) {
 		this.peer = peer;
 		this.info = peer.getInfo();
-		this.view = peer.getRobotRunnableView();
 		this.status = peer.getStatus();
 		this.commands = peer.getCommands();
 	}
@@ -344,7 +342,7 @@ public class ReadingRobotProxy implements IReadingRobotProxy {
 	public final double getBattleFieldWidth() {
 		peer.lockRead();
 		try {
-			return view.getBattleFieldWidth();
+			return peer.getBattleFieldWidth();
 		} finally {
 			peer.unlockRead();
 		}
@@ -353,7 +351,7 @@ public class ReadingRobotProxy implements IReadingRobotProxy {
 	public final double getBattleFieldHeight() {
 		peer.lockRead();
 		try {
-			return view.getBattleFieldHeight();
+			return peer.getBattleFieldHeight();
 		} finally {
 			peer.unlockRead();
 		}

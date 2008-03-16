@@ -39,7 +39,6 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
-	private IDisplayRobotPeer robotPeer;
 	private IDisplayRobotProxy robotView;
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
@@ -117,8 +116,8 @@ public class RobotDialog extends JFrame {
 	public void setRobotPeer(IDisplayRobotProxy robotView) {
 		this.robotView = robotView;
 		getConsoleScrollPane().setText("");
-		if (robotPeer != null && robotPeer.getOut() != null) {
-			getConsoleScrollPane().processStream(robotPeer.getOut().getInputStream());
+		if (robotView != null && robotView.getOut() != null) {
+			getConsoleScrollPane().processStream(robotView.getOut().getInputStream());
 		}
 	}
 

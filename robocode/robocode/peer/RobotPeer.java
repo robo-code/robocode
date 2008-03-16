@@ -69,6 +69,7 @@ import robocode.peer.robot.*;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.battlefield.BattleField;
 
 import java.security.AccessControlException;
 
@@ -101,6 +102,7 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 	private RobotOutputStream out;
 	private IBasicRobot robot;
 	private Battle battle;
+    private BattleField battleField;
 	private RobotClassManager robotClassManager;
 	private RobotFileSystemManager robotFileSystemManager;
 	private RobotThreadManager robotThreadManager;
@@ -110,10 +112,10 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 	public RobotPeer(Battle battle, RobotClassManager robotClassManager, long fileSystemQuota) {
 		super();
 
-		// dummy
 		this.battle = battle;
+        this.battleField = battle.getBattleField(); 
 
-		// data
+        // data
 		info = new RobotPeerInfo();
 		info.setupInfo(this);
 		status = new RobotPeerStatus();
@@ -283,20 +285,40 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 
 	// security
 	public void forceStop() {
-		// intentionaly not synchronized to prevent block from user code
-		status.setRunning(false);
-		status.getStatistics().setInactive();
+        lockWrite();
+        try
+        {
+            status.setRunning(false);
+            status.getStatistics().setInactive();
+        }
+        finally {
+            unlockWrite();
+        }
 	}
 
 	public void forceUncharge() {
-		// intentionaly not synchronized to prevent block from user code
-		status.setEnergy(0);
-	}
+		lockWrite();
+        try
+        {
+		    status.uncharge();
+        }
+        finally {
+            unlockWrite();
+        }
+    }
 
 	public String getName() {
 		// intentionaly not synchronized to prevent block from user code
 		return info.getName();
 	}
+
+    public double getBattleFieldHeight() {
+        return battleField.getHeight();
+    }
+
+    public double getBattleFieldWidth() {
+        return battleField.getWidth();
+    }
 
 	// IContestant
 	public IContestantStatistics getRobotStatistics() {

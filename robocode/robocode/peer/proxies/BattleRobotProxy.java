@@ -16,8 +16,6 @@ import robocode.*;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.peer.*;
-import robocode.peer.data.RobotPeerCommands;
-import robocode.peer.data.RobotPeerInfo;
 import robocode.peer.data.RobotPeerStatus;
 import robocode.peer.robot.*;
 import robocode.util.BoundingRectangle;
@@ -85,32 +83,42 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 	// not synchronized, called by setup
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
-	public void setupPreInitialize() {
-		status.setState(RobotPeerStatus.STATE_DEAD);
-		status.setBoundingBox(new BoundingRectangle());
-		status.setStatistics(new RobotStatistics(this));
+	public void setupPreInitializeLocked() {
+        peer.lockWrite();
+        try {
+            status.setState(RobotPeerStatus.STATE_DEAD);
+            status.setBoundingBox(new BoundingRectangle());
+            status.setStatistics(new RobotStatistics(this));
+        } finally {
+            peer.unlockWrite();
+        }
 	}
 
-	public void setupSetDuplicate(int d) {
-		info.setDuplicate(d);
-	}
-
-	public void setupUpdateBoundingBox() {
-		getBoundingBox().setRect(status.getX() - WIDTH / 2 + 2, status.getY() - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
+	public void setupSetDuplicateLocked(int d) {
+        peer.lockWrite();
+        try {
+    		info.setDuplicate(d);
+        } finally {
+            peer.unlockWrite();
+        }
 	}
 
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 	// synchronizet inplace, called by battle
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
     
-	public void initializeLocked(double x, double y, double heading, List<IBattleRobotProxy> battleRobots) {
+	public boolean initializeLocked(double x, double y, double heading, List<IBattleRobotProxy> battleRobots) {
 		peer.lockWrite();
 		try {
-			status.setState(RobotPeerStatus.STATE_ACTIVE);
+            status.setX(x);
+            status.setY(y);
+            updateBoundingBox();
+            if (!validSpot(battleRobots)){
+                return false;
+            }
 
+			status.setState(RobotPeerStatus.STATE_ACTIVE);
 			status.setWinner(false);
-			status.setX(x);
-			status.setY(y);
 			status.setHeading(heading);
 			status.setGunHeading(heading);
 			status.setRadarHeading(heading);
@@ -160,12 +168,15 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 			commands.setAdjustRadarForGunTurn(false);
 			commands.setAdjustRadarForBodyTurnSet(false);
 			commands.setCurrentBullet(null);
-		} finally {
+
+            return true;
+
+        } finally {
 			peer.unlockWrite();
 		}
 	}
 
-	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 	// synchronizet by battle, called by battle
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
@@ -205,11 +216,6 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 			return;
 		}
 		status.setEnergy(status.getEnergy() - abs(zapAmount));
-		if (status.getEnergy() < .1) {
-			status.setEnergy(0);
-			commands.setDistanceRemaining(0);
-			commands.setTurnRemaining(0);
-		}
 	}
 
 	public void battleKill() {
@@ -239,8 +245,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 			// 'fake' bullet for explosion on self
 			battle.addBullet(new ExplosionPeer(this, battle));
 		}
-		status.setEnergy(0);
-
+		status.uncharge();
 		status.setState(RobotPeerStatus.STATE_DEAD);
 	}
 
@@ -272,7 +277,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 
 		for (IBattleRobotProxy robotPeer : robots) {
 			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead())
-					&& b_intersects(status.getScanArc(), robotPeer.getBoundingBox())) {
+					&& intersects(status.getScanArc(), robotPeer.getBoundingBox())) {
 				double dx = robotPeer.getX() - status.getX();
 				double dy = robotPeer.getY() - status.getY();
 				double angle = atan2(dx, dy);
@@ -409,7 +414,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 		}
 
 		if (updateBounds) {
-			setupUpdateBoundingBox();
+			updateBoundingBox();
 		}
 
 		commands.setDistanceRemaining(commands.getDistanceRemaining() - status.getVelocity());
@@ -602,7 +607,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 				status.setEnergy(status.getEnergy() - Rules.getWallHitDamage(status.getVelocity()), false);
 			}
 
-			setupUpdateBoundingBox();
+			updateBoundingBox();
 
 			commands.setDistanceRemaining(0);
 			status.setVelocity(0);
@@ -710,15 +715,20 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 			// Wake up the thread
 			synchronized (peer.getSyncRoot()) {
 				peer.getSyncRoot().notifyAll();
-			}
-			try {
-				peer.getSyncRoot().wait(10000);
-			} catch (InterruptedException e) {}
+                try {
+                    peer.getSyncRoot().wait(10000);
+                } catch (InterruptedException e) {}
+            }
 		}
 	}
 
 	public void setSkippedTurnsLocked(int s) {
-		status.setSkippedTurns(s);
+        peer.lockWrite();
+        try {
+            status.setSkippedTurns(s);
+        } finally {
+            peer.unlockWrite();
+        }
 	}
 
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
@@ -756,7 +766,22 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 	// components and helpers
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
-	private boolean b_intersects(Arc2D arc, Rectangle2D rect) {
+    private boolean validSpot(List<IBattleRobotProxy> battleRobots) {
+        for (IBattleRobotProxy otherRobotProxy : battleRobots) {
+            if (otherRobotProxy != null && otherRobotProxy != this) {
+                if (this.getBoundingBox().intersects(otherRobotProxy.getBoundingBox())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void updateBoundingBox() {
+        getBoundingBox().setRect(status.getX() - WIDTH / 2 + 2, status.getY() - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
+    }
+
+	private boolean intersects(Arc2D arc, Rectangle2D rect) {
 		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
 				arc.getStartPoint().getY()))
 				|| arc.intersects(rect);

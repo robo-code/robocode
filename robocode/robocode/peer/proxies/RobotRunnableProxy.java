@@ -190,7 +190,7 @@ public class RobotRunnableProxy extends ReadingRobotProxy implements IRobotRunna
 		peer.lockWrite();
 		try {
 			if (uncharge) {
-				status.setEnergy(0);
+				status.uncharge();
 			}
 			status.setRunning(false);
 		} finally {

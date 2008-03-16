@@ -24,6 +24,7 @@ public interface IDisplayRobotProxy extends IReadingRobotProxy {
 	void lockRead();
 	void unlockRead();
 	void cleanup();
+    RobotOutputStream getOut();
 
 	void displaySetPaintEnabled(boolean enabled);
 	void displaySetSGPaintEnabled(boolean enabled);

@@ -34,11 +34,10 @@ public interface IBattleRobotProxy extends IReadingRobotProxy {
 	RobotFileSystemManager getRobotFileSystemManager();
 	IDisplayRobotProxy getDisplayView();
 
-	void setupPreInitialize();
-	void setupSetDuplicate(int d);
-	void setupUpdateBoundingBox();
+	void setupPreInitializeLocked();
+	void setupSetDuplicateLocked(int d);
     
-	void initializeLocked(double x, double y, double heading, java.util.List<IBattleRobotProxy> battleRobots);
+	boolean initializeLocked(double x, double y, double heading, java.util.List<IBattleRobotProxy> battleRobots);
 
 	void battleKill();
 	void battleZap(double z);

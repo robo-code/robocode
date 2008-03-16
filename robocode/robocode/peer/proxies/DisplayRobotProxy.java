@@ -13,6 +13,7 @@ package robocode.peer.proxies;
 
 
 import robocode.peer.IDisplayRobotPeer;
+import robocode.peer.robot.RobotOutputStream;
 import robocode.robotinterfaces.IBasicEvents;
 
 import java.awt.*;
@@ -43,6 +44,10 @@ public class DisplayRobotProxy extends ReadingRobotProxy implements IDisplayRobo
 	public void unlockRead() {
 		peer.unlockRead();
 	}
+
+    public RobotOutputStream getOut() {
+        return peer.getOut();
+    }
 
 	public void displaySetPaintEnabled(boolean enabled) {
 		peer.lockWrite();

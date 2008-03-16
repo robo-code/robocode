@@ -46,7 +46,7 @@ public interface IRobotPeer extends Runnable {
 
 	void checkNoLock();
 
-	ReentrantLock getSyncRoot();
+	Object getSyncRoot();
 
 	// init
 	void setRobot(IBasicRobot newRobot);
@@ -60,7 +60,11 @@ public interface IRobotPeer extends Runnable {
 
 	RobotPeerCommands getCommands();
 
-	// view
+    double getBattleFieldWidth();
+    
+    double getBattleFieldHeight();
+
+    // view
 	IRobotRunnableProxy getRobotRunnableView();
 
 	IDisplayRobotProxy getDisplayProxy();
