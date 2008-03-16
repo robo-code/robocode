@@ -29,7 +29,7 @@ package robocode.robotinterfaces.peer;
  * @author Flemming N. Larsen (javadoc)
  *
  * @since 1.6
-*/
+ */
 public interface IJuniorRobotPeer extends IBasicRobotPeer {
 
 	/**

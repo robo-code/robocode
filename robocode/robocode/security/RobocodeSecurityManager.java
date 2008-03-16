@@ -98,7 +98,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (robotPeer == null) {
 			robotPeer = threadManager.getLoadingRobotPeer(c);
 			if (robotPeer != null) {
-				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access to thread: " + t.getName());
+				throw new AccessControlException(
+						"Preventing " + robotPeer.getName() + " from access to thread: " + t.getName());
 			}
 			checkPermission(new RuntimePermission("modifyThread"));
 			return;
@@ -309,7 +310,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 				if (o == null) {
 					robotPeer.setEnergy(0);
 					throw new AccessControlException(
-							"Preventing " + robotPeer.getName() + " from access: " + perm + ": You must use a RobocodeOutputStream.");
+							"Preventing " + robotPeer.getName() + " from access: " + perm
+							+ ": You must use a RobocodeOutputStream.");
 				}
 				// Remove the RobocodeOutputStream so future access checks will fail.
 				removeRobocodeOutputStream();
@@ -540,6 +542,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		Thread c = Thread.currentThread();
+
 		if (isSafeThread(c)) {
 			return;
 		}
@@ -553,8 +556,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
 					|| (experimental && subPkg.equals("robotinterfaces.peer")))) {
 
-
 				RobotPeer robotPeer = threadManager.getRobotPeer(c);
+
 				if (robotPeer == null) {
 					robotPeer = threadManager.getLoadingRobotPeer(c);
 				}

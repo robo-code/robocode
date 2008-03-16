@@ -315,7 +315,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 					RobotFileSpecification robotFileSpecification = (RobotFileSpecification) fileSpecification;
 
 					if (robotFileSpecification.isDevelopmentVersion()) {
-						robotFileSpecification.setRobotDescription(getPackagerOptionsPanel().getDescriptionArea().getText());
+						robotFileSpecification.setRobotDescription(
+								getPackagerOptionsPanel().getDescriptionArea().getText());
 						robotFileSpecification.setRobotJavaSourceIncluded(
 								getPackagerOptionsPanel().getIncludeSource().isSelected());
 						robotFileSpecification.setRobotAuthorName(getPackagerOptionsPanel().getAuthorField().getText());
@@ -333,7 +334,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 							}
 						}
 						robotFileSpecification.setRobotWebpage(u);
-						robotFileSpecification.setRobocodeVersion(robotManager.getManager().getVersionManager().getVersion());
+						robotFileSpecification.setRobocodeVersion(
+								robotManager.getManager().getVersionManager().getVersion());
 
 						FileOutputStream fos2 = null;
 

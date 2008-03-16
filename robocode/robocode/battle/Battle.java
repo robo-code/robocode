@@ -1539,8 +1539,8 @@ public class Battle implements Runnable {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
 				} catch (Throwable e) {
-					robotPeer.getOut().println("SYSTEM: An error occurred during initialization of "
-							+ robotPeer.getRobotClassManager());
+					robotPeer.getOut().println(
+							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
 					robotPeer.getOut().println("SYSTEM: " + e);
 					e.printStackTrace(robotPeer.getOut());
 				}

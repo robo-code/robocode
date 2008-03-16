@@ -26,7 +26,7 @@ import robocode.security.RobocodeSecurityManager;
  * and custom events for a {@link AdvancedRobot}. The code below is taken from
  * the sample robot named {@code sample.Target}. See the
  * {@code sample/Target.java} for details.
-  * <pre>
+ * <pre>
  *   addCustomEvent(
  *       new Condition("triggerhit") {
  *           public boolean test() {

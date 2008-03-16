@@ -449,8 +449,8 @@ public class BattleView extends Canvas {
 			}
 			if (drawRobotName) {
 				g.setColor(Color.white);
-				centerString(g, robotPeer.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2,
-						smallFont, smallFontMetrics);
+				centerString(g, robotPeer.getVeryShortName(), x,
+						y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2, smallFont, smallFontMetrics);
 			}
 			if (robotPeer.isPaintEnabled() && robotPeer.getRobot() != null) {
 				drawRobotPaint(g, robotPeer);

@@ -13,6 +13,7 @@
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
+
 import robocode.ScannedRobotEvent;
 import robocode.robotinterfaces.IBasicEvents;
 

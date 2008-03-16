@@ -39,7 +39,7 @@ public interface IInteractiveEvents {
 	 * key events.
 	 *
 	 * @param event holds details about current event
-     * @see java.awt.event.KeyListener#keyPressed(KeyEvent)
+	 * @see java.awt.event.KeyListener#keyPressed(KeyEvent)
 	 * @see #onKeyReleased(KeyEvent)
 	 * @see #onKeyTyped(KeyEvent)
 	 *
@@ -53,7 +53,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * key events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent)
 	 * @see #onKeyPressed(KeyEvent)
 	 * @see #onKeyTyped(KeyEvent)
@@ -68,7 +68,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * key events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent)
 	 * @see #onKeyPressed(KeyEvent)
 	 * @see #onKeyReleased(KeyEvent)
@@ -84,7 +84,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)
@@ -104,7 +104,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.MouseListener#mouseEntered(MouseEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)
@@ -124,7 +124,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.MouseListener#mouseExited(MouseEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)
@@ -144,7 +144,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMouseReleased(MouseEvent)
@@ -164,7 +164,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.MouseListener#mouseReleased(MouseEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)
@@ -184,7 +184,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.MouseMotionListener#mouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)
 	 * @see #onMouseReleased(MouseEvent)
@@ -205,7 +205,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.MouseMotionListener#mouseDragged(MouseEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)
@@ -225,7 +225,7 @@ public interface IInteractiveEvents {
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
-     * @param event holds details about current event
+	 * @param event holds details about current event
 	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(MouseWheelEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)

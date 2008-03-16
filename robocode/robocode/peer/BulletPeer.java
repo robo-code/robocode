@@ -173,7 +173,8 @@ public class BulletPeer {
 		for (int i = 0; i < robots.size(); i++) {
 			robotPeer = robots.get(i);
 
-			if (!(robotPeer == null || robotPeer == owner || robotPeer.isDead()) && robotPeer.getBoundingBox().intersectsLine(boundingLine)) {
+			if (!(robotPeer == null || robotPeer == owner || robotPeer.isDead())
+					&& robotPeer.getBoundingBox().intersectsLine(boundingLine)) {
 				double damage = Rules.getBulletDamage(power);
 
 				double score = damage;
@@ -194,8 +195,8 @@ public class BulletPeer {
 				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 
 				robotPeer.getEventManager().add(
-						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()),
-						getBullet()));
+						new HitByBulletEvent(
+								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()));
 
 				state = STATE_HIT_VICTIM;
 				owner.getEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet));

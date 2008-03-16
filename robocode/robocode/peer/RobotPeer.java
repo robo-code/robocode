@@ -660,15 +660,17 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
 		for (RobotPeer robotPeer : battle.getRobots()) {
-			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead()) && intersects(scanArc, robotPeer.boundingBox)) {
+			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead())
+					&& intersects(scanArc, robotPeer.boundingBox)) {
 				double dx = robotPeer.getX() - getX();
 				double dy = robotPeer.getY() - getY();
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 
 				eventManager.add(
-						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(), normalRelativeAngle(angle - getBodyHeading()), dist,
-						robotPeer.getBodyHeading(), robotPeer.getVelocity()));
+						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
+						normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
+						robotPeer.getVelocity()));
 			}
 		}
 	}
@@ -1437,6 +1439,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public synchronized Bullet fire(double power) {
 		Bullet bullet = setFire(power);
+
 		execute();
 		return bullet;
 	}

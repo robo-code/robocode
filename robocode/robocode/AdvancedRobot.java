@@ -953,7 +953,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public boolean isAdjustGunForRobotTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer)peer).isAdjustGunForBodyTurn();
+			return ((IAdvancedRobotPeer) peer).isAdjustGunForBodyTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -977,7 +977,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public boolean isAdjustRadarForRobotTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer)peer).isAdjustRadarForBodyTurn();
+			return ((IAdvancedRobotPeer) peer).isAdjustRadarForBodyTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -1001,7 +1001,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public boolean isAdjustRadarForGunTurn() {
 		if (peer != null) {
-			return ((IAdvancedRobotPeer)peer).isAdjustRadarForGunTurn();
+			return ((IAdvancedRobotPeer) peer).isAdjustRadarForGunTurn();
 		}
 		uninitializedException();
 		return false; // never called
