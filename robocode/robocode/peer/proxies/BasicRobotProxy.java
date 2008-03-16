@@ -107,7 +107,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		getCall();
 		peer.lockRead();
 		try {
-			return commands.getTurnRemaining();
+			return commands.getBodyTurnRemaining();
 		} finally {
 			peer.unlockRead();
 		}
@@ -165,11 +165,11 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	}
 
 	// Junior calls below
-	public final double getHeading() {
+	public final double getBodyHeading() {
 		getCall();
 		peer.lockRead();
 		try {
-			return status.getHeading();
+			return status.getBodyHeading();
 		} finally {
 			peer.unlockRead();
 		}
@@ -418,7 +418,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		peer.lockWrite();
 		try {
 			if (status.getEnergy() > 0) {
-				commands.setTurnRemaining(radians);
+				commands.setBodyTurnRemaining(radians);
 			}
 		} finally {
 			peer.unlockWrite();

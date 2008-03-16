@@ -209,7 +209,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	public double getHeading() {
 		if (peer != null) {
-			double rv = 180.0 * peer.getHeading() / Math.PI;
+			double rv = 180.0 * peer.getBodyHeading() / Math.PI;
 
 			while (rv < 0) {
 				rv += 360;

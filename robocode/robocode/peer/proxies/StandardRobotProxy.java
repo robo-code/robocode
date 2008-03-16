@@ -120,13 +120,13 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 		try {
 			if (!commands.isStopped() || overwrite) {
 				commands.setSaveDistanceToGo(commands.getDistanceRemaining());
-				commands.setSaveAngleToTurn(commands.getTurnRemaining());
+				commands.setSaveAngleToTurn(commands.getBodyTurnRemaining());
 				commands.setSaveGunAngleToTurn(commands.getGunTurnRemaining());
 				commands.setSaveRadarAngleToTurn(commands.getRadarTurnRemaining());
 			}
 			commands.setStopped(true);
 			commands.setDistanceRemaining(0);
-			commands.setTurnRemaining(0);
+			commands.setBodyTurnRemaining(0);
 			commands.setGunTurnRemaining(0);
 			commands.setRadarTurnRemaining(0);
 		} finally {
@@ -140,7 +140,7 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 			if (commands.isStopped()) {
 				commands.setStopped(false);
 				commands.setDistanceRemaining(commands.getSaveDistanceToGo());
-				commands.setTurnRemaining(commands.getSaveAngleToTurn());
+				commands.setBodyTurnRemaining(commands.getSaveAngleToTurn());
 				commands.setGunTurnRemaining(commands.getSaveGunAngleToTurn());
 				commands.setRadarTurnRemaining(commands.getSaveRadarAngleToTurn());
 			}

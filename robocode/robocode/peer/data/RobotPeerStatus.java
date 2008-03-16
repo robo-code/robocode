@@ -44,7 +44,7 @@ public class RobotPeerStatus extends RobotPeerLock {
 	private double energy;
 	private double velocity;
 	private double gunHeat;
-	private double heading;
+	private double bodyHeading;
 	private double radarHeading;
 	private double gunHeading;
 	private double x;
@@ -165,9 +165,9 @@ public class RobotPeerStatus extends RobotPeerLock {
 		return gunHeading;
 	}
 
-	public final double getHeading() {
+	public final double getBodyHeading() {
 		checkReadLock();
-		return heading;
+		return bodyHeading;
 	}
 
 	public final double getRadarHeading() {
@@ -226,7 +226,7 @@ public class RobotPeerStatus extends RobotPeerLock {
 		x = rr.x;
 		y = rr.y;
 		energy = (double) rr.energy / 10;
-		heading = Math.PI * rr.heading / 128;
+		bodyHeading = Math.PI * rr.heading / 128;
 		radarHeading = Math.PI * rr.radarHeading / 128;
 		gunHeading = Math.PI * rr.gunHeading / 128;
 		state = rr.state;
@@ -281,9 +281,9 @@ public class RobotPeerStatus extends RobotPeerLock {
 		gunHeat = newGunHeat;
 	}
 
-	public final void setHeading(double heading) {
+	public final void setBodyHeading(double bodyHeading) {
 		checkWriteLock();
-		this.heading = heading;
+		this.bodyHeading = bodyHeading;
 	}
 
 	public final void setGunHeading(double newGunHeading) {
@@ -296,12 +296,12 @@ public class RobotPeerStatus extends RobotPeerLock {
 		radarHeading = newRadarHeading;
 	}
 
-	public final void adjustHeading(double difference, boolean near) {
+	public final void adjustBodyHeading(double difference, boolean finished) {
 		checkWriteLock();
-		if (near) {
-			heading = normalNearAbsoluteAngle(heading + difference);
+		if (finished) {
+			bodyHeading = normalNearAbsoluteAngle(bodyHeading + difference);
 		} else {
-			heading = normalAbsoluteAngle(heading + difference);
+			bodyHeading = normalAbsoluteAngle(bodyHeading + difference);
 		}
 	}
 

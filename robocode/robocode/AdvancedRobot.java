@@ -459,7 +459,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   setAhead(100);
 	 *   execute();
 	 * <p/>
-	 *   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
+	 *   while (getDistanceRemaining() > 0 && getBodyTurnRemaining() > 0) {
 	 *       execute();
 	 *   }
 	 * </pre>

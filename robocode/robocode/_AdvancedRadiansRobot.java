@@ -55,7 +55,7 @@ public class _AdvancedRadiansRobot extends _AdvancedRobot {
 	 */
 	public double getHeadingRadians() {
 		if (peer != null) {
-			return peer.getHeading();
+			return peer.getBodyHeading();
 		}
 		uninitializedException();
 		return 0; // never called

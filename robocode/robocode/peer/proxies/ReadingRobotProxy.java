@@ -17,8 +17,6 @@ import robocode.peer.TeamPeer;
 import robocode.peer.data.RobotPeerCommands;
 import robocode.peer.data.RobotPeerInfo;
 import robocode.peer.data.RobotPeerStatus;
-import robocode.peer.robot.RobotOutputStream;
-import robocode.peer.robot.RobotStatistics;
 import robocode.util.BoundingRectangle;
 
 import java.awt.*;
@@ -369,7 +367,7 @@ public class ReadingRobotProxy implements IReadingRobotProxy {
 	public final double getHeading() {
 		peer.lockRead();
 		try {
-			return status.getHeading();
+			return status.getBodyHeading();
 		} finally {
 			peer.unlockRead();
 		}
@@ -445,7 +443,7 @@ public class ReadingRobotProxy implements IReadingRobotProxy {
 	public final double getTurnRemaining() {
 		peer.lockRead();
 		try {
-			return commands.getTurnRemaining();
+			return commands.getBodyTurnRemaining();
 		} finally {
 			peer.unlockRead();
 		}

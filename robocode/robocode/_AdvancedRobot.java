@@ -115,7 +115,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getHeading() getHeading} instead.
+	 * @deprecated Use {@link Robot#getHeading() getBodyHeading} instead.
 	 */
 	@Deprecated
 	public double getHeadingDegrees() {

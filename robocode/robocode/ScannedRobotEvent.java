@@ -88,7 +88,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * Returns the heading of the robot, in degrees (0 <= getHeading() < 360)
+	 * Returns the heading of the robot, in degrees (0 <= getBodyHeading() < 360)
 	 *
 	 * @return the heading of the robot, in degrees
 	 */
@@ -97,7 +97,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * Returns the heading of the robot, in radians (0 <= getHeading() < 2 * PI)
+	 * Returns the heading of the robot, in radians (0 <= getBodyHeading() < 2 * PI)
 	 *
 	 * @return the heading of the robot, in radians
 	 */

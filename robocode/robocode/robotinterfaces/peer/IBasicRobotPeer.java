@@ -81,7 +81,7 @@ public interface IBasicRobotPeer {
 	 * @see #getGunHeading()
 	 * @see #getRadarHeading()
 	 */
-	double getHeading();
+	double getBodyHeading();
 
 	/**
 	 * Returns the direction that the robot's gun is facing, in degrees.
@@ -91,7 +91,7 @@ public interface IBasicRobotPeer {
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
 	 * @return the direction that the robot's gun is facing, in degrees.
-	 * @see #getHeading()
+	 * @see #getBodyHeading()
 	 * @see #getRadarHeading()
 	 */
 	double getGunHeading();
@@ -104,7 +104,7 @@ public interface IBasicRobotPeer {
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
 	 * @return the direction that the robot's radar is facing, in degrees.
-	 * @see #getHeading()
+	 * @see #getBodyHeading()
 	 * @see #getGunHeading()
 	 */
 	double getRadarHeading();
@@ -274,7 +274,7 @@ public interface IBasicRobotPeer {
 	 *   setAhead(100);
 	 *   execute();
 	 * <p/>
-	 *   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
+	 *   while (getDistanceRemaining() > 0 && getBodyTurnRemaining() > 0) {
 	 *       execute();
 	 *   }
 	 * </pre>

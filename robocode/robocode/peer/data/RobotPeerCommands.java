@@ -43,7 +43,6 @@ public class RobotPeerCommands extends RobotPeerLock {
 	private double saveRadarAngleToTurn;
 
 	private double acceleration;
-	private double turnRate;
 	private boolean slowingDown;
 	private int moveDirection;
 	private boolean isStopped;
@@ -89,7 +88,7 @@ public class RobotPeerCommands extends RobotPeerLock {
 		return maxTurnRate;
 	}
 
-	public final double getTurnRemaining() {
+	public final double getBodyTurnRemaining() {
 		checkReadLock();
 		return turnRemaining;
 	}
@@ -112,7 +111,7 @@ public class RobotPeerCommands extends RobotPeerLock {
 	public final double getTurnRemainingSync() {
 		peer.lockRead();
 		try {
-			return getTurnRemaining();
+			return getBodyTurnRemaining();
 		} finally {
 			peer.unlockRead();
 		}
@@ -183,11 +182,6 @@ public class RobotPeerCommands extends RobotPeerLock {
 	public final double getAcceleration() {
 		checkReadLock();
 		return acceleration;
-	}
-
-	public final double getTurnRate() {
-		checkReadLock();
-		return turnRate;
 	}
 
 	public final boolean isSlowingDown() {
@@ -292,7 +286,7 @@ public class RobotPeerCommands extends RobotPeerLock {
 		this.maxTurnRate = min(abs(maxTurnRate), Rules.MAX_TURN_RATE_RADIANS);
 	}
 
-	public final void setTurnRemaining(double turnRemaining) {
+	public final void setBodyTurnRemaining(double turnRemaining) {
 		checkWriteLock();
 		this.turnRemaining = turnRemaining;
 	}
@@ -340,11 +334,6 @@ public class RobotPeerCommands extends RobotPeerLock {
 	public final void setAcceleration(double acceleration) {
 		checkWriteLock();
 		this.acceleration = acceleration;
-	}
-
-	public final void setTurnRate(double turnRate) {
-		checkWriteLock();
-		this.turnRate = turnRate;
 	}
 
 	public final void setSlowingDown(boolean slowingDown) {
@@ -412,7 +401,7 @@ public class RobotPeerCommands extends RobotPeerLock {
 
 		if (!status.getScan()) {
 			status.setScan(
-					(lastHeading != status.getHeading() || lastGunHeading != status.getGunHeading()
+					(lastHeading != status.getBodyHeading() || lastGunHeading != status.getGunHeading()
 					|| lastRadarHeading != status.getRadarHeading() || lastX != status.getX() || lastY != status.getY()
 					|| getWaitCondition() != null));
 		}
@@ -423,10 +412,10 @@ public class RobotPeerCommands extends RobotPeerLock {
 		RobotPeerStatus status = peer.getStatus();
 
 		lastGunHeading = status.getGunHeading();
-		lastHeading = status.getHeading();
+		lastHeading = status.getBodyHeading();
 		lastRadarHeading = status.getRadarHeading();
 		lastX = status.getX();
 		lastY = status.getY();
-		lastHeading = status.getHeading();
+		lastHeading = status.getBodyHeading();
 	}
 }

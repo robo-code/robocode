@@ -119,7 +119,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 
 			status.setState(RobotPeerStatus.STATE_ACTIVE);
 			status.setWinner(false);
-			status.setHeading(heading);
+			status.setBodyHeading(heading);
 			status.setGunHeading(heading);
 			status.setRadarHeading(heading);
 			status.setVelocity(0);
@@ -186,10 +186,10 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 			status.setState(RobotPeerStatus.STATE_ACTIVE);
 		}
 		commands.updateLast();
-		battleupdateGunHeat();
+		battleUpdateGunHeat();
 
 		if (!status.isInCollision()) {
-			battleUpdateHeading();
+			battleUpdateBodyHeading();
 		}
 
 		battleUpdateGunHeading();
@@ -285,13 +285,13 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 
 				getBattleEventManager().add(
 						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
-						normalRelativeAngle(angle - status.getHeading()), dist, robotPeer.getHeading(),
+						normalRelativeAngle(angle - status.getBodyHeading()), dist, robotPeer.getHeading(),
 						robotPeer.getVelocity()));
 			}
 		}
 	}
 
-	private void battleupdateGunHeat() {
+	private void battleUpdateGunHeat() {
 		status.setGunHeat(status.getGunHeat() - peer.getRobotRunnableView().getGunCoolingRate());
 		if (status.getGunHeat() < 0) {
 			status.setGunHeat(0);
@@ -394,8 +394,8 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 					status.getVelocity() + Math.min(Rules.DECELERATION, -status.getVelocity() - commands.getMaxVelocity()));
 		}
 
-		double dx = status.getVelocity() * sin(status.getHeading());
-		double dy = status.getVelocity() * cos(status.getHeading());
+		double dx = status.getVelocity() * sin(status.getBodyHeading());
+		double dy = status.getVelocity() * cos(status.getBodyHeading());
 
 		status.setX(status.getX() + dx);
 		status.setY(status.getY() + dy);
@@ -420,119 +420,127 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 		commands.setDistanceRemaining(commands.getDistanceRemaining() - status.getVelocity());
 	}
 
-	private void battleUpdateHeading() {
+	private void battleUpdateBodyHeading() {
 
-		commands.setTurnRate(
-				Math.min(commands.getMaxTurnRate(),
-				(.4 + .6 * (1 - (abs(status.getVelocity()) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS));
+        double radarTurnRemaining = commands.getRadarTurnRemaining();
+        double bodyTurnRemaining = commands.getBodyTurnRemaining();
+        double gunTurnRemaining = commands.getGunTurnRemaining();
+        double turnRate = Math.min(commands.getMaxTurnRate(),
+                (.4 + .6 * (1 - (abs(status.getVelocity()) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
 
-		if (commands.getTurnRemaining() > 0) {
-			if (commands.getTurnRemaining() < commands.getTurnRate()) {
-				status.adjustHeading(commands.getTurnRemaining(), true);
-				status.adjustGunHeading(commands.getTurnRemaining());
-				status.adjustRadarHeading(commands.getTurnRemaining());
+        if (bodyTurnRemaining > 0) {
+			if (bodyTurnRemaining < turnRate) {
+				status.adjustGunHeading(bodyTurnRemaining);
+				status.adjustRadarHeading(bodyTurnRemaining);
 				if (commands.isAdjustGunForBodyTurn()) {
-					commands.setGunTurnRemaining(commands.getGunTurnRemaining() - commands.getTurnRemaining());
+					commands.setGunTurnRemaining(gunTurnRemaining - bodyTurnRemaining);
 				}
 				if (commands.isAdjustRadarForBodyTurn()) {
-					commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - commands.getTurnRemaining());
+					commands.setRadarTurnRemaining(radarTurnRemaining - bodyTurnRemaining);
 				}
-				commands.setTurnRemaining(0);
+				commands.setBodyTurnRemaining(0);
+                status.adjustBodyHeading(bodyTurnRemaining, true);
 			} else {
-				status.adjustHeading(commands.getTurnRate(), false);
-				status.adjustGunHeading(commands.getTurnRate());
-				status.adjustRadarHeading(commands.getTurnRate());
-				commands.setTurnRemaining(commands.getTurnRemaining() - commands.getTurnRate());
+				status.adjustGunHeading(turnRate);
+				status.adjustRadarHeading(turnRate);
 				if (commands.isAdjustGunForBodyTurn()) {
-					commands.setGunTurnRemaining(commands.getGunTurnRemaining() - commands.getTurnRate());
+					commands.setGunTurnRemaining(gunTurnRemaining - turnRate);
 				}
 				if (commands.isAdjustRadarForBodyTurn()) {
-					commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - commands.getTurnRate());
+					commands.setRadarTurnRemaining(radarTurnRemaining - turnRate);
 				}
+                bodyTurnRemaining-=turnRate;
+                commands.setBodyTurnRemaining(bodyTurnRemaining);
+                status.adjustBodyHeading(turnRate, bodyTurnRemaining == 0);
 			}
-		} else if (commands.getTurnRemaining() < 0) {
-			if (commands.getTurnRemaining() > -commands.getTurnRate()) {
-				status.adjustGunHeading(commands.getTurnRemaining());
-				status.adjustRadarHeading(commands.getTurnRemaining());
-				status.adjustHeading(commands.getTurnRemaining(), true);
+		} else if (bodyTurnRemaining < 0) {
+			if (bodyTurnRemaining > -turnRate) {
+				status.adjustGunHeading(bodyTurnRemaining);
+				status.adjustRadarHeading(bodyTurnRemaining);
 				if (commands.isAdjustGunForBodyTurn()) {
-					commands.setGunTurnRemaining(commands.getGunTurnRemaining() - commands.getTurnRemaining());
+					commands.setGunTurnRemaining(gunTurnRemaining - bodyTurnRemaining);
 				}
 				if (commands.isAdjustRadarForBodyTurn()) {
-					commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - commands.getTurnRemaining());
+					commands.setRadarTurnRemaining(radarTurnRemaining - bodyTurnRemaining);
 				}
-				commands.setTurnRemaining(0);
+				commands.setBodyTurnRemaining(0);
+                status.adjustBodyHeading(bodyTurnRemaining, true);
 			} else {
-				status.adjustHeading(-commands.getTurnRate(), false);
-				status.adjustGunHeading(-commands.getTurnRate());
-				status.adjustRadarHeading(-commands.getTurnRate());
-				commands.setTurnRemaining(commands.getTurnRemaining() + commands.getTurnRate());
+				status.adjustGunHeading(-turnRate);
+				status.adjustRadarHeading(-turnRate);
 				if (commands.isAdjustGunForBodyTurn()) {
-					commands.setGunTurnRemaining(commands.getGunTurnRemaining() + commands.getTurnRate());
+					commands.setGunTurnRemaining(gunTurnRemaining + turnRate);
 				}
 				if (commands.isAdjustRadarForBodyTurn()) {
-					commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() + commands.getTurnRate());
+					commands.setRadarTurnRemaining(radarTurnRemaining + turnRate);
 				}
+                bodyTurnRemaining += turnRate;
+                commands.setBodyTurnRemaining(bodyTurnRemaining);
+                status.adjustBodyHeading(-turnRate, bodyTurnRemaining==0);
 			}
 		}
 
-		if (Double.isNaN(status.getHeading())) {
+        if (Double.isNaN(status.getBodyHeading())) {
 			System.out.println("HOW IS HEADING NAN HERE");
 		}
 	}
 
 	private void battleUpdateGunHeading() {
-		if (commands.getGunTurnRemaining() > 0) {
-			if (commands.getGunTurnRemaining() < Rules.GUN_TURN_RATE_RADIANS) {
-				status.adjustGunHeading(commands.getGunTurnRemaining());
-				status.adjustRadarHeading(commands.getGunTurnRemaining());
+        double gunTurnRemaining = commands.getGunTurnRemaining();
+        double radarTurnRemaining = commands.getRadarTurnRemaining();
+        
+        if (gunTurnRemaining > 0) {
+			if (gunTurnRemaining < Rules.GUN_TURN_RATE_RADIANS) {
+				status.adjustGunHeading(gunTurnRemaining);
+				status.adjustRadarHeading(gunTurnRemaining);
 				if (commands.isAdjustRadarForGunTurn()) {
-					commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - commands.getGunTurnRemaining());
+					commands.setRadarTurnRemaining(radarTurnRemaining - gunTurnRemaining);
 				}
 				commands.setGunTurnRemaining(0);
 			} else {
 				status.adjustGunHeading(Rules.GUN_TURN_RATE_RADIANS);
 				status.adjustRadarHeading(Rules.GUN_TURN_RATE_RADIANS);
-				commands.setGunTurnRemaining(commands.getGunTurnRemaining() - Rules.GUN_TURN_RATE_RADIANS);
 				if (commands.isAdjustRadarForGunTurn()) {
-					commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - Rules.GUN_TURN_RATE_RADIANS);
+					commands.setRadarTurnRemaining(radarTurnRemaining - Rules.GUN_TURN_RATE_RADIANS);
 				}
+                commands.setGunTurnRemaining(gunTurnRemaining - Rules.GUN_TURN_RATE_RADIANS);
 			}
-		} else if (commands.getGunTurnRemaining() < 0) {
-			if (commands.getGunTurnRemaining() > -Rules.GUN_TURN_RATE_RADIANS) {
-				status.adjustGunHeading(commands.getGunTurnRemaining());
-				status.adjustRadarHeading(commands.getGunTurnRemaining());
+		} else if (gunTurnRemaining < 0) {
+			if (gunTurnRemaining > -Rules.GUN_TURN_RATE_RADIANS) {
+				status.adjustGunHeading(gunTurnRemaining);
+				status.adjustRadarHeading(gunTurnRemaining);
 				if (commands.isAdjustRadarForGunTurn()) {
-					commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - commands.getGunTurnRemaining());
+					commands.setRadarTurnRemaining(radarTurnRemaining - gunTurnRemaining);
 				}
 				commands.setGunTurnRemaining(0);
 			} else {
 				status.adjustGunHeading(Rules.GUN_TURN_RATE_RADIANS);
 				status.adjustRadarHeading(Rules.GUN_TURN_RATE_RADIANS);
-				commands.setGunTurnRemaining(commands.getGunTurnRemaining() + Rules.GUN_TURN_RATE_RADIANS);
 				if (commands.isAdjustRadarForGunTurn()) {
-					commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() + Rules.GUN_TURN_RATE_RADIANS);
+					commands.setRadarTurnRemaining(radarTurnRemaining + Rules.GUN_TURN_RATE_RADIANS);
 				}
+                commands.setGunTurnRemaining(gunTurnRemaining + Rules.GUN_TURN_RATE_RADIANS);
 			}
 		}
 	}
 
 	private void battleUpdateRadarHeading() {
-		if (commands.getRadarTurnRemaining() > 0) {
-			if (commands.getRadarTurnRemaining() < Rules.RADAR_TURN_RATE_RADIANS) {
-				status.adjustRadarHeading(commands.getRadarTurnRemaining());
+        double radarTurnRemaining = commands.getRadarTurnRemaining();
+        if (radarTurnRemaining > 0) {
+			if (radarTurnRemaining < Rules.RADAR_TURN_RATE_RADIANS) {
+				status.adjustRadarHeading(radarTurnRemaining);
 				commands.setRadarTurnRemaining(0);
 			} else {
 				status.adjustRadarHeading(Rules.RADAR_TURN_RATE_RADIANS);
-				commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() - Rules.RADAR_TURN_RATE_RADIANS);
+				commands.setRadarTurnRemaining(radarTurnRemaining - Rules.RADAR_TURN_RATE_RADIANS);
 			}
-		} else if (commands.getRadarTurnRemaining() < 0) {
-			if (commands.getRadarTurnRemaining() > -Rules.RADAR_TURN_RATE_RADIANS) {
-				status.adjustRadarHeading(commands.getRadarTurnRemaining());
+		} else if (radarTurnRemaining < 0) {
+			if (radarTurnRemaining > -Rules.RADAR_TURN_RATE_RADIANS) {
+				status.adjustRadarHeading(radarTurnRemaining);
 				commands.setRadarTurnRemaining(0);
 			} else {
 				status.adjustRadarHeading(-Rules.RADAR_TURN_RATE_RADIANS);
-				commands.setRadarTurnRemaining(commands.getRadarTurnRemaining() + Rules.RADAR_TURN_RATE_RADIANS);
+				commands.setRadarTurnRemaining(radarTurnRemaining + Rules.RADAR_TURN_RATE_RADIANS);
 			}
 		}
 	}
@@ -545,33 +553,33 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 		if (status.getX() > getBattleFieldWidth() - HALF_WIDTH_OFFSET) {
 			hitWall = true;
 			fixx = getBattleFieldWidth() - HALF_WIDTH_OFFSET - status.getX();
-			angle = normalRelativeAngle(PI / 2 - status.getHeading());
+			angle = normalRelativeAngle(PI / 2 - status.getBodyHeading());
 		}
 
 		if (status.getX() < HALF_WIDTH_OFFSET) {
 			hitWall = true;
 			fixx = HALF_WIDTH_OFFSET - status.getX();
-			angle = normalRelativeAngle(3 * PI / 2 - status.getHeading());
+			angle = normalRelativeAngle(3 * PI / 2 - status.getBodyHeading());
 		}
 
 		if (status.getY() > getBattleFieldHeight() - HALF_HEIGHT_OFFSET) {
 			hitWall = true;
 			fixy = getBattleFieldHeight() - HALF_HEIGHT_OFFSET - status.getY();
-			angle = normalRelativeAngle(-status.getHeading());
+			angle = normalRelativeAngle(-status.getBodyHeading());
 		}
 
 		if (status.getY() < HALF_HEIGHT_OFFSET) {
 			hitWall = true;
 			fixy = HALF_HEIGHT_OFFSET - status.getY();
-			angle = normalRelativeAngle(PI - status.getHeading());
+			angle = normalRelativeAngle(PI - status.getBodyHeading());
 		}
 
 		if (hitWall) {
 			getBattleEventManager().add(new HitWallEvent(angle));
 
 			// only fix both x and y values if hitting wall at an angle
-			if ((status.getHeading() % (Math.PI / 2)) != 0) {
-				double tanHeading = tan(status.getHeading());
+			if ((status.getBodyHeading() % (Math.PI / 2)) != 0) {
+				double tanHeading = tan(status.getBodyHeading());
 
 				// if it hits bottom or top wall
 				if (fixx == 0) {
@@ -629,11 +637,11 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 				// Bounce back
 				double angle = atan2(robotView.getX() - status.getX(), robotView.getY() - status.getY());
 
-				double movedx = status.getVelocity() * sin(status.getHeading());
-				double movedy = status.getVelocity() * cos(status.getHeading());
+				double movedx = status.getVelocity() * sin(status.getBodyHeading());
+				double movedy = status.getVelocity() * cos(status.getBodyHeading());
 
 				boolean atFault;
-				double bearing = normalRelativeAngle(angle - status.getHeading());
+				double bearing = normalRelativeAngle(angle - status.getBodyHeading());
 
 				if ((status.getVelocity() > 0 && bearing > -PI / 2 && bearing < PI / 2)
 						|| (status.getVelocity() < 0 && (bearing < -PI / 2 || bearing > PI / 2))) {
@@ -657,7 +665,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 						}
 					}
 					getBattleEventManager().add(
-							new HitRobotEvent(robotView.getName(), normalRelativeAngle(angle - status.getHeading()),
+							new HitRobotEvent(robotView.getName(), normalRelativeAngle(angle - status.getBodyHeading()),
 							robotView.getEnergy(), atFault));
 					robotView.getBattleEventManager().add(
 							new HitRobotEvent(info.getName(), normalRelativeAngle(PI + angle - robotView.getHeading()),

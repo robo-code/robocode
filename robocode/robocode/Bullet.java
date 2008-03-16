@@ -42,7 +42,7 @@ public class Bullet {
 
 	/**
 	 * Returns the direction the bullet is/was heading, in degrees
-	 * (0 <= getHeading() < 360). This is not relative to the direction you are
+	 * (0 <= getBodyHeading() < 360). This is not relative to the direction you are
 	 * facing.
 	 *
 	 * @return the direction the bullet is/was heading, in degrees

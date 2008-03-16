@@ -76,10 +76,10 @@ public class HitByBulletEvent extends Event {
 
 	/**
 	 * Returns the heading of the bullet when it hit you, in degrees
-	 * (0 <= getHeading() < 360)
+	 * (0 <= getBodyHeading() < 360)
 	 * <p/>
 	 * Note: This is not relative to the direction you are facing. The robot
-	 * that fired the bullet was in the opposite direction of getHeading() when
+	 * that fired the bullet was in the opposite direction of getBodyHeading() when
 	 * it fired the bullet.
 	 *
 	 * @return the heading of the bullet, in degrees
