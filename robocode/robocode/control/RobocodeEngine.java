@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  *     - System.out, System.err, and System.in is now only set once, as new
  *       instances of the RobocodeEngine causes memory leaks with
  *       System.setOut() and System.setErr()
+ *     - Updated Javadocs
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -31,6 +32,13 @@
  *******************************************************************************/
 package robocode.control;
 
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.security.Policy;
+import java.util.List;
 
 import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
@@ -43,22 +51,16 @@ import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.security.Policy;
-import java.util.List;
-
 
 /**
- * RobocodeEngine - Class for controlling Robocode.
+ * The RobocodeEngine is meant for 3rd party applications to let them run
+ * battles in Robocode and receive the results. This class in the main class
+ * of the {@code robocode.control} package.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
- * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public class RobocodeEngine {
 	private RobocodeListener listener;
@@ -78,19 +80,29 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Creates a new RobocodeEngine
+	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
-	 * @param robocodeHome should be the root robocode directory (i.e. c:\robocode)
-	 * @param listener     Your listener
+	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
+	 * @param listener the listener that must receive the callbacks from this
+	 *     RobocodeEngine.
+	 *
+	 * @see #RobocodeEngine(RobocodeListener)
+	 * @see #close()
 	 */
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
 		init(robocodeHome, listener);
 	}
 
 	/**
-	 * Creates a new RobocodeEngine using robocode.jar to determine the robocodeHome file.
+	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
+	 * Robocode is used to determine the root directory of Robocode.
+	 * See {@link #RobocodeEngine(File, RobocodeListener)}.
 	 *
-	 * @param listener Your listener
+	 * @param listener the listener that must receive the callbacks from this
+	 *     RobocodeEngine.
+	 *
+	 * @see #RobocodeEngine(File, RobocodeListener)
+	 * @see #close()
 	 */
 	public RobocodeEngine(RobocodeListener listener) {
 		File robotsDir = FileUtil.getRobotsDir();
@@ -102,8 +114,13 @@ public class RobocodeEngine {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void finalize() {
+	public void finalize() throws Throwable {
+		super.finalize();
+
 		// Make sure close() is called to prevent memory leaks
 		close();
 	}
@@ -137,8 +154,9 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Call this when you are finished with this RobocodeEngine.
-	 * This method disposes the Robocode window
+	 * Closes the RobocodeEngine and releases any allocated resources.
+	 * You should call this when you have finished using the RobocodeEngine.
+	 * This method automatically disposes the Robocode window if it open.
 	 */
 	public void close() {
 		if (manager.isGUIEnabled()) {
@@ -152,7 +170,7 @@ public class RobocodeEngine {
 
 	/**
 	 * Returns the installed version of Robocode.
-	 *
+	 * 
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
@@ -161,6 +179,9 @@ public class RobocodeEngine {
 
 	/**
 	 * Shows or hides the Robocode window.
+	 *
+	 * @param visible {@code true} if the Robocode window must be set visible;
+	 *    {@code false} otherwise.
 	 */
 	public void setVisible(boolean visible) {
 		if (visible && !manager.isGUIEnabled()) {
@@ -178,9 +199,13 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Gets a list of robots available for battle.
+	 * Returns the robots available for for battle from the local robot
+	 * repository in the Robocode home folder.
+	 * 
+	 * @return an array of all available robots for battle from the local robot
+	 *    repository.
 	 *
-	 * @return An array of all available robots.
+	 * @see RobotSpecification
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
@@ -195,7 +220,15 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Runs a battle
+	 * Runs the specified battle.
+	 *
+	 * @param battle the specification of the battle to play including the
+	 *    participation robots.
+	 *
+	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
+	 * @see RobocodeListener#battleMessage(String)
+	 * @see BattleSpecification
+	 * @see #getLocalRepository()
 	 */
 	public void runBattle(BattleSpecification battle) {
 		Logger.setLogListener(listener);
@@ -204,7 +237,10 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Asks a battle to abort.
+	 * Aborts the current battle if it is running.
+	 *
+	 * @see #runBattle(BattleSpecification)
+	 * @see RobocodeListener#battleAborted(BattleSpecification)
 	 */
 	public void abortCurrentBattle() {
 		manager.getBattleManager().stop();

@@ -8,13 +8,15 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link Robot#onWin onWin} when your robot wins the
- * round.
+ * This event is sent to {@link Robot#onWin(WinEvent) onWin(WinEvent)} when your
+ * robot wins the round in a battle.
  *
  * @author Mathew A. Nelson (original)
  */

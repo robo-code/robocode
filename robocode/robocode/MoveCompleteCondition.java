@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -21,10 +21,11 @@ package robocode;
  * A prebuilt condition you can use that indicates your robot has finished
  * moving.
  *
+ * @see Condition
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
- * @see Condition
  */
 public class MoveCompleteCondition extends Condition {
 	private AdvancedRobot robot;
@@ -43,9 +44,10 @@ public class MoveCompleteCondition extends Condition {
 	 * A condition priority is a value from 0 - 99. The higher value, the
 	 * higher priority. The default priority is 80.
 	 *
-	 * @param robot    your robot, which must be a {@link AdvancedRobot}
+	 * @param robot your robot, which must be a {@link AdvancedRobot}
 	 * @param priority the priority of this condition
-	 * @see Condition#setPriority
+	 * 
+	 * @see Condition#setPriority(int)
 	 */
 	public MoveCompleteCondition(AdvancedRobot robot, int priority) {
 		super();
@@ -57,7 +59,7 @@ public class MoveCompleteCondition extends Condition {
 	 * Tests if the robot has stopped moving.
 	 *
 	 * @return {@code true} if the robot has stopped moving; {@code false}
-	 *         otherwise
+	 *    otherwise
 	 */
 	@Override
 	public boolean test() {

@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
+ * http://sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
  *     Pavel Savara
@@ -14,19 +14,20 @@
 package robocode.robotinterfaces;
 
 
-import robocode.*;
-import robocode.Event;
+import java.awt.Graphics2D;
 
-import java.awt.*;
+import robocode.*;
 
 
 /**
  * An event interface for receiving basic robot events with an
  * {@link IBasicRobot}.
  *
+ * @see IBasicRobot
+ *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (javadoc)
- * @see IBasicRobot
+ *
  * @since 1.6
  */
 public interface IBasicEvents {
@@ -35,19 +36,20 @@ public interface IBasicEvents {
 	 * This method is called every turn in a battle round in order to provide
 	 * the robot status as a complete snapshot of the robot's current state at
 	 * that specific time.
-	 * <p/>
+	 * <p>
 	 * The main benefit of this method is that you'll automatically receive all
 	 * current data values of the robot like e.g. the x and y coordinate,
 	 * heading, gun heat etc., which are grouped into the exact same time/turn.
-	 * <p/>
+	 * <p>
 	 * This is the only way to map the robots data values to a specific time.
 	 * For example, it is not possible to determine the exact time of the
-	 * robot's heading by calling first calling {@link robocode.Robot#getTime()}
-	 * and then {@link robocode.Robot#getHeading()} afterwards, as the time
-	 * <em>might</em> change after between the {@link robocode.Robot#getTime()}
-	 * and {@link robocode.Robot#getHeading()} call.
+	 * robot's heading by calling first calling {@link Robot#getTime()} and then
+	 * {@link Robot#getHeading()} afterwards, as the time <em>might</em> change
+	 * after between the {@link Robot#getTime()} and {@link Robot#getHeading()}
+	 * call.
 	 *
 	 * @param event the event containing the robot status at the time it occurred.
+	 *    
 	 * @since 1.5
 	 */
 	void onStatus(StatusEvent event);
@@ -56,7 +58,7 @@ public interface IBasicEvents {
 	 * This method is called when one of your bullets hits another robot.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onBulletHit(BulletHitEvent event) {
@@ -65,8 +67,8 @@ public interface IBasicEvents {
 	 * </pre>
 	 *
 	 * @param event the bullet-hit event set by the game
-	 * @see robocode.BulletHitEvent
-	 * @see robocode.Event
+	 * @see BulletHitEvent
+	 * @see Event
 	 */
 	void onBulletHit(BulletHitEvent event);
 
@@ -74,7 +76,7 @@ public interface IBasicEvents {
 	 * This method is called when one of your bullets hits another bullet.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onBulletHitBullet(BulletHitBulletEvent event) {
@@ -83,8 +85,8 @@ public interface IBasicEvents {
 	 * </pre>
 	 *
 	 * @param event the bullet-hit-bullet event set by the game
-	 * @see robocode.BulletHitBulletEvent
-	 * @see robocode.Event
+	 * @see BulletHitBulletEvent
+	 * @see Event
 	 */
 	void onBulletHitBullet(BulletHitBulletEvent event);
 
@@ -92,7 +94,7 @@ public interface IBasicEvents {
 	 * This method is called when one of your bullets misses, i.e. hits a wall.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onBulletHit(BulletMissedEvent event) {
@@ -101,22 +103,23 @@ public interface IBasicEvents {
 	 * </pre>
 	 *
 	 * @param event the bullet-missed event set by the game
-	 * @see robocode.BulletMissedEvent
-	 * @see robocode.Event
+	 * @see BulletMissedEvent
+	 * @see Event
 	 */
 	void onBulletMissed(BulletMissedEvent event);
 
 	/**
 	 * This method is called if your robot dies.
-	 * <p/>
+	 * <p>
 	 * You should override it in your robot if you want to be informed of this
 	 * event. Actions will have no effect if called from this section. The
 	 * intent is to allow you to perform calculations or print something out
 	 * when the robot is killed.
 	 *
 	 * @param event the death event set by the game
-	 * @see robocode.DeathEvent
-	 * @see robocode.Event
+	 *
+	 * @see DeathEvent
+	 * @see Event
 	 */
 	public void onDeath(DeathEvent event);
 
@@ -124,7 +127,7 @@ public interface IBasicEvents {
 	 * This method is called when your robot is hit by a bullet.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   void onHitByBullet(HitByBulletEvent event) {
@@ -133,8 +136,8 @@ public interface IBasicEvents {
 	 * </pre>
 	 *
 	 * @param event the hit-by-bullet event set by the game
-	 * @see robocode.HitByBulletEvent
-	 * @see robocode.Event
+	 * @see HitByBulletEvent
+	 * @see Event
 	 */
 	void onHitByBullet(HitByBulletEvent event);
 
@@ -142,7 +145,7 @@ public interface IBasicEvents {
 	 * This method is called when your robot collides with another robot.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   void onHitRobot(HitRobotEvent event) {
@@ -152,9 +155,9 @@ public interface IBasicEvents {
 	 *           ahead(100);
 	 *       }
 	 *   }
-	 * <p/>
+	 *
 	 *   -- or perhaps, for a more advanced robot --
-	 * <p/>
+	 *
 	 *   public void onHitRobot(HitRobotEvent event) {
 	 *       if (event.getBearing() > -90 && event.getBearing() <= 90) {
 	 *           setBack(100);
@@ -163,10 +166,10 @@ public interface IBasicEvents {
 	 *       }
 	 *   }
 	 * </pre>
-	 * <p/>
+	 *
 	 * The angle is relative to your robot's facing. So 0 is straight ahead of
 	 * you.
-	 * <p/>
+	 * <p>
 	 * This event can be generated if another robot hits you, in which case
 	 * {@link HitRobotEvent#isMyFault() event.isMyFault()} will return
 	 * {@code false}. In this case, you will not be automatically stopped by the
@@ -183,12 +186,13 @@ public interface IBasicEvents {
 	 * This method is called when your robot collides with a wall.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * The wall at the top of the screen is 0 degrees, right is 90 degrees,
 	 * bottom is 180 degrees, left is 270 degrees. But this event is relative to
-	 * your heading, so: The bearing is such that turnRight(e.getBearing()) will
+	 * your heading, so: The bearing is such that {@link Robot#turnRight(double)
+	 * turnRight} {@link HitWallEvent#getBearing() (event.getBearing())} will
 	 * point you perpendicular to the wall.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   void onHitWall(HitWallEvent event) {
@@ -207,16 +211,16 @@ public interface IBasicEvents {
 	 * robot's radar scan "hits" another robot.
 	 * You should override it in your robot if you want to be informed of this
 	 * event. (Almost all robots should override this!)
-	 * <p/>
+	 * <p>
 	 * This event is automatically called if there is a robot in range of your
 	 * radar.
-	 * <p/>
+	 * <p>
 	 * Note that the robot's radar can only see robot within the range defined
-	 * by {@link Rules#equals(Object)} (1200 pixels).
-	 * <p/>
+	 * by {@link Rules#RADAR_SCAN_RADIUS} (1200 pixels).
+	 * <p>
 	 * Also not that the bearing of the scanned robot is relative to your
 	 * robot's heading.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   void onScannedRobot(ScannedRobotEvent event) {
@@ -228,24 +232,29 @@ public interface IBasicEvents {
 	 *       }
 	 *   }
 	 * </pre>
-	 * <p/>
-	 * Note:
+	 *
+	 * <b>Note:</b><br>
 	 * The game assists Robots in firing, as follows:
-	 * If the gun and radar are aligned (and were aligned last turn),
-	 * and the event is current,
-	 * and you call fire() before taking any other actions,
-	 * fire() will fire directly at the robot.
+	 * <ul>
+	 *   <li>If the gun and radar are aligned (and were aligned last turn),
+	 *   <li>and the event is current,
+	 *   <li>and you call fire() before taking any other actions, {@link
+	 *     Robot#fire(double) fire()} will fire directly at the robot.
+	 * </ul>
+	 * <p>
 	 * In essence, this means that if you can see a robot, and it doesn't move,
 	 * then fire will hit it.
-	 * <p/>
+	 * <p>
 	 * AdvancedRobots will NOT be assisted in this manner, and are expected to
-	 * examine the event to determine if fire() would hit. (i.e. you are
-	 * spinning your gun around, but by the time you get the event, your gun is
-	 * 5 degrees past the robot).
+	 * examine the event to determine if {@link Robot#fire(double) fire()} would
+	 * hit. (i.e. you are spinning your gun around, but by the time you get the
+	 * event, your gun is 5 degrees past the robot).
 	 *
 	 * @param event the scanned-robot event set by the game
+	 *
 	 * @see ScannedRobotEvent
 	 * @see Event
+	 * @see Rules#RADAR_SCAN_RADIUS
 	 */
 	void onScannedRobot(ScannedRobotEvent event);
 
@@ -262,7 +271,7 @@ public interface IBasicEvents {
 
 	/**
 	 * This method is called if your robot wins a battle.
-	 * <p/>
+	 * <p>
 	 * Your robot could perform a victory dance here! :-)
 	 *
 	 * @param event the win event set by the game
@@ -275,22 +284,23 @@ public interface IBasicEvents {
 	 * This method is called every time the robot is painted. You should
 	 * override this method if you want to draw items for your robot on the
 	 * battle field, e.g. targets, virtual bullets etc.
-	 * <p/>
+	 * <p>
 	 * This method is very useful for debugging your robot.
-	 * <p/>
+	 * <p>
 	 * Note that the robot will only be painted if the "Paint" is enabled on the
 	 * robot's console window; otherwise the robot will never get painted (the
 	 * reason being that all robots might have graphical items that must be
 	 * painted, and then you might not be able to tell what graphical items that
 	 * have been painted for your robot).
-	 * <p/>
+	 * <p>
 	 * Also note that the coordinate system for the graphical context where you
 	 * paint items fits for the Robocode coordinate system where (0, 0) is at
 	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
 	 *
 	 * @param g the graphics context to use for painting graphical items for the
-	 *          robot
+	 *    robot
+	 *
 	 * @since 1.1
 	 */
 	void onPaint(Graphics2D g);

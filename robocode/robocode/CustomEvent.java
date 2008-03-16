@@ -9,25 +9,27 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link AdvancedRobot#onCustomEvent onCustomEvent} when
- * a custom condition is met. Be sure to reset or remove the custom condition to
- * avoid having it reoccuring repeatedly.
+ * This event is sent to {@link AdvancedRobot#onCustomEvent(CustomEvent)
+ * onCustomEvent(CustomEvent)} when a custom condition is met. Be sure to reset
+ * or remove the custom condition to avoid having it reoccuring repeatedly (see
+ * the example for the {@link #getCondition()} method.
+ *
+ * @see #getCondition()
  *
  * @author Mathew A. Nelson (original)
- * @see #getCondition
  */
 public class CustomEvent extends Event {
 	private Condition condition;
 
 	/**
 	 * Called by the game to create a new CustomEvent when a condition is met.
-	 *
+	 * 
 	 * @param condition the condition that must be met
 	 */
 	public CustomEvent(Condition condition) {
@@ -39,12 +41,12 @@ public class CustomEvent extends Event {
 	 * The event will have the given priority.
 	 * An event priority is a value from 0 - 99. The higher value, the higher
 	 * priority. The default priority is 80.
-	 * <p/>
+	 * <p>
 	 * This is equivalent to calling {@link Condition#setPriority(int)} on the
 	 * Condition.
 	 *
 	 * @param condition the condition that must be met
-	 * @param priority  the priority of the condition
+	 * @param priority the priority of the condition
 	 */
 	public CustomEvent(Condition condition, int priority) {
 		this.condition = condition;
@@ -61,7 +63,7 @@ public class CustomEvent extends Event {
 	 *   public void onCustomEvent(CustomEvent event) {
 	 *       if (event.getCondition().getName().equals("mycondition")) {
 	 *           removeCustomEvent(event.getCondition());
-	 *           doSomethingElse();
+	 *           <i>// do something else</i>
 	 *       }
 	 *   }
 	 * </pre>

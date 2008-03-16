@@ -9,15 +9,15 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
- * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot onScannedRobot}
- * when you scan a robot. You can use the information contained in this event to
- * determine what to do.
+ * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot(ScannedRobotEvent)
+ * onScannedRobot(ScannedRobotEvent)} when you scan a robot.
+ * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)
  */
@@ -31,12 +31,12 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * Called by the game to create a new ScannedRobotEvent.
-	 *
-	 * @param name     the name of the scanned robot
-	 * @param energy   the energy of the scanned robot
-	 * @param bearing  the bearing of the scanned robot, in radians
+	 * 
+	 * @param name the name of the scanned robot
+	 * @param energy the energy of the scanned robot
+	 * @param bearing the bearing of the scanned robot, in radians
 	 * @param distance the distance from your robot to the scanned robot
-	 * @param heading  the heading of the scanned robot
+	 * @param heading the heading of the scanned robot
 	 * @param velocity the velocity of the scanned robot
 	 */
 	public ScannedRobotEvent(String name, double energy, double bearing, double distance, double heading, double velocity) {
@@ -88,7 +88,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * Returns the heading of the robot, in degrees (0 <= getBodyHeading() < 360)
+	 * Returns the heading of the robot, in degrees (0 <= getHeading() < 360)
 	 *
 	 * @return the heading of the robot, in degrees
 	 */
@@ -97,7 +97,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
-	 * Returns the heading of the robot, in radians (0 <= getBodyHeading() < 2 * PI)
+	 * Returns the heading of the robot, in radians (0 <= getHeading() < 2 * PI)
 	 *
 	 * @return the heading of the robot, in radians
 	 */

@@ -47,11 +47,11 @@
  *       independent UnsafeLoadRobotsThread class. In addition, the battle
  *       thread is not sharing it's run() method anymore with the
  *       UnsafeLoadRobotsThread, which has now got its own run() method
- *     - The 'running' and 'aborted' flags are now synchronizet towards
+ *     - The 'running' and 'aborted' flags are now synchronized towards
  *       'battleMonitor' instead of 'this' object
  *     - Added waitTillRunning() method so another thread can be blocked until
  *       the battle has started running
- *     - Replaced synchronizetList on lists for deathEvent, robots, bullets,
+ *     - Replaced synchronizedList on lists for deathEvent, robots, bullets,
  *       and contestants with a CopyOnWriteArrayList in order to prevent
  *       ConcurrentModificationExceptions when accessing these list via
  *       Iterators using public methods to this class

@@ -18,7 +18,8 @@ import robocode.peer.proxies.IBattleRobotProxy;
 /**
  * Contains the status of a robot for a specific time/turn.
  *
- * @author Flemming N. Larsen (contributor)
+ * @author Flemming N. Larsen (original)
+ * 
  * @since 1.5
  */
 public class RobotStatus {
@@ -73,6 +74,7 @@ public class RobotStatus {
 	 * battlefield.
 	 *
 	 * @return the X position of the robot
+	 *
 	 * @see #getY()
 	 */
 	public double getX() {
@@ -84,6 +86,7 @@ public class RobotStatus {
 	 * battlefield.
 	 *
 	 * @return the Y position of the robot
+	 *
 	 * @see #getX()
 	 */
 	public double getY() {
@@ -93,7 +96,7 @@ public class RobotStatus {
 	/**
 	 * Returns the direction that the robot's body is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
@@ -106,7 +109,7 @@ public class RobotStatus {
 	/**
 	 * Returns the direction that the robot's body is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
@@ -119,7 +122,7 @@ public class RobotStatus {
 	/**
 	 * Returns the direction that the robot's gun is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
@@ -132,7 +135,7 @@ public class RobotStatus {
 	/**
 	 * Returns the direction that the robot's gun is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
@@ -145,7 +148,7 @@ public class RobotStatus {
 	/**
 	 * Returns the direction that the robot's radar is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
 	 *
@@ -158,7 +161,7 @@ public class RobotStatus {
 	/**
 	 * Returns the direction that the robot's radar is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
@@ -170,11 +173,12 @@ public class RobotStatus {
 
 	/**
 	 * Returns the velocity of the robot measured in pixels/turn.
-	 * <p/>
+	 * <p>
 	 * The maximum velocity of a robot is defined by {@link Rules#MAX_VELOCITY}
 	 * (8 pixels / turn).
 	 *
 	 * @return the velocity of the robot measured in pixels/turn
+	 *
 	 * @see Rules#MAX_VELOCITY
 	 */
 	public double getVelocity() {
@@ -183,7 +187,7 @@ public class RobotStatus {
 
 	/**
 	 * Returns the angle remaining in the robots's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently turning to the right. Negative values
 	 * means that the robot is currently turning to the left.
@@ -196,7 +200,7 @@ public class RobotStatus {
 
 	/**
 	 * Returns the angle remaining in the robots's turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently turning to the right. Negative values
 	 * means that the robot is currently turning to the left.
@@ -209,7 +213,7 @@ public class RobotStatus {
 
 	/**
 	 * Returns the angle remaining in the radar's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the radar is currently turning to the right. Negative values
 	 * means that the radar is currently turning to the left.
@@ -222,7 +226,7 @@ public class RobotStatus {
 
 	/**
 	 * Returns the angle remaining in the radar's turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the radar is currently turning to the right. Negative values
 	 * means that the radar is currently turning to the left.
@@ -235,7 +239,7 @@ public class RobotStatus {
 
 	/**
 	 * Returns the angle remaining in the gun's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the gun is currently turning to the right. Negative values
 	 * means that the gun is currently turning to the left.
@@ -248,7 +252,7 @@ public class RobotStatus {
 
 	/**
 	 * Returns the angle remaining in the gun's turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the gun is currently turning to the right. Negative values
 	 * means that the gun is currently turning to the left.
@@ -262,13 +266,13 @@ public class RobotStatus {
 	/**
 	 * Returns the distance remaining in the robot's current move measured in
 	 * pixels.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently moving forwards. Negative values means
 	 * that the robot is currently moving backwards.
 	 *
 	 * @return the distance remaining in the robot's current move measured in
-	 *         pixels.
+	 *    pixels.
 	 */
 	public double getDistanceRemaining() {
 		return distanceRemaining;
@@ -278,15 +282,16 @@ public class RobotStatus {
 	 * Returns the current heat of the gun. The gun cannot fire unless this is
 	 * 0. (Calls to fire will succeed, but will not actually fire unless
 	 * getGunHeat() == 0).
-	 * <p/>
+	 * <p>
 	 * The amount of gun heat generated when the gun is fired is
 	 * 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
 	 * by {@link Robot#getGunCoolingRate()}, which is a battle setup.
-	 * <p/>
+	 * <p>
 	 * Note that all guns are "hot" at the start of each round, where the gun
 	 * heat is 3.
 	 *
 	 * @return the current gun heat
+	 *
 	 * @see Robot#getGunCoolingRate()
 	 * @see Robot#fire(double)
 	 * @see Robot#fireBullet(double)

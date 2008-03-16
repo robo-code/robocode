@@ -21,10 +21,11 @@ package robocode;
  * A prebuilt condition you can use that indicates your robot has finished
  * turning.
  *
+ * @see Condition
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
- * @see Condition
  */
 public class TurnCompleteCondition extends Condition {
 	private AdvancedRobot robot;
@@ -45,9 +46,10 @@ public class TurnCompleteCondition extends Condition {
 	 * A condition priority is a value from 0 - 99. The higher value, the
 	 * higher priority. The default priority is 80.
 	 *
-	 * @param robot    your robot, which must be a {@link AdvancedRobot}
+	 * @param robot your robot, which must be a {@link AdvancedRobot}
 	 * @param priority the priority of this condition
-	 * @see Condition#setPriority
+	 * 
+	 * @see Condition#setPriority(int)
 	 */
 	public TurnCompleteCondition(AdvancedRobot robot, int priority) {
 		super();
@@ -59,7 +61,7 @@ public class TurnCompleteCondition extends Condition {
 	 * Tests if the robot has finished turning.
 	 *
 	 * @return {@code true} if the robot has stopped turning; {@code false}
-	 *         otherwise
+	 *    otherwise
 	 */
 	@Override
 	public boolean test() {

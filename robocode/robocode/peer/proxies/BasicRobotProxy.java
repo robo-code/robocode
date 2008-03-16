@@ -103,7 +103,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		}
 	}
 
-	public final double getTurnRemaining() {
+	public final double getBodyTurnRemaining() {
 		getCall();
 		peer.lockRead();
 		try {
@@ -285,6 +285,12 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		}
 	}
 
+	public Bullet fire(double power) {
+		Bullet bullet = setFire(power);
+		execute();
+		return bullet;
+	}
+	
 	// asynchronous actions
 	public Bullet setFire(double power) {
 		setCall();

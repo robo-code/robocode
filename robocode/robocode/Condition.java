@@ -10,7 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -22,9 +22,10 @@ import robocode.security.RobocodeSecurityManager;
 
 
 /**
- * Condition is used to define custom  AdvancedRobot#waitFor waitFor} and
- * custom events for a {@link AdvancedRobot}. The code below is taken from the
- * sample robot named Target. See Target.java for details.
+ * Condition is used to define custom  {@link AdvancedRobot#waitFor(Condition)}
+ * and custom events for a {@link AdvancedRobot}. The code below is taken from
+ * the sample robot named {@code sample.Target}. See the
+ * {@code sample/Target.java} for details.
  * <pre>
  *   addCustomEvent(
  *       new Condition("triggerhit") {
@@ -36,15 +37,16 @@ import robocode.security.RobocodeSecurityManager;
  * </pre>
  * You should note that by extending Condition this way, you are actually
  * creating an inner class -- so if you distribute your robot, there will be
- * multiple class files.  (i.e. Target$1.class)
+ * multiple class files. (i.e. {@code Target$1.class})
+ *
+ * @see AdvancedRobot#waitFor(Condition)
+ * @see AdvancedRobot#addCustomEvent(Condition)
+ * @see AdvancedRobot#removeCustomEvent(Condition)
+ * @see AdvancedRobot#onCustomEvent(CustomEvent)
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
- * @see AdvancedRobot#waitFor
- * @see AdvancedRobot#addCustomEvent
- * @see AdvancedRobot#removeCustomEvent
- * @see AdvancedRobot#onCustomEvent
  */
 public abstract class Condition {
 
@@ -78,7 +80,7 @@ public abstract class Condition {
 	 * A condition priority is a value from 0 - 99. The higher value, the
 	 * higher priority. The default priority is 80.
 	 *
-	 * @param name     the name for the new condition
+	 * @param name the name for the new condition
 	 * @param priority the priority of the new condition
 	 */
 	public Condition(String name, int priority) {
@@ -152,11 +154,11 @@ public abstract class Condition {
 	 * The game will call your test() function, and take action if it returns
 	 * {@code true}. This is valid for both {@link AdvancedRobot#waitFor} and
 	 * {@link AdvancedRobot#addCustomEvent}.
-	 * <p/>
+	 * <p>
 	 * You may not take any actions inside of test().
 	 *
 	 * @return {@code true} if the condition has been met, {@code false}
-	 *         otherwise.
+	 *    otherwise.
 	 */
 	public abstract boolean test();
 

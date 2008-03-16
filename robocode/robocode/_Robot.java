@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     - Code cleanup
  *     - Changed to extend the new _RobotBase class instead of being top class
  *     - The uninitializedException() method does not need a method name as input
@@ -24,15 +24,16 @@ package robocode;
 /**
  * This class is used by the system, as well as being a placeholder for all deprecated
  * (meaning, you should not use them) calls for Robot.
- * <p/>
+ * <p>
  * You should create a {@link Robot} instead.
- * <p/>
+ * <p>
  * There is no guarantee that this class will exist in future versions of Robocode.
+ *
+ * @see Robot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
- * @see Robot
  */
 public abstract class _Robot extends _RobotBase {
 	private String robotImageName;
@@ -42,7 +43,7 @@ public abstract class _Robot extends _RobotBase {
 	protected _Robot() {}
 
 	/**
-	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat} instead.
+	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat()} instead.
 	 */
 	@Deprecated
 	public double getGunCharge() {
@@ -54,7 +55,7 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getEnergy() getEnergy} instead.
+	 * @deprecated Use {@link Robot#getEnergy() getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -66,7 +67,7 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds} instead.
+	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds()} instead.
 	 */
 	@Deprecated
 	public int getNumBattles() {
@@ -78,7 +79,7 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum} instead.
+	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum()} instead.
 	 */
 	@Deprecated
 	public int getBattleNum() {
@@ -91,7 +92,7 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated This call has moved to {@link AdvancedRobot},
-	 *             and will no longer function in the Robot class.
+	 * and will no longer function in the Robot class.
 	 */
 	@Deprecated
 	public void setInterruptible(boolean interruptible) {}

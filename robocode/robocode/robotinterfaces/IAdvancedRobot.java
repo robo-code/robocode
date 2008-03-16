@@ -20,13 +20,15 @@ package robocode.robotinterfaces;
  * An advanced robot allows non-blocking calls, custom events, get notifications
  * about skipped turns, and also allow writes to the file system.
  *
- * @author Pavel Savara (original)
- * @author Flemming N. Larsen (javadoc)
  * @see robocode.AdvancedRobot
  * @see IBasicRobot
  * @see IJuniorRobot
  * @see IInteractiveRobot
  * @see ITeamRobot
+ *
+ * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
+ *
  * @since 1.6
  */
 public interface IAdvancedRobot extends IBasicRobot {
@@ -37,7 +39,8 @@ public interface IAdvancedRobot extends IBasicRobot {
 	 * {@link IAdvancedEvents} listener.
 	 *
 	 * @return listener to advanced events or {@code null} if this robot should
-	 *         not receive the notifications.
+	 *    not receive the notifications.
+	 *
 	 * @since 1.6
 	 */
 	IAdvancedEvents getAdvancedEventListener();

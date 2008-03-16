@@ -23,30 +23,33 @@ import java.awt.event.MouseWheelEvent;
  * An event interface for receiving interactive events with an
  * {@link IInteractiveRobot}.
  *
+ * @see IInteractiveRobot
+ *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (javadoc)
- * @see IInteractiveRobot
+ *
  * @since 1.6
  */
 public interface IInteractiveEvents {
-
+   
 	/**
 	 * This method is called when a key has been pressed.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * key events.
 	 *
 	 * @param event holds details about current event
-	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-	 * @see #onKeyReleased(java.awt.event.KeyEvent)
-	 * @see #onKeyTyped(java.awt.event.KeyEvent)
+	 * @see java.awt.event.KeyListener#keyPressed(KeyEvent)
+	 * @see #onKeyReleased(KeyEvent)
+	 * @see #onKeyTyped(KeyEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onKeyPressed(KeyEvent event);
 
 	/**
 	 * This method is called when a key has been released.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * key events.
 	 *
@@ -54,13 +57,14 @@ public interface IInteractiveEvents {
 	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent)
 	 * @see #onKeyPressed(KeyEvent)
 	 * @see #onKeyTyped(KeyEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onKeyReleased(KeyEvent event);
 
 	/**
 	 * This method is called when a key has been typed (pressed and released).
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * key events.
 	 *
@@ -68,6 +72,7 @@ public interface IInteractiveEvents {
 	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent)
 	 * @see #onKeyPressed(KeyEvent)
 	 * @see #onKeyReleased(KeyEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onKeyTyped(KeyEvent event);
@@ -75,26 +80,27 @@ public interface IInteractiveEvents {
 	/**
 	 * This method is called when a mouse button has been clicked (pressed and
 	 * released).
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
 	 * @param event holds details about current event
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 * @see #onMouseMoved(java.awt.event.MouseEvent)
-	 * @see #onMousePressed(java.awt.event.MouseEvent)
-	 * @see #onMouseReleased(java.awt.event.MouseEvent)
-	 * @see #onMouseEntered(java.awt.event.MouseEvent)
-	 * @see #onMouseExited(java.awt.event.MouseEvent)
-	 * @see #onMouseDragged(java.awt.event.MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onMouseClicked(MouseEvent event);
 
 	/**
 	 * This method is called when the mouse has entered the battle view.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
@@ -106,14 +112,15 @@ public interface IInteractiveEvents {
 	 * @see #onMouseClicked(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onMouseEntered(MouseEvent event);
 
 	/**
 	 * This method is called when the mouse has exited the battle view.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
@@ -125,14 +132,15 @@ public interface IInteractiveEvents {
 	 * @see #onMouseClicked(MouseEvent)
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onMouseExited(MouseEvent event);
 
 	/**
 	 * This method is called when a mouse button has been pressed.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
@@ -144,14 +152,15 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onMousePressed(MouseEvent event);
 
 	/**
 	 * This method is called when a mouse button has been released.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
@@ -163,14 +172,15 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onMouseReleased(MouseEvent event);
 
 	/**
 	 * This method is called when the mouse has been moved.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
@@ -182,7 +192,8 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onMouseMoved(MouseEvent event);
@@ -190,7 +201,7 @@ public interface IInteractiveEvents {
 	/**
 	 * This method is called when a mouse button has been pressed and then
 	 * dragged.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
@@ -202,19 +213,20 @@ public interface IInteractiveEvents {
 	 * @see #onMouseClicked(MouseEvent)
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
+	 *
 	 * @since 1.3.4
 	 */
 	void onMouseDragged(MouseEvent event);
 
 	/**
 	 * This method is called when the mouse wheel has been rotated.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Interactive} robot for an example of how to use
 	 * mouse events.
 	 *
 	 * @param event holds details about current event
-	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(MouseWheelEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)
 	 * @see #onMouseReleased(MouseEvent)

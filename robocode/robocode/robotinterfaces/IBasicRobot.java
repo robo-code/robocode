@@ -24,13 +24,15 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  * A basic robot allows blocking calls only and cannot handle custom events nor
  * writes to the file system like an advanced robot.
  *
- * @author Pavel Savara (original)
- * @author Flemming N. Larsen (javadoc)
  * @see robocode.Robot
  * @see IJuniorRobot
  * @see IInteractiveRobot
  * @see IAdvancedRobot
  * @see ITeamRobot
+ *
+ * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
+ *
  * @since 1.6
  */
 public interface IBasicRobot {
@@ -40,8 +42,10 @@ public interface IBasicRobot {
 	 * {@link java.lang.Runnable#run()} method of your robot, where the program
 	 * of your robot is implemented.
 	 *
-	 * @return a runnable implementation
 	 * @see java.lang.Runnable#run()
+	 *
+	 * @return a runnable implementation
+	 *
 	 * @since 1.6
 	 */
 	Runnable getRobotRunnable();
@@ -52,7 +56,8 @@ public interface IBasicRobot {
 	 * {@link IBasicEvents} listener.
 	 *
 	 * @return listener to basic events or {@code null} if this robot should
-	 *         not receive the notifications.
+	 *    not receive the notifications.
+	 *
 	 * @since 1.6
 	 */
 	IBasicEvents getBasicEventListener();
@@ -60,7 +65,7 @@ public interface IBasicRobot {
 	/**
 	 * Do not call this method! Your robot will simply stop interacting with
 	 * the game.
-	 * <p/>
+	 * <p>
 	 * This method is called by the game. A robot peer is the object that deals
 	 * with game mechanics and rules, and makes sure your robot abides by them.
 	 */
@@ -68,7 +73,7 @@ public interface IBasicRobot {
 
 	/**
 	 * Do not call this method!
-	 * <p/>
+	 * <p>
 	 * This method is called by the game when setting the output stream for your
 	 * robot.
 	 *

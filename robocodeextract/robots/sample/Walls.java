@@ -32,8 +32,8 @@ public class Walls extends Robot {
 		peek = false;
 		
 		// turnLeft to face a wall.
-		// getBodyHeading() % 90 means the remainder of
-		// getBodyHeading() divided by 90.
+		// getHeading() % 90 means the remainder of 
+		// getHeading() divided by 90.
 		turnLeft(getHeading() % 90);
 		ahead(moveAmount);
 		// Turn the gun to turn right 90 degrees.

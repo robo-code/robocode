@@ -41,7 +41,7 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 		execute();
 	}
 
-	public void scanReset() {
+	public void rescan() {
 		peer.checkNoLock();
 
 		boolean reset = false;
