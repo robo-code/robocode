@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 /**
  * A MessageEvent is sent to {@link TeamRobot#onMessageReceived(MessageEvent)
- * onMessageReceived} when a teammate sends a message to your robot.
+ * onMessageReceived(MessageEvent)} when a teammate sends a message to your robot.
  * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)

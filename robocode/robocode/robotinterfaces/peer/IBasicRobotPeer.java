@@ -139,7 +139,7 @@ public interface IBasicRobotPeer {
 	 * @see #getGunHeading()
 	 */
 	double getRadarHeading();
-	
+
 	/**
 	 * Returns the current heat of the gun. The gun cannot fire unless this is
 	 * 0. (Calls to fire will succeed, but will not actually fire unless
@@ -440,8 +440,8 @@ public interface IBasicRobotPeer {
 	 *
 	 * @see #setFire(double)
 	 * @see Bullet
-	 * @see #getGunHeat
-	 * @see #getGunCoolingRate
+	 * @see #getGunHeat()
+	 * @see #getGunCoolingRate()
 	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHit(BulletHitEvent)
 	 *    onBulletHit(BulletHitEvent)
 	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHitBullet(BulletHitBulletEvent)
@@ -514,14 +514,172 @@ public interface IBasicRobotPeer {
 	 */
 	Bullet setFire(double power);
 
-	// fast setters
+	/**
+	 * Sets the color of the robot's body.
+	 * <p>
+	 * A {@code null} indicates the default (blue) color.
+	 *
+	 * <pre>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 *   ...
+	 *
+	 *   public void run() {
+	 *       setBodyColor(Color.BLACK);
+	 *       ...
+	 *   }
+	 * </pre>
+	 *
+	 * @param color the new body color
+	 *
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
+	 *
+	 * @since 1.1.2
+	 */
 	void setBodyColor(Color color);
+
+	/**
+	 * Sets the color of the robot's gun.
+	 * <p>
+	 * A {@code null} indicates the default (blue) color.
+	 *
+	 * <pre>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 *   ...
+	 *
+	 *   public void run() {
+	 *       setGunColor(Color.RED);
+	 *       ...
+	 *   }
+	 * </pre>
+	 *
+	 * @param color the new gun color
+	 *
+	 * @see #setBodyColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
+	 *
+	 * @since 1.1.2
+	 */
 	void setGunColor(Color color);
+
+	/**
+	 * Sets the color of the robot's radar.
+	 * <p>
+	 * A {@code null} indicates the default (blue) color.
+	 *
+	 * <pre>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 *   ...
+	 *
+	 *   public void run() {
+	 *       setRadarColor(Color.YELLOW);
+	 *       ...
+	 *   }
+	 * </pre>
+	 *
+	 * @param color the new radar color
+	 *
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
+	 *
+	 * @since 1.1.2
+	 */
 	void setRadarColor(Color color);
+
+	/**
+	 * Sets the color of the robot's bullets.
+	 * <p>
+	 * A {@code null} indicates the default white color.
+	 *
+	 * <pre>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 *   ...
+	 *
+	 *   public void run() {
+	 *       setBulletColor(Color.GREEN);
+	 *       ...
+	 *   }
+	 * </pre>
+	 *
+	 * @param color the new bullet color
+	 *
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
+	 *
+	 * @since 1.1.2
+	 */
 	void setBulletColor(Color color);
+
+	/**
+	 * Sets the color of the robot's scan arc.
+	 * <p>
+	 * A {@code null} indicates the default (blue) color.
+	 *
+	 * <pre>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 *   ...
+	 *
+	 *   public void run() {
+	 *       setScanColor(Color.WHITE);
+	 *       ...
+	 *   }
+	 * </pre>
+	 *
+	 * @param color the new scan arc color
+	 *
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see Color
+	 *
+	 * @since 1.1.2
+	 */
 	void setScanColor(Color color);
 
-	// counters
+	/**
+	 * This call <em>must</em> be made from a robot call to inform the game
+	 * that the robot made a {@code get*} call like e.g. {@link #getX()} or
+	 * {@link #getVelocity()}.
+	 * <p>
+	 * This method is used by the game to determine if the robot is inactive or
+	 * not. Note: You should only make this call once in a {@code get*} method!
+	 *
+	 * @see #setCall()
+	 */
 	void getCall();
+
+	/**
+	 * This call <em>must</em> be made from a robot call to inform the game
+	 * that the robot made a {@code set*} call like e.g. {@link
+	 * #setFire(double)} or {@link #setBodyColor(Color)}.
+	 * <p>
+	 * This method is used by the game to determine if the robot is inactive or
+	 * not. Note: You should only make this call once in a {@code set*} method!
+	 *
+	 * @see #getCall()
+	 */
 	void setCall();
 }

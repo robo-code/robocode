@@ -49,7 +49,7 @@ public class TurnCompleteCondition extends Condition {
 	 * @param robot your robot, which must be a {@link AdvancedRobot}
 	 * @param priority the priority of this condition
 	 * 
-	 * @see Condition#setPriority
+	 * @see Condition#setPriority(int)
 	 */
 	public TurnCompleteCondition(AdvancedRobot robot, int priority) {
 		super();

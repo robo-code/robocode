@@ -35,8 +35,8 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 		((IStandardRobotPeer) peer).resume();
 	}
 
-	public void scanReset() {
-		((IStandardRobotPeer) peer).scanReset();
+	public void rescan() {
+		((IStandardRobotPeer) peer).rescan();
 	}
 
 	public void turnRadar(double radians) {

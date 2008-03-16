@@ -9,15 +9,15 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
- * A HitRobotEvent is sent to {@link Robot#onHitRobot onHitRobot} when your
- * robot collides with another robot. You can use the information contained in
- * this event to determine what to do.
+ * A HitRobotEvent is sent to {@link Robot#onHitRobot(HitRobotEvent)
+ * onHitRobot(HitRobotEvent)} when your robot collides with another robot.
+ * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)
  */

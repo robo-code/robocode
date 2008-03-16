@@ -10,7 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     - The uninitializedException() method does not need a method name as input
  *       parameter anymore
  *     - Changed the priority of the DeathEvent from 100 to -1 in order to let

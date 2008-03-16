@@ -9,18 +9,18 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
- * This event is sent to {@link AdvancedRobot#onCustomEvent onCustomEvent} when
- * a custom condition is met. Be sure to reset or remove the custom condition to
- * avoid having it reoccuring repeatedly (see the example for the
- * {@link #getCondition()} method.
+ * This event is sent to {@link AdvancedRobot#onCustomEvent(CustomEvent)
+ * onCustomEvent(CustomEvent)} when a custom condition is met. Be sure to reset
+ * or remove the custom condition to avoid having it reoccuring repeatedly (see
+ * the example for the {@link #getCondition()} method.
  *
- * @see #getCondition
+ * @see #getCondition()
  *
  * @author Mathew A. Nelson (original)
  */

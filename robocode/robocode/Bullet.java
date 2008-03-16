@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
@@ -22,8 +22,8 @@ import robocode.peer.BulletPeer;
  * and {@link AdvancedRobot#setFireBullet(double)}, and all the bullet-related
  * events.
  *
- * @see Robot#fireBullet
- * @see AdvancedRobot#setFireBullet
+ * @see Robot#fireBullet(double)
+ * @see AdvancedRobot#setFireBullet(double)
  * @see BulletHitEvent
  * @see BulletMissedEvent
  * @see BulletHitBulletEvent

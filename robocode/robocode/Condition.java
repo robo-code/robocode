@@ -10,7 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -39,10 +39,10 @@ import robocode.security.RobocodeSecurityManager;
  * creating an inner class -- so if you distribute your robot, there will be
  * multiple class files. (i.e. {@code Target$1.class})
  *
- * @see AdvancedRobot#waitFor
- * @see AdvancedRobot#addCustomEvent
- * @see AdvancedRobot#removeCustomEvent
- * @see AdvancedRobot#onCustomEvent
+ * @see AdvancedRobot#waitFor(Condition)
+ * @see AdvancedRobot#addCustomEvent(Condition)
+ * @see AdvancedRobot#removeCustomEvent(Condition)
+ * @see AdvancedRobot#onCustomEvent(CustomEvent)
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)

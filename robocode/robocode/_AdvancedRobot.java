@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Added a peer.getCall() to getWaitCount()
  *     - Fixed wrong names used in uninitializedException() calls
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     - The uninitializedException() method does not need a method name as input
  *       parameter anymore
  *     Pavel Savara
@@ -77,8 +77,8 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#setTurnRight(double) setTurnRight}
-	 *    instead.
+	 * @deprecated Use {@link AdvancedRobot#setTurnRight(double)
+	 *    setTurnRight(double)} instead.
 	 */
 	@Deprecated
 	public void setTurnRightDegrees(double degrees) {
@@ -91,7 +91,7 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnRadarLeft(double)
-	 *    setTurnRadarLeft} instead.
+	 *    setTurnRadarLeft(double)} instead.
 	 */
 	@Deprecated
 	public void setTurnRadarLeftDegrees(double degrees) {
@@ -103,8 +103,8 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link AdvancedRobot#setTurnLeft(double) setTurnLeft}
-	 *    instead.
+	 * @deprecated Use {@link AdvancedRobot#setTurnLeft(double)
+	 *    setTurnLeft(double)} instead.
 	 */
 	@Deprecated
 	public void setTurnLeftDegrees(double degrees) {
@@ -116,7 +116,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getHeading() getHeading} instead.
+	 * @deprecated Use {@link Robot#getHeading() getHeading()} instead.
 	 */
 	@Deprecated
 	public double getHeadingDegrees() {
@@ -124,7 +124,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#turnLeft(double) turnLeft} instead.
+	 * @deprecated Use {@link Robot#turnLeft(double) turnLeft(double)} instead.
 	 */
 	@Deprecated
 	public void turnLeftDegrees(double degrees) {
@@ -132,7 +132,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#turnRight(double) turnRight} instead.
+	 * @deprecated Use {@link Robot#turnRight(double) turnRight(double)} instead.
 	 */
 	@Deprecated
 	public void turnRightDegrees(double degrees) {
@@ -152,7 +152,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getGunHeading() getGunHeading} instead.
+	 * @deprecated Use {@link Robot#getGunHeading() getGunHeading()} instead.
 	 */
 	@Deprecated
 	public double getGunHeadingDegrees() {
@@ -160,7 +160,7 @@ public class _AdvancedRobot extends Robot {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getRadarHeading() getRadarHeading} instead.
+	 * @deprecated Use {@link Robot#getRadarHeading() getRadarHeading()} instead.
 	 */
 	@Deprecated
 	public double getRadarHeadingDegrees() {

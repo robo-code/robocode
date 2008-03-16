@@ -31,7 +31,7 @@ import java.awt.event.MouseWheelEvent;
  * @since 1.6
  */
 public interface IInteractiveEvents {
-    
+   
 	/**
 	 * This method is called when a key has been pressed.
 	 * <p>
@@ -39,9 +39,9 @@ public interface IInteractiveEvents {
 	 * key events.
 	 *
 	 * @param event holds details about current event
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-	 * @see #onKeyReleased(java.awt.event.KeyEvent)
-	 * @see #onKeyTyped(java.awt.event.KeyEvent)
+     * @see java.awt.event.KeyListener#keyPressed(KeyEvent)
+	 * @see #onKeyReleased(KeyEvent)
+	 * @see #onKeyTyped(KeyEvent)
 	 *
 	 * @since 1.3.4
 	 */
@@ -85,14 +85,14 @@ public interface IInteractiveEvents {
 	 * mouse events.
 	 *
      * @param event holds details about current event
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 * @see #onMouseMoved(java.awt.event.MouseEvent)
-	 * @see #onMousePressed(java.awt.event.MouseEvent)
-	 * @see #onMouseReleased(java.awt.event.MouseEvent)
-	 * @see #onMouseEntered(java.awt.event.MouseEvent)
-	 * @see #onMouseExited(java.awt.event.MouseEvent)
-	 * @see #onMouseDragged(java.awt.event.MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
+	 * @see #onMouseMoved(MouseEvent)
+	 * @see #onMousePressed(MouseEvent)
+	 * @see #onMouseReleased(MouseEvent)
+	 * @see #onMouseEntered(MouseEvent)
+	 * @see #onMouseExited(MouseEvent)
+	 * @see #onMouseDragged(MouseEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 *
 	 * @since 1.3.4
 	 */
@@ -112,7 +112,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseClicked(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 *
 	 * @since 1.3.4
 	 */
@@ -132,7 +132,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseClicked(MouseEvent)
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 *
 	 * @since 1.3.4
 	 */
@@ -152,7 +152,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 *
 	 * @since 1.3.4
 	 */
@@ -172,7 +172,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 *
 	 * @since 1.3.4
 	 */
@@ -192,7 +192,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
 	 * @see #onMouseDragged(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 *
 	 * @since 1.3.4
 	 */
@@ -213,7 +213,7 @@ public interface IInteractiveEvents {
 	 * @see #onMouseClicked(MouseEvent)
 	 * @see #onMouseEntered(MouseEvent)
 	 * @see #onMouseExited(MouseEvent)
-	 * @see #onMouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see #onMouseWheelMoved(MouseWheelEvent)
 	 *
 	 * @since 1.3.4
 	 */
@@ -226,7 +226,7 @@ public interface IInteractiveEvents {
 	 * mouse events.
 	 *
      * @param event holds details about current event
-	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(MouseWheelEvent)
 	 * @see #onMouseMoved(MouseEvent)
 	 * @see #onMousePressed(MouseEvent)
 	 * @see #onMouseReleased(MouseEvent)

@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -49,7 +49,7 @@ public class RadarTurnCompleteCondition extends Condition {
 	 * @param robot your robot, which must be a {@link AdvancedRobot}
 	 * @param priority the priority of this condition
 	 * 
-	 * @see Condition#setPriority
+	 * @see Condition#setPriority(int)
 	 */
 	public RadarTurnCompleteCondition(AdvancedRobot robot, int priority) {
 		super();

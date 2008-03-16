@@ -10,7 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Optimized for Java 5
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     - Removed try-catch(ClassCastException) from compareTo()
  *     - Changed compareTo() to first and foremost compare the events based on
  *       their event times, and secondly to compare the priorities if the event
@@ -122,7 +122,7 @@ public class Event implements Comparable<Event> {
 	 *
 	 * @param newPriority the new priority of this event
 	 *
-	 * @see AdvancedRobot#setEventPriority
+	 * @see AdvancedRobot#setEventPriority(String, int)
 	 */
 	public void setPriority(int newPriority) {
 		priority = newPriority;

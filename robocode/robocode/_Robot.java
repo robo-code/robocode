@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     - Code cleanup
  *     - Changed to extend the new _RobotBase class instead of being top class
  *     - The uninitializedException() method does not need a method name as input
@@ -43,7 +43,7 @@ public abstract class _Robot extends _RobotBase {
 	protected _Robot() {}
 
 	/**
-	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat} instead.
+	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat()} instead.
 	 */
 	@Deprecated
 	public double getGunCharge() {
@@ -55,7 +55,7 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getEnergy() getEnergy} instead.
+	 * @deprecated Use {@link Robot#getEnergy() getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -67,7 +67,7 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds} instead.
+	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds()} instead.
 	 */
 	@Deprecated
 	public int getNumBattles() {
@@ -79,7 +79,7 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum} instead.
+	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum()} instead.
 	 */
 	@Deprecated
 	public int getBattleNum() {

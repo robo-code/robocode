@@ -9,15 +9,15 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
- * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot onScannedRobot}
- * when you scan a robot. You can use the information contained in this event to
- * determine what to do.
+ * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot(ScannedRobotEvent)
+ * onScannedRobot(ScannedRobotEvent)} when you scan a robot.
+ * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)
  */

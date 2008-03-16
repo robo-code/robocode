@@ -16,10 +16,11 @@ import robocode.peer.RobotPeer;
 
 
 /**
- * This event is sent to {@link Robot#onStatus(StatusEvent)} every turn.
+ * This event is sent to {@link Robot#onStatus(StatusEvent)
+ * onStatus(StatusEvent)} every turn in a battle.
  *
- * @author Flemming N. Larsen (contributor)
- * 
+ * @author Flemming N. Larsen (original)
+ *
  * @since 1.5
  */
 public class StatusEvent extends Event {

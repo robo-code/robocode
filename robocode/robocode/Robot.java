@@ -12,7 +12,7 @@
  *     - Added setColors(Color, Color, Color, Color, Color), setAllColors(),
  *       setBodyColor(), setGunColor(), setRadarColor(), setBulletColor(), and
  *       setScanColor()
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     - The finalize() is now protected instead of public
  *     - Added onKeyPressed(), onKeyReleased(), onKeyTyped() events
  *     - Added onMouseMoved(), onMouseClicked(), onMouseReleased(),
@@ -127,9 +127,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param distance the distance to move ahead measured in pixels.
 	 *    If this value is negative, the robot will move back instead of ahead.
 	 *
-	 * @see #back
-	 * @see #onHitWall
-	 * @see #onHitRobot
+	 * @see #back(double)
+	 * @see #onHitWall(HitWallEvent)
+	 * @see #onHitRobot(HitRobotEvent)
 	 */
 	public void ahead(double distance) {
 		if (peer != null) {
@@ -165,9 +165,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param distance the distance to move back measured in pixels.
 	 *    If this value is negative, the robot will move ahead instead of back.
 	 *
-	 * @see #ahead
-	 * @see #onHitWall
-	 * @see #onHitRobot
+	 * @see #ahead(double)
+	 * @see #onHitWall(HitWallEvent)
+	 * @see #onHitRobot(HitRobotEvent)
 	 */
 	public void back(double distance) {
 		if (peer != null) {
@@ -236,7 +236,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @return the height of the robot measured in pixels.
 	 *
-	 * @see #getWidth
+	 * @see #getWidth()
 	 */
 	public double getHeight() {
 		if (peer == null) {
@@ -250,7 +250,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @return the width of the robot measured in pixels.
 	 *
-	 * @see #getHeight
+	 * @see #getHeight()
 	 */
 	public double getWidth() {
 		if (peer == null) {
@@ -452,12 +452,12 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param power the amount of energy given to the bullet, and subtracted
 	 *     from the robot's energy.
 	 *
-	 * @see #fireBullet
-	 * @see #getGunHeat
-	 * @see #getGunCoolingRate
-	 * @see #onBulletHit
-	 * @see #onBulletHitBullet
-	 * @see #onBulletMissed
+	 * @see #fireBullet(double)
+	 * @see #getGunHeat()
+	 * @see #getGunCoolingRate()
+	 * @see #onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent)
 	 */
 	public void fire(double power) {
 		if (peer != null) {
@@ -511,13 +511,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *    was actually fired, which can be used for tracking the bullet after it
 	 *    has been fired. If the bullet was not fired, {@code null} is returned.
 	 *
-	 * @see #fire
+	 * @see #fire(double)
 	 * @see Bullet
-	 * @see #getGunHeat
-	 * @see #getGunCoolingRate
-	 * @see #onBulletHit
-	 * @see #onBulletHitBullet
-	 * @see #onBulletMissed
+	 * @see #getGunHeat()
+	 * @see #getGunCoolingRate()
+	 * @see #onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent)
 	 */
 	public Bullet fireBullet(double power) {
 		if (peer != null) {
@@ -746,27 +746,29 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 
 	/**
 	 * Scans for other robots. This method is called automatically by the game,
-	 * as long as you are moving, turning, turning your gun, or turning your
-	 * radar.
+	 * as long as the robot is moving, turning its body, turning its gun, or
+	 * turning its radar.
 	 * <p>
-	 * Scan will cause {@link #onScannedRobot(ScannedRobotEvent) onScannedRobot}
-	 * to be called if you see a robot.
+	 * Scan will cause {@link #onScannedRobot(ScannedRobotEvent)
+	 * onScannedRobot(ScannedRobotEvent)} to be called if you see a robot.
 	 * <p>
-	 * There are 2 reasons to call scan() manually:
-	 * 1 - You want to scan after you stop moving.
-	 * 2 - You want to interrupt the onScannedRobot event.
-	 *     This is more likely. If you are in onScannedRobot, and call scan(),
+	 * There are 2 reasons to call {@code scan()} manually:
+	 * <ol>
+	 * <li>You want to scan after you stop moving.
+	 * <li>You want to interrupt the {@code onScannedRobot} event. This is more
+	 *     likely. If you are in {@code onScannedRobot} and call {@code scan()},
 	 *     and you still see a robot, then the system will interrupt your
-	 *     onScannedRobot event immediately and start it from the top.
+	 *     {@code onScannedRobot} event immediately and start it from the top.
+	 * </ol>
 	 * <p>
 	 * This call executes immediately.
 	 *
-	 * @see #onScannedRobot
+	 * @see #onScannedRobot(ScannedRobotEvent)
 	 * @see ScannedRobotEvent
 	 */
 	public void scan() {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).scanReset();
+			((IStandardRobotPeer) peer).rescan();
 		} else {
 			uninitializedException();
 		}
@@ -778,9 +780,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Ok, so this needs some explanation: The gun is mounted on the robot's
 	 * body. So, normally, if the robot turns 90 degrees to the right, then the
 	 * gun will turn with it as it is mounted on top of the robot's body. To
-	 * compensate for this, you can call setAdjustGunForRobotTurn(true). When
-	 * this is set, the gun will turn independent from the robot's turn, i.e.
-	 * the gun will compensate for the robot's body turn.
+	 * compensate for this, you can call {@code setAdjustGunForRobotTurn(true)}.
+	 * When this is set, the gun will turn independent from the robot's turn,
+	 * i.e. the gun will compensate for the robot's body turn.
 	 * <p>
 	 * Example, assuming both the robot and gun start out facing up (0 degrees):
 	 * <pre>
@@ -796,7 +798,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *   // Set gun to turn independent from the robot's turn
 	 *   setAdjustGunForRobotTurn(true);
 	 *   turnRight(90);
-	 *   // At this point, the robot is facting right (90 degrees), but the gun is still facing up.
+	 *   // At this point, the robot is facing right (90 degrees), but the gun is still facing up.
 	 *   turnLeft(90);
 	 *   // Both are back to 0 degrees.
 	 * </pre>
@@ -807,7 +809,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param independent {@code true} if the gun must turn independent from the
 	 *    robot's turn; {@code false} if the gun must turn with the robot's turn.
 	 *
-	 * @see #setAdjustRadarForGunTurn
+	 * @see #setAdjustRadarForGunTurn(boolean)
 	 */
 	public void setAdjustGunForRobotTurn(boolean independent) {
 		if (peer != null) {
@@ -823,11 +825,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Ok, so this needs some explanation: The radar is mounted on the gun, and
 	 * the gun is mounted on the robot's body. So, normally, if the robot turns
 	 * 90 degrees to the right, the gun turns, as does the radar. Hence, if the
-	 * robot turns 90 degrees to the right, then the gun and radar will turn with
-	 * it as the radar is mounted on top of the gun. To compensate for this, you
-	 * can call setAdjustRadarForRobotTurn(true). When this is set, the radar will
-	 * turn independent from the robot's turn, i.e. the radar will compensate for
-	 * the robot's turn.
+	 * robot turns 90 degrees to the right, then the gun and radar will turn
+	 * with it as the radar is mounted on top of the gun. To compensate for
+	 * this, you can call {@code setAdjustRadarForRobotTurn(true)}. When this is
+	 * set, the radar will turn independent from the robot's turn, i.e. the
+	 * radar will compensate for the robot's turn.
 	 * <p>
 	 * Example, assuming the robot, gun, and radar all start out facing up (0
 	 * degrees):
@@ -849,8 +851,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *    the robots's turn; {@code false} if the radar must turn with the robot's
 	 *    turn.
 	 *
-	 * @see #setAdjustGunForRobotTurn
-	 * @see #setAdjustRadarForGunTurn
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
 	 */
 	public void setAdjustRadarForRobotTurn(boolean independent) {
 		if (peer != null) {
@@ -864,11 +866,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Sets the radar to turn independent from the gun's turn.
 	 * <p>
 	 * Ok, so this needs some explanation: The radar is mounted on the robot's
-	 * gun. So, normally, if the gun turns 90 degrees to the right, then the radar
-	 * will turn with it as it is mounted on top of the gun. To compensate for
-	 * this, you can call setAdjustRadarForGunTurn(true). When this is set, the
-	 * radar will turn independent from the robot's turn, i.e. the radar will
-	 * compensate for the gun's turn.
+	 * gun. So, normally, if the gun turns 90 degrees to the right, then the
+	 * radar will turn with it as it is mounted on top of the gun. To compensate
+	 * for this, you can call {@code setAdjustRadarForGunTurn(true)}. When this
+	 * is set, the radar will turn independent from the robot's turn, i.e. the
+	 * radar will compensate for the gun's turn.
 	 * <p>
 	 * Example, assuming both the gun and radar start out facing up (0 degrees):
 	 * <pre>
@@ -884,17 +886,17 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *   turnGunRight(90);
 	 *   // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
 	 * </pre>
-	 * Note: Calling setAdjustRadarForGunTurn will automatically call
-	 * {@link #setAdjustRadarForRobotTurn(boolean)} with the same value, unless
-	 * you have already called it earlier. This behavior is primarily for
-	 * backward compatibility with older Robocode robots.
+	 * Note: Calling {@code setAdjustRadarForGunTurn(boolean)} will
+	 * automatically call {@link #setAdjustRadarForRobotTurn(boolean)} with the
+	 * same value, unless you have already called it earlier. This behavior is
+	 * primarily for backward compatibility with older Robocode robots.
 	 *
 	 * @param independent {@code true} if the radar must turn independent from
 	 *    the gun's turn; {@code false} if the radar must turn with the gun's
 	 *    turn.
 	 *
-	 * @see #setAdjustRadarForRobotTurn
-	 * @see #setAdjustGunForRobotTurn
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustGunForRobotTurn(boolean)
 	 */
 	public void setAdjustRadarForGunTurn(boolean independent) {
 		if (peer != null) {
@@ -908,7 +910,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * Sets the color of the robot's body, gun, and radar in the same time.
 	 * <p>
 	 * You may only call this method one time per battle. A {@code null}
-	 * indicates the default (blue-ish) color.
+	 * indicates the default (blue) color.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -918,6 +920,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 *   public void run() {
 	 *       setColors(null, Color.RED, new Color(150, 0, 150));
+	 *       ...
 	 *   }
 	 * </pre>
 	 *
@@ -926,13 +929,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param radarColor the new radar color
 	 *
 	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setAllColors
-	 * @see #setBodyColor
-	 * @see #setGunColor
-	 * @see #setRadarColor
-	 * @see #setBulletColor
-	 * @see #setScanColor
-	 * @see java.awt.Color
+	 * @see #setAllColors(Color)
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
 	 */
 	public void setColors(Color bodyColor, Color gunColor, Color radarColor) {
 		if (peer != null) {
@@ -949,7 +952,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * the same time.
 	 * <p>
 	 * You may only call this method one time per battle. A {@code null}
-	 * indicates the default (blue-ish) color for the body, gun, radar, and scan
+	 * indicates the default (blue) color for the body, gun, radar, and scan
 	 * arc, but white for the bullet color.
 	 * <p>
 	 * Example:
@@ -960,6 +963,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 *   public void run() {
 	 *       setColors(null, Color.RED, Color.GREEN, null, new Color(150, 0, 150));
+	 *       ...
 	 *   }
 	 * </pre>
 	 *
@@ -970,13 +974,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * @param scanArcColor the new scan arc color
 	 *
 	 * @see #setColors(Color, Color, Color)
-	 * @see #setAllColors
-	 * @see #setBodyColor
-	 * @see #setGunColor
-	 * @see #setRadarColor
-	 * @see #setBulletColor
-	 * @see #setScanColor
-	 * @see java.awt.Color
+	 * @see #setAllColors(Color)
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
 	 *
 	 * @since 1.1.3
 	 */
@@ -997,7 +1001,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * color of the body, gun, radar, bullet, and scan arc.
 	 * <p>
 	 * You may only call this method one time per battle. A {@code null}
-	 * indicates the default (blue-ish) color for the body, gun, radar, and scan
+	 * indicates the default (blue) color for the body, gun, radar, and scan
 	 * arc, but white for the bullet color.
 	 *
 	 * <pre>
@@ -1008,6 +1012,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 *   public void run() {
 	 *       setAllColors(Color.RED);
+	 *       ...
 	 *   }
 	 * </pre>
 	 *
@@ -1015,12 +1020,12 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @see #setColors(Color, Color, Color)
 	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setBodyColor
-	 * @see #setGunColor
-	 * @see #setRadarColor
-	 * @see #setBulletColor
-	 * @see #setScanColor
-	 * @see java.awt.Color
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
 	 *
 	 * @since 1.1.3
 	 */
@@ -1039,7 +1044,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	/**
 	 * Sets the color of the robot's body.
 	 * <p>
-	 * A {@code null} indicates the default (blue-ish) color.
+	 * A {@code null} indicates the default (blue) color.
 	 *
 	 * <pre>
 	 * Example:
@@ -1049,6 +1054,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 *   public void run() {
 	 *       setBodyColor(Color.BLACK);
+	 *       ...
 	 *   }
 	 * </pre>
 	 *
@@ -1056,12 +1062,12 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @see #setColors(Color, Color, Color)
 	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setAllColors
-	 * @see #setGunColor
-	 * @see #setRadarColor
-	 * @see #setBulletColor
-	 * @see #setScanColor
-	 * @see java.awt.Color
+	 * @see #setAllColors(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
 	 *
 	 * @since 1.1.2
 	 */
@@ -1076,7 +1082,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	/**
 	 * Sets the color of the robot's gun.
 	 * <p>
-	 * A {@code null} indicates the default (blue-ish) color.
+	 * A {@code null} indicates the default (blue) color.
 	 *
 	 * <pre>
 	 * Example:
@@ -1086,6 +1092,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 *   public void run() {
 	 *       setGunColor(Color.RED);
+	 *       ...
 	 *   }
 	 * </pre>
 	 *
@@ -1093,12 +1100,12 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @see #setColors(Color, Color, Color)
 	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setAllColors
-	 * @see #setBodyColor
-	 * @see #setRadarColor
-	 * @see #setBulletColor
-	 * @see #setScanColor
-	 * @see java.awt.Color
+	 * @see #setAllColors(Color)
+	 * @see #setBodyColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
 	 *
 	 * @since 1.1.2
 	 */
@@ -1113,7 +1120,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	/**
 	 * Sets the color of the robot's radar.
 	 * <p>
-	 * A {@code null} indicates the default (blue-ish) color.
+	 * A {@code null} indicates the default (blue) color.
 	 *
 	 * <pre>
 	 * Example:
@@ -1123,6 +1130,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 *   public void run() {
 	 *       setRadarColor(Color.YELLOW);
+	 *       ...
 	 *   }
 	 * </pre>
 	 *
@@ -1130,12 +1138,12 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @see #setColors(Color, Color, Color)
 	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setAllColors
-	 * @see #setBodyColor
-	 * @see #setGunColor
-	 * @see #setBulletColor
-	 * @see #setScanColor
-	 * @see java.awt.Color
+	 * @see #setAllColors(Color)
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
 	 *
 	 * @since 1.1.2
 	 */
@@ -1160,6 +1168,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 *   public void run() {
 	 *       setBulletColor(Color.GREEN);
+	 *       ...
 	 *   }
 	 * </pre>
 	 *
@@ -1167,12 +1176,12 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @see #setColors(Color, Color, Color)
 	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setAllColors
-	 * @see #setBodyColor
-	 * @see #setGunColor
-	 * @see #setRadarColor
-	 * @see #setScanColor
-	 * @see java.awt.Color
+	 * @see #setAllColors(Color)
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
 	 *
 	 * @since 1.1.2
 	 */
@@ -1187,7 +1196,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	/**
 	 * Sets the color of the robot's scan arc.
 	 * <p>
-	 * A {@code null} indicates the default (blue-ish) color.
+	 * A {@code null} indicates the default (blue) color.
 	 *
 	 * <pre>
 	 * Example:
@@ -1197,6 +1206,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 *   public void run() {
 	 *       setScanColor(Color.WHITE);
+	 *       ...
 	 *   }
 	 * </pre>
 	 *
@@ -1204,12 +1214,12 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 *
 	 * @see #setColors(Color, Color, Color)
 	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setAllColors
-	 * @see #setBodyColor
-	 * @see #setGunColor
-	 * @see #setRadarColor
-	 * @see #setBulletColor
-	 * @see java.awt.Color
+	 * @see #setAllColors(Color)
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see Color
 	 *
 	 * @since 1.1.2
 	 */

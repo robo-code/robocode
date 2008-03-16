@@ -44,6 +44,7 @@
  *     - Changed the behaviour of checkRobotCollision() so that HitRobotEvents
  *       are only created and sent to robot when damage do occur. Previously, a
  *       robot could receive HitRobotEvents even when no damage was done
+ *     - Renamed scanReset() to rescan()
  *     Luis Crespo
  *     - Added states
  *     Titus Chen
@@ -616,7 +617,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 				: arc.intersects(rect);
 	}
 
-	public void scanReset() {
+	public void rescan() {
 		boolean reset = false;
 		boolean resetValue = false;
 

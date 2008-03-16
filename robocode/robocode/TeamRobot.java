@@ -10,7 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Added missing getMessageEvents()
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     - The uninitializedException() method does not need a method name as input
  *       parameter anymore
  *     Pavel Savara
@@ -57,8 +57,14 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 *       fire(1);
 	 *   }
 	 * </pre>
+	 *
 	 * @param name the robot name to check
-	 * @return boolean value
+	 * @return {@code true} if the specified name belongs to one of your
+	 *    teammates; {@code false} otherwise.
+	 *
+	 * @see #getTeammates()
+	 * @see #broadcastMessage(Serializable)
+	 * @see #sendMessage(String, Serializable)
 	 */
 	public boolean isTeammate(String name) {
 		if (peer != null) {
@@ -69,7 +75,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	}
 
 	/**
-	 * Returns the names of all teammates, or <code>null</code> there is no
+	 * Returns the names of all teammates, or {@code null} there is no
 	 * teammates.
 	 * <p>
 	 * Example:
@@ -85,9 +91,13 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 *   }
 	 * </pre>
 	 *
-	 * @return a String array containing the names of all your team mates, or
-	 *     <code>null</code> if there is no team mates. The length of the String
-	 *     array is equal to the number of team mates
+	 * @return a String array containing the names of all your teammates, or
+	 *     {@code null} if there is no teammates. The length of the String array
+	 *     is equal to the number of teammates.
+	 *
+	 * @see #isTeammate(String)
+	 * @see #broadcastMessage(Serializable)
+	 * @see #sendMessage(String, Serializable)
 	 */
 	public String[] getTeammates() {
 		if (peer != null) {
@@ -98,7 +108,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	}
 
 	/**
-	 * Broadcasts a message to all team mates.
+	 * Broadcasts a message to all teammates.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -107,8 +117,13 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 *   }
 	 * </pre>
 	 *
-	 * @param message the message to broadcast to all team mates
-	 * @throws java.io.IOException
+	 * @param message the message to broadcast to all teammates
+	 * @throws IOException if the message could not be broadcasted to the
+	 *    teammates
+	 *
+	 * @see #isTeammate(String)
+	 * @see #getTeammates()
+	 * @see #sendMessage(String, Serializable)
 	 */
 	public void broadcastMessage(Serializable message) throws IOException {
 		if (peer != null) {
@@ -119,7 +134,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	}
 
 	/**
-	 * Sends a message to one (or more) team mates.
+	 * Sends a message to one (or more) teammates.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -130,7 +145,11 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 *
 	 * @param name the name of the intended recipient of the message
 	 * @param message the message to send
-	 * @throws java.io.IOException
+	 * @throws IOException if the message could not be sent
+	 *
+	 * @see #isTeammate(String)
+	 * @see #getTeammates()
+	 * @see #broadcastMessage(Serializable)
 	 */
 	public void sendMessage(String name, Serializable message) throws IOException {
 		if (peer != null) {
@@ -154,9 +173,9 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 * @return a vector containing all MessageEvents currently in the robot's
 	 *    queue
 	 *
-	 * @see #onMessageReceived
+	 * @see #onMessageReceived(MessageEvent)
 	 * @see MessageEvent
-	 * 
+	 *
 	 * @since 1.2.6
 	 */
 	public Vector<MessageEvent> getMessageEvents() {

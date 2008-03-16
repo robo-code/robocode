@@ -18,7 +18,7 @@ import robocode.peer.RobotPeer;
 /**
  * Contains the status of a robot for a specific time/turn.
  *
- * @author Flemming N. Larsen (contributor)
+ * @author Flemming N. Larsen (original)
  * 
  * @since 1.5
  */

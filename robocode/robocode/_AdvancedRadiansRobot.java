@@ -10,7 +10,7 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Minor cleanup
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *     - The uninitializedException() method does not need a method name as input
  *       parameter anymore
  *     Pavel Savara

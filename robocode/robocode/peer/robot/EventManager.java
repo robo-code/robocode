@@ -151,22 +151,21 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHit
-	 * @see #onBulletHitBullet
-	 * @see #onBulletMissed
-	 * @see #onHitByBullet
-	 * @see #onHitByRobot
-	 * @see #onHitRobot
-	 * @see #onHitWall
-	 * @see #onSkippedTurn
-	 * @see robocode.BulletHitEvent
-	 * @see robocode.BulletMissedEvent
-	 * @see robocode.HitByBulletEvent
-	 * @see robocode.HitByRobotEvent
-	 * @see robocode.HitRobotEvent
-	 * @see robocode.HitWallEvent
-	 * @see robocode.SkippedTurnEvent
-	 * @see robocode.Event
+	 * @see #onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent)
+	 * @see #onHitByBullet(HitByBulletEvent)
+	 * @see #onHitRobot(HitRobotEvent)
+	 * @see #onHitWall(HitWallEvent)
+	 * @see #onSkippedTurn(SkippedTurnEvent)
+	 * @see BulletHitEvent
+	 * @see BulletMissedEvent
+	 * @see HitByBulletEvent
+	 * @see HitByRobotEvent
+	 * @see HitRobotEvent
+	 * @see HitWallEvent
+	 * @see SkippedTurnEvent
+	 * @see Event
 	 * @see List
 	 */
 	public List<Event> getAllEvents() {
@@ -191,8 +190,8 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHitBullet
-	 * @see robocode.BulletHitBulletEvent
+	 * @see #onBulletHitBullet(BulletHitBulletEvent)
+	 * @see BulletHitBulletEvent
 	 * @see List
 	 */
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
@@ -219,8 +218,8 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHit
-	 * @see robocode.BulletHitEvent
+	 * @see #onBulletHit(BulletHitEvent)
+	 * @see BulletHitEvent
 	 * @see List
 	 */
 	public List<BulletHitEvent> getBulletHitEvents() {
@@ -247,8 +246,8 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletMissed
-	 * @see robocode.BulletMissedEvent
+	 * @see #onBulletMissed(BulletMissedEvent)
+	 * @see BulletMissedEvent
 	 * @see List
 	 */
 	public List<BulletMissedEvent> getBulletMissedEvents() {
@@ -358,8 +357,8 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitByBullet
-	 * @see robocode.HitByBulletEvent
+	 * @see #onHitByBullet(HitByBulletEvent)
+	 * @see HitByBulletEvent
 	 * @see List
 	 */
 	public List<HitByBulletEvent> getHitByBulletEvents() {
@@ -386,8 +385,8 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitRobot
-	 * @see robocode.HitRobotEvent
+	 * @see #onHitRobot(HitRobotEvent)
+	 * @see HitRobotEvent
 	 * @see List
 	 */
 	public List<HitRobotEvent> getHitRobotEvents() {
@@ -414,8 +413,8 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitWall
-	 * @see robocode.HitWallEvent
+	 * @see #onHitWall(HitWallEvent)
+	 * @see HitWallEvent
 	 * @see List
 	 */
 	public List<HitWallEvent> getHitWallEvents() {
@@ -457,8 +456,8 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onRobotDeath
-	 * @see robocode.RobotDeathEvent
+	 * @see #onRobotDeath(RobotDeathEvent)
+	 * @see RobotDeathEvent
 	 * @see List
 	 */
 	public List<RobotDeathEvent> getRobotDeathEvents() {
@@ -489,8 +488,8 @@ public class EventManager implements IEventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onScannedRobot
-	 * @see robocode.ScannedRobotEvent
+	 * @see #onScannedRobot(ScannedRobotEvent)
+	 * @see ScannedRobotEvent
 	 * @see List
 	 */
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
@@ -866,7 +865,7 @@ public class EventManager implements IEventManager {
 	 * @return a vector containing all MessageEvents currently in the robot's
 	 *    queue
 	 *
-	 * @see #onMessageReceived
+	 * @see #onMessageReceived(MessageEvent)
 	 * @see MessageEvent
 	 *
 	 * @since 1.2.6
@@ -898,7 +897,7 @@ public class EventManager implements IEventManager {
 	 * @return a vector containing all StatusEvents currently in the robot's
 	 *    queue.
 	 *
-	 * @see #onStatus
+	 * @see #onStatus(StatusEvent)
 	 * @see StatusEvent
 	 *
 	 * @since 1.5

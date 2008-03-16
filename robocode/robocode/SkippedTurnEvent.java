@@ -9,14 +9,14 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
- * A SkippedTurnEvent is sent to {@link AdvancedRobot#onSkippedTurn
- * onSkippedTurn} when your robot is forced to skipping a turn.
+ * A SkippedTurnEvent is sent to {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)
+ * onSkippedTurn(SkippedTurnEvent)} when your robot is forced to skipping a turn.
  * You must take an action every turn in order to participate in the game.
  * For example,
  * <pre>
@@ -38,7 +38,8 @@ package robocode;
  * between actions, that is using too much processing power for the calculations
  * etc. in your robot.
  *
- * @see AdvancedRobot#onSkippedTurn
+ * @see AdvancedRobot#onSkippedTurn(SkippedTurnEvent)
+ * @see SkippedTurnEvent
  *
  * @author Mathew A. Nelson (original)
  */
