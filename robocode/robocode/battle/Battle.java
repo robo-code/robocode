@@ -249,8 +249,9 @@ public class Battle implements Runnable {
 	}
 
 	@Override
-	public void finalize() {
-		if (keyHandler != null) {
+	public void finalize() throws Throwable {
+        super.finalize();
+        if (keyHandler != null) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(keyHandler);
 		}
 	}

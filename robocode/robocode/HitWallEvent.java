@@ -45,6 +45,8 @@ public class HitWallEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getBearing()} instead.
+     *
+     * @return the bearing to the wall you hit, in degrees
 	 */
 	@Deprecated
 	public double getBearingDegrees() {

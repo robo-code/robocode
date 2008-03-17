@@ -57,7 +57,7 @@ public class FileUtil {
 	 * Changes the current working directory.
 	 *
 	 * @param cwd a File that is the new working directory
-	 * @throws IOException
+	 * @throws IOException if an I/O exception occurs
 	 */
 	public static void setCwd(File cwd) throws IOException {
 		FileUtil.cwd = cwd.getCanonicalFile();
@@ -77,7 +77,7 @@ public class FileUtil {
 	/**
 	 * Returns the file type of a file name, i.e. it's extension.
 	 *
-	 * @param file the file name
+	 * @param fileName the file name
 	 * @return the file type of the file name, e.g. ".class", ".jar" or "" if
 	 *    the file name does not contain an extension.
 	 */
@@ -110,11 +110,9 @@ public class FileUtil {
 	/**
 	 * Copies a file into another file.
 	 * 
-	 * @param inFile the input file to copy
-	 * @param outFile the output file to copy to
-	 * @return {@code true} if the file was copies succesfully; {@code false}
-	 *    otherwise.
-	 * @throws IOException
+	 * @param srcFile the input file to copy
+	 * @param destFile the output file to copy to
+	 * @throws IOException if an I/O exception occurs
 	 */
 	public static void copy(File srcFile, File destFile) throws IOException {
 		if (srcFile.equals(destFile)) {

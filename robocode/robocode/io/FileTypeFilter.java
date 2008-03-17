@@ -34,7 +34,7 @@ public class FileTypeFilter implements FileFilter {
 	/**
 	 * Creates a new file type filter.
 	 *
-	 * @param fileType an array of file extensions that is accepted for this
+	 * @param fileTypes an array of file extensions that is accepted for this
 	 *    file filter, e.g. ".class", ".jar", ".zip" etc.
 	 */
 	public FileTypeFilter(String[] fileTypes) {
@@ -51,8 +51,8 @@ public class FileTypeFilter implements FileFilter {
 	 * Tests if a specified file should be included in a file list.
 	 *
 	 * @param file the file that must be tested against this file filter.
-	 * @param <code>true</code> if the file is accepted for the file list;
-	 *    <code>false</code> otherwise.
+	 * @return {@code true} if the file is accepted for the file list;
+     *    {@code false} otherwise.
 	 */
 	public boolean accept(File file) {
 		if (file.isDirectory()) {

@@ -126,18 +126,18 @@ public class TeamSpecification extends FileSpecification {
 	}
 
 	/**
-	 * Sets the robotName.
+	 * Sets the name of the team
 	 *
-	 * @param robotName The robotName to set
+	 * @param name The new name for the team
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * Sets the robotDescription.
+	 * Sets the team description.
 	 *
-	 * @param robotDescription The robotDescription to set
+	 * @param teamDescription The new team description
 	 */
 	public void setTeamDescription(String teamDescription) {
 		this.description = teamDescription;
@@ -145,9 +145,9 @@ public class TeamSpecification extends FileSpecification {
 	}
 
 	/**
-	 * Sets the robotAuthorName.
+	 * Sets the the author name.
 	 *
-	 * @param robotAuthorName The robotAuthorName to set
+	 * @param teamAuthorName The new author name
 	 */
 	public void setTeamAuthorName(String teamAuthorName) {
 		this.authorName = teamAuthorName;
@@ -155,9 +155,9 @@ public class TeamSpecification extends FileSpecification {
 	}
 
 	/**
-	 * Sets the robotAuthorEmail.
+	 * Sets the e-mail address of the author.
 	 *
-	 * @param robotAuthorEmail The robotAuthorEmail to set
+	 * @param teamAuthorEmail The new e-mail address of the author.
 	 */
 	public void setTeamAuthorEmail(String teamAuthorEmail) {
 		this.authorEmail = teamAuthorEmail;
@@ -165,9 +165,9 @@ public class TeamSpecification extends FileSpecification {
 	}
 
 	/**
-	 * Sets the robotAuthorWebsite.
+	 * Sets the website for the author/team.
 	 *
-	 * @param robotAuthorWebsite The robotAuthorWebsite to set
+	 * @param teamAuthorWebsite The new website for the author/team.
 	 */
 	public void setTeamAuthorWebsite(String teamAuthorWebsite) {
 		this.authorWebsite = teamAuthorWebsite;
@@ -175,9 +175,9 @@ public class TeamSpecification extends FileSpecification {
 	}
 
 	/**
-	 * Sets the robotVersion.
+	 * Sets the robot version.
 	 *
-	 * @param robotVersion The robotVersion to set
+	 * @param teamVersion The new robot version.
 	 */
 	public void setTeamVersion(String teamVersion) {
 		this.version = teamVersion;
@@ -185,9 +185,9 @@ public class TeamSpecification extends FileSpecification {
 	}
 
 	/**
-	 * Sets the robotWebpage.
+	 * Sets the robot webpage.
 	 *
-	 * @param robotWebpage The robotWebpage to set
+	 * @param teamWebpage The new robot webpage.
 	 */
 	public void setTeamWebpage(URL teamWebpage) {
 		this.webpage = teamWebpage;

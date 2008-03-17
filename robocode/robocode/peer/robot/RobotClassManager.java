@@ -165,7 +165,7 @@ public class RobotClassManager {
 	/**
 	 * Sets the robotSpecification.
 	 *
-	 * @param robotSpecification The robotSpecification to set
+	 * @param controlRobotSpecification The robotSpecification to set
 	 */
 	public void setControlRobotSpecification(robocode.control.RobotSpecification controlRobotSpecification) {
 		this.controlRobotSpecification = controlRobotSpecification;

@@ -55,6 +55,8 @@ public class HitRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getBearing()} instead.
+     *
+     * @return the bearing to the robot you hit, in degrees
 	 */
 	@Deprecated
 	public double getBearingDegrees() {
@@ -91,6 +93,8 @@ public class HitRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getName()} instead.
+     *
+     * @return the name of the robot you hit
 	 */
 	@Deprecated
 	public String getRobotName() {

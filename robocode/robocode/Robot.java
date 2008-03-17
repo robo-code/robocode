@@ -415,7 +415,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * You may not override this method.
 	 */
 	@Override
-	protected final void finalize() {}
+	protected final void finalize() throws Throwable {
+        super.finalize();
+    }
 
 	/**
 	 * Immediately fires a bullet. The bullet will travel in the direction the
@@ -643,10 +645,10 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	}
 
 	/**
-	 * Returns the number of the current round (0 to {@link #getNumRounds()} - 1)
-	 * in the battle.
+	 * Returns the current round number (0 to {@link #getNumRounds()} - 1) of
+	 * the battle.
 	 *
-	 * @return the number of the current round in the battle
+	 * @return the current round number of the battle
 	 *
 	 * @see #getNumRounds()
 	 */

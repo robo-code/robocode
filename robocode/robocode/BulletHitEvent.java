@@ -26,8 +26,12 @@ public class BulletHitEvent extends Event {
 	private Bullet bullet;
 
 	/**
-	 * Called by the game to create a new BulletHitEvent.
-	 */
+	 * Called by the game to create a new {@code BulletHitEvent}.
+     *
+     * @param name the name of the robot your bullet hit
+     * @param energy the remaining energy of the robot that your bullet has hit
+     * @param bullet the bullet that hit the robot
+     */
 	public BulletHitEvent(String name, double energy, Bullet bullet) {
 		super();
 		this.name = name;
@@ -56,6 +60,8 @@ public class BulletHitEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getEnergy()} instead.
+     *
+     * @return energy the remaining energy of the robot that your bullet has hit
 	 */
 	@Deprecated
 	public double getLife() {
@@ -73,6 +79,8 @@ public class BulletHitEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getEnergy()} instead.
+     *
+     * @return energy the remaining energy of the robot that your bullet has hit
 	 */
 	@Deprecated
 	public double getRobotLife() {
@@ -81,6 +89,8 @@ public class BulletHitEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getName()} instead.
+     *
+     * @return the name of the robot your bullet hit.
 	 */
 	@Deprecated
 	public String getRobotName() {

@@ -161,7 +161,6 @@ public class EventManager implements IEventManager {
 	 * @see BulletHitEvent
 	 * @see BulletMissedEvent
 	 * @see HitByBulletEvent
-	 * @see HitByRobotEvent
 	 * @see HitRobotEvent
 	 * @see HitWallEvent
 	 * @see SkippedTurnEvent

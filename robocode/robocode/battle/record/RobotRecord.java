@@ -63,7 +63,7 @@ public class RobotRecord {
 	/**
 	 * Constructs a new robot record.
 	 *
-	 * @param owner index of the robot
+	 * @param index index of the owner robot
 	 * @param robot the robot peer that is copied into this record
 	 */
 	public RobotRecord(int index, RobotPeer robot) {

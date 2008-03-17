@@ -25,8 +25,11 @@ public class BulletHitBulletEvent extends Event {
 	private Bullet hitBullet;
 
 	/**
-	 * Called by the game to create a new BulletHitEvent.
-	 */
+	 * Called by the game to create a new {@code BulletHitEvent}.
+     *
+     * @param bullet your bullet that hit another bullet
+     * @param hitBullet the bullet that was hit by your bullet
+     */
 	public BulletHitBulletEvent(Bullet bullet, Bullet hitBullet) {
 		super();
 		this.bullet = bullet;

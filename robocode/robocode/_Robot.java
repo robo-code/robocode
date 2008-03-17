@@ -44,6 +44,8 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat()} instead.
+     *
+     * @return 5 - {@link robocode.Robot#getGunHeat() getGunHeat()}. 
 	 */
 	@Deprecated
 	public double getGunCharge() {
@@ -56,6 +58,8 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated Use {@link Robot#getEnergy() getEnergy()} instead.
+     *
+	 * @return the robot's current life/energy.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -68,6 +72,8 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds()} instead.
+     *
+     * @return the number of rounds in the current battle
 	 */
 	@Deprecated
 	public int getNumBattles() {
@@ -80,6 +86,8 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum()} instead.
+     *
+     * @return the current round number of the battle
 	 */
 	@Deprecated
 	public int getBattleNum() {
@@ -91,14 +99,19 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated This call has moved to {@link AdvancedRobot},
-	 * and will no longer function in the Robot class.
+	 * This call has moved to {@link AdvancedRobot}, and will no longer function in
+     * the {@link Robot} class.
+     *
+     * @param interruptible {@code true} if the event handler should be
+     *    interrupted if new events of the same priority occurs; {@code false}
+     *    otherwise
 	 */
-	@Deprecated
 	public void setInterruptible(boolean interruptible) {}
 
 	/**
 	 * @deprecated This call is not used.
+     *
+     * @return the name of the gun image
 	 */
 	@Deprecated
 	public String getGunImageName() {
@@ -106,7 +119,9 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated This call is not used.
+     * @deprecated This call is not used.
+     *
+     * @param newGunImageName the name of the new gun image
 	 */
 	@Deprecated
 	public void setGunImageName(String newGunImageName) {
@@ -115,6 +130,8 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated This call is not used.
+     *
+     * @param newRadarImageName the name of the new radar image
 	 */
 	@Deprecated
 	public void setRadarImageName(String newRadarImageName) {
@@ -123,6 +140,8 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated This call is not used.
+     *
+     * @param newRobotImageName the name of the new robot body image
 	 */
 	@Deprecated
 	public void setRobotImageName(String newRobotImageName) {
@@ -131,6 +150,8 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated This call is not used.
+     *
+     * @return the name of the radar image
 	 */
 	@Deprecated
 	public String getRadarImageName() {
@@ -139,6 +160,8 @@ public abstract class _Robot extends _RobotBase {
 
 	/**
 	 * @deprecated This call is not used.
+     *
+     * @return the name of the robot image
 	 */
 	@Deprecated
 	public String getRobotImageName() {
