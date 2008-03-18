@@ -101,20 +101,20 @@ public class UpdateRatingFiles {
 		Properties nano = getProperties(nanoratings);
 
 		// update #battles
-		for (String bat : battles) {
-			String[] bat = bat.split(",");
+		for (String battle : battles) {
+			String[] battleSpec = battle.split(",");
 
-			battle[1] = battle[1].replaceAll(" ", "_");
-			double num = Double.parseDouble(battle[2]);
+			battleSpec[1] = battleSpec[1].replaceAll(" ", "_");
+			double num = Double.parseDouble(battleSpec[2]);
 
-			if (battle[0].equals(game)) {
-				updateRecord(battle[1], num, all);
-			} else if (battle[0].equals(minibots) && mini != null) {
-				updateRecord(battle[1], num, mini);
-			} else if (battle[0].equals(microbots) && micro != null) {
-				updateRecord(battle[1], num, micro);
-			} else if (battle[0].equals(nanobots) && nano != null) {
-				updateRecord(battle[1], num, nano);
+			if (battleSpec[0].equals(game)) {
+				updateRecord(battleSpec[1], num, all);
+			} else if (battleSpec[0].equals(minibots) && mini != null) {
+				updateRecord(battleSpec[1], num, mini);
+			} else if (battleSpec[0].equals(microbots) && micro != null) {
+				updateRecord(battleSpec[1], num, micro);
+			} else if (battleSpec[0].equals(nanobots) && nano != null) {
+				updateRecord(battleSpec[1], num, nano);
 			}
 		}
 
