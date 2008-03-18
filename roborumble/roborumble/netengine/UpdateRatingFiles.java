@@ -101,8 +101,8 @@ public class UpdateRatingFiles {
 		Properties nano = getProperties(nanoratings);
 
 		// update #battles
-		for (int  i = 0; i < battles.size(); i++) {
-			String[] battle = (battles.get(i)).split(",");
+		for (String bat : battles) {
+			String[] bat = bat.split(",");
 
 			battle[1] = battle[1].replaceAll(" ", "_");
 			double num = Double.parseDouble(battle[2]);
@@ -119,20 +119,10 @@ public class UpdateRatingFiles {
 		}
 
 		// save ratings files
-		if (!storeProperties(all, generalratings, "General ratings updated with new battles number")) {
-			return false;
-		}
-		if (!storeProperties(all, miniratings, "Mini ratings updated with new battles number")) {
-			return false;
-		}
-		if (!storeProperties(all, microratings, "Micro ratings updated with new battles number")) {
-			return false;
-		}
-		if (!storeProperties(all, nanoratings, "Nano ratings updated with new battles number")) {
-			return false;
-		}
-
-		return true;
+		return storeProperties(all, generalratings, "General ratings updated with new battles number")
+				&& storeProperties(all, miniratings, "Mini ratings updated with new battles number")
+				&& storeProperties(all, microratings, "Micro ratings updated with new battles number")
+				&& storeProperties(all, nanoratings, "Nano ratings updated with new battles number");
 	}
 
 	private void updateRecord(String bot, double battles, Properties ratings) {

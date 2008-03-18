@@ -31,7 +31,6 @@ public class Target extends AdvancedRobot {
 			public boolean test() {
 				return (getEnergy() <= trigger);
 			}
-			;
 		});
 	}
 

@@ -425,10 +425,7 @@ public class BattleManager {
 				if (idx >= 0) {
 					extension = fn.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".battle")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".battle");
 			}
 
 			@Override

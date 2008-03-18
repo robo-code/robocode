@@ -78,8 +78,8 @@ public final class CacheCleaner {
 		if (file.isDirectory()) {
 			final File[] files = file.listFiles();
 
-			for (int i = 0; i < files.length; i++) {
-				recursivelyDelete(files[i]);
+			for (File f : files) {
+				recursivelyDelete(f);
 			}
 		}
 

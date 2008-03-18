@@ -44,8 +44,7 @@ public class RobotThreadManager {
 		if (runThread != null && runThread.isAlive()) {
 			try {
 				runThread.setPriority(Thread.MIN_PRIORITY);
-			} catch (NullPointerException e) {
-				; // Work-around: Sometimes this occurs in the Java core?!
+			} catch (NullPointerException e) {// Work-around: Sometimes this occurs in the Java core?!
 			}
 			runThread.interrupt();
 			try {

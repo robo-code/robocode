@@ -151,8 +151,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private double distanceRemaining;
 
-	private double turnRate;
-
 	private double gunHeat;
 
 	private BattleField battleField;
@@ -358,7 +356,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 				double movedx = velocity * sin(heading);
 				double movedy = velocity * cos(heading);
 
-				boolean atFault = false;
+				boolean atFault;
 				double bearing = normalRelativeAngle(angle - heading);
 
 				if ((velocity > 0 && bearing > -PI / 2 && bearing < PI / 2)
@@ -579,8 +577,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			}
 		} catch (DeathException e) {
 			out.println("SYSTEM: " + getName() + " has died");
-		} catch (WinException e) {
-			; // Do nothing
+		} catch (WinException e) {// Do nothing
 		} catch (DisabledException e) {
 			setEnergy(0);
 			String msg = e.getMessage();
@@ -613,8 +610,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private boolean intersects(Arc2D arc, Rectangle2D rect) {
 		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
 				arc.getStartPoint().getY()))
-				? true
-				: arc.intersects(rect);
+				|| arc.intersects(rect);
 	}
 
 	public void rescan() {
@@ -804,8 +800,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			// Sleeping and waiting for battle to wake us up.
 			try {
 				wait();
-			} catch (InterruptedException e) {
-				; // We are expecting this to happen when a round is ended!
+			} catch (InterruptedException e) {// We are expecting this to happen when a round is ended!
 			}
 			isSleeping = false;
 			// Notify battle thread, which is waiting in
@@ -946,7 +941,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private void updateHeading() {
 		boolean normalizeHeading = true;
 
-		turnRate = min(maxTurnRate, (.4 + .6 * (1 - (abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
+		double turnRate = min(maxTurnRate,
+				(.4 + .6 * (1 - (abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
 
 		if (turnRemaining > 0) {
 			if (turnRemaining < turnRate) {
@@ -1046,7 +1042,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 				desiredDistanceRemaining = 0;
 			}
 		}
-		double slowDownVelocity = (int) ((Rules.DECELERATION / 2) * (sqrt(4 * abs(desiredDistanceRemaining) + 1) - 1));
+		double slowDownVelocity = (int) ((sqrt(4 * abs(desiredDistanceRemaining) + 1) - 1));
 
 		if (moveDirection == -1) {
 			slowDownVelocity = -slowDownVelocity;
@@ -1414,10 +1410,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public boolean isTeammate(String name) {
-		if (getTeamPeer() == null) {
-			return false;
-		}
-		return getTeamPeer().contains(name);
+		return getTeamPeer() != null && getTeamPeer().contains(name);
 	}
 
 	/**

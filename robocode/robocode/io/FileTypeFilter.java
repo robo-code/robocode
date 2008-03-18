@@ -52,7 +52,7 @@ public class FileTypeFilter implements FileFilter {
 	 *
 	 * @param file the file that must be tested against this file filter.
 	 * @return {@code true} if the file is accepted for the file list;
-     *    {@code false} otherwise.
+	 *    {@code false} otherwise.
 	 */
 	public boolean accept(File file) {
 		if (file.isDirectory()) {

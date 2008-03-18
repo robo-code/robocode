@@ -40,7 +40,6 @@ public class PrepareBattles {
 	private String participantsfile;
 	private String battlesfile;
 	private int numbattles;
-	private String sizesfile;
 	private CompetitionsSelector size;
 	private String runonly;
 	private Properties generalratings;
@@ -59,7 +58,8 @@ public class PrepareBattles {
 		participantsfile = parameters.getProperty("PARTICIPANTSFILE", "");
 		battlesfile = parameters.getProperty("INPUT", "");
 		numbattles = Integer.parseInt(parameters.getProperty("NUMBATTLES", "100"));
-		sizesfile = parameters.getProperty("CODESIZEFILE", "");
+		String sizesfile = parameters.getProperty("CODESIZEFILE", "");
+
 		size = new CompetitionsSelector(sizesfile, botsrepository);
 		runonly = parameters.getProperty("RUNONLY", "GENERAL");
 		prioritynum = Integer.parseInt(parameters.getProperty("BATTLESPERBOT", "500"));
@@ -114,7 +114,7 @@ public class PrepareBattles {
 			}
 		}
 		// Open battles file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
@@ -248,7 +248,7 @@ public class PrepareBattles {
 		r.delete();
 		
 		// Open battles file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
@@ -388,7 +388,7 @@ public class PrepareBattles {
 		}
 		
 		// Open battles file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);

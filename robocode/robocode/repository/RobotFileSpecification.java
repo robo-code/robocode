@@ -177,7 +177,7 @@ public class RobotFileSpecification extends FileSpecification {
 				}
 			}
 		}
-		robotJavaSourceIncluded = Boolean.valueOf(props.getProperty(ROBOT_JAVA_SOURCE_INCLUDED, "false")).booleanValue();
+		robotJavaSourceIncluded = Boolean.valueOf(props.getProperty(ROBOT_JAVA_SOURCE_INCLUDED, "false"));
 	}
 
 	/**

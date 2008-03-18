@@ -68,26 +68,21 @@ public class FileSpecificationDatabase implements Serializable {
 	}
 
 	public boolean contains(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Iterator<FileSpecification> i = hash.values().iterator();
 
-		while (i.hasNext()) {
-			Object o = i.next();
-
-			if (o instanceof RobotFileSpecification || o instanceof TeamSpecification) {
-				FileSpecification spec = (FileSpecification) o;
-
-				if (spec.isDuplicate()) {
+		for (FileSpecification fileSpecification : hash.values()) {
+			if (fileSpecification instanceof RobotFileSpecification || fileSpecification instanceof TeamSpecification) {
+				if (fileSpecification.isDuplicate()) {
 					continue;
 				}
-				if (spec.isDevelopmentVersion() != isDevelopmentVersion) {
+				if (fileSpecification.isDevelopmentVersion() != isDevelopmentVersion) {
 					continue;
 				}
-				if (fullClassName.equals(spec.getFullClassName())) {
-					if (version == null && spec.getVersion() == null) {
+				if (fullClassName.equals(fileSpecification.getFullClassName())) {
+					if (version == null && fileSpecification.getVersion() == null) {
 						return true;
 					}
-					if (version != null && spec.getVersion() != null) {
-						if (version.equals(spec.getVersion())) {
+					if (version != null && fileSpecification.getVersion() != null) {
+						if (version.equals(fileSpecification.getVersion())) {
 							return true;
 						}
 					}
@@ -98,27 +93,22 @@ public class FileSpecificationDatabase implements Serializable {
 	}
 
 	public FileSpecification get(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Iterator<FileSpecification> i = hash.values().iterator();
 
-		while (i.hasNext()) {
-			Object o = i.next();
-
-			if (o instanceof RobotFileSpecification || o instanceof TeamSpecification) {
-				FileSpecification spec = (FileSpecification) o;
-
-				if (spec.isDuplicate()) {
+		for (FileSpecification fileSpecification : hash.values()) {
+			if (fileSpecification instanceof RobotFileSpecification || fileSpecification instanceof TeamSpecification) {
+				if (fileSpecification.isDuplicate()) {
 					continue;
 				}
-				if (spec.isDevelopmentVersion() != isDevelopmentVersion) {
+				if (fileSpecification.isDevelopmentVersion() != isDevelopmentVersion) {
 					continue;
 				}
-				if (fullClassName.equals(spec.getFullClassName())) {
-					if (version == null && spec.getVersion() == null) {
-						return spec;
+				if (fullClassName.equals(fileSpecification.getFullClassName())) {
+					if (version == null && fileSpecification.getVersion() == null) {
+						return fileSpecification;
 					}
-					if (version != null && spec.getVersion() != null) {
-						if (version.equals(spec.getVersion())) {
-							return spec;
+					if (version != null && fileSpecification.getVersion() != null) {
+						if (version.equals(fileSpecification.getVersion())) {
+							return fileSpecification;
 						}
 					}
 				}
@@ -188,13 +178,9 @@ public class FileSpecificationDatabase implements Serializable {
 		String fullClassName = removedSpecification.getFullClassName();
 		String version = removedSpecification.getVersion();
 
-		Iterator<FileSpecification> i = hash.values().iterator();
-
-		while (i.hasNext()) {
-			Object o = i.next();
-
-			if (o instanceof RobotFileSpecification) {
-				RobotFileSpecification spec = (RobotFileSpecification) o;
+		for (FileSpecification fileSpecification : hash.values()) {
+			if (fileSpecification instanceof RobotFileSpecification) {
+				RobotFileSpecification spec = (RobotFileSpecification) fileSpecification;
 
 				if (spec.isDevelopmentVersion()) {
 					continue;

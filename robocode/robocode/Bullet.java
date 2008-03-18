@@ -35,9 +35,9 @@ public class Bullet {
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
-     *
-     * @param peer the bullet peer of the {@code Bullet} 
-     */
+	 *
+	 * @param peer the bullet peer of the {@code Bullet} 
+	 */
 	public Bullet(BulletPeer peer) {
 		this.peer = peer;
 	}

@@ -26,9 +26,9 @@ public class BulletMissedEvent extends Event {
 
 	/**
 	 * Called by the game to create a new {@code BulletMissedEvent}.
-     *
-     * @param bullet the bullet that missed
-     */
+	 *
+	 * @param bullet the bullet that missed
+	 */
 	public BulletMissedEvent(Bullet bullet) {
 		this.bullet = bullet;
 	}

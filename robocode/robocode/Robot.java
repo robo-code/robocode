@@ -416,8 +416,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 */
 	@Override
 	protected final void finalize() throws Throwable {
-        super.finalize();
-    }
+		super.finalize();
+	}
 
 	/**
 	 * Immediately fires a bullet. The bullet will travel in the direction the

@@ -122,7 +122,7 @@ public class TeamSpecification extends FileSpecification {
 		} catch (MalformedURLException e) {
 			webpage = null;
 		}
-		teamJavaSourceIncluded = Boolean.valueOf(props.getProperty(TEAM_JAVA_SOURCE_INCLUDED, "false")).booleanValue();
+		teamJavaSourceIncluded = Boolean.valueOf(props.getProperty(TEAM_JAVA_SOURCE_INCLUDED, "false"));
 	}
 
 	/**

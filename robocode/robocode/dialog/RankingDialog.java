@@ -216,7 +216,7 @@ public class RankingDialog extends JFrame {
 				getTable().getColumnModel().getColumn(x).setCellRenderer(new ResultsTableCellRenderer(false));
 			}
 			TableColumn column = getTable().getColumnModel().getColumn(x);
-			Component comp = null;
+			Component comp;
 
 			column.setHeaderRenderer(new ResultsTableCellRenderer(true));
 			comp = column.getHeaderRenderer().getTableCellRendererComponent(null, column.getHeaderValue(), false, false,

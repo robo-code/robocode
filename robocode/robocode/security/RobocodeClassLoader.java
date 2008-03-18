@@ -124,8 +124,8 @@ public class RobocodeClassLoader extends ClassLoader {
 			return cachedClasses.get(name);
 		}
 		
-		Class<?> c = null;
-		File f = null;
+		Class<?> c;
+		File f;
 
 		if (toplevel) {
 			uid1 = 0;

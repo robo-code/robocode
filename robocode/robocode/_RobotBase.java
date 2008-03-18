@@ -76,7 +76,7 @@ public abstract class _RobotBase implements IBasicRobot, Runnable {
 	 * Throws a RobotException. This method should be called when the robot's peer
 	 * is uninitialized.
 	 */
-	final static void uninitializedException() {
+	static void uninitializedException() {
 		StackTraceElement[] trace = new Throwable().getStackTrace();
 		String methodName = trace[1].getMethodName();
 

@@ -213,7 +213,6 @@ public class Battle implements Runnable {
 	private boolean isRecordingEnabled;
 	private static BattleRecord battleRecord;
 	private RoundRecord currentRoundRecord;
-	private TurnRecord currentTurnRecord;
 
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
@@ -250,8 +249,8 @@ public class Battle implements Runnable {
 
 	@Override
 	public void finalize() throws Throwable {
-        super.finalize();
-        if (keyHandler != null) {
+		super.finalize();
+		if (keyHandler != null) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(keyHandler);
 		}
 	}
@@ -836,7 +835,8 @@ public class Battle implements Runnable {
 			computeActiveRobots();
 
 			if (isRecordingEnabled && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
-				currentTurnRecord = new TurnRecord();
+				TurnRecord currentTurnRecord = new TurnRecord();
+
 				currentRoundRecord.turns.add(currentTurnRecord);
 
 				currentTurnRecord.robotStates = new ArrayList<RobotRecord>();

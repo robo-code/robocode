@@ -204,10 +204,7 @@ public class FilenamePanel extends WizardPanel {
 	}
 
 	public boolean showFileSelectDialog() {
-		String fileName = "outgoing" + File.separatorChar;
-		String saveDir = fileName;
-
-		File f = new File(saveDir);
+		File f = new File("outgoing" + File.separatorChar);
 
 		JFileChooser chooser = new JFileChooser(f);
 
@@ -226,10 +223,7 @@ public class FilenamePanel extends WizardPanel {
 				if (idx >= 0) {
 					extension = fn.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".jar")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".jar");
 			}
 
 			@Override
@@ -245,7 +239,7 @@ public class FilenamePanel extends WizardPanel {
 		while (!done) {
 			done = true;
 			int rv = chooser.showSaveDialog(this);
-			String robotFileName = null;
+			String robotFileName;
 
 			if (rv == JFileChooser.APPROVE_OPTION) {
 				robotFileName = chooser.getSelectedFile().getPath();

@@ -88,7 +88,6 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean onlyShowPackaged;
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
-	private RobotNameCellRenderer robotNamesCellRenderer;
 	private List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
 	private boolean showNumRoundsPanel;
 	private RobotRepositoryManager repositoryManager;
@@ -309,7 +308,9 @@ public class RobotSelectionPanel extends WizardPanel {
 			selectedRobotsList = new JList();
 			selectedRobotsList.setModel(new SelectedRobotsModel());
 			selectedRobotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-			robotNamesCellRenderer = new RobotNameCellRenderer();
+
+			RobotNameCellRenderer robotNamesCellRenderer = new RobotNameCellRenderer();
+
 			selectedRobotsList.setCellRenderer(robotNamesCellRenderer);
 			MouseListener mouseListener = new MouseAdapter() {
 				@Override

@@ -144,8 +144,7 @@ public class BattleView extends Canvas {
 						g.drawImage(offscreenImage, 0, 0, null);
 
 						bufferStrategy.show();
-					} catch (NullPointerException e) {
-						; // Occurs sometimes for no reason?!
+					} catch (NullPointerException e) {// Occurs sometimes for no reason?!
 					} finally {
 						if (g != null) {
 							g.dispose();

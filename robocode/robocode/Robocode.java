@@ -54,8 +54,6 @@ import robocode.security.SecurePrintStream;
  */
 public class Robocode {
 
-	private RobocodeManager manager;
-
 	/**
 	 * Use the command-line to start Robocode.
 	 * The command is:
@@ -75,7 +73,7 @@ public class Robocode {
 
 	private boolean initialize(String args[]) {
 		try {
-			manager = new RobocodeManager(false, null);
+			RobocodeManager manager = new RobocodeManager(false, null);
 
 			if (System.getProperty("WORKINGDIRECTORY") != null) {
 				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));

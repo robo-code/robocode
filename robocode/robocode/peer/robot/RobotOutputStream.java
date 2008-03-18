@@ -17,6 +17,7 @@ package robocode.peer.robot;
 import java.io.PrintStream;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Arrays;
 
 import robocode.io.BufferedPipedInputStream;
 import robocode.io.BufferedPipedOutputStream;
@@ -224,7 +225,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 	@Override
 	public void write(byte[] buf) {
 		if (isOkToPrint()) {
-			out.print(buf);
+			out.print(Arrays.toString(buf));
 			count.addAndGet(buf.length / 1000);
 		}
 	}
