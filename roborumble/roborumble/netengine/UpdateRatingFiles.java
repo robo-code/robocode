@@ -101,38 +101,28 @@ public class UpdateRatingFiles {
 		Properties nano = getProperties(nanoratings);
 
 		// update #battles
-		for (int  i = 0; i < battles.size(); i++) {
-			String[] battle = (battles.get(i)).split(",");
+		for (String battle : battles) {
+			String[] battleSpec = battle.split(",");
 
-			battle[1] = battle[1].replaceAll(" ", "_");
-			double num = Double.parseDouble(battle[2]);
+			battleSpec[1] = battleSpec[1].replaceAll(" ", "_");
+			double num = Double.parseDouble(battleSpec[2]);
 
-			if (battle[0].equals(game)) {
-				updateRecord(battle[1], num, all);
-			} else if (battle[0].equals(minibots) && mini != null) {
-				updateRecord(battle[1], num, mini);
-			} else if (battle[0].equals(microbots) && micro != null) {
-				updateRecord(battle[1], num, micro);
-			} else if (battle[0].equals(nanobots) && nano != null) {
-				updateRecord(battle[1], num, nano);
+			if (battleSpec[0].equals(game)) {
+				updateRecord(battleSpec[1], num, all);
+			} else if (battleSpec[0].equals(minibots) && mini != null) {
+				updateRecord(battleSpec[1], num, mini);
+			} else if (battleSpec[0].equals(microbots) && micro != null) {
+				updateRecord(battleSpec[1], num, micro);
+			} else if (battleSpec[0].equals(nanobots) && nano != null) {
+				updateRecord(battleSpec[1], num, nano);
 			}
 		}
 
 		// save ratings files
-		if (!storeProperties(all, generalratings, "General ratings updated with new battles number")) {
-			return false;
-		}
-		if (!storeProperties(all, miniratings, "Mini ratings updated with new battles number")) {
-			return false;
-		}
-		if (!storeProperties(all, microratings, "Micro ratings updated with new battles number")) {
-			return false;
-		}
-		if (!storeProperties(all, nanoratings, "Nano ratings updated with new battles number")) {
-			return false;
-		}
-
-		return true;
+		return storeProperties(all, generalratings, "General ratings updated with new battles number")
+				&& storeProperties(all, miniratings, "Mini ratings updated with new battles number")
+				&& storeProperties(all, microratings, "Micro ratings updated with new battles number")
+				&& storeProperties(all, nanoratings, "Nano ratings updated with new battles number");
 	}
 
 	private void updateRecord(String bot, double battles, Properties ratings) {

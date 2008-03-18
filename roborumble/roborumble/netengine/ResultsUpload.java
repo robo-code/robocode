@@ -45,7 +45,6 @@ public class ResultsUpload {
 	private String game;
 	private String user;
 	private String sizesfile;
-	private String botsrepository;
 	private String minibots;
 	private String microbots;
 	private String nanobots;
@@ -62,7 +61,8 @@ public class ResultsUpload {
 		tempdir = parameters.getProperty("TEMP", "");
 		user = parameters.getProperty("USER", "");
 		game = propertiesfile;
-		botsrepository = parameters.getProperty("BOTSREP", "");
+		String botsrepository = parameters.getProperty("BOTSREP", "");
+
 		while (game.indexOf("/") != -1) {
 			game = game.substring(game.indexOf("/") + 1);
 		}
@@ -87,7 +87,7 @@ public class ResultsUpload {
 		Vector<String> results = new Vector<String>();
 		String match = "";
 		String bot1 = "";
-		String bot2 = "";
+		String bot2;
 		int status = 0;
 		BufferedReader br = null;
 
@@ -123,7 +123,7 @@ public class ResultsUpload {
 		}
 
 		// Open the temp file to put the unuploaded results
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(tempdir + "results.txt")), false);
@@ -134,7 +134,7 @@ public class ResultsUpload {
 		}
 
 		// Open the file to put the battles number for each participant
-		PrintStream battlesnum = null;
+		PrintStream battlesnum;
 
 		try {
 			battlesnum = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesnumfile)), false);
@@ -147,7 +147,7 @@ public class ResultsUpload {
 		}
 
 		// Open the file to put the battles which have priority
-		PrintStream prioritybattles = null;
+		PrintStream prioritybattles;
 
 		try {
 			prioritybattles = new PrintStream(new BufferedOutputStream(new FileOutputStream(priority)), false);

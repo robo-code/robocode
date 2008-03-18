@@ -68,6 +68,8 @@ public interface IBasicRobot {
 	 * <p>
 	 * This method is called by the game. A robot peer is the object that deals
 	 * with game mechanics and rules, and makes sure your robot abides by them.
+	 *
+	 * @param peer the robot peer supplied by the game
 	 */
 	void setPeer(IBasicRobotPeer peer);
 
@@ -76,6 +78,8 @@ public interface IBasicRobot {
 	 * <p>
 	 * This method is called by the game when setting the output stream for your
 	 * robot.
+	 *
+	 * @param out the new output print stream for this robot
 	 *
 	 * @since 1.6
 	 */

@@ -785,17 +785,17 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	private EventHandler eventHandler;
 
-	/**
+	/*
 	 * Returns the event handler of this robot.
 	 */
-	private final EventHandler getEventHandler() {
+	private EventHandler getEventHandler() {
 		if (eventHandler == null) {
 			eventHandler = new EventHandler();
 		}
 		return eventHandler;
 	}
 
-	/**
+	/*
 	 * The JuniorRobot event handler, which implements the basic robot events,
 	 * JuniorRobot event, and Runnable. 
 	 */

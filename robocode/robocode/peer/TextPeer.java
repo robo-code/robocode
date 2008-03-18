@@ -90,9 +90,9 @@ public class TextPeer {
 	}
 
 	/**
-	 * Sets the clearTime.
+	 * Sets the duration.
 	 *
-	 * @param clearTime The clearTime to set
+	 * @param duration The new duration.
 	 */
 	public void setDuration(long duration) {
 		this.duration = duration;

@@ -44,6 +44,11 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnGunLeft(double)
 	 *    setTurnGunLeft} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's gun to the left.
+	 *    If {@code degrees} > 0 the robot's gun is set to turn left.
+	 *    If {@code degrees} < 0 the robot's gun is set to turn right.
+	 *    If {@code degrees} = 0 the robot's gun is set to stop turning.
 	 */
 	@Deprecated
 	public void setTurnGunLeftDegrees(double degrees) {
@@ -57,6 +62,11 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnGunRight(double)
 	 *    setTurnGunRight} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's gun to the right.
+	 *    If {@code degrees} > 0 the robot's gun is set to turn right.
+	 *    If {@code degrees} < 0 the robot's gun is set to turn left.
+	 *    If {@code degrees} = 0 the robot's gun is set to stop turning.
 	 */
 	@Deprecated
 	public void setTurnGunRightDegrees(double degrees) {
@@ -70,6 +80,11 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated Use {@link Robot#turnRadarRight(double) turnRadarRight}
 	 *    instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's radar to the right.
+	 *    If {@code degrees} > 0 the robot's radar will turn right.
+	 *    If {@code degrees} < 0 the robot's radar will turn left.
+	 *    If {@code degrees} = 0 the robot's radar will not turn, but execute.
 	 */
 	@Deprecated
 	public void turnRadarRightDegrees(double degrees) {
@@ -79,6 +94,11 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnRight(double)
 	 *    setTurnRight(double)} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the right.
+	 *    If {@code degrees} > 0 the robot is set to turn right.
+	 *    If {@code degrees} < 0 the robot is set to turn left.
+	 *    If {@code degrees} = 0 the robot is set to stop turning.
 	 */
 	@Deprecated
 	public void setTurnRightDegrees(double degrees) {
@@ -92,6 +112,11 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnRadarLeft(double)
 	 *    setTurnRadarLeft(double)} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's radar to the left.
+	 *    If {@code degrees} > 0 the robot's radar is set to turn left.
+	 *    If {@code degrees} < 0 the robot's radar is set to turn right.
+	 *    If {@code degrees} = 0 the robot's radar is set to stop turning.
 	 */
 	@Deprecated
 	public void setTurnRadarLeftDegrees(double degrees) {
@@ -105,6 +130,11 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnLeft(double)
 	 *    setTurnLeft(double)} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the left.
+	 *    If {@code degrees} > 0 the robot is set to turn left.
+	 *    If {@code degrees} < 0 the robot is set to turn right.
+	 *    If {@code degrees} = 0 the robot is set to stop turning.
 	 */
 	@Deprecated
 	public void setTurnLeftDegrees(double degrees) {
@@ -117,6 +147,8 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#getHeading() getHeading()} instead.
+	 *
+	 * @return the direction that the robot's body is facing, in degrees.
 	 */
 	@Deprecated
 	public double getHeadingDegrees() {
@@ -125,6 +157,11 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#turnLeft(double) turnLeft(double)} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the left.
+	 *    If {@code degrees} > 0 the robot will turn left.
+	 *    If {@code degrees} < 0 the robot will turn right.
+	 *    If {@code degrees} = 0 the robot will not turn, but execute.
 	 */
 	@Deprecated
 	public void turnLeftDegrees(double degrees) {
@@ -133,6 +170,11 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#turnRight(double) turnRight(double)} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the right.
+	 *    If {@code degrees} > 0 the robot will turn right.
+	 *    If {@code degrees} < 0 the robot will turn left.
+	 *    If {@code degrees} = 0 the robot will not turn, but execute.
 	 */
 	@Deprecated
 	public void turnRightDegrees(double degrees) {
@@ -153,6 +195,8 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#getGunHeading() getGunHeading()} instead.
+	 *
+	 * @return the direction that the robot's gun is facing, in degrees.
 	 */
 	@Deprecated
 	public double getGunHeadingDegrees() {
@@ -161,6 +205,8 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#getRadarHeading() getRadarHeading()} instead.
+	 *
+	 * @return the direction that the robot's radar is facing, in degrees.
 	 */
 	@Deprecated
 	public double getRadarHeadingDegrees() {
@@ -170,6 +216,8 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated This method is no longer functional.
 	 * Use {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)} instead.
+	 *
+	 * @return allways {@code 0} as this method is no longer functional.
 	 */
 	@Deprecated
 	public int getWaitCount() {
@@ -182,6 +230,11 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated Use {@link AdvancedRobot#setTurnRadarRight(double)
 	 *    setTurnRadarRight} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's radar to the right.
+	 *    If {@code degrees} > 0 the robot's radar is set to turn right.
+	 *    If {@code degrees} < 0 the robot's radar is set to turn left.
+	 *    If {@code degrees} = 0 the robot's radar is set to stop turning.
 	 */
 	@Deprecated
 	public void setTurnRadarRightDegrees(double degrees) {
@@ -194,6 +247,11 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#turnGunLeft(double) turnGunLeft} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's gun to the left.
+	 *    If {@code degrees} > 0 the robot's gun will turn left.
+	 *    If {@code degrees} < 0 the robot's gun will turn right.
+	 *    If {@code degrees} = 0 the robot's gun will not turn, but execute.
 	 */
 	@Deprecated
 	public void turnGunLeftDegrees(double degrees) {
@@ -202,6 +260,11 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#turnGunRight(double) turnGunRight} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's gun to the right.
+	 *    If {@code degrees} > 0 the robot's gun will turn right.
+	 *    If {@code degrees} < 0 the robot's gun will turn left.
+	 *    If {@code degrees} = 0 the robot's gun will not turn, but execute.
 	 */
 	@Deprecated
 	public void turnGunRightDegrees(double degrees) {
@@ -210,6 +273,11 @@ public class _AdvancedRobot extends Robot {
 
 	/**
 	 * @deprecated Use {@link Robot#turnRadarLeft(double) turnRadarLeft} instead.
+	 *
+	 * @param degrees the amount of degrees to turn the robot's radar to the left.
+	 *    If {@code degrees} > 0 the robot's radar will turn left.
+	 *    If {@code degrees} < 0 the robot's radar will turn right.
+	 *    If {@code degrees} = 0 the robot's radar will not turn, but execute.
 	 */
 	@Deprecated
 	public void turnRadarLeftDegrees(double degrees) {
@@ -219,6 +287,8 @@ public class _AdvancedRobot extends Robot {
 	/**
 	 * @deprecated This method is no longer functional.
 	 * Use {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)} instead.
+	 *
+	 * @return allways {@code 0} as this method is no longer functional.
 	 */
 	@Deprecated
 	public int getMaxWaitCount() {

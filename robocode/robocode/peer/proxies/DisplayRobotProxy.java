@@ -45,9 +45,9 @@ public class DisplayRobotProxy extends ReadingRobotProxy implements IDisplayRobo
 		peer.unlockRead();
 	}
 
-    public RobotOutputStream getOut() {
-        return peer.getOut();
-    }
+	public RobotOutputStream getOut() {
+		return peer.getOut();
+	}
 
 	public void displaySetPaintEnabled(boolean enabled) {
 		peer.lockWrite();

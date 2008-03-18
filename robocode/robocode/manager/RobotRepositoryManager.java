@@ -65,7 +65,6 @@ public class RobotRepositoryManager {
 	private File robotCache;
 
 	private Repository repository;
-	private boolean cacheWarning;
 	private RobocodeManager manager;
 
 	private List<FileSpecification> updatedJarList = Collections.synchronizedList(new ArrayList<FileSpecification>());
@@ -122,7 +121,8 @@ public class RobotRepositoryManager {
 		updatedJarList.clear();
 
 		// jarUpdated = false;
-		cacheWarning = false;
+		boolean cacheWarning = false;
+
 		// boolean changed = false;
 		this.write = false;
 
@@ -161,8 +161,8 @@ public class RobotRepositoryManager {
 		// This loop should not be changed to an for-each loop as the updated jar list
 		// gets updated (jars are added) by the methods called in this loop, which can
 		// cause a ConcurrentModificationException!
-		for (int i = 0; i < updatedJarList.size(); i++) {
-			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
+		for (FileSpecification anUpdatedJarList : updatedJarList) {
+			JarSpecification updatedJar = (JarSpecification) anUpdatedJarList;
 
 			processJar(updatedJar);
 			updateRobotDatabase(updatedJar);
@@ -188,11 +188,9 @@ public class RobotRepositoryManager {
 		for (FileSpecification fs : fileSpecificationList) {
 			if (fs instanceof TeamSpecification) {
 				repository.add(fs);
-				continue;
 			} else if (fs instanceof RobotFileSpecification) {
 				if (verifyRootPackage(fs.getName())) {
 					repository.add(fs);
-					continue;
 				}
 			}
 		}
@@ -340,7 +338,7 @@ public class RobotRepositoryManager {
 				}
 			} else if (fileName.indexOf("$") < 0 && fileName.indexOf("robocode") != 0) {
 				FileSpecification cachedSpecification = getRobotDatabase().get(file.getPath());
-				FileSpecification fileSpecification = null;
+				FileSpecification fileSpecification;
 
 				// if cachedSpecification is null, then this is a new file
 				if (cachedSpecification != null
@@ -638,7 +636,7 @@ public class RobotRepositoryManager {
 					try {
 						fos = new FileOutputStream(out);
 
-						int num = 0;
+						int num;
 
 						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
 							fos.write(buf, 0, num);

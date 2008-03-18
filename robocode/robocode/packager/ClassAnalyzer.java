@@ -137,7 +137,7 @@ public class ClassAnalyzer {
 				case CONSTANT_Class: {
 						int name_index = in.readUnsignedShort();
 
-						classNameIndexes.add(Integer.valueOf(name_index));
+						classNameIndexes.add(name_index);
 					}
 					break;
 
@@ -248,7 +248,7 @@ public class ClassAnalyzer {
 		}
 
 		for (Integer classNameIndex : classNameIndexes) {
-			String className = strings[classNameIndex.intValue()];
+			String className = strings[classNameIndex];
 
 			if (className.indexOf("[") != 0) {
 				referencedClasses.add(className);

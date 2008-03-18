@@ -74,7 +74,7 @@ public final class VersionManager {
 	}
 
 	public boolean checkForNewVersion(boolean notifyNoUpdate) {
-		URL url = null;
+		URL url;
 
 		try {
 			url = new URL("http://robocode.sourceforge.net/version/version.html");

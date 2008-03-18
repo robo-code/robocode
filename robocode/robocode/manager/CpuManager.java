@@ -19,6 +19,9 @@
  *       milliseconds
  *     Robert D. Maupin
  *     - The "heavy math" algorithm for calculation the CPU constant
+ *     Pavel Savara
+ *     - Cheating the optimizer with the setCpuConstant() so the optimizer does
+ *       not throw the rational computation away  
  *******************************************************************************/
 package robocode.manager;
 
@@ -31,6 +34,7 @@ import robocode.io.Logger;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert Maupin (contributor)
+ * @author Pavel Savara (contributor) 
  */
 public class CpuManager {
 	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
@@ -76,6 +80,11 @@ public class CpuManager {
 					Math.cbrt(Math.abs(Math.random() * 10)))
 					/ Math.exp(Math.random());
 			count++;
+		}
+
+		// to cheat optimizer, almost never happen
+		if (d == 0.0) {
+			Logger.log("bingo!");
 		}
 
 		cpuConstant = Math.max(1, (long) (1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));

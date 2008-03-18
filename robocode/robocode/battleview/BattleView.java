@@ -132,7 +132,7 @@ public class BattleView extends Canvas {
 			if (offscreenGfx != null) {
 				offscreenGfx.setRenderingHints(renderingHints);
 
-                drawBattle(offscreenGfx);
+				drawBattle(offscreenGfx);
 
 				if (bufferStrategy != null) {
 					Graphics2D g = null;
@@ -142,8 +142,7 @@ public class BattleView extends Canvas {
 						g.drawImage(offscreenImage, 0, 0, null);
 
 						bufferStrategy.show();
-					} catch (NullPointerException e) {
-						; // Occurs sometimes for no reason?!
+					} catch (NullPointerException e) {// Occurs sometimes for no reason?!
 					} finally {
 						if (g != null) {
 							g.dispose();
@@ -355,15 +354,14 @@ public class BattleView extends Canvas {
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
 			for (IDisplayRobotProxy robotPeer : battle.getDisplayRobots()) {
-                robotPeer.lockRead();
-                try{
-                    if (robotPeer.isAlive()) {
-                        drawScanArc(g, robotPeer);
-                    }
-                }
-                finally {
-                    robotPeer.unlockRead();
-                }
+				robotPeer.lockRead();
+				try {
+					if (robotPeer.isAlive()) {
+						drawScanArc(g, robotPeer);
+					}
+				} finally {
+					robotPeer.unlockRead();
+				}
 			}
 		}
 	}
@@ -377,61 +375,59 @@ public class BattleView extends Canvas {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
 			for (IDisplayRobotProxy robotPeer : battle.getDisplayRobots()) {
-                robotPeer.lockRead();
-                try{
-                    if (robotPeer.isDead()) {
-                        x = robotPeer.getX();
-                        y = battleFieldHeight - robotPeer.getY();
+				robotPeer.lockRead();
+				try {
+					if (robotPeer.isDead()) {
+						x = robotPeer.getX();
+						y = battleFieldHeight - robotPeer.getY();
 
-                        at = AffineTransform.getTranslateInstance(x, y);
+						at = AffineTransform.getTranslateInstance(x, y);
 
-                        explodeDebrise.setTransform(at);
-                        explodeDebrise.paint(g);
-                    }
-                }
-                finally {
-                    robotPeer.unlockRead();
-                }
-            }
+						explodeDebrise.setTransform(at);
+						explodeDebrise.paint(g);
+					}
+				} finally {
+					robotPeer.unlockRead();
+				}
+			}
 		}
 
 		for (IDisplayRobotProxy robotPeer : battle.getDisplayRobots()) {
-            robotPeer.lockRead();
-            try{
-                if (robotPeer.isAlive()) {
-                    x = robotPeer.getX();
-                    y = battleFieldHeight - robotPeer.getY();
+			robotPeer.lockRead();
+			try {
+				if (robotPeer.isAlive()) {
+					x = robotPeer.getX();
+					y = battleFieldHeight - robotPeer.getY();
 
-                    at = AffineTransform.getTranslateInstance(x, y);
-                    at.rotate(robotPeer.getHeading());
+					at = AffineTransform.getTranslateInstance(x, y);
+					at.rotate(robotPeer.getHeading());
 
-                    RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(robotPeer.getBodyColor());
+					RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(robotPeer.getBodyColor());
 
-                    robotRenderImage.setTransform(at);
-                    robotRenderImage.paint(g);
+					robotRenderImage.setTransform(at);
+					robotRenderImage.paint(g);
 
-                    at = AffineTransform.getTranslateInstance(x, y);
-                    at.rotate(robotPeer.getGunHeading());
+					at = AffineTransform.getTranslateInstance(x, y);
+					at.rotate(robotPeer.getGunHeading());
 
-                    RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(robotPeer.getGunColor());
+					RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(robotPeer.getGunColor());
 
-                    gunRenderImage.setTransform(at);
-                    gunRenderImage.paint(g);
+					gunRenderImage.setTransform(at);
+					gunRenderImage.paint(g);
 
-                    if (!robotPeer.isDroid()) {
-                        at = AffineTransform.getTranslateInstance(x, y);
-                        at.rotate(robotPeer.getRadarHeading());
+					if (!robotPeer.isDroid()) {
+						at = AffineTransform.getTranslateInstance(x, y);
+						at.rotate(robotPeer.getRadarHeading());
 
-                        RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(robotPeer.getRadarColor());
+						RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(robotPeer.getRadarColor());
 
-                        radarRenderImage.setTransform(at);
-                        radarRenderImage.paint(g);
-                    }
-                }
-            }
-            finally {
-                robotPeer.unlockRead();
-            }
+						radarRenderImage.setTransform(at);
+						radarRenderImage.paint(g);
+					}
+				}
+			} finally {
+				robotPeer.unlockRead();
+			}
 		}
 	}
 
@@ -441,42 +437,41 @@ public class BattleView extends Canvas {
 		g.setClip(null);
 
 		for (IDisplayRobotProxy robotPeer : battle.getDisplayRobots()) {
-            robotPeer.lockRead();
-            try{
-                if (robotPeer.isDead()) {
-                    continue;
-                }
-                int x = (int) robotPeer.getX();
-                int y = battle.getBattleField().getHeight() - (int) robotPeer.getY();
+			robotPeer.lockRead();
+			try {
+				if (robotPeer.isDead()) {
+					continue;
+				}
+				int x = (int) robotPeer.getX();
+				int y = battle.getBattleField().getHeight() - (int) robotPeer.getY();
 
-                if (drawRobotEnergy && robotPeer.isAlive()) {
-                    g.setColor(Color.white);
-                    int ll = (int) robotPeer.getEnergy();
-                    int rl = (int) ((robotPeer.getEnergy() - ll + .001) * 10.0);
+				if (drawRobotEnergy && robotPeer.isAlive()) {
+					g.setColor(Color.white);
+					int ll = (int) robotPeer.getEnergy();
+					int rl = (int) ((robotPeer.getEnergy() - ll + .001) * 10.0);
 
-                    if (rl == 10) {
-                        rl = 9;
-                    }
-                    String energyString = ll + "." + rl;
+					if (rl == 10) {
+						rl = 9;
+					}
+					String energyString = ll + "." + rl;
 
-                    if (robotPeer.getEnergy() == 0 && robotPeer.isAlive()) {
-                        energyString = "Disabled";
-                    }
-                    centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2, smallFont,
-                            smallFontMetrics);
-                }
-                if (drawRobotName) {
-                    g.setColor(Color.white);
-                    centerString(g, robotPeer.getVeryShortName(), x,
-                            y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2, smallFont, smallFontMetrics);
-                }
-                if (robotPeer.isPaintEnabled() && robotPeer.isAlive()) {
-                    drawRobotPaint(g, robotPeer);
-                }
-            }
-            finally {
-                robotPeer.unlockRead();
-            }
+					if (robotPeer.getEnergy() == 0 && robotPeer.isAlive()) {
+						energyString = "Disabled";
+					}
+					centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2,
+							smallFont, smallFontMetrics);
+				}
+				if (drawRobotName) {
+					g.setColor(Color.white);
+					centerString(g, robotPeer.getVeryShortName(), x,
+							y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2, smallFont, smallFontMetrics);
+				}
+				if (robotPeer.isPaintEnabled() && robotPeer.isAlive()) {
+					drawRobotPaint(g, robotPeer);
+				}
+			} finally {
+				robotPeer.unlockRead();
+			}
 		}
 
 		g.setClip(savedClip);

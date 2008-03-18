@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class RobotPeerSync {
 
-    private final Object syncRoot = new Object();
+	private final Object syncRoot = new Object();
 	private final ReentrantLock syncLock = new ReentrantLock();
 	private int read = 0;
 	private int write = 0;

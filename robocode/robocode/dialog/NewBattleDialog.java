@@ -171,8 +171,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * NewBattleDialog constructor comment.
-	 *
-	 * @param owner Frame
 	 */
 	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
 		super(manager.getWindowManager().getRobocodeFrame());

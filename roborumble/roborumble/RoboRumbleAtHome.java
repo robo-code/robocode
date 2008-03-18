@@ -55,7 +55,7 @@ public class RoboRumbleAtHome {
 		int iterations = 0;
 		long lastdownload = 0;
 		boolean ratingsdownloaded = false;
-		boolean participantsdownloaded = false;	
+		boolean participantsdownloaded;
 	
 		do {			
 			System.out.println("Iteration number " + iterations);
@@ -88,7 +88,7 @@ public class RoboRumbleAtHome {
 			// Create battles file (and delete old ones), and execute battles
 			if (executes.equals("YES")) {
 				
-				boolean ready = false;
+				boolean ready;
 				PrepareBattles battles = new PrepareBattles(parameters);
 				
 				if (melee.equals("YES")) {

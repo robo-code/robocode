@@ -287,6 +287,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public Bullet fire(double power) {
 		Bullet bullet = setFire(power);
+
 		execute();
 		return bullet;
 	}
@@ -551,12 +552,12 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		// Loop thru the number of turns it will take to move the distance and adjust
 		// the max. turn rate so it fit the current velocity of the robot
 		for (int t = turns; t >= 0; t--) {
-            peer.lockWrite();
-            try {
-    			commands.setMaxTurnRate(status.getVelocitySync() * radians / absDistance);
-            } finally {
-                peer.unlockWrite();
-            }
+			peer.lockWrite();
+			try {
+				commands.setMaxTurnRate(status.getVelocitySync() * radians / absDistance);
+			} finally {
+				peer.unlockWrite();
+			}
 			execute(); // Perform next turn
 		}
 
@@ -584,14 +585,14 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		synchronized (peer.getSyncRoot()) {
 			peer.getSyncRoot().notifyAll();
 
-            // Sleeping and waiting for battle to wake us up.
-            try {
-                peer.getSyncRoot().wait();
-            } catch (InterruptedException e) {// We are expecting this to happen when a round is ended!
-            }
-        }
+			// Sleeping and waiting for battle to wake us up.
+			try {
+				peer.getSyncRoot().wait();
+			} catch (InterruptedException e) {// We are expecting this to happen when a round is ended!
+			}
+		}
 
-        finalizeExcec();
+		finalizeExcec();
 	}
 
 	private void initializeExec() {

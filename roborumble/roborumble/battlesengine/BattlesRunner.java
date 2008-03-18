@@ -97,7 +97,7 @@ public class BattlesRunner {
 		}
 
 		// open output file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
@@ -178,7 +178,7 @@ public class BattlesRunner {
 		}
 
 		// open output file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);

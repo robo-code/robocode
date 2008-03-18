@@ -34,9 +34,9 @@ public class Bullet {
 	private IRobotBulletProxy peer;
 
 	/**
-	 * Called by the game to create a Bullet object
+	 * Called by the game to create a new {@code Bullet} object
 	 *
-	 * @param peer peer of the bullet
+	 * @param peer the bullet peer of the {@code Bullet} 
 	 */
 	public Bullet(IRobotBulletProxy peer) {
 		this.peer = peer;

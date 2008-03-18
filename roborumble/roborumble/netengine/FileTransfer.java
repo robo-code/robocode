@@ -37,11 +37,7 @@ public class FileTransfer {
 	public enum DownloadStatus {
 
 		/** The download was succesful */
-		OK,
-		/** Connection problem */
-		COULD_NOT_CONNECT,
-		/** The file to download was not found */
-		FILE_NOT_FOUND
+		OK, /** Connection problem */ COULD_NOT_CONNECT, /** The file to download was not found */ FILE_NOT_FOUND
 	}
 
 
@@ -76,7 +72,7 @@ public class FileTransfer {
 	 * @return a session id for keeping a session on a HTTP site or null if no
 	 *    session is available
 	 */
-	public final static String getSessionId(String url) {
+	public static String getSessionId(String url) {
 		HttpURLConnection con = null;
 
 		try {
@@ -164,7 +160,7 @@ public class FileTransfer {
 	 * @return the download status, which is DownloadStatus.OK if the download
 	 *    completed successfully; otherwise an error occurred
 	 */
-	public final static DownloadStatus download(String url, String filename, String sessionId) {
+	public static DownloadStatus download(String url, String filename, String sessionId) {
 		HttpURLConnection con = null;
 
 		try {
@@ -489,7 +485,7 @@ public class FileTransfer {
 	 *    into
 	 * @return true if the file was copied; false otherwise
 	 */
-	public final static boolean copy(String src_file, String dest_file) {
+	public static boolean copy(String src_file, String dest_file) {
 		FileInputStream in = null;
 		FileOutputStream out = null;
 

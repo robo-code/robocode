@@ -71,7 +71,7 @@
  *     - Added isRunning()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronizet List and HashMap
+ *       synchronized List and HashMap
  *     Titus Chen
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
@@ -242,7 +242,8 @@ public class Battle extends BattleData implements Runnable {
 	}
 
 	@Override
-	public void finalize() {
+	public void finalize() throws Throwable {
+		super.finalize();
 		if (keyHandler != null) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(keyHandler);
 		}
@@ -1134,27 +1135,27 @@ public class Battle extends BattleData implements Runnable {
 				// complete their processing before we get here,
 				// so we test if the robot is already asleep.
 
-                synchronized (robotProxy.getPeer().getSyncRoot()){
-                    if (!robotProxy.isSleeping()) {
-                        try {
-                            long waitTime = manager.getCpuManager().getCpuConstant();
+				synchronized (robotProxy.getPeer().getSyncRoot()) {
+					if (!robotProxy.isSleeping()) {
+						try {
+							long waitTime = manager.getCpuManager().getCpuConstant();
 
-                            int millisWait = (int) (waitTime / 1000000);
+							int millisWait = (int) (waitTime / 1000000);
 
-                            for (int i = millisWait; i > 0 && !robotProxy.isSleeping(); i--) {
-                                robotProxy.getPeer().getSyncRoot().wait(0, 999999);
-                            }
-                            if (!robotProxy.isSleeping()) {
-                                robotProxy.getPeer().getSyncRoot().wait(0, (int) (waitTime % 1000000));
-                            }
-                        } catch (InterruptedException e) {
-                            // ?
-                            log("Wait for " + robotProxy + " interrupted.");
-                        }
-                    }
-                }
+							for (int i = millisWait; i > 0 && !robotProxy.isSleeping(); i--) {
+								robotProxy.getPeer().getSyncRoot().wait(0, 999999);
+							}
+							if (!robotProxy.isSleeping()) {
+								robotProxy.getPeer().getSyncRoot().wait(0, (int) (waitTime % 1000000));
+							}
+						} catch (InterruptedException e) {
+							// ?
+							log("Wait for " + robotProxy + " interrupted.");
+						}
+					}
+				}
 
-                if (robotProxy.isSleeping() || !robotProxy.isRunning()) {
+				if (robotProxy.isSleeping() || !robotProxy.isRunning()) {
 					robotProxy.setSkippedTurnsLocked(0);
 				} else {
 					robotProxy.setSkippedTurnsLocked(robotProxy.getSkippedTurns() + 1);
@@ -1424,9 +1425,9 @@ public class Battle extends BattleData implements Runnable {
 						(RobotPeer) robotProxy.getPeer());
 				long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
-				//robotProxy.lockWrite();
-				//try {
-                synchronized (robotProxy.getPeer().getSyncRoot()){
+				// robotProxy.lockWrite();
+				// try {
+				synchronized (robotProxy.getPeer().getSyncRoot()) {
 					try {
 						log(".", false);
 
@@ -1442,10 +1443,10 @@ public class Battle extends BattleData implements Runnable {
 					} catch (InterruptedException e) {
 						log("Wait for " + robotProxy + " interrupted.");
 					}
-                }
-                //} finally {
-				//	robotProxy.unlockWrite();
-				//}
+				}
+				// } finally {
+				// robotProxy.unlockWrite();
+				// }
 
 				if (!robotProxy.isSleeping()) {
 					log(
@@ -1504,38 +1505,37 @@ public class Battle extends BattleData implements Runnable {
 			}
 			// Loading robots
 			for (IBattleRobotProxy robotProxy : getBattleRobots()) {
-                robotProxy.lockWrite();
-                try{
-                    robotProxy.getPeer().setRobot(null);
-                    Class<?> robotClass;
+				robotProxy.lockWrite();
+				try {
+					robotProxy.getPeer().setRobot(null);
+					Class<?> robotClass;
 
-                    try {
-                        manager.getThreadManager().setLoadingRobot((RobotPeer) robotProxy.getPeer());
-                        robotClass = robotProxy.getRobotClassManager().getRobotClass();
-                        if (robotClass == null) {
-                            robotProxy.getOut().println("SYSTEM: Skipping robot: " + robotProxy.getName());
-                            continue;
-                        }
-                        IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
+					try {
+						manager.getThreadManager().setLoadingRobot((RobotPeer) robotProxy.getPeer());
+						robotClass = robotProxy.getRobotClassManager().getRobotClass();
+						if (robotClass == null) {
+							robotProxy.getOut().println("SYSTEM: Skipping robot: " + robotProxy.getName());
+							continue;
+						}
+						IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
-                        robotProxy.getPeer().setRobot(bot);
-                    } catch (IllegalAccessException e) {
-                        robotProxy.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
-                        robotProxy.getOut().println("SYSTEM: Is your constructor marked public?");
-                    } catch (Throwable e) {
-                        robotProxy.getOut().println(
-                                "SYSTEM: An error occurred during initialization of " + robotProxy.getRobotClassManager());
-                        robotProxy.getOut().println("SYSTEM: " + e);
-                        e.printStackTrace(robotProxy.getOut());
-                    }
-                    if (roundNum > 0) {
-                        initializeRobotPosition(robotProxy);
-                    }
-                }
-                finally {
-                    robotProxy.unlockWrite();
-                }
-            } // for
+						robotProxy.getPeer().setRobot(bot);
+					} catch (IllegalAccessException e) {
+						robotProxy.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
+						robotProxy.getOut().println("SYSTEM: Is your constructor marked public?");
+					} catch (Throwable e) {
+						robotProxy.getOut().println(
+								"SYSTEM: An error occurred during initialization of " + robotProxy.getRobotClassManager());
+						robotProxy.getOut().println("SYSTEM: " + e);
+						e.printStackTrace(robotProxy.getOut());
+					}
+					if (roundNum > 0) {
+						initializeRobotPosition(robotProxy);
+					}
+				} finally {
+					robotProxy.unlockWrite();
+				}
+			} // for
 			manager.getThreadManager().setLoadingRobot(null);
 			setRobotsLoaded(true);
 		}

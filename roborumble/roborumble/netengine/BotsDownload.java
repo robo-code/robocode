@@ -190,8 +190,8 @@ public class BotsDownload {
 
 			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(participantsfile)), false);
 
-			for (int i = 0; i < bots.size(); i++) {
-				outtxt.println(bots.get(i));
+			for (String bot : bots) {
+				outtxt.println(bot);
 			}
 			outtxt.close();
 
@@ -283,7 +283,6 @@ public class BotsDownload {
 			} catch (IOException e) {
 				System.out.println("Battles input file not found ... Aborting");
 				System.out.println(e);
-				return;
 			} finally {
 				if (br != null) {
 					try {
@@ -309,7 +308,7 @@ public class BotsDownload {
 
 		// Download the bot
 
-		String url = null;
+		String url;
 		String sessionId = null;
 
 		if (id.indexOf("://") == -1) {

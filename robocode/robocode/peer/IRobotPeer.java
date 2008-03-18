@@ -60,11 +60,11 @@ public interface IRobotPeer extends Runnable {
 
 	RobotPeerCommands getCommands();
 
-    double getBattleFieldWidth();
+	double getBattleFieldWidth();
     
-    double getBattleFieldHeight();
+	double getBattleFieldHeight();
 
-    // view
+	// view
 	IRobotRunnableProxy getRobotRunnableView();
 
 	IDisplayRobotProxy getDisplayProxy();

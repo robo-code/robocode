@@ -14,7 +14,7 @@
  *       shadowed the second one
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronizet List and HashMap
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer;
 

@@ -176,7 +176,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	private int extractRobot() {
 		robotManager.clearRobotList();
-		int rv = 0;
+		int rv;
 
 		output = new StringWriter();
 		PrintWriter out = new PrintWriter(output);

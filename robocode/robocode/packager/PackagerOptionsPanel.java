@@ -285,10 +285,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 				return false;
 			}
 		}
-		if (getDescriptionArea().getText().length() == 0) {
-			return false;
-		}
-		return true;
+		return getDescriptionArea().getText().length() != 0;
 	}
 
 	public static void main(String[] args) {

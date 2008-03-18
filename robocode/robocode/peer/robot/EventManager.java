@@ -10,7 +10,7 @@
  *     - Initial API and implementation
  *     Matthew Reeder
  *     - Fix for HyperThreading hang issue with the getTime() method that was
- *       synchronizet before, which sometimes caused a deadlock to occur in the
+ *       synchronized before, which sometimes caused a deadlock to occur in the
  *       code processing the hitWall event.
  *     Flemming N. Larsen
  *     - Ported to Java 5.0
@@ -20,7 +20,7 @@
  *     - Added features to support the new JuniorRobot class
  *     - Bugfix: Fixed ConcurrentModificationExceptions due to lack of
  *       synchronization with the event queue. Now all getXXXEvents() methods
- *       are synchronizet against the event queue, and the list of customEvents
+ *       are synchronized against the event queue, and the list of customEvents
  *       is a CopyOnWriteArrayList which is fully thread-safe
  *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
  *       robots process events before they die
@@ -29,7 +29,7 @@
  *       getStatusEvents() method
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronizet List and HashMap
+ *       synchronized List and HashMap
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -169,20 +169,20 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHit
-	 * @see #onBulletHitBullet
-	 * @see #onBulletMissed
-	 * @see #onHitByBullet
-	 * @see #onHitRobot
-	 * @see #onHitWall
-	 * @see #onSkippedTurn
-	 * @see robocode.BulletHitEvent
-	 * @see robocode.BulletMissedEvent
-	 * @see robocode.HitByBulletEvent
-	 * @see robocode.HitRobotEvent
-	 * @see robocode.HitWallEvent
-	 * @see robocode.SkippedTurnEvent
-	 * @see robocode.Event
+	 * @see #onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent)
+	 * @see #onHitByBullet(HitByBulletEvent)
+	 * @see #onHitRobot(HitRobotEvent)
+	 * @see #onHitWall(HitWallEvent)
+	 * @see #onSkippedTurn(SkippedTurnEvent)
+	 * @see BulletHitEvent
+	 * @see BulletMissedEvent
+	 * @see HitByBulletEvent
+	 * @see HitRobotEvent
+	 * @see HitWallEvent
+	 * @see SkippedTurnEvent
+	 * @see Event
 	 * @see List
 	 */
 	public List<Event> getAllEvents() {
@@ -207,8 +207,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHitBullet
-	 * @see robocode.BulletHitBulletEvent
+	 * @see #onBulletHitBullet(BulletHitBulletEvent)
+	 * @see BulletHitBulletEvent
 	 * @see List
 	 */
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
@@ -235,8 +235,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHit
-	 * @see robocode.BulletHitEvent
+	 * @see #onBulletHit(BulletHitEvent)
+	 * @see BulletHitEvent
 	 * @see List
 	 */
 	public List<BulletHitEvent> getBulletHitEvents() {
@@ -263,8 +263,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletMissed
-	 * @see robocode.BulletMissedEvent
+	 * @see #onBulletMissed(BulletMissedEvent)
+	 * @see BulletMissedEvent
 	 * @see List
 	 */
 	public List<BulletMissedEvent> getBulletMissedEvents() {
@@ -423,8 +423,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitByBullet
-	 * @see robocode.HitByBulletEvent
+	 * @see #onHitByBullet(HitByBulletEvent)
+	 * @see HitByBulletEvent
 	 * @see List
 	 */
 	public List<HitByBulletEvent> getHitByBulletEvents() {
@@ -451,8 +451,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitRobot
-	 * @see robocode.HitRobotEvent
+	 * @see #onHitRobot(HitRobotEvent)
+	 * @see HitRobotEvent
 	 * @see List
 	 */
 	public List<HitRobotEvent> getHitRobotEvents() {
@@ -479,8 +479,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitWall
-	 * @see robocode.HitWallEvent
+	 * @see #onHitWall(HitWallEvent)
+	 * @see HitWallEvent
 	 * @see List
 	 */
 	public List<HitWallEvent> getHitWallEvents() {
@@ -519,8 +519,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onRobotDeath
-	 * @see robocode.RobotDeathEvent
+	 * @see #onRobotDeath(RobotDeathEvent)
+	 * @see RobotDeathEvent
 	 * @see List
 	 */
 	public List<RobotDeathEvent> getRobotDeathEvents() {
@@ -551,8 +551,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onScannedRobot
-	 * @see robocode.ScannedRobotEvent
+	 * @see #onScannedRobot(ScannedRobotEvent)
+	 * @see ScannedRobotEvent
 	 * @see List
 	 */
 	public final List<ScannedRobotEvent> getScannedRobotEvents() {
@@ -1279,8 +1279,10 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *
 	 * @return a vector containing all MessageEvents currently in the robot's
 	 *         queue
-	 * @see #onMessageReceived
+	 *
+	 * @see #onMessageReceived(MessageEvent)
 	 * @see MessageEvent
+	 *
 	 * @since 1.2.6
 	 */
 	public List<MessageEvent> getMessageEvents() {
@@ -1309,8 +1311,10 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *
 	 * @return a vector containing all StatusEvents currently in the robot's
 	 *         queue.
-	 * @see #onStatus
+	 *
+	 * @see #onStatus(StatusEvent)
 	 * @see StatusEvent
+	 *
 	 * @since 1.5
 	 */
 	public List<StatusEvent> getStatusEvents() {

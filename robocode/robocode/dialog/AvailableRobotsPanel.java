@@ -192,7 +192,7 @@ public class AvailableRobotsPanel extends JPanel {
 					((AvailableRobotsModel) getAvailableRobotsList().getModel()).changed();
 				} else {
 					availablePackages.add("(All)");
-					String packageName = null;
+					String packageName;
 
 					for (FileSpecification robotSpec : robotList) {
 						packageName = robotSpec.getFullPackage();
@@ -234,15 +234,13 @@ public class AvailableRobotsPanel extends JPanel {
 			if (selectedPackage.equals("(All)")) {
 				robotNamesCellRenderer.setUseShortNames(false);
 				availableRobots.clear();
-				for (int j = 0; j < robotList.size(); j++) {
-					availableRobots.add(robotList.get(j));
+				for (FileSpecification aRobotList : robotList) {
+					availableRobots.add(aRobotList);
 				}
 				break;
 			}
 			// Single package.
-			for (int j = 0; j < robotList.size(); j++) {
-				FileSpecification robotSpecification = robotList.get(j);
-
+			for (FileSpecification robotSpecification : robotList) {
 				if (robotSpecification.getFullPackage() == null) {
 					if (selectedPackage.equals("(No package)")) {
 						availableRobots.add(robotSpecification);

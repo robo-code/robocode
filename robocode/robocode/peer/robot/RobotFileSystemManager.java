@@ -12,7 +12,7 @@
  *     - Ported to Java 5.0
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronizet List and HashMap
+ *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -111,9 +111,7 @@ public class RobotFileSystemManager {
 			return null;
 		}
 		try {
-			File dir = new File(robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory(), robotPeer.getRobotClassManager().getClassNameManager().getShortClassName() + ".data").getCanonicalFile();
-
-			return dir;
+			return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory(), robotPeer.getRobotClassManager().getClassNameManager().getShortClassName() + ".data").getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}
@@ -146,7 +144,7 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		File attemptedFile = null;
+		File attemptedFile;
 
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
@@ -179,7 +177,7 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		File attemptedFile = null;
+		File attemptedFile;
 
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
@@ -187,11 +185,7 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		if (attemptedFile.getParentFile().equals(allowedDirectory)) {
-			return true;
-		}
-
-		return false;
+		return attemptedFile.getParentFile().equals(allowedDirectory);
 	}
 
 	public void removeStream(RobocodeFileOutputStream s) {

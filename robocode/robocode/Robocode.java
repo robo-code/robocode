@@ -29,6 +29,10 @@
 package robocode;
 
 
+import java.awt.Frame;
+import java.io.File;
+import java.security.Policy;
+
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -38,22 +42,17 @@ import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
 
-import java.awt.*;
-import java.io.File;
-import java.security.Policy;
-
 
 /**
  * Robocode - A programming game involving battling AI tanks.<br>
  * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
  *
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
- * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public class Robocode {
-
-	private RobocodeManager manager;
 
 	/**
 	 * Use the command-line to start Robocode.
@@ -74,7 +73,7 @@ public class Robocode {
 
 	private boolean initialize(String args[]) {
 		try {
-			manager = new RobocodeManager(false, null);
+			RobocodeManager manager = new RobocodeManager(false, null);
 
 			if (System.getProperty("WORKINGDIRECTORY") != null) {
 				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
@@ -177,7 +176,7 @@ public class Robocode {
 
 			if (battleFilename != null) {
 				robocode.manager.BattleManager battleManager = manager.getBattleManager();
-
+				
 				battleManager.setBattleFilename(battleFilename);
 				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.loadBattleProperties();

@@ -84,23 +84,23 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
 	public void setupPreInitializeLocked() {
-        peer.lockWrite();
-        try {
-            status.setState(RobotPeerStatus.STATE_DEAD);
-            status.setBoundingBox(new BoundingRectangle());
-            status.setStatistics(new RobotStatistics(this));
-        } finally {
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			status.setState(RobotPeerStatus.STATE_DEAD);
+			status.setBoundingBox(new BoundingRectangle());
+			status.setStatistics(new RobotStatistics(this));
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
 	public void setupSetDuplicateLocked(int d) {
-        peer.lockWrite();
-        try {
-    		info.setDuplicate(d);
-        } finally {
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			info.setDuplicate(d);
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
@@ -110,12 +110,12 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 	public boolean initializeLocked(double x, double y, double heading, List<IBattleRobotProxy> battleRobots) {
 		peer.lockWrite();
 		try {
-            status.setX(x);
-            status.setY(y);
-            updateBoundingBox();
-            if (!validSpot(battleRobots)){
-                return false;
-            }
+			status.setX(x);
+			status.setY(y);
+			updateBoundingBox();
+			if (!validSpot(battleRobots)) {
+				return false;
+			}
 
 			status.setState(RobotPeerStatus.STATE_ACTIVE);
 			status.setWinner(false);
@@ -169,14 +169,14 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 			commands.setAdjustRadarForBodyTurnSet(false);
 			commands.setCurrentBullet(null);
 
-            return true;
+			return true;
 
-        } finally {
+		} finally {
 			peer.unlockWrite();
 		}
 	}
 
-    // // // //  // // // // // // // // // // // // // // // // // // // // // // // //
+	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 	// synchronizet by battle, called by battle
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
@@ -422,13 +422,13 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 
 	private void battleUpdateBodyHeading() {
 
-        double radarTurnRemaining = commands.getRadarTurnRemaining();
-        double bodyTurnRemaining = commands.getBodyTurnRemaining();
-        double gunTurnRemaining = commands.getGunTurnRemaining();
-        double turnRate = Math.min(commands.getMaxTurnRate(),
-                (.4 + .6 * (1 - (abs(status.getVelocity()) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
+		double radarTurnRemaining = commands.getRadarTurnRemaining();
+		double bodyTurnRemaining = commands.getBodyTurnRemaining();
+		double gunTurnRemaining = commands.getGunTurnRemaining();
+		double turnRate = Math.min(commands.getMaxTurnRate(),
+				(.4 + .6 * (1 - (abs(status.getVelocity()) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
 
-        if (bodyTurnRemaining > 0) {
+		if (bodyTurnRemaining > 0) {
 			if (bodyTurnRemaining < turnRate) {
 				status.adjustGunHeading(bodyTurnRemaining);
 				status.adjustRadarHeading(bodyTurnRemaining);
@@ -439,7 +439,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 					commands.setRadarTurnRemaining(radarTurnRemaining - bodyTurnRemaining);
 				}
 				commands.setBodyTurnRemaining(0);
-                status.adjustBodyHeading(bodyTurnRemaining, true);
+				status.adjustBodyHeading(bodyTurnRemaining, true);
 			} else {
 				status.adjustGunHeading(turnRate);
 				status.adjustRadarHeading(turnRate);
@@ -449,9 +449,9 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 				if (commands.isAdjustRadarForBodyTurn()) {
 					commands.setRadarTurnRemaining(radarTurnRemaining - turnRate);
 				}
-                bodyTurnRemaining-=turnRate;
-                commands.setBodyTurnRemaining(bodyTurnRemaining);
-                status.adjustBodyHeading(turnRate, bodyTurnRemaining == 0);
+				bodyTurnRemaining -= turnRate;
+				commands.setBodyTurnRemaining(bodyTurnRemaining);
+				status.adjustBodyHeading(turnRate, bodyTurnRemaining == 0);
 			}
 		} else if (bodyTurnRemaining < 0) {
 			if (bodyTurnRemaining > -turnRate) {
@@ -464,7 +464,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 					commands.setRadarTurnRemaining(radarTurnRemaining - bodyTurnRemaining);
 				}
 				commands.setBodyTurnRemaining(0);
-                status.adjustBodyHeading(bodyTurnRemaining, true);
+				status.adjustBodyHeading(bodyTurnRemaining, true);
 			} else {
 				status.adjustGunHeading(-turnRate);
 				status.adjustRadarHeading(-turnRate);
@@ -474,22 +474,22 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 				if (commands.isAdjustRadarForBodyTurn()) {
 					commands.setRadarTurnRemaining(radarTurnRemaining + turnRate);
 				}
-                bodyTurnRemaining += turnRate;
-                commands.setBodyTurnRemaining(bodyTurnRemaining);
-                status.adjustBodyHeading(-turnRate, bodyTurnRemaining==0);
+				bodyTurnRemaining += turnRate;
+				commands.setBodyTurnRemaining(bodyTurnRemaining);
+				status.adjustBodyHeading(-turnRate, bodyTurnRemaining == 0);
 			}
 		}
 
-        if (Double.isNaN(status.getBodyHeading())) {
+		if (Double.isNaN(status.getBodyHeading())) {
 			System.out.println("HOW IS HEADING NAN HERE");
 		}
 	}
 
 	private void battleUpdateGunHeading() {
-        double gunTurnRemaining = commands.getGunTurnRemaining();
-        double radarTurnRemaining = commands.getRadarTurnRemaining();
+		double gunTurnRemaining = commands.getGunTurnRemaining();
+		double radarTurnRemaining = commands.getRadarTurnRemaining();
         
-        if (gunTurnRemaining > 0) {
+		if (gunTurnRemaining > 0) {
 			if (gunTurnRemaining < Rules.GUN_TURN_RATE_RADIANS) {
 				status.adjustGunHeading(gunTurnRemaining);
 				status.adjustRadarHeading(gunTurnRemaining);
@@ -503,7 +503,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 				if (commands.isAdjustRadarForGunTurn()) {
 					commands.setRadarTurnRemaining(radarTurnRemaining - Rules.GUN_TURN_RATE_RADIANS);
 				}
-                commands.setGunTurnRemaining(gunTurnRemaining - Rules.GUN_TURN_RATE_RADIANS);
+				commands.setGunTurnRemaining(gunTurnRemaining - Rules.GUN_TURN_RATE_RADIANS);
 			}
 		} else if (gunTurnRemaining < 0) {
 			if (gunTurnRemaining > -Rules.GUN_TURN_RATE_RADIANS) {
@@ -519,14 +519,15 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 				if (commands.isAdjustRadarForGunTurn()) {
 					commands.setRadarTurnRemaining(radarTurnRemaining + Rules.GUN_TURN_RATE_RADIANS);
 				}
-                commands.setGunTurnRemaining(gunTurnRemaining + Rules.GUN_TURN_RATE_RADIANS);
+				commands.setGunTurnRemaining(gunTurnRemaining + Rules.GUN_TURN_RATE_RADIANS);
 			}
 		}
 	}
 
 	private void battleUpdateRadarHeading() {
-        double radarTurnRemaining = commands.getRadarTurnRemaining();
-        if (radarTurnRemaining > 0) {
+		double radarTurnRemaining = commands.getRadarTurnRemaining();
+
+		if (radarTurnRemaining > 0) {
 			if (radarTurnRemaining < Rules.RADAR_TURN_RATE_RADIANS) {
 				status.adjustRadarHeading(radarTurnRemaining);
 				commands.setRadarTurnRemaining(0);
@@ -723,20 +724,20 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 			// Wake up the thread
 			synchronized (peer.getSyncRoot()) {
 				peer.getSyncRoot().notifyAll();
-                try {
-                    peer.getSyncRoot().wait(10000);
-                } catch (InterruptedException e) {}
-            }
+				try {
+					peer.getSyncRoot().wait(10000);
+				} catch (InterruptedException e) {}
+			}
 		}
 	}
 
 	public void setSkippedTurnsLocked(int s) {
-        peer.lockWrite();
-        try {
-            status.setSkippedTurns(s);
-        } finally {
-            peer.unlockWrite();
-        }
+		peer.lockWrite();
+		try {
+			status.setSkippedTurns(s);
+		} finally {
+			peer.unlockWrite();
+		}
 	}
 
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
@@ -774,20 +775,20 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 	// components and helpers
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
-    private boolean validSpot(List<IBattleRobotProxy> battleRobots) {
-        for (IBattleRobotProxy otherRobotProxy : battleRobots) {
-            if (otherRobotProxy != null && otherRobotProxy != this) {
-                if (this.getBoundingBox().intersects(otherRobotProxy.getBoundingBox())) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+	private boolean validSpot(List<IBattleRobotProxy> battleRobots) {
+		for (IBattleRobotProxy otherRobotProxy : battleRobots) {
+			if (otherRobotProxy != null && otherRobotProxy != this) {
+				if (this.getBoundingBox().intersects(otherRobotProxy.getBoundingBox())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
-    private void updateBoundingBox() {
-        getBoundingBox().setRect(status.getX() - WIDTH / 2 + 2, status.getY() - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
-    }
+	private void updateBoundingBox() {
+		getBoundingBox().setRect(status.getX() - WIDTH / 2 + 2, status.getY() - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
+	}
 
 	private boolean intersects(Arc2D arc, Rectangle2D rect) {
 		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),

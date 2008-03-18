@@ -50,7 +50,6 @@ public class WindowManager {
 	private RobotExtractor robotExtractor;
 	private RobocodeFrame robocodeFrame;
 	private RobocodeManager manager;
-	private TeamCreator teamCreator;
 	private RankingDialog rankingDialog;
 
 	public WindowManager(RobocodeManager manager) {
@@ -101,10 +100,7 @@ public class WindowManager {
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".battle")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".battle");
 			}
 
 			@Override
@@ -227,8 +223,7 @@ public class WindowManager {
 
 			try {
 				splashScreen.wait(20000);
-			} catch (InterruptedException e) {
-				; // Do nothing
+			} catch (InterruptedException e) {// Do nothing
 			}
 		}
 
@@ -256,15 +251,7 @@ public class WindowManager {
 	}
 
 	public boolean closeRobocodeEditor() {
-		if (robocodeEditor == null) {
-			return true;
-		}
-
-		if (!robocodeEditor.isVisible()) {
-			return true;
-		}
-
-		return robocodeEditor.close();
+		return robocodeEditor == null || !robocodeEditor.isVisible() || robocodeEditor.close();
 	}
 
 	/**
@@ -277,7 +264,8 @@ public class WindowManager {
 	}
 
 	public void showCreateTeamDialog() {
-		teamCreator = new robocode.dialog.TeamCreator(manager.getRobotRepositoryManager());
+		TeamCreator teamCreator = new TeamCreator(manager.getRobotRepositoryManager());
+
 		WindowUtil.packCenterShow(teamCreator);
 	}
 
@@ -305,13 +293,7 @@ public class WindowManager {
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".jar")) {
-					return true;
-				}
-				if (extension.equalsIgnoreCase(".zip")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".jar") || extension.equalsIgnoreCase(".zip");
 			}
 
 			@Override
@@ -399,10 +381,7 @@ public class WindowManager {
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".csv")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".csv");
 			}
 
 			@Override

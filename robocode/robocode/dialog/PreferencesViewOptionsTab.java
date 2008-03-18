@@ -466,8 +466,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			public void desiredTpsChanged(int tps) {
 				PreferencesViewOptionsTab.this.desiredTpsTextField.setText("" + tps);
 			}
-
-			;
 		});
 	}
 

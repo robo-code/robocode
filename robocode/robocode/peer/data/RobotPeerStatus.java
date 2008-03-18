@@ -325,10 +325,10 @@ public class RobotPeerStatus extends RobotPeerLock {
 		state = newState;
 	}
 
-    public final void uncharge() {
-        energy = 0;
-        peer.getCommands().resetIntentions();
-    }
+	public final void uncharge() {
+		energy = 0;
+		peer.getCommands().resetIntentions();
+	}
 
 	public final void setEnergy(double newEnergy) {
 		setEnergy(newEnergy, true);

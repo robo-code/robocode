@@ -180,7 +180,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	/**
 	 * The system calls this method, you should not call it.
 	 */
-	public final static void setThreadManager(ThreadManager threadManager) {
+	public static void setThreadManager(ThreadManager threadManager) {
 		System.getSecurityManager().checkPermission(new RobocodePermission("setThreadManager"));
 		RobocodeFileOutputStream.threadManager = threadManager;
 	}

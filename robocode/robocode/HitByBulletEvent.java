@@ -90,6 +90,8 @@ public class HitByBulletEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getHeading()} instead.
+	 *
+	 * @return the heading of the bullet, in degrees
 	 */
 	@Deprecated
 	public double getHeadingDegrees() {

@@ -74,6 +74,7 @@ public class Utils {
 	 *
 	 * @param angle the angle to normalize
 	 * @return the normalized angle that will be in the range of [0,2*PI[
+	 *
 	 * @see #normalAbsoluteAngle(double)
 	 * @see #isNear(double, double)
 	 */

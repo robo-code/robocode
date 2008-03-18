@@ -44,13 +44,14 @@
  *     - Changed the behaviour of checkRobotCollision() so that HitRobotEvents
  *       are only created and sent to robot when damage do occur. Previously, a
  *       robot could receive HitRobotEvents even when no damage was done
+ *     - Renamed scanReset() to rescan()
  *     Luis Crespo
  *     - Added states
  *     Titus Chen
  *     - Bugfix: Hit wall and teleporting problems with checkWallCollision()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronizet List and HashMap
+ *       synchronized List and HashMap
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
@@ -102,7 +103,7 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 	private RobotOutputStream out;
 	private IBasicRobot robot;
 	private Battle battle;
-    private BattleField battleField;
+	private BattleField battleField;
 	private RobotClassManager robotClassManager;
 	private RobotFileSystemManager robotFileSystemManager;
 	private RobotThreadManager robotThreadManager;
@@ -113,9 +114,9 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 		super();
 
 		this.battle = battle;
-        this.battleField = battle.getBattleField(); 
+		this.battleField = battle.getBattleField(); 
 
-        // data
+		// data
 		info = new RobotPeerInfo();
 		info.setupInfo(this);
 		status = new RobotPeerStatus();
@@ -285,40 +286,36 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 
 	// security
 	public void forceStop() {
-        lockWrite();
-        try
-        {
-            status.setRunning(false);
-            status.getStatistics().setInactive();
-        }
-        finally {
-            unlockWrite();
-        }
+		lockWrite();
+		try {
+			status.setRunning(false);
+			status.getStatistics().setInactive();
+		} finally {
+			unlockWrite();
+		}
 	}
 
 	public void forceUncharge() {
 		lockWrite();
-        try
-        {
-		    status.uncharge();
-        }
-        finally {
-            unlockWrite();
-        }
-    }
+		try {
+			status.uncharge();
+		} finally {
+			unlockWrite();
+		}
+	}
 
 	public String getName() {
 		// intentionaly not synchronized to prevent block from user code
 		return info.getName();
 	}
 
-    public double getBattleFieldHeight() {
-        return battleField.getHeight();
-    }
+	public double getBattleFieldHeight() {
+		return battleField.getHeight();
+	}
 
-    public double getBattleFieldWidth() {
-        return battleField.getWidth();
-    }
+	public double getBattleFieldWidth() {
+		return battleField.getWidth();
+	}
 
 	// IContestant
 	public IContestantStatistics getRobotStatistics() {
