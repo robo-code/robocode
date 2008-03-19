@@ -24,8 +24,6 @@ import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 
 /**
  * @author Pavel Savara (original)

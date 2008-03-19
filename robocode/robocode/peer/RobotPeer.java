@@ -305,7 +305,7 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 	}
 
 	public String getName() {
-		// intentionaly not synchronized to prevent block from user code
+		// intentionally not synchronized to prevent block from user code
 		return info.getName();
 	}
 

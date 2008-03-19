@@ -592,7 +592,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 			}
 		}
 
-		finalizeExcec();
+		finalizeExec();
 	}
 
 	private void initializeExec() {
@@ -629,7 +629,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		}
 	}
 
-	private void finalizeExcec() {
+	private void finalizeExec() {
 		peer.lockWrite();
 		try {
 			status.setSleeping(false);

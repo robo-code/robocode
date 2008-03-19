@@ -514,8 +514,8 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 				}
 				commands.setGunTurnRemaining(0);
 			} else {
-				status.adjustGunHeading(Rules.GUN_TURN_RATE_RADIANS);
-				status.adjustRadarHeading(Rules.GUN_TURN_RATE_RADIANS);
+				status.adjustGunHeading(-Rules.GUN_TURN_RATE_RADIANS);
+				status.adjustRadarHeading(-Rules.GUN_TURN_RATE_RADIANS);
 				if (commands.isAdjustRadarForGunTurn()) {
 					commands.setRadarTurnRemaining(radarTurnRemaining + Rules.GUN_TURN_RATE_RADIANS);
 				}

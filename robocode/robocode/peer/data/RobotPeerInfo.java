@@ -14,7 +14,6 @@ package robocode.peer.data;
 
 import robocode.Robot;
 import robocode.manager.NameManager;
-import robocode.peer.IBattleRobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IInteractiveRobot;
@@ -183,20 +182,20 @@ public class RobotPeerInfo extends RobotPeerLock {
 		return isInteractive;
 	}
 
-	private boolean testInteractiveHandler(IInteractiveRobot r, String name, Class eventClass) {
+	private boolean testInteractiveHandler(IInteractiveRobot r, String name, Class<?> eventClass) {
 		checkReadLock();
-		Class c = r.getClass();
+		Class<?> c = r.getClass();
 
 		do {
 			try {
 				if (c.getDeclaredMethod(name, eventClass) != null) {
 					return true;
 				}
-
 			} catch (NoSuchMethodException e) {// intentionaly empty
 			}
 			c = c.getSuperclass();
 		} while (c != Robot.class);
+
 		return false;
 	}
 

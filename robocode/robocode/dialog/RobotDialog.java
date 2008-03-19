@@ -23,7 +23,6 @@ package robocode.dialog;
 
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
-import robocode.peer.IDisplayRobotPeer;
 import robocode.peer.proxies.IDisplayRobotProxy;
 
 import javax.swing.*;

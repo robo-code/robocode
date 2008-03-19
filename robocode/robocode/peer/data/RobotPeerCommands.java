@@ -416,6 +416,5 @@ public class RobotPeerCommands extends RobotPeerLock {
 		lastRadarHeading = status.getRadarHeading();
 		lastX = status.getX();
 		lastY = status.getY();
-		lastHeading = status.getBodyHeading();
 	}
 }

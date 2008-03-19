@@ -685,7 +685,6 @@ public class Battle extends BattleData implements Runnable {
 
 	private long robotStartTime;
 	private long turnStartTime;
-	private long frameStartTime;
 
 	private int currentRobotMillis;
 	private int totalRobotMillisThisSec;
@@ -783,9 +782,6 @@ public class Battle extends BattleData implements Runnable {
 
 		// Set flag indication if we are running in "minimized mode"
 		boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
-
-		// Store the start time before the frame update
-		frameStartTime = System.currentTimeMillis();
 
 		// Paint current battle frame
 		displayTurn(minimizedMode);
