@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Code cleanup
  *     - Fixed potential NullPointerException in getLoadingRobotPeer()
+ *     - Added getRobotClasses() and getRobotPeers() for the
+ *       RobocodeSecurityManager
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -19,6 +21,7 @@ package robocode.manager;
 
 
 import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,6 +79,8 @@ public class ThreadManager {
 	}
 
 	public void reset() {
+		robotLoaderThread = null;
+		loadingRobot = null;
 		groups.clear();
 		robots.clear();
 	}
@@ -88,5 +93,43 @@ public class ThreadManager {
 
 	public synchronized void setRobotLoaderThread(Thread robotLoaderThread) {
 		this.robotLoaderThread = robotLoaderThread;
+	}
+
+	public List<Class<?>> getRobotClasses() {
+		List<Class<?>> classes = new ArrayList<Class<?>>();
+
+		RobotPeer robotPeer;
+		IBasicRobot robot;
+
+		for (int i = robots.size() - 1; i >= 0; i--) {
+			robotPeer = robots.get(i);
+			if (robotPeer != null) {
+				robot = robotPeer.getRobot();
+				if (robot != null) {
+					classes.add(robot.getClass());
+				}
+			}
+		}
+		return classes;
+	}
+
+	public List<RobotPeer> getRobotPeers(Class<?> robotClass) {
+		List<RobotPeer> robotPeers = new ArrayList<RobotPeer>();
+
+		for (int i = robots.size() - 1; i >= 0; i--) {
+			RobotPeer robotPeer = robots.get(i);
+
+			if (robotPeer != null) {
+				IBasicRobot robot = robotPeer.getRobot();
+
+				// NOTE: The check is on name level, as the equals() method does not work between
+				// the two classes.
+				if (robot != null && robot.getClass().getName().equals(robotClass.getName())) {
+					robotPeers.add(robotPeer);
+				}
+			}
+		}
+
+		return robotPeers;
 	}
 }

@@ -19,7 +19,7 @@
  *     - Changed the column names to be more informative and equal in width
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronizet List and HashMap
+ *       synchronized List and HashMap
  *     Nathaniel Troutman
  *     - Added sanity check on battle object in getRowCount()
  *******************************************************************************/
@@ -117,7 +117,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public String getTitle() {
-		if (title == null) {
+		if (title == null && battle != null) {
 			int round = battle.getRoundNum();
 
 			title = "Results for " + round + " round";

@@ -528,19 +528,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPackageAccess(String pkg) {
-		if (pkg.equals("java.lang")) {
-			return;
-		}
-
 		super.checkPackageAccess(pkg);
 
 		if (isSafeContext()) {
-			return;
-		}
-
-		Thread c = Thread.currentThread();
-
-		if (isSafeThread(c)) {
 			return;
 		}
 
@@ -551,7 +541,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			// Only access to robocode.util or robocode.robotinterfaces is allowed
 			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
+					|| subPkg.equals("peer.proxies")
 					|| (experimental && subPkg.equals("robotinterfaces.peer")))) {
+
+				Thread c = Thread.currentThread();
+
+				if (isSafeThread()) {
+					return;
+				}
 
 				RobotPeer robotPeer = threadManager.getRobotPeer(c);
 
@@ -564,6 +561,41 @@ public class RobocodeSecurityManager extends SecurityManager {
 				throw new AccessControlException(
 						"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "
 						+ pkg);
+			}
+		}
+	}
+
+	@Override
+	public void checkAwtEventQueueAccess() {
+		super.checkAwtEventQueueAccess();
+
+ 		// Prevent robots from accessing the AWT Event Queue, i.e. hacking Robocode
+
+		List<Class<?>> robotClasses = threadManager.getRobotClasses();
+
+		for (Class<?> contextClass : getClassContext()) {
+
+			// Check if a the context class is any of the robot classes
+			for (Class<?> robotClass : robotClasses) {
+				if (contextClass.getName().startsWith(robotClass.getName())) {
+
+					// We found a robot accessing the AWT Event Queue.
+					// Now, kill all robot instances of this robot class!
+
+					List<RobotPeer> robotPeers = threadManager.getRobotPeers(robotClass);
+
+					for (RobotPeer robotPeer : robotPeers) {
+						if (robotPeer != null) {
+							robotPeer.getOut().println("SYSTEM: Accessing the AWT Event Queue is not allowed!");	
+
+							// Disable the robot
+							robotPeer.forceUncharge();
+						}
+					}
+
+					// Kill the thread created thru the AWT Event Queue 
+					throw new ThreadDeath();
+				}
 			}
 		}
 	}
