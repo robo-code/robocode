@@ -75,7 +75,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 		((IAdvancedRobotPeer) peer).setTurnRadar(radians);
 	}
 
-	// blockig actions
+	// blocking actions
 	public void waitFor(Condition condition) {
 		((IAdvancedRobotPeer) peer).waitFor(condition);
 	}
