@@ -83,7 +83,8 @@ public class RobocodeProperties {
 			optionsBattleDesiredTPS = 30;
 
 	private boolean
-			optionsRenderingBufferImages = true;
+			optionsRenderingBufferImages = true,
+			optionsRenderingForceBulletColor = false;
 
 	// Sound Options (Sound Effects)
 	private boolean
@@ -157,7 +158,8 @@ public class RobocodeProperties {
 			OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing",
 			OPTIONS_RENDERING_METHOD = "robocode.options.rendering.method",
 			OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers",
-			OPTIONS_RENDERING_BUFFERIMAGES = "robocode.options.rendering.bufferImages",
+			OPTIONS_RENDERING_BUFFER_IMAGES = "robocode.options.rendering.bufferImages",
+			OPTIONS_RENDERING_FORCE_BULLET_COLOR = "robocode.options.rendering.forceBulletColor",
 
 			OPTIONS_SOUND_ENABLESOUND = "robocode.options.sound.enableSound",
 			OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunshot",
@@ -510,7 +512,26 @@ public class RobocodeProperties {
 	 */
 	public void setOptionsRenderingBufferImages(boolean optionsRenderingBufferImages) {
 		this.optionsRenderingBufferImages = optionsRenderingBufferImages;
-		props.setProperty(OPTIONS_RENDERING_BUFFERIMAGES, "" + optionsRenderingBufferImages);
+		props.setProperty(OPTIONS_RENDERING_BUFFER_IMAGES, "" + optionsRenderingBufferImages);
+	}
+
+	/**
+	 * Gets the optionsRenderingForceBulletColor
+	 *
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsRenderingForceBulletColor() {
+		return optionsRenderingForceBulletColor;
+	}
+
+	/**
+	 * Sets the optionsRenderingForceBulletColor.
+	 *
+	 * @param optionsRenderingForceBulletColor The optionsRenderingForceBulletColor to set
+	 */
+	public void setOptionsRenderingForceBulletColor(boolean optionsRenderingForceBulletColor) {
+		this.optionsRenderingForceBulletColor = optionsRenderingForceBulletColor;
+		props.setProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "" + optionsRenderingForceBulletColor);
 	}
 
 	/**
@@ -940,7 +961,8 @@ public class RobocodeProperties {
 				Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0")));
 		setOptionsRenderingMethod(Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0")));
 		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
-		optionsRenderingBufferImages = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_BUFFERIMAGES, "true"));
+		optionsRenderingBufferImages = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_BUFFER_IMAGES, "true"));
+		optionsRenderingForceBulletColor = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "false"));
 
 		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false"));
 		optionsSoundEnableGunshot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true"));
