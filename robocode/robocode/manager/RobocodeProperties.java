@@ -1057,11 +1057,12 @@ public class RobocodeProperties {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	@SuppressWarnings("serial")
 	private static class SortedProperties extends Properties {
+		private static final long serialVersionUID = 1L;
+
 		@SuppressWarnings("unchecked")
 		@Override
-		public Enumeration keys() {
+		public Enumeration<Object> keys() {
 			Enumeration<Object> keysEnum = super.keys();
 
 			Vector<String> keyList = new Vector<String>();
@@ -1072,7 +1073,7 @@ public class RobocodeProperties {
 
 			Collections.sort(keyList);
 
-			return keyList.elements();
+			return (Enumeration) keyList.elements();
 		}
 	}
 

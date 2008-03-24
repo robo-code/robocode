@@ -28,7 +28,6 @@
 package robocode.packager;
 
 
-import codesize.Codesize;
 import robocode.dialog.*;
 import robocode.io.Logger;
 import robocode.io.NoDuplicateJarOutputStream;
@@ -479,7 +478,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			public void run() {
 				File jarFile = new File(getFilenamePanel().getFilenameField().getText());
 
-				Codesize.Item item = Codesize.processZipFile(jarFile);
+				codesize.Codesize.Item item = codesize.Codesize.processZipFile(jarFile);
 
 				int codesize = item.getCodeSize();
 
