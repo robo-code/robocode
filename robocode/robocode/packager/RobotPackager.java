@@ -60,8 +60,6 @@ import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
 
-import codesize.Codesize;
-
 
 /**
  * @author Mathew A. Nelson (original)
@@ -483,7 +481,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			public void run() {
 				File jarFile = new File(getFilenamePanel().getFilenameField().getText());
 
-				Codesize.Item item = Codesize.processZipFile(jarFile);
+				codesize.Codesize.Item item = codesize.Codesize.processZipFile(jarFile);
 
 				int codesize = item.getCodeSize();
 
