@@ -5,6 +5,9 @@ package sampleteam;
  * Point - a serializable point class
  */
 public class Point implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private double x = 0.0;
 	private double y = 0.0;
 	
