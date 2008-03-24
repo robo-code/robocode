@@ -474,8 +474,9 @@
           debug="${debug}"
           debuglevel="lines,vars,source"
           optimize="true"
-          includes="**/*.java"
-      />
+          includes="**/*.java">
+      	<compilerarg value="-Xlint"/>
+	  </javac>
     </sequential>
   </macrodef>
 
