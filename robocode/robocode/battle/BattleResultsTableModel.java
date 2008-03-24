@@ -117,7 +117,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public String getTitle() {
-		if (title == null) {
+		if (title == null && battle != null) {
 			int round = battle.getRoundNum();
 
 			title = "Results for " + round + " round";

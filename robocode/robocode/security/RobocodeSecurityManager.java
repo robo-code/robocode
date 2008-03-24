@@ -85,6 +85,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	@Override
 	public void checkAccess(Thread t) {
 		super.checkAccess(t);
+
 		Thread c = Thread.currentThread();
 
 		if (isSafeThread(c) && getSecurityContext().equals(safeSecurityContext)) {
@@ -523,10 +524,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPackageAccess(String pkg) {
-		if (pkg.equals("java.lang")) {
-			return;
-		}
-
 		super.checkPackageAccess(pkg);
 
 		// Accept if running in Robocode's security context

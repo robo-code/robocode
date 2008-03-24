@@ -1,5 +1,5 @@
 Version 1.5.5
-(03/06/2008)
+(03/24/2008)
 -------------
 o Bugfixes
   -- The CPU constant was not calculated the first time Robocode was started up.
@@ -9,6 +9,10 @@ o Changes
   -- Fixed a security issue, where robot was able to access the internals of
      the Robocode game thru the AWT Event Queue.
      -- Robots that try to access the AWT Event Queue will be disabled
+  -- Added a "Make all bullets white" option to the Rendering Options.
+     -- When this option is enabled, all bullets on the battle field will be
+        painted in white. Use this options when you need to see all bullets
+        on the battle field, i.e. when bullet colors are almost invisible.
 
 Version 1.5.4
 (02/15/2008)
