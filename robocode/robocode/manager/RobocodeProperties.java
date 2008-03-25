@@ -962,7 +962,8 @@ public class RobocodeProperties {
 		setOptionsRenderingMethod(Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0")));
 		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
 		optionsRenderingBufferImages = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_BUFFER_IMAGES, "true"));
-		optionsRenderingForceBulletColor = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "false"));
+		optionsRenderingForceBulletColor = Boolean.valueOf(
+				props.getProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "false"));
 
 		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false"));
 		optionsSoundEnableGunshot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true"));

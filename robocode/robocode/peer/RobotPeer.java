@@ -318,7 +318,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	/**
-	 * Creates and returns a new robot view  
+	 * Creates and returns a new robot proxy  
 	 */
 	public IBasicRobotPeer getRobotProxy() {
 		if (isTeamRobot) {
@@ -558,8 +558,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 		try {
 			if (robot != null) {
-				robot.setOut(getOut());
-				robot.setPeer(getRobotProxy());
 
 				// Process all events for the first turn.
 				// This is done as the first robot status event must occur before the robot

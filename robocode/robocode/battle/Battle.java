@@ -1536,6 +1536,9 @@ public class Battle implements Runnable {
 					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
 					robotPeer.setRobot(bot);
+
+					bot.setOut(robotPeer.getOut());
+					bot.setPeer(robotPeer);
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");

@@ -536,7 +536,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (isSafeContext()) {
 			return;
 		}
-
+                                          
 		// Access to robocode sub package?
 		if (pkg.startsWith("robocode.")) {
 
@@ -544,12 +544,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			// Only access to robocode.util or robocode.robotinterfaces is allowed
 			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
-					|| subPkg.equals("peer.proxies")
 					|| (experimental && subPkg.equals("robotinterfaces.peer")))) {
 
 				Thread c = Thread.currentThread();
 
-				if (isSafeThread()) {
+				if (isSafeThread(c)) {
 					return;
 				}
 
@@ -573,7 +572,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	public void checkAwtEventQueueAccess() {
 		super.checkAwtEventQueueAccess();
 
- 		// Prevent robots from accessing the AWT Event Queue, i.e. hacking Robocode
+		// Prevent robots from accessing the AWT Event Queue, i.e. hacking Robocode
 
 		List<Class<?>> robotClasses = threadManager.getRobotClasses();
 

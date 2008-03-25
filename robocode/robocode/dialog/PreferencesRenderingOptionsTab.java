@@ -263,8 +263,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 	private void loadPreferences(RobocodeProperties props) {
 		getOptionsRenderingAntialiasingComboBox().setSelectedIndex(props.getOptionsRenderingAntialiasing());
-		getOptionsRenderingTextAntialiasingComboBox().setSelectedIndex(
-				props.getOptionsRenderingTextAntialiasing());
+		getOptionsRenderingTextAntialiasingComboBox().setSelectedIndex(props.getOptionsRenderingTextAntialiasing());
 		getOptionsRenderingMethodComboBox().setSelectedIndex(props.getOptionsRenderingMethod());
 		getOptionsRenderingNoBuffersComboBox().setSelectedIndex(props.getOptionsRenderingNoBuffers() - 1);
 		getOptionsRenderingBufferImagesCheckBox().setSelected(props.getOptionsRenderingBufferImages());
