@@ -1516,6 +1516,9 @@ public class Battle extends BattleData implements Runnable {
 						IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
 						robotProxy.getPeer().setRobot(bot);
+
+						bot.setOut(robotProxy.getPeer().getOut());
+						bot.setPeer(robotProxy.getPeer().getRobotView());
 					} catch (IllegalAccessException e) {
 						robotProxy.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 						robotProxy.getOut().println("SYSTEM: Is your constructor marked public?");

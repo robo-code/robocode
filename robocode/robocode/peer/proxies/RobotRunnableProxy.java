@@ -168,8 +168,6 @@ public class RobotRunnableProxy extends ReadingRobotProxy implements IRobotRunna
 			IBasicRobot robot = peer.getRobot();
 
 			if (robot != null) {
-				robot.setOut(peer.getOut());
-				robot.setPeer(peer.getRobotView());
 
 				// Process all events for the first turn.
 				// This is done as the first robot status event must occur before the robot
