@@ -561,6 +561,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 					robotPeer.setEnergy(0);
 				}
 
+				if (!experimental && subPkg.equals("robotinterfaces.peer")) {
+					robotPeer.getOut().println(
+							"SYSTEM: " + robotPeer.getName() + " is not allowed to access the internal Robocode package: "
+							+ pkg + "\n"
+							+ "SYSTEM: Perhaps you did not set the -DEXPERIMENTAL=true option in the robocode.bat or robocode.sh file?\n"
+							+ "SYSTEM: ----");
+				}
+
 				throw new AccessControlException(
 						"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "
 						+ pkg);

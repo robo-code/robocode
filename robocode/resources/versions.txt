@@ -1,5 +1,5 @@
 Version 1.6 Beta
-(03/26/2008)
+(03/27/2008)
 -------------
 o Bugfixes
   -- The CPU constant was not calculated the first time Robocode was started up.
@@ -16,7 +16,7 @@ o Major changes
         within Robocode. But it is possible to create new robot types with other
         methods names etc. from the robot interfaces, and it is also possible to
         create ordinary robots based directly on the robot interfaces.
-     -- See the new 'samplealiens' directory for some examples of how to use
+     -- See the new 'sampleex' directory for some examples of how to use
         these new interfaces in Java.
      -- The introduction of the new robot interfaces required a great deal of
         changes and cleanup of the internal structures of Robocode, but for the
@@ -30,7 +30,7 @@ o Major changes
         Note that this experimental option might be removed in the future so
         that robots are always allowed to access the robot peer from the new
         robot interfaces.
-     -- Most work with the robot interfaces were performed by Pavel Šavara that
+     -- Most work with the robot interfaces were performed by Pavel Savara that
         has joined the development of Robocode, and which has done a tremendous
         job with the new robot interfaces.
 o Minor changes

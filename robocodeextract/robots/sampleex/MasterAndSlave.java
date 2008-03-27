@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package samplealiens;
+package sampleex;
 
 
 import robocode.robotinterfaces.IAdvancedRobot;

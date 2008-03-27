@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package samplealiens;
+package sampleex;
 
 
 import java.awt.Graphics2D;
