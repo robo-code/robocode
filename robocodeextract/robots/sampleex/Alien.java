@@ -21,6 +21,9 @@ import robocode.robotinterfaces.peer.*;
 
 
 /**
+ * A sample robot.
+ * Is not inherited from classic base robots, uses new experimental access to RobotPeer.
+ * Use -DEXPERIMENTAL=true to start robocode for this robot.
  * @author Pavel Savara (original)
  */
 public class Alien implements IBasicEvents, IBasicRobot, Runnable {
@@ -38,10 +41,6 @@ public class Alien implements IBasicEvents, IBasicRobot, Runnable {
 
 	public void setPeer(IBasicRobotPeer iRobotPeer) {
 		peer = (IStandardRobotPeer) iRobotPeer;
-	}
-
-	public IBasicRobotPeer getPeer() {
-		return peer;
 	}
 
 	public void setOut(PrintStream printStream) {
