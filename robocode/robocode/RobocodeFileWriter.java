@@ -23,17 +23,16 @@ import java.io.IOException;
  * RobocodeFileWriter is similar to a {@link java.io.FileWriter} and is used for
  * writing data out to a file, which you got by calling {@link
  * AdvancedRobot#getDataFile(String)}.
- * <p>
+ * <p/>
  * You should read {@link java.io.FileWriter} for documentation of this class.
- * <p>
+ * <p/>
  * Please notice that the max. size of your data file is set to 200000
  * (~195 KB).
  *
- * @see AdvancedRobot#getDataFile(String)
- * @see java.io.FileWriter
- *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @see AdvancedRobot#getDataFile(String)
+ * @see java.io.FileWriter
  */
 public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 

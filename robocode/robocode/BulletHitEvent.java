@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ public class BulletHitEvent extends Event {
 	/**
 	 * Called by the game to create a new {@code BulletHitEvent}.
 	 *
-	 * @param name the name of the robot your bullet hit
+	 * @param name   the name of the robot your bullet hit
 	 * @param energy the remaining energy of the robot that your bullet has hit
 	 * @param bullet the bullet that hit the robot
 	 */
@@ -59,9 +59,8 @@ public class BulletHitEvent extends Event {
 	}
 
 	/**
-	 * @deprecated Use {@link #getEnergy()} instead.
-	 *
 	 * @return energy the remaining energy of the robot that your bullet has hit
+	 * @deprecated Use {@link #getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -78,9 +77,8 @@ public class BulletHitEvent extends Event {
 	}
 
 	/**
-	 * @deprecated Use {@link #getEnergy()} instead.
-	 *
 	 * @return energy the remaining energy of the robot that your bullet has hit
+	 * @deprecated Use {@link #getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getRobotLife() {
@@ -88,9 +86,8 @@ public class BulletHitEvent extends Event {
 	}
 
 	/**
-	 * @deprecated Use {@link #getName()} instead.
-	 *
 	 * @return the name of the robot your bullet hit.
+	 * @deprecated Use {@link #getName()} instead.
 	 */
 	@Deprecated
 	public String getRobotName() {

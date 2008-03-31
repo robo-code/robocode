@@ -118,7 +118,7 @@
 	<zip
         destfile="${build}/${sources.archive}"
         basedir=".."
-        includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**"
+        includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**, tools/**"
         excludes="build/build, **/bin/**, **/.svn/**"
         defaultexcludes="no"
     />

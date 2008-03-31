@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,23 +24,27 @@
 package roborumble.netengine;
 
 
-import java.net.*;
-import java.util.*;
-import java.util.jar.*;
-import java.util.zip.*;
-import java.io.*;
-
-import roborumble.battlesengine.*;
-
+import roborumble.battlesengine.CompetitionsSelector;
 import static roborumble.netengine.FileTransfer.DownloadStatus;
 import static roborumble.util.PropertiesUtil.getProperties;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.Vector;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 
 /**
  * Class used for downloading participating robots from the Internet.
  * Manages the download operations (participants and JAR files).
  * Controlled by properties files.
- * 
+ *
  * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  */

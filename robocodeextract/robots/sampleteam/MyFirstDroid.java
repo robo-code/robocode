@@ -1,12 +1,14 @@
 package sampleteam;
 
 
-import robocode.*;
+import robocode.Droid;
+import robocode.MessageEvent;
+import robocode.TeamRobot;
 
 
 /**
  * SimpleDroid - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Follows orders of team leader
  */
 public class MyFirstDroid extends TeamRobot implements Droid {
@@ -17,7 +19,7 @@ public class MyFirstDroid extends TeamRobot implements Droid {
 	public void run() {
 		out.println("MyFirstDroid ready.");
 	}
-	
+
 	/**
 	 * onMessageReceived:  What to do when our leader sends a message
 	 */
@@ -49,7 +51,7 @@ public class MyFirstDroid extends TeamRobot implements Droid {
 
 	/**
 	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */	
+	 */
 	public double normalRelativeAngle(double angle) {
 		if (angle > -180 && angle <= 180) {
 			return angle;

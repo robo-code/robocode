@@ -62,6 +62,7 @@ package robocode.peer;
 
 
 import robocode.battle.Battle;
+import robocode.battlefield.BattleField;
 import robocode.peer.data.RobotPeerCommands;
 import robocode.peer.data.RobotPeerInfo;
 import robocode.peer.data.RobotPeerStatus;
@@ -70,7 +71,6 @@ import robocode.peer.robot.*;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.battlefield.BattleField;
 
 import java.security.AccessControlException;
 
@@ -114,7 +114,7 @@ public class RobotPeer extends RobotPeerSync implements IContestantPeer, IRobotP
 		super();
 
 		this.battle = battle;
-		this.battleField = battle.getBattleField(); 
+		this.battleField = battle.getBattleField();
 
 		// data
 		info = new RobotPeerInfo();

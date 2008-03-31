@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,8 @@ package roborumble.netengine;
 
 
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 /**
@@ -36,8 +37,18 @@ public class FileTransfer {
 	 */
 	public enum DownloadStatus {
 
-		/** The download was succesful */
-		OK, /** Connection problem */ COULD_NOT_CONNECT, /** The file to download was not found */ FILE_NOT_FOUND
+		/**
+		 * The download was succesful
+		 */
+		OK,
+		/**
+		 * Connection problem
+		 */
+		COULD_NOT_CONNECT,
+		/**
+		 * The file to download was not found
+		 */
+		FILE_NOT_FOUND
 	}
 
 
@@ -55,7 +66,7 @@ public class FileTransfer {
 			super(name);
 			setDaemon(true);
 		}
-		
+
 		protected void notifyFinish() {
 			// Notify that this thread is finish
 			synchronized (this) {
@@ -153,12 +164,11 @@ public class FileTransfer {
 	/**
 	 * Downloads a file from a HTTP site.
 	 *
-	 * @param url the url of the HTTP site to download the file from
-	 * @param filename the filename of the destination file
+	 * @param url       the url of the HTTP site to download the file from
+	 * @param filename  the filename of the destination file
 	 * @param sessionId an optional session id if the download is session based
-	 *
 	 * @return the download status, which is DownloadStatus.OK if the download
-	 *    completed successfully; otherwise an error occurred
+	 *         completed successfully; otherwise an error occurred
 	 */
 	public static DownloadStatus download(String url, String filename, String sessionId) {
 		HttpURLConnection con = null;
@@ -480,9 +490,9 @@ public class FileTransfer {
 	/**
 	 * Copies a file into another file.
 	 *
-	 * @param src_file the filename of the source file to copy
+	 * @param src_file  the filename of the source file to copy
 	 * @param dest_file the filename of the destination file to copy the file
-	 *    into
+	 *                  into
 	 * @return true if the file was copied; false otherwise
 	 */
 	public static boolean copy(String src_file, String dest_file) {

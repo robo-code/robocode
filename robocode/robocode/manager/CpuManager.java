@@ -34,7 +34,7 @@ import robocode.io.Logger;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert Maupin (contributor)
- * @author Pavel Savara (contributor) 
+ * @author Pavel Savara (contributor)
  */
 public class CpuManager {
 	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;

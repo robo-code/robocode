@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,18 +20,14 @@
 package robocode;
 
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
-
-import javax.swing.*;
 
 
 /**
@@ -350,7 +346,7 @@ public class AutoExtract implements ActionListener {
 			// Create RoboRumble working dirs
 			createDir(new File(roborumbleDir, "files"));
 			createDir(new File(roborumbleDir, "temp"));
-			
+
 			// Move RoboRumble config files from /config folder into the /roborumble folder
 			move(new File(installDir, "config/roborumble.txt"), new File(installDir, "roborumble/roborumble.txt"));
 			move(new File(installDir, "config/meleerumble.txt"), new File(installDir, "roborumble/meleerumble.txt"));
@@ -482,10 +478,10 @@ public class AutoExtract implements ActionListener {
 				while (in.available() > 0) {
 					out.write(buf, 0, in.read(buf, 0, buf.length));
 				}
-				
+
 				in.close();
 				out.close();
-				
+
 			} catch (IOException e) {}
 			srcFile.delete();
 		}

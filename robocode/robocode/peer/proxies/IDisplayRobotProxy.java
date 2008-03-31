@@ -22,14 +22,20 @@ import java.awt.*;
  */
 public interface IDisplayRobotProxy extends IReadingRobotProxy {
 	void lockRead();
+
 	void unlockRead();
+
 	void cleanup();
+
 	RobotOutputStream getOut();
 
 	void displaySetPaintEnabled(boolean enabled);
+
 	void displaySetSGPaintEnabled(boolean enabled);
+
 	void displayKill();
 
 	void onInteractiveEvent(robocode.Event e);
+
 	void onPaint(Graphics2D g);
 }

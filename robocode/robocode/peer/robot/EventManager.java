@@ -1062,7 +1062,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 			boolean conditionSatisfied;
 
 			// Was: (* Do not turn this into a "for each" loop as this will cause a  ConcurrentModificationException! *)
-			// NOT with CopyOnWriteArrayList 
+			// NOT with CopyOnWriteArrayList
 			for (Condition customEvent : customEvents) {
 				c = customEvent;
 				robotView.setTestingCondition(true);
@@ -1279,10 +1279,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *
 	 * @return a vector containing all MessageEvents currently in the robot's
 	 *         queue
-	 *
 	 * @see #onMessageReceived(MessageEvent)
 	 * @see MessageEvent
-	 *
 	 * @since 1.2.6
 	 */
 	public List<MessageEvent> getMessageEvents() {
@@ -1311,10 +1309,8 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 	 *
 	 * @return a vector containing all StatusEvents currently in the robot's
 	 *         queue.
-	 *
 	 * @see #onStatus(StatusEvent)
 	 * @see StatusEvent
-	 *
 	 * @since 1.5
 	 */
 	public List<StatusEvent> getStatusEvents() {

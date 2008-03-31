@@ -106,7 +106,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 	// synchronizet inplace, called by battle
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
-    
+
 	public boolean initializeLocked(double x, double y, double heading, List<IBattleRobotProxy> battleRobots) {
 		peer.lockWrite();
 		try {
@@ -488,7 +488,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 	private void battleUpdateGunHeading() {
 		double gunTurnRemaining = commands.getGunTurnRemaining();
 		double radarTurnRemaining = commands.getRadarTurnRemaining();
-        
+
 		if (gunTurnRemaining > 0) {
 			if (gunTurnRemaining < Rules.GUN_TURN_RATE_RADIANS) {
 				status.adjustGunHeading(gunTurnRemaining);

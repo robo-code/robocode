@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -68,7 +68,7 @@ public class FileUtil {
 	 *
 	 * @param file the file
 	 * @return the file type of the file, e.g. ".class", ".jar" or "" if the
-	 *    file name does not contain an extension.
+	 *         file name does not contain an extension.
 	 */
 	public static String getFileType(File file) {
 		return getFileType(file.getName());
@@ -79,7 +79,7 @@ public class FileUtil {
 	 *
 	 * @param fileName the file name
 	 * @return the file type of the file name, e.g. ".class", ".jar" or "" if
-	 *    the file name does not contain an extension.
+	 *         the file name does not contain an extension.
 	 */
 	public static String getFileType(String fileName) {
 		int lastdot = fileName.lastIndexOf('.');
@@ -109,8 +109,8 @@ public class FileUtil {
 
 	/**
 	 * Copies a file into another file.
-	 * 
-	 * @param srcFile the input file to copy
+	 *
+	 * @param srcFile  the input file to copy
 	 * @param destFile the output file to copy to
 	 * @throws IOException if an I/O exception occurs
 	 */
@@ -127,7 +127,7 @@ public class FileUtil {
 		try {
 			in = new FileInputStream(srcFile);
 			out = new FileOutputStream(destFile);
-	
+
 			while (in.available() > 0) {
 				out.write(buf, 0, in.read(buf, 0, buf.length));
 			}
@@ -146,7 +146,7 @@ public class FileUtil {
 	 *
 	 * @param dir the file for the directory to delete
 	 * @return <code>true</code> if the directory was deleted;
-	 *    <code>false</code> otherwise if e.g. the file is not a directory
+	 *         <code>false</code> otherwise if e.g. the file is not a directory
 	 */
 	public static boolean deleteDir(File dir) {
 		if (!dir.isDirectory()) {
@@ -234,7 +234,7 @@ public class FileUtil {
 	public static File getConfigDir() {
 		return createDir(new File(cwd, "/config"));
 	}
-	
+
 	/**
 	 * Returns the Robocode configuration file.
 	 *

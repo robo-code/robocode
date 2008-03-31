@@ -586,14 +586,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 					for (RobotPeer robotPeer : robotPeers) {
 						if (robotPeer != null) {
-							robotPeer.getOut().println("SYSTEM: Accessing the AWT Event Queue is not allowed!");	
+							robotPeer.getOut().println("SYSTEM: Accessing the AWT Event Queue is not allowed!");
 
 							// Disable the robot
 							robotPeer.forceUncharge();
 						}
 					}
 
-					// Kill the thread created thru the AWT Event Queue 
+					// Kill the thread created thru the AWT Event Queue
 					throw new ThreadDeath();
 				}
 			}

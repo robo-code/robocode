@@ -291,7 +291,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		execute();
 		return bullet;
 	}
-	
+
 	// asynchronous actions
 	public Bullet setFire(double power) {
 		setCall();

@@ -12,12 +12,14 @@
 package samplealiens;
 
 
-import java.awt.Graphics2D;
-import java.io.PrintStream;
-
 import robocode.*;
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IStandardRobotPeer;
+
+import java.awt.*;
+import java.io.PrintStream;
 
 
 /**

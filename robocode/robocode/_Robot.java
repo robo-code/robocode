@@ -24,16 +24,15 @@ package robocode;
 /**
  * This class is used by the system, as well as being a placeholder for all deprecated
  * (meaning, you should not use them) calls for Robot.
- * <p>
+ * <p/>
  * You should create a {@link Robot} instead.
- * <p>
+ * <p/>
  * There is no guarantee that this class will exist in future versions of Robocode.
- *
- * @see Robot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
+ * @see Robot
  */
 public abstract class _Robot extends _RobotBase {
 	private String robotImageName;
@@ -43,9 +42,8 @@ public abstract class _Robot extends _RobotBase {
 	protected _Robot() {}
 
 	/**
+	 * @return 5 - {@link robocode.Robot#getGunHeat() getGunHeat()}.
 	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat()} instead.
-	 *
-	 * @return 5 - {@link robocode.Robot#getGunHeat() getGunHeat()}. 
 	 */
 	@Deprecated
 	public double getGunCharge() {
@@ -57,9 +55,8 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getEnergy() getEnergy()} instead.
-	 *
 	 * @return the robot's current life/energy.
+	 * @deprecated Use {@link Robot#getEnergy() getEnergy()} instead.
 	 */
 	@Deprecated
 	public double getLife() {
@@ -71,9 +68,8 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds()} instead.
-	 *
 	 * @return the number of rounds in the current battle
+	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds()} instead.
 	 */
 	@Deprecated
 	public int getNumBattles() {
@@ -85,9 +81,8 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum()} instead.
-	 *
 	 * @return the current round number of the battle
+	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum()} instead.
 	 */
 	@Deprecated
 	public int getBattleNum() {
@@ -103,15 +98,14 @@ public abstract class _Robot extends _RobotBase {
 	 * the {@link Robot} class.
 	 *
 	 * @param interruptible {@code true} if the event handler should be
-	 *    interrupted if new events of the same priority occurs; {@code false}
-	 *    otherwise
+	 *                      interrupted if new events of the same priority occurs; {@code false}
+	 *                      otherwise
 	 */
 	public void setInterruptible(boolean interruptible) {}
 
 	/**
-	 * @deprecated This call is not used.
-	 *
 	 * @return the name of the gun image
+	 * @deprecated This call is not used.
 	 */
 	@Deprecated
 	public String getGunImageName() {
@@ -119,9 +113,8 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated This call is not used.
-	 *
 	 * @param newGunImageName the name of the new gun image
+	 * @deprecated This call is not used.
 	 */
 	@Deprecated
 	public void setGunImageName(String newGunImageName) {
@@ -129,9 +122,8 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated This call is not used.
-	 *
 	 * @param newRadarImageName the name of the new radar image
+	 * @deprecated This call is not used.
 	 */
 	@Deprecated
 	public void setRadarImageName(String newRadarImageName) {
@@ -139,9 +131,8 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated This call is not used.
-	 *
 	 * @param newRobotImageName the name of the new robot body image
+	 * @deprecated This call is not used.
 	 */
 	@Deprecated
 	public void setRobotImageName(String newRobotImageName) {
@@ -149,9 +140,8 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated This call is not used.
-	 *
 	 * @return the name of the radar image
+	 * @deprecated This call is not used.
 	 */
 	@Deprecated
 	public String getRadarImageName() {
@@ -159,9 +149,8 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @deprecated This call is not used.
-	 *
 	 * @return the name of the robot image
+	 * @deprecated This call is not used.
 	 */
 	@Deprecated
 	public String getRobotImageName() {

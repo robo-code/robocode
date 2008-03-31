@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,6 @@ public class Utils {
 	 *
 	 * @param angle the angle to normalize
 	 * @return the normalized angle that will be in the range of [0,2*PI[
-	 *
 	 * @see #normalAbsoluteAngle(double)
 	 * @see #isNear(double, double)
 	 */

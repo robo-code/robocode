@@ -1,13 +1,16 @@
 package sample;
 
 
-import java.awt.Color;
-import robocode.*;
+import robocode.DeathEvent;
+import robocode.Robot;
+import robocode.ScannedRobotEvent;
+
+import java.awt.*;
 
 
 /**
  * Corners - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * This robot moves to a corner, then swings the gun back and forth.
  * If it dies, it tries a new corner in the next round.
  */
