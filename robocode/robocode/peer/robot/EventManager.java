@@ -1141,7 +1141,7 @@ public class EventManager implements IRobotEventManager, IBattleEventManager, ID
 							&& !(robotView.isAdvancedRobot())) {
 						robotView.setFireAssistAngle(
 								Utils.normalAbsoluteAngle(
-										robotView.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians()));
+										robotView.getBodyHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians()));
 						if (!robotView.isAdvancedRobot()) {
 							robotView.setFireAssistValid(true);
 						}

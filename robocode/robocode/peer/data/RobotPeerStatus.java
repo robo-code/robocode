@@ -359,7 +359,7 @@ public class RobotPeerStatus extends RobotPeerLock {
 
 	public final void setRunning(boolean running) {
 		// checkWriteLock();
-		// intentionaly not synchronized to prevent block from user code
+		// intentionally not synchronized to prevent block from user code
 		this.isRunning = running;
 	}
 

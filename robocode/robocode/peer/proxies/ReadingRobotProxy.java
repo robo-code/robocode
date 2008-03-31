@@ -364,7 +364,7 @@ public class ReadingRobotProxy implements IReadingRobotProxy {
 		}
 	}
 
-	public final double getHeading() {
+	public final double getBodyHeading() {
 		peer.lockRead();
 		try {
 			return status.getBodyHeading();
@@ -440,7 +440,7 @@ public class ReadingRobotProxy implements IReadingRobotProxy {
 	// commands
 	// // // //  // // // // // // // // // // // // // // // // // // // // // // // //
 
-	public final double getTurnRemaining() {
+	public final double getBodyTurnRemaining() {
 		peer.lockRead();
 		try {
 			return commands.getBodyTurnRemaining();

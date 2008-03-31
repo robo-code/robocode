@@ -285,7 +285,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 
 				getBattleEventManager().add(
 						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
-						normalRelativeAngle(angle - status.getBodyHeading()), dist, robotPeer.getHeading(),
+						normalRelativeAngle(angle - status.getBodyHeading()), dist, robotPeer.getBodyHeading(),
 						robotPeer.getVelocity()));
 			}
 		}
@@ -669,7 +669,7 @@ public class BattleRobotProxy extends ReadingRobotProxy implements IBattleRobotP
 							new HitRobotEvent(robotView.getName(), normalRelativeAngle(angle - status.getBodyHeading()),
 							robotView.getEnergy(), atFault));
 					robotView.getBattleEventManager().add(
-							new HitRobotEvent(info.getName(), normalRelativeAngle(PI + angle - robotView.getHeading()),
+							new HitRobotEvent(info.getName(), normalRelativeAngle(PI + angle - robotView.getBodyHeading()),
 							status.getEnergy(), false));
 				}
 			}

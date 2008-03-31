@@ -70,7 +70,7 @@ public class RobotRecord {
 		x = (short) (robot.getX() + 0.5);
 		y = (short) (robot.getY() + 0.5);
 		energy = (short) (robot.getEnergy() * 10);
-		heading = (byte) (128 * robot.getHeading() / Math.PI);
+		heading = (byte) (128 * robot.getBodyHeading() / Math.PI);
 		radarHeading = (byte) (128 * robot.getRadarHeading() / Math.PI);
 		gunHeading = (byte) (128 * robot.getGunHeading() / Math.PI);
 		state = (byte) robot.getState();

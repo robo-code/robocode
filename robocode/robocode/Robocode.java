@@ -236,7 +236,7 @@ public class Robocode {
 						+ "    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
 						+ "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
 						+ "    -Ddebug=true|false         Enable or disable System.err messages\n"
-						+ "    -EXPERIMENTAL=true|false   Enable or disable new robot interfaces\n" + "\n");
+						+ "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n");
 	}
 
 	/**

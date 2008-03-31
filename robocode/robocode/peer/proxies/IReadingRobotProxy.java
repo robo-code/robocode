@@ -70,7 +70,7 @@ public interface IReadingRobotProxy {
 
 	double getY();
 
-	double getHeading();
+	double getBodyHeading();
 
 	double getRadarHeading();
 
@@ -86,7 +86,7 @@ public interface IReadingRobotProxy {
 
 	BoundingRectangle getBoundingBox();
 
-	double getTurnRemaining();
+	double getBodyTurnRemaining();
 
 	double getRadarTurnRemaining();
 

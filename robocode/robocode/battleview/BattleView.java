@@ -400,7 +400,7 @@ public class BattleView extends Canvas {
 					y = battleFieldHeight - robotPeer.getY();
 
 					at = AffineTransform.getTranslateInstance(x, y);
-					at.rotate(robotPeer.getHeading());
+					at.rotate(robotPeer.getBodyHeading());
 
 					RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(robotPeer.getBodyColor());
 
@@ -485,12 +485,22 @@ public class BattleView extends Canvas {
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
 		// Do the painting
-		if (robotPeer.isSGPaintEnabled()) {
-			robotPeer.onPaint(g);
-		} else {
-			mirroredGraphics.bind(g, battleField.getHeight());
-			robotPeer.onPaint(mirroredGraphics);
-			mirroredGraphics.release();
+		try {
+			if (robotPeer != null) {
+
+				if (robotPeer.isSGPaintEnabled()) {
+					robotPeer.onPaint(g);
+				} else {
+					mirroredGraphics.bind(g, battleField.getHeight());
+					robotPeer.onPaint(mirroredGraphics);
+					mirroredGraphics.release();
+				}
+			}
+		} catch (Exception e) {
+			// Make sure that Robocode is not halted by an exception caused by letting the robot paint
+
+			robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
+			e.printStackTrace(robotPeer.getOut());
 		}
 
 		// Restore the graphics state

@@ -206,7 +206,7 @@ public class BulletPeer implements IRobotBulletProxy, IBattleBulletProxy, IDispl
 
 				robotPeer.getBattleEventManager().add(
 						new HitByBulletEvent(
-								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getHeading()), getBullet()));
+								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()));
 
 				state = STATE_HIT_VICTIM;
 				owner.getBattleEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet));
