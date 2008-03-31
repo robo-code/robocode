@@ -37,11 +37,11 @@
 package robocode.peer.robot;
 
 
-import java.util.List;
-
 import robocode.control.RobotResults;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
+
+import java.util.List;
 
 
 /**

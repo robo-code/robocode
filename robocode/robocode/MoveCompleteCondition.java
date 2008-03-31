@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,10 @@ package robocode;
  * A prebuilt condition you can use that indicates your robot has finished
  * moving.
  *
- * @see Condition
- *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @see Condition
  */
 public class MoveCompleteCondition extends Condition {
 	private AdvancedRobot robot;
@@ -44,9 +43,8 @@ public class MoveCompleteCondition extends Condition {
 	 * A condition priority is a value from 0 - 99. The higher value, the
 	 * higher priority. The default priority is 80.
 	 *
-	 * @param robot your robot, which must be a {@link AdvancedRobot}
+	 * @param robot    your robot, which must be a {@link AdvancedRobot}
 	 * @param priority the priority of this condition
-	 * 
 	 * @see Condition#setPriority(int)
 	 */
 	public MoveCompleteCondition(AdvancedRobot robot, int priority) {
@@ -59,7 +57,7 @@ public class MoveCompleteCondition extends Condition {
 	 * Tests if the robot has stopped moving.
 	 *
 	 * @return {@code true} if the robot has stopped moving; {@code false}
-	 *    otherwise
+	 *         otherwise
 	 */
 	@Override
 	public boolean test() {

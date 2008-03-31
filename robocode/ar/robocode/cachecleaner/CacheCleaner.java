@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Aaron Rotenberg and Robocode Contributors
+ * Copyright (c) 2007, 2008 Aaron Rotenberg and Robocode Contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,13 @@
 package ar.robocode.cachecleaner;
 
 
-import java.io.*;
+import robocode.control.BattleSpecification;
+import robocode.control.RobocodeEngine;
+import robocode.control.RobocodeListener;
+import robocode.control.RobotResults;
 
-import robocode.control.*;
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -59,7 +63,7 @@ public final class CacheCleaner {
 		engine.getLocalRepository(); // Force rebuild.
 		System.out.println("done.");
 	}
-	
+
 	private static void deleteFile(String filename) {
 		System.out.print("Deleting " + filename + "... ");
 		try {

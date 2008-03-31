@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001-2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,7 @@ public class BulletRecord {
 	/**
 	 * Constructs a new bullet record.
 	 *
-	 * @param owner index of the robot that fired the bullet
+	 * @param owner  index of the robot that fired the bullet
 	 * @param bullet the bullet peer that is copied into this record
 	 */
 	public BulletRecord(int owner, BulletPeer bullet) {

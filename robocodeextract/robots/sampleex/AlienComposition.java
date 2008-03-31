@@ -11,89 +11,92 @@
  *******************************************************************************/
 package sampleex;
 
+
+import robocode.*;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.peer.IStandardRobotPeer;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.*;
+import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
-import java.io.PrintStream;
 import java.awt.*;
+import java.io.PrintStream;
+
 
 /**
  * A sample robot.
  * Is not inherited from classic base robots, uses new experimental access to RobotPeer.
  * Use -DEXPERIMENTAL=true to start robocode for this robot.
  * This composition version is showing possible decomposition of robot, main runnable and event handler to different classes.
+ *
  * @author Pavel Savara (original)
  */
 public class AlienComposition implements IBasicRobot {
-    PrintStream out;
-    IStandardRobotPeer peer;
-    AlienMain main;
-    AlienEventHandler handler;
+	PrintStream out;
+	IStandardRobotPeer peer;
+	AlienMain main;
+	AlienEventHandler handler;
 
-    public AlienComposition(){
-        main = new AlienMain();
-        handler = new AlienEventHandler();
-    }
+	public AlienComposition() {
+		main = new AlienMain();
+		handler = new AlienEventHandler();
+	}
 
-    public void setPeer(IBasicRobotPeer iRobotPeer) {
-        peer = (IStandardRobotPeer) iRobotPeer;
-    }
+	public void setPeer(IBasicRobotPeer iRobotPeer) {
+		peer = (IStandardRobotPeer) iRobotPeer;
+	}
 
-    public void setOut(PrintStream printStream) {
-        out = printStream;
-    }
+	public void setOut(PrintStream printStream) {
+		out = printStream;
+	}
 
-    public Runnable getRobotRunnable() {
-        return main;
-    }
+	public Runnable getRobotRunnable() {
+		return main;
+	}
 
-    public IBasicEvents getBasicEventListener() {
-        return handler;
-    }
+	public IBasicEvents getBasicEventListener() {
+		return handler;
+	}
+
+	class AlienMain implements Runnable {
+		public void run() {
+			while (true) {
+				peer.move(100); // Move ahead 100
+				peer.turnGun(Math.PI * 2); // Spin gun around
+				peer.move(-100); // Move back 100
+				peer.turnGun(Math.PI * 2); // Spin gun around
+			}
+		}
+	}
 
 
-    class AlienMain implements Runnable {
-        public void run() {
-            while (true) {
-                peer.move(100); // Move ahead 100
-                peer.turnGun(Math.PI * 2); // Spin gun around
-                peer.move(-100); // Move back 100
-                peer.turnGun(Math.PI * 2); // Spin gun around
-            }
-        }
-    }
+	class AlienEventHandler implements IBasicEvents {
+		public void onScannedRobot(ScannedRobotEvent e) {
+			peer.setFire(1);
+		}
 
-    class AlienEventHandler implements IBasicEvents {
-        public void onScannedRobot(ScannedRobotEvent e) {
-            peer.setFire(1);
-        }
+		public void onHitByBullet(HitByBulletEvent e) {
+			peer.turnBody(Math.PI / 2 + e.getBearingRadians());
+		}
 
-        public void onHitByBullet(HitByBulletEvent e) {
-            peer.turnBody(Math.PI / 2 + e.getBearingRadians());
-        }
+		public void onStatus(StatusEvent e) {}
 
-        public void onStatus(StatusEvent e) {}
+		public void onBulletHit(BulletHitEvent e) {}
 
-        public void onBulletHit(BulletHitEvent e) {}
+		public void onBulletHitBullet(BulletHitBulletEvent e) {}
 
-        public void onBulletHitBullet(BulletHitBulletEvent e) {}
+		public void onBulletMissed(BulletMissedEvent e) {}
 
-        public void onBulletMissed(BulletMissedEvent e) {}
+		public void onDeath(DeathEvent e) {}
 
-        public void onDeath(DeathEvent e) {}
+		public void onHitRobot(HitRobotEvent e) {}
 
-        public void onHitRobot(HitRobotEvent e) {}
+		public void onHitWall(HitWallEvent e) {}
 
-        public void onHitWall(HitWallEvent e) {}
+		public void onRobotDeath(RobotDeathEvent e) {}
 
-        public void onRobotDeath(RobotDeathEvent e) {}
+		public void onWin(WinEvent e) {}
 
-        public void onWin(WinEvent e) {}
-
-        public void onPaint(Graphics2D g) {}
-    }
+		public void onPaint(Graphics2D g) {}
+	}
 }
 

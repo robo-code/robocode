@@ -26,15 +26,15 @@
 package robocode.security;
 
 
-import java.io.*;
-import java.security.AccessControlException;
-import java.security.Permission;
-import java.util.*;
-
 import robocode.RobocodeFileOutputStream;
 import robocode.manager.ThreadManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
+
+import java.io.*;
+import java.security.AccessControlException;
+import java.security.Permission;
+import java.util.*;
 
 
 /**
@@ -218,7 +218,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// For development purposes, allow read any file if override is set.
 		if (perm instanceof FilePermission) {
 			FilePermission fp = (FilePermission) perm;
-			
+
 			if (fp.getActions().equals("read")) {
 				if (System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals("true")) {
 					return;
@@ -470,7 +470,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	public synchronized Thread getBattleThread() {
 		return battleThread;
 	}
-	
+
 	public synchronized void setBattleThread(Thread newBattleThread) {
 		checkPermission(new RobocodePermission("setBattleThread"));
 		battleThread = newBattleThread;
@@ -536,7 +536,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (isSafeContext()) {
 			return;
 		}
-                                          
+
 		// Access to robocode sub package?
 		if (pkg.startsWith("robocode.")) {
 
@@ -597,14 +597,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 					for (RobotPeer robotPeer : robotPeers) {
 						if (robotPeer != null) {
-							robotPeer.getOut().println("SYSTEM: Accessing the AWT Event Queue is not allowed!");	
+							robotPeer.getOut().println("SYSTEM: Accessing the AWT Event Queue is not allowed!");
 
 							// Disable the robot
 							robotPeer.setEnergy(0);
 						}
 					}
 
-					// Kill the thread created thru the AWT Event Queue 
+					// Kill the thread created thru the AWT Event Queue
 					throw new ThreadDeath();
 				}
 			}

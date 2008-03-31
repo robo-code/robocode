@@ -12,8 +12,8 @@
 package robocode.peer.proxies;
 
 
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.Bullet;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.awt.*;
 
@@ -23,7 +23,7 @@ import java.awt.*;
  */
 public class BasicRobotProxy implements IBasicRobotPeer {
 	IBasicRobotPeer peer;
-	
+
 	public BasicRobotProxy(IBasicRobotPeer peer) {
 		this.peer = peer;
 	}

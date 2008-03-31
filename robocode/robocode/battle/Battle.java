@@ -92,36 +92,18 @@
 package robocode.battle;
 
 
-import static java.lang.Math.PI;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.lang.Math.random;
-import static robocode.io.Logger.log;
-
-import java.awt.Component;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
-import java.awt.Label;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import robocode.*;
-import robocode.repository.RobotFileSpecification;
-import robocode.robotinterfaces.*;
+import robocode.MessageEvent;
+import robocode.RobotDeathEvent;
+import robocode.SkippedTurnEvent;
+import robocode.StatusEvent;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
-import robocode.dialog.RobotButton;
 import robocode.dialog.RobocodeFrame;
+import robocode.dialog.RobotButton;
+import static robocode.io.Logger.log;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
@@ -129,7 +111,23 @@ import robocode.manager.RobocodeProperties.PropertyListener;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
+import robocode.repository.RobotFileSpecification;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IInteractiveEvents;
+import robocode.robotinterfaces.IInteractiveRobot;
 import robocode.security.RobocodeClassLoader;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import static java.lang.Math.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -264,11 +262,11 @@ public class Battle implements Runnable {
 	 * to create a thread, starting the thread causes the object's
 	 * <code>run</code> method to be called in that separately executing
 	 * thread.
-	 * <p>
+	 * <p/>
 	 * The general contract of the method <code>run</code> is that it may
 	 * take any action whatsoever.
 	 *
-	 * @see     java.lang.Thread#run()
+	 * @see java.lang.Thread#run()
 	 */
 	public void run() {
 		// Notify that the battle is now running
@@ -310,7 +308,7 @@ public class Battle implements Runnable {
 		if (!replay) {
 			battleRecord = isRecordingEnabled ? new BattleRecord(battleField, robots) : null;
 		}
-			
+
 		while (!isAborted() && roundNum < numRounds) {
 			updateTitle();
 			try {
@@ -473,7 +471,7 @@ public class Battle implements Runnable {
 		for (RobotPeer r : robots) {
 			// Clear all static field on the robot (at class level)
 			r.cleanupStaticFields();
-			
+
 			// Clear the robot object by removing the reference to it
 			r.setRobot(null);
 			r.cleanup();
@@ -867,13 +865,13 @@ public class Battle implements Runnable {
 				}
 			}
 
-			// Add status events for the current turn to all robots that are alive 
+			// Add status events for the current turn to all robots that are alive
 			for (RobotPeer r : robots) {
 				if (!r.isDead()) {
 					r.getEventManager().add(new StatusEvent(r));
 				}
 			}
-			
+
 			// Store the robot start time
 			robotStartTime = System.currentTimeMillis();
 
@@ -887,7 +885,7 @@ public class Battle implements Runnable {
 			boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
 
 			// Paint current battle frame
-			
+
 			if (!(isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode)) {
 				// Update the battle view if the frame has not been painted yet this second
 				// or if it's time to paint the next frame
@@ -916,7 +914,7 @@ public class Battle implements Runnable {
 
 			// Estimate the time that will be used on the total turn this second
 			estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
-			
+
 			// Calculate delay needed for keeping the desired TPS (Turns Per Second)
 			if (endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode) {
 				delay = 0;
@@ -926,7 +924,7 @@ public class Battle implements Runnable {
 
 			// Set flag for if the second has passed
 			resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
-			
+
 			// Check if we must limit the TPS
 			if (!(resetThisSec || minimizedMode)) {
 				resetThisSec = ((desiredTPS - turnsThisSec) == 0);
@@ -1103,7 +1101,7 @@ public class Battle implements Runnable {
 
 			// Set flag for if the second has passed
 			resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
-			
+
 			// Check if we must limit the TPS
 			if (!(resetThisSec || minimizedMode)) {
 				resetThisSec = ((desiredTPS - turnsThisSec) == 0);
@@ -1115,7 +1113,7 @@ public class Battle implements Runnable {
 					Thread.sleep(delay);
 				} catch (InterruptedException e) {
 					// Set the thread status back to being interrupted
-					Thread.currentThread().interrupt();					
+					Thread.currentThread().interrupt();
 				}
 			}
 
@@ -1489,7 +1487,7 @@ public class Battle implements Runnable {
 			battleMonitor.notifyAll();
 
 			// Adjust the desired TPS temporary to maximum rate to stop the battle as quickly as possible
-			int savedTPS = desiredTPS;			
+			int savedTPS = desiredTPS;
 
 			desiredTPS = 10000;
 
@@ -1661,7 +1659,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the activeRobots.
-	 * 
+	 *
 	 * @return Returns a int
 	 */
 	public synchronized int getActiveRobots() {
@@ -1696,7 +1694,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the activeRobots.
-	 * 
+	 *
 	 * @param activeRobots The activeRobots to set
 	 */
 	private synchronized void setActiveRobots(int activeRobots) {
@@ -1705,7 +1703,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the roundNum.
-	 * 
+	 *
 	 * @return Returns a int
 	 */
 	public int getRoundNum() {
@@ -1714,7 +1712,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the roundNum.
-	 * 
+	 *
 	 * @param roundNum The roundNum to set
 	 */
 	public void setRoundNum(int roundNum) {
@@ -1723,7 +1721,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the unsafeLoaderThreadRunning.
-	 * 
+	 *
 	 * @return Returns a boolean
 	 */
 	public synchronized boolean isUnsafeLoaderThreadRunning() {
@@ -1732,7 +1730,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the unsafeLoaderThreadRunning.
-	 * 
+	 *
 	 * @param unsafeLoaderThreadRunning The unsafeLoaderThreadRunning to set
 	 */
 	public synchronized void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
@@ -1741,7 +1739,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the battleSpecification.
-	 * 
+	 *
 	 * @return Returns a BattleSpecification
 	 */
 	public BattleSpecification getBattleSpecification() {
@@ -1750,7 +1748,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Sets the battleSpecification.
-	 * 
+	 *
 	 * @param battleSpecification The battleSpecification to set
 	 */
 	public void setBattleSpecification(BattleSpecification battleSpecification) {
@@ -1759,7 +1757,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Gets the manager.
-	 * 
+	 *
 	 * @return Returns a RobocodeManager
 	 */
 	public RobocodeManager getManager() {
@@ -1795,7 +1793,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Informs on whether the battle is running or not.
-	 * 
+	 *
 	 * @return true if the battle is running, false otherwise
 	 */
 	public boolean isRunning() {
@@ -1806,7 +1804,7 @@ public class Battle implements Runnable {
 
 	/**
 	 * Informs on whether the battle is aborted or not.
-	 * 
+	 *
 	 * @return true if the battle is aborted, false otherwise
 	 */
 	private boolean isAborted() {
@@ -1976,7 +1974,7 @@ public class Battle implements Runnable {
 	public void mouseMoved(final MouseEvent e) {
 		if (isRunning()) {
 			MouseEvent me = mirroredMouseEvent(e);
-			
+
 			for (RobotPeer robotPeer : robots) {
 				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
@@ -1995,11 +1993,11 @@ public class Battle implements Runnable {
 			}
 		}
 	}
-	
+
 	public void mouseDragged(final MouseEvent e) {
 		if (isRunning()) {
 			MouseEvent me = mirroredMouseEvent(e);
-			
+
 			for (RobotPeer robotPeer : robots) {
 				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
 					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
@@ -2049,7 +2047,7 @@ public class Battle implements Runnable {
 		}
 		return safeEventComponent;
 	}
-	
+
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 		double scale;
 
@@ -2067,7 +2065,7 @@ public class Battle implements Runnable {
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
 
 		return new MouseEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-				e.getClickCount(), e.isPopupTrigger(), e.getButton()); 
+				e.getClickCount(), e.isPopupTrigger(), e.getButton());
 	}
 
 	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
@@ -2087,7 +2085,7 @@ public class Battle implements Runnable {
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
 
 		return new MouseWheelEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()); 
+				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
 	}
 
 	private final class KeyEventHandler implements KeyEventDispatcher {

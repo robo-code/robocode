@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,13 +21,7 @@
 package robocode.editor;
 
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.Rectangle;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.StringTokenizer;
+import robocode.io.Logger;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -35,8 +29,11 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileFilter;
-
-import robocode.io.Logger;
+import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
 
 /**
@@ -500,6 +497,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 
 	/**
 	 * Return the lineNumbers
+	 *
 	 * @ robocode.editor.LineNumbers
 	 */
 	private LineNumbers getLineNumbers() {
@@ -513,8 +511,8 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		((JavaDocument) getEditorPane().getDocument()).undo();
 		repaint();
 	}
-	
-	public void redo() {	
+
+	public void redo() {
 		((JavaDocument) getEditorPane().getDocument()).redo();
 		repaint();
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,14 @@
 package robocode.gfx;
 
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import robocode.io.Logger;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.RGBImageFilter;
 import java.net.URL;
-
-import javax.imageio.ImageIO;
-
-import robocode.io.Logger;
 
 
 /**
@@ -67,7 +63,7 @@ public class ImageUtil {
 
 		Graphics g = bufferedImage.getGraphics();
 
-		g.drawImage(image, 0, 0, null);	
+		g.drawImage(image, 0, 0, null);
 
 		return bufferedImage;
 	}
@@ -76,7 +72,7 @@ public class ImageUtil {
 	 * Create a copy of an robot image into a coloured robot image. The colors of the
 	 * input image are changed into the input color, but with the same lumination.
 	 *
-	 * @param img the source image
+	 * @param img   the source image
 	 * @param color the new color that substitutes the old color(s) in the source image
 	 * @return a new image
 	 */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,17 +21,20 @@
 package roborumble.netengine;
 
 
-import java.util.*;
-import java.io.*;
-
 import static roborumble.util.PropertiesUtil.getProperties;
 import static roborumble.util.PropertiesUtil.storeProperties;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.Vector;
 
 
 /**
  * Class used for updating the local rating files.
  * Controlled by properties files.
- * 
+ *
  * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  */

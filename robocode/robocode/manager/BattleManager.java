@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,16 +51,6 @@
 package robocode.manager;
 
 
-import static robocode.io.Logger.log;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import javax.swing.JFileChooser;
-
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
@@ -70,6 +60,7 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
+import static robocode.io.Logger.log;
 import robocode.peer.ContestantPeer;
 import robocode.peer.ContestantStatistics;
 import robocode.peer.RobotPeer;
@@ -79,6 +70,13 @@ import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
+
+import javax.swing.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 /**
@@ -102,6 +100,7 @@ public class BattleManager {
 
 	public interface PauseResumeListener {
 		public void battlePaused();
+
 		public void battleResumed();
 	}
 

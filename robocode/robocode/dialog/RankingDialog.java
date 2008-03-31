@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,24 +20,21 @@
 package robocode.dialog;
 
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.*;
-
-import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
-
 import robocode.battle.Battle;
 import robocode.battle.BattleRankingTableModel;
 import robocode.battle.BattleResultsTableModel;
 import robocode.manager.RobocodeManager;
 
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.awt.event.*;
+
 
 /**
  * Frame to display the battle results or ranking during battles.
- * 
+ *
  * @author Mathew A. Nelson (original)
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
@@ -105,7 +102,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the content pane.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getDialogContentPane() {
@@ -122,7 +119,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the buttonPanel.
-	 * 
+	 *
 	 * @return JPanel
 	 */
 	private JPanel getButtonPanel() {
@@ -137,7 +134,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the okButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getOkButton() {
@@ -152,7 +149,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the saveButton
-	 * 
+	 *
 	 * @return JButton
 	 */
 	private JButton getSaveButton() {
@@ -167,7 +164,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the scroll pane
-	 * 
+	 *
 	 * @return JScrollPane
 	 */
 	private JScrollPane getScrollPane() {
@@ -191,7 +188,7 @@ public class RankingDialog extends JFrame {
 
 	/**
 	 * Return the table.
-	 * 
+	 *
 	 * @return JTable
 	 */
 	private JTable getTable() {
@@ -340,9 +337,9 @@ public class RankingDialog extends JFrame {
 		// Hide the window so as to hopefully not get any more updates that might
 		// depend on battle being intact still
 		setVisible(false);
-		
+
 		dispose();
-		
+
 		// Since we are displaying the results we have to keep the battle
 		// around, but now that we are done we need to clean things up.
 		battle.cleanup();

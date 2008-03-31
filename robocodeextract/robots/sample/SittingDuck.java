@@ -1,26 +1,31 @@
 package sample;
 
 
-import robocode.*;
-import java.io.*;
-import java.awt.Color;
+import robocode.AdvancedRobot;
+import robocode.RobocodeFileOutputStream;
+
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
 
 
 /**
  * SittingDuck - a sample robot by Mathew Nelson
- *
+ * <p/>
  * Along with sitting still doing nothing,
  * this robot demonstrates persistency.
  */
 public class SittingDuck extends AdvancedRobot {
 	static boolean incrementedBattles = false;
-	
+
 	public void run() {
 		setBodyColor(Color.yellow);
 		setGunColor(Color.yellow);
 
 		int roundCount, battleCount;
-		
+
 		// Read file "count.dat" which contains 2 lines,
 		// a round count, and a battle count
 		try {
@@ -65,6 +70,6 @@ public class SittingDuck extends AdvancedRobot {
 			out.println("IOException trying to write: " + e);
 		}
 
-		out.println("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles.");	
+		out.println("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles.");
 	}
 }

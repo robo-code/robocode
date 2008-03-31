@@ -60,7 +60,7 @@ public class RobotThreadManager {
 			try {
 				runThread.join(5000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();				
+				e.printStackTrace();
 			}
 			if (runThread.isAlive()) {
 				log("Warning!  Unable to stop thread: " + runThread.getName());

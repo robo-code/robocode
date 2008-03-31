@@ -27,16 +27,14 @@
 package robocode.dialog;
 
 
+import robocode.manager.RobocodeManager;
+import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
-
-import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
-import robocode.manager.RobocodeManager;
-import robocode.security.RobocodeSecurityManager;
+import java.awt.event.*;
 
 
 /**
@@ -767,7 +765,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private void helpJavaDocumentationActionPerformed() {
 		manager.getWindowManager().showJavaDocumentation();
 	}
-	
+
 	private void helpRoboWikiMenuItemActionPerformed() {
 		manager.getWindowManager().showRoboWiki();
 	}

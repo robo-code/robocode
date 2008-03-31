@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,13 +18,13 @@
 package robocode.editor;
 
 
-import java.io.InputStream;
-import java.io.IOException;
-
 import robocode.dialog.ConsoleDialog;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 
 /**
@@ -62,7 +62,7 @@ public class RobocodeCompiler {
 		console.setSize(500, 400);
 		console.setText("Compiling...\n");
 		WindowUtil.centerShow(editor, console);
-		
+
 		InputStream in = null;
 		InputStream err = null;
 

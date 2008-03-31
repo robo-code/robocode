@@ -38,11 +38,10 @@ public class BattlefieldSpecification implements java.io.Serializable {
 	/**
 	 * Creates a battlefield of the specified width and height.
 	 *
-	 * @param width the width of the battlefield, where 400 >= width < 5000.
+	 * @param width  the width of the battlefield, where 400 >= width < 5000.
 	 * @param height the height of the battlefield, where 400 >= height < 5000.
-	 *
 	 * @throws IllegalArgumentException if the width or height is less than 400
-	 *    or greater than 5000
+	 *                                  or greater than 5000
 	 */
 	public BattlefieldSpecification(int width, int height) {
 		if (width < 400 || width > 5000) {

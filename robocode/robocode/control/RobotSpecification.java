@@ -38,7 +38,7 @@ public class RobotSpecification implements java.io.Serializable {
 	/**
 	 * This constructor is called by the game in order to construct a new
 	 * RobotSpecification.
-	 * 
+	 *
 	 * @param fileSpecification the file specification of the robot
 	 */
 	RobotSpecification(robocode.repository.FileSpecification fileSpecification) {
@@ -47,9 +47,8 @@ public class RobotSpecification implements java.io.Serializable {
 
 	/**
 	 * Returns the name of this robot or team.
-	 * 
-	 * @return the name of this robot or team.
 	 *
+	 * @return the name of this robot or team.
 	 * @see #getVersion()
 	 * @see #getNameAndVersion()
 	 */
@@ -61,7 +60,6 @@ public class RobotSpecification implements java.io.Serializable {
 	 * Returns the version of this robot or team.
 	 *
 	 * @return the version of this robot or team.
-	 *
 	 * @see #getName()
 	 * @see #getNameAndVersion()
 	 */
@@ -78,10 +76,8 @@ public class RobotSpecification implements java.io.Serializable {
 	 * Returns the name and version of this robot or team.
 	 *
 	 * @return the name and version of this robot or team.
-	 *
 	 * @see #getName()
 	 * @see #getVersion()
-	 *
 	 * @since 1.3
 	 */
 	public String getNameAndVersion() {
@@ -108,7 +104,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 * does not come from a JAR file (could be class files instead).
 	 *
 	 * @return the JAR file containing this robot or team, or {@code null} if it
-	 * does not come from a JAR file (could be class files instead).
+	 *         does not come from a JAR file (could be class files instead).
 	 */
 	public File getJarFile() {
 		return fileSpecification.getJarFile();

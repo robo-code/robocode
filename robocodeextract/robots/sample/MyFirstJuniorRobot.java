@@ -1,12 +1,12 @@
 package sample;
 
 
-import robocode.*;
+import robocode.JuniorRobot;
 
 
 /**
  * MyFirstJuniorRobot - a sample robot by Flemming N. Larsen
- * 
+ * <p/>
  * Moves in a seesaw motion, and spins the gun around at each end
  * when it cannot see any enemy robot. When the robot sees and enemy
  * robot, it will immediately turn the gun and fire at it.
@@ -18,7 +18,7 @@ public class MyFirstJuniorRobot extends JuniorRobot {
 	 */
 	public void run() {
 		// Set robot colors
-		setColors(green, black, blue);		
+		setColors(green, black, blue);
 
 		// Seesaw forever
 		while (true) {

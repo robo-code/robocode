@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,16 +28,6 @@
 package robocode.dialog;
 
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.*;
-import java.io.*;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import robocode.battle.Battle;
 import robocode.battleview.BattleView;
 import robocode.gfx.ImageUtil;
@@ -47,6 +37,13 @@ import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 
 
 /**
@@ -100,7 +97,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			final Object source = e.getSource();
-			
+
 			if (source == getPauseButton()) {
 				pauseResumeButtonActionPerformed();
 			} else if (source == getStopButton()) {
@@ -697,8 +694,7 @@ public class RobocodeFrame extends JFrame {
 	/**
 	 * Sets the iconified.
 	 *
-	 * @param iconified
-	 *        The iconified to set
+	 * @param iconified The iconified to set
 	 */
 	public void setIconified(boolean iconified) {
 		this.iconified = iconified;

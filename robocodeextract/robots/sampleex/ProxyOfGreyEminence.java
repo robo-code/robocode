@@ -9,7 +9,7 @@
  * Proxy is just dummy forwarding code, which is only visible part for Robocode.
  * RegullarMonk is for infrastructure, helpers etc.
  * GreyEminence is the real brain behind.
- * 
+ *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
@@ -28,6 +28,7 @@ import robocode.ScannedRobotEvent;
  */
 public class ProxyOfGreyEminence extends AdvancedRobot {
 	private GreyEminence monk;
+
 	public ProxyOfGreyEminence() {
 		monk = new GreyEminence(this);
 	}

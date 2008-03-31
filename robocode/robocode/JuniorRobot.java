@@ -16,17 +16,15 @@
 package robocode;
 
 
-import static java.lang.Math.toDegrees;
-import static java.lang.Math.toRadians;
-
-import java.awt.Color;
-import java.awt.Graphics2D;
-
-import static robocode.util.Utils.normalRelativeAngle;
-import robocode.util.Utils;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IJuniorRobot;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
+import robocode.util.Utils;
+import static robocode.util.Utils.normalRelativeAngle;
+
+import java.awt.*;
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
 
 
 /**
@@ -35,57 +33,75 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
  * purpose of teaching programming skills to inexperienced in programming
  * students. The simplified robot model will keep player from overwhelming of
  * Robocode's rules, programming syntax and programming concept.
- * <p>
+ * <p/>
  * Instead of using getters and setters, public fields are provided for
  * receiving information like the last scanned robot, the coordinate of the
  * robot etc.
- * <p>
+ * <p/>
  * All methods on this class are blocking calls, i.e. they do not return before
  * their action has been completed and will at least take one turn to execute.
  * However, setting colors is executed immediately and does not cost a turn to
- * perform. 
- *
- * @see Robot
- * @see AdvancedRobot
- * @see TeamRobot
- * @see Droid
+ * perform.
  *
  * @author Nutch Poovarawan from Cubic Creative (designer)
  * @author Flemming N. Larsen (implementor)
  * @author Pavel Savara (contributor)
- * 
+ * @see Robot
+ * @see AdvancedRobot
+ * @see TeamRobot
+ * @see Droid
  * @since 1.4
  */
 public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
-	/** The color black (0x000000) */
-	public final static int	black = 0x000000;
+	/**
+	 * The color black (0x000000)
+	 */
+	public final static int black = 0x000000;
 
-	/** The color white (0xFFFFFF) */
+	/**
+	 * The color white (0xFFFFFF)
+	 */
 	public final static int white = 0xFFFFFF;
 
-	/** The color red  (0xFF0000) */
+	/**
+	 * The color red  (0xFF0000)
+	 */
 	public final static int red = 0xFF0000;
 
-	/** The color orange (0xFFA500) */
+	/**
+	 * The color orange (0xFFA500)
+	 */
 	public final static int orange = 0xFFA500;
 
-	/** The color yellow (0xFFFF00) */
+	/**
+	 * The color yellow (0xFFFF00)
+	 */
 	public final static int yellow = 0xFFFF00;
 
-	/** The color green (0x008000) */
+	/**
+	 * The color green (0x008000)
+	 */
 	public final static int green = 0x008000;
 
-	/** The color blue (0x0000FF) */
+	/**
+	 * The color blue (0x0000FF)
+	 */
 	public final static int blue = 0x0000FF;
 
-	/** The color purple (0x800080) */
+	/**
+	 * The color purple (0x800080)
+	 */
 	public final static int purple = 0x800080;
 
-	/** The color brown (0x8B4513) */
+	/**
+	 * The color brown (0x8B4513)
+	 */
 	public final static int brown = 0x8B4513;
 
-	/** The color gray (0x808080) */
+	/**
+	 * The color gray (0x808080)
+	 */
 	public final static int gray = 0x808080;
 
 	/**
@@ -170,7 +186,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * @see #fire(double)
 	 */
 	public boolean gunReady;
-    
+
 	/**
 	 * Current distance to the scanned nearest other robot (in pixels).
 	 * If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
@@ -323,7 +339,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 	/**
 	 * Do not call this method!
-	 * <p>
+	 * <p/>
 	 * {@inheritDoc}
 	 */
 	public final Runnable getRobotRunnable() {
@@ -332,7 +348,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 	/**
 	 * Do not call this method!
-	 * <p>
+	 * <p/>
 	 * {@inheritDoc}
 	 */
 	public final IBasicEvents getBasicEventListener() {
@@ -342,7 +358,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * The main method in every robot. You must override this to set up your
 	 * robot's basic behavior.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // A basic robot that moves around in a square
@@ -359,7 +375,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Moves this robot forward by pixels.
 	 *
 	 * @param distance the amount of pixels to move forward
-	 * 
 	 * @see #back(int)
 	 * @see #robotX
 	 * @see #robotY
@@ -376,7 +391,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Moves this robot backward by pixels.
 	 *
 	 * @param distance the amount of pixels to move backward
-	 *
 	 * @see #ahead(int)
 	 * @see #robotX
 	 * @see #robotY
@@ -389,7 +403,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Turns this robot left by degrees.
 	 *
 	 * @param degrees the amount of degrees to turn to the left
-	 *
 	 * @see #heading
 	 * @see #turnRight(int)
 	 * @see #turnTo(int)
@@ -406,7 +419,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Turns this robot right by degrees.
 	 *
 	 * @param degrees the amount of degrees to turn to the right
-	 *
 	 * @see #heading
 	 * @see #turnLeft(int)
 	 * @see #turnTo(int)
@@ -429,7 +441,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * specified angle.
 	 *
 	 * @param angle the angle to turn this robot to
-	 *
 	 * @see #heading
 	 * @see #turnLeft(int)
 	 * @see #turnRight(int)
@@ -450,14 +461,13 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Moves this robot forward by pixels and turns this robot left by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
 	 * circle, and the moving and turning will end at the same time.
-	 * <p>
+	 * <p/>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
-	 * compared to the distance. 
+	 * compared to the distance.
 	 *
 	 * @param distance the amount of pixels to move forward
-	 * @param degrees the amount of degrees to turn to the left
-	 *
+	 * @param degrees  the amount of degrees to turn to the left
 	 * @see #heading
 	 * @see #robotX
 	 * @see #robotY
@@ -476,14 +486,13 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Moves this robot forward by pixels and turns this robot right by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
 	 * circle, and the moving and turning will end at the same time.
-	 * <p>
+	 * <p/>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
-	 * compared to the distance. 
+	 * compared to the distance.
 	 *
 	 * @param distance the amount of pixels to move forward
-	 * @param degrees the amount of degrees to turn to the right
-	 *
+	 * @param degrees  the amount of degrees to turn to the right
 	 * @see #heading
 	 * @see #robotX
 	 * @see #robotY
@@ -506,14 +515,13 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Moves this robot backward by pixels and turns this robot left by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
 	 * circle, and the moving and turning will end at the same time.
-	 * <p>
+	 * <p/>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
-	 * compared to the distance. 
+	 * compared to the distance.
 	 *
 	 * @param distance the amount of pixels to move backward
-	 * @param degrees the amount of degrees to turn to the left
-	 *
+	 * @param degrees  the amount of degrees to turn to the left
 	 * @see #heading
 	 * @see #robotX
 	 * @see #robotY
@@ -532,14 +540,13 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Moves this robot backward by pixels and turns this robot right by degrees
 	 * at the same time. The robot will move in a curve that follows a perfect
 	 * circle, and the moving and turning will end at the same time.
-	 * <p>
+	 * <p/>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
-	 * compared to the distance. 
+	 * compared to the distance.
 	 *
 	 * @param distance the amount of pixels to move backward
-	 * @param degrees the amount of degrees to turn to the right
-	 *
+	 * @param degrees  the amount of degrees to turn to the right
 	 * @see #heading
 	 * @see #robotX
 	 * @see #robotY
@@ -558,7 +565,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Turns the gun left by degrees.
 	 *
 	 * @param degrees the amount of degrees to turn the gun to the left
-	 *
 	 * @see #gunHeading
 	 * @see #gunBearing
 	 * @see #turnGunRight(int)
@@ -573,7 +579,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Turns the gun right by degrees.
 	 *
 	 * @param degrees the amount of degrees to turn the gun to the right
-	 *
 	 * @see #gunHeading
 	 * @see #gunBearing
 	 * @see #turnGunLeft(int)
@@ -594,7 +599,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * specified angle.
 	 *
 	 * @param angle the angle to turn the gun to
-	 *
 	 * @see #gunHeading
 	 * @see #gunBearing
 	 * @see #turnGunLeft(int)
@@ -614,7 +618,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * The gun will turn to the side with the shortest delta angle to the specified angle.
 	 *
 	 * @param angle the angle to turn the gun to relative to the body of this robot
-	 *
 	 * @see #gunHeading
 	 * @see #gunBearing
 	 * @see #turnGunLeft(int)
@@ -630,7 +633,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	}
 
 	/**
-	 * Fires a bullet with the default power of 1. 
+	 * Fires a bullet with the default power of 1.
 	 * If the gun heat is more than 0 and hence cannot fire, this method will
 	 * suspend until the gun is ready to fire, and then fire a bullet.
 	 *
@@ -647,7 +650,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * suspend until the gun is ready to fire, and then fire a bullet.
 	 *
 	 * @param power between 0.1 and 3
-	 *
 	 * @see #gunReady
 	 */
 	public void fire(double power) {
@@ -661,7 +663,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 	/**
 	 * Skips a turn.
-	 * 
+	 *
 	 * @see #doNothing(int)
 	 */
 	public void doNothing() {
@@ -676,7 +678,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Skips the specified number of turns.
 	 *
 	 * @param turns the number of turns to skip
-	 * 
 	 * @see #doNothing()
 	 */
 	public void doNothing(int turns) {
@@ -696,10 +697,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Sets the colors of the robot. The color values are RGB values.
 	 * You can use the colors that are already defined for this class.
 	 *
-	 * @param bodyColor the RGB color value for the body
-	 * @param gunColor the RGB color value for the gun
+	 * @param bodyColor  the RGB color value for the body
+	 * @param gunColor   the RGB color value for the gun
 	 * @param radarColor the RGB color value for the radar
-	 *
 	 * @see #setColors(int, int, int, int, int)
 	 */
 	public void setColors(int bodyColor, int gunColor, int radarColor) {
@@ -716,12 +716,11 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Sets the colors of the robot. The color values are RGB values.
 	 * You can use the colors that are already defined for this class.
 	 *
-	 * @param bodyColor the RGB color value for the body
-	 * @param gunColor the RGB color value for the gun
-	 * @param radarColor the RGB color value for the radar
-	 * @param bulletColor the RGB color value for the bullets
+	 * @param bodyColor    the RGB color value for the body
+	 * @param gunColor     the RGB color value for the gun
+	 * @param radarColor   the RGB color value for the radar
+	 * @param bulletColor  the RGB color value for the bullets
 	 * @param scanArcColor the RGB color value for the scan arc
-	 *
 	 * @see #setColors(int, int, int)
 	 */
 	public void setColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor) {
@@ -797,7 +796,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 	/*
 	 * The JuniorRobot event handler, which implements the basic robot events,
-	 * JuniorRobot event, and Runnable. 
+	 * JuniorRobot event, and Runnable.
 	 */
 	private final class EventHandler implements IBasicEvents, Runnable {
 
@@ -824,7 +823,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
 			gunReady = (s.getGunHeat() <= 0);
 
-			// Auto fire  
+			// Auto fire
 			if (juniorFirePower > 0 && gunReady && (peer.getGunTurnRemaining() == 0)) {
 				if (peer.setFire(juniorFirePower) != null) {
 					gunReady = false;

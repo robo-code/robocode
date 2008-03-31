@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,6 @@
  *******************************************************************************/
 package robocode.battleview;
 
-
-import static java.lang.Math.*;
-
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
@@ -36,6 +29,12 @@ import robocode.peer.RobotPeer;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.util.GraphicsState;
+
+import java.awt.*;
+import java.awt.geom.*;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import static java.lang.Math.*;
 
 
 /**
@@ -346,13 +345,13 @@ public class BattleView extends Canvas {
 		final Shape savedClip = g.getClip();
 
 		g.setClip(null);
-		
+
 		g.setColor(Color.RED);
 		g.drawRect(-1, -1, battleField.getWidth() + 2, battleField.getHeight() + 2);
 
 		g.setClip(savedClip);
 	}
-	
+
 	private void drawScanArcs(Graphics2D g) {
 		if (drawScanArcs) {
 			for (RobotPeer robotPeer : battle.getRobots()) {
@@ -496,7 +495,7 @@ public class BattleView extends Canvas {
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
-		
+
 		double x, y;
 
 		for (BulletPeer bullet : battle.getBullets()) {
@@ -559,7 +558,7 @@ public class BattleView extends Canvas {
 
 		double scaledViewWidth = getWidth() / scale;
 		double scaledViewHeight = getHeight() / scale;
-		
+
 		double borderWidth = (scaledViewWidth - battleField.getWidth()) / 2;
 		double borderHeight = (scaledViewHeight - battleField.getHeight()) / 2;
 

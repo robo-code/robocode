@@ -17,19 +17,17 @@ package robocode.control;
 /**
  * A Listener interface for receiving callbacks from the {@link RobocodeEngine}.
  *
- * @see  RobocodeEngine
- *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @see RobocodeEngine
  */
 public interface RobocodeListener {
 
 	/**
 	 * This method is called when a battle completes successfully.
 	 *
-	 * @param battle information about the battle that completed
+	 * @param battle  information about the battle that completed
 	 * @param results an array containing the results for the individual robot
-	 *
 	 * @see RobocodeEngine#runBattle(BattleSpecification)
 	 * @see BattleSpecification
 	 * @see RobotResults
@@ -40,7 +38,6 @@ public interface RobocodeListener {
 	 * This method is called when a battle has been aborted.
 	 *
 	 * @param battle information about the battle that was aborted
-	 *
 	 * @see RobocodeEngine#abortCurrentBattle()
 	 * @see BattleSpecification
 	 */
@@ -50,8 +47,8 @@ public interface RobocodeListener {
 	 * This method is called when the game logs messages that is normally
 	 * written out to the console.
 	 *
-	 * @see RobocodeEngine#runBattle(BattleSpecification)
 	 * @param message the message logged by the game
+	 * @see RobocodeEngine#runBattle(BattleSpecification)
 	 */
 	void battleMessage(String message);
 }

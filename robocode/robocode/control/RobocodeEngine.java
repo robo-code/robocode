@@ -33,13 +33,6 @@
 package robocode.control;
 
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.security.Policy;
-import java.util.List;
-
 import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -50,6 +43,13 @@ import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.security.Policy;
+import java.util.List;
 
 
 /**
@@ -83,9 +83,8 @@ public class RobocodeEngine {
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
-	 * @param listener the listener that must receive the callbacks from this
-	 *     RobocodeEngine.
-	 *
+	 * @param listener     the listener that must receive the callbacks from this
+	 *                     RobocodeEngine.
 	 * @see #RobocodeEngine(RobocodeListener)
 	 * @see #close()
 	 */
@@ -99,8 +98,7 @@ public class RobocodeEngine {
 	 * See {@link #RobocodeEngine(File, RobocodeListener)}.
 	 *
 	 * @param listener the listener that must receive the callbacks from this
-	 *     RobocodeEngine.
-	 *
+	 *                 RobocodeEngine.
 	 * @see #RobocodeEngine(File, RobocodeListener)
 	 * @see #close()
 	 */
@@ -170,7 +168,7 @@ public class RobocodeEngine {
 
 	/**
 	 * Returns the installed version of Robocode.
-	 * 
+	 *
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
@@ -181,7 +179,7 @@ public class RobocodeEngine {
 	 * Shows or hides the Robocode window.
 	 *
 	 * @param visible {@code true} if the Robocode window must be set visible;
-	 *    {@code false} otherwise.
+	 *                {@code false} otherwise.
 	 */
 	public void setVisible(boolean visible) {
 		if (visible && !manager.isGUIEnabled()) {
@@ -201,10 +199,9 @@ public class RobocodeEngine {
 	/**
 	 * Returns the robots available for for battle from the local robot
 	 * repository in the Robocode home folder.
-	 * 
-	 * @return an array of all available robots for battle from the local robot
-	 *    repository.
 	 *
+	 * @return an array of all available robots for battle from the local robot
+	 *         repository.
 	 * @see RobotSpecification
 	 */
 	public RobotSpecification[] getLocalRepository() {
@@ -223,8 +220,7 @@ public class RobocodeEngine {
 	 * Runs the specified battle.
 	 *
 	 * @param battle the specification of the battle to play including the
-	 *    participation robots.
-	 *
+	 *               participation robots.
 	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
 	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification

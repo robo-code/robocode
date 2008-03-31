@@ -22,10 +22,9 @@ package robocode.control;
  * {@link RobocodeListener#battleComplete(BattleSpecification, RobotResults[])}
  * event handler.
  *
- * @see RobocodeListener
- *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @see RobocodeListener
  */
 public class RobotResults implements java.io.Serializable {
 
@@ -47,18 +46,18 @@ public class RobotResults implements java.io.Serializable {
 	/**
 	 * Constructs a new RobotResults.
 	 *
-	 * @param robot the robot these results are for
-	 * @param rank the rank of the robot in the battle
-	 * @param score the total score for the robot in the battle
-	 * @param survival the survival score for the robot in the battle
+	 * @param robot             the robot these results are for
+	 * @param rank              the rank of the robot in the battle
+	 * @param score             the total score for the robot in the battle
+	 * @param survival          the survival score for the robot in the battle
 	 * @param lastSurvivorBonus the last survivor bonus for the robot in the battle
-	 * @param bulletDamage the bullet damage score for the robot in the battle
+	 * @param bulletDamage      the bullet damage score for the robot in the battle
 	 * @param bulletDamageBonus the bullet damage bonus for the robot in the battle
-	 * @param ramDamage the ram damage for the robot in the battle
-	 * @param ramDamageBonus the ram damage bonus for the robot in the battle
-	 * @param firsts the number of times this robot placed first
-	 * @param seconds the number of times this robot placed second
-	 * @param thirds the number of times this robot placed third
+	 * @param ramDamage         the ram damage for the robot in the battle
+	 * @param ramDamageBonus    the ram damage bonus for the robot in the battle
+	 * @param firsts            the number of times this robot placed first
+	 * @param seconds           the number of times this robot placed second
+	 * @param thirds            the number of times this robot placed third
 	 */
 	public RobotResults(
 			RobotSpecification robot,
@@ -89,9 +88,9 @@ public class RobotResults implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the robot the robot these results are for.
+	 * Returns the robot these results are meant for.
 	 *
-	 * @return the robot the robot these results are for.
+	 * @return the robot these results are meant for.
 	 */
 	public RobotSpecification getRobot() {
 		return robot;

@@ -14,8 +14,8 @@
 package robocode.peer.proxies;
 
 
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
 
 /**

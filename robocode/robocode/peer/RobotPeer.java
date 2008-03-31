@@ -61,27 +61,8 @@
 package robocode.peer;
 
 
-import static java.lang.Math.*;
-import static robocode.gfx.ColorUtil.toColor;
-import static robocode.io.Logger.log;
-import static robocode.util.Utils.normalAbsoluteAngle;
-import static robocode.util.Utils.normalNearAbsoluteAngle;
-import static robocode.util.Utils.normalRelativeAngle;
-
-import java.awt.Color;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.io.File;
-import java.io.Serializable;
-import java.io.IOException;
-import java.util.List;
-import java.security.AccessControlException;
-
 import robocode.*;
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
+import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
@@ -90,10 +71,32 @@ import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.exception.WinException;
+import static robocode.gfx.ColorUtil.toColor;
+import static robocode.io.Logger.log;
 import robocode.manager.NameManager;
+import robocode.peer.proxies.AdvancedRobotProxy;
+import robocode.peer.proxies.JuniorRobotProxy;
+import robocode.peer.proxies.StandardRobotProxy;
+import robocode.peer.proxies.TeamRobotProxy;
 import robocode.peer.robot.*;
-import robocode.peer.proxies.*;
+import robocode.robotinterfaces.*;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IJuniorRobotPeer;
+import robocode.robotinterfaces.peer.ITeamRobotPeer;
 import robocode.util.BoundingRectangle;
+import static robocode.util.Utils.*;
+
+import java.awt.*;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import static java.lang.Math.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.security.AccessControlException;
+import java.util.List;
 
 
 /**
@@ -240,7 +243,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public RobotPeer(String name) {
 		this.name = name;
-		
+
 		battleField = new DefaultBattleField(800, 600);
 		battle = new Battle(battleField, null);
 	}
@@ -318,7 +321,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	/**
-	 * Creates and returns a new robot proxy  
+	 * Creates and returns a new robot proxy
 	 */
 	public IBasicRobotPeer getRobotProxy() {
 		if (isTeamRobot) {
@@ -627,7 +630,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), resetValue);
 		}
 	}
-	
+
 	public void scan() {
 		if (isDroid) {
 			return;
@@ -1164,7 +1167,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private synchronized boolean getHalt() {
 		return halt;
 	}
-	
+
 	public synchronized void setHalt(boolean halt) {
 		this.halt = halt;
 	}
@@ -1836,7 +1839,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			statistics.cleanup();
 			statistics = null;
 		}
-		
+
 		out = null;
 		battle = null;
 
@@ -1850,14 +1853,14 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			waitCondition = null;
 		}
 	}
-        
+
 	public void cleanupStaticFields() {
 		if (robot == null) {
 			return;
 		}
 
 		Field[] fields = new Field[0];
-		
+
 		// This try-catch-throwable must be here, as it is not always possible to get the
 		// declared fields without getting a Throwable like java.lang.NoClassDefFoundError.
 		try {
@@ -1930,7 +1933,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			// Increment turn for acceleration
 			turns++;
 
-			// Every 2nd time we increment time for deceleration 
+			// Every 2nd time we increment time for deceleration
 			if (t > 2 && (t % 2) > 0) {
 				turns++;
 			}
@@ -1952,7 +1955,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		setTurnBody(radians);
 
 		// Loop thru the number of turns it will take to move the distance and adjust
-		// the max. turn rate so it fit the current velocity of the robot 
+		// the max. turn rate so it fit the current velocity of the robot
 		for (int t = turns; t >= 0; t--) {
 			setMaxTurnRate(getVelocity() * radians / absDistance);
 			execute(); // Perform next turn

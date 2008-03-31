@@ -27,14 +27,15 @@
 package robocode.editor;
 
 
+import robocode.dialog.WindowUtil;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
-import java.awt.Event;
-import java.awt.event.*;
-
 import javax.swing.*;
-
-import robocode.dialog.WindowUtil;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 
 
 /**
@@ -316,7 +317,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	public void windowCloseActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-		
+
 		if (editWindow != null) {
 			editWindow.doDefaultCloseAction();
 		}
@@ -347,7 +348,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			compilerCompileMenuItem.setText("Compile");
 			compilerCompileMenuItem.setMnemonic('m');
 			compilerCompileMenuItem.setDisplayedMnemonicIndex(2);
-			compilerCompileMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, MENU_SHORTCUT_KEY_MASK));			
+			compilerCompileMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, MENU_SHORTCUT_KEY_MASK));
 			compilerCompileMenuItem.addActionListener(eventHandler);
 		}
 		return compilerCompileMenuItem;

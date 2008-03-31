@@ -22,20 +22,31 @@ import java.util.List;
  */
 public interface IEventManager {
 	void addCustomEvent(Condition condition);
+
 	void removeCustomEvent(Condition condition);
+
 	void clearAllEvents(boolean includingSystemEvents);
 
 	void setEventPriority(String eventClass, int priority);
+
 	int getEventPriority(String eventClass);
 
 	java.util.List<Event> getAllEvents();
+
 	List<BulletMissedEvent> getBulletMissedEvents();
+
 	List<BulletHitBulletEvent> getBulletHitBulletEvents();
+
 	List<BulletHitEvent> getBulletHitEvents();
+
 	List<HitByBulletEvent> getHitByBulletEvents();
+
 	List<HitRobotEvent> getHitRobotEvents();
+
 	List<HitWallEvent> getHitWallEvents();
+
 	List<RobotDeathEvent> getRobotDeathEvents();
+
 	List<ScannedRobotEvent> getScannedRobotEvents();
 
 	// team

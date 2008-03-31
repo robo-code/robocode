@@ -25,21 +25,20 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.ArrayList;
-import java.util.List;
+import robocode.repository.FileSpecification;
+import robocode.repository.TeamSpecification;
+import robocode.ui.ShortcutUtil;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import robocode.repository.FileSpecification;
-import robocode.repository.TeamSpecification;
-import robocode.ui.ShortcutUtil;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**

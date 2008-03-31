@@ -12,7 +12,7 @@
 package robocode.ui;
 
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.InputEvent;
 
 

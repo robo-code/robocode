@@ -23,18 +23,18 @@
 package robocode.peer.robot;
 
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.List;
-
 import robocode.MessageEvent;
 import robocode.io.BufferedPipedOutputStream;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**

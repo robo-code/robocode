@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,12 @@
 package robocode.editor;
 
 
-import java.awt.Container;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
 
 
 /**
@@ -53,7 +51,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * WindowMenuItem Constructor
-	 *
+	 * <p/>
 	 * Initializes the WindowMenuItem and adds it to the parentMenu.
 	 */
 	public WindowMenuItem(EditWindow window, JMenu parentMenu) {
@@ -74,10 +72,10 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Event handler for the menu item
-	 *
+	 * <p/>
 	 * Brings the window to the front. This should be called for the "More
 	 * Windows..." Item, because it doesn't make itself its own ActionListener.
-	 *
+	 * <p/>
 	 * Note that e can be null, and this menu item might not be showing (if this
 	 * is called from the "More Windows" dialog).
 	 */
@@ -131,7 +129,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Gets the name of the file represented by this item.
-	 *
+	 * <p/>
 	 * Creates a unique filler filename if the window is nameless. May shorten
 	 * the filename if the name is long.
 	 */
@@ -197,7 +195,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	/**
 	 * Figures out what index (from 0 to WINDOW_MENU_MAX_SIZE-1) this item is in
 	 * the window menu.
-	 *
+	 * <p/>
 	 * Returns -1 if this item isn't showing.
 	 */
 	protected int getIndex() {
@@ -229,7 +227,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Returns true if this item should be showing.
-	 *
+	 * <p/>
 	 * Returns false if there are more than WINDOW_MENU_MAX_SIZE items before it
 	 * in the menu.
 	 */
@@ -252,7 +250,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Returns true if this item should be enabled (selectable).
-	 *
+	 * <p/>
 	 * Returns false if it is a More Windows... item and there are no windows.
 	 */
 	@Override
@@ -272,7 +270,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Determines if this menu item should currently show as "selected".
-	 *
+	 * <p/>
 	 * The item should be seleced if the window it's tied to has focus.
 	 */
 	@Override
@@ -299,7 +297,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Creates a string representation of this object.
-	 *
+	 * <p/>
 	 * Handy for repurposing the menu items as list items :-)
 	 */
 	@Override

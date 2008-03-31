@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *******************************************************************************/
 package robocode.battleview;
 
+
+import robocode.util.GraphicsState;
 
 import java.awt.*;
 import java.awt.RenderingHints.Key;
@@ -24,8 +26,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
-
-import robocode.util.GraphicsState;
 
 
 /**
@@ -55,9 +55,8 @@ public class MirroredGraphics extends Graphics2D {
 	 * When painting using this wrapper has finnished the
 	 * {@link #release() } method must be called.
 	 *
-	 * @param g the Graphics2D object to wrap
+	 * @param g      the Graphics2D object to wrap
 	 * @param height the height of the battlefield to mirror
-	 *
 	 * @see #release()
 	 */
 	public void bind(Graphics2D g, int height) {
@@ -468,7 +467,7 @@ public class MirroredGraphics extends Graphics2D {
 	 * object into a mirrored transform.
 	 *
 	 * @return the AffineTransform before calling this method, which is used for
-	 * restoring the AffineTransform later.
+	 *         restoring the AffineTransform later.
 	 */
 	private AffineTransform setToMirroredTransform() {
 		AffineTransform saveTx = g.getTransform();

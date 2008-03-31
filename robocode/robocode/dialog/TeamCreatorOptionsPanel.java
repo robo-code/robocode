@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,21 +20,18 @@
 package robocode.dialog;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.net.URL;
-import java.util.List;
+import robocode.repository.FileSpecification;
+import robocode.text.LimitedClassnameDocument;
+import robocode.text.LimitedDocument;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import robocode.repository.FileSpecification;
-import robocode.text.LimitedClassnameDocument;
-import robocode.text.LimitedDocument;
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.net.URL;
+import java.util.List;
 
 
 /**

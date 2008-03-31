@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,15 +19,15 @@
 package robocode.repository;
 
 
-import java.io.*;
-import java.net.URL;
-import java.util.Properties;
-import java.util.StringTokenizer;
-
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.NameManager;
 import robocode.manager.RobotRepositoryManager;
+
+import java.io.*;
+import java.net.URL;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 
 /**
@@ -187,7 +187,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	/**
 	 * Gets the UUID.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getUUID() {

@@ -39,16 +39,16 @@
 package robocode.peer.robot;
 
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import robocode.*;
+import robocode.exception.EventInterruptedException;
+import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.*;
+import robocode.util.Utils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import robocode.*;
-import robocode.robotinterfaces.*;
-import robocode.exception.EventInterruptedException;
-import robocode.peer.RobotPeer;
-import robocode.util.Utils;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -127,7 +127,7 @@ public class EventManager implements IEventManager {
 	public void clear(long clearTime) {
 		eventQueue.clear(clearTime);
 	}
-        
+
 	public void cleanup() {
 		// Remove all events
 		reset();
@@ -140,7 +140,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all events currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (Event e : getAllEvents()) {
@@ -181,7 +181,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all BulletHitBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
@@ -209,7 +209,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all BulletHitEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletHitEvent e : getBulletHitEvents()) {
@@ -237,7 +237,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all BulletMissedEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletMissedEvent e : getBulletMissedEvents()) {
@@ -348,7 +348,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitByBulletEvent e : getHitByBulletEvents()) {
@@ -376,7 +376,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all HitRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitRobotEvent e : getHitRobotEvents()) {
@@ -404,7 +404,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all HitWallEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitWallEvent e : getHitWallEvents()) {
@@ -447,7 +447,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all RobotDeathEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (RobotDeathEvent e : getRobotDeathEvents()) {
@@ -479,7 +479,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a list containing all ScannedRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (ScannedRobotEvent e : getScannedRobotEvents()) {
@@ -851,7 +851,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a vector containing all MessageEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (MessageEvent e : getMessageEvents()) {
@@ -860,11 +860,9 @@ public class EventManager implements IEventManager {
 	 * </pre>
 	 *
 	 * @return a vector containing all MessageEvents currently in the robot's
-	 *    queue
-	 *
+	 *         queue
 	 * @see #onMessageReceived(MessageEvent)
 	 * @see MessageEvent
-	 *
 	 * @since 1.2.6
 	 */
 	public List<MessageEvent> getMessageEvents() {
@@ -883,7 +881,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Returns a vector containing all StatusEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (StatusEvent e : getStatusEvents()) {
@@ -892,11 +890,9 @@ public class EventManager implements IEventManager {
 	 * </pre>
 	 *
 	 * @return a vector containing all StatusEvents currently in the robot's
-	 *    queue.
-	 *
+	 *         queue.
 	 * @see #onStatus(StatusEvent)
 	 * @see StatusEvent
-	 *
 	 * @since 1.5
 	 */
 	public List<StatusEvent> getStatusEvents() {

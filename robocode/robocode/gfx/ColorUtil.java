@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package robocode.gfx;
 
 import static robocode.util.Utils.isNear;
 
-import java.awt.Color;
+import java.awt.*;
 
 
 /**
@@ -28,7 +28,6 @@ public class ColorUtil {
 	 * Return a Color based on a color in RGB565 format.
 	 *
 	 * @param rgb565 the color in RGB565 format.
-	 *
 	 * @return a Color based on the specifed color in RGB565 format.
 	 */
 	public static Color toColor(short rgb565) {
@@ -46,7 +45,6 @@ public class ColorUtil {
 	 * Returns a color in the RGB565 format based on a Color instance.
 	 *
 	 * @param c the color to convert into a RGB565 color.
-	 *
 	 * @return a color in the RGB565 format based on the specified Color.
 	 */
 	public static short toRGB565(Color c) {
@@ -72,7 +70,6 @@ public class ColorUtil {
 	 * @param r the red color component.
 	 * @param g the green color component.
 	 * @param b the blue color component.
-	 *
 	 * @return a <code>float[] { H, S, L }</code> representing the HSL color.
 	 */
 	public static float[] fromRGBtoHSL(int r, int g, int b) {
@@ -117,7 +114,7 @@ public class ColorUtil {
 				H--;
 			}
 		}
-		return new float[] { H, S, L };
+		return new float[] { H, S, L};
 	}
 
 	/**
@@ -126,7 +123,6 @@ public class ColorUtil {
 	 * @param h the color hue.
 	 * @param s the color saturation.
 	 * @param l the color lumination.
-	 *
 	 * @return an RGB integer value.
 	 */
 	public static int fromHSLtoRGB(float h, float s, float l) {

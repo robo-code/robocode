@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,17 +25,16 @@
 package robocode.battle;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
-
 import robocode.manager.RobocodeManager;
 import robocode.peer.ContestantPeer;
 import robocode.peer.ContestantStatistics;
 import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
+
+import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**

@@ -1,14 +1,17 @@
 package sampleteam;
 
 
-import robocode.*;
-import java.awt.Color;
-import java.io.*;
+import robocode.HitByBulletEvent;
+import robocode.ScannedRobotEvent;
+import robocode.TeamRobot;
+
+import java.awt.*;
+import java.io.IOException;
 
 
 /**
  * MyFirstLeader - a sample team robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Looks around for enemies, and orders teammates to fire
  */
 public class MyFirstLeader extends TeamRobot {

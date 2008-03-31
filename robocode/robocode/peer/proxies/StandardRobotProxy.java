@@ -13,8 +13,8 @@ package robocode.peer.proxies;
 
 
 import robocode.Bullet;
-import robocode.robotinterfaces.peer.IStandardRobotPeer;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 
 /**

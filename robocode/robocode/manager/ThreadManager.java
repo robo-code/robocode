@@ -20,12 +20,12 @@
 package robocode.manager;
 
 
+import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.IBasicRobot;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import robocode.robotinterfaces.IBasicRobot;
-import robocode.peer.RobotPeer;
 
 
 /**

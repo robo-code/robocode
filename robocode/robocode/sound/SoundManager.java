@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,15 +28,15 @@
 package robocode.sound;
 
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.Mixer;
-
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.Mixer;
 
 
 /**
@@ -129,10 +129,10 @@ public class SoundManager {
 	/**
 	 * Plays a specific sound at a given volume, panning and loop count
 	 *
-	 * @param key the sound name, as stored in the sound table
-	 * @param pan panning to be used (-1=left, 0=middle, +1=right)
+	 * @param key    the sound name, as stored in the sound table
+	 * @param pan    panning to be used (-1=left, 0=middle, +1=right)
 	 * @param volume volume to be used, from 0 to 1
-	 * @param loop the number of times to loop the sound
+	 * @param loop   the number of times to loop the sound
 	 */
 	private void playSound(Object key, float pan, float volume, int loop) {
 		Clip c = getSounds().getSound(key);
@@ -172,7 +172,7 @@ public class SoundManager {
 	 * Plays a specific piece of music with a given loop count with no panning and
 	 * max. volume.
 	 *
-	 * @param key the sound name, as stored in the sound table
+	 * @param key  the sound name, as stored in the sound table
 	 * @param loop the number of times to loop the music
 	 */
 	private void playMusic(Object key, int loop) {
@@ -282,7 +282,7 @@ public class SoundManager {
 	/**
 	 * Determines pan based on the relative position to the battlefield's width
 	 *
-	 * @param x the bullet or robot position
+	 * @param x     the bullet or robot position
 	 * @param width the battlefield's width
 	 * @return the panning value, ranging from -1 to +1
 	 */

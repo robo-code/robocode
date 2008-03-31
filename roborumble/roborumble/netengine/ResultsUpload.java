@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,19 +21,20 @@
 package roborumble.netengine;
 
 
-import java.net.*;
-import java.util.*;
-import java.io.*;
-
-import roborumble.battlesengine.*;
-
+import roborumble.battlesengine.CompetitionsSelector;
 import static roborumble.util.PropertiesUtil.getProperties;
+
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Properties;
+import java.util.Vector;
 
 
 /**
  * Class used for uploading results to a server.
  * Controlled by properties files.
- * 
+ *
  * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -141,7 +142,7 @@ public class ResultsUpload {
 		} catch (IOException e) {
 			System.out.println("Not able to open battles number file ... Aborting");
 			System.out.println(e);
-			
+
 			outtxt.close();
 			return false;
 		}
@@ -178,7 +179,7 @@ public class ResultsUpload {
 
 			// if the match mode was general, then send the results to all competitions (asuming codesize is used).
 			// if its not, then send results only to smaller size competitions
-			String	data = "version=1" + "&" + "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2]
+			String data = "version=1" + "&" + "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2]
 					+ "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
 					+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0]
 					+ "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];

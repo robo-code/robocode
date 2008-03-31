@@ -12,18 +12,21 @@
 package sampleex;
 
 
-import java.awt.Graphics2D;
-import java.io.PrintStream;
-
 import robocode.*;
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.*;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.peer.IStandardRobotPeer;
+
+import java.awt.*;
+import java.io.PrintStream;
 
 
 /**
  * A sample robot.
  * Is not inherited from classic base robots, uses new experimental access to RobotPeer.
  * Use -DEXPERIMENTAL=true to start robocode for this robot.
+ *
  * @author Pavel Savara (original)
  */
 public class Alien implements IBasicEvents, IBasicRobot, Runnable {

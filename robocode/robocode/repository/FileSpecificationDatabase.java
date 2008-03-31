@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,13 +41,13 @@ public class FileSpecificationDatabase implements Serializable {
 		try {
 			fis = new FileInputStream(f);
 			ObjectInputStream in = new ObjectInputStream(fis);
-	
+
 			Object obj = in.readObject();
-	
+
 			if (obj instanceof Hashtable) {
 				// The following provides backward compability for versions before 1.2.3A
 				Hashtable<String, FileSpecification> hashtable = (Hashtable<String, FileSpecification>) obj;
-	
+
 				hash = new HashMap<String, FileSpecification>(hashtable);
 			} else {
 				// Using new container type for version 1.2.3B and followers
