@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,17 +25,16 @@
 package robocode.battle;
 
 
+import robocode.manager.RobocodeManager;
+import robocode.peer.IContestantPeer;
+import robocode.peer.IContestantStatistics;
+import robocode.peer.TeamPeer;
+import robocode.text.StringUtil;
+
+import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
-
-import robocode.manager.RobocodeManager;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
-import robocode.peer.TeamPeer;
-import robocode.text.StringUtil;
 
 
 /**
@@ -49,142 +48,142 @@ import robocode.text.StringUtil;
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
-	private RobocodeManager manager;
-	private Battle battle;
+    private RobocodeManager manager;
+    private Battle battle;
 
-	public BattleRankingTableModel(RobocodeManager manager) {
-		super();
-		this.manager = manager;
-	}
+    public BattleRankingTableModel(RobocodeManager manager) {
+        super();
+        this.manager = manager;
+    }
 
-	public int getColumnCount() {
-		return 12;
-	}
+    public int getColumnCount() {
+        return 12;
+    }
 
-	public int getRowCount() {
-		List<ContestantPeer> contestants = getContestants();
+    public int getRowCount() {
+        List<IContestantPeer> contestants = getContestants();
 
-		return (contestants != null) ? contestants.size() : 0;
-	}
+        return (contestants != null) ? contestants.size() : 0;
+    }
 
-	@Override
-	public String getColumnName(int col) {
-		switch (col) {
-		case 0:
-			return "Rank";
+    @Override
+    public String getColumnName(int col) {
+        switch (col) {
+            case 0:
+                return "Rank";
 
-		case 1:
-			return "Robot Name";
+            case 1:
+                return "Robot Name";
 
-		case 2:
-			return "    Total Score    ";
+            case 2:
+                return "    Total Score    ";
 
-		case 3:
-			return "     Survival     ";
+            case 3:
+                return "     Survival     ";
 
-		case 4:
-			return "Surv Bonus";
+            case 4:
+                return "Surv Bonus";
 
-		case 5:
-			return "    Bullet Dmg    ";
+            case 5:
+                return "    Bullet Dmg    ";
 
-		case 6:
-			return " Bullet Bonus ";
+            case 6:
+                return " Bullet Bonus ";
 
-		case 7:
-			return "Ram Dmg * 2";
+            case 7:
+                return "Ram Dmg * 2";
 
-		case 8:
-			return "Ram Bonus";
+            case 8:
+                return "Ram Bonus";
 
-		case 9:
-			return " 1sts ";
+            case 9:
+                return " 1sts ";
 
-		case 10:
-			return " 2nds ";
+            case 10:
+                return " 2nds ";
 
-		case 11:
-			return " 3rds ";
+            case 11:
+                return " 3rds ";
 
-		default:
-			return "";
-		}
-	}
+            default:
+                return "";
+        }
+    }
 
-	public Object getValueAt(int row, int col) {
-		List<ContestantPeer> contestants = new ArrayList<ContestantPeer>(getContestants());
+    public Object getValueAt(int row, int col) {
+        List<IContestantPeer> contestants = new ArrayList<IContestantPeer>(getContestants());
 
-		Collections.sort(contestants);
+        Collections.sort(contestants);
 
-		ContestantPeer r = contestants.get(row);
-		ContestantStatistics statistics = r.getStatistics();
+        IContestantPeer r = contestants.get(row);
+        IContestantStatistics statistics = r.getRobotStatistics();
 
-		switch (col) {
-		case 0:
-			return StringUtil.getPlacementString(row + 1);
+        switch (col) {
+            case 0:
+                return StringUtil.getPlacementString(row + 1);
 
-		case 1:
-			return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
+            case 1:
+                return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
 
-		case 2: {
-			double current = battle.isRunning() ? statistics.getCurrentScore() : 0;
+            case 2: {
+                double current = battle.isRunning() ? statistics.getCurrentScore() : 0;
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalScore() + current + 0.5);
-		}
+                return (int) (current + 0.5) + " / " + (int) (statistics.getTotalScore() + current + 0.5);
+            }
 
-		case 3: {
-			double current = battle.isRunning() ? statistics.getCurrentSurvivalScore() : 0;
+            case 3: {
+                double current = battle.isRunning() ? statistics.getCurrentSurvivalScore() : 0;
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalSurvivalScore() + current + 0.5);
-		}
+                return (int) (current + 0.5) + " / " + (int) (statistics.getTotalSurvivalScore() + current + 0.5);
+            }
 
-		case 4:
-			return (int) (statistics.getTotalLastSurvivorBonus() + 0.5);
+            case 4:
+                return (int) (statistics.getTotalLastSurvivorBonus() + 0.5);
 
-		case 5: {
-			double current = battle.isRunning() ? statistics.getCurrentBulletDamageScore() : 0;
+            case 5: {
+                double current = battle.isRunning() ? statistics.getCurrentBulletDamageScore() : 0;
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletDamageScore() + current + 0.5);
-		}
+                return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletDamageScore() + current + 0.5);
+            }
 
-		case 6: {
-			double current = battle.isRunning() ? statistics.getCurrentBulletKillBonus() : 0;
+            case 6: {
+                double current = battle.isRunning() ? statistics.getCurrentBulletKillBonus() : 0;
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletKillBonus() + current + 0.5);
-		}
+                return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletKillBonus() + current + 0.5);
+            }
 
-		case 7: {
-			double current = battle.isRunning() ? statistics.getCurrentRammingDamageScore() : 0;
+            case 7: {
+                double current = battle.isRunning() ? statistics.getCurrentRammingDamageScore() : 0;
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingDamageScore() + current + 0.5);
-		}
+                return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingDamageScore() + current + 0.5);
+            }
 
-		case 8: {
-			double current = battle.isRunning() ? statistics.getCurrentRammingKillBonus() : 0;
+            case 8: {
+                double current = battle.isRunning() ? statistics.getCurrentRammingKillBonus() : 0;
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingKillBonus() + current + 0.5);
-		}
+                return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingKillBonus() + current + 0.5);
+            }
 
-		case 9:
-			return "" + statistics.getTotalFirsts();
+            case 9:
+                return "" + statistics.getTotalFirsts();
 
-		case 10:
-			return "" + statistics.getTotalSeconds();
+            case 10:
+                return "" + statistics.getTotalSeconds();
 
-		case 11:
-			return "" + statistics.getTotalThirds();
+            case 11:
+                return "" + statistics.getTotalThirds();
 
-		default:
-			return "";
-		}
-	}
+            default:
+                return "";
+        }
+    }
 
-	private List<ContestantPeer> getContestants() {
-		if (manager == null) {
-			return null;
-		}
-		battle = manager.getBattleManager().getBattle();
+    private List<IContestantPeer> getContestants() {
+        if (manager == null) {
+            return null;
+        }
+        battle = manager.getBattleManager().getBattle();
 
-		return (battle != null) ? battle.getContestants() : null;
-	}
+        return (battle != null) ? battle.getContestants() : null;
+    }
 }

@@ -5,8 +5,6 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
- * This is temporary implementation of the interface. You should not build any external component on top of it.
- *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
@@ -14,20 +12,8 @@
 package robocode.peer;
 
 
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-
-
 /**
  * @author Pavel Savara (original)
  */
-public class JuniorRobotPeerProxy extends BasicRobotPeerProxy implements IJuniorRobotPeer {
-
-	public JuniorRobotPeerProxy(IBasicRobotPeer peer) {
-		super(peer);
-	}
-
-	public void turnAndMove(double distance, double radians) {
-		((IJuniorRobotPeer) peer).turnAndMove(distance, radians);
-	}
+public interface IDisplayRobotPeer extends IRobotPeer {
 }

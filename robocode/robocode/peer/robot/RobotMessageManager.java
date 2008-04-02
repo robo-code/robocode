@@ -18,23 +18,24 @@
  *       is fully thread-safe 
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
+ *       synchronizet List and HashMap
  *******************************************************************************/
 package robocode.peer.robot;
 
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.List;
 
 import robocode.MessageEvent;
 import robocode.io.BufferedPipedOutputStream;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
+import robocode.peer.proxies.IRobotRunnableProxy;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -44,71 +45,96 @@ import robocode.peer.TeamPeer;
  */
 public class RobotMessageManager {
 
-	private RobotPeer robotPeer;
-	private List<MessageEvent> messageEvents = new CopyOnWriteArrayList<MessageEvent>();
+    private RobotPeer robotPeer;
+    private IRobotRunnableProxy robotView;
+    private List<MessageEvent> messageEvents = new CopyOnWriteArrayList<MessageEvent>();
 
-	private ObjectOutputStream out;
-	private ObjectInputStream in;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
 
-	public RobotMessageManager(RobotPeer robotPeer) {
-		this.robotPeer = robotPeer;
-		try {
-			BufferedPipedOutputStream bufOut = new BufferedPipedOutputStream(32768, false);
+    public RobotMessageManager(RobotPeer robotPeer) {
+        this.robotPeer = robotPeer;
+        robotView = robotPeer.getRobotRunnableView();
+        try {
+            BufferedPipedOutputStream bufOut = new BufferedPipedOutputStream(32768, false);
 
-			out = new ObjectOutputStream(bufOut);
-			in = new RobocodeObjectInputStream(bufOut.getInputStream(),
-					robotPeer.getRobotClassManager().getRobotClassLoader());
-		} catch (IOException e) {
-			robotPeer.getOut().println("Unable to initialize team message service.");
-		}
-	}
+            out = new ObjectOutputStream(bufOut);
+            in = new RobocodeObjectInputStream(bufOut.getInputStream(),
+                    robotPeer.getRobotClassManager().getRobotClassLoader());
+        } catch (IOException e) {
+            robotPeer.getOut().println("Unable to initialize team message service.");
+        }
+    }
 
-	public void sendMessage(String name, Serializable message) throws IOException {
-		TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
+    public void cleanup() {
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {// ignore now
+            }
+        }
+        in = null;
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException e) {// ignore now
+            }
+        }
+        out = null;
+        robotView = null;
+        robotPeer = null;
+        if (messageEvents != null) {
+            messageEvents.clear();
+        }
+        messageEvents = null;
+    }
 
-		if (teamPeer == null) {
-			return;
-		}
+    public void sendMessage(String name, Serializable message) throws IOException {
+        TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
 
-		for (RobotPeer receiver : teamPeer) {
-			if (receiver.isAlive()) {
-				if (name == null
-						|| (receiver.getName().length() >= name.length()
-								&& receiver.getName().substring(0, name.length()).equals(name))
-								|| (receiver.getNonVersionedName().length() >= name.length()
-										&& receiver.getNonVersionedName().substring(0, name.length()).equals(name))) {
-					if (name == null && receiver == robotPeer) {
-						continue;
-					}
-					RobotMessageManager robotMsgMan = receiver.getMessageManager();
+        if (teamPeer == null) {
+            return;
+        }
 
-					if (robotMsgMan != null) {
-						synchronized (robotMsgMan.out) {
-							robotMsgMan.out.writeObject(message);
-							try {
-								robotMsgMan.addMessage(robotPeer.getName(), (Serializable) robotMsgMan.in.readObject());
-							} catch (ClassNotFoundException e) {
-								System.out.println("Unable to send: " + e);
-							}
-						}
-					}
-				}
-			}
-		}
-		// Note:  Does nothing, simply throws IOException if too many bytes.
-	}
+        for (RobotPeer receiver : teamPeer) {
+            if (robotView.isAlive()) {
+                if (name == null
+                        || (robotView.getName().length() >= name.length()
+                        && robotView.getName().substring(0, name.length()).equals(name))
+                        || (robotView.getNonVersionedName().length() >= name.length()
+                        && robotView.getNonVersionedName().substring(0, name.length()).equals(name))) {
+                    if (name == null && receiver == robotPeer) {
+                        continue;
+                    }
+                    RobotMessageManager robotMsgMan = receiver.getRobotMessageManager();
 
-	public void addMessage(String sender, Serializable o) {
-		if (robotPeer.isAlive()) {
-			messageEvents.add(new MessageEvent(sender, o));
-		}
-	}
+                    if (robotMsgMan != null) {
+                        synchronized (robotMsgMan.out) {
+                            robotMsgMan.out.writeObject(message);
+                            try {
+                                robotMsgMan.addMessage(robotView.getName(), (Serializable) robotMsgMan.in.readObject());
+                            } catch (ClassNotFoundException e) {
+                                System.out.println("Unable to send: " + e);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // Note:  Does nothing, simply throws IOException if too many bytes.
+    }
 
-	public List<MessageEvent> getMessageEvents() {
-		return messageEvents;
-	}
+    public void addMessage(String sender, Serializable o) {
+        if (robotView.isAlive()) {
+            messageEvents.add(new MessageEvent(sender, o));
+        }
+    }
 
-	public void clearMessageEvents() {
-		messageEvents.clear();
-	}
+    public List<MessageEvent> getMessageEvents() {
+        return messageEvents;
+    }
+
+    public void clearMessageEvents() {
+        messageEvents.clear();
+    }
 }

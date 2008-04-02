@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,22 +37,22 @@ import java.util.zip.ZipException;
  * @author Robert D. Maupin (contributor)
  */
 public class NoDuplicateJarOutputStream extends JarOutputStream {
-	private Map<String, String> entries = new HashMap<String, String>();
+    private Map<String, String> entries = new HashMap<String, String>();
 
-	public NoDuplicateJarOutputStream(OutputStream out) throws IOException {
-		super(out);
-	}
+    public NoDuplicateJarOutputStream(OutputStream out) throws IOException {
+        super(out);
+    }
 
-	public NoDuplicateJarOutputStream(OutputStream out, Manifest man) throws IOException {
-		super(out, man);
-	}
+    public NoDuplicateJarOutputStream(OutputStream out, Manifest man) throws IOException {
+        super(out, man);
+    }
 
-	@Override
-	public void putNextEntry(ZipEntry ze) throws IOException {
-		if (entries.containsKey(ze.getName())) {
-			throw new ZipException("duplicate entry: " + ze.getName());
-		}
-		entries.put(ze.getName(), "");
-		super.putNextEntry(ze);
-	}
+    @Override
+    public void putNextEntry(ZipEntry ze) throws IOException {
+        if (entries.containsKey(ze.getName())) {
+            throw new ZipException("duplicate entry: " + ze.getName());
+        }
+        entries.put(ze.getName(), "");
+        super.putNextEntry(ze);
+    }
 }

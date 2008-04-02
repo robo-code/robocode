@@ -18,6 +18,7 @@ using nrobocodeui.manager;
 using robocode.battle;
 using robocode.manager;
 using robocode.peer;
+using robocode.peer.proxies;
 using robocode.ui;
 
 namespace nrobocodeui.dialog
@@ -142,7 +143,7 @@ namespace nrobocodeui.dialog
             fpRobotButtons.Controls.Clear();
         }
 
-        public void addRobotButton(IRobotDialogManager irdm, RobotPeer rp)
+        public void addRobotButton(IRobotDialogManager irdm, IDisplayRobotProxy rp)
         {
             Button rb = new Button();
             rb.Tag = rp;

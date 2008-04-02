@@ -17,13 +17,13 @@
 package robocode.peer.robot;
 
 
+import robocode.RobocodeFileOutputStream;
+import robocode.peer.RobotPeer;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import robocode.RobocodeFileOutputStream;
-import robocode.peer.RobotPeer;
 
 
 /**
@@ -32,170 +32,168 @@ import robocode.peer.RobotPeer;
  * @author Robert D. Maupin (contributor)
  */
 public class RobotFileSystemManager {
-	private RobotPeer robotPeer;
-	private long quotaUsed = 0;
-	private boolean quotaMessagePrinted = false;
-	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
-	private long maxQuota = 0;
+    private RobotPeer robotPeer;
+    private long quotaUsed = 0;
+    private boolean quotaMessagePrinted = false;
+    private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
+    private long maxQuota = 0;
 
-	/**
-	 * RobotFileSystemHandler constructor comment.
-	 */
-	public RobotFileSystemManager(RobotPeer robotPeer, long maxQuota) {
-		this.robotPeer = robotPeer;
-		this.maxQuota = maxQuota;
-	}
+    /**
+     * RobotFileSystemHandler constructor comment.
+     */
+    public RobotFileSystemManager(RobotPeer robotPeer, long maxQuota) {
+        this.robotPeer = robotPeer;
+        this.maxQuota = maxQuota;
+    }
 
-	public void addStream(RobocodeFileOutputStream s) throws IOException {
-		if (s == null) {
-			throw new SecurityException("You may not add a null stream.");
-		}
-		if (!streams.contains(s)) {
-			if (streams.size() < 5) {
-				streams.add(s);
-			} else {
-				throw new IOException(
-						"You may only have 5 streams open at a time.\n Make sure you call close() on your streams when you are finished with them.");
-			}
-		}
-	}
+    public void addStream(RobocodeFileOutputStream s) throws IOException {
+        if (s == null) {
+            throw new SecurityException("You may not add a null stream.");
+        }
+        if (!streams.contains(s)) {
+            if (streams.size() < 5) {
+                streams.add(s);
+            } else {
+                throw new IOException(
+                        "You may only have 5 streams open at a time.\n Make sure you call close() on your streams when you are finished with them.");
+            }
+        }
+    }
 
-	public synchronized void adjustQuota(long len) {
-		quotaUsed += len;
-	}
+    public synchronized void adjustQuota(long len) {
+        this.quotaUsed += len;
+    }
 
-	public void checkQuota() throws IOException {
-		checkQuota(0);
-	}
+    public synchronized void setQuotaUsed(long quotaUsed) {
+        this.quotaUsed = quotaUsed;
+    }
 
-	public void checkQuota(long numBytes) throws IOException {
-		if (numBytes < 0) {
-			throw new IndexOutOfBoundsException("checkQuota on negative numBytes!");
-		}
-		if (quotaUsed + numBytes <= maxQuota) {
-			adjustQuota(numBytes);
-			return;
-		}
-		if (!quotaMessagePrinted) {
-			robotPeer.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
-			quotaMessagePrinted = true;
-		}
-		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");
-	}
+    public synchronized long getQuotaUsed() {
+        return quotaUsed;
+    }
 
-	public long getMaxQuota() {
-		return maxQuota;
-	}
+    public void checkQuota() throws IOException {
+        checkQuota(0);
+    }
 
-	public long getQuotaUsed() {
-		return quotaUsed;
-	}
+    public void checkQuota(long numBytes) throws IOException {
+        if (numBytes < 0) {
+            throw new IndexOutOfBoundsException("checkQuota on negative numBytes!");
+        }
+        if (getQuotaUsed() + numBytes <= maxQuota) {
+            adjustQuota(numBytes);
+            return;
+        }
+        if (!quotaMessagePrinted) {
+            robotPeer.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
+            quotaMessagePrinted = true;
+        }
+        throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");
+    }
 
-	public File getReadableDirectory() {
-		if (robotPeer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory() == null) {
-			return null;
-		}
-		try {
-			return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory()).getCanonicalFile();
-		} catch (java.io.IOException e) {
-			return null;
-		}
-	}
+    public long getMaxQuota() {
+        return maxQuota;
+    }
 
-	public File getWritableDirectory() {
-		if (robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory() == null) {
-			return null;
-		}
-		try {
-			File dir = new File(robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory(), robotPeer.getRobotClassManager().getClassNameManager().getShortClassName() + ".data").getCanonicalFile();
+    public File getReadableDirectory() {
+        if (robotPeer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory() == null) {
+            return null;
+        }
+        try {
+            return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory()).getCanonicalFile();
+        } catch (java.io.IOException e) {
+            return null;
+        }
+    }
 
-			return dir;
-		} catch (java.io.IOException e) {
-			return null;
-		}
-	}
+    public File getWritableDirectory() {
+        if (robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory() == null) {
+            return null;
+        }
+        try {
+            return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory(), robotPeer.getRobotClassManager().getClassNameManager().getShortClassName() + ".data").getCanonicalFile();
+        } catch (java.io.IOException e) {
+            return null;
+        }
+    }
 
-	public void initializeQuota() {
-		File dataDirectory = getWritableDirectory();
+    public void initializeQuota() {
+        File dataDirectory = getWritableDirectory();
 
-		if (dataDirectory == null) {
-			quotaUsed = maxQuota;
-			return;
-		}
-		if (!dataDirectory.exists()) {
-			this.quotaUsed = 0;
-			return;
-		}
-		quotaMessagePrinted = false;
-		File[] dataFiles = dataDirectory.listFiles();
+        if (dataDirectory == null) {
+            setQuotaUsed(maxQuota);
+            return;
+        }
+        if (!dataDirectory.exists()) {
+            this.setQuotaUsed(0);
+            return;
+        }
+        quotaMessagePrinted = false;
+        File[] dataFiles = dataDirectory.listFiles();
 
-		quotaUsed = 0;
-		for (File file : dataFiles) {
-			quotaUsed += file.length();
-		}
-	}
+        setQuotaUsed(0);
+        for (File file : dataFiles) {
+            setQuotaUsed(getQuotaUsed() + file.length());
+        }
+    }
 
-	public boolean isReadable(String fileName) {
-		File allowedDirectory = getReadableDirectory();
+    public boolean isReadable(String fileName) {
+        File allowedDirectory = getReadableDirectory();
 
-		if (allowedDirectory == null) {
-			return false;
-		}
+        if (allowedDirectory == null) {
+            return false;
+        }
 
-		File attemptedFile = null;
+        File attemptedFile;
 
-		try {
-			attemptedFile = new File(fileName).getCanonicalFile();
-		} catch (java.io.IOException e) {
-			return false;
-		}
+        try {
+            attemptedFile = new File(fileName).getCanonicalFile();
+        } catch (java.io.IOException e) {
+            return false;
+        }
 
-		if (attemptedFile.getParent().indexOf(allowedDirectory.toString()) == 0) {
-			String fs = attemptedFile.toString();
-			int dataIndex = fs.indexOf(".data", allowedDirectory.toString().length());
+        if (attemptedFile.getParent().indexOf(allowedDirectory.toString()) == 0) {
+            String fs = attemptedFile.toString();
+            int dataIndex = fs.indexOf(".data", allowedDirectory.toString().length());
 
-			if (dataIndex >= 0) {
-				if (isWritable(fileName) || attemptedFile.equals(getWritableDirectory())) {
-					return true;
-				}
-				throw new java.security.AccessControlException(
-						"Preventing " + Thread.currentThread().getName() + " from access to: " + fileName
-						+ ": You may not read another robot's data directory.");
-			}
-			return true;
-		}
+            if (dataIndex >= 0) {
+                if (isWritable(fileName) || attemptedFile.equals(getWritableDirectory())) {
+                    return true;
+                }
+                throw new java.security.AccessControlException(
+                        "Preventing " + Thread.currentThread().getName() + " from access to: " + fileName
+                                + ": You may not read another robot's data directory.");
+            }
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public boolean isWritable(String fileName) {
-		File allowedDirectory = getWritableDirectory();
+    public boolean isWritable(String fileName) {
+        File allowedDirectory = getWritableDirectory();
 
-		if (allowedDirectory == null) {
-			return false;
-		}
+        if (allowedDirectory == null) {
+            return false;
+        }
 
-		File attemptedFile = null;
+        File attemptedFile;
 
-		try {
-			attemptedFile = new File(fileName).getCanonicalFile();
-		} catch (java.io.IOException e) {
-			return false;
-		}
+        try {
+            attemptedFile = new File(fileName).getCanonicalFile();
+        } catch (java.io.IOException e) {
+            return false;
+        }
 
-		if (attemptedFile.getParentFile().equals(allowedDirectory)) {
-			return true;
-		}
+        return attemptedFile.getParentFile().equals(allowedDirectory);
+    }
 
-		return false;
-	}
-
-	public void removeStream(RobocodeFileOutputStream s) {
-		if (s == null) {
-			throw new SecurityException("You may not remove a null stream.");
-		}
-		if (streams.contains(s)) {
-			streams.remove(s);
-		}
-	}
+    public void removeStream(RobocodeFileOutputStream s) {
+        if (s == null) {
+            throw new SecurityException("You may not remove a null stream.");
+        }
+        if (streams.contains(s)) {
+            streams.remove(s);
+        }
+    }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,43 +22,43 @@ package robocode.util;
  * @author Mathew A. Nelson (original)
  */
 public class BoundingRectangle extends java.awt.geom.Rectangle2D.Float {
-	public BoundingRectangle() {
-		super();
-	}
+    public BoundingRectangle() {
+        super();
+    }
 
-	public BoundingRectangle(double x, double y, double w, double h) {
-		super((float) x, (float) y, (float) w, (float) h);
-	}
+    public BoundingRectangle(double x, double y, double w, double h) {
+        super((float) x, (float) y, (float) w, (float) h);
+    }
 
-	@Override
-	public int outcode(double x, double y) {
+    @Override
+    public int outcode(double x, double y) {
 
-		/*
-		 * Note on casts to double below.  If the arithmetic of
-		 * x+w or y+h is done in float, then some bits may be
-		 * lost if the binary exponents of x/y and w/h are not
-		 * similar.  By converting to double before the addition
-		 * we force the addition to be carried out in double to
-		 * avoid rounding error in the comparison.
-		 *
-		 * See bug 4320890 for problems that this inaccuracy causes.
-		 */
-		int out = 0;
+        /*
+           * Note on casts to double below.  If the arithmetic of
+           * x+w or y+h is done in float, then some bits may be
+           * lost if the binary exponents of x/y and w/h are not
+           * similar.  By converting to double before the addition
+           * we force the addition to be carried out in double to
+           * avoid rounding error in the comparison.
+           *
+           * See bug 4320890 for problems that this inaccuracy causes.
+           */
+        int out = 0;
 
-		if (this.width <= 0) {
-			out |= OUT_LEFT | OUT_RIGHT;
-		} else if (x < this.x) {
-			out |= OUT_LEFT;
-		} else if (x > this.x + (double) this.width) {
-			out |= OUT_RIGHT;
-		}
-		if (this.height <= 0) {
-			out |= OUT_TOP | OUT_BOTTOM;
-		} else if (y < this.y) {
-			out |= OUT_TOP;
-		} else if (y > this.y + (double) this.height) {
-			out |= OUT_BOTTOM;
-		}
-		return out;
-	}
+        if (this.width <= 0) {
+            out |= OUT_LEFT | OUT_RIGHT;
+        } else if (x < this.x) {
+            out |= OUT_LEFT;
+        } else if (x > this.x + (double) this.width) {
+            out |= OUT_RIGHT;
+        }
+        if (this.height <= 0) {
+            out |= OUT_TOP | OUT_BOTTOM;
+        } else if (y < this.y) {
+            out |= OUT_TOP;
+        } else if (y > this.y + (double) this.height) {
+            out |= OUT_BOTTOM;
+        }
+        return out;
+    }
 }

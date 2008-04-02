@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,14 +17,13 @@
 package roborumble.battlesengine;
 
 
-import codesize.*;
-import java.util.*;
-import java.io.*;
-
+import codesize.Codesize.*;
+import codesize.Codesize;
 import static roborumble.util.PropertiesUtil.getProperties;
 import static roborumble.util.PropertiesUtil.storeProperties;
 
-import codesize.Codesize.*;
+import java.io.File;
+import java.util.Properties;
 
 
 /**
@@ -33,7 +32,7 @@ import codesize.Codesize.*;
  * Reads a file with the battles to be runned and outputs the results in
  * another file.
  * Controlled by properties files.
- * 
+ *
  * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -41,8 +40,8 @@ public class CompetitionsSelector {
 	private String repository;
 	private String sizesfile;
 	private Properties sizes;
-	
-	public CompetitionsSelector(String sizesfile, String repository) { 
+
+	public CompetitionsSelector(String sizesfile, String repository) {
 		this.repository = repository;
 		// open sizes file
 		this.sizesfile = sizesfile;
@@ -87,7 +86,7 @@ public class CompetitionsSelector {
 				sizes.setProperty(bot2name, Long.toString(size2));
 			}
 		}
-		
+
 		// if the file needs update, then save the file
 		if (fileneedsupdate && size1 != 0 && size2 != 0) {
 			storeProperties(sizes, sizesfile, "Bots code size");

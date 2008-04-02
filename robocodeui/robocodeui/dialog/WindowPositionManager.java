@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,15 +18,18 @@
 package robocodeui.dialog;
 
 
+import robocode.io.FileUtil;
+import robocode.io.Logger;
+
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import robocode.io.FileUtil;
-import robocode.io.Logger;
 
 
 /**
@@ -35,130 +38,134 @@ import robocode.io.Logger;
  */
 public class WindowPositionManager implements ComponentListener {
 
-	private Properties windowPositions;
+    private Properties windowPositions;
 
-	/**
-	 * WindowPositionManager constructor comment.
-	 */
-	public WindowPositionManager() {
-		super();
-	}
+    /**
+     * WindowPositionManager constructor comment.
+     */
+    public WindowPositionManager() {
+        super();
+    }
 
-	public Properties getWindowPositions() {
-		if (windowPositions == null) {
-			windowPositions = new Properties();
+    public Properties getWindowPositions() {
+        if (windowPositions == null) {
+            windowPositions = new Properties();
 
-			FileInputStream in = null;
+            FileInputStream in = null;
 
-			try {
-				in = new FileInputStream(FileUtil.getWindowConfigFile());
-				windowPositions.load(in);
-			} catch (FileNotFoundException e) {
-				Logger.log("Creating " + FileUtil.getWindowConfigFile().getName() + " file");
-			} catch (Exception e) {
-				Logger.log(e);
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (IOException e) {}
-				}
-			}
-		}
-		return windowPositions;
-	}
+            try {
+                in = new FileInputStream(FileUtil.getWindowConfigFile());
+                windowPositions.load(in);
+            } catch (FileNotFoundException e) {
+                Logger.log("Creating " + FileUtil.getWindowConfigFile().getName() + " file");
+            } catch (Exception e) {
+                Logger.log(e);
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                    }
+                }
+            }
+        }
+        return windowPositions;
+    }
 
-	public void componentHidden(ComponentEvent e) {}
+    public void componentHidden(ComponentEvent e) {
+    }
 
-	public void componentMoved(ComponentEvent e) {
-		// Hack, because we cannot detect maximized frame in Java 1.3
-		if (e.getComponent().getBounds().getWidth() >= Toolkit.getDefaultToolkit().getScreenSize().width
-				|| e.getComponent().getBounds().getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().height) {
-			return;
-		}
-		setWindowRect(true, (Window) e.getComponent(), e.getComponent().getBounds());
-	}
+    public void componentMoved(ComponentEvent e) {
+        // Hack, because we cannot detect maximized frame in Java 1.3
+        if (e.getComponent().getBounds().getWidth() >= Toolkit.getDefaultToolkit().getScreenSize().width
+                || e.getComponent().getBounds().getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().height) {
+            return;
+        }
+        setWindowRect(true, (Window) e.getComponent(), e.getComponent().getBounds());
+    }
 
-	public void componentResized(ComponentEvent e) {
-		// Hack, because we cannot detect maximized frame in Java 1.3
-		if (e.getComponent().getBounds().getWidth() >= Toolkit.getDefaultToolkit().getScreenSize().width
-				|| e.getComponent().getBounds().getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().height) {
-			return;
-		}
-		setWindowRect(false, (Window) e.getComponent(), e.getComponent().getBounds());
-	}
+    public void componentResized(ComponentEvent e) {
+        // Hack, because we cannot detect maximized frame in Java 1.3
+        if (e.getComponent().getBounds().getWidth() >= Toolkit.getDefaultToolkit().getScreenSize().width
+                || e.getComponent().getBounds().getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().height) {
+            return;
+        }
+        setWindowRect(false, (Window) e.getComponent(), e.getComponent().getBounds());
+    }
 
-	public void componentShown(ComponentEvent e) {}
+    public void componentShown(ComponentEvent e) {
+    }
 
-	public void setWindowRect(boolean move, Window w, Rectangle rect) {
-		String rString = rect.x + "," + rect.y + "," + rect.width + "," + rect.height;
+    public void setWindowRect(boolean move, Window w, Rectangle rect) {
+        String rString = rect.x + "," + rect.y + "," + rect.width + "," + rect.height;
 
-		getWindowPositions().put(w.getClass().getName(), rString);
-	}
+        getWindowPositions().put(w.getClass().getName(), rString);
+    }
 
-	public Rectangle getWindowRect(Window window) {
-		window.addComponentListener(this);
+    public Rectangle getWindowRect(Window window) {
+        window.addComponentListener(this);
 
-		String rString = (String) getWindowPositions().get(window.getClass().getName());
+        String rString = (String) getWindowPositions().get(window.getClass().getName());
 
-		if (rString == null) {
-			return null;
-		}
+        if (rString == null) {
+            return null;
+        }
 
-		StringTokenizer tokenizer = new StringTokenizer(rString, ",");
-		int x = Integer.parseInt(tokenizer.nextToken());
-		int y = Integer.parseInt(tokenizer.nextToken());
-		int width = Integer.parseInt(tokenizer.nextToken());
-		int height = Integer.parseInt(tokenizer.nextToken());
+        StringTokenizer tokenizer = new StringTokenizer(rString, ",");
+        int x = Integer.parseInt(tokenizer.nextToken());
+        int y = Integer.parseInt(tokenizer.nextToken());
+        int width = Integer.parseInt(tokenizer.nextToken());
+        int height = Integer.parseInt(tokenizer.nextToken());
 
-		return fitWindowBoundsToScreen(new Rectangle(x, y, width, height));
-	}
+        return fitWindowBoundsToScreen(new Rectangle(x, y, width, height));
+    }
 
-	public void saveWindowPositions() {
-		FileOutputStream out = null;
+    public void saveWindowPositions() {
+        FileOutputStream out = null;
 
-		try {
-			out = new FileOutputStream(FileUtil.getWindowConfigFile());
+        try {
+            out = new FileOutputStream(FileUtil.getWindowConfigFile());
 
-			getWindowPositions().store(out, "Robocode window sizes");
-		} catch (IOException e) {
-			Logger.log("Warning:  Unable to save window positions: " + e);
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {}
-			}
-		}
-	}
-	
-	private Rectangle fitWindowBoundsToScreen(Rectangle windowBounds) {
-		if (windowBounds == null) {
-			return null;
-		}
+            getWindowPositions().store(out, "Robocode window sizes");
+        } catch (IOException e) {
+            Logger.log("Warning:  Unable to save window positions: " + e);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
 
-		// Return the input window bounds, if we can find a screen device that contains these bounds
+    private Rectangle fitWindowBoundsToScreen(Rectangle windowBounds) {
+        if (windowBounds == null) {
+            return null;
+        }
 
-		final GraphicsEnvironment gfxEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		final GraphicsDevice[] screenDevices = gfxEnv.getScreenDevices();
+        // Return the input window bounds, if we can find a screen device that contains these bounds
 
-		for (int i = screenDevices.length - 1; i >= 0; i--) { 
-			GraphicsConfiguration[] gfxCfg = screenDevices[i].getConfigurations();
+        final GraphicsEnvironment gfxEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        final GraphicsDevice[] screenDevices = gfxEnv.getScreenDevices();
 
-			for (int j = gfxCfg.length - 1; j >= 0; j--) {
-				if (gfxCfg[j].getBounds().contains(windowBounds.getLocation())) {
-					return windowBounds; // Found the bounds
-				}
-			}
-		}
+        for (int i = screenDevices.length - 1; i >= 0; i--) {
+            GraphicsConfiguration[] gfxCfg = screenDevices[i].getConfigurations();
 
-		// Otherwise, return window bounds at a location within the current screen
+            for (int j = gfxCfg.length - 1; j >= 0; j--) {
+                if (gfxCfg[j].getBounds().contains(windowBounds.getLocation())) {
+                    return windowBounds; // Found the bounds
+                }
+            }
+        }
 
-		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // Otherwise, return window bounds at a location within the current screen
 
-		int x = (screenSize.width - windowBounds.width) / 2; 
-		int y = (screenSize.height - windowBounds.height) / 2; 
-		
-		return new Rectangle(x, y, windowBounds.width, windowBounds.height); 
-	}
+        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        int x = (screenSize.width - windowBounds.width) / 2;
+        int y = (screenSize.height - windowBounds.height) / 2;
+
+        return new Rectangle(x, y, windowBounds.width, windowBounds.height);
+    }
 }

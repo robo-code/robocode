@@ -22,66 +22,64 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 /**
  * This class is the base class of all robots used by the system. You should not
  * base your robots on this class.
- * <p>
+ * <p/>
  * You should create a robot that is derived from the {@link Robot} or
  * {@link JuniorRobot} class instead.
- * <p>
+ * <p/>
  * There is no guarantee that this class will exist in future versions of Robocode.
  *
+ * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * @see Robot
  * @see JuniorRobot
  * @see AdvancedRobot
  * @see TeamRobot
- *
- * @author Flemming N. Larsen (original)
- * @author Pavel Savara (contributor)
- * 
  * @since 1.4
  */
 public abstract class _RobotBase implements IBasicRobot, Runnable {
 
-	IBasicRobotPeer peer;
+    IBasicRobotPeer peer;
 
-	/**
-	 * The output stream your robot should use to print.
-	 * <p>
-	 * You can view the print-outs by clicking the button for your robot in the
-	 * right side of the battle window.
-	 * <p>
-	 * Example:
-	 * <pre>
-	 *   // Print out a line each time my robot hits another robot
-	 *   public void onHitRobot(HitRobotEvent e) {
-	 *       out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
-	 *   }
-	 * </pre>
-	 */
-	public java.io.PrintStream out;
+    /**
+     * The output stream your robot should use to print.
+     * <p/>
+     * You can view the print-outs by clicking the button for your robot in the
+     * right side of the battle window.
+     * <p/>
+     * Example:
+     * <pre>
+     *   // Print out a line each time my robot hits another robot
+     *   public void onHitRobot(HitRobotEvent e) {
+     *       out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
+     *   }
+     * </pre>
+     */
+    public java.io.PrintStream out;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public final void setOut(java.io.PrintStream out) {
-		this.out = out;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public final void setOut(java.io.PrintStream out) {
+        this.out = out;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public final void setPeer(IBasicRobotPeer peer) {
-		this.peer = peer;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public final void setPeer(IBasicRobotPeer peer) {
+        this.peer = peer;
+    }
 
-	/**
-	 * Throws a RobotException. This method should be called when the robot's peer
-	 * is uninitialized.
-	 */
-	final static void uninitializedException() {
-		StackTraceElement[] trace = new Throwable().getStackTrace();
-		String methodName = trace[1].getMethodName();
+    /**
+     * Throws a RobotException. This method should be called when the robot's peer
+     * is uninitialized.
+     */
+    final static void uninitializedException() {
+        StackTraceElement[] trace = new Throwable().getStackTrace();
+        String methodName = trace[1].getMethodName();
 
-		throw new RobotException(
-				"You cannot call the " + methodName
-				+ "() method before your run() method is called, or you are using a Robot object that the game doesn't know about.");
-	}
+        throw new RobotException(
+                "You cannot call the " + methodName
+                        + "() method before your run() method is called, or you are using a Robot object that the game doesn't know about.");
+    }
 }

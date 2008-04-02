@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,21 +20,18 @@
 package robocodeui.packager;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.*;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.List;
+import robocode.repository.IFileSpecification;
+import robocode.text.LimitedDocument;
+import robocodeui.dialog.WizardPanel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import robocodeui.dialog.WizardPanel;
-import robocode.repository.IFileSpecification;
-import robocode.text.LimitedDocument;
+import java.awt.*;
+import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.List;
 
 
 /**
@@ -44,376 +41,382 @@ import robocode.text.LimitedDocument;
  */
 @SuppressWarnings("serial")
 public class PackagerOptionsPanel extends WizardPanel {
-	private RobotPackager robotPackager;
-	private JCheckBox includeSource;
-	private EventHandler eventHandler = new EventHandler();
+    private RobotPackager robotPackager;
+    private JCheckBox includeSource;
+    private EventHandler eventHandler = new EventHandler();
 
-	private JLabel authorLabel;
-	private JTextField authorField;
-	private JLabel descriptionLabel;
-	private JTextArea descriptionArea;
-	private JLabel versionLabel;
-	private JTextField versionField;
-	private JLabel versionHelpLabel;
-	private JLabel webpageLabel;
-	private JTextField webpageField;
-	private JLabel webpageHelpLabel;
+    private JLabel authorLabel;
+    private JTextField authorField;
+    private JLabel descriptionLabel;
+    private JTextArea descriptionArea;
+    private JLabel versionLabel;
+    private JTextField versionField;
+    private JLabel versionHelpLabel;
+    private JLabel webpageLabel;
+    private JTextField webpageField;
+    private JLabel webpageHelpLabel;
 
-	private class EventHandler implements ComponentListener, KeyListener, DocumentListener {
-		public void insertUpdate(DocumentEvent e) {
-			fireStateChanged();
-		}
+    private class EventHandler implements ComponentListener, KeyListener, DocumentListener {
+        public void insertUpdate(DocumentEvent e) {
+            fireStateChanged();
+        }
 
-		public void changedUpdate(DocumentEvent e) {
-			fireStateChanged();
-		}
+        public void changedUpdate(DocumentEvent e) {
+            fireStateChanged();
+        }
 
-		public void removeUpdate(DocumentEvent e) {
-			fireStateChanged();
-		}
+        public void removeUpdate(DocumentEvent e) {
+            fireStateChanged();
+        }
 
-		public void componentMoved(ComponentEvent e) {}
+        public void componentMoved(ComponentEvent e) {
+        }
 
-		public void componentHidden(ComponentEvent e) {}
+        public void componentHidden(ComponentEvent e) {
+        }
 
-		public void componentShown(ComponentEvent e) {
-			List<IFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+        public void componentShown(ComponentEvent e) {
+            List<IFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
-			if (selectedRobots != null) {
-				if (selectedRobots.size() == 1) {
-					IFileSpecification fileSpecification = selectedRobots.get(0);
-					String v = fileSpecification.getVersion();
-	
-					if (v == null || v.length() == 0) {
-						getVersionHelpLabel().setVisible(false);
-						v = "1.0";
-					} else {
-						if (v.length() == 10) {
-							v = v.substring(0, 9);
-						}
-						v += "*";
-						getVersionHelpLabel().setVisible(true);
-					}
-					getVersionField().setText(v);
-					String d = fileSpecification.getDescription();
-	
-					if (d == null) {
-						d = "";
-					}
-					getDescriptionArea().setText(d);
-					String a = fileSpecification.getAuthorName();
-	
-					if (a == null) {
-						a = "";
-					}
-					getAuthorField().setText(a);
-					URL u = fileSpecification.getWebpage();
-	
-					if (u == null) {
-						getWebpageField().setText("");
-					} else {
-						getWebpageField().setText(u.toString());
-					}
-	
-					String filepath = fileSpecification.getFilePath();
-	
-					String text = "";
+            if (selectedRobots != null) {
+                if (selectedRobots.size() == 1) {
+                    IFileSpecification fileSpecification = selectedRobots.get(0);
+                    String v = fileSpecification.getVersion();
 
-					if (filepath != null && filepath.indexOf(".") != -1) {
-						String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
-	
-						text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
-					}
-					getWebpageHelpLabel().setText(text);
+                    if (v == null || v.length() == 0) {
+                        getVersionHelpLabel().setVisible(false);
+                        v = "1.0";
+                    } else {
+                        if (v.length() == 10) {
+                            v = v.substring(0, 9);
+                        }
+                        v += "*";
+                        getVersionHelpLabel().setVisible(true);
+                    }
+                    getVersionField().setText(v);
+                    String d = fileSpecification.getDescription();
 
-					getVersionLabel().setVisible(true);
-					getVersionField().setVisible(true);
-					getAuthorLabel().setVisible(true);
-					getAuthorField().setVisible(true);
-					getWebpageLabel().setVisible(true);
-					getWebpageField().setVisible(true);
-					getWebpageHelpLabel().setVisible(true);
-					getDescriptionLabel().setText(
-							"Please enter a short description of your robot (up to 3 lines of 72 chars each).");
-				} else if (selectedRobots.size() > 1) {
-					getVersionLabel().setVisible(false);
-					getVersionField().setVisible(false);
-					getVersionHelpLabel().setVisible(false);
-					getAuthorLabel().setVisible(false);
-					getAuthorField().setVisible(false);
-					getWebpageLabel().setVisible(false);
-					getWebpageField().setVisible(false);
-					getWebpageHelpLabel().setVisible(false);
-					getDescriptionLabel().setText(
-							"Please enter a short description of this robot collection (up to 3 lines of 72 chars each).");
-					if (getDescriptionArea().getText() == null || getDescriptionArea().getText().length() == 0) {
-						getDescriptionArea().setText("(Example)This robot comes from the ... robot collection\n");
-					}
-				}
-			}
-		}
+                    if (d == null) {
+                        d = "";
+                    }
+                    getDescriptionArea().setText(d);
+                    String a = fileSpecification.getAuthorName();
 
-		public void componentResized(ComponentEvent e) {}
+                    if (a == null) {
+                        a = "";
+                    }
+                    getAuthorField().setText(a);
+                    URL u = fileSpecification.getWebpage();
 
-		public void keyPressed(KeyEvent e) {}
+                    if (u == null) {
+                        getWebpageField().setText("");
+                    } else {
+                        getWebpageField().setText(u.toString());
+                    }
 
-		public void keyReleased(KeyEvent e) {}
+                    String filepath = fileSpecification.getFilePath();
 
-		public void keyTyped(KeyEvent e) {}
-	}
+                    String text = "";
 
-	public JPanel robotListPanel;
+                    if (filepath != null && filepath.indexOf(".") != -1) {
+                        String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
 
-	public PackagerOptionsPanel(RobotPackager robotPackager) {
-		super();
-		this.robotPackager = robotPackager;
-		initialize();
-	}
+                        text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
+                    }
+                    getWebpageHelpLabel().setText(text);
 
-	public JCheckBox getIncludeSource() {
-		if (includeSource == null) {
-			includeSource = new JCheckBox("Include source", true);
-		}
-		return includeSource;
-	}
+                    getVersionLabel().setVisible(true);
+                    getVersionField().setVisible(true);
+                    getAuthorLabel().setVisible(true);
+                    getAuthorField().setVisible(true);
+                    getWebpageLabel().setVisible(true);
+                    getWebpageField().setVisible(true);
+                    getWebpageHelpLabel().setVisible(true);
+                    getDescriptionLabel().setText(
+                            "Please enter a short description of your robot (up to 3 lines of 72 chars each).");
+                } else if (selectedRobots.size() > 1) {
+                    getVersionLabel().setVisible(false);
+                    getVersionField().setVisible(false);
+                    getVersionHelpLabel().setVisible(false);
+                    getAuthorLabel().setVisible(false);
+                    getAuthorField().setVisible(false);
+                    getWebpageLabel().setVisible(false);
+                    getWebpageField().setVisible(false);
+                    getWebpageHelpLabel().setVisible(false);
+                    getDescriptionLabel().setText(
+                            "Please enter a short description of this robot collection (up to 3 lines of 72 chars each).");
+                    if (getDescriptionArea().getText() == null || getDescriptionArea().getText().length() == 0) {
+                        getDescriptionArea().setText("(Example)This robot comes from the ... robot collection\n");
+                    }
+                }
+            }
+        }
 
-	private void initialize() {
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		JLabel label = new JLabel("It is up to you whether or not to include the source when you distribute your robot.");
+        public void componentResized(ComponentEvent e) {
+        }
 
-		label.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(label);
+        public void keyPressed(KeyEvent e) {
+        }
 
-		label = new JLabel(
-				"If you include the source, other people will be able to look at your code and learn from it.");
-		label.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(label);
+        public void keyReleased(KeyEvent e) {
+        }
 
-		getIncludeSource().setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(getIncludeSource());
+        public void keyTyped(KeyEvent e) {
+        }
+    }
 
-		label = new JLabel(" ");
-		label.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(label);
+    public JPanel robotListPanel;
 
-		add(getVersionLabel());
+    public PackagerOptionsPanel(RobotPackager robotPackager) {
+        super();
+        this.robotPackager = robotPackager;
+        initialize();
+    }
 
-		JPanel p = new JPanel();
+    public JCheckBox getIncludeSource() {
+        if (includeSource == null) {
+            includeSource = new JCheckBox("Include source", true);
+        }
+        return includeSource;
+    }
 
-		p.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		p.setAlignmentX(Component.LEFT_ALIGNMENT);
-		getVersionField().setAlignmentX(Component.LEFT_ALIGNMENT);
-		getVersionField().setMaximumSize(getVersionField().getPreferredSize());
-		p.setMaximumSize(new Dimension(Integer.MAX_VALUE, getVersionField().getPreferredSize().height));
-		p.add(getVersionField());
-		p.add(getVersionHelpLabel());
-		add(p);
+    private void initialize() {
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        JLabel label = new JLabel("It is up to you whether or not to include the source when you distribute your robot.");
 
-		label = new JLabel(" ");
-		label.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(label);
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(label);
 
-		add(getDescriptionLabel());
+        label = new JLabel(
+                "If you include the source, other people will be able to look at your code and learn from it.");
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(label);
 
-		JScrollPane scrollPane = new JScrollPane(getDescriptionArea(), ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        getIncludeSource().setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(getIncludeSource());
 
-		scrollPane.setMaximumSize(scrollPane.getPreferredSize());
-		scrollPane.setMinimumSize(new Dimension(100, scrollPane.getPreferredSize().height));
-		scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(scrollPane);
+        label = new JLabel(" ");
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(label);
 
-		label = new JLabel(" ");
-		label.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(label);
+        add(getVersionLabel());
 
-		add(getAuthorLabel());
+        JPanel p = new JPanel();
 
-		getAuthorField().setAlignmentX(Component.LEFT_ALIGNMENT);
-		getAuthorField().setMaximumSize(getAuthorField().getPreferredSize());
-		add(getAuthorField());
+        p.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        p.setAlignmentX(Component.LEFT_ALIGNMENT);
+        getVersionField().setAlignmentX(Component.LEFT_ALIGNMENT);
+        getVersionField().setMaximumSize(getVersionField().getPreferredSize());
+        p.setMaximumSize(new Dimension(Integer.MAX_VALUE, getVersionField().getPreferredSize().height));
+        p.add(getVersionField());
+        p.add(getVersionHelpLabel());
+        add(p);
 
-		label = new JLabel(" ");
-		label.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(label);
+        label = new JLabel(" ");
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(label);
 
-		add(getWebpageLabel());
+        add(getDescriptionLabel());
 
-		getWebpageField().setAlignmentX(Component.LEFT_ALIGNMENT);
-		getWebpageField().setMaximumSize(getWebpageField().getPreferredSize());
-		add(getWebpageField());
+        JScrollPane scrollPane = new JScrollPane(getDescriptionArea(), ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-		getWebpageHelpLabel().setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(getWebpageHelpLabel());
+        scrollPane.setMaximumSize(scrollPane.getPreferredSize());
+        scrollPane.setMinimumSize(new Dimension(100, scrollPane.getPreferredSize().height));
+        scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(scrollPane);
 
-		JPanel panel = new JPanel();
+        label = new JLabel(" ");
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(label);
 
-		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(panel);
-		addComponentListener(eventHandler);
-	}
+        add(getAuthorLabel());
 
-	@Override
-	public boolean isReady() {
-		if (getVersionLabel().isVisible()) {
-			if (getVersionField().getText().length() == 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf(",") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf(" ") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("*") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("(") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf(")") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("[") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("]") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("{") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("}") >= 0) {
-				return false;
-			}
-		}
-		if (getDescriptionArea().getText().length() == 0) {
-			return false;
-		}
-		return true;
-	}
+        getAuthorField().setAlignmentX(Component.LEFT_ALIGNMENT);
+        getAuthorField().setMaximumSize(getAuthorField().getPreferredSize());
+        add(getAuthorField());
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("options");
+        label = new JLabel(" ");
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(label);
 
-		frame.setSize(new Dimension(500, 300));
-		frame.getContentPane().add(new PackagerOptionsPanel(null));
+        add(getWebpageLabel());
 
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				e.getWindow().dispose();
-			}
+        getWebpageField().setAlignmentX(Component.LEFT_ALIGNMENT);
+        getWebpageField().setMaximumSize(getWebpageField().getPreferredSize());
+        add(getWebpageField());
 
-			@Override
-			public void windowClosed(WindowEvent e) {
-				System.exit(0);
-			}
-		});
+        getWebpageHelpLabel().setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(getWebpageHelpLabel());
 
-		try {
-			SwingUtilities.invokeAndWait(new PackAndShowFrameWorker(frame));
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-	}
+        JPanel panel = new JPanel();
 
-	private JLabel getAuthorLabel() {
-		if (authorLabel == null) {
-			authorLabel = new JLabel("Please enter your name. (optional)");
-			authorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		}
-		return authorLabel;
-	}
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(panel);
+        addComponentListener(eventHandler);
+    }
 
-	public JTextField getAuthorField() {
-		if (authorField == null) {
-			authorField = new JTextField(40);
-		}
-		return authorField;
-	}
+    @Override
+    public boolean isReady() {
+        if (getVersionLabel().isVisible()) {
+            if (getVersionField().getText().length() == 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf(",") >= 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf(" ") >= 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf("*") >= 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf("(") >= 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf(")") >= 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf("[") >= 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf("]") >= 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf("{") >= 0) {
+                return false;
+            }
+            if (getVersionField().getText().indexOf("}") >= 0) {
+                return false;
+            }
+        }
+        if (getDescriptionArea().getText().length() == 0) {
+            return false;
+        }
+        return true;
+    }
 
-	public JLabel getDescriptionLabel() {
-		if (descriptionLabel == null) {
-			descriptionLabel = new JLabel("");
-			descriptionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		}
-		return descriptionLabel;
-	}
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("options");
 
-	public JTextArea getDescriptionArea() {
-		if (descriptionArea == null) {
-			LimitedDocument doc = new LimitedDocument(3, 72);
+        frame.setSize(new Dimension(500, 300));
+        frame.getContentPane().add(new PackagerOptionsPanel(null));
 
-			descriptionArea = new JTextArea(doc, null, 3, 72);
-			doc.addDocumentListener(eventHandler);
-		}
-		return descriptionArea;
-	}
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().dispose();
+            }
 
-	private JLabel getVersionLabel() {
-		if (versionLabel == null) {
-			versionLabel = new JLabel(
-					"Please enter a version number for this robot (up to 10 chars, no spaces,commas,asterisks, or brackets).");
-			versionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		}
-		return versionLabel;
-	}
+            @Override
+            public void windowClosed(WindowEvent e) {
+                System.exit(0);
+            }
+        });
 
-	public JTextField getVersionField() {
-		if (versionField == null) {
-			LimitedDocument doc = new LimitedDocument(1, 10);
+        try {
+            SwingUtilities.invokeAndWait(new PackAndShowFrameWorker(frame));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
 
-			versionField = new JTextField(doc, null, 10);
-			doc.addDocumentListener(eventHandler);
-		}
-		return versionField;
-	}
+    private JLabel getAuthorLabel() {
+        if (authorLabel == null) {
+            authorLabel = new JLabel("Please enter your name. (optional)");
+            authorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+        return authorLabel;
+    }
 
-	public JLabel getVersionHelpLabel() {
-		if (versionHelpLabel == null) {
-			versionHelpLabel = new JLabel("<-- Make sure to delete the asterisk and type in a new version number");
-		}
-		return versionHelpLabel;
-	}
+    public JTextField getAuthorField() {
+        if (authorField == null) {
+            authorField = new JTextField(40);
+        }
+        return authorField;
+    }
 
-	public JLabel getWebpageLabel() {
-		if (webpageLabel == null) {
-			webpageLabel = new JLabel("Please enter a URL for your robot's webpage. (optional)");
-			webpageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		}
-		return webpageLabel;
-	}
+    public JLabel getDescriptionLabel() {
+        if (descriptionLabel == null) {
+            descriptionLabel = new JLabel("");
+            descriptionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+        return descriptionLabel;
+    }
 
-	public JTextField getWebpageField() {
-		if (webpageField == null) {
-			webpageField = new JTextField(40);
-		}
-		return webpageField;
-	}
+    public JTextArea getDescriptionArea() {
+        if (descriptionArea == null) {
+            LimitedDocument doc = new LimitedDocument(3, 72);
 
-	public JLabel getWebpageHelpLabel() {
-		if (webpageHelpLabel == null) {
-			webpageHelpLabel = new JLabel("");
-		}
-		return webpageHelpLabel;
-	}
+            descriptionArea = new JTextArea(doc, null, 3, 72);
+            doc.addDocumentListener(eventHandler);
+        }
+        return descriptionArea;
+    }
 
-	static class PackAndShowFrameWorker implements Runnable {
-		JFrame frame;
-		
-		public PackAndShowFrameWorker(JFrame frame) {
-			this.frame = frame;
-		}
+    private JLabel getVersionLabel() {
+        if (versionLabel == null) {
+            versionLabel = new JLabel(
+                    "Please enter a version number for this robot (up to 10 chars, no spaces,commas,asterisks, or brackets).");
+            versionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+        return versionLabel;
+    }
 
-		public void run() {
-			if (frame != null) {
-				frame.pack();
-				frame.setVisible(true);
-			}
-		}		
-	}
+    public JTextField getVersionField() {
+        if (versionField == null) {
+            LimitedDocument doc = new LimitedDocument(1, 10);
+
+            versionField = new JTextField(doc, null, 10);
+            doc.addDocumentListener(eventHandler);
+        }
+        return versionField;
+    }
+
+    public JLabel getVersionHelpLabel() {
+        if (versionHelpLabel == null) {
+            versionHelpLabel = new JLabel("<-- Make sure to delete the asterisk and type in a new version number");
+        }
+        return versionHelpLabel;
+    }
+
+    public JLabel getWebpageLabel() {
+        if (webpageLabel == null) {
+            webpageLabel = new JLabel("Please enter a URL for your robot's webpage. (optional)");
+            webpageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+        return webpageLabel;
+    }
+
+    public JTextField getWebpageField() {
+        if (webpageField == null) {
+            webpageField = new JTextField(40);
+        }
+        return webpageField;
+    }
+
+    public JLabel getWebpageHelpLabel() {
+        if (webpageHelpLabel == null) {
+            webpageHelpLabel = new JLabel("");
+        }
+        return webpageHelpLabel;
+    }
+
+    static class PackAndShowFrameWorker implements Runnable {
+        JFrame frame;
+
+        public PackAndShowFrameWorker(JFrame frame) {
+            this.frame = frame;
+        }
+
+        public void run() {
+            if (frame != null) {
+                frame.pack();
+                frame.setVisible(true);
+            }
+        }
+    }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,13 +22,13 @@
 package robocodeui.manager;
 
 
-import java.util.*;
-
 import robocode.battle.Battle;
-import robocodeui.dialog.RobotDialog;
-import robocode.peer.RobotPeer;
 import robocode.manager.RobocodeManager;
+import robocode.peer.proxies.IDisplayRobotProxy;
 import robocode.ui.IRobotDialogManager;
+import robocodeui.dialog.RobotDialog;
+
+import java.util.*;
 
 
 /**
@@ -38,63 +38,63 @@ import robocode.ui.IRobotDialogManager;
  */
 public class RobotDialogManager implements IRobotDialogManager {
 
-	private Map<String, RobotDialog> robotDialogHashMap = new HashMap<String, RobotDialog>();
-	private RobocodeManager manager;
+    private Map<String, RobotDialog> robotDialogHashMap = new HashMap<String, RobotDialog>();
+    private RobocodeManager manager;
 
-	public RobotDialogManager() {
-		super();
-	}
+    public RobotDialogManager() {
+        super();
+    }
 
-	public void setActiveBattle(Battle b) {
-		List<RobotPeer> robots = b.getRobots();
+    public void setActiveBattle(Battle b) {
+        List<IDisplayRobotProxy> robots = b.getDisplayRobots();
 
-		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
+        Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
 
-		for (String name : keys) {
-			boolean found = false;
+        for (String name : keys) {
+            boolean found = false;
 
-			for (RobotPeer r : robots) {
-				if (r.getName().equals(name)) {
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				RobotDialog dialog = robotDialogHashMap.get(name);
+            for (IDisplayRobotProxy robotView : robots) {
+                if (robotView.getName().equals(name)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                RobotDialog dialog = robotDialogHashMap.get(name);
 
-				robotDialogHashMap.remove(name);
-				dialog.dispose();
-			}
-		}
-	}
+                robotDialogHashMap.remove(name);
+                dialog.dispose();
+            }
+        }
+    }
 
-	public void reset() {
-		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
+    public void reset() {
+        Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
 
-		for (String name : keys) {
-			RobotDialog dialog = robotDialogHashMap.get(name);
+        for (String name : keys) {
+            RobotDialog dialog = robotDialogHashMap.get(name);
 
-			if (!dialog.isVisible()) {
-				robotDialogHashMap.remove(name);
-				dialog.dispose();
-			}
-		}
-	}
+            if (!dialog.isVisible()) {
+                robotDialogHashMap.remove(name);
+                dialog.dispose();
+            }
+        }
+    }
 
-	public RobotDialog getRobotDialog(String robotName, boolean create) {
-		RobotDialog dialog = robotDialogHashMap.get(robotName);
+    public RobotDialog getRobotDialog(String robotName, boolean create) {
+        RobotDialog dialog = robotDialogHashMap.get(robotName);
 
-		if (create && dialog == null) {
-			if (robotDialogHashMap.size() > 10) {
-				reset();
-			}
-			dialog = new RobotDialog(manager);
-			robotDialogHashMap.put(robotName, dialog);
-		}
-		return dialog;
-	}
-	
-	public void setRobocodeManager(RobocodeManager robocodeManager) {
-		manager = robocodeManager;
-	}
+        if (create && dialog == null) {
+            if (robotDialogHashMap.size() > 10) {
+                reset();
+            }
+            dialog = new RobotDialog(manager);
+            robotDialogHashMap.put(robotName, dialog);
+        }
+        return dialog;
+    }
+
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        manager = robocodeManager;
+    }
 }

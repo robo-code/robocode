@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,54 +25,54 @@ import robocode.control.RobocodeListener;
  * @author Mathew A. Nelson (original)
  */
 public class Logger {
-	private static RobocodeListener logListener;
-	private static String logBuffer = "";
+    private static RobocodeListener logListener;
+    private static String logBuffer = "";
 
-	public static void setLogListener(RobocodeListener logListener) {
-		Logger.logListener = logListener;
-	}
+    public static void setLogListener(RobocodeListener logListener) {
+        Logger.logListener = logListener;
+    }
 
-	public static void log(String s) {
-		if (logListener == null) {
-			System.err.println(s);
-		} else {
-			logListener.battleMessage(s);
-		}
-	}
+    public static void log(String s) {
+        if (logListener == null) {
+            System.err.println(s);
+        } else {
+            logListener.battleMessage(s);
+        }
+    }
 
-	public static void log(String s, Throwable e) {
-		if (logListener == null) {
-			System.err.println(s + ": " + e);
-			e.printStackTrace(System.err);
-		} else {
-			logListener.battleMessage(s + ": " + e);
-		}
-	}
+    public static void log(String s, Throwable e) {
+        if (logListener == null) {
+            System.err.println(s + ": " + e);
+            e.printStackTrace(System.err);
+        } else {
+            logListener.battleMessage(s + ": " + e);
+        }
+    }
 
-	public static void log(String s, boolean newline) {
-		if (logListener == null) {
-			if (newline) {
-				System.err.println(s);
-			} else {
-				System.err.print(s);
-				System.err.flush();
-			}
-		} else {
-			if (newline) {
-				logListener.battleMessage(logBuffer + s);
-				logBuffer = "";
-			} else {
-				logBuffer += s;
-			}
-		}
-	}
+    public static void log(String s, boolean newline) {
+        if (logListener == null) {
+            if (newline) {
+                System.err.println(s);
+            } else {
+                System.err.print(s);
+                System.err.flush();
+            }
+        } else {
+            if (newline) {
+                logListener.battleMessage(logBuffer + s);
+                logBuffer = "";
+            } else {
+                logBuffer += s;
+            }
+        }
+    }
 
-	public static void log(Throwable e) {
-		if (logListener == null) {
-			System.err.println(e);
-			e.printStackTrace(System.err);
-		} else {
-			logListener.battleMessage("" + e);
-		}
-	}
+    public static void log(Throwable e) {
+        if (logListener == null) {
+            System.err.println(e);
+            e.printStackTrace(System.err);
+        } else {
+            logListener.battleMessage("" + e);
+        }
+    }
 }

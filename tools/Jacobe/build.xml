@@ -15,6 +15,7 @@
   <target name="jacobe">
   	<beautify dir="../../autoextract"/>
   	<beautify dir="../../robocode"/>
+  	<beautify dir="../../robocodeui"/>
   	<beautify dir="../../robocodeextract"/>
   	<beautify dir="../../roborumble"/>
   </target>

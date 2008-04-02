@@ -19,6 +19,9 @@
  *       milliseconds
  *     Robert D. Maupin
  *     - The "heavy math" algorithm for calculation the CPU constant
+ *     Pavel Savara
+ *     - Cheating the optimizer with the setCpuConstant() so the optimizer does
+ *       not throw the rational computation away  
  *******************************************************************************/
 package robocode.manager;
 
@@ -30,54 +33,59 @@ import robocode.io.Logger;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class CpuManager {
-	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
-	private final static int TEST_PERIOD_MILLIS = 5000;
+    private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
+    private final static int TEST_PERIOD_MILLIS = 5000;
 
-	private long cpuConstant = -1;
-	private RobocodeManager manager;
+    private long cpuConstant = -1;
+    private RobocodeManager manager;
 
+    public CpuManager(RobocodeManager manager) {
+        this.manager = manager;
+    }
 
-	public CpuManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
+    public long getCpuConstant() {
+        if (cpuConstant == -1) {
+            cpuConstant = manager.getProperties().getCpuConstant();
+            if (cpuConstant == -1) {
+                calculateCpuConstant();
+            }
+        }
+        return cpuConstant;
+    }
 
-	public long getCpuConstant() {
-		if (cpuConstant == -1) {
-			cpuConstant = manager.getProperties().getCpuConstant();
-			if (cpuConstant == -1) {
-				calculateCpuConstant();
-			}
-		}
-		return cpuConstant;
-	}
-	
-	public void calculateCpuConstant() {
-		manager.getWindowManager().setStatus("Estimating CPU speed, please wait...");
+    public void calculateCpuConstant() {
+        manager.getWindowManager().setStatus("Estimating CPU speed, please wait...");
 
-		setCpuConstant();
+        setCpuConstant();
 
-		Logger.log("Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
-		manager.getProperties().setCpuConstant(cpuConstant);
-		manager.saveProperties();
+        Logger.log("Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
+        manager.getProperties().setCpuConstant(cpuConstant);
+        manager.saveProperties();
 
-		manager.getWindowManager().setStatus("");
-	}
-	
-	private void setCpuConstant() {
-		long count = 0;
-		double d = 0;
+        manager.getWindowManager().setStatus("");
+    }
 
-		long start = System.currentTimeMillis();
+    private void setCpuConstant() {
+        long count = 0;
+        double d = 0;
 
-		while (System.currentTimeMillis() - start < TEST_PERIOD_MILLIS) {
-			d += Math.hypot(Math.sqrt(Math.abs(Math.log(Math.atan(Math.random())))),
-					Math.cbrt(Math.abs(Math.random() * 10)))
-					/ Math.exp(Math.random());
-			count++;
-		}
+        long start = System.currentTimeMillis();
 
-		cpuConstant = Math.max(1, (long) (1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));
-	}
+        while (System.currentTimeMillis() - start < TEST_PERIOD_MILLIS) {
+            d += Math.hypot(Math.sqrt(Math.abs(Math.log(Math.atan(Math.random())))),
+                    Math.cbrt(Math.abs(Math.random() * 10)))
+                    / Math.exp(Math.random());
+            count++;
+        }
+
+        // to cheat optimizer, almost never happen
+        if (d == 0.0) {
+            Logger.log("bingo!");
+        }
+
+        cpuConstant = Math.max(1, (long) (1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));
+    }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,18 +20,14 @@
 package robocode;
 
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
-
-import javax.swing.*;
 
 
 /**
@@ -78,7 +74,7 @@ public class AutoExtract implements ActionListener {
 	private boolean acceptLicense() {
 		String licenseText = "";
 
-		InputStream is = null;
+		InputStream is;
 
 		try {
 			JarFile extractJar = new JarFile("extract.jar");
@@ -175,8 +171,8 @@ public class AutoExtract implements ActionListener {
 
 		statusDialog.setVisible(true);
 
-		FileOutputStream fos = null;
-		String entryName = "";
+		FileOutputStream fos;
+		String entryName;
 
 		byte buf[] = new byte[2048];
 
@@ -219,7 +215,7 @@ public class AutoExtract implements ActionListener {
 						fos = new FileOutputStream(out);
 
 						int index = 0;
-						int num = 0;
+						int num;
 						int count = 0;
 
 						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
@@ -271,12 +267,11 @@ public class AutoExtract implements ActionListener {
 		// Set native look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Throwable t) {
-			; // For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
+		} catch (Throwable t) {// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
 		}
 
 		File installDir = null;
-		File suggestedDir = null;
+		File suggestedDir;
 
 		AutoExtract extractor = new AutoExtract();
 
@@ -395,7 +390,7 @@ public class AutoExtract implements ActionListener {
 			return false;
 		}
 
-		String command = null;
+		String command;
 
 		if (osName.indexOf("9") != -1) {
 			command = "command.com /c cscript.exe "; // /nologo

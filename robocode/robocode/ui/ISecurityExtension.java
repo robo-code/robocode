@@ -11,9 +11,10 @@
  *******************************************************************************/
 package robocode.ui;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public interface ISecurityExtension extends ILoadableManager{
-	void initialize();
+public interface ISecurityExtension extends ILoadableManager {
+    void initialize();
 }

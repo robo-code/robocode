@@ -12,8 +12,8 @@
 package robocode.ui;
 
 
-import robocode.peer.BulletPeer;
-import robocode.peer.RobotPeer;
+import robocode.peer.proxies.IBattleBulletProxy;
+import robocode.peer.proxies.IBattleRobotProxy;
 
 
 /**
@@ -21,37 +21,37 @@ import robocode.peer.RobotPeer;
  */
 public interface ISoundManager extends robocode.ui.ILoadableManager {
 
-	/**
-	 * Plays a bullet sound depending on the bullet's state
-	 *
-	 * @param bp the bullet peer
-	 */
-	void playBulletSound(BulletPeer bp);
+    /**
+     * Plays a bullet sound depending on the bullet's state
+     *
+     * @param bp the bullet peer
+     */
+    void playBulletSound(IBattleBulletProxy bp, float battleFiedsWidth);
 
-	/**
-	 * Plays a robot sound depending on the robot's state
-	 *
-	 * @param rp the robot peer
-	 */
-	void playRobotSound(RobotPeer rp);
+    /**
+     * Plays a robot sound depending on the robot's state
+     *
+     * @param rp the robot peer
+     */
+    void playRobotSound(IBattleRobotProxy rp);
 
-	/**
-	 * Stops the background music.
-	 */
-	void stopBackgroundMusic();
+    /**
+     * Stops the background music.
+     */
+    void stopBackgroundMusic();
 
-	/**
-	 * Plays the end of battle music once.
-	 */
-	void playEndOfBattleMusic();
+    /**
+     * Plays the end of battle music once.
+     */
+    void playEndOfBattleMusic();
 
-	/**
-	 * Plays the background music, which is looping forever until stopped.
-	 */
-	void playBackgroundMusic();
+    /**
+     * Plays the background music, which is looping forever until stopped.
+     */
+    void playBackgroundMusic();
 
-	/**
-	 * Plays the theme music once.
-	 */
-	void playThemeMusic();
+    /**
+     * Plays the theme music once.
+     */
+    void playThemeMusic();
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,14 +51,6 @@
 package robocode.manager;
 
 
-import static robocode.io.Logger.log;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
@@ -69,13 +61,23 @@ import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
 import robocode.io.FileUtil;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
+import static robocode.io.Logger.log;
+import robocode.peer.IContestantPeer;
+import robocode.peer.IContestantStatistics;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
-import robocode.repository.*;
+import robocode.repository.IFileSpecification;
+import robocode.repository.IRobotFileSpecification;
+import robocode.repository.RobotFileSpecification;
+import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 /**
@@ -86,532 +88,535 @@ import robocode.security.RobocodeSecurityManager;
  * @author Nathaniel Troutman (contributor)
  */
 public class BattleManager {
-	private BattleProperties battleProperties = new BattleProperties();
-	private String battleFilename;
-	private String battlePath;
-	private Battle battle;
-	private int pauseCount;
-	private String resultsFile;
-	private RobocodeManager manager;
-	private int stepTurn;
-
-	private List<PauseResumeListener> pauseResumeListeners = new ArrayList<PauseResumeListener>();
-
-	public interface PauseResumeListener {
-		public void battlePaused();
-		public void battleResumed();
-	}
-
-	/**
-	 * Steps for a single turn, then goes back to paused
-	 */
-	public void nextTurn() {
-		if (battle != null && battle.isRunning()) {
-			stepTurn = battle.getCurrentTime() + 1;
-		}
-	}
-
-	/**
-	 * If the battle is paused, this method determines if it should perform one turn and then stop again.
-	 *
-	 * @return true if the battle should perform one turn, false otherwise
-	 */
-	public boolean shouldStep() {
-		// This code assumes it is called only if the battle is paused.
-		return stepTurn > battle.getCurrentTime();
-	}
-
-	/**
-	 * This method should be called to inform the battle manager that a new round is starting
-	 */
-	public void startNewRound() {
-		stepTurn = 0;
-	}
-
-	public BattleManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
-
-	public void stop() {
-		if (getBattle() != null) {
-			getBattle().stop();
-		}
-		if (manager.isSoundEnabled()) {
-			manager.getSoundManager().stopBackgroundMusic();
-		}
-	}
-
-	public void restart() {
-		// Start new battle. The old battle is automatically stopped
-		startNewBattle(battleProperties, false, false);
-	}
-
-	public void replay() {
-		startNewBattle(battleProperties, false, true);
-	}
-
-	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete, boolean replay) {
-		this.battleProperties = battleProperties;
-
-		List<IFileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
-				false, false, false, false, false, false);
-
-		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
-
-		if (battleProperties.getSelectedRobots() != null) {
-			StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
-
-			while (tokenizer.hasMoreTokens()) {
-				String bot = tokenizer.nextToken();
-
-				for (IFileSpecification fileSpec : robotSpecificationsList) {
-					if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-						if (fileSpec instanceof IRobotFileSpecification) {
-							battlingRobotsList.add(new RobotClassManager((IRobotFileSpecification) fileSpec, manager));
-							break;
-						} else if (fileSpec instanceof TeamSpecification) {
-							TeamSpecification currentTeam = (TeamSpecification) fileSpec;
-							TeamPeer teamManager = new TeamPeer(currentTeam.getName());
-
-							StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
-
-							while (teamTokenizer.hasMoreTokens()) {
-								bot = teamTokenizer.nextToken();
-								IRobotFileSpecification match = null;
-
-								for (IFileSpecification teamFileSpec : robotSpecificationsList) {
-									// Teams cannot include teams
-									if (teamFileSpec instanceof TeamSpecification) {
-										continue;
-									}
-									if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-										// Found team member
-										match = (RobotFileSpecification) teamFileSpec;
-										if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
-												|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
-											break;
-										}
-										// else, still looking
-									}
-								}
-								battlingRobotsList.add(new RobotClassManager(match, teamManager, manager));
-							}
-							break;
-						}
-					}
-				}
-			}
-		}
-		startNewBattle(battlingRobotsList, exitOnComplete, replay, null);
-	}
-
-	public void startNewBattle(BattleSpecification spec, boolean replay) {
-		battleProperties = new BattleProperties();
-		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
-		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
-		battleProperties.setGunCoolingRate(spec.getGunCoolingRate());
-		battleProperties.setInactivityTime(spec.getInactivityTime());
-		battleProperties.setNumRounds(spec.getNumRounds());
-		battleProperties.setSelectedRobots(spec.getRobots());
-
-		List<IFileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
-				false, false, false, false, false, false);
-		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
-
-		for (RobotSpecification battleRobotSpec : spec.getRobots()) {
-			if (battleRobotSpec == null) {
-				break;
-			}
-
-			String bot = battleRobotSpec.getClassName();
-
-			if (!(battleRobotSpec.getVersion() == null || battleRobotSpec.getVersion().length() == 0)) {
-				bot += ' ' + battleRobotSpec.getVersion();
-			}
-
-			boolean found = false;
-
-			for (IFileSpecification fileSpec : robotSpecificationsList) {
-				if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-					if (fileSpec instanceof IRobotFileSpecification) {
-						RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec, manager);
-
-						rcm.setControlRobotSpecification(battleRobotSpec);
-						battlingRobotsList.add(rcm);
-						found = true;
-						break;
-					} else if (fileSpec instanceof TeamSpecification) {
-						TeamSpecification currentTeam = (TeamSpecification) fileSpec;
-						TeamPeer teamManager = new TeamPeer(currentTeam.getName());
-
-						StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
-
-						while (teamTokenizer.hasMoreTokens()) {
-							bot = teamTokenizer.nextToken();
-							IRobotFileSpecification match = null;
-
-							for (IFileSpecification teamFileSpec : robotSpecificationsList) {
-								// Teams cannot include teams
-								if (teamFileSpec instanceof TeamSpecification) {
-									continue;
-								}
-								if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-									// Found team member
-									match = (RobotFileSpecification) teamFileSpec;
-									if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
-											|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
-										found = true;
-										break;
-									}
-									// else, still looking
-								}
-							}
-							RobotClassManager rcm = new RobotClassManager(match, teamManager, manager);
-
-							rcm.setControlRobotSpecification(battleRobotSpec);
-							battlingRobotsList.add(rcm);
-						}
-						break;
-					}
-				}
-			}
-			if (!found) {
-				log("Aborting battle, could not find robot: " + bot);
-				if (manager.getListener() != null) {
-					manager.getListener().battleAborted(spec);
-				}
-				return;
-			}
-		}
-		startNewBattle(battlingRobotsList, false, replay, spec);
-	}
-
-	private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
-			BattleSpecification battleSpecification) {
-
-		log("Preparing battle...");
-		if (battle != null) {
-			battle.stop();
-		}
-
-		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
-				battleProperties.getBattlefieldHeight());
-
-		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);
-		}
-		battle = new Battle(battleField, manager);
-		battle.setExitOnComplete(exitOnComplete);
-
-		// Only used when controlled by RobocodeEngine
-		battle.setBattleSpecification(battleSpecification);
-
-		// Set stuff the view needs to know
-		battle.setProperties(battleProperties);
-
-		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
-
-		battleThread.setPriority(Thread.NORM_PRIORITY);
-		battleThread.setName("Battle Thread");
-		battle.setBattleThread(battleThread);
-		battle.setReplay(replay);
-
-		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
-			((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
-		}
-
-		if (manager.isGUIEnabled()) {
-			robocode.ui.IBattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-
-			battleView.setVisible(true);
-			battleView.setInitialized(false);
-		}
-
-		for (RobotClassManager robotClassMgr : battlingRobotsList) {
-			battle.addRobot(robotClassMgr);
-		}
-
-		if (manager.isGUIEnabled()) {
-			robocode.ui.IRobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
-
-			frame.setEnableBattleSaveAsMenuItem(true);
-			frame.setEnableBattleSaveMenuItem(true);
-
-			if (isPaused()) {
-				pauseResumeBattle();
-			}
-
-			manager.getRobotDialogManager().setActiveBattle(battle);
-		}
-
-		// Start the battle thread
-		battleThread.start();
-
-		// Wait until the battle is running.
-		// This must be done as a new battle could be started immediately after this one causing
-		// multiple battle threads to run at the same time, which must be prevented!
-		battle.waitTillRunning();
-	}
-
-	public String getBattleFilename() {
-		String filename = battleFilename;
-
-		return getBattleFilename(filename);
-	}
-
-	public static String getBattleFilename(String filename) {
-		if (filename != null) {
-			if (filename.indexOf(File.separatorChar) < 0) {
-				filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
-			}
-			if (!filename.endsWith(".battle")) {
-				filename += ".battle";
-			}
-		}
-		return filename;
-	}
-
-	public void setBattleFilename(String newBattleFilename) {
-		battleFilename = newBattleFilename;
-	}
-
-	public synchronized void pauseResumeBattle() {
-		if (isPaused()) {
-			resumeBattle();
-		} else {
-			pauseBattle();
-		}
-	}
-
-	public synchronized boolean isPaused() {
-		return (pauseCount != 0);
-	}
-
-	public synchronized void pauseBattle() {
-		pauseCount++;
-
-		if (pauseCount == 1) {
-			notifyBattlePaused();
-		}
-	}
-
-	public String getBattlePath() {
-		if (battlePath == null) {
-			battlePath = System.getProperty("BATTLEPATH");
-			if (battlePath == null) {
-				battlePath = "battles";
-			}
-			battlePath = new File(FileUtil.getCwd(), battlePath).getAbsolutePath();
-		}
-		return battlePath;
-	}
-
-	public void saveBattle() {
-		pauseBattle();
-		saveBattleProperties();
-		resumeBattle();
-	}
-
-	public void saveBattleAs() {
-		pauseBattle();
-		String path = manager.getWindowManager().getRobocodeFrame().saveBattleDialog(getBattlePath());
-
-		if (path != null) {
-			battleFilename = path;
-			int idx = battleFilename.lastIndexOf('.');
-			String extension = "";
-
-			if (idx > 0) {
-				extension = battleFilename.substring(idx);
-			}
-			if (!(extension.equalsIgnoreCase(".battle"))) {
-				battleFilename += ".battle";
-			}
-			saveBattleProperties();
-		}
-
-		resumeBattle();
-	}
-
-	public void saveBattleProperties() {
-		if (battleProperties == null) {
-			log("Cannot save null battle properties");
-			return;
-		}
-		if (battleFilename == null) {
-			saveBattleAs();
-			return;
-		}
-		FileOutputStream out = null;
-
-		try {
-			out = new FileOutputStream(battleFilename);
-
-			battleProperties.store(out, "Battle Properties");
-		} catch (IOException e) {
-			log("IO Exception saving battle properties: " + e);
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {}
-			}
-		}
-	}
-
-	public void loadBattleProperties() {
-		FileInputStream in = null;
-
-		try {
-			in = new FileInputStream(getBattleFilename());
-			getBattleProperties().load(in);
-		} catch (FileNotFoundException e) {
-			log("No file " + battleFilename + " found, using defaults.");
-		} catch (IOException e) {
-			log("IO Exception reading " + getBattleFilename() + ": " + e);
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
-		}
-	}
-
-	public Battle getBattle() {
-		return battle;
-	}
-
-	public void setOptions() {
-		if (battle != null) {
-			battle.setOptions();
-		}
-	}
-
-	public BattleProperties getBattleProperties() {
-		if (battleProperties == null) {
-			battleProperties = new BattleProperties();
-		}
-		return battleProperties;
-	}
-
-	public void setDefaultBattleProperties() {
-		battleProperties = new BattleProperties();
-	}
-
-	public synchronized void resumeBattle() {
-		int oldPauseCount = pauseCount;
-
-		pauseCount = Math.max(--pauseCount, 0);
-
-		if (oldPauseCount == 1) {
-			notifyBattleResumed();
-		}
-	}
-
-	public void setResultsFile(String newResultsFile) {
-		resultsFile = newResultsFile;
-	}
-
-	public String getResultsFile() {
-		return resultsFile;
-	}
-
-	public void sendResultsToListener(Battle battle, RobocodeListener listener) {
-		if (listener == null) {
-			return;
-		}
-
-		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(battle.getContestants());
-
-		Collections.sort(orderedPeers);
-
-		RobotResults results[] = new RobotResults[orderedPeers.size()];
-
-		for (int i = 0; i < results.length; i++) {
-			ContestantPeer peer = orderedPeers.get(i);
-			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
-
-			ContestantStatistics stats = peer.getStatistics();
-
-			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
-					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
-					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
-					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
-		}
-		listener.battleComplete(battle.getBattleSpecification(), results);
-	}
-
-	public void printResultsData(Battle battle) {
-		// Do not print out if no result file has been specified and the GUI is enabled
-		if (getResultsFile() == null && (!battle.isExitOnComplete() || manager.isGUIEnabled())) {
-			return;
-		}
-
-		PrintStream out = null;
-		FileOutputStream fos = null;
-
-		if (getResultsFile() == null) {
-			out = System.out;
-		} else {
-			File f = new File(getResultsFile());
-
-			try {
-				fos = new FileOutputStream(f);
-				out = new PrintStream(fos);
-			} catch (IOException e) {
-				log(e);
-			}
-		}
-
-		BattleResultsTableModel resultsTable = new BattleResultsTableModel(battle);
-
-		if (out != null) {
-			resultsTable.print(out);
-			out.close();
-		}
-		if (fos != null) {
-			try {
-				fos.close();
-			} catch (IOException e) {}
-		}
-	}
-
-	/**
-	 * Gets the manager.
-	 *
-	 * @return Returns a RobocodeManager
-	 */
-	public RobocodeManager getManager() {
-		return manager;
-	}
-
-	public void addListener(PauseResumeListener listener) {
-		if (pauseResumeListeners == null) {
-			pauseResumeListeners = new ArrayList<PauseResumeListener>();
-		}
-		pauseResumeListeners.add(listener);
-	}
-
-	public void removeListener(PauseResumeListener listener) {
-		pauseResumeListeners.remove(listener);
-	}
-
-	private void notifyBattlePaused() {
-		for (PauseResumeListener l : pauseResumeListeners) {
-			l.battlePaused();
-		}
-	}
-
-	private void notifyBattleResumed() {
-		for (PauseResumeListener l : pauseResumeListeners) {
-			l.battleResumed();
-		}
-	}
-
-	public void cleanup() {
-		battle = null;
-		manager = null;
-	}
+    private BattleProperties battleProperties = new BattleProperties();
+    private String battleFilename;
+    private String battlePath;
+    private Battle battle;
+    private int pauseCount;
+    private String resultsFile;
+    private RobocodeManager manager;
+    private int stepTurn;
+
+    private List<PauseResumeListener> pauseResumeListeners = new ArrayList<PauseResumeListener>();
+
+    public interface PauseResumeListener {
+        public void battlePaused();
+
+        public void battleResumed();
+    }
+
+    /**
+     * Steps for a single turn, then goes back to paused
+     */
+    public void nextTurn() {
+        if (battle != null && battle.isRunning()) {
+            stepTurn = battle.getCurrentTime() + 1;
+        }
+    }
+
+    /**
+     * If the battle is paused, this method determines if it should perform one turn and then stop again.
+     *
+     * @return true if the battle should perform one turn, false otherwise
+     */
+    public boolean shouldStep() {
+        // This code assumes it is called only if the battle is paused.
+        return stepTurn > battle.getCurrentTime();
+    }
+
+    /**
+     * This method should be called to inform the battle manager that a new round is starting
+     */
+    public void startNewRound() {
+        stepTurn = 0;
+    }
+
+    public BattleManager(RobocodeManager manager) {
+        this.manager = manager;
+    }
+
+    public void stop() {
+        if (getBattle() != null) {
+            getBattle().stop();
+        }
+        if (manager.isSoundEnabled()) {
+            manager.getSoundManager().stopBackgroundMusic();
+        }
+    }
+
+    public void restart() {
+        // Start new battle. The old battle is automatically stopped
+        startNewBattle(battleProperties, false, false);
+    }
+
+    public void replay() {
+        startNewBattle(battleProperties, false, true);
+    }
+
+    public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete, boolean replay) {
+        this.battleProperties = battleProperties;
+
+        List<IFileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
+                false, false, false, false, false, false);
+
+        List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
+
+        if (battleProperties.getSelectedRobots() != null) {
+            StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
+
+            while (tokenizer.hasMoreTokens()) {
+                String bot = tokenizer.nextToken();
+
+                for (IFileSpecification fileSpec : robotSpecificationsList) {
+                    if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+                        if (fileSpec instanceof IRobotFileSpecification) {
+                            battlingRobotsList.add(new RobotClassManager((IRobotFileSpecification) fileSpec, manager));
+                            break;
+                        } else if (fileSpec instanceof TeamSpecification) {
+                            TeamSpecification currentTeam = (TeamSpecification) fileSpec;
+                            TeamPeer teamManager = new TeamPeer(currentTeam.getName());
+
+                            StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+
+                            while (teamTokenizer.hasMoreTokens()) {
+                                bot = teamTokenizer.nextToken();
+                                IRobotFileSpecification match = null;
+
+                                for (IFileSpecification teamFileSpec : robotSpecificationsList) {
+                                    // Teams cannot include teams
+                                    if (teamFileSpec instanceof TeamSpecification) {
+                                        continue;
+                                    }
+                                    if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+                                        // Found team member
+                                        match = (RobotFileSpecification) teamFileSpec;
+                                        if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
+                                                || currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
+                                            break;
+                                        }
+                                        // else, still looking
+                                    }
+                                }
+                                battlingRobotsList.add(new RobotClassManager(match, teamManager, manager));
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        startNewBattle(battlingRobotsList, exitOnComplete, replay, null);
+    }
+
+    public void startNewBattle(BattleSpecification spec, boolean replay) {
+        battleProperties = new BattleProperties();
+        battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
+        battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
+        battleProperties.setGunCoolingRate(spec.getGunCoolingRate());
+        battleProperties.setInactivityTime(spec.getInactivityTime());
+        battleProperties.setNumRounds(spec.getNumRounds());
+        battleProperties.setSelectedRobots(spec.getRobots());
+
+        List<IFileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
+                false, false, false, false, false, false);
+        List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
+
+        for (RobotSpecification battleRobotSpec : spec.getRobots()) {
+            if (battleRobotSpec == null) {
+                break;
+            }
+
+            String bot = battleRobotSpec.getClassName();
+
+            if (!(battleRobotSpec.getVersion() == null || battleRobotSpec.getVersion().length() == 0)) {
+                bot += ' ' + battleRobotSpec.getVersion();
+            }
+
+            boolean found = false;
+
+            for (IFileSpecification fileSpec : robotSpecificationsList) {
+                if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+                    if (fileSpec instanceof IRobotFileSpecification) {
+                        RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec, manager);
+
+                        rcm.setControlRobotSpecification(battleRobotSpec);
+                        battlingRobotsList.add(rcm);
+                        found = true;
+                        break;
+                    } else if (fileSpec instanceof TeamSpecification) {
+                        TeamSpecification currentTeam = (TeamSpecification) fileSpec;
+                        TeamPeer teamManager = new TeamPeer(currentTeam.getName());
+
+                        StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+
+                        while (teamTokenizer.hasMoreTokens()) {
+                            bot = teamTokenizer.nextToken();
+                            IRobotFileSpecification match = null;
+
+                            for (IFileSpecification teamFileSpec : robotSpecificationsList) {
+                                // Teams cannot include teams
+                                if (teamFileSpec instanceof TeamSpecification) {
+                                    continue;
+                                }
+                                if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+                                    // Found team member
+                                    match = (RobotFileSpecification) teamFileSpec;
+                                    if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
+                                            || currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
+                                        found = true;
+                                        break;
+                                    }
+                                    // else, still looking
+                                }
+                            }
+                            RobotClassManager rcm = new RobotClassManager(match, teamManager, manager);
+
+                            rcm.setControlRobotSpecification(battleRobotSpec);
+                            battlingRobotsList.add(rcm);
+                        }
+                        break;
+                    }
+                }
+            }
+            if (!found) {
+                log("Aborting battle, could not find robot: " + bot);
+                if (manager.getListener() != null) {
+                    manager.getListener().battleAborted(spec);
+                }
+                return;
+            }
+        }
+        startNewBattle(battlingRobotsList, false, replay, spec);
+    }
+
+    private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
+                                BattleSpecification battleSpecification) {
+
+        log("Preparing battle...");
+        if (battle != null) {
+            battle.stop();
+        }
+
+        BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
+                battleProperties.getBattlefieldHeight());
+
+        if (manager.isGUIEnabled()) {
+            manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);
+        }
+        battle = new Battle(battleField, manager);
+        battle.setExitOnComplete(exitOnComplete);
+
+        // Only used when controlled by RobocodeEngine
+        battle.setBattleSpecification(battleSpecification);
+
+        // Set stuff the view needs to know
+        battle.setProperties(battleProperties);
+
+        Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
+
+        battleThread.setPriority(Thread.NORM_PRIORITY);
+        battleThread.setName("Battle Thread");
+        battle.setBattleThread(battleThread);
+        battle.setReplay(replay);
+
+        if (!System.getProperty("NOSECURITY", "false").equals("true")) {
+            ((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
+            ((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
+        }
+
+        if (manager.isGUIEnabled()) {
+            robocode.ui.IBattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+
+            battleView.setVisible(true);
+            battleView.setInitialized(false);
+        }
+
+        for (RobotClassManager robotClassMgr : battlingRobotsList) {
+            battle.addRobot(robotClassMgr);
+        }
+
+        if (manager.isGUIEnabled()) {
+            robocode.ui.IRobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
+
+            frame.setEnableBattleSaveAsMenuItem(true);
+            frame.setEnableBattleSaveMenuItem(true);
+
+            if (isPaused()) {
+                pauseResumeBattle();
+            }
+
+            manager.getRobotDialogManager().setActiveBattle(battle);
+        }
+
+        // Start the battle thread
+        battleThread.start();
+
+        // Wait until the battle is running.
+        // This must be done as a new battle could be started immediately after this one causing
+        // multiple battle threads to run at the same time, which must be prevented!
+        battle.waitTillRunning();
+    }
+
+    public String getBattleFilename() {
+        String filename = battleFilename;
+
+        return getBattleFilename(filename);
+    }
+
+    public static String getBattleFilename(String filename) {
+        if (filename != null) {
+            if (filename.indexOf(File.separatorChar) < 0) {
+                filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
+            }
+            if (!filename.endsWith(".battle")) {
+                filename += ".battle";
+            }
+        }
+        return filename;
+    }
+
+    public void setBattleFilename(String newBattleFilename) {
+        battleFilename = newBattleFilename;
+    }
+
+    public synchronized void pauseResumeBattle() {
+        if (isPaused()) {
+            resumeBattle();
+        } else {
+            pauseBattle();
+        }
+    }
+
+    public synchronized boolean isPaused() {
+        return (pauseCount != 0);
+    }
+
+    public synchronized void pauseBattle() {
+        pauseCount++;
+
+        if (pauseCount == 1) {
+            notifyBattlePaused();
+        }
+    }
+
+    public String getBattlePath() {
+        if (battlePath == null) {
+            battlePath = System.getProperty("BATTLEPATH");
+            if (battlePath == null) {
+                battlePath = "battles";
+            }
+            battlePath = new File(FileUtil.getCwd(), battlePath).getAbsolutePath();
+        }
+        return battlePath;
+    }
+
+    public void saveBattle() {
+        pauseBattle();
+        saveBattleProperties();
+        resumeBattle();
+    }
+
+    public void saveBattleAs() {
+        pauseBattle();
+        String path = manager.getWindowManager().getRobocodeFrame().saveBattleDialog(getBattlePath());
+
+        if (path != null) {
+            battleFilename = path;
+            int idx = battleFilename.lastIndexOf('.');
+            String extension = "";
+
+            if (idx > 0) {
+                extension = battleFilename.substring(idx);
+            }
+            if (!(extension.equalsIgnoreCase(".battle"))) {
+                battleFilename += ".battle";
+            }
+            saveBattleProperties();
+        }
+        resumeBattle();
+    }
+
+    public void saveBattleProperties() {
+        if (battleProperties == null) {
+            log("Cannot save null battle properties");
+            return;
+        }
+        if (battleFilename == null) {
+            saveBattleAs();
+            return;
+        }
+        FileOutputStream out = null;
+
+        try {
+            out = new FileOutputStream(battleFilename);
+
+            battleProperties.store(out, "Battle Properties");
+        } catch (IOException e) {
+            log("IO Exception saving battle properties: " + e);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
+
+    public void loadBattleProperties() {
+        FileInputStream in = null;
+
+        try {
+            in = new FileInputStream(getBattleFilename());
+            getBattleProperties().load(in);
+        } catch (FileNotFoundException e) {
+            log("No file " + battleFilename + " found, using defaults.");
+        } catch (IOException e) {
+            log("IO Exception reading " + getBattleFilename() + ": " + e);
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
+
+    public Battle getBattle() {
+        return battle;
+    }
+
+    public void setOptions() {
+        if (battle != null) {
+            battle.setOptions();
+        }
+    }
+
+    public BattleProperties getBattleProperties() {
+        if (battleProperties == null) {
+            battleProperties = new BattleProperties();
+        }
+        return battleProperties;
+    }
+
+    public void setDefaultBattleProperties() {
+        battleProperties = new BattleProperties();
+    }
+
+    public synchronized void resumeBattle() {
+        int oldPauseCount = pauseCount;
+
+        pauseCount = Math.max(--pauseCount, 0);
+
+        if (oldPauseCount == 1) {
+            notifyBattleResumed();
+        }
+    }
+
+    public void setResultsFile(String newResultsFile) {
+        resultsFile = newResultsFile;
+    }
+
+    public String getResultsFile() {
+        return resultsFile;
+    }
+
+    public void sendResultsToListener(Battle battle, RobocodeListener listener) {
+        if (listener == null) {
+            return;
+        }
+
+        List<IContestantPeer> orderedPeers = new ArrayList<IContestantPeer>(battle.getContestants());
+
+        Collections.sort(orderedPeers);
+
+        RobotResults results[] = new RobotResults[orderedPeers.size()];
+
+        for (int i = 0; i < results.length; i++) {
+            IContestantPeer peer = orderedPeers.get(i);
+            RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
+
+            IContestantStatistics stats = peer.getRobotStatistics();
+
+            results[i] = new RobotResults((robotPeer).getRobotClassManager().getControlRobotSpecification(), (i + 1),
+                    stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
+                    stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
+                    stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
+        }
+        listener.battleComplete(battle.getBattleSpecification(), results);
+    }
+
+    public void printResultsData(Battle battle) {
+        // Do not print out if no result file has been specified and the GUI is enabled
+        if (getResultsFile() == null && (!battle.isExitOnComplete() || manager.isGUIEnabled())) {
+            return;
+        }
+
+        PrintStream out = null;
+        FileOutputStream fos = null;
+
+        if (getResultsFile() == null) {
+            out = System.out;
+        } else {
+            File f = new File(getResultsFile());
+
+            try {
+                fos = new FileOutputStream(f);
+                out = new PrintStream(fos);
+            } catch (IOException e) {
+                log(e);
+            }
+        }
+
+        BattleResultsTableModel resultsTable = new BattleResultsTableModel(battle);
+
+        if (out != null) {
+            resultsTable.print(out);
+            out.close();
+        }
+        if (fos != null) {
+            try {
+                fos.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    /**
+     * Gets the manager.
+     *
+     * @return Returns a RobocodeManager
+     */
+    public RobocodeManager getManager() {
+        return manager;
+    }
+
+    public void addListener(PauseResumeListener listener) {
+        if (pauseResumeListeners == null) {
+            pauseResumeListeners = new ArrayList<PauseResumeListener>();
+        }
+        pauseResumeListeners.add(listener);
+    }
+
+    public void removeListener(PauseResumeListener listener) {
+        pauseResumeListeners.remove(listener);
+    }
+
+    private void notifyBattlePaused() {
+        for (PauseResumeListener l : pauseResumeListeners) {
+            l.battlePaused();
+        }
+    }
+
+    private void notifyBattleResumed() {
+        for (PauseResumeListener l : pauseResumeListeners) {
+            l.battleResumed();
+        }
+    }
+
+    public void cleanup() {
+        battle = null;
+        manager = null;
+    }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,14 @@
 package robocodeui.manager;
 
 
+import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
+import robocode.manager.RobocodeManager;
+import robocode.ui.IVersionManager;
+import robocodeui.dialog.WindowUtil;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -33,15 +39,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
-import java.awt.*;
-
-import javax.swing.JOptionPane;
-
-import robocode.io.FileUtil;
-import robocode.ui.IVersionManager;
-import robocode.manager.RobocodeManager;
-
-import robocodeui.dialog.WindowUtil;
 
 
 /**
@@ -49,351 +46,358 @@ import robocodeui.dialog.WindowUtil;
  * @author Flemming N. Larsen (contributor)
  */
 public final class VersionManager implements IVersionManager {
-	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
+    private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
 
-	private String version;
-	private RobocodeManager manager;
+    private String version;
+    private RobocodeManager manager;
 
-	public VersionManager() {}
+    public VersionManager() {
+    }
 
-	public void checkUpdateCheck() {
-		Date lastCheckedDate = manager.getProperties().getVersionChecked();
+    public void checkUpdateCheck() {
+        Date lastCheckedDate = manager.getProperties().getVersionChecked();
 
-		Date today = new Date();
+        Date today = new Date();
 
-		if (lastCheckedDate == null) {
-			lastCheckedDate = today;
-			manager.getProperties().setVersionChecked(lastCheckedDate);
-			manager.saveProperties();
-		}
-		Calendar checkDate = Calendar.getInstance();
+        if (lastCheckedDate == null) {
+            lastCheckedDate = today;
+            manager.getProperties().setVersionChecked(lastCheckedDate);
+            manager.saveProperties();
+        }
+        Calendar checkDate = Calendar.getInstance();
 
-		checkDate.setTime(lastCheckedDate);
-		checkDate.add(Calendar.DATE, 5);
+        checkDate.setTime(lastCheckedDate);
+        checkDate.add(Calendar.DATE, 5);
 
-		if (checkDate.getTime().before(today) && checkForNewVersion(false)) {
-			manager.getProperties().setVersionChecked(today);
-			manager.saveProperties();
-		}
-	}
+        if (checkDate.getTime().before(today) && checkForNewVersion(false)) {
+            manager.getProperties().setVersionChecked(today);
+            manager.saveProperties();
+        }
+    }
 
-	public boolean checkForNewVersion(boolean notifyNoUpdate) {
-		URL url = null;
+    public boolean checkForNewVersion(boolean notifyNoUpdate) {
+        URL url = null;
 
-		try {
-			url = new URL("http://robocode.sourceforge.net/version/version.html");
-		} catch (MalformedURLException e) {
-			log("Unable to check for new version: " + e);
-			if (notifyNoUpdate) {
-				WindowUtil.messageError("Unable to check for new version: " + e);
-			}
-			return false;
-		}
+        try {
+            url = new URL("http://robocode.sourceforge.net/version/version.html");
+        } catch (MalformedURLException e) {
+            log("Unable to check for new version: " + e);
+            if (notifyNoUpdate) {
+                WindowUtil.messageError("Unable to check for new version: " + e);
+            }
+            return false;
+        }
 
-		InputStream inputStream = null;
-		InputStreamReader inputStreamReader = null;
-		BufferedReader reader = null;
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader reader = null;
 
-		try {
-			URLConnection urlConnection = url.openConnection();
+        try {
+            URLConnection urlConnection = url.openConnection();
 
-			urlConnection.setConnectTimeout(5000);
+            urlConnection.setConnectTimeout(5000);
 
-			if (urlConnection instanceof HttpURLConnection) {
-				log("Update checking with http.");
-				HttpURLConnection h = (HttpURLConnection) urlConnection;
+            if (urlConnection instanceof HttpURLConnection) {
+                log("Update checking with http.");
+                HttpURLConnection h = (HttpURLConnection) urlConnection;
 
-				if (h.usingProxy()) {
-					log("http using proxy.");
-				}
-			}
-			inputStream = urlConnection.getInputStream();
-			inputStreamReader = new InputStreamReader(inputStream);
-			reader = new BufferedReader(inputStreamReader);
+                if (h.usingProxy()) {
+                    log("http using proxy.");
+                }
+            }
+            inputStream = urlConnection.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            reader = new BufferedReader(inputStreamReader);
 
-			String newVersLine = reader.readLine();
-			String curVersLine = getVersion();
+            String newVersLine = reader.readLine();
+            String curVersLine = getVersion();
 
-			boolean newVersionAvailable = false;
-			Component parentComponent = (Component) manager.getWindowManager().getRobocodeFrame();
-			
-			if (newVersLine != null && curVersLine != null) {
-				Version newVersion = new Version(newVersLine);
+            boolean newVersionAvailable = false;
+            Component parentComponent = (Component) manager.getWindowManager().getRobocodeFrame();
 
-				if (newVersion.compareTo(curVersLine) > 0) {
-					newVersionAvailable = true;
+            if (newVersLine != null && curVersLine != null) {
+                Version newVersion = new Version(newVersLine);
 
-					if (JOptionPane.showConfirmDialog(parentComponent,
-							"Version " + newVersion + " of Robocode is now available.  Would you like to download it?",
-							"Version " + newVersion + " available", JOptionPane.YES_NO_OPTION)
-							== JOptionPane.YES_OPTION) {
-						try {
-							BrowserManager.openURL(INSTALL_URL);
-						} catch (IOException e) {
-							JOptionPane.showMessageDialog(parentComponent, e.getMessage(), "Unable to open browser!",
-									JOptionPane.INFORMATION_MESSAGE);
-						}
-					} else if (newVersion.isFinal()) {
-						JOptionPane.showMessageDialog(parentComponent,
-								"It is highly recommended that you always download the latest version.  You may get it at "
-								+ INSTALL_URL,
-								"Update when you can!",
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-			}
-			if (!newVersionAvailable && notifyNoUpdate) {
-				JOptionPane.showMessageDialog(parentComponent,
-						"You have version " + version + ".  This is the latest version of Robocode.", "No update available",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-		} catch (IOException e) {
-			log("Unable to check for new version: " + e);
-			if (notifyNoUpdate) {
-				WindowUtil.messageError("Unable to check for new version: " + e);
-			}
-			return false;
-		} finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e) {}
-			}
-			if (inputStreamReader != null) {
-				try {
-					inputStreamReader.close();
-				} catch (IOException e) {}
-			}
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {}
-			}
-		}
+                if (newVersion.compareTo(curVersLine) > 0) {
+                    newVersionAvailable = true;
 
-		return true;
-	}
+                    if (JOptionPane.showConfirmDialog(parentComponent,
+                            "Version " + newVersion + " of Robocode is now available.  Would you like to download it?",
+                            "Version " + newVersion + " available", JOptionPane.YES_NO_OPTION)
+                            == JOptionPane.YES_OPTION) {
+                        try {
+                            BrowserManager.openURL(INSTALL_URL);
+                        } catch (IOException e) {
+                            JOptionPane.showMessageDialog(parentComponent, e.getMessage(), "Unable to open browser!",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } else if (newVersion.isFinal()) {
+                        JOptionPane.showMessageDialog(parentComponent,
+                                "It is highly recommended that you always download the latest version.  You may get it at "
+                                        + INSTALL_URL,
+                                "Update when you can!",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+            if (!newVersionAvailable && notifyNoUpdate) {
+                JOptionPane.showMessageDialog(parentComponent,
+                        "You have version " + version + ".  This is the latest version of Robocode.", "No update available",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (IOException e) {
+            log("Unable to check for new version: " + e);
+            if (notifyNoUpdate) {
+                WindowUtil.messageError("Unable to check for new version: " + e);
+            }
+            return false;
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                }
+            }
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException e) {
+                }
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                }
+            }
+        }
 
-	public String getVersion() {
-		if (version == null) {
-			version = getVersionFromJar();
-		}
-		return version;
-	}
+        return true;
+    }
 
-	private String getVersionFromJar() {
-		String versionString = null;
+    public String getVersion() {
+        if (version == null) {
+            version = getVersionFromJar();
+        }
+        return version;
+    }
 
-		BufferedReader in = null;
+    private String getVersionFromJar() {
+        String versionString = null;
 
-		try {
-			URL versionsUrl = getClass().getResource("/resources/versions.txt");
+        BufferedReader in = null;
 
-			if (versionsUrl == null) {
-				log("no url");
-				return null;
-			}
+        try {
+            URL versionsUrl = getClass().getResource("/resources/versions.txt");
 
-			in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
+            if (versionsUrl == null) {
+                log("no url");
+                return null;
+            }
 
-			versionString = in.readLine();
-			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
-				versionString = in.readLine();
-			}
-		} catch (FileNotFoundException e) {
-			log("No versions.txt file in robocode.jar.");
-			versionString = "unknown";
-		} catch (IOException e) {
-			log("IO Exception reading versions.txt from robocode.jar" + e);
-			versionString = "unknown";
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
-		}
+            in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
 
-		String version = "unknown";
+            versionString = in.readLine();
+            while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
+                versionString = in.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            log("No versions.txt file in robocode.jar.");
+            versionString = "unknown";
+        } catch (IOException e) {
+            log("IO Exception reading versions.txt from robocode.jar" + e);
+            versionString = "unknown";
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+        }
 
-		if (versionString != null) {
-			try {
-				version = versionString.substring(8);
-			} catch (Exception e) {
-				version = "unknown";
-			}
-		}
-		if (version.equals("unknown")) {
-			log("Warning:  Getting version from file.");
-			return getVersionFromFile();
-		}
-		return version;
-	}
+        String version = "unknown";
 
-	private String getVersionFromFile() {
-		String versionString = null;
+        if (versionString != null) {
+            try {
+                version = versionString.substring(8);
+            } catch (Exception e) {
+                version = "unknown";
+            }
+        }
+        if (version.equals("unknown")) {
+            log("Warning:  Getting version from file.");
+            return getVersionFromFile();
+        }
+        return version;
+    }
 
-		FileReader fileReader = null;
-		BufferedReader in = null;
+    private String getVersionFromFile() {
+        String versionString = null;
 
-		try {
-			fileReader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
-			in = new BufferedReader(fileReader);
+        FileReader fileReader = null;
+        BufferedReader in = null;
 
-			versionString = in.readLine();
-			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
-				versionString = in.readLine();
-			}
-		} catch (FileNotFoundException e) {
-			log("No versions.txt file.");
-			versionString = "unknown";
-		} catch (IOException e) {
-			log("IO Exception reading versions.txt" + e);
-			versionString = "unknown";
-		} finally {
-			if (fileReader != null) {
-				try {
-					fileReader.close();
-				} catch (IOException e) {}
-			}
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
-		}
+        try {
+            fileReader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
+            in = new BufferedReader(fileReader);
 
-		String version = "unknown";
+            versionString = in.readLine();
+            while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
+                versionString = in.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            log("No versions.txt file.");
+            versionString = "unknown";
+        } catch (IOException e) {
+            log("IO Exception reading versions.txt" + e);
+            versionString = "unknown";
+        } finally {
+            if (fileReader != null) {
+                try {
+                    fileReader.close();
+                } catch (IOException e) {
+                }
+            }
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+        }
 
-		if (versionString != null) {
-			try {
-				version = versionString.substring(8);
-			} catch (Exception e) {
-				version = "unknown";
-			}
-		}
-		return version;
-	}
-    
-	public void setRobocodeManager(RobocodeManager robocodeManager) {
-		manager = robocodeManager;
-	}
+        String version = "unknown";
+
+        if (versionString != null) {
+            try {
+                version = versionString.substring(8);
+            } catch (Exception e) {
+                version = "unknown";
+            }
+        }
+        return version;
+    }
+
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        manager = robocodeManager;
+    }
 }
 
 
 class Version implements Comparable<Object> {
 
-	private final String version;
+    private final String version;
 
-	public Version(String version) {
-		this.version = version.replaceAll("\\.\\s++", ".").replaceAll("\\s++|lpha|eta", "");
-	}
+    public Version(String version) {
+        this.version = version.replaceAll("\\.\\s++", ".").replaceAll("\\s++|lpha|eta", "");
+    }
 
-	public boolean isAlpha() {
-		return (version.matches(".*(A|a).*"));
-	}
+    public boolean isAlpha() {
+        return (version.matches(".*(A|a).*"));
+    }
 
-	public boolean isBeta() {
-		return (version.matches(".*(B|b).*"));
-	}
+    public boolean isBeta() {
+        return (version.matches(".*(B|b).*"));
+    }
 
-	public boolean isFinal() {
-		return !(isAlpha() || isBeta());
-	}
+    public boolean isFinal() {
+        return !(isAlpha() || isBeta());
+    }
 
-	public int compareTo(Object o) {
-		if (o == null) {
-			throw new IllegalArgumentException();
-		}
-		if (o instanceof String) {
-			return compareTo(new Version((String) o));
-		} else if (o instanceof Version) {
-			Version v = (Version) o;
+    public int compareTo(Object o) {
+        if (o == null) {
+            throw new IllegalArgumentException();
+        }
+        if (o instanceof String) {
+            return compareTo(new Version((String) o));
+        } else if (o instanceof Version) {
+            Version v = (Version) o;
 
-			if (version.equalsIgnoreCase(v.version)) {
-				return 0;
-			}
+            if (version.equalsIgnoreCase(v.version)) {
+                return 0;
+            }
 
-			String[] split1 = version.split(" ", 2);
-			String[] split2 = v.version.split(" ", 2);
+            String[] split1 = version.split(" ", 2);
+            String[] split2 = v.version.split(" ", 2);
 
-			if (split1[0].equalsIgnoreCase(split2[0])) {
-				if (split1.length == 1) {
-					return 1;
-				}
-				if (split2.length == 1) {
-					return -1;
-				}
-				
-				split1 = split1[1].split(" ", 2);
-				split2 = split2[1].split(" ", 2);
+            if (split1[0].equalsIgnoreCase(split2[0])) {
+                if (split1.length == 1) {
+                    return 1;
+                }
+                if (split2.length == 1) {
+                    return -1;
+                }
 
-				int compare = split1[0].compareToIgnoreCase(split2[0]);
+                split1 = split1[1].split(" ", 2);
+                split2 = split2[1].split(" ", 2);
 
-				if (compare == 0) {
-					if (split1.length == 1) {
-						return -1;
-					}
-					if (split2.length == 1) {
-						return 1;
-					}
-					return split1[1].compareToIgnoreCase(split2[1]);
-				}
-				return compare;
-			}
+                int compare = split1[0].compareToIgnoreCase(split2[0]);
 
-			split1 = split1[0].split("\\.", 3);
-			split2 = split2[0].split("\\.", 3);
+                if (compare == 0) {
+                    if (split1.length == 1) {
+                        return -1;
+                    }
+                    if (split2.length == 1) {
+                        return 1;
+                    }
+                    return split1[1].compareToIgnoreCase(split2[1]);
+                }
+                return compare;
+            }
 
-			split1[0] = split1[0].trim();
-			split2[0] = split2[0].trim();
-			int compare = split1[0].compareToIgnoreCase(split2[0]);
-			
-			if (compare == 0) {
-				if (split1.length == 1) {
-					return -1;
-				}
-				if (split2.length == 1) {
-					return 1;
-				}
+            split1 = split1[0].split("\\.", 3);
+            split2 = split2[0].split("\\.", 3);
 
-				split1[1] = (split1[1] + '\uffff').trim();
-				split2[1] = (split2[1] + '\uffff').trim();
-				compare = split1[1].compareToIgnoreCase(split2[1]);
+            split1[0] = split1[0].trim();
+            split2[0] = split2[0].trim();
+            int compare = split1[0].compareToIgnoreCase(split2[0]);
 
-				if (compare == 0) {
-					if (split1.length == 2) {
-						return -1;
-					}
-					if (split2.length == 2) {
-						return 1;
-					}
+            if (compare == 0) {
+                if (split1.length == 1) {
+                    return -1;
+                }
+                if (split2.length == 1) {
+                    return 1;
+                }
 
-					split1[2] = (split1[2] + '\uffff').trim();
-					split2[2] = (split2[2] + '\uffff').trim();
-					compare = split1[2].compareToIgnoreCase(split2[2]);
+                split1[1] = (split1[1] + '\uffff').trim();
+                split2[1] = (split2[1] + '\uffff').trim();
+                compare = split1[1].compareToIgnoreCase(split2[1]);
 
-					if (compare == 0) {
-						if (split1.length == 3) {
-							return -1;
-						}
-						if (split2.length == 3) {
-							return 1;
-						}
-					}
-					return compare;
-				}
-				return compare;
-			}
-			return compare;
-			
-		} else {
-			throw new IllegalArgumentException("The input object must be a String or Version object");
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return version;
-	}
+                if (compare == 0) {
+                    if (split1.length == 2) {
+                        return -1;
+                    }
+                    if (split2.length == 2) {
+                        return 1;
+                    }
+
+                    split1[2] = (split1[2] + '\uffff').trim();
+                    split2[2] = (split2[2] + '\uffff').trim();
+                    compare = split1[2].compareToIgnoreCase(split2[2]);
+
+                    if (compare == 0) {
+                        if (split1.length == 3) {
+                            return -1;
+                        }
+                        if (split2.length == 3) {
+                            return 1;
+                        }
+                    }
+                    return compare;
+                }
+                return compare;
+            }
+            return compare;
+
+        } else {
+            throw new IllegalArgumentException("The input object must be a String or Version object");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return version;
+    }
 }

@@ -9,219 +9,246 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Updated to use methods from the Logger, which replaces logger methods
  *       that has been (re)moved from the robocode.util.Utils class
  *     - Fixed potential NullPointerExceptions
- *     - Code cleanup
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
 
-import java.io.*;
-
 import robocode.exception.RobotException;
 import robocode.io.Logger;
 import robocode.manager.ThreadManager;
-import robocode.peer.RobotPeer;
+import robocode.peer.IRobotRobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.security.RobocodePermission;
 import robocode.security.RobocodeSecurityManager;
 
+import java.io.*;
+
 
 /**
- * RobocodeFileOutputStream is used for streaming/writing data out to a file,
- * which you got by calling {@link AdvancedRobot#getDataFile(String)}.
- * <p>
- * You should read java.io.FileOutputStream for documentation of this class.
- * <p>
+ * RobocodeFileOutputStream is similar to a {@link java.io.FileOutputStream}
+ * and is used for streaming/writing data out to a file, which you got
+ * previously by calling {@link AdvancedRobot#getDataFile(String)}.
+ * <p/>
+ * You should read {@link java.io.FileOutputStream} for documentation of this
+ * class.
+ * <p/>
  * Please notice that the max. size of your data file is set to 200000
  * (~195 KB).
  *
- * @see AdvancedRobot#getDataFile(String)
- * @see java.io.FileOutputStream
- *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @see AdvancedRobot#getDataFile(String)
+ * @see java.io.FileOutputStream
  */
 public class RobocodeFileOutputStream extends OutputStream {
-	private static ThreadManager threadManager;
-	private FileOutputStream out;
-	private String name = null;
-	private RobotFileSystemManager fileSystemManager;
+    private static ThreadManager threadManager;
+    private FileOutputStream out;
+    private String fileName;
+    private RobotFileSystemManager fileSystemManager;
 
-	/**
-	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
-	 * @see java.io.FileOutputStream
-	 */
-	public RobocodeFileOutputStream(File file) throws IOException {
-		this(file.getPath());
-	}
+    /**
+     * Constructs a new RobocodeFileOutputStream.
+     * See {@link java.io.FileOutputStream#FileOutputStream(File)}
+     * for documentation about this constructor.
+     *
+     * @see java.io.FileOutputStream#FileOutputStream(File)
+     */
+    public RobocodeFileOutputStream(File file) throws IOException {
+        this(file.getPath());
+    }
 
-	/**
-	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
-	 * @see java.io.FileOutputStream
-	 */
-	public RobocodeFileOutputStream(FileDescriptor fdObj) {
-		throw new RobotException("Creating a RobocodeFileOutputStream with a FileDescriptor is not supported.");
-	}
+    /**
+     * Constructs a new RobocodeFileOutputStream.
+     * See {@link java.io.FileOutputStream#FileOutputStream(FileDescriptor)}
+     * for documentation about this constructor.
+     *
+     * @see java.io.FileOutputStream#FileOutputStream(FileDescriptor)
+     */
+    public RobocodeFileOutputStream(FileDescriptor fdObj) {
+        throw new RobotException("Creating a RobocodeFileOutputStream with a FileDescriptor is not supported.");
+    }
 
-	/**
-	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
-	 * @see java.io.FileOutputStream
-	 */
-	public RobocodeFileOutputStream(String name) throws java.io.IOException {
-		this(name, false);
-	}
+    /**
+     * Constructs a new RobocodeFileOutputStream.
+     * See {@link java.io.FileOutputStream#FileOutputStream(String)}
+     * for documentation about this constructor.
+     *
+     * @see java.io.FileOutputStream#FileOutputStream(String)
+     */
+    public RobocodeFileOutputStream(String fileName) throws java.io.IOException {
+        this(fileName, false);
+    }
 
-	/**
-	 * RobocodeFileOutputStream constructor -- see FileOutputStream for docs!
-	 * @see java.io.FileOutputStream
-	 */
-	public RobocodeFileOutputStream(String name, boolean append) throws IOException {
-		if (threadManager == null) {
-			Logger.log("RobocodeFileOutputStream.threadManager cannot be null!");
-			return;
-		}
-		Thread c = Thread.currentThread();
+    /**
+     * Constructs a new RobocodeFileOutputStream.
+     * See {@link java.io.FileOutputStream#FileOutputStream(String, boolean)}
+     * for documentation about this constructor.
+     *
+     * @see java.io.FileOutputStream#FileOutputStream(String, boolean)
+     */
+    public RobocodeFileOutputStream(String fileName, boolean append) throws IOException {
+        if (threadManager == null) {
+            Logger.log("RobocodeFileOutputStream.threadManager cannot be null!");
+            return;
+        }
+        Thread c = Thread.currentThread();
 
-		this.name = name;
-		RobotPeer r = threadManager.getRobotPeer(c);
+        this.fileName = fileName;
+        IRobotRobotPeer robotPeer = threadManager.getRobotPeer(c);
 
-		if (r == null) {
-			Logger.log("RobotPeer is null");
-			return;
-		}
+        if (robotPeer == null) {
+            Logger.log("RobotPeer is null");
+            return;
+        }
 
-		if (!r.isAdvancedRobot()) {
-			throw new RobotException("Only robots that extend AdvancedRobot may write to the filesystem.");
-		}
+        if (!robotPeer.getRobotRunnableView().isAdvancedRobot()) {
+            throw new RobotException("Only advanced robots may write to the filesystem");
+        }
 
-		this.fileSystemManager = r.getRobotFileSystemManager();
+        this.fileSystemManager = robotPeer.getRobotFileSystemManager();
 
-		// First, we see if the file exists:
-		File f = new File(name);
-		long len;
+        // First, we see if the file exists:
+        File f = new File(fileName);
+        long len;
 
-		if (f.exists()) {
-			len = f.length();
-		} else {
-			fileSystemManager.checkQuota();
-			len = 0;
-		}
+        if (f.exists()) {
+            len = f.length();
+        } else {
+            fileSystemManager.checkQuota();
+            len = 0;
+        }
 
-		RobocodeSecurityManager securityManager;
+        RobocodeSecurityManager securityManager;
 
-		if (System.getSecurityManager() instanceof RobocodeSecurityManager) {
-			securityManager = (RobocodeSecurityManager) System.getSecurityManager();
-			securityManager.getFileOutputStream(this, append);
-			if (!append) {
-				fileSystemManager.adjustQuota(-len);
-			}
-			fileSystemManager.addStream(this);
-		} else {
-			throw new RobotException("Non robocode security manager?");
-		}
-	}
+        if (System.getSecurityManager() instanceof RobocodeSecurityManager) {
+            securityManager = (RobocodeSecurityManager) System.getSecurityManager();
+            securityManager.getFileOutputStream(this, append);
+            if (!append) {
+                fileSystemManager.adjustQuota(-len);
+            }
+            fileSystemManager.addStream(this);
+        } else {
+            throw new RobotException("Non robocode security manager?");
+        }
+    }
 
-	/**
-	 * See java.io.FileOutputStream
-	 *
-	 * @see java.io.FileOutputStream
-	 */
-	@Override
-	public final void close() throws IOException {
-		fileSystemManager.removeStream(this);
-		out.close();
-	}
+    /**
+     * Closes this output stream. See {@link java.io.FileOutputStream#close()}
+     * for documentation about this method.
+     *
+     * @see java.io.FileOutputStream#close()
+     */
+    @Override
+    public final void close() throws IOException {
+        fileSystemManager.removeStream(this);
+        out.close();
+    }
 
-	/**
-	 * See java.io.FileOutputStream
-	 *
-	 * @see java.io.FileOutputStream
-	 */
-	@Override
-	public final void flush() throws IOException {
-		out.flush();
-	}
+    /**
+     * Flushes this output stream. See {@link java.io.FileOutputStream#flush()}
+     * for documentation about this method.
+     *
+     * @see java.io.FileOutputStream#flush()
+     */
+    @Override
+    public final void flush() throws IOException {
+        out.flush();
+    }
 
-	/**
-	 * Returns the filename
-	 */
-	public final String getName() {
-		return name;
-	}
+    /**
+     * Returns the filename of this output stream.
+     *
+     * @return the filename of this output stream.
+     */
+    public final String getName() {
+        return fileName;
+    }
 
-	/**
-	 * The system calls this method, you should not call it.
-	 */
-	public final void setFileOutputStream(FileOutputStream out) {
-		this.out = out;
-	}
+    /**
+     * The system calls this method, you should not call it.
+     */
+    public final void setFileOutputStream(FileOutputStream out) {
+        this.out = out;
+    }
 
-	/**
-	 * The system calls this method, you should not call it.
-	 */
-	public final static void setThreadManager(ThreadManager threadManager) {
-		System.getSecurityManager().checkPermission(new RobocodePermission("setThreadManager"));
-		RobocodeFileOutputStream.threadManager = threadManager;
-	}
+    /**
+     * The system calls this method, you should not call it.
+     */
+    public static void setThreadManager(ThreadManager threadManager) {
+        System.getSecurityManager().checkPermission(new RobocodePermission("setThreadManager"));
+        RobocodeFileOutputStream.threadManager = threadManager;
+    }
 
-	/**
-	 * See java.io.FileOutputStream
-	 *
-	 * @see java.io.FileOutputStream
-	 */
-	@Override
-	public final void write(byte[] b) throws IOException {
-		try {
-			fileSystemManager.checkQuota(b.length);
-			out.write(b);
-		} catch (IOException e) {
-			try {
-				close();
-			} catch (IOException f) {}
-			throw e;
-		}
-	}
+    /**
+     * Writes a byte array to this output stream.
+     * See {@link java.io.FileOutputStream#write(byte[])} for documentation
+     * about this method.
+     *
+     * @see java.io.FileOutputStream#write(byte[])
+     */
+    @Override
+    public final void write(byte[] b) throws IOException {
+        try {
+            fileSystemManager.checkQuota(b.length);
+            out.write(b);
+        } catch (IOException e) {
+            try {
+                close();
+            } catch (IOException f) {
+            }
+            throw e;
+        }
+    }
 
-	/**
-	 * See java.io.FileOutputStream
-	 *
-	 * @see java.io.FileOutputStream
-	 */
-	@Override
-	public final void write(byte[] b, int off, int len) throws IOException {
-		if (len < 0) {
-			throw new IndexOutOfBoundsException();
-		}
-		try {
-			fileSystemManager.checkQuota(len);
-			out.write(b, off, len);
-		} catch (IOException e) {
-			close();
-			try {
-				close();
-			} catch (IOException f) {}
-			throw e;
-		}
-	}
+    /**
+     * Writes a byte array to this output stream.
+     * See {@link java.io.FileOutputStream#write(byte[], int, int)} for
+     * documentation about this method.
+     *
+     * @see java.io.FileOutputStream#write(byte[], int, int)
+     */
+    @Override
+    public final void write(byte[] b, int off, int len) throws IOException {
+        if (len < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        try {
+            fileSystemManager.checkQuota(len);
+            out.write(b, off, len);
+        } catch (IOException e) {
+            close();
+            try {
+                close();
+            } catch (IOException f) {
+            }
+            throw e;
+        }
+    }
 
-	/**
-	 * See java.io.FileOutputStream
-	 *
-	 * @see java.io.FileOutputStream
-	 */
-	@Override
-	public final void write(int b) throws IOException {
-		try {
-			fileSystemManager.checkQuota(1);
-			out.write(b);
-		} catch (IOException e) {
-			close();
-			try {
-				close();
-			} catch (IOException f) {}
-			throw e;
-		}
-	}
+    /**
+     * Writes a single byte to this output stream.
+     * See {@link java.io.FileOutputStream#write(int)} for documentation about
+     * this method.
+     *
+     * @see java.io.FileOutputStream#write(int)
+     */
+    @Override
+    public final void write(int b) throws IOException {
+        try {
+            fileSystemManager.checkQuota(1);
+            out.write(b);
+        } catch (IOException e) {
+            close();
+            try {
+                close();
+            } catch (IOException f) {
+            }
+            throw e;
+        }
+    }
 }

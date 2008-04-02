@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,16 +18,14 @@
 package robocodeui.packager;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
+import robocode.repository.IFileSpecification;
+import robocodeui.dialog.WizardPanel;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.List;
-
-import javax.swing.*;
-
-import robocodeui.dialog.WizardPanel;
-import robocode.repository.IFileSpecification;
 
 
 /**
@@ -37,102 +35,104 @@ import robocode.repository.IFileSpecification;
  */
 @SuppressWarnings("serial")
 public class ConfirmPanel extends WizardPanel {
-	private RobotPackager robotPackager;
-	private EventHandler eventHandler = new EventHandler();
-	private boolean visible;
-	private JPanel robotListPanel;
+    private RobotPackager robotPackager;
+    private EventHandler eventHandler = new EventHandler();
+    private boolean visible;
+    private JPanel robotListPanel;
 
-	private class EventHandler implements ComponentListener {
-		public void componentMoved(ComponentEvent e) {}
+    private class EventHandler implements ComponentListener {
+        public void componentMoved(ComponentEvent e) {
+        }
 
-		public void componentResized(ComponentEvent e) {}
+        public void componentResized(ComponentEvent e) {
+        }
 
-		public void componentHidden(ComponentEvent e) {
-			visible = false;
-			fireStateChanged();
-		}
+        public void componentHidden(ComponentEvent e) {
+            visible = false;
+            fireStateChanged();
+        }
 
-		public void componentShown(ComponentEvent e) {
-			// log("confirm panel shown.");
-			if (robotPackager == null) {
-				return;
-			}
+        public void componentShown(ComponentEvent e) {
+            // log("confirm panel shown.");
+            if (robotPackager == null) {
+                return;
+            }
 
-			visible = true;
-			updateFields();
-			fireStateChanged();
-			repaint();
-		}
-	}
+            visible = true;
+            updateFields();
+            fireStateChanged();
+            repaint();
+        }
+    }
 
-	/**
-	 * PackagerOptionsPanel constructor comment.
-	 */
-	public ConfirmPanel(RobotPackager robotPackager) {
-		super();
-		this.robotPackager = robotPackager;
-		initialize();
-	}
+    /**
+     * PackagerOptionsPanel constructor comment.
+     */
+    public ConfirmPanel(RobotPackager robotPackager) {
+        super();
+        this.robotPackager = robotPackager;
+        initialize();
+    }
 
-	public JPanel getRobotListPanel() {
-		if (robotListPanel == null) {
-			robotListPanel = new JPanel();
-			robotListPanel.setLayout(new BoxLayout(robotListPanel, BoxLayout.Y_AXIS));
-			robotListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		}
-		return robotListPanel;
-	}
+    public JPanel getRobotListPanel() {
+        if (robotListPanel == null) {
+            robotListPanel = new JPanel();
+            robotListPanel.setLayout(new BoxLayout(robotListPanel, BoxLayout.Y_AXIS));
+            robotListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+        return robotListPanel;
+    }
 
-	private void initialize() {
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		addComponentListener(eventHandler);
-		add(new JPanel());
-	}
+    private void initialize() {
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        addComponentListener(eventHandler);
+        add(new JPanel());
+    }
 
-	@Override
-	public boolean isReady() {
-		return visible;
-	}
+    @Override
+    public boolean isReady() {
+        return visible;
+    }
 
-	public void setSelectedRobots(List<IFileSpecification> selectedRobots) {
-		getRobotListPanel().removeAll();
+    public void setSelectedRobots(List<IFileSpecification> selectedRobots) {
+        getRobotListPanel().removeAll();
 
-		if (selectedRobots == null || selectedRobots.size() == 0) {
-			getRobotListPanel().add(new JLabel("You have not yet selected any robots."));
-		} else if (selectedRobots.size() == 1) {
-			String robotName = (selectedRobots.get(0)).getFullClassName();
+        if (selectedRobots == null || selectedRobots.size() == 0) {
+            getRobotListPanel().add(new JLabel("You have not yet selected any robots."));
+        } else if (selectedRobots.size() == 1) {
+            String robotName = (selectedRobots.get(0)).getFullClassName();
 
-			getRobotListPanel().add(new JLabel("You have selected " + robotName + " for packaging."));
-		} else {
-			getRobotListPanel().add(new JLabel("You have selected the following robots for packaging:"));
+            getRobotListPanel().add(new JLabel("You have selected " + robotName + " for packaging."));
+        } else {
+            getRobotListPanel().add(new JLabel("You have selected the following robots for packaging:"));
 
-			for (IFileSpecification selected : selectedRobots) {
-				getRobotListPanel().add(new JLabel(selected.getFullClassName()));
-			}
-		}
-		getRobotListPanel().add(new JLabel(""));
-		getRobotListPanel().setMaximumSize(new Dimension(10000, robotListPanel.getPreferredSize().height));
+            for (IFileSpecification selected : selectedRobots) {
+                getRobotListPanel().add(new JLabel(selected.getFullClassName()));
+            }
+        }
+        getRobotListPanel().add(new JLabel(""));
+        getRobotListPanel().setMaximumSize(new Dimension(10000, robotListPanel.getPreferredSize().height));
 
-		validate();
-	}
+        validate();
+    }
 
-	public void updateFields() {
-		removeAll();
-		setSelectedRobots(robotPackager.getRobotSelectionPanel().getSelectedRobots());
-		add(getRobotListPanel());
-		add(Box.createVerticalStrut(20));
-		if (robotPackager.getPackagerOptionsPanel().getIncludeSource().isSelected()) {
-			add(new JLabel("Java source files will be included."));
-		} else {
-			add(new JLabel("Only .class files will be included."));
-		}
-		add(Box.createVerticalStrut(20));
-		add(new JLabel("The package will be saved in " + robotPackager.getFilenamePanel().getFilenameField().getText()));
-		add(Box.createVerticalStrut(20));
-		add(new JLabel("If all of the above is correct, click the Package button to start packaging."));
-		add(new JPanel());
+    public void updateFields() {
+        removeAll();
+        setSelectedRobots(robotPackager.getRobotSelectionPanel().getSelectedRobots());
+        add(getRobotListPanel());
+        add(Box.createVerticalStrut(20));
+        if (robotPackager.getPackagerOptionsPanel().getIncludeSource().isSelected()) {
+            add(new JLabel("Java source files will be included."));
+        } else {
+            add(new JLabel("Only .class files will be included."));
+        }
+        add(Box.createVerticalStrut(20));
+        add(new JLabel("The package will be saved in " + robotPackager.getFilenamePanel().getFilenameField().getText()));
+        add(Box.createVerticalStrut(20));
+        add(new JLabel("If all of the above is correct, click the Package button to start packaging."));
+        add(new JPanel());
 
-		revalidate();
-	}
+        revalidate();
+    }
 }

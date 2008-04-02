@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,19 +21,20 @@
 package roborumble.netengine;
 
 
-import java.net.*;
-import java.util.*;
-import java.io.*;
-
-import roborumble.battlesengine.*;
-
+import roborumble.battlesengine.CompetitionsSelector;
 import static roborumble.util.PropertiesUtil.getProperties;
+
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Properties;
+import java.util.Vector;
 
 
 /**
  * Class used for uploading results to a server.
  * Controlled by properties files.
- * 
+ *
  * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -45,7 +46,6 @@ public class ResultsUpload {
 	private String game;
 	private String user;
 	private String sizesfile;
-	private String botsrepository;
 	private String minibots;
 	private String microbots;
 	private String nanobots;
@@ -62,7 +62,8 @@ public class ResultsUpload {
 		tempdir = parameters.getProperty("TEMP", "");
 		user = parameters.getProperty("USER", "");
 		game = propertiesfile;
-		botsrepository = parameters.getProperty("BOTSREP", "");
+		String botsrepository = parameters.getProperty("BOTSREP", "");
+
 		while (game.indexOf("/") != -1) {
 			game = game.substring(game.indexOf("/") + 1);
 		}
@@ -87,7 +88,7 @@ public class ResultsUpload {
 		Vector<String> results = new Vector<String>();
 		String match = "";
 		String bot1 = "";
-		String bot2 = "";
+		String bot2;
 		int status = 0;
 		BufferedReader br = null;
 
@@ -123,7 +124,7 @@ public class ResultsUpload {
 		}
 
 		// Open the temp file to put the unuploaded results
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(tempdir + "results.txt")), false);
@@ -134,20 +135,20 @@ public class ResultsUpload {
 		}
 
 		// Open the file to put the battles number for each participant
-		PrintStream battlesnum = null;
+		PrintStream battlesnum;
 
 		try {
 			battlesnum = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesnumfile)), false);
 		} catch (IOException e) {
 			System.out.println("Not able to open battles number file ... Aborting");
 			System.out.println(e);
-			
+
 			outtxt.close();
 			return false;
 		}
 
 		// Open the file to put the battles which have priority
-		PrintStream prioritybattles = null;
+		PrintStream prioritybattles;
 
 		try {
 			prioritybattles = new PrintStream(new BufferedOutputStream(new FileOutputStream(priority)), false);
@@ -178,7 +179,7 @@ public class ResultsUpload {
 
 			// if the match mode was general, then send the results to all competitions (asuming codesize is used).
 			// if its not, then send results only to smaller size competitions
-			String	data = "version=1" + "&" + "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2]
+			String data = "version=1" + "&" + "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2]
 					+ "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
 					+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0]
 					+ "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];

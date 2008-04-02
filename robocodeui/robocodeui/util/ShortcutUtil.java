@@ -12,7 +12,7 @@
 package robocodeui.util;
 
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.InputEvent;
 
 
@@ -23,42 +23,42 @@ import java.awt.event.InputEvent;
  */
 public class ShortcutUtil {
 
-	/**
-	 * The menu shortcut key mask.
-	 */
-	public final static int MENU_SHORTCUT_KEY_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    /**
+     * The menu shortcut key mask.
+     */
+    public final static int MENU_SHORTCUT_KEY_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
-	/**
-	 * Returns the text for the shortcut modifier key.
-	 */
-	public static String getModifierKeyText() {
+    /**
+     * Returns the text for the shortcut modifier key.
+     */
+    public static String getModifierKeyText() {
 
-		boolean isMac = (System.getProperty("os.name").startsWith("Mac"));
+        boolean isMac = (System.getProperty("os.name").startsWith("Mac"));
 
-		String text = "";
+        String text = "";
 
-		if ((MENU_SHORTCUT_KEY_MASK & InputEvent.SHIFT_MASK) == InputEvent.SHIFT_MASK) {
-			text = "Shift";
-		}
-		if ((MENU_SHORTCUT_KEY_MASK & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
-			if (text.length() > 0) {
-				text += '+';
-			}
-			text = "Ctrl";
-		}
-		if ((MENU_SHORTCUT_KEY_MASK & InputEvent.ALT_MASK) == InputEvent.ALT_MASK) {
-			if (text.length() > 0) {
-				text += '+';
-			}
-			text = isMac ? "Opt" : "Alt";
-		}
-		if ((MENU_SHORTCUT_KEY_MASK & InputEvent.META_MASK) == InputEvent.META_MASK) {
-			if (text.length() > 0) {
-				text += '+';
-			}
-			text = isMac ? "Cmd" : "Meta";
-		}
+        if ((MENU_SHORTCUT_KEY_MASK & InputEvent.SHIFT_MASK) == InputEvent.SHIFT_MASK) {
+            text = "Shift";
+        }
+        if ((MENU_SHORTCUT_KEY_MASK & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
+            if (text.length() > 0) {
+                text += '+';
+            }
+            text = "Ctrl";
+        }
+        if ((MENU_SHORTCUT_KEY_MASK & InputEvent.ALT_MASK) == InputEvent.ALT_MASK) {
+            if (text.length() > 0) {
+                text += '+';
+            }
+            text = isMac ? "Opt" : "Alt";
+        }
+        if ((MENU_SHORTCUT_KEY_MASK & InputEvent.META_MASK) == InputEvent.META_MASK) {
+            if (text.length() > 0) {
+                text += '+';
+            }
+            text = isMac ? "Cmd" : "Meta";
+        }
 
-		return text;
-	}
+        return text;
+    }
 }

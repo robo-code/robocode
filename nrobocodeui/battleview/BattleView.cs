@@ -10,6 +10,7 @@ using robocode.battle;
 using robocode.battlefield;
 using robocode.manager;
 using robocode.peer;
+using robocode.peer.proxies;
 using robocode.ui;
 using nrobocodeui.dialog;
 using nrobocodeui.gfx;
@@ -220,7 +221,7 @@ namespace nrobocodeui.battleview
 
         public void DrawRobots(Graphics g)
         {
-            List robots = battle.getRobots();
+            List robots = battle.getDisplayRobots();
             object[] robotPeers = robots.toArray();
 
             Matrix at;
@@ -231,7 +232,7 @@ namespace nrobocodeui.battleview
             {
                 RenderImage explodeDebrise = new RenderImage(resources.images.ground.explode_debris);
 
-                foreach (RobotPeer r in robotPeers)
+                foreach (IDisplayRobotProxy r in robotPeers)
                 {
 			        if (r.isDead())
                     {
@@ -248,13 +249,13 @@ namespace nrobocodeui.battleview
 	        }
 
             // Draw all robots
-            foreach (RobotPeer r in robotPeers)
+            foreach (IDisplayRobotProxy r in robotPeers)
             {
                 DrawRobot(r, g);
             }
         }
 
-        private void DrawRobot(RobotPeer robot, Graphics g)
+        private void DrawRobot(IDisplayRobotProxy robot, Graphics g)
         {
             if (robot.isAlive())
             {
@@ -264,7 +265,7 @@ namespace nrobocodeui.battleview
 
                 Matrix at = new Matrix();
                 at.Translate(x, y);
-                at.Rotate(Radians.ToDegrees(robot.getHeading()));
+                at.Rotate(Radians.ToDegrees(robot.getBodyHeading()));
 
                 RenderImage robotRenderImage = new RenderImage(imageManager.getColoredBodyRenderImage(robot.getBodyColor()));
 
@@ -405,7 +406,7 @@ namespace nrobocodeui.battleview
 
             int battleFieldHeight = battle.getBattleField().getHeight();
 
-            foreach (BulletPeer bullet in battle.getBullets().toArray())
+            foreach (IBattleBulletProxy bullet in battle.getDisplayBullets().toArray())
             {
                 float x = (float)bullet.getPaintX();
                 float y = (float)(battleFieldHeight - bullet.getPaintY());
@@ -469,7 +470,7 @@ namespace nrobocodeui.battleview
 
             int battleFieldHeight = battle.getBattleField().getHeight();
 
-            foreach (RobotPeer r in battle.getRobots().toArray())
+            foreach (IDisplayRobotProxy r in battle.getDisplayRobots().toArray())
             {
 			    if (r.isDead()) {
 				    continue;
@@ -477,7 +478,7 @@ namespace nrobocodeui.battleview
 			    float x = (float)r.getX();
                 float y = (float)(battleFieldHeight - r.getY());
 
-			    if (drawRobotEnergy && r.getRobot() != null)
+			    if (drawRobotEnergy ) // ??? && r.getRobot() != null)
                 {
 				    int ll = (int)r.getEnergy();
 				    int rl = (int)((r.getEnergy() - ll + .001) * 10.0);
@@ -500,10 +501,11 @@ namespace nrobocodeui.battleview
                 {
                     CenterString(g, brush, r.getVeryShortName(), x, y + ROBOT_TEXT_Y_OFFSET + font.Height / 2, font);
 			    }
-			    if (r.isPaintEnabled() && r.getRobot() != null)
+                /* TODO ZAMO
+			    if (r.isPaintEnabled()) // ?? && r.getRobot() != null)
                 {
 // TODO:				    DrawRobotPaint(g, r);
-			    }
+			    }*/
 		    }
 
             g.Clip = savedClip;
@@ -700,7 +702,7 @@ namespace nrobocodeui.battleview
             {
                 if (battle != null)
                 {
-                    battle.processKeyEvent(new nrobocode.Events.KeyEvent(e, true));
+                    //TODO ZAMO battle.processKeyEvent(new nrobocode.Events.KeyEvent(e, true));
                 }
             }
             catch (Exception ex)
@@ -716,7 +718,7 @@ namespace nrobocodeui.battleview
             {
                 if (battle != null)
                 {
-                    battle.processKeyEvent(new nrobocode.Events.KeyPressEvent(e));
+                    //TODO ZAMO battle.processKeyEvent(new nrobocode.Events.KeyPressEvent(e));
                 }
             }
             catch (Exception ex)
@@ -732,7 +734,7 @@ namespace nrobocodeui.battleview
             {
                 if (battle != null)
                 {
-                    battle.processKeyEvent(new nrobocode.Events.KeyEvent(e, false));
+                    //TODO ZAMO battle.processKeyEvent(new nrobocode.Events.KeyEvent(e, false));
                 }
             }
             catch (Exception ex)

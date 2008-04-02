@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,14 +15,10 @@
 package robocodeui.dialog;
 
 
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.SystemColor;
-
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 
 
 /**
@@ -32,31 +28,31 @@ import javax.swing.table.DefaultTableCellRenderer;
 @SuppressWarnings("serial")
 public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 
-	private boolean isBordered;
+    private boolean isBordered;
 
-	public ResultsTableCellRenderer(boolean isBordered) {
-		super();
-		this.isBordered = isBordered;
-		setHorizontalAlignment(SwingConstants.CENTER);
-		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-	}
+    public ResultsTableCellRenderer(boolean isBordered) {
+        super();
+        this.isBordered = isBordered;
+        setHorizontalAlignment(SwingConstants.CENTER);
+        setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+    }
 
-	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-			boolean hasFocus, int row, int column) {
-		if (isBordered) {
-			setBorder(new EtchedBorder(EtchedBorder.RAISED));
-			setBackground(SystemColor.menu);
-			setForeground(SystemColor.menuText);
-		} else if (isSelected) {
-			setBackground(SystemColor.textHighlight);
-			setForeground(SystemColor.textHighlightText);
-		} else {
-			setBackground(SystemColor.text);
-			setForeground(SystemColor.textText);
-		}
-		setText(value.toString());
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                   boolean hasFocus, int row, int column) {
+        if (isBordered) {
+            setBorder(new EtchedBorder(EtchedBorder.RAISED));
+            setBackground(SystemColor.menu);
+            setForeground(SystemColor.menuText);
+        } else if (isSelected) {
+            setBackground(SystemColor.textHighlight);
+            setForeground(SystemColor.textHighlightText);
+        } else {
+            setBackground(SystemColor.text);
+            setForeground(SystemColor.textText);
+        }
+        setText(value.toString());
 
-		return this;
-	}
+        return this;
+    }
 }

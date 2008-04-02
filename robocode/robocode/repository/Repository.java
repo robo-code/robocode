@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,70 +30,71 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class Repository {
-	private List<IFileSpecification> fileSpecifications = Collections.synchronizedList(
-			new ArrayList<IFileSpecification>());
+    private List<IFileSpecification> fileSpecifications = Collections.synchronizedList(
+            new ArrayList<IFileSpecification>());
 
-	public void add(IFileSpecification fileSpecification) {
-		fileSpecifications.add(fileSpecification);
-	}
+    public void add(IFileSpecification fileSpecification) {
+        fileSpecifications.add(fileSpecification);
+    }
 
-	public List<IFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
-			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
+    public List<IFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
+                                                               boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
 
-		List<IFileSpecification> v = Collections.synchronizedList(new ArrayList<IFileSpecification>());
+        List<IFileSpecification> v = Collections.synchronizedList(new ArrayList<IFileSpecification>());
 
-		for (IFileSpecification spec : fileSpecifications) {
+        for (IFileSpecification spec : fileSpecifications) {
 
-			if (spec.isDuplicate()) {
-				continue;
-			}
-			if (!(spec instanceof IRobotFileSpecification)) {
-				if (onlyRobots) {
-					continue;
-				}
-				if (onlyDevelopment && spec.getFullPackage() != null
-						&& (spec.getFullPackage().equals("sample") || spec.getFullPackage().equals("sampleteam"))) {
-					continue;
-				}
-				if (onlyDevelopment && !spec.isDevelopmentVersion()) {
-					continue;
-				}
-			} else {
-				IRobotFileSpecification robotFileSpecification = (IRobotFileSpecification) spec;
+            if (spec.isDuplicate()) {
+                continue;
+            }
+            if (!(spec instanceof IRobotFileSpecification)) {
+                if (onlyRobots) {
+                    continue;
+                }
+                if (onlyDevelopment && spec.getFullPackage() != null
+                        && (spec.getFullPackage().equals("sample") || spec.getFullPackage().equals("sampleteam"))) {
+                    continue;
+                }
+                if (onlyDevelopment && !spec.isDevelopmentVersion()) {
+                    continue;
+                }
+            } else {
+                IRobotFileSpecification robotFileSpecification = (IRobotFileSpecification) spec;
 
-				if (onlyWithSource && !robotFileSpecification.getRobotJavaSourceIncluded()) {
-					continue;
-				}
-				if (onlyWithPackage && robotFileSpecification.getFullPackage() == null) {
-					continue;
-				}
-				if (onlyDevelopment && !robotFileSpecification.isDevelopmentVersion()) {
-					continue;
-				}
-				if (onlyNotDevelopment && robotFileSpecification.isDevelopmentVersion()) {
-					continue;
-				}
-				if (onlyDevelopment && robotFileSpecification.getFullPackage() != null
-						&& (robotFileSpecification.getFullPackage().equals("sample") || robotFileSpecification.getFullPackage().equals("sampleteam"))) {
-					continue;
-				}
-			}
-			String version = spec.getVersion();
+                if (onlyWithSource && !robotFileSpecification.getRobotJavaSourceIncluded()) {
+                    continue;
+                }
+                if (onlyWithPackage && robotFileSpecification.getFullPackage() == null) {
+                    continue;
+                }
+                if (onlyDevelopment && !robotFileSpecification.isDevelopmentVersion()) {
+                    continue;
+                }
+                if (onlyNotDevelopment && robotFileSpecification.isDevelopmentVersion()) {
+                    continue;
+                }
+                if (onlyDevelopment && robotFileSpecification.getFullPackage() != null
+                        && (robotFileSpecification.getFullPackage().equals("sample")
+                        || robotFileSpecification.getFullPackage().equals("sampleteam"))) {
+                    continue;
+                }
+            }
+            String version = spec.getVersion();
 
-			if (version != null) {
-				if ((version.indexOf(",") >= 0) || (version.indexOf(" ") >= 0) || (version.indexOf("*") >= 0)
-						|| (version.indexOf("(") >= 0) || (version.indexOf(")") >= 0) || (version.indexOf("{") >= 0)
-						|| (version.indexOf("}") >= 0)) {
-					continue;
-				}
-			}
-			v.add(spec);
-		}
-		return v;
-	}
+            if (version != null) {
+                if ((version.indexOf(",") >= 0) || (version.indexOf(" ") >= 0) || (version.indexOf("*") >= 0)
+                        || (version.indexOf("(") >= 0) || (version.indexOf(")") >= 0) || (version.indexOf("{") >= 0)
+                        || (version.indexOf("}") >= 0)) {
+                    continue;
+                }
+            }
+            v.add(spec);
+        }
+        return v;
+    }
 
-	public void sortRobotSpecifications() {
-		Collections.sort(fileSpecifications);
-	}
+    public void sortRobotSpecifications() {
+        Collections.sort(fileSpecifications);
+    }
 }
 

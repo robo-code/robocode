@@ -11,23 +11,25 @@
  *******************************************************************************/
 package robocodeui.security;
 
-import robocode.ui.ISecurityExtension;
+
 import robocode.manager.RobocodeManager;
 import robocode.security.RobocodeSecurityManager;
+import robocode.ui.ISecurityExtension;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class SecurityExtension implements ISecurityExtension {
-	private RobocodeManager manager;
-	private RobocodeSecurityManager securityManager ;
+    private RobocodeManager manager;
+    private RobocodeSecurityManager securityManager;
 
-	public void initialize() {
-		securityManager = (RobocodeSecurityManager) System.getSecurityManager();
-		securityManager.addSafeContext();
-	}
+    public void initialize() {
+        securityManager = (RobocodeSecurityManager) System.getSecurityManager();
+        securityManager.addSafeContext();
+    }
 
-	public void setRobocodeManager(RobocodeManager robocodeManager) {
-		manager = robocodeManager;
-	}
+    public void setRobocodeManager(RobocodeManager robocodeManager) {
+        manager = robocodeManager;
+    }
 }

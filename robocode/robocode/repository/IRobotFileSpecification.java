@@ -19,28 +19,49 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public interface IRobotFileSpecification extends IFileSpecification {
-	void setUid(String uid);
-	String getRobotClassPath();
-	boolean getRobotJavaSourceIncluded();
-	boolean getNeedsExternalLoader();
-	void setRobotDescription(String d);
-	void setRobotJavaSourceIncluded(boolean b);
-	void setRobotAuthorName(String an);
-	void setRobotWebpage(URL u);
-	void store(java.io.OutputStream outputStream, java.lang.String s) throws java.io.IOException;
-	void setRobocodeVersion(String v);
-	void setRobotVersion(String v);
-	Object clone(); 
-	String getThisFileName();
+    void setUid(String uid);
 
-	boolean isAdvancedRobot();
-	boolean isInteractiveRobot();
-	boolean isJuniorRobot();
-	boolean isTeamRobot();
-	boolean isDroid();
-	void setAdvancedRobot(boolean value);
-	void setInteractiveRobot(boolean value);
-	void setJuniorRobot(boolean value);
-	void setTeamRobot(boolean value);
-	void setDroid(boolean value);
+    String getRobotClassPath();
+
+    boolean getRobotJavaSourceIncluded();
+
+    boolean getNeedsExternalLoader();
+
+    void setRobotDescription(String d);
+
+    void setRobotJavaSourceIncluded(boolean b);
+
+    void setRobotAuthorName(String an);
+
+    void setRobotWebpage(URL u);
+
+    void store(java.io.OutputStream outputStream, java.lang.String s) throws java.io.IOException;
+
+    void setRobocodeVersion(String v);
+
+    void setRobotVersion(String v);
+
+    Object clone();
+
+    String getThisFileName();
+
+    boolean isAdvancedRobot();
+
+    boolean isInteractiveRobot();
+
+    boolean isJuniorRobot();
+
+    boolean isTeamRobot();
+
+    boolean isDroid();
+
+    void setAdvancedRobot(boolean value);
+
+    void setInteractiveRobot(boolean value);
+
+    void setJuniorRobot(boolean value);
+
+    void setTeamRobot(boolean value);
+
+    void setDroid(boolean value);
 }

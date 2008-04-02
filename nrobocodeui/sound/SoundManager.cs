@@ -17,6 +17,7 @@ using System.Media;
 using System.Text;
 using nrobocodeui.manager;
 using robocode.peer;
+using robocode.peer.proxies;
 using robocode.ui;
 
 namespace nrobocodeui.sound
@@ -54,13 +55,13 @@ namespace nrobocodeui.sound
              */
         }
 
-        public void playBulletSound(BulletPeer bp)
+        public void playBulletSound(IBattleBulletProxy bp, float w)
         {
             //TODO more logic
             Play(nrobocodeui.resources.sounds.zap);
         }
 
-        public void playRobotSound(RobotPeer rp)
+        public void playRobotSound(IBattleRobotProxy rp)
         {
             //TODO more logic
             Play(nrobocodeui.resources.sounds.crash);

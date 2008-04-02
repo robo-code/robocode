@@ -20,9 +20,10 @@ import robocode.manager.RobocodeManager;
  */
 public interface ILoadableManager {
 
-	/**
-	 * Sets root manager to the plugged in manager
-	 * @param root manager
-	 */
-	void setRobocodeManager(RobocodeManager root);
+    /**
+     * Sets root manager to the plugged in manager
+     *
+     * @param root manager
+     */
+    void setRobocodeManager(RobocodeManager root);
 }

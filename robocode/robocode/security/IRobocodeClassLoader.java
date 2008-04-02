@@ -12,20 +12,27 @@
 package robocode.security;
 
 
-import robocode.ui.ILoadableManager;
 import robocode.peer.robot.RobotClassManager;
+import robocode.ui.ILoadableManager;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobocodeClassLoader extends ILoadableManager {
-	void init(RobotClassManager robotClassManager);
-	Class<?> loadRobotClass(String s, boolean b) throws ClassNotFoundException;
-	Class<?> loadClass(String s, boolean b) throws ClassNotFoundException;
-	Class<?> loadClass(String s) throws ClassNotFoundException;
-	String getRootPackageDirectory();
-	String getClassDirectory();
-	String getRootDirectory();
-	void cleanup();
+    void init(RobotClassManager robotClassManager);
+
+    Class<?> loadRobotClass(String s, boolean b) throws ClassNotFoundException;
+
+    Class<?> loadClass(String s, boolean b) throws ClassNotFoundException;
+
+    Class<?> loadClass(String s) throws ClassNotFoundException;
+
+    String getRootPackageDirectory();
+
+    String getClassDirectory();
+
+    String getRootDirectory();
+
+    void cleanup();
 }

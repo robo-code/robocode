@@ -5,47 +5,47 @@
 <!-- ====================================================================== -->
 
 <project name="robocode" default="build" basedir="../build">
-  <description>Apache Ant build script for building Robocode</description>
+    <description>Apache Ant build script for building Robocode</description>
 
-  <!-- Enable debug information when compiling -->  
-  <property name="debug" value="on"/>
+    <!-- Enable debug information when compiling -->
+    <property name="debug" value="on"/>
 
-  <!-- Import common build file -->
-  <import file="../build/build.xml"/>
+    <!-- Import common build file -->
+    <import file="../build/build.xml"/>
 
-  <!-- ====================================== -->
-  <!-- Target: build                          -->
-  <!-- ====================================== -->
-  <target
-      name="build"
-      description="build Robocode"
-      depends="compile.robocode, compile.robots">
+    <!-- ====================================== -->
+    <!-- Target: build                          -->
+    <!-- ====================================== -->
+    <target
+            name="build"
+            description="build Robocode"
+            depends="compile.robocode, compile.robots">
 
-    <!-- Copy resources -->
-    <copy todir="${build}/resources">
-      <fileset dir="../robocode/resources"/>
-    </copy>
+        <!-- Copy resources -->
+        <copy todir="${build}/resources">
+            <fileset dir="../robocode/resources"/>
+        </copy>
 
-    <!-- Copy battles -->
-    <copy todir="${build}/battles">
-      <fileset dir="../robocodeextract/battles"/>
-    </copy>
+        <!-- Copy battles -->
+        <copy todir="${build}/battles">
+            <fileset dir="../robocodeextract/battles"/>
+        </copy>
 
-    <!-- Copy compilers -->
-    <copy todir="${build}/compilers">
-      <fileset dir="../robocodeextract/compilers"/>
-    </copy>
+        <!-- Copy compilers -->
+        <copy todir="${build}/compilers">
+            <fileset dir="../robocodeextract/compilers"/>
+        </copy>
 
-    <!-- Copy templates -->
-    <copy todir="${build}/templates">
-      <fileset dir="../robocodeextract/templates"/>
-    </copy>
+        <!-- Copy templates -->
+        <copy todir="${build}/templates">
+            <fileset dir="../robocodeextract/templates"/>
+        </copy>
 
-    <!-- Copy browser batch files -->
-    <copy todir="${build}">
-      <fileset file="../robocodeextract/browser.*"/>
-    </copy>
-    
-  </target>
+        <!-- Copy browser batch files -->
+        <copy todir="${build}">
+            <fileset file="../robocodeextract/browser.*"/>
+        </copy>
+
+    </target>
 
 </project>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,10 +24,15 @@
 package robocodeui.packager;
 
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import robocode.io.FileUtil;
+import robocode.repository.IFileSpecification;
+import robocodeui.dialog.WizardPanel;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Caret;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -35,15 +40,6 @@ import java.awt.event.ComponentListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.Caret;
-
-import robocodeui.dialog.WizardPanel;
-import robocode.io.FileUtil;
-import robocode.repository.IFileSpecification;
 
 
 /**
@@ -53,240 +49,243 @@ import robocode.repository.IFileSpecification;
  */
 @SuppressWarnings("serial")
 public class FilenamePanel extends WizardPanel {
-	private RobotPackager robotPackager;
+    private RobotPackager robotPackager;
 
-	private EventHandler eventHandler = new EventHandler();
-	private boolean robocodeErrorShown;
+    private EventHandler eventHandler = new EventHandler();
+    private boolean robocodeErrorShown;
 
-	private JButton browseButton;
-	private JTextField filenameField;
+    private JButton browseButton;
+    private JTextField filenameField;
 
-	private class EventHandler implements ActionListener, DocumentListener, ComponentListener {
-		public void insertUpdate(DocumentEvent e) {
-			fireStateChanged();
-		}
+    private class EventHandler implements ActionListener, DocumentListener, ComponentListener {
+        public void insertUpdate(DocumentEvent e) {
+            fireStateChanged();
+        }
 
-		public void changedUpdate(DocumentEvent e) {
-			fireStateChanged();
-		}
+        public void changedUpdate(DocumentEvent e) {
+            fireStateChanged();
+        }
 
-		public void removeUpdate(DocumentEvent e) {
-			fireStateChanged();
-		}
+        public void removeUpdate(DocumentEvent e) {
+            fireStateChanged();
+        }
 
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == getBrowseButton()) {
-				showFileSelectDialog();
-			}
-		}
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == getBrowseButton()) {
+                showFileSelectDialog();
+            }
+        }
 
-		public void componentMoved(ComponentEvent e) {}
+        public void componentMoved(ComponentEvent e) {
+        }
 
-		public void componentResized(ComponentEvent e) {}
+        public void componentResized(ComponentEvent e) {
+        }
 
-		public void componentHidden(ComponentEvent e) {}
+        public void componentHidden(ComponentEvent e) {
+        }
 
-		public void componentShown(ComponentEvent e) {
-			String fileName = FileUtil.getRobotsDir().getAbsolutePath() + File.separator;
-			File outgoingFile = new File(fileName);
+        public void componentShown(ComponentEvent e) {
+            String fileName = FileUtil.getRobotsDir().getAbsolutePath() + File.separator;
+            File outgoingFile = new File(fileName);
 
-			if (!outgoingFile.exists()) {
-				outgoingFile.mkdirs();
-			}
-			String jarName = "myrobots.jar";
-			List<IFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+            if (!outgoingFile.exists()) {
+                outgoingFile.mkdirs();
+            }
+            String jarName = "myrobots.jar";
+            List<IFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
-			if (selectedRobots != null && selectedRobots.size() == 1) {
-				jarName = selectedRobots.get(0).getFullClassName() + "_"
-						+ robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
-			}
+            if (selectedRobots != null && selectedRobots.size() == 1) {
+                jarName = selectedRobots.get(0).getFullClassName() + "_"
+                        + robotPackager.getPackagerOptionsPanel().getVersionField().getText() + ".jar";
+            }
 
-			getFilenameField().setText(fileName + jarName);
-			Caret caret = getFilenameField().getCaret();
+            getFilenameField().setText(fileName + jarName);
+            Caret caret = getFilenameField().getCaret();
 
-			caret.setDot(fileName.length());
-			caret.moveDot(fileName.length() + jarName.length() - 4);
+            caret.setDot(fileName.length());
+            caret.moveDot(fileName.length() + jarName.length() - 4);
 
-			getFilenameField().requestFocus();
-		}
-	}
+            getFilenameField().requestFocus();
+        }
+    }
 
-	public FilenamePanel(RobotPackager robotPackager) {
-		super();
-		this.robotPackager = robotPackager;
-		initialize();
-	}
+    public FilenamePanel(RobotPackager robotPackager) {
+        super();
+        this.robotPackager = robotPackager;
+        initialize();
+    }
 
-	private void initialize() {
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		addComponentListener(eventHandler);
+    private void initialize() {
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        addComponentListener(eventHandler);
 
-		GridBagLayout layout = new GridBagLayout();
+        GridBagLayout layout = new GridBagLayout();
 
-		setLayout(layout);
-		GridBagConstraints c = new GridBagConstraints();
+        setLayout(layout);
+        GridBagConstraints c = new GridBagConstraints();
 
-		c.insets = new Insets(5, 5, 5, 5);
-		c.anchor = GridBagConstraints.NORTHWEST;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.NORTHWEST;
 
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridwidth = 1;
-		c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.weightx = 1;
 
-		add(new JLabel("Please type in a .jar file to save this robot package to: "), c);
+        add(new JLabel("Please type in a .jar file to save this robot package to: "), c);
 
-		c.gridy = 1;
-		add(getFilenameField(), c);
+        c.gridy = 1;
+        add(getFilenameField(), c);
 
-		c.fill = GridBagConstraints.NONE;
-		c.gridy = 2;
-		c.insets = new Insets(3, 3, 3, 3);
-		add(getBrowseButton(), c);
+        c.fill = GridBagConstraints.NONE;
+        c.gridy = 2;
+        c.insets = new Insets(3, 3, 3, 3);
+        add(getBrowseButton(), c);
 
-		c.fill = GridBagConstraints.VERTICAL;
-		c.weighty = 1;
-		c.gridy = 3;
-		add(new JPanel(), c);
-	}
+        c.fill = GridBagConstraints.VERTICAL;
+        c.weighty = 1;
+        c.gridy = 3;
+        add(new JPanel(), c);
+    }
 
-	@Override
-	public boolean isReady() {
-		if (filenameField.getText() == null) {
-			return false;
-		}
-		int robocodeIndex = filenameField.getText().lastIndexOf(File.separatorChar);
+    @Override
+    public boolean isReady() {
+        if (filenameField.getText() == null) {
+            return false;
+        }
+        int robocodeIndex = filenameField.getText().lastIndexOf(File.separatorChar);
 
-		if (robocodeIndex > 0) {
-			if (filenameField.getText().substring(robocodeIndex + 1).indexOf("robocode") == 0) {
-				if (!robocodeErrorShown) {
-					robocodeErrorShown = true;
-					new Thread(new Runnable() {
-						public void run() {
-							JOptionPane.showMessageDialog(FilenamePanel.this, "Filename cannot begin with robocode");
-						}
-					}).start();
-				}
-				return false;
-			}
-		}
-		return (filenameField.getText().toLowerCase().indexOf(".jar") != 0);
-	}
+        if (robocodeIndex > 0) {
+            if (filenameField.getText().substring(robocodeIndex + 1).indexOf("robocode") == 0) {
+                if (!robocodeErrorShown) {
+                    robocodeErrorShown = true;
+                    new Thread(new Runnable() {
+                        public void run() {
+                            JOptionPane.showMessageDialog(FilenamePanel.this, "Filename cannot begin with robocode");
+                        }
+                    }).start();
+                }
+                return false;
+            }
+        }
+        return (filenameField.getText().toLowerCase().indexOf(".jar") != 0);
+    }
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("options");
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("options");
 
-		frame.setSize(new Dimension(500, 300));
-		frame.getContentPane().add(new FilenamePanel(null));
+        frame.setSize(new Dimension(500, 300));
+        frame.getContentPane().add(new FilenamePanel(null));
 
-		try {
-			SwingUtilities.invokeAndWait(new ShowFrameWorker(frame));
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public JButton getBrowseButton() {
-		if (browseButton == null) {
-			browseButton = new JButton("Browse");
-			browseButton.addActionListener(eventHandler);
-		}
-		return browseButton;
-	}
+        try {
+            SwingUtilities.invokeAndWait(new ShowFrameWorker(frame));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public JTextField getFilenameField() {
-		if (filenameField == null) {
-			filenameField = new JTextField("(none selected)", 60);
-			filenameField.getDocument().addDocumentListener(eventHandler);
-		}
-		return filenameField;
-	}
+    public JButton getBrowseButton() {
+        if (browseButton == null) {
+            browseButton = new JButton("Browse");
+            browseButton.addActionListener(eventHandler);
+        }
+        return browseButton;
+    }
 
-	public boolean showFileSelectDialog() {
-		String fileName = "outgoing" + File.separatorChar;
-		String saveDir = fileName;
+    public JTextField getFilenameField() {
+        if (filenameField == null) {
+            filenameField = new JTextField("(none selected)", 60);
+            filenameField.getDocument().addDocumentListener(eventHandler);
+        }
+        return filenameField;
+    }
 
-		File f = new File(saveDir);
+    public boolean showFileSelectDialog() {
+        String fileName = "outgoing" + File.separatorChar;
+        String saveDir = fileName;
 
-		JFileChooser chooser = new JFileChooser(f);
+        File f = new File(saveDir);
 
-		chooser.setCurrentDirectory(f);
+        JFileChooser chooser = new JFileChooser(f);
 
-		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-			@Override
-			public boolean accept(File pathname) {
-				if (pathname.isDirectory()) {
-					return true;
-				}
-				String fn = pathname.getName();
-				int idx = fn.lastIndexOf('.');
-				String extension = "";
+        chooser.setCurrentDirectory(f);
 
-				if (idx >= 0) {
-					extension = fn.substring(idx);
-				}
-				if (extension.equalsIgnoreCase(".jar")) {
-					return true;
-				}
-				return false;
-			}
+        javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                if (pathname.isDirectory()) {
+                    return true;
+                }
+                String fn = pathname.getName();
+                int idx = fn.lastIndexOf('.');
+                String extension = "";
 
-			@Override
-			public String getDescription() {
-				return "JAR files";
-			}
-		};
+                if (idx >= 0) {
+                    extension = fn.substring(idx);
+                }
+                if (extension.equalsIgnoreCase(".jar")) {
+                    return true;
+                }
+                return false;
+            }
 
-		chooser.setFileFilter(filter);
+            @Override
+            public String getDescription() {
+                return "JAR files";
+            }
+        };
 
-		boolean done = false;
+        chooser.setFileFilter(filter);
 
-		while (!done) {
-			done = true;
-			int rv = chooser.showSaveDialog(this);
-			String robotFileName = null;
+        boolean done = false;
 
-			if (rv == JFileChooser.APPROVE_OPTION) {
-				robotFileName = chooser.getSelectedFile().getPath();
-				if (robotFileName.toLowerCase().indexOf(".jar") < 0) {
-					robotFileName += ".jar";
-				}
-				File outFile = new File(robotFileName);
+        while (!done) {
+            done = true;
+            int rv = chooser.showSaveDialog(this);
+            String robotFileName = null;
 
-				if (outFile.exists()) {
-					int ok = JOptionPane.showConfirmDialog(this,
-							robotFileName + " already exists.  Are you sure you want to replace it?", "Warning",
-							JOptionPane.YES_NO_CANCEL_OPTION);
+            if (rv == JFileChooser.APPROVE_OPTION) {
+                robotFileName = chooser.getSelectedFile().getPath();
+                if (robotFileName.toLowerCase().indexOf(".jar") < 0) {
+                    robotFileName += ".jar";
+                }
+                File outFile = new File(robotFileName);
 
-					if (ok == JOptionPane.NO_OPTION) {
-						done = false;
-						continue;
-					}
-					if (ok == JOptionPane.CANCEL_OPTION) {
-						return false;
-					}
-				}
-				getFilenameField().setText(robotFileName);
-				fireStateChanged();
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
+                if (outFile.exists()) {
+                    int ok = JOptionPane.showConfirmDialog(this,
+                            robotFileName + " already exists.  Are you sure you want to replace it?", "Warning",
+                            JOptionPane.YES_NO_CANCEL_OPTION);
 
-	static class ShowFrameWorker implements Runnable {
-		JFrame frame;
-		
-		public ShowFrameWorker(JFrame frame) {
-			this.frame = frame;
-		}
+                    if (ok == JOptionPane.NO_OPTION) {
+                        done = false;
+                        continue;
+                    }
+                    if (ok == JOptionPane.CANCEL_OPTION) {
+                        return false;
+                    }
+                }
+                getFilenameField().setText(robotFileName);
+                fireStateChanged();
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 
-		public void run() {
-			if (frame != null) {
-				frame.setVisible(true);
-			}
-		}		
-	}
+    static class ShowFrameWorker implements Runnable {
+        JFrame frame;
+
+        public ShowFrameWorker(JFrame frame) {
+            this.frame = frame;
+        }
+
+        public void run() {
+            if (frame != null) {
+                frame.setVisible(true);
+            }
+        }
+    }
 }

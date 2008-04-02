@@ -23,29 +23,26 @@ package robocode.robotinterfaces;
  * {@link IAdvancedRobot} or {@link ITeamRobot}, you should inherit from these
  * interfaces instead, as these are inherited from this interface.
  *
+ * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
  * @see robocode.Robot
  * @see robocode.AdvancedRobot
  * @see IBasicRobot
  * @see IJuniorRobot
  * @see IAdvancedRobot
  * @see ITeamRobot
- *
- * @author Pavel Savara (original)
- * @author Flemming N. Larsen (javadoc)
- *
  * @since 1.6
  */
 public interface IInteractiveRobot extends IBasicRobot {
 
-	/**
-	 * This method is called by the game to notify this robot about interactive
-	 * events, i.e. keyboard and mouse events. Hence, this method must be
-	 * implemented so it returns your {@link IInteractiveEvents} listener.
-	 *
-	 * @return listener to interactive events or {@code null} if this robot
-	 *    should not receive the notifications.
-	 *
-	 * @since 1.6
-	 */
-	IInteractiveEvents getInteractiveEventListener();
+    /**
+     * This method is called by the game to notify this robot about interactive
+     * events, i.e. keyboard and mouse events. Hence, this method must be
+     * implemented so it returns your {@link IInteractiveEvents} listener.
+     *
+     * @return listener to interactive events or {@code null} if this robot
+     *         should not receive the notifications.
+     * @since 1.6
+     */
+    IInteractiveEvents getInteractiveEventListener();
 }

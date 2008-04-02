@@ -16,6 +16,7 @@ package robocode.ui;
  * @author Pavel Savara (original)
  */
 public interface IVersionManager extends robocode.ui.ILoadableManager {
-	void checkUpdateCheck();
-	String getVersion();
+    void checkUpdateCheck();
+
+    String getVersion();
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,20 +21,20 @@ package robocode.repository;
 @SuppressWarnings("serial")
 public class ClassSpecification extends FileSpecification {
 
-	// Used in FileSpecification
-	public ClassSpecification(IRobotFileSpecification robotFileSpecification) {
-		this.developmentVersion = robotFileSpecification.isDevelopmentVersion();
-		this.rootDir = robotFileSpecification.getRootDir();
-		this.name = robotFileSpecification.getName();
-		setFileName(robotFileSpecification.getFileName());
-		setFilePath(robotFileSpecification.getFilePath());
-		setFileType(robotFileSpecification.getFileType());
-		setFileLastModified(robotFileSpecification.getFileLastModified());
-		setFileLength(robotFileSpecification.getFileLength());
-	}
+    // Used in FileSpecification
+    public ClassSpecification(IRobotFileSpecification robotFileSpecification) {
+        this.developmentVersion = robotFileSpecification.isDevelopmentVersion();
+        this.rootDir = robotFileSpecification.getRootDir();
+        this.name = robotFileSpecification.getName();
+        setFileName(robotFileSpecification.getFileName());
+        setFilePath(robotFileSpecification.getFilePath());
+        setFileType(robotFileSpecification.getFileType());
+        setFileLastModified(robotFileSpecification.getFileLastModified());
+        setFileLength(robotFileSpecification.getFileLength());
+    }
 
-	@Override
-	public String getUid() {
-		return getFilePath();
-	}
+    @Override
+    public String getUid() {
+        return getFilePath();
+    }
 }

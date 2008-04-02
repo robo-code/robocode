@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,24 +21,24 @@ import java.io.InputStream;
  */
 public class BufferedPipedInputStream extends InputStream {
 
-	private BufferedPipedOutputStream out;
+    private BufferedPipedOutputStream out;
 
-	protected BufferedPipedInputStream(BufferedPipedOutputStream out) {
-		this.out = out;
-	}
+    protected BufferedPipedInputStream(BufferedPipedOutputStream out) {
+        this.out = out;
+    }
 
-	@Override
-	public int read() throws IOException {
-		return out.read();
-	}
+    @Override
+    public int read() throws IOException {
+        return out.read();
+    }
 
-	@Override
-	public int read(byte b[], int off, int len) throws IOException {
-		return out.read(b, off, len);
-	}
+    @Override
+    public int read(byte b[], int off, int len) throws IOException {
+        return out.read(b, off, len);
+    }
 
-	@Override
-	public int available() {
-		return out.available();
-	}
+    @Override
+    public int available() {
+        return out.available();
+    }
 }

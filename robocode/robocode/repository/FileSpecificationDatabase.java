@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,193 +32,193 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class FileSpecificationDatabase implements Serializable {
 
-	private Map<String, IFileSpecification> hash = new HashMap<String, IFileSpecification>();
+    private Map<String, IFileSpecification> hash = new HashMap<String, IFileSpecification>();
 
-	@SuppressWarnings("unchecked")
-	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
-		FileInputStream fis = null;
+    @SuppressWarnings("unchecked")
+    public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
+        FileInputStream fis = null;
 
-		try {
-			fis = new FileInputStream(f);
-			ObjectInputStream in = new ObjectInputStream(fis);
-	
-			Object obj = in.readObject();
-	
-			if (obj instanceof Hashtable) {
-				// The following provides backward compability for versions before 1.2.3A
-				Hashtable<String, IFileSpecification> hashtable = (Hashtable<String, IFileSpecification>) obj;
-	
-				hash = new HashMap<String, IFileSpecification>(hashtable);
-			} else {
-				// Using new container type for version 1.2.3B and followers
-				hash = (HashMap<String, IFileSpecification>) obj;
-			}
-		} finally {
-			if (fis != null) {
-				fis.close();
-			}
-		}
-	}
+        try {
+            fis = new FileInputStream(f);
+            ObjectInputStream in = new ObjectInputStream(fis);
 
-	public void store(File f) throws IOException, FileNotFoundException {
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
+            Object obj = in.readObject();
 
-		out.writeObject(hash);
-		out.close();
-	}
+            if (obj instanceof Hashtable) {
+                // The following provides backward compability for versions before 1.2.3A
+                Hashtable<String, IFileSpecification> hashtable = (Hashtable<String, IFileSpecification>) obj;
 
-	public boolean contains(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Iterator<IFileSpecification> i = hash.values().iterator();
+                hash = new HashMap<String, IFileSpecification>(hashtable);
+            } else {
+                // Using new container type for version 1.2.3B and followers
+                hash = (HashMap<String, IFileSpecification>) obj;
+            }
+        } finally {
+            if (fis != null) {
+                fis.close();
+            }
+        }
+    }
 
-		while (i.hasNext()) {
-			Object o = i.next();
+    public void store(File f) throws IOException, FileNotFoundException {
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
 
-			if (o instanceof IRobotFileSpecification || o instanceof TeamSpecification) {
-				IFileSpecification spec = (IFileSpecification) o;
+        out.writeObject(hash);
+        out.close();
+    }
 
-				if (spec.isDuplicate()) {
-					continue;
-				}
-				if (spec.isDevelopmentVersion() != isDevelopmentVersion) {
-					continue;
-				}
-				if (fullClassName.equals(spec.getFullClassName())) {
-					if (version == null && spec.getVersion() == null) {
-						return true;
-					}
-					if (version != null && spec.getVersion() != null) {
-						if (version.equals(spec.getVersion())) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+    public boolean contains(String fullClassName, String version, boolean isDevelopmentVersion) {
+        Iterator<IFileSpecification> i = hash.values().iterator();
 
-	public IFileSpecification get(String fullClassName, String version, boolean isDevelopmentVersion) {
-		Iterator<IFileSpecification> i = hash.values().iterator();
+        while (i.hasNext()) {
+            Object o = i.next();
 
-		while (i.hasNext()) {
-			Object o = i.next();
+            if (o instanceof IRobotFileSpecification || o instanceof TeamSpecification) {
+                IFileSpecification spec = (IFileSpecification) o;
 
-			if (o instanceof IRobotFileSpecification || o instanceof TeamSpecification) {
-				IFileSpecification spec = (IFileSpecification) o;
+                if (spec.isDuplicate()) {
+                    continue;
+                }
+                if (spec.isDevelopmentVersion() != isDevelopmentVersion) {
+                    continue;
+                }
+                if (fullClassName.equals(spec.getFullClassName())) {
+                    if (version == null && spec.getVersion() == null) {
+                        return true;
+                    }
+                    if (version != null && spec.getVersion() != null) {
+                        if (version.equals(spec.getVersion())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
-				if (spec.isDuplicate()) {
-					continue;
-				}
-				if (spec.isDevelopmentVersion() != isDevelopmentVersion) {
-					continue;
-				}
-				if (fullClassName.equals(spec.getFullClassName())) {
-					if (version == null && spec.getVersion() == null) {
-						return spec;
-					}
-					if (version != null && spec.getVersion() != null) {
-						if (version.equals(spec.getVersion())) {
-							return spec;
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
+    public IFileSpecification get(String fullClassName, String version, boolean isDevelopmentVersion) {
+        Iterator<IFileSpecification> i = hash.values().iterator();
 
-	public List<IFileSpecification> getFileSpecifications() {
-		List<IFileSpecification> v = new ArrayList<IFileSpecification>();
+        while (i.hasNext()) {
+            Object o = i.next();
 
-		for (String key : hash.keySet()) {
-			v.add(hash.get(key));
-		}
-		return v;
-	}
+            if (o instanceof IRobotFileSpecification || o instanceof TeamSpecification) {
+                IFileSpecification spec = (IFileSpecification) o;
 
-	public List<JarSpecification> getJarSpecifications() {
-		List<JarSpecification> v = new ArrayList<JarSpecification>();
+                if (spec.isDuplicate()) {
+                    continue;
+                }
+                if (spec.isDevelopmentVersion() != isDevelopmentVersion) {
+                    continue;
+                }
+                if (fullClassName.equals(spec.getFullClassName())) {
+                    if (version == null && spec.getVersion() == null) {
+                        return spec;
+                    }
+                    if (version != null && spec.getVersion() != null) {
+                        if (version.equals(spec.getVersion())) {
+                            return spec;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
-		for (String key : hash.keySet()) {
-			IFileSpecification spec = hash.get(key);
+    public List<IFileSpecification> getFileSpecifications() {
+        List<IFileSpecification> v = new ArrayList<IFileSpecification>();
 
-			if (spec instanceof JarSpecification) {
-				v.add((JarSpecification) spec);
-			}
-		}
-		return v;
-	}
+        for (String key : hash.keySet()) {
+            v.add(hash.get(key));
+        }
+        return v;
+    }
 
-	public IFileSpecification get(String key) {
-		Object o = hash.get(key);
+    public List<JarSpecification> getJarSpecifications() {
+        List<JarSpecification> v = new ArrayList<JarSpecification>();
 
-		if (o == null) {
-			return null;
-		}
-		if (!(o instanceof IFileSpecification)) {
-			return null;
-		}
-		return (IFileSpecification) o;
-	}
+        for (String key : hash.keySet()) {
+            IFileSpecification spec = hash.get(key);
 
-	public void remove(String key) {
-		IFileSpecification removedSpecification = hash.get(key);
+            if (spec instanceof JarSpecification) {
+                v.add((JarSpecification) spec);
+            }
+        }
+        return v;
+    }
 
-		if (removedSpecification == null) {
-			return;
-		}
+    public IFileSpecification get(String key) {
+        Object o = hash.get(key);
 
-		hash.remove(key);
+        if (o == null) {
+            return null;
+        }
+        if (!(o instanceof IFileSpecification)) {
+            return null;
+        }
+        return (IFileSpecification) o;
+    }
 
-		// No concept of duplicates for classes
-		if (!(removedSpecification instanceof IRobotFileSpecification)) {
-			return;
-		}
-		// If it's already a dupe we're removing, return
-		if (removedSpecification.isDuplicate()) {
-			return;
-		}
-		// Development versions are not considered for duplicates
-		if (removedSpecification.isDevelopmentVersion()) {
-			return;
-		}
+    public void remove(String key) {
+        IFileSpecification removedSpecification = hash.get(key);
 
-		// If there were any duplicates, we need to set one to not-duplicate
-		IFileSpecification unduplicatedSpec = null;
-		String fullClassName = removedSpecification.getFullClassName();
-		String version = removedSpecification.getVersion();
+        if (removedSpecification == null) {
+            return;
+        }
 
-		Iterator<IFileSpecification> i = hash.values().iterator();
+        hash.remove(key);
 
-		while (i.hasNext()) {
-			Object o = i.next();
+        // No concept of duplicates for classes
+        if (!(removedSpecification instanceof IRobotFileSpecification)) {
+            return;
+        }
+        // If it's already a dupe we're removing, return
+        if (removedSpecification.isDuplicate()) {
+            return;
+        }
+        // Development versions are not considered for duplicates
+        if (removedSpecification.isDevelopmentVersion()) {
+            return;
+        }
 
-			if (o instanceof IRobotFileSpecification) {
-				IRobotFileSpecification spec = (IRobotFileSpecification) o;
+        // If there were any duplicates, we need to set one to not-duplicate
+        IFileSpecification unduplicatedSpec = null;
+        String fullClassName = removedSpecification.getFullClassName();
+        String version = removedSpecification.getVersion();
 
-				if (spec.isDevelopmentVersion()) {
-					continue;
-				}
-				if (fullClassName.equals(spec.getFullClassName())) {
-					if ((version == null && spec.getVersion() == null)
-							|| ((version != null && spec.getVersion() != null) && (version.equals(spec.getVersion())))) {
-						if (unduplicatedSpec == null) {
-							unduplicatedSpec = spec;
-							unduplicatedSpec.setDuplicate(false);
-						} else {
-							if (spec.getFileLastModified() < unduplicatedSpec.getFileLastModified()) {
-								unduplicatedSpec.setDuplicate(true);
-								spec.setDuplicate(false);
-								unduplicatedSpec = spec;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+        Iterator<IFileSpecification> i = hash.values().iterator();
 
-	public void put(String key, IFileSpecification spec) {
-		hash.put(key, spec);
-	}
+        while (i.hasNext()) {
+            Object o = i.next();
+
+            if (o instanceof IRobotFileSpecification) {
+                IRobotFileSpecification spec = (IRobotFileSpecification) o;
+
+                if (spec.isDevelopmentVersion()) {
+                    continue;
+                }
+                if (fullClassName.equals(spec.getFullClassName())) {
+                    if ((version == null && spec.getVersion() == null)
+                            || ((version != null && spec.getVersion() != null) && (version.equals(spec.getVersion())))) {
+                        if (unduplicatedSpec == null) {
+                            unduplicatedSpec = spec;
+                            unduplicatedSpec.setDuplicate(false);
+                        } else {
+                            if (spec.getFileLastModified() < unduplicatedSpec.getFileLastModified()) {
+                                unduplicatedSpec.setDuplicate(true);
+                                spec.setDuplicate(false);
+                                unduplicatedSpec = spec;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void put(String key, IFileSpecification spec) {
+        hash.put(key, spec);
+    }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,10 @@ package robocode.security;
 
 
 import static robocode.io.Logger.log;
+import robocode.manager.RobocodeManager;
+import robocode.packager.ClassAnalyzer;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.IRobotFileSpecification;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -39,11 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import robocode.packager.ClassAnalyzer;
-import robocode.peer.robot.RobotClassManager;
-import robocode.repository.IRobotFileSpecification;
-import robocode.manager.RobocodeManager;
-
 
 /**
  * @author Mathew A. Nelson (original)
@@ -53,208 +52,211 @@ import robocode.manager.RobocodeManager;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeClassLoader extends ClassLoader implements IRobocodeClassLoader {
-	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
+    private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
 
-	private IRobotFileSpecification robotFileSpecification;
-	private RobotClassManager robotClassManager;
-	private String rootPackageDirectory;
-	private String rootDirectory;
-	private String classDirectory;
-	private ProtectionDomain protectionDomain;
+    private IRobotFileSpecification robotFileSpecification;
+    private RobotClassManager robotClassManager;
+    private String rootPackageDirectory;
+    private String rootDirectory;
+    private String classDirectory;
+    private ProtectionDomain protectionDomain;
 
-	private long uid1;
-	private long uid2;
+    private long uid1;
+    private long uid2;
 
-	// The hidden ClassLoader.class.classes field
-	private Field classesField = null;
+    // The hidden ClassLoader.class.classes field
+    private Field classesField = null;
 
-	public RobocodeClassLoader(ClassLoader parent) {
-		super(parent);
-	}
+    public RobocodeClassLoader(ClassLoader parent) {
+        super(parent);
+    }
 
-	public void init(RobotClassManager robotClassManager) {
-		this.robotClassManager = robotClassManager;
-		this.robotFileSpecification = robotClassManager.getRobotSpecification();
+    public void init(RobotClassManager robotClassManager) {
+        this.robotClassManager = robotClassManager;
+        this.robotFileSpecification = robotClassManager.getRobotSpecification();
 
-		// Deep within the class loader is a vector of classes, and is VM
-		// implementation specific, so its not in every VM. However, if a VM
-		// does have it then we have to make sure we clear it during cleanup().
-		Field[] fields = ClassLoader.class.getDeclaredFields();
+        // Deep within the class loader is a vector of classes, and is VM
+        // implementation specific, so its not in every VM. However, if a VM
+        // does have it then we have to make sure we clear it during cleanup().
+        Field[] fields = ClassLoader.class.getDeclaredFields();
 
-		for (Field field : fields) {
-			if (field.getName().equals("classes")) {
-				classesField = field;
-				break;
-			}
-		}
+        for (Field field : fields) {
+            if (field.getName().equals("classes")) {
+                classesField = field;
+                break;
+            }
+        }
 
-		if (classesField == null) {
-			System.err.println("Failed to find classes field in:" + this);
-		}
-	}
+        if (classesField == null) {
+            System.err.println("Failed to find classes field in:" + this);
+        }
+    }
 
-	public synchronized String getClassDirectory() {
-		return classDirectory;
-	}
+    public synchronized String getClassDirectory() {
+        return classDirectory;
+    }
 
-	@Override
-	public InputStream getResourceAsStream(String resource) {
-		log("Classloader:  getResourceAsStream: " + resource);
-		return super.getResourceAsStream(resource);
-	}
+    @Override
+    public InputStream getResourceAsStream(String resource) {
+        log("Classloader:  getResourceAsStream: " + resource);
+        return super.getResourceAsStream(resource);
+    }
 
-	public synchronized String getRootDirectory() {
-		return rootDirectory;
-	}
+    public synchronized String getRootDirectory() {
+        return rootDirectory;
+    }
 
-	public synchronized String getRootPackageDirectory() {
-		return rootPackageDirectory;
-	}
+    public synchronized String getRootPackageDirectory() {
+        return rootPackageDirectory;
+    }
 
-	@Override
-	public synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
-		if (className.indexOf(getRobotClassManager().getRootPackage() + ".") == 0) {
-			return loadRobotClass(className, false);
-		}
-		try {
-			return super.loadClass(className, resolve);
-		} catch (ClassNotFoundException e) {
-			return loadRobotClass(className, false);
-		}
-	}
+    @Override
+    public synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
+        if (className.indexOf(getRobotClassManager().getRootPackage() + ".") == 0) {
+            return loadRobotClass(className, false);
+        }
+        try {
+            return super.loadClass(className, resolve);
+        } catch (ClassNotFoundException e) {
+            return loadRobotClass(className, false);
+        }
+    }
 
-	public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
-		if (cachedClasses.containsKey(name)) {
-			return cachedClasses.get(name);
-		}
-		
-		Class<?> c = null;
-		File f = null;
+    public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
+        if (cachedClasses.containsKey(name)) {
+            return cachedClasses.get(name);
+        }
 
-		if (toplevel) {
-			uid1 = 0;
-			uid2 = 0;
-		}
+        Class<?> c = null;
+        File f = null;
 
-		if (!name.equals(robotClassManager.getFullClassName())) {
-			if (robotClassManager.getRootPackage() == null) {
-				log(
-						robotClassManager.getFullClassName() + " is not in a package, but is trying to reference class "
-						+ name);
-				log("To do this in Robocode, you must put your robot into a package.");
-				throw new ClassNotFoundException(
-						robotClassManager.getFullClassName() + "is not in a package, but is trying to reference class " + name);
-			}
-		}
+        if (toplevel) {
+            uid1 = 0;
+            uid2 = 0;
+        }
 
-		String filename = name.replace('.', File.separatorChar) + ".class";
+        if (!name.equals(robotClassManager.getFullClassName())) {
+            if (robotClassManager.getRootPackage() == null) {
+                log(
+                        robotClassManager.getFullClassName() + " is not in a package, but is trying to reference class "
+                                + name);
+                log("To do this in Robocode, you must put your robot into a package.");
+                throw new ClassNotFoundException(
+                        robotClassManager.getFullClassName() + "is not in a package, but is trying to reference class " + name);
+            }
+        }
 
-		String classPath = robotFileSpecification.getRobotClassPath();
+        String filename = name.replace('.', File.separatorChar) + ".class";
 
-		if (classPath.indexOf(File.pathSeparator) >= 0) {
-			throw new ClassNotFoundException(
-					"A robot cannot have multiple directories or jars in it's classpath: " + name);
-		}
+        String classPath = robotFileSpecification.getRobotClassPath();
 
-		f = new File(classPath + File.separator + filename);
-		if (protectionDomain == null) {
-			try {
-				// Java 1.4 only:
-				// If we want to use a Policy object to control access, we could do this:
-				// protectionDomain = new ProtectionDomain(new CodeSource(f.toURL(),null),new Permissions(),this,null);
-				// We *cannot* do this anymore, as the robots directory is now allowed to be in the classpath
+        if (classPath.indexOf(File.pathSeparator) >= 0) {
+            throw new ClassNotFoundException(
+                    "A robot cannot have multiple directories or jars in it's classpath: " + name);
+        }
 
-				// But it's easier to use the statically-linked version, to simply say
-				// that this class is not allowed to do anything.
-				// Note that we only create one protection domain for this classloader, so the
-				// "code source" is simply the robot itself.
-				Permissions p = new Permissions();
+        f = new File(classPath + File.separator + filename);
+        if (protectionDomain == null) {
+            try {
+                // Java 1.4 only:
+                // If we want to use a Policy object to control access, we could do this:
+                // protectionDomain = new ProtectionDomain(new CodeSource(f.toURL(),null),new Permissions(),this,null);
+                // We *cannot* do this anymore, as the robots directory is now allowed to be in the classpath
 
-				CodeSource source = new CodeSource(f.toURL(), (java.security.cert.Certificate[]) null);
-				
-				protectionDomain = new ProtectionDomain(source, p);
-				//TODO ZAMO protectionDomain = new ProtectionDomain(source, p ,this ,null);
-			} catch (MalformedURLException e) {
-				throw new ClassNotFoundException("Unable to build protection domain.");
-			}
-		}
-		int size = (int) (f.length());
+                // But it's easier to use the statically-linked version, to simply say
+                // that this class is not allowed to do anything.
+                // Note that we only create one protection domain for this classloader, so the
+                // "code source" is simply the robot itself.
+                Permissions p = new Permissions();
 
-		uid1 += size;
-		byte buff[] = new byte[size];
+                CodeSource source = new CodeSource(f.toURL(), (java.security.cert.Certificate[]) null);
 
-		FileInputStream fis = null;
-		DataInputStream dis = null;
+                protectionDomain = new ProtectionDomain(source, p);
+                // TODO ZAMO protectionDomain = new ProtectionDomain(source, p ,this ,null);
+            } catch (MalformedURLException e) {
+                throw new ClassNotFoundException("Unable to build protection domain.");
+            }
+        }
+        int size = (int) (f.length());
 
-		try {
-			fis = new FileInputStream(f);
-			dis = new DataInputStream(fis);
+        uid1 += size;
+        byte buff[] = new byte[size];
 
-			dis.readFully(buff);
-			dis.close();
-			List<String> v = ClassAnalyzer.getReferencedClasses(buff);
+        FileInputStream fis = null;
+        DataInputStream dis = null;
 
-			robotClassManager.addReferencedClasses(v);
-			uid1 += v.size();
-			for (byte element : buff) {
-				uid2 += element;
-			}
-			c = defineClass(name, buff, 0, buff.length, protectionDomain);
+        try {
+            fis = new FileInputStream(f);
+            dis = new DataInputStream(fis);
 
-			robotClassManager.addResolvedClass(name);
-			if (name.equals(robotClassManager.getFullClassName())) {
-				if (robotClassManager.getRootPackage() == null) {
-					rootPackageDirectory = null;
-					classDirectory = null;
-				} else {
-					rootPackageDirectory = new File(classPath + File.separator + robotClassManager.getRootPackage() + File.separator).getCanonicalPath();
-					classDirectory = new File(classPath + File.separator + robotClassManager.getClassNameManager().getFullPackage().replace('.', File.separatorChar) + File.separator).getCanonicalPath();
-				}
-				rootDirectory = new File(classPath).getCanonicalPath();
-			}
-			if (toplevel) {
-				robotClassManager.loadUnresolvedClasses();
-				robotClassManager.setUid(uid1 + "" + uid2);
-			}
+            dis.readFully(buff);
+            dis.close();
+            List<String> v = ClassAnalyzer.getReferencedClasses(buff);
 
-			cachedClasses.put(name, c);
-			return c;
-		} catch (IOException e) {
-			throw new ClassNotFoundException("Could not find: " + name + ": " + e);
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException e) {}
-			}
-			if (dis != null) {
-				try {
-					dis.close();
-				} catch (IOException e) {}
-			}
-		}
-	}
+            robotClassManager.addReferencedClasses(v);
+            uid1 += v.size();
+            for (byte element : buff) {
+                uid2 += element;
+            }
+            c = defineClass(name, buff, 0, buff.length, protectionDomain);
 
-	private synchronized RobotClassManager getRobotClassManager() {
-		return robotClassManager;
-	}
+            robotClassManager.addResolvedClass(name);
+            if (name.equals(robotClassManager.getFullClassName())) {
+                if (robotClassManager.getRootPackage() == null) {
+                    rootPackageDirectory = null;
+                    classDirectory = null;
+                } else {
+                    rootPackageDirectory = new File(classPath + File.separator + robotClassManager.getRootPackage() + File.separator).getCanonicalPath();
+                    classDirectory = new File(classPath + File.separator + robotClassManager.getClassNameManager().getFullPackage().replace('.', File.separatorChar) + File.separator).getCanonicalPath();
+                }
+                rootDirectory = new File(classPath).getCanonicalPath();
+            }
+            if (toplevel) {
+                robotClassManager.loadUnresolvedClasses();
+                robotClassManager.setUid(uid1 + "" + uid2);
+            }
 
-	public void cleanup() {
-		if (cachedClasses != null) {
-			cachedClasses.clear();
-		}
+            cachedClasses.put(name, c);
+            return c;
+        } catch (IOException e) {
+            throw new ClassNotFoundException("Could not find: " + name + ": " + e);
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                }
+            }
+            if (dis != null) {
+                try {
+                    dis.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
 
-		if (classesField != null) {
-			try {
-				classesField.set(this, null);
-			} catch (IllegalArgumentException e) {// TODO Graceful error handling
-			} catch (IllegalAccessException e) {// TODO Graceful error handling
-			}
-		}
+    private synchronized RobotClassManager getRobotClassManager() {
+        return robotClassManager;
+    }
 
-		robotClassManager = null;
-		robotFileSpecification = null;
-	}
+    public void cleanup() {
+        if (cachedClasses != null) {
+            cachedClasses.clear();
+        }
 
-	public void setRobocodeManager(RobocodeManager root) {}
+        if (classesField != null) {
+            try {
+                classesField.set(this, null);
+            } catch (IllegalArgumentException e) {// TODO Graceful error handling
+            } catch (IllegalAccessException e) {// TODO Graceful error handling
+            }
+        }
+
+        robotClassManager = null;
+        robotFileSpecification = null;
+    }
+
+    public void setRobocodeManager(RobocodeManager root) {
+    }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,38 +12,38 @@
 package robocode;
 
 
-import robocode.peer.RobotPeer;
+import robocode.peer.proxies.IBattleRobotProxy;
 
 
 /**
- * This event is sent to {@link Robot#onStatus(StatusEvent)} every turn.
+ * This event is sent to {@link Robot#onStatus(StatusEvent)
+ * onStatus(StatusEvent)} every turn in a battle.
  *
- * @author Flemming N. Larsen (contributor)
- * 
+ * @author Flemming N. Larsen (original)
  * @since 1.5
  */
 public class StatusEvent extends Event {
 
-	private final RobotStatus status;
+    private final RobotStatus status;
 
-	/**
-	 * Creates a new RobotStatus based a a RobotPeer.
-	 * This constructor is called internally from the game.
-	 *
-	 * @param r the RobotPeer containing the states we must make a snapshot of
-	 */
-	public StatusEvent(RobotPeer r) {
-		super();
+    /**
+     * This constructor is called internally from the game in order to create
+     * a new {@link RobotStatus}.
+     *
+     * @param robotPeer the RobotPeer containing the current states
+     */
+    public StatusEvent(IBattleRobotProxy robotPeer) {
+        super();
 
-		status = new RobotStatus(r);
-	}
+        status = new RobotStatus(robotPeer);
+    }
 
-	/**
-	 * Returns the robot status at the time defined by getTime().
-	 * 
-	 * @see #getTime()
-	 */
-	public RobotStatus getStatus() {
-		return status;
-	}
+    /**
+     * Returns the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
+     *
+     * @return the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
+     */
+    public RobotStatus getStatus() {
+        return status;
+    }
 }

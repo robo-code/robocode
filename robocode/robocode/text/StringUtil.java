@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,20 +21,20 @@ package robocode.text;
  */
 public class StringUtil {
 
-	public static String getPlacementString(int i) {
-		String result = "" + i;
+    public static String getPlacementString(int i) {
+        String result = "" + i;
 
-		if (i > 3 && i < 20) {
-			result += "th";
-		} else if (i % 10 == 1) {
-			result += "st";
-		} else if (i % 10 == 2) {
-			result += "nd";
-		} else if (i % 10 == 3) {
-			result += "rd";
-		} else {
-			result += "th";
-		}
-		return result;
-	}
+        if (i > 3 && i < 20) {
+            result += "th";
+        } else if (i % 10 == 1) {
+            result += "st";
+        } else if (i % 10 == 2) {
+            result += "nd";
+        } else if (i % 10 == 3) {
+            result += "rd";
+        } else {
+            result += "th";
+        }
+        return result;
+    }
 }

@@ -20,16 +20,25 @@ import robocode.battlefield.BattleField;
  * @author Pavel Savara (original)
  */
 public interface IBattleView {
-	int getWidth();
-	int getHeight();
+    int getWidth();
 
-	void setVisible(boolean value);
-	void setInitialized(boolean value);
-	boolean isDisplayTPS();
-	boolean isDisplayFPS();
-	void update();
-	void setDisplayOptions();
-	void repaint();
-	void setBattle(Battle battle);
-	void setBattleField(BattleField bf);
+    int getHeight();
+
+    void setVisible(boolean value);
+
+    void setInitialized(boolean value);
+
+    boolean isDisplayTPS();
+
+    boolean isDisplayFPS();
+
+    void update();
+
+    void setDisplayOptions();
+
+    void repaint();
+
+    void setBattle(Battle battle);
+
+    void setBattleField(BattleField bf);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,57 +28,57 @@ import java.util.ArrayList;
  * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
-public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
+public class TeamPeer extends ArrayList<RobotPeer> implements IContestantPeer {
 
-	private String name;
-	private RobotPeer teamLeader;
-	private TeamStatistics teamStatistics;
+    private String name;
+    private RobotPeer teamLeader;
+    private TeamStatistics teamStatistics;
 
-	public TeamPeer(String name) {
-		this.name = name;
-		this.teamStatistics = new TeamStatistics(this);
-	}
+    public TeamPeer(String name) {
+        this.name = name;
+        this.teamStatistics = new TeamStatistics(this);
+    }
 
-	public int compareTo(ContestantPeer cp) {
-		double score1 = teamStatistics.getTotalScore();
-		double score2 = cp.getStatistics().getTotalScore();
+    public int compareTo(IContestantPeer cp) {
+        double score1 = teamStatistics.getTotalScore();
+        double score2 = cp.getRobotStatistics().getTotalScore();
 
-		if (teamLeader != null && teamLeader.getBattle().isRunning()) {
-			score1 += teamStatistics.getCurrentScore();
-			score2 += cp.getStatistics().getCurrentScore();
-		}
-		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
-	}
+        if (teamLeader != null && ((RobotPeer) teamLeader).getBattle().isRunning()) {
+            score1 += teamStatistics.getCurrentScore();
+            score2 += cp.getRobotStatistics().getCurrentScore();
+        }
+        return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+    }
 
-	public ContestantStatistics getStatistics() {
-		return teamStatistics;
-	}
+    public IContestantStatistics getRobotStatistics() {
+        return teamStatistics;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public RobotPeer getTeamLeader() {
-		return teamLeader;
-	}
+    public RobotPeer getTeamLeader() {
+        return teamLeader;
+    }
 
-	@Override
-	public boolean add(RobotPeer r) {
-		if (teamLeader == null) {
-			teamLeader = r;
-		}
-		return super.add(r);
-	}
+    @Override
+    public boolean add(RobotPeer r) {
+        if (teamLeader == null) {
+            teamLeader = r;
+        }
+        return super.add(r);
+    }
 
-	@Override
-	public boolean contains(Object s) {
-		if (s != null && s instanceof String) {
-			for (RobotPeer r : this) {
-				if (s.equals(r.getName())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean contains(Object s) {
+        if (s != null && s instanceof String) {
+            for (RobotPeer r : this) {
+                if (s.equals(r.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

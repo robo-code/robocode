@@ -14,6 +14,7 @@ using System.ComponentModel;
 using nrobocodeui.utils;
 using robocode.peer;
 using nrobocodeui.battleview;
+using robocode.peer.proxies;
 using robocode.ui;
 
 namespace nrobocodeui.dialog
@@ -159,13 +160,13 @@ namespace nrobocodeui.dialog
             }
         }
 
-        public void addRobotButton(IRobotDialogManager irdm, RobotPeer rp)
+        public void addRobotButton(IRobotDialogManager irdm, IDisplayRobotProxy rp)
         {
             if (closing)
                 return;
             //lock (synchronizer)
             {
-                synchronizer.BeginInvoke(new Action<IRobotDialogManager, RobotPeer>(frame.addRobotButton), new object[] {irdm, rp});
+                synchronizer.BeginInvoke(new Action<IRobotDialogManager, IDisplayRobotProxy>(frame.addRobotButton), new object[] { irdm, rp });
             }
         }
 

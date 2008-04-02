@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,14 @@
 package roborumble;
 
 
-import roborumble.battlesengine.*;
-import roborumble.netengine.*;
-import java.util.*;
-
+import roborumble.battlesengine.BattlesRunner;
+import roborumble.battlesengine.PrepareBattles;
+import roborumble.netengine.BotsDownload;
+import roborumble.netengine.ResultsUpload;
+import roborumble.netengine.UpdateRatingFiles;
 import static roborumble.util.PropertiesUtil.getProperties;
+
+import java.util.Properties;
 
 
 /**
@@ -30,7 +33,7 @@ import static roborumble.util.PropertiesUtil.getProperties;
  * @author Flemming N. Larsen (contributor)
  */
 public class RoboRumbleAtHome {
-	
+
 	public static void main(String args[]) {
 
 		// Get the associated parameters file
@@ -55,9 +58,9 @@ public class RoboRumbleAtHome {
 		int iterations = 0;
 		long lastdownload = 0;
 		boolean ratingsdownloaded = false;
-		boolean participantsdownloaded = false;	
-	
-		do {			
+		boolean participantsdownloaded;
+
+		do {
 			System.out.println("Iteration number " + iterations);
 
 			// Download data from Internet if downloads is YES and it has not been download for two hours
@@ -69,7 +72,7 @@ public class RoboRumbleAtHome {
 				System.out.println("Downloading missing bots ...");
 				download.downloadMissingBots();
 				download.updateCodeSize();
-				if (runonly.equals("SERVER")) { 
+				if (runonly.equals("SERVER")) {
 					// Download rating files and update ratings downloaded
 					System.out.println("Downloading rating files ...");
 					ratingsdownloaded = download.downloadRatings();
@@ -87,10 +90,10 @@ public class RoboRumbleAtHome {
 
 			// Create battles file (and delete old ones), and execute battles
 			if (executes.equals("YES")) {
-				
-				boolean ready = false;
+
+				boolean ready;
 				PrepareBattles battles = new PrepareBattles(parameters);
-				
+
 				if (melee.equals("YES")) {
 					System.out.println("Preparing melee battles list ...");
 					ready = battles.createMeleeBattlesList();
@@ -104,7 +107,7 @@ public class RoboRumbleAtHome {
 					} else {
 						// Create the normal lists
 						ready = battles.createBattlesList();
-					} 
+					}
 				}
 
 				battles = null;
@@ -121,7 +124,7 @@ public class RoboRumbleAtHome {
 						engine.runBattles();
 					}
 					engine = null;
-				} 
+				}
 			}
 
 			// Upload results
@@ -143,7 +146,7 @@ public class RoboRumbleAtHome {
 
 			iterations++;
 		} while (iterates.equals("YES"));
-	
+
 		// With Java 5 this causes a IllegalThreadStateException, but not in Java 6
 		// System.exit(0);
 	}

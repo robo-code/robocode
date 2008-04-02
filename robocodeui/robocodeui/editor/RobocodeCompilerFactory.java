@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,22 +22,16 @@
 package robocodeui.editor;
 
 
+import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
+import robocodeui.dialog.ConsoleDialog;
+import robocodeui.dialog.WindowUtil;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import robocodeui.dialog.ConsoleDialog;
-import robocodeui.dialog.WindowUtil;
-import robocode.io.FileUtil;
 
 
 /**
@@ -46,518 +40,532 @@ import robocode.io.FileUtil;
  */
 public class RobocodeCompilerFactory {
 
-	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator
-			+ "libs/robocode.jar" + File.pathSeparator + getRobotPath();
+    private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator
+            + "libs/robocode.jar" + File.pathSeparator + getRobotPath();
 
-	private static CompilerProperties compilerProperties;
-	private static String robotPath;
-	private static boolean compilerInstalling;
+    private static CompilerProperties compilerProperties;
+    private static String robotPath;
+    private static boolean compilerInstalling;
 
-	private static final char SPINNER[] = {
-		'-', '\\', '|', '/'
-	};
+    private static final char SPINNER[] = {
+            '-', '\\', '|', '/'
+    };
 
-	/**
-	 * RobocodeCompiler constructor comment.
-	 */
-	public RobocodeCompilerFactory() {
-		super();
-	}
+    /**
+     * RobocodeCompiler constructor comment.
+     */
+    public RobocodeCompilerFactory() {
+        super();
+    }
 
-	public static RobocodeCompiler createCompiler(RobocodeEditor editor) {
-		compilerProperties = null;
-		if (getCompilerProperties().getCompilerBinary() == null
-				|| getCompilerProperties().getCompilerBinary().length() == 0) {
-			if (installCompiler(editor)) {
-				return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
-						getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
-			}
-			log("Unable to create compiler.");
-			return null;
-		}
-		return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
-				getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
-	}
+    public static RobocodeCompiler createCompiler(RobocodeEditor editor) {
+        compilerProperties = null;
+        if (getCompilerProperties().getCompilerBinary() == null
+                || getCompilerProperties().getCompilerBinary().length() == 0) {
+            if (installCompiler(editor)) {
+                return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
+                        getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
+            }
+            log("Unable to create compiler.");
+            return null;
+        }
+        return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
+                getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
+    }
 
-	public static boolean extract(File src, File dest) {
-		JDialog statusDialog = new JDialog();
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = 50;
+    public static boolean extract(File src, File dest) {
+        JDialog statusDialog = new JDialog();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int height = 50;
 
-		if (File.separatorChar == '/') {
-			height = 100;
-		}
+        if (File.separatorChar == '/') {
+            height = 100;
+        }
 
-		statusDialog.setTitle("Installing");
-		statusDialog.setLocation((screenSize.width - 500) / 2, (screenSize.height - height) / 2);
-		statusDialog.setSize(500, height);
-		JLabel status = new JLabel();
+        statusDialog.setTitle("Installing");
+        statusDialog.setLocation((screenSize.width - 500) / 2, (screenSize.height - height) / 2);
+        statusDialog.setSize(500, height);
+        JLabel status = new JLabel();
 
-		statusDialog.getContentPane().setLayout(new BorderLayout());
-		statusDialog.getContentPane().add(status, BorderLayout.CENTER);
+        statusDialog.getContentPane().setLayout(new BorderLayout());
+        statusDialog.getContentPane().add(status, BorderLayout.CENTER);
 
-		statusDialog.setVisible(true);
+        statusDialog.setVisible(true);
 
-		FileInputStream fis = null;
-		FileOutputStream fos = null;
-		JarInputStream jarIS = null;
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+        JarInputStream jarIS = null;
 
-		String entryName = "";
+        String entryName = "";
 
-		byte buf[] = new byte[2048];
+        byte buf[] = new byte[2048];
 
-		try {
-			fis = new FileInputStream(src);
-			jarIS = new JarInputStream(fis);
+        try {
+            fis = new FileInputStream(src);
+            jarIS = new JarInputStream(fis);
 
-			JarEntry entry = jarIS.getNextJarEntry();
+            JarEntry entry = jarIS.getNextJarEntry();
 
-			while (entry != null) {
-				int spin = 0;
+            while (entry != null) {
+                int spin = 0;
 
-				entryName = entry.getName();
-				if (entry.isDirectory()) {
-					File dir = new File(dest, entry.getName());
+                entryName = entry.getName();
+                if (entry.isDirectory()) {
+                    File dir = new File(dest, entry.getName());
 
-					dir.mkdirs();
-				} else {
-					status.setText(entryName + " " + SPINNER[spin++]);
-					File out = new File(dest, entry.getName());
-					File parentDirectory = new File(out.getParent());
+                    dir.mkdirs();
+                } else {
+                    status.setText(entryName + " " + SPINNER[spin++]);
+                    File out = new File(dest, entry.getName());
+                    File parentDirectory = new File(out.getParent());
 
-					parentDirectory.mkdirs();
+                    parentDirectory.mkdirs();
 
-					int index = 0;
+                    int index = 0;
 
-					try {
-						fos = new FileOutputStream(out);
-	
-						int num = 0;
-						int count = 0;
-	
-						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-							fos.write(buf, 0, num);
-							index += num;
-							count++;
-							if (count > 80) {
-								status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
-								if (spin > 3) {
-									spin = 0;
-								}
-								count = 0;
-							}
-						}
-					} finally {
-						if (fos != null) {
-							fos.close();
-						}
-					}
+                    try {
+                        fos = new FileOutputStream(out);
 
-					status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
-				}
-				entry = jarIS.getNextJarEntry();
-			}
-			statusDialog.dispose();
-			return true;
-		} catch (IOException e) {
-			statusDialog.dispose();
-			WindowUtil.error(null, e.toString());
-			return false;
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException e) {}
-			}
-			if (jarIS != null) {
-				try {
-					jarIS.close();
-				} catch (IOException e) {}
-			}
-		}
-	}
+                        int num = 0;
+                        int count = 0;
 
-	public static CompilerProperties getCompilerProperties() {
-		if (compilerProperties == null) {
-			compilerProperties = new CompilerProperties();
+                        while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+                            fos.write(buf, 0, num);
+                            index += num;
+                            count++;
+                            if (count > 80) {
+                                status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
+                                if (spin > 3) {
+                                    spin = 0;
+                                }
+                                count = 0;
+                            }
+                        }
+                    } finally {
+                        if (fos != null) {
+                            fos.close();
+                        }
+                    }
 
-			FileInputStream in = null;
+                    status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
+                }
+                entry = jarIS.getNextJarEntry();
+            }
+            statusDialog.dispose();
+            return true;
+        } catch (IOException e) {
+            statusDialog.dispose();
+            WindowUtil.error(null, e.toString());
+            return false;
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                }
+            }
+            if (jarIS != null) {
+                try {
+                    jarIS.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
 
-			try {
-				in = new FileInputStream(FileUtil.getCompilerConfigFile());
-				compilerProperties.load(in);
-				if (compilerProperties.getRobocodeVersion() == null) {
-					log("Setting up new compiler");
-					compilerProperties.setCompilerBinary("");
-				}
-			} catch (FileNotFoundException e) {
-				log("Setting up compiler.");
-			} catch (IOException e) {
-				log("IO Exception reading " + FileUtil.getCompilerConfigFile().getName() + ": " + e);
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (IOException e) {}
-				}
-			}
-		}
-		return compilerProperties;
-	}
+    public static CompilerProperties getCompilerProperties() {
+        if (compilerProperties == null) {
+            compilerProperties = new CompilerProperties();
 
-	private static String getJavaLib() {
-		String javahome = System.getProperty("java.home");
+            FileInputStream in = null;
 
-		String javalib = "";
+            try {
+                in = new FileInputStream(FileUtil.getCompilerConfigFile());
+                compilerProperties.load(in);
+                if (compilerProperties.getRobocodeVersion() == null) {
+                    log("Setting up new compiler");
+                    compilerProperties.setCompilerBinary("");
+                }
+            } catch (FileNotFoundException e) {
+                log("Setting up compiler.");
+            } catch (IOException e) {
+                log("IO Exception reading " + FileUtil.getCompilerConfigFile().getName() + ": " + e);
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                    }
+                }
+            }
+        }
+        return compilerProperties;
+    }
 
-		if (System.getProperty("os.name").indexOf("Mac") == 0) {
-			javalib = new File(javahome).getParentFile().getPath() + "/Classes/classes.jar";
-		} else {
-			javalib = javahome + "/lib/rt.jar";
-		}
+    private static String getJavaLib() {
+        String javahome = System.getProperty("java.home");
 
-		return FileUtil.quoteFileName(javalib);
-	}
+        String javalib = "";
 
-	private static String getRobotPath() {
-		if (robotPath == null) {
-			robotPath = System.getProperty("ROBOTPATH", "robots");
-		}
+        if (System.getProperty("os.name").indexOf("Mac") == 0) {
+            javalib = new File(javahome).getParentFile().getPath() + "/Classes/classes.jar";
+        } else {
+            javalib = javahome + "/lib/rt.jar";
+        }
 
-		return FileUtil.quoteFileName(robotPath);
-	}
+        return FileUtil.quoteFileName(javalib);
+    }
 
-	public static boolean installCompiler(RobocodeEditor editor) {
-		if (compilerInstalling) {
-			JOptionPane.showMessageDialog(editor,
-					"Sorry, the compiler is still installing.\nPlease wait until it is complete.", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		compilerInstalling = true;
+    private static String getRobotPath() {
+        if (robotPath == null) {
+            robotPath = System.getProperty("ROBOTPATH", "robots");
+        }
 
-		String compilerBinary = null;
-		String compilerOptions = "";
+        return FileUtil.quoteFileName(robotPath);
+    }
 
-		String osName = System.getProperty("os.name");
+    public static boolean installCompiler(RobocodeEditor editor) {
+        if (compilerInstalling) {
+            JOptionPane.showMessageDialog(editor,
+                    "Sorry, the compiler is still installing.\nPlease wait until it is complete.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        compilerInstalling = true;
 
-		ConsoleDialog console = new ConsoleDialog(editor, "Setting up compiler", false);
+        String compilerBinary = null;
+        String compilerOptions = "";
 
-		console.setSize(500, 400);
-		console.getOkButton().setEnabled(false);
-		console.setText("Please wait while Robocode sets up a compiler for you...\n\n");
-		WindowUtil.centerShow(editor, console);
+        String osName = System.getProperty("os.name");
 
-		console.append("Setting up compiler for " + osName + "\n");
-		console.append("Java home is " + System.getProperty("java.home") + "\n\n");
+        ConsoleDialog console = new ConsoleDialog(editor, "Setting up compiler", false);
 
-		boolean javacOk = testJavac(console);
-		boolean jikesOk = false;
-		boolean rv = true;
-		boolean mustBuildJikes = false;
-		String jikesJar = "";
-		String jikesBinary = "";
-		boolean noExtract = false;
+        console.setSize(500, 400);
+        console.getOkButton().setEnabled(false);
+        console.setText("Please wait while Robocode sets up a compiler for you...\n\n");
+        WindowUtil.centerShow(editor, console);
 
-		compilerProperties.setRobocodeVersion(editor.getManager().getVersionManager().getVersion());
+        console.append("Setting up compiler for " + osName + "\n");
+        console.append("Java home is " + System.getProperty("java.home") + "\n\n");
 
-		if (osName.indexOf("Windows") == 0) {
-			jikesJar = "compilers/jikes-1.22.win.jar";
-			jikesBinary = "./jikes-1.22/bin/jikes.exe";
-			mustBuildJikes = false;
-		} else if (osName.indexOf("Linux") == 0) {
-			jikesJar = "compilers/jikes-1.22.src.jar";
-			jikesBinary = "./jikes-1.22/bin/jikes";
-			mustBuildJikes = true;
-		} else if (osName.indexOf("Mac") == 0) {
-			jikesJar = "compilers/jikes-1.22.src.jar";
-			jikesBinary = "/usr/bin/jikes";
-			jikesOk = testJikes(console, jikesBinary + " -classpath " + getJavaLib());
-			if (!jikesOk) {
-				mustBuildJikes = true;
-				jikesBinary = "./jikes-1.22/bin/jikes";
-			}
-		} else {
-			jikesJar = "compilers/jikes-1.22.src.jar";
-			mustBuildJikes = true;
-			jikesBinary = "./jikes-1.22/bin/jikes";
-		}
+        boolean javacOk = testJavac(console);
+        boolean jikesOk = false;
+        boolean rv = true;
+        boolean mustBuildJikes = false;
+        String jikesJar = "";
+        String jikesBinary = "";
+        boolean noExtract = false;
 
-		if (javacOk) {
-			String noString = "(If you click No, Robocode will install and use Jikes)";
+        compilerProperties.setRobocodeVersion(editor.getManager().getVersionManager().getVersion());
 
-			if (jikesOk) {
-				noString = "(If you click No, Robocode will use Jikes)";
-			}
+        if (osName.indexOf("Windows") == 0) {
+            jikesJar = "compilers/jikes-1.22.win.jar";
+            jikesBinary = "./jikes-1.22/bin/jikes.exe";
+            mustBuildJikes = false;
+        } else if (osName.indexOf("Linux") == 0) {
+            jikesJar = "compilers/jikes-1.22.src.jar";
+            jikesBinary = "./jikes-1.22/bin/jikes";
+            mustBuildJikes = true;
+        } else if (osName.indexOf("Mac") == 0) {
+            jikesJar = "compilers/jikes-1.22.src.jar";
+            jikesBinary = "/usr/bin/jikes";
+            jikesOk = testJikes(console, jikesBinary + " -classpath " + getJavaLib());
+            if (!jikesOk) {
+                mustBuildJikes = true;
+                jikesBinary = "./jikes-1.22/bin/jikes";
+            }
+        } else {
+            jikesJar = "compilers/jikes-1.22.src.jar";
+            mustBuildJikes = true;
+            jikesBinary = "./jikes-1.22/bin/jikes";
+        }
 
-			int rc = JOptionPane.showConfirmDialog(editor,
-					"Robocode has found a working javac on this system.\nWould you like to use it?\n" + noString,
-					"Confirm javac", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (javacOk) {
+            String noString = "(If you click No, Robocode will install and use Jikes)";
 
-			if (rc == JOptionPane.NO_OPTION) {
-				javacOk = false;
-			}
-		}
-		if (javacOk) {
-			compilerBinary = "javac";
-			compilerOptions = "-deprecation -g";
-			getCompilerProperties().setCompilerBinary(compilerBinary);
-			getCompilerProperties().setCompilerOptions(compilerOptions);
-			getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
-			saveCompilerProperties();
-			console.append("\nCongratulations!  Compiler set up successfully.\n");
-			console.append("Click OK to continue.\n");
-			console.scrollToBottom();
-			rv = true;
-		} else if (jikesOk) {
-			compilerBinary = jikesBinary;
-			compilerOptions = "-deprecation -g -Xstdout +T4";
-			getCompilerProperties().setCompilerBinary(compilerBinary);
-			getCompilerProperties().setCompilerOptions(compilerOptions);
-			getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
-			saveCompilerProperties();
-			console.append("\nCongratulations!  Jikes set up successfully.\n");
-			console.append("Click OK to continue.\n");
-			console.scrollToBottom();
-			rv = true;
-		}
-		if (!javacOk && !jikesOk) {
-			console.append("\nExtracting Jikes...\n");
-			if (noExtract || extract(new File(FileUtil.getCwd(), jikesJar), new File("."))) {
-				if (!noExtract) {
-					console.append("Jikes extracted successfully.\n");
-				}
-				if (mustBuildJikes) {
-					if (JOptionPane.showConfirmDialog(editor,
-							"Robocode is now going to build Jikes for you.\nThis will take a while... got get a cup of coffee!\n",
-							"Java time", JOptionPane.OK_CANCEL_OPTION)
-							== JOptionPane.OK_OPTION) {
-						if (makeJikes(editor, console, jikesBinary + " -classpath " + getJavaLib())) {
-							compilerBinary = jikesBinary;
-							compilerOptions = "-deprecation -g -Xstdout +T4";
-							getCompilerProperties().setCompilerBinary(compilerBinary);
-							getCompilerProperties().setCompilerOptions(compilerOptions);
-							getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
-							saveCompilerProperties();
-							console.append("\nCongratulations!  Jikes is installed successfully.\n");
-							console.append("Click OK to continue.\n");
-							console.scrollToBottom();
-							rv = true;
-						} else {
-							JOptionPane.showMessageDialog(editor,
-									"Robocode was unable to build and test Jikes.\n"
-									+ "Please consult the console window for errors.\n"
-									+ "For help with this, please post to the discussion at:\n" + "http://robocode.net/forum",
-									"Error",
-									JOptionPane.ERROR_MESSAGE);
-							compilerOptions = "-deprecation -g";
-							getCompilerProperties().setCompilerOptions(compilerOptions);
-							getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
-							saveCompilerProperties();
-							rv = false;
-						}
-					}
-				} else {
-					compilerBinary = jikesBinary;
-					compilerOptions = "-deprecation -g -Xstdout +T4";
-					getCompilerProperties().setCompilerBinary(compilerBinary);
-					getCompilerProperties().setCompilerOptions(compilerOptions);
-					getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
-					if (testJikes(console, jikesBinary + " -classpath " + getJavaLib())) {
-						saveCompilerProperties();
-						console.append("\nCongratulations!  Compiler set up successfully.\n");
-						console.append("Click OK to continue.\n");
-						console.scrollToBottom();
-						rv = true;
-					} else {
-						JOptionPane.showMessageDialog(editor,
-								"Robocode was unable to successfully compile with Jikes\n"
-								+ "Please consult the console window for errors.\n"
-								+ "For help with this, please post to the discussion at:\n"
-								+ "http://robocode.sourceforge.net/forum",
-								"Error",
-								JOptionPane.ERROR_MESSAGE);
-						saveCompilerProperties();
-						rv = false;
-					}
-				}
-			} else {
-				console.append("Unable to extract Jikes.\n");
-				console.append("Unable to determine compiler for this sytem.\n");
-				console.scrollToBottom();
-				JOptionPane.showMessageDialog(editor,
-						"Robocode was unable to extract Jikes." + "Please consult the console window for errors.\n"
-						+ "For help with this, please post to the discussion at:\n" + "http://robocode.sourceforge.net/forum",
-						"Error",
-						JOptionPane.ERROR_MESSAGE);
-				compilerOptions = "-deprecation -g";
-				getCompilerProperties().setCompilerOptions(compilerOptions);
-				getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
-				saveCompilerProperties();
-				rv = false;
-			}
-		}
+            if (jikesOk) {
+                noString = "(If you click No, Robocode will use Jikes)";
+            }
 
-		compilerInstalling = false;
-		console.getOkButton().setEnabled(true);
-		return rv;
-	}
+            int rc = JOptionPane.showConfirmDialog(editor,
+                    "Robocode has found a working javac on this system.\nWould you like to use it?\n" + noString,
+                    "Confirm javac", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-	private static boolean makeJikes(RobocodeEditor editor, ConsoleDialog console, String jikesBinary) {
-		String result = "";
-		boolean rv = true;
+            if (rc == JOptionPane.NO_OPTION) {
+                javacOk = false;
+            }
+        }
+        if (javacOk) {
+            compilerBinary = "javac";
+            compilerOptions = "-deprecation -g";
+            getCompilerProperties().setCompilerBinary(compilerBinary);
+            getCompilerProperties().setCompilerOptions(compilerOptions);
+            getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
+            saveCompilerProperties();
+            console.append("\nCongratulations!  Compiler set up successfully.\n");
+            console.append("Click OK to continue.\n");
+            console.scrollToBottom();
+            rv = true;
+        } else if (jikesOk) {
+            compilerBinary = jikesBinary;
+            compilerOptions = "-deprecation -g -Xstdout +T4";
+            getCompilerProperties().setCompilerBinary(compilerBinary);
+            getCompilerProperties().setCompilerOptions(compilerOptions);
+            getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
+            saveCompilerProperties();
+            console.append("\nCongratulations!  Jikes set up successfully.\n");
+            console.append("Click OK to continue.\n");
+            console.scrollToBottom();
+            rv = true;
+        }
+        if (!javacOk && !jikesOk) {
+            console.append("\nExtracting Jikes...\n");
+            if (noExtract || extract(new File(FileUtil.getCwd(), jikesJar), new File("."))) {
+                if (!noExtract) {
+                    console.append("Jikes extracted successfully.\n");
+                }
+                if (mustBuildJikes) {
+                    if (JOptionPane.showConfirmDialog(editor,
+                            "Robocode is now going to build Jikes for you.\nThis will take a while... got get a cup of coffee!\n",
+                            "Java time", JOptionPane.OK_CANCEL_OPTION)
+                            == JOptionPane.OK_OPTION) {
+                        if (makeJikes(editor, console, jikesBinary + " -classpath " + getJavaLib())) {
+                            compilerBinary = jikesBinary;
+                            compilerOptions = "-deprecation -g -Xstdout +T4";
+                            getCompilerProperties().setCompilerBinary(compilerBinary);
+                            getCompilerProperties().setCompilerOptions(compilerOptions);
+                            getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
+                            saveCompilerProperties();
+                            console.append("\nCongratulations!  Jikes is installed successfully.\n");
+                            console.append("Click OK to continue.\n");
+                            console.scrollToBottom();
+                            rv = true;
+                        } else {
+                            JOptionPane.showMessageDialog(editor,
+                                    "Robocode was unable to build and test Jikes.\n"
+                                            + "Please consult the console window for errors.\n"
+                                            + "For help with this, please post to the discussion at:\n" + "http://robocode.net/forum",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            compilerOptions = "-deprecation -g";
+                            getCompilerProperties().setCompilerOptions(compilerOptions);
+                            getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
+                            saveCompilerProperties();
+                            rv = false;
+                        }
+                    }
+                } else {
+                    compilerBinary = jikesBinary;
+                    compilerOptions = "-deprecation -g -Xstdout +T4";
+                    getCompilerProperties().setCompilerBinary(compilerBinary);
+                    getCompilerProperties().setCompilerOptions(compilerOptions);
+                    getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
+                    if (testJikes(console, jikesBinary + " -classpath " + getJavaLib())) {
+                        saveCompilerProperties();
+                        console.append("\nCongratulations!  Compiler set up successfully.\n");
+                        console.append("Click OK to continue.\n");
+                        console.scrollToBottom();
+                        rv = true;
+                    } else {
+                        JOptionPane.showMessageDialog(editor,
+                                "Robocode was unable to successfully compile with Jikes\n"
+                                        + "Please consult the console window for errors.\n"
+                                        + "For help with this, please post to the discussion at:\n"
+                                        + "http://robocode.sourceforge.net/forum",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        saveCompilerProperties();
+                        rv = false;
+                    }
+                }
+            } else {
+                console.append("Unable to extract Jikes.\n");
+                console.append("Unable to determine compiler for this sytem.\n");
+                console.scrollToBottom();
+                JOptionPane.showMessageDialog(editor,
+                        "Robocode was unable to extract Jikes." + "Please consult the console window for errors.\n"
+                                + "For help with this, please post to the discussion at:\n" + "http://robocode.sourceforge.net/forum",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                compilerOptions = "-deprecation -g";
+                getCompilerProperties().setCompilerOptions(compilerOptions);
+                getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
+                saveCompilerProperties();
+                rv = false;
+            }
+        }
 
-		console.append("\nRobocode building Jikes...\n");
+        compilerInstalling = false;
+        console.getOkButton().setEnabled(true);
+        return rv;
+    }
 
-		InputStream in = null;
-		InputStream err = null;
+    private static boolean makeJikes(RobocodeEditor editor, ConsoleDialog console, String jikesBinary) {
+        String result = "";
+        boolean rv = true;
 
-		try {
-			String command = "./compilers/buildJikes.sh";
+        console.append("\nRobocode building Jikes...\n");
 
-			log(command);
+        InputStream in = null;
+        InputStream err = null;
 
-			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
+        try {
+            String command = "./compilers/buildJikes.sh";
 
-			in = p.getInputStream();
-			err = p.getErrorStream();
-			console.processStream(in);
-			console.processStream(err);
-			p.waitFor();
-			if (p.exitValue() == 0) {
-				console.append("Finished building Jikes\n");
-				console.scrollToBottom();
-				if (testJikes(console, jikesBinary)) {
-					rv = true;
-				} else {
-					rv = false;
-				}
-			} else {
-				result = "Jikes compile Failed (" + p.exitValue() + ")\n";
-				console.append(result);
-				console.scrollToBottom();
-				rv = false;
-			}
-		} catch (IOException e) {
-			console.append("\n" + e.toString() + "\n");
-			console.setTitle("Jikes compile failed.\n");
-			console.scrollToBottom();
-			rv = false;
-		} catch (InterruptedException e) {
-			console.append("\n" + e.toString() + "\n");
-			console.setTitle("Jikes compile failed.\n");
-			console.scrollToBottom();
-			rv = false;
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
-			if (err != null) {
-				try {
-					err.close();
-				} catch (IOException e) {}
-			}
-		}
-		return rv;
-	}
+            log(command);
 
-	public static void saveCompilerProperties() {
-		if (compilerProperties == null) {
-			log("Cannot save null compiler properties");
-			return;
-		}
-		FileOutputStream out = null;
+            Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
-		try {
-			out = new FileOutputStream(FileUtil.getCompilerConfigFile());
+            in = p.getInputStream();
+            err = p.getErrorStream();
+            console.processStream(in);
+            console.processStream(err);
+            p.waitFor();
+            if (p.exitValue() == 0) {
+                console.append("Finished building Jikes\n");
+                console.scrollToBottom();
+                if (testJikes(console, jikesBinary)) {
+                    rv = true;
+                } else {
+                    rv = false;
+                }
+            } else {
+                result = "Jikes compile Failed (" + p.exitValue() + ")\n";
+                console.append(result);
+                console.scrollToBottom();
+                rv = false;
+            }
+        } catch (IOException e) {
+            console.append("\n" + e.toString() + "\n");
+            console.setTitle("Jikes compile failed.\n");
+            console.scrollToBottom();
+            rv = false;
+        } catch (InterruptedException e) {
+            console.append("\n" + e.toString() + "\n");
+            console.setTitle("Jikes compile failed.\n");
+            console.scrollToBottom();
+            rv = false;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+            if (err != null) {
+                try {
+                    err.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return rv;
+    }
 
-			compilerProperties.store(out, "Robocode Compiler Properties");
-		} catch (IOException e) {
-			log(e);
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {}
-			}
-		}
-	}
+    public static void saveCompilerProperties() {
+        if (compilerProperties == null) {
+            log("Cannot save null compiler properties");
+            return;
+        }
+        FileOutputStream out = null;
 
-	private static boolean testJavac(ConsoleDialog console) {
-		console.append("Testing compile with javac...\n");
-		boolean javacOk = false;
+        try {
+            out = new FileOutputStream(FileUtil.getCompilerConfigFile());
 
-		InputStream in = null;
-		InputStream err = null;
+            compilerProperties.store(out, "Robocode Compiler Properties");
+        } catch (IOException e) {
+            log(e);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
 
-		try {
-			Process p = Runtime.getRuntime().exec("javac compilers/CompilerTest.java", null, FileUtil.getCwd());
+    private static boolean testJavac(ConsoleDialog console) {
+        console.append("Testing compile with javac...\n");
+        boolean javacOk = false;
 
-			in = p.getInputStream();
-			err = p.getErrorStream();
-			console.processStream(in);
-			console.processStream(err);
-			p.waitFor();
-			if (p.exitValue() == 0) {
-				javacOk = true;
-			}
-		} catch (IOException e) {} catch (InterruptedException e) {} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
-			if (err != null) {
-				try {
-					err.close();
-				} catch (IOException e) {}
-			}
-		}
-		if (!javacOk) {
-			console.append("javac does not exist.\n");
-		} else {
-			console.append("javac ok.\n");
-		}
-		return javacOk;
-	}
+        InputStream in = null;
+        InputStream err = null;
 
-	private static boolean testJikes(ConsoleDialog console, String jikesBinary) {
-		console.append("\nTesting compile with Jikes...\n");
-		boolean jikesOk = false;
+        try {
+            Process p = Runtime.getRuntime().exec("javac compilers/CompilerTest.java", null, FileUtil.getCwd());
 
-		InputStream in = null;
-		InputStream err = null;
+            in = p.getInputStream();
+            err = p.getErrorStream();
+            console.processStream(in);
+            console.processStream(err);
+            p.waitFor();
+            if (p.exitValue() == 0) {
+                javacOk = true;
+            }
+        } catch (IOException e) {
+        } catch (InterruptedException e) {
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+            if (err != null) {
+                try {
+                    err.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        if (!javacOk) {
+            console.append("javac does not exist.\n");
+        } else {
+            console.append("javac ok.\n");
+        }
+        return javacOk;
+    }
 
-		try {
-			Process p = Runtime.getRuntime().exec(jikesBinary + " compilers/CompilerTest.java", null, FileUtil.getCwd());
+    private static boolean testJikes(ConsoleDialog console, String jikesBinary) {
+        console.append("\nTesting compile with Jikes...\n");
+        boolean jikesOk = false;
 
-			in = p.getInputStream();
-			err = p.getErrorStream();
-			console.processStream(in);
-			console.processStream(err);
-			p.waitFor();
-			if (p.exitValue() == 0) {
-				jikesOk = true;
-			}
-		} catch (IOException e) {} catch (InterruptedException e) {} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
-			if (err != null) {
-				try {
-					err.close();
-				} catch (IOException e) {}
-			}
-		}
-		if (!jikesOk) {
-			console.append("Unable to compile with Jikes!\n");
-		} else {
-			console.append("Jikes ok.\n");
-		}
-		return jikesOk;
-	}
+        InputStream in = null;
+        InputStream err = null;
+
+        try {
+            Process p = Runtime.getRuntime().exec(jikesBinary + " compilers/CompilerTest.java", null, FileUtil.getCwd());
+
+            in = p.getInputStream();
+            err = p.getErrorStream();
+            console.processStream(in);
+            console.processStream(err);
+            p.waitFor();
+            if (p.exitValue() == 0) {
+                jikesOk = true;
+            }
+        } catch (IOException e) {
+        } catch (InterruptedException e) {
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+            if (err != null) {
+                try {
+                    err.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        if (!jikesOk) {
+            console.append("Unable to compile with Jikes!\n");
+        } else {
+            console.append("Jikes ok.\n");
+        }
+        return jikesOk;
+    }
 }

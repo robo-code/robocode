@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Aaron Rotenberg and Robocode Contributors
+ * Copyright (c) 2007, 2008 Aaron Rotenberg and Robocode Contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,13 @@
 package ar.robocode.cachecleaner;
 
 
-import java.io.*;
+import robocode.control.BattleSpecification;
+import robocode.control.RobocodeEngine;
+import robocode.control.RobocodeListener;
+import robocode.control.RobotResults;
 
-import robocode.control.*;
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -27,66 +31,70 @@ import robocode.control.*;
  * @author AaronR
  */
 public final class CacheCleaner {
-	private CacheCleaner() {}
+    private CacheCleaner() {
+    }
 
-	private static class NullListener implements RobocodeListener {
-		public void battleAborted(BattleSpecification battleSpec) {}
+    private static class NullListener implements RobocodeListener {
+        public void battleAborted(BattleSpecification battleSpec) {
+        }
 
-		public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {}
+        public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {
+        }
 
-		public void battleMessage(String message) {}
-	}
+        public void battleMessage(String message) {
+        }
+    }
 
-	public static void main(String[] args) {
-		clean();
-	}
+    public static void main(String[] args) {
+        clean();
+    }
 
-	public static void clean() {
-		deleteFile("roborumble/temp");
-		deleteFile("robots/.robotcache");
-		deleteFile("robots/robot.database");
+    public static void clean() {
+        deleteFile("roborumble/temp");
+        deleteFile("robots/.robotcache");
+        deleteFile("robots/robot.database");
 
-		System.out.print("Creating roborumble/temp... ");
-		if (new File("roborumble/temp").mkdir()) {
-			System.out.println("done.");
-		} else {
-			System.out.println("failed.");
-		}
+        System.out.print("Creating roborumble/temp... ");
+        if (new File("roborumble/temp").mkdir()) {
+            System.out.println("done.");
+        } else {
+            System.out.println("failed.");
+        }
 
-		System.out.print("Rebuilding robot database... ");
-		RobocodeEngine engine = new RobocodeEngine(new NullListener());
+        System.out.print("Rebuilding robot database... ");
+        RobocodeEngine engine = new RobocodeEngine(new NullListener());
 
-		engine.getLocalRepository(); // Force rebuild.
-		System.out.println("done.");
-	}
-	
-	private static void deleteFile(String filename) {
-		System.out.print("Deleting " + filename + "... ");
-		try {
-			recursivelyDelete(new File(filename));
-			System.out.println("done.");
-		} catch (IOException ex) {
-			System.out.println("failed.");
-		}
-	}
+        engine.getLocalRepository(); // Force rebuild.
+        System.out.println("done.");
+    }
 
-	private static boolean recursivelyDelete(File file) throws IOException {
-		if (!file.exists()) {
-			return false;
-		}
+    private static void deleteFile(String filename) {
+        System.out.print("Deleting " + filename + "... ");
+        try {
+            recursivelyDelete(new File(filename));
+            System.out.println("done.");
+        } catch (IOException ex) {
+            System.out.println("failed.");
+        }
+    }
 
-		if (file.isDirectory()) {
-			final File[] files = file.listFiles();
+    private static boolean recursivelyDelete(File file) throws IOException {
+        if (!file.exists()) {
+            return false;
+        }
 
-			for (int i = 0; i < files.length; i++) {
-				recursivelyDelete(files[i]);
-			}
-		}
+        if (file.isDirectory()) {
+            final File[] files = file.listFiles();
 
-		if (!file.delete()) {
-			throw new IOException("Delete failed.");
-		}
+            for (File f : files) {
+                recursivelyDelete(f);
+            }
+        }
 
-		return true;
-	}
+        if (!file.delete()) {
+            throw new IOException("Delete failed.");
+        }
+
+        return true;
+    }
 }

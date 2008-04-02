@@ -29,14 +29,10 @@
 package robocode;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.security.Policy;
-
 import robocode.io.FileUtil;
 import robocode.io.Logger;
-import robocode.manager.RobocodeManager;
 import robocode.manager.BattleManager;
+import robocode.manager.RobocodeManager;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
@@ -44,284 +40,288 @@ import robocode.security.SecurePrintStream;
 import robocode.ui.ISecurityExtension;
 import robocode.ui.IWindowManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.Policy;
+
 
 /**
  * Robocode - A programming game involving battling AI tanks.<br>
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- *
- * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public class Robocode {
 
-	public class Setup {
-		public boolean minimize = false;
-		public String battleFilename = null;
-		public String resultsFilename = null;
-		public boolean runInThisThread = true;
-		public boolean securityOption = true;
-		public boolean experimentalOption = false;
-		public int tps = 0;
-	}
+    public class Setup {
+        public boolean minimize = false;
+        public String battleFilename = null;
+        public String resultsFilename = null;
+        public boolean runInThisThread = true;
+        public boolean securityOption = true;
+        public boolean experimentalOption = false;
+        public int tps = 0;
+    }
 
-	private RobocodeManager manager;
-	public Setup setup;
+    private RobocodeManager manager;
+    public Setup setup;
 
-	/**
-	 * Use the command-line to start Robocode.
-	 * The command is:
-	 * <pre>
-	 *    java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
-	 * </pre>
-	 *
-	 * @param args an array of command-line arguments
-	 */
-	public static void main(String[] args) {
-		Robocode robocode = new Robocode();
+    /**
+     * Use the command-line to start Robocode.
+     * The command is:
+     * <pre>
+     *    java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
+     * </pre>
+     *
+     * @param args an array of command-line arguments
+     */
+    public static void main(String[] args) {
+        Robocode robocode = new Robocode();
 
-		try {
-			robocode.initialize(args);
-			if (robocode.setup.runInThisThread) {
-				run(robocode);
-			} else {
-				robocode.manager.getWindowManager().runDisplay(robocode);
-			}
-		} catch (Throwable e) {
-			Logger.log(e);
-		}
-	}
+        try {
+            robocode.initialize(args);
+            if (robocode.setup.runInThisThread) {
+                run(robocode);
+            } else {
+                robocode.manager.getWindowManager().runDisplay(robocode);
+            }
+        } catch (Throwable e) {
+            Logger.log(e);
+        }
+    }
 
-	private Robocode() {}
+    private Robocode() {
+    }
 
-	private void initialize(String args[]) throws Throwable {
-		manager = new RobocodeManager(false, null);
-		setup = new Setup();
+    private void initialize(String args[]) throws Throwable {
+        manager = new RobocodeManager(false, null);
+        setup = new Setup();
 
-		if (System.getProperty("WORKINGDIRECTORY") != null) {
-			FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
-		}
+        if (System.getProperty("WORKINGDIRECTORY") != null) {
+            FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
+        }
 
-		LoadSetup(args, setup);
-		if (manager.isGUIEnabled()) {
-			IWindowManager wm = manager.getWindowManager();
-			wm.setLookAndFeel();
-			setup.runInThisThread = wm.initializeDisplay();
-		}
-		InitStreams();
-		InitSecurity();
-	}
+        LoadSetup(args, setup);
+        if (manager.isGUIEnabled()) {
+            IWindowManager wm = manager.getWindowManager();
 
-	/**
-	 * this method is used externaly when is executed by working thread when UI is running in application thread.
-	 * For example .NET UI
-	 * @param robocode
-	 * @return
-	 */
-	public static void run(Robocode robocode) {
-		RobocodeManager manager = robocode.manager;
-		Setup setup = robocode.setup;
+            wm.setLookAndFeel();
+            setup.runInThisThread = wm.initializeDisplay();
+        }
+        InitStreams();
+        InitSecurity();
+    }
 
-		if (setup.battleFilename != null) {
-			robocode.manager.BattleManager battleManager = manager.getBattleManager();
+    /**
+     * this method is used externaly when is executed by working thread when UI is running in application thread.
+     * For example .NET UI
+     *
+     * @param robocode
+     * @return
+     */
+    public static void run(Robocode robocode) {
+        RobocodeManager manager = robocode.manager;
+        Setup setup = robocode.setup;
 
-			battleManager.setBattleFilename(setup.battleFilename);
-			battleManager.loadBattleProperties();
-			battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
-			battleManager.getBattle().setDesiredTPS(setup.tps);
-		}
-		if (setup.resultsFilename != null) {
-			manager.getBattleManager().setResultsFile(setup.resultsFilename);
-		}
-		if (!manager.isGUIEnabled()) {
-			return;
-		}
+        if (setup.battleFilename != null) {
+            robocode.manager.BattleManager battleManager = manager.getBattleManager();
 
-		if (!setup.minimize && setup.battleFilename == null) {
-			if (manager.isSoundEnabled()) {
-				manager.getSoundManager().playThemeMusic();
-			}
-			manager.getWindowManager().showSplashScreen();
-		}
-		manager.getWindowManager().showRobocodeFrame(true);
-		if (!setup.minimize) {
-			manager.getVersionManager().checkUpdateCheck();
-		}
-		if (setup.minimize) {
-			manager.getWindowManager().getRobocodeFrame().setIconified(true);
-		}
+            battleManager.setBattleFilename(setup.battleFilename);
+            battleManager.loadBattleProperties();
+            battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
+            battleManager.getBattle().setDesiredTPS(setup.tps);
+        }
+        if (setup.resultsFilename != null) {
+            manager.getBattleManager().setResultsFile(setup.resultsFilename);
+        }
+        if (!manager.isGUIEnabled()) {
+            return;
+        }
 
-		if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
-			manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
-			manager.saveProperties();
-			manager.runIntroBattle();
-		}
+        if (!setup.minimize && setup.battleFilename == null) {
+            if (manager.isSoundEnabled()) {
+                manager.getSoundManager().playThemeMusic();
+            }
+            manager.getWindowManager().showSplashScreen();
+        }
+        manager.getWindowManager().showRobocodeFrame(true);
+        if (!setup.minimize) {
+            manager.getVersionManager().checkUpdateCheck();
+        }
+        if (setup.minimize) {
+            manager.getWindowManager().getRobocodeFrame().setIconified(true);
+        }
 
-		return;
-	}
+        if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
+            manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
+            manager.saveProperties();
+            manager.runIntroBattle();
+        }
 
-	private void LoadSetup(String[] args, Setup setup) throws IOException {
-		setup.tps = manager.getProperties().getOptionsBattleDesiredTPS();
-		for (int i = 0; i < args.length; i++) {
-			if (args[i].equals("-cwd") && (i < args.length + 1)) {
-				FileUtil.setCwd(new File(args[i + 1]));
-				i++;
-			} else if (args[i].equals("-battle") && (i < args.length + 1)) {
-				setup.battleFilename = args[i + 1];
-				i++;
-			} else if (args[i].equals("-results") && (i < args.length + 1)) {
-				setup.resultsFilename = args[i + 1];
-				i++;
-			} else if (args[i].equals("-tps") && (i < args.length + 1)) {
-				setup.tps = Integer.parseInt(args[i + 1]);
-				i++;
-			} else if (args[i].equals("-minimize")) {
-				setup.minimize = true;
-			} else if (args[i].equals("-nodisplay")) {
-				manager.setEnableGUI(false);
-				manager.setEnableSound(false);
-				setup.tps = 10000;
-			} else if (args[i].equals("-nosound")) {
-				manager.setEnableSound(false);
-			} else if (args[i].equals("-?") || args[i].equals("-help")) {
-				printUsage();
-				System.exit(0);
-			} else {
-				System.out.println("Not understood: " + args[i]);
-				printUsage();
-				System.exit(8);
-			}
-		}
-		File robots = FileUtil.getRobotsDir();
+        return;
+    }
 
-		if (!robots.exists() || !robots.isDirectory()) {
-			System.err.println(
-					new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
-			System.exit(8);
-		}
-		if (setup.battleFilename != null) {
-			if (!(new File(BattleManager.getBattleFilename(setup.battleFilename)).exists())) {
-				System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
-				System.exit(8);
-			}
-		}
-	}
+    private void LoadSetup(String[] args, Setup setup) throws IOException {
+        setup.tps = manager.getProperties().getOptionsBattleDesiredTPS();
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-cwd") && (i < args.length + 1)) {
+                FileUtil.setCwd(new File(args[i + 1]));
+                i++;
+            } else if (args[i].equals("-battle") && (i < args.length + 1)) {
+                setup.battleFilename = args[i + 1];
+                i++;
+            } else if (args[i].equals("-results") && (i < args.length + 1)) {
+                setup.resultsFilename = args[i + 1];
+                i++;
+            } else if (args[i].equals("-tps") && (i < args.length + 1)) {
+                setup.tps = Integer.parseInt(args[i + 1]);
+                i++;
+            } else if (args[i].equals("-minimize")) {
+                setup.minimize = true;
+            } else if (args[i].equals("-nodisplay")) {
+                manager.setEnableGUI(false);
+                manager.setEnableSound(false);
+                setup.tps = 10000;
+            } else if (args[i].equals("-nosound")) {
+                manager.setEnableSound(false);
+            } else if (args[i].equals("-?") || args[i].equals("-help")) {
+                printUsage();
+                System.exit(0);
+            } else {
+                System.out.println("Not understood: " + args[i]);
+                printUsage();
+                System.exit(8);
+            }
+        }
+        File robots = FileUtil.getRobotsDir();
 
-	private void InitStreams() {
-		SecurePrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-		SecurePrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-		SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
+        if (!robots.exists() || !robots.isDirectory()) {
+            System.err.println(
+                    new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
+            System.exit(8);
+        }
+        if (setup.battleFilename != null) {
+            if (!(new File(BattleManager.getBattleFilename(setup.battleFilename)).exists())) {
+                System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
+                System.exit(8);
+            }
+        }
+    }
 
-		System.setOut(sysout);
-		if (!System.getProperty("debug", "false").equals("true")) {
-			System.setErr(syserr);
-		}
-		System.setIn(sysin);
-	}
+    private void InitStreams() {
+        SecurePrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
+        SecurePrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
+        SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
 
-	private void InitSecurity() {
-		Thread.currentThread().setName("Application Thread");
+        System.setOut(sysout);
+        if (!System.getProperty("debug", "false").equals("true")) {
+            System.setErr(syserr);
+        }
+        System.setIn(sysin);
+    }
 
-		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
+    private void InitSecurity() {
+        Thread.currentThread().setName("Application Thread");
 
-		Policy.setPolicy(securityPolicy);
+        RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
-		// For John Burkey at Apple
+        Policy.setPolicy(securityPolicy);
 
-		if (System.getProperty("NOSECURITY", "false").equals("true")) {
-			setup.securityOption = false;
-		}
-		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-			setup.experimentalOption = true;
-		}
+        // For John Burkey at Apple
 
-		if (setup.securityOption) {
-			RobocodeSecurityManager robocodeSecurityManager = new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, setup.experimentalOption);
-			System.setSecurityManager(robocodeSecurityManager);
-			robocodeSecurityManager.addSafeThreadGroups();
+        if (System.getProperty("NOSECURITY", "false").equals("true")) {
+            setup.securityOption = false;
+        }
+        if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+            setup.experimentalOption = true;
+        }
 
-			RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
+        if (setup.securityOption) {
+            RobocodeSecurityManager robocodeSecurityManager = new RobocodeSecurityManager(Thread.currentThread(),
+                    manager.getThreadManager(), true, setup.experimentalOption);
 
-			ISecurityExtension extension = manager.getSecurityExtension();
-			if (extension!=null){
-				extension.initialize();
-			}
-		}
-		if (!setup.securityOption) {
-			manager.getWindowManager().messageWarning(
-					"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-					+ "You should only run robots which you trust!");
-		}
-		if (setup.experimentalOption) {
-			manager.getWindowManager().messageWarning(
-					"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
-					+ "You should only run robots which you trust!");
-		}
-	}
+            System.setSecurityManager(robocodeSecurityManager);
+            robocodeSecurityManager.addSafeThreadGroups();
 
-	private void printUsage() {
-		System.out.print(
-				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n" +
-				"                [-minimize] [-nodisplay] [-nosound]]\n" +
-				"\n" +
-				"where options include:\n" +
-				"    -cwd <path>             Change the current working directory\n" +
-				"    -battle <battle file>   Run the battle specified in a battle file\n" +
-				"    -results <file>         Save results to the specified text file\n" +
-				"    -tps <tps>              Set the TPS (Turns Per Second) to use\n" +
-				"    -minimize               Run minimized when Robocode starts\n" +
-				"    -nodisplay              Run with the display / GUI disabled\n" +
-				"    -nosound                Run with sound disabled\n" +
-				"\n" +
-				"properties include:\n" +
-				"    -DWORKINGDIRECTORY=<path>  Set the working directory\n" +
-				"    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n" +
-				"    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n" +
-				"    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n" +
-				"    -Ddebug=true|false         Enable or disable System.err messages\n" +
-				"    -EXPERIMENTAL=true|false   Enable or disable new robot interfaces\n" +
-				"\n");
-	}
+            RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
 
-	/**
-	 * Prints out all running thread to the standard system out (console)
-	 */
-	public static void printRunningThreads() {
-		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+            ISecurityExtension extension = manager.getSecurityExtension();
 
-		if (currentGroup == null) {
-			return;
-		}
+            if (extension != null) {
+                extension.initialize();
+            }
+        }
+        if (!setup.securityOption) {
+            manager.getWindowManager().messageWarning(
+                    "Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
+                            + "You should only run robots which you trust!");
+        }
+        if (setup.experimentalOption) {
+            manager.getWindowManager().messageWarning(
+                    "Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
+                            + "You should only run robots which you trust!");
+        }
+    }
 
-		while (currentGroup.getParent() != null) {
-			currentGroup = currentGroup.getParent();
-		}
+    private void printUsage() {
+        System.out.print(
+                "Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
+                        + "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
+                        + "    -cwd <path>             Change the current working directory\n"
+                        + "    -battle <battle file>   Run the battle specified in a battle file\n"
+                        + "    -results <file>         Save results to the specified text file\n"
+                        + "    -tps <tps>              Set the TPS (Turns Per Second) to use\n"
+                        + "    -minimize               Run minimized when Robocode starts\n"
+                        + "    -nodisplay              Run with the display / GUI disabled\n"
+                        + "    -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
+                        + "    -DWORKINGDIRECTORY=<path>  Set the working directory\n"
+                        + "    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
+                        + "    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
+                        + "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
+                        + "    -Ddebug=true|false         Enable or disable System.err messages\n"
+                        + "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n");
+    }
 
-		ThreadGroup groups[] = new ThreadGroup[256];
-		Thread threads[] = new Thread[256];
+    /**
+     * Prints out all running thread to the standard system out (console)
+     */
+    public static void printRunningThreads() {
+        ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
 
-		int numGroups = currentGroup.enumerate(groups, true);
+        if (currentGroup == null) {
+            return;
+        }
 
-		for (int i = 0; i < numGroups; i++) {
-			currentGroup = groups[i];
-			if (currentGroup.isDaemon()) {
-				System.out.print("  ");
-			} else {
-				System.out.print("* ");
-			}
-			System.out.println("In group: " + currentGroup.getName());
-			int numThreads = currentGroup.enumerate(threads);
+        while (currentGroup.getParent() != null) {
+            currentGroup = currentGroup.getParent();
+        }
 
-			for (int j = 0; j < numThreads; j++) {
-				if (threads[j].isDaemon()) {
-					System.out.print("  ");
-				} else {
-					System.out.print("* ");
-				}
-				System.out.println(threads[j].getName());
-			}
-			System.out.println("---------------");
-		}
-	}
+        ThreadGroup groups[] = new ThreadGroup[256];
+        Thread threads[] = new Thread[256];
+
+        int numGroups = currentGroup.enumerate(groups, true);
+
+        for (int i = 0; i < numGroups; i++) {
+            currentGroup = groups[i];
+            if (currentGroup.isDaemon()) {
+                System.out.print("  ");
+            } else {
+                System.out.print("* ");
+            }
+            System.out.println("In group: " + currentGroup.getName());
+            int numThreads = currentGroup.enumerate(threads);
+
+            for (int j = 0; j < numThreads; j++) {
+                if (threads[j].isDaemon()) {
+                    System.out.print("  ");
+                } else {
+                    System.out.print("* ");
+                }
+                System.out.println(threads[j].getName());
+            }
+            System.out.println("---------------");
+        }
+    }
 }

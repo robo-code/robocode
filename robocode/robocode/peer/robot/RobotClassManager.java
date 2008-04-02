@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,15 +25,15 @@
 package robocode.peer.robot;
 
 
-import java.util.*;
-
+import robocode.control.RobotSpecification;
 import robocode.io.Logger;
 import robocode.manager.NameManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.TeamPeer;
 import robocode.repository.IRobotFileSpecification;
 import robocode.security.IRobocodeClassLoader;
-import robocode.control.RobotSpecification;
+
+import java.util.*;
 
 
 /**
@@ -43,184 +43,186 @@ import robocode.control.RobotSpecification;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobotClassManager {
-	private IRobotFileSpecification robotFileSpecification;
-	private Class<?> robotClass;
-	private Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
+    private IRobotFileSpecification robotFileSpecification;
+    private Class<?> robotClass;
+    private Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
 
-	private IRobocodeClassLoader robotClassLoader = null;
-	// only used if we're being controlled by RobocodeEngine:
-	private RobotSpecification controlRobotSpecification;
+    private IRobocodeClassLoader robotClassLoader = null;
+    // only used if we're being controlled by RobocodeEngine:
+    private RobotSpecification controlRobotSpecification;
 
-	private String fullClassName;
-	private TeamPeer teamManager;
-	private RobocodeManager manager;
+    private String fullClassName;
+    private TeamPeer teamManager;
+    private RobocodeManager manager;
 
-	private String uid = "";
+    private String uid = "";
 
-	/**
-	 * RobotClassHandler constructor
-	 */
-	public RobotClassManager(IRobotFileSpecification robotFileSpecification, RobocodeManager manager) {
-		this(robotFileSpecification, null, manager);
-	}
+    /**
+     * RobotClassHandler constructor
+     *
+     * @param robotFileSpecification specification
+     */
+    public RobotClassManager(IRobotFileSpecification robotFileSpecification, RobocodeManager manager) {
+        this(robotFileSpecification, null, manager);
+    }
 
-	public RobotClassManager(IRobotFileSpecification robotFileSpecification, TeamPeer teamManager, RobocodeManager manager) {
-		this.robotFileSpecification = robotFileSpecification;
-		this.fullClassName = robotFileSpecification.getName();
-		this.teamManager = teamManager;
-		this.manager = manager;
-	}
+    public RobotClassManager(IRobotFileSpecification robotFileSpecification, TeamPeer teamManager, RobocodeManager manager) {
+        this.robotFileSpecification = robotFileSpecification;
+        this.fullClassName = robotFileSpecification.getName();
+        this.teamManager = teamManager;
+        this.manager = manager;
+    }
 
-	public String getRootPackage() {
-		return getClassNameManager().getRootPackage();
-	}
+    public String getRootPackage() {
+        return getClassNameManager().getRootPackage();
+    }
 
-	public NameManager getClassNameManager() {
-		return robotFileSpecification.getNameManager();
-	}
+    public NameManager getClassNameManager() {
+        return robotFileSpecification.getNameManager();
+    }
 
-	public void addReferencedClasses(List<String> refClasses) {
-		if (refClasses == null) {
-			return;
-		}
-		for (String refClass : refClasses) {
-			String className = refClass.replace('/', '.');
+    public void addReferencedClasses(List<String> refClasses) {
+        if (refClasses == null) {
+            return;
+        }
+        for (String refClass : refClasses) {
+            String className = refClass.replace('/', '.');
 
-			if (getRootPackage() == null || !(className.startsWith("java") || className.startsWith("robocode"))) {
-				if (getRootPackage() == null && !className.equals(fullClassName)) {
-					continue;
-				}
-				if (!referencedClasses.containsKey(className)) {
-					referencedClasses.put(className, "false");
-				}
-			}
-		}
-	}
+            if (getRootPackage() == null || !(className.startsWith("java") || className.startsWith("robocode"))) {
+                if (getRootPackage() == null && !className.equals(fullClassName)) {
+                    continue;
+                }
+                if (!referencedClasses.containsKey(className)) {
+                    referencedClasses.put(className, "false");
+                }
+            }
+        }
+    }
 
-	public void addResolvedClass(String className) {
-		if (!referencedClasses.containsKey(className)) {
-			Logger.log(fullClassName + ": Cannot set " + className + " to resolved, did not know it was referenced.");
-			return;
-		}
-		referencedClasses.put(className, "true");
-	}
+    public void addResolvedClass(String className) {
+        if (!referencedClasses.containsKey(className)) {
+            Logger.log(fullClassName + ": Cannot set " + className + " to resolved, did not know it was referenced.");
+            return;
+        }
+        referencedClasses.put(className, "true");
+    }
 
-	public String getFullClassName() {
-		// Better not be null...
-		return fullClassName;
-	}
+    public String getFullClassName() {
+        // Better not be null...
+        return fullClassName;
+    }
 
-	public Set<String> getReferencedClasses() {
-		return referencedClasses.keySet();
-	}
+    public Set<String> getReferencedClasses() {
+        return referencedClasses.keySet();
+    }
 
-	public Class<?> getRobotClass() {
-		return robotClass;
-	}
+    public Class<?> getRobotClass() {
+        return robotClass;
+    }
 
-	public IRobocodeClassLoader getRobotClassLoader() {
-		if (robotClassLoader == null) {
-			robotClassLoader = manager.createRobocodeClassLoader(this);
-		}
-		return robotClassLoader;
-	}
+    public IRobocodeClassLoader getRobotClassLoader() {
+        if (robotClassLoader == null) {
+            robotClassLoader = manager.createRobocodeClassLoader(this);
+        }
+        return robotClassLoader;
+    }
 
-	public IRobotFileSpecification getRobotSpecification() {
-		return robotFileSpecification;
-	}
+    public IRobotFileSpecification getRobotSpecification() {
+        return robotFileSpecification;
+    }
 
-	public void loadUnresolvedClasses() throws ClassNotFoundException {
-		Iterator<String> keys = referencedClasses.keySet().iterator();
+    public void loadUnresolvedClasses() throws ClassNotFoundException {
+        Iterator<String> keys = referencedClasses.keySet().iterator();
 
-		while (keys.hasNext()) {
-			String s = keys.next();
+        while (keys.hasNext()) {
+            String s = keys.next();
 
-			if (referencedClasses.get(s).equals("false")) {
-				// resolve, then rebuild keys...
-				if (isSecutityOn()) {
-					robotClassLoader.loadRobotClass(s, false);
-				} else {
-					robotClassLoader.loadClass(s, true);
-					addResolvedClass(s);
-				}
-				keys = referencedClasses.keySet().iterator();
-			}
-		}
-	}
+            if (referencedClasses.get(s).equals("false")) {
+                // resolve, then rebuild keys...
+                if (isSecutityOn()) {
+                    robotClassLoader.loadRobotClass(s, false);
+                } else {
+                    robotClassLoader.loadClass(s, true);
+                    addResolvedClass(s);
+                }
+                keys = referencedClasses.keySet().iterator();
+            }
+        }
+    }
 
-	public void setRobotClass(Class<?> newRobotClass) {
-		robotClass = newRobotClass;
-	}
+    public void setRobotClass(Class<?> newRobotClass) {
+        robotClass = newRobotClass;
+    }
 
-	@Override
-	public String toString() {
-		return getRobotSpecification().getNameManager().getUniqueFullClassNameWithVersion();
-	}
+    @Override
+    public String toString() {
+        return getRobotSpecification().getNameManager().getUniqueFullClassNameWithVersion();
+    }
 
-	/**
-	 * Gets the robotSpecification.
-	 *
-	 * @return Returns a RobotSpecification
-	 */
-	public RobotSpecification getControlRobotSpecification() {
-		return controlRobotSpecification;
-	}
+    /**
+     * Gets the robotSpecification.
+     *
+     * @return Returns a RobotSpecification
+     */
+    public RobotSpecification getControlRobotSpecification() {
+        return controlRobotSpecification;
+    }
 
-	/**
-	 * Sets the robotSpecification.
-	 *
-	 * @param robotSpecification The robotSpecification to set
-	 */
-	public void setControlRobotSpecification(RobotSpecification controlRobotSpecification) {
-		this.controlRobotSpecification = controlRobotSpecification;
-	}
+    /**
+     * Sets the robotSpecification.
+     *
+     * @param controlRobotSpecification The robotSpecification to set
+     */
+    public void setControlRobotSpecification(RobotSpecification controlRobotSpecification) {
+        this.controlRobotSpecification = controlRobotSpecification;
+    }
 
-	/**
-	 * Gets the teamManager.
-	 *
-	 * @return Returns a TeamManager
-	 */
-	public TeamPeer getTeamManager() {
-		return teamManager;
-	}
+    /**
+     * Gets the teamManager.
+     *
+     * @return Returns a TeamManager
+     */
+    public TeamPeer getTeamManager() {
+        return teamManager;
+    }
 
-	/**
-	 * Gets the uid.
-	 *
-	 * @return Returns a long
-	 */
-	public String getUid() {
-		return uid;
-	}
+    /**
+     * Gets the uid.
+     *
+     * @return Returns a long
+     */
+    public String getUid() {
+        return uid;
+    }
 
-	/**
-	 * Sets the uid.
-	 *
-	 * @param uid The uid to set
-	 */
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
+    /**
+     * Sets the uid.
+     *
+     * @param uid The uid to set
+     */
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
-	/**
-	 * @return true if the security is enabled; false otherwise
-	 */
-	public static boolean isSecutityOn() {
-		return !System.getProperty("NOSECURITY", "false").equals("true");
-	}
+    /**
+     * @return true if the security is enabled; false otherwise
+     */
+    public static boolean isSecutityOn() {
+        return !System.getProperty("NOSECURITY", "false").equals("true");
+    }
 
-	public void cleanup() {
-		robotClass = null;
+    public void cleanup() {
+        robotClass = null;
 
-		if (robotClassLoader != null) {
-			robotClassLoader.cleanup();
-			robotClassLoader = null;
-		}
+        if (robotClassLoader != null) {
+            robotClassLoader.cleanup();
+            robotClassLoader = null;
+        }
 
-		if (referencedClasses != null) {
-			referencedClasses.clear();
-		}
+        if (referencedClasses != null) {
+            referencedClasses.clear();
+        }
 
-		robotFileSpecification = null;
-	}
+        robotFileSpecification = null;
+    }
 }

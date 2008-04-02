@@ -23,32 +23,52 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public interface IFileSpecification extends Comparable<IFileSpecification>, Serializable, Cloneable {
-	String getFileName();
-	String getFilePath();
-	String getFileType();
-	long getFileLastModified();
-	long getFileLength();
-	boolean exists();
+    String getFileName();
 
-	String getFullClassName();
-	String getVersion();
-	String getFullPackage();
-	String getDescription();
-	String getRobocodeVersion();
-	URL getWebpage();
-	String getAuthorName();
+    String getFilePath();
 
-	boolean isDuplicate();
-	boolean isSameFile(String filePath, long fileLength, long fileLastModified);
-	void setDuplicate(boolean value);
-	boolean isDevelopmentVersion();
+    String getFileType();
 
-	// move ?
-	NameManager getNameManager();
-	String getName();
-	String getFullClassNameWithVersion();
-	File getRootDir();
-	String getUid();
-	boolean getValid();
-	File getJarFile();
+    long getFileLastModified();
+
+    long getFileLength();
+
+    boolean exists();
+
+    String getFullClassName();
+
+    String getVersion();
+
+    String getFullPackage();
+
+    String getDescription();
+
+    String getRobocodeVersion();
+
+    URL getWebpage();
+
+    String getAuthorName();
+
+    boolean isDuplicate();
+
+    boolean isSameFile(String filePath, long fileLength, long fileLastModified);
+
+    void setDuplicate(boolean value);
+
+    boolean isDevelopmentVersion();
+
+    // move ?
+    NameManager getNameManager();
+
+    String getName();
+
+    String getFullClassNameWithVersion();
+
+    File getRootDir();
+
+    String getUid();
+
+    boolean getValid();
+
+    File getJarFile();
 }

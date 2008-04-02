@@ -19,16 +19,23 @@ import robocode.Robocode;
  * @author Pavel Savara (original)
  */
 public interface IWindowManager extends ILoadableManager {
-	IRobocodeFrame getRobocodeFrame();
-	void showResultsDialog();
-	void showSplashScreen();
-	void showRobocodeFrame(boolean value);
+    IRobocodeFrame getRobocodeFrame();
 
-	void setLookAndFeel();
-	boolean initializeDisplay();
-	void runDisplay(Robocode robocode);
+    void showResultsDialog();
 
-	void setStatus(String status);
-	void messageError(String message);
-	void messageWarning(String message);
+    void showSplashScreen();
+
+    void showRobocodeFrame(boolean value);
+
+    void setLookAndFeel();
+
+    boolean initializeDisplay();
+
+    void runDisplay(Robocode robocode);
+
+    void setStatus(String status);
+
+    void messageError(String message);
+
+    void messageWarning(String message);
 }

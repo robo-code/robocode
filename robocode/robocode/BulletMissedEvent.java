@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
@@ -22,21 +22,23 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class BulletMissedEvent extends Event {
-	private Bullet bullet;
+    private Bullet bullet;
 
-	/**
-	 * Called by the game to create a new BulletMissedEvent.
-	 */
-	public BulletMissedEvent(Bullet bullet) {
-		this.bullet = bullet;
-	}
+    /**
+     * Called by the game to create a new {@code BulletMissedEvent}.
+     *
+     * @param bullet the bullet that missed
+     */
+    public BulletMissedEvent(Bullet bullet) {
+        this.bullet = bullet;
+    }
 
-	/**
-	 * Returns the bullet that missed.
-	 *
-	 * @return the bullet that missed
-	 */
-	public Bullet getBullet() {
-		return bullet;
-	}
+    /**
+     * Returns the bullet that missed.
+     *
+     * @return the bullet that missed
+     */
+    public Bullet getBullet() {
+        return bullet;
+    }
 }

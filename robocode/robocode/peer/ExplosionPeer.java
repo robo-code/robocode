@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,10 @@ package robocode.peer;
 
 import robocode.battle.Battle;
 import robocode.battle.record.BulletRecord;
+import robocode.peer.proxies.IBattleBulletProxy;
+import robocode.peer.proxies.IBattleRobotProxy;
+
+import java.util.List;
 
 
 /**
@@ -39,40 +43,40 @@ import robocode.battle.record.BulletRecord;
  */
 public class ExplosionPeer extends BulletPeer {
 
-	private static final int EXPLOSION_LENGTH = 71;
+    private static final int EXPLOSION_LENGTH = 71;
 
-	public ExplosionPeer(RobotPeer owner, Battle battle) {
-		super(owner, battle);
+    public ExplosionPeer(IBattleRobotProxy owner, Battle battle) {
+        super(owner, battle);
 
-		x = owner.getX();
-		y = owner.getY();
-		victim = owner;
-		power = 1;
-		state = STATE_EXPLODED;
-		explosionImageIndex = 1;
-	}
+        x = owner.getX();
+        y = owner.getY();
+        victim = owner;
+        power = 1;
+        state = STATE_EXPLODED;
+        explosionImageIndex = 1;
+    }
 
-	public ExplosionPeer(RobotPeer owner, Battle battle, BulletRecord br) {
-		super(owner, battle, br);
+    public ExplosionPeer(IBattleRobotProxy owner, Battle battle, BulletRecord br) {
+        super(owner, battle, br);
 
-		victim = owner;
-		power = 1;
-		state = STATE_EXPLODED;
-		explosionImageIndex = 1;
-	}
+        victim = owner;
+        power = 1;
+        state = STATE_EXPLODED;
+        explosionImageIndex = 1;
+    }
 
-	@Override
-	public synchronized final void update() {
-		x = owner.getX();
-		y = owner.getY();
+    @Override
+    public final void update(List<IBattleRobotProxy> robots, List<IBattleBulletProxy> allBullets) {
+        x = owner.getX();
+        y = owner.getY();
 
-		nextFrame();
+        nextFrame();
 
-		updateBulletState();
-	}
+        updateBulletState();
+    }
 
-	@Override
-	protected int getExplosionLength() {
-		return EXPLOSION_LENGTH;
-	}
+    @Override
+    protected int getExplosionLength() {
+        return EXPLOSION_LENGTH;
+    }
 }

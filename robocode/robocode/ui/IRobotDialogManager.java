@@ -19,5 +19,5 @@ import robocode.battle.Battle;
  * @author Pavel Savara (original)
  */
 public interface IRobotDialogManager extends ILoadableManager {
-	void setActiveBattle(Battle bt);
+    void setActiveBattle(Battle bt);
 }

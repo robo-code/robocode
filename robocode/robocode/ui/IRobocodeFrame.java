@@ -12,27 +12,38 @@
 package robocode.ui;
 
 
-import robocode.peer.RobotPeer;
-
-import java.io.File;
+import robocode.peer.proxies.IDisplayRobotProxy;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobocodeFrame {
-	boolean isIconified();
-	void setIconified(boolean value);
-	void clearRobotButtons();
-	void addRobotButton(IRobotDialogManager robotDialogManager, RobotPeer robotPeer);
-	void validate();
-	void setTitle(String title);
-	void setEnableStopButton(boolean value);
-	void setEnableReplayButton(boolean value);
-	void setEnableRestartButton(boolean value);
-	void setEnableBattleSaveAsMenuItem(boolean value);
-	void setEnableBattleSaveMenuItem(boolean value);
-	IBattleView getBattleView();
-	String saveBattleDialog(String file);
-	void dispose();
+    boolean isIconified();
+
+    void setIconified(boolean value);
+
+    void clearRobotButtons();
+
+    void addRobotButton(IRobotDialogManager robotDialogManager, IDisplayRobotProxy robotProxy);
+
+    void validate();
+
+    void setTitle(String title);
+
+    void setEnableStopButton(boolean value);
+
+    void setEnableReplayButton(boolean value);
+
+    void setEnableRestartButton(boolean value);
+
+    void setEnableBattleSaveAsMenuItem(boolean value);
+
+    void setEnableBattleSaveMenuItem(boolean value);
+
+    IBattleView getBattleView();
+
+    String saveBattleDialog(String file);
+
+    void dispose();
 }
