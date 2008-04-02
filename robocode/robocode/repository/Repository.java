@@ -42,42 +42,46 @@ public class Repository {
 		List<FileSpecification> v = Collections.synchronizedList(new ArrayList<FileSpecification>());
 
 		for (FileSpecification spec : fileSpecifications) {
-
 			if (spec.isDuplicate()) {
 				continue;
 			}
-			if (!(spec instanceof RobotFileSpecification)) {
-				if (onlyRobots) {
-					continue;
-				}
-				if (onlyDevelopment && spec.getFullPackage() != null
-						&& (spec.getFullPackage().equals("sample") || spec.getFullPackage().equals("sampleteam"))) {
-					continue;
-				}
-				if (onlyDevelopment && !spec.isDevelopmentVersion()) {
-					continue;
-				}
+			if (!(spec instanceof RobotFileSpecification) && onlyRobots) {
+				continue;
 			} else {
-				RobotFileSpecification robotFileSpecification = (RobotFileSpecification) spec;
+				if (onlyWithPackage && spec.getFullPackage() == null) {
+					continue;
+				}
+				if (onlyNotDevelopment && spec.isDevelopmentVersion()) {
+					continue;
+				}
 
-				if (onlyWithSource && !robotFileSpecification.getRobotJavaSourceIncluded()) {
+				if (spec instanceof RobotFileSpecification) {
+					RobotFileSpecification robotSpec = (RobotFileSpecification) spec;
+				
+					if (onlyWithSource && !robotSpec.getRobotJavaSourceIncluded()) {
+						continue;
+					}
+				} else if (spec instanceof TeamSpecification) {
+					TeamSpecification teamSpec = (TeamSpecification) spec;
+				
+					if (onlyWithSource && !teamSpec.getTeamJavaSourceIncluded()) {
+						continue;
+					}
+				}
+			}
+			if (onlyDevelopment) {
+				if (!spec.isDevelopmentVersion()) {
 					continue;
 				}
-				if (onlyWithPackage && robotFileSpecification.getFullPackage() == null) {
-					continue;
-				}
-				if (onlyDevelopment && !robotFileSpecification.isDevelopmentVersion()) {
-					continue;
-				}
-				if (onlyNotDevelopment && robotFileSpecification.isDevelopmentVersion()) {
-					continue;
-				}
-				if (onlyDevelopment && robotFileSpecification.getFullPackage() != null
-						&& (robotFileSpecification.getFullPackage().equals("sample")
-						|| robotFileSpecification.getFullPackage().equals("sampleteam"))) {
+
+				String fullPackage = spec.getFullPackage();
+
+				if (fullPackage != null
+						&& (fullPackage.equals("sample") || fullPackage.equals("sampleteam") || fullPackage.equals("sampleex"))) {
 					continue;
 				}
 			}
+
 			String version = spec.getVersion();
 
 			if (version != null) {
