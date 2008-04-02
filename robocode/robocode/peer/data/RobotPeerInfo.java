@@ -26,7 +26,7 @@ import java.awt.event.MouseWheelEvent;
  */
 public class RobotPeerInfo extends RobotPeerLock {
 
-	private boolean interactiveTested = false;
+	private boolean interactiveTested;
 	private boolean isInteractive;
 	private boolean isDuplicate;
 	private boolean isJuniorRobot;
@@ -104,8 +104,8 @@ public class RobotPeerInfo extends RobotPeerLock {
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robocode.robotinterfaces.IJuniorRobot}; <code>false</code> otherwise.
+	 * Returns {@code true} if the robot is implementing the
+	 * {@link robocode.robotinterfaces.IJuniorRobot}; {@code false} otherwise.
 	 */
 	public boolean isJuniorRobot() {
 		checkReadLock();
@@ -113,8 +113,8 @@ public class RobotPeerInfo extends RobotPeerLock {
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robocode.robotinterfaces.IInteractiveRobot}; <code>false</code> otherwise.
+	 * Returns {@code true} if the robot is implementing the
+	 * {@link robocode.robotinterfaces.IInteractiveRobot}; {@code false} otherwise.
 	 */
 	public boolean isInteractiveRobot() {
 		checkReadLock();
@@ -122,8 +122,8 @@ public class RobotPeerInfo extends RobotPeerLock {
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robocode.robotinterfaces.IAdvancedRobot}; <code>false</code> otherwise.
+	 * Returns {@code true} if the robot is implementing the
+	 * {@link robocode.robotinterfaces.IAdvancedRobot}; {@code false} otherwise.
 	 */
 	public boolean isAdvancedRobot() {
 		checkReadLock();
@@ -131,8 +131,8 @@ public class RobotPeerInfo extends RobotPeerLock {
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link robocode.robotinterfaces.ITeamRobot}; <code>false</code> otherwise.
+	 * Returns {@code true} if the robot is implementing the
+	 * {@link robocode.robotinterfaces.ITeamRobot}; {@code false} otherwise.
 	 */
 	public boolean isTeamRobot() {
 		checkReadLock();

@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Rewritten
+ *     Pavel Savara
+ *     - Provided better synchronization
  *******************************************************************************/
 package robocode.battleview;
 
@@ -39,6 +41,7 @@ import static java.lang.Math.*;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
@@ -478,6 +481,7 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, IDisplayRobotProxy robotPeer) {
+		// Save the graphics state
 		GraphicsState gfxState = new GraphicsState();
 
 		gfxState.save(g);
@@ -485,22 +489,12 @@ public class BattleView extends Canvas {
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
 		// Do the painting
-		try {
-			if (robotPeer != null) {
-
-				if (robotPeer.isSGPaintEnabled()) {
-					robotPeer.onPaint(g);
-				} else {
-					mirroredGraphics.bind(g, battleField.getHeight());
-					robotPeer.onPaint(mirroredGraphics);
-					mirroredGraphics.release();
-				}
-			}
-		} catch (Exception e) {
-			// Make sure that Robocode is not halted by an exception caused by letting the robot paint
-
-			robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-			e.printStackTrace(robotPeer.getOut());
+		if (robotPeer.isSGPaintEnabled()) {
+			robotPeer.onPaint(g);
+		} else {
+			mirroredGraphics.bind(g, battleField.getHeight());
+			robotPeer.onPaint(mirroredGraphics);
+			mirroredGraphics.release();
 		}
 
 		// Restore the graphics state

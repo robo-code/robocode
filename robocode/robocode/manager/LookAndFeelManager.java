@@ -13,6 +13,7 @@ package robocode.manager;
 
 
 import javax.swing.*;
+import java.util.Locale;
 
 
 /**
@@ -31,8 +32,16 @@ public class LookAndFeelManager {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable t) {
-			// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
-			System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
+			// Work-around for problems with setting Look and Feel described here:
+			// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6468089
+			Locale.setDefault(Locale.US);
+
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Throwable t2) {
+				// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
+				System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
+			}
 		}
 	}
 }

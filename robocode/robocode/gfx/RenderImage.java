@@ -35,7 +35,7 @@ public class RenderImage extends RenderObject {
 	protected Area boundArea;
 
 	/**
-	 * Constructs a new <code>RenderImage</code>, which has it's origin in the center
+	 * Constructs a new {@code RenderImage}, which has it's origin in the center
 	 * of the image.
 	 *
 	 * @param image the image to be rendered
@@ -45,7 +45,7 @@ public class RenderImage extends RenderObject {
 	}
 
 	/**
-	 * Constructs a new <code>RenderImage</code>
+	 * Constructs a new {@code RenderImage}
 	 *
 	 * @param image   the image to be rendered
 	 * @param originX the x coordinate of the origin for the rendered image
@@ -62,10 +62,10 @@ public class RenderImage extends RenderObject {
 	}
 
 	/**
-	 * Constructs a new <code>RenderImage</code> that is a copy of another
-	 * <code>RenderImage</code>.
+	 * Constructs a new {@code RenderImage} that is a copy of another
+	 * {@code RenderImage}.
 	 *
-	 * @param ri the <code>RenderImage</code> to copy
+	 * @param ri the {@code RenderImage} to copy
 	 */
 	public RenderImage(RenderImage ri) {
 		super(ri);

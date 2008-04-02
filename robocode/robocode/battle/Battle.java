@@ -88,6 +88,8 @@
  *       with nano seconds 
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - Provided better synchronization
+ *     - Refactored large methods into several smaller methods
  *******************************************************************************/
 package robocode.battle;
 
@@ -131,7 +133,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * The <code>Battle</code> class is used for controlling a battle.
+ * The {@code Battle} class is used for controlling a battle.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -254,12 +256,12 @@ public class Battle extends BattleData implements Runnable {
 	}
 
 	/**
-	 * When an object implementing interface <code>Runnable</code> is used
+	 * When an object implementing interface {@code Runnable} is used
 	 * to create a thread, starting the thread causes the object's
-	 * <code>run</code> method to be called in that separately executing
+	 * {@code run()} method to be called in that separately executing
 	 * thread.
 	 * <p/>
-	 * The general contract of the method <code>run</code> is that it may
+	 * The general contract of the method {@code run()} is that it may
 	 * take any action whatsoever.
 	 *
 	 * @see java.lang.Thread#run()
@@ -1632,7 +1634,6 @@ public class Battle extends BattleData implements Runnable {
 	 *
 	 * @return Returns a int
 	 */
-
 	public synchronized int getActiveRobots() {
 		return activeRobots;
 	}
