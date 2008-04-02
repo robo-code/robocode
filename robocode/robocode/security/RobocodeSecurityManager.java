@@ -58,9 +58,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private Thread battleThread;
 
-	/**
-	 * RobocodeSecurityManager constructor
-	 */
 	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
 		safeThreads.add(safeThread);

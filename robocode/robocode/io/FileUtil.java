@@ -145,8 +145,8 @@ public class FileUtil {
 	 * Deletes a directory.
 	 *
 	 * @param dir the file for the directory to delete
-	 * @return <code>true</code> if the directory was deleted;
-	 *         <code>false</code> otherwise if e.g. the file is not a directory
+	 * @return {@code true} if the directory was deleted;
+	 *         {@code false} otherwise if e.g. the file is not a directory
 	 */
 	public static boolean deleteDir(File dir) {
 		if (!dir.isDirectory()) {

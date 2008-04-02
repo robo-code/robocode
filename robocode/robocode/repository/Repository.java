@@ -12,6 +12,8 @@
  *     - Replaced FileSpecificationVector with plain Vector
  *     - Ported to Java 5
  *     - Code cleanup
+ *     - Bugfixed to handle TeamSpecification as well and the new sampleex
+ *       robots
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap

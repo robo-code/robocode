@@ -18,7 +18,7 @@ import java.awt.geom.AffineTransform;
 
 /**
  * The base of all renderable objects.
- * An <code>RenderObject</code> is an object that can be painted and transformed.
+ * An {@code RenderObject} is an object that can be painted and transformed.
  *
  * @author Flemming N. Larsen (original)
  */
@@ -40,7 +40,7 @@ public class RenderObject {
 	protected int frame;
 
 	/**
-	 * Constructs a new <code>RenderObject</code>.
+	 * Constructs a new {@code RenderObject}.
 	 */
 	public RenderObject() {
 		baseTransform = new AffineTransform();
@@ -48,8 +48,8 @@ public class RenderObject {
 	}
 
 	/**
-	 * Constructs a new <code>RenderObject</code> that is a copy of another
-	 * <code>RenderObject</code>.
+	 * Constructs a new {@code RenderObject} that is a copy of another
+	 * {@code RenderObject}.
 	 */
 	public RenderObject(RenderObject ro) {
 		baseTransform = new AffineTransform(ro.baseTransform);

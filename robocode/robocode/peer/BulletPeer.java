@@ -111,6 +111,9 @@ public class BulletPeer {
 
 	/**
 	 * BulletPeer constructor
+	 *
+	 * @param owner  who fire the bullet
+	 * @param battle root battle
 	 */
 	public BulletPeer(RobotPeer owner, Battle battle) {
 		super();

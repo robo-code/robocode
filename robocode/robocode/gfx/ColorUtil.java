@@ -70,7 +70,7 @@ public class ColorUtil {
 	 * @param r the red color component.
 	 * @param g the green color component.
 	 * @param b the blue color component.
-	 * @return a <code>float[] { H, S, L }</code> representing the HSL color.
+	 * @return a {@code float[] { H, S, L }} representing the HSL color.
 	 */
 	public static float[] fromRGBtoHSL(int r, int g, int b) {
 		float R = (float) r / 255;

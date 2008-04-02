@@ -179,7 +179,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 	/**
 	 * Flag specifying if the gun is ready to fire, i.e. gun heat <= 0.
-	 * <code>true</code> means that the gun is able to fire; <code>false</code>
+	 * {@code true} means that the gun is able to fire; {@code false}
 	 * means that the gun cannot fire yet as it still needs to cool down.
 	 *
 	 * @see #fire()
