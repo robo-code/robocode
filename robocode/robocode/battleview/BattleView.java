@@ -12,6 +12,8 @@
  *     - Rewritten
  *     Pavel Savara
  *     - Provided better synchronization
+ *     - Refactored use of RobotPeer into IBattleRobotProxy and
+ *       IDisplayRobotProxy
  *******************************************************************************/
 package robocode.battleview;
 

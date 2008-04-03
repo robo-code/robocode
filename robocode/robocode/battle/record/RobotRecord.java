@@ -8,6 +8,8 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Refactored use of RobotPeer into IBattleRobotProxy
  *******************************************************************************/
 package robocode.battle.record;
 
@@ -22,6 +24,7 @@ import robocode.peer.proxies.IBattleRobotProxy;
  * etc. in order to keep memory footprint as small as possible.
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  */
 public class RobotRecord {
 

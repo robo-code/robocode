@@ -123,8 +123,8 @@ public class ThreadManager {
 				IBasicRobot robot = robotPeer.getRobot();
 
 				// NOTE: The check is on name level, as the equals() method does not work between
-				// the two classes.
-				if (robot != null && robot.getClass().isAssignableFrom(robotClass)) {
+				// the two classes, and isAssignableFrom() does not work here either! -FNL
+				if (robot != null && robot.getClass().getName().equals(robotClass.getName())) {
 					robotPeers.add(robotPeer);
 				}
 			}

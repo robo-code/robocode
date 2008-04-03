@@ -13,6 +13,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Pavel Savara
+ *     - Provided better synchronization
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -30,6 +32,7 @@ import java.util.List;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotFileSystemManager {
 	private RobotPeer robotPeer;

@@ -18,7 +18,11 @@
  *       is fully thread-safe 
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronizet List and HashMap
+ *       synchronized List and HashMap
+ *     Pavel Savara
+ *     - Provided better synchronization
+ *     - Refactored use of RobotPeer into IRobotRunnableProxy
+ *     - Added cleanup() method
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -42,6 +46,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotMessageManager {
 

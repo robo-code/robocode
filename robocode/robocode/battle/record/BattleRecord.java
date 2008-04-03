@@ -11,6 +11,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Pavel Savara
+ *     - Refactored use of RobotPeer into IBattleRobotProxy and
  *******************************************************************************/
 package robocode.battle.record;
 
@@ -29,6 +31,7 @@ import java.util.List;
  *
  * @author Flemming N. Larsen (original)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class BattleRecord {
 

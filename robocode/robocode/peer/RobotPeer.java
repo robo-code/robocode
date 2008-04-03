@@ -57,6 +57,8 @@
  *       to prevent circular references causing memory leaks
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - Rewritten most parts to provide better syncrhronization, which has
+ *       split out into proxy classes and data classes
  *******************************************************************************/
 package robocode.peer;
 

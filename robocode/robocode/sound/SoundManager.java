@@ -24,6 +24,9 @@
  *       panning are supported before adjusting these
  *     Titus Chen:
  *     - Slight optimization with pan calculation in playBulletSound()
+ *     Pavel Savara
+ *     - Refactored use of BulletPeer and RobotPeer into IBattleBulletProxy and
+ *       IBattleRobotProxy
  *******************************************************************************/
 package robocode.sound;
 
@@ -49,6 +52,7 @@ import javax.sound.sampled.Mixer;
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
  * @author Titus Chen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class SoundManager {
 

@@ -8,7 +8,7 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
- */
+ *******************************************************************************/
 package robocode;
 
 
@@ -19,6 +19,7 @@ import robocode.peer.proxies.IBattleRobotProxy;
  * Contains the status of a robot for a specific time/turn.
  *
  * @author Flemming N. Larsen (original)
+ *
  * @since 1.5
  */
 public class RobotStatus {

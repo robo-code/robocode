@@ -90,6 +90,8 @@
  *     - Re-work of robot interfaces
  *     - Provided better synchronization
  *     - Refactored large methods into several smaller methods
+ *     - Refactored use of RobotPeer into IBattleRobotProxy and
+ *       IDisplayRobotProxy
  *******************************************************************************/
 package robocode.battle;
 

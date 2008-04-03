@@ -17,6 +17,8 @@
  *     - Bugfix: The waitForStop() was using 'runThreadGroup.activeCount > 0'
  *       instead of runThread.isAlive() causing some robots to be forced to stop.
  *       In the same time this method was simplified up updated for faster CPU's   
+ *     Pavel Savara
+ *     - Provided better synchronization
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -28,6 +30,7 @@ import robocode.peer.RobotPeer;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotThreadManager {
 	private RobotPeer robotPeer;

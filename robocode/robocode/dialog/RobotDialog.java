@@ -17,6 +17,8 @@
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Added Pause button
+ *     Pavel Savara
+ *     - Refactored use of RobotPeer into IDisplayRobotProxy
  *******************************************************************************/
 package robocode.dialog;
 
@@ -34,6 +36,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {

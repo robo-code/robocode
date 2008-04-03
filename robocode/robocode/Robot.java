@@ -26,7 +26,7 @@
  *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
  *     - Added onPaint() method for painting the robot
  *     Pavel Savara
- *     - Re-work of robot interfaces
+ *     - Re-work of robot interfaces and proxies
  *******************************************************************************/
 package robocode;
 
@@ -62,6 +62,7 @@ import java.awt.event.MouseWheelEvent;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  * @author Pavel Savara (contributor)
+ *
  * @see <a target="_top" href="http://robocode.sourceforge.net">
  *      robocode.sourceforge.net</a>
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">

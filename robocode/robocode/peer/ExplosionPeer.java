@@ -23,6 +23,8 @@
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
  *       as the battleField variable was not intialized
+ *     Pavel Savara
+ *     - Refactored use of RobotPeer into IBattleRobotProxy
  *******************************************************************************/
 package robocode.peer;
 
@@ -40,6 +42,7 @@ import java.util.List;
  * @author Luis Crespo (contributor)
  * @author Flemming N. Larsen (contributor)
  * @author Titus Chen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class ExplosionPeer extends BulletPeer {
 

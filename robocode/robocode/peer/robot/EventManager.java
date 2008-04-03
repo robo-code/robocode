@@ -36,6 +36,8 @@
  *     Pavel Savara
  *     - Re-work of robot interfaces
  *     - Removed synchronization where is not necessary
+ *     - Interactive events (mouse and key events) are now put into the event
+ *       queue of the robot
  *******************************************************************************/
 package robocode.peer.robot;
 

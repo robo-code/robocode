@@ -161,8 +161,8 @@ public class RobotRepositoryManager {
 		// This loop should not be changed to an for-each loop as the updated jar list
 		// gets updated (jars are added) by the methods called in this loop, which can
 		// cause a ConcurrentModificationException!
-		for (FileSpecification anUpdatedJarList : updatedJarList) {
-			JarSpecification updatedJar = (JarSpecification) anUpdatedJarList;
+		for (int i = 0; i < updatedJarList.size(); i++) {
+			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
 
 			processJar(updatedJar);
 			updateRobotDatabase(updatedJar);

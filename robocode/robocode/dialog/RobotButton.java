@@ -15,6 +15,8 @@
  *       did nothing or was not being used
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
+ *     Pavel Savara
+ *     - Refactored use of RobotPeer into IDisplayRobotProxy
  *******************************************************************************/
 package robocode.dialog;
 
@@ -31,6 +33,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {

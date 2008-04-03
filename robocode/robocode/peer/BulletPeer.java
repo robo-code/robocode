@@ -34,11 +34,15 @@
  *     - Added states
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
- *       synchronizet List and HashMap
+ *       synchronized List and HashMap
  *     Titus Chen
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
  *       as the battleField variable was not intialized
+ *     Pavel Savara
+ *     - Provided better synchronization
+ *     - Refactored use of RobotPeer and BulletPeer into IBattleRobotProxy,
+ *       IDisplayRobotProxy and IRobotBulletProxy
  *******************************************************************************/
 package robocode.peer;
 
@@ -65,6 +69,7 @@ import java.util.List;
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (constributor)
+ * @author Pavel Savara (contributor)
  */
 public class BulletPeer implements IRobotBulletProxy, IBattleBulletProxy, IDisplayBulletProxy {
 	// Bullet states: all states last one turn, except MOVING and DONE

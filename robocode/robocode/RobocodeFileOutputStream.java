@@ -14,6 +14,8 @@
  *       that has been (re)moved from the robocode.util.Utils class
  *     - Fixed potential NullPointerExceptions
  *     - Updated Javadocs
+ *     Pavel Savara
+ *     - Refactored use of RobotPeer into IRobotRobotPeer
  *******************************************************************************/
 package robocode;
 
@@ -42,6 +44,8 @@ import java.io.*;
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
+ *
  * @see AdvancedRobot#getDataFile(String)
  * @see java.io.FileOutputStream
  */

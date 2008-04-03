@@ -18,6 +18,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Pavel Savara
+ *     - Refactored use of RobotPeer into IDisplayRobotProxy
  *******************************************************************************/
 package robocode.manager;
 
@@ -33,6 +35,7 @@ import java.util.*;
  * @author Mathew A. Nelson (orinal)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotDialogManager {
 

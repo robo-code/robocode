@@ -8,6 +8,8 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Refactored use of BulletPeer into IBattleBulletProxy
  *******************************************************************************/
 package robocode.battle.record;
 
@@ -22,6 +24,7 @@ import robocode.peer.proxies.IBattleBulletProxy;
  * etc. in order to keep memory footprint as small as possible.
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  */
 public class BulletRecord {
 

@@ -33,6 +33,8 @@
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
+ *     Pavel Savara
+ *     - Refactored use of RobotPeer into IBattleRobotProxy
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -53,6 +55,7 @@ import java.util.List;
  * @author Titus Chen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotStatistics implements robocode.peer.IContestantStatistics {
 

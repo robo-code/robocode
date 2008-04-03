@@ -12,6 +12,8 @@
  *     - Updated for Java 5
  *     - Optimized
  *     - Code cleanup
+ *     Pavel Savara
+ *     - Provided better synchronization
  *******************************************************************************/
 package robocode.peer.robot;
 
@@ -28,6 +30,7 @@ import java.util.Vector;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public final class EventQueue extends Vector<Event> {

@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Updated Javadocs
+ *     Pavel Savara
+ *     - Refactored use of BulletPeer into IRobotBulletProxy
  *******************************************************************************/
 package robocode;
 
@@ -23,6 +25,9 @@ import robocode.peer.proxies.IRobotBulletProxy;
  * events.
  *
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
+ *
  * @see Robot#fireBullet(double)
  * @see AdvancedRobot#setFireBullet(double)
  * @see BulletHitEvent
