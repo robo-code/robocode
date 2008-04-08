@@ -1,0 +1,1 @@
+java -Xmx512M -Dsun.io.useCanonCaches=false -cp libs/robocode.jar;libs/codesize.jar;libs/cachecleaner.jar;libs/pimods.jar;libs/jogl.jar;libs/gluegen-rt.jar -Djava.library.path=libs pimods.robocode.Pimods4Robocode

@@ -98,12 +98,18 @@ import java.awt.Label;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.FileNotFoundException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+/* PIMODS' PATCH BEGIN */
+import robocode.pimods.PimodsClient;
+import robocode.pimods.XMLBattleStreamMaker;
+/* PIMODS' PATCH END */
 
 import robocode.*;
 import robocode.battle.record.*;
@@ -214,6 +220,11 @@ public class Battle implements Runnable {
 	// Dummy component used to preventing robots in accessing the real source component
 	private static Component safeEventComponent;
 
+	/* PIMODS' PATCH BEGIN */
+	private XMLBattleStreamMaker xmlMaker;
+//	private PimodsClient pimodsClient;
+	/* PIMODS' PATCH END */
+	
 	/**
 	 * Battle constructor
 	 */
@@ -233,6 +244,10 @@ public class Battle implements Runnable {
 			keyHandler = new KeyEventHandler(this, robots);
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
 		}
+		/* PIMODS' PATCH BEGIN */
+		xmlMaker = new XMLBattleStreamMaker();
+//		pimodsClient = new PimodsClient();
+		/* PIMODS' PATCH END */
 	}
 
 	@Override
@@ -258,6 +273,7 @@ public class Battle implements Runnable {
 	 * @see     java.lang.Thread#run()
 	 */
 	public void run() {
+		
 		// Notify that the battle is now running
 		synchronized (battleMonitor) {
 			running = true;
@@ -297,6 +313,7 @@ public class Battle implements Runnable {
 		if (!replay) {
 			battleRecord = isRecordingEnabled ? new BattleRecord(battleField, robots) : null;
 		}
+		
 			
 		while (!isAborted() && roundNum < numRounds) {
 			updateTitle();
@@ -320,6 +337,14 @@ public class Battle implements Runnable {
 
 			roundNum++;
 		}
+		/* PIMODS' PATCH BEGIN */
+		try{
+			xmlMaker.close();
+//			pimodsClient.close();
+		}catch(FileNotFoundException e){
+			System.err.println("File not found xmlMaker");
+		}
+		/* PIMODS' PATCH END */
 
 		if (!replay) {
 			for (RobotPeer r : robots) {
@@ -757,6 +782,9 @@ public class Battle implements Runnable {
 		if (battleView != null) {
 			battleView.update();
 		}
+		/* PIMODS' PATCH BEGIN */
+//		xmlMaker.addRound(this.roundNum);
+		/* PIMODS' PATCH END */
 
 		while (!battleOver) {
 			if (shouldPause() && !battleManager.shouldStep()) {
@@ -884,6 +912,39 @@ public class Battle implements Runnable {
 
 				playSounds();
 			}
+			
+			/* PIMODS' PATCH BEGIN */
+			if(this.roundNum==0 && this.currentTime==2){
+				xmlMaker.setupField( battleField.getWidth(), battleField.getHeight() );
+				for(RobotPeer r : robots){
+					xmlMaker.setupTank(r.getName(), r.getBodyColor(), r.getGunColor(), r.getRadarColor(), r.getBulletColor());
+				}
+				xmlMaker.addBattle(battleField.getWidth(), battleField.getHeight());
+				xmlMaker.addRound(this.roundNum);
+				String message=xmlMaker.getSettings();
+				if( manager.getListener()!=null )
+					manager.getListener().battleMessage( message );
+				PimodsClient.sendMessage( message );
+			}
+			if(this.currentTime > 2){
+				xmlMaker.addTurn(this.currentTime);
+				for( RobotPeer r : robots){
+					if( r.isAlive()){
+						xmlMaker.addTankPosition(r.getName(), r.getX(), r.getY(), r.getHeading(), 
+								r.getEnergy(), r.getGunHeading(), r.getRadarHeading());
+					}
+				}
+				for( BulletPeer b : bullets){
+					if( b.isActive()){
+						xmlMaker.addBullet( b.toString(), b.getX(), b.getY(), b.getPower());
+					}
+				}
+				String message=xmlMaker.getCurrentTurn();
+				if( manager.getListener()!=null )
+					manager.getListener().battleMessage( message );
+				PimodsClient.sendMessage( message );
+			}
+			/* PIMODS' PATCH END */
 
 			// Calculate the total time spend on robots this second
 			totalRobotMillisThisSec += currentRobotMillis;

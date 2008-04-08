@@ -18,7 +18,7 @@
   <!-- ====================================== -->
   <target
       name="build"
-      description="build Robocode"
+      description="build Robocode3D"
       depends="compile.robocode, compile.robots">
 
     <!-- Copy resources -->
@@ -46,6 +46,16 @@
       <fileset file="../robocodeextract/browser.*"/>
     </copy>
     
+    <!-- Copy pimods config file -->
+    <copy todir="${build}">
+      <fileset file="../pimodsextract/config/config.txt"/>
+    </copy>
+
+    <!-- Copy pimods misc files -->
+    <copy todir="${build}/misc">
+      <fileset dir="../pimodsextract/misc"/>
+    </copy>
+
   </target>
 
 </project>
