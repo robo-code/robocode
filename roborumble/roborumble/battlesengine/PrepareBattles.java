@@ -84,7 +84,6 @@ public class PrepareBattles {
 		try {
 			FileReader fr = new FileReader(participantsfile);
 
-
 			br = new BufferedReader(fr);
 			String record;
 
@@ -162,7 +161,6 @@ public class PrepareBattles {
 		try {
 			FileReader fr = new FileReader(participantsfile);
 
-
 			br = new BufferedReader(fr);
 			String record;
 
@@ -216,7 +214,6 @@ public class PrepareBattles {
 
 		try {
 			FileReader fr = new FileReader(priority);
-
 
 			br = new BufferedReader(fr);
 			String record;
@@ -344,7 +341,6 @@ public class PrepareBattles {
 
 		try {
 			FileReader fr = new FileReader(participantsfile);
-
 
 			br = new BufferedReader(fr);
 			String record;

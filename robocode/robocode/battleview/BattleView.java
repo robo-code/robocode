@@ -522,7 +522,6 @@ public class BattleView extends Canvas {
 						bulletColor = Color.WHITE;
 					}
 				}
-
 				g.setColor(bulletColor);
 				g.fill(bulletArea);
 
