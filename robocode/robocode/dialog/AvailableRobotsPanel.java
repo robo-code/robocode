@@ -25,21 +25,20 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.ArrayList;
-import java.util.List;
+import robocode.repository.FileSpecification;
+import robocode.repository.TeamSpecification;
+import robocode.ui.ShortcutUtil;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import robocode.repository.FileSpecification;
-import robocode.repository.TeamSpecification;
-import robocode.ui.ShortcutUtil;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -193,7 +192,7 @@ public class AvailableRobotsPanel extends JPanel {
 					((AvailableRobotsModel) getAvailableRobotsList().getModel()).changed();
 				} else {
 					availablePackages.add("(All)");
-					String packageName = null;
+					String packageName;
 
 					for (FileSpecification robotSpec : robotList) {
 						packageName = robotSpec.getFullPackage();
@@ -235,15 +234,13 @@ public class AvailableRobotsPanel extends JPanel {
 			if (selectedPackage.equals("(All)")) {
 				robotNamesCellRenderer.setUseShortNames(false);
 				availableRobots.clear();
-				for (int j = 0; j < robotList.size(); j++) {
-					availableRobots.add(robotList.get(j));
+				for (FileSpecification aRobotList : robotList) {
+					availableRobots.add(aRobotList);
 				}
 				break;
 			}
 			// Single package.
-			for (int j = 0; j < robotList.size(); j++) {
-				FileSpecification robotSpecification = robotList.get(j);
-
+			for (FileSpecification robotSpecification : robotList) {
 				if (robotSpecification.getFullPackage() == null) {
 					if (selectedPackage.equals("(No package)")) {
 						availableRobots.add(robotSpecification);

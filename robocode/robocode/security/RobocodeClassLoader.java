@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,9 @@ package robocode.security;
 
 
 import static robocode.io.Logger.log;
+import robocode.packager.ClassAnalyzer;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.RobotFileSpecification;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -38,10 +41,6 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import robocode.packager.ClassAnalyzer;
-import robocode.peer.robot.RobotClassManager;
-import robocode.repository.RobotSpecification;
 
 
 /**
@@ -54,7 +53,7 @@ import robocode.repository.RobotSpecification;
 public class RobocodeClassLoader extends ClassLoader {
 	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
 
-	private RobotSpecification robotSpecification;
+	private RobotFileSpecification robotFileSpecification;
 	private RobotClassManager robotClassManager;
 	private String rootPackageDirectory;
 	private String rootDirectory;
@@ -70,7 +69,7 @@ public class RobocodeClassLoader extends ClassLoader {
 	public RobocodeClassLoader(ClassLoader parent, RobotClassManager robotClassManager) {
 		super(parent);
 		this.robotClassManager = robotClassManager;
-		this.robotSpecification = robotClassManager.getRobotSpecification();
+		this.robotFileSpecification = robotClassManager.getRobotSpecification();
 
 		// Deep within the class loader is a vector of classes, and is VM
 		// implementation specific, so its not in every VM. However, if a VM
@@ -123,9 +122,9 @@ public class RobocodeClassLoader extends ClassLoader {
 		if (cachedClasses.containsKey(name)) {
 			return cachedClasses.get(name);
 		}
-		
-		Class<?> c = null;
-		File f = null;
+
+		Class<?> c;
+		File f;
 
 		if (toplevel) {
 			uid1 = 0;
@@ -145,7 +144,7 @@ public class RobocodeClassLoader extends ClassLoader {
 
 		String filename = name.replace('.', File.separatorChar) + ".class";
 
-		String classPath = robotSpecification.getRobotClassPath();
+		String classPath = robotFileSpecification.getRobotClassPath();
 
 		if (classPath.indexOf(File.pathSeparator) >= 0) {
 			throw new ClassNotFoundException(
@@ -247,6 +246,6 @@ public class RobocodeClassLoader extends ClassLoader {
 		}
 
 		robotClassManager = null;
-		robotSpecification = null;
+		robotFileSpecification = null;
 	}
 }

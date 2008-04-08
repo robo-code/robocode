@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,13 +26,24 @@
  *       synchronized List and HashMap
  *     - Changed so that the robot repository only adds .jar files from the root
  *       of the robots folder and not from sub folders of the robots folder
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.manager;
 
 
+import robocode.Droid;
+import robocode.dialog.WindowUtil;
+import robocode.io.FileTypeFilter;
+import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.*;
+import robocode.robotinterfaces.*;
 
+import javax.swing.*;
 import java.io.*;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,19 +51,12 @@ import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import javax.swing.JOptionPane;
-
-import robocode.dialog.WindowUtil;
-import robocode.io.FileTypeFilter;
-import robocode.io.FileUtil;
-import robocode.peer.robot.RobotClassManager;
-import robocode.repository.*;
-
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotRepositoryManager {
 	private FileSpecificationDatabase robotDatabase;
@@ -61,7 +65,6 @@ public class RobotRepositoryManager {
 	private File robotCache;
 
 	private Repository repository;
-	private boolean cacheWarning;
 	private RobocodeManager manager;
 
 	private List<FileSpecification> updatedJarList = Collections.synchronizedList(new ArrayList<FileSpecification>());
@@ -118,7 +121,8 @@ public class RobotRepositoryManager {
 		updatedJarList.clear();
 
 		// jarUpdated = false;
-		cacheWarning = false;
+		boolean cacheWarning = false;
+
 		// boolean changed = false;
 		this.write = false;
 
@@ -184,11 +188,9 @@ public class RobotRepositoryManager {
 		for (FileSpecification fs : fileSpecificationList) {
 			if (fs instanceof TeamSpecification) {
 				repository.add(fs);
-				continue;
-			} else if (fs instanceof RobotSpecification) {
+			} else if (fs instanceof RobotFileSpecification) {
 				if (verifyRootPackage(fs.getName())) {
 					repository.add(fs);
-					continue;
 				}
 			}
 		}
@@ -336,7 +338,7 @@ public class RobotRepositoryManager {
 				}
 			} else if (fileName.indexOf("$") < 0 && fileName.indexOf("robocode") != 0) {
 				FileSpecification cachedSpecification = getRobotDatabase().get(file.getPath());
-				FileSpecification fileSpecification = null;
+				FileSpecification fileSpecification;
 
 				// if cachedSpecification is null, then this is a new file
 				if (cachedSpecification != null
@@ -390,50 +392,57 @@ public class RobotRepositoryManager {
 
 		String key = fileSpecification.getFilePath();
 
-		boolean updated = false;
-
-		if (fileSpecification instanceof RobotSpecification) {
-			RobotSpecification robotSpecification = (RobotSpecification) fileSpecification;
+		if (fileSpecification instanceof RobotFileSpecification) {
+			RobotFileSpecification robotFileSpecification = (RobotFileSpecification) fileSpecification;
 
 			try {
-				RobotClassManager robotClassManager = new RobotClassManager(robotSpecification);
+				RobotClassManager robotClassManager = new RobotClassManager(robotFileSpecification);
 				Class<?> robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(
 						robotClassManager.getFullClassName(), true);
 
-				robotSpecification.setUid(robotClassManager.getUid());
+				robotFileSpecification.setUid(robotClassManager.getUid());
 
-				Class<?>[] interfaces = robotClass.getInterfaces();
-
-				for (Class<?> itf : interfaces) {
-					if (itf.getName().equals("robocode.Droid")) {
-						robotSpecification.setDroid(true);
-						break;
-					}
-				}
-
-				Class<?> superClass = robotClass.getSuperclass();
-
-				if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
-					superClass = null;
-				}
-
-				if (robotSpecification.getValid()) {
-					while (!updated && superClass != null && !superClass.getName().equals("java.lang.Object")) {
-						if (superClass.getName().equals("robocode.TeamRobot")) {
-							robotSpecification.setTeamRobot(true);
+				if (robotFileSpecification.getValid()) {
+					if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
+						if (Droid.class.isAssignableFrom(robotClass)) {
+							robotFileSpecification.setDroid(true);
 						}
-						if (superClass.getName().equals("robocode.Robot")
-								|| superClass.getName().equals("robocode.JuniorRobot")) {
-							updateNoDuplicates(robotSpecification);
+
+						if (ITeamRobot.class.isAssignableFrom(robotClass)) {
+							robotFileSpecification.setTeamRobot(true);
+						}
+
+						if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
+							robotFileSpecification.setAdvancedRobot(true);
+						}
+
+						if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
+							robotFileSpecification.setInteractiveRobot(true);
+						}
+
+						/* if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
+						 robotFileSpecification.setClassicRobot(true);
+						 }*/
+
+						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
+							robotFileSpecification.setJuniorRobot(true);
+							if (robotFileSpecification.isAdvancedRobot()) {
+								throw new AccessControlException(
+										robotFileSpecification.getName()
+												+ ": Junior robot should not implement IAdvancedRobot interface.");
+							}
+						}
+
+						if (IBasicRobot.class.isAssignableFrom(robotClass)) {
+							updateNoDuplicates(robotFileSpecification);
 							return;
 						}
-						superClass = superClass.getSuperclass();
 					}
 				}
-				getRobotDatabase().put(key, new ClassSpecification(robotSpecification));
+				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
 			} catch (Throwable t) {
-				getRobotDatabase().put(key, robotSpecification);
-				log(robotSpecification.getName() + ": Got an error with this class: " + t);
+				getRobotDatabase().put(key, robotFileSpecification);
+				log(robotFileSpecification.getName() + ": Got an error with this class: " + t);
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
@@ -627,14 +636,14 @@ public class RobotRepositoryManager {
 					try {
 						fos = new FileOutputStream(out);
 
-						int num = 0;
-	
+						int num;
+
 						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
 							fos.write(buf, 0, num);
 						}
-	
+
 						FileDescriptor fd = fos.getFD();
-	
+
 						fd.sync();
 					} finally {
 						if (fos != null) {

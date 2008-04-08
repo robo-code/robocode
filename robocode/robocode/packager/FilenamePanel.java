@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,10 +24,15 @@
 package robocode.packager;
 
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import robocode.dialog.WizardPanel;
+import robocode.io.FileUtil;
+import robocode.repository.FileSpecification;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Caret;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -35,15 +40,6 @@ import java.awt.event.ComponentListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.Caret;
-
-import robocode.dialog.WizardPanel;
-import robocode.io.FileUtil;
-import robocode.repository.FileSpecification;
 
 
 /**
@@ -186,7 +182,7 @@ public class FilenamePanel extends WizardPanel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public JButton getBrowseButton() {
 		if (browseButton == null) {
 			browseButton = new JButton("Browse");
@@ -204,10 +200,7 @@ public class FilenamePanel extends WizardPanel {
 	}
 
 	public boolean showFileSelectDialog() {
-		String fileName = "outgoing" + File.separatorChar;
-		String saveDir = fileName;
-
-		File f = new File(saveDir);
+		File f = new File("outgoing" + File.separatorChar);
 
 		JFileChooser chooser = new JFileChooser(f);
 
@@ -226,10 +219,7 @@ public class FilenamePanel extends WizardPanel {
 				if (idx >= 0) {
 					extension = fn.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".jar")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".jar");
 			}
 
 			@Override
@@ -245,7 +235,7 @@ public class FilenamePanel extends WizardPanel {
 		while (!done) {
 			done = true;
 			int rv = chooser.showSaveDialog(this);
-			String robotFileName = null;
+			String robotFileName;
 
 			if (rv == JFileChooser.APPROVE_OPTION) {
 				robotFileName = chooser.getSelectedFile().getPath();
@@ -278,7 +268,7 @@ public class FilenamePanel extends WizardPanel {
 
 	static class ShowFrameWorker implements Runnable {
 		JFrame frame;
-		
+
 		public ShowFrameWorker(JFrame frame) {
 			this.frame = frame;
 		}
@@ -287,6 +277,6 @@ public class FilenamePanel extends WizardPanel {
 			if (frame != null) {
 				frame.setVisible(true);
 			}
-		}		
+		}
 	}
 }

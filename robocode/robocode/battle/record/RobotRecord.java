@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001-2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package robocode.battle.record;
 
 
 import static robocode.gfx.ColorUtil.toRGB565;
-
 import robocode.peer.RobotPeer;
 
 
@@ -63,7 +62,7 @@ public class RobotRecord {
 	/**
 	 * Constructs a new robot record.
 	 *
-	 * @param owner index of the robot
+	 * @param index index of the owner robot
 	 * @param robot the robot peer that is copied into this record
 	 */
 	public RobotRecord(int index, RobotPeer robot) {
@@ -71,7 +70,7 @@ public class RobotRecord {
 		x = (short) (robot.getX() + 0.5);
 		y = (short) (robot.getY() + 0.5);
 		energy = (short) (robot.getEnergy() * 10);
-		heading = (byte) (128 * robot.getHeading() / Math.PI);
+		heading = (byte) (128 * robot.getBodyHeading() / Math.PI);
 		radarHeading = (byte) (128 * robot.getRadarHeading() / Math.PI);
 		gunHeading = (byte) (128 * robot.getGunHeading() / Math.PI);
 		state = (byte) robot.getState();

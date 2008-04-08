@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,11 +30,10 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import robocode.io.Logger;
+import robocode.manager.RobotRepositoryManager;
+import robocode.repository.FileSpecification;
+import robocode.repository.TeamSpecification;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -42,11 +41,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import robocode.io.Logger;
-import robocode.manager.RobotRepositoryManager;
-import robocode.repository.FileSpecification;
-import robocode.repository.TeamSpecification;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -88,7 +87,6 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean onlyShowPackaged;
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
-	private RobotNameCellRenderer robotNamesCellRenderer;
 	private List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
 	private boolean showNumRoundsPanel;
 	private RobotRepositoryManager repositoryManager;
@@ -309,7 +307,9 @@ public class RobotSelectionPanel extends WizardPanel {
 			selectedRobotsList = new JList();
 			selectedRobotsList.setModel(new SelectedRobotsModel());
 			selectedRobotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-			robotNamesCellRenderer = new RobotNameCellRenderer();
+
+			RobotNameCellRenderer robotNamesCellRenderer = new RobotNameCellRenderer();
+
 			selectedRobotsList.setCellRenderer(robotNamesCellRenderer);
 			MouseListener mouseListener = new MouseAdapter() {
 				@Override
@@ -592,7 +592,7 @@ public class RobotSelectionPanel extends WizardPanel {
 			numRoundsTextField.setAlignmentX((float) .5);
 			// Center text in textfield
 			numRoundsTextField.setHorizontalAlignment(SwingConstants.CENTER);
- 
+
 			// Add document listener
 			numRoundsTextField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -605,7 +605,7 @@ public class RobotSelectionPanel extends WizardPanel {
 				public void removeUpdate(DocumentEvent e) {
 					handleChange();
 				}
-				
+
 				private void handleChange() {
 					try {
 						int numRounds = Integer.parseInt(numRoundsTextField.getText());
@@ -614,7 +614,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 						if (numRounds != props.getNumberOfRounds()) {
 							props.setNumberOfRounds(numRounds);
-							
+
 						}
 					} catch (NumberFormatException nfe) {}
 				}

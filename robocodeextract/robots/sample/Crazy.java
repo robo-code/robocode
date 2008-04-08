@@ -1,13 +1,14 @@
 package sample;
 
 
-import java.awt.Color;
 import robocode.*;
+
+import java.awt.*;
 
 
 /**
  * Crazy - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * This robot moves around in a crazy pattern
  */
 public class Crazy extends AdvancedRobot {
@@ -15,7 +16,7 @@ public class Crazy extends AdvancedRobot {
 
 	/**
 	 * run: Crazy's main run function
-	 */	
+	 */
 	public void run() {
 		// Set colors
 		setBodyColor(new Color(0, 200, 0));
@@ -31,7 +32,7 @@ public class Crazy extends AdvancedRobot {
 			movingForward = true;
 			// Tell the game we will want to turn right 90
 			setTurnRight(90);
-			// At this point, we have indicated to the game that *when we do something*, 
+			// At this point, we have indicated to the game that *when we do something*,
 			// we will want to move ahead and turn right.  That's what "set" means.
 			// It is important to realize we have not done anything yet!
 			// In order to actually move, we'll want to call a method that
@@ -54,7 +55,7 @@ public class Crazy extends AdvancedRobot {
 
 	/**
 	 * onHitWall:  Handle collision with wall.
-	 */	
+	 */
 	public void onHitWall(HitWallEvent e) {
 		// Bounce off!
 		reverseDirection();
@@ -62,7 +63,7 @@ public class Crazy extends AdvancedRobot {
 
 	/**
 	 * reverseDirection:  Switch from ahead to back & vice versa
-	 */	
+	 */
 	public void reverseDirection() {
 		if (movingForward) {
 			setBack(40000);
@@ -75,14 +76,14 @@ public class Crazy extends AdvancedRobot {
 
 	/**
 	 * onScannedRobot:  Fire!
-	 */	
+	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		fire(1);
 	}
 
 	/**
 	 * onHitRobot:  Back up!
-	 */	
+	 */
 	public void onHitRobot(HitRobotEvent e) {
 		// If we're moving the other robot, reverse!
 		if (e.isMyFault()) {

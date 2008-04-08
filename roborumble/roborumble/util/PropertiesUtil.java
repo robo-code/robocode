@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@ package roborumble.util;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 
@@ -26,7 +26,7 @@ public final class PropertiesUtil {
 
 	/**
 	 * Returns a new Properties instance that is initialized to the specified properties file.
-	 * 
+	 *
 	 * @param filename the filename of the properties file to load
 	 * @return a new java.util.Properties instance
 	 */
@@ -56,7 +56,7 @@ public final class PropertiesUtil {
 
 	/**
 	 * Returns a new Properties instance that is initialized to the specified properties input stream.
-	 * 
+	 *
 	 * @param is the input stream of the properties to load
 	 * @return a new java.util.Properties instance
 	 */
@@ -73,10 +73,10 @@ public final class PropertiesUtil {
 
 	/**
 	 * Stores a Properties instance to the specified properties file.
-	 * 
+	 *
 	 * @param properties the properties to store
-	 * @param filename the filename of the file to store the properties into
-	 * @param comments comments to include in the properties file
+	 * @param filename   the filename of the file to store the properties into
+	 * @param comments   comments to include in the properties file
 	 * @return true if the properties were stored; false otherwise
 	 */
 	public static boolean storeProperties(Properties properties, String filename, String comments) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,15 +22,15 @@ package robocode.repository;
 public class ClassSpecification extends FileSpecification {
 
 	// Used in FileSpecification
-	public ClassSpecification(RobotSpecification robotSpecification) {
-		this.developmentVersion = robotSpecification.isDevelopmentVersion();
-		this.rootDir = robotSpecification.getRootDir();
-		this.name = robotSpecification.getName();
-		setFileName(robotSpecification.getFileName());
-		setFilePath(robotSpecification.getFilePath());
-		setFileType(robotSpecification.getFileType());
-		setFileLastModified(robotSpecification.getFileLastModified());
-		setFileLength(robotSpecification.getFileLength());
+	public ClassSpecification(RobotFileSpecification robotFileSpecification) {
+		this.developmentVersion = robotFileSpecification.isDevelopmentVersion();
+		this.rootDir = robotFileSpecification.getRootDir();
+		this.name = robotFileSpecification.getName();
+		setFileName(robotFileSpecification.getFileName());
+		setFilePath(robotFileSpecification.getFilePath());
+		setFileType(robotFileSpecification.getFileType());
+		setFileLastModified(robotFileSpecification.getFileLastModified());
+		setFileLength(robotFileSpecification.getFileLength());
 	}
 
 	@Override

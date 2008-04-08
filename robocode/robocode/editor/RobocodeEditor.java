@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,21 +24,19 @@
 package robocode.editor;
 
 
+import robocode.gfx.ImageUtil;
+import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import robocode.manager.BrowserManager;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.Document;
-
-import robocode.gfx.ImageUtil;
-import robocode.io.FileUtil;
-import robocode.manager.BrowserManager;
-import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 
 
 /**
@@ -83,7 +81,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	/**
 	 * Action that launches the Replace dialog.
-	 *
+	 * <p/>
 	 * The reason this is needed (and the menubar isn't sufficient) is that
 	 * ctrl+H is bound in JTextComponents at a lower level to backspace and in
 	 * order to override this, I need to rebind it to an Action when the
@@ -669,12 +667,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			String robotFilename = chooser.getSelectedFile().getPath();
 
 			editorDirectory = chooser.getSelectedFile().getParentFile();
-			
+
 			FileReader fileReader = null;
 
 			try {
 				fileReader = new FileReader(robotFilename);
-				
+
 				EditWindow editWindow = new EditWindow(this, robotsDirectory);
 
 				editWindow.getEditorPane().read(fileReader, new File(robotFilename));

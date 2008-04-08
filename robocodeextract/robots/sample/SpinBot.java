@@ -1,13 +1,16 @@
 package sample;
 
 
-import java.awt.Color;
-import robocode.*;
+import robocode.AdvancedRobot;
+import robocode.HitRobotEvent;
+import robocode.ScannedRobotEvent;
+
+import java.awt.*;
 
 
 /**
  * SpinBot - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Moves in a circle, firing hard when an enemy is detected
  */
 public class SpinBot extends AdvancedRobot {
@@ -32,7 +35,7 @@ public class SpinBot extends AdvancedRobot {
 			// Start moving (and turning)
 			ahead(10000);
 			// Repeat.
-		} 
+		}
 	}
 
 	/**
@@ -44,7 +47,7 @@ public class SpinBot extends AdvancedRobot {
 
 	/**
 	 * onHitRobot:  If it's our fault, we'll stop turning and moving,
-	 *              so we need to turn again to keep spinning.
+	 * so we need to turn again to keep spinning.
 	 */
 	public void onHitRobot(HitRobotEvent e) {
 		if (e.getBearing() > -10 && e.getBearing() < 10) {

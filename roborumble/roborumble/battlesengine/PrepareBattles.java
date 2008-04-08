@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,12 @@
 package roborumble.battlesengine;
 
 
-import java.util.*;
-import java.io.*;
-
 import static roborumble.util.PropertiesUtil.getProperties;
+
+import java.io.*;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Vector;
 
 
 /**
@@ -40,7 +42,6 @@ public class PrepareBattles {
 	private String participantsfile;
 	private String battlesfile;
 	private int numbattles;
-	private String sizesfile;
 	private CompetitionsSelector size;
 	private String runonly;
 	private Properties generalratings;
@@ -59,7 +60,8 @@ public class PrepareBattles {
 		participantsfile = parameters.getProperty("PARTICIPANTSFILE", "");
 		battlesfile = parameters.getProperty("INPUT", "");
 		numbattles = Integer.parseInt(parameters.getProperty("NUMBATTLES", "100"));
-		sizesfile = parameters.getProperty("CODESIZEFILE", "");
+		String sizesfile = parameters.getProperty("CODESIZEFILE", "");
+
 		size = new CompetitionsSelector(sizesfile, botsrepository);
 		runonly = parameters.getProperty("RUNONLY", "GENERAL");
 		prioritynum = Integer.parseInt(parameters.getProperty("BATTLESPERBOT", "500"));
@@ -80,32 +82,33 @@ public class PrepareBattles {
 		BufferedReader br = null;
 
 		try {
-			FileReader fr = new FileReader(participantsfile); 
+			FileReader fr = new FileReader(participantsfile);
+
 
 			br = new BufferedReader(fr);
 			String record;
 
-			while ((record = br.readLine()) != null) { 
+			while ((record = br.readLine()) != null) {
 				if (record.indexOf(",") != -1) {
 					String name = record.substring(0, record.indexOf(","));
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
 
-					if (exists) { 
+					if (exists) {
 						if ((runonly.equals("MINI") && size.checkCompetitorsForSize(name, name, 1500))
 								|| (runonly.equals("MICRO") && size.checkCompetitorsForSize(name, name, 750))
 								|| (runonly.equals("NANO") && size.checkCompetitorsForSize(name, name, 250))
 								|| (!runonly.equals("MINI") && !runonly.equals("MICRO") && !runonly.equals("NANO"))) {
 							jars.add(jar);
 							names.add(name);
-						}	
+						}
 					}
 				}
 			}
-		} catch (IOException e) { 
-			System.out.println("Participants file not found ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Participants file not found ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		} finally {
 			if (br != null) {
 				try {
@@ -114,14 +117,14 @@ public class PrepareBattles {
 			}
 		}
 		// Open battles file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
-		} catch (IOException e) { 
-			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
 		// Create the participants file
 		Random random = new Random();
@@ -134,7 +137,7 @@ public class PrepareBattles {
 			if (bot1 != bot2) {
 				outtxt.println(names.get(bot1) + "," + names.get(bot2) + "," + runonly);
 				count++;
-			} 	
+			}
 		}
 		outtxt.close();
 		return true;
@@ -155,20 +158,21 @@ public class PrepareBattles {
 		// Read participants
 
 		BufferedReader br = null;
-		
+
 		try {
-			FileReader fr = new FileReader(participantsfile); 
+			FileReader fr = new FileReader(participantsfile);
+
 
 			br = new BufferedReader(fr);
 			String record;
 
-			while ((record = br.readLine()) != null) { 
+			while ((record = br.readLine()) != null) {
 				if (record.indexOf(",") != -1) {
 					String name = record.substring(0, record.indexOf(","));
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
 
-					if (exists) { 
+					if (exists) {
 						namesall.add(name);
 						if (size.checkCompetitorsForSize(name, name, 1500)) {
 							namesmini.add(name);
@@ -194,10 +198,10 @@ public class PrepareBattles {
 					}
 				}
 			}
-		} catch (IOException e) { 
-			System.out.println("Participants file not found ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Participants file not found ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		} finally {
 			if (br != null) {
 				try {
@@ -207,16 +211,17 @@ public class PrepareBattles {
 		}
 
 		// Read priority battles
-		
+
 		br = null;
 
 		try {
-			FileReader fr = new FileReader(priority); 
+			FileReader fr = new FileReader(priority);
+
 
 			br = new BufferedReader(fr);
 			String record;
 
-			while ((record = br.readLine()) != null) { 
+			while ((record = br.readLine()) != null) {
 				String[] items = record.split(",");
 
 				if (items.length == 3) {
@@ -232,8 +237,8 @@ public class PrepareBattles {
 					}
 				}
 			}
-		} catch (IOException e) { 
-			System.out.println("Prioritary battles file not found ...  "); 
+		} catch (IOException e) {
+			System.out.println("Prioritary battles file not found ...  ");
 		} finally {
 			if (br != null) {
 				try {
@@ -246,20 +251,20 @@ public class PrepareBattles {
 		File r = new File(priority);
 
 		r.delete();
-		
+
 		// Open battles file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
-		} catch (IOException e) { 
-			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
 		// Create the participants file
 		Random random = new Random();
-		int count = 0; 
+		int count = 0;
 
 		// Add prioritary battles
 		while (count < numbattles && count < prioritarybattles.size()) {
@@ -286,7 +291,7 @@ public class PrepareBattles {
 			if (bots != null) {
 				outtxt.println(bots[0] + "," + bots[1] + "," + runonly);
 				count++;
-			} 	
+			}
 		}
 		outtxt.close();
 		return true;
@@ -334,22 +339,23 @@ public class PrepareBattles {
 		Vector<String> prioritynano = new Vector<String>();
 
 		// Read participants
-		
+
 		BufferedReader br = null;
 
 		try {
-			FileReader fr = new FileReader(participantsfile); 
+			FileReader fr = new FileReader(participantsfile);
+
 
 			br = new BufferedReader(fr);
 			String record;
 
-			while ((record = br.readLine()) != null) { 
+			while ((record = br.readLine()) != null) {
 				if (record.indexOf(",") != -1) {
 					String name = record.substring(0, record.indexOf(","));
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
 
-					if (exists) { 
+					if (exists) {
 						namesall.add(name);
 						if (size.checkCompetitorsForSize(name, name, 1500)) {
 							namesmini.add(name);
@@ -375,10 +381,10 @@ public class PrepareBattles {
 					}
 				}
 			}
-		} catch (IOException e) { 
-			System.out.println("Participants file not found ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Participants file not found ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		} finally {
 			if (br != null) {
 				try {
@@ -386,21 +392,21 @@ public class PrepareBattles {
 				} catch (IOException e) {}
 			}
 		}
-		
+
 		// Open battles file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
-		} catch (IOException e) { 
-			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting"); 
+		} catch (IOException e) {
+			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
 			System.out.println(e);
-			return false; 
+			return false;
 		}
 
 		// Create the participants file
 		Random random = new Random();
-		int count = 0; 
+		int count = 0;
 
 		// Add bots with less than 500 battles, or a random battle if all bots have enough battles
 		while (count < numbattles && namesall.size() > meleebots) {
@@ -427,7 +433,7 @@ public class PrepareBattles {
 
 				outtxt.println(battle);
 				count++;
-			} 	
+			}
 		}
 		outtxt.close();
 		return true;
@@ -436,7 +442,7 @@ public class PrepareBattles {
 	private String[] getmeleebots(Vector<String> list1, Vector<String> list2, Random rand) {
 		String[] bots = new String[meleebots];
 
-		bots[0] = list1.get(rand.nextInt(list1.size())); 
+		bots[0] = list1.get(rand.nextInt(list1.size()));
 		int count = 1;
 
 		while (count < meleebots) {
@@ -450,7 +456,7 @@ public class PrepareBattles {
 			}
 			if (!exists) {
 				count++;
-			} 
+			}
 		}
 		return bots;
 	}

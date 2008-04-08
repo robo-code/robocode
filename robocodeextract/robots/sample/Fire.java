@@ -1,13 +1,17 @@
 package sample;
 
 
-import java.awt.Color;
-import robocode.*;
+import robocode.HitByBulletEvent;
+import robocode.HitRobotEvent;
+import robocode.Robot;
+import robocode.ScannedRobotEvent;
+
+import java.awt.*;
 
 
 /**
  * Fire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Sits still.  Spins gun around.  Moves when hit.
  */
 public class Fire extends Robot {
@@ -15,7 +19,7 @@ public class Fire extends Robot {
 
 	/**
 	 * run:  Fire's main run function
-	 */	
+	 */
 	public void run() {
 		// Set colors
 		setBodyColor(Color.orange);
@@ -32,7 +36,7 @@ public class Fire extends Robot {
 
 	/**
 	 * onScannedRobot:  Fire!
-	 */	
+	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// If the other robot is close by, and we have plenty of life,
 		// fire hard!
@@ -48,10 +52,10 @@ public class Fire extends Robot {
 
 	/**
 	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
-	 */	
+	 */
 	public void onHitByBullet(HitByBulletEvent e) {
 		turnRight(normalRelativeAngle(90 - (getHeading() - e.getHeading())));
-		
+
 		ahead(dist);
 		dist *= -1;
 		scan();
@@ -59,7 +63,7 @@ public class Fire extends Robot {
 
 	/**
 	 * onHitRobot:  Aim at it.  Fire Hard!
-	 */	
+	 */
 	public void onHitRobot(HitRobotEvent e) {
 		double turnGunAmt = normalRelativeAngle(e.getBearing() + getHeading() - getGunHeading());
 

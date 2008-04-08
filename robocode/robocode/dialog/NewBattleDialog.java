@@ -22,16 +22,14 @@
 package robocode.dialog;
 
 
-import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
-
-import java.awt.BorderLayout;
-import java.awt.event.*;
-import java.util.List;
-
-import javax.swing.*;
-
 import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
+import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
 
 
 /**
@@ -173,8 +171,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	/**
 	 * NewBattleDialog constructor comment.
-	 *
-	 * @param owner Frame
 	 */
 	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
 		super(manager.getWindowManager().getRobocodeFrame());

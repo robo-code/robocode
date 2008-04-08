@@ -8,6 +8,7 @@
       <customJdkName value="" />
       <maximumHeapSize value="128" />
       <properties />
+      <executeOn event="beforeRun" target="robocode.jar" runConfigurationType="Application" runConfigurationName="Unnamed" />
     </buildFile>
   </component>
   <component name="BuildJarProjectSettings">
@@ -63,7 +64,7 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
-  <component name="IdProvider" IDEtalkID="F27E01D789A09AF0ABD103A83B854541" />
+  <component name="IdProvider" IDEtalkID="CECAA5A4F5627FAA172BC28FFB06AA80" />
   <component name="InspectionProjectProfileManager">
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
@@ -232,7 +233,8 @@
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/pimodsextract/pimodsextract.iml" filepath="$PROJECT_DIR$/pimodsextract/pimodsextract.iml" />
+      <module fileurl="file://$PROJECT_DIR$/autoextract/autoextract.iml" filepath="$PROJECT_DIR$/autoextract/autoextract.iml" />
+      <module fileurl="file://$PROJECT_DIR$/build/build.iml" filepath="$PROJECT_DIR$/build/build.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode/robocode.iml" filepath="$PROJECT_DIR$/robocode/robocode.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocodeextract/robocodeextract.iml" filepath="$PROJECT_DIR$/robocodeextract/robocodeextract.iml" />
       <module fileurl="file://$PROJECT_DIR$/roborumble/roborumble.iml" filepath="$PROJECT_DIR$/roborumble/roborumble.iml" />
@@ -256,7 +258,7 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
+    <mapping directory="" vcs="svn" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>

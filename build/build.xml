@@ -33,7 +33,8 @@
   <property name="src.autoextract" location="../autoextract"/>
   <property name="src.robots" location="../robocodeextract/robots"/>
   <property name="src.roborumble" location="../roborumble"/>
-  <property name="src.cachecleaner" location="../robocode/ar"/>
+  <property name="src.pimods" location="../robocode/pimods"/>
+  <property name="src.pimodsextract" location="../pimodsextract"/>
 
   <!-- License file -->
   <property name="license.file" location="${src.extract}/license/cpl-v10.html"/>
@@ -119,7 +120,7 @@
 	<zip
         destfile="${build}/${sources.archive}"
         basedir=".."
-        includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**"
+        includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**, tools/**"
         excludes="build/build, **/bin/**, **/.svn/**"
         defaultexcludes="no"
     />
@@ -138,9 +139,16 @@
  
   	<!-- Copy libs into the build folder -->
   	<copy file="${src.extract}/libs/codesize.jar" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/gluegen-rt.dll" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/gluegen-rt.jar" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/jogl_awt.dll" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/jogl_cg.dll" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/jogl.dll" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/jogl.jar" toDir="${build}/libs"/>
  
     <!-- Compile Robocode -->
-    <compile srcdir="${src.robocode}" destdir="${build}" classpath="${build}/libs/codesize.jar"/>
+    <compile srcdir="${src.robocode}" destdir="${build}"
+    	classpath="${build}/libs/codesize.jar;${build}/libs/jogl.jar;${build}/libs/glugen-rt.jar"/>
 
     <!-- Flag that Robocode has been built -->
     <touch file="${build}/.robocode_build"/>
@@ -217,28 +225,6 @@
   </uptodate>
 
   <!-- ====================================== -->
-  <!-- Target: compile.cachecleaner           -->
-  <!-- ====================================== -->
-  <target
-      name="compile.cachecleaner"
-      description="Compile CacheCleaner"
-      depends="init"
-      unless="cachecleaner.uptodate">
-
-    <echo message="Compiling CacheCleaner..."/>
-
-    <!-- Compile CacheCleaner -->
-    <compile srcdir="${src.cachecleaner}" destdir="${build}"/>
-
-    <!-- Flag that CacheCleaner has been built -->
-    <touch file="${build}/.cachecleaner_build"/>
-  </target>
-
-  <uptodate property="cachecleaner.uptodate" targetfile="${build}/.cachecleaner_build">
-    <srcfiles dir="${src.cachecleaner}"/>
-  </uptodate>
-
-  <!-- ====================================== -->
   <!-- Target: robocode.jar                   -->
   <!-- ====================================== -->
   <target
@@ -277,7 +263,7 @@
   <target
       name="extract.jar"
       description="Build extract.jar"
-      depends="init, robocode.jar, roborumble.jar, compile.robots, cachecleaner.jar, javadoc"
+      depends="init, robocode.jar, roborumble.jar, compile.robots, pimods.jar, javadoc"
       unless="extract.jar.uptodate">
 
     <echo message="Building extract.jar..."/>
@@ -293,10 +279,17 @@
         <include name="*.sh"/>            <!-- Shell files (Mac, Linux, and similar) -->
       	<include name="config/*"/>        <!-- Configuration files -->
       </fileset>
+      <fileset dir="${src.pimodsextract}">  <!-- Files from the pimods extract folder -->
+        <include name="*.bat"/>             <!-- Windows batch files -->
+      	<include name="config.txt"/>        <!-- pimods config file -->
+        <include name="misc/**"/>           <!-- Misc pimods files -->
+        <include name="libs/**"/>           <!-- JOGL libraries -->
+      </fileset>
       <fileset dir="${build}">
         <include name="libs/robocode.jar"/>      <!-- Builded robocode.jar -->
         <include name="libs/roborumble.jar"/>    <!-- Builded roborumble.jar -->
         <include name="libs/cachecleaner.jar"/>  <!-- Builded cachecleaner.jar -->
+        <include name="libs/pimods.jar"/>        <!-- Builded pimods.jar -->
         <include name="javadoc/**"/>             <!-- Builded javadoc files -->
         <include name="robots/**"/>              <!-- Builded robots -->
       </fileset>
@@ -339,32 +332,30 @@
   </uptodate>
 
   <!-- ====================================== -->
-  <!-- Target: cachecleaner.jar               -->
+  <!-- Target: pimods.jar               -->
   <!-- ====================================== -->
   <target
-      name="cachecleaner.jar"
-      description="Build cachecleaner.jar"
-      depends="init, compile.cachecleaner"
-      unless="cachecleaner.jar.uptodate">
+      name="pimods.jar"
+      description="Build pimods.jar"
+      depends="init, compile.robocode"
+      unless="pimods.jar.uptodate">
 
-    <echo message="Building cachecleaner.jar..."/>
+    <echo message="Building pimods.jar..."/>
 
-    <!-- Create the cachecleaner.jar file -->
-    <jar destfile="${build}/libs/cachecleaner.jar">
+    <!-- Create the pimods.jar file -->
+    <jar destfile="${build}/libs/pimods.jar">
       <!-- Specify files to include -->
-      <fileset dir="${build}" includes="ar/**"/>  <!-- Class files -->
+      <fileset dir="${build}" includes="pimods/**"/>  <!-- Class files -->
       <!-- Set the main class of the manifest -->
       <manifest>
-        <attribute name="Implementation-Title" value="CacheCleaner for Robocode"/>
-	    <attribute name="Implementation-Version" value="v${version}, ${TODAY}"/> 
-	    <attribute name="Implementation-Vendor" value="AaronR"/>
-        <attribute name="Main-Class" value="ar.robocode.cachecleaner.CacheCleaner"/>
+        <attribute name="Implementation-Title" value="pimods4robocode"/>
+	    <attribute name="Implementation-Version" value="0.4"/> 
       </manifest>
     </jar>
   </target>
 
-  <uptodate property="cachecleaner.jar.uptodate" targetfile="${build}/libs/cachecleaner.jar">
-    <srcfiles dir="${src.cachecleaner}"/>
+  <uptodate property="pimods.jar.uptodate" targetfile="${build}/libs/pimods.jar">
+    <srcfiles dir="${src.pimods}"/>
   </uptodate>
 
   <!-- ====================================== -->
@@ -389,6 +380,8 @@
         <include name="robocode/*.java"/>
       	<include name="robocode/util/Utils.java"/>
       	<include name="robocode/control/*.java"/>
+        <include name="robocode/robotinterfaces/*.java"/>
+        <include name="robocode/robotinterfaces/peer/*.java"/>
       </fileset>
       <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
     </javadoc>
@@ -468,8 +461,8 @@
       	  srcdir="@{srcdir}"
           destdir="@{destdir}"
           classpath="@{classpath}"
-          source="1.5"
-          target="1.5"
+          source="1.6"
+          target="1.6"
           debug="${debug}"
           debuglevel="lines,vars,source"
           optimize="true"

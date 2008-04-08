@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,18 +43,17 @@
 package robocode.peer;
 
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static robocode.gfx.ColorUtil.toColor;
-
-import java.awt.Color;
-import java.awt.geom.Line2D;
-import java.util.List;
-
 import robocode.*;
 import robocode.battle.Battle;
 import robocode.battle.record.BulletRecord;
 import robocode.battlefield.BattleField;
+import static robocode.gfx.ColorUtil.toColor;
+
+import java.awt.*;
+import java.awt.geom.Line2D;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import java.util.List;
 
 
 /**
@@ -78,7 +77,7 @@ public class BulletPeer {
 	private static final int EXPLOSION_LENGTH = 17;
 
 	private static final int RADIUS = 3;
-	
+
 	protected final RobotPeer owner;
 	protected final Battle battle;
 	private final BattleField battleField;
@@ -112,6 +111,9 @@ public class BulletPeer {
 
 	/**
 	 * BulletPeer constructor
+	 *
+	 * @param owner  who fire the bullet
+	 * @param battle root battle
 	 */
 	public BulletPeer(RobotPeer owner, Battle battle) {
 		super();
@@ -167,44 +169,45 @@ public class BulletPeer {
 	}
 
 	private void checkRobotCollision() {
-		RobotPeer r;
+		RobotPeer robotPeer;
 		List<RobotPeer> robots = battle.getRobots();
 
 		for (int i = 0; i < robots.size(); i++) {
-			r = robots.get(i);
+			robotPeer = robots.get(i);
 
-			if (!(r == null || r == owner || r.isDead()) && r.getBoundingBox().intersectsLine(boundingLine)) {
+			if (!(robotPeer == null || robotPeer == owner || robotPeer.isDead())
+					&& robotPeer.getBoundingBox().intersectsLine(boundingLine)) {
 				double damage = Rules.getBulletDamage(power);
 
 				double score = damage;
 
-				if (score > r.getEnergy()) {
-					score = r.getEnergy();
+				if (score > robotPeer.getEnergy()) {
+					score = robotPeer.getEnergy();
 				}
-				r.setEnergy(r.getEnergy() - damage);
+				robotPeer.setEnergy(robotPeer.getEnergy() - damage);
 
 				owner.getRobotStatistics().scoreBulletDamage(i, score);
 
-				if (r.getEnergy() <= 0) {
-					if (r.isAlive()) {
-						r.kill();
+				if (robotPeer.getEnergy() <= 0) {
+					if (robotPeer.isAlive()) {
+						robotPeer.kill();
 						owner.getRobotStatistics().scoreBulletKill(i);
 					}
 				}
 				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 
-				r.getEventManager().add(
-						new HitByBulletEvent(robocode.util.Utils.normalRelativeAngle(heading + Math.PI - r.getHeading()),
-						getBullet()));
+				robotPeer.getEventManager().add(
+						new HitByBulletEvent(
+								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()));
 
 				state = STATE_HIT_VICTIM;
-				owner.getEventManager().add(new BulletHitEvent(r.getName(), r.getEnergy(), bullet));
+				owner.getEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet));
 				frame = 0;
-				victim = r;
+				victim = robotPeer;
 
 				double newX, newY;
-				
-				if (r.getBoundingBox().contains(lastX, lastY)) {
+
+				if (robotPeer.getBoundingBox().contains(lastX, lastY)) {
 					newX = lastX;
 					newY = lastY;
 
@@ -215,8 +218,8 @@ public class BulletPeer {
 					newY = y;
 				}
 
-				deltaX = newX - r.getX();
-				deltaY = newY - r.getY();
+				deltaX = newX - robotPeer.getX();
+				deltaY = newY - robotPeer.getY();
 
 				break;
 			}
@@ -272,11 +275,11 @@ public class BulletPeer {
 	}
 
 	public synchronized double getPaintX() {
-		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getX() + deltaX : x; 
+		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getX() + deltaX : x;
 	}
 
 	public synchronized double getPaintY() {
-		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getY() + deltaY : y; 
+		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getY() + deltaY : y;
 	}
 
 	public synchronized boolean isActive() {

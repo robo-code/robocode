@@ -64,7 +64,7 @@ public class RobocodeLiveAnimator extends NetXMLAnimator4Robocode{
             Policy.setPolicy(securityPolicy);
 
             System.setSecurityManager(new RobocodeSecurityManager(Thread
-                    .currentThread(), manager.getThreadManager(), false));
+                    .currentThread(), manager.getThreadManager(), false, false));
             RobocodeFileOutputStream.setThreadManager(manager
                     .getThreadManager());
 

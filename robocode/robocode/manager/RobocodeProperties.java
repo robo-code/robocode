@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,14 +35,15 @@
 package robocode.manager;
 
 
-import java.awt.RenderingHints;
+import robocode.io.Logger;
+
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import robocode.io.Logger;
+import java.util.List;
 
 
 /**
@@ -408,7 +409,8 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsRenderingTextAntialiasing.
 	 *
-	 * @param optionsRenderingTextAntialiasing The optionsRenderingTextAntialiasing to set
+	 * @param optionsRenderingTextAntialiasing
+	 *         The optionsRenderingTextAntialiasing to set
 	 */
 	public void setOptionsRenderingTextAntialiasing(int optionsRenderingTextAntialiasing) {
 		this.optionsRenderingTextAntialiasing = optionsRenderingTextAntialiasing;
@@ -527,7 +529,8 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsRenderingForceBulletColor.
 	 *
-	 * @param optionsRenderingForceBulletColor The optionsRenderingForceBulletColor to set
+	 * @param optionsRenderingForceBulletColor
+	 *         The optionsRenderingForceBulletColor to set
 	 */
 	public void setOptionsRenderingForceBulletColor(boolean optionsRenderingForceBulletColor) {
 		this.optionsRenderingForceBulletColor = optionsRenderingForceBulletColor;
@@ -643,7 +646,8 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsSoundEnableWallCollision.
 	 *
-	 * @param optionsSoundEnableWallCollision The optionsSoundEnableWallCollision to set
+	 * @param optionsSoundEnableWallCollision
+	 *         The optionsSoundEnableWallCollision to set
 	 */
 	public void setOptionsSoundEnableWallCollision(boolean optionsSoundEnableWallCollision) {
 		this.optionsSoundEnableWallCollision = optionsSoundEnableWallCollision;
@@ -662,7 +666,8 @@ public class RobocodeProperties {
 	/**
 	 * Sets the optionsSoundEnableRobotCollision.
 	 *
-	 * @param optionsSoundEnableRobotCollision The optionsSoundEnableRobotCollision to set
+	 * @param optionsSoundEnableRobotCollision
+	 *         The optionsSoundEnableRobotCollision to set
 	 */
 	public void setOptionsSoundEnableRobotCollision(boolean optionsSoundEnableRobotCollision) {
 		this.optionsSoundEnableRobotCollision = optionsSoundEnableRobotCollision;
@@ -936,7 +941,7 @@ public class RobocodeProperties {
 		this.numberOfRounds = Math.max(1, numberOfRounds);
 		props.setProperty(NUMBER_OF_ROUNDS, "" + this.numberOfRounds);
 	}
-	
+
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
@@ -944,14 +949,14 @@ public class RobocodeProperties {
 	public void load(FileInputStream in) throws IOException {
 		props.load(in);
 
-		optionsViewRobotNames = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTNAMES, "true")).booleanValue();
-		optionsViewScanArcs = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SCANARCS, "false")).booleanValue();
-		optionsViewRobotEnergy = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true")).booleanValue();
-		optionsViewGround = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_GROUND, "true")).booleanValue();
-		optionsViewTPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_TPS, "true")).booleanValue();
-		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true")).booleanValue();
-		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true")).booleanValue();
-		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "true")).booleanValue();
+		optionsViewRobotNames = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTNAMES, "true"));
+		optionsViewScanArcs = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SCANARCS, "false"));
+		optionsViewRobotEnergy = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_ROBOTENERGY, "true"));
+		optionsViewGround = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_GROUND, "true"));
+		optionsViewTPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_TPS, "true"));
+		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true"));
+		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true"));
+		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "true"));
 
 		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
 
@@ -961,27 +966,30 @@ public class RobocodeProperties {
 				Integer.parseInt(props.getProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "0")));
 		setOptionsRenderingMethod(Integer.parseInt(props.getProperty(OPTIONS_RENDERING_METHOD, "0")));
 		optionsRenderingNoBuffers = Integer.parseInt(props.getProperty(OPTIONS_RENDERING_NO_BUFFERS, "2"));
-		optionsRenderingBufferImages = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_BUFFER_IMAGES, "true")).booleanValue();
-		optionsRenderingForceBulletColor = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "false")).booleanValue();
+		optionsRenderingBufferImages = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_BUFFER_IMAGES, "true"));
+		optionsRenderingForceBulletColor = Boolean.valueOf(
+				props.getProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "false"));
 
-		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false")).booleanValue();
-		optionsSoundEnableGunshot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true")).booleanValue();
-		optionsSoundEnableBulletHit = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "true")).booleanValue();
-		optionsSoundEnableRobotDeath = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "true")).booleanValue();
-		optionsSoundEnableRobotCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "true")).booleanValue();
-		optionsSoundEnableWallCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "true")).booleanValue();
+		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false"));
+		optionsSoundEnableGunshot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true"));
+		optionsSoundEnableBulletHit = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "true"));
+		optionsSoundEnableRobotDeath = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "true"));
+		optionsSoundEnableRobotCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "true"));
+		optionsSoundEnableWallCollision = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "true"));
 
 		optionsSoundMixer = props.getProperty(OPTIONS_SOUND_MIXER, "DirectAudioDevice");
-		optionsSoundEnableMixerVolume = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "true")).booleanValue();
-		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true")).booleanValue();
+		optionsSoundEnableMixerVolume = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "true"));
+		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true"));
 
 		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
 
-		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true")).booleanValue();
-		optionsCommonAppendWhenSavingResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true")).booleanValue();
-		optionsCommonEnableReplayRecording = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "false")).booleanValue();
+		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true"));
+		optionsCommonAppendWhenSavingResults = Boolean.valueOf(
+				props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true"));
+		optionsCommonEnableReplayRecording = Boolean.valueOf(
+				props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "false"));
 
-		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false")).booleanValue();
+		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false"));
 
 		fileThemeMusic = props.getProperty(FILE_THEME_MUSIC);
 		fileBackgroundMusic = props.getProperty(FILE_BACKGROUND_MUSIC);
@@ -1008,7 +1016,7 @@ public class RobocodeProperties {
 		robotFilesystemQuota = Long.parseLong(props.getProperty(ROBOT_FILESYSTEM_QUOTA, "" + 200000));
 		consoleQuota = Long.parseLong(props.getProperty(CONSOLE_QUOTA, "8192"));
 		cpuConstant = Long.parseLong(props.getProperty(CPU_CONSTANT, "-1"));
-		
+
 		numberOfRounds = Integer.parseInt(props.getProperty(NUMBER_OF_ROUNDS, "10"));
 	}
 
@@ -1051,11 +1059,12 @@ public class RobocodeProperties {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	@SuppressWarnings("serial")
 	private static class SortedProperties extends Properties {
+		private static final long serialVersionUID = 1L;
+
 		@SuppressWarnings("unchecked")
 		@Override
-		public Enumeration keys() {
+		public Enumeration<Object> keys() {
 			Enumeration<Object> keysEnum = super.keys();
 
 			Vector<String> keyList = new Vector<String>();
@@ -1066,7 +1075,7 @@ public class RobocodeProperties {
 
 			Collections.sort(keyList);
 
-			return keyList.elements();
+			return (Enumeration) keyList.elements();
 		}
 	}
 

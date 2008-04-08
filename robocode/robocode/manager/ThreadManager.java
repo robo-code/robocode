@@ -20,12 +20,12 @@
 package robocode.manager;
 
 
+import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.IBasicRobot;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import robocode._RobotBase;
-import robocode.peer.RobotPeer;
 
 
 /**
@@ -44,10 +44,10 @@ public class ThreadManager {
 		super();
 	}
 
-	public void addThreadGroup(ThreadGroup g, RobotPeer r) {
+	public void addThreadGroup(ThreadGroup g, RobotPeer robotPeer) {
 		if (!groups.contains(g)) {
 			groups.add(g);
-			robots.add(r);
+			robots.add(robotPeer);
 		}
 	}
 
@@ -85,9 +85,9 @@ public class ThreadManager {
 		robots.clear();
 	}
 
-	public synchronized void setLoadingRobot(RobotPeer newLoadingRobot) {
+	public synchronized void setLoadingRobot(RobotPeer newLoadingRobotPeer) {
 		if (robotLoaderThread != null && robotLoaderThread.equals(Thread.currentThread())) {
-			loadingRobot = newLoadingRobot;
+			loadingRobot = newLoadingRobotPeer;
 		}
 	}
 
@@ -99,7 +99,7 @@ public class ThreadManager {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 
 		RobotPeer robotPeer;
-		_RobotBase robot;
+		IBasicRobot robot;
 
 		for (int i = robots.size() - 1; i >= 0; i--) {
 			robotPeer = robots.get(i);
@@ -120,11 +120,11 @@ public class ThreadManager {
 			RobotPeer robotPeer = robots.get(i);
 
 			if (robotPeer != null) {
-				_RobotBase robot = robotPeer.getRobot();
+				IBasicRobot robot = robotPeer.getRobot();
 
 				// NOTE: The check is on name level, as the equals() method does not work between
-				// the two classes.
-				if (robot != null && robot.getClass().isAssignableFrom(robotClass)) {
+				// the two classes, and isAssignableFrom() does not work here either! -FNL
+				if (robot != null && robot.getClass().getName().equals(robotClass.getName())) {
 					robotPeers.add(robotPeer);
 				}
 			}

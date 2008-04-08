@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,8 @@ public class FileTypeFilter implements FileFilter {
 	/**
 	 * Creates a new file type filter.
 	 *
-	 * @param fileType an array of file extensions that is accepted for this
-	 *    file filter, e.g. ".class", ".jar", ".zip" etc.
+	 * @param fileTypes an array of file extensions that is accepted for this
+	 *                  file filter, e.g. ".class", ".jar", ".zip" etc.
 	 */
 	public FileTypeFilter(String[] fileTypes) {
 		super();
@@ -51,8 +51,8 @@ public class FileTypeFilter implements FileFilter {
 	 * Tests if a specified file should be included in a file list.
 	 *
 	 * @param file the file that must be tested against this file filter.
-	 * @param <code>true</code> if the file is accepted for the file list;
-	 *    <code>false</code> otherwise.
+	 * @return {@code true} if the file is accepted for the file list;
+	 *         {@code false} otherwise.
 	 */
 	public boolean accept(File file) {
 		if (file.isDirectory()) {
