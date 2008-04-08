@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,12 +19,16 @@
  *     - Moved the NoDuplicateJarOutputStream into the robocode.io package
  *     - Added codesize information using the new outputSizeClass() method
  *     - Added missing close() on FileInputStreams and FileOutputStreams
+ *     - Changed the F5 key press for refreshing the list of available robots
+ *       into 'modifier key' + R to comply with other OSes like e.g. Mac OS
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
 package robocode.packager;
 
+
+import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
@@ -212,9 +216,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 			robotPackagerContentPane.add(getWizardPanel(), BorderLayout.CENTER);
 			getWizardPanel().getWizardController().setFinishButtonTextAndMnemonic("Package!", 'P', 0);
 			robotPackagerContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK),
+					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			robotPackagerContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_FOCUSED);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK), JComponent.WHEN_FOCUSED);
 		}
 		return robotPackagerContentPane;
 	}
@@ -273,11 +278,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 					jarFilename + " already exists.  Are you sure you want to replace it?", "Warning",
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
-			if (ok == JOptionPane.NO_OPTION) {
-				out.println("Cancelled by user.");
-				return -1;
-			}
-			if (ok == JOptionPane.CANCEL_OPTION) {
+			if (ok == JOptionPane.NO_OPTION || ok == JOptionPane.CANCEL_OPTION) {
 				out.println("Cancelled by user.");
 				return -1;
 			}
@@ -473,7 +474,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public void outputSizeClass() {
 		// Codesize must be called within a safe thread to prevent security exception
 		
-		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager)System.getSecurityManager();
+		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager) System.getSecurityManager();
 
 		Thread thread = new Thread() {
 			@Override

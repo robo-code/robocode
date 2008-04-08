@@ -44,6 +44,7 @@ public class FileTransfer {
 		FILE_NOT_FOUND
 	}
 
+
 	/**
 	 * Daemon worker thread containing a 'finish' flag for waiting and notifying
 	 * when the thread has finished it's job.
@@ -161,7 +162,7 @@ public class FileTransfer {
 	 * @param sessionId an optional session id if the download is session based
 	 *
 	 * @return the download status, which is DownloadStatus.OK if the download
-	 *    completed successfully; otherwise an error occured
+	 *    completed successfully; otherwise an error occurred
 	 */
 	public final static DownloadStatus download(String url, String filename, String sessionId) {
 		HttpURLConnection con = null;
@@ -381,6 +382,7 @@ public class FileTransfer {
 			}
 		}
 	}
+
 
 	/**
 	 * Worker thread used for getting the response code of an already open HTTP

@@ -39,6 +39,7 @@ public class AtHomeListener implements RobocodeListener {
 		} else {
 			// Results are copied in order to prevent exposure of internal results
 			RobotResults[] resultsCopy = new RobotResults[results.length];
+
 			System.arraycopy(results, 0, resultsCopy, 0, results.length);
 
 			this.results = resultsCopy;
@@ -62,6 +63,7 @@ public class AtHomeListener implements RobocodeListener {
 
 		// Results are copied in order to prevent exposure of internal results
 		RobotResults[] resultsCopy = new RobotResults[results.length];
+
 		System.arraycopy(results, 0, resultsCopy, 0, results.length);
 
 		return resultsCopy;

@@ -1,14 +1,69 @@
+Version 1.5.5
+(03/24/2008)
+-------------
+o Bugfixes
+  -- The CPU constant was not calculated the first time Robocode was started up.
+  -- Removed ^M characters from the buildJikes.sh file so that the Jikes compiler
+     can be built under Unix, Linux and Mac OS X.
+o Changes
+  -- Fixed a security issue, where robot was able to access the internals of
+     the Robocode game thru the AWT Event Queue.
+     -- Robots that try to access the AWT Event Queue will be disabled
+  -- Added a "Make all bullets white" option to the Rendering Options.
+     -- When this option is enabled, all bullets on the battle field will be
+        painted in white. Use this options when you need to see all bullets
+        on the battle field, i.e. when bullet colors are almost invisible.
+
+Version 1.5.4
+(02/15/2008)
+-------------
+o Bugfix
+  -- The CPU constant was way too little compared to version 1.4.9
+     -- This is a critical bug when Robocode is used for competitions
+     -- Now the CPU calculation has been improved, where a heavy math benchmark
+        has been adopted from Robert D. Maupin (AKA Chase-san)
+     -- The method for determining if a robot has exceeded it's CPU time limit
+        has been improved to use nano second precision, to get rid of an issue
+        with millisecond granularity. This method was created by Julian Kent
+        (AKA Skilgannon)  
+
+Version 1.5.3
+(01/30/2008)
+-------------
+o Bugfixes
+  -- Some of the mnemonics on the menus on the Help menu did not work correctly
+  -- NullPointerException occurred when clicking a robot button on the right side
+     of the battle view, when no battle was running
+o Changes
+  -- All functions key shortcuts have been replaced to comply with OSes where
+     the function keys (F1 - F12) are not available or have a specific purpose,
+     and thus should not be overridden
+     -- The F5 shortcut key for refreshing the list of available robots in the
+        New Battle, Robot Packager, Robot Extractor, and Team Creator window has
+        been changed to 'modifier key' + R, i.e. Ctrl+R on Windows and Linux, and
+        Command+R for Mac OS
+     -- The F6 shortcut key for 'Compile' has been changed to 'modifier key' + B,
+        i.e. Ctrl+B on Windows and Linux, and Command+B for Mac OS
+     -- The F3 shortcut key for 'Find Next' has been changed to 'modifier key' + G,
+        i.e. Ctrl+G on Windows and Linux, and Command+G for Mac OS
+  -- When a robot or team is being packaged an UUID is now put in the .properties
+     and/or .team files in the newly generated robot or team archive file (.jar file)
+     -- The UUID is a unique identifier for the robot or team, which is generated
+        every time a robot or team package is being created or overwritten
+     -- This feature has been made in advantage to support coming features provided
+        in Robocode Repository, which is currently being updated
+
 Version 1.5.2
 (01/08/2008)
 -------------
-o Bugfix:
-  -- On some systems Robocode would not start up when tryng to run robocode.bat
+o Bugfix
+  -- On some systems Robocode would not start up when trying to run robocode.bat
      or robocode.sh
 
 Version 1.5.1
 (12/12/2007)
 -------------
-o Bugfix:
+o Bugfix
   -- Fixed security flaw with the Event Dispatch Thread, where robots could use
      the SwingUtilities.invokeLater() for running any code they should like to
      -- Thanks goes to John Cleland who reported  this security flaw and provided
@@ -59,7 +114,7 @@ o New features
      snapshot of the current robot state at that specific time/turn
      -- This new method makes it possible to map a specific robot field to a
         specific time
-  -- Added the Robot Cache Cleaner tool created by Aaron Rotenberg (aka AaronR)
+  -- Added the Robot Cache Cleaner tool created by Aaron Rotenberg (AKA AaronR)
      -- Used for cleaning the cache files for the robots, which is very useful with
         the RoboRumble client, where most problems can be solved by cleaning the
         robot cache files
@@ -299,7 +354,7 @@ o Bugfix
      version 1.4. ConcurrentModificationException in robots could occur on some
      systems, which in worst case could cause a robot to loose battles or in
      best case give a robot a lesser score
-  -- Thank goes to Helge Rhodin (aka Krabb) for help with solving the bug!
+  -- Thank goes to Helge Rhodin (AKA Krabb) for help with solving the bug!
 
 Version 1.4
 (08/14/2007)
@@ -469,7 +524,7 @@ o RoboRumble@Home client, originally developed by Albert Prez, is now built-in
      version of Robocode and which has been ported to Java 5
   -- Configuration files has been updated, and are available in the 'roborumble' folder
   -- Issues with downloading robots from the Robocode Repository site has been fixed
-o Special thanks goes to Gert Heijenk (aka GrubbmGait)
+o Special thanks goes to Gert Heijenk (AKA GrubbmGait)
   -- Gert did a tremendous job with lots of alpha testing regarding the new RoboRumble@Home
      built into Robocode! :-D  
 o The codesize tool by Christian D. Schnell has been added
@@ -617,7 +672,7 @@ o Fixed incosistency with .jar files located in the robot folder
      root of the robot folder, and also the sub folders. When running Robocode the
      first time without these files, Robots from the sub folders were shown
      (if available), but not the following times when Robocode was started up.
-  -- This fix was done by Robert D. Maupin (aka Chase-san)
+  -- This fix was done by Robert D. Maupin (AKA Chase-san)
 
 Version 1.2.3B
 (01/14/2007)
@@ -636,7 +691,7 @@ Version 1.2.3A
 o Bugfix
   -- Removed a ConcurrentModificationException that occured when processing robot events
 o Internal Robocde improvements
-  -- Robert D. Maupin (aka Chase-san) replaced all old type Java containers like Vector
+  -- Robert D. Maupin (AKA Chase-san) replaced all old type Java containers like Vector
      Hashtable, Enumeration with the newer and faster types like ArrayList, HashMap, and
      set
   -- This improves the performance a bit, especially when running in "minimized" mode

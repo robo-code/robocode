@@ -35,6 +35,7 @@ public final class PropertiesUtil {
 
 		if (filename != null && filename.trim().length() > 0) {
 			FileInputStream fis = null;
+
 			try {
 				fis = new FileInputStream(filename);
 				props.load(fis);
@@ -61,6 +62,7 @@ public final class PropertiesUtil {
 	 */
 	public static Properties getProperties(InputStream is) {
 		Properties props = new Properties();
+
 		try {
 			props.load(is);
 		} catch (Exception e) {
@@ -83,6 +85,7 @@ public final class PropertiesUtil {
 		}
 
 		FileOutputStream fos = null;
+
 		try {
 			fos = new FileOutputStream(filename);
 			properties.store(fos, comments);

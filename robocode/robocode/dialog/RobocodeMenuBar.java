@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@
  *       and Robocode Repository
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
- *     - Changed menu accelerator keys to use Toolkit.getMenuShortcutKeyMask()
- *       instead of Event.CTRL_MASK
+ *     - Changed menu shortcut keys to use getMenuShortcutKeyMask() instead of
+ *       Event.CTRL_MASK in order to comply with other OSes like e.g. Mac OS
  *     - Added "Recalculate CPU constant" to the Options menu
  *     - Added "Clean Robot Cache" to the Options menu
  *     Matthew Reeder
@@ -26,6 +26,8 @@
  *******************************************************************************/
 package robocode.dialog;
 
+
+import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import java.awt.event.*;
 
@@ -89,8 +91,6 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem helpRobocodeRepositoryMenuItem;
 	private RobocodeFrame robocodeFrame;
 	private RobocodeManager manager;
-
-	private final int MENU_SHORTCUT_KEY_MASK = java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
 	private class EventHandler implements ActionListener, MenuListener {
 		public void actionPerformed(ActionEvent e) {
@@ -242,6 +242,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleSaveMenuItem());
 			battleMenu.add(getBattleSaveAsMenuItem());
+			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleExitMenuItem());
 			battleMenu.addMenuListener(eventHandler);
 		}
@@ -439,8 +440,8 @@ public class RobocodeMenuBar extends JMenuBar {
 		if (helpRobocodeApiMenuItem == null) {
 			helpRobocodeApiMenuItem = new JMenuItem();
 			helpRobocodeApiMenuItem.setText("Robocode API");
-			helpRobocodeApiMenuItem.setMnemonic('A');
-			helpRobocodeApiMenuItem.setDisplayedMnemonicIndex(9);
+			helpRobocodeApiMenuItem.setMnemonic('I');
+			helpRobocodeApiMenuItem.setDisplayedMnemonicIndex(11);
 			helpRobocodeApiMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeApiMenuItem;
@@ -456,7 +457,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpRobocodeMenuItem = new JMenuItem();
 			helpRobocodeMenuItem.setText("Robocode Home");
 			helpRobocodeMenuItem.setMnemonic('H');
-			helpRobocodeMenuItem.setDisplayedMnemonicIndex(11);
+			helpRobocodeMenuItem.setDisplayedMnemonicIndex(9);
 			helpRobocodeMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeMenuItem;
@@ -519,8 +520,8 @@ public class RobocodeMenuBar extends JMenuBar {
 		if (helpRobocodeRepositoryMenuItem == null) {
 			helpRobocodeRepositoryMenuItem = new JMenuItem();
 			helpRobocodeRepositoryMenuItem.setText("Robocode Repository");
-			helpRobocodeRepositoryMenuItem.setMnemonic('p');
-			helpRobocodeRepositoryMenuItem.setDisplayedMnemonicIndex(11);
+			helpRobocodeRepositoryMenuItem.setMnemonic('R');
+			helpRobocodeRepositoryMenuItem.setDisplayedMnemonicIndex(9);
 			helpRobocodeRepositoryMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeRepositoryMenuItem;
@@ -673,6 +674,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			robotMenu.setMnemonic('R');
 			robotMenu.setDisplayedMnemonicIndex(0);
 			robotMenu.add(getRobotEditorMenuItem());
+			robotMenu.add(new JSeparator());
 			robotMenu.add(getRobotImportMenuItem());
 			robotMenu.add(getRobotPackagerMenuItem());
 			robotMenu.add(getTeamMenu());
@@ -801,12 +803,12 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void optionsCleanRobotCachePerformed() {
-		int ok = JOptionPane.showConfirmDialog(this, "Do you want to clean the robot cache?",
-				"Clean Robot Cache", JOptionPane.YES_NO_OPTION);
+		int ok = JOptionPane.showConfirmDialog(this, "Do you want to clean the robot cache?", "Clean Robot Cache",
+				JOptionPane.YES_NO_OPTION);
 
 		if (ok == JOptionPane.YES_OPTION) {
 			// Run the robot cache clear in a safe thread
-			final RobocodeSecurityManager securityManager = (RobocodeSecurityManager)System.getSecurityManager();
+			final RobocodeSecurityManager securityManager = (RobocodeSecurityManager) System.getSecurityManager();
 
 			Thread thread = new Thread() {
 				@Override

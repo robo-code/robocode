@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,11 +9,12 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
+ *     - Code cleanup
  *     - Added setPaintEnabled() and setSGPaintEnabled() in constructor
- *     - Removed cleanup(), which did not do anything
+ *     - Removed cleanup(), getRobotDialog(), and getRobotPeer() methods, which
+ *       did nothing or was not being used
  *     - Updated to use methods from the WindowUtil, which replaces window methods
  *       that have been (re)moved from the robocode.util.Utils class
- *     - Code cleanup
  *******************************************************************************/
 package robocode.dialog;
 
@@ -40,6 +41,7 @@ public class RobotButton extends JButton implements ActionListener {
 	private RobotPeer robotPeer;
 	private RobotDialog robotDialog;
 	private RobotDialogManager robotDialogManager;
+	private String robotName;
 
 	/**
 	 * RobotButton constructor
@@ -47,8 +49,10 @@ public class RobotButton extends JButton implements ActionListener {
 	public RobotButton(RobotDialogManager robotDialogManager, RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
 		this.robotDialogManager = robotDialogManager;
+		robotName = robotPeer.getName();
+
 		initialize();
-		robotDialog = robotDialogManager.getRobotDialog(robotPeer.getName(), false);
+		robotDialog = robotDialogManager.getRobotDialog(robotName, false);
 		if (robotDialog != null) {
 			robotDialog.setRobotPeer(robotPeer);
 			robotPeer.setPaintEnabled(robotDialog.isPaintEnabled());
@@ -58,25 +62,15 @@ public class RobotButton extends JButton implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (robotDialog == null) {
-			robotDialog = robotDialogManager.getRobotDialog(robotPeer.getName(), true);
-			robotDialog.setTitle(robotPeer.getName());
+			robotDialog = robotDialogManager.getRobotDialog(robotName, true);
+			robotDialog.setTitle(robotName);
 			robotDialog.setRobotPeer(robotPeer);
-			if (robotDialog.isVisible() && robotDialog.getState() == Frame.NORMAL) {
-				;
-			} else {
+			if (!robotDialog.isVisible() || robotDialog.getState() != Frame.NORMAL) {
 				WindowUtil.packPlaceShow(robotDialog);
 			}
 		} else {
 			robotDialog.setVisible(true);
 		}
-	}
-
-	public RobotDialog getRobotDialog() {
-		return robotDialog;
-	}
-
-	public RobotPeer getRobotPeer() {
-		return robotPeer;
 	}
 
 	/**

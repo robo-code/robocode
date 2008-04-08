@@ -81,6 +81,11 @@
  *       been extended to cleanup all robots, but also all classes that this
  *       class refers to in order to avoid circular references. In addition,
  *       cleanup has been added to the KeyEventHandler
+ *     Julian Kent
+ *     - Fix: Method for using only nano second precision when using
+ *       RobotPeer.wait(0, nanoSeconds) in order to prevent the millisecond
+ *       granularity issue, which is typically were coarse compared to the one
+ *       with nano seconds 
  *******************************************************************************/
 package robocode.battle;
 
@@ -136,6 +141,7 @@ import robocode.security.RobocodeClassLoader;
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Julian Kent (contributor)
  */
 public class Battle implements Runnable {
 
@@ -983,7 +989,10 @@ public class Battle implements Runnable {
 			if (delay > 0) {
 				try {
 					Thread.sleep(delay);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					// Set the thread status back to being interrupted
+					Thread.currentThread().interrupt();
+				}
 			}
 
 			// Update title when second has passed
@@ -1157,7 +1166,10 @@ public class Battle implements Runnable {
 			if (delay > 0) {
 				try {
 					Thread.sleep(delay);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					// Set the thread status back to being interrupted
+					Thread.currentThread().interrupt();					
+				}
 			}
 
 			// Update title when second has passed
@@ -1174,7 +1186,10 @@ public class Battle implements Runnable {
 			updateTitle();
 			try {
 				Thread.sleep(500);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 			return true;
 		}
 		return false;
@@ -1213,7 +1228,14 @@ public class Battle implements Runnable {
 							try {
 								long waitTime = manager.getCpuManager().getCpuConstant();
 
-								r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
+								int millisWait = (int) (waitTime / 1000000);
+
+								for (int i = millisWait; i > 0 && !r.isSleeping(); i--) {
+									r.wait(0, 999999);
+								}
+								if (!r.isSleeping()) {
+									r.wait(0, (int) (waitTime % 1000000));
+								}
 							} catch (InterruptedException e) {
 								// ?
 								log("Wait for " + r + " interrupted.");
@@ -1429,7 +1451,10 @@ public class Battle implements Runnable {
 			// waiting for loader to start
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		for (RobotPeer r : robots) {
@@ -1449,7 +1474,10 @@ public class Battle implements Runnable {
 		while (!isRobotsLoaded()) {
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		for (RobotPeer r : robots) {
@@ -1688,7 +1716,7 @@ public class Battle implements Runnable {
 	 * 
 	 * @return Returns a int
 	 */
-	public int getActiveRobots() {
+	public synchronized int getActiveRobots() {
 		return activeRobots;
 	}
 
@@ -2083,8 +2111,8 @@ public class Battle implements Runnable {
 	}
 
 	private final class KeyEventHandler implements KeyEventDispatcher {
-		private Battle battle = null;
-		private List<RobotPeer> robots = null;
+		private Battle battle;
+		private List<RobotPeer> robots;
 
 		public KeyEventHandler(Battle battle, List<RobotPeer> robots) {
 			this.battle = battle;

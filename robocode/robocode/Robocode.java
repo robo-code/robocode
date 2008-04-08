@@ -231,7 +231,9 @@ public class Robocode {
 				"    -nosound                Run with sound disabled\n" +
 				"\n" +
 				"properties include:\n" +
-				"    -DWORKINGDIRECTORY=<path>  Set the current working directory\n" +
+				"    -DWORKINGDIRECTORY=<path>  Set the working directory\n" +
+				"    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n" +
+				"    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n" +
 				"    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n" +
 				"    -Ddebug=true|false         Enable or disable System.err messages\n" +
 				"\n");

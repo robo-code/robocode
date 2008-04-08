@@ -145,8 +145,9 @@ public class SoundCache {
 			clones = new ClipClones(mixer, data, numClones);
 			soundTable.put(key, clones);
 		} catch (LineUnavailableException e) {
-			Logger.log("The audio mixer " + mixer.getMixerInfo().getName() +
-					" does not support the audio format of the sound clip: " + resourceName);
+			Logger.log(
+					"The audio mixer " + mixer.getMixerInfo().getName()
+					+ " does not support the audio format of the sound clip: " + resourceName);
 		}
 	}
 

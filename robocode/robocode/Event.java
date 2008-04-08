@@ -131,7 +131,7 @@ public class Event implements Comparable<Event> {
 	/**
 	 * Called by the game to set the time this event occurred.
 	 * 
-	 * @param newTime the time this event occured
+	 * @param newTime the time this event occurred
 	 */
 	public void setTime(long newTime) {
 		time = newTime;

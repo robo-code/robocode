@@ -271,7 +271,9 @@ public class AutoExtract implements ActionListener {
 		// Set native look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {}
+		} catch (Throwable t) {
+			; // For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
+		}
 
 		File installDir = null;
 		File suggestedDir = null;

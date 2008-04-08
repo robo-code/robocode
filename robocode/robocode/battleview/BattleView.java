@@ -514,11 +514,17 @@ public class BattleView extends Canvas {
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
 
-				Color bulletColor = bullet.getColor();
+				Color bulletColor;
 
-				if (bulletColor == null) {
+				if (manager.getProperties().getOptionsRenderingForceBulletColor()) {
 					bulletColor = Color.WHITE;
+				} else {
+					bulletColor = bullet.getColor();
+					if (bulletColor == null) {
+						bulletColor = Color.WHITE;
+					}
 				}
+
 				g.setColor(bulletColor);
 				g.fill(bulletArea);
 

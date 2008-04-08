@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,16 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
- *     - Added checkPackageAccess() to limit access to the robocode.util Robocode
+ *     - Added checkPackageAccess() to limit access to the robocode.util package
  *       package only
  *     - Ported to Java 5.0
  *     - Removed unnecessary method synchronization
  *     - Fixed potential NullPointerException in getFileOutputStream()
  *     - Added setStatus()
  *     - Fixed synchronization issue with accessing battleThread
+ *     - Added checkAwtEventQueueAccess() in order to prevent robots in accessing
+ *       the AWT Event Queue so they are not able to cheat by accessing the
+ *       internals of the Robocode game!
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -82,6 +85,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	@Override
 	public void checkAccess(Thread t) {
 		super.checkAccess(t);
+
 		Thread c = Thread.currentThread();
 
 		if (isSafeThread(c) && getSecurityContext().equals(safeSecurityContext)) {
@@ -520,10 +524,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPackageAccess(String pkg) {
-		if (pkg.equals("java.lang")) {
-			return;
-		}
-
 		super.checkPackageAccess(pkg);
 
 		// Accept if running in Robocode's security context
@@ -546,6 +546,41 @@ public class RobocodeSecurityManager extends SecurityManager {
 					throw new AccessControlException(
 							"Preventing " + Thread.currentThread().getName()
 							+ " from access to the internal Robocode pakage: " + pkg);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void checkAwtEventQueueAccess() {
+		super.checkAwtEventQueueAccess();
+
+ 		// Prevent robots from accessing the AWT Event Queue, i.e. hacking Robocode
+
+		List<Class<?>> robotClasses = threadManager.getRobotClasses();
+
+		for (Class<?> contextClass : getClassContext()) {
+
+			// Check if a the context class is any of the robot classes
+			for (Class<?> robotClass : robotClasses) {
+				if (contextClass.getName().startsWith(robotClass.getName())) {
+
+					// We found a robot accessing the AWT Event Queue.
+					// Now, kill all robot instances of this robot class!
+
+					List<RobotPeer> robotPeers = threadManager.getRobotPeers(robotClass);
+
+					for (RobotPeer robotPeer : robotPeers) {
+						if (robotPeer != null) {
+							robotPeer.getOut().println("SYSTEM: Accessing the AWT Event Queue is not allowed!");	
+
+							// Disable the robot
+							robotPeer.setEnergy(0);
+						}
+					}
+
+					// Kill the thread created thru the AWT Event Queue 
+					throw new ThreadDeath();
 				}
 			}
 		}

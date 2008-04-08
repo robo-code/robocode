@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,13 @@
  *     - Added keyboard mnemonics to buttons
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     - Changed the F5 key press for refreshing the list of available robots
+ *       into 'modifier key' + R to comply with other OSes like e.g. Mac OS
  *******************************************************************************/
 package robocode.dialog;
 
+
+import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -88,9 +92,10 @@ public class TeamCreator extends JDialog implements WizardListener {
 			teamCreatorContentPane.add(getWizardPanel(), BorderLayout.CENTER);
 			getWizardPanel().getWizardController().setFinishButtonTextAndMnemonic("Create Team!", 'C', 0);
 			teamCreatorContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK),
+					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			teamCreatorContentPane.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), JComponent.WHEN_FOCUSED);
+					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK), JComponent.WHEN_FOCUSED);
 		}
 		return teamCreatorContentPane;
 	}
@@ -165,10 +170,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			int ok = JOptionPane.showConfirmDialog(this, f + " already exists.  Are you sure you want to replace it?",
 					"Warning", JOptionPane.YES_NO_CANCEL_OPTION);
 
-			if (ok == JOptionPane.NO_OPTION) {
-				return -1;
-			}
-			if (ok == JOptionPane.CANCEL_OPTION) {
+			if (ok == JOptionPane.NO_OPTION || ok == JOptionPane.CANCEL_OPTION) {
 				return -1;
 			}
 		}
@@ -197,6 +199,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 		teamSpec.setRobocodeVersion(manager.getVersionManager().getVersion());
 
 		FileOutputStream out = null;
+
 		try {
 			out = new FileOutputStream(f);
 			teamSpec.store(out, "Robocode robot team");

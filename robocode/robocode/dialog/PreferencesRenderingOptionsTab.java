@@ -42,6 +42,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JComboBox optionsRenderingMethodComboBox;
 	private JComboBox optionsRenderingNoBuffersComboBox;
 	private JCheckBox optionsRenderingBufferImagesCheckBox;
+	private JCheckBox optionsRendereringForceBulletColorCheckBox;
 
 	private JButton predefinedPlaformDefaultButton;
 	private JButton predefinedSpeedButton;
@@ -158,10 +159,11 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JPanel getOtherSettingsPanel() {
 		if (otherSettingsPanel == null) {
 			otherSettingsPanel = new JPanel();
-			otherSettingsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-					"Other settings"));
+			otherSettingsPanel.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Other settings"));
 			otherSettingsPanel.setLayout(new BoxLayout(otherSettingsPanel, BoxLayout.Y_AXIS));
 			otherSettingsPanel.add(getOptionsRenderingBufferImagesCheckBox());
+			otherSettingsPanel.add(getOptionsRendereringForceBulletColorCheckBox());
 		}
 		return otherSettingsPanel;
 	}
@@ -244,13 +246,29 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return optionsRenderingBufferImagesCheckBox;
 	}
 
-	private void loadPreferences(RobocodeProperties robocodeProperties) {
-		getOptionsRenderingAntialiasingComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingAntialiasing());
+	/**
+	 * Return the optionsRendereringForceBulletColorBox
+	 *
+	 * @return JCheckBox
+	 */
+	private JCheckBox getOptionsRendereringForceBulletColorCheckBox() {
+		if (optionsRendereringForceBulletColorCheckBox == null) {
+			optionsRendereringForceBulletColorCheckBox = new JCheckBox("Make all bullets white");
+			optionsRendereringForceBulletColorCheckBox.setMnemonic('M');
+			optionsRendereringForceBulletColorCheckBox.setDisplayedMnemonicIndex(0);
+			optionsRendereringForceBulletColorCheckBox.addActionListener(eventHandler);
+		}
+		return optionsRendereringForceBulletColorCheckBox;
+	}
+
+	private void loadPreferences(RobocodeProperties props) {
+		getOptionsRenderingAntialiasingComboBox().setSelectedIndex(props.getOptionsRenderingAntialiasing());
 		getOptionsRenderingTextAntialiasingComboBox().setSelectedIndex(
-				robocodeProperties.getOptionsRenderingTextAntialiasing());
-		getOptionsRenderingMethodComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingMethod());
-		getOptionsRenderingNoBuffersComboBox().setSelectedIndex(robocodeProperties.getOptionsRenderingNoBuffers() - 1);
-		getOptionsRenderingBufferImagesCheckBox().setSelected(robocodeProperties.getOptionsRenderingBufferImages());
+				props.getOptionsRenderingTextAntialiasing());
+		getOptionsRenderingMethodComboBox().setSelectedIndex(props.getOptionsRenderingMethod());
+		getOptionsRenderingNoBuffersComboBox().setSelectedIndex(props.getOptionsRenderingNoBuffers() - 1);
+		getOptionsRenderingBufferImagesCheckBox().setSelected(props.getOptionsRenderingBufferImages());
+		getOptionsRendereringForceBulletColorCheckBox().setSelected(props.getOptionsRenderingForceBulletColor());
 	}
 
 	public void storePreferences() {
@@ -261,6 +279,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		props.setOptionsRenderingMethod(optionsRenderingMethodComboBox.getSelectedIndex());
 		props.setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
 		props.setOptionsRenderingBufferImages(optionsRenderingBufferImagesCheckBox.isSelected());
+		props.setOptionsRenderingForceBulletColor(optionsRendereringForceBulletColorCheckBox.isSelected());
 		manager.saveProperties();
 	}
 

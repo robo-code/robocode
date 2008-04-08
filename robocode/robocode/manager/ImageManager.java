@@ -131,6 +131,7 @@ public class ImageManager {
 
 	private Image getImage(String filename) {
 		Image image = ImageUtil.getImage(filename);
+
 		if (manager.getProperties().getOptionsRenderingBufferImages()) {
 			image = ImageUtil.getBufferedImage(image);
 		}

@@ -863,7 +863,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot {
 	 * <p>
 	 * See the sample robots for examples of use.
 	 *
-	 * @param event the custom event that occured
+	 * @param event the custom event that occurred
 	 *
 	 * @see #addCustomEvent
 	 * @see CustomEvent

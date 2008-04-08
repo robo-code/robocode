@@ -119,10 +119,8 @@ public class BattleSpecification implements java.io.Serializable {
 	}
 
 	/**
-	 * Used by Robocode, you do not need to use this.
+	 * @deprecated Used by Robocode, you do not need to use this.
 	 * This method may not exist in a future version of Robocode.
-	 *
-	 * @deprecated
 	 */
 	@Deprecated
 	public BattleProperties getBattleProperties() {

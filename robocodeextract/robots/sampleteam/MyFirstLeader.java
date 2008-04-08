@@ -19,6 +19,7 @@ public class MyFirstLeader extends TeamRobot {
 	public void run() {
 		// Prepare RobotColors object
 		RobotColors c = new RobotColors();
+
 		c.bodyColor = Color.red;
 		c.gunColor = Color.red;
 		c.radarColor = Color.red;

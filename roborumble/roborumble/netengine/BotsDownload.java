@@ -103,9 +103,6 @@ public class BotsDownload {
 		String exclude = parameters.getProperty("EXCLUDE");
 
 		if (exclude != null) {
-			// Trim trailing white spaces
-			exclude = exclude.trim();
-
 			// Convert into regular expression
 
 			// Dots must be dots, not "any character" in the regular expression
@@ -118,10 +115,7 @@ public class BotsDownload {
 			exclude = exclude.replaceAll("\\*", ".*");
 
 			// Split the exclude line into independent exclude filters that are trimmed for white-spaces
-			excludes = exclude.split("[,;]");
-			for (String excl : excludes) {
-				excl = excl.trim();
-			}
+			excludes = exclude.split("[\\s,;]+");
 		}
 	}
 
@@ -457,6 +451,7 @@ public class BotsDownload {
 			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") != -1) {
 					String name = record.substring(0, record.indexOf(",")).replace(' ', '_');
+
 					namesall.put(name, name);
 				}
 			}

@@ -76,6 +76,7 @@ public class UpdateRatingFiles {
 
 		try {
 			FileReader fr = new FileReader(battlesnumfile);
+
 			br = new BufferedReader(fr);
 			String record;
 
