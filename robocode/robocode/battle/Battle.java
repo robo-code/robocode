@@ -674,6 +674,7 @@ public class Battle implements Runnable {
 					r.setJuniorRobot(robotFileSpecification.isJuniorRobot());
 					r.setAdvancedRobot(robotFileSpecification.isAdvancedRobot());
 					r.setInteractiveRobot(robotFileSpecification.isInteractiveRobot());
+                    r.setPaintRobot(robotFileSpecification.isPaintRobot());
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 

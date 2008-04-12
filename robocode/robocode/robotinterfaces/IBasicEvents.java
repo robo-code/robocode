@@ -18,8 +18,6 @@ import robocode.*;
 import robocode.Event;
 import robocode.Robot;
 
-import java.awt.*;
-
 
 /**
  * An event interface for receiving basic robot events with an
@@ -276,28 +274,4 @@ public interface IBasicEvents {
 	 * @see Event
 	 */
 	void onWin(WinEvent event);
-
-	/**
-	 * This method is called every time the robot is painted. You should
-	 * override this method if you want to draw items for your robot on the
-	 * battle field, e.g. targets, virtual bullets etc.
-	 * <p/>
-	 * This method is very useful for debugging your robot.
-	 * <p/>
-	 * Note that the robot will only be painted if the "Paint" is enabled on the
-	 * robot's console window; otherwise the robot will never get painted (the
-	 * reason being that all robots might have graphical items that must be
-	 * painted, and then you might not be able to tell what graphical items that
-	 * have been painted for your robot).
-	 * <p/>
-	 * Also note that the coordinate system for the graphical context where you
-	 * paint items fits for the Robocode coordinate system where (0, 0) is at
-	 * the bottom left corner of the battlefield, where X is towards right and Y
-	 * is upwards.
-	 *
-	 * @param g the graphics context to use for painting graphical items for the
-	 *          robot
-	 * @since 1.1
-	 */
-	void onPaint(Graphics2D g);
 }
