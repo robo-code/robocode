@@ -26,6 +26,17 @@
       <fileset dir="../robocode/resources"/>
     </copy>
 
+  	<!-- Copy robot properties files -->
+    <copy todir="${build}/robots/sample">
+      <fileset file="../robocodeextract/robots/sample/*.properties"/>
+    </copy>
+    <copy todir="${build}/robots/sampleteam">
+      <fileset file="../robocodeextract/robots/sampleteam/*.properties"/>
+    </copy>
+    <copy todir="${build}/robots/sampleex">
+      <fileset file="../robocodeextract/robots/sampleex/*.properties"/>
+    </copy>
+
     <!-- Copy battles -->
     <copy todir="${build}/battles">
       <fileset dir="../robocodeextract/battles"/>

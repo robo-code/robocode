@@ -20,11 +20,21 @@ import robocode.Robot;
 import java.awt.*;
 
 /**
+ * PaintingRobot - a sample robot that demonstrates the onPaint() method
+ * <p/>
+ * Moves in a seesaw motion, and spins the gun around at each end.
+ * When painting is enabled for this robot, a red circle will be painted
+ * around this robot.
+ *
  * @author Stefan Westen (SGSample)
  * @author Pavel Savara
  */
 public class PaintingRobot extends Robot {
-    public void run() {
+
+	/**
+	 * PaintingRobot's run method - Seesaw
+	 */
+	public void run() {
         while (true) {
             ahead(100);
             turnGunRight(360);
@@ -33,15 +43,25 @@ public class PaintingRobot extends Robot {
         }
     }
 
+	/**
+	 * Fire when we see a robot
+	 */
     public void onScannedRobot(ScannedRobotEvent e) {
         fire(1);
     }
 
+	/**
+	 * We were hit!  Turn perpendicular to the bullet,
+	 * so our seesaw might avoid a future shot.
+	 */
     public void onHitByBullet(HitByBulletEvent e) {
         turnLeft(90 - e.getBearing());
     }
 
-    public void onPaint(java.awt.Graphics2D g) {
+    /**
+     * Paint a red circle around our PaintingRobot
+     */
+    public void onPaint(Graphics2D g) {
         g.setColor(Color.red);
         g.drawOval((int) (getX() - 50), (int) (getY() - 50), 100, 100);
     }
