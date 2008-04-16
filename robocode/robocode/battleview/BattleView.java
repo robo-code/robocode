@@ -26,8 +26,7 @@ import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.ExplosionPeer;
 import robocode.peer.RobotPeer;
-import robocode.robotinterfaces.IBasicEvents;
-import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.*;
 import robocode.util.GraphicsState;
 
 import java.awt.*;
@@ -466,25 +465,28 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		IBasicRobot robot = robotPeer.getRobot();
-		IBasicEvents basicEvents = robot.getBasicEventListener();
+		if (robotPeer.getRobot() != null && robotPeer.isPaintRobot()) {
 
-		// Do the painting
-		try {
-			if (basicEvents != null) {
-				if (robotPeer.isSGPaintEnabled()) {
-					basicEvents.onPaint(g);
-				} else {
-					mirroredGraphics.bind(g, battleField.getHeight());
-					basicEvents.onPaint(mirroredGraphics);
-					mirroredGraphics.release();
+			IPaintRobot robot = (IPaintRobot) robotPeer.getRobot();
+			IPaintEvents basicEvents = robot.getPaintEventListener();
+
+			// Do the painting
+			try {
+				if (basicEvents != null) {
+					if (robotPeer.isSGPaintEnabled()) {
+						basicEvents.onPaint(g);
+					} else {
+						mirroredGraphics.bind(g, battleField.getHeight());
+						basicEvents.onPaint(mirroredGraphics);
+						mirroredGraphics.release();
+					}
 				}
-			}
-		} catch (Exception e) {
-			// Make sure that Robocode is not halted by an exception caused by letting the robot paint
+			} catch (Exception e) {
+				// Make sure that Robocode is not halted by an exception caused by letting the robot paint
 
-			robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-			e.printStackTrace(robotPeer.getOut());
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
+				e.printStackTrace(robotPeer.getOut());
+			}
 		}
 
 		// Restore the graphics state

@@ -31,9 +31,7 @@
 package robocode;
 
 
-import robocode.robotinterfaces.IBasicEvents;
-import robocode.robotinterfaces.IInteractiveEvents;
-import robocode.robotinterfaces.IInteractiveRobot;
+import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 import java.awt.*;
@@ -70,7 +68,7 @@ import java.awt.event.MouseWheelEvent;
  * @see TeamRobot
  * @see Droid
  */
-public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, IInteractiveEvents {
+public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents, IInteractiveEvents, IPaintEvents {
 
 	/**
 	 * Constructs a new robot.
@@ -95,6 +93,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IBasicEvents, II
 	 * {@inheritDoc}}
 	 */
 	public final IInteractiveEvents getInteractiveEventListener() {
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}}
+	 */
+	public final IPaintEvents getPaintEventListener() {
 		return this;
 	}
 

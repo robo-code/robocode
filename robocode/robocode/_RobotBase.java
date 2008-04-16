@@ -75,7 +75,7 @@ public abstract class _RobotBase implements IBasicRobot, Runnable {
 	 * is uninitialized.
 	 */
 	static void uninitializedException() {
-		StackTraceElement[] trace = new Throwable().getStackTrace();
+		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		String methodName = trace[1].getMethodName();
 
 		throw new RobotException(

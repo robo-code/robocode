@@ -164,6 +164,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private boolean isJuniorRobot;
 	private boolean isInteractiveRobot;
+	private boolean isPaintRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
 	private boolean isDroid;
@@ -294,6 +295,18 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public void setInteractiveRobot(boolean value) {
 		this.isInteractiveRobot = value;
+	}
+
+	/**
+	 * Returns <code>true</code> if the robot is implementing the
+	 * {@link IPaintRobot}; <code>false</code> otherwise.
+	 */
+	public boolean isPaintRobot() {
+		return isPaintRobot;
+	}
+
+	public void setPaintRobot(boolean value) {
+		this.isPaintRobot = value;
 	}
 
 	/**
