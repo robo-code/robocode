@@ -267,31 +267,38 @@ public class EventManager implements IEventManager {
 	}
 
 	public int getEventPriority(String eventClass) {
-		if (eventClass.equals("robocode.BulletHitEvent") || eventClass.equals("BulletHitEvent")) {
+		if (eventClass == null) {
+			return -1;
+		}
+		if (eventClass.startsWith("robocode.")) {
+			eventClass = eventClass.substring(9);
+		}
+
+		if (eventClass.equals("BulletHitEvent")) {
 			return bulletHitEventPriority;
-		} else if (eventClass.equals("robocode.BulletMissedEvent") || eventClass.equals("BulletMissedEvent")) {
+		} else if (eventClass.equals("BulletMissedEvent")) {
 			return bulletMissedEventPriority;
-		} else if (eventClass.equals("robocode.DeathEvent") || eventClass.equals("DeathEvent")) {
+		} else if (eventClass.equals("DeathEvent")) {
 			return deathEventPriority;
-		} else if (eventClass.equals("robocode.HitByBulletEvent") || eventClass.equals("HitByBulletEvent")) {
+		} else if (eventClass.equals("HitByBulletEvent")) {
 			return hitByBulletEventPriority;
-		} else if (eventClass.equals("robocode.HitRobotEvent") || eventClass.equals("HitRobotEvent")) {
+		} else if (eventClass.equals("HitRobotEvent")) {
 			return hitRobotEventPriority;
-		} else if (eventClass.equals("robocode.HitWallEvent") || eventClass.equals("HitWallEvent")) {
+		} else if (eventClass.equals("HitWallEvent")) {
 			return hitWallEventPriority;
-		} else if (eventClass.equals("robocode.RobotDeathEvent") || eventClass.equals("RobotDeathEvent")) {
+		} else if (eventClass.equals("RobotDeathEvent")) {
 			return robotDeathEventPriority;
-		} else if (eventClass.equals("robocode.ScannedRobotEvent") || eventClass.equals("ScannedRobotEvent")) {
+		} else if (eventClass.equals("ScannedRobotEvent")) {
 			return scannedRobotEventPriority;
-		} else if (eventClass.equals("robocode.MessageEvent") || eventClass.equals("MessageEvent")) {
+		} else if (eventClass.equals("MessageEvent")) {
 			return messageEventPriority;
-		} else if (eventClass.equals("robocode.SkippedTurnEvent") || eventClass.equals("SkippedTurnEvent")) {
+		} else if (eventClass.equals("SkippedTurnEvent")) {
 			return skippedTurnEventPriority;
-		} else if (eventClass.equals("robocode.WinEvent") || eventClass.equals("WinEvent")) {
+		} else if (eventClass.equals("WinEvent")) {
 			return winEventPriority;
-		} else if (eventClass.equals("robocode.BulletHitBulletEvent") || eventClass.equals("BulletHitBulletEvent")) {
+		} else if (eventClass.equals("BulletHitBulletEvent")) {
 			return bulletHitBulletEventPriority;
-		} else if (eventClass.equals("robocode.StatusEvent") || eventClass.equals("StatusEvent")) {
+		} else if (eventClass.equals("StatusEvent")) {
 			return statusEventPriority;
 		} else {
 			return -1;
@@ -793,6 +800,9 @@ public class EventManager implements IEventManager {
 	}
 
 	public void setEventPriority(String eventClass, int priority) {
+		if (eventClass == null) {
+			return;
+		}
 		if (priority < 0) {
 			robotPeer.getOut().println("SYSTEM: Priority must be between 0 and 99.");
 			robotPeer.getOut().println("SYSTEM: Priority for " + eventClass + " will be 0.");
@@ -802,35 +812,38 @@ public class EventManager implements IEventManager {
 			robotPeer.getOut().println("SYSTEM: Priority for " + eventClass + " will be 99.");
 			priority = 99;
 		}
-		if (eventClass.equals("robocode.BulletHitEvent") || eventClass.equals("BulletHitEvent")) {
+		if (eventClass.startsWith("robocode.")) {
+			eventClass = eventClass.substring(9);
+		}
+		if (eventClass.equals("BulletHitEvent")) {
 			bulletHitEventPriority = priority;
-		} else if (eventClass.equals("robocode.BulletHitBulletEvent") || eventClass.equals("BulletHitBulletEvent")) {
+		} else if (eventClass.equals("BulletHitBulletEvent")) {
 			bulletHitBulletEventPriority = priority;
-		} else if (eventClass.equals("robocode.BulletMissedEvent") || eventClass.equals("BulletMissedEvent")) {
+		} else if (eventClass.equals("BulletMissedEvent")) {
 			bulletMissedEventPriority = priority;
-		} else if (eventClass.equals("robocode.HitByBulletEvent") || eventClass.equals("HitByBulletEvent")) {
+		} else if (eventClass.equals("HitByBulletEvent")) {
 			hitByBulletEventPriority = priority;
-		} else if (eventClass.equals("robocode.HitRobotEvent") || eventClass.equals("HitRobotEvent")) {
+		} else if (eventClass.equals("HitRobotEvent")) {
 			hitRobotEventPriority = priority;
-		} else if (eventClass.equals("robocode.HitWallEvent") || eventClass.equals("HitWallEvent")) {
+		} else if (eventClass.equals("HitWallEvent")) {
 			hitWallEventPriority = priority;
-		} else if (eventClass.equals("robocode.RobotDeathEvent") || eventClass.equals("RobotDeathEvent")) {
+		} else if (eventClass.equals("RobotDeathEvent")) {
 			robotDeathEventPriority = priority;
-		} else if (eventClass.equals("robocode.ScannedRobotEvent") || eventClass.equals("ScannedRobotEvent")) {
+		} else if (eventClass.equals("ScannedRobotEvent")) {
 			scannedRobotEventPriority = priority;
-		} else if (eventClass.equals("robocode.MessageEvent") || eventClass.equals("MessageEvent")) {
+		} else if (eventClass.equals("MessageEvent")) {
 			messageEventPriority = priority;
-		} else if (eventClass.equals("robocode.StatusEvent") || eventClass.equals("StatusEvent")) {
+		} else if (eventClass.equals("StatusEvent")) {
 			statusEventPriority = priority;
-		} else if (eventClass.equals("robocode.CustomEvent") || eventClass.equals("CustomEvent")) {
+		} else if (eventClass.equals("CustomEvent")) {
 			robotPeer.getOut().println(
 					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
-		} else if (eventClass.equals("robocode.SkippedTurnEvent") || eventClass.equals("SkippedTurnEvent")) {
+		} else if (eventClass.equals("SkippedTurnEvent")) {
 			robotPeer.getOut().println(
 					"SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
-		} else if (eventClass.equals("robocode.WinEvent") || eventClass.equals("WinEvent")) {
+		} else if (eventClass.equals("WinEvent")) {
 			robotPeer.getOut().println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
-		} else if (eventClass.equals("robocode.DeathEvent") || eventClass.equals("DeathEvent")) {
+		} else if (eventClass.equals("DeathEvent")) {
 			robotPeer.getOut().println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
 		} else {
 			robotPeer.getOut().println("SYSTEM: Unknown event class: " + eventClass);
