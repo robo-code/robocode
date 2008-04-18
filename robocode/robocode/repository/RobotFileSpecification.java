@@ -51,7 +51,7 @@ public class RobotFileSpecification extends FileSpecification {
 
 	private boolean isJuniorRobot;
 	private boolean isInteractiveRobot;
-    private boolean isPaintRobot;
+	private boolean isPaintRobot;
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
 	private boolean isDroid;
@@ -347,13 +347,13 @@ public class RobotFileSpecification extends FileSpecification {
 		this.isInteractiveRobot = value;
 	}
 
-    public boolean isPaintRobot() {
-        return isPaintRobot;
-    }
+	public boolean isPaintRobot() {
+		return isPaintRobot;
+	}
 
-    public void setPaintRobot(boolean value) {
-        this.isPaintRobot = value;
-    }
+	public void setPaintRobot(boolean value) {
+		this.isPaintRobot = value;
+	}
 
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;

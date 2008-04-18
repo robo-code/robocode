@@ -96,12 +96,12 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		return this;
 	}
 
-    /**
-     * {@inheritDoc}}
-     */
-    public final IPaintEvents getPaintEventListener() {
-        return this;
-    }
+	/**
+	 * {@inheritDoc}}
+	 */
+	public final IPaintEvents getPaintEventListener() {
+		return this;
+	}
 
 	/**
 	 * Immediately moves your robot ahead (forward) by distance measured in

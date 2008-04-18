@@ -420,9 +420,9 @@ public class RobotRepositoryManager {
 							robotFileSpecification.setInteractiveRobot(true);
 						}
 
-                        if (IPaintRobot.class.isAssignableFrom(robotClass)) {
-                            robotFileSpecification.setPaintRobot(true);
-                        }
+						if (IPaintRobot.class.isAssignableFrom(robotClass)) {
+							robotFileSpecification.setPaintRobot(true);
+						}
 
 						/* if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
 						 robotFileSpecification.setClassicRobot(true);

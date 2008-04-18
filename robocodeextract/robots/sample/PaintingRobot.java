@@ -13,11 +13,13 @@
  *******************************************************************************/
 package sample;
 
+
 import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
 import robocode.Robot;
 
 import java.awt.*;
+
 
 /**
  * PaintingRobot - a sample robot that demonstrates the onPaint() method
@@ -35,34 +37,34 @@ public class PaintingRobot extends Robot {
 	 * PaintingRobot's run method - Seesaw
 	 */
 	public void run() {
-        while (true) {
-            ahead(100);
-            turnGunRight(360);
-            back(100);
-            turnGunRight(360);
-        }
-    }
+		while (true) {
+			ahead(100);
+			turnGunRight(360);
+			back(100);
+			turnGunRight(360);
+		}
+	}
 
 	/**
 	 * Fire when we see a robot
 	 */
-    public void onScannedRobot(ScannedRobotEvent e) {
-        fire(1);
-    }
+	public void onScannedRobot(ScannedRobotEvent e) {
+		fire(1);
+	}
 
 	/**
 	 * We were hit!  Turn perpendicular to the bullet,
 	 * so our seesaw might avoid a future shot.
 	 */
-    public void onHitByBullet(HitByBulletEvent e) {
-        turnLeft(90 - e.getBearing());
-    }
+	public void onHitByBullet(HitByBulletEvent e) {
+		turnLeft(90 - e.getBearing());
+	}
 
-    /**
-     * Paint a red circle around our PaintingRobot
-     */
-    public void onPaint(Graphics2D g) {
-        g.setColor(Color.red);
-        g.drawOval((int) (getX() - 50), (int) (getY() - 50), 100, 100);
-    }
+	/**
+	 * Paint a red circle around our PaintingRobot
+	 */
+	public void onPaint(Graphics2D g) {
+		g.setColor(Color.red);
+		g.drawOval((int) (getX() - 50), (int) (getY() - 50), 100, 100);
+	}
 }

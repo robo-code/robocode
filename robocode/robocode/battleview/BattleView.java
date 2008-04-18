@@ -465,32 +465,31 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
+		if (robotPeer.getRobot() != null && robotPeer.isPaintRobot()) {
 
-        if (robotPeer.getRobot() != null && robotPeer.isPaintRobot()) {
+			IPaintRobot robot = (IPaintRobot) robotPeer.getRobot();
+			IPaintEvents basicEvents = robot.getPaintEventListener();
 
-            IPaintRobot robot = (IPaintRobot) robotPeer.getRobot();
-            IPaintEvents basicEvents = robot.getPaintEventListener();
+			// Do the painting
+			try {
+				if (basicEvents != null) {
+					if (robotPeer.isSGPaintEnabled()) {
+						basicEvents.onPaint(g);
+					} else {
+						mirroredGraphics.bind(g, battleField.getHeight());
+						basicEvents.onPaint(mirroredGraphics);
+						mirroredGraphics.release();
+					}
+				}
+			} catch (Exception e) {
+				// Make sure that Robocode is not halted by an exception caused by letting the robot paint
 
-            // Do the painting
-            try {
-                if (basicEvents != null) {
-                    if (robotPeer.isSGPaintEnabled()) {
-                        basicEvents.onPaint(g);
-                    } else {
-                        mirroredGraphics.bind(g, battleField.getHeight());
-                        basicEvents.onPaint(mirroredGraphics);
-                        mirroredGraphics.release();
-                    }
-                }
-            } catch (Exception e) {
-                // Make sure that Robocode is not halted by an exception caused by letting the robot paint
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
+				e.printStackTrace(robotPeer.getOut());
+			}
+		}
 
-                robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-                e.printStackTrace(robotPeer.getOut());
-            }
-        }
-
-        // Restore the graphics state
+		// Restore the graphics state
 		gfxState.restore(g);
 	}
 
