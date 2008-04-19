@@ -465,21 +465,16 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		if (robotPeer.getRobot() != null && robotPeer.isPaintRobot()) {
-
-			IPaintRobot robot = (IPaintRobot) robotPeer.getRobot();
-			IPaintEvents paintEvents = robot.getPaintEventListener();
+		if (robotPeer.isPaintRobot()) {
 
 			// Do the painting
 			try {
-				if (paintEvents != null) {
-					if (robotPeer.isSGPaintEnabled()) {
-						robotPeer.getGraphicsProxy().processTo(g);
-					} else {
-						mirroredGraphics.bind(g, battleField.getHeight());
-						robotPeer.getGraphicsProxy().processTo(g);
-						mirroredGraphics.release();
-					}
+				if (robotPeer.isSGPaintEnabled()) {
+					robotPeer.getGraphicsProxy().processTo(g);
+				} else {
+					mirroredGraphics.bind(g, battleField.getHeight());
+					robotPeer.getGraphicsProxy().processTo(g);
+					mirroredGraphics.release();
 				}
 			} catch (Exception e) {
 				// Make sure that Robocode is not halted by an exception caused by letting the robot paint
