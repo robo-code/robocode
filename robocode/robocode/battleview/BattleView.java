@@ -468,16 +468,16 @@ public class BattleView extends Canvas {
 		if (robotPeer.getRobot() != null && robotPeer.isPaintRobot()) {
 
 			IPaintRobot robot = (IPaintRobot) robotPeer.getRobot();
-			IPaintEvents basicEvents = robot.getPaintEventListener();
+			IPaintEvents paintEvents = robot.getPaintEventListener();
 
 			// Do the painting
 			try {
-				if (basicEvents != null) {
+				if (paintEvents != null) {
 					if (robotPeer.isSGPaintEnabled()) {
-						basicEvents.onPaint(g);
+						robotPeer.getGraphicsProxy().processTo(g);
 					} else {
 						mirroredGraphics.bind(g, battleField.getHeight());
-						basicEvents.onPaint(mirroredGraphics);
+						robotPeer.getGraphicsProxy().processTo(g);
 						mirroredGraphics.release();
 					}
 				}

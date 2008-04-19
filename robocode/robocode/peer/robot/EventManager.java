@@ -27,6 +27,7 @@
  *     - Added handling of the new StatusEvent, which is used for calling the new
  *       Robot.onStatus(StatusEvent e) event handler, and added the
  *       getStatusEvents() method
+ *     - Added PaintEvent with the onPaint() handler and also getPaintEvents()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -60,11 +61,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Pavel Savara (contributor)
  */
 public class EventManager implements IEventManager {
-	private RobotPeer robotPeer = null;
+	private RobotPeer robotPeer;
 
 	private final int MAX_PRIORITY = 100;
 
 	private final int deathEventPriority = -1; // System event -> cannot be changed!
+	private int paintEventPriority = 5;
 	private int scannedRobotEventPriority = 10;
 	private int hitByBulletEventPriority = 20;
 	private int hitWallEventPriority = 30;
@@ -85,7 +87,7 @@ public class EventManager implements IEventManager {
 	private EventQueue eventQueue;
 
 	private double fireAssistAngle;
-	private boolean fireAssistValid = false;
+	private boolean fireAssistValid;
 	private boolean useFireAssist = true;
 
 	private boolean interruptible[] = new boolean[MAX_PRIORITY + 1];
@@ -300,6 +302,8 @@ public class EventManager implements IEventManager {
 			return bulletHitBulletEventPriority;
 		} else if (eventClass.equals("StatusEvent")) {
 			return statusEventPriority;
+		} else if (eventClass.equals("PaintEvent")) {
+			return paintEventPriority;
 		} else {
 			return -1;
 		}
@@ -344,6 +348,9 @@ public class EventManager implements IEventManager {
 		}
 		if (e instanceof CustomEvent) {
 			return ((CustomEvent) e).getCondition().getPriority();
+		}
+		if (e instanceof PaintEvent) {
+			return paintEventPriority;
 		}
 		return 0;
 	}
@@ -689,6 +696,18 @@ public class EventManager implements IEventManager {
 		}
 	}
 
+	public void onPaint() {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isPaintRobot()) {
+			IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
+
+			if (listener != null) {
+				listener.onPaint(robotPeer.getGraphicsProxy());
+			}
+		}
+	}
+	
 	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
@@ -770,6 +789,8 @@ public class EventManager implements IEventManager {
 					onWin((WinEvent) currentEvent);
 				} else if (currentEvent instanceof CustomEvent) {
 					onCustomEvent((CustomEvent) currentEvent);
+				} else if (currentEvent instanceof PaintEvent) {
+					onPaint();
 				} else {
 					robotPeer.getOut().println("Unknown event: " + currentEvent);
 				}
@@ -835,6 +856,8 @@ public class EventManager implements IEventManager {
 			messageEventPriority = priority;
 		} else if (eventClass.equals("StatusEvent")) {
 			statusEventPriority = priority;
+		} else if (eventClass.equals("PaintEvent")) {
+			paintEventPriority = priority;
 		} else if (eventClass.equals("CustomEvent")) {
 			robotPeer.getOut().println(
 					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
@@ -868,7 +891,7 @@ public class EventManager implements IEventManager {
 	 * Example:
 	 * <pre>
 	 *   for (MessageEvent e : getMessageEvents()) {
-	 *      // do something with e
+	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
 	 *
@@ -898,7 +921,7 @@ public class EventManager implements IEventManager {
 	 * Example:
 	 * <pre>
 	 *   for (StatusEvent e : getStatusEvents()) {
-	 *      // do something with e
+	 *      <i> (do something with e) </i>
 	 *   }
 	 * </pre>
 	 *
@@ -915,6 +938,36 @@ public class EventManager implements IEventManager {
 			for (Event e : eventQueue) {
 				if (e instanceof StatusEvent) {
 					events.add((StatusEvent) e);
+				}
+			}
+		}
+		return events;
+	}
+
+	/**
+	 * Returns a vector containing all PaintEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   for (PaintEvent e : getPaintEvents()) {
+	 *      <i> (do something with e) </i>
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all PaintEvents currently in the robot's
+	 *         queue.
+	 * @see #onPaint(Graphics2D)
+	 * @see PaintEvent
+	 * @since 1.6.1
+	 */
+	public List<PaintEvent> getPaintEvents() {
+		List<PaintEvent> events = Collections.synchronizedList(new ArrayList<PaintEvent>());
+
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof PaintEvent) {
+					events.add((PaintEvent) e);
 				}
 			}
 		}

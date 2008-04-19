@@ -92,10 +92,7 @@
 package robocode.battle;
 
 
-import robocode.MessageEvent;
-import robocode.RobotDeathEvent;
-import robocode.SkippedTurnEvent;
-import robocode.StatusEvent;
+import robocode.*;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.battleview.BattleView;
@@ -866,10 +863,16 @@ public class Battle implements Runnable {
 				}
 			}
 
-			// Add status events for the current turn to all robots that are alive
+			// Add events for the current turn to all robots that are alive
 			for (RobotPeer r : robots) {
 				if (!r.isDead()) {
+					// Add status event
 					r.getEventManager().add(new StatusEvent(r));
+
+					// Add paint event, if robot is a paint robot and its painting is enabled
+					if (r.isPaintRobot() && r.isPaintEnabled()) {
+						r.getEventManager().add(new PaintEvent());
+					}
 				}
 			}
 

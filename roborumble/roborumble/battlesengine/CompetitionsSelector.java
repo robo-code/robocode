@@ -17,6 +17,7 @@
 package roborumble.battlesengine;
 
 
+import codesize.Codesize;
 import codesize.Codesize.*;
 import static roborumble.util.PropertiesUtil.getProperties;
 import static roborumble.util.PropertiesUtil.storeProperties;

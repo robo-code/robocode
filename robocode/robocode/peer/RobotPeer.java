@@ -45,6 +45,8 @@
  *       are only created and sent to robot when damage do occur. Previously, a
  *       robot could receive HitRobotEvents even when no damage was done
  *     - Renamed scanReset() to rescan()
+ *     - Added getStatusEvents()
+ *     - Added getGraphicsProxy(), getPaintEvents()
  *     Luis Crespo
  *     - Added states
  *     Titus Chen
@@ -83,6 +85,7 @@ import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
+import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
@@ -239,6 +242,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
+
+	private Graphics2DProxy graphicsProxy;
 
 	protected int state;
 
@@ -1865,6 +1870,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			waitCondition.cleanup();
 			waitCondition = null;
 		}
+
+		// Cleanup graphics proxy
+		graphicsProxy = null;
 	}
 
 	public void cleanupStaticFields() {
@@ -1981,5 +1989,20 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public List<MessageEvent> getMessageEvents() {
 		return eventManager.getMessageEvents();
+	}
+
+	public List<StatusEvent> getStatusEvents() {
+		return eventManager.getStatusEvents();
+	}
+
+	public List<PaintEvent> getPaintEvents() {
+		return eventManager.getPaintEvents();
+	}
+
+	public Graphics2DProxy getGraphicsProxy() {
+		if (graphicsProxy == null) {
+			graphicsProxy = new Graphics2DProxy();
+		}
+		return graphicsProxy;
 	}
 }
