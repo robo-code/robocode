@@ -119,7 +119,7 @@
         destfile="${build}/${sources.archive}"
         basedir=".."
         includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**, tools/**"
-        excludes="build/build, **/bin/**, **/.svn/**"
+        excludes="build/build, **/bin/**, **/.svn/**, **/_svn/**"
         defaultexcludes="no"
     />
   </target>
@@ -286,11 +286,15 @@
       <!-- Specify files to include -->
       <fileset dir="${src.extract}">      <!-- Files from the extract folder -->
         <exclude name="build/**"/>        <!-- Exclude build files (if any) -->
+        <exclude name="**/.svn/**"/>      <!-- Exclude subversion files (if any) -->
+        <exclude name="**/_svn/**"/>      <!-- Exclude subversion files (if any) -->
       </fileset>
       <fileset dir="${src.roborumble}">   <!-- Files from the roborumble folder -->
         <include name="*.bat"/>           <!-- Windows batch files -->
         <include name="*.sh"/>            <!-- Shell files (Mac, Linux, and similar) -->
       	<include name="config/*"/>        <!-- Configuration files -->
+        <exclude name="**/.svn/**"/>      <!-- Exclude subversion files (if any) -->
+        <exclude name="**/_svn/**"/>      <!-- Exclude subversion files (if any) -->
       </fileset>
       <fileset dir="${build}">
         <include name="libs/robocode.jar"/>      <!-- Builded robocode.jar -->
