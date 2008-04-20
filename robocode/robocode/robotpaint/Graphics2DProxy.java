@@ -748,11 +748,14 @@ public class Graphics2DProxy extends Graphics2D {
 		for (QueuedCall call : queuedCalls) {
 			try {
 				processQueuedCall(call, g);
-				queuedCalls.poll();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void clearQueue() {
+		queuedCalls.clear();
 	}
 
 	private void initialize(Graphics2D g) {

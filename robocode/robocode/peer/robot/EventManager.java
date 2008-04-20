@@ -44,6 +44,7 @@ import robocode.*;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.RobotPeer;
 import robocode.robotinterfaces.*;
+import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.Utils;
 
 import java.util.ArrayList;
@@ -703,11 +704,16 @@ public class EventManager implements IEventManager {
 			IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
 
 			if (listener != null) {
-				listener.onPaint(robotPeer.getGraphicsProxy());
+				// Clear the queue of calls in the graphics proxy as these have already
+				// been processed, so calling onPaint() will add the new calls
+				Graphics2DProxy gfxProxy = robotPeer.getGraphicsProxy();
+
+				gfxProxy.clearQueue();
+				listener.onPaint(gfxProxy);
 			}
 		}
 	}
-	
+
 	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
