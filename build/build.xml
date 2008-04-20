@@ -51,10 +51,15 @@
 
   <defaultexcludes add="build.xml"/>	 <!-- Ant build scripts -->
   <defaultexcludes add="**/.*/**"/>      <!-- Eclipse configuration folders -->
+  <defaultexcludes add="**/*.iml"/>      <!-- IDEA -->
+  <defaultexcludes add="**/*.ipr"/>      <!-- IDEA -->
+  <defaultexcludes add="**/*.iws"/>      <!-- IDEA -->
   <defaultexcludes add="**/*.bak"/>      <!-- Windows backup files -->
   <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
   <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
   <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
+  <defaultexcludes add="**/.svn"/>       <!-- Subversion directories -->
+  <defaultexcludes add="**/_svn"/>       <!-- Subversion directories -->
 
   <!-- ====================================== -->
   <!-- Target: init                           -->
