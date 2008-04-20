@@ -15,6 +15,7 @@
  *       parameter anymore
  *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
  *       robots process events before they die
+ *     - Added getStatusEvents() and getPaintEvents()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -42,6 +43,7 @@ import java.util.Vector;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Pavel Savara (contributor)
+ *
  * @see <a target="_top" href="http://robocode.sourceforge.net">
  *      robocode.sourceforge.net</a>
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
@@ -762,11 +764,30 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Returns the current priority of a class of events.
 	 * An event priority is a value from 0 - 99. The higher value, the higher
-	 * priority. The default priority is 80.
+	 * priority.
 	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   int myHitRobotPriority = getEventPriority("HitRobotEvent");
+	 * </pre>
+	 * <p/>
+	 * The default priorities are, from highest to lowest:
+	 * <pre>
+	 * 	 {@link WinEvent}:             100 (reserved)
+	 * 	 {@link SkippedTurnEvent}:     100 (reserved)
+	 *   {@link StatusEvent}:           99
+	 * 	 {@link CustomEvent}:           80
+	 * 	 {@link MessageEvent}:          75
+	 * 	 {@link RobotDeathEvent}:       70
+	 * 	 {@link BulletMissedEvent}:     60
+	 * 	 {@link BulletHitBulletEvent}:  55
+	 * 	 {@link BulletHitEvent}:        50
+	 * 	 {@link HitByBulletEvent}:      40
+	 * 	 {@link HitWallEvent}:          30
+	 * 	 {@link HitRobotEvent}:         20
+	 * 	 {@link ScannedRobotEvent}:     10
+	 *   {@link PaintEvent}:             5
+	 * 	 {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
 	 *
 	 * @param eventClass the name of the event class (string)
@@ -909,6 +930,59 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * Returns a vector containing all StatusEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   for (StatusEvent event : getStatusEvents()) {
+	 *       <i>// do something with the event</i>
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all StatusEvents currently in the robot's queue
+	 * @see #onStatus(StatusEvent) onStatus(StatusEvent)
+	 * @see StatusEvent
+	 * @see #getAllEvents()
+	 *
+	 * @since 1.6.1
+	 */
+	public Vector<StatusEvent> getStatusEvents() {
+		if (peer != null) {
+			return new Vector<StatusEvent>(((IAdvancedRobotPeer) peer).getStatusEvents());
+		}
+		uninitializedException();
+		return null; // never called
+	}
+
+	/**
+	 * Returns a vector containing all PaintEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   for (PaintEvent event : getPaintEvents()) {
+	 *       <i>// do something with the event</i>
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all PaintEvents currently in the robot's
+	 *         queue
+	 * @see #onPaint(Graphics2D) onPaint(Graphics2D)
+	 * @see PaintEvent
+	 * @see #getAllEvents()
+	 *
+	 * @since 1.6.1
+	 */
+	public Vector<PaintEvent> getPaintEvents() {
+		if (peer != null) {
+			return new Vector<PaintEvent>(((IAdvancedRobotPeer) peer).getPaintEvents());
+		}
+		uninitializedException();
+		return null; // never called
+	}
+
+	/**
 	 * Checks if the gun is set to adjust for the robot turning, i.e. to turn
 	 * independent from the robot's body turn.
 	 * <p/>
@@ -1000,6 +1074,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 * 	 {@link WinEvent}:             100 (reserved)
 	 * 	 {@link SkippedTurnEvent}:     100 (reserved)
+	 *   {@link StatusEvent}:           99
 	 * 	 {@link CustomEvent}:           80
 	 * 	 {@link MessageEvent}:          75
 	 * 	 {@link RobotDeathEvent}:       70
@@ -1010,6 +1085,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * 	 {@link HitWallEvent}:          30
 	 * 	 {@link HitRobotEvent}:         20
 	 * 	 {@link ScannedRobotEvent}:     10
+	 *   {@link PaintEvent}:             5
 	 * 	 {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
 	 * <p/>

@@ -1,6 +1,9 @@
 Version 1.6.1 Alpha
-(04/17/2008)
+(04/20/2008)
 -------------
+o Changes
+- onPaint() in robot event queue. Robot will pay CPU time, added PaintEvent
+- Added getStatusEvents() and getPaintEvents() to AdvancedRobot and IAdvancedRobotPeer
 
 Version 1.6.0 Beta 2
 (04/17/2008)

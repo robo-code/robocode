@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Added getPaintEvents()
  *******************************************************************************/
 package robocode.peer.proxies;
 
@@ -22,6 +24,7 @@ import java.util.List;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
@@ -127,6 +130,11 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 		return ((IAdvancedRobotPeer) peer).getAllEvents();
 	}
 
+	public List<StatusEvent> getStatusEvents() {
+		peer.getCall();
+		return ((IAdvancedRobotPeer) peer).getStatusEvents();
+	}
+
 	public List<BulletMissedEvent> getBulletMissedEvents() {
 		peer.getCall();
 		return ((IAdvancedRobotPeer) peer).getBulletMissedEvents();
@@ -165,6 +173,11 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		peer.getCall();
 		return ((IAdvancedRobotPeer) peer).getScannedRobotEvents();
+	}
+
+	public List<PaintEvent> getPaintEvents() {
+		peer.getCall();
+		return ((IAdvancedRobotPeer) peer).getPaintEvents();
 	}
 
 	// data

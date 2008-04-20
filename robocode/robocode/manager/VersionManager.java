@@ -186,17 +186,16 @@ public final class VersionManager {
 
 			if (versionsUrl == null) {
 				log("no url");
-                versionString = "unknown";
-			}
-            else {
-                in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
+				versionString = "unknown";
+			} else {
+				in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
 
-                versionString = in.readLine();
-                while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
-                    versionString = in.readLine();
-                }
-            }
-        } catch (FileNotFoundException e) {
+				versionString = in.readLine();
+				while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
+					versionString = in.readLine();
+				}
+			}
+		} catch (FileNotFoundException e) {
 			log("No versions.txt file in robocode.jar.");
 			versionString = "unknown";
 		} catch (IOException e) {

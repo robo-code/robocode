@@ -358,6 +358,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * <pre>
 	 * 	 {@link WinEvent}:             100 (reserved)
 	 * 	 {@link SkippedTurnEvent}:     100 (reserved)
+	 *   {@link StatusEvent}:           99
 	 * 	 {@link CustomEvent}:           80
 	 * 	 {@link MessageEvent}:          75
 	 * 	 {@link RobotDeathEvent}:       70
@@ -368,6 +369,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * 	 {@link HitWallEvent}:          30
 	 * 	 {@link HitRobotEvent}:         20
 	 * 	 {@link ScannedRobotEvent}:     10
+	 *   {@link PaintEvent}:             5
 	 * 	 {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
 	 * <p/>
@@ -486,6 +488,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * @return a vector containing all events currently in the robot's queue
 	 * @see Event
 	 * @see #clearAllEvents()
+	 * @see StatusEvent
 	 * @see ScannedRobotEvent
 	 * @see BulletHitBulletEvent
 	 * @see BulletMissedEvent
@@ -497,6 +500,9 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * @see DeathEvent
 	 * @see WinEvent
 	 * @see MessageEvent
+	 * @see PaintEvent
+	 * @see robocode.robotinterfaces.IBasicEvents#onStatus(StatusEvent)
+	 *      onStatus(StatusEvent)
 	 * @see robocode.robotinterfaces.IBasicEvents#onScannedRobot(ScannedRobotEvent)
 	 *      onScannedRobot(ScannedRobotEvent)
 	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHit(BulletHitEvent)
@@ -522,8 +528,31 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * @see robocode.robotinterfaces.IAdvancedEvents#onCustomEvent(CustomEvent)
 	 *      onCustomEvent(CustomEvent)
 	 * @see robocode.robotinterfaces.ITeamEvents#onMessageReceived(MessageEvent)
+	 * @see robocode.robotinterfaces.IPaintEvents#onPaint(java.awt.Graphics2D)
 	 */
 	java.util.List<Event> getAllEvents();
+
+	/**
+	 * Returns a vector containing all StatusEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   for (StatusEvent event : getStatusEvents()) {
+	 *       <i>// do something with the event</i>
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all StatusEvents currently in the robot's
+	 *         queue
+	 * @see robocode.robotinterfaces.IBasicEvents#onStatus(StatusEvent)
+	 *      onStatus(StatusEvent)
+	 * @see StatusEvent
+	 * @see #getAllEvents()
+	 *
+	 * @since 1.6.1
+	 */
+	List<StatusEvent> getStatusEvents();
 
 	/**
 	 * Returns a vector containing all BulletMissedEvents currently in the
@@ -688,6 +717,28 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * @see #getAllEvents()
 	 */
 	List<ScannedRobotEvent> getScannedRobotEvents();
+
+	/**
+	 * Returns a vector containing all PaintEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   for (PaintEvent event : getPaintEvents()) {
+	 *       <i>// do something with the event</i>
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all PaintEvents currently in the robot's
+	 *         queue
+	 * @see robocode.robotinterfaces.IPaintEvents#onPaint(Graphics2D)
+	 *      onPaint(Graphics2D)
+	 * @see PaintEvent
+	 * @see #getAllEvents()
+	 *
+	 * @since 1.6.1
+	 */
+	List<PaintEvent> getPaintEvents();
 
 	/**
 	 * Returns a file representing a data directory for the robot, which can be

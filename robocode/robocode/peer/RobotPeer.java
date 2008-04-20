@@ -1671,6 +1671,10 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return eventManager.getAllEvents();
 	}
 
+	public List<StatusEvent> getStatusEvents() {
+		return eventManager.getStatusEvents();
+	}
+
 	public List<BulletMissedEvent> getBulletMissedEvents() {
 		return eventManager.getBulletMissedEvents();
 	}
@@ -1701,6 +1705,14 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		return eventManager.getScannedRobotEvents();
+	}
+
+	public List<MessageEvent> getMessageEvents() {
+		return eventManager.getMessageEvents();
+	}
+
+	public List<PaintEvent> getPaintEvents() {
+		return eventManager.getPaintEvents();
 	}
 
 	public void setSkippedTurns(int newSkippedTurns) {
@@ -1985,18 +1997,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		// Restore the saved max. velocity and max. turn rate
 		setMaxVelocity(savedMaxVelocity);
 		setMaxTurnRate(savedMaxTurnRate);
-	}
-
-	public List<MessageEvent> getMessageEvents() {
-		return eventManager.getMessageEvents();
-	}
-
-	public List<StatusEvent> getStatusEvents() {
-		return eventManager.getStatusEvents();
-	}
-
-	public List<PaintEvent> getPaintEvents() {
-		return eventManager.getPaintEvents();
 	}
 
 	public Graphics2DProxy getGraphicsProxy() {
