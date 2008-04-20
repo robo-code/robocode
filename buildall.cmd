@@ -1,0 +1,1 @@
+mvn clean package javadoc:javadoc assembly:assembly
