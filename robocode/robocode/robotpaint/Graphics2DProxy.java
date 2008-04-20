@@ -95,7 +95,7 @@ public class Graphics2DProxy extends Graphics2D {
 	}
 
 	// Thread-safe queue of calls
-	private Queue<QueuedCall> queuedCalls = new ConcurrentLinkedQueue<QueuedCall>();
+	private final Queue<QueuedCall> queuedCalls = new ConcurrentLinkedQueue<QueuedCall>();
 
 	// Needed for getTransform()
 	private AffineTransform transform;
@@ -130,37 +130,9 @@ public class Graphics2DProxy extends Graphics2D {
 	// Needed for getFont()
 	private Font font;
 
-	boolean isInitialized;
+	// Flag indicating if this proxy has been initialized
+	private boolean isInitialized;
 
-	private void initialize(Graphics2D g) {
-		transform = g.getTransform();
-		transform = transform == null ? new AffineTransform() : new AffineTransform(transform);
-
-		color = copyOf(g.getColor());
-
-		font = copyOf(g.getFont());
-
-		clip = g.getClip();
-
-		deviceConfiguration = g.getDeviceConfiguration();
-
-		composite = g.getComposite();
-		
-		paint = g.getPaint();
-
-		stroke = g.getStroke();
-
-		renderingHints = (RenderingHints) ObjectCloner.deepCopy(g.getRenderingHints());
-
-		background = g.getBackground();
-		if (background != null) {
-			background = new Color(background.getRGB());
-		}
-
-		fontRenderContext = g.getFontRenderContext();
-		
-		isInitialized = true;
-	}
 
 	// --------------------------------------------------------------------------
 	// Overriding all methods from the extended Graphics class
@@ -783,7 +755,37 @@ public class Graphics2DProxy extends Graphics2D {
 		}
 	}
 
-	private void processQueuedCall(QueuedCall call, Graphics2D g) throws Exception {
+	private void initialize(Graphics2D g) {
+		transform = g.getTransform();
+		transform = transform == null ? new AffineTransform() : new AffineTransform(transform);
+
+		color = copyOf(g.getColor());
+
+		font = copyOf(g.getFont());
+
+		clip = g.getClip();
+
+		deviceConfiguration = g.getDeviceConfiguration();
+
+		composite = g.getComposite();
+		
+		paint = g.getPaint();
+
+		stroke = g.getStroke();
+
+		renderingHints = (RenderingHints) ObjectCloner.deepCopy(g.getRenderingHints());
+
+		background = g.getBackground();
+		if (background != null) {
+			background = new Color(background.getRGB());
+		}
+
+		fontRenderContext = g.getFontRenderContext();
+		
+		isInitialized = true;
+	}
+
+	private void processQueuedCall(QueuedCall call, Graphics2D g) {
 		switch (call.method) {
 		case TRANSLATE_INT:
 			processTranslate_int(call, g);
@@ -1046,14 +1048,14 @@ public class Graphics2DProxy extends Graphics2D {
 
 	private void processClipRect(QueuedCall call, Graphics2D g) {
 		// clipRect(int, int, int, int)
-		g.clipRect(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue());
+		g.clipRect((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3]);
 	}
 
 	private void processSetClip(QueuedCall call, Graphics2D g) {
 		// setClip(int, int, int, int)
-		g.setClip(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue());
+		g.setClip((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3]);
 	}
 
 	private void processSetClip_Shape(QueuedCall call, Graphics2D g) {
@@ -1063,47 +1065,47 @@ public class Graphics2DProxy extends Graphics2D {
 
 	private void processCopyArea(QueuedCall call, Graphics2D g) {
 		// copyArea(int, int, int, int, int, int)
-		g.copyArea(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(),
-				((Integer) call.args[5]).intValue());
+		g.copyArea((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3], (Integer) call.args[4],
+                (Integer) call.args[5]);
 	}
 
 	private void processDrawLine(QueuedCall call, Graphics2D g) {
 		// drawLine(int, int, int, int)
-		g.drawLine(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue());
+		g.drawLine((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3]);
 	}
 
 	private void processFillRect(QueuedCall call, Graphics2D g) {
 		// fillRect(int, int, int, int)
-		g.fillRect(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue());
+		g.fillRect((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3]);
 	}
 
 	private void processDrawRect(QueuedCall call, Graphics2D g) {
 		// drawRect(int, int, int, int)
-		g.drawRect(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue());
+		g.drawRect((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3]);
 	}
 
 	private void processClearRect(QueuedCall call, Graphics2D g) {
 		// clearRect(int, int, int, int)
-		g.clearRect(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue());
+		g.clearRect((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3]);
 	}
 
 	private void processDrawRoundRect(QueuedCall call, Graphics2D g) {
 		// drawRoundRect(int, int, int, int, int, int)
-		g.drawRoundRect(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(),
-				((Integer) call.args[5]).intValue());
+		g.drawRoundRect((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3], (Integer) call.args[4],
+                (Integer) call.args[5]);
 	}
 
 	private void processFillRoundRect(QueuedCall call, Graphics2D g) {
 		// fillRoundRect(int, int, int, int, int, int)
-		g.fillRoundRect(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(),
-				((Integer) call.args[5]).intValue());
+		g.fillRoundRect((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3], (Integer) call.args[4],
+                (Integer) call.args[5]);
 	}
 
 	private void processDraw3DRect(QueuedCall call, Graphics2D g) {
@@ -1122,43 +1124,43 @@ public class Graphics2DProxy extends Graphics2D {
 
 	private void processDrawOval(QueuedCall call, Graphics2D g) {
 		// drawOval(int, int, int, int)
-		g.drawOval(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue());
+		g.drawOval((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3]);
 	}
 
 	private void processFillOval(QueuedCall call, Graphics2D g) {
 		// fillOval(int, int, int, int)
-		g.fillOval(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue());
+		g.fillOval((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3]);
 	}
 
 	private void processDrawArc(QueuedCall call, Graphics2D g) {
 		// drawArc(int, int, int, int, int, int)
-		g.drawArc(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(),
-				((Integer) call.args[5]).intValue());
+		g.drawArc((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3], (Integer) call.args[4],
+                (Integer) call.args[5]);
 	}
 
 	private void processFillArc(QueuedCall call, Graphics2D g) {
 		// fillArc(int, int, int, int, int, int)
-		g.fillArc(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(),
-				((Integer) call.args[5]).intValue());
+		g.fillArc((Integer) call.args[0], (Integer) call.args[1],
+                (Integer) call.args[2], (Integer) call.args[3], (Integer) call.args[4],
+                (Integer) call.args[5]);
 	}
 
 	private void processDrawPolyline(QueuedCall call, Graphics2D g) {
 		// drawPolyline(int[], int[], int)
-		g.drawPolyline((int[]) call.args[0], (int[]) call.args[1], ((Integer) call.args[2]).intValue());
+		g.drawPolyline((int[]) call.args[0], (int[]) call.args[1], (Integer) call.args[2]);
 	}
 
 	private void processDrawPolygon(QueuedCall call, Graphics2D g) {
 		// drawPolygon(int[], int[], int)
-		g.drawPolygon((int[]) call.args[0], (int[]) call.args[1], ((Integer) call.args[2]).intValue());
+		g.drawPolygon((int[]) call.args[0], (int[]) call.args[1], (Integer) call.args[2]);
 	}
 
 	private void processFillPolygon(QueuedCall call, Graphics2D g) {
 		// fillPolygon(int[], int[], int)
-		g.fillPolygon((int[]) call.args[0], (int[]) call.args[1], ((Integer) call.args[2]).intValue());
+		g.fillPolygon((int[]) call.args[0], (int[]) call.args[1], (Integer) call.args[2]);
 	}	
 	
 	private void processDrawString_int(QueuedCall call, Graphics2D g) {
@@ -1174,54 +1176,54 @@ public class Graphics2DProxy extends Graphics2D {
 
 	private void processDrawChars(QueuedCall call, Graphics2D g) {
 		// drawBytes(char[], int, int, int, int)
-		g.drawChars((char[]) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue(),
-				((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue());
+		g.drawChars((char[]) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
+                (Integer) call.args[3], (Integer) call.args[4]);
 	}
 
 	private void processDrawBytes(QueuedCall call, Graphics2D g) {
 		// drawBytes(byte[], int, int, int, int)
-		g.drawBytes((byte[]) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue(),
-				((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue());
+		g.drawBytes((byte[]) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
+                (Integer) call.args[3], (Integer) call.args[4]);
 	}
 
 	private void processDrawImage1(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, ImageObserver)
-		g.drawImage((Image) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue(),
+		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
 				(ImageObserver) call.args[3]);
 	}	
 	
 	private void processDrawImage2(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, int, int, ImageObserver)
-		g.drawImage((Image) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue(),
-				((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(), (ImageObserver) call.args[5]);
+		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
+                (Integer) call.args[3], (Integer) call.args[4], (ImageObserver) call.args[5]);
 	}	
 
 	private void processDrawImage3(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, Color, ImageObserver)
-		g.drawImage((Image) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue(),
+		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
 				(Color) call.args[3], (ImageObserver) call.args[4]);
 	}	
 	
 	private void processDrawImage4(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, int, int, Color, ImageObserver)
-		g.drawImage((Image) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue(),
-				((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(), (Color) call.args[5],
+		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
+                (Integer) call.args[3], (Integer) call.args[4], (Color) call.args[5],
 				(ImageObserver) call.args[6]);
 	}	
 	
 	private void processDrawImage5(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, int, int, int, int, int, int, ImageObserver)
-		g.drawImage((Image) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue(),
-				((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(), ((Integer) call.args[4]).intValue(),
-				((Integer) call.args[5]).intValue(), ((Integer) call.args[6]).intValue(), ((Integer) call.args[7]).intValue(),
+		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
+                (Integer) call.args[3], (Integer) call.args[4], (Integer) call.args[4],
+                (Integer) call.args[5], (Integer) call.args[6], (Integer) call.args[7],
 				(ImageObserver) call.args[8]);
 	}	
 
 	private void processDrawImage6(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, int, int, int, int, int, int, Color, ImageObserver)
-		g.drawImage((Image) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue(),
-				((Integer) call.args[3]).intValue(), ((Integer) call.args[4]).intValue(), ((Integer) call.args[4]).intValue(),
-				((Integer) call.args[5]).intValue(), ((Integer) call.args[6]).intValue(), ((Integer) call.args[7]).intValue(),
+		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
+                (Integer) call.args[3], (Integer) call.args[4], (Integer) call.args[4],
+                (Integer) call.args[5], (Integer) call.args[6], (Integer) call.args[7],
 				(Color) call.args[8], (ImageObserver) call.args[9]);
 	}	
 
@@ -1237,8 +1239,8 @@ public class Graphics2DProxy extends Graphics2D {
 
 	private void processDrawImage8(QueuedCall call, Graphics2D g) {
 		// drawImage(BufferedImage, BufferedImageOp, int, int)
-		g.drawImage((BufferedImage) call.args[0], (BufferedImageOp) call.args[1], ((Integer) call.args[2]).intValue(),
-				((Integer) call.args[3]).intValue());
+		g.drawImage((BufferedImage) call.args[0], (BufferedImageOp) call.args[1], (Integer) call.args[2],
+                (Integer) call.args[3]);
 	}
 
 	private void processDrawRenderedImage(QueuedCall call, Graphics2D g) {
@@ -1253,19 +1255,19 @@ public class Graphics2DProxy extends Graphics2D {
 
 	private void processDrawString_float(QueuedCall call, Graphics2D g) {
 		// drawString(String, float, float)
-		g.drawString((String) call.args[0], ((Float) call.args[1]).floatValue(), ((Float) call.args[2]).floatValue());
+		g.drawString((String) call.args[0], (Float) call.args[1], (Float) call.args[2]);
 	}
 
 	private void processDrawString_ACIterator_float(QueuedCall call, Graphics2D g) {
 		// drawString(AttributedCharacterIterator, float, float)
-		g.drawString((AttributedCharacterIterator) call.args[0], ((Float) call.args[1]).floatValue(),
-				((Float) call.args[2]).floatValue());
+		g.drawString((AttributedCharacterIterator) call.args[0], (Float) call.args[1],
+                (Float) call.args[2]);
 	}
 
 	private void processDrawGlyphVector(QueuedCall call, Graphics2D g) {
 		// drawGlyphVector(GlyphVector gv, float x, float y)
-		g.drawGlyphVector((GlyphVector) call.args[0], ((Float) call.args[1]).floatValue(),
-				((Float) call.args[2]).floatValue());
+		g.drawGlyphVector((GlyphVector) call.args[0], (Float) call.args[1],
+                (Float) call.args[2]);
 	}
 
 	private void processFill(QueuedCall call, Graphics2D g) {
@@ -1305,28 +1307,28 @@ public class Graphics2DProxy extends Graphics2D {
 
 	private void processTranslate_double(QueuedCall call, Graphics2D g) {
 		// translate(double, double)
-		g.translate(((Double) call.args[0]).doubleValue(), ((Double) call.args[1]).doubleValue());
+		g.translate((Double) call.args[0], (Double) call.args[1]);
 	}
 
 	private void processRotate(QueuedCall call, Graphics2D g) {
 		// rotate(double)
-		g.rotate(((Double) call.args[0]).doubleValue());
+		g.rotate((Double) call.args[0]);
 	}
 
 	private void processRotate_xy(QueuedCall call, Graphics2D g) {
 		// rotate(double)
-		g.rotate(((Double) call.args[0]).doubleValue(), ((Double) call.args[1]).doubleValue(),
-				((Double) call.args[2]).doubleValue());
+		g.rotate((Double) call.args[0], (Double) call.args[1],
+                (Double) call.args[2]);
 	}
 
 	private void processScale(QueuedCall call, Graphics2D g) {
 		// scale(double, double)
-		g.scale(((Double) call.args[0]).doubleValue(), ((Double) call.args[1]).doubleValue());
+		g.scale((Double) call.args[0], (Double) call.args[1]);
 	}
 
 	private void processShear(QueuedCall call, Graphics2D g) {
 		// shear(double, double)
-		g.shear(((Double) call.args[0]).doubleValue(), ((Double) call.args[1]).doubleValue());
+		g.shear((Double) call.args[0], (Double) call.args[1]);
 	}
 
 	private void processTransform(QueuedCall call, Graphics2D g) {
@@ -1379,7 +1381,7 @@ public class Graphics2DProxy extends Graphics2D {
 	private class FontMetricsByFont extends FontMetrics {
 		private static final long serialVersionUID = 1L;
 
-		protected FontMetricsByFont(Font font) {
+		FontMetricsByFont(Font font) {
 			super(font);
 		}
 	}
