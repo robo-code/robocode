@@ -26,7 +26,6 @@ import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.ExplosionPeer;
 import robocode.peer.RobotPeer;
-import robocode.robotinterfaces.*;
 import robocode.util.GraphicsState;
 
 import java.awt.*;
