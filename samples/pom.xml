@@ -9,10 +9,6 @@
 	<artifactId>samples</artifactId>
 	<packaging>jar</packaging>
     <name>Robocode sample robots</name>
-    <configuration>
-        <source>1.5</source>
-        <target>1.5</target>
-    </configuration>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>

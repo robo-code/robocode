@@ -9,10 +9,6 @@
   <artifactId>robocode</artifactId>
   <name>Robocode</name>
   <version>1.6.2</version>
-  <configuration>
-    <source>1.5</source>
-    <target>1.5</target>
-  </configuration>
   <dependencies>
     <dependency>
       <groupId>net.sf.robocode</groupId>
