@@ -64,15 +64,6 @@ import java.util.List;
  * @author Titus Chen (constributor)
  */
 public class BulletPeer {
-	// Bullet states: all states last one turn, except MOVING and DONE
-	public static final int
-			STATE_SHOT = 0,
-			STATE_MOVING = 1,
-			STATE_HIT_VICTIM = 2,
-			STATE_HIT_BULLET = 3,
-			STATE_HIT_WALL = 4,
-			STATE_EXPLODED = 5,
-			STATE_INACTIVE = 6;
 
 	private static final int EXPLOSION_LENGTH = 17;
 
@@ -85,7 +76,7 @@ public class BulletPeer {
 	private Bullet bullet;
 	protected RobotPeer victim;
 
-	protected int state;
+	protected BulletState state;
 
 	private double velocity;
 	private double heading;
@@ -122,7 +113,7 @@ public class BulletPeer {
 		this.battle = battle;
 		battleField = battle.getBattleField();
 		bullet = new Bullet(this);
-		state = STATE_SHOT;
+		state = BulletState.FIRED;
 		color = owner.getBulletColor(); // Store current bullet color set on robot
 	}
 
@@ -133,14 +124,14 @@ public class BulletPeer {
 		y = br.y;
 		power = ((double) br.power) / 10;
 		frame = br.frame;
-		state = br.state;
+		state = BulletState.toState(br.state);
 		color = toColor(br.color);
 	}
 
 	private void checkBulletCollision() {
 		for (BulletPeer b : battle.getBullets()) {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
-				state = STATE_HIT_BULLET;
+				state = BulletState.HIT_BULLET;
 				b.setState(state);
 				frame = 0;
 				x = lastX;
@@ -200,7 +191,7 @@ public class BulletPeer {
 						new HitByBulletEvent(
 								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()));
 
-				state = STATE_HIT_VICTIM;
+				state = BulletState.HIT_VICTIM;
 				owner.getEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet));
 				frame = 0;
 				victim = robotPeer;
@@ -229,7 +220,7 @@ public class BulletPeer {
 	private void checkWallCollision() {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
 				|| (y + RADIUS >= battleField.getHeight())) {
-			state = STATE_HIT_WALL;
+			state = BulletState.HIT_WALL;
 			owner.getEventManager().add(new BulletMissedEvent(bullet));
 		}
 	}
@@ -275,18 +266,18 @@ public class BulletPeer {
 	}
 
 	public synchronized double getPaintX() {
-		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getX() + deltaX : x;
+		return (state == BulletState.HIT_VICTIM && victim != null) ? victim.getX() + deltaX : x;
 	}
 
 	public synchronized double getPaintY() {
-		return (state == STATE_HIT_VICTIM && victim != null) ? victim.getY() + deltaY : y;
+		return (state == BulletState.HIT_VICTIM && victim != null) ? victim.getY() + deltaY : y;
 	}
 
 	public synchronized boolean isActive() {
-		return state <= STATE_MOVING;
+		return state.getValue() <= BulletState.MOVING.getValue();
 	}
 
-	public synchronized int getState() {
+	public synchronized BulletState getState() {
 		return state;
 	}
 
@@ -318,7 +309,7 @@ public class BulletPeer {
 		y = lastY = newY;
 	}
 
-	public synchronized void setState(int newState) {
+	public synchronized void setState(BulletState newState) {
 		state = newState;
 	}
 
@@ -333,7 +324,7 @@ public class BulletPeer {
 			if (isActive()) {
 				checkWallCollision();
 			}
-		} else if (state == STATE_HIT_VICTIM || state == STATE_HIT_BULLET) {
+		} else if (state == BulletState.HIT_VICTIM || state == BulletState.HIT_BULLET) {
 			frame++;
 		}
 		updateBulletState();
@@ -341,24 +332,24 @@ public class BulletPeer {
 
 	protected void updateBulletState() {
 		switch (state) {
-		case STATE_SHOT:
-			state = STATE_MOVING;
+		case FIRED:
+			state = BulletState.MOVING;
 			break;
 
-		case STATE_HIT_BULLET:
-		case STATE_HIT_VICTIM:
-		case STATE_EXPLODED:
+		case HIT_BULLET:
+		case HIT_VICTIM:
+		case EXPLODED:
 			if (frame >= getExplosionLength()) {
-				state = STATE_INACTIVE;
+				state = BulletState.INACTIVE;
 			}
 			break;
 
-		case STATE_HIT_WALL:
-			state = STATE_INACTIVE;
+		case HIT_WALL:
+			state = BulletState.INACTIVE;
 			break;
 		}
 
-		if (state == STATE_INACTIVE) {
+		if (state == BulletState.INACTIVE) {
 			battle.removeBullet(this);
 		}
 	}

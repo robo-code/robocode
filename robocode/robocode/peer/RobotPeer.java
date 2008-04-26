@@ -116,13 +116,6 @@ import java.util.List;
  */
 public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
 
-	// Robot States: all states last one turn, except ALIVE and DEAD
-	public static final int
-			STATE_ACTIVE = 0,
-			STATE_HIT_WALL = 1,
-			STATE_HIT_ROBOT = 2,
-			STATE_DEAD = 3;
-
 	public static final int
 			WIDTH = 40,
 			HEIGHT = 40;
@@ -245,7 +238,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private Graphics2DProxy graphicsProxy;
 
-	protected int state;
+	protected RobotState state;
 
 	public RobotPeer(String name) {
 		this.name = name;
@@ -409,7 +402,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			}
 		}
 		if (inCollision) {
-			state = STATE_HIT_ROBOT;
+			state = RobotState.HIT_ROBOT;
 		}
 	}
 
@@ -484,7 +477,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			acceleration = 0;
 		}
 		if (hitWall) {
-			state = STATE_HIT_WALL;
+			state = RobotState.HIT_WALL;
 		}
 	}
 
@@ -567,11 +560,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public synchronized boolean isDead() {
-		return state == STATE_DEAD;
+		return state == RobotState.DEAD;
 	}
 
 	public synchronized boolean isAlive() {
-		return state != STATE_DEAD;
+		return state != RobotState.DEAD;
 	}
 
 	public void run() {
@@ -734,7 +727,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 						BulletPeer sBullet = new BulletPeer(this, battle);
 
-						sBullet.setState(BulletPeer.STATE_HIT_VICTIM);
+						sBullet.setState(BulletState.HIT_VICTIM);
 						sBullet.setX(teammate.getX());
 						sBullet.setY(teammate.getY());
 						sBullet.setVictim(teammate);
@@ -750,11 +743,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 		setEnergy(0);
 
-		state = STATE_DEAD;
+		state = RobotState.DEAD;
 	}
 
 	public synchronized void preInitialize() {
-		state = STATE_DEAD;
+		state = RobotState.DEAD;
 	}
 
 	public synchronized void setGunHeading(double newGunHeading) {
@@ -882,7 +875,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public final synchronized void update() {
 		// Reset robot state to active if it is not dead
 		if (isAlive()) {
-			state = STATE_ACTIVE;
+			state = RobotState.ACTIVE;
 		}
 
 		updateGunHeat();
@@ -1222,7 +1215,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public synchronized void initialize(double x, double y, double heading) {
-		state = STATE_ACTIVE;
+		state = RobotState.ACTIVE;
 
 		isWinner = false;
 		this.x = lastX = x;
@@ -1823,11 +1816,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return sgPaintEnabled;
 	}
 
-	public synchronized int getState() {
+	public synchronized RobotState getState() {
 		return state;
 	}
 
-	public synchronized void setState(int newState) {
+	public synchronized void setState(RobotState newState) {
 		state = newState;
 	}
 
@@ -1838,7 +1831,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		heading = Math.PI * rr.heading / 128;
 		radarHeading = Math.PI * rr.radarHeading / 128;
 		gunHeading = Math.PI * rr.gunHeading / 128;
-		state = rr.state;
+		state = RobotState.toState(rr.state);
 		bodyColor = toColor(rr.bodyColor);
 		gunColor = toColor(rr.gunColor);
 		radarColor = toColor(rr.radarColor);

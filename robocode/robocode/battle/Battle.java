@@ -113,6 +113,7 @@ import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
 import robocode.security.RobocodeClassLoader;
+import robocode.snapshot.BattleSnapshot;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -221,6 +222,8 @@ public class Battle implements Runnable {
 	// Dummy component used to preventing robots in accessing the real source component
 	private static Component safeEventComponent;
 
+	private BattleSnapshot battleSnapshot;
+	
 	/**
 	 * Battle constructor
 	 */
@@ -240,6 +243,8 @@ public class Battle implements Runnable {
 			keyHandler = new KeyEventHandler(this, robots);
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
 		}
+
+		battleSnapshot = new BattleSnapshot(this);
 	}
 
 	@Override
@@ -501,6 +506,8 @@ public class Battle implements Runnable {
 		battleManager = null;
 		battleSpecification = null;
 
+		battleSnapshot = null;
+		
 		// Request garbage collecting
 		for (int i = 4; i >= 0; i--) { // Make sure it is run
 			System.gc();
@@ -876,6 +883,8 @@ public class Battle implements Runnable {
 				}
 			}
 
+			battleSnapshot = new BattleSnapshot(this);
+
 			// Store the robot start time
 			robotStartTime = System.currentTimeMillis();
 
@@ -1037,7 +1046,7 @@ public class Battle implements Runnable {
 			TurnRecord turnRecord = roundRecord.turns.get(currentTime);
 
 			for (RobotPeer rp : robots) {
-				rp.setState(RobotPeer.STATE_DEAD);
+				rp.setState(RobotState.DEAD);
 			}
 			for (RobotRecord rr : turnRecord.robotStates) {
 				robot = robots.get(rr.index);
@@ -1048,7 +1057,7 @@ public class Battle implements Runnable {
 
 			for (BulletRecord br : turnRecord.bulletStates) {
 				robot = robots.get(br.owner);
-				if (br.state == BulletPeer.STATE_EXPLODED) {
+				if (br.state == BulletState.EXPLODED.getValue()) {
 					bullet = new ExplosionPeer(robot, this, br);
 				} else {
 					bullet = new BulletPeer(robot, this, br);
@@ -1079,6 +1088,8 @@ public class Battle implements Runnable {
 
 				playSounds();
 			}
+
+			battleSnapshot = new BattleSnapshot(this);
 
 			// Calculate the total time spend on frame updates this second
 			totalFrameMillisThisSec += (int) (System.currentTimeMillis() - frameStartTime);
@@ -1783,7 +1794,7 @@ public class Battle implements Runnable {
 
 			for (RobotPeer rp : robots) {
 				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
-				if (rp.getState() == RobotPeer.STATE_HIT_ROBOT) {
+				if (rp.getState() == RobotState.HIT_ROBOT) {
 					if (playedRobotHitRobot) {
 						continue;
 					}
@@ -2177,5 +2188,9 @@ public class Battle implements Runnable {
 			// Load robots
 			unsafeLoadRobots();
 		}
+	}
+
+	public BattleSnapshot getBattleSnapshot() {
+		return battleSnapshot;
 	}
 }

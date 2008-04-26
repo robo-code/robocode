@@ -60,7 +60,7 @@ public class BulletRecord {
 		y = (short) (bullet.getPaintY() + 0.5);
 		power = (byte) (bullet.getPower() * 10);
 		frame = (byte) bullet.getFrame();
-		state = (byte) bullet.getState();
+		state = (byte) bullet.getState().getValue();
 		color = toRGB565(bullet.getColor());
 	}
 }

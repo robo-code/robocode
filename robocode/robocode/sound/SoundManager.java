@@ -191,29 +191,29 @@ public class SoundManager {
 			pan = calcPan((float) bp.getX(), bp.getBattleField().getWidth());
 		}
 		switch (bp.getState()) {
-		case BulletPeer.STATE_SHOT:
+		case FIRED:
 			if (properties.getOptionsSoundEnableGunshot()) {
 				playSound("gunshot", pan, calcBulletVolume(bp), 0);
 			}
 			break;
 
-		case BulletPeer.STATE_HIT_VICTIM:
+		case HIT_VICTIM:
 			if (properties.getOptionsSoundEnableBulletHit()) {
 				playSound("bullet hits robot", pan);
 			}
 			break;
 
-		case BulletPeer.STATE_HIT_BULLET:
+		case HIT_BULLET:
 			if (properties.getOptionsSoundEnableBulletHit()) {
 				playSound("bullet hits bullet", pan);
 			}
 			break;
 
-		case BulletPeer.STATE_HIT_WALL:
+		case HIT_WALL:
 			// Currently, no sound
 			break;
 
-		case BulletPeer.STATE_EXPLODED:
+		case EXPLODED:
 			if (properties.getOptionsSoundEnableRobotDeath()) {
 				playSound("robot death", pan);
 			}
@@ -233,13 +233,13 @@ public class SoundManager {
 			pan = calcPan((float) robotPeer.getX(), robotPeer.getBattle().getBattleField().getWidth());
 		}
 		switch (robotPeer.getState()) {
-		case RobotPeer.STATE_HIT_ROBOT:
+		case HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
 				playSound("robot collision", pan);
 			}
 			break;
 
-		case RobotPeer.STATE_HIT_WALL:
+		case HIT_WALL:
 			if (properties.getOptionsSoundEnableWallCollision()) {
 				playSound("wall collision", pan);
 			}
