@@ -16,218 +16,251 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\WindowPositionManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/WindowPositionManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\TeamCreator.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/TeamCreator.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\MoveCompleteCondition.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/MoveCompleteCondition.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\ConsoleDialog.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/ConsoleDialog.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robotapi" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/RobotRepositoryManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/RobotRepositoryManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\RobotButton.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/RobotButton.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\WizardListener.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/WizardListener.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/battleview" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/battleview" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\HitByBulletEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/HitByBulletEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\ITeamEvents.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/ITeamEvents.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\gfx\ColorUtil.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/gfx/ColorUtil.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\RobotStatus.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/RobotStatus.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/SpinBot.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/SpinBot.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/util" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robotapi/src" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\control\BattlefieldSpecification.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/control/BattlefieldSpecification.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-19.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-19.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\sound\SoundManager.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/sound/SoundManager.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\TeamCreatorOptionsPanel.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/TeamCreatorOptionsPanel.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\GunTurnCompleteCondition.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/GunTurnCompleteCondition.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\AvailableRobotsPanel.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/AvailableRobotsPanel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/ground/explode_debris.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/ground/explode_debris.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-55.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-55.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\control\RobocodeListener.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/control/RobocodeListener.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\RobocodeMenuBar.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/RobocodeMenuBar.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-37.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-37.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\exception\DisabledException.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/exception/DisabledException.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\AdvancedRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/AdvancedRobot.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\ITeamEvents.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/ITeamEvents.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\package.html" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/package.html" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\util\GraphicsState.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/util/GraphicsState.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\control\RobotSpecification.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/control/RobotSpecification.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\RobotStatus.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/RobotStatus.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\PreferencesCommonOptionsTab.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/PreferencesCommonOptionsTab.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-36.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-36.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common/common.iml" afterPath="$PROJECT_DIR$/common/common.iml" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\control\RobocodeEngine.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/control/RobocodeEngine.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/sounds" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/sounds" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/roborumble/roborumble.iml" afterPath="$PROJECT_DIR$/roborumble/roborumble.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/Battle.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/Battle.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/robocode.iml" afterPath="$PROJECT_DIR$/robocode/robocode.iml" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\ITeamRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/ITeamRobot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/io/Logger.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/io/Logger.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\peer\IJuniorRobotPeer.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/peer/IJuniorRobotPeer.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\NewBattleBattleFieldTab.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/NewBattleBattleFieldTab.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IPaintRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IPaintRobot.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\HitRobotEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/HitRobotEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\exception\WinException.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/exception/WinException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/ImageManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/ImageManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/RobocodeManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/RobocodeManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/versions.txt" afterPath="$PROJECT_DIR$/versions.txt" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\gfx\RenderObject.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/gfx/RenderObject.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-64.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-64.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\_Robot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/_Robot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-14.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-14.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\gfx\RenderImage.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/gfx/RenderImage.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_autoextract/_autoextract.iml" afterPath="$PROJECT_DIR$/_autoextract/_autoextract.iml" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\BulletMissedEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/BulletMissedEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/record/RobotRecord.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/record/RobotRecord.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/common/src/main" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\WizardController.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/WizardController.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IPaintEvents.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IPaintEvents.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\PreferencesRenderingOptionsTab.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/PreferencesRenderingOptionsTab.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\Rules.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/Rules.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\util\Utils.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/util/Utils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/Tracker.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/Tracker.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\peer\ITeamRobotPeer.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/peer/ITeamRobotPeer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sampleex/ProxyOfGreyEminence.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sampleex/ProxyOfGreyEminence.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\PreferencesDialog.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/PreferencesDialog.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/control" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/JuniorRobotProxy.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/JuniorRobotProxy.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\PreferencesDevelopmentOptionsTab.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/PreferencesDevelopmentOptionsTab.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\StatusEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/StatusEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IAdvancedRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IAdvancedRobot.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\control\BattleSpecification.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/control/BattleSpecification.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/IBulletPeer.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\exception\RobotException.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/exception/RobotException.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\peer\package.html" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/package.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-38.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-38.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\RobotDeathEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/RobotDeathEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\PreferencesSoundOptionsTab.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/PreferencesSoundOptionsTab.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/ground" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/ground" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-7.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-7.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\PaintEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/PaintEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\HitWallEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/HitWallEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IPaintRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IPaintRobot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-16.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-16.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\SkippedTurnEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/SkippedTurnEvent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-62.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-62.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-53.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-53.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\TurnCompleteCondition.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/TurnCompleteCondition.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\PreferencesDialog.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/PreferencesDialog.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-2.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-14.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-14.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\MessageEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/MessageEvent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-10.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-10.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\RobotSelectionPanel.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/RobotSelectionPanel.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\NewBattleRulesTab.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/NewBattleRulesTab.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\ConsoleDialog.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/ConsoleDialog.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_root.iws" afterPath="$PROJECT_DIR$/_root.iws" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\TeamCreatorOptionsPanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/TeamCreatorOptionsPanel.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\util\GraphicsState.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/util/GraphicsState.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\HitWallEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/HitWallEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\RankingDialog.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/RankingDialog.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\package.html" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/package.html" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\RobotSelectionPanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/RobotSelectionPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/VersionManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/VersionManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/EventManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/EventManager.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-65.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-65.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\PreferencesRenderingOptionsTab.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/PreferencesRenderingOptionsTab.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-46.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-46.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\HitRobotEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/HitRobotEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\BulletMissedEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/BulletMissedEvent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/samples.iml" afterPath="$PROJECT_DIR$/samples/samples.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/RamFire.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/RamFire.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robotapi/robotapi.iml" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\RobocodeFrame.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/RobocodeFrame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/BulletPeer.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/BulletPeer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/SittingDuck.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/SittingDuck.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/sound" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/sound" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sampleex/MasterAndSlave.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sampleex/MasterAndSlave.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/Target.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/Target.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/robotinterfaces" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\control\BattleSpecification.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control/BattleSpecification.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/editor/RobocodeCompiler.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/editor/RobocodeCompiler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/Interactive.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/Interactive.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/CpuManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/CpuManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\RobotExtractor.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/RobotExtractor.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\sound\SoundCache.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/sound/SoundCache.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/RobotPeer.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/RobotPeer.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\_Robot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/_Robot.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\GunTurnCompleteCondition.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/GunTurnCompleteCondition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/RobotClassManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/RobotClassManager.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/dialog" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/TeamRobotProxy.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/TeamRobotProxy.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/ui" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/ui" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IBasicRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IBasicRobot.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\AvailableRobotsPanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/AvailableRobotsPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/MyFirstRobot.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/MyFirstRobot.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\RobocodeFileWriter.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/RobocodeFileWriter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/BattleProperties.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/BattleProperties.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\SkippedTurnEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/SkippedTurnEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/record/BulletRecord.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/record/BulletRecord.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\DeathEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/DeathEvent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/common/src/main/java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\_AdvancedRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/_AdvancedRobot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/editor/RobocodeCompilerFactory.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/editor/RobocodeCompilerFactory.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\ConsoleScrollPane.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/ConsoleScrollPane.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\ui\ShortcutUtil.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/ui/ShortcutUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/packager/RobotPackager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/packager/RobotPackager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\Condition.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/Condition.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/gfx" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/gfx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/AdvancedRobotProxy.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/AdvancedRobotProxy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/StandardRobotProxy.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/StandardRobotProxy.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\RobocodeMenuBar.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/RobocodeMenuBar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/EventQueue.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/EventQueue.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\RobotDialog.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/RobotDialog.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\TeamRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/TeamRobot.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\peer\IAdvancedRobotPeer.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/peer/IAdvancedRobotPeer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/RobotMessageManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/RobotMessageManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\RobotDescriptionPanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/RobotDescriptionPanel.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\control\BattlefieldSpecification.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control/BattlefieldSpecification.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/Fire.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/Fire.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\PreferencesViewOptionsTab.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/PreferencesViewOptionsTab.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/Crazy.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/Crazy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/packager/PackagerOptionsPanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/packager/PackagerOptionsPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sampleteam/MyFirstDroid.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sampleteam/MyFirstDroid.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\Droid.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/Droid.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sampleteam/MyFirstLeader.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sampleteam/MyFirstLeader.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\WindowUtil.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/WindowUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/Corners.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/Corners.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\RobotDeathEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/RobotDeathEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\exception\RobotException.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/exception/RobotException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/RobotDialogManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/RobotDialogManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\control\RobotResults.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control/RobotResults.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\_AdvancedRadiansRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/_AdvancedRadiansRobot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/editor/RobocodeEditor.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/editor/RobocodeEditor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/common" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/packager/ConfirmPanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/packager/ConfirmPanel.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\PreferencesSoundOptionsTab.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/PreferencesSoundOptionsTab.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\NewBattleRulesTab.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/NewBattleRulesTab.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\RobocodeFileOutputStream.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/RobocodeFileOutputStream.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/common/src" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/util" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\control\RobocodeListener.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control/RobocodeListener.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\NewBattleDialog.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/NewBattleDialog.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\JuniorRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/JuniorRobot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/roborumble/src/main/java/roborumble/battlesengine/BattlesRunner.java" afterPath="$PROJECT_DIR$/roborumble/src/main/java/roborumble/battlesengine/BattlesRunner.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\ResultsTableCellRenderer.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/ResultsTableCellRenderer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robotapi/src/main/java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\Wizard.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/Wizard.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\WinEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/WinEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\exception\DisabledException.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/exception/DisabledException.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\control\RobotSpecification.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control/RobotSpecification.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/exception" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/exception" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\util\BoundingRectangle.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/util/BoundingRectangle.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\battleview\MirroredGraphics.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/battleview/MirroredGraphics.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/RobotStatistics.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/RobotStatistics.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sampleex/Alien.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sampleex/Alien.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\PaintEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/PaintEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\WizardTabbedPane.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/WizardTabbedPane.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\battleview\BattleView.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/battleview/BattleView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_root.ipr" afterPath="$PROJECT_DIR$/_root.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/security/RobocodeSecurityManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/security/RobocodeSecurityManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\Event.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/Event.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IJuniorRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IJuniorRobot.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robotapi/src/main" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\package.html" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/package.html" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\ResultsDialog.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/ResultsDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/RobotFileSystemManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/RobotFileSystemManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\WizardPanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/WizardPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/WindowManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/WindowManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\exception\DeathException.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/exception/DeathException.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\Bullet.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/Bullet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/BattleManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/BattleManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\TurnCompleteCondition.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/TurnCompleteCondition.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\peer\package.html" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/peer/package.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/Robocode.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/Robocode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/ThreadManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/manager/ThreadManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\ScannedRobotEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/ScannedRobotEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\peer\IBasicRobotPeer.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/peer/IBasicRobotPeer.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/robotinterfaces/peer" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/peer" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/ar/robocode/cachecleaner/CacheCleaner.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/ar/robocode/cachecleaner/CacheCleaner.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\Robot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/Robot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/BasicRobotProxy.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/proxies/BasicRobotProxy.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\SplashScreen.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/SplashScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/record/RoundRecord.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/battle/record/RoundRecord.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IInteractiveRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IInteractiveRobot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sampleex/AlienComposition.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sampleex/AlienComposition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/Walls.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/Walls.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IInteractiveEvents.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IInteractiveEvents.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\BulletHitEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/BulletHitEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.project" afterPath="$PROJECT_DIR$/.project" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/pom.xml" afterPath="$PROJECT_DIR$/robocode/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/MyFirstJuniorRobot.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/MyFirstJuniorRobot.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\AboutBox.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/AboutBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/packager/FilenamePanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/packager/FilenamePanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/PaintingRobot.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/PaintingRobot.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\ui\ShortcutUtil.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/ui/ShortcutUtil.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-18.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-18.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\exception\EventInterruptedException.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/exception/EventInterruptedException.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\ScannedRobotEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/ScannedRobotEvent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-48.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-48.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\WindowUtil.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/WindowUtil.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\JuniorRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/JuniorRobot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-26.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-26.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-44.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-44.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\gfx\RobocodeLogo.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/gfx/RobocodeLogo.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\TeamCreator.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/TeamCreator.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-9.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-9.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\gfx\ColorUtil.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/gfx/ColorUtil.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-28.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-28.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robotapi/robotapi.iml" afterPath="$PROJECT_DIR$/robotapi/robotapi.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-63.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-63.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-50.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-50.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-23.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-23.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\ResultsDialog.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/ResultsDialog.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robotapi/exception" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/exception" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-61.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-61.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\RadarTurnCompleteCondition.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/RadarTurnCompleteCondition.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-20.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-20.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\battleview\BattleView.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/battleview/BattleView.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IAdvancedEvents.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IAdvancedEvents.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\PreferencesViewOptionsTab.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/PreferencesViewOptionsTab.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-70.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-70.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/control" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-4.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-4.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-25.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-25.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-22.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-22.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-12.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-12.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-11.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-11.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/body.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/body.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-43.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-43.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\Droid.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/Droid.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\TeamRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/TeamRobot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-54.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-54.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-7.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-7.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\BulletHitEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/BulletHitEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\_RobotBase.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/_RobotBase.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/battleview" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/battleview" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\AboutBox.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/AboutBox.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-3.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-3.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/icons" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/icons" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IInteractiveEvents.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IInteractiveEvents.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/sound" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/sound" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/sounds/explode.wav" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/sounds/explode.wav" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\Rules.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/Rules.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/turret.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/turret.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-1.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-1.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\DeathEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/DeathEvent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-12.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-12.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\control\RobotResults.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/control/RobotResults.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\Event.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/Event.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\util\Utils.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/util/Utils.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-13.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-13.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-32.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-32.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-27.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-27.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\gfx\ImageUtil.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/gfx/ImageUtil.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\exception\DeathException.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/exception/DeathException.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/sounds/zap.wav" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/sounds/zap.wav" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-59.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-59.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/util" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/util" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/ground/blue_metal/blue_metal_3.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/ground/blue_metal/blue_metal_3.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-9.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-9.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/ground/blue_metal/blue_metal_1.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/ground/blue_metal/blue_metal_1.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\_AdvancedRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/_AdvancedRobot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-40.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-40.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\battleview\MirroredGraphics.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/battleview/MirroredGraphics.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-42.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-42.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IJuniorRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IJuniorRobot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-47.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-47.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/icons/robocode-icon.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/icons/robocode-icon.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-17.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-17.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/sounds/shellhit.wav" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/sounds/shellhit.wav" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-58.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-58.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\Wizard.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/Wizard.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/ui" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/ui" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-8.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-8.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-39.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-39.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\WizardController.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/WizardController.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\Condition.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/Condition.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-67.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-67.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-1.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-1.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\control\package.html" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/control/package.html" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\RobotDescriptionPanel.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/RobotDescriptionPanel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/gfx" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/gfx" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\ResultsTableCellRenderer.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/ResultsTableCellRenderer.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\Robot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/Robot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-30.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-30.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\SplashScreen.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/SplashScreen.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\RobotButton.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/RobotButton.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\WizardCardPanel.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/WizardCardPanel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-41.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-41.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-6.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-6.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-13.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-13.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\RobocodeFrame.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/RobocodeFrame.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/sounds/13831_adcbicycle_22.wav" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/sounds/13831_adcbicycle_22.wav" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\MoveCompleteCondition.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/MoveCompleteCondition.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robotapi" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-3.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-3.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/ground/blue_metal" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/ground/blue_metal" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-71.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-71.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-66.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-66.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-15.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-15.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-34.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-34.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/ground/blue_metal/blue_metal_2.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/ground/blue_metal/blue_metal_2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-21.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-21.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\NewBattleDialog.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/NewBattleDialog.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-52.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-52.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\WizardListener.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/WizardListener.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-11.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-11.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\peer\IStandardRobotPeer.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/IStandardRobotPeer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-29.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-29.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-31.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-31.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-5.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-5.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IBasicEvents.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IBasicEvents.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-2.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-2.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\sound\SoundCache.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/sound/SoundCache.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-10.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-10.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-49.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-49.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\gfx\RenderObject.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/gfx/RenderObject.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\RobocodeFileOutputStream.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/RobocodeFileOutputStream.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\peer\IBasicRobotPeer.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/IBasicRobotPeer.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IInteractiveRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IInteractiveRobot.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\WindowPositionManager.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/WindowPositionManager.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-68.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-68.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\peer\ITeamRobotPeer.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/ITeamRobotPeer.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\RobocodeFileWriter.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/RobocodeFileWriter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/ground/blue_metal/blue_metal_4.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/ground/blue_metal/blue_metal_4.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-51.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-51.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\peer\IAdvancedRobotPeer.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/IAdvancedRobotPeer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-60.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-60.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\PreferencesDevelopmentOptionsTab.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/PreferencesDevelopmentOptionsTab.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/peer" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-24.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-24.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocodeui" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocodeui/robocodeui.iml" afterPath="$PROJECT_DIR$/robocodeui/robocodeui.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-57.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-57.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-4.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-4.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\StatusEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/StatusEvent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-15.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-15.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\WizardPanel.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/WizardPanel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\HitByBulletEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/HitByBulletEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\BulletHitBulletEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/BulletHitBulletEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\WinEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/WinEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\peer\IJuniorRobotPeer.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/IJuniorRobotPeer.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IBasicRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IBasicRobot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-69.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-69.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\CustomEvent.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/CustomEvent.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\ITeamRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/ITeamRobot.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\NewBattleBattleFieldTab.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/NewBattleBattleFieldTab.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-8.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-8.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_root.iml" afterPath="$PROJECT_DIR$/_root.iml" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\sound\SoundManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/sound/SoundManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\CustomEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/CustomEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\control\package.html" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control/package.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/battlefield/DefaultBattleField.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/battlefield/DefaultBattleField.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\AdvancedRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/AdvancedRobot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/IEventManager.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/peer/robot/IEventManager.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\_RobotBase.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/_RobotBase.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/common/pom.xml" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\gfx\RobocodeLogo.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/gfx/RobocodeLogo.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IAdvancedEvents.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IAdvancedEvents.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\BulletHitBulletEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/BulletHitBulletEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\RadarTurnCompleteCondition.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/RadarTurnCompleteCondition.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\MessageEvent.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/MessageEvent.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\gfx\RenderImage.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/gfx/RenderImage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\control\RobocodeEngine.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/control/RobocodeEngine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/robocode/src/main/java/robocode/editor/RobocodeEditorMenuBar.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocode/editor/RobocodeEditorMenuBar.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/robotapi/pom.xml" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IBasicEvents.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IBasicEvents.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\gfx\ImageUtil.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/gfx/ImageUtil.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/common/common.iml" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\exception\EventInterruptedException.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/exception/EventInterruptedException.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\peer\IStandardRobotPeer.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/peer/IStandardRobotPeer.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\PreferencesCommonOptionsTab.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/PreferencesCommonOptionsTab.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samples/src/main/java/sample/TrackFire.java" afterPath="$PROJECT_DIR$/samples/src/main/java/sample/TrackFire.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/roborumble/src/main/java/roborumble/battlesengine/AtHomeListener.java" afterPath="$PROJECT_DIR$/roborumble/src/main/java/roborumble/battlesengine/AtHomeListener.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\robotinterfaces\IAdvancedRobot.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robotapi/robotinterfaces/IAdvancedRobot.java" />
-      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocode\dialog\WizardCardPanel.java" afterPath="$PROJECT_DIR$/robocode/src/main/java/robocodeui/dialog/WizardCardPanel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-16.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-16.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\RobotExtractor.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/RobotExtractor.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-5.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-5.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion1-6.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion1-6.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\IPaintEvents.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/IPaintEvents.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-56.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-56.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/ground/blue_metal/blue_metal_0.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/ground/blue_metal/blue_metal_0.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-35.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-35.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\WizardTabbedPane.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/WizardTabbedPane.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\exception\WinException.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/exception/WinException.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\Bullet.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/Bullet.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\RankingDialog.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/RankingDialog.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\RobotDialog.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/RobotDialog.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-33.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-33.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\_AdvancedRadiansRobot.java" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/_AdvancedRadiansRobot.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-17.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-17.png" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\util\BoundingRectangle.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/util/BoundingRectangle.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robocodeui\dialog\ConsoleScrollPane.java" afterPath="$PROJECT_DIR$/robocodeui/src/main/java/robocodeui/dialog/ConsoleScrollPane.java" />
+      <change type="MOVED" beforePath="D:\Sf\MRobocode\robocode\src\main\java\robotapi\robotinterfaces\package.html" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/package.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/java/robotapi/util" afterPath="$PROJECT_DIR$/robotapi/src/main/java/robotapi/util" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/explosion/explosion2-45.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/explosion/explosion2-45.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/robocode/src/main/resources/images/radar.png" afterPath="$PROJECT_DIR$/robocodeui/src/main/resources/images/radar.png" />
     </list>
     <ignored path="_root.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -415,7 +448,26 @@
     <favorites_list name="_root" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="Bullet.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/robotapi/src/main/java/robotapi/Bullet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="22" selection-start="668" selection-end="668" vertical-scroll-proportion="0.10350076">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IBulletPeer.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/IBulletPeer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="29" selection-start="674" selection-end="674" vertical-scroll-proportion="0.15525115">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -447,6 +499,124 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="_root" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotapi" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotapi" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotapi" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotapi" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotapi" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotinterfaces" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotapi" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotapi" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robotinterfaces" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="peer" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="roborumble" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robocodeui" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="robocode" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Libraries" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewLibrariesNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="_root" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
         </PATH_ELEMENT>
       </PATH>
     </subPane>
@@ -694,7 +864,7 @@
   </component>
   <component name="ProjectView">
     <navigator currentView="PackagesPane" proportions="0.5" version="1" splitterProportion="0.5">
-      <flattenPackages ProjectPane="false" />
+      <flattenPackages PackagesPane="false" ProjectPane="false" />
       <showMembers />
       <showModules />
       <showLibraryContents />
@@ -861,25 +1031,24 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1288" height="1000" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2762692" order="1" />
-      <window_info id="Maven Importer Output" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14994097" order="-1" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="4" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1794569" order="8" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="0" />
-      <window_info id="Maven projects" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.43216896" order="3" />
+      <window_info id="Maven projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.112103984" order="3" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19008936" order="0" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25507718" order="0" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="2" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="6" />
@@ -888,6 +1057,7 @@
       <window_info id="Aspects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="5" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="0" />
+      <window_info id="Maven Importer Output" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14994097" order="8" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="2" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="3" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
@@ -983,65 +1153,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robotapi/BulletHitBulletEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="12" selection-start="961" selection-end="961" vertical-scroll-proportion="-0.3215859">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robotapi/Rules.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="19" selection-start="1028" selection-end="1028" vertical-scroll-proportion="-5.73348">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robotapi/RobotStatus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="13" selection-start="764" selection-end="764" vertical-scroll-proportion="0.52422905">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robotapi/RobocodeFileOutputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="13" selection-start="1774" selection-end="1774" vertical-scroll-proportion="2.2342858">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robotapi/RobocodeFileWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="13" selection-start="1285" selection-end="1285" vertical-scroll-proportion="0.54025424">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robotapi/util/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="13" selection-start="1241" selection-end="1241" vertical-scroll-proportion="1.2628572">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robocode/battlefield/BattleField.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="20" column="17" selection-start="793" selection-end="793" vertical-scroll-proportion="0.26930693">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robocodeui/battleview/BattleView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="13" selection-start="1454" selection-end="1454" vertical-scroll-proportion="0.41632652">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robotapi/Bullet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="20" selection-start="666" selection-end="666" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1061,6 +1175,20 @@
     <entry file="file://$PROJECT_DIR$/robocode/src/main/java/robocode/robotpaint/Graphics2DProxy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="37" column="17" selection-start="1223" selection-end="1223" vertical-scroll-proportion="0.425">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robotapi/src/main/java/robotapi/Bullet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="22" selection-start="668" selection-end="668" vertical-scroll-proportion="0.10350076">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robotapi/src/main/java/robotapi/robotinterfaces/peer/IBulletPeer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="29" selection-start="674" selection-end="674" vertical-scroll-proportion="0.15525115">
           <folding />
         </state>
       </provider>

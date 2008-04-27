@@ -14,7 +14,7 @@
 package robotapi;
 
 
-import robocode.peer.BulletPeer;
+import robocode.peer.IBulletPeer;
 
 
 /**
