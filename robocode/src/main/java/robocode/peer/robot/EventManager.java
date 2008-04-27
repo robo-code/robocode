@@ -40,11 +40,11 @@
 package robocode.peer.robot;
 
 
-import robocode.*;
-import robocode.exception.EventInterruptedException;
+import robotapi.exception.EventInterruptedException;
 import robocode.peer.RobotPeer;
-import robocode.robotinterfaces.*;
-import robocode.util.Utils;
+import robotapi.robotinterfaces.*;
+import robotapi.util.Utils;
+import robotapi.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

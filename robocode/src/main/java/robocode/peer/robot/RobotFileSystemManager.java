@@ -17,7 +17,7 @@
 package robocode.peer.robot;
 
 
-import robocode.RobocodeFileOutputStream;
+import robotapi.RobocodeFileOutputStream;
 import robocode.peer.RobotPeer;
 
 import java.io.File;

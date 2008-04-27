@@ -14,7 +14,7 @@
 package robocode.battlefield;
 
 
-import robocode.util.BoundingRectangle;
+import robocodeui.util.BoundingRectangle;
 
 
 /**

@@ -14,10 +14,9 @@
 package sample;
 
 
-import robocode.HitByBulletEvent;
-import robocode.HitRobotEvent;
-import robocode.Robot;
-import robocode.ScannedRobotEvent;
+import robotapi.HitByBulletEvent;
+import robotapi.HitRobotEvent;
+import robotapi.ScannedRobotEvent;
 
 import java.awt.*;
 
@@ -27,7 +26,7 @@ import java.awt.*;
  * <p/>
  * Sits still.  Spins gun around.  Moves when hit.
  */
-public class Fire extends Robot {
+public class Fire extends robotapi.Robot {
 	int dist = 50; // distance to move when we're hit
 
 	/**

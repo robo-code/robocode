@@ -17,9 +17,9 @@
 package sampleex;
 
 
-import robocode.AdvancedRobot;
-import robocode.HitByBulletEvent;
-import robocode.ScannedRobotEvent;
+import robotapi.AdvancedRobot;
+import robotapi.HitByBulletEvent;
+import robotapi.ScannedRobotEvent;
 
 
 /**

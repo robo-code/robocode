@@ -5,7 +5,7 @@
     <artifactId>_root</artifactId>
     <packaging>pom</packaging>
     <version>1.6.2</version>
-    <name>robocode</name>
+    <name>Robocode - Build the best - destroy the rest!</name>
     <organization>
         <name>Robocode</name>
         <url>http://robocode.sf.net</url>
@@ -16,7 +16,10 @@
     </scm>
     <modules>
         <module>_autoextract</module>
+        <module>common</module>        
+        <module>robotapi</module>
         <module>robocode</module>
+        <module>robocodeui</module>
         <module>roborumble</module>
         <module>samples</module>
     </modules>

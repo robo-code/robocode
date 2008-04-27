@@ -12,7 +12,7 @@
 package sample;
 
 
-import robocode.JuniorRobot;
+import robotapi.JuniorRobot;
 
 
 /**

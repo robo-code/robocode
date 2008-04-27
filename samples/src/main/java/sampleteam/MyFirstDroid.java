@@ -14,9 +14,9 @@
 package sampleteam;
 
 
-import robocode.Droid;
-import robocode.MessageEvent;
-import robocode.TeamRobot;
+import robotapi.Droid;
+import robotapi.MessageEvent;
+import robotapi.TeamRobot;
 
 
 /**

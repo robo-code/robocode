@@ -12,9 +12,9 @@
 package sample;
 
 
-import robocode.AdvancedRobot;
-import static robocode.util.Utils.normalAbsoluteAngle;
-import static robocode.util.Utils.normalRelativeAngle;
+import robotapi.AdvancedRobot;
+import static robotapi.util.Utils.normalAbsoluteAngle;
+import static robotapi.util.Utils.normalRelativeAngle;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

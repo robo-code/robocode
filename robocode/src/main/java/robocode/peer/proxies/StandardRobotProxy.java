@@ -12,9 +12,9 @@
 package robocode.peer.proxies;
 
 
-import robocode.Bullet;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotinterfaces.peer.IStandardRobotPeer;
+import robotapi.Bullet;
+import robotapi.robotinterfaces.peer.IBasicRobotPeer;
+import robotapi.robotinterfaces.peer.IStandardRobotPeer;
 
 
 /**

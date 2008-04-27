@@ -12,9 +12,9 @@
 package robocode.peer.proxies;
 
 
-import robocode.MessageEvent;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotinterfaces.peer.ITeamRobotPeer;
+import robotapi.MessageEvent;
+import robotapi.robotinterfaces.peer.IBasicRobotPeer;
+import robotapi.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.IOException;
 import java.io.Serializable;

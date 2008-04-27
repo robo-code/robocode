@@ -14,9 +14,8 @@
 package sample;
 
 
-import robocode.HitRobotEvent;
-import robocode.Robot;
-import robocode.ScannedRobotEvent;
+import robotapi.HitRobotEvent;
+import robotapi.ScannedRobotEvent;
 
 import java.awt.*;
 
@@ -26,7 +25,7 @@ import java.awt.*;
  * <p/>
  * Moves around the outer edge with the gun facing in.
  */
-public class Walls extends Robot {
+public class Walls extends robotapi.Robot {
 
 	boolean peek; // Don't turn if there's a robot there
 	double moveAmount; // How much to move

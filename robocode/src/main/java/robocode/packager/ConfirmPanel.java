@@ -18,7 +18,7 @@
 package robocode.packager;
 
 
-import robocode.dialog.WizardPanel;
+import robocodeui.dialog.WizardPanel;
 import robocode.repository.FileSpecification;
 
 import javax.swing.*;

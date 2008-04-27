@@ -28,7 +28,7 @@
 package robocode.packager;
 
 
-import robocode.dialog.*;
+import robocodeui.dialog.*;
 import robocode.io.Logger;
 import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.RobotRepositoryManager;
@@ -37,7 +37,7 @@ import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
-import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import static robocodeui.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
 import java.awt.*;

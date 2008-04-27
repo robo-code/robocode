@@ -29,7 +29,7 @@
 package robocode;
 
 
-import robocode.dialog.WindowUtil;
+import robocodeui.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
@@ -41,6 +41,8 @@ import robocode.security.SecurePrintStream;
 import java.awt.*;
 import java.io.File;
 import java.security.Policy;
+
+import robotapi.RobocodeFileOutputStream;
 
 
 /**

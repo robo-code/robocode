@@ -14,9 +14,9 @@
 package sampleteam;
 
 
-import robocode.HitByBulletEvent;
-import robocode.ScannedRobotEvent;
-import robocode.TeamRobot;
+import robotapi.HitByBulletEvent;
+import robotapi.ScannedRobotEvent;
+import robotapi.TeamRobot;
 
 import java.awt.*;
 import java.io.IOException;

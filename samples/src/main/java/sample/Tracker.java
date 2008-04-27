@@ -14,10 +14,9 @@
 package sample;
 
 
-import robocode.HitRobotEvent;
-import robocode.Robot;
-import robocode.ScannedRobotEvent;
-import robocode.WinEvent;
+import robotapi.HitRobotEvent;
+import robotapi.ScannedRobotEvent;
+import robotapi.WinEvent;
 
 import java.awt.*;
 
@@ -27,7 +26,7 @@ import java.awt.*;
  * <p/>
  * Locks onto a robot, moves close, fires when close.
  */
-public class Tracker extends Robot {
+public class Tracker extends robotapi.Robot {
 	int count = 0; // Keeps track of how long we've
 	// been searching for our target
 	double gunTurnAmt; // How much to turn our gun when searching

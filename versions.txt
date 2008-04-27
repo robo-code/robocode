@@ -10,7 +10,7 @@ o Bugfixes
   -- Removed ^M characters from the buildJikes.sh file so that the Jikes compiler
      can be built under Unix, Linux and Mac OS X.
 o Major changes
-  -- A new package named robocode.robotinterfaces has been introduced, which
+  -- A new package named robotapi.robotinterfaces has been introduced, which
      contains pure Java robot interfaces for basic, advanced, interactive, junior
      and team robots. See the Javadocs (HTML) documentation for more details about
      these new interfaces.
@@ -292,7 +292,7 @@ o Bugfixes
   -- Test Condition flag of a robot was not reset between rounds 
      -- If the robot thread was disabled while testing a condition for a custom
         event all following rounds will trigger a
-        "robocode.exception.RobotException: You cannot take action inside
+        "robotapi.exception.RobotException: You cannot take action inside
         Condition.test(). You should handleonCustomEvent instead."
   -- Again, the title of Robocode was incorrectly showing round N+1 of N when a
      battle was ended
@@ -315,7 +315,7 @@ Version 1.4.4
 -------------
 o Bugfixes
   -- With version 1.4.3 a bug was introduced so that battleAborted() was called
-     in the robocode.control.RobocodeListener when the battle was not aborted,
+     in the robocodeui.control.RobocodeListener when the battle was not aborted,
      i.e. when a battle completes successfully
      -- This bug caused Robocode clients as e.g. RoboRumble to hang!
   -- Removed Windows end-of-line characters from the .sh files for RoboRumble
@@ -329,7 +329,7 @@ Version 1.4.3
 -------------
 o Bugfixes
   -- Major bugfixes was done by Nathaniel Troutman to get rid of large memory
-     leaks, especially when creating and destroying robocode.control.RobocodeEngine
+     leaks, especially when creating and destroying robocodeui.control.RobocodeEngine
      instances many times
      -- Most of the memory leaks were caused by circular references between internal
         classes/objects in Robocode. Now, these circular references are cleaned up
@@ -361,7 +361,7 @@ o Bugfixes
   -- RoboRumble was invoking AWT (GUI) stuff when running, which caused problems
      on systems without support graphical display or running RoboRumble remotely
      behind a firewall
-  -- When running robocode.control.RobocodeEngine it caused memory leaks each time
+  -- When running robocodeui.control.RobocodeEngine it caused memory leaks each time
      a new instance of the RobocodeEngine was created, even though the object was
      completely destroyed 
   -- The onPaint() method was invoked just before the robot got the chance of
@@ -439,7 +439,7 @@ o Faster rendering
 o Key events
   -- Key events are now received even though the battle view does not have the focus
 o Controlling Robocode
-  -- The container classes in the robocode.control package are now Serializable, which
+  -- The container classes in the robocodeui.control package are now Serializable, which
      makes it easy to load and store, battle specifications, results etc., but also to
      send these over the network
 
@@ -530,15 +530,15 @@ Version 1.3
 Now featuring the RoboRumble@Home client
 -------------
 o Bugfixes
-  -- When using robocode.control.RobocodeEngine it was not possible to play team battles.
+  -- When using robocodeui.control.RobocodeEngine it was not possible to play team battles.
      Instead an ArrayOutOfBoundsException occurred
-  -- robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead
+  -- robocodeui.control.RobotResults.getRamDamage() incorrectly returned a double instead
      of an integer. This bug caused problems with running Robocode on RoboLeague
   -- The "Enable replay recording" got set if it was not set after running Robocode without
      the robocode.properties file the first time
   -- No sounds were played (when enabled) when Robocode was launched the second time
   -- Fixed NullPointerException occurred when a robot is forced to stop
-  -- NullPointerException could occur when using robocode.control.RobocodeEngine and the
+  -- NullPointerException could occur when using robocodeui.control.RobocodeEngine and the
      GUI was not enabled
   -- The text field for the filename in the robot packager was way too high
   -- Lots of synchronizations issues and potential ConcurrentModificationExceptions have
@@ -577,7 +577,7 @@ o Added feature that allows specifying the initial start positions of the robots
      the 2nd robot starts at (100,100,?) with a random heading, the 3rd (and last) robot
      starts at a random position with a random heading
   -- See the battle/intro.battle for an example of how to use this option  
-o Added a new method called getNameAndVersion() to the robocode.control.RobotSpecification
+o Added a new method called getNameAndVersion() to the robocodeui.control.RobotSpecification
   -- This method was added to better support RoboRumble and ranking programs
 o Changed the TeamRobot.broadcastMessage() so it does not throw an IOException when the
   robot is not in a team
@@ -593,7 +593,7 @@ Version 1.2.6A
 -------------
 o Bugfixes
   -- A NullPointerException occured if the battle view was not initialized
-     -- This bug made it impossible to control Robocode via the robocode.control package
+     -- This bug made it impossible to control Robocode via the robocodeui.control package
         when attempting to show the battle window
 o The Ranking Panel and Battle Results are now windows instead of dialoges
   -- This means that the Ranking Panel and Battle Results will still be visible when the
@@ -696,8 +696,8 @@ o Added "View Explosion Debris" option in the View Options
   -- Explosion debris is diabled per default as this feature can slow down the game
      with 25% - 50% when viewing battles 
 o Javadoc provided for:
-  -- The robocode.util.Utils class providing angle normalizing methods
-  -- The whole robocode.control package used for controlling Robocode externally
+  -- The robotapi.util.Utils class providing angle normalizing methods
+  -- The whole robocodeui.control package used for controlling Robocode externally
 o Fixed incosistency with .jar files located in the robot folder
   -- Robot packages (.jar files) is now only extracted from the root of the robots folder
   -- In previous Robocode versions when starting up Robocode without a robot.database
@@ -749,7 +749,7 @@ o Added replay feature
 o Improved the security manager
   -- Robots are not allowed to access any internal Robocode packages anymore,
      except for the robocode.util package in order to let legacy robots access
-     the robocode.util.Utils class, e.g. for calling normalRelativeAngle() etc.
+     the robotapi.util.Utils class, e.g. for calling normalRelativeAngle() etc.
 o Hotkey added for exiting Robocode quickly
   -- It is now possible to exit from Robocode by pressing Alt+F4 in the main window
      of Robocode. Note that the main window must be active
@@ -1125,7 +1125,7 @@ o Added a development path to support external IDEs such as Eclipse (http://ecli
   -- Simply add the path to your robot project
   -- As usual, robots will be loaded from disk at the start of each battle
 o Improved support for RoboLeague
-o Documented robocode.control package (http://robocode.alphaworks.ibm.com/docs/control)
+o Documented robocodeui.control package (http://robocode.alphaworks.ibm.com/docs/control)
 o Fixed bug:  sendMessage causing StringIndexOutOfBounds
 
 Version 0.99.1

@@ -24,7 +24,7 @@
 package robocode.editor;
 
 
-import robocode.gfx.ImageUtil;
+import robocodeui.gfx.ImageUtil;
 import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
 import robocode.manager.BrowserManager;

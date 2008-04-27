@@ -21,7 +21,7 @@ package robocode.manager;
 
 
 import robocode.peer.RobotPeer;
-import robocode.robotinterfaces.IBasicRobot;
+import robotapi.robotinterfaces.IBasicRobot;
 
 import java.util.ArrayList;
 import java.util.Collections;

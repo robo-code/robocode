@@ -12,7 +12,7 @@
 package robocode.battle.record;
 
 
-import static robocode.gfx.ColorUtil.toRGB565;
+import static robocodeui.gfx.ColorUtil.toRGB565;
 import robocode.peer.RobotPeer;
 
 

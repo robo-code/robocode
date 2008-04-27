@@ -15,10 +15,10 @@
 package ar.robocode.cachecleaner;
 
 
-import robocode.control.BattleSpecification;
-import robocode.control.RobocodeEngine;
-import robocode.control.RobocodeListener;
-import robocode.control.RobotResults;
+import robocodeui.control.BattleSpecification;
+import robocodeui.control.RobocodeEngine;
+import robocodeui.control.RobocodeListener;
+import robocodeui.control.RobotResults;
 
 import java.io.File;
 import java.io.IOException;

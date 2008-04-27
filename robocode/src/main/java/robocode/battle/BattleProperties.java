@@ -16,7 +16,7 @@
 package robocode.battle;
 
 
-import robocode.control.RobotSpecification;
+import robocodeui.control.RobotSpecification;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

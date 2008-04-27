@@ -24,7 +24,7 @@
 package robocode.packager;
 
 
-import robocode.dialog.WizardPanel;
+import robocodeui.dialog.WizardPanel;
 import robocode.io.FileUtil;
 import robocode.repository.FileSpecification;
 

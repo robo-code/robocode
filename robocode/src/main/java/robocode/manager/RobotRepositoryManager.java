@@ -32,14 +32,14 @@
 package robocode.manager;
 
 
-import robocode.Droid;
-import robocode.dialog.WindowUtil;
+import robotapi.Droid;
+import robocodeui.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
-import robocode.robotinterfaces.*;
+import robotapi.robotinterfaces.*;
 
 import javax.swing.*;
 import java.io.*;

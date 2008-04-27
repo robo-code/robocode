@@ -22,8 +22,8 @@
 package robocode.editor;
 
 
-import robocode.dialog.ConsoleDialog;
-import robocode.dialog.WindowUtil;
+import robocodeui.dialog.ConsoleDialog;
+import robocodeui.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
 

@@ -12,12 +12,13 @@
 package robocode.peer.proxies;
 
 
-import robocode.*;
-import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robotapi.robotinterfaces.peer.IAdvancedRobotPeer;
+import robotapi.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.io.File;
 import java.util.List;
+
+import robotapi.*;
 
 
 /**

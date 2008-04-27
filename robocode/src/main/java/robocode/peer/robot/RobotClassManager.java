@@ -47,7 +47,7 @@ public class RobotClassManager {
 
 	private RobocodeClassLoader robotClassLoader = null;
 	// only used if we're being controlled by RobocodeEngine:
-	private robocode.control.RobotSpecification controlRobotSpecification;
+	private robocodeui.control.RobotSpecification controlRobotSpecification;
 
 	private String fullClassName;
 	private TeamPeer teamManager;
@@ -161,7 +161,7 @@ public class RobotClassManager {
 	 *
 	 * @return Returns a RobotSpecification
 	 */
-	public robocode.control.RobotSpecification getControlRobotSpecification() {
+	public robocodeui.control.RobotSpecification getControlRobotSpecification() {
 		return controlRobotSpecification;
 	}
 
@@ -170,7 +170,7 @@ public class RobotClassManager {
 	 *
 	 * @param controlRobotSpecification The robotSpecification to set
 	 */
-	public void setControlRobotSpecification(robocode.control.RobotSpecification controlRobotSpecification) {
+	public void setControlRobotSpecification(robocodeui.control.RobotSpecification controlRobotSpecification) {
 		this.controlRobotSpecification = controlRobotSpecification;
 	}
 

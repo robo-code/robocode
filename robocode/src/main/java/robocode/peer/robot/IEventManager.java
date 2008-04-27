@@ -12,9 +12,9 @@
 package robocode.peer.robot;
 
 
-import robocode.*;
-
 import java.util.List;
+
+import robotapi.*;
 
 
 /**

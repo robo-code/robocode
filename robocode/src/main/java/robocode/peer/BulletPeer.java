@@ -43,17 +43,19 @@
 package robocode.peer;
 
 
-import robocode.*;
 import robocode.battle.Battle;
 import robocode.battle.record.BulletRecord;
 import robocode.battlefield.BattleField;
-import static robocode.gfx.ColorUtil.toColor;
+import static robocodeui.gfx.ColorUtil.toColor;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import java.util.List;
+
+import robotapi.util.Utils;
+import robotapi.*;
 
 
 /**
@@ -198,7 +200,7 @@ public class BulletPeer {
 
 				robotPeer.getEventManager().add(
 						new HitByBulletEvent(
-								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()));
+								Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()));
 
 				state = STATE_HIT_VICTIM;
 				owner.getEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet));

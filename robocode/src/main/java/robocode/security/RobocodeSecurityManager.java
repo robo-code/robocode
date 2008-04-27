@@ -26,7 +26,7 @@
 package robocode.security;
 
 
-import robocode.RobocodeFileOutputStream;
+import robotapi.RobocodeFileOutputStream;
 import robocode.manager.ThreadManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
@@ -539,7 +539,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			String subPkg = pkg.substring(9);
 
-			// Only access to robocode.util or robocode.robotinterfaces is allowed
+			// Only access to robocode.util or robotapi.robotinterfaces is allowed
 			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
 					|| (experimental && subPkg.equals("robotinterfaces.peer")) || (subPkg.equals("robotpaint")))) {
 

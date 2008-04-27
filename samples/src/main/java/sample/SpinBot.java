@@ -14,9 +14,9 @@
 package sample;
 
 
-import robocode.AdvancedRobot;
-import robocode.HitRobotEvent;
-import robocode.ScannedRobotEvent;
+import robotapi.AdvancedRobot;
+import robotapi.HitRobotEvent;
+import robotapi.ScannedRobotEvent;
 
 import java.awt.*;
 

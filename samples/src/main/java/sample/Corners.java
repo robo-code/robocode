@@ -14,9 +14,8 @@
 package sample;
 
 
-import robocode.DeathEvent;
-import robocode.Robot;
-import robocode.ScannedRobotEvent;
+import robotapi.DeathEvent;
+import robotapi.ScannedRobotEvent;
 
 import java.awt.*;
 
@@ -27,7 +26,7 @@ import java.awt.*;
  * This robot moves to a corner, then swings the gun back and forth.
  * If it dies, it tries a new corner in the next round.
  */
-public class Corners extends Robot {
+public class Corners extends robotapi.Robot {
 	int others; // Number of other robots in the game
 	static int corner = 0; // Which corner we are currently using
 	// static so that it keeps it between rounds.

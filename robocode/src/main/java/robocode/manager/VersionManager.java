@@ -24,7 +24,7 @@
 package robocode.manager;
 
 
-import robocode.dialog.WindowUtil;
+import robocodeui.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
 

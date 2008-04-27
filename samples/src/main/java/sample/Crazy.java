@@ -14,9 +14,9 @@
 package sample;
 
 
-import robocode.*;
-
 import java.awt.*;
+
+import robotapi.*;
 
 
 /**

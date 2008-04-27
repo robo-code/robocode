@@ -12,8 +12,8 @@
 package sample;
 
 
-import robocode.AdvancedRobot;
-import robocode.RobocodeFileOutputStream;
+import robotapi.AdvancedRobot;
+import robotapi.RobocodeFileOutputStream;
 
 import java.awt.*;
 import java.io.BufferedReader;

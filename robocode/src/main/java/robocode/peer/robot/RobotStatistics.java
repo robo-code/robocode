@@ -37,11 +37,13 @@
 package robocode.peer.robot;
 
 
-import robocode.control.RobotResults;
+import robocodeui.control.RobotResults;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 
 import java.util.List;
+
+import robotapi.Rules;
 
 
 /**
@@ -255,8 +257,8 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 	public void scoreRammingDamage(int robot) {
 		if (isActive && !isTeammate(robot)) {
-			getRobotDamage()[robot] += robocode.Rules.ROBOT_HIT_DAMAGE;
-			rammingDamageScore += robocode.Rules.ROBOT_HIT_BONUS;
+			getRobotDamage()[robot] += Rules.ROBOT_HIT_DAMAGE;
+			rammingDamageScore += Rules.ROBOT_HIT_BONUS;
 		}
 	}
 

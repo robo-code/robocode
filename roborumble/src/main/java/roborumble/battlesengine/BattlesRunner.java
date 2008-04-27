@@ -22,7 +22,7 @@
 package roborumble.battlesengine;
 
 
-import robocode.control.*;
+import robocodeui.control.*;
 import static roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;

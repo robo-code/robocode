@@ -15,7 +15,7 @@
 package robocode.io;
 
 
-import robocode.control.RobocodeListener;
+import robocodeui.control.RobocodeListener;
 
 
 /**

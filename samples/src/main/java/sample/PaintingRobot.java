@@ -14,9 +14,8 @@
 package sample;
 
 
-import robocode.HitByBulletEvent;
-import robocode.ScannedRobotEvent;
-import robocode.Robot;
+import robotapi.HitByBulletEvent;
+import robotapi.ScannedRobotEvent;
 
 import java.awt.*;
 
@@ -31,7 +30,7 @@ import java.awt.*;
  * @author Stefan Westen (SGSample)
  * @author Pavel Savara
  */
-public class PaintingRobot extends Robot {
+public class PaintingRobot extends robotapi.Robot {
 
 	/**
 	 * PaintingRobot's run method - Seesaw

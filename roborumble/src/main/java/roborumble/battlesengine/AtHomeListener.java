@@ -18,9 +18,9 @@
 package roborumble.battlesengine;
 
 
-import robocode.control.BattleSpecification;
-import robocode.control.RobocodeListener;
-import robocode.control.RobotResults;
+import robocodeui.control.BattleSpecification;
+import robocodeui.control.RobocodeListener;
+import robocodeui.control.RobotResults;
 
 
 /**

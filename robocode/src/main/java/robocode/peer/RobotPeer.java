@@ -63,17 +63,16 @@
 package robocode.peer;
 
 
-import robocode.*;
-import robocode.Event;
+import robotapi.Event;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.exception.DeathException;
-import robocode.exception.DisabledException;
-import robocode.exception.RobotException;
-import robocode.exception.WinException;
-import static robocode.gfx.ColorUtil.toColor;
+import robotapi.exception.DeathException;
+import robotapi.exception.DisabledException;
+import robotapi.exception.RobotException;
+import robotapi.exception.WinException;
+import static robocodeui.gfx.ColorUtil.toColor;
 import static robocode.io.Logger.log;
 import robocode.manager.NameManager;
 import robocode.peer.proxies.AdvancedRobotProxy;
@@ -81,13 +80,14 @@ import robocode.peer.proxies.JuniorRobotProxy;
 import robocode.peer.proxies.StandardRobotProxy;
 import robocode.peer.proxies.TeamRobotProxy;
 import robocode.peer.robot.*;
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
-import robocode.robotinterfaces.peer.ITeamRobotPeer;
+import robotapi.robotinterfaces.*;
+import robotapi.robotinterfaces.peer.IBasicRobotPeer;
+import robotapi.robotinterfaces.peer.IJuniorRobotPeer;
+import robotapi.robotinterfaces.peer.ITeamRobotPeer;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.util.BoundingRectangle;
-import static robocode.util.Utils.*;
+import robocodeui.util.BoundingRectangle;
+import static robotapi.util.Utils.*;
+import robotapi.*;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;

@@ -12,14 +12,15 @@
 package sampleex;
 
 
-import robocode.*;
-import robocode.robotinterfaces.IBasicEvents;
-import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotinterfaces.peer.IStandardRobotPeer;
+import robotapi.robotinterfaces.IBasicEvents;
+import robotapi.robotinterfaces.IBasicRobot;
+import robotapi.robotinterfaces.peer.IBasicRobotPeer;
+import robotapi.robotinterfaces.peer.IStandardRobotPeer;
 
 import java.awt.*;
 import java.io.PrintStream;
+
+import robotapi.*;
 
 
 /**

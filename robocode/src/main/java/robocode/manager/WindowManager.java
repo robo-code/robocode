@@ -25,8 +25,8 @@ package robocode.manager;
 
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
-import robocode.dialog.*;
-import robocode.dialog.SplashScreen;
+import robocodeui.dialog.*;
+import robocodeui.dialog.SplashScreen;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
@@ -208,7 +208,7 @@ public class WindowManager {
 			robotExtractor = null;
 		}
 
-		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
+		robotExtractor = new robocodeui.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
 		// Pack, center, and show it
 		WindowUtil.packCenterShow(robotExtractor);
 	}

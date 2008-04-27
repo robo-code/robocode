@@ -23,7 +23,7 @@ package robocode.manager;
 
 
 import robocode.battle.Battle;
-import robocode.dialog.RobotDialog;
+import robocodeui.dialog.RobotDialog;
 import robocode.peer.RobotPeer;
 
 import java.util.*;

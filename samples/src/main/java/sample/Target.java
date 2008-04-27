@@ -14,9 +14,9 @@
 package sample;
 
 
-import robocode.AdvancedRobot;
-import robocode.Condition;
-import robocode.CustomEvent;
+import robotapi.AdvancedRobot;
+import robotapi.CustomEvent;
+import robotapi.Condition;
 
 import java.awt.*;
 

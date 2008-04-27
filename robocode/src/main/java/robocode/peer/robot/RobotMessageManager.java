@@ -23,7 +23,7 @@
 package robocode.peer.robot;
 
 
-import robocode.MessageEvent;
+import robotapi.MessageEvent;
 import robocode.io.BufferedPipedOutputStream;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.peer.RobotPeer;

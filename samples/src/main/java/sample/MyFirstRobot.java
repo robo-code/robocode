@@ -12,9 +12,9 @@
 package sample;
 
 
-import robocode.HitByBulletEvent;
-import robocode.Robot;
-import robocode.ScannedRobotEvent;
+import robotapi.HitByBulletEvent;
+import robotapi.Robot;
+import robotapi.ScannedRobotEvent;
 
 
 /**

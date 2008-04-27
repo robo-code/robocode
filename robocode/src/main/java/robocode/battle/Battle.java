@@ -92,14 +92,13 @@
 package robocode.battle;
 
 
-import robocode.*;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
-import robocode.battleview.BattleView;
-import robocode.control.BattleSpecification;
-import robocode.control.RobotResults;
-import robocode.dialog.RobocodeFrame;
-import robocode.dialog.RobotButton;
+import robocodeui.battleview.BattleView;
+import robocodeui.control.BattleSpecification;
+import robocodeui.control.RobotResults;
+import robocodeui.dialog.RobocodeFrame;
+import robocodeui.dialog.RobotButton;
 import static robocode.io.Logger.log;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
@@ -109,9 +108,9 @@ import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.repository.RobotFileSpecification;
-import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.IInteractiveEvents;
-import robocode.robotinterfaces.IInteractiveRobot;
+import robotapi.robotinterfaces.IBasicRobot;
+import robotapi.robotinterfaces.IInteractiveEvents;
+import robotapi.robotinterfaces.IInteractiveRobot;
 import robocode.security.RobocodeClassLoader;
 
 import java.awt.*;
@@ -125,6 +124,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import robotapi.*;
 
 
 /**

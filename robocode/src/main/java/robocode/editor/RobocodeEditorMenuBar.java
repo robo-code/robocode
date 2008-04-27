@@ -27,8 +27,8 @@
 package robocode.editor;
 
 
-import robocode.dialog.WindowUtil;
-import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import robocodeui.dialog.WindowUtil;
+import static robocodeui.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
 import java.awt.*;

@@ -56,9 +56,9 @@ import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.control.BattleSpecification;
-import robocode.control.RobocodeListener;
-import robocode.control.RobotResults;
+import robocodeui.control.BattleSpecification;
+import robocodeui.control.RobocodeListener;
+import robocodeui.control.RobotResults;
 import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
 import robocode.peer.ContestantPeer;
@@ -220,7 +220,7 @@ public class BattleManager {
 				false, false, false, false, false, false);
 		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
 
-		for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
+		for (robocodeui.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
 			if (battleRobotSpec == null) {
 				break;
 			}
@@ -324,7 +324,7 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			robocodeui.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 			battleView.setVisible(true);
 			battleView.setInitialized(false);
@@ -335,7 +335,7 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.dialog.RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
+			robocodeui.dialog.RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
 
 			frame.getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
 			frame.getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);

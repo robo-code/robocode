@@ -14,9 +14,8 @@
 package sample;
 
 
-import robocode.Robot;
-import robocode.ScannedRobotEvent;
-import robocode.WinEvent;
+import robotapi.ScannedRobotEvent;
+import robotapi.WinEvent;
 
 import java.awt.*;
 
@@ -26,7 +25,7 @@ import java.awt.*;
  * <p/>
  * Sits still.  Tracks and fires at the nearest robot it sees
  */
-public class TrackFire extends Robot {
+public class TrackFire extends robotapi.Robot {
 
 	/**
 	 * TrackFire's run method

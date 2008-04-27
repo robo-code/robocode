@@ -19,8 +19,8 @@
 package robocode.manager;
 
 
-import robocode.gfx.ImageUtil;
-import robocode.gfx.RenderImage;
+import robocodeui.gfx.ImageUtil;
+import robocodeui.gfx.RenderImage;
 
 import java.awt.*;
 import java.util.*;

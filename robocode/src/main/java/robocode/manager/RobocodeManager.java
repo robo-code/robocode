@@ -26,12 +26,12 @@
 package robocode.manager;
 
 
-import robocode.control.BattleSpecification;
-import robocode.control.RobocodeListener;
-import robocode.control.RobotResults;
+import robocodeui.control.BattleSpecification;
+import robocodeui.control.RobocodeListener;
+import robocodeui.control.RobotResults;
 import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
-import robocode.sound.SoundManager;
+import robocodeui.sound.SoundManager;
 
 import java.io.*;
 
