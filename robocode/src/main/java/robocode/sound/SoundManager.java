@@ -32,6 +32,7 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.peer.IBulletPeer;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -298,7 +299,7 @@ public class SoundManager {
 	 * @param bp the bullet peer
 	 * @return the volume value, ranging from 0 to 1
 	 */
-	private float calcBulletVolume(BulletPeer bp) {
+	private float calcBulletVolume(IBulletPeer bp) {
 		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
 	}
 }

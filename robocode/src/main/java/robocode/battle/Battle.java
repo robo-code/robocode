@@ -112,6 +112,7 @@ import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
+import robocode.robotinterfaces.peer.IBulletPeer;
 import robocode.security.RobocodeClassLoader;
 
 import java.awt.*;
@@ -713,7 +714,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public void removeBullet(BulletPeer bullet) {
+	public void removeBullet(IBulletPeer bullet) {
 		bullets.remove(bullet);
 	}
 

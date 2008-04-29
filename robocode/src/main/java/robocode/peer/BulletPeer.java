@@ -44,6 +44,7 @@ package robocode.peer;
 
 
 import robocode.*;
+import robocode.robotinterfaces.peer.IBulletPeer;
 import robocode.battle.Battle;
 import robocode.battle.record.BulletRecord;
 import robocode.battlefield.BattleField;
@@ -63,7 +64,7 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (constributor)
  */
-public class BulletPeer {
+public class BulletPeer implements IBulletPeer {
 	// Bullet states: all states last one turn, except MOVING and DONE
 	public static final int
 			STATE_SHOT = 0,
@@ -254,6 +255,10 @@ public class BulletPeer {
 		return owner;
 	}
 
+    public String getOwnerName() {
+        return owner.getName();
+    }
+
 	public synchronized double getPower() {
 		return power;
 	}
@@ -265,6 +270,10 @@ public class BulletPeer {
 	public synchronized RobotPeer getVictim() {
 		return victim;
 	}
+
+    public synchronized String getVictimName() {
+        return (victim != null) ? victim.getName() : null;
+    }
 
 	public synchronized double getX() {
 		return x;
