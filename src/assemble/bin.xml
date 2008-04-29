@@ -2,7 +2,7 @@
           xsi:schemaLocation="assembly-v1.0.0.xsd">
     <id>bin</id>
     <formats>
-        <format>jar</format>
+        <format>dir</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
     <moduleSets>
@@ -36,16 +36,29 @@
                 <outputDirectory>robots</outputDirectory>
                 <unpack>true</unpack>
                 <includeDependencies>false</includeDependencies>
+                <excludes>
+                    <!-- TODO
+                    <exclude>**/META-INF/**</exclude>
+                    -->
+                </excludes>
             </binaries>
         </moduleSet>
     </moduleSets>
     <fileSets>
         <fileSet>
             <directory>robocode/src/main/extract</directory>
+            <excludes>
+                <exclude>**/_svn/**</exclude>
+                <exclude>**/.svn/**</exclude>
+            </excludes>
             <outputDirectory></outputDirectory>
         </fileSet>
         <fileSet>
             <directory>roborumble/src/main/extract</directory>
+            <excludes>
+                <exclude>**/_svn/**</exclude>
+                <exclude>**/.svn/**</exclude>
+            </excludes>
             <outputDirectory></outputDirectory>
         </fileSet>
         <fileSet>
