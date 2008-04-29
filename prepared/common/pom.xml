@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <parent>
+    <artifactId>_root</artifactId>
+    <groupId>net.sf.robocode</groupId>
+    <version>1.6.2</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.sf.robocode</groupId>
+  <artifactId>common</artifactId>
+  <name>Robocode</name>
+  <version>1.6.2</version>
+  <dependencies>
+  </dependencies>
+</project>
