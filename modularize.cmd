@@ -6,6 +6,10 @@ copy /y prepared\robocode\pom.xml                                               
 rem ********************************************************************************************
 svn mkdir robotapi
 rem ********************************************************************************************
+svn mkdir                                                                         robotapi\src
+svn mkdir                                                                         robotapi\src\main
+svn mkdir                                                                         robotapi\src\main\java
+svn mkdir                                                                         robotapi\src\main\java\robocode
 svn mkdir                                                                         robotapi\src\main\java\robocode\util
 svn mv prepared\robotapi\pom.xml                                                  robotapi
 svn mv robocode\src\main\java\robocode\AdvancedRobot.java                         robotapi\src\main\java\robocode
@@ -53,6 +57,9 @@ svn mv robocode\src\main\java\robocode\util\Utils.java                          
 rem ********************************************************************************************
 svn mkdir common
 rem ********************************************************************************************
+svn mkdir                                                                         common\src\
+svn mkdir                                                                         common\src\main
+svn mkdir                                                                         common\src\main\java
 svn mkdir                                                                         common\src\main\java\robocode
 svn mv prepared\common\pom.xml                                                    common
 
@@ -60,6 +67,10 @@ svn mv prepared\common\pom.xml                                                  
 rem ********************************************************************************************
 svn mkdir robocodeui
 rem ********************************************************************************************
+svn mkdir                                                                         robocodeui\src\
+svn mkdir                                                                         robocodeui\src\main
+svn mkdir                                                                         robocodeui\src\main\java
+svn mkdir                                                                         robocodeui\src\main\java\robocode
 svn mkdir                                                                         robocodeui\src\main\java\robocode\util
 svn mkdir                                                                         robocodeui\src\main\java\robocode\manager
 svn mv prepared\robocodeui\pom.xml                                                robocodeui
