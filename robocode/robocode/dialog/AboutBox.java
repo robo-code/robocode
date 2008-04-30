@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,16 +14,15 @@
 package robocode.dialog;
 
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
+import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-
-import robocode.manager.RobocodeManager;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 /**
@@ -56,12 +55,13 @@ public final class AboutBox extends JDialog {
 			+ "font-size: 10px}</style></head>" + "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT
 			+ "\"><table><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
 			+ "\"></td><td><table width=\"100%\"><tr><td width=\"100%\"><b>Robocode</b><br><br>"
-			+ "&copy;&nbsp;Copyright 2001, 2007<br>Mathew A. Nelson and Robocode contributors</td>" + "<td><b>Version: "
+			+ "&copy;&nbsp;Copyright 2001, 2008<br>Mathew A. Nelson and Robocode contributors</td>" + "<td><b>Version: "
 			+ TAG_ROBOCODE_VERSION
 			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">robocode.sourceforge.net</a><br>&nbsp;</td></tr></table><center><br>"
-			+ "Originally designed and programmed by Mathew A. Nelson<br><br>Graphics by Garett S. Hourihan<br><br>"
+			+ "Originally designed and programmed by Mathew A. Nelson<br>" + "Graphics by Garett S. Hourihan<br><br>"
 			+ "<b>Featuring RoboRumble@Home</b><br><br>Originally designed and programmed by Albert Pérez<br><br>"
 			+ "<b>Contributors:</b><br><br>Flemming N. Larsen (main developer, integrator and admin),<br>"
+			+ "Pavel Savara (robot interfaces in the robocode.robotinterfaces package),<br>"
 			+ "Cubic Creative (the design and ideas for the JuniorRobot class),<br>"
 			+ "Christian D. Schnell (for the Codesize utility),<br>"
 			+ "Luis Crespo (sound engine, single-step debugging, ranking panel),<br>"
@@ -69,12 +69,11 @@ public final class AboutBox extends JDialog {
 			+ "Titus Chen (bugfixes for robot teleportation, bad wall collision detection, team ranking,<br>"
 			+ "replay scores and robot color flickering),<br>"
 			+ "Robert D. Maupin (optimizations with collections and improved CPU constant benchmark),<br>"
-			+ "Ascander Jr (graphics for ground tiles),<br>"
-			+ "Stefan Westen (onPaint method from RobocodeSG),<br>"
+			+ "Ascander Jr (graphics for ground tiles),<br>" + "Stefan Westen (onPaint method from RobocodeSG),<br>"
 			+ "Nathaniel Troutman (fixing memory leaks due to circular references)<br>"
 			+ "Aaron Rotenberg (for the Robot Cache Cleaner utility),<br>"
-			+ "Julian Kent (nano precision timing of allowed robot time),</br>"
-			+ "<br>You are using Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
+			+ "Julian Kent (nano precision timing of allowed robot time),<br>" + "<br>You are using Java " + TAG_JAVA_VERSION
+			+ " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
 	// Robocode version
 	private String robocodeVersion;

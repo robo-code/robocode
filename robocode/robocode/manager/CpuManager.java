@@ -34,7 +34,7 @@ import robocode.io.Logger;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert Maupin (contributor)
- * @author Pavel Savara (contributor) 
+ * @author Pavel Savara (contributor)
  */
 public class CpuManager {
 	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
@@ -56,7 +56,7 @@ public class CpuManager {
 		}
 		return cpuConstant;
 	}
-	
+
 	public void calculateCpuConstant() {
 		WindowUtil.setStatus("Estimating CPU speed, please wait...");
 
@@ -68,7 +68,7 @@ public class CpuManager {
 
 		WindowUtil.setStatus("");
 	}
-	
+
 	private void setCpuConstant() {
 		long count = 0;
 		double d = 0;

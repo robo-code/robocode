@@ -1,13 +1,29 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Mathew A. Nelson
+ *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Maintainance
+ *******************************************************************************/
 package sample;
 
 
-import java.awt.Color;
-import robocode.*;
+import robocode.Robot;
+import robocode.ScannedRobotEvent;
+import robocode.WinEvent;
+
+import java.awt.*;
 
 
 /**
  * TrackFire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Sits still.  Tracks and fires at the nearest robot it sees
  */
 public class TrackFire extends Robot {
@@ -22,7 +38,7 @@ public class TrackFire extends Robot {
 		setRadarColor(Color.pink);
 		setScanColor(Color.pink);
 		setBulletColor(Color.pink);
-		
+
 		// Loop forever
 		while (true) {
 			turnGunRight(10); // Scans automatically
@@ -40,7 +56,7 @@ public class TrackFire extends Robot {
 		// If it's close enough, fire!
 		if (Math.abs(bearingFromGun) <= 3) {
 			turnGunRight(bearingFromGun);
-			// We check gun heat here, because calling fire() 
+			// We check gun heat here, because calling fire()
 			// uses a turn, which could cause us to lose track
 			// of the other robot.
 			if (getGunHeat() == 0) {
@@ -60,7 +76,7 @@ public class TrackFire extends Robot {
 	}
 
 	public void onWin(WinEvent e) {
-		// Victory dance	
+		// Victory dance
 		turnRight(36000);
 	}
 

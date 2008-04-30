@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,16 +18,14 @@
 package robocode.packager;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
+import robocode.dialog.WizardPanel;
+import robocode.repository.FileSpecification;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.List;
-
-import javax.swing.*;
-
-import robocode.dialog.WizardPanel;
-import robocode.repository.FileSpecification;
 
 
 /**

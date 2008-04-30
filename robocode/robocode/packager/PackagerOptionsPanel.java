@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,21 +20,18 @@
 package robocode.packager;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.*;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.List;
+import robocode.dialog.WizardPanel;
+import robocode.repository.FileSpecification;
+import robocode.text.LimitedDocument;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import robocode.dialog.WizardPanel;
-import robocode.repository.FileSpecification;
-import robocode.text.LimitedDocument;
+import java.awt.*;
+import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.List;
 
 
 /**
@@ -83,7 +80,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 				if (selectedRobots.size() == 1) {
 					FileSpecification fileSpecification = selectedRobots.get(0);
 					String v = fileSpecification.getVersion();
-	
+
 					if (v == null || v.length() == 0) {
 						getVersionHelpLabel().setVisible(false);
 						v = "1.0";
@@ -96,32 +93,32 @@ public class PackagerOptionsPanel extends WizardPanel {
 					}
 					getVersionField().setText(v);
 					String d = fileSpecification.getDescription();
-	
+
 					if (d == null) {
 						d = "";
 					}
 					getDescriptionArea().setText(d);
 					String a = fileSpecification.getAuthorName();
-	
+
 					if (a == null) {
 						a = "";
 					}
 					getAuthorField().setText(a);
 					URL u = fileSpecification.getWebpage();
-	
+
 					if (u == null) {
 						getWebpageField().setText("");
 					} else {
 						getWebpageField().setText(u.toString());
 					}
-	
+
 					String filepath = fileSpecification.getFilePath();
-	
+
 					String text = "";
 
 					if (filepath != null && filepath.indexOf(".") != -1) {
 						String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
-	
+
 						text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
 					}
 					getWebpageHelpLabel().setText(text);
@@ -288,10 +285,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 				return false;
 			}
 		}
-		if (getDescriptionArea().getText().length() == 0) {
-			return false;
-		}
-		return true;
+		return getDescriptionArea().getText().length() != 0;
 	}
 
 	public static void main(String[] args) {
@@ -404,7 +398,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 
 	static class PackAndShowFrameWorker implements Runnable {
 		JFrame frame;
-		
+
 		public PackAndShowFrameWorker(JFrame frame) {
 			this.frame = frame;
 		}
@@ -414,6 +408,6 @@ public class PackagerOptionsPanel extends WizardPanel {
 				frame.pack();
 				frame.setVisible(true);
 			}
-		}		
+		}
 	}
 }

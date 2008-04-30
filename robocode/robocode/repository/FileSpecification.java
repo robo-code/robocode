@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,15 +19,15 @@
 package robocode.repository;
 
 
-import java.io.*;
-import java.net.URL;
-import java.util.Properties;
-import java.util.StringTokenizer;
-
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.NameManager;
 import robocode.manager.RobotRepositoryManager;
+
+import java.io.*;
+import java.net.URL;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 
 /**
@@ -88,16 +88,16 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		String filename = f.getName();
 		String fileType = FileUtil.getFileType(filename);
 
-		FileSpecification newSpec = null;
+		FileSpecification newSpec;
 
 		if (fileType.equals(".team")) {
 			newSpec = new TeamSpecification(f, rootDir, prefix, developmentVersion);
 		} else if (fileType.equals(".jar") || fileType.equals(".zip")) {
 			newSpec = new JarSpecification(f, rootDir, prefix, developmentVersion);
 		} else {
-			newSpec = new RobotSpecification(f, rootDir, prefix, developmentVersion);
+			newSpec = new RobotFileSpecification(f, rootDir, prefix, developmentVersion);
 			if (!(developmentVersion || newSpec.getValid())) {
-				newSpec = new ClassSpecification((RobotSpecification) newSpec);
+				newSpec = new ClassSpecification((RobotFileSpecification) newSpec);
 			}
 		}
 		newSpec.developmentVersion = developmentVersion;
@@ -144,29 +144,13 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public boolean isSameFile(String filePath, long fileLength, long fileLastModified) {
-		if (!filePath.equals(this.filePath)) {
-			return false;
-		}
-		if (fileLength != this.fileLength) {
-			return false;
-		}
-		if (fileLastModified != this.fileLastModified) {
-			return false;
-		}
-		return true;
+		return filePath.equals(this.filePath) && fileLength == this.fileLength
+				&& fileLastModified == this.fileLastModified;
 	}
 
 	public boolean isSameFile(FileSpecification other) {
-		if (other == null) {
-			return false;
-		}
-		if (other.getFileLength() != getFileLength()) {
-			return false;
-		}
-		if (other.getFileLastModified() != getFileLastModified()) {
-			return false;
-		}
-		return true;
+		return other != null && other.getFileLength() == getFileLength()
+				&& other.getFileLastModified() == getFileLastModified();
 	}
 
 	@Override
@@ -195,23 +179,15 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 					return false;
 				}
 			}
-			if (other.getFileLength() != getFileLength()) {
-				return false;
-			}
-			if (other.getFileLastModified() != getFileLastModified()) {
-				return false;
-			}
-			if (!other.getFileType().equals(getFileType())) {
-				return false;
-			}
-			return true;
+			return other.getFileLength() == getFileLength() && other.getFileLastModified() == getFileLastModified()
+					&& other.getFileType().equals(getFileType());
 		}
 		return false;
 	}
 
 	/**
 	 * Gets the UUID.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getUUID() {
@@ -322,7 +298,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the thisFilename.
 	 *
-	 * @param thisFilename The thisFilename to set
+	 * @param thisFileName The thisFilename to set
 	 */
 	public void setThisFileName(String thisFileName) {
 		this.thisFileName = thisFileName;
@@ -358,7 +334,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the propertiesFilename.
 	 *
-	 * @param propertiesFilename The propertiesFilename to set
+	 * @param propertiesFileName The propertiesFilename to set
 	 */
 	public void setPropertiesFileName(String propertiesFileName) {
 		this.propertiesFileName = propertiesFileName;
@@ -376,7 +352,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	/**
 	 * Sets the filename.
 	 *
-	 * @param filename The filename to set
+	 * @param fileName The filename to set
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
@@ -485,7 +461,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	public NameManager getNameManager() {
 		if (nameManager == null) {
-			if (this instanceof RobotSpecification) {
+			if (this instanceof RobotFileSpecification) {
 				nameManager = new NameManager(name, version, developmentVersion, false);
 			} else if (this instanceof TeamSpecification) {
 				nameManager = new NameManager(name, version, developmentVersion, true);
@@ -497,7 +473,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public boolean exists() {
-		return (getFilePath() != null) ? new File(getFilePath()).exists() : false;
+		return (getFilePath() != null) && new File(getFilePath()).exists();
 	}
 
 	/**

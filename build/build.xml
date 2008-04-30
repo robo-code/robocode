@@ -55,7 +55,6 @@
   <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
   <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
   <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
-  <defaultexcludes add="**/_*.java"/>    <!-- Java files to hide in Javadoc -->
 
   <!-- ====================================== -->
   <!-- Target: init                           -->
@@ -119,8 +118,8 @@
 	<zip
         destfile="${build}/${sources.archive}"
         basedir=".."
-        includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**"
-        excludes="build/build, **/bin/**, **/.svn/**"
+        includes="autoextract/**, build/*, robocode/**, robocodeextract/**, roborumble/**, tools/**"
+        excludes="build/build, **/bin/**, **/.svn/**, **/_svn/**"
         defaultexcludes="no"
     />
   </target>
@@ -287,11 +286,15 @@
       <!-- Specify files to include -->
       <fileset dir="${src.extract}">      <!-- Files from the extract folder -->
         <exclude name="build/**"/>        <!-- Exclude build files (if any) -->
+        <exclude name="**/.svn/**"/>      <!-- Exclude subversion files (if any) -->
+        <exclude name="**/_svn/**"/>      <!-- Exclude subversion files (if any) -->
       </fileset>
       <fileset dir="${src.roborumble}">   <!-- Files from the roborumble folder -->
         <include name="*.bat"/>           <!-- Windows batch files -->
         <include name="*.sh"/>            <!-- Shell files (Mac, Linux, and similar) -->
       	<include name="config/*"/>        <!-- Configuration files -->
+        <exclude name="**/.svn/**"/>      <!-- Exclude subversion files (if any) -->
+        <exclude name="**/_svn/**"/>      <!-- Exclude subversion files (if any) -->
       </fileset>
       <fileset dir="${build}">
         <include name="libs/robocode.jar"/>      <!-- Builded robocode.jar -->
@@ -389,6 +392,8 @@
         <include name="robocode/*.java"/>
       	<include name="robocode/util/Utils.java"/>
       	<include name="robocode/control/*.java"/>
+        <include name="robocode/robotinterfaces/*.java"/>
+        <include name="robocode/robotinterfaces/peer/*.java"/>
       </fileset>
       <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
     </javadoc>
@@ -473,8 +478,9 @@
           debug="${debug}"
           debuglevel="lines,vars,source"
           optimize="true"
-          includes="**/*.java"
-      />
+          includes="**/*.java">
+      	<compilerarg value="-Xlint"/>
+	  </javac>
     </sequential>
   </macrodef>
 

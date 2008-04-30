@@ -1,12 +1,23 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Flemming N. Larsen
+ *     - Initial implementation
+ *******************************************************************************/
 package sample;
 
 
-import robocode.*;
+import robocode.JuniorRobot;
 
 
 /**
  * MyFirstJuniorRobot - a sample robot by Flemming N. Larsen
- * 
+ * <p/>
  * Moves in a seesaw motion, and spins the gun around at each end
  * when it cannot see any enemy robot. When the robot sees and enemy
  * robot, it will immediately turn the gun and fire at it.
@@ -18,7 +29,7 @@ public class MyFirstJuniorRobot extends JuniorRobot {
 	 */
 	public void run() {
 		// Set robot colors
-		setColors(green, black, blue);		
+		setColors(green, black, blue);
 
 		// Seesaw forever
 		while (true) {

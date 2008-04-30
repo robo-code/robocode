@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,11 +37,11 @@
 package robocode.peer.robot;
 
 
-import java.util.List;
-
 import robocode.control.RobotResults;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
+
+import java.util.List;
 
 
 /**
@@ -248,7 +248,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 			bulletKillBonus += bonus;
 
-			robotPeer.out.println(
+			robotPeer.getOut().println(
 					"SYSTEM: Bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
 		}
 	}
@@ -273,7 +273,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 			}
 			rammingKillBonus += bonus;
 
-			robotPeer.out.println(
+			robotPeer.getOut().println(
 					"SYSTEM: Ram bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
 		}
 	}

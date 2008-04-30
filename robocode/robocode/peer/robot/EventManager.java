@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,19 +33,22 @@
  *     Nathaniel Troutman
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.peer.robot;
 
 
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import robocode.*;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.*;
 import robocode.util.Utils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -54,8 +57,9 @@ import robocode.util.Utils;
  * @author Matthew Reeder (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Pavel Savara (contributor)
  */
-public class EventManager {
+public class EventManager implements IEventManager {
 	private RobotPeer robotPeer = null;
 
 	private final int MAX_PRIORITY = 100;
@@ -88,14 +92,14 @@ public class EventManager {
 
 	private final static int MAX_QUEUE_SIZE = 256;
 
-	private _RobotBase robot;
+	private IBasicRobot robot;
 
 	/**
 	 * EventManager constructor comment.
 	 */
-	public EventManager(RobotPeer r) {
+	public EventManager(RobotPeer robotPeer) {
 		super();
-		this.robotPeer = r;
+		this.robotPeer = robotPeer;
 		eventQueue = new EventQueue(this);
 		reset();
 	}
@@ -123,7 +127,7 @@ public class EventManager {
 	public void clear(long clearTime) {
 		eventQueue.clear(clearTime);
 	}
-        
+
 	public void cleanup() {
 		// Remove all events
 		reset();
@@ -136,7 +140,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all events currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (Event e : getAllEvents()) {
@@ -147,22 +151,20 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHit
-	 * @see #onBulletHitBullet
-	 * @see #onBulletMissed
-	 * @see #onHitByBullet
-	 * @see #onHitByRobot
-	 * @see #onHitRobot
-	 * @see #onHitWall
-	 * @see #onSkippedTurn
-	 * @see robocode.BulletHitEvent
-	 * @see robocode.BulletMissedEvent
-	 * @see robocode.HitByBulletEvent
-	 * @see robocode.HitByRobotEvent
-	 * @see robocode.HitRobotEvent
-	 * @see robocode.HitWallEvent
-	 * @see robocode.SkippedTurnEvent
-	 * @see robocode.Event
+	 * @see #onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent)
+	 * @see #onHitByBullet(HitByBulletEvent)
+	 * @see #onHitRobot(HitRobotEvent)
+	 * @see #onHitWall(HitWallEvent)
+	 * @see #onSkippedTurn(SkippedTurnEvent)
+	 * @see BulletHitEvent
+	 * @see BulletMissedEvent
+	 * @see HitByBulletEvent
+	 * @see HitRobotEvent
+	 * @see HitWallEvent
+	 * @see SkippedTurnEvent
+	 * @see Event
 	 * @see List
 	 */
 	public List<Event> getAllEvents() {
@@ -179,7 +181,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all BulletHitBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
@@ -187,8 +189,8 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHitBullet
-	 * @see robocode.BulletHitBulletEvent
+	 * @see #onBulletHitBullet(BulletHitBulletEvent)
+	 * @see BulletHitBulletEvent
 	 * @see List
 	 */
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
@@ -207,7 +209,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all BulletHitEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletHitEvent e : getBulletHitEvents()) {
@@ -215,8 +217,8 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletHit
-	 * @see robocode.BulletHitEvent
+	 * @see #onBulletHit(BulletHitEvent)
+	 * @see BulletHitEvent
 	 * @see List
 	 */
 	public List<BulletHitEvent> getBulletHitEvents() {
@@ -235,7 +237,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all BulletMissedEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (BulletMissedEvent e : getBulletMissedEvents()) {
@@ -243,8 +245,8 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onBulletMissed
-	 * @see robocode.BulletMissedEvent
+	 * @see #onBulletMissed(BulletMissedEvent)
+	 * @see BulletMissedEvent
 	 * @see List
 	 */
 	public List<BulletMissedEvent> getBulletMissedEvents() {
@@ -346,7 +348,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitByBulletEvent e : getHitByBulletEvents()) {
@@ -354,8 +356,8 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitByBullet
-	 * @see robocode.HitByBulletEvent
+	 * @see #onHitByBullet(HitByBulletEvent)
+	 * @see HitByBulletEvent
 	 * @see List
 	 */
 	public List<HitByBulletEvent> getHitByBulletEvents() {
@@ -374,7 +376,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all HitRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitRobotEvent e : getHitRobotEvents()) {
@@ -382,8 +384,8 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitRobot
-	 * @see robocode.HitRobotEvent
+	 * @see #onHitRobot(HitRobotEvent)
+	 * @see HitRobotEvent
 	 * @see List
 	 */
 	public List<HitRobotEvent> getHitRobotEvents() {
@@ -402,7 +404,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all HitWallEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (HitWallEvent e : getHitWallEvents()) {
@@ -410,8 +412,8 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onHitWall
-	 * @see robocode.HitWallEvent
+	 * @see #onHitWall(HitWallEvent)
+	 * @see HitWallEvent
 	 * @see List
 	 */
 	public List<HitWallEvent> getHitWallEvents() {
@@ -431,13 +433,13 @@ public class EventManager {
 		return this.interruptible[priority];
 	}
 
-	private _RobotBase getRobot() {
+	private IBasicRobot getRobot() {
 		return robot;
 	}
 
-	public void setRobot(_RobotBase r) {
+	public void setRobot(IBasicRobot r) {
 		this.robot = r;
-		if (r instanceof AdvancedRobot) {
+		if (robotPeer.isAdvancedRobot()) {
 			useFireAssist = false;
 		}
 	}
@@ -445,7 +447,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all RobotDeathEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (RobotDeathEvent e : getRobotDeathEvents()) {
@@ -453,8 +455,8 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onRobotDeath
-	 * @see robocode.RobotDeathEvent
+	 * @see #onRobotDeath(RobotDeathEvent)
+	 * @see RobotDeathEvent
 	 * @see List
 	 */
 	public List<RobotDeathEvent> getRobotDeathEvents() {
@@ -477,7 +479,7 @@ public class EventManager {
 	/**
 	 * Returns a list containing all ScannedRobotEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 *
+	 * <p/>
 	 * <P>Example:
 	 * <pre>
 	 *    for (ScannedRobotEvent e : getScannedRobotEvents()) {
@@ -485,8 +487,8 @@ public class EventManager {
 	 *    }
 	 * </pre>
 	 *
-	 * @see #onScannedRobot
-	 * @see robocode.ScannedRobotEvent
+	 * @see #onScannedRobot(ScannedRobotEvent)
+	 * @see ScannedRobotEvent
 	 * @see List
 	 */
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
@@ -510,208 +512,189 @@ public class EventManager {
 		return fireAssistValid;
 	}
 
-	public void onBulletHit(BulletHitEvent e) {
-		_RobotBase robot = getRobot();
+	public void onStatus(StatusEvent e) {
+		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onBulletHit(e);
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null) {
+				listener.onStatus(e);
+			}
+		}
+	}
+
+	public void onBulletHit(BulletHitEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null) {
+				listener.onBulletHit(e);
+			}
 		}
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onBulletHitBullet(e);
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null) {
+				listener.onBulletHitBullet(e);
+			}
 		}
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onBulletMissed(e);
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null) {
+				listener.onBulletMissed(e);
+			}
 		}
 	}
 
 	public void onCustomEvent(CustomEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			if (robot instanceof AdvancedRobot) {
-				((AdvancedRobot) robot).onCustomEvent(e);
+			if (robotPeer.isAdvancedRobot()) {
+				IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
-			} else if (robot instanceof JuniorRobot) {
-				Condition c = e.getCondition();
-
-				if (c instanceof RobotPeer.GunReadyCondition) {
-					((JuniorRobot) robot).gunReady = true;
-
-				} else if (c instanceof RobotPeer.GunFireCondition) {
-					double firePower = robotPeer.getJuniorFirePower(); 
-
-					if (firePower > 0) {
-						if (robotPeer.setFire(firePower) != null) {
-							((JuniorRobot) robot).gunReady = false;
-						}
-						robotPeer.setJuniorFire(0);
-					}
+				if (listener != null) {
+					listener.onCustomEvent(e);
 				}
 			}
 		}
 	}
 
 	public void onDeath(DeathEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onDeath(e);
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null) {
+				listener.onDeath(e);
+			}
 		}
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			if (robot instanceof JuniorRobot) {
-				JuniorRobot jr = ((JuniorRobot) robot);
+			IBasicEvents listener = robot.getBasicEventListener();
 
-				robotPeer.updateJuniorRobotFields();
-
-				jr.hitByBulletAngle = (int) (Math.toDegrees(
-						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
-								+ 0.5);
-				jr.hitByBulletBearing = (int) (e.getBearing() + 0.5);
-				jr.onHitByBullet();
-			} else {
-				((Robot) robot).onHitByBullet(e);
+			if (listener != null) {
+				listener.onHitByBullet(e);
 			}
 		}
 	}
 
 	public void onHitRobot(HitRobotEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			if (robot instanceof JuniorRobot) {
-				JuniorRobot jr = ((JuniorRobot) robot);
+			IBasicEvents listener = robot.getBasicEventListener();
 
-				robotPeer.updateJuniorRobotFields();
-
-				jr.hitRobotAngle = (int) (Math.toDegrees(
-						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
-								+ 0.5);
-				jr.hitRobotBearing = (int) (e.getBearing() + 0.5);
-				jr.onHitRobot();
-			} else {
-				((Robot) robot).onHitRobot(e);
+			if (listener != null) {
+				listener.onHitRobot(e);
 			}
 		}
 	}
 
 	public void onHitWall(HitWallEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			if (robot instanceof JuniorRobot) {
-				JuniorRobot jr = ((JuniorRobot) robot);
+			IBasicEvents listener = robot.getBasicEventListener();
 
-				robotPeer.updateJuniorRobotFields();
-
-				jr.hitWallAngle = (int) (Math.toDegrees(
-						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
-								+ 0.5);
-				jr.hitWallBearing = (int) (e.getBearing() + 0.5);
-				jr.onHitWall();
-			} else {
-				((Robot) robot).onHitWall(e);
+			if (listener != null) {
+				listener.onHitWall(e);
 			}
 		}
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			if (robot instanceof JuniorRobot) {
-				JuniorRobot jr = ((JuniorRobot) robot);
+			IBasicEvents listener = robot.getBasicEventListener();
 
-				jr.others = robotPeer.getOthers();
-			} else {
-				((Robot) robot).onRobotDeath(e);
+			if (listener != null) {
+				listener.onRobotDeath(e);
 			}
 		}
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			if (robot instanceof JuniorRobot) {
-				JuniorRobot jr = ((JuniorRobot) robot);
+			IBasicEvents listener = robot.getBasicEventListener();
 
-				jr.scannedDistance = (int) (e.getDistance() + 0.5);
-				jr.scannedEnergy = Math.max(1, (int) (e.getEnergy() + 0.5));
-				jr.scannedAngle = (int) (Math.toDegrees(
-						Utils.normalAbsoluteAngle(robotPeer.getHeading() + e.getBearingRadians()))
-								+ 0.5);
-				jr.scannedBearing = (int) (e.getBearing() + 0.5);
-				jr.scannedHeading = (int) (e.getHeading() + 0.5);
-				jr.scannedVelocity = (int) (e.getVelocity() + 0.5);
-				jr.onScannedRobot();
-			} else {
-				((Robot) robot).onScannedRobot(e);
+			if (listener != null) {
+				listener.onScannedRobot(e);
 			}
 		}
 	}
 
 	public void onSkippedTurn(SkippedTurnEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof AdvancedRobot) {
-			((AdvancedRobot) robot).onSkippedTurn(e);
+		if (robot != null && robotPeer.isAdvancedRobot()) {
+			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+
+			if (listener != null) {
+				listener.onSkippedTurn(e);
+			}
 		}
 	}
 
 	public void onMessageReceived(MessageEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof TeamRobot) {
-			((TeamRobot) robot).onMessageReceived(e);
+		if (robot != null && robotPeer.isTeamRobot()) {
+			ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
+
+			if (listener != null) {
+				listener.onMessageReceived(e);
+			}
 		}
 	}
 
 	public void onWin(WinEvent e) {
-		_RobotBase robot = getRobot();
+		IBasicRobot robot = getRobot();
 
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onWin(e);
-		}
-	}
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
 
-	public void onStatus(StatusEvent e) {
-		_RobotBase robot = getRobot();
-
-		if (robot != null && robot instanceof Robot) {
-			((Robot) robot).onStatus(e);
+			if (listener != null) {
+				listener.onWin(e);
+			}
 		}
 	}
 
 	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
-			Condition c;
 			boolean conditionSatisfied;
 
 			// Do not turn this into a "for each" loop as this will cause a
 			// ConcurrentModificationException!
-			for (int i = 0; i < customEvents.size(); i++) {
-				c = customEvents.get(i);
+			for (Condition customEvent : customEvents) {
 				robotPeer.setTestingCondition(true);
-				conditionSatisfied = c.test();
+				conditionSatisfied = customEvent.test();
 				robotPeer.setTestingCondition(false);
 				if (conditionSatisfied) {
-					eventQueue.add(new CustomEvent(c));
+					eventQueue.add(new CustomEvent(customEvent));
 				}
 			}
 		}
@@ -758,9 +741,9 @@ public class EventManager {
 				} else if (currentEvent instanceof ScannedRobotEvent) {
 					if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
 							&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
-							&& !(getRobot() instanceof AdvancedRobot)) {
+							&& !(robotPeer.isAdvancedRobot())) {
 						fireAssistAngle = Utils.normalAbsoluteAngle(
-								robotPeer.getHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
+								robotPeer.getBodyHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
 						if (useFireAssist) {
 							fireAssistValid = true;
 						}
@@ -781,7 +764,7 @@ public class EventManager {
 				} else if (currentEvent instanceof CustomEvent) {
 					onCustomEvent((CustomEvent) currentEvent);
 				} else {
-					robotPeer.out.println("Unknown event: " + currentEvent);
+					robotPeer.getOut().println("Unknown event: " + currentEvent);
 				}
 				setInterruptible(currentTopEventPriority, false);
 
@@ -811,12 +794,12 @@ public class EventManager {
 
 	public void setEventPriority(String eventClass, int priority) {
 		if (priority < 0) {
-			robotPeer.out.println("SYSTEM: Priority must be between 0 and 99.");
-			robotPeer.out.println("SYSTEM: Priority for " + eventClass + " will be 0.");
+			robotPeer.getOut().println("SYSTEM: Priority must be between 0 and 99.");
+			robotPeer.getOut().println("SYSTEM: Priority for " + eventClass + " will be 0.");
 			priority = 0;
 		} else if (priority > 99) {
-			robotPeer.out.println("SYSTEM: Priority must be between 0 and 99.");
-			robotPeer.out.println("SYSTEM: Priority for " + eventClass + " will be 99.");
+			robotPeer.getOut().println("SYSTEM: Priority must be between 0 and 99.");
+			robotPeer.getOut().println("SYSTEM: Priority for " + eventClass + " will be 99.");
 			priority = 99;
 		}
 		if (eventClass.equals("robocode.BulletHitEvent") || eventClass.equals("BulletHitEvent")) {
@@ -840,16 +823,17 @@ public class EventManager {
 		} else if (eventClass.equals("robocode.StatusEvent") || eventClass.equals("StatusEvent")) {
 			statusEventPriority = priority;
 		} else if (eventClass.equals("robocode.CustomEvent") || eventClass.equals("CustomEvent")) {
-			robotPeer.out.println(
+			robotPeer.getOut().println(
 					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.SkippedTurnEvent") || eventClass.equals("SkippedTurnEvent")) {
-			robotPeer.out.println("SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
+			robotPeer.getOut().println(
+					"SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.WinEvent") || eventClass.equals("WinEvent")) {
-			robotPeer.out.println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
+			robotPeer.getOut().println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
 		} else if (eventClass.equals("robocode.DeathEvent") || eventClass.equals("DeathEvent")) {
-			robotPeer.out.println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
+			robotPeer.getOut().println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
 		} else {
-			robotPeer.out.println("SYSTEM: Unknown event class: " + eventClass);
+			robotPeer.getOut().println("SYSTEM: Unknown event class: " + eventClass);
 		}
 	}
 
@@ -867,7 +851,7 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all MessageEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (MessageEvent e : getMessageEvents()) {
@@ -876,11 +860,9 @@ public class EventManager {
 	 * </pre>
 	 *
 	 * @return a vector containing all MessageEvents currently in the robot's
-	 *    queue
-	 *
-	 * @see #onMessageReceived
+	 *         queue
+	 * @see #onMessageReceived(MessageEvent)
 	 * @see MessageEvent
-	 *
 	 * @since 1.2.6
 	 */
 	public List<MessageEvent> getMessageEvents() {
@@ -899,7 +881,7 @@ public class EventManager {
 	/**
 	 * Returns a vector containing all StatusEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   for (StatusEvent e : getStatusEvents()) {
@@ -908,11 +890,9 @@ public class EventManager {
 	 * </pre>
 	 *
 	 * @return a vector containing all StatusEvents currently in the robot's
-	 *    queue.
-	 *
-	 * @see #onStatus
+	 *         queue.
+	 * @see #onStatus(StatusEvent)
 	 * @see StatusEvent
-	 *
 	 * @since 1.5
 	 */
 	public List<StatusEvent> getStatusEvents() {

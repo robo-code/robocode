@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,24 +23,19 @@
 package robocode.manager;
 
 
-import java.io.File;
-import java.io.IOException;
-
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.Window;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
-
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
 import robocode.dialog.*;
+import robocode.dialog.SplashScreen;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -55,7 +50,6 @@ public class WindowManager {
 	private RobotExtractor robotExtractor;
 	private RobocodeFrame robocodeFrame;
 	private RobocodeManager manager;
-	private TeamCreator teamCreator;
 	private RankingDialog rankingDialog;
 
 	public WindowManager(RobocodeManager manager) {
@@ -72,7 +66,7 @@ public class WindowManager {
 
 	public void showRobocodeFrame(boolean visible) {
 		RobocodeFrame frame = getRobocodeFrame();
-		
+
 		if (visible) {
 			// Pack frame to size all components
 			WindowUtil.packCenterShow(frame);
@@ -106,10 +100,7 @@ public class WindowManager {
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".battle")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".battle");
 			}
 
 			@Override
@@ -232,8 +223,7 @@ public class WindowManager {
 
 			try {
 				splashScreen.wait(20000);
-			} catch (InterruptedException e) {
-				; // Do nothing
+			} catch (InterruptedException e) {// Do nothing
 			}
 		}
 
@@ -261,15 +251,7 @@ public class WindowManager {
 	}
 
 	public boolean closeRobocodeEditor() {
-		if (robocodeEditor == null) {
-			return true;
-		}
-
-		if (!robocodeEditor.isVisible()) {
-			return true;
-		}
-
-		return robocodeEditor.close();
+		return robocodeEditor == null || !robocodeEditor.isVisible() || robocodeEditor.close();
 	}
 
 	/**
@@ -282,7 +264,8 @@ public class WindowManager {
 	}
 
 	public void showCreateTeamDialog() {
-		teamCreator = new robocode.dialog.TeamCreator(manager.getRobotRepositoryManager());
+		TeamCreator teamCreator = new TeamCreator(manager.getRobotRepositoryManager());
+
 		WindowUtil.packCenterShow(teamCreator);
 	}
 
@@ -310,13 +293,7 @@ public class WindowManager {
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".jar")) {
-					return true;
-				}
-				if (extension.equalsIgnoreCase(".zip")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".jar") || extension.equalsIgnoreCase(".zip");
 			}
 
 			@Override
@@ -372,8 +349,7 @@ public class WindowManager {
 	/**
 	 * Shows a web page using the browser manager.
 	 *
-	 * @param url
-	 *        The URL of the web page
+	 * @param url The URL of the web page
 	 */
 	private void showInBrowser(String url) {
 		try {
@@ -405,10 +381,7 @@ public class WindowManager {
 				if (idx >= 0) {
 					extension = filename.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".csv")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".csv");
 			}
 
 			@Override

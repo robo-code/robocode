@@ -1,13 +1,29 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Mathew A. Nelson
+ *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Maintainance
+ *******************************************************************************/
 package sample;
 
 
-import java.awt.Color;
-import robocode.*;
+import robocode.HitRobotEvent;
+import robocode.Robot;
+import robocode.ScannedRobotEvent;
+
+import java.awt.*;
 
 
 /**
  * RamFire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Drives at robots trying to ram them.
  * Fires when it hits them.
  */
@@ -32,13 +48,13 @@ public class RamFire extends Robot {
 	 * onScannedRobot:  We have a target.  Go get it.
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-				
+
 		if (e.getBearing() >= 0) {
 			turnDirection = 1;
 		} else {
 			turnDirection = -1;
 		}
-			
+
 		turnRight(e.getBearing());
 		ahead(e.getDistance() + 5);
 		scan(); // Might want to move ahead again!
@@ -54,7 +70,7 @@ public class RamFire extends Robot {
 			turnDirection = -1;
 		}
 		turnRight(e.getBearing());
-		
+
 		// Determine a shot that won't kill the robot...
 		// We want to ram him instead for bonus points
 		if (e.getEnergy() > 16) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,42 +8,44 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Re-work of robot interfaces, added setOut()
  *******************************************************************************/
 package robocode;
 
 
 import robocode.exception.RobotException;
-import robocode.peer.RobotPeer;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 
 /**
  * This class is the base class of all robots used by the system. You should not
  * base your robots on this class.
- * <p>
+ * <p/>
  * You should create a robot that is derived from the {@link Robot} or
  * {@link JuniorRobot} class instead.
- * <p>
+ * <p/>
  * There is no guarantee that this class will exist in future versions of Robocode.
  *
+ * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * @see Robot
  * @see JuniorRobot
  * @see AdvancedRobot
  * @see TeamRobot
- *
- * @author Flemming N. Larsen (original)
- * 
  * @since 1.4
  */
-public abstract class _RobotBase implements Runnable {
+public abstract class _RobotBase implements IBasicRobot, Runnable {
 
-	RobotPeer peer;
+	IBasicRobotPeer peer;
 
 	/**
 	 * The output stream your robot should use to print.
-	 * <p>
+	 * <p/>
 	 * You can view the print-outs by clicking the button for your robot in the
 	 * right side of the battle window.
-	 * <p>
+	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   // Print out a line each time my robot hits another robot
@@ -55,11 +57,16 @@ public abstract class _RobotBase implements Runnable {
 	public java.io.PrintStream out;
 
 	/**
-	 * This method is called by the game. RobotPeer is the object that deals with
-	 * game mechanics and rules, and makes sure your robot abides by them.
-	 * Do not call this method! Your robot will simply stop interacting with the game.
+	 * {@inheritDoc}
 	 */
-	public final void setPeer(RobotPeer peer) {
+	public final void setOut(java.io.PrintStream out) {
+		this.out = out;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setPeer(IBasicRobotPeer peer) {
 		this.peer = peer;
 	}
 
@@ -67,8 +74,8 @@ public abstract class _RobotBase implements Runnable {
 	 * Throws a RobotException. This method should be called when the robot's peer
 	 * is uninitialized.
 	 */
-	final static void uninitializedException() {
-		StackTraceElement[] trace = new Throwable().getStackTrace();
+	static void uninitializedException() {
+		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		String methodName = trace[1].getMethodName();
 
 		throw new RobotException(

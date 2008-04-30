@@ -1,12 +1,27 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Mathew A. Nelson
+ *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Maintainance
+ *******************************************************************************/
 package sampleteam;
 
 
-import robocode.*;
+import robocode.Droid;
+import robocode.MessageEvent;
+import robocode.TeamRobot;
 
 
 /**
  * SimpleDroid - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Follows orders of team leader
  */
 public class MyFirstDroid extends TeamRobot implements Droid {
@@ -17,7 +32,7 @@ public class MyFirstDroid extends TeamRobot implements Droid {
 	public void run() {
 		out.println("MyFirstDroid ready.");
 	}
-	
+
 	/**
 	 * onMessageReceived:  What to do when our leader sends a message
 	 */
@@ -49,7 +64,7 @@ public class MyFirstDroid extends TeamRobot implements Droid {
 
 	/**
 	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */	
+	 */
 	public double normalRelativeAngle(double angle) {
 		if (angle > -180 && angle <= 180) {
 			return angle;

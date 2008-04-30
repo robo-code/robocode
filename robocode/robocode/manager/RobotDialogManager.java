@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,11 +22,11 @@
 package robocode.manager;
 
 
-import java.util.*;
-
 import robocode.battle.Battle;
 import robocode.dialog.RobotDialog;
 import robocode.peer.RobotPeer;
+
+import java.util.*;
 
 
 /**
@@ -52,8 +52,8 @@ public class RobotDialogManager {
 		for (String name : keys) {
 			boolean found = false;
 
-			for (RobotPeer r : robots) {
-				if (r.getName().equals(name)) {
+			for (RobotPeer robotPeer : robots) {
+				if (robotPeer.getName().equals(name)) {
 					found = true;
 					break;
 				}

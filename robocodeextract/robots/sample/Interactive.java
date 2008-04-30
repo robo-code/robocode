@@ -1,23 +1,33 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Flemming N. Larsen
+ *     - Initial implementation
+ *******************************************************************************/
 package sample;
 
 
-import static java.awt.event.KeyEvent.*;
-import static robocode.util.Utils.*;
+import robocode.AdvancedRobot;
+import static robocode.util.Utils.normalAbsoluteAngle;
+import static robocode.util.Utils.normalRelativeAngle;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import static java.awt.event.KeyEvent.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.Color;
-import java.awt.Graphics2D;
-
-import robocode.AdvancedRobot;
 
 
 /**
  * Interactive - a sample robot by Flemming N. Larsen.
- *
+ * <p/>
  * This is a robot that is controlled using the arrow keys and mouse only.
- * 
+ * <p/>
  * Keys:
  * - Arrow up:    Move forward
  * - Arrow down:  Move backward
@@ -30,19 +40,19 @@ import robocode.AdvancedRobot;
  * - Button 1:    Fire a bullet with power = 1
  * - Button 2:    Fire a bullet with power = 2
  * - Button 3:    Fire a bullet with power = 3
- *
+ * <p/>
  * The bullet color depends on the fire power:
  * - Power = 1:   Yellow
  * - Power = 2:   Orange
  * - Power = 3:   Red
- *
+ * <p/>
  * Note that the robot will continue firing as long as the mouse button is
  * pressed down.
- *
+ * <p/>
  * By enabling the "Paint" button on the robot console window for this robot,
  * a cross hair will be painted for the robots current aim (controlled by the
  * mouse).
- * 
+ *
  * @author Flemming N. Larsen
  * @version 1.1
  * @since 1.3.4
@@ -83,7 +93,7 @@ public class Interactive extends AdvancedRobot {
 			moveAmount = Math.max(0, moveAmount - 1);
 
 			// Sets the robot to turn right or turn left (at maximum speed) or
-			// stop turning depending on the turn direction 
+			// stop turning depending on the turn direction
 			setTurnRight(45 * turnDirection); // degrees
 
 			// Turns the gun toward the current aim coordinate (x,y) controlled by
@@ -99,7 +109,7 @@ public class Interactive extends AdvancedRobot {
 
 			// Execute all pending set-statements
 			execute();
-			
+
 			// Next turn is processed in this loop..
 		}
 	}
@@ -136,7 +146,7 @@ public class Interactive extends AdvancedRobot {
 		switch (e.getKeyCode()) {
 		case VK_UP:
 		case VK_DOWN:
-			// Arrow up and down keys: move direction = stand still 
+			// Arrow up and down keys: move direction = stand still
 			moveDirection = 0;
 			break;
 

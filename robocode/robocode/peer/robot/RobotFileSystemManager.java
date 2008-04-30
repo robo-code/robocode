@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,13 +17,13 @@
 package robocode.peer.robot;
 
 
+import robocode.RobocodeFileOutputStream;
+import robocode.peer.RobotPeer;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import robocode.RobocodeFileOutputStream;
-import robocode.peer.RobotPeer;
 
 
 /**
@@ -77,7 +77,7 @@ public class RobotFileSystemManager {
 			return;
 		}
 		if (!quotaMessagePrinted) {
-			robotPeer.out.println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
+			robotPeer.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
 			quotaMessagePrinted = true;
 		}
 		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");
@@ -107,9 +107,7 @@ public class RobotFileSystemManager {
 			return null;
 		}
 		try {
-			File dir = new File(robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory(), robotPeer.getRobotClassManager().getClassNameManager().getShortClassName() + ".data").getCanonicalFile();
-
-			return dir;
+			return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory(), robotPeer.getRobotClassManager().getClassNameManager().getShortClassName() + ".data").getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}
@@ -142,7 +140,7 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		File attemptedFile = null;
+		File attemptedFile;
 
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
@@ -175,7 +173,7 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		File attemptedFile = null;
+		File attemptedFile;
 
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
@@ -183,11 +181,8 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		if (attemptedFile.getParentFile().equals(allowedDirectory)) {
-			return true;
-		}
+		return attemptedFile.getParentFile().equals(allowedDirectory);
 
-		return false;
 	}
 
 	public void removeStream(RobocodeFileOutputStream s) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,18 +23,18 @@
 package robocode.peer.robot;
 
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.List;
-
 import robocode.MessageEvent;
 import robocode.io.BufferedPipedOutputStream;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -59,11 +59,11 @@ public class RobotMessageManager {
 			in = new RobocodeObjectInputStream(bufOut.getInputStream(),
 					robotPeer.getRobotClassManager().getRobotClassLoader());
 		} catch (IOException e) {
-			robotPeer.out.println("Unable to initialize team message service.");
+			robotPeer.getOut().println("Unable to initialize team message service.");
 		}
 	}
 
-	public void sendMessage(String name, Serializable o) throws IOException {
+	public void sendMessage(String name, Serializable message) throws IOException {
 		TeamPeer teamPeer = robotPeer.getRobotClassManager().getTeamManager();
 
 		if (teamPeer == null) {
@@ -84,7 +84,7 @@ public class RobotMessageManager {
 
 					if (robotMsgMan != null) {
 						synchronized (robotMsgMan.out) {
-							robotMsgMan.out.writeObject(o);
+							robotMsgMan.out.writeObject(message);
 							try {
 								robotMsgMan.addMessage(robotPeer.getName(), (Serializable) robotMsgMan.in.readObject());
 							} catch (ClassNotFoundException e) {

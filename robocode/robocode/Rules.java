@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,10 +24,12 @@ import static java.lang.Math.max;
  *
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (original)
- *
  * @since 1.1.4
  */
 public final class Rules {
+
+	// Hide the constructor in the Javadocs as it should not be used
+	private Rules() {}
 
 	/**
 	 * The acceleration of a robot, i.e. the increase of velocity when the
@@ -70,8 +72,8 @@ public final class Rules {
 	 * Note, that the turn rate of the robot depends on it's velocity.
 	 *
 	 * @see #MAX_TURN_RATE_RADIANS
-	 * @see #getTurnRate
-	 * @see #getTurnRateRadians
+	 * @see #getTurnRate(double)
+	 * @see #getTurnRateRadians(double)
 	 */
 	public static final double MAX_TURN_RATE = 10;
 
@@ -80,8 +82,8 @@ public final class Rules {
 	 * degrees.
 	 *
 	 * @see #MAX_TURN_RATE
-	 * @see #getTurnRate
-	 * @see #getTurnRateRadians
+	 * @see #getTurnRate(double)
+	 * @see #getTurnRateRadians(double)
 	 */
 	public static final double MAX_TURN_RATE_RADIANS = Math.toRadians(MAX_TURN_RATE);
 
@@ -97,7 +99,7 @@ public final class Rules {
 	 * case the gun moves relatively to the robot body.
 	 *
 	 * @see #GUN_TURN_RATE_RADIANS
-	 * @see Robot#setAdjustGunForRobotTurn
+	 * @see Robot#setAdjustGunForRobotTurn(boolean)
 	 */
 	public static final double GUN_TURN_RATE = 20;
 
@@ -121,8 +123,8 @@ public final class Rules {
 	 * the radar moves relatively to the gun and/or robot body.
 	 *
 	 * @see #RADAR_TURN_RATE_RADIANS
-	 * @see Robot#setAdjustGunForRobotTurn
-	 * @see Robot#setAdjustRadarForGunTurn
+	 * @see Robot#setAdjustGunForRobotTurn(boolean)
+	 * @see Robot#setAdjustRadarForGunTurn(boolean)
 	 */
 	public static final double RADAR_TURN_RATE = 45;
 
@@ -151,8 +153,7 @@ public final class Rules {
 	 *
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in degrees/turn.
-	 *
-	 * @see #getTurnRateRadians
+	 * @see #getTurnRateRadians(double)
 	 */
 	public static double getTurnRate(double velocity) {
 		return MAX_TURN_RATE - 0.75 * velocity;
@@ -164,8 +165,7 @@ public final class Rules {
 	 *
 	 * @param velocity the velocity of the robot.
 	 * @return turn rate in radians/turn.
-	 *
-	 * @see #getTurnRate
+	 * @see #getTurnRate(double)
 	 */
 	public static double getTurnRateRadians(double velocity) {
 		return Math.toRadians(getTurnRate(velocity));

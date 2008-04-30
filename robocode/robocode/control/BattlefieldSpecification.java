@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,13 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - This class now implements java.io.Serializable
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode.control;
 
 
 /**
- * Defines a battlefield
+ * Defines the size of a battlefield.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -28,42 +29,47 @@ public class BattlefieldSpecification implements java.io.Serializable {
 	private int height;
 
 	/**
-	 * Creates a standard 800 x 600 battlefield
+	 * Creates a standard 800 x 600 battlefield.
 	 */
 	public BattlefieldSpecification() {
 		this(800, 600);
 	}
 
 	/**
-	 * Creates a battlefield of any width and height.
+	 * Creates a battlefield of the specified width and height.
 	 *
-	 * @param width Width of this battlefield
-	 * @param height Height of this battlefield
+	 * @param width  the width of the battlefield, where 400 >= width < 5000.
+	 * @param height the height of the battlefield, where 400 >= height < 5000.
+	 * @throws IllegalArgumentException if the width or height is less than 400
+	 *                                  or greater than 5000
 	 */
 	public BattlefieldSpecification(int width, int height) {
-		if (width >= 400 && width <= 5000) {
-			this.width = width;
+		if (width < 400 || width > 5000) {
+			throw new IllegalArgumentException("width must be: 400 >= width < 5000");
 		}
-		if (height >= 400 && height <= 5000) {
-			this.height = height;
+		if (height < 400 || height > 5000) {
+			throw new IllegalArgumentException("height must be: 400 >= height < 5000");
 		}
+
+		this.width = width;
+		this.height = height;
 	}
 
 	/**
-	 * Gets the height of this battlefield.
+	 * Returns the width of this battlefield.
 	 *
-	 * @return Returns the height of this battlefield.
-	 */
-	public int getHeight() {
-		return height;
-	}
-
-	/**
-	 * Gets the width of this battlefield.
-	 *
-	 * @return Returns the width of this battlefield.
+	 * @return the width of this battlefield.
 	 */
 	public int getWidth() {
 		return width;
+	}
+
+	/**
+	 * Returns the height of this battlefield.
+	 *
+	 * @return the height of this battlefield.
+	 */
+	public int getHeight() {
+		return height;
 	}
 }

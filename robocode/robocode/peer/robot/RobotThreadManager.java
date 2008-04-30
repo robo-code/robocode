@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,8 +44,7 @@ public class RobotThreadManager {
 		if (runThread != null && runThread.isAlive()) {
 			try {
 				runThread.setPriority(Thread.MIN_PRIORITY);
-			} catch (NullPointerException e) {
-				; // Work-around: Sometimes this occurs in the Java core?!
+			} catch (NullPointerException e) {// Work-around: Sometimes this occurs in the Java core?!
 			}
 			runThread.interrupt();
 			try {
@@ -61,12 +60,12 @@ public class RobotThreadManager {
 			try {
 				runThread.join(5000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();				
+				e.printStackTrace();
 			}
 			if (runThread.isAlive()) {
 				log("Warning!  Unable to stop thread: " + runThread.getName());
 			} else {
-				robotPeer.out.println("SYSTEM: This robot has been stopped.  No score will be generated.");
+				robotPeer.getOut().println("SYSTEM: This robot has been stopped.  No score will be generated.");
 				log(robotPeer.getName() + " has been stopped.  No score will be generated.");
 			}
 		}
@@ -80,7 +79,7 @@ public class RobotThreadManager {
 
 		if (numThreads != 0) {
 			robotPeer.getRobotStatistics().setInactive();
-			robotPeer.out.println(
+			robotPeer.getOut().println(
 					"SYSTEM:  You still have " + numThreads + " running threads.  No score will be generated.");
 		}
 		for (Thread thread : threads) {
@@ -94,13 +93,13 @@ public class RobotThreadManager {
 				try {
 					thread.join(1000);
 				} catch (InterruptedException e) {
-					robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
+					robotPeer.getOut().println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
 					log("Thread: " + thread.getName() + " join interrupted.");
 				}
 				if (thread.isAlive()) {
 					log("Warning! Unable to stop thread: " + thread.getName());
 				} else {
-					robotPeer.out.println("SYSTEM:  Thread: " + thread.getName() + " has been stopped.");
+					robotPeer.getOut().println("SYSTEM:  Thread: " + thread.getName() + " has been stopped.");
 					log("Thread: " + thread.getName() + " has been stopped.");
 				}
 			}

@@ -18,9 +18,13 @@
 package robocode.dialog;
 
 
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobotRepositoryManager;
+import robocode.repository.TeamSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -30,12 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.swing.*;
-
-import robocode.manager.RobocodeManager;
-import robocode.manager.RobotRepositoryManager;
-import robocode.repository.TeamSpecification;
 
 
 /**

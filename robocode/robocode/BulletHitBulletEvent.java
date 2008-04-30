@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Updated Javadoc
+ *     - Updated Javadocs
  *******************************************************************************/
 package robocode;
 
@@ -25,7 +25,10 @@ public class BulletHitBulletEvent extends Event {
 	private Bullet hitBullet;
 
 	/**
-	 * Called by the game to create a new BulletHitEvent.
+	 * Called by the game to create a new {@code BulletHitEvent}.
+	 *
+	 * @param bullet    your bullet that hit another bullet
+	 * @param hitBullet the bullet that was hit by your bullet
 	 */
 	public BulletHitBulletEvent(Bullet bullet, Bullet hitBullet) {
 		super();

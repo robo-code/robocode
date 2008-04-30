@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,13 +18,14 @@
 package roborumble.battlesengine;
 
 
-import robocode.control.*;
-import roborumble.battlesengine.Coordinator;
+import robocode.control.BattleSpecification;
+import robocode.control.RobocodeListener;
+import robocode.control.RobotResults;
 
 
 /**
  * Listener used for receiving battle results.
- * 
+ *
  * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
  */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,30 +12,35 @@
 package robocode.gfx;
 
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 
 /**
  * The base of all renderable objects.
- * An <code>RenderObject</code> is an object that can be painted and transformed.
+ * An {@code RenderObject} is an object that can be painted and transformed.
  *
  * @author Flemming N. Larsen (original)
  */
 public class RenderObject {
 
-	/** Base transform, e.g. the initial rotation and translation */
+	/**
+	 * Base transform, e.g. the initial rotation and translation
+	 */
 	protected AffineTransform baseTransform;
 
-	/** Current transform that is concatenated with the base transform */
+	/**
+	 * Current transform that is concatenated with the base transform
+	 */
 	protected AffineTransform transform;
 
-	/** Current frame that must be rendered */
+	/**
+	 * Current frame that must be rendered
+	 */
 	protected int frame;
 
 	/**
-	 * Constructs a new <code>RenderObject</code>.
+	 * Constructs a new {@code RenderObject}.
 	 */
 	public RenderObject() {
 		baseTransform = new AffineTransform();
@@ -43,8 +48,8 @@ public class RenderObject {
 	}
 
 	/**
-	 * Constructs a new <code>RenderObject</code> that is a copy of another
-	 * <code>RenderObject</code>.
+	 * Constructs a new {@code RenderObject} that is a copy of another
+	 * {@code RenderObject}.
 	 */
 	public RenderObject(RenderObject ro) {
 		baseTransform = new AffineTransform(ro.baseTransform);

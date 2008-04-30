@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,7 @@
 package robocode.gfx;
 
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
@@ -26,14 +24,18 @@ import java.awt.geom.Area;
  */
 public class RenderImage extends RenderObject {
 
-	/** Image */
+	/**
+	 * Image
+	 */
 	protected Image image;
 
-	/** Area containing the bounds of the image to paint */
+	/**
+	 * Area containing the bounds of the image to paint
+	 */
 	protected Area boundArea;
 
 	/**
-	 * Constructs a new <code>RenderImage</code>, which has it's origin in the center
+	 * Constructs a new {@code RenderImage}, which has it's origin in the center
 	 * of the image.
 	 *
 	 * @param image the image to be rendered
@@ -43,9 +45,9 @@ public class RenderImage extends RenderObject {
 	}
 
 	/**
-	 * Constructs a new <code>RenderImage</code>
+	 * Constructs a new {@code RenderImage}
 	 *
-	 * @param image the image to be rendered
+	 * @param image   the image to be rendered
 	 * @param originX the x coordinate of the origin for the rendered image
 	 * @param originY the y coordinate of the origin for the rendered image
 	 */
@@ -60,10 +62,10 @@ public class RenderImage extends RenderObject {
 	}
 
 	/**
-	 * Constructs a new <code>RenderImage</code> that is a copy of another
-	 * <code>RenderImage</code>.
+	 * Constructs a new {@code RenderImage} that is a copy of another
+	 * {@code RenderImage}.
 	 *
-	 * @param ri the <code>RenderImage</code> to copy
+	 * @param ri the {@code RenderImage} to copy
 	 */
 	public RenderImage(RenderImage ri) {
 		super(ri);

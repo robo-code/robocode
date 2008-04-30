@@ -24,10 +24,13 @@
 package robocode.dialog;
 
 
+import robocode.manager.RobotRepositoryManager;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.FileSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
-import java.awt.AWTEvent;
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -36,12 +39,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Set;
-
-import javax.swing.*;
-
-import robocode.manager.RobotRepositoryManager;
-import robocode.peer.robot.RobotClassManager;
-import robocode.repository.FileSpecification;
 
 
 /**
@@ -179,7 +176,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	private int extractRobot() {
 		robotManager.clearRobotList();
-		int rv = 0;
+		int rv;
 
 		output = new StringWriter();
 		PrintWriter out = new PrintWriter(output);

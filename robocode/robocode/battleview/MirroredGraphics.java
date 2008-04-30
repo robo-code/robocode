@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,20 +12,17 @@
 package robocode.battleview;
 
 
+import robocode.util.GraphicsState;
+
 import java.awt.*;
 import java.awt.RenderingHints.Key;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ImageObserver;
-import java.awt.image.RenderedImage;
+import java.awt.image.*;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
-
-import robocode.util.GraphicsState;
 
 
 /**
@@ -55,9 +52,8 @@ public class MirroredGraphics extends Graphics2D {
 	 * When painting using this wrapper has finnished the
 	 * {@link #release() } method must be called.
 	 *
-	 * @param g the Graphics2D object to wrap
+	 * @param g      the Graphics2D object to wrap
 	 * @param height the height of the battlefield to mirror
-	 *
 	 * @see #release()
 	 */
 	public void bind(Graphics2D g, int height) {
@@ -81,104 +77,345 @@ public class MirroredGraphics extends Graphics2D {
 		graphicsState.restore(g);
 	}
 
+	// --------------------------------------------------------------------------
+	// Overriding all methods from the extended Graphics class
+	// --------------------------------------------------------------------------
+
+	// Methods that should not be overridden or implemented:
+	// - finalize()
+	// - toString()
+
 	@Override
-	public void setTransform(AffineTransform Tx) {
-		tmpTx.setTransform(origTxMirrored);
-		tmpTx.concatenate(Tx);
-		g.setTransform(tmpTx);
+	public Graphics create() {
+		return g.create();
 	}
 
 	@Override
-	public AffineTransform getTransform() {
-		return g.getTransform();
+	public Graphics create(int x, int y, int width, int height) {
+		return g.create(x, y, width, height);
 	}
 
 	@Override
-	public void drawBytes(byte[] data, int offset, int length, int x, int y) {
+	public void translate(int x, int y) {
+		g.translate(x, y);
+	}
+
+	@Override
+	public Color getColor() {
+		return g.getColor();
+	}
+
+	@Override
+	public void setColor(Color c) {
+		g.setColor(c);
+	}
+
+	@Override
+	public void setPaintMode() {
+		g.setPaintMode();
+	}
+
+	@Override
+	public void setXORMode(Color c1) {
+		g.setXORMode(c1);
+	}
+
+	@Override
+	public Font getFont() {
+		return g.getFont();
+	}
+
+	@Override
+	public void setFont(Font font) {
+		g.setFont(font);
+	}
+
+	@Override
+	public FontMetrics getFontMetrics(Font f) {
+		return g.getFontMetrics(f);
+	}
+
+	@Override
+	public Rectangle getClipBounds() {
+		return g.getClipBounds();
+	}
+
+	@Override
+	public void clipRect(int x, int y, int width, int height) {
+		g.clipRect(x, y, width, height);
+	}
+
+	@Override
+	public void setClip(int x, int y, int width, int height) {
+		g.setClip(x, y, width, height);
+	}
+
+	@Override
+	public Shape getClip() {
+		return g.getClip();
+	}
+
+	@Override
+	public void setClip(Shape clip) {
+		g.setClip(clip);
+	}
+
+	@Override
+	public void copyArea(int x, int y, int width, int height, int dx, int dy) {
+		g.copyArea(x, y, width, height, dx, dy);
+	}
+
+	@Override
+	public void drawLine(int x1, int y1, int x2, int y2) {
+		g.drawLine(x1, y1, x2, y2);
+	}
+
+	@Override
+	public void fillRect(int x, int y, int width, int height) {
+		g.fillRect(x, y, width, height);
+	}
+
+	@Override
+	public void drawRect(int x, int y, int width, int height) {
+		g.drawRect(x, y, width, height);
+	}
+
+	@Override
+	public void clearRect(int x, int y, int width, int height) {
+		g.clearRect(x, y, width, height);
+	}
+
+	@Override
+	public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
+		g.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
+	}
+
+	@Override
+	public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
+		g.fillRoundRect(x, y, width, height, arcWidth, arcHeight);
+	}
+
+	@Override
+	public void draw3DRect(int x, int y, int width, int height, boolean raised) {
+		g.draw3DRect(x, y, width, height, raised);
+	}
+
+	@Override
+	public void fill3DRect(int x, int y, int width, int height, boolean raised) {	
+		g.fill3DRect(x, y, width, height, raised);
+	}
+
+	@Override
+	public void drawOval(int x, int y, int width, int height) {
+		g.drawOval(x, y, width, height);
+	}
+
+	@Override
+	public void fillOval(int x, int y, int width, int height) {
+		g.fillOval(x, y, width, height);
+	}
+
+	@Override
+	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
+		g.drawArc(x, y, width, height, startAngle, startAngle);
+	}
+
+	@Override
+	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
+		g.fillArc(x, y, width, height, startAngle, startAngle);
+	}
+
+	@Override
+	public void drawPolyline(int[] xPoints, int[] yPoints, int npoints) {
+		g.drawPolyline(xPoints, yPoints, npoints);
+	}
+
+	@Override
+	public void drawPolygon(int[] xPoints, int[] yPoints, int npoints) {
+		g.drawPolyline(xPoints, yPoints, npoints);
+	}
+
+	@Override
+	public void drawPolygon(Polygon p) {
+		g.drawPolygon(p);
+	}
+
+	@Override
+	public void fillPolygon(int[] xPoints, int[] yPoints, int npoints) {
+		g.fillPolygon(xPoints, yPoints, npoints);
+	}
+
+	@Override
+	public void fillPolygon(Polygon p) {
+		g.fillPolygon(p);
+	}
+
+	// Modified so that the y-axis is mirrored
+	@Override
+	public void drawString(String str, int x, int y) {
+		// Change the transform to use the mirrored transform and save the current one 
 		AffineTransform saveTx = setToMirroredTransform();
 
-		g.drawBytes(data, offset, length, x, -y);
+		g.drawString(str, x, -y);
+
+		// Restore the transform
 		g.setTransform(saveTx);
 	}
 
+	// Modified so that the y-axis is mirrored
+	@Override
+	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
+		// Change the transform to use the mirrored transform and save the current one 
+		AffineTransform saveTx = setToMirroredTransform();
+
+		g.drawString(iterator, x, -y);
+
+		// Restore the transform
+		g.setTransform(saveTx);
+	}
+
+	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawChars(char[] data, int offset, int length, int x, int y) {
+		// Change the transform to use the mirrored transform and save the current one 
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawChars(data, offset, length, x, -y);
+
+		// Restore the transform
+		g.setTransform(saveTx);
+	}
+
+	// Modified so that the y-axis is mirrored
+	@Override
+	public void drawBytes(byte[] data, int offset, int length, int x, int y) {
+		// Change the transform to use the mirrored transform and save the current one 
+		AffineTransform saveTx = setToMirroredTransform();
+
+		g.drawBytes(data, offset, length, x, -y);
+
+		// Restore the transform
 		g.setTransform(saveTx);
 	}
 
 	@Override
-	public void drawString(String str, int x, int y) {
-		AffineTransform saveTx = setToMirroredTransform();
-
-		g.drawString(str, x, -y);
-		g.setTransform(saveTx);
+	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
+		return g.drawImage(img, x, y, observer);
 	}
 
+	@Override
+	public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
+		return g.drawImage(img, x, y, width, height, observer);
+	}
+
+	@Override
+	public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
+		return g.drawImage(img, x, y, bgcolor, observer);
+	}
+
+	@Override
+	public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
+		return g.drawImage(img, x, y, width, height, bgcolor, observer);
+	}
+
+	@Override
+	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
+			ImageObserver observer) {
+		return g.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
+	}
+
+	@Override
+	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
+			Color bgcolor, ImageObserver observer) {
+		return g.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
+	}
+
+	@Override
+	public void dispose() {// TODO: Ignored here, as the robot should not be allowed to dispose this object 
+	}
+
+	@Override
+	@Deprecated
+	public Rectangle getClipRect() {
+		return g.getClipBounds(); // Must use getClipBounds() instead of the deprecated getClipRect() method 
+	}
+
+	@Override
+	public boolean hitClip(int x, int y, int width, int height) {
+		return g.hitClip(x, y, width, height);
+	}
+
+	@Override
+	public Rectangle getClipBounds(Rectangle r) {
+		return g.getClipBounds(r);
+	}
+
+	// --------------------------------------------------------------------------
+	// Overriding all methods from the extended Graphics2D class
+	// --------------------------------------------------------------------------
+
+	@Override
+	public void draw(Shape s) {
+		g.draw(s);
+	}
+
+	@Override
+	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
+		return g.drawImage(img, xform, obs);
+	}
+
+	@Override
+	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
+		g.drawImage(img, op, x, y);
+	}
+
+	@Override
+	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
+		g.drawRenderedImage(img, xform);
+	}
+
+	@Override
+	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
+		g.drawRenderableImage(img, xform);
+	}
+
+	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawString(String str, float x, float y) {
+		// Change the transform to use the mirrored transform and save the current one 
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawString(str, x, -y);
+
+		// Restore the transform
 		g.setTransform(saveTx);
 	}
 
-	@Override
-	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-		AffineTransform saveTx = setToMirroredTransform();
-
-		g.drawString(iterator, x, -y);
-		g.setTransform(saveTx);
-	}
-
+	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawString(AttributedCharacterIterator iterator, float x, float y) {
+		// Change the transform to use the mirrored transform and save the current one 
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawString(iterator, x, -y);
+
+		// Restore the transform
 		g.setTransform(saveTx);
 	}
-
+	
 	@Override
-	public void draw(Shape arg0) {
-		g.draw(arg0);
+	public void drawGlyphVector(GlyphVector gv, float x, float y) {
+		g.drawGlyphVector(gv, x, y);
 	}
 
 	@Override
-	public boolean drawImage(Image arg0, AffineTransform arg1, ImageObserver arg2) {
-		return g.drawImage(arg0, arg1, arg2);
+	public void fill(Shape s) {
+		g.fill(s);
 	}
 
 	@Override
-	public void drawImage(BufferedImage arg0, BufferedImageOp arg1, int arg2, int arg3) {
-		g.drawImage(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public void drawRenderedImage(RenderedImage arg0, AffineTransform arg1) {
-		g.drawRenderedImage(arg0, arg1);
-	}
-
-	@Override
-	public void drawRenderableImage(RenderableImage arg0, AffineTransform arg1) {
-		g.drawRenderableImage(arg0, arg1);
-	}
-
-	@Override
-	public void drawGlyphVector(GlyphVector arg0, float arg1, float arg2) {
-		g.drawGlyphVector(arg0, arg1, arg2);
-	}
-
-	@Override
-	public void fill(Shape arg0) {
-		g.fill(arg0);
-	}
-
-	@Override
-	public boolean hit(Rectangle arg0, Shape arg1, boolean arg2) {
-		return g.hit(arg0, arg1, arg2);
+	public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
+		return g.hit(rect, s, onStroke);
 	}
 
 	@Override
@@ -187,38 +424,38 @@ public class MirroredGraphics extends Graphics2D {
 	}
 
 	@Override
-	public void setComposite(Composite arg0) {
-		g.setComposite(arg0);
+	public void setComposite(Composite comp) {
+		g.setComposite(comp);
 	}
 
 	@Override
-	public void setPaint(Paint arg0) {
-		g.setPaint(arg0);
+	public void setPaint(Paint paint) {
+		g.setPaint(paint);
 	}
 
 	@Override
-	public void setStroke(Stroke arg0) {
-		g.setStroke(arg0);
+	public void setStroke(Stroke s) {
+		g.setStroke(s);
 	}
 
 	@Override
-	public void setRenderingHint(Key arg0, Object arg1) {
-		g.setRenderingHint(arg0, arg1);
+	public void setRenderingHint(Key hintKey, Object hintValue) {
+		g.setRenderingHint(hintKey, hintValue);
 	}
 
 	@Override
-	public Object getRenderingHint(Key arg0) {
-		return g.getRenderingHint(arg0);
+	public Object getRenderingHint(Key hintKey) {
+		return g.getRenderingHint(hintKey);
 	}
 
 	@Override
-	public void setRenderingHints(Map<?, ?> arg0) {
-		g.setRenderingHints(arg0);
+	public void setRenderingHints(Map<?, ?> hints) {
+		g.setRenderingHints(hints);
 	}
 
 	@Override
-	public void addRenderingHints(Map<?, ?> arg0) {
-		g.addRenderingHints(arg0);
+	public void addRenderingHints(Map<?, ?> hints) {
+		g.addRenderingHints(hints);
 	}
 
 	@Override
@@ -227,38 +464,49 @@ public class MirroredGraphics extends Graphics2D {
 	}
 
 	@Override
-	public void translate(int arg0, int arg1) {
-		g.translate(arg0, arg1);
+	public void translate(double tx, double ty) {
+		g.translate(tx, ty);
 	}
 
 	@Override
-	public void translate(double arg0, double arg1) {
-		g.translate(arg0, arg1);
+	public void rotate(double theta) {
+		g.rotate(theta);
 	}
 
 	@Override
-	public void rotate(double arg0) {
-		g.rotate(arg0);
+	public void rotate(double theta, double x, double y) {
+		g.rotate(theta, x, y);
 	}
 
 	@Override
-	public void rotate(double arg0, double arg1, double arg2) {
-		g.rotate(arg0, arg1, arg2);
+	public void scale(double sx, double sy) {
+		g.scale(sx, sy);
 	}
 
 	@Override
-	public void scale(double arg0, double arg1) {
-		g.scale(arg0, arg1);
+	public void shear(double shx, double shy) {
+		g.shear(shx, shy);
 	}
 
 	@Override
-	public void shear(double arg0, double arg1) {
-		g.shear(arg0, arg1);
+	public void transform(AffineTransform Tx) {
+		g.transform(Tx);
+	}
+
+	// Transforming is handled on the y-axis mirrored transform
+	@Override
+	public void setTransform(AffineTransform Tx) {
+		// Set the current transform to by the original mirrored transform
+		// concatenated with the input transform. This way the new transform
+		// will automatically be mirrored around the y-axis
+		tmpTx.setTransform(origTxMirrored);
+		tmpTx.concatenate(Tx);
+		g.setTransform(tmpTx);
 	}
 
 	@Override
-	public void transform(AffineTransform arg0) {
-		g.transform(arg0);
+	public AffineTransform getTransform() {
+		return g.getTransform();
 	}
 
 	@Override
@@ -272,8 +520,8 @@ public class MirroredGraphics extends Graphics2D {
 	}
 
 	@Override
-	public void setBackground(Color arg0) {
-		g.setBackground(arg0);
+	public void setBackground(Color color) {
+		g.setBackground(color);
 	}
 
 	@Override
@@ -287,8 +535,8 @@ public class MirroredGraphics extends Graphics2D {
 	}
 
 	@Override
-	public void clip(Shape arg0) {
-		g.clip(arg0);
+	public void clip(Shape s) {
+		g.clip(s);
 	}
 
 	@Override
@@ -296,179 +544,16 @@ public class MirroredGraphics extends Graphics2D {
 		return g.getFontRenderContext();
 	}
 
-	@Override
-	public Graphics create() {
-		return g.create();
-	}
-
-	@Override
-	public Color getColor() {
-		return g.getColor();
-	}
-
-	@Override
-	public void setColor(Color arg0) {
-		g.setColor(arg0);
-	}
-
-	@Override
-	public void setPaintMode() {
-		g.setPaintMode();
-	}
-
-	@Override
-	public void setXORMode(Color arg0) {
-		g.setXORMode(arg0);
-	}
-
-	@Override
-	public Font getFont() {
-		return g.getFont();
-	}
-
-	@Override
-	public void setFont(Font arg0) {
-		g.setFont(arg0);
-	}
-
-	@Override
-	public FontMetrics getFontMetrics(Font arg0) {
-		return g.getFontMetrics(arg0);
-	}
-
-	@Override
-	public Rectangle getClipBounds() {
-		return g.getClipBounds();
-	}
-
-	@Override
-	public void clipRect(int arg0, int arg1, int arg2, int arg3) {
-		g.clipRect(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public void setClip(int arg0, int arg1, int arg2, int arg3) {
-		g.setClip(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public Shape getClip() {
-		return g.getClip();
-	}
-
-	@Override
-	public void setClip(Shape arg0) {
-		g.setClip(arg0);
-	}
-
-	@Override
-	public void copyArea(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
-		g.copyArea(arg0, arg1, arg2, arg3, arg4, arg5);
-	}
-
-	@Override
-	public void drawLine(int arg0, int arg1, int arg2, int arg3) {
-		g.drawLine(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public void fillRect(int arg0, int arg1, int arg2, int arg3) {
-		g.fillRect(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public void clearRect(int arg0, int arg1, int arg2, int arg3) {
-		g.clearRect(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public void drawRoundRect(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
-		g.drawRoundRect(arg0, arg1, arg2, arg3, arg4, arg5);
-	}
-
-	@Override
-	public void fillRoundRect(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
-		g.fillRoundRect(arg0, arg1, arg2, arg3, arg4, arg5);
-	}
-
-	@Override
-	public void drawOval(int arg0, int arg1, int arg2, int arg3) {
-		g.drawOval(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public void fillOval(int arg0, int arg1, int arg2, int arg3) {
-		g.fillOval(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public void drawArc(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
-		g.drawArc(arg0, arg1, arg2, arg3, arg4, arg5);
-	}
-
-	@Override
-	public void fillArc(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
-		g.fillArc(arg0, arg1, arg2, arg3, arg4, arg5);
-	}
-
-	@Override
-	public void drawPolyline(int[] arg0, int[] arg1, int arg2) {
-		g.drawPolyline(arg0, arg1, arg2);
-	}
-
-	@Override
-	public void drawPolygon(int[] arg0, int[] arg1, int arg2) {
-		g.drawPolyline(arg0, arg1, arg2);
-	}
-
-	@Override
-	public void fillPolygon(int[] arg0, int[] arg1, int arg2) {
-		g.fillPolygon(arg0, arg1, arg2);
-	}
-
-	@Override
-	public boolean drawImage(Image arg0, int arg1, int arg2, ImageObserver arg3) {
-		return g.drawImage(arg0, arg1, arg2, arg3);
-	}
-
-	@Override
-	public boolean drawImage(Image arg0, int arg1, int arg2, int arg3, int arg4, ImageObserver arg5) {
-		return g.drawImage(arg0, arg1, arg2, arg3, arg4, arg5);
-	}
-
-	@Override
-	public boolean drawImage(Image arg0, int arg1, int arg2, Color arg3, ImageObserver arg4) {
-		return g.drawImage(arg0, arg1, arg2, arg3, arg4);
-	}
-
-	@Override
-	public boolean drawImage(Image arg0, int arg1, int arg2, int arg3, int arg4, Color arg5, ImageObserver arg6) {
-		return g.drawImage(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-	}
-
-	@Override
-	public boolean drawImage(Image arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7,
-			int arg8, ImageObserver arg9) {
-		return g.drawImage(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-	}
-
-	@Override
-	public boolean drawImage(Image arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7,
-			int arg8, Color arg9, ImageObserver arg10) {
-		return g.drawImage(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-	}
-
-	@Override
-	public void dispose() {
-		g.dispose();
-	}
+	// --------------------------------------------------------------------------
+	// Private worker methods
+	// --------------------------------------------------------------------------
 
 	/**
 	 * This methods translates the current transform on the internal Graphics2D
-	 * object into a mirrored transform.
+	 * object into a transform that is mirrored around the y-axis.
 	 *
-	 * @return the AffineTransform before calling this method, which is used for
-	 * restoring the AffineTransform later.
+	 * @return the AffineTransform before calling this method, which must be
+	 *         used for restoring the AffineTransform later.
 	 */
 	private AffineTransform setToMirroredTransform() {
 		AffineTransform saveTx = g.getTransform();

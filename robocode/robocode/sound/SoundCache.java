@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,14 +17,13 @@
 package robocode.sound;
 
 
+import robocode.io.Logger;
+
+import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.sound.sampled.*;
-
-import robocode.io.Logger;
 
 
 /**
@@ -37,10 +36,14 @@ import robocode.io.Logger;
  */
 public class SoundCache {
 
-	/** Table containing all sound clips */
+	/**
+	 * Table containing all sound clips
+	 */
 	private Map<Object, ClipClones> soundTable;
 
-	/** Mixer used for creating clip instances */
+	/**
+	 * Mixer used for creating clip instances
+	 */
 	private Mixer mixer;
 
 	/**
@@ -124,9 +127,9 @@ public class SoundCache {
 	 * If there is any error, the method returns silently, and clip instances will
 	 * not be found later for the provided key.
 	 *
-	 * @param key the key to be used for later retrieval of the sound
+	 * @param key          the key to be used for later retrieval of the sound
 	 * @param resourceName the resource holding the audio data
-	 * @param numClones the number of copies of the clip to be created
+	 * @param numClones    the number of copies of the clip to be created
 	 */
 	public void addSound(Object key, String resourceName, int numClones) {
 		if (mixer == null || resourceName == null || (resourceName.trim().length() == 0)) {

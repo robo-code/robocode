@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,10 +29,6 @@
 package robocode;
 
 
-import java.awt.Frame;
-import java.io.File;
-import java.security.Policy;
-
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -42,19 +38,20 @@ import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
 
+import java.awt.*;
+import java.io.File;
+import java.security.Policy;
+
 
 /**
  * Robocode - A programming game involving battling AI tanks.<br>
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
- *
- * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public class Robocode {
-
-	private RobocodeManager manager;
 
 	/**
 	 * Use the command-line to start Robocode.
@@ -75,7 +72,7 @@ public class Robocode {
 
 	private boolean initialize(String args[]) {
 		try {
-			manager = new RobocodeManager(false, null);
+			RobocodeManager manager = new RobocodeManager(false, null);
 
 			if (System.getProperty("WORKINGDIRECTORY") != null) {
 				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
@@ -89,6 +86,7 @@ public class Robocode {
 
 			// For John Burkey at Apple
 			boolean securityOn = true;
+			boolean experimentalOn = false;
 
 			if (System.getProperty("NOSECURITY", "false").equals("true")) {
 				WindowUtil.messageWarning(
@@ -96,9 +94,15 @@ public class Robocode {
 						+ "You should only run robots which you trust!");
 				securityOn = false;
 			}
+			if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+				WindowUtil.messageWarning(
+						"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
+						+ "You should only run robots which you trust!");
+				experimentalOn = true;
+			}
 			if (securityOn) {
 				System.setSecurityManager(
-						new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true));
+						new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, experimentalOn));
 
 				RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
 
@@ -171,7 +175,7 @@ public class Robocode {
 
 			if (battleFilename != null) {
 				robocode.manager.BattleManager battleManager = manager.getBattleManager();
-				
+
 				battleManager.setBattleFilename(battleFilename);
 				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.loadBattleProperties();
@@ -218,25 +222,21 @@ public class Robocode {
 
 	private void printUsage() {
 		System.out.print(
-				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n" +
-				"                [-minimize] [-nodisplay] [-nosound]]\n" +
-				"\n" +
-				"where options include:\n" +
-				"    -cwd <path>             Change the current working directory\n" +
-				"    -battle <battle file>   Run the battle specified in a battle file\n" +
-				"    -results <file>         Save results to the specified text file\n" +
-				"    -tps <tps>              Set the TPS (Turns Per Second) to use\n" +
-				"    -minimize               Run minimized when Robocode starts\n" +
-				"    -nodisplay              Run with the display / GUI disabled\n" +
-				"    -nosound                Run with sound disabled\n" +
-				"\n" +
-				"properties include:\n" +
-				"    -DWORKINGDIRECTORY=<path>  Set the working directory\n" +
-				"    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n" +
-				"    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n" +
-				"    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n" +
-				"    -Ddebug=true|false         Enable or disable System.err messages\n" +
-				"\n");
+				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
+						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
+						+ "    -cwd <path>             Change the current working directory\n"
+						+ "    -battle <battle file>   Run the battle specified in a battle file\n"
+						+ "    -results <file>         Save results to the specified text file\n"
+						+ "    -tps <tps>              Set the TPS (Turns Per Second) to use\n"
+						+ "    -minimize               Run minimized when Robocode starts\n"
+						+ "    -nodisplay              Run with the display / GUI disabled\n"
+						+ "    -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
+						+ "    -DWORKINGDIRECTORY=<path>  Set the working directory\n"
+						+ "    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
+						+ "    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
+						+ "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
+						+ "    -Ddebug=true|false         Enable or disable System.err messages\n"
+						+ "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n");
 	}
 
 	/**

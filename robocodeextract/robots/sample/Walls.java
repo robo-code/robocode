@@ -1,13 +1,29 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Mathew A. Nelson
+ *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Maintainance
+ *******************************************************************************/
 package sample;
 
 
-import java.awt.Color;
-import robocode.*;
+import robocode.HitRobotEvent;
+import robocode.Robot;
+import robocode.ScannedRobotEvent;
+
+import java.awt.*;
 
 
 /**
  * Walls - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Moves around the outer edge with the gun facing in.
  */
 public class Walls extends Robot {
@@ -25,14 +41,14 @@ public class Walls extends Robot {
 		setRadarColor(Color.orange);
 		setBulletColor(Color.cyan);
 		setScanColor(Color.cyan);
-		
+
 		// Initialize moveAmount to the maximum possible for this battlefield.
 		moveAmount = Math.max(getBattleFieldWidth(), getBattleFieldHeight());
 		// Initialize peek to false
 		peek = false;
-		
+
 		// turnLeft to face a wall.
-		// getHeading() % 90 means the remainder of 
+		// getHeading() % 90 means the remainder of
 		// getHeading() divided by 90.
 		turnLeft(getHeading() % 90);
 		ahead(moveAmount);
@@ -40,7 +56,7 @@ public class Walls extends Robot {
 		peek = true;
 		turnGunRight(90);
 		turnRight(90);
-		
+
 		while (true) {
 			// Look before we turn when ahead() completes.
 			peek = true;
@@ -52,10 +68,10 @@ public class Walls extends Robot {
 			turnRight(90);
 		}
 	}
-	
+
 	/**
 	 * onHitRobot:  Move away a bit.
-	 */	
+	 */
 	public void onHitRobot(HitRobotEvent e) {
 		// If he's in front of us, set back up a bit.
 		if (e.getBearing() > -90 && e.getBearing() < 90) {
@@ -68,11 +84,11 @@ public class Walls extends Robot {
 
 	/**
 	 * onScannedRobot:  Fire!
-	 */	
+	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		fire(2);
 		// Note that scan is called automatically when the robot is moving.
-		// By calling it manually here, we make sure we generate another scan event if there's a robot on the next 
+		// By calling it manually here, we make sure we generate another scan event if there's a robot on the next
 		// wall, so that we do not start moving up it until it's gone.
 		if (peek) {
 			scan();

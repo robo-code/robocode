@@ -1,13 +1,30 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Mathew A. Nelson
+ *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Maintainance
+ *******************************************************************************/
 package sample;
 
 
-import java.awt.Color;
-import robocode.*;
+import robocode.HitRobotEvent;
+import robocode.Robot;
+import robocode.ScannedRobotEvent;
+import robocode.WinEvent;
+
+import java.awt.*;
 
 
 /**
  * Tracker - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * 
+ * <p/>
  * Locks onto a robot, moves close, fires when close.
  */
 public class Tracker extends Robot {
@@ -18,7 +35,7 @@ public class Tracker extends Robot {
 
 	/**
 	 * run:  Tracker's main run function
-	 */	
+	 */
 	public void run() {
 		// Set colors
 		setBodyColor(new Color(128, 128, 50));
@@ -26,7 +43,7 @@ public class Tracker extends Robot {
 		setRadarColor(new Color(200, 200, 70));
 		setScanColor(Color.white);
 		setBulletColor(Color.blue);
-		
+
 		// Prepare gun
 		trackName = null; // Initialize to not tracking anyone
 		setAdjustGunForRobotTurn(true); // Keep the gun still when we turn
@@ -52,10 +69,10 @@ public class Tracker extends Robot {
 			}
 		}
 	}
-	
+
 	/**
 	 * onScannedRobot:  Here's the good stuff
-	 */	
+	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 
 		// If we have a target, and this isn't it, return immediately
@@ -74,7 +91,7 @@ public class Tracker extends Robot {
 		// If our target is too far away, turn and move torward it.
 		if (e.getDistance() > 150) {
 			gunTurnAmt = normalRelativeAngle(e.getBearing() + (getHeading() - getRadarHeading()));
-			
+
 			turnGunRight(gunTurnAmt); // Try changing these to setTurnGunRight,
 			turnRight(e.getBearing()); // and see how much Tracker improves...
 			// (you'll have to make Tracker an AdvancedRobot)
@@ -86,7 +103,7 @@ public class Tracker extends Robot {
 		gunTurnAmt = normalRelativeAngle(e.getBearing() + (getHeading() - getRadarHeading()));
 		turnGunRight(gunTurnAmt);
 		fire(3);
-		
+
 		// Our target is too close!  Back up.
 		if (e.getDistance() < 100) {
 			if (e.getBearing() > -90 && e.getBearing() <= 90) {
@@ -97,10 +114,10 @@ public class Tracker extends Robot {
 		}
 		scan();
 	}
-	
+
 	/**
 	 * onHitRobot:  Set him as our new target
-	 */	
+	 */
 	public void onHitRobot(HitRobotEvent e) {
 		// Only print if he's not already our target.
 		if (trackName != null && !trackName.equals(e.getName())) {
@@ -119,19 +136,19 @@ public class Tracker extends Robot {
 
 	/**
 	 * onWin:  Do a victory dance
-	 */	
+	 */
 	public void onWin(WinEvent e) {
 		for (int i = 0; i < 50; i++) {
 			turnRight(30);
 			turnLeft(30);
 		}
 	}
-	
+
 	// normalAbsoluteAngle is not used in this robot,
 	// but is here for reference.
 	/**
 	 * normalAbsoluteAngle:  Returns angle such that 0 <= angle < 360
-	 */	
+	 */
 	public double normalAbsoluteAngle(double angle) {
 		if (angle >= 0 && angle < 360) {
 			return angle;
@@ -149,7 +166,7 @@ public class Tracker extends Robot {
 
 	/**
 	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */	
+	 */
 	public double normalRelativeAngle(double angle) {
 		if (angle > -180 && angle <= 180) {
 			return angle;

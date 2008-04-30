@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,18 +23,20 @@ package roborumble.battlesengine;
 
 
 import robocode.control.*;
-
-import java.util.*;
-import java.io.*;
-
 import static roborumble.util.PropertiesUtil.getProperties;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 
 
 /**
  * The BattlesRunner is running battles.
  * Reads a file with the battles to be runned and outputs the results in another file.
  * Controlled by properties files.
- * 
+ *
  * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
  */
@@ -97,7 +99,7 @@ public class BattlesRunner {
 		}
 
 		// open output file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
@@ -155,7 +157,7 @@ public class BattlesRunner {
 		// Read input file
 		ArrayList<String> robots = new ArrayList<String>();
 		BufferedReader br = null;
-		
+
 		try {
 			FileReader fr = new FileReader(inputfile);
 
@@ -178,7 +180,7 @@ public class BattlesRunner {
 		}
 
 		// open output file
-		PrintStream outtxt = null;
+		PrintStream outtxt;
 
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
@@ -255,11 +257,11 @@ public class BattlesRunner {
 		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
 
 		RobotSpecification spec;
-		
+
 		for (String robot : selectedRobots) {
 			spec = robotSpecMap.get(robot);
 			if (spec != null) {
-				selectedRobotSpecs.add(spec);			
+				selectedRobotSpecs.add(spec);
 			}
 		}
 		engine.runBattle(

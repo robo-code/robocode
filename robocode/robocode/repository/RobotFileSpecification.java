@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,14 @@
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
+ *     Pavel Savara
+ *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode.repository;
 
+
+import robocode.io.FileUtil;
+import robocode.io.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,16 +27,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import robocode.io.FileUtil;
-import robocode.io.Logger;
-
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
-public class RobotSpecification extends FileSpecification {
+public class RobotFileSpecification extends FileSpecification {
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
 	private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
@@ -46,11 +49,15 @@ public class RobotSpecification extends FileSpecification {
 	protected boolean robotJavaSourceIncluded;
 	protected String robotClassPath;
 
-	private boolean teamRobot;
-	private boolean droid;
+	private boolean isJuniorRobot;
+	private boolean isInteractiveRobot;
+	private boolean isPaintRobot;
+	private boolean isAdvancedRobot;
+	private boolean isTeamRobot;
+	private boolean isDroid;
 
 	// Used in RobotRepositoryManager
-	protected RobotSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
+	protected RobotFileSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
 		valid = true;
 		String filename = f.getName();
 		String filepath = f.getPath();
@@ -171,13 +178,13 @@ public class RobotSpecification extends FileSpecification {
 				}
 			}
 		}
-		robotJavaSourceIncluded = Boolean.valueOf(props.getProperty(ROBOT_JAVA_SOURCE_INCLUDED, "false")).booleanValue();
+		robotJavaSourceIncluded = Boolean.valueOf(props.getProperty(ROBOT_JAVA_SOURCE_INCLUDED, "false"));
 	}
 
 	/**
 	 * Sets the robotName.
 	 *
-	 * @param robotName The robotName to set
+	 * @param name The robotName to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -269,7 +276,7 @@ public class RobotSpecification extends FileSpecification {
 	/**
 	 * Sets the robotClasspath.
 	 *
-	 * @param robotClasspath The robotClasspath to set
+	 * @param robotClassPath The robotClasspath to set
 	 */
 	public void setRobotClassPath(String robotClassPath) {
 		this.robotClassPath = robotClassPath;
@@ -308,19 +315,52 @@ public class RobotSpecification extends FileSpecification {
 		this.uid = uid;
 	}
 
-	public boolean isTeamRobot() {
-		return teamRobot;
-	}
-
 	public boolean isDroid() {
-		return droid;
+		return isDroid;
 	}
 
-	public void setTeamRobot(boolean teamRobot) {
-		this.teamRobot = teamRobot;
+	public void setDroid(boolean value) {
+		this.isDroid = value;
 	}
 
-	public void setDroid(boolean droid) {
-		this.droid = droid;
+	public boolean isTeamRobot() {
+		return isTeamRobot;
 	}
+
+	public void setTeamRobot(boolean value) {
+		this.isTeamRobot = value;
+	}
+
+	public boolean isAdvancedRobot() {
+		return isAdvancedRobot;
+	}
+
+	public void setAdvancedRobot(boolean value) {
+		this.isAdvancedRobot = value;
+	}
+
+	public boolean isInteractiveRobot() {
+		return isInteractiveRobot;
+	}
+
+	public void setInteractiveRobot(boolean value) {
+		this.isInteractiveRobot = value;
+	}
+
+	public boolean isPaintRobot() {
+		return isPaintRobot;
+	}
+
+	public void setPaintRobot(boolean value) {
+		this.isPaintRobot = value;
+	}
+
+	public boolean isJuniorRobot() {
+		return isJuniorRobot;
+	}
+
+	public void setJuniorRobot(boolean value) {
+		this.isJuniorRobot = value;
+	}
+
 }
