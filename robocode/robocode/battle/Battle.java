@@ -65,6 +65,8 @@
  *     - Simplified the repainting of the battle
  *     - Bugfix: In wakeupRobots(), only wakeup a robot that is running and alive
  *     - A StatusEvent is now send to all alive robot each turn
+ *     - Extended allowed max. length of a robot's full package name from 16 to
+ *       32 characters
  *     Luis Crespo
  *     - Added sound features using the playSounds() method
  *     - Added debug step feature
@@ -143,6 +145,11 @@ import java.util.regex.Pattern;
  */
 public class Battle implements Runnable {
 
+	// Allowed maximum length for a robot's full package name
+	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+	// Allowed maximum length for a robot's short class name
+	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
+	
 	// Maximum turns to display the battle when battle ended
 	private final static int TURNS_DISPLAYED_AFTER_ENDING = 35;
 
@@ -1429,15 +1436,22 @@ public class Battle implements Runnable {
 			}
 		}
 
+		String name;
+
 		for (RobotPeer r : robots) {
-			if (r.getRobotClassManager().getClassNameManager().getFullPackage() != null
-					&& r.getRobotClassManager().getClassNameManager().getFullPackage().length() > 18) {
-				r.getOut().println("SYSTEM: Your package name is too long.  16 characters maximum please.");
+			name = r.getRobotClassManager().getClassNameManager().getFullPackage();
+			if (name != null && name.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+				r.getOut().println(
+						"SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+						+ " characters maximum please.");
 				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
-			if (r.getRobotClassManager().getClassNameManager().getShortClassName().length() > 35) {
-				r.getOut().println("SYSTEM: Your classname is too long.  32 characters maximum please.");
+
+			name = r.getRobotClassManager().getClassNameManager().getShortClassName();
+			if (name != null && name.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
+				r.getOut().println(
+						"SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH + " characters maximum please.");
 				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}

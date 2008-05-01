@@ -4,9 +4,10 @@ Version 1.6.1 Alpha
 o Changes
 - onPaint() in robot event queue. Robot will pay CPU time, added PaintEvent
 - Added getStatusEvents() and getPaintEvents() to AdvancedRobot and IAdvancedRobotPeer
+- Extended allowed max. length of a robot's full package name from 16 to 32 characters
 
-Version 1.6.0 Beta 2
-(04/17/2008)
+Version 1.6.0
+(05/01/2008)
 -------------
 o Bugfixes
   -- The CPU constant was not calculated the first time Robocode was started up.
