@@ -15,6 +15,7 @@ package robocode.battleview;
 
 
 import robocode.battle.Battle;
+import robocode.battle.IBattleListener;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
@@ -23,6 +24,7 @@ import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
+import robocode.manager.RobocodeProperties.PropertyListener;
 import robocode.snapshot.*;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.peer.BulletState;
@@ -40,7 +42,7 @@ import static java.lang.Math.*;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class BattleView extends Canvas {
+public class BattleView extends Canvas implements IBattleView {
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
@@ -100,6 +102,9 @@ public class BattleView extends Canvas {
 	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
 	private GraphicsState graphicsState = new GraphicsState();
+
+	// Property listener
+	private PropertyListener propertyListener;
 
 	/**
 	 * BattleView constructor.
@@ -217,6 +222,22 @@ public class BattleView extends Canvas {
 			groundImage = null;
 		}
 
+		setDisplayOptions();
+		desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS();
+
+		RobocodeProperties props = manager.getProperties();
+
+		desiredTPS = props.getOptionsBattleDesiredTPS();
+
+		propertyListener = props.new PropertyListener() {
+			@Override
+			public void desiredTpsChanged(int tps) {
+				desiredTPS = tps;
+			}
+		};
+
+		props.addPropertyListener(propertyListener);
+
 		initialized = true;
 	}
 
@@ -261,6 +282,10 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawBattle(Graphics2D g) {
+		if (battle == null || battle.isAborted()) {
+			return;
+		}
+
 		// Save the graphics state
 		graphicsState.save(g);
 
@@ -351,7 +376,7 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawScanArcs(Graphics2D g) {
-		if (drawScanArcs) {
+		if (drawScanArcs || battle != null) {
 			for (RobotSnapshot robotSnapshot : battle.getBattleSnapshot().getRobots()) {
 				if (robotSnapshot.getState().isAlive()) {
 					drawScanArc(g, robotSnapshot);
@@ -361,6 +386,10 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobots(Graphics2D g) {
+		if (battle == null) {
+			return;
+		}
+		
 		double x, y;
 		AffineTransform at;
 		int battleFieldHeight = battle.getBattleField().getHeight();
@@ -416,6 +445,10 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawText(Graphics2D g) {
+		if (battle == null) {
+			return;
+		}
+
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
@@ -490,6 +523,10 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawBullets(Graphics2D g) {
+		if (battle == null) {
+			return;
+		}
+
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
@@ -540,10 +577,6 @@ public class BattleView extends Canvas {
 		g.setClip(savedClip);
 	}
 
-	public void setBattle(Battle battle) {
-		this.battle = battle;
-	}
-
 	private void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
 		g.setFont(font);
 
@@ -573,12 +606,6 @@ public class BattleView extends Canvas {
 			top = -borderHeight;
 		}
 		g.drawString(s, (int) (left + 0.5), (int) (top + height - descent + 0.5));
-	}
-
-	public void setTitle(String s) {
-		if (robocodeFrame != null) {
-			robocodeFrame.setTitle(s);
-		}
 	}
 
 	private Rectangle drawScanArc(Graphics2D g, RobotSnapshot robotSnapshot) {
@@ -646,5 +673,183 @@ public class BattleView extends Canvas {
 
 	public void setInitialized(boolean initialized) {
 		this.initialized = initialized;
+	}
+
+
+	
+	
+	private IBattleListener battleEventListener = new BattleEventHandler();
+
+	public IBattleListener getBattleListener() {
+		return battleEventListener;
+	}
+
+	private class BattleEventHandler implements IBattleListener {
+
+		public void onBattleStarted(Battle battle) {
+			BattleView.this.battle = battle;
+
+			repaint();
+		}
+
+		public void onBattleEnded() {
+			BattleView.this.battle = null;
+
+			repaint();
+		}
+
+		public void onRoundStarted() {
+			turnsThisSec = 0;
+			framesThisSec = 0;
+			currentRobotMillis = 0;
+			totalRobotMillisThisSec = 0;
+			totalFrameMillisThisSec = 0;
+			estimatedFPS = 0;
+			delay = 0;
+
+			resetThisSec = true;
+
+			boolean minimizedMode = manager.getWindowManager().getRobocodeFrame().isIconified();
+
+			if (!minimizedMode) {
+				update();
+			}
+		}
+
+		public void onRoundEnded() {
+		}
+
+		public void onTurnStarted() {
+			turnStartTime = System.currentTimeMillis();
+
+			resetSec();
+
+			turnsThisSec++;
+
+			boolean minimizedMode = manager.getWindowManager().getRobocodeFrame().isIconified();
+
+			// Paint current battle frame
+			displayTurn(minimizedMode);
+
+			// Measure timing
+			measureTime(minimizedMode);
+		}
+
+		public void onTurnEnded() {
+		}
+	}
+
+
+	private int turnsPerSecond;
+	private int framesPerSecond;
+	
+	
+	public int getTPS() {
+		return turnsPerSecond;
+	}
+	
+	public int getFPS() {
+		return framesPerSecond;
+	}
+
+	
+	private int desiredTPS = 30;
+	private long startTimeThisSec = 0;
+
+	private int turnsThisSec;
+	private int framesThisSec;
+
+	private long turnStartTime;
+
+	private int currentRobotMillis;
+	private int totalRobotMillisThisSec;
+	private int totalFrameMillisThisSec;
+	private int totalTurnMillisThisSec;
+
+	private float estFrameTimeThisSec;
+	private float estimatedFPS;
+	private int estimatedTurnMillisThisSec;
+
+	private int delay;
+
+	private boolean resetThisSec;
+
+	private void resetSec() {
+		if (resetThisSec) {
+			resetThisSec = false;
+
+			startTimeThisSec = turnStartTime;
+
+			turnsPerSecond = turnsThisSec;
+			framesPerSecond = framesThisSec;
+			
+			turnsThisSec = 0;
+			framesThisSec = 0;
+
+			totalRobotMillisThisSec = 0;
+			totalFrameMillisThisSec = 0;
+		}
+	}
+
+	private void displayTurn(boolean minimizedMode) {
+		if (!(minimizedMode || battle == null || battle.isAborted() /* || endTimer >= TURNS_DISPLAYED_AFTER_ENDING */)) {
+			// Update the battle view if the frame has not been painted yet this second
+			// or if it's time to paint the next frame
+			if ((estimatedFPS * turnsThisSec / desiredTPS) >= framesThisSec) {
+				update();
+				framesThisSec++;
+			}
+// FIXME:			playSounds();
+		}
+	}
+
+	private void measureTime(boolean minimizedMode) {
+		// Calculate the total time spend on robots this second
+		totalRobotMillisThisSec += currentRobotMillis;
+
+		// Calculate the total time used for the frame update
+		totalFrameMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentRobotMillis;
+
+		// Calculate the total turn time this second
+		totalTurnMillisThisSec = max(1, totalRobotMillisThisSec + totalFrameMillisThisSec);
+
+		// Estimate the time remaining this second to spend on frame updates
+		estFrameTimeThisSec = max(0, 1000 - desiredTPS * totalRobotMillisThisSec / turnsThisSec);
+
+		// Estimate the possible FPS based on the estimated frame time
+		estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
+
+		// Estimate the time that will be used on the total turn this second
+		estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
+
+		// Calculate delay needed for keeping the desired TPS (Turns Per Second)
+		if (/*endTimer >= TURNS_DISPLAYED_AFTER_ENDING ||*/ minimizedMode) {
+			delay = 0;
+		} else {
+			delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
+		}
+
+		// Set flag for if the second has passed
+		resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
+
+		// Check if we must limit the TPS
+		if (!(resetThisSec || minimizedMode)) {
+			resetThisSec = ((desiredTPS - turnsThisSec) == 0);
+		}
+
+		// Delay to match desired TPS
+		if (delay > 0) {
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				// Set the thread status back to being interrupted
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
+	// FIXME: Remove when possible
+	public void setDesiredTPS(int tps) {
+		desiredTPS = tps;
 	}
 }

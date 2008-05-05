@@ -52,10 +52,14 @@ package robocode.manager;
 
 
 import robocode.battle.Battle;
+import robocode.battle.BattleEventDispatcher;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
+import robocode.battle.IBattleListener;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.battleview.BattleView;
+import robocode.battleview.IBattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
@@ -302,7 +306,10 @@ public class BattleManager {
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);
 		}
-		battle = new Battle(battleField, manager);
+		
+		BattleEventDispatcher battleEventDispather = new BattleEventDispatcher();
+		
+		battle = new Battle(battleField, manager, battleEventDispather);
 		battle.setExitOnComplete(exitOnComplete);
 
 		// Only used when controlled by RobocodeEngine
@@ -324,10 +331,13 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 			battleView.setVisible(true);
 			battleView.setInitialized(false);
+
+			IBattleListener battleListener = ((IBattleView) battleView).getBattleListener();
+			battleEventDispather.addListener(battleListener);
 		}
 
 		for (RobotClassManager robotClassMgr : battlingRobotsList) {
@@ -502,8 +512,9 @@ public class BattleManager {
 	}
 
 	public void setOptions() {
-		if (battle != null) {
-			battle.setOptions();
+		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+		if (battleView != null) {
+			battleView.setDisplayOptions();
 		}
 	}
 

@@ -244,7 +244,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		this.name = name;
 
 		battleField = new DefaultBattleField(800, 600);
-		battle = new Battle(battleField, null);
+		battle = new Battle(battleField, null, null); // FIXME: Avoid this
 	}
 
 	public boolean isIORobot() {
