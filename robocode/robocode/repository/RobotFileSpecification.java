@@ -131,7 +131,7 @@ public class RobotFileSpecification extends FileSpecification {
 
 		if (htmlFile.exists() && (getWebpage() == null || getWebpage().toString().length() == 0)) {
 			try {
-				setRobotWebpage(htmlFile.toURL());
+				setRobotWebpage(htmlFile.toURI().toURL());
 			} catch (MalformedURLException e) {
 				setRobotWebpage(null);
 			}
