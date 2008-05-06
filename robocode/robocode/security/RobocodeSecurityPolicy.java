@@ -49,7 +49,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 		while (tokenizer.hasMoreTokens()) {
 			try {
-				URL u = new File(tokenizer.nextToken()).toURL();
+				URL u = new File(tokenizer.nextToken()).toURI().toURL();
 
 				if (!trustedCodeUrls.contains(u)) {
 					trustedCodeUrls.add(u);

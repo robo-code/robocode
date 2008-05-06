@@ -22,6 +22,8 @@ package robocode.util;
  * @author Mathew A. Nelson (original)
  */
 public class BoundingRectangle extends java.awt.geom.Rectangle2D.Float {
+	private static final long serialVersionUID = 1L;
+
 	public BoundingRectangle() {
 		super();
 	}

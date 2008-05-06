@@ -166,7 +166,7 @@ public class RobocodeClassLoader extends ClassLoader {
 				Permissions p = new Permissions();
 
 				protectionDomain = new ProtectionDomain(
-						new CodeSource(f.toURL(), (java.security.cert.Certificate[]) null), p);
+						new CodeSource(f.toURI().toURL(), (java.security.cert.Certificate[]) null), p);
 			} catch (MalformedURLException e) {
 				throw new ClassNotFoundException("Unable to build protection domain.");
 			}
