@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.snapshot;
+package robocode.battle.snapshot;
 
 
 import robocode.battle.Battle;

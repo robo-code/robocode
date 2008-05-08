@@ -36,7 +36,7 @@
  *       getOptionsCommonShowResults() from the properties
  *     - Simplified the code in the run() method when battle is stopped
  *     - Changed so that stop() makes the current round stop immediately
- *     - Added handling keyboard events thru a KeyboardEventDispather
+ *     - Added handling keyboard events thru a KeyboardEventDispatcher
  *     - Added mouseMoved(), mouseClicked(), mouseReleased(), mouseEntered(),
  *       mouseExited(), mouseDragged(), mouseWheelMoved()
  *     - Changed to take the new JuniorRobot class into account
@@ -98,6 +98,7 @@ package robocode.battle;
 import robocode.*;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
+import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
@@ -114,7 +115,6 @@ import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
 import robocode.security.RobocodeClassLoader;
-import robocode.snapshot.BattleSnapshot;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -221,17 +221,17 @@ public class Battle implements Runnable {
 
 	private BattleSnapshot battleSnapshot;
 
-	private final BattleEventDispatcher eventDispather;
+	private final BattleEventDispatcher eventDispatcher;
 
 	/**
 	 * Battle constructor
 	 */
-	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispather) {
+	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher) {
 		super();
 
 		this.battleField = battleField;
 		this.manager = manager;
-		this.eventDispather = eventDispather;
+		this.eventDispatcher = eventDispatcher;
 
 		battleManager = manager.getBattleManager();
 
@@ -362,7 +362,7 @@ public class Battle implements Runnable {
 			}
 		}
 
-		eventDispather.notifyBattleEnded(false); // not aborted
+		eventDispatcher.notifyBattleEnded(false); // not aborted
 
 		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
@@ -578,7 +578,7 @@ public class Battle implements Runnable {
 			battleMonitor.notifyAll();
 		}
 
-		eventDispather.notifyBattleStarted();
+		eventDispatcher.notifyBattleStarted();
 
 		if (manager.isSoundEnabled()) {
 			manager.getSoundManager().playBackgroundMusic();
@@ -698,7 +698,7 @@ public class Battle implements Runnable {
 		currentTime = 0;
 		inactiveTurnCount = 0;
 
-		eventDispather.notifyRoundStarted();
+		eventDispatcher.notifyRoundStarted();
 
 		if (isRecordingEnabled) {
 			currentRoundRecord = new RoundRecord();
@@ -730,7 +730,7 @@ public class Battle implements Runnable {
 
 		bullets.clear();
 
-		eventDispather.notifyRoundEnded();
+		eventDispatcher.notifyRoundEnded();
 	}
 
 	public void replayRound() {
@@ -738,7 +738,7 @@ public class Battle implements Runnable {
 
 		roundOver = false;
 
-		eventDispather.notifyRoundStarted();
+		eventDispatcher.notifyRoundStarted();
 
 		endTimer = 0;
 		currentTime = 0;
@@ -751,7 +751,7 @@ public class Battle implements Runnable {
 
 		bullets.clear();
 
-		eventDispather.notifyRoundEnded();
+		eventDispatcher.notifyRoundEnded();
 	}
 
 	private void replayTurn() {
@@ -760,7 +760,7 @@ public class Battle implements Runnable {
 		}
 
 		// Next turn is starting
-		eventDispather.notifyTurnStarted();
+		eventDispatcher.notifyTurnStarted();
 
 		roundOver = replayRecord();
 
@@ -768,7 +768,7 @@ public class Battle implements Runnable {
 
 		battleSnapshot = new BattleSnapshot(this);
 		
-		eventDispather.notifyTurnEnded();
+		eventDispatcher.notifyTurnEnded(battleSnapshot);
 	}
 
 	private void runTurn() {
@@ -777,7 +777,7 @@ public class Battle implements Runnable {
 		}
 
 		// Next turn is starting
-		eventDispather.notifyTurnStarted();
+		eventDispatcher.notifyTurnStarted();
 
 		cleanRobotEvents();
 
@@ -807,6 +807,8 @@ public class Battle implements Runnable {
 
 		// Robot time!
 		wakeupRobots();
+
+		eventDispatcher.notifyTurnEnded(battleSnapshot);
 	}
 
 	private void addRobotEventsForTurnEnded() {
@@ -1317,7 +1319,7 @@ public class Battle implements Runnable {
 			aborted = true;
 			battleMonitor.notifyAll();
 
-			eventDispather.notifyBattleEnded(true); // battle was aborted
+			eventDispatcher.notifyBattleEnded(true); // battle was aborted
 
 			// Adjust the desired TPS temporary to maximum rate to stop the battle as quickly as possible
 			
@@ -1589,33 +1591,6 @@ public class Battle implements Runnable {
 	 */
 	public RobocodeManager getManager() {
 		return manager;
-	}
-
-	/**
-	 * Plays sounds.
-	 */
-	private void playSounds() {
-		if (manager.isSoundEnabled()) {
-			for (BulletPeer bp : getBullets()) {
-				if (bp.getFrame() == 0) {
-					manager.getSoundManager().playBulletSound(bp);
-				}
-			}
-
-			boolean playedRobotHitRobot = false;
-
-			for (RobotPeer rp : robots) {
-				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
-				if (rp.getState() == RobotState.HIT_ROBOT) {
-					if (playedRobotHitRobot) {
-						continue;
-					}
-					playedRobotHitRobot = true;
-				}
-
-				manager.getSoundManager().playRobotSound(rp);
-			}
-		}
 	}
 
 	/**

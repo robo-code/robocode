@@ -1,6 +1,8 @@
 package robocode.battle.events;
 
 
+import robocode.battle.snapshot.BattleSnapshot;
+
 import java.util.HashMap;
 
 
@@ -21,50 +23,50 @@ public class BattleEventDispatcher {
 	}
 
 	public void notifyBattleStarted() {
-		for (BattleObserverEventDispatcher observerEventDispather : eventDispatcherMap.values()) {
-			observerEventDispather.notify(new BattleStartedEvent());
+		for (BattleObserverEventDispatcher observerEventDispatcher : eventDispatcherMap.values()) {
+			observerEventDispatcher.notify(new BattleStartedEvent());
 		}
 	}
 
 	public void notifyBattleEnded(boolean isAborted) {
-		for (BattleObserverEventDispatcher observerEventDispather : eventDispatcherMap.values()) {
-			observerEventDispather.notify(new BattleEndedEvent(isAborted));
+		for (BattleObserverEventDispatcher observerEventDispatcher : eventDispatcherMap.values()) {
+			observerEventDispatcher.notify(new BattleEndedEvent(isAborted));
 		}
 	}
 
 	public void notifyBattlePaused() {
-		for (BattleObserverEventDispatcher observerEventDispather : eventDispatcherMap.values()) {
-			observerEventDispather.notify(new BattlePausedEvent());
+		for (BattleObserverEventDispatcher observerEventDispatcher : eventDispatcherMap.values()) {
+			observerEventDispatcher.notify(new BattlePausedEvent());
 		}
 	}
 
 	public void notifyBattleResumed() {
-		for (BattleObserverEventDispatcher observerEventDispather : eventDispatcherMap.values()) {
-			observerEventDispather.notify(new BattleResumedEvent());
+		for (BattleObserverEventDispatcher observerEventDispatcher : eventDispatcherMap.values()) {
+			observerEventDispatcher.notify(new BattleResumedEvent());
 		}
 	}
 
 	public void notifyRoundStarted() {
-		for (BattleObserverEventDispatcher observerEventDispather : eventDispatcherMap.values()) {
-			observerEventDispather.notify(new RoundStartedEvent());
+		for (BattleObserverEventDispatcher observerEventDispatcher : eventDispatcherMap.values()) {
+			observerEventDispatcher.notify(new RoundStartedEvent());
 		}
 	}
 
 	public void notifyRoundEnded() {
-		for (BattleObserverEventDispatcher observerEventDispather : eventDispatcherMap.values()) {
-			observerEventDispather.notify(new RoundEndedEvent());
+		for (BattleObserverEventDispatcher observerEventDispatcher : eventDispatcherMap.values()) {
+			observerEventDispatcher.notify(new RoundEndedEvent());
 		}
 	}
 
 	public void notifyTurnStarted() {
-		for (BattleObserverEventDispatcher observerEventDispather : eventDispatcherMap.values()) {
-			observerEventDispather.notify(new TurnStartedEvent());
+		for (BattleObserverEventDispatcher observerEventDispatcher : eventDispatcherMap.values()) {
+			observerEventDispatcher.notify(new TurnStartedEvent());
 		}
 	}
 	
-	public void notifyTurnEnded() {
-		for (BattleObserverEventDispatcher observerEventDispather : eventDispatcherMap.values()) {
-			observerEventDispather.notify(new TurnEndedEvent());
+	public void notifyTurnEnded(BattleSnapshot battleSnapshot) {
+		for (BattleObserverEventDispatcher observerEventDispatcher : eventDispatcherMap.values()) {
+			observerEventDispatcher.notify(new TurnEndedEvent(battleSnapshot));
 		}
 	}
 }

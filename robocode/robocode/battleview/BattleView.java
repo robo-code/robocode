@@ -16,6 +16,8 @@ package robocode.battleview;
 
 import robocode.battle.Battle;
 import robocode.battle.events.*;
+import robocode.battle.snapshot.BulletSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
@@ -25,7 +27,6 @@ import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.RobocodeProperties.PropertyListener;
-import robocode.snapshot.*;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.peer.BulletState;
 import robocode.util.GraphicsState;
@@ -681,7 +682,7 @@ public class BattleView extends Canvas implements IBattleObserver {
 		return battleEventListener;
 	}
 
-	private class BattleEventHandler implements IBattleListener {
+	private class BattleEventHandler extends BattleAdaptor {
 
 		public void onBattleStarted(BattleStartedEvent event) {
 			battle = manager.getBattleManager().getBattle(); // FIXME: Should be avoided!
@@ -692,12 +693,6 @@ public class BattleView extends Canvas implements IBattleObserver {
 			battle = null;
 			repaint();
 		}
-
-		public void onBattlePaused(BattlePausedEvent event) {}
-
-		public void onBattleResumed(BattleResumedEvent event) {}
-
-		public void onRoundEnded(RoundEndedEvent event) {}
 
 		public void onRoundStarted(RoundStartedEvent event) {
 			turnsThisSec = 0;
@@ -714,8 +709,6 @@ public class BattleView extends Canvas implements IBattleObserver {
 				update();
 			}
 		}
-
-		public void onTurnEnded(TurnEndedEvent event) {}
 
 		public void onTurnStarted(TurnStartedEvent event) {
 			turnStartTime = System.currentTimeMillis();

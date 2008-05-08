@@ -30,8 +30,8 @@ package robocode.sound;
 
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.peer.BulletPeer;
-import robocode.peer.RobotPeer;
+import robocode.battle.snapshot.BulletSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -50,11 +50,14 @@ import javax.sound.sampled.Mixer;
  */
 public class SoundManager {
 
-	// Cache containing sound clips
-	private SoundCache sounds;
+	// The Robocode manager
+	private final RobocodeManager manager;
 
 	// Access to properties
-	private RobocodeProperties properties;
+	private final RobocodeProperties properties;
+
+	// Cache containing sound clips
+	private SoundCache sounds;
 
 	/**
 	 * Constructs a new sound manager.
@@ -62,7 +65,8 @@ public class SoundManager {
 	 * @param manager the Robocode manager
 	 */
 	public SoundManager(RobocodeManager manager) {
-		properties = manager.getProperties();
+		this.manager = manager;
+		this.properties = manager.getProperties();
 	}
 
 	/**
@@ -182,18 +186,18 @@ public class SoundManager {
 	/**
 	 * Plays a bullet sound depending on the bullet's state
 	 *
-	 * @param bp the bullet peer
+	 * @param bullet the bullet to play the sound of
 	 */
-	public void playBulletSound(BulletPeer bp) {
+	public void playBulletSound(BulletSnapshot bullet) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) bp.getX(), bp.getBattleField().getWidth());
+			pan = calcPan((float) bullet.getX(), manager.getBattleManager().getBattleProperties().getBattlefieldWidth());
 		}
-		switch (bp.getState()) {
+		switch (bullet.getState()) {
 		case FIRED:
 			if (properties.getOptionsSoundEnableGunshot()) {
-				playSound("gunshot", pan, calcBulletVolume(bp), 0);
+				playSound("gunshot", pan, calcBulletVolume(bullet), 0);
 			}
 			break;
 
@@ -224,15 +228,15 @@ public class SoundManager {
 	/**
 	 * Plays a robot sound depending on the robot's state
 	 *
-	 * @param robotPeer the robot peer
+	 * @param robot the robot to play the sound of
 	 */
-	public void playRobotSound(RobotPeer robotPeer) {
+	public void playRobotSound(RobotSnapshot robot) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) robotPeer.getX(), robotPeer.getBattle().getBattleField().getWidth());
+			pan = calcPan((float) robot.getX(), manager.getBattleManager().getBattleProperties().getBattlefieldWidth());
 		}
-		switch (robotPeer.getState()) {
+		switch (robot.getState()) {
 		case HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
 				playSound("robot collision", pan);
@@ -293,12 +297,12 @@ public class SoundManager {
 	}
 
 	/**
-	 * Determines volume based on the bullets's energy
+	 * Determines volume based on the bullet's energy
 	 *
-	 * @param bp the bullet peer
+	 * @param bullet the bullet
 	 * @return the volume value, ranging from 0 to 1
 	 */
-	private float calcBulletVolume(BulletPeer bp) {
-		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
+	private float calcBulletVolume(BulletSnapshot bullet) {
+		return (float) (bullet.getPower() / robocode.Rules.MAX_BULLET_POWER);
 	}
 }

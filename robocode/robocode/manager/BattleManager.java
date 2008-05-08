@@ -70,6 +70,7 @@ import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
+import robocode.sound.BattleSoundPlayer;
 
 import javax.swing.*;
 import java.io.*;
@@ -95,6 +96,7 @@ public class BattleManager {
 	private String resultsFile;
 	private RobocodeManager manager;
 	private int stepTurn;
+	private BattleSoundPlayer battleSoundPlayer;
 
 	private List<PauseResumeListener> pauseResumeListeners = new ArrayList<PauseResumeListener>();
 
@@ -303,9 +305,9 @@ public class BattleManager {
 			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);
 		}
 		
-		BattleEventDispatcher battleEventDispather = new BattleEventDispatcher();
+		BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
 		
-		battle = new Battle(battleField, manager, battleEventDispather);
+		battle = new Battle(battleField, manager, battleEventDispatcher);
 		battle.setExitOnComplete(exitOnComplete);
 
 		// Only used when controlled by RobocodeEngine
@@ -332,7 +334,13 @@ public class BattleManager {
 			battleView.setVisible(true);
 			battleView.setInitialized(false);
 
-			battleEventDispather.addObserver(battleView);
+			battleEventDispatcher.addObserver(battleView);
+		}
+
+		if (manager.isSoundEnabled()) {
+			BattleSoundPlayer battleSoundPlayer = getBattleSoundPlayer();
+
+			battleEventDispatcher.addObserver(battleSoundPlayer);
 		}
 
 		for (RobotClassManager robotClassMgr : battlingRobotsList) {
@@ -638,5 +646,12 @@ public class BattleManager {
 	public void cleanup() {
 		battle = null;
 		manager = null;
+	}
+
+	private BattleSoundPlayer getBattleSoundPlayer() {
+		if (battleSoundPlayer == null) {
+			battleSoundPlayer = new BattleSoundPlayer(manager);
+		}
+		return battleSoundPlayer;
 	}
 }

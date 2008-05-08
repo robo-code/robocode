@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.snapshot;
+package robocode.battle.snapshot;
 
 
 import static robocode.common.ObjectCloner.deepCopy;

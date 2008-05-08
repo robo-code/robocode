@@ -8,7 +8,7 @@ public class BattleObserverEventDispatcher {
 
 	private final IBattleObserver observer;
 
-	private final WorkerThread dispatherThread = new DispatherThread();
+	private final WorkerThread dispatcherThread = new DispatcherThread();
 
 	private final BattleEventQueue eventQueue = new BattleEventQueue();
 
@@ -31,23 +31,23 @@ public class BattleObserverEventDispatcher {
 	}
 	
 	public void start() {
-		dispatherThread.start();
+		dispatcherThread.start();
 	}
 	
 	public void stop() {
-		dispatherThread.stop();
+		dispatcherThread.stop();
 	}
 
 	/*
 	 public void pause() {
-	 dispatherThread.pause();
+	 dispatcherThread.pause();
 	 }
 
 	 public void resume() {
-	 dispatherThread.resume();
+	 dispatcherThread.resume();
 	 }
 	 */
-	private class DispatherThread extends WorkerThread {
+	private class DispatcherThread extends WorkerThread {
 
 		@Override
 		public void loop() {
