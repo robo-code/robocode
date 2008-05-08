@@ -12,7 +12,7 @@
 package robocode.robotpaint;
 
 
-import static robocode.util.ObjectCloner.deepCopy;
+import static robocode.common.ObjectCloner.deepCopy;
 
 import java.awt.*;
 import java.awt.RenderingHints.Key;

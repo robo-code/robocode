@@ -12,7 +12,7 @@
 package robocode.snapshot;
 
 
-import static robocode.util.ObjectCloner.deepCopy;
+import static robocode.common.ObjectCloner.deepCopy;
 
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;

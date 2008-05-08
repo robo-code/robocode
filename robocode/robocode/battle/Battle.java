@@ -96,6 +96,7 @@ package robocode.battle;
 
 
 import robocode.*;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
 import robocode.battlefield.BattleField;
 import robocode.control.BattleSpecification;
@@ -105,8 +106,6 @@ import robocode.dialog.RobotButton;
 import static robocode.io.Logger.log;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
-import robocode.manager.RobocodeProperties.PropertyListener;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
@@ -363,7 +362,7 @@ public class Battle implements Runnable {
 			}
 		}
 
-		eventDispather.notifyBattleEnded();
+		eventDispather.notifyBattleEnded(false); // not aborted
 
 		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
@@ -579,7 +578,7 @@ public class Battle implements Runnable {
 			battleMonitor.notifyAll();
 		}
 
-		eventDispather.notifyBattleStarted(this);
+		eventDispather.notifyBattleStarted();
 
 		if (manager.isSoundEnabled()) {
 			manager.getSoundManager().playBackgroundMusic();
@@ -708,7 +707,23 @@ public class Battle implements Runnable {
 		battleManager.startNewRound();
 
 		while (!roundOver) {
-			runTurn();
+			if (!manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified()) {
+				runTurn();
+			} else {
+				long startTime = System.currentTimeMillis();
+	
+				runTurn();
+
+				int deltaTime = (int) (System.currentTimeMillis() - startTime);
+				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS(); 
+				int delay = Math.max(((1000 / desiredTPS) - deltaTime), 0);
+
+				try {
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			}
 		}
 
 		recordRound();
@@ -1302,16 +1317,10 @@ public class Battle implements Runnable {
 			aborted = true;
 			battleMonitor.notifyAll();
 
-			eventDispather.notifyBattleEnded();
+			eventDispather.notifyBattleEnded(true); // battle was aborted
 
 			// Adjust the desired TPS temporary to maximum rate to stop the battle as quickly as possible
 			
-			// FIXME: this is a hack and does not check if GUI is enabled!
-			robocode.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-			int savedTPS = battleView.getTPS();
-
-			battleView.setDesiredTPS(10000);
-
 			// Wait till the battle is not running anymore
 			while (running) {
 				try {
@@ -1320,9 +1329,6 @@ public class Battle implements Runnable {
 					break;
 				}
 			}
-
-			// Restore the desired TPS
-			battleView.setDesiredTPS(savedTPS);
 		}
 	}
 
@@ -1827,21 +1833,22 @@ public class Battle implements Runnable {
 	}
 
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
-/*		double scale;
 
-		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
-			scale = min((double) battleView.getWidth() / battleField.getWidth(),
-					(double) battleView.getHeight() / battleField.getHeight());
-		} else {
-			scale = 1;
-		}
+		/* double scale;
 
-		double dx = (battleView.getWidth() - scale * battleField.getWidth()) / 2;
-		double dy = (battleView.getHeight() - scale * battleField.getHeight()) / 2;
+		 if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
+		 scale = min((double) battleView.getWidth() / battleField.getWidth(),
+		 (double) battleView.getHeight() / battleField.getHeight());
+		 } else {
+		 scale = 1;
+		 }
 
-		int x = (int) ((e.getX() - dx) / scale + 0.5);
-		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
-*/
+		 double dx = (battleView.getWidth() - scale * battleField.getWidth()) / 2;
+		 double dy = (battleView.getHeight() - scale * battleField.getHeight()) / 2;
+
+		 int x = (int) ((e.getX() - dx) / scale + 0.5);
+		 int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
+		 */
 		int x = 0, y = 0; // FIXME
 		
 		return new MouseEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
@@ -1849,21 +1856,22 @@ public class Battle implements Runnable {
 	}
 
 	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
-/*		double scale;
 
-		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
-			scale = min((double) battleView.getWidth() / battleField.getWidth(),
-					(double) battleView.getHeight() / battleField.getHeight());
-		} else {
-			scale = 1;
-		}
+		/* double scale;
 
-		double dx = (battleView.getWidth() - scale * battleField.getWidth()) / 2;
-		double dy = (battleView.getHeight() - scale * battleField.getHeight()) / 2;
+		 if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
+		 scale = min((double) battleView.getWidth() / battleField.getWidth(),
+		 (double) battleView.getHeight() / battleField.getHeight());
+		 } else {
+		 scale = 1;
+		 }
 
-		int x = (int) ((e.getX() - dx) / scale + 0.5);
-		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
-*/
+		 double dx = (battleView.getWidth() - scale * battleField.getWidth()) / 2;
+		 double dy = (battleView.getHeight() - scale * battleField.getHeight()) / 2;
+
+		 int x = (int) ((e.getX() - dx) / scale + 0.5);
+		 int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
+		 */
 		int x = 0, y = 0; // FIXME
 
 		return new MouseWheelEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,

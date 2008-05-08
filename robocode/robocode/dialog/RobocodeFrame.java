@@ -634,6 +634,7 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		Timer titleTimer = new Timer(true); // run as daemon
+
 		titleTimer.schedule(new TitleTimerTask(), 0, 500);
 	}
 
@@ -716,7 +717,6 @@ public class RobocodeFrame extends JFrame {
 	public void setEnableReplayButton(boolean enable) {
 		getReplayButton().setEnabled(enable);
 	}
-
 
 	private class TitleTimerTask extends TimerTask {
 		@Override

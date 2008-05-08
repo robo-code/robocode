@@ -51,15 +51,11 @@
 package robocode.manager;
 
 
-import robocode.battle.Battle;
-import robocode.battle.BattleEventDispatcher;
-import robocode.battle.BattleProperties;
-import robocode.battle.BattleResultsTableModel;
-import robocode.battle.IBattleListener;
+import robocode.battle.*;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.battleview.BattleView;
-import robocode.battleview.IBattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
@@ -336,8 +332,7 @@ public class BattleManager {
 			battleView.setVisible(true);
 			battleView.setInitialized(false);
 
-			IBattleListener battleListener = ((IBattleView) battleView).getBattleListener();
-			battleEventDispather.addListener(battleListener);
+			battleEventDispather.addObserver(battleView);
 		}
 
 		for (RobotClassManager robotClassMgr : battlingRobotsList) {
@@ -513,6 +508,7 @@ public class BattleManager {
 
 	public void setOptions() {
 		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+
 		if (battleView != null) {
 			battleView.setDisplayOptions();
 		}

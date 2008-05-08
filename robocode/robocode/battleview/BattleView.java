@@ -15,7 +15,7 @@ package robocode.battleview;
 
 
 import robocode.battle.Battle;
-import robocode.battle.IBattleListener;
+import robocode.battle.events.*;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
@@ -42,7 +42,7 @@ import static java.lang.Math.*;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class BattleView extends Canvas implements IBattleView {
+public class BattleView extends Canvas implements IBattleObserver {
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
@@ -122,7 +122,7 @@ public class BattleView extends Canvas implements IBattleView {
 	/**
 	 * Shows the next frame. The game calls this every frame.
 	 */
-	public void update() {
+	private void update() {
 		if (robocodeFrame.isIconified() || (getWidth() <= 0) || (getHeight() <= 0)) {
 			return;
 		}
@@ -675,9 +675,6 @@ public class BattleView extends Canvas implements IBattleView {
 		this.initialized = initialized;
 	}
 
-
-	
-	
 	private IBattleListener battleEventListener = new BattleEventHandler();
 
 	public IBattleListener getBattleListener() {
@@ -686,19 +683,23 @@ public class BattleView extends Canvas implements IBattleView {
 
 	private class BattleEventHandler implements IBattleListener {
 
-		public void onBattleStarted(Battle battle) {
-			BattleView.this.battle = battle;
-
+		public void onBattleStarted(BattleStartedEvent event) {
+			battle = manager.getBattleManager().getBattle(); // FIXME: Should be avoided!
 			repaint();
 		}
 
-		public void onBattleEnded() {
-			BattleView.this.battle = null;
-
+		public void onBattleEnded(BattleEndedEvent event) {
+			battle = null;
 			repaint();
 		}
 
-		public void onRoundStarted() {
+		public void onBattlePaused(BattlePausedEvent event) {}
+
+		public void onBattleResumed(BattleResumedEvent event) {}
+
+		public void onRoundEnded(RoundEndedEvent event) {}
+
+		public void onRoundStarted(RoundStartedEvent event) {
 			turnsThisSec = 0;
 			framesThisSec = 0;
 			currentRobotMillis = 0;
@@ -709,40 +710,30 @@ public class BattleView extends Canvas implements IBattleView {
 
 			resetThisSec = true;
 
-			boolean minimizedMode = manager.getWindowManager().getRobocodeFrame().isIconified();
-
-			if (!minimizedMode) {
+			if (!isMinimizedMode()) {
 				update();
 			}
 		}
 
-		public void onRoundEnded() {
-		}
+		public void onTurnEnded(TurnEndedEvent event) {}
 
-		public void onTurnStarted() {
+		public void onTurnStarted(TurnStartedEvent event) {
 			turnStartTime = System.currentTimeMillis();
 
 			resetSec();
 
 			turnsThisSec++;
 
-			boolean minimizedMode = manager.getWindowManager().getRobocodeFrame().isIconified();
-
 			// Paint current battle frame
-			displayTurn(minimizedMode);
+			displayTurn();
 
 			// Measure timing
-			measureTime(minimizedMode);
-		}
-
-		public void onTurnEnded() {
+			measureTime();
 		}
 	}
 
-
 	private int turnsPerSecond;
 	private int framesPerSecond;
-	
 	
 	public int getTPS() {
 		return turnsPerSecond;
@@ -752,7 +743,6 @@ public class BattleView extends Canvas implements IBattleView {
 		return framesPerSecond;
 	}
 
-	
 	private int desiredTPS = 30;
 	private long startTimeThisSec = 0;
 
@@ -791,19 +781,19 @@ public class BattleView extends Canvas implements IBattleView {
 		}
 	}
 
-	private void displayTurn(boolean minimizedMode) {
-		if (!(minimizedMode || battle == null || battle.isAborted() /* || endTimer >= TURNS_DISPLAYED_AFTER_ENDING */)) {
+	private void displayTurn() {
+		if (!(isMinimizedMode() || battle == null || battle.isAborted()/* || endTimer >= TURNS_DISPLAYED_AFTER_ENDING */)) {
 			// Update the battle view if the frame has not been painted yet this second
 			// or if it's time to paint the next frame
 			if ((estimatedFPS * turnsThisSec / desiredTPS) >= framesThisSec) {
 				update();
 				framesThisSec++;
 			}
-// FIXME:			playSounds();
+			// FIXME:			playSounds();
 		}
 	}
 
-	private void measureTime(boolean minimizedMode) {
+	private void measureTime() {
 		// Calculate the total time spend on robots this second
 		totalRobotMillisThisSec += currentRobotMillis;
 
@@ -823,7 +813,7 @@ public class BattleView extends Canvas implements IBattleView {
 		estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
 
 		// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-		if (/*endTimer >= TURNS_DISPLAYED_AFTER_ENDING ||*/ minimizedMode) {
+		if (/* endTimer >= TURNS_DISPLAYED_AFTER_ENDING ||*/isMinimizedMode()) {
 			delay = 0;
 		} else {
 			delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
@@ -833,7 +823,7 @@ public class BattleView extends Canvas implements IBattleView {
 		resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
 
 		// Check if we must limit the TPS
-		if (!(resetThisSec || minimizedMode)) {
+		if (!(resetThisSec || isMinimizedMode())) {
 			resetThisSec = ((desiredTPS - turnsThisSec) == 0);
 		}
 
@@ -848,8 +838,7 @@ public class BattleView extends Canvas implements IBattleView {
 		}
 	}
 
-	// FIXME: Remove when possible
-	public void setDesiredTPS(int tps) {
-		desiredTPS = tps;
+	private boolean isMinimizedMode() {
+		return manager.getWindowManager().getRobocodeFrame().isIconified();
 	}
 }

@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.util;
+package robocode.common;
 
 
 import java.awt.Color;
