@@ -253,12 +253,6 @@ public class Battle implements Runnable {
 		deterministic = true;
 		nonDeterministicRobots = null;
 
-		boolean soundInitialized = false;
-
-		if (manager.isSoundEnabled()) {
-			soundInitialized = true;
-		}
-
 		roundNum = 0;
 
 		if (manager.isGUIEnabled()) {
@@ -346,11 +340,6 @@ public class Battle implements Runnable {
 		// for cleaning up the battle when its done with it.
 		if (!manager.isGUIEnabled()) {
 			cleanup();
-		}
-
-		if (soundInitialized) {
-			manager.getSoundManager().stopBackgroundMusic();
-			manager.getSoundManager().playEndOfBattleMusic();
 		}
 
 		if (manager.isGUIEnabled()) {
@@ -549,10 +538,6 @@ public class Battle implements Runnable {
 		}
 
 		eventDispatcher.onBattleStarted();
-
-		if (manager.isSoundEnabled()) {
-			manager.getSoundManager().playBackgroundMusic();
-		}
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");

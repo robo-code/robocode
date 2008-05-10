@@ -140,9 +140,6 @@ public class BattleManager {
 		if (getBattle() != null) {
 			getBattle().stop();
 		}
-		if (manager.isSoundEnabled()) {
-			manager.getSoundManager().stopBackgroundMusic();
-		}
 	}
 
 	public void restart() {
@@ -308,7 +305,11 @@ public class BattleManager {
             battleView.setBattleField(battleField, battleEventDispatcher);
         }
 
-		battle = new Battle(battleField, manager, battleEventDispatcher);
+        if (manager.isSoundEnabled()){
+            manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
+        }
+
+        battle = new Battle(battleField, manager, battleEventDispatcher);
 		battle.setExitOnComplete(exitOnComplete);
 
 		// Only used when controlled by RobocodeEngine
