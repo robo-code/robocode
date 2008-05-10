@@ -177,7 +177,7 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		public void mouseClicked(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
+            Battle battle = manager.getBattleManager().getBattle();
 
 			if (battle != null) {
 				battle.mouseClicked(e);

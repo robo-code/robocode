@@ -219,7 +219,6 @@ public class Battle implements Runnable {
 	// Dummy component used to preventing robots in accessing the real source component
 	private static Component safeEventComponent;
 
-
 	private final BattleEventDispatcher eventDispatcher;
 
 	/**
@@ -707,7 +706,7 @@ public class Battle implements Runnable {
 			} else {
 				long startTime = System.currentTimeMillis();
 	
-			runTurn();
+			    runTurn();
 
 				int deltaTime = (int) (System.currentTimeMillis() - startTime);
 				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS(); 
