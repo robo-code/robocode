@@ -717,6 +717,9 @@ public class Battle implements Runnable {
 				int deltaTime = (int) (System.currentTimeMillis() - startTime);
 				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS(); 
 				int delay = Math.max(((1000 / desiredTPS) - deltaTime), 0);
+                if (isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING ) { //TODO || minimizedMode
+                    delay = 0;
+                }
 
 				try {
 					Thread.sleep(delay);
