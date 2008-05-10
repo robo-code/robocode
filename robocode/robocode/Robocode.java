@@ -180,7 +180,7 @@ public class Robocode {
 				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.loadBattleProperties();
 					battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
-					battleManager.getBattle().setDesiredTPS(tps);
+					//TODO ZAMO battleManager.getBattle().setDesiredTPS(tps);
 				} else {
 					System.err.println("The specified battle file '" + battleFilename + "' was not be found");
 					System.exit(8);

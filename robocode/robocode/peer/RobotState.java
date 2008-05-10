@@ -41,4 +41,12 @@ public enum RobotState {
 	public boolean isDead() {
 		return this == DEAD;
 	}
+
+	public boolean isHitRobot() {
+		return this == HIT_ROBOT;
+	}
+
+	public boolean isHitWall() {
+		return this == HIT_WALL;
+	}
 }

@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.snapshot;
+package robocode.battle.snapshot;
 
 
 import static robocode.util.ObjectCloner.deepCopy;
@@ -57,9 +57,9 @@ public class BulletSnapshot implements java.io.Serializable {
 	private final double power;
 
 	// The x coordinate
-	// private final double x;
+	private final double x;
 	// The y coordinate
-	// private final double y;
+	private final double y;
 
 	// The x coordinate for painting (due to offset on robot when bullet hits a robot)
 	private final double paintX;
@@ -90,8 +90,8 @@ public class BulletSnapshot implements java.io.Serializable {
 		
 		power = peer.getPower();
 
-		// x = peer.getX();
-		// y = peer.getY();
+		x = peer.getX();
+		y = peer.getY();
 
 		paintX = peer.getPaintX();
 		paintY = peer.getPaintY();
@@ -136,18 +136,18 @@ public class BulletSnapshot implements java.io.Serializable {
 	 *
 	 * @return the x coordinate of the bullet.
 	 */
-	// public double getX() {
-	// return x;
-	// }
+	public double getX() {
+		return x;
+	}
 
 	/**
 	 * Returns the y coordinate of the bullet.
 	 *
 	 * @return the y coordinate of the bullet.
 	 */
-	// public double getY() {
-	// return y;
-	// }
+	public double getY() {
+		return y;
+	}
 
 	/**
 	 * Returns the x coordinate where to paint the bullet.

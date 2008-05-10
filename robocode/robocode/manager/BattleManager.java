@@ -54,6 +54,7 @@ package robocode.manager;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.control.BattleSpecification;
@@ -70,6 +71,7 @@ import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
+import robocode.battleview.BattleView;
 
 import javax.swing.*;
 import java.io.*;
@@ -299,10 +301,14 @@ public class BattleManager {
 		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight());
 
+        BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
+
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().getBattleView().setBattleField(battleField);
-		}
-		battle = new Battle(battleField, manager);
+            BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+            battleView.setBattleField(battleField, battleEventDispatcher);
+        }
+
+		battle = new Battle(battleField, manager, battleEventDispatcher);
 		battle.setExitOnComplete(exitOnComplete);
 
 		// Only used when controlled by RobocodeEngine
@@ -503,7 +509,7 @@ public class BattleManager {
 
 	public void setOptions() {
 		if (battle != null) {
-			battle.setOptions();
+			//TODO ZAMO battle.setOptions();
 		}
 	}
 

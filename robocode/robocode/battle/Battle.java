@@ -36,7 +36,7 @@
  *       getOptionsCommonShowResults() from the properties
  *     - Simplified the code in the run() method when battle is stopped
  *     - Changed so that stop() makes the current round stop immediately
- *     - Added handling keyboard events thru a KeyboardEventDispather
+ *     - Added handling keyboard events thru a KeyboardEventDispatcher
  *     - Added mouseMoved(), mouseClicked(), mouseReleased(), mouseEntered(),
  *       mouseExited(), mouseDragged(), mouseWheelMoved()
  *     - Changed to take the new JuniorRobot class into account
@@ -96,9 +96,10 @@ package robocode.battle;
 
 
 import robocode.*;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
+import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battlefield.BattleField;
-import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
 import robocode.dialog.RobocodeFrame;
@@ -106,8 +107,6 @@ import robocode.dialog.RobotButton;
 import static robocode.io.Logger.log;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
-import robocode.manager.RobocodeProperties.PropertyListener;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
@@ -116,7 +115,6 @@ import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
 import robocode.security.RobocodeClassLoader;
-import robocode.snapshot.BattleSnapshot;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -154,7 +152,6 @@ public class Battle implements Runnable {
 	private final static int TURNS_DISPLAYED_AFTER_ENDING = 35;
 
 	// Objects we use
-	private BattleView battleView;
 	private BattleField battleField;
 	private BattleManager battleManager;
 	private RobocodeManager manager;
@@ -173,10 +170,6 @@ public class Battle implements Runnable {
 	private double inactivityEnergy;
 	private long inactivityTime;
 
-	// TPS and FPS related items
-	private int desiredTPS = 30;
-	private long startTimeThisSec = 0;
-
 	// Turn skip related items
 	private int maxSkippedTurns = 30;
 	private int maxSkippedTurnsWithIO = 240;
@@ -186,11 +179,10 @@ public class Battle implements Runnable {
 	// Current round items
 	private int numRounds;
 	private int roundNum;
-	private int turnsThisSec;
-	private int framesThisSec;
 	private int currentTime;
 	private int endTimer;
 	private int activeRobots;
+	private boolean roundOver;
 
 	// Death events
 	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
@@ -221,29 +213,24 @@ public class Battle implements Runnable {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	// Property listener
-	private PropertyListener propertyListener;
-
 	// Key event dispatcher
 	private KeyEventHandler keyHandler;
 
 	// Dummy component used to preventing robots in accessing the real source component
 	private static Component safeEventComponent;
 
-	private BattleSnapshot battleSnapshot;
+
+	private final BattleEventDispatcher eventDispatcher;
 
 	/**
 	 * Battle constructor
 	 */
-	public Battle(BattleField battleField, RobocodeManager manager) {
+	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher) {
 		super();
 
-		if (manager.isGUIEnabled()) {
-			battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-			battleView.setBattle(this);
-		}
 		this.battleField = battleField;
 		this.manager = manager;
+		this.eventDispatcher = eventDispatcher;
 
 		battleManager = manager.getBattleManager();
 
@@ -251,8 +238,6 @@ public class Battle implements Runnable {
 			keyHandler = new KeyEventHandler(this, robots);
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
 		}
-
-		battleSnapshot = new BattleSnapshot(this);
 	}
 
 	@Override
@@ -267,6 +252,10 @@ public class Battle implements Runnable {
 		this.replay = replay;
 	}
 
+	public boolean isReplay() {
+		return replay;
+	}
+	
 	/**
 	 * When an object implementing interface {@code Runnable} is used
 	 * to create a thread, starting the thread causes the object's
@@ -306,7 +295,6 @@ public class Battle implements Runnable {
 		}
 
 		while (!isAborted() && roundNum < numRounds) {
-			updateTitle();
 			try {
 				setupRound();
 
@@ -371,9 +359,7 @@ public class Battle implements Runnable {
 			}
 		}
 
-		if (battleView != null) {
-			battleView.repaint();
-		}
+		eventDispatcher.onBattleEnded(false); // not aborted
 
 		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
@@ -399,9 +385,6 @@ public class Battle implements Runnable {
 			running = false;
 			battleMonitor.notifyAll();
 		}
-
-		// Must be done here, as this method depends on the running state
-		updateTitle();
 	}
 
 	public void waitTillRunning() {
@@ -488,19 +471,9 @@ public class Battle implements Runnable {
 			keyHandler = null;
 		}
 
-		if (manager != null) {
-			RobocodeProperties props = manager.getProperties();
-
-			props.removePropertyListener(propertyListener);
-			props = null;
-			propertyListener = null;
-		}
-
 		battleField = null;
 		battleManager = null;
 		battleSpecification = null;
-
-		battleSnapshot = null;
 
 		// Request garbage collecting
 		for (int i = 4; i >= 0; i--) { // Make sure it is run
@@ -593,17 +566,6 @@ public class Battle implements Runnable {
 		return null;
 	}
 
-	public void setOptions() {
-		setDesiredTPS(manager.getProperties().getOptionsBattleDesiredTPS());
-		if (battleView != null) {
-			battleView.setDisplayOptions();
-		}
-	}
-
-	public void setDesiredTPS(int desiredTPS) {
-		this.desiredTPS = desiredTPS;
-	}
-
 	public void initialize() {
 		// Notify that the battle is now running
 		synchronized (battleMonitor) {
@@ -611,28 +573,11 @@ public class Battle implements Runnable {
 			battleMonitor.notifyAll();
 		}
 
-		if (battleView != null) {
-			battleView.repaint();
-		}
+		eventDispatcher.onBattleStarted();
 
 		if (manager.isSoundEnabled()) {
 			manager.getSoundManager().playBackgroundMusic();
 		}
-
-		setOptions();
-
-		RobocodeProperties props = manager.getProperties();
-
-		desiredTPS = props.getOptionsBattleDesiredTPS();
-
-		propertyListener = props.new PropertyListener() {
-			@Override
-			public void desiredTpsChanged(int tps) {
-				desiredTPS = tps;
-			}
-		};
-
-		props.addPropertyListener(propertyListener);
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
@@ -692,9 +637,6 @@ public class Battle implements Runnable {
 
 					initializeRobotPosition(r);
 
-					if (battleView != null && !replay) {
-						battleView.update();
-					}
 				} catch (Throwable e) {
 					r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
 					e.printStackTrace(r.getOut());
@@ -743,24 +685,6 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private boolean roundOver;
-
-	private long turnStartTime;
-	private long robotStartTime;
-
-	private int currentRobotMillis;
-	private int totalRobotMillisThisSec;
-	private int totalFrameMillisThisSec;
-	private int totalTurnMillisThisSec;
-
-	private float estFrameTimeThisSec;
-	private float estimatedFPS;
-	private int estimatedTurnMillisThisSec;
-
-	private int delay;
-
-	private boolean resetThisSec;
-
 	public void runRound() {
 		log("Let the games begin!");
 
@@ -768,15 +692,8 @@ public class Battle implements Runnable {
 		endTimer = 0;
 		currentTime = 0;
 		inactiveTurnCount = 0;
-		turnsThisSec = 0;
-		framesThisSec = 0;
-		currentRobotMillis = 0;
-		totalRobotMillisThisSec = 0;
-		totalFrameMillisThisSec = 0;
-		estimatedFPS = 0;
-		delay = 0;
 
-		resetThisSec = true;
+		eventDispatcher.onRoundStarted();
 
 		if (isRecordingEnabled) {
 			currentRoundRecord = new RoundRecord();
@@ -784,19 +701,31 @@ public class Battle implements Runnable {
 
 		battleManager.startNewRound();
 
-		boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
-
-		if (!minimizedMode) {
-			battleView.update();
-		}
-
 		while (!roundOver) {
+			if (!manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified()) {
+				runTurn();
+			} else {
+				long startTime = System.currentTimeMillis();
+	
 			runTurn();
+
+				int deltaTime = (int) (System.currentTimeMillis() - startTime);
+				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS(); 
+				int delay = Math.max(((1000 / desiredTPS) - deltaTime), 0);
+
+				try {
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			}
 		}
 
 		recordRound();
 
 		bullets.clear();
+
+		eventDispatcher.onRoundEnded();
 	}
 
 	public void replayRound() {
@@ -804,78 +733,42 @@ public class Battle implements Runnable {
 
 		roundOver = false;
 
+		eventDispatcher.onRoundStarted();
+
 		endTimer = 0;
 		currentTime = 0;
-		turnsThisSec = 0;
-		framesThisSec = 0;
-		totalFrameMillisThisSec = 0;
-		estimatedFPS = 0;
-		delay = 0;
-		resetThisSec = true;
 
 		battleManager.startNewRound();
-
-		boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
-
-		if (!minimizedMode) {
-			battleView.update();
-		}
 
 		while (!(roundOver || isAborted())) {
 			replayTurn();
 		}
 
 		bullets.clear();
+
+		eventDispatcher.onRoundEnded();
 	}
 
 	private void replayTurn() {
 		if (shouldPause() && !battleManager.shouldStep()) {
-			resetThisSec = true;
 			return;
 		}
-
-		// Next turn is starting
-		turnStartTime = System.currentTimeMillis();
-
-		resetSec();
 
 		roundOver = replayRecord();
 
 		currentTime++;
-		turnsThisSec++;
 
-		battleSnapshot = new BattleSnapshot(this);
-
-		// Set flag indication if we are running in "minimized mode"
-		boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
-
-		// Paint current battle frame
-		displayTurn(minimizedMode);
-
-		// Measure timing
-		measureTime(minimizedMode);
-
-		// Update title when second has passed
-		if (resetThisSec) {
-			updateTitle();
-		}
+		eventDispatcher.onTurnEnded(new BattleSnapshot(this));
 	}
 
 	private void runTurn() {
 		if (shouldPause() && !battleManager.shouldStep()) {
-			resetThisSec = true;
 			return;
 		}
-
-		// Next turn is starting
-		turnStartTime = System.currentTimeMillis();
-
-		resetSec();
 
 		cleanRobotEvents();
 
 		currentTime++;
-		turnsThisSec++;
 
 		updateBullets();
 
@@ -897,44 +790,10 @@ public class Battle implements Runnable {
 
 		addRobotEventsForTurnEnded();
 
-		battleSnapshot = new BattleSnapshot(this);
-
-		// Store the robot start time
-		robotStartTime = System.currentTimeMillis();
-
 		// Robot time!
 		wakeupRobots();
 
-		// Calculate the time spend on the robots
-		currentRobotMillis = (int) (System.currentTimeMillis() - robotStartTime);
-
-		// Set flag indication if we are running in "minimized mode"
-		boolean minimizedMode = battleView == null || manager.getWindowManager().getRobocodeFrame().isIconified();
-
-		// Paint current battle frame
-		displayTurn(minimizedMode);
-
-		// Measure timing
-		measureTime(minimizedMode);
-
-		// Update title when second has passed
-		if (resetThisSec) {
-			updateTitle();
-		}
-	}
-
-	private void resetSec() {
-		if (resetThisSec) {
-			resetThisSec = false;
-
-			startTimeThisSec = turnStartTime;
-
-			turnsThisSec = 0;
-			framesThisSec = 0;
-
-			totalRobotMillisThisSec = 0;
-			totalFrameMillisThisSec = 0;
-		}
+		eventDispatcher.onTurnEnded(new BattleSnapshot(this));
 	}
 
 	private void addRobotEventsForTurnEnded() {
@@ -982,51 +841,6 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private void measureTime(boolean minimizedMode) {
-		// Calculate the total time spend on robots this second
-		totalRobotMillisThisSec += currentRobotMillis;
-
-		// Calculate the total time used for the frame update
-		totalFrameMillisThisSec += (int) (System.currentTimeMillis() - turnStartTime) - currentRobotMillis;
-
-		// Calculate the total turn time this second
-		totalTurnMillisThisSec = max(1, totalRobotMillisThisSec + totalFrameMillisThisSec);
-
-		// Estimate the time remaining this second to spend on frame updates
-		estFrameTimeThisSec = max(0, 1000 - desiredTPS * totalRobotMillisThisSec / turnsThisSec);
-
-		// Estimate the possible FPS based on the estimated frame time
-		estimatedFPS = max(1, framesThisSec * estFrameTimeThisSec / totalFrameMillisThisSec);
-
-		// Estimate the time that will be used on the total turn this second
-		estimatedTurnMillisThisSec = desiredTPS * totalTurnMillisThisSec / turnsThisSec;
-
-		// Calculate delay needed for keeping the desired TPS (Turns Per Second)
-		if (endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode) {
-			delay = 0;
-		} else {
-			delay = (estimatedTurnMillisThisSec >= 1000) ? 0 : (1000 - estimatedTurnMillisThisSec) / desiredTPS;
-		}
-
-		// Set flag for if the second has passed
-		resetThisSec = (System.currentTimeMillis() - startTimeThisSec) >= 1000;
-
-		// Check if we must limit the TPS
-		if (!(resetThisSec || minimizedMode)) {
-			resetThisSec = ((desiredTPS - turnsThisSec) == 0);
-		}
-
-		// Delay to match desired TPS
-		if (delay > 0) {
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				// Set the thread status back to being interrupted
-				Thread.currentThread().interrupt();
-			}
-		}
-	}
-
 	private void recordRound() {
 		if (isRecordingEnabled) {
 			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
@@ -1050,19 +864,6 @@ public class Battle implements Runnable {
 
 			currentRoundRecord.results = results;
 			battleRecord.rounds.add(currentRoundRecord);
-		}
-	}
-
-	private void displayTurn(boolean minimizedMode) {
-		if (!(isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING || minimizedMode)) {
-			// Update the battle view if the frame has not been painted yet this second
-			// or if it's time to paint the next frame
-			if ((estimatedFPS * turnsThisSec / desiredTPS) >= framesThisSec) {
-				battleView.update();
-				framesThisSec++;
-			}
-
-			playSounds();
 		}
 	}
 
@@ -1139,7 +940,6 @@ public class Battle implements Runnable {
 
 	private boolean shouldPause() {
 		if (battleManager.isPaused() && !isAborted()) {
-			updateTitle();
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
@@ -1504,10 +1304,9 @@ public class Battle implements Runnable {
 			aborted = true;
 			battleMonitor.notifyAll();
 
-			// Adjust the desired TPS temporary to maximum rate to stop the battle as quickly as possible
-			int savedTPS = desiredTPS;
+			eventDispatcher.onBattleEnded(true); // battle was aborted
 
-			desiredTPS = 10000;
+			// Adjust the desired TPS temporary to maximum rate to stop the battle as quickly as possible
 
 			// Wait till the battle is not running anymore
 			while (running) {
@@ -1517,9 +1316,6 @@ public class Battle implements Runnable {
 					break;
 				}
 			}
-
-			// Restore the desired TPS
-			desiredTPS = savedTPS;
 		}
 	}
 
@@ -1783,33 +1579,6 @@ public class Battle implements Runnable {
 	}
 
 	/**
-	 * Plays sounds.
-	 */
-	private void playSounds() {
-		if (manager.isSoundEnabled()) {
-			for (BulletPeer bp : getBullets()) {
-				if (bp.getFrame() == 0) {
-					manager.getSoundManager().playBulletSound(bp);
-				}
-			}
-
-			boolean playedRobotHitRobot = false;
-
-			for (RobotPeer rp : robots) {
-				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
-				if (rp.getState() == RobotState.HIT_ROBOT) {
-					if (playedRobotHitRobot) {
-						continue;
-					}
-					playedRobotHitRobot = true;
-				}
-
-				manager.getSoundManager().playRobotSound(rp);
-			}
-		}
-	}
-
-	/**
 	 * Informs on whether the battle is running or not.
 	 *
 	 * @return true if the battle is running, false otherwise
@@ -1825,53 +1594,10 @@ public class Battle implements Runnable {
 	 *
 	 * @return true if the battle is aborted, false otherwise
 	 */
-	private boolean isAborted() {
+	public boolean isAborted() {
 		synchronized (battleMonitor) {
 			return aborted;
 		}
-	}
-
-	private void updateTitle() {
-		if (battleView == null) {
-			return;
-		}
-
-		StringBuffer title = new StringBuffer("Robocode");
-
-		if (isRunning()) {
-			title.append(": ");
-
-			if (currentTime == 0) {
-				title.append("Starting round");
-			} else {
-				title.append(replay ? "Replaying round " : "Round ");
-				title.append(roundNum + 1).append(" of ").append(numRounds);
-
-				if (!battleManager.isPaused()) {
-					boolean dispTps = battleView.isDisplayTPS();
-					boolean dispFps = battleView.isDisplayFPS();
-
-					if (dispTps | dispFps) {
-						title.append(" (");
-
-						if (dispTps) {
-							title.append(turnsThisSec).append(" TPS");
-						}
-						if (dispTps & dispFps) {
-							title.append(", ");
-						}
-						if (dispFps) {
-							title.append(framesThisSec).append(" FPS");
-						}
-						title.append(')');
-					}
-				}
-			}
-		}
-		if (battleManager.isPaused()) {
-			title.append(" (paused)");
-		}
-		battleView.setTitle(title.toString());
 	}
 
 	public void mouseClicked(final MouseEvent e) {
@@ -2067,7 +1793,8 @@ public class Battle implements Runnable {
 	}
 
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
-		double scale;
+
+		/* double scale;
 
 		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
 			scale = min((double) battleView.getWidth() / battleField.getWidth(),
@@ -2081,13 +1808,16 @@ public class Battle implements Runnable {
 
 		int x = (int) ((e.getX() - dx) / scale + 0.5);
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
+		 */
+		int x = 0, y = 0; // FIXME
 
 		return new MouseEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
 				e.getClickCount(), e.isPopupTrigger(), e.getButton());
 	}
 
 	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
-		double scale;
+
+		/* double scale;
 
 		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
 			scale = min((double) battleView.getWidth() / battleField.getWidth(),
@@ -2101,6 +1831,8 @@ public class Battle implements Runnable {
 
 		int x = (int) ((e.getX() - dx) / scale + 0.5);
 		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
+		 */
+		int x = 0, y = 0; // FIXME
 
 		return new MouseWheelEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
 				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
@@ -2191,9 +1923,5 @@ public class Battle implements Runnable {
 			// Load robots
 			unsafeLoadRobots();
 		}
-	}
-
-	public BattleSnapshot getBattleSnapshot() {
-		return battleSnapshot;
 	}
 }
