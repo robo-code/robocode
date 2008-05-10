@@ -30,6 +30,8 @@ package robocode.dialog;
 
 import robocode.battle.Battle;
 import robocode.battleview.BattleView;
+import robocode.battleview.SafeComponent;
+import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -37,6 +39,7 @@ import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
+import robocode.battlefield.BattleField;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -44,6 +47,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import static java.lang.Math.min;
 
 
 /**
@@ -55,6 +59,7 @@ import java.io.*;
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
 	private EventHandler eventHandler = new EventHandler();
+    private InteractiveHandler interactiveHandler;
 	private PauseResumeHandler pauseResumeHandler = new PauseResumeHandler();
 
 	private RobocodeMenuBar robocodeMenuBar;
@@ -93,7 +98,7 @@ public class RobocodeFrame extends JFrame {
 	private WindowManager windowManager;
 
 	private class EventHandler implements ComponentListener, ActionListener, ContainerListener, WindowListener,
-			ChangeListener, MouseListener, MouseMotionListener, MouseWheelListener {
+			ChangeListener {
 
 		public void actionPerformed(ActionEvent e) {
 			final Object source = e.getSource();
@@ -176,69 +181,8 @@ public class RobocodeFrame extends JFrame {
 			}
 		}
 
-		public void mouseClicked(MouseEvent e) {
-            Battle battle = manager.getBattleManager().getBattle();
 
-			if (battle != null) {
-				battle.mouseClicked(e);
-			}
-		}
 
-		public void mouseEntered(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseEntered(e);
-			}
-		}
-
-		public void mouseExited(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseExited(e);
-			}
-		}
-
-		public void mousePressed(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mousePressed(e);
-			}
-		}
-
-		public void mouseReleased(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseReleased(e);
-			}
-		}
-
-		public void mouseMoved(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseMoved(e);
-			}
-		}
-
-		public void mouseDragged(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseDragged(e);
-			}
-		}
-
-		public void mouseWheelMoved(MouseWheelEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseWheelMoved(e);
-			}
-		}
 	}
 
 
@@ -260,7 +204,8 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
-		this.windowManager = manager.getWindowManager();
+        interactiveHandler = new InteractiveHandler(manager);
+        this.windowManager = manager.getWindowManager();
 		this.manager = manager;
 		initialize();
 	}
@@ -616,10 +561,12 @@ public class RobocodeFrame extends JFrame {
 
 		addWindowListener(eventHandler);
 
-		getBattleView().addMouseListener(eventHandler);
-		getBattleView().addMouseMotionListener(eventHandler);
-		getBattleView().addMouseWheelListener(eventHandler);
-		getBattleView().setFocusable(true);
+		getBattleView().addMouseListener(interactiveHandler);
+		getBattleView().addMouseMotionListener(interactiveHandler);
+		getBattleView().addMouseWheelListener(interactiveHandler);
+        getBattleView().setFocusable(true);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(interactiveHandler);
+        
 
 		if (manager.isSlave()) {
 			getRobocodeMenuBar().getBattleMenu().setEnabled(false);

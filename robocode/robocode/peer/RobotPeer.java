@@ -1998,4 +1998,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 		return graphicsProxy;
 	}
+
+    public void onInteractiveEvent(robocode.Event e) {
+        eventManager.add(e);
+    }
+
 }

@@ -360,7 +360,7 @@ public class BattleManager {
 		// This must be done as a new battle could be started immediately after this one causing
 		// multiple battle threads to run at the same time, which must be prevented!
 		battle.waitTillRunning();
-	}
+    }
 
 	public String getBattleFilename() {
 		String filename = battleFilename;

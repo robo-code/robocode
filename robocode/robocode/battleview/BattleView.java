@@ -28,12 +28,15 @@ import robocode.manager.RobocodeProperties;
 import robocode.battle.snapshot.*;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.peer.BulletState;
+import robocode.peer.RobotPeer;
 import robocode.util.GraphicsState;
+import robocode.KeyTypedEvent;
+import robocode.KeyPressedEvent;
+import robocode.KeyReleasedEvent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;

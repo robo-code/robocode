@@ -78,6 +78,18 @@ public class EventManager implements IEventManager {
 	private int robotDeathEventPriority = 70;
 	private int messageEventPriority = 75;
 	// custom events defaults to 80
+	private int mouseClickedEventPriority = 98;
+	private int mouseDraggedEventPriority = 98;
+	private int mouseEnteredEventPriority = 98;
+	private int mouseExitedEventPriority = 98;
+	private int mouseMovedEventPriority = 98;
+	private int mousePressedEventPriority = 98;
+	private int mouseReleasedEventPriority = 98;
+	private int mouseWheelMovedEventPriority = 98;
+	private int keyTypedEventPriority = 98;
+	private int keyPressedEventPriority = 98;
+	private int keyReleasedEventPriority = 98;
+
 	private int statusEventPriority = 99;
 	private final int skippedTurnEventPriority = 100; // System event -> cannot be changed!
 	private final int winEventPriority = 100; // System event -> cannot be changed!
@@ -305,6 +317,28 @@ public class EventManager implements IEventManager {
 			return statusEventPriority;
 		} else if (eventClass.equals("PaintEvent")) {
 			return paintEventPriority;
+		} else if (eventClass.equals("MouseClickedEvent")) {
+			return mouseClickedEventPriority;
+		} else if (eventClass.equals("MouseDraggedEvent")) {
+			return mouseDraggedEventPriority;
+		} else if (eventClass.equals("MouseEnteredEvent")) {
+			return mouseEnteredEventPriority;
+		} else if (eventClass.equals("MouseExitedEvent")) {
+			return mouseExitedEventPriority;
+		} else if (eventClass.equals("MouseMovedEvent")) {
+			return mouseMovedEventPriority;
+		} else if (eventClass.equals("MousePressedEvent")) {
+			return mousePressedEventPriority;
+		} else if (eventClass.equals("MouseReleasedEvent")) {
+			return mouseReleasedEventPriority;
+		} else if (eventClass.equals("MouseWheelMovedEvent")) {
+			return mouseWheelMovedEventPriority;
+		} else if (eventClass.equals("KeyTypedEvent")) {
+			return keyTypedEventPriority;
+		} else if (eventClass.equals("KeyPressedEvent")) {
+			return keyPressedEventPriority;
+		} else if (eventClass.equals("KeyReleasedEvent")) {
+			return keyReleasedEventPriority;
 		} else {
 			return -1;
 		}
@@ -346,6 +380,39 @@ public class EventManager implements IEventManager {
 		}
 		if (e instanceof StatusEvent) {
 			return statusEventPriority;
+		}
+		if (e instanceof MouseClickedEvent) {
+			return mouseClickedEventPriority;
+		}
+		if (e instanceof MouseDraggedEvent) {
+			return mouseDraggedEventPriority;
+		}
+		if (e instanceof MouseEnteredEvent) {
+			return mouseEnteredEventPriority;
+		}
+		if (e instanceof MouseExitedEvent) {
+			return mouseExitedEventPriority;
+		}
+		if (e instanceof MouseMovedEvent) {
+			return mouseMovedEventPriority;
+		}
+		if (e instanceof MousePressedEvent) {
+			return mousePressedEventPriority;
+		}
+		if (e instanceof MouseReleasedEvent) {
+			return mouseReleasedEventPriority;
+		}
+		if (e instanceof MouseWheelMovedEvent) {
+			return mouseWheelMovedEventPriority;
+		}
+		if (e instanceof KeyTypedEvent) {
+			return keyTypedEventPriority;
+		}
+		if (e instanceof KeyPressedEvent) {
+			return keyPressedEventPriority;
+		}
+		if (e instanceof KeyReleasedEvent) {
+			return keyReleasedEventPriority;
 		}
 		if (e instanceof CustomEvent) {
 			return ((CustomEvent) e).getCondition().getPriority();
@@ -575,6 +642,194 @@ public class EventManager implements IEventManager {
 		}
 	}
 
+	public void onMouseClickedEvent(MouseClickedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onMouseClicked(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onMouseDraggedEvent(MouseDraggedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onMouseDragged(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onMouseEnteredEvent(MouseEnteredEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onMouseEntered(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onMouseExitedEvent(MouseExitedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onMouseExited(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onMouseMovedEvent(MouseMovedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onMouseMoved(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onMousePressedEvent(MousePressedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onMousePressed(e.getInnerEvent());
+					listener.onMousePressed(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onMouseReleasedEvent(MouseReleasedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onMouseReleased(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onMouseWheelMovedEvent(MouseWheelMovedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onMouseWheelMoved((java.awt.event.MouseWheelEvent) e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onKeyTypedEvent(KeyTypedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onKeyTyped(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyTyped(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onKeyPressedEvent(KeyPressedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onKeyPressed(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyPressed(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
+	public void onKeyReleasedEvent(KeyReleasedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isInteractiveRobot()) {
+			try {
+				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+				if (listener != null) {
+                    listener.onKeyReleased(e.getInnerEvent());
+				}
+			} catch (Exception e2) {
+				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyReleasedEvent(MouseEvent):");
+				e2.printStackTrace(robotPeer.getOut());
+			}
+		}
+	}
+
 	public void onCustomEvent(CustomEvent e) {
 		IBasicRobot robot = getRobot();
 
@@ -770,6 +1025,28 @@ public class EventManager implements IEventManager {
 					onBulletHitBullet((BulletHitBulletEvent) currentEvent);
 				} else if (currentEvent instanceof BulletMissedEvent) {
 					onBulletMissed((BulletMissedEvent) currentEvent);
+				} else if (currentEvent instanceof MouseClickedEvent) {
+					onMouseClickedEvent((MouseClickedEvent) currentEvent);
+				} else if (currentEvent instanceof MouseDraggedEvent) {
+					onMouseDraggedEvent((MouseDraggedEvent) currentEvent);
+				} else if (currentEvent instanceof MouseEnteredEvent) {
+					onMouseEnteredEvent((MouseEnteredEvent) currentEvent);
+				} else if (currentEvent instanceof MouseExitedEvent) {
+					onMouseExitedEvent((MouseExitedEvent) currentEvent);
+				} else if (currentEvent instanceof MouseMovedEvent) {
+					onMouseMovedEvent((MouseMovedEvent) currentEvent);
+				} else if (currentEvent instanceof MousePressedEvent) {
+					onMousePressedEvent((MousePressedEvent) currentEvent);
+				} else if (currentEvent instanceof MouseReleasedEvent) {
+					onMouseReleasedEvent((MouseReleasedEvent) currentEvent);
+				} else if (currentEvent instanceof MouseWheelMovedEvent) {
+					onMouseWheelMovedEvent((MouseWheelMovedEvent) currentEvent);
+				} else if (currentEvent instanceof KeyTypedEvent) {
+					onKeyTypedEvent((KeyTypedEvent) currentEvent);
+				} else if (currentEvent instanceof KeyPressedEvent) {
+					onKeyPressedEvent((KeyPressedEvent) currentEvent);
+				} else if (currentEvent instanceof KeyReleasedEvent) {
+					onKeyReleasedEvent((KeyReleasedEvent) currentEvent);
 				} else if (currentEvent instanceof ScannedRobotEvent) {
 					if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
 							&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
@@ -860,6 +1137,28 @@ public class EventManager implements IEventManager {
 			scannedRobotEventPriority = priority;
 		} else if (eventClass.equals("MessageEvent")) {
 			messageEventPriority = priority;
+		} else if (eventClass.equals("MouseClickedEvent")) {
+			mouseClickedEventPriority = priority;
+		} else if (eventClass.equals("MouseDraggedEvent")) {
+			mouseDraggedEventPriority = priority;
+		} else if (eventClass.equals("MouseEnteredEvent")) {
+			mouseEnteredEventPriority = priority;
+		} else if (eventClass.equals("MouseExitedEvent")) {
+			mouseExitedEventPriority = priority;
+		} else if (eventClass.equals("MouseMovedEvent")) {
+			mouseMovedEventPriority = priority;
+		} else if (eventClass.equals("MousePressedEvent")) {
+			mousePressedEventPriority = priority;
+		} else if (eventClass.equals("MouseReleasedEvent")) {
+			mouseReleasedEventPriority = priority;
+		} else if (eventClass.equals("MouseWheelMovedEvent")) {
+			mouseWheelMovedEventPriority = priority;
+		} else if (eventClass.equals("KeyTypedEvent")) {
+			keyTypedEventPriority = priority;
+		} else if (eventClass.equals("KeyPressedEvent")) {
+			keyPressedEventPriority = priority;
+		} else if (eventClass.equals("KeyReleasedEvent")) {
+			keyReleasedEventPriority = priority;
 		} else if (eventClass.equals("StatusEvent")) {
 			statusEventPriority = priority;
 		} else if (eventClass.equals("PaintEvent")) {
@@ -963,7 +1262,7 @@ public class EventManager implements IEventManager {
 	 *
 	 * @return a vector containing all PaintEvents currently in the robot's
 	 *         queue.
-	 * @see #onPaint(Graphics2D)
+	 * @see #onPaint()
 	 * @see PaintEvent
 	 * @since 1.6.1
 	 */

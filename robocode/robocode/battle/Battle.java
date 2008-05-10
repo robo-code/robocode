@@ -96,6 +96,7 @@ package robocode.battle;
 
 
 import robocode.*;
+import robocode.battleview.SafeComponent;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.BattleSnapshot;
@@ -112,8 +113,6 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.IInteractiveEvents;
-import robocode.robotinterfaces.IInteractiveRobot;
 import robocode.security.RobocodeClassLoader;
 
 import java.awt.*;
@@ -213,11 +212,6 @@ public class Battle implements Runnable {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	// Key event dispatcher
-	private KeyEventHandler keyHandler;
-
-	// Dummy component used to preventing robots in accessing the real source component
-	private static Component safeEventComponent;
 
 	private final BattleEventDispatcher eventDispatcher;
 
@@ -232,19 +226,6 @@ public class Battle implements Runnable {
 		this.eventDispatcher = eventDispatcher;
 
 		battleManager = manager.getBattleManager();
-
-		if (manager.isGUIEnabled()) {
-			keyHandler = new KeyEventHandler(this, robots);
-			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
-		}
-	}
-
-	@Override
-	public void finalize() throws Throwable {
-		super.finalize();
-		if (keyHandler != null) {
-			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(keyHandler);
-		}
 	}
 
 	public void setReplay(boolean replay) {
@@ -463,11 +444,6 @@ public class Battle implements Runnable {
 		if (robots != null) {
 			robots.clear();
 			robots = null;
-		}
-
-		if (keyHandler != null) {
-			keyHandler.cleanup();
-			keyHandler = null;
 		}
 
 		battleField = null;
@@ -1601,22 +1577,9 @@ public class Battle implements Runnable {
 
 	public void mouseClicked(final MouseEvent e) {
 		if (isRunning()) {
-			MouseEvent me = mirroredMouseEvent(e);
-
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
-					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
-
-					try {
-						IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-						if (listener != null) {
-							listener.onMouseClicked(me);
-						}
-					} catch (Exception e2) {
-						robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
-						e2.printStackTrace(robotPeer.getOut());
-					}
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseClickedEvent(cloneMouseEvent(e)));
 				}
 			}
 		}
@@ -1624,22 +1587,9 @@ public class Battle implements Runnable {
 
 	public void mouseEntered(final MouseEvent e) {
 		if (isRunning()) {
-			MouseEvent me = mirroredMouseEvent(e);
-
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
-					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
-
-					try {
-						IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-						if (listener != null) {
-							listener.onMouseEntered(me);
-						}
-					} catch (Exception e2) {
-						robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
-						e2.printStackTrace(robotPeer.getOut());
-					}
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseEnteredEvent(cloneMouseEvent(e)));
 				}
 			}
 		}
@@ -1647,22 +1597,9 @@ public class Battle implements Runnable {
 
 	public void mouseExited(final MouseEvent e) {
 		if (isRunning()) {
-			MouseEvent me = mirroredMouseEvent(e);
-
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
-					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
-
-					try {
-						IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-						if (listener != null) {
-							listener.onMouseExited(me);
-						}
-					} catch (Exception e2) {
-						robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
-						e2.printStackTrace(robotPeer.getOut());
-					}
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() ) {
+					robotPeer.onInteractiveEvent(new MouseExitedEvent(cloneMouseEvent(e)));
 				}
 			}
 		}
@@ -1670,22 +1607,9 @@ public class Battle implements Runnable {
 
 	public void mousePressed(final MouseEvent e) {
 		if (isRunning()) {
-			MouseEvent me = mirroredMouseEvent(e);
-
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
-					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
-
-					try {
-						IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-						if (listener != null) {
-							listener.onMousePressed(me);
-						}
-					} catch (Exception e2) {
-						robotPeer.getOut().println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
-						e2.printStackTrace(robotPeer.getOut());
-					}
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MousePressedEvent(cloneMouseEvent(e)));
 				}
 			}
 		}
@@ -1693,22 +1617,9 @@ public class Battle implements Runnable {
 
 	public void mouseReleased(final MouseEvent e) {
 		if (isRunning()) {
-			MouseEvent me = mirroredMouseEvent(e);
-
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
-					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
-
-					try {
-						IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-						if (listener != null) {
-							listener.onMouseReleased(me);
-						}
-					} catch (Exception e2) {
-						robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
-						e2.printStackTrace(robotPeer.getOut());
-					}
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseReleasedEvent(cloneMouseEvent(e)));
 				}
 			}
 		}
@@ -1716,22 +1627,9 @@ public class Battle implements Runnable {
 
 	public void mouseMoved(final MouseEvent e) {
 		if (isRunning()) {
-			MouseEvent me = mirroredMouseEvent(e);
-
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
-					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
-
-					try {
-						IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-						if (listener != null) {
-							listener.onMouseMoved(me);
-						}
-					} catch (Exception e2) {
-						robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
-						e2.printStackTrace(robotPeer.getOut());
-					}
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseMovedEvent(cloneMouseEvent(e)));
 				}
 			}
 		}
@@ -1739,22 +1637,9 @@ public class Battle implements Runnable {
 
 	public void mouseDragged(final MouseEvent e) {
 		if (isRunning()) {
-			MouseEvent me = mirroredMouseEvent(e);
-
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
-					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
-
-					try {
-						IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-						if (listener != null) {
-							listener.onMouseDragged(me);
-						}
-					} catch (Exception e2) {
-						robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
-						e2.printStackTrace(robotPeer.getOut());
-					}
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseDraggedEvent(cloneMouseEvent(e)));
 				}
 			}
 		}
@@ -1762,155 +1647,60 @@ public class Battle implements Runnable {
 
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		if (isRunning()) {
-			MouseWheelEvent mwe = mirroredMouseWheelEvent(e);
-
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.getRobot() != null && robotPeer.isInteractiveRobot()) {
-					IInteractiveRobot robot = (IInteractiveRobot) robotPeer.getRobot();
-
-					try {
-						IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-						if (listener != null) {
-							listener.onMouseWheelMoved(mwe);
-						}
-					} catch (Exception e2) {
-						robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseWheelMoved(MouseWheelEvent):");
-						e2.printStackTrace(robotPeer.getOut());
-					}
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseWheelMovedEvent(cloneMouseWheelEvent(e)));
 				}
 			}
 		}
 	}
 
-	// Returns a dummy component used to preventing robots in accessing the real source component
-	private static Component getSafeEventComponent() {
-		if (safeEventComponent == null) {
-			safeEventComponent = new Label();
-		}
-		return safeEventComponent;
-	}
+    public void keyTyped(final KeyEvent e) {
+        if (isRunning()) {
+            for (RobotPeer robotPeer : robots) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new KeyTypedEvent(cloneKeyEvent(e)));
+                }
+            }
+        }
+    }
 
-	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
+    public void keyPressed(final KeyEvent e) {
+        if (isRunning()) {
+            for (RobotPeer robotPeer : robots) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new KeyPressedEvent(cloneKeyEvent(e)));
+                }
+            }
+        }
+    }
 
-		/* double scale;
+    public void keyReleased(final KeyEvent e) {
+        if (isRunning()) {
+            for (RobotPeer robotPeer : robots) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new KeyReleasedEvent(cloneKeyEvent(e)));
+                }
+            }
+        }
+    }
 
-		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
-			scale = min((double) battleView.getWidth() / battleField.getWidth(),
-					(double) battleView.getHeight() / battleField.getHeight());
-		} else {
-			scale = 1;
-		}
+    public static KeyEvent cloneKeyEvent(final KeyEvent e) {
+        return new KeyEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
+                e.getKeyChar(), e.getKeyLocation());
+    }
 
-		double dx = (battleView.getWidth() - scale * battleField.getWidth()) / 2;
-		double dy = (battleView.getHeight() - scale * battleField.getHeight()) / 2;
+    public static MouseEvent cloneMouseEvent(final MouseEvent e) {
+        return new MouseEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getX(), e.getY(),
+                e.getClickCount(), e.isPopupTrigger(), e.getButton());
+    }
 
-		int x = (int) ((e.getX() - dx) / scale + 0.5);
-		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
-		 */
-		int x = 0, y = 0; // FIXME
+    public static MouseWheelEvent cloneMouseWheelEvent(final MouseWheelEvent e) {
+        return new MouseWheelEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getX(), e.getY(),
+                e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
+    }
 
-		return new MouseEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-				e.getClickCount(), e.isPopupTrigger(), e.getButton());
-	}
-
-	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
-
-		/* double scale;
-
-		if (battleView.getWidth() < battleField.getWidth() || battleView.getHeight() < battleField.getHeight()) {
-			scale = min((double) battleView.getWidth() / battleField.getWidth(),
-					(double) battleView.getHeight() / battleField.getHeight());
-		} else {
-			scale = 1;
-		}
-
-		double dx = (battleView.getWidth() - scale * battleField.getWidth()) / 2;
-		double dy = (battleView.getHeight() - scale * battleField.getHeight()) / 2;
-
-		int x = (int) ((e.getX() - dx) / scale + 0.5);
-		int y = (int) (battleField.getHeight() - (e.getY() - dy) / scale + 0.5);
-		 */
-		int x = 0, y = 0; // FIXME
-
-		return new MouseWheelEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
-	}
-
-	private final class KeyEventHandler implements KeyEventDispatcher {
-		private Battle battle;
-		private List<RobotPeer> robots;
-
-		public KeyEventHandler(Battle battle, List<RobotPeer> robots) {
-			this.battle = battle;
-			this.robots = robots;
-		}
-
-		public boolean dispatchKeyEvent(KeyEvent e) {
-			if (battle != null && battle.isRunning()) {
-				IInteractiveRobot robot;
-
-				for (RobotPeer robotPeer : robots) {
-					if (!(robotPeer.isAlive() && robotPeer.isInteractiveRobot())) {
-						continue;
-					}
-					robot = (IInteractiveRobot) robotPeer.getRobot();
-					if (robot == null) {
-						continue;
-					}
-					IInteractiveEvents listener = robot.getInteractiveEventListener();
-
-					if (listener == null) {
-						continue;
-					}
-					KeyEvent ke = cloneKeyEvent(e);
-
-					switch (e.getID()) {
-					case KeyEvent.KEY_TYPED:
-						try {
-							listener.onKeyTyped(ke);
-						} catch (Exception e2) {
-							robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyTyped(KeyEvent):");
-							e2.printStackTrace(robotPeer.getOut());
-						}
-						break;
-
-					case KeyEvent.KEY_PRESSED:
-						try {
-							listener.onKeyPressed(ke);
-						} catch (Exception e2) {
-							robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyPressed(KeyEvent):");
-							e2.printStackTrace(robotPeer.getOut());
-						}
-						break;
-
-					case KeyEvent.KEY_RELEASED:
-						try {
-							listener.onKeyReleased(ke);
-						} catch (Exception e2) {
-							robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyReleased(KeyEvent):");
-							e2.printStackTrace(robotPeer.getOut());
-						}
-						break;
-					}
-				}
-			}
-			return false;
-		}
-
-		private KeyEvent cloneKeyEvent(final KeyEvent e) {
-			return new KeyEvent(getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
-					e.getKeyChar(), e.getKeyLocation());
-		}
-
-		public void cleanup() {
-			robots = null;
-			battle = null;
-		}
-	}
-
-
-	private class UnsafeLoadRobotsThread extends Thread {
+    private class UnsafeLoadRobotsThread extends Thread {
 
 		public UnsafeLoadRobotsThread() {
 			super(new ThreadGroup("Robot Loader Group"), "Robot Loader");
