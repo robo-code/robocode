@@ -96,25 +96,39 @@ public class BattleObserver implements IBattleListener {
     }
 
 
+    private boolean paintBattle(boolean force) {
+        BattleSnapshot s=snapshot.get();
+        if (lastSnapshot!=s || force){
+            lastSnapshot=s;
+            battleView.paintBattle(s);
+            battleView.invalidate();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean update() {
+        if (isRunning.get()){
+            return paintBattle(true);
+        }
+        else{
+            battleView.paintRobocodeLogo();
+            return true;
+        }
+    }
+
     private class EventsDispatcher implements Runnable {
         public void run(){
-            if (isRunning.get()){
-                battleView.paintBattle(snapshot.get());
-            }
-            else{
-                battleView.paintRobocodeLogo();
-            }
+            update();
         }
     }
 
     private class TimerDispatcher implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            BattleSnapshot s=snapshot.get();
-            if (lastSnapshot!=s){
-                lastSnapshot=s;
-                battleView.paintBattle(s);
-                battleView.invalidate();
-            }
+            paintBattle(false);
         }
     }
 }

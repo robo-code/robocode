@@ -118,14 +118,19 @@ public class BattleView extends Canvas {
         if (!initialized) {
             initialize();
             paintRobocodeLogo();
+            return;
         }
 
         if (robocodeFrame.isIconified() || !isDisplayable() || (getWidth() <= 0) || (getHeight() <= 0)) {
             return;
         }
-
-        super.paint(g);
-	}
+        if (observer!=null){
+            observer.update();
+        }
+        else{
+            paintRobocodeLogo();
+        }
+    }
 
     /**
      * Draws the Robocode logo
@@ -150,10 +155,6 @@ public class BattleView extends Canvas {
 	 * Draws the Robocode logo
 	 */
 	public void paintRobocodeLogo() {
-        if (!isDisplayable()) {
-            return;
-        }
-        
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         if (g != null) {
 
