@@ -687,6 +687,9 @@ public class Battle implements Runnable {
 				int deltaTime = (int) (System.currentTimeMillis() - startTime);
 				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS(); 
 				int delay = Math.max(((1000 / desiredTPS) - deltaTime), 0);
+                if (isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING ) { //TODO || minimizedMode
+                    delay = 0;
+                }
 
 				try {
 					Thread.sleep(delay);
@@ -800,8 +803,9 @@ public class Battle implements Runnable {
 			if (!r.isDead()) {
 				r.update();
 			}
-			if ((zap || isAborted()) && !r.isDead()) {
-				if (isAborted()) {
+            boolean aborted = isAborted();
+            if ((zap || aborted) && !r.isDead()) {
+				if (aborted) {
 					r.zap(5);
 				} else {
 					r.zap(.1);
