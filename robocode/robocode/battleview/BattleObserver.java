@@ -42,7 +42,7 @@ public class BattleObserver implements IBattleListener {
         this.battleView=battleView;
         snapshot=new AtomicReference<BattleSnapshot>();
         snapshot.set(null);
-        timer=new Timer(100, timerDispatcher); //TODO FPS
+        timer=new Timer(1000/20, timerDispatcher); //TODO FPS
         isRunning=new AtomicBoolean();
         isRunning.set(false);
         isPaused=new AtomicBoolean();

@@ -92,8 +92,6 @@ public class BattleView extends Canvas {
 
 	private BufferStrategy bufferStrategy;
 
-	private Image offscreenImage;
-
 	private GeneralPath robocodeTextPath = new RobocodeLogo().getRobocodeText();
 
 	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
@@ -117,22 +115,55 @@ public class BattleView extends Canvas {
 	@Override
 	public void paint(Graphics g) {
 
-        if (robocodeFrame.isIconified() || (getWidth() <= 0) || (getHeight() <= 0)) {
-            return;
-        }
-
         if (!initialized) {
             initialize();
             paintRobocodeLogo();
         }
 
-        if (isDisplayable()) {
-            Graphics2D localG = (Graphics2D) bufferStrategy.getDrawGraphics();
-            if (localG != null) {
-                localG.drawImage(offscreenImage, 0, 0, null);
-                bufferStrategy.show();
-                localG.dispose();
-            }
+        if (robocodeFrame.isIconified() || !isDisplayable() || (getWidth() <= 0) || (getHeight() <= 0)) {
+            return;
+        }
+
+        super.paint(g);
+	}
+
+    /**
+     * Draws the Robocode logo
+     */
+    public void paintBattle(BattleSnapshot snapshot) {
+        if (!isDisplayable() || robocodeFrame.isIconified() || (getWidth() <= 0) || (getHeight() <= 0)) {
+            return;
+        }
+        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+        if (g != null) {
+            g.setRenderingHints(renderingHints);
+            g.scale(scale, scale);
+
+            drawBattle(g, snapshot);
+
+            bufferStrategy.show();
+            g.dispose();
+        }
+    }
+
+	/**
+	 * Draws the Robocode logo
+	 */
+	public void paintRobocodeLogo() {
+        if (!isDisplayable()) {
+            return;
+        }
+        
+        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+        if (g != null) {
+
+            g.setRenderingHints(renderingHints);
+            g.scale(scale, scale);
+
+            drawLogo(g);
+
+            bufferStrategy.show();
+            g.dispose();
         }
 	}
 
@@ -155,18 +186,11 @@ public class BattleView extends Canvas {
 	private void initialize() {
 		setDisplayOptions();
 
-		if (offscreenImage != null) {
-			offscreenImage.flush();
-			offscreenImage = null;
-		}
-
-		offscreenImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
-		Graphics2D offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-
 		if (bufferStrategy == null) {
 			createBufferStrategy(numBuffers);
 			bufferStrategy = getBufferStrategy();
 		}
+        Graphics2D g = (Graphics2D)bufferStrategy.getDrawGraphics();
 
 		// If we are scaled...
 		if (getWidth() < battleField.getWidth() || getHeight() < battleField.getHeight()) {
@@ -176,14 +200,14 @@ public class BattleView extends Canvas {
 
 			scale = min((double) getWidth() / battleField.getWidth(), (double) getHeight() / battleField.getHeight());
 
-			offscreenGfx.scale(scale, scale);
+            g.scale(scale, scale);
 		} else {
 			scale = 1;
 		}
 
 		// Scale font
 		smallFont = new Font("Dialog", Font.PLAIN, (int) (10 / scale));
-		smallFontMetrics = offscreenGfx.getFontMetrics(smallFont);
+		smallFontMetrics = g.getFontMetrics(smallFont);
 
 		// Initialize ground image
 		if (drawGround) {
@@ -519,6 +543,25 @@ public class BattleView extends Canvas {
 		g.setClip(savedClip);
 	}
 
+    private void drawLogo(Graphics2D g) {
+        setBackground(Color.BLACK);
+        g.clearRect(0, 0, getWidth(), getHeight());
+
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2.0, (getHeight() - 46) / 2.0));
+        g.setColor(new Color(0, 0x40, 0));
+        g.fill(robocodeTextPath);
+
+        Font font = new Font("Dialog", Font.BOLD, 14);
+        int width = g.getFontMetrics(font).stringWidth(ROBOCODE_SLOGAN);
+
+        g.setTransform(new AffineTransform());
+        g.setFont(font);
+        g.setColor(new Color(0, 0x50, 0));
+        g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
+    }
+
 	private void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
 		g.setFont(font);
 
@@ -593,51 +636,7 @@ public class BattleView extends Canvas {
         observer=new BattleObserver(this, battleEventDispatcher);
     }
 
-    /**
-     * Draws the Robocode logo
-     */
-    public void paintBattle(BattleSnapshot snapshot) {
-        Graphics2D offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-        if (offscreenGfx != null) {
-            offscreenGfx.setRenderingHints(renderingHints);
-
-            drawBattle(offscreenGfx, snapshot);
-
-            offscreenGfx.dispose();
-        }
-        repaint();
-    }
-
-	/**
-	 * Draws the Robocode logo
-	 */
-	public void paintRobocodeLogo() {
-        Graphics2D offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-        if (offscreenGfx != null) {
-            offscreenGfx.setRenderingHints(renderingHints);
-
-            setBackground(Color.BLACK);
-            offscreenGfx.clearRect(0, 0, getWidth(), getHeight());
-
-            offscreenGfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            offscreenGfx.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2.0, (getHeight() - 46) / 2.0));
-            offscreenGfx.setColor(new Color(0, 0x40, 0));
-            offscreenGfx.fill(robocodeTextPath);
-
-            Font font = new Font("Dialog", Font.BOLD, 14);
-            int width = offscreenGfx.getFontMetrics(font).stringWidth(ROBOCODE_SLOGAN);
-
-            offscreenGfx.setTransform(new AffineTransform());
-            offscreenGfx.setFont(font);
-            offscreenGfx.setColor(new Color(0, 0x50, 0));
-            offscreenGfx.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
-            offscreenGfx.dispose();
-        }
-        repaint();
-	}
-
-	public boolean isDisplayTPS() {
+    public boolean isDisplayTPS() {
 		return displayTPS;
 	}
 
