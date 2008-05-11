@@ -19,7 +19,10 @@ import java.awt.RenderingHints.Key;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ImageObserver;
+import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
@@ -201,7 +204,7 @@ public class MirroredGraphics extends Graphics2D {
 	}
 
 	@Override
-	public void fill3DRect(int x, int y, int width, int height, boolean raised) {	
+	public void fill3DRect(int x, int y, int width, int height, boolean raised) {
 		g.fill3DRect(x, y, width, height, raised);
 	}
 
@@ -253,7 +256,7 @@ public class MirroredGraphics extends Graphics2D {
 	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawString(String str, int x, int y) {
-		// Change the transform to use the mirrored transform and save the current one 
+		// Change the transform to use the mirrored transform and save the current one
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawString(str, x, -y);
@@ -265,7 +268,7 @@ public class MirroredGraphics extends Graphics2D {
 	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-		// Change the transform to use the mirrored transform and save the current one 
+		// Change the transform to use the mirrored transform and save the current one
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawString(iterator, x, -y);
@@ -277,7 +280,7 @@ public class MirroredGraphics extends Graphics2D {
 	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawChars(char[] data, int offset, int length, int x, int y) {
-		// Change the transform to use the mirrored transform and save the current one 
+		// Change the transform to use the mirrored transform and save the current one
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawChars(data, offset, length, x, -y);
@@ -289,7 +292,7 @@ public class MirroredGraphics extends Graphics2D {
 	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawBytes(byte[] data, int offset, int length, int x, int y) {
-		// Change the transform to use the mirrored transform and save the current one 
+		// Change the transform to use the mirrored transform and save the current one
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawBytes(data, offset, length, x, -y);
@@ -331,13 +334,13 @@ public class MirroredGraphics extends Graphics2D {
 	}
 
 	@Override
-	public void dispose() {// TODO: Ignored here, as the robot should not be allowed to dispose this object 
+	public void dispose() {// TODO: Ignored here, as the robot should not be allowed to dispose this object
 	}
 
 	@Override
 	@Deprecated
 	public Rectangle getClipRect() {
-		return g.getClipBounds(); // Must use getClipBounds() instead of the deprecated getClipRect() method 
+		return g.getClipBounds(); // Must use getClipBounds() instead of the deprecated getClipRect() method
 	}
 
 	@Override
@@ -382,7 +385,7 @@ public class MirroredGraphics extends Graphics2D {
 	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawString(String str, float x, float y) {
-		// Change the transform to use the mirrored transform and save the current one 
+		// Change the transform to use the mirrored transform and save the current one
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawString(str, x, -y);
@@ -394,7 +397,7 @@ public class MirroredGraphics extends Graphics2D {
 	// Modified so that the y-axis is mirrored
 	@Override
 	public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-		// Change the transform to use the mirrored transform and save the current one 
+		// Change the transform to use the mirrored transform and save the current one
 		AffineTransform saveTx = setToMirroredTransform();
 
 		g.drawString(iterator, x, -y);
@@ -402,7 +405,7 @@ public class MirroredGraphics extends Graphics2D {
 		// Restore the transform
 		g.setTransform(saveTx);
 	}
-	
+
 	@Override
 	public void drawGlyphVector(GlyphVector gv, float x, float y) {
 		g.drawGlyphVector(gv, x, y);

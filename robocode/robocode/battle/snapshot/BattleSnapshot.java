@@ -39,11 +39,10 @@ import java.util.List;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
- *
  * @since 1.6.1
  */
 public class BattleSnapshot implements java.io.Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// The width of the battlefield
@@ -60,7 +59,7 @@ public class BattleSnapshot implements java.io.Serializable {
 
 	/**
 	 * Constructs a snapshot of the battle.
-	 * 
+	 *
 	 * @param battle the battle to make a snapshot of.
 	 */
 	public BattleSnapshot(Battle battle) {
@@ -87,7 +86,7 @@ public class BattleSnapshot implements java.io.Serializable {
 	// public int getFieldWidth() {
 	// return fieldWidth;
 	// }
-	
+
 	/**
 	 * Returns the height of the battlefield.
 	 *

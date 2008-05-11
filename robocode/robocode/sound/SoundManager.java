@@ -28,24 +28,19 @@
 package robocode.sound;
 
 
-import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
-import robocode.peer.BulletPeer;
-import robocode.peer.RobotPeer;
-import robocode.peer.RobotState;
-import robocode.battle.events.IBattleListener;
 import robocode.battle.events.BattleEventDispatcher;
+import robocode.battle.events.IBattleListener;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
+import robocode.peer.RobotState;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Mixer;
-import javax.swing.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -64,17 +59,17 @@ public class SoundManager {
 
 	// Access to properties
 	private RobocodeProperties properties;
-    private BattleObserver battleObserver=null;
-    private RobocodeManager manager;
+	private BattleObserver battleObserver = null;
+	private RobocodeManager manager;
 
-    /**
+	/**
 	 * Constructs a new sound manager.
 	 *
 	 * @param manager the Robocode manager
 	 */
 	public SoundManager(RobocodeManager manager) {
-        this.manager=manager;
-        properties = manager.getProperties();
+		this.manager = manager;
+		properties = manager.getProperties();
 	}
 
 	/**
@@ -314,69 +309,65 @@ public class SoundManager {
 		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
 	}
 
-    public void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher){
-        if (battleObserver!=null){
-            battleObserver.dispose();
-        }
-        battleObserver=new BattleObserver(battleEventDispatcher); 
-    }
+	public void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher) {
+		if (battleObserver != null) {
+			battleObserver.dispose();
+		}
+		battleObserver = new BattleObserver(battleEventDispatcher);
+	}
 
-    private class BattleObserver implements IBattleListener{
+	private class BattleObserver implements IBattleListener {
 
-        robocode.battle.events.BattleEventDispatcher dispatcher;
+		robocode.battle.events.BattleEventDispatcher dispatcher;
 
-        public BattleObserver(BattleEventDispatcher dispatcher) {
-            this.dispatcher=dispatcher;
-            dispatcher.addListener(this);
-        }
+		public BattleObserver(BattleEventDispatcher dispatcher) {
+			this.dispatcher = dispatcher;
+			dispatcher.addListener(this);
+		}
 
-        public void dispose(){
-            dispatcher.removeListener(this);
-        }
+		public void dispose() {
+			dispatcher.removeListener(this);
+		}
 
-        public void onBattleStarted() {
-            playBackgroundMusic();
-        }
+		public void onBattleStarted() {
+			playBackgroundMusic();
+		}
 
-        public void onBattleEnded(boolean isAborted) {
-            stopBackgroundMusic();
-            playEndOfBattleMusic();
-        }
+		public void onBattleEnded(boolean isAborted) {
+			stopBackgroundMusic();
+			playEndOfBattleMusic();
+		}
 
-        public void onBattlePaused() {
-        }
+		public void onBattlePaused() {}
 
-        public void onBattleResumed() {
-        }
+		public void onBattleResumed() {}
 
-        public void onRoundStarted() {
-        }
+		public void onRoundStarted() {}
 
-        public void onRoundEnded() {
-        }
+		public void onRoundEnded() {}
 
-        public void onTurnEnded(BattleSnapshot battleSnapshot) {
-            int battleFieldWidth = manager.getBattleManager().getBattle().getBattleField().getWidth();
+		public void onTurnEnded(BattleSnapshot battleSnapshot) {
+			int battleFieldWidth = manager.getBattleManager().getBattle().getBattleField().getWidth();
 
-            for (BulletSnapshot bp : battleSnapshot.getBullets()) {
-                if (bp.getFrame() == 0) {
-                    playBulletSound(bp, battleFieldWidth);
-                }
-            }
+			for (BulletSnapshot bp : battleSnapshot.getBullets()) {
+				if (bp.getFrame() == 0) {
+					playBulletSound(bp, battleFieldWidth);
+				}
+			}
 
-            boolean playedRobotHitRobot = false;
+			boolean playedRobotHitRobot = false;
 
-            for (RobotSnapshot rp : battleSnapshot.getRobots()) {
-                // Make sure that robot-hit-robot events do not play twice (one per colliding robot)
-                if (rp.getState() == RobotState.HIT_ROBOT) {
-                    if (playedRobotHitRobot) {
-                        continue;
-                    }
-                    playedRobotHitRobot = true;
-                }
+			for (RobotSnapshot rp : battleSnapshot.getRobots()) {
+				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
+				if (rp.getState() == RobotState.HIT_ROBOT) {
+					if (playedRobotHitRobot) {
+						continue;
+					}
+					playedRobotHitRobot = true;
+				}
 
-                playRobotSound(rp, battleFieldWidth);
-            }
-        }
-    }
+				playRobotSound(rp, battleFieldWidth);
+			}
+		}
+	}
 }

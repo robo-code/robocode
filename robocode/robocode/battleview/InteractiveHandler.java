@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robocode.battleview;
 
+
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.manager.RobocodeManager;
@@ -19,154 +20,153 @@ import java.awt.*;
 import java.awt.event.*;
 import static java.lang.Math.min;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public final class InteractiveHandler implements KeyEventDispatcher, MouseListener, MouseMotionListener, MouseWheelListener {
-    private RobocodeManager manager;
+	private RobocodeManager manager;
 
-    public InteractiveHandler(RobocodeManager manager) {
-        this.manager = manager;
-    }
+	public InteractiveHandler(RobocodeManager manager) {
+		this.manager = manager;
+	}
 
-    public boolean dispatchKeyEvent(KeyEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
-        
-        if (battle != null) {
-            switch (e.getID()) {
-            case KeyEvent.KEY_TYPED:
-                battle.keyTyped(e);
-                break;
+	public boolean dispatchKeyEvent(KeyEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-            case KeyEvent.KEY_PRESSED:
-                battle.keyPressed(e);
-                break;
+		if (battle != null) {
+			switch (e.getID()) {
+			case KeyEvent.KEY_TYPED:
+				battle.keyTyped(e);
+				break;
 
-            case KeyEvent.KEY_RELEASED:
-                battle.keyReleased(e);
-                break;
-            }
-        }
-        return false;
-    }
+			case KeyEvent.KEY_PRESSED:
+				battle.keyPressed(e);
+				break;
 
-    public void mouseClicked(MouseEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
+			case KeyEvent.KEY_RELEASED:
+				battle.keyReleased(e);
+				break;
+			}
+		}
+		return false;
+	}
 
-        if (battle != null) {
-            battle.mouseClicked(mirroredMouseEvent(e));
-        }
-    }
+	public void mouseClicked(MouseEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-    public void mouseEntered(MouseEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
+		if (battle != null) {
+			battle.mouseClicked(mirroredMouseEvent(e));
+		}
+	}
 
-        if (battle != null) {
-            battle.mouseEntered(mirroredMouseEvent(e));
-        }
-    }
+	public void mouseEntered(MouseEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-    public void mouseExited(MouseEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
+		if (battle != null) {
+			battle.mouseEntered(mirroredMouseEvent(e));
+		}
+	}
 
-        if (battle != null) {
-            battle.mouseExited(mirroredMouseEvent(e));
-        }
-    }
+	public void mouseExited(MouseEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-    public void mousePressed(MouseEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
+		if (battle != null) {
+			battle.mouseExited(mirroredMouseEvent(e));
+		}
+	}
 
-        if (battle != null) {
-            battle.mousePressed(mirroredMouseEvent(e));
-        }
-    }
+	public void mousePressed(MouseEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-    public void mouseReleased(MouseEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
+		if (battle != null) {
+			battle.mousePressed(mirroredMouseEvent(e));
+		}
+	}
 
-        if (battle != null) {
-            battle.mouseReleased(mirroredMouseEvent(e));
-        }
-    }
+	public void mouseReleased(MouseEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-    public void mouseMoved(MouseEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
+		if (battle != null) {
+			battle.mouseReleased(mirroredMouseEvent(e));
+		}
+	}
 
-        if (battle != null) {
-            battle.mouseMoved(mirroredMouseEvent(e));
-        }
-    }
+	public void mouseMoved(MouseEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-    public void mouseDragged(MouseEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
+		if (battle != null) {
+			battle.mouseMoved(mirroredMouseEvent(e));
+		}
+	}
 
-        if (battle != null) {
-            battle.mouseDragged(mirroredMouseEvent(e));
-        }
-    }
+	public void mouseDragged(MouseEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        Battle battle = manager.getBattleManager().getBattle();
+		if (battle != null) {
+			battle.mouseDragged(mirroredMouseEvent(e));
+		}
+	}
 
-        if (battle != null) {
-            battle.mouseWheelMoved(mirroredMouseWheelEvent(e));
-        }
-    }
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		Battle battle = manager.getBattleManager().getBattle();
 
-    private MouseEvent mirroredMouseEvent(final MouseEvent e) {
+		if (battle != null) {
+			battle.mouseWheelMoved(mirroredMouseWheelEvent(e));
+		}
+	}
 
-        double scale;
-        BattleField battleField=manager.getBattleManager().getBattle().getBattleField();
-        BattleView battleView =manager.getWindowManager().getRobocodeFrame().getBattleView();  
+	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 
-        int vWidth = battleView.getWidth();
-        int fWidth = battleField.getWidth();
-        int vHeight = battleView.getHeight();
-        int fHeight = battleField.getHeight();
+		double scale;
+		BattleField battleField = manager.getBattleManager().getBattle().getBattleField();
+		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
-        if (vWidth < fWidth || vHeight < fHeight) {
-            scale = min((double) vWidth / fWidth,
-                    (double) fHeight / fHeight);
-        } else {
-            scale = 1;
-        }
+		int vWidth = battleView.getWidth();
+		int fWidth = battleField.getWidth();
+		int vHeight = battleView.getHeight();
+		int fHeight = battleField.getHeight();
 
-        double dx = (vWidth - scale * fWidth) / 2;
-        double dy = (fHeight - scale * fHeight) / 2;
+		if (vWidth < fWidth || vHeight < fHeight) {
+			scale = min((double) vWidth / fWidth, (double) fHeight / fHeight);
+		} else {
+			scale = 1;
+		}
 
-        int x = (int) ((e.getX() - dx) / scale + 0.5);
-        int y = (int) (fHeight - (e.getY() - dy) / scale + 0.5);
+		double dx = (vWidth - scale * fWidth) / 2;
+		double dy = (fHeight - scale * fHeight) / 2;
 
-        return new MouseEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-                e.getClickCount(), e.isPopupTrigger(), e.getButton());
-    }
+		int x = (int) ((e.getX() - dx) / scale + 0.5);
+		int y = (int) (fHeight - (e.getY() - dy) / scale + 0.5);
 
-    private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
+		return new MouseEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
+				e.getClickCount(), e.isPopupTrigger(), e.getButton());
+	}
 
-        double scale;
-        BattleField battleField=manager.getBattleManager().getBattle().getBattleField();
-        BattleView battleView =manager.getWindowManager().getRobocodeFrame().getBattleView();
+	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
 
-        int vWidth = battleView.getWidth();
-        int fWidth = battleField.getWidth();
-        int vHeight = battleView.getHeight();
-        int fHeight = battleField.getHeight();
+		double scale;
+		BattleField battleField = manager.getBattleManager().getBattle().getBattleField();
+		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
-        if (vWidth < fWidth || vHeight < fHeight) {
-            scale = min((double) vWidth / fWidth,
-                    (double) fHeight / fHeight);
-        } else {
-            scale = 1;
-        }
+		int vWidth = battleView.getWidth();
+		int fWidth = battleField.getWidth();
+		int vHeight = battleView.getHeight();
+		int fHeight = battleField.getHeight();
 
-        double dx = (vWidth - scale * fWidth) / 2;
-        double dy = (fHeight - scale * fHeight) / 2;
+		if (vWidth < fWidth || vHeight < fHeight) {
+			scale = min((double) vWidth / fWidth, (double) fHeight / fHeight);
+		} else {
+			scale = 1;
+		}
 
-        int x = (int) ((e.getX() - dx) / scale + 0.5);
-        int y = (int) (fHeight - (e.getY() - dy) / scale + 0.5);
+		double dx = (vWidth - scale * fWidth) / 2;
+		double dy = (fHeight - scale * fHeight) / 2;
 
-        return new MouseWheelEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x, y,
-                e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
-    }
+		int x = (int) ((e.getX() - dx) / scale + 0.5);
+		int y = (int) (fHeight - (e.getY() - dy) / scale + 0.5);
+
+		return new MouseWheelEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), x,
+				y, e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
+	}
 }

@@ -11,19 +11,23 @@
  *******************************************************************************/
 package robocode.battleview;
 
+
 import java.awt.*;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class SafeComponent extends Component {
-    // Dummy component used to preventing robots in accessing the real source component
-    private static Component safeEventComponent;
+	private static final long serialVersionUID = 1L;
 
-    public static Component getSafeEventComponent() {
-        if (safeEventComponent == null) {
-            safeEventComponent = new SafeComponent();
-        }
-        return safeEventComponent;
-    }
+	// Dummy component used to preventing robots in accessing the real source component
+	private static Component safeEventComponent;
+
+	public static Component getSafeEventComponent() {
+		if (safeEventComponent == null) {
+			safeEventComponent = new SafeComponent();
+		}
+		return safeEventComponent;
+	}
 }

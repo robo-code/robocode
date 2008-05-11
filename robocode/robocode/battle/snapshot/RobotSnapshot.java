@@ -12,13 +12,12 @@
 package robocode.battle.snapshot;
 
 
-import static robocode.util.ObjectCloner.deepCopy;
-
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
 import robocode.robotpaint.Graphics2DProxy;
+import static robocode.util.ObjectCloner.deepCopy;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.io.PrintStream;
 import java.io.Serializable;
@@ -42,7 +41,6 @@ import java.io.Serializable;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
- *
  * @since 1.6.1
  */
 public class RobotSnapshot implements Serializable {
@@ -104,7 +102,7 @@ public class RobotSnapshot implements Serializable {
 
 	/**
 	 * Constructs a snapshot of the robot.
-	 * 
+	 *
 	 * @param peer the robot peer to make a snapshot of.
 	 */
 	public RobotSnapshot(RobotPeer peer) {
@@ -297,7 +295,7 @@ public class RobotSnapshot implements Serializable {
 	public boolean isPaintEnabled() {
 		return isPaintEnabled;
 	}
-	
+
 	/**
 	 * Returns a flag specifying if RobocodeSG painting is enabled for the
 	 * robot.

@@ -28,9 +28,7 @@
 package robocode.dialog;
 
 
-import robocode.battle.Battle;
 import robocode.battleview.BattleView;
-import robocode.battleview.SafeComponent;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
@@ -39,7 +37,6 @@ import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
-import robocode.battlefield.BattleField;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -47,7 +44,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import static java.lang.Math.min;
 
 
 /**
@@ -59,7 +55,7 @@ import static java.lang.Math.min;
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
 	private EventHandler eventHandler = new EventHandler();
-    private InteractiveHandler interactiveHandler;
+	private InteractiveHandler interactiveHandler;
 	private PauseResumeHandler pauseResumeHandler = new PauseResumeHandler();
 
 	private RobocodeMenuBar robocodeMenuBar;
@@ -180,9 +176,6 @@ public class RobocodeFrame extends JFrame {
 				tpsLabel.setText("  " + tps);
 			}
 		}
-
-
-
 	}
 
 
@@ -204,8 +197,8 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
-        interactiveHandler = new InteractiveHandler(manager);
-        this.windowManager = manager.getWindowManager();
+		interactiveHandler = new InteractiveHandler(manager);
+		this.windowManager = manager.getWindowManager();
 		this.manager = manager;
 		initialize();
 	}
@@ -564,9 +557,8 @@ public class RobocodeFrame extends JFrame {
 		getBattleView().addMouseListener(interactiveHandler);
 		getBattleView().addMouseMotionListener(interactiveHandler);
 		getBattleView().addMouseWheelListener(interactiveHandler);
-        getBattleView().setFocusable(true);
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(interactiveHandler);
-        
+		getBattleView().setFocusable(true);
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(interactiveHandler);
 
 		if (manager.isSlave()) {
 			getRobocodeMenuBar().getBattleMenu().setEnabled(false);

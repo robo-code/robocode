@@ -11,9 +11,11 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 import robocode.battle.snapshot.BattleSnapshot;
 
 import java.util.ArrayList;
+
 
 /**
  * @author Flemming N. Larsen (original)
@@ -23,59 +25,58 @@ public class BattleEventDispatcher implements IBattleListener {
 
 	private ArrayList<IBattleListener> listeners = new ArrayList<IBattleListener>();
 
-    public BattleEventDispatcher () {
-    }
+	public BattleEventDispatcher() {}
 
 	public void addListener(IBattleListener listener) {
-		assert(listener != null);
+		assert (listener != null);
 
 		listeners.add(listener);
 	}
 
 	public void removeListener(IBattleListener listener) {
-		assert(listener != null);
+		assert (listener != null);
 		listeners.remove(listener);
 	}
 
-    public void onBattleStarted() {
-        for (IBattleListener listener : listeners) {
-            listener.onBattleStarted();
-        }
-    }
+	public void onBattleStarted() {
+		for (IBattleListener listener : listeners) {
+			listener.onBattleStarted();
+		}
+	}
 
 	public void onBattleEnded(boolean isAborted) {
-        for (IBattleListener listener : listeners) {
-            listener.onBattleEnded(isAborted);
-        }
+		for (IBattleListener listener : listeners) {
+			listener.onBattleEnded(isAborted);
+		}
 	}
 
 	public void onBattlePaused() {
-        for (IBattleListener listener : listeners) {
-            listener.onBattlePaused();
-        }
+		for (IBattleListener listener : listeners) {
+			listener.onBattlePaused();
+		}
 	}
 
 	public void onBattleResumed() {
-        for (IBattleListener listener : listeners) {
-            listener.onBattleResumed();
-        }
+		for (IBattleListener listener : listeners) {
+			listener.onBattleResumed();
+		}
 	}
 
 	public void onRoundStarted() {
-        for (IBattleListener listener : listeners) {
-            listener.onRoundStarted();
-        }
+		for (IBattleListener listener : listeners) {
+			listener.onRoundStarted();
+		}
 	}
 
 	public void onRoundEnded() {
-        for (IBattleListener listener : listeners) {
-            listener.onRoundEnded();
-        }
+		for (IBattleListener listener : listeners) {
+			listener.onRoundEnded();
+		}
 	}
 
 	public void onTurnEnded(BattleSnapshot battleSnapshot) {
-        for (IBattleListener listener : listeners) {
-            listener.onTurnEnded(battleSnapshot);
-        }
+		for (IBattleListener listener : listeners) {
+			listener.onTurnEnded(battleSnapshot);
+		}
 	}
 }

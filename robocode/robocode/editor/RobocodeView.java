@@ -99,7 +99,6 @@ public class RobocodeView extends PlainView {
 			} else if (state == KEYWORD) {
 				// Still
 				if (Character.isLetter(segment.array[i + segment.offset])) {// && Character.isLowerCase(segment.array[i+segment.offset]))
-					;
 				} else {
 					// flush now
 					doc.getText(p0 + left, i - left, token);

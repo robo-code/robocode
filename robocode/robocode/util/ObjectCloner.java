@@ -12,7 +12,7 @@
 package robocode.util;
 
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.*;
 
 
@@ -29,7 +29,7 @@ public class ObjectCloner {
 	 *
 	 * @param orig the object to deep copy.
 	 * @return a new object that is a deep copy of the specified input object; or
-	 *   {@code null} if the object was not copied for some reason.
+	 *         {@code null} if the object was not copied for some reason.
 	 */
 	public static Object deepCopy(Object orig) {
 
@@ -37,7 +37,7 @@ public class ObjectCloner {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream out = null;
 
-		try { 
+		try {
 			out = new ObjectOutputStream(baos);
 			out.writeObject(orig);
 			out.flush();
@@ -78,7 +78,7 @@ public class ObjectCloner {
 
 	/**
 	 * Returns a deep copy of the specified {@code Color}, or {@code null} if
-	 * the reference to the {@code Color} is {@code null}. 
+	 * the reference to the {@code Color} is {@code null}.
 	 *
 	 * @param c the {@code Color} to deep copy.
 	 * @return a new {@code Color} that is a deep copy if the specified input

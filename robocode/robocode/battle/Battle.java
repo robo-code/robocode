@@ -96,11 +96,11 @@ package robocode.battle;
 
 
 import robocode.*;
-import robocode.battleview.SafeComponent;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battlefield.BattleField;
+import robocode.battleview.SafeComponent;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
 import robocode.dialog.RobocodeFrame;
@@ -115,7 +115,6 @@ import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.security.RobocodeClassLoader;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -146,7 +145,7 @@ public class Battle implements Runnable {
 	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
 	// Allowed maximum length for a robot's short class name
 	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
-	
+
 	// Maximum turns to display the battle when battle ended
 	private final static int TURNS_DISPLAYED_AFTER_ENDING = 35;
 
@@ -212,7 +211,6 @@ public class Battle implements Runnable {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-
 	private final BattleEventDispatcher eventDispatcher;
 
 	/**
@@ -235,7 +233,7 @@ public class Battle implements Runnable {
 	public boolean isReplay() {
 		return replay;
 	}
-	
+
 	/**
 	 * When an object implementing interface {@code Runnable} is used
 	 * to create a thread, starting the thread causes the object's
@@ -666,15 +664,16 @@ public class Battle implements Runnable {
 				runTurn();
 			} else {
 				long startTime = System.currentTimeMillis();
-	
-			    runTurn();
+
+				runTurn();
 
 				int deltaTime = (int) (System.currentTimeMillis() - startTime);
-				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS(); 
+				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS();
 				int delay = Math.max(((1000 / desiredTPS) - deltaTime), 0);
-                if (isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING ) { //TODO || minimizedMode
-                    delay = 0;
-                }
+
+				if (isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING) { // TODO || minimizedMode
+					delay = 0;
+				}
 
 				try {
 					Thread.sleep(delay);
@@ -765,7 +764,7 @@ public class Battle implements Runnable {
 			if (!r.isDead()) {
 				// Add status event
 				r.getEventManager().add(new StatusEvent(r));
-	
+
 				// Add paint event, if robot is a paint robot and its painting is enabled
 				if (r.isPaintRobot() && r.isPaintEnabled()) {
 					r.getEventManager().add(new PaintEvent());
@@ -788,8 +787,9 @@ public class Battle implements Runnable {
 			if (!r.isDead()) {
 				r.update();
 			}
-            boolean aborted = isAborted();
-            if ((zap || aborted) && !r.isDead()) {
+			boolean aborted = isAborted();
+
+			if ((zap || aborted) && !r.isDead()) {
 				if (aborted) {
 					r.zap(5);
 				} else {
@@ -1290,7 +1290,9 @@ public class Battle implements Runnable {
 				try {
 					setUnsafeLoaderThreadRunning(true);
 					unsafeLoaderMonitor.wait();
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
 			}
 			// Loader awake
 			if (roundNum >= numRounds || isAborted()) {
@@ -1300,7 +1302,7 @@ public class Battle implements Runnable {
 			// Loading robots
 			for (RobotPeer robotPeer : robots) {
 				robotPeer.setRobot(null);
-				Class<?> robotClass = null;
+				Class<?> robotClass;
 
 				try {
 					manager.getThreadManager().setLoadingRobot(robotPeer);
@@ -1587,7 +1589,7 @@ public class Battle implements Runnable {
 	public void mouseExited(final MouseEvent e) {
 		if (isRunning()) {
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot() ) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MouseExitedEvent(cloneMouseEvent(e)));
 				}
 			}
@@ -1644,52 +1646,53 @@ public class Battle implements Runnable {
 		}
 	}
 
-    public void keyTyped(final KeyEvent e) {
-        if (isRunning()) {
-            for (RobotPeer robotPeer : robots) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new KeyTypedEvent(cloneKeyEvent(e)));
-                }
-            }
-        }
-    }
+	public void keyTyped(final KeyEvent e) {
+		if (isRunning()) {
+			for (RobotPeer robotPeer : robots) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new KeyTypedEvent(cloneKeyEvent(e)));
+				}
+			}
+		}
+	}
 
-    public void keyPressed(final KeyEvent e) {
-        if (isRunning()) {
-            for (RobotPeer robotPeer : robots) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new KeyPressedEvent(cloneKeyEvent(e)));
-                }
-            }
-        }
-    }
+	public void keyPressed(final KeyEvent e) {
+		if (isRunning()) {
+			for (RobotPeer robotPeer : robots) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new KeyPressedEvent(cloneKeyEvent(e)));
+				}
+			}
+		}
+	}
 
-    public void keyReleased(final KeyEvent e) {
-        if (isRunning()) {
-            for (RobotPeer robotPeer : robots) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new KeyReleasedEvent(cloneKeyEvent(e)));
-                }
-            }
-        }
-    }
+	public void keyReleased(final KeyEvent e) {
+		if (isRunning()) {
+			for (RobotPeer robotPeer : robots) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new KeyReleasedEvent(cloneKeyEvent(e)));
+				}
+			}
+		}
+	}
 
-    public static KeyEvent cloneKeyEvent(final KeyEvent e) {
-        return new KeyEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(),
-                e.getKeyChar(), e.getKeyLocation());
-    }
+	public static KeyEvent cloneKeyEvent(final KeyEvent e) {
+		return new KeyEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
+				e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
+	}
 
-    public static MouseEvent cloneMouseEvent(final MouseEvent e) {
-        return new MouseEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getX(), e.getY(),
-                e.getClickCount(), e.isPopupTrigger(), e.getButton());
-    }
+	public static MouseEvent cloneMouseEvent(final MouseEvent e) {
+		return new MouseEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
+				e.getX(), e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
+	}
 
-    public static MouseWheelEvent cloneMouseWheelEvent(final MouseWheelEvent e) {
-        return new MouseWheelEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getX(), e.getY(),
-                e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
-    }
+	public static MouseWheelEvent cloneMouseWheelEvent(final MouseWheelEvent e) {
+		return new MouseWheelEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
+				e.getX(), e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(),
+				e.getWheelRotation());
+	}
 
-    private class UnsafeLoadRobotsThread extends Thread {
+	private class UnsafeLoadRobotsThread extends Thread {
 
 		public UnsafeLoadRobotsThread() {
 			super(new ThreadGroup("Robot Loader Group"), "Robot Loader");

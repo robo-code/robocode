@@ -1171,7 +1171,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			notifyAll();
 			try {
 				wait(10000);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();                
+			}
 		}
 	}
 
@@ -1999,8 +2001,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return graphicsProxy;
 	}
 
-    public void onInteractiveEvent(robocode.Event e) {
-        eventManager.add(e);
-    }
+	public void onInteractiveEvent(robocode.Event e) {
+		eventManager.add(e);
+	}
 
 }

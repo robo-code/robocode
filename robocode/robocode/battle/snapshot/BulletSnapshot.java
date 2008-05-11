@@ -12,13 +12,12 @@
 package robocode.battle.snapshot;
 
 
-import static robocode.util.ObjectCloner.deepCopy;
-
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;
 import robocode.peer.ExplosionPeer;
+import static robocode.util.ObjectCloner.deepCopy;
 
-import java.awt.Color;
+import java.awt.*;
 
 
 /**
@@ -39,7 +38,6 @@ import java.awt.Color;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
- *
  * @since 1.6.1
  */
 public class BulletSnapshot implements java.io.Serializable {
@@ -48,7 +46,6 @@ public class BulletSnapshot implements java.io.Serializable {
 
 	// The name of the robot that owns this bullet
 	// private final String ownerName;
-
 
 	// The bullet state
 	private final BulletState state;
@@ -80,14 +77,14 @@ public class BulletSnapshot implements java.io.Serializable {
 
 	/**
 	 * Constructs a snapshot of the bullet.
-	 * 
+	 *
 	 * @param peer the bullet peer to make a snapshot of.
 	 */
 	public BulletSnapshot(BulletPeer peer) {
 		// ownerName = peer.getOwner().getName();
 
 		state = peer.getState();
-		
+
 		power = peer.getPower();
 
 		x = peer.getX();
@@ -97,7 +94,7 @@ public class BulletSnapshot implements java.io.Serializable {
 		paintY = peer.getPaintY();
 
 		color = deepCopy(peer.getColor());
-		
+
 		frame = peer.getFrame();
 
 		isExplosion = peer instanceof ExplosionPeer;
@@ -187,6 +184,7 @@ public class BulletSnapshot implements java.io.Serializable {
 
 	/**
 	 * Returns the flag specifying if this bullet has turned into an explosion.
+	 *
 	 * @return {@code true} if this bullet is now an explosion; {@code false}
 	 *         otherwise
 	 */

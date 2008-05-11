@@ -28,8 +28,8 @@ package robocode.security;
 
 import robocode.RobocodeFileOutputStream;
 import robocode.manager.ThreadManager;
-import robocode.peer.RobotPeer;
 import robocode.peer.BulletState;
+import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
 
 import java.io.*;
@@ -67,8 +67,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		this.experimental = experimental;
 		safeSecurityContext = getSecurityContext();
 
-        BulletState s=BulletState.INACTIVE;//Fake class loading
-    }
+		BulletState s = BulletState.INACTIVE; // Fake class loading
+	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
 		outputStreamThreads.put(Thread.currentThread(), o);

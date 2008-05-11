@@ -650,7 +650,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onMouseClicked(e.getInnerEvent());
+					listener.onMouseClicked(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
@@ -667,7 +667,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onMouseDragged(e.getInnerEvent());
+					listener.onMouseDragged(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
@@ -684,7 +684,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onMouseEntered(e.getInnerEvent());
+					listener.onMouseEntered(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
@@ -701,7 +701,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onMouseExited(e.getInnerEvent());
+					listener.onMouseExited(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
@@ -718,7 +718,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onMouseMoved(e.getInnerEvent());
+					listener.onMouseMoved(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
@@ -735,7 +735,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onMousePressed(e.getInnerEvent());
+					listener.onMousePressed(e.getInnerEvent());
 					listener.onMousePressed(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
@@ -753,7 +753,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onMouseReleased(e.getInnerEvent());
+					listener.onMouseReleased(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
@@ -770,7 +770,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onMouseWheelMoved((java.awt.event.MouseWheelEvent) e.getInnerEvent());
+					listener.onMouseWheelMoved((java.awt.event.MouseWheelEvent) e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
@@ -787,7 +787,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onKeyTyped(e.getInnerEvent());
+					listener.onKeyTyped(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyTyped(MouseEvent):");
@@ -804,7 +804,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onKeyPressed(e.getInnerEvent());
+					listener.onKeyPressed(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyPressed(MouseEvent):");
@@ -821,7 +821,7 @@ public class EventManager implements IEventManager {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
 				if (listener != null) {
-                    listener.onKeyReleased(e.getInnerEvent());
+					listener.onKeyReleased(e.getInnerEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyReleasedEvent(MouseEvent):");

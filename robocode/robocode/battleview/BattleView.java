@@ -14,9 +14,11 @@
 package robocode.battleview;
 
 
-import robocode.battle.Battle;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
+import robocode.battle.snapshot.BattleSnapshot;
+import robocode.battle.snapshot.BulletSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
@@ -25,24 +27,20 @@ import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.battle.snapshot.*;
-import robocode.robotpaint.Graphics2DProxy;
 import robocode.peer.BulletState;
-import robocode.peer.RobotPeer;
+import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.GraphicsState;
-import robocode.KeyTypedEvent;
-import robocode.KeyPressedEvent;
-import robocode.KeyReleasedEvent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -62,9 +60,9 @@ public class BattleView extends Canvas {
 	private RobocodeFrame robocodeFrame;
 
 	// The battle and battlefield,
-    private BattleSnapshot lastSnapshot;
+	private BattleSnapshot lastSnapshot;
 	private BattleField battleField;
-    private BattleObserver observer;
+	private BattleObserver observer;
 
 	private boolean initialized;
 	private double scale = 1.0;
@@ -112,7 +110,7 @@ public class BattleView extends Canvas {
 
 	private GraphicsState graphicsState = new GraphicsState();
 
-    /**
+	/**
 	 * BattleView constructor.
 	 */
 	public BattleView(RobocodeManager manager, RobocodeFrame robocodeFrame) {
@@ -123,42 +121,43 @@ public class BattleView extends Canvas {
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
-    }
+	}
 
 	/**
 	 * Shows the next frame. The game calls this every frame.
 	 */
 	private void update() {
-        if (!initialized) {
-            initialize();
-        }
+		if (!initialized) {
+			initialize();
+		}
 
-		if (robocodeFrame.isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0) || (getHeight() <= 0)) {
+		if (robocodeFrame.isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
+				|| (getHeight() <= 0)) {
 			return;
 		}
 
-        offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-        if (offscreenGfx != null) {
-            offscreenGfx.setRenderingHints(renderingHints);
+		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
+		if (offscreenGfx != null) {
+			offscreenGfx.setRenderingHints(renderingHints);
 
-            drawBattle(offscreenGfx, lastSnapshot);
+			drawBattle(offscreenGfx, lastSnapshot);
 
-            if (bufferStrategy != null) {
-                Graphics2D g = null;
+			if (bufferStrategy != null) {
+				Graphics2D g = null;
 
-                try {
-                    g = (Graphics2D) bufferStrategy.getDrawGraphics();
-                    g.drawImage(offscreenImage, 0, 0, null);
+				try {
+					g = (Graphics2D) bufferStrategy.getDrawGraphics();
+					g.drawImage(offscreenImage, 0, 0, null);
 
-                    bufferStrategy.show();
-                } catch (NullPointerException e) {// Occurs sometimes for no reason?!
-                } finally {
-                    if (g != null) {
-                        g.dispose();
-                    }
-                }
-            }
-        }
+					bufferStrategy.show();
+				} catch (NullPointerException e) {// Occurs sometimes for no reason?!
+				} finally {
+					if (g != null) {
+						g.dispose();
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -299,26 +298,26 @@ public class BattleView extends Canvas {
 		// Draw ground
 		drawGround(g);
 
-        if (snapShot!=null){
-            // Draw scan arcs
-            drawScanArcs(g, snapShot);
+		if (snapShot != null) {
+			// Draw scan arcs
+			drawScanArcs(g, snapShot);
 
-            // Draw robots
-            drawRobots(g, snapShot);
-        }
+			// Draw robots
+			drawRobots(g, snapShot);
+		}
 
 		// Draw the border of the battlefield
 		drawBorder(g);
 
-        if (snapShot!=null){
-            // Draw all bullets
-            drawBullets(g, snapShot);
+		if (snapShot != null) {
+			// Draw all bullets
+			drawBullets(g, snapShot);
 
-            // Draw all text
-            drawText(g, snapShot);
-        }
+			// Draw all text
+			drawText(g, snapShot);
+		}
 
-        // Restore the graphics state
+		// Restore the graphics state
 		graphicsState.restore(g);
 	}
 
@@ -378,7 +377,7 @@ public class BattleView extends Canvas {
 		AffineTransform at;
 		int battleFieldHeight = battleField.getHeight();
 
-		if (drawGround && drawExplosionDebris ) {
+		if (drawGround && drawExplosionDebris) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
 			for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
@@ -621,35 +620,35 @@ public class BattleView extends Canvas {
 
 	public void setBattleField(BattleField battleField, BattleEventDispatcher battleEventDispatcher) {
 		this.battleField = battleField;
-        if (observer!=null){
-            observer.dispose();
-        }
-        observer=new BattleObserver(this, battleEventDispatcher);
-    }
+		if (observer != null) {
+			observer.dispose();
+		}
+		observer = new BattleObserver(this, battleEventDispatcher);
+	}
 
 	/**
 	 * Draws the Robocode logo
 	 */
-    private void paintRobocodeLogo(Graphics2D g) {
-        setBackground(Color.BLACK);
-        g.clearRect(0, 0, getWidth(), getHeight());
+	private void paintRobocodeLogo(Graphics2D g) {
+		setBackground(Color.BLACK);
+		g.clearRect(0, 0, getWidth(), getHeight());
 
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2.0, (getHeight() - 46) / 2.0));
-        g.setColor(new Color(0, 0x40, 0));
-        g.fill(robocodeTextPath);
+		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2.0, (getHeight() - 46) / 2.0));
+		g.setColor(new Color(0, 0x40, 0));
+		g.fill(robocodeTextPath);
 
-        Font font = new Font("Dialog", Font.BOLD, 14);
-        int width = g.getFontMetrics(font).stringWidth(ROBOCODE_SLOGAN);
+		Font font = new Font("Dialog", Font.BOLD, 14);
+		int width = g.getFontMetrics(font).stringWidth(ROBOCODE_SLOGAN);
 
-        g.setTransform(new AffineTransform());
-        g.setFont(font);
-        g.setColor(new Color(0, 0x50, 0));
-        g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
-    }
+		g.setTransform(new AffineTransform());
+		g.setFont(font);
+		g.setColor(new Color(0, 0x50, 0));
+		g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
+	}
 
-    public boolean isDisplayTPS() {
+	public boolean isDisplayTPS() {
 		return displayTPS;
 	}
 
@@ -661,96 +660,98 @@ public class BattleView extends Canvas {
 		this.initialized = initialized;
 	}
 
-    private class BattleObserver implements IBattleListener {
-        BattleView battleView;
-        AtomicReference<BattleSnapshot> snapshot;
-        AtomicBoolean isRunning;
-        AtomicBoolean isPaused;
-        robocode.battle.events.BattleEventDispatcher dispatcher;
+	private class BattleObserver implements IBattleListener {
+		BattleView battleView;
+		AtomicReference<BattleSnapshot> snapshot;
+		AtomicBoolean isRunning;
+		AtomicBoolean isPaused;
+		robocode.battle.events.BattleEventDispatcher dispatcher;
 
-        EventsDispatcher eventsDispatcher =new EventsDispatcher();
-        TimerDispatcher timerDispatcher =new TimerDispatcher();
-        Timer timer;
+		EventsDispatcher eventsDispatcher = new EventsDispatcher();
+		TimerDispatcher timerDispatcher = new TimerDispatcher();
+		Timer timer;
 
-        public BattleObserver(BattleView battleView, BattleEventDispatcher dispatcher) {
-            this.dispatcher=dispatcher;
-            this.battleView=battleView;
-            snapshot=new AtomicReference<BattleSnapshot>();
-            snapshot.set(null);
-            timer=new Timer(1000/20, timerDispatcher); //TODO FPS
-            isRunning=new AtomicBoolean();
-            isRunning.set(false);
-            isPaused=new AtomicBoolean();
-            isPaused.set(false);
-            lastSnapshot=null;
+		public BattleObserver(BattleView battleView, BattleEventDispatcher dispatcher) {
+			this.dispatcher = dispatcher;
+			this.battleView = battleView;
+			snapshot = new AtomicReference<BattleSnapshot>();
+			snapshot.set(null);
+			timer = new Timer(1000 / 20, timerDispatcher); // TODO FPS
+			isRunning = new AtomicBoolean();
+			isRunning.set(false);
+			isPaused = new AtomicBoolean();
+			isPaused.set(false);
+			lastSnapshot = null;
 
-            dispatcher.addListener(this);
+			dispatcher.addListener(this);
 
-        }
+		}
 
-        public void dispose(){
-            dispatcher.removeListener(this);
-        }
+		public void dispose() {
+			dispatcher.removeListener(this);
+		}
 
-        public void onBattleStarted() {
-            isRunning.set(true);
-            isPaused.set(false);
-            EventQueue.invokeLater(eventsDispatcher);
-            timer.start();
-        }
+		public void onBattleStarted() {
+			isRunning.set(true);
+			isPaused.set(false);
+			EventQueue.invokeLater(eventsDispatcher);
+			timer.start();
+		}
 
-        public void onBattleEnded(boolean isAborted) {
-            timer.stop();
-            isRunning.set(false);
-            isPaused.set(false);
-            EventQueue.invokeLater(eventsDispatcher);
-        }
+		public void onBattleEnded(boolean isAborted) {
+			timer.stop();
+			isRunning.set(false);
+			isPaused.set(false);
+			EventQueue.invokeLater(eventsDispatcher);
+		}
 
-        public void onBattleResumed() {
-            isPaused.set(false);
-            EventQueue.invokeLater(eventsDispatcher);
-            timer.start();
-        }
+		public void onBattleResumed() {
+			isPaused.set(false);
+			EventQueue.invokeLater(eventsDispatcher);
+			timer.start();
+		}
 
-        public void onBattlePaused() {
-            timer.stop();
-            isPaused.set(true);
-            EventQueue.invokeLater(eventsDispatcher);
-        }
+		public void onBattlePaused() {
+			timer.stop();
+			isPaused.set(true);
+			EventQueue.invokeLater(eventsDispatcher);
+		}
 
-        public void onRoundStarted() {
-            EventQueue.invokeLater(eventsDispatcher);
-        }
+		public void onRoundStarted() {
+			EventQueue.invokeLater(eventsDispatcher);
+		}
 
-        public void onRoundEnded() {
-            EventQueue.invokeLater(eventsDispatcher);
-        }
+		public void onRoundEnded() {
+			EventQueue.invokeLater(eventsDispatcher);
+		}
 
-        public void onTurnEnded(BattleSnapshot battleSnapshot) {
-            snapshot.set(battleSnapshot);
-        }
+		public void onTurnEnded(BattleSnapshot battleSnapshot) {
+			snapshot.set(battleSnapshot);
+		}
 
-        public boolean isRunning(){
-            return isRunning.get();
-        }
+		public boolean isRunning() {
+			return isRunning.get();
+		}
 
-        private class EventsDispatcher implements Runnable {
-            public void run(){
-                if (!isRunning.get()) {
-                    lastSnapshot=null;
-                }
-                repaint();
-            }
-        }
+		private class EventsDispatcher implements Runnable {
+			public void run() {
+				if (!isRunning.get()) {
+					lastSnapshot = null;
+				}
+				repaint();
+			}
+		}
 
-        private class TimerDispatcher implements ActionListener {
-            public void actionPerformed(ActionEvent e) {
-                BattleSnapshot s=snapshot.get();
-                if (lastSnapshot!=s){
-                    lastSnapshot=s;
-                    battleView.update();
-                }
-            }
-        }
-    }
+
+		private class TimerDispatcher implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				BattleSnapshot s = snapshot.get();
+
+				if (lastSnapshot != s) {
+					lastSnapshot = s;
+					battleView.update();
+				}
+			}
+		}
+	}
 }

@@ -57,6 +57,7 @@ import robocode.battle.BattleResultsTableModel;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
@@ -71,7 +72,6 @@ import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
-import robocode.battleview.BattleView;
 
 import javax.swing.*;
 import java.io.*;
@@ -298,18 +298,19 @@ public class BattleManager {
 		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight());
 
-        BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
+		BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
 
 		if (manager.isGUIEnabled()) {
-            BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-            battleView.setBattleField(battleField, battleEventDispatcher);
-        }
+			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
-        if (manager.isSoundEnabled()){
-            manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
-        }
+			battleView.setBattleField(battleField, battleEventDispatcher);
+		}
 
-        battle = new Battle(battleField, manager, battleEventDispatcher);
+		if (manager.isSoundEnabled()) {
+			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
+		}
+
+		battle = new Battle(battleField, manager, battleEventDispatcher);
 		battle.setExitOnComplete(exitOnComplete);
 
 		// Only used when controlled by RobocodeEngine
@@ -361,7 +362,7 @@ public class BattleManager {
 		// This must be done as a new battle could be started immediately after this one causing
 		// multiple battle threads to run at the same time, which must be prevented!
 		battle.waitTillRunning();
-    }
+	}
 
 	public String getBattleFilename() {
 		String filename = battleFilename;
@@ -509,8 +510,7 @@ public class BattleManager {
 	}
 
 	public void setOptions() {
-		if (battle != null) {
-			//TODO ZAMO battle.setOptions();
+		if (battle != null) {// TODO ZAMO battle.setOptions();
 		}
 	}
 
