@@ -171,8 +171,6 @@ public class Battle implements Runnable {
 	// Turn skip related items
 	private int maxSkippedTurns = 30;
 	private int maxSkippedTurnsWithIO = 240;
-	private String nonDeterministicRobots;
-	private boolean deterministic = true;
 
 	// Current round items
 	private int numRounds;
@@ -247,9 +245,6 @@ public class Battle implements Runnable {
 	 */
 	public void run() {
 		initialize();
-
-		deterministic = true;
-		nonDeterministicRobots = null;
 
 		roundNum = 0;
 
@@ -482,10 +477,6 @@ public class Battle implements Runnable {
 		return inactivityTime;
 	}
 
-	public String getNonDeterministicRobots() {
-		return nonDeterministicRobots;
-	}
-
 	public int getNumRounds() {
 		return numRounds;
 	}
@@ -601,10 +592,6 @@ public class Battle implements Runnable {
 				}
 			}
 		}
-	}
-
-	public boolean isDeterministic() {
-		return deterministic;
 	}
 
 	public boolean isExitOnComplete() {
@@ -969,15 +956,6 @@ public class Battle implements Runnable {
 
 						r.getEventManager().add(new SkippedTurnEvent());
 
-						// Actually, Robocode is never deterministic due to Robots
-						// using calls to Math.random()... but the point is,
-						// at least one robot skipped a turn.
-						deterministic = false;
-						if (nonDeterministicRobots == null) {
-							nonDeterministicRobots = r.getName();
-						} else if (nonDeterministicRobots.indexOf(r.getName()) == -1) {
-							nonDeterministicRobots += "," + r.getName();
-						}
 						if ((!r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurns))
 								|| (r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurnsWithIO))) {
 							r.getOut().println(
@@ -1124,10 +1102,6 @@ public class Battle implements Runnable {
 
 	public void setCurrentTime(int newCurrentTime) {
 		currentTime = newCurrentTime;
-	}
-
-	void setDeterministic(boolean newDeterministic) {
-		deterministic = newDeterministic;
 	}
 
 	public void setExitOnComplete(boolean newExitOnComplete) {
