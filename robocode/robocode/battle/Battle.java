@@ -211,6 +211,12 @@ public class Battle implements Runnable {
 
 	private final BattleEventDispatcher eventDispatcher;
 
+	// TPS (turns per second) calculation stuff
+	private int tps;
+	private long turnStartTime;
+	long measuredTurnStartTime;
+	int measuredTurnCounter;
+
 	/**
 	 * Battle constructor
 	 */
@@ -224,6 +230,10 @@ public class Battle implements Runnable {
 		battleManager = manager.getBattleManager();
 	}
 
+	public int getTPS() {
+		return tps;
+	}
+	
 	public void setReplay(boolean replay) {
 		this.replay = replay;
 	}
@@ -519,7 +529,7 @@ public class Battle implements Runnable {
 		return null;
 	}
 
-	public void initialize() {
+	private void initialize() {
 		// Notify that the battle is now running
 		synchronized (battleMonitor) {
 			running = true;
@@ -647,27 +657,7 @@ public class Battle implements Runnable {
 		battleManager.startNewRound();
 
 		while (!roundOver) {
-			if (!manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified()) {
-				runTurn();
-			} else {
-				long startTime = System.currentTimeMillis();
-
-				runTurn();
-
-				int deltaTime = (int) (System.currentTimeMillis() - startTime);
-				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS();
-				int delay = Math.max(((1000 / desiredTPS) - deltaTime), 0);
-
-				if (isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING) { // TODO || minimizedMode
-					delay = 0;
-				}
-
-				try {
-					Thread.sleep(delay);
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-				}
-			}
+			runTurn();
 		}
 
 		recordRound();
@@ -703,17 +693,23 @@ public class Battle implements Runnable {
 			return;
 		}
 
+		prepareTurn();
+
 		roundOver = replayRecord();
 
 		currentTime++;
 
 		eventDispatcher.onTurnEnded(new BattleSnapshot(this));
+
+		finalizeTurn();
 	}
 
 	private void runTurn() {
 		if (shouldPause() && !battleManager.shouldStep()) {
 			return;
 		}
+
+		prepareTurn();
 
 		cleanRobotEvents();
 
@@ -743,6 +739,49 @@ public class Battle implements Runnable {
 		wakeupRobots();
 
 		eventDispatcher.onTurnEnded(new BattleSnapshot(this));
+		
+		finalizeTurn();
+	}
+
+	private void prepareTurn() {
+		turnStartTime = System.nanoTime();
+	}
+
+	private void finalizeTurn() {
+		// Calculate the current turns per second (TPS)
+		
+		if (measuredTurnCounter == 0) {
+			measuredTurnStartTime = turnStartTime;
+		} else {
+			long deltaTime = turnStartTime - measuredTurnStartTime;
+			
+			if (deltaTime / 1000000000 >= 1) {
+				tps = (int) ((long) measuredTurnCounter * 1000000000 / deltaTime);
+
+				measuredTurnStartTime = turnStartTime;
+				measuredTurnCounter = 0;
+			}
+		}
+		measuredTurnCounter++;
+		
+		// Let the battle sleep is the GUI is enabled and is not minimized
+		// in order to keep the desired TPS
+
+		if (manager.isGUIEnabled() && !manager.getWindowManager().getRobocodeFrame().isIconified()) {
+
+			long deltaTime = System.nanoTime() - turnStartTime;
+			int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS();
+			long delay = (int) Math.max(((1000000000 / desiredTPS) - deltaTime), 0);
+
+			if (isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING) {
+				delay = 0;
+			}
+			try {
+				Thread.sleep(delay / 1000000, (int) (delay % 1000000));
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
 	}
 
 	private void addRobotEventsForTurnEnded() {
@@ -1251,6 +1290,7 @@ public class Battle implements Runnable {
 				try {
 					battleMonitor.wait();
 				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
 					break;
 				}
 			}

@@ -28,6 +28,7 @@
 package robocode.dialog;
 
 
+import robocode.battle.Battle;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
@@ -43,6 +44,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.io.*;
 
 
@@ -569,6 +572,10 @@ public class RobocodeFrame extends JFrame {
 			getRestartButton().setEnabled(false);
 			getReplayButton().setEnabled(false);
 		}
+
+		Timer titleTimer = new Timer(true); // run as daemon
+
+		titleTimer.schedule(new TitleTimerTask(), 0, 500);
 	}
 
 	public void loadVersionFile() {
@@ -649,5 +656,53 @@ public class RobocodeFrame extends JFrame {
 
 	public void setEnableReplayButton(boolean enable) {
 		getReplayButton().setEnabled(enable);
+	}
+
+	private class TitleTimerTask extends TimerTask {
+		@Override
+		public void run() {
+			updateTitle();
+		}
+	}
+	
+	private void updateTitle() {
+		StringBuffer title = new StringBuffer("Robocode");
+
+		Battle battle = manager.getBattleManager().getBattle();
+
+		if (battle != null && battle.isRunning()) {
+			title.append(": ");
+
+			if (battle.getCurrentTime() == 0) {
+				title.append("Starting round");
+			} else {
+				title.append(battle.isReplay() ? "Replaying round " : "Round ");
+				title.append(battle.getRoundNum() + 1).append(" of ").append(battle.getNumRounds());
+
+				if (!manager.getBattleManager().isPaused()) {
+					boolean dispTps = battleView.isDisplayTPS();
+					boolean dispFps = battleView.isDisplayFPS();
+
+					if (dispTps | dispFps) {
+						title.append(" (");
+
+						if (dispTps) {
+							title.append(battle.getTPS()).append(" TPS");
+						}
+						if (dispTps & dispFps) {
+							title.append(", ");
+						}
+						if (dispFps) {
+							title.append(battleView.getFPS()).append(" FPS");
+						}
+						title.append(')');
+					}
+				}
+			}
+		}
+		if (manager.getBattleManager().isPaused()) {
+			title.append(" (paused)");
+		}
+		setTitle(title.toString());
 	}
 }

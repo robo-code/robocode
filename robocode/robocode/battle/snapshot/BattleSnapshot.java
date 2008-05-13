@@ -57,6 +57,9 @@ public class BattleSnapshot implements java.io.Serializable {
 	// List of all bullets currently the battlefield
 	private final List<BulletSnapshot> bullets;
 
+	// Current TPS (turns per second)
+	private final int tps;
+
 	/**
 	 * Constructs a snapshot of the battle.
 	 *
@@ -76,6 +79,8 @@ public class BattleSnapshot implements java.io.Serializable {
 		for (BulletPeer bulletPeer : battle.getBullets()) {
 			bullets.add(new BulletSnapshot(bulletPeer));
 		}
+
+		tps = battle.getTPS();
 	}
 
 	/**
@@ -112,5 +117,14 @@ public class BattleSnapshot implements java.io.Serializable {
 	 */
 	public List<BulletSnapshot> getBullets() {
 		return Collections.unmodifiableList(bullets);
+	}
+
+	/**
+	 * Returns the current TPS (turns per second).
+	 *
+	 * @return the current TPS (turns per second).
+	 */
+	public int getTPS() {
+		return tps;
 	}
 }

@@ -46,6 +46,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
@@ -87,9 +88,13 @@ public class BattleView extends Canvas {
 
 	private RenderingHints renderingHints;
 
-	// TPS and FPS
 	private boolean displayTPS;
 	private boolean displayFPS;
+
+	// FPS (frames per second) calculation
+	private int fps = 30;
+	private long measuredFrameCounter;
+	private long measuredDeltaTime;
 
 	// Fonts and the like
 	private Font smallFont;
@@ -123,6 +128,10 @@ public class BattleView extends Canvas {
 		battleField = new DefaultBattleField(800, 600);
 	}
 
+	public int getFPS() {
+		return fps;
+	}
+	
 	/**
 	 * Shows the next frame. The game calls this every frame.
 	 */
@@ -583,12 +592,6 @@ public class BattleView extends Canvas {
 		g.drawString(s, (int) (left + 0.5), (int) (top + height - descent + 0.5));
 	}
 
-	public void setTitle(String s) {
-		if (robocodeFrame != null) {
-			robocodeFrame.setTitle(s);
-		}
-	}
-
 	private Rectangle drawScanArc(Graphics2D g, RobotSnapshot robotSnapshot) {
 		Arc2D.Double scanArc = (Arc2D.Double) robotSnapshot.getScanArc();
 
@@ -674,17 +677,14 @@ public class BattleView extends Canvas {
 		public BattleObserver(BattleView battleView, BattleEventDispatcher dispatcher) {
 			this.dispatcher = dispatcher;
 			this.battleView = battleView;
-			snapshot = new AtomicReference<BattleSnapshot>();
-			snapshot.set(null);
-			timer = new Timer(1000 / 20, timerDispatcher); // TODO FPS
-			isRunning = new AtomicBoolean();
-			isRunning.set(false);
-			isPaused = new AtomicBoolean();
-			isPaused.set(false);
+			snapshot = new AtomicReference<BattleSnapshot>(null);
+			
+			timer = new Timer(1000 / fps, timerDispatcher);
+			isRunning = new AtomicBoolean(false);
+			isPaused = new AtomicBoolean(false);
 			lastSnapshot = null;
 
 			dispatcher.addListener(this);
-
 		}
 
 		public void dispose() {
@@ -749,7 +749,30 @@ public class BattleView extends Canvas {
 
 				if (lastSnapshot != s) {
 					lastSnapshot = s;
+
+					long startTime = System.nanoTime();
+
 					battleView.update();
+
+					long deltaTime = System.nanoTime() - startTime;
+
+					measuredDeltaTime += deltaTime;
+					
+					measuredFrameCounter++;
+
+					if ((measuredFrameCounter % 50) == 0) {
+						fps = (int) (1000000000 * measuredFrameCounter / measuredDeltaTime);
+						if (lastSnapshot.getTPS() > 0) {
+							fps = Math.min(fps, lastSnapshot.getTPS());
+						}
+
+						measuredFrameCounter = 1;
+						measuredDeltaTime = deltaTime;
+
+						if (fps > 0) {
+							timer.setDelay(1000 / fps);
+						}
+					}
 				}
 			}
 		}

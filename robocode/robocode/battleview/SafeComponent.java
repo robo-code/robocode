@@ -18,9 +18,8 @@ import java.awt.*;
 /**
  * @author Pavel Savara (original)
  */
+@SuppressWarnings("serial")
 public class SafeComponent extends Component {
-	private static final long serialVersionUID = 1L;
-
 	// Dummy component used to preventing robots in accessing the real source component
 	private static Component safeEventComponent;
 
