@@ -14,7 +14,6 @@ package robocode.battleview;
 
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
-import robocode.battlefield.BattleField;
 import robocode.manager.RobocodeManager;
 
 import java.awt.*;
@@ -120,13 +119,13 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 
 		double scale;
-		BattleField battleField = manager.getBattleManager().getBattle().getBattleField();
+		BattleProperties battleProps = manager.getBattleManager().getBattleProperties();
 		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 		int vWidth = battleView.getWidth();
-		int fWidth = battleField.getWidth();
 		int vHeight = battleView.getHeight();
-		int fHeight = battleField.getHeight();
+		int fWidth = battleProps.getBattlefieldWidth();
+		int fHeight = battleProps.getBattlefieldHeight();
 
 		if (vWidth < fWidth || vHeight < fHeight) {
 			scale = min((double) vWidth / fWidth, (double) fHeight / fHeight);
