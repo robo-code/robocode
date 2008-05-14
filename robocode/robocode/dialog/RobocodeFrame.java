@@ -680,8 +680,8 @@ public class RobocodeFrame extends JFrame {
 				title.append(battle.getRoundNum() + 1).append(" of ").append(battle.getNumRounds());
 
 				if (!manager.getBattleManager().isPaused()) {
-					boolean dispTps = battleView.isDisplayTPS();
-					boolean dispFps = battleView.isDisplayFPS();
+					boolean dispTps = manager.getProperties().getOptionsViewTPS();
+					boolean dispFps = manager.getProperties().getOptionsViewFPS();
 
 					if (dispTps | dispFps) {
 						title.append(" (");

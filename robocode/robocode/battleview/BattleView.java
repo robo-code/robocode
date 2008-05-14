@@ -88,9 +88,6 @@ public class BattleView extends Canvas {
 
 	private RenderingHints renderingHints;
 
-	private boolean displayTPS;
-	private boolean displayFPS;
-
 	// FPS (frames per second) calculation
 	private int fps = 30;
 	private long measuredFrameCounter;
@@ -181,8 +178,6 @@ public class BattleView extends Canvas {
 	public void setDisplayOptions() {
 		RobocodeProperties props = manager.getProperties();
 
-		displayTPS = props.getOptionsViewTPS();
-		displayFPS = props.getOptionsViewFPS();
 		drawRobotName = props.getOptionsViewRobotNames();
 		drawRobotEnergy = props.getOptionsViewRobotEnergy();
 		drawScanArcs = props.getOptionsViewScanArcs();
@@ -649,14 +644,6 @@ public class BattleView extends Canvas {
 		g.setFont(font);
 		g.setColor(new Color(0, 0x50, 0));
 		g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
-	}
-
-	public boolean isDisplayTPS() {
-		return displayTPS;
-	}
-
-	public boolean isDisplayFPS() {
-		return displayFPS;
 	}
 
 	public void setInitialized(boolean initialized) {

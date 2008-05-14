@@ -28,8 +28,8 @@
 package robocode.sound;
 
 
+import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.events.IBattleListener;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
@@ -316,7 +316,7 @@ public class SoundManager {
 		battleObserver = new BattleObserver(battleEventDispatcher);
 	}
 
-	private class BattleObserver implements IBattleListener {
+	private class BattleObserver extends BattleAdaptor {
 
 		robocode.battle.events.BattleEventDispatcher dispatcher;
 
@@ -337,14 +337,6 @@ public class SoundManager {
 			stopBackgroundMusic();
 			playEndOfBattleMusic();
 		}
-
-		public void onBattlePaused() {}
-
-		public void onBattleResumed() {}
-
-		public void onRoundStarted() {}
-
-		public void onRoundEnded() {}
 
 		public void onTurnEnded(BattleSnapshot battleSnapshot) {
 			int battleFieldWidth = manager.getBattleManager().getBattle().getBattleField().getWidth();

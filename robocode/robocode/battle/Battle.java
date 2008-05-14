@@ -699,8 +699,6 @@ public class Battle implements Runnable {
 
 		currentTime++;
 
-		eventDispatcher.onTurnEnded(new BattleSnapshot(this));
-
 		finalizeTurn();
 	}
 
@@ -738,8 +736,6 @@ public class Battle implements Runnable {
 		// Robot time!
 		wakeupRobots();
 
-		eventDispatcher.onTurnEnded(new BattleSnapshot(this));
-		
 		finalizeTurn();
 	}
 
@@ -748,38 +744,46 @@ public class Battle implements Runnable {
 	}
 
 	private void finalizeTurn() {
+		eventDispatcher.onTurnEnded(new BattleSnapshot(this));
+
+		calculateTPS();
+
+		synchronizeTPS();
+	}
+	
+	private void calculateTPS() {
 		// Calculate the current turns per second (TPS)
 		
-		if (measuredTurnCounter == 0) {
+		if (measuredTurnCounter++ == 0) {
 			measuredTurnStartTime = turnStartTime;
-		} else {
-			long deltaTime = turnStartTime - measuredTurnStartTime;
-			
-			if (deltaTime / 1000000000 >= 1) {
-				tps = (int) ((long) measuredTurnCounter * 1000000000 / deltaTime);
-
-				measuredTurnStartTime = turnStartTime;
-				measuredTurnCounter = 0;
-			}
 		}
-		measuredTurnCounter++;
-		
+
+		long deltaTime = System.nanoTime() - measuredTurnStartTime;
+
+		if (deltaTime / 1000000000 >= 1) {
+			tps = (int) (measuredTurnCounter * 1000000000L / deltaTime);
+			measuredTurnCounter = 0;
+		}
+	}
+
+	private void synchronizeTPS() {
 		// Let the battle sleep is the GUI is enabled and is not minimized
 		// in order to keep the desired TPS
 
 		if (manager.isGUIEnabled() && !manager.getWindowManager().getRobocodeFrame().isIconified()) {
+			long delay = 0;
 
-			long deltaTime = System.nanoTime() - turnStartTime;
-			int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS();
-			long delay = (int) Math.max(((1000000000 / desiredTPS) - deltaTime), 0);
-
-			if (isAborted() || endTimer >= TURNS_DISPLAYED_AFTER_ENDING) {
-				delay = 0;
+			if (!isAborted() && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
+				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS();
+				long deltaTime = System.nanoTime() - turnStartTime;
+				delay = (int) Math.max(((1000000000 / desiredTPS) - deltaTime), 0);
 			}
-			try {
-				Thread.sleep(delay / 1000000, (int) (delay % 1000000));
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
+			if (delay > 0) {
+				try {
+					Thread.sleep(delay / 1000000, (int) (delay % 1000000));
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
 			}
 		}
 	}
