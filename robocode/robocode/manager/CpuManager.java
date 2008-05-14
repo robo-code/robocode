@@ -41,6 +41,7 @@ public class CpuManager {
 	private final static int TEST_PERIOD_MILLIS = 5000;
 
 	private long cpuConstant = -1;
+    private long waitConstant = -1;
 	private RobocodeManager manager;
 
 	public CpuManager(RobocodeManager manager) {
@@ -61,8 +62,11 @@ public class CpuManager {
 		WindowUtil.setStatus("Estimating CPU speed, please wait...");
 
 		setCpuConstant();
+        Logger.log("Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
 
-		Logger.log("Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
+        //TODO ZAMO setWaitConstant();
+        //TODO ZAMO Logger.log("Java is able to sleep minimum " + waitConstant + " nanoseconds on this system.");
+
 		manager.getProperties().setCpuConstant(cpuConstant);
 		manager.saveProperties();
 
@@ -89,4 +93,33 @@ public class CpuManager {
 
 		cpuConstant = Math.max(1, (long) (1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));
 	}
+
+    private void setWaitConstant() {
+        long count = 0;
+
+        long start = System.currentTimeMillis();
+        Object l = new Object();
+        try {
+            synchronized (l) {
+                while (System.currentTimeMillis() - start < TEST_PERIOD_MILLIS) {
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    l.wait(0, 1);
+                    count+=10;
+                }
+            }
+        } catch (InterruptedException e) {
+        }
+
+        waitConstant = Math.max(1, (long) (1000.0 * TEST_PERIOD_MILLIS / count));
+    }
+
+
 }
