@@ -50,6 +50,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
+	private final static int TIMER_TICKS_PER_SECOND = 50;
+
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
@@ -57,9 +59,6 @@ public class BattleView extends Canvas {
 	private final static Area BULLET_AREA = new Area(new Ellipse2D.Double(-0.5, -0.5, 1, 1));
 
 	private final static int ROBOT_TEXT_Y_OFFSET = 24;
-
-    private final static int MIN_FPS = 10;
-    private final static int MAX_FPS = 50;
 
 	private RobocodeFrame robocodeFrame;
 
@@ -92,9 +91,7 @@ public class BattleView extends Canvas {
 	private RenderingHints renderingHints;
 
 	// FPS (frames per second) calculation
-	private int fps = 30;
-	private long measuredFrameCounter;
-	private long measuredDeltaTime;
+	private int fps;
 
 	// Fonts and the like
 	private Font smallFont;
@@ -664,12 +661,15 @@ public class BattleView extends Canvas {
 		TimerDispatcher timerDispatcher = new TimerDispatcher();
 		Timer timer;
 
+		long measuredFrameCounter;
+		long measuredFrameStartTime;
+		
 		public BattleObserver(BattleView battleView, BattleEventDispatcher dispatcher) {
 			this.dispatcher = dispatcher;
 			this.battleView = battleView;
 			snapshot = new AtomicReference<BattleSnapshot>(null);
 			
-			timer = new Timer(1000 / fps, timerDispatcher);
+			timer = new Timer(1000 / TIMER_TICKS_PER_SECOND, timerDispatcher);
 			isRunning = new AtomicBoolean(false);
 			isPaused = new AtomicBoolean(false);
 			lastSnapshot = null;
@@ -740,40 +740,25 @@ public class BattleView extends Canvas {
 				if (lastSnapshot != s) {
 					lastSnapshot = s;
 
-					long startTime = System.nanoTime();
-
 					battleView.update();
 
-					long deltaTime = System.nanoTime() - startTime;
-
-					measuredDeltaTime += deltaTime;
-					
-					measuredFrameCounter++;
-
-					if ((measuredFrameCounter % 50) == 0) {
-						fps = (int) (1000000000 * measuredFrameCounter / measuredDeltaTime);
-						if (lastSnapshot.getTPS() > 0) {
-							fps = Math.min(fps, lastSnapshot.getTPS());
-						}
-
-						measuredFrameCounter = 1;
-						measuredDeltaTime = deltaTime;
-
-                        if (fps<10){
-                            fps = MIN_FPS;
-                        }
-                        if (fps>50){
-                            fps = MAX_FPS;
-                        }
-
-                        if (fps > 0) {
-							timer.setDelay(1000 / fps);
-						}
-                        else{
-                            timer.setDelay(1);
-                        }
-                    }
+					calculateFPS();
 				}
+			}
+		}
+
+		private void calculateFPS() {
+			// Calculate the current frames per second (FPS)
+
+			if (measuredFrameCounter++ == 0) {
+				measuredFrameStartTime = System.nanoTime();
+			}
+
+			long deltaTime = System.nanoTime() - measuredFrameStartTime;
+
+			if (deltaTime / 1000000000 >= 1) {
+				fps = (int) (measuredFrameCounter * 1000000000L / deltaTime);
+				measuredFrameCounter = 0;
 			}
 		}
 	}
