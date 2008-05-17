@@ -63,7 +63,9 @@ public class RobocodeFrame extends JFrame {
 
 	private RobocodeMenuBar robocodeMenuBar;
 
-	private JPanel robocodeContentPane;
+    private final static int MAX_TPS = 400;
+
+    private JPanel robocodeContentPane;
 	private JLabel statusLabel;
 
 	private BattleView battleView;
@@ -472,11 +474,11 @@ public class RobocodeFrame extends JFrame {
 
 			int tps = Math.max(props.getOptionsBattleDesiredTPS(), 1);
 
-			if (tps > 200) {
-				tps = 201;
+			if (tps > MAX_TPS) {
+				tps = MAX_TPS +1;
 			}
 
-			tpsSlider = new JSlider(1, 201, tps);
+			tpsSlider = new JSlider(1, MAX_TPS +1, tps);
 			tpsSlider.addChangeListener(eventHandler);
 
 			WindowUtil.setFixedSize(tpsSlider, new Dimension(300, 20));
@@ -500,7 +502,7 @@ public class RobocodeFrame extends JFrame {
 		if (tpsLabel == null) {
 			int tps = getTpsSlider().getValue();
 
-			if (tps > 200) {
+			if (tps > MAX_TPS) {
 				tps = 10000;
 			}
 			tpsLabel = new JLabel("" + tps);

@@ -58,6 +58,9 @@ public class BattleView extends Canvas {
 
 	private final static int ROBOT_TEXT_Y_OFFSET = 24;
 
+    private final static int MIN_FPS = 10;
+    private final static int MAX_FPS = 50;
+
 	private RobocodeFrame robocodeFrame;
 
 	// The battle and battlefield,
@@ -756,10 +759,20 @@ public class BattleView extends Canvas {
 						measuredFrameCounter = 1;
 						measuredDeltaTime = deltaTime;
 
-						if (fps > 0) {
+                        if (fps<10){
+                            fps = MIN_FPS;
+                        }
+                        if (fps>50){
+                            fps = MAX_FPS;
+                        }
+
+                        if (fps > 0) {
 							timer.setDelay(1000 / fps);
 						}
-					}
+                        else{
+                            timer.setDelay(1);
+                        }
+                    }
 				}
 			}
 		}
