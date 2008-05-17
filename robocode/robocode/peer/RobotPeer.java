@@ -165,9 +165,14 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private boolean isTeamRobot;
 	private boolean isDroid;
 	private boolean isIORobot;
-	private boolean isRunning;
-	private boolean isStopped;
-	private boolean isSleeping;
+
+    //thread is running
+    private boolean isRunning;
+
+    //waiting for next tick
+    private boolean isSleeping;
+
+    private boolean isStopped;
 	private boolean isWinner;
 
 	private double lastGunHeading;
