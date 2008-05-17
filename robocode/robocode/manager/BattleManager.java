@@ -394,6 +394,16 @@ public class BattleManager {
 		}
 	}
 
+    public synchronized void resumeBattle() {
+        int oldPauseCount = pauseCount;
+
+        pauseCount = Math.max(--pauseCount, 0);
+
+        if (oldPauseCount == 1) {
+            notifyBattleResumed();
+        }
+    }
+
 	public String getBattlePath() {
 		if (battlePath == null) {
 			battlePath = System.getProperty("BATTLEPATH");
@@ -509,11 +519,6 @@ public class BattleManager {
 		return battle;
 	}
 
-	public void setOptions() {
-		if (battle != null) {// TODO ZAMO battle.setOptions();
-		}
-	}
-
 	public BattleProperties getBattleProperties() {
 		if (battleProperties == null) {
 			battleProperties = new BattleProperties();
@@ -523,16 +528,6 @@ public class BattleManager {
 
 	public void setDefaultBattleProperties() {
 		battleProperties = new BattleProperties();
-	}
-
-	public synchronized void resumeBattle() {
-		int oldPauseCount = pauseCount;
-
-		pauseCount = Math.max(--pauseCount, 0);
-
-		if (oldPauseCount == 1) {
-			notifyBattleResumed();
-		}
 	}
 
 	public void setResultsFile(String newResultsFile) {

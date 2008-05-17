@@ -100,7 +100,6 @@ import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battlefield.BattleField;
-import robocode.battleview.SafeComponent;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
 import robocode.dialog.RobocodeFrame;
@@ -342,7 +341,7 @@ public class Battle implements Runnable {
 			}
 		}
 
-		eventDispatcher.onBattleEnded(false); // not aborted
+		eventDispatcher.onBattleEnded(isAborted()); // not aborted
 
 		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
@@ -1317,21 +1316,17 @@ public class Battle implements Runnable {
 			aborted = true;
 			battleMonitor.notifyAll();
 
-			eventDispatcher.onBattleEnded(true); // battle was aborted
-
-			// Adjust the desired TPS temporary to maximum rate to stop the battle as quickly as possible
-
-			// Wait till the battle is not running anymore
-			while (running) {
-				try {
-					battleMonitor.wait();
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-					break;
-				}
-			}
-		}
-	}
+            // Wait till the battle is not running anymore
+            while (running) {
+                try {
+                    battleMonitor.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }
+    }
 
     private void shortSleep() {
         try {
