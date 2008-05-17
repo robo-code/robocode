@@ -15,9 +15,13 @@ package robocode.battleview;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
+import robocode.peer.RobotPeer;
+import robocode.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import static java.lang.Math.min;
 
 
@@ -31,23 +35,28 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		this.manager = manager;
 	}
 
-	public boolean dispatchKeyEvent(KeyEvent e) {
+	public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			switch (e.getID()) {
-			case KeyEvent.KEY_TYPED:
-				battle.keyTyped(e);
-				break;
+        if (battle != null && battle.isRunning()) {
 
-			case KeyEvent.KEY_PRESSED:
-				battle.keyPressed(e);
-				break;
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    switch (e.getID()) {
+                    case KeyEvent.KEY_TYPED:
+                        robotPeer.onInteractiveEvent(new KeyTypedEvent(cloneKeyEvent(e)));
+                        break;
 
-			case KeyEvent.KEY_RELEASED:
-				battle.keyReleased(e);
-				break;
-			}
+                    case KeyEvent.KEY_PRESSED:
+                        robotPeer.onInteractiveEvent(new KeyPressedEvent(cloneKeyEvent(e)));
+                        break;
+
+                    case KeyEvent.KEY_RELEASED:
+                        robotPeer.onInteractiveEvent(new KeyReleasedEvent(cloneKeyEvent(e)));
+                        break;
+                    }
+                }
+            }
 		}
 		return false;
 	}
@@ -55,66 +64,103 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	public void mouseClicked(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			battle.mouseClicked(mirroredMouseEvent(e));
+        if (battle != null && battle.isRunning()) {
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new MouseClickedEvent(mirroredMouseEvent(e)));
+                }
+            }
 		}
 	}
 
 	public void mouseEntered(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			battle.mouseEntered(mirroredMouseEvent(e));
+        if (battle != null && battle.isRunning()) {
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new MouseEnteredEvent(mirroredMouseEvent(e)));
+                }
+            }
 		}
 	}
 
 	public void mouseExited(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			battle.mouseExited(mirroredMouseEvent(e));
+        if (battle != null && battle.isRunning()) {
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new MouseExitedEvent(mirroredMouseEvent(e)));
+                }
+            }
 		}
 	}
 
 	public void mousePressed(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			battle.mousePressed(mirroredMouseEvent(e));
+        if (battle != null && battle.isRunning()) {
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new MousePressedEvent(mirroredMouseEvent(e)));
+                }
+            }
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			battle.mouseReleased(mirroredMouseEvent(e));
+        if (battle != null && battle.isRunning()) {
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new MouseReleasedEvent(mirroredMouseEvent(e)));
+                }
+            }
 		}
 	}
 
 	public void mouseMoved(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			battle.mouseMoved(mirroredMouseEvent(e));
+        if (battle != null && battle.isRunning()) {
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new MouseMovedEvent(mirroredMouseEvent(e)));
+                }
+            }
 		}
 	}
 
 	public void mouseDragged(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			battle.mouseDragged(mirroredMouseEvent(e));
+        if (battle != null && battle.isRunning()) {
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new MouseDraggedEvent(mirroredMouseEvent(e)));
+                }
+            }
 		}
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-		if (battle != null) {
-			battle.mouseWheelMoved(mirroredMouseWheelEvent(e));
-		}
+		if (battle != null && battle.isRunning()) {
+            for (RobotPeer robotPeer : battle.getRobots()) {
+                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+                    robotPeer.onInteractiveEvent(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
+                }
+            }
+        }
 	}
+
+    public static KeyEvent cloneKeyEvent(final KeyEvent e) {
+        return new KeyEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
+                e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
+    }
 
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 
