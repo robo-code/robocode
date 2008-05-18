@@ -2,11 +2,12 @@ package robocode.battle.events;
 
 
 import robocode.battle.snapshot.BattleSnapshot;
+import robocode.battle.BattleProperties;
 
 
 public interface IBattleListener {
 
-	public void onBattleStarted();
+	public void onBattleStarted(BattleProperties properties);
 
 	public void onBattleEnded(boolean isAborted);
 
@@ -14,9 +15,11 @@ public interface IBattleListener {
 
 	public void onBattleResumed();
 
-	public void onRoundStarted();
+	public void onRoundStarted(int round);
 
 	public void onRoundEnded();
 
-	public void onTurnEnded(BattleSnapshot battleSnapshot);
+    public void onTurnStarted();
+    
+    public void onTurnEnded(BattleSnapshot battleSnapshot);
 }

@@ -541,7 +541,7 @@ public class Battle implements Runnable {
 			battleMonitor.notifyAll();
 		}
 
-		eventDispatcher.onBattleStarted();
+		eventDispatcher.onBattleStarted(manager.getBattleManager().getBattleProperties());
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
@@ -653,7 +653,7 @@ public class Battle implements Runnable {
 		currentTime = 0;
 		inactiveTurnCount = 0;
 
-		eventDispatcher.onRoundStarted();
+		eventDispatcher.onRoundStarted(roundNum);
 
 		if (isRecordingEnabled) {
 			currentRoundRecord = new RoundRecord();
@@ -677,7 +677,7 @@ public class Battle implements Runnable {
 
 		roundOver = false;
 
-		eventDispatcher.onRoundStarted();
+		eventDispatcher.onRoundStarted(roundNum);
 
 		endTimer = 0;
 		currentTime = 0;

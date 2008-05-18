@@ -33,6 +33,7 @@ import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.RobotState;
@@ -329,7 +330,7 @@ public class SoundManager {
 			dispatcher.removeListener(this);
 		}
 
-		public void onBattleStarted() {
+		public void onBattleStarted(BattleProperties properties) {
 			playBackgroundMusic();
 		}
 

@@ -13,6 +13,7 @@ package robocode.battle.events;
 
 
 import robocode.battle.snapshot.BattleSnapshot;
+import robocode.battle.BattleProperties;
 
 import java.util.ArrayList;
 
@@ -38,9 +39,9 @@ public class BattleEventDispatcher implements IBattleListener {
 		listeners.remove(listener);
 	}
 
-	public void onBattleStarted() {
+	public void onBattleStarted(BattleProperties properties) {
 		for (IBattleListener listener : listeners) {
-			listener.onBattleStarted();
+			listener.onBattleStarted(properties);
 		}
 	}
 
@@ -62,9 +63,9 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-	public void onRoundStarted() {
+	public void onRoundStarted(int round) {
 		for (IBattleListener listener : listeners) {
-			listener.onRoundStarted();
+			listener.onRoundStarted(round);
 		}
 	}
 
@@ -73,6 +74,12 @@ public class BattleEventDispatcher implements IBattleListener {
 			listener.onRoundEnded();
 		}
 	}
+
+    public void onTurnStarted() {
+        for (IBattleListener listener : listeners) {
+            listener.onTurnStarted();
+        }
+    }
 
 	public void onTurnEnded(BattleSnapshot battleSnapshot) {
 		for (IBattleListener listener : listeners) {

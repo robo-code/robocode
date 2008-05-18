@@ -16,9 +16,11 @@ package robocode.battleview;
 
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
+import robocode.battle.events.BattleAdaptor;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.BattleProperties;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
@@ -650,7 +652,7 @@ public class BattleView extends Canvas {
 		this.initialized = initialized;
 	}
 
-	private class BattleObserver implements IBattleListener {
+	private class BattleObserver extends BattleAdaptor {
 		BattleView battleView;
 		AtomicReference<BattleSnapshot> snapshot;
 		AtomicBoolean isRunning;
@@ -681,7 +683,7 @@ public class BattleView extends Canvas {
 			dispatcher.removeListener(this);
 		}
 
-		public void onBattleStarted() {
+		public void onBattleStarted(BattleProperties properties) {
 			isRunning.set(true);
 			isPaused.set(false);
 			EventQueue.invokeLater(eventsDispatcher);
@@ -707,7 +709,7 @@ public class BattleView extends Canvas {
 			EventQueue.invokeLater(eventsDispatcher);
 		}
 
-		public void onRoundStarted() {
+		public void onRoundStarted(int round) {
 			EventQueue.invokeLater(eventsDispatcher);
 		}
 
