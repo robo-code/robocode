@@ -748,6 +748,8 @@ public class Battle implements Runnable {
 
     private void prepareTurn() {
 		turnStartTime = System.nanoTime();
+
+        eventDispatcher.onTurnStarted();
 	}
 
 	private void finalizeTurn() {
