@@ -91,6 +91,9 @@ public class RobocodeCompiler {
 			console.append("Does " + compilerBinary + " exist?\n");
 			console.setTitle("Exception while compiling");
 		} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+
 			console.append("Compile interrupted.\n");
 			console.setTitle("Compile interrupted.");
 		} finally {

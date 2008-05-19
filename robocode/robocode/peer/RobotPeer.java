@@ -817,7 +817,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			// Sleeping and waiting for battle to wake us up.
 			try {
 				wait();
-			} catch (InterruptedException e) {// We are expecting this to happen when a round is ended!
+			} catch (InterruptedException e) {
+				// We are expecting this to happen when a round is ended!
+
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
 			}
 			isSleeping = false;
 			// Notify battle thread, which is waiting in
@@ -1177,7 +1181,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			try {
 				wait(10000);
 			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();                
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
 			}
 		}
 	}

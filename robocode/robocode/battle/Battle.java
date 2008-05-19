@@ -168,9 +168,9 @@ public class Battle implements Runnable {
 	private int maxSkippedTurns = 30;
 	private int maxSkippedTurnsWithIO = 240;
 	private boolean parallelOn;
-    private double parallelConstant; 
+	private double parallelConstant; 
 
-    // Current round items
+	// Current round items
 	private int numRounds;
 	private int roundNum;
 	private int currentTime;
@@ -257,14 +257,14 @@ public class Battle implements Runnable {
 		roundNum = 0;
 
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
-        if (parallelOn) {
-            // how could robots share CPUs ?
-            parallelConstant = robots.size()/Runtime.getRuntime().availableProcessors();
-            // four CPUs can't run two single threaded robot faster than two CPUs 
-            if (parallelConstant<1){
-                parallelConstant=1;
-            }
-        }
+		if (parallelOn) {
+			// how could robots share CPUs ?
+			parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
+			// four CPUs can't run two single threaded robot faster than two CPUs 
+			if (parallelConstant < 1) {
+				parallelConstant = 1;
+			}
+		}
 
 		if (manager.isGUIEnabled()) {
 			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
@@ -373,6 +373,9 @@ public class Battle implements Runnable {
 				try {
 					battleMonitor.wait();
 				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+
 					return;
 				}
 			}
@@ -639,7 +642,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public void runRound() {
+	private void runRound() {
 		log("Let the games begin!");
 
 		roundOver = false;
@@ -666,7 +669,7 @@ public class Battle implements Runnable {
 		eventDispatcher.onRoundEnded();
 	}
 
-	public void replayRound() {
+	private void replayRound() {
 		log("Replay started");
 
 		roundOver = false;
@@ -786,6 +789,7 @@ public class Battle implements Runnable {
 				try {
 					Thread.sleep(delay / 1000000, (int) (delay % 1000000));
 				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 				}
 			}
@@ -958,24 +962,25 @@ public class Battle implements Runnable {
 	private void wakeupRobots() {
 		// Wake up all robot threads
 		synchronized (robots) {
-            final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
-            if (parallelOn){
-                wakeParallel(robotsAtRandom);
-            } else{
-                wakeupSerial(robotsAtRandom);
-            }
-        }
+			final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
+
+			if (parallelOn) {
+				wakeParallel(robotsAtRandom);
+			} else {
+				wakeupSerial(robotsAtRandom);
+			}
+		}
 	}
 
-    private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
-        final long waitTime = manager.getCpuManager().getCpuConstant();
-        int millisWait = (int) (waitTime / 1000000);
+	private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
+		final long waitTime = manager.getCpuManager().getCpuConstant();
+		int millisWait = (int) (waitTime / 1000000);
 
-        for (RobotPeer r : robotsAtRandom) {
-            if (r.isRunning()) {
-                // This call blocks until the
-                // robot's thread actually wakes up.
-                r.wakeup();
+		for (RobotPeer r : robotsAtRandom) {
+			if (r.isRunning()) {
+				// This call blocks until the
+				// robot's thread actually wakes up.
+				r.wakeup();
 
 				if (r.isAlive()) {
 					synchronized (r) {
@@ -992,7 +997,9 @@ public class Battle implements Runnable {
 									r.wait(0, (int) (waitTime % 1000000));
 								}
 							} catch (InterruptedException e) {
-								// ?
+								// Immediately reasserts the exception by interrupting the caller thread itself
+								Thread.currentThread().interrupt();
+
 								log("Wait for " + r + " interrupted.");
 							}
 						}
@@ -1003,37 +1010,40 @@ public class Battle implements Runnable {
 		}
 	}
 
-    private void wakeParallel(List<RobotPeer> robotsAtRandom) {
-        final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
-        int millisWait = (int) (waitTime / 1000000);
+	private void wakeParallel(List<RobotPeer> robotsAtRandom) {
+		final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
+		int millisWait = (int) (waitTime / 1000000);
 
-        for (RobotPeer r : robotsAtRandom) {
-            if (r.isRunning()) {
-                r.wakeup();
-            }
-        }
-        for (RobotPeer r : robotsAtRandom) {
-            if (r.isRunning() && r.isAlive()) {
-                try {
-                    synchronized (r) {
-                        for (; millisWait > 0 && !r.isSleeping(); millisWait--) {
-                            r.wait(0, 999999);
-                        }
-                        if (!r.isSleeping()) {
-                            r.wait(0, (int) (waitTime % 1000000));
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    log("Wait for " + r + " interrupted.");
-                }
-            }
-        }
-        for (RobotPeer r : robotsAtRandom) {
-            if (r.isRunning() && r.isAlive()) {
-                setSkippedTurns(r);
-            }
-        }
-    }
+		for (RobotPeer r : robotsAtRandom) {
+			if (r.isRunning()) {
+				r.wakeup();
+			}
+		}
+		for (RobotPeer r : robotsAtRandom) {
+			if (r.isRunning() && r.isAlive()) {
+				try {
+					synchronized (r) {
+						for (; millisWait > 0 && !r.isSleeping(); millisWait--) {
+							r.wait(0, 999999);
+						}
+						if (!r.isSleeping()) {
+							r.wait(0, (int) (waitTime % 1000000));
+						}
+					}
+				} catch (InterruptedException e) {
+					log("Wait for " + r + " interrupted.");
+
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+				}
+			}
+		}
+		for (RobotPeer r : robotsAtRandom) {
+			if (r.isRunning() && r.isAlive()) {
+				setSkippedTurns(r);
+			}
+		}
+	}
 
 	private void setSkippedTurns(RobotPeer r) {
 		if (r.isSleeping() || !r.isRunning()) {
@@ -1126,7 +1136,7 @@ public class Battle implements Runnable {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreLastSurvivor();
 							r.setWinner(true);
-                            if (r.getTeamPeer() != null) {
+							if (r.getTeamPeer() != null) {
 								if (r.isTeamLeader()) {
 									leaderFirsts = true;
 								} else {
@@ -1157,7 +1167,7 @@ public class Battle implements Runnable {
 		return battleOver;
 	}
 
-	public int getActiveContestantCount(RobotPeer peer) {
+	private int getActiveContestantCount(RobotPeer peer) {
 		int count = 0;
 
 		for (ContestantPeer c : contestants) {
@@ -1175,16 +1185,8 @@ public class Battle implements Runnable {
 		return count;
 	}
 
-	public void setBattleField(BattleField newBattleField) {
-		battleField = newBattleField;
-	}
-
 	public void setBattleThread(Thread newBattleThread) {
 		battleThread = newBattleThread;
-	}
-
-	public void setCurrentTime(int newCurrentTime) {
-		currentTime = newCurrentTime;
 	}
 
 	public void setExitOnComplete(boolean newExitOnComplete) {
@@ -1293,6 +1295,9 @@ public class Battle implements Runnable {
 
 					} catch (InterruptedException e) {
 						log("Wait for " + r + " interrupted.");
+
+						// Immediately reasserts the exception by interrupting the caller thread itself
+						Thread.currentThread().interrupt();
 					}
 				}
 				if (!r.isSleeping()) {
@@ -1320,6 +1325,7 @@ public class Battle implements Runnable {
 				try {
 					battleMonitor.wait();
 				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 					break;
 				}
@@ -1331,7 +1337,7 @@ public class Battle implements Runnable {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// Set the thread status back to being interrupted
+			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -1344,6 +1350,7 @@ public class Battle implements Runnable {
 					setUnsafeLoaderThreadRunning(true);
 					unsafeLoaderMonitor.wait();
 				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 				}
 			}
@@ -1586,15 +1593,6 @@ public class Battle implements Runnable {
 	 */
 	public void setBattleSpecification(BattleSpecification battleSpecification) {
 		this.battleSpecification = battleSpecification;
-	}
-
-	/**
-	 * Gets the manager.
-	 *
-	 * @return Returns a RobocodeManager
-	 */
-	public RobocodeManager getManager() {
-		return manager;
 	}
 
 	/**

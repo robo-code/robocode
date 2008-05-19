@@ -438,6 +438,9 @@ public class RobocodeCompilerFactory {
 			console.scrollToBottom();
 			rv = false;
 		} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+
 			console.append("\n" + e.toString() + "\n");
 			console.setTitle("Jikes compile failed.\n");
 			console.scrollToBottom();

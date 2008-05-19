@@ -513,7 +513,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 		synchronized (thread) {
 			try {
 				thread.wait();
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		securityManager.removeSafeThread(thread);

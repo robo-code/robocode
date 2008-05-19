@@ -116,6 +116,8 @@ public class CpuManager {
                 }
             }
         } catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
         }
 
         waitConstant = Math.max(1, (long) (1000.0 * TEST_PERIOD_MILLIS / count));

@@ -26,7 +26,6 @@ package robocode.manager;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
 import robocode.dialog.*;
-import robocode.dialog.SplashScreen;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
@@ -223,7 +222,9 @@ public class WindowManager {
 
 			try {
 				splashScreen.wait(20000);
-			} catch (InterruptedException e) {// Do nothing
+			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
 			}
 		}
 

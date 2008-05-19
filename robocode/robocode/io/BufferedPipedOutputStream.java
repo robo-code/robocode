@@ -99,6 +99,9 @@ public class BufferedPipedOutputStream extends OutputStream {
 						return -1;
 					}
 				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+
 					throw new IOException("read interrupted");
 				}
 			}

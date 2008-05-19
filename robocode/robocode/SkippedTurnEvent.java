@@ -22,7 +22,11 @@ package robocode;
  * <pre>
  *    try {
  *        Thread.sleep(1000);
- *    } catch (InterruptedException e) {}
+ *    } catch (InterruptedException e) {
+ *        // Immediately reasserts the exception by interrupting the caller thread
+ *        // itself.
+ *        Thread.currentThread().interrupt();
+ *    }
  * </pre>
  * will cause many SkippedTurnEvents, because you are not responding to the game.
  * If you receive 30 SkippedTurnEvents, you will be removed from the round.

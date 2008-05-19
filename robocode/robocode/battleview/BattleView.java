@@ -15,7 +15,6 @@ package robocode.battleview;
 
 
 import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.events.IBattleListener;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;

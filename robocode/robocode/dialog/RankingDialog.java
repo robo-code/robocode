@@ -257,8 +257,8 @@ public class RankingDialog extends JFrame {
 						try {
 							sleep(1000);
 						} catch (InterruptedException e) {
-							// Set the thread status back to being interrupted
-							interrupt();
+							// Immediately reasserts the exception by interrupting the caller thread itself
+							Thread.currentThread().interrupt();
 						}
 
 						if (table.getModel().getRowCount() != rows) {

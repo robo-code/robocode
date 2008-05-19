@@ -50,6 +50,9 @@ public class RobotThreadManager {
 			try {
 				runThread.join(5000);
 			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+
 				e.printStackTrace();
 			}
 			robotPeer.setRunning(false);
@@ -60,6 +63,9 @@ public class RobotThreadManager {
 			try {
 				runThread.join(5000);
 			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+
 				e.printStackTrace();
 			}
 			if (runThread.isAlive()) {
@@ -93,6 +99,9 @@ public class RobotThreadManager {
 				try {
 					thread.join(1000);
 				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+
 					robotPeer.getOut().println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
 					log("Thread: " + thread.getName() + " join interrupted.");
 				}
@@ -143,7 +152,7 @@ public class RobotThreadManager {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// Set the thread status back to being interrupted
+				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
 				break; // We are in a loop
 			}
