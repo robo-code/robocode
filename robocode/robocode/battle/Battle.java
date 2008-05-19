@@ -168,8 +168,9 @@ public class Battle implements Runnable {
 	private int maxSkippedTurns = 30;
 	private int maxSkippedTurnsWithIO = 240;
 	private boolean parallelOn;
+    private double parallelConstant; 
 
-	// Current round items
+    // Current round items
 	private int numRounds;
 	private int roundNum;
 	private int currentTime;
@@ -256,6 +257,14 @@ public class Battle implements Runnable {
 		roundNum = 0;
 
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
+        if (parallelOn) {
+            // how could robots share CPUs ?
+            parallelConstant = robots.size()/Runtime.getRuntime().availableProcessors();
+            // four CPUs can't run two single threaded robot faster than two CPUs 
+            if (parallelConstant<1){
+                parallelConstant=1;
+            }
+        }
 
 		if (manager.isGUIEnabled()) {
 			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
@@ -949,24 +958,24 @@ public class Battle implements Runnable {
 	private void wakeupRobots() {
 		// Wake up all robot threads
 		synchronized (robots) {
-			final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
-			final long waitTime = manager.getCpuManager().getCpuConstant();
-			int millisWait = (int) (waitTime / 1000000);
-
-			if (parallelOn) {
-				wakeParallel(robotsAtRandom, waitTime, millisWait);
-			} else {
-				wakeupSerial(robotsAtRandom, waitTime, millisWait);
-			}
-		}
+            final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
+            if (parallelOn){
+                wakeParallel(robotsAtRandom);
+            } else{
+                wakeupSerial(robotsAtRandom);
+            }
+        }
 	}
 
-	private void wakeupSerial(List<RobotPeer> robotsAtRandom, long waitTime, int millisWait) {
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning()) {
-				// This call blocks until the
-				// robot's thread actually wakes up.
-				r.wakeup();
+    private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
+        final long waitTime = manager.getCpuManager().getCpuConstant();
+        int millisWait = (int) (waitTime / 1000000);
+
+        for (RobotPeer r : robotsAtRandom) {
+            if (r.isRunning()) {
+                // This call blocks until the
+                // robot's thread actually wakes up.
+                r.wakeup();
 
 				if (r.isAlive()) {
 					synchronized (r) {
@@ -994,34 +1003,37 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private void wakeParallel(List<RobotPeer> robotsAtRandom, long waitTime, int millisWait) {
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning()) {
-				r.wakeup();
-			}
-		}
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning() && r.isAlive()) {
-				try {
-					synchronized (r) {
-						for (; millisWait > 0 && !r.isSleeping(); millisWait--) {
-							r.wait(0, 999999);
-						}
-						if (!r.isSleeping()) {
-							r.wait(0, (int) (waitTime % 1000000));
-						}
-					}
-				} catch (InterruptedException e) {
-					log("Wait for " + r + " interrupted.");
-				}
-			}
-		}
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning() && r.isAlive()) {
-				setSkippedTurns(r);
-			}
-		}
-	}
+    private void wakeParallel(List<RobotPeer> robotsAtRandom) {
+        final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
+        int millisWait = (int) (waitTime / 1000000);
+
+        for (RobotPeer r : robotsAtRandom) {
+            if (r.isRunning()) {
+                r.wakeup();
+            }
+        }
+        for (RobotPeer r : robotsAtRandom) {
+            if (r.isRunning() && r.isAlive()) {
+                try {
+                    synchronized (r) {
+                        for (; millisWait > 0 && !r.isSleeping(); millisWait--) {
+                            r.wait(0, 999999);
+                        }
+                        if (!r.isSleeping()) {
+                            r.wait(0, (int) (waitTime % 1000000));
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    log("Wait for " + r + " interrupted.");
+                }
+            }
+        }
+        for (RobotPeer r : robotsAtRandom) {
+            if (r.isRunning() && r.isAlive()) {
+                setSkippedTurns(r);
+            }
+        }
+    }
 
 	private void setSkippedTurns(RobotPeer r) {
 		if (r.isSleeping() || !r.isRunning()) {
@@ -1114,7 +1126,7 @@ public class Battle implements Runnable {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreLastSurvivor();
 							r.setWinner(true);
-							if (r.getTeamPeer() != null) {
+                            if (r.getTeamPeer() != null) {
 								if (r.isTeamLeader()) {
 									leaderFirsts = true;
 								} else {
