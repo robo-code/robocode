@@ -142,13 +142,17 @@ public class Robocode {
 					i++;
 				} else if (args[i].equals("-tps") && (i < args.length + 1)) {
 					tps = Integer.parseInt(args[i + 1]);
+					if (tps < 1) {
+						System.out.println("tps must be > 0");
+						System.exit(8);
+					}
 					i++;
 				} else if (args[i].equals("-minimize")) {
 					minimize = true;
 				} else if (args[i].equals("-nodisplay")) {
 					manager.setEnableGUI(false);
 					manager.setEnableSound(false);
-					tps = 10000;
+					tps = 10000; // set TPS to maximum
 				} else if (args[i].equals("-nosound")) {
 					manager.setEnableSound(false);
 				} else if (args[i].equals("-?") || args[i].equals("-help")) {
@@ -168,6 +172,8 @@ public class Robocode {
 				System.exit(8);
 			}
 
+			manager.getProperties().setOptionsBattleDesiredTPS(tps);
+
 			// Set the Look and Feel (LAF)
 			if (manager.isGUIEnabled()) {
 				robocode.manager.LookAndFeelManager.setLookAndFeel();
@@ -180,7 +186,6 @@ public class Robocode {
 				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.loadBattleProperties();
 					battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
-					//TODO ZAMO battleManager.getBattle().setDesiredTPS(tps);
 				} else {
 					System.err.println("The specified battle file '" + battleFilename + "' was not be found");
 					System.exit(8);
@@ -227,7 +232,7 @@ public class Robocode {
 						+ "    -cwd <path>             Change the current working directory\n"
 						+ "    -battle <battle file>   Run the battle specified in a battle file\n"
 						+ "    -results <file>         Save results to the specified text file\n"
-						+ "    -tps <tps>              Set the TPS (Turns Per Second) to use\n"
+						+ "    -tps <tps>              Set the TPS (Turns Per Second) to use. TPS must be > 0\n"
 						+ "    -minimize               Run minimized when Robocode starts\n"
 						+ "    -nodisplay              Run with the display / GUI disabled\n"
 						+ "    -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
@@ -237,7 +242,7 @@ public class Robocode {
 						+ "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
 						+ "    -Ddebug=true|false         Enable or disable System.err messages\n"
 						+ "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n"
-                        + "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n");
+						+ "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n");
 	}
 
 	/**
