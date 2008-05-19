@@ -57,15 +57,18 @@ import java.io.*;
  */
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
+
+	private final static int MAX_TPS = 10000;
+
+	private final static int MAX_TPS_SLIDER_VALUE = 51;
+	
 	private EventHandler eventHandler = new EventHandler();
 	private InteractiveHandler interactiveHandler;
 	private PauseResumeHandler pauseResumeHandler = new PauseResumeHandler();
 
 	private RobocodeMenuBar robocodeMenuBar;
 
-    private final static int MAX_TPS = 400;
-
-    private JPanel robocodeContentPane;
+	private JPanel robocodeContentPane;
 	private JLabel statusLabel;
 
 	private BattleView battleView;
@@ -172,13 +175,20 @@ public class RobocodeFrame extends JFrame {
 
 		public void stateChanged(ChangeEvent e) {
 			if (e.getSource() == getTpsSlider()) {
-				int tps = tpsSlider.getValue();
+				int tps = getTpsFromSlider();
+				
+				if (tps == 0) {
+					manager.getBattleManager().pauseBattle();
+				} else {
+					if (manager.getBattleManager().isPaused()) {
+						manager.getBattleManager().resumeBattle();
+					}
 
-				if (tps == tpsSlider.getMaximum()) {
-					tps = 10000;
+					// Only set desired TPS if it is not set to zero
+					manager.getProperties().setOptionsBattleDesiredTPS(tps);
 				}
-				manager.getProperties().setOptionsBattleDesiredTPS(tps);
-				tpsLabel.setText("  " + tps);
+
+				tpsLabel.setText(getTpsFromSliderAsString());
 			}
 		}
 	}
@@ -474,19 +484,36 @@ public class RobocodeFrame extends JFrame {
 
 			int tps = Math.max(props.getOptionsBattleDesiredTPS(), 1);
 
-			if (tps > MAX_TPS) {
-				tps = MAX_TPS +1;
-			}
-
-			tpsSlider = new JSlider(1, MAX_TPS +1, tps);
+			tpsSlider = new JSlider(0, MAX_TPS_SLIDER_VALUE, tpsToSliderValue(tps));
+			tpsSlider.setPaintLabels(true);
+			tpsSlider.setPaintTicks(true);
+			tpsSlider.setMinorTickSpacing(1);
+			
 			tpsSlider.addChangeListener(eventHandler);
 
-			WindowUtil.setFixedSize(tpsSlider, new Dimension(300, 20));
+			java.util.Hashtable<Integer, JLabel> labels = new java.util.Hashtable<Integer, JLabel>();
+			
+			labels.put(0, new JLabel("0"));
+			labels.put(5, new JLabel("5"));
+			labels.put(10, new JLabel("10"));
+			labels.put(15, new JLabel("20"));
+			labels.put(20, new JLabel("30"));
+			labels.put(25, new JLabel("55"));
+			labels.put(30, new JLabel("80"));
+			labels.put(35, new JLabel("120"));
+			labels.put(40, new JLabel("240"));
+			labels.put(45, new JLabel("500"));
+			labels.put(50, new JLabel("1000"));
+
+			tpsSlider.setMajorTickSpacing(5);
+			tpsSlider.setLabelTable(labels);
+
+			WindowUtil.setFixedSize(tpsSlider, new Dimension(300, 40));
 
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override
 				public void desiredTpsChanged(int tps) {
-					tpsSlider.setValue(tps);
+					setTpsOnSlider(tps);
 				}
 			});
 		}
@@ -500,12 +527,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public JLabel getTpsLabel() {
 		if (tpsLabel == null) {
-			int tps = getTpsSlider().getValue();
-
-			if (tps > MAX_TPS) {
-				tps = 10000;
-			}
-			tpsLabel = new JLabel("" + tps);
+			tpsLabel = new JLabel(getTpsFromSliderAsString());
 		}
 		return tpsLabel;
 	}
@@ -706,5 +728,58 @@ public class RobocodeFrame extends JFrame {
 			title.append(" (paused)");
 		}
 		setTitle(title.toString());
+	}
+
+	private int getTpsFromSlider() {
+		int value = getTpsSlider().getValue();
+
+		if (value <= 10) {
+			return value;
+		}
+		if (value <= 20) {
+			return 2 * value - 10;
+		}
+		if (value <= 34) {
+			return 5 * value - 70;
+		}
+		if (value <= 39) {
+			return 20 * value - 580;
+		}
+		if (value <= 44) {
+			return 40 * value - 1360;
+		}
+		if (value <= 50) {
+			return 100 * value - 4000;
+		}
+		return MAX_TPS;
+	}
+
+	private void setTpsOnSlider(int tps) {
+		tpsSlider.setValue(tpsToSliderValue(tps));
+	}
+
+	private int tpsToSliderValue(int tps) {
+		int value = MAX_TPS_SLIDER_VALUE;
+		
+		if (tps <= 10) {
+			value = tps;
+		} else if (tps <= 30) {
+			value = (tps + 10) / 2;
+		} else if (tps <= 100) {
+			value = (tps + 70) / 5;
+		} else if (tps <= 200) {
+			value = (tps + 580) / 20;
+		} else if (tps <= 400) {
+			value = (tps + 1360) / 40;
+		} else if (tps <= 1000) {
+			value = (tps + 4000) / 100;
+		}
+		return value;
+	}
+
+	private String getTpsFromSliderAsString() {
+		int tps = getTpsFromSlider();
+
+		return "  " + ((tps == MAX_TPS) ? "max" : "" + tps) + "  ";
 	}
 }
