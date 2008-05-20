@@ -95,15 +95,13 @@
 package robocode.battle;
 
 
+import static robocode.io.Logger.log;
 import robocode.*;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battlefield.BattleField;
-import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
-import robocode.dialog.RobotButton;
-import static robocode.io.Logger.log;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
@@ -187,9 +185,6 @@ public class Battle implements Runnable {
 
 	// Results related items
 	private boolean exitOnComplete;
-
-	// Results for RobocodeEngine controller
-	private BattleSpecification battleSpecification;
 
 	// Robot loading related items
 	private Thread unsafeLoadRobotsThread;
@@ -304,13 +299,6 @@ public class Battle implements Runnable {
 			}
 			unsafeLoadRobotsThread.interrupt();
 
-			if (manager.getListener() != null) {
-				if (isAborted()) {
-					manager.getListener().battleAborted(battleSpecification);
-				} else {
-					battleManager.sendResultsToListener(this, manager.getListener());
-				}
-			}
 			if (!isAborted() && manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
 				manager.getWindowManager().showResultsDialog();
 			}
@@ -439,7 +427,6 @@ public class Battle implements Runnable {
 
 		battleField = null;
 		battleManager = null;
-		battleSpecification = null;
 
 		// Request garbage collecting
 		for (int i = 4; i >= 0; i--) { // Make sure it is run
@@ -536,16 +523,6 @@ public class Battle implements Runnable {
 		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
-
-		if (manager.isGUIEnabled()) {
-			for (RobotPeer r : robots) {
-				r.preInitialize();
-				manager.getWindowManager().getRobocodeFrame().addRobotButton(
-						new RobotButton(manager.getRobotDialogManager(), r));
-			}
-
-			manager.getWindowManager().getRobocodeFrame().validate();
-		}
 
 		// Pre-load robot classes without security...
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
@@ -759,7 +736,7 @@ public class Battle implements Runnable {
 		// Let the battle sleep is the GUI is enabled and is not minimized
 		// in order to keep the desired TPS
 
-		if (manager.isGUIEnabled() && !manager.getWindowManager().getRobocodeFrame().isIconified()) {
+		if (!battleManager.isRunningMinimized()) {
 			long delay = 0;
 
 			if (!isAborted() && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
@@ -1558,24 +1535,6 @@ public class Battle implements Runnable {
 	 */
 	private synchronized void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
 		this.unsafeLoaderThreadRunning = unsafeLoaderThreadRunning;
-	}
-
-	/**
-	 * Gets the battleSpecification.
-	 *
-	 * @return Returns a BattleSpecification
-	 */
-	public BattleSpecification getBattleSpecification() {
-		return battleSpecification;
-	}
-
-	/**
-	 * Sets the battleSpecification.
-	 *
-	 * @param battleSpecification The battleSpecification to set
-	 */
-	public void setBattleSpecification(BattleSpecification battleSpecification) {
-		this.battleSpecification = battleSpecification;
 	}
 
 	/**

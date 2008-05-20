@@ -54,6 +54,7 @@ package robocode.manager;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
+import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
 import robocode.battlefield.BattleField;
@@ -91,14 +92,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Nathaniel Troutman (contributor)
  */
 public class BattleManager {
+	private RobocodeManager manager;
+
+	private Battle battle;
+	private BattleSpecification battleSpecification;
 	private BattleProperties battleProperties = new BattleProperties();
+
 	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
+
+	private BattleObserver battleObserver = new BattleObserver();
 
 	private String battleFilename;
 	private String battlePath;
-	private Battle battle;
 	private String resultsFile;
-	private RobocodeManager manager;
 
 	private AtomicInteger pauseCount = new AtomicInteger(0);
 
@@ -106,11 +112,15 @@ public class BattleManager {
 
 	public BattleManager(RobocodeManager manager) {
 		this.manager = manager;
+		
+		battleEventDispatcher.addListener(battleObserver);
 	}
 
 	public void cleanup() {
 		battle = null;
 		manager = null;
+		battleEventDispatcher = null;
+		battleObserver = null;
 	}
 
 	/**
@@ -293,6 +303,8 @@ public class BattleManager {
 	private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
 			BattleSpecification battleSpecification) {
 
+		this.battleSpecification = battleSpecification;
+
 		log("Preparing battle...");
 		if (battle != null) {
 			battle.stop();
@@ -313,9 +325,6 @@ public class BattleManager {
 
 		battle = new Battle(battleField, manager, battleEventDispatcher);
 		battle.setExitOnComplete(exitOnComplete);
-
-		// Only used when controlled by RobocodeEngine
-		battle.setBattleSpecification(battleSpecification);
 
 		// Set stuff the view needs to know
 		battle.setProperties(battleProperties);
@@ -559,7 +568,8 @@ public class BattleManager {
 					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
 					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
 		}
-		listener.battleComplete(battle.getBattleSpecification(), results);
+
+		listener.battleComplete(battleSpecification, results);
 	}
 
 	public void printResultsData(Battle battle) {
@@ -603,5 +613,21 @@ public class BattleManager {
 
 	public void removeListener(IBattleListener listener) {
 		battleEventDispatcher.removeListener(listener);
+	}
+
+	public boolean isRunningMinimized() {
+		return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
+	}
+
+	private class BattleObserver extends BattleAdaptor {
+		public void onBattleEnded(boolean isAborted) {
+			if (manager.getListener() != null) {
+				if (isAborted) {
+					manager.getListener().battleAborted(battleSpecification);
+				} else {
+					sendResultsToListener(battle, manager.getListener());
+				}
+			}
+		}
 	}
 }

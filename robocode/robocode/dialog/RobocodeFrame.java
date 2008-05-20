@@ -40,6 +40,7 @@ import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
+import robocode.peer.RobotPeer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -200,11 +201,19 @@ public class RobocodeFrame extends JFrame {
 	private class BattleObserver extends BattleAdaptor {
 
 		public void onBattleStarted(BattleProperties battleProperties) {
-			clearRobotButtons();
-
 			getStopButton().setEnabled(true);
 			getRestartButton().setEnabled(true);
 			getReplayButton().setEnabled(false);
+
+			getRobotButtonsPanel().removeAll();
+			getRobotButtonsPanel().repaint();
+
+			for (RobotPeer r : manager.getBattleManager().getBattle().getRobots()) {
+				r.preInitialize();
+				addRobotButton(new RobotButton(manager.getRobotDialogManager(), r));
+			}
+
+			validate();
 		}
 
 		public void onBattleEnded(boolean isAborted) {
@@ -261,11 +270,6 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public void battleViewPanelResized() {
 		battleView.setBounds(getBattleViewPanel().getBounds());
-	}
-
-	private void clearRobotButtons() {
-		getRobotButtonsPanel().removeAll();
-		getRobotButtonsPanel().repaint();
 	}
 
 	/**
