@@ -30,6 +30,9 @@ public class Coordinator {
 			try {
 				wait();
 			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+
 				e.printStackTrace();
 			}
 		}
@@ -42,6 +45,9 @@ public class Coordinator {
 			try {
 				wait();
 			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+
 				e.printStackTrace();
 			}
 		}

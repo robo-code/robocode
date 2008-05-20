@@ -105,6 +105,9 @@ public class FileTransfer {
 						sessionIdThread.wait(CONNECTION_TIMEOUT);
 						sessionIdThread.interrupt();
 					} catch (InterruptedException e) {
+						// Immediately reasserts the exception by interrupting the caller thread itself
+						Thread.currentThread().interrupt();
+
 						return null;
 					}
 				}
