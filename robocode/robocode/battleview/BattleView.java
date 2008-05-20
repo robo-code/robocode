@@ -656,10 +656,9 @@ public class BattleView extends Canvas {
 		AtomicReference<BattleSnapshot> snapshot;
 		AtomicBoolean isRunning;
 		AtomicBoolean isPaused;
-		robocode.battle.events.BattleEventDispatcher dispatcher;
+		BattleEventDispatcher dispatcher;
 
-		EventsDispatcher eventsDispatcher = new EventsDispatcher();
-		TimerDispatcher timerDispatcher = new TimerDispatcher();
+		RepaintTask repaintTask = new RepaintTask();
 		Timer timer;
 
 		long measuredFrameCounter;
@@ -670,7 +669,7 @@ public class BattleView extends Canvas {
 			this.battleView = battleView;
 			snapshot = new AtomicReference<BattleSnapshot>(null);
 			
-			timer = new Timer(1000 / TIMER_TICKS_PER_SECOND, timerDispatcher);
+			timer = new Timer(1000 / TIMER_TICKS_PER_SECOND, new UpdateTask());
 			isRunning = new AtomicBoolean(false);
 			isPaused = new AtomicBoolean(false);
 			lastSnapshot = null;
@@ -678,14 +677,21 @@ public class BattleView extends Canvas {
 			dispatcher.addListener(this);
 		}
 
+		public void finalize() throws Throwable {
+			super.finalize();
+
+			dispose();
+		}
+		
 		public void dispose() {
+			timer.stop();
 			dispatcher.removeListener(this);
 		}
 
 		public void onBattleStarted(BattleProperties properties) {
 			isRunning.set(true);
 			isPaused.set(false);
-			EventQueue.invokeLater(eventsDispatcher);
+			EventQueue.invokeLater(repaintTask);
 			timer.start();
 		}
 
@@ -693,27 +699,25 @@ public class BattleView extends Canvas {
 			timer.stop();
 			isRunning.set(false);
 			isPaused.set(false);
-			EventQueue.invokeLater(eventsDispatcher);
+			EventQueue.invokeLater(repaintTask);
 		}
 
 		public void onBattleResumed() {
 			isPaused.set(false);
-			EventQueue.invokeLater(eventsDispatcher);
 			timer.start();
 		}
 
 		public void onBattlePaused() {
 			timer.stop();
 			isPaused.set(true);
-			EventQueue.invokeLater(eventsDispatcher);
 		}
 
 		public void onRoundStarted(int round) {
-			EventQueue.invokeLater(eventsDispatcher);
+			EventQueue.invokeLater(repaintTask);
 		}
 
 		public void onRoundEnded() {
-			EventQueue.invokeLater(eventsDispatcher);
+			EventQueue.invokeLater(repaintTask);
 		}
 
 		public void onTurnEnded(BattleSnapshot battleSnapshot) {
@@ -724,7 +728,7 @@ public class BattleView extends Canvas {
 			return isRunning.get();
 		}
 
-		private class EventsDispatcher implements Runnable {
+		private class RepaintTask implements Runnable {
 			public void run() {
 				if (!isRunning.get()) {
 					lastSnapshot = null;
@@ -734,7 +738,7 @@ public class BattleView extends Canvas {
 		}
 
 
-		private class TimerDispatcher implements ActionListener {
+		private class UpdateTask implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				BattleSnapshot s = snapshot.get();
 

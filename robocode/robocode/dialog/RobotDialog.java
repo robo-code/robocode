@@ -21,6 +21,7 @@
 package robocode.dialog;
 
 
+import robocode.battle.events.BattleAdaptor;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.RobotPeer;
@@ -49,6 +50,8 @@ public class RobotDialog extends JFrame {
 	private JCheckBox sgCheckBox;
 	private JToggleButton pauseButton;
 
+	private PauseResumeHandler pauseResumeHandler = new PauseResumeHandler();
+
 	private ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
@@ -66,16 +69,6 @@ public class RobotDialog extends JFrame {
 			} else if (src == RobotDialog.this.getPauseButton()) {
 				pauseResumeButtonActionPerformed();
 			}
-		}
-	};
-
-	private BattleManager.PauseResumeListener pauseResumeHandler = new BattleManager.PauseResumeListener() {
-		public void battlePaused() {
-			getPauseButton().setSelected(true);
-		}
-
-		public void battleResumed() {
-			getPauseButton().setSelected(false);
 		}
 	};
 
@@ -104,6 +97,7 @@ public class RobotDialog extends JFrame {
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
+
 		manager.getBattleManager().removeListener(pauseResumeHandler);
 	}
 
@@ -335,4 +329,17 @@ public class RobotDialog extends JFrame {
 			battleManager.pauseBattle();
 		}
 	}
+
+	private class PauseResumeHandler extends BattleAdaptor {
+		public void onBattlePaused() {
+			getPauseButton().setSelected(true);
+		}
+
+		public void onBattleResumed() {
+			getPauseButton().setSelected(false);
+		}
+	}
+
+
+	;
 }

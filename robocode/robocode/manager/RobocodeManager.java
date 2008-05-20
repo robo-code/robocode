@@ -257,7 +257,6 @@ public class RobocodeManager {
 
 			private void cleanup() {
 				setListener(null);
-				getWindowManager().getRobocodeFrame().clearRobotButtons();
 				getBattleManager().setDefaultBattleProperties();
 				getProperties().setOptionsCommonShowResults(origShowResults);
 			}

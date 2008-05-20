@@ -55,6 +55,7 @@ import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.BattleResultsTableModel;
 import robocode.battle.events.BattleEventDispatcher;
+import robocode.battle.events.IBattleListener;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.battleview.BattleView;
@@ -79,6 +80,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -90,20 +92,25 @@ import java.util.StringTokenizer;
  */
 public class BattleManager {
 	private BattleProperties battleProperties = new BattleProperties();
+	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
+
 	private String battleFilename;
 	private String battlePath;
 	private Battle battle;
-	private int pauseCount;
 	private String resultsFile;
 	private RobocodeManager manager;
+
+	private AtomicInteger pauseCount = new AtomicInteger(0);
+
 	private int stepTurn;
 
-	private List<PauseResumeListener> pauseResumeListeners = new ArrayList<PauseResumeListener>();
+	public BattleManager(RobocodeManager manager) {
+		this.manager = manager;
+	}
 
-	public interface PauseResumeListener {
-		public void battlePaused();
-
-		public void battleResumed();
+	public void cleanup() {
+		battle = null;
+		manager = null;
 	}
 
 	/**
@@ -130,10 +137,6 @@ public class BattleManager {
 	 */
 	public void startNewRound() {
 		stepTurn = 0;
-	}
-
-	public BattleManager(RobocodeManager manager) {
-		this.manager = manager;
 	}
 
 	public void stop() {
@@ -298,8 +301,6 @@ public class BattleManager {
 		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight());
 
-		BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
-
 		if (manager.isGUIEnabled()) {
 			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
@@ -383,26 +384,24 @@ public class BattleManager {
 	}
 
 	public synchronized boolean isPaused() {
-		return (pauseCount != 0);
+		return (pauseCount.get() != 0);
 	}
 
 	public synchronized void pauseBattle() {
-		pauseCount++;
-
-		if (pauseCount == 1) {
-			notifyBattlePaused();
+		if (pauseCount.incrementAndGet() == 1) {
+			battleEventDispatcher.onBattlePaused();
 		}
 	}
 
-    public synchronized void resumeBattle() {
-        int oldPauseCount = pauseCount;
+	public synchronized void resumeBattle() {
+		int oldPauseCount = pauseCount.get();
 
-        pauseCount = Math.max(--pauseCount, 0);
+		pauseCount.set(Math.max(pauseCount.decrementAndGet(), 0));
 
-        if (oldPauseCount == 1) {
-            notifyBattleResumed();
-        }
-    }
+		if (oldPauseCount == 1) {
+			battleEventDispatcher.onBattleResumed();
+		}
+	}
 
 	public String getBattlePath() {
 		if (battlePath == null) {
@@ -598,40 +597,11 @@ public class BattleManager {
 		}
 	}
 
-	/**
-	 * Gets the manager.
-	 *
-	 * @return Returns a RobocodeManager
-	 */
-	public RobocodeManager getManager() {
-		return manager;
+	public void addListener(IBattleListener listener) {
+		battleEventDispatcher.addListener(listener);
 	}
 
-	public void addListener(PauseResumeListener listener) {
-		if (pauseResumeListeners == null) {
-			pauseResumeListeners = new ArrayList<PauseResumeListener>();
-		}
-		pauseResumeListeners.add(listener);
-	}
-
-	public void removeListener(PauseResumeListener listener) {
-		pauseResumeListeners.remove(listener);
-	}
-
-	private void notifyBattlePaused() {
-		for (PauseResumeListener l : pauseResumeListeners) {
-			l.battlePaused();
-		}
-	}
-
-	private void notifyBattleResumed() {
-		for (PauseResumeListener l : pauseResumeListeners) {
-			l.battleResumed();
-		}
-	}
-
-	public void cleanup() {
-		battle = null;
-		manager = null;
+	public void removeListener(IBattleListener listener) {
+		battleEventDispatcher.removeListener(listener);
 	}
 }

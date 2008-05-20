@@ -102,7 +102,6 @@ import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
-import robocode.dialog.RobocodeFrame;
 import robocode.dialog.RobotButton;
 import static robocode.io.Logger.log;
 import robocode.manager.BattleManager;
@@ -240,6 +239,10 @@ public class Battle implements Runnable {
 		return replay;
 	}
 
+	public boolean hasReplayRecord() {
+		return battleRecord != null;
+	}
+	
 	/**
 	 * When an object implementing interface {@code Runnable} is used
 	 * to create a thread, starting the thread causes the object's
@@ -266,13 +269,6 @@ public class Battle implements Runnable {
 			}
 		}
 
-		if (manager.isGUIEnabled()) {
-			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
-
-			frame.setEnableStopButton(true);
-			frame.setEnableRestartButton(true);
-			frame.setEnableReplayButton(false);
-		}
 		isRecordingEnabled = manager.getProperties().getOptionsCommonEnableReplayRecording();
 
 		if (!replay) {
@@ -353,13 +349,6 @@ public class Battle implements Runnable {
 			cleanup();
 		}
 
-		if (manager.isGUIEnabled()) {
-			RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
-
-			frame.setEnableStopButton(false);
-			frame.setEnableReplayButton(battleRecord != null);
-		}
-
 		// Notify that the battle is over
 		synchronized (battleMonitor) {
 			running = false;
@@ -387,8 +376,7 @@ public class Battle implements Runnable {
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
-		RobotPeer robotPeer = new RobotPeer(robotClassManager,
-				battleManager.getManager().getProperties().getRobotFilesystemQuota());
+		RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota());
 		TeamPeer teamManager = robotClassManager.getTeamManager();
 
 		if (teamManager != null) {
@@ -550,17 +538,12 @@ public class Battle implements Runnable {
 		unsafeLoadRobotsThread.start();
 
 		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().clearRobotButtons();
-		}
-
-		for (RobotPeer r : robots) {
-			r.preInitialize();
-			if (manager.isGUIEnabled()) {
+			for (RobotPeer r : robots) {
+				r.preInitialize();
 				manager.getWindowManager().getRobocodeFrame().addRobotButton(
 						new RobotButton(manager.getRobotDialogManager(), r));
 			}
-		}
-		if (manager.isGUIEnabled()) {
+
 			manager.getWindowManager().getRobocodeFrame().validate();
 		}
 

@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Flemming N. Larsen
+ *     Flemming N. Larsen & Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
 package robocode.battle.events;
@@ -15,7 +15,8 @@ package robocode.battle.events;
 import robocode.battle.snapshot.BattleSnapshot;
 import robocode.battle.BattleProperties;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.List;
 
 
 /**
@@ -23,8 +24,10 @@ import java.util.ArrayList;
  * @author Pavel Savara (original)
  */
 public class BattleEventDispatcher implements IBattleListener {
-
-	private ArrayList<IBattleListener> listeners = new ArrayList<IBattleListener>();
+	// This list is guaranteed to be thread-safe, which is necessary as it will be accessed
+	// by both the battle thread and battle manager thread. If this list is not thread-safe
+	// then ConcurentModificationExceptions will occur from time to time.
+	private List<IBattleListener> listeners = new CopyOnWriteArrayList<IBattleListener>();
 
 	public BattleEventDispatcher() {}
 
@@ -75,11 +78,11 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-    public void onTurnStarted() {
-        for (IBattleListener listener : listeners) {
-            listener.onTurnStarted();
-        }
-    }
+	public void onTurnStarted() {
+		for (IBattleListener listener : listeners) {
+			listener.onTurnStarted();
+		}
+	}
 
 	public void onTurnEnded(BattleSnapshot battleSnapshot) {
 		for (IBattleListener listener : listeners) {
