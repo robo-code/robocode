@@ -41,7 +41,7 @@ import java.util.List;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public class BattleSnapshot implements java.io.Serializable {
+public class TurnSnapshot implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -68,7 +68,7 @@ public class BattleSnapshot implements java.io.Serializable {
 	 *
 	 * @param battle the battle to make a snapshot of.
 	 */
-	public BattleSnapshot(Battle battle) {
+	public TurnSnapshot(Battle battle) {
 		// fieldWidth = battle.getBattleField().getWidth();
 		// fieldHeight = battle.getBattleField().getHeight();
 

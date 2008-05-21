@@ -99,7 +99,7 @@ import static robocode.io.Logger.log;
 import robocode.*;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
-import robocode.battle.snapshot.BattleSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.control.RobotResults;
 import robocode.manager.BattleManager;
@@ -710,7 +710,7 @@ public class Battle implements Runnable {
 	}
 
 	private void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new BattleSnapshot(this));
+		eventDispatcher.onTurnEnded(new TurnSnapshot(this));
 
 		synchronizeTPS();
 

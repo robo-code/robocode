@@ -50,7 +50,7 @@ public class RobotDialog extends JFrame {
 	private JCheckBox sgCheckBox;
 	private JToggleButton pauseButton;
 
-	private PauseResumeHandler pauseResumeHandler = new PauseResumeHandler();
+	private BattleObserver battleObserver = new BattleObserver();
 
 	private ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -91,14 +91,14 @@ public class RobotDialog extends JFrame {
 			getKillButton().setEnabled(false);
 		}
 
-		manager.getBattleManager().addListener(pauseResumeHandler);
+		manager.getBattleManager().addListener(battleObserver);
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		manager.getBattleManager().removeListener(pauseResumeHandler);
+		manager.getBattleManager().removeListener(battleObserver);
 	}
 
 	/**
@@ -330,7 +330,7 @@ public class RobotDialog extends JFrame {
 		}
 	}
 
-	private class PauseResumeHandler extends BattleAdaptor {
+	private class BattleObserver extends BattleAdaptor {
 		public void onBattlePaused() {
 			getPauseButton().setSelected(true);
 		}
@@ -339,7 +339,4 @@ public class RobotDialog extends JFrame {
 			getPauseButton().setSelected(false);
 		}
 	}
-
-
-	;
 }

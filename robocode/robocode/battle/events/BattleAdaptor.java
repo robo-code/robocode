@@ -1,7 +1,7 @@
 package robocode.battle.events;
 
 
-import robocode.battle.snapshot.BattleSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.BattleProperties;
 
 
@@ -21,5 +21,5 @@ public class BattleAdaptor implements IBattleListener {
 
     public void onTurnStarted() {}
     
-    public void onTurnEnded(BattleSnapshot battleSnapshot) {}
+    public void onTurnEnded(TurnSnapshot turnSnapshot) {}
 }

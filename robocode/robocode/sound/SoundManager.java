@@ -30,7 +30,7 @@ package robocode.sound;
 
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.snapshot.BattleSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.BattleProperties;
@@ -339,10 +339,10 @@ public class SoundManager {
 			playEndOfBattleMusic();
 		}
 
-		public void onTurnEnded(BattleSnapshot battleSnapshot) {
+		public void onTurnEnded(TurnSnapshot turnSnapshot) {
 			int battleFieldWidth = manager.getBattleManager().getBattle().getBattleField().getWidth();
 
-			for (BulletSnapshot bp : battleSnapshot.getBullets()) {
+			for (BulletSnapshot bp : turnSnapshot.getBullets()) {
 				if (bp.getFrame() == 0) {
 					playBulletSound(bp, battleFieldWidth);
 				}
@@ -350,7 +350,7 @@ public class SoundManager {
 
 			boolean playedRobotHitRobot = false;
 
-			for (RobotSnapshot rp : battleSnapshot.getRobots()) {
+			for (RobotSnapshot rp : turnSnapshot.getRobots()) {
 				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
 				if (rp.getState() == RobotState.HIT_ROBOT) {
 					if (playedRobotHitRobot) {

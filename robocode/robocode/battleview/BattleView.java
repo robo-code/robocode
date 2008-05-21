@@ -16,7 +16,7 @@ package robocode.battleview;
 
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.BattleAdaptor;
-import robocode.battle.snapshot.BattleSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.BattleProperties;
@@ -64,7 +64,7 @@ public class BattleView extends Canvas {
 	private RobocodeFrame robocodeFrame;
 
 	// The battle and battlefield,
-	private BattleSnapshot lastSnapshot;
+	private TurnSnapshot lastSnapshot;
 	private BattleField battleField;
 	private BattleObserver observer;
 
@@ -273,7 +273,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawBattle(Graphics2D g, BattleSnapshot snapShot) {
+	private void drawBattle(Graphics2D g, TurnSnapshot snapShot) {
 		// Save the graphics state
 		graphicsState.save(g);
 
@@ -367,7 +367,7 @@ public class BattleView extends Canvas {
 		g.setClip(savedClip);
 	}
 
-	private void drawScanArcs(Graphics2D g, BattleSnapshot snapShot) {
+	private void drawScanArcs(Graphics2D g, TurnSnapshot snapShot) {
 		if (drawScanArcs) {
 			for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
 				if (robotSnapshot.getState().isAlive()) {
@@ -377,7 +377,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawRobots(Graphics2D g, BattleSnapshot snapShot) {
+	private void drawRobots(Graphics2D g, TurnSnapshot snapShot) {
 		double x, y;
 		AffineTransform at;
 		int battleFieldHeight = battleField.getHeight();
@@ -432,7 +432,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawText(Graphics2D g, BattleSnapshot snapShot) {
+	private void drawText(Graphics2D g, TurnSnapshot snapShot) {
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
@@ -506,7 +506,7 @@ public class BattleView extends Canvas {
 		gfxState.restore(g);
 	}
 
-	private void drawBullets(Graphics2D g, BattleSnapshot snapShot) {
+	private void drawBullets(Graphics2D g, TurnSnapshot snapShot) {
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
@@ -653,7 +653,7 @@ public class BattleView extends Canvas {
 
 	private class BattleObserver extends BattleAdaptor {
 		BattleView battleView;
-		AtomicReference<BattleSnapshot> snapshot;
+		AtomicReference<TurnSnapshot> snapshot;
 		AtomicBoolean isRunning;
 		AtomicBoolean isPaused;
 		BattleEventDispatcher dispatcher;
@@ -667,7 +667,7 @@ public class BattleView extends Canvas {
 		public BattleObserver(BattleView battleView, BattleEventDispatcher dispatcher) {
 			this.dispatcher = dispatcher;
 			this.battleView = battleView;
-			snapshot = new AtomicReference<BattleSnapshot>(null);
+			snapshot = new AtomicReference<TurnSnapshot>(null);
 			
 			timer = new Timer(1000 / TIMER_TICKS_PER_SECOND, new UpdateTask());
 			isRunning = new AtomicBoolean(false);
@@ -720,8 +720,8 @@ public class BattleView extends Canvas {
 			EventQueue.invokeLater(repaintTask);
 		}
 
-		public void onTurnEnded(BattleSnapshot battleSnapshot) {
-			snapshot.set(battleSnapshot);
+		public void onTurnEnded(TurnSnapshot turnSnapshot) {
+			snapshot.set(turnSnapshot);
 		}
 
 		public boolean isRunning() {
@@ -740,7 +740,7 @@ public class BattleView extends Canvas {
 
 		private class UpdateTask implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
-				BattleSnapshot s = snapshot.get();
+				TurnSnapshot s = snapshot.get();
 
 				if (lastSnapshot != s) {
 					lastSnapshot = s;

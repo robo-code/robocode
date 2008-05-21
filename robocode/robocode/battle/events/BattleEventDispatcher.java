@@ -12,7 +12,7 @@
 package robocode.battle.events;
 
 
-import robocode.battle.snapshot.BattleSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.BattleProperties;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -84,9 +84,9 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-	public void onTurnEnded(BattleSnapshot battleSnapshot) {
+	public void onTurnEnded(TurnSnapshot turnSnapshot) {
 		for (IBattleListener listener : listeners) {
-			listener.onTurnEnded(battleSnapshot);
+			listener.onTurnEnded(turnSnapshot);
 		}
 	}
 }
