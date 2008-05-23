@@ -13,7 +13,8 @@ package robocode.battle.events;
 
 
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.BattleProperties;
+import robocode.control.BattleSpecification;
+import robocode.control.RobotResults;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
@@ -42,17 +43,23 @@ public class BattleEventDispatcher implements IBattleListener {
 		listeners.remove(listener);
 	}
 
-	public void onBattleStarted(BattleProperties properties) {
+	public void onBattleStarted(BattleSpecification battleSpecification) {
 		for (IBattleListener listener : listeners) {
-			listener.onBattleStarted(properties);
+			listener.onBattleStarted(battleSpecification);
 		}
 	}
 
-	public void onBattleEnded(boolean isAborted) {
+	public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
 		for (IBattleListener listener : listeners) {
-			listener.onBattleEnded(isAborted);
+			listener.onBattleCompleted(battleSpecification, results);
 		}
 	}
+
+    public void onBattleEnded(boolean isAborted) {
+        for (IBattleListener listener : listeners) {
+            listener.onBattleEnded(isAborted);
+        }
+    }
 
 	public void onBattlePaused() {
 		for (IBattleListener listener : listeners) {

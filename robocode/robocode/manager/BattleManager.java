@@ -65,9 +65,6 @@ import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
 import static robocode.io.Logger.log;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
-import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
@@ -534,6 +531,10 @@ public class BattleManager {
 		return battleProperties;
 	}
 
+    public BattleSpecification getBattleSpecification() {
+        return battleSpecification;
+    }
+
 	public void setDefaultBattleProperties() {
 		battleProperties = new BattleProperties();
 	}
@@ -546,33 +547,7 @@ public class BattleManager {
 		return resultsFile;
 	}
 
-	public void sendResultsToListener(Battle battle, RobocodeListener listener) {
-		if (listener == null) {
-			return;
-		}
-
-		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(battle.getContestants());
-
-		Collections.sort(orderedPeers);
-
-		RobotResults results[] = new RobotResults[orderedPeers.size()];
-
-		for (int i = 0; i < results.length; i++) {
-			ContestantPeer peer = orderedPeers.get(i);
-			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
-
-			ContestantStatistics stats = peer.getStatistics();
-
-			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
-					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
-					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
-					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
-		}
-
-		listener.battleComplete(battleSpecification, results);
-	}
-
-	public void printResultsData(Battle battle) {
+    public void printResultsData(Battle battle) {
 		// Do not print out if no result file has been specified and the GUI is enabled
 		if (getResultsFile() == null && (!battle.isExitOnComplete() || manager.isGUIEnabled())) {
 			return;
@@ -620,14 +595,20 @@ public class BattleManager {
 	}
 
 	private class BattleObserver extends BattleAdaptor {
-		public void onBattleEnded(boolean isAborted) {
-			if (manager.getListener() != null) {
-				if (isAborted) {
-					manager.getListener().battleAborted(battleSpecification);
-				} else {
-					sendResultsToListener(battle, manager.getListener());
-				}
+        @Override
+		public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
+            RobocodeListener listener = manager.getListener();
+            if (listener != null) {
+                listener.battleComplete(battleSpecification, results);
 			}
 		}
-	}
+
+        @Override
+        public void onBattleEnded(boolean isAborted) {
+            RobocodeListener listener = manager.getListener();
+            if (isAborted && listener != null) {
+                listener.battleAborted(battleSpecification);
+            }
+        }
+    }
 }

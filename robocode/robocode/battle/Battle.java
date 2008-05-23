@@ -328,9 +328,13 @@ public class Battle implements Runnable {
 			}
 		}
 
-		eventDispatcher.onBattleEnded(isAborted()); // not aborted
 
-		// The results dialog needs the battle object to be complete, so we
+        eventDispatcher.onBattleEnded(isAborted());
+        if (!isAborted()) {
+            eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleSpecification(), computeResults());
+        }
+
+        // The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
 		// for cleaning up the battle when its done with it.
 		if (!manager.isGUIEnabled()) {
@@ -358,6 +362,27 @@ public class Battle implements Runnable {
 			}
 		}
 	}
+
+    private RobotResults[] computeResults() {
+        List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());
+
+        Collections.sort(orderedPeers);
+
+        RobotResults results[] = new RobotResults[orderedPeers.size()];
+
+        for (int i = 0; i < results.length; i++) {
+            ContestantPeer peer = orderedPeers.get(i);
+            RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
+
+            ContestantStatistics stats = peer.getStatistics();
+
+            results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
+                    stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
+                    stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
+                    stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
+        }
+        return results;
+    }
 
 	public void addBullet(BulletPeer bullet) {
 		bullets.add(bullet);
@@ -513,7 +538,7 @@ public class Battle implements Runnable {
 			battleMonitor.notifyAll();
 		}
 
-		eventDispatcher.onBattleStarted(manager.getBattleManager().getBattleProperties());
+		eventDispatcher.onBattleStarted(manager.getBattleManager().getBattleSpecification());
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");

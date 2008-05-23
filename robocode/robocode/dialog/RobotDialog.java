@@ -331,10 +331,12 @@ public class RobotDialog extends JFrame {
 	}
 
 	private class BattleObserver extends BattleAdaptor {
-		public void onBattlePaused() {
+		@Override
+        public void onBattlePaused() {
 			getPauseButton().setSelected(true);
 		}
 
+        @Override
 		public void onBattleResumed() {
 			getPauseButton().setSelected(false);
 		}

@@ -2,14 +2,17 @@ package robocode.battle.events;
 
 
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.BattleProperties;
+import robocode.control.RobotResults;
+import robocode.control.BattleSpecification;
 
 
 public class BattleAdaptor implements IBattleListener {
 
-	public void onBattleStarted(BattleProperties properties) {}
+	public void onBattleStarted(BattleSpecification battleSpecification) {}
 
 	public void onBattleEnded(boolean isAborted) {}
+
+    public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {}
 
 	public void onBattlePaused() {}
 

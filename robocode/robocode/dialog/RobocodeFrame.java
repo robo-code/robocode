@@ -41,6 +41,8 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
 import robocode.peer.RobotPeer;
+import robocode.control.BattleSpecification;
+import robocode.control.RobotResults;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -200,7 +202,8 @@ public class RobocodeFrame extends JFrame {
 
 	private class BattleObserver extends BattleAdaptor {
 
-		public void onBattleStarted(BattleProperties battleProperties) {
+        @Override
+		public void onBattleStarted(BattleSpecification battleSpecification) {
 			getStopButton().setEnabled(true);
 			getRestartButton().setEnabled(true);
 			getReplayButton().setEnabled(false);
@@ -216,16 +219,19 @@ public class RobocodeFrame extends JFrame {
 			validate();
 		}
 
+        @Override
 		public void onBattleEnded(boolean isAborted) {
 			getStopButton().setEnabled(false);
 			getReplayButton().setEnabled(manager.getBattleManager().getBattle().hasReplayRecord());
 		}
 
+        @Override
 		public void onBattlePaused() {
 			getPauseButton().setSelected(true);
 			getNextTurnButton().setEnabled(true);
 		}
 
+        @Override
 		public void onBattleResumed() {
 			getPauseButton().setSelected(false);
 			getNextTurnButton().setEnabled(false);
