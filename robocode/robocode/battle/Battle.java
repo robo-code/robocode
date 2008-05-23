@@ -183,9 +183,6 @@ public class Battle implements Runnable {
 	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
 
-	// Results related items
-	private boolean exitOnComplete;
-
 	// Robot loading related items
 	private Thread unsafeLoadRobotsThread;
 	private final Object unsafeLoaderMonitor = new Object();
@@ -304,10 +301,6 @@ public class Battle implements Runnable {
 			}
 
 			battleManager.printResultsData(this);
-
-			if (exitOnComplete) {
-				System.exit(0);
-			}
 		} else {
 			// Replay
 
@@ -328,13 +321,12 @@ public class Battle implements Runnable {
 			}
 		}
 
+		eventDispatcher.onBattleEnded(isAborted());
+		if (!isAborted()) {
+			eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleSpecification(), computeResults());
+		}
 
-        eventDispatcher.onBattleEnded(isAborted());
-        if (!isAborted()) {
-            eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleSpecification(), computeResults());
-        }
-
-        // The results dialog needs the battle object to be complete, so we
+		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
 		// for cleaning up the battle when its done with it.
 		if (!manager.isGUIEnabled()) {
@@ -363,26 +355,26 @@ public class Battle implements Runnable {
 		}
 	}
 
-    private RobotResults[] computeResults() {
-        List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());
+	private RobotResults[] computeResults() {
+		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());
 
-        Collections.sort(orderedPeers);
+		Collections.sort(orderedPeers);
 
-        RobotResults results[] = new RobotResults[orderedPeers.size()];
+		RobotResults results[] = new RobotResults[orderedPeers.size()];
 
-        for (int i = 0; i < results.length; i++) {
-            ContestantPeer peer = orderedPeers.get(i);
-            RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
+		for (int i = 0; i < results.length; i++) {
+			ContestantPeer peer = orderedPeers.get(i);
+			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
 
-            ContestantStatistics stats = peer.getStatistics();
+			ContestantStatistics stats = peer.getStatistics();
 
-            results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
-                    stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
-                    stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
-                    stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
-        }
-        return results;
-    }
+			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
+					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
+					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
+					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
+		}
+		return results;
+	}
 
 	public void addBullet(BulletPeer bullet) {
 		bullets.add(bullet);
@@ -591,11 +583,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public boolean isExitOnComplete() {
-		return exitOnComplete;
-	}
-
-	public synchronized boolean isRobotsLoaded() {
+	private synchronized boolean isRobotsLoaded() {
 		return robotsLoaded;
 	}
 
@@ -1172,10 +1160,6 @@ public class Battle implements Runnable {
 
 	public void setBattleThread(Thread newBattleThread) {
 		battleThread = newBattleThread;
-	}
-
-	public void setExitOnComplete(boolean newExitOnComplete) {
-		exitOnComplete = newExitOnComplete;
 	}
 
 	public void setGunCoolingRate(double newGunCoolingRate) {

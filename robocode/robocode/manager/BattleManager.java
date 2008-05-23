@@ -91,6 +91,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BattleManager {
 	private RobocodeManager manager;
 
+	private boolean exitOnComplete;
+
 	private Battle battle;
 	private BattleSpecification battleSpecification;
 	private BattleProperties battleProperties = new BattleProperties();
@@ -301,6 +303,7 @@ public class BattleManager {
 			BattleSpecification battleSpecification) {
 
 		this.battleSpecification = battleSpecification;
+		this.exitOnComplete = exitOnComplete;
 
 		log("Preparing battle...");
 		if (battle != null) {
@@ -321,7 +324,6 @@ public class BattleManager {
 		}
 
 		battle = new Battle(battleField, manager, battleEventDispatcher);
-		battle.setExitOnComplete(exitOnComplete);
 
 		// Set stuff the view needs to know
 		battle.setProperties(battleProperties);
@@ -389,11 +391,11 @@ public class BattleManager {
 		battleFilename = newBattleFilename;
 	}
 
-	public synchronized boolean isPaused() {
+	public boolean isPaused() {
 		return (pauseCount.get() != 0);
 	}
 
-	public synchronized void pauseBattle() {
+	public void pauseBattle() {
 		if (pauseCount.incrementAndGet() == 1) {
 			battleEventDispatcher.onBattlePaused();
 		}
@@ -531,9 +533,9 @@ public class BattleManager {
 		return battleProperties;
 	}
 
-    public BattleSpecification getBattleSpecification() {
-        return battleSpecification;
-    }
+	public BattleSpecification getBattleSpecification() {
+		return battleSpecification;
+	}
 
 	public void setDefaultBattleProperties() {
 		battleProperties = new BattleProperties();
@@ -547,9 +549,9 @@ public class BattleManager {
 		return resultsFile;
 	}
 
-    public void printResultsData(Battle battle) {
+	public void printResultsData(Battle battle) {
 		// Do not print out if no result file has been specified and the GUI is enabled
-		if (getResultsFile() == null && (!battle.isExitOnComplete() || manager.isGUIEnabled())) {
+		if (getResultsFile() == null && (!exitOnComplete || manager.isGUIEnabled())) {
 			return;
 		}
 
@@ -595,20 +597,32 @@ public class BattleManager {
 	}
 
 	private class BattleObserver extends BattleAdaptor {
-        @Override
-		public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
-            RobocodeListener listener = manager.getListener();
-            if (listener != null) {
-                listener.battleComplete(battleSpecification, results);
+		@Override
+		public void onBattleEnded(boolean isAborted) {
+			RobocodeListener listener = manager.getListener();
+
+			if (isAborted) {
+				if (listener != null) {
+					listener.battleAborted(battleSpecification);
+				}
+				// We should only exit here, if the battle was aborted.
+				// Otherwise the results will not be given to the client when Robocode is closed down
+				if (exitOnComplete) {
+					System.exit(0);
+				}
 			}
 		}
 
-        @Override
-        public void onBattleEnded(boolean isAborted) {
-            RobocodeListener listener = manager.getListener();
-            if (isAborted && listener != null) {
-                listener.battleAborted(battleSpecification);
-            }
-        }
-    }
+		@Override
+		public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
+			RobocodeListener listener = manager.getListener();
+
+			if (listener != null) {
+				listener.battleComplete(battleSpecification, results);
+			}
+			if (exitOnComplete) {
+				System.exit(0);
+			}
+		}
+	}
 }
