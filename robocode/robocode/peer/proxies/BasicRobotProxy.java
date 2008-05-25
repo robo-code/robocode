@@ -89,7 +89,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		peer.setCall();
 	}
 
-    // AdvancedRobot calls below
+	// AdvancedRobot calls below
 	public double getRadarTurnRemaining() {
 		peer.getCall();
 		return peer.getRadarTurnRemaining();
@@ -192,8 +192,8 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		return peer.getRoundNum();
 	}
 
-    public Graphics2D getGraphics() {
-        peer.getCall();
-        return peer.getGraphics();
-    }
+	public Graphics2D getGraphics() {
+		peer.getCall();
+		return peer.getGraphics();
+	}
 }

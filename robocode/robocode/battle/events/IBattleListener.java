@@ -12,7 +12,7 @@ public interface IBattleListener {
 
 	public void onBattleEnded(boolean isAborted);
 
-    public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results);
+	public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results);
 
 	public void onBattlePaused();
 
@@ -22,7 +22,7 @@ public interface IBattleListener {
 
 	public void onRoundEnded();
 
-    public void onTurnStarted();
+	public void onTurnStarted();
     
-    public void onTurnEnded(TurnSnapshot turnSnapshot);
+	public void onTurnEnded(TurnSnapshot turnSnapshot);
 }

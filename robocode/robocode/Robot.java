@@ -27,6 +27,7 @@
  *     - Added onPaint() method for painting the robot
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - Added getGraphics()
  *******************************************************************************/
 package robocode;
 
@@ -1413,21 +1414,33 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		return 0; // never called
 	}
 
-    /**
-     * Provides robot with same Graphics as onPaint event. Could be used to paint anytime during other events.
-     * @return Graphics canvas to paint on battle view
-     * @since 1.6.1
-     * @see robocode.robotinterfaces.IPaintEvents#onPaint
-     */
-    public Graphics2D getGraphics(){
-        if (peer != null) {
-            return peer.getGraphics();
-        }
-        uninitializedException();
-        return null; // never called
-    }
+	/**
+	 * Returns a graphics context used for painting graphical items for the robot.
+	 * <p/>
+	 * This method is very useful for debugging your robot.
+	 * <p/>
+	 * Note that the robot will only be painted if the "Paint" is enabled on the
+	 * robot's console window; otherwise the robot will never get painted (the
+	 * reason being that all robots might have graphical items that must be
+	 * painted, and then you might not be able to tell what graphical items that
+	 * have been painted for your robot).
+	 * <p/>
+	 * Also note that the coordinate system for the graphical context where you
+	 * paint items fits for the Robocode coordinate system where (0, 0) is at
+	 * the bottom left corner of the battlefield, where X is towards right and Y
+	 * is upwards.
+	 * @see #onPaint(Graphics2D)
+	 * @since 1.6.1
+	 */
+	public Graphics2D getGraphics() {
+		if (peer != null) {
+			return peer.getGraphics();
+		}
+		uninitializedException();
+		return null; // never called
+	}
 
-    /**
+	/**
 	 * {@inheritDoc}
 	 */
 	public void onPaint(Graphics2D g) {}

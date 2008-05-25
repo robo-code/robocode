@@ -38,25 +38,25 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-        if (battle != null && battle.isRunning()) {
+		if (battle != null && battle.isRunning()) {
 
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    switch (e.getID()) {
-                    case KeyEvent.KEY_TYPED:
-                        robotPeer.onInteractiveEvent(new KeyTypedEvent(cloneKeyEvent(e)));
-                        break;
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					switch (e.getID()) {
+					case KeyEvent.KEY_TYPED:
+						robotPeer.onInteractiveEvent(new KeyTypedEvent(cloneKeyEvent(e)));
+						break;
 
-                    case KeyEvent.KEY_PRESSED:
-                        robotPeer.onInteractiveEvent(new KeyPressedEvent(cloneKeyEvent(e)));
-                        break;
+					case KeyEvent.KEY_PRESSED:
+						robotPeer.onInteractiveEvent(new KeyPressedEvent(cloneKeyEvent(e)));
+						break;
 
-                    case KeyEvent.KEY_RELEASED:
-                        robotPeer.onInteractiveEvent(new KeyReleasedEvent(cloneKeyEvent(e)));
-                        break;
-                    }
-                }
-            }
+					case KeyEvent.KEY_RELEASED:
+						robotPeer.onInteractiveEvent(new KeyReleasedEvent(cloneKeyEvent(e)));
+						break;
+					}
+				}
+			}
 		}
 		return false;
 	}
@@ -64,84 +64,84 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	public void mouseClicked(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-        if (battle != null && battle.isRunning()) {
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new MouseClickedEvent(mirroredMouseEvent(e)));
-                }
-            }
+		if (battle != null && battle.isRunning()) {
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseClickedEvent(mirroredMouseEvent(e)));
+				}
+			}
 		}
 	}
 
 	public void mouseEntered(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-        if (battle != null && battle.isRunning()) {
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new MouseEnteredEvent(mirroredMouseEvent(e)));
-                }
-            }
+		if (battle != null && battle.isRunning()) {
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseEnteredEvent(mirroredMouseEvent(e)));
+				}
+			}
 		}
 	}
 
 	public void mouseExited(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-        if (battle != null && battle.isRunning()) {
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new MouseExitedEvent(mirroredMouseEvent(e)));
-                }
-            }
+		if (battle != null && battle.isRunning()) {
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseExitedEvent(mirroredMouseEvent(e)));
+				}
+			}
 		}
 	}
 
 	public void mousePressed(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-        if (battle != null && battle.isRunning()) {
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new MousePressedEvent(mirroredMouseEvent(e)));
-                }
-            }
+		if (battle != null && battle.isRunning()) {
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MousePressedEvent(mirroredMouseEvent(e)));
+				}
+			}
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-        if (battle != null && battle.isRunning()) {
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new MouseReleasedEvent(mirroredMouseEvent(e)));
-                }
-            }
+		if (battle != null && battle.isRunning()) {
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseReleasedEvent(mirroredMouseEvent(e)));
+				}
+			}
 		}
 	}
 
 	public void mouseMoved(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-        if (battle != null && battle.isRunning()) {
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new MouseMovedEvent(mirroredMouseEvent(e)));
-                }
-            }
+		if (battle != null && battle.isRunning()) {
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseMovedEvent(mirroredMouseEvent(e)));
+				}
+			}
 		}
 	}
 
 	public void mouseDragged(MouseEvent e) {
 		Battle battle = manager.getBattleManager().getBattle();
 
-        if (battle != null && battle.isRunning()) {
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new MouseDraggedEvent(mirroredMouseEvent(e)));
-                }
-            }
+		if (battle != null && battle.isRunning()) {
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseDraggedEvent(mirroredMouseEvent(e)));
+				}
+			}
 		}
 	}
 
@@ -149,18 +149,18 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-            for (RobotPeer robotPeer : battle.getRobots()) {
-                if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-                    robotPeer.onInteractiveEvent(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
-                }
-            }
-        }
+			for (RobotPeer robotPeer : battle.getRobots()) {
+				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
+					robotPeer.onInteractiveEvent(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
+				}
+			}
+		}
 	}
 
-    public static KeyEvent cloneKeyEvent(final KeyEvent e) {
-        return new KeyEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
-                e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
-    }
+	public static KeyEvent cloneKeyEvent(final KeyEvent e) {
+		return new KeyEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
+				e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
+	}
 
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 

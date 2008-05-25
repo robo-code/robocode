@@ -44,7 +44,6 @@ import robocode.*;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.RobotPeer;
 import robocode.robotinterfaces.*;
-import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.Utils;
 
 import java.util.ArrayList;

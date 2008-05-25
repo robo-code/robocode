@@ -33,12 +33,10 @@ import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.RobotState;
 import robocode.control.BattleSpecification;
-import robocode.control.RobotResults;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -332,18 +330,18 @@ public class SoundManager {
 			dispatcher.removeListener(this);
 		}
 
-        @Override
+		@Override
 		public void onBattleStarted(BattleSpecification battleSpecification) {
 			playBackgroundMusic();
 		}
 
-        @Override
+		@Override
 		public void onBattleEnded(boolean isAborted) {
 			stopBackgroundMusic();
 			playEndOfBattleMusic();
 		}
 
-        @Override
+		@Override
 		public void onTurnEnded(TurnSnapshot turnSnapshot) {
 			int battleFieldWidth = manager.getBattleManager().getBattle().getBattleField().getWidth();
 

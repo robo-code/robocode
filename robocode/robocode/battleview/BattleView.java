@@ -19,7 +19,6 @@ import robocode.battle.events.BattleAdaptor;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.BattleProperties;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
@@ -32,7 +31,6 @@ import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.GraphicsState;
 import robocode.control.BattleSpecification;
-import robocode.control.RobotResults;
 
 import javax.swing.*;
 import java.awt.*;
@@ -690,7 +688,7 @@ public class BattleView extends Canvas {
 			dispatcher.removeListener(this);
 		}
 
-        @Override
+		@Override
 		public void onBattleStarted(BattleSpecification battleSpecification) {
 			isRunning.set(true);
 			isPaused.set(false);
@@ -698,7 +696,7 @@ public class BattleView extends Canvas {
 			timer.start();
 		}
 
-        @Override
+		@Override
 		public void onBattleEnded(boolean isAborted) {
 			timer.stop();
 			isRunning.set(false);
@@ -706,7 +704,7 @@ public class BattleView extends Canvas {
 			EventQueue.invokeLater(repaintTask);
 		}
 
-       @Override
+		@Override
 		public void onBattleResumed() {
 			isPaused.set(false);
 			timer.start();

@@ -53,11 +53,11 @@ public class RobotResults implements java.io.Serializable {
 	 * @param lastSurvivorBonus the last survivor bonus for the robot in the battle
 	 * @param bulletDamage      the bullet damage score for the robot in the battle
 	 * @param bulletDamageBonus the bullet damage bonus for the robot in the battle
-	 * @param ramDamage         the ram damage for the robot in the battle
-	 * @param ramDamageBonus    the ram damage bonus for the robot in the battle
-	 * @param firsts            the number of times this robot placed first
-	 * @param seconds           the number of times this robot placed second
-	 * @param thirds            the number of times this robot placed third
+	 * @param ramDamage         the ramming damage for the robot in the battle
+	 * @param ramDamageBonus    the ramming damage bonus for the robot in the battle
+	 * @param firsts            the number of rounds this robot placed first
+	 * @param seconds           the number of rounds this robot placed second
+	 * @param thirds            the number of rounds this robot placed third
 	 */
 	public RobotResults(
 			RobotSpecification robot,
@@ -169,27 +169,27 @@ public class RobotResults implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the number of times this robot placed first in the battle.
+	 * Returns the number of rounds this robot placed first in the battle.
 	 *
-	 * @return the number of times this robot placed first in the battle.
+	 * @return the number of rounds this robot placed first in the battle.
 	 */
 	public int getFirsts() {
 		return firsts;
 	}
 
 	/**
-	 * Returns the number of times this robot placed second in the battle.
+	 * Returns the number of rounds this robot placed second in the battle.
 	 *
-	 * @return the number of times this robot placed second in the battle.
+	 * @return the number of rounds this robot placed second in the battle.
 	 */
 	public int getSeconds() {
 		return seconds;
 	}
 
 	/**
-	 * Returns the number of times this robot placed third in the battle.
+	 * Returns the number of rounds this robot placed third in the battle.
 	 *
-	 * @return the number of times this robot placed third in the battle.
+	 * @return the number of rounds this robot placed third in the battle.
 	 */
 	public int getThirds() {
 		return thirds;

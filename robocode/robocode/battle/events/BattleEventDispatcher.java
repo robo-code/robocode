@@ -55,11 +55,11 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-    public void onBattleEnded(boolean isAborted) {
-        for (IBattleListener listener : listeners) {
-            listener.onBattleEnded(isAborted);
-        }
-    }
+	public void onBattleEnded(boolean isAborted) {
+		for (IBattleListener listener : listeners) {
+			listener.onBattleEnded(isAborted);
+		}
+	}
 
 	public void onBattlePaused() {
 		for (IBattleListener listener : listeners) {

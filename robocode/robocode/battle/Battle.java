@@ -789,10 +789,10 @@ public class Battle implements Runnable {
 		for (RobotPeer r : robots) {
 			r.getEventManager().clear(currentTime - 1);
 
-            // Clear the queue of calls in the graphics proxy as these have already
-            // been processed, so calling onPaint() will add the new calls
-            ((Graphics2DProxy)r.getGraphics()).clearQueue();
-        }
+			// Clear the queue of calls in the graphics proxy as these have already
+			// been processed, so calling onPaint() will add the new calls
+			((Graphics2DProxy) r.getGraphics()).clearQueue();
+		}
 	}
 
 	private void moveRobots() {

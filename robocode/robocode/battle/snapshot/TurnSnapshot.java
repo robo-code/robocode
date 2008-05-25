@@ -60,8 +60,8 @@ public class TurnSnapshot implements java.io.Serializable {
 	// Current TPS (turns per second)
 	private final int tps;
 
-    // Current turn
-    private final int turn;
+	// Current turn
+	private final int turn;
 
 	/**
 	 * Constructs a snapshot of the battle.
@@ -84,8 +84,8 @@ public class TurnSnapshot implements java.io.Serializable {
 		}
 
 		tps = battle.getTPS();
-        turn = battle.getCurrentTime();
-    }
+		turn = battle.getCurrentTime();
+	}
 
 	/**
 	 * Returns the width of the battlefield.
@@ -132,12 +132,12 @@ public class TurnSnapshot implements java.io.Serializable {
 		return tps;
 	}
 
-    /**
-     * Returns the current turn.
-     *
-     * @return the current turn.
-     */
-    public int getTurn() {
-        return turn;
-    }
+	/**
+	 * Returns the current turn.
+	 *
+	 * @return the current turn.
+	 */
+	public int getTurn() {
+		return turn;
+	}
 }

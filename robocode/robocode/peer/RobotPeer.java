@@ -166,13 +166,13 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private boolean isDroid;
 	private boolean isIORobot;
 
-    //thread is running
-    private boolean isRunning;
+	// thread is running
+	private boolean isRunning;
 
-    //waiting for next tick
-    private boolean isSleeping;
+	// waiting for next tick
+	private boolean isSleeping;
 
-    private boolean isStopped;
+	private boolean isStopped;
 	private boolean isWinner;
 
 	private double lastGunHeading;
@@ -1590,7 +1590,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 	}
 
-    public synchronized void getCall() {
+	public synchronized void getCall() {
 		getCallCount++;
 		if (getCallCount == MAX_GET_CALL_COUNT) {
 			out.println("SYSTEM: You have made " + getCallCount + " calls to getXX methods without calling execute()");
@@ -2004,12 +2004,12 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		setMaxTurnRate(savedMaxTurnRate);
 	}
 
-    public Graphics2D getGraphics() {
-        if (graphicsProxy == null) {
-            graphicsProxy = new Graphics2DProxy();
-        }
-        return graphicsProxy;
-    }
+	public Graphics2D getGraphics() {
+		if (graphicsProxy == null) {
+			graphicsProxy = new Graphics2DProxy();
+		}
+		return graphicsProxy;
+	}
 
 	public void onInteractiveEvent(robocode.Event e) {
 		eventManager.add(e);
