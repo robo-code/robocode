@@ -10,6 +10,7 @@
  *     - Initial implementation
  *     Pavel Savara
  *     - Included in Robocode samples
+ *     - Added getGraphics() example on onHitByBullet()
  *******************************************************************************/
 package sample;
 
@@ -22,7 +23,8 @@ import java.awt.*;
 
 
 /**
- * PaintingRobot - a sample robot that demonstrates the onPaint() method
+ * PaintingRobot - a sample robot that demonstrates the onPaint() and
+ * getGraphics() methods.
  * <p/>
  * Moves in a seesaw motion, and spins the gun around at each end.
  * When painting is enabled for this robot, a red circle will be painted
@@ -53,19 +55,20 @@ public class PaintingRobot extends Robot {
 	}
 
 	/**
-	 * We were hit!
-     * Draw orange circles, during non onPaint event
-     * @since 1.6.1
+	 * We were hit!  Turn perpendicular to the bullet,
+	 * so our seesaw might avoid a future shot.
+	 * In addition, draw orange circles where we were hit.
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
-        Graphics2D g = getGraphics();
-        g.setColor(Color.orange);
-        g.drawOval((int) (getX() - 55), (int) (getY() - 55), 110, 110);
-        g.drawOval((int) (getX() - 56), (int) (getY() - 56), 112, 112);
-        g.drawOval((int) (getX() - 59), (int) (getY() - 59), 118, 118);
-        g.drawOval((int) (getX() - 60), (int) (getY() - 60), 120, 120);
+		Graphics2D g = getGraphics();
 
-        turnLeft(90 - e.getBearing());
+		g.setColor(Color.orange);
+		g.drawOval((int) (getX() - 55), (int) (getY() - 55), 110, 110);
+		g.drawOval((int) (getX() - 56), (int) (getY() - 56), 112, 112);
+		g.drawOval((int) (getX() - 59), (int) (getY() - 59), 118, 118);
+		g.drawOval((int) (getX() - 60), (int) (getY() - 60), 120, 120);
+
+		turnLeft(90 - e.getBearing());
 	}
 
 	/**
