@@ -651,4 +651,12 @@ public interface IBasicRobotPeer {
 	 * @see #getCall()
 	 */
 	void setCall();
+
+    /**
+     * Provides robot with same Graphics as onPaint event. Could be used to paint anytime during other events.
+     * @return Graphics canvas to paint on battle view 
+     * @since 1.6.1
+     * @see robocode.robotinterfaces.IPaintEvents#onPaint
+     */
+    Graphics2D getGraphics();
 }

@@ -959,12 +959,7 @@ public class EventManager implements IEventManager {
 			IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
 
 			if (listener != null) {
-				// Clear the queue of calls in the graphics proxy as these have already
-				// been processed, so calling onPaint() will add the new calls
-				Graphics2DProxy gfxProxy = robotPeer.getGraphicsProxy();
-
-				gfxProxy.clearQueue();
-				listener.onPaint(gfxProxy);
+				listener.onPaint(robotPeer.getGraphics());
 			}
 		}
 	}

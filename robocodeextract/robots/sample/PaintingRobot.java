@@ -53,11 +53,19 @@ public class PaintingRobot extends Robot {
 	}
 
 	/**
-	 * We were hit!  Turn perpendicular to the bullet,
-	 * so our seesaw might avoid a future shot.
+	 * We were hit!
+     * Draw orange circles, during non onPaint event
+     * @since 1.6.1
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
-		turnLeft(90 - e.getBearing());
+        Graphics2D g = getGraphics();
+        g.setColor(Color.orange);
+        g.drawOval((int) (getX() - 55), (int) (getY() - 55), 110, 110);
+        g.drawOval((int) (getX() - 56), (int) (getY() - 56), 112, 112);
+        g.drawOval((int) (getX() - 59), (int) (getY() - 59), 118, 118);
+        g.drawOval((int) (getX() - 60), (int) (getY() - 60), 120, 120);
+
+        turnLeft(90 - e.getBearing());
 	}
 
 	/**

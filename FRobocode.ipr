@@ -236,6 +236,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/robocode/robocode.iml" filepath="$PROJECT_DIR$/robocode/robocode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocodeextract/robocodeextract.iml" filepath="$PROJECT_DIR$/robocodeextract/robocodeextract.iml" />
       <module fileurl="file://$PROJECT_DIR$/roborumble/roborumble.iml" filepath="$PROJECT_DIR$/roborumble/roborumble.iml" />
     </modules>
   </component>

@@ -17,6 +17,8 @@ package robocode.robotinterfaces.peer;
 import robocode.ScannedRobotEvent;
 import robocode.robotinterfaces.IBasicEvents;
 
+import java.awt.*;
+
 
 /**
  * The standard robot peer for standard robot types like {@link robocode.Robot},

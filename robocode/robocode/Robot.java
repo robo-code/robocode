@@ -1413,7 +1413,21 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		return 0; // never called
 	}
 
-	/**
+    /**
+     * Provides robot with same Graphics as onPaint event. Could be used to paint anytime during other events.
+     * @return Graphics canvas to paint on battle view
+     * @since 1.6.1
+     * @see robocode.robotinterfaces.IPaintEvents#onPaint
+     */
+    public Graphics2D getGraphics(){
+        if (peer != null) {
+            return peer.getGraphics();
+        }
+        uninitializedException();
+        return null; // never called
+    }
+
+    /**
 	 * {@inheritDoc}
 	 */
 	public void onPaint(Graphics2D g) {}

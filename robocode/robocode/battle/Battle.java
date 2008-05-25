@@ -97,6 +97,7 @@ package robocode.battle;
 
 import static robocode.io.Logger.log;
 import robocode.*;
+import robocode.robotpaint.Graphics2DProxy;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.TurnSnapshot;
@@ -787,7 +788,11 @@ public class Battle implements Runnable {
 	private void cleanRobotEvents() {
 		for (RobotPeer r : robots) {
 			r.getEventManager().clear(currentTime - 1);
-		}
+
+            // Clear the queue of calls in the graphics proxy as these have already
+            // been processed, so calling onPaint() will add the new calls
+            ((Graphics2DProxy)r.getGraphics()).clearQueue();
+        }
 	}
 
 	private void moveRobots() {
