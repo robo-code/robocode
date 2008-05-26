@@ -96,4 +96,10 @@ public class BattleEventDispatcher implements IBattleListener {
 			listener.onTurnEnded(turnSnapshot);
 		}
 	}
+
+    public void onBattleMessage(String message) {
+        for (IBattleListener listener : listeners) {
+            listener.onBattleMessage(message);
+        }
+    }
 }

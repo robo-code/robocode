@@ -96,6 +96,7 @@ package robocode.battle;
 
 
 import static robocode.io.Logger.log;
+import robocode.io.Logger;
 import robocode.*;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.battle.events.BattleEventDispatcher;
@@ -326,6 +327,7 @@ public class Battle implements Runnable {
 		if (!isAborted()) {
 			eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleSpecification(), computeResults());
 		}
+        Logger.setLogListener(null);
 
 		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible

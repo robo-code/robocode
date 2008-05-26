@@ -25,4 +25,6 @@ public class BattleAdaptor implements IBattleListener {
 	public void onTurnStarted() {}
     
 	public void onTurnEnded(TurnSnapshot turnSnapshot) {}
+
+    public void onBattleMessage(String message) {}
 }

@@ -617,7 +617,7 @@ public class BattleView extends Canvas {
 		return scanArc.getBounds();
 	}
 
-	public void setBattleField(BattleField battleField, BattleEventDispatcher battleEventDispatcher) {
+	public void setup(BattleField battleField, BattleEventDispatcher battleEventDispatcher) {
 		this.battleField = battleField;
 		if (observer != null) {
 			observer.dispose();

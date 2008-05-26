@@ -64,6 +64,7 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
+import robocode.io.Logger;
 import static robocode.io.Logger.log;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
@@ -316,10 +317,12 @@ public class BattleManager {
 		if (manager.isGUIEnabled()) {
 			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
-			battleView.setBattleField(battleField, battleEventDispatcher);
+			battleView.setup(battleField, battleEventDispatcher);
 		}
+        Logger.setLogListener(battleEventDispatcher);
 
-		if (manager.isSoundEnabled()) {
+
+        if (manager.isSoundEnabled()) {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
@@ -624,5 +627,13 @@ public class BattleManager {
 				System.exit(0);
 			}
 		}
+
+        @Override
+        public void onBattleMessage(String message) {
+            RobocodeListener listener = manager.getListener();
+            if (listener != null) {
+                listener.battleMessage(message);
+            }
+        }
 	}
 }

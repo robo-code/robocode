@@ -15,7 +15,7 @@
 package robocode.io;
 
 
-import robocode.control.RobocodeListener;
+import robocode.battle.events.IBattleListener;
 
 
 /**
@@ -25,10 +25,10 @@ import robocode.control.RobocodeListener;
  * @author Mathew A. Nelson (original)
  */
 public class Logger {
-	private static RobocodeListener logListener;
-	private static String logBuffer = "";
+	private static IBattleListener logListener;
+	private static StringBuffer logBuffer = new StringBuffer();
 
-	public static void setLogListener(RobocodeListener logListener) {
+	public static void setLogListener(IBattleListener logListener) {
 		Logger.logListener = logListener;
 	}
 
@@ -36,7 +36,7 @@ public class Logger {
 		if (logListener == null) {
 			System.err.println(s);
 		} else {
-			logListener.battleMessage(s);
+			logListener.onBattleMessage(s);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class Logger {
 			System.err.println(s + ": " + e);
 			e.printStackTrace(System.err);
 		} else {
-			logListener.battleMessage(s + ": " + e);
+			logListener.onBattleMessage(s + ": " + e);
 		}
 	}
 
@@ -59,10 +59,10 @@ public class Logger {
 			}
 		} else {
 			if (newline) {
-				logListener.battleMessage(logBuffer + s);
-				logBuffer = "";
+				logListener.onBattleMessage(logBuffer + s);
+				logBuffer.setLength(0);
 			} else {
-				logBuffer += s;
+				logBuffer.append(s);
 			}
 		}
 	}
@@ -72,7 +72,7 @@ public class Logger {
 			System.err.println(e);
 			e.printStackTrace(System.err);
 		} else {
-			logListener.battleMessage("" + e);
+			logListener.onBattleMessage("" + e);
 		}
 	}
 }

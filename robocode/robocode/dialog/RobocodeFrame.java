@@ -234,6 +234,11 @@ public class RobocodeFrame extends JFrame {
 			getPauseButton().setSelected(false);
 			getNextTurnButton().setEnabled(false);
 		}
+
+        @Override
+        public void onBattleMessage(String message) {
+            System.err.println(message);
+        }
 	}
 
 	/**

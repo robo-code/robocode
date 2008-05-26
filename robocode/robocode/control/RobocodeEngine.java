@@ -227,8 +227,6 @@ public class RobocodeEngine {
 	 * @see #getLocalRepository()
 	 */
 	public void runBattle(BattleSpecification battle) {
-		Logger.setLogListener(listener);
-
 		manager.getBattleManager().startNewBattle(battle, false);
 	}
 

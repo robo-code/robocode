@@ -25,4 +25,13 @@ public interface IBattleListener {
 	public void onTurnStarted();
     
 	public void onTurnEnded(TurnSnapshot turnSnapshot);
+
+    /**
+     * This method is called when the game logs messages that is normally
+     * written out to the console.
+     *
+     * @param message the message logged by the game
+     * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
+     */
+    void onBattleMessage(String message);
 }
