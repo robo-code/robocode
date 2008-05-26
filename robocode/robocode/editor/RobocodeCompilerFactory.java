@@ -25,7 +25,9 @@ package robocode.editor;
 import robocode.dialog.ConsoleDialog;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
-import static robocode.io.Logger.log;
+import robocode.io.Logger;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,7 +68,7 @@ public class RobocodeCompilerFactory {
 				return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
 						getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
 			}
-			log("Unable to create compiler.");
+			logError("Unable to create compiler.");
 			return null;
 		}
 		return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
@@ -181,13 +183,13 @@ public class RobocodeCompilerFactory {
 				in = new FileInputStream(FileUtil.getCompilerConfigFile());
 				compilerProperties.load(in);
 				if (compilerProperties.getRobocodeVersion() == null) {
-					log("Setting up new compiler");
+					logMessage("Setting up new compiler");
 					compilerProperties.setCompilerBinary("");
 				}
 			} catch (FileNotFoundException e) {
-				log("Setting up compiler.");
+				logError("Setting up compiler failed.", e);
 			} catch (IOException e) {
-				log("IO Exception reading " + FileUtil.getCompilerConfigFile().getName() + ": " + e);
+				logError("IO Exception reading " + FileUtil.getCompilerConfigFile().getName(), e);
 			} finally {
 				if (in != null) {
 					try {
@@ -409,7 +411,7 @@ public class RobocodeCompilerFactory {
 		try {
 			String command = "./compilers/buildJikes.sh";
 
-			log(command);
+			logMessage(command);
 
 			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
@@ -462,7 +464,7 @@ public class RobocodeCompilerFactory {
 
 	public static void saveCompilerProperties() {
 		if (compilerProperties == null) {
-			log("Cannot save null compiler properties");
+			logError("Cannot save null compiler properties");
 			return;
 		}
 		FileOutputStream out = null;
@@ -472,7 +474,7 @@ public class RobocodeCompilerFactory {
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
-			log(e);
+			Logger.logError(e);
 		} finally {
 			if (out != null) {
 				try {

@@ -21,7 +21,9 @@
 package robocode.peer.robot;
 
 
-import static robocode.io.Logger.log;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
+import robocode.io.Logger;
 import robocode.peer.RobotPeer;
 
 
@@ -69,10 +71,10 @@ public class RobotThreadManager {
 				e.printStackTrace();
 			}
 			if (runThread.isAlive()) {
-				log("Warning!  Unable to stop thread: " + runThread.getName());
+				logError("Warning!  Unable to stop thread: " + runThread.getName());
 			} else {
 				robotPeer.getOut().println("SYSTEM: This robot has been stopped.  No score will be generated.");
-				log(robotPeer.getName() + " has been stopped.  No score will be generated.");
+				logMessage(robotPeer.getName() + " has been stopped.  No score will be generated.");
 			}
 		}
 
@@ -103,13 +105,13 @@ public class RobotThreadManager {
 					Thread.currentThread().interrupt();
 
 					robotPeer.getOut().println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
-					log("Thread: " + thread.getName() + " join interrupted.");
+					logError("Thread: " + thread.getName() + " join interrupted.");
 				}
 				if (thread.isAlive()) {
-					log("Warning! Unable to stop thread: " + thread.getName());
+					logError("Warning! Unable to stop thread: " + thread.getName());
 				} else {
 					robotPeer.getOut().println("SYSTEM:  Thread: " + thread.getName() + " has been stopped.");
-					log("Thread: " + thread.getName() + " has been stopped.");
+					logError("Thread: " + thread.getName() + " has been stopped.");
 				}
 			}
 		}
@@ -123,7 +125,7 @@ public class RobotThreadManager {
 		try {
 			runThreadGroup.destroy();
 		} catch (Exception e) {
-			log("Warning, could not destroy " + runThreadGroup.getName(), e);
+			Logger.logError("Warning, could not destroy " + runThreadGroup.getName(), e);
 		}
 	}
 
@@ -134,7 +136,7 @@ public class RobotThreadManager {
 			runThread.setPriority(Thread.NORM_PRIORITY);
 			runThread.start();
 		} catch (Exception e) {
-			log("Exception starting thread: " + e);
+			logError("Exception starting thread: " + e);
 		}
 	}
 
@@ -147,7 +149,7 @@ public class RobotThreadManager {
 
 		for (int j = 0; j < 100 && runThread.isAlive(); j++) {
 			if (j == 50) {
-				log("Waiting for robot " + robotPeer.getName() + " to stop");
+				logError("Waiting for robot " + robotPeer.getName() + " to stop");
 			}
 			try {
 				Thread.sleep(10);
@@ -160,10 +162,10 @@ public class RobotThreadManager {
 
 		if (runThread.isAlive()) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-				log("Robot " + robotPeer.getName() + " is not stopping.  Forcing a stop.");
+				logError("Robot " + robotPeer.getName() + " is not stopping.  Forcing a stop.");
 				forceStop();
 			} else {
-				log("Robot " + robotPeer.getName() + " is still running.  Not stopping it because security is off.");
+				logError("Robot " + robotPeer.getName() + " is still running.  Not stopping it because security is off.");
 			}
 		}
 	}

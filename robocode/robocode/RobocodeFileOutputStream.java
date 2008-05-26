@@ -93,7 +93,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 */
 	public RobocodeFileOutputStream(String fileName, boolean append) throws IOException {
 		if (threadManager == null) {
-			Logger.log("RobocodeFileOutputStream.threadManager cannot be null!");
+			Logger.logError("RobocodeFileOutputStream.threadManager cannot be null!");
 			return;
 		}
 		Thread c = Thread.currentThread();
@@ -102,7 +102,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 		RobotPeer robotPeer = threadManager.getRobotPeer(c);
 
 		if (robotPeer == null) {
-			Logger.log("RobotPeer is null");
+			Logger.logError("RobotPeer is null");
 			return;
 		}
 

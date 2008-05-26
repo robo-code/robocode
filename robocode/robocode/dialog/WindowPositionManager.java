@@ -57,9 +57,9 @@ public class WindowPositionManager implements ComponentListener {
 				in = new FileInputStream(FileUtil.getWindowConfigFile());
 				windowPositions.load(in);
 			} catch (FileNotFoundException e) {
-				Logger.log("Creating " + FileUtil.getWindowConfigFile().getName() + " file");
+				Logger.logMessage("Creating " + FileUtil.getWindowConfigFile().getName() + " file");
 			} catch (Exception e) {
-				Logger.log(e);
+				Logger.logError(e);
 			} finally {
 				if (in != null) {
 					try {
@@ -125,7 +125,7 @@ public class WindowPositionManager implements ComponentListener {
 
 			getWindowPositions().store(out, "Robocode window sizes");
 		} catch (IOException e) {
-			Logger.log("Warning:  Unable to save window positions: " + e);
+			Logger.logError("Warning:  Unable to save window positions: " + e);
 		} finally {
 			if (out != null) {
 				try {

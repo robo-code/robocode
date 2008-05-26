@@ -39,14 +39,14 @@ public class ImageUtil {
 		URL url = ClassLoader.class.getResource(filename);
 
 		if (url == null) {
-			Logger.log("Could not load image because of invalid filename: " + filename);
+			Logger.logError("Could not load image because of invalid filename: " + filename);
 			return null;
 		}
 
 		try {
 			return ImageIO.read(url);
 		} catch (Exception e) {
-			Logger.log("Could not load image: " + filename);
+			Logger.logError("Could not load image: " + filename);
 			return null;
 		}
 	}

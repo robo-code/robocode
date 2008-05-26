@@ -98,7 +98,7 @@ public class RobotClassManager {
 
 	public void addResolvedClass(String className) {
 		if (!referencedClasses.containsKey(className)) {
-			Logger.log(fullClassName + ": Cannot set " + className + " to resolved, did not know it was referenced.");
+			Logger.logError(fullClassName + ": Cannot set " + className + " to resolved, did not know it was referenced.");
 			return;
 		}
 		referencedClasses.put(className, "true");

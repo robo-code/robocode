@@ -32,30 +32,21 @@ public class Logger {
 		Logger.logListener = logListener;
 	}
 
-	public static void log(String s) {
+	public static void logMessage(String s) {
 		if (logListener == null) {
-			System.err.println(s);
+			System.out.println(s);
 		} else {
 			logListener.onBattleMessage(s);
 		}
 	}
 
-	public static void log(String s, Throwable e) {
-		if (logListener == null) {
-			System.err.println(s + ": " + e);
-			e.printStackTrace(System.err);
-		} else {
-			logListener.onBattleMessage(s + ": " + e);
-		}
-	}
-
-	public static void log(String s, boolean newline) {
+	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
 			if (newline) {
-				System.err.println(s);
+				System.out.println(s);
 			} else {
-				System.err.print(s);
-				System.err.flush();
+				System.out.print(s);
+				System.out.flush();
 			}
 		} else {
 			if (newline) {
@@ -67,12 +58,29 @@ public class Logger {
 		}
 	}
 
-	public static void log(Throwable e) {
+    public static void logError(String s) {
+        if (logListener == null) {
+            System.err.println(s);
+        } else {
+            logListener.onBattleMessage(s);
+        }
+    }
+
+    public static void logError(String s, Throwable e) {
+        if (logListener == null) {
+            System.err.println(s + ": " + e);
+            e.printStackTrace(System.err);
+        } else {
+            logListener.onBattleError(s + ": " + e);
+        }
+    }
+
+	public static void logError(Throwable e) {
 		if (logListener == null) {
 			System.err.println(e);
 			e.printStackTrace(System.err);
 		} else {
-			logListener.onBattleMessage("" + e);
+			logListener.onBattleError("" + e);
 		}
 	}
 }

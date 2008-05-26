@@ -236,7 +236,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			out.close();
 
 		} catch (IOException e) {
-			Logger.log(e);
+			Logger.logError(e);
 		}
 	}
 }

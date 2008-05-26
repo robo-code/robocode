@@ -89,7 +89,7 @@ public class ClassAnalyzer {
 			long magic = in.readInt();
 
 			if (magic != 0xCAFEBABE) {
-				Logger.log("Not a class file!");
+				Logger.logError("Not a class file!");
 				return null;
 			}
 			in.readUnsignedShort(); // minor version

@@ -102,4 +102,10 @@ public class BattleEventDispatcher implements IBattleListener {
             listener.onBattleMessage(message);
         }
     }
+
+    public void onBattleError(String error) {
+        for (IBattleListener listener : listeners) {
+            listener.onBattleError(error);
+        }
+    }
 }

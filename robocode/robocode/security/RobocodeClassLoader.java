@@ -27,7 +27,8 @@
 package robocode.security;
 
 
-import static robocode.io.Logger.log;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
 import robocode.packager.ClassAnalyzer;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.RobotFileSpecification;
@@ -94,7 +95,7 @@ public class RobocodeClassLoader extends ClassLoader {
 
 	@Override
 	public InputStream getResourceAsStream(String resource) {
-		log("Classloader:  getResourceAsStream: " + resource);
+		logMessage("Classloader:  getResourceAsStream: " + resource);
 		return super.getResourceAsStream(resource);
 	}
 
@@ -133,10 +134,10 @@ public class RobocodeClassLoader extends ClassLoader {
 
 		if (!name.equals(robotClassManager.getFullClassName())) {
 			if (robotClassManager.getRootPackage() == null) {
-				log(
+				logError(
 						robotClassManager.getFullClassName() + " is not in a package, but is trying to reference class "
 						+ name);
-				log("To do this in Robocode, you must put your robot into a package.");
+				logError("To do this in Robocode, you must put your robot into a package.");
 				throw new ClassNotFoundException(
 						robotClassManager.getFullClassName() + "is not in a package, but is trying to reference class " + name);
 			}

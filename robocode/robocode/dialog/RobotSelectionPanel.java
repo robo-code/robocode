@@ -663,7 +663,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 			tokenizer = new StringTokenizer(selectedRobotsString, ",");
 			if (robotList == null) {
-				Logger.log(new RuntimeException("Cannot add robots to a null robots list!"));
+				Logger.logError(new RuntimeException("Cannot add robots to a null robots list!"));
 				return;
 			}
 			this.selectedRobots.clear();

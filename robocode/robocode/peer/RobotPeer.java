@@ -74,7 +74,8 @@ import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.exception.WinException;
 import static robocode.gfx.ColorUtil.toColor;
-import static robocode.io.Logger.log;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
 import robocode.manager.NameManager;
 import robocode.peer.proxies.AdvancedRobotProxy;
 import robocode.peer.proxies.JuniorRobotProxy;
@@ -613,7 +614,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 				out.println(getName() + ": Throwable: " + t);
 				out.printStackTrace(t);
 			} else {
-				log(getName() + " stopped successfully.");
+				logMessage(getName() + " stopped successfully.");
 			}
 		}
 

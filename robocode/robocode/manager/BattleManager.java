@@ -65,7 +65,8 @@ import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
-import static robocode.io.Logger.log;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
 import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
@@ -290,7 +291,7 @@ public class BattleManager {
 				}
 			}
 			if (!found) {
-				log("Aborting battle, could not find robot: " + bot);
+				logError("Aborting battle, could not find robot: " + bot);
 				if (manager.getListener() != null) {
 					manager.getListener().battleAborted(spec);
 				}
@@ -306,7 +307,7 @@ public class BattleManager {
 		this.battleSpecification = battleSpecification;
 		this.exitOnComplete = exitOnComplete;
 
-		log("Preparing battle...");
+		logMessage("Preparing battle...");
 		if (battle != null) {
 			battle.stop();
 		}
@@ -482,7 +483,7 @@ public class BattleManager {
 
 	public void saveBattleProperties() {
 		if (battleProperties == null) {
-			log("Cannot save null battle properties");
+			logError("Cannot save null battle properties");
 			return;
 		}
 		if (battleFilename == null) {
@@ -496,7 +497,7 @@ public class BattleManager {
 
 			battleProperties.store(out, "Battle Properties");
 		} catch (IOException e) {
-			log("IO Exception saving battle properties: " + e);
+			logError("IO Exception saving battle properties: " + e);
 		} finally {
 			if (out != null) {
 				try {
@@ -513,9 +514,9 @@ public class BattleManager {
 			in = new FileInputStream(getBattleFilename());
 			getBattleProperties().load(in);
 		} catch (FileNotFoundException e) {
-			log("No file " + battleFilename + " found, using defaults.");
+			logError("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {
-			log("IO Exception reading " + getBattleFilename() + ": " + e);
+			logError("IO Exception reading " + getBattleFilename() + ": " + e);
 		} finally {
 			if (in != null) {
 				try {
@@ -570,7 +571,7 @@ public class BattleManager {
 				fos = new FileOutputStream(f);
 				out = new PrintStream(fos);
 			} catch (IOException e) {
-				log(e);
+				Logger.logError(e);
 			}
 		}
 

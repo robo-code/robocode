@@ -69,7 +69,7 @@ public class RobocodeCompiler {
 		try {
 			String command = compilerBinary + " " + compilerOptions + " " + compilerClassPath + " " + fileName;
 
-			Logger.log("Compile command: " + command);
+			Logger.logMessage("Compile command: " + command);
 
 			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 

@@ -148,7 +148,7 @@ public class SoundCache {
 			clones = new ClipClones(mixer, data, numClones);
 			soundTable.put(key, clones);
 		} catch (LineUnavailableException e) {
-			Logger.log(
+			Logger.logError(
 					"The audio mixer " + mixer.getMixerInfo().getName()
 					+ " does not support the audio format of the sound clip: " + resourceName);
 		}
@@ -165,7 +165,7 @@ public class SoundCache {
 		URL url = ClassLoader.class.getResource(resourceName);
 
 		if (url == null) {
-			Logger.log("Could not load sound because of invalid resource name: " + resourceName);
+			Logger.logError("Could not load sound because of invalid resource name: " + resourceName);
 			return null;
 		}
 		try {
@@ -173,7 +173,7 @@ public class SoundCache {
 
 			data = new SoundData(ais);
 		} catch (Exception e) {
-			Logger.log("Error while reading sound from resource: " + resourceName, e);
+			Logger.logError("Error while reading sound from resource: " + resourceName, e);
 			data = null;
 		}
 		return data;

@@ -95,7 +95,8 @@
 package robocode.battle;
 
 
-import static robocode.io.Logger.log;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
 import robocode.io.Logger;
 import robocode.*;
 import robocode.robotpaint.Graphics2DProxy;
@@ -285,7 +286,7 @@ public class Battle implements Runnable {
 				cleanupRound();
 			} catch (Exception e) {
 				e.printStackTrace();
-				log("Exception running a battle: " + e);
+				logError("Exception running a battle: ", e);
 			}
 
 			roundNum++;
@@ -456,7 +457,7 @@ public class Battle implements Runnable {
 
 	private void cleanupRound() {
 		if (!replay) {
-			log("Round " + (roundNum + 1) + " cleaning up.");
+			logMessage("Round " + (roundNum + 1) + " cleaning up.");
 
 			for (RobotPeer r : robots) {
 				r.getRobotThreadManager().waitForStop();
@@ -595,10 +596,10 @@ public class Battle implements Runnable {
 
 		battleThread.getThreadGroup().enumerate(systemThreads, false);
 
-		log("Threads: ------------------------");
+		logMessage("Threads: ------------------------");
 		for (Thread thread : systemThreads) {
 			if (thread != null) {
-				log(thread.getName());
+				logError(thread.getName());
 			}
 		}
 	}
@@ -619,7 +620,7 @@ public class Battle implements Runnable {
 	}
 
 	private void runRound() {
-		log("Let the games begin!");
+		logMessage("Let the games begin!");
 
 		roundOver = false;
 		endTimer = 0;
@@ -646,7 +647,7 @@ public class Battle implements Runnable {
 	}
 
 	private void replayRound() {
-		log("Replay started");
+		logMessage("Replay started");
 
 		roundOver = false;
 
@@ -980,7 +981,7 @@ public class Battle implements Runnable {
 								// Immediately reasserts the exception by interrupting the caller thread itself
 								Thread.currentThread().interrupt();
 
-								log("Wait for " + r + " interrupted.");
+								logMessage("Wait for " + r + " interrupted.");
 							}
 						}
 					}
@@ -1011,7 +1012,7 @@ public class Battle implements Runnable {
 						}
 					}
 				} catch (InterruptedException e) {
-					log("Wait for " + r + " interrupted.");
+					logMessage("Wait for " + r + " interrupted.");
 
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
@@ -1188,7 +1189,7 @@ public class Battle implements Runnable {
 			setInactivityTime(battleProperties.getInactivityTime());
 			setInitialPositions(battleProperties.getInitialPositions());
 		} catch (Exception e) {
-			log("Exception setting battle properties", e);
+			Logger.logError("Exception setting battle properties", e);
 		}
 	}
 
@@ -1197,8 +1198,8 @@ public class Battle implements Runnable {
 	}
 
 	public void setupRound() {
-		log("----------------------");
-		log("Round " + (roundNum + 1) + " initializing..", false);
+		logMessage("----------------------");
+		Logger.logMessage("Round " + (roundNum + 1) + " initializing..", false);
 		currentTime = 0;
 
 		setRobotsLoaded(false);
@@ -1258,7 +1259,7 @@ public class Battle implements Runnable {
 
 				synchronized (r) {
 					try {
-						log(".", false);
+						Logger.logMessage(".", false);
 
 						// Add StatusEvent for the first turn
 						r.getEventManager().add(new StatusEvent(r));
@@ -1270,19 +1271,19 @@ public class Battle implements Runnable {
 						r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
 
 					} catch (InterruptedException e) {
-						log("Wait for " + r + " interrupted.");
+						logMessage("Wait for " + r + " interrupted.");
 
 						// Immediately reasserts the exception by interrupting the caller thread itself
 						Thread.currentThread().interrupt();
 					}
 				}
 				if (!r.isSleeping()) {
-					log("\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
+					logMessage("\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 				}
 			}
 		}
 
-		log("");
+		logError("");
 	}
 
 	public void stop() {

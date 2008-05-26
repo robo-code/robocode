@@ -237,6 +237,11 @@ public class RobocodeFrame extends JFrame {
 
         @Override
         public void onBattleMessage(String message) {
+            System.out.println(message);
+        }
+
+        @Override
+        public void onBattleError(String message) {
             System.err.println(message);
         }
 	}
@@ -652,10 +657,10 @@ public class RobocodeFrame extends JFrame {
 				versionString = in.readLine();
 			}
 		} catch (FileNotFoundException e) {
-			Logger.log("No version.txt file.");
+			Logger.logError("No version.txt file.");
 			versionString = "unknown";
 		} catch (IOException e) {
-			Logger.log("IO Exception reading version.txt" + e);
+			Logger.logError("IO Exception reading version.txt", e);
 			versionString = "unknown";
 		} finally {
 			if (reader != null) {

@@ -220,7 +220,7 @@ public class Robocode {
 
 			return true;
 		} catch (Throwable e) {
-			Logger.log(e);
+			Logger.logError(e);
 			return false;
 		}
 	}

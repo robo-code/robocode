@@ -553,7 +553,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 			} catch (Throwable e) {
 				rv = 8;
-				Logger.log(e);
+				Logger.logError(e);
 				out.println(e);
 			}
 		} else {

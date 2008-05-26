@@ -30,7 +30,8 @@ import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
 import robocode.io.FileUtil;
-import static robocode.io.Logger.log;
+import robocode.io.Logger;
+import static robocode.io.Logger.logError;
 import robocode.sound.SoundManager;
 
 import java.io.*;
@@ -135,9 +136,9 @@ public class RobocodeManager {
 				in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 				properties.load(in);
 			} catch (FileNotFoundException e) {
-				log("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
+				logError("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
 			} catch (IOException e) {
-				log("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+				logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 			} finally {
 				if (in != null) {
 					try {
@@ -151,7 +152,7 @@ public class RobocodeManager {
 
 	public void saveProperties() {
 		if (properties == null) {
-			log("Cannot save null robocode properties");
+			logError("Cannot save null robocode properties");
 			return;
 		}
 		FileOutputStream out = null;
@@ -161,7 +162,7 @@ public class RobocodeManager {
 
 			properties.store(out, "Robocode Properties");
 		} catch (IOException e) {
-			log(e);
+			Logger.logError(e);
 		} finally {
 			if (out != null) {
 				try {

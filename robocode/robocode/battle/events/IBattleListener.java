@@ -34,4 +34,13 @@ public interface IBattleListener {
      * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
      */
     void onBattleMessage(String message);
+
+    /**
+     * This method is called when the game logs messages that is normally
+     * written out to the err console.
+     *
+     * @param error the message logged by the game
+     * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
+     */
+    void onBattleError(String error);
 }

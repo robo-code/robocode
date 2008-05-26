@@ -127,7 +127,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			setContentPane(getEditWindowContentPane());
 			editor.addToWindowMenu(this);
 		} catch (Throwable e) {
-			Logger.log(e);
+			Logger.logError(e);
 		}
 	}
 
@@ -258,7 +258,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 					}
 				}
 			} catch (IOException e) {
-				Logger.log("Unable to check reasonable filename: " + e);
+				Logger.logError("Unable to check reasonable filename: " + e);
 			}
 		}
 

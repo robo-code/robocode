@@ -75,7 +75,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
-			Logger.log("Clone not supported!");
+			Logger.logError("Clone not supported!");
 			return null;
 		}
 	}
