@@ -3,8 +3,17 @@ Version 1.6.1 Alpha
 -------------
 o Changes
 - onPaint() in robot event queue. Robot will pay CPU time, added PaintEvent
+- onMouse(), onKey() in robot event queue
+- getGraphics() robot could paint anytime
 - Added getStatusEvents() and getPaintEvents() to AdvancedRobot and IAdvancedRobotPeer
 - Extended allowed max. length of a robot's full package name from 16 to 32 characters
+- TPS slider, pause on 0 TPS, 
+- FPS now max 40, TPS very fast
+- -DPARALLEL option
+- reworked BattleView, introduced IBattleListener, immutable turn snapshots, rendering in AWT thread
+- InterruptedException
+- Logging improvements
+
 
 Version 1.6.0
 (05/01/2008)
