@@ -13,7 +13,6 @@ package robocode.peer.proxies;
 
 
 import robocode.MessageEvent;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.IOException;
@@ -25,34 +24,37 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer {
-	public TeamRobotProxy(IBasicRobotPeer peer) {
+    private ITeamRobotPeer peer;
+
+    public TeamRobotProxy(ITeamRobotPeer peer) {
 		super(peer);
-	}
+        this.peer=peer;
+    }
 
 	// team
 	public String[] getTeammates() {
 		peer.getCall();
-		return ((ITeamRobotPeer) peer).getTeammates();
+		return peer.getTeammates();
 	}
 
 	public boolean isTeammate(String name) {
 		peer.getCall();
-		return ((ITeamRobotPeer) peer).isTeammate(name);
+		return peer.isTeammate(name);
 	}
 
 	public void sendMessage(String name, Serializable message) throws IOException {
 		peer.setCall();
-		((ITeamRobotPeer) peer).sendMessage(name, message);
+		peer.sendMessage(name, message);
 	}
 
 	public void broadcastMessage(Serializable message) throws IOException {
 		peer.setCall();
-		((ITeamRobotPeer) peer).broadcastMessage(message);
+		peer.broadcastMessage(message);
 	}
 
 	// events
 	public List<MessageEvent> getMessageEvents() {
 		peer.getCall();
-		return ((ITeamRobotPeer) peer).getMessageEvents();
+		return peer.getMessageEvents();
 	}
 }

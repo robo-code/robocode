@@ -13,7 +13,6 @@ package robocode.peer.proxies;
 
 
 import robocode.Bullet;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 
@@ -22,25 +21,28 @@ import robocode.robotinterfaces.peer.IStandardRobotPeer;
  */
 public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobotPeer {
 
-	public StandardRobotProxy(IBasicRobotPeer peer) {
+    private IStandardRobotPeer peer;
+
+	public StandardRobotProxy(IStandardRobotPeer peer) {
 		super(peer);
-	}
+        this.peer=peer;
+    }
 
 	// blocking actions
 	public void stop(boolean overwrite) {
-		((IStandardRobotPeer) peer).stop(overwrite);
+		peer.stop(overwrite);
 	}
 
 	public void resume() {
-		((IStandardRobotPeer) peer).resume();
+		peer.resume();
 	}
 
 	public void rescan() {
-		((IStandardRobotPeer) peer).rescan();
+		peer.rescan();
 	}
 
 	public void turnRadar(double radians) {
-		((IStandardRobotPeer) peer).turnRadar(radians);
+		peer.turnRadar(radians);
 	}
 
 	public Bullet fire(double power) {
@@ -50,16 +52,16 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 	// fast setters
 	public void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
 		peer.setCall();
-		((IStandardRobotPeer) peer).setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
+		peer.setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
 	}
 
 	public void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
 		peer.setCall();
-		((IStandardRobotPeer) peer).setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
+		peer.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
 	}
 
 	public void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
 		peer.setCall();
-		((IStandardRobotPeer) peer).setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
+		peer.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
 	}
 }
