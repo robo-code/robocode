@@ -63,7 +63,7 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (constributor)
  */
-public class BulletPeer {
+public class BulletPeer implements IBulletPeer {
 
 	private static final int EXPLOSION_LENGTH = 17;
 
@@ -377,4 +377,12 @@ public class BulletPeer {
 	protected int getExplosionLength() {
 		return EXPLOSION_LENGTH;
 	}
+
+    public String getVictimName() {
+        return (victim != null) ? victim.getName() : null;
+    }
+
+    public String getOwnerName(){
+        return owner.getName();
+    }
 }

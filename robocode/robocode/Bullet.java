@@ -14,7 +14,7 @@
 package robocode;
 
 
-import robocode.peer.BulletPeer;
+import robocode.peer.IBulletPeer;
 
 
 /**
@@ -30,14 +30,14 @@ import robocode.peer.BulletPeer;
  * @see BulletHitBulletEvent
  */
 public class Bullet {
-	private BulletPeer peer;
+	private IBulletPeer peer;
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
 	 *
 	 * @param peer the bullet peer of the {@code Bullet}
 	 */
-	public Bullet(BulletPeer peer) {
+	public Bullet(IBulletPeer peer) {
 		this.peer = peer;
 	}
 
@@ -69,7 +69,7 @@ public class Bullet {
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getName() {
-		return peer.getOwner().getName();
+		return peer.getOwnerName();
 	}
 
 	/**
@@ -103,8 +103,9 @@ public class Bullet {
 	 *         the bullet has not hit a robot.
 	 */
 	public String getVictim() {
-		return (peer.getVictim() != null) ? peer.getVictim().getName() : null;
-	}
+        return peer.getVictimName();
+
+    }
 
 	/**
 	 * Returns the X position of the bullet.
