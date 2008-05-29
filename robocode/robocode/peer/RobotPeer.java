@@ -417,9 +417,12 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		double fixx = 0, fixy = 0;
 		double angle = 0;
 
-		if (x > getBattleFieldWidth() - HALF_WIDTH_OFFSET) {
+        final double battleFieldWidth = battleField.getWidth();
+        final double battleFieldHeight = battleField.getHeight();
+
+        if (x > battleFieldWidth - HALF_WIDTH_OFFSET) {
 			hitWall = true;
-			fixx = getBattleFieldWidth() - HALF_WIDTH_OFFSET - x;
+			fixx = battleFieldWidth - HALF_WIDTH_OFFSET - x;
 			angle = normalRelativeAngle(PI / 2 - bodyHeading);
 		}
 
@@ -429,9 +432,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			angle = normalRelativeAngle(3 * PI / 2 - bodyHeading);
 		}
 
-		if (y > getBattleFieldHeight() - HALF_HEIGHT_OFFSET) {
+        if (y > battleFieldHeight - HALF_HEIGHT_OFFSET) {
 			hitWall = true;
-			fixy = getBattleFieldHeight() - HALF_HEIGHT_OFFSET - y;
+			fixy = battleFieldHeight - HALF_HEIGHT_OFFSET - y;
 			angle = normalRelativeAngle(-bodyHeading);
 		}
 
@@ -466,10 +469,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 			x = (HALF_WIDTH_OFFSET >= x)
 					? HALF_WIDTH_OFFSET
-					: ((getBattleFieldWidth() - HALF_WIDTH_OFFSET < x) ? getBattleFieldWidth() - HALF_WIDTH_OFFSET : x);
+					: ((battleFieldWidth - HALF_WIDTH_OFFSET < x) ? battleFieldWidth - HALF_WIDTH_OFFSET : x);
 			y = (HALF_HEIGHT_OFFSET >= y)
 					? HALF_HEIGHT_OFFSET
-					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
+					: ((battleFieldHeight - HALF_HEIGHT_OFFSET < y) ? battleFieldHeight - HALF_HEIGHT_OFFSET : y);
 
 			// Update energy, but do not reset inactiveTurnCount
 			if (isAdvancedRobot) {
