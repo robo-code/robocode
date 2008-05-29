@@ -15,6 +15,7 @@ package robocode.peer.proxies;
 
 
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
+import robocode.peer.RobotPeer;
 
 
 /**
@@ -22,14 +23,11 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
  */
 public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPeer {
 
-    private IJuniorRobotPeer peer;
-
-    public JuniorRobotProxy(IJuniorRobotPeer peer) {
+    public JuniorRobotProxy(RobotPeer peer) {
 		super(peer);
-        this.peer=peer;
     }
 
-	public void turnAndMove(double distance, double radians) {
+	public final void turnAndMove(double distance, double radians) {
 		peer.turnAndMove(distance, radians);
 	}
 }

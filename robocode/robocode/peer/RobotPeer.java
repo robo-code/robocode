@@ -115,7 +115,7 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
+public class RobotPeer implements Runnable, ContestantPeer {
 
 	public static final int
 			WIDTH = 40,

@@ -15,6 +15,7 @@ package robocode.peer.proxies;
 
 
 import robocode.*;
+import robocode.peer.RobotPeer;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 import java.io.File;
@@ -27,173 +28,170 @@ import java.util.List;
  */
 public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-    private IAdvancedRobotPeer peer;
-
-    public AdvancedRobotProxy(IAdvancedRobotPeer peer) {
+    public AdvancedRobotProxy(RobotPeer peer) {
 		super(peer);
-        this.peer=peer;
     }
 
-	public boolean isAdjustGunForBodyTurn() {
+	public final boolean isAdjustGunForBodyTurn() {
 		peer.getCall();
 		return peer.isAdjustGunForBodyTurn();
 	}
 
-	public boolean isAdjustRadarForGunTurn() {
+	public final boolean isAdjustRadarForGunTurn() {
 		peer.getCall();
 		return peer.isAdjustRadarForGunTurn();
 	}
 
-	public boolean isAdjustRadarForBodyTurn() {
+	public final boolean isAdjustRadarForBodyTurn() {
 		peer.getCall();
 		return peer.isAdjustRadarForBodyTurn();
 	}
 
 	// asynchronous actions
-	public void setResume() {
+	public final void setResume() {
 		peer.setCall();
 		peer.setResume();
 	}
 
-	public void setStop(boolean overwrite) {
+	public final void setStop(boolean overwrite) {
 		peer.setCall();
 		peer.setStop(overwrite);
 	}
 
-	public void setMove(double distance) {
+	public final void setMove(double distance) {
 		peer.setCall();
 		peer.setMove(distance);
 	}
 
-	public void setTurnBody(double radians) {
+	public final void setTurnBody(double radians) {
 		peer.setCall();
 		peer.setTurnBody(radians);
 	}
 
-	public void setTurnGun(double radians) {
+	public final void setTurnGun(double radians) {
 		peer.setCall();
 		peer.setTurnGun(radians);
 	}
 
-	public void setTurnRadar(double radians) {
+	public final void setTurnRadar(double radians) {
 		peer.setCall();
 		peer.setTurnRadar(radians);
 	}
 
 	// blocking actions
-	public void waitFor(Condition condition) {
+	public final void waitFor(Condition condition) {
 		peer.waitFor(condition);
 	}
 
 	// fast setters
-	public void setMaxTurnRate(double newTurnRate) {
+	public final void setMaxTurnRate(double newTurnRate) {
 		peer.setCall();
 		peer.setMaxTurnRate(newTurnRate);
 	}
 
-	public void setMaxVelocity(double newVelocity) {
+	public final void setMaxVelocity(double newVelocity) {
 		peer.setCall();
 		peer.setMaxVelocity(newVelocity);
 	}
 
 	// events manipulation
-	public void setInterruptible(boolean interruptable) {
+	public final void setInterruptible(boolean interruptable) {
 		peer.setCall();
 		peer.setInterruptible(interruptable);
 	}
 
-	public void setEventPriority(String eventClass, int priority) {
+	public final void setEventPriority(String eventClass, int priority) {
 		peer.setCall();
 		peer.setEventPriority(eventClass, priority);
 	}
 
-	public int getEventPriority(String eventClass) {
+	public final int getEventPriority(String eventClass) {
 		peer.getCall();
 		return peer.getEventPriority(eventClass);
 	}
 
-	public void removeCustomEvent(Condition condition) {
+	public final void removeCustomEvent(Condition condition) {
 		peer.setCall();
 		peer.removeCustomEvent(condition);
 	}
 
-	public void addCustomEvent(Condition condition) {
+	public final void addCustomEvent(Condition condition) {
 		peer.setCall();
 		peer.addCustomEvent(condition);
 	}
 
-	public void clearAllEvents() {
+	public final void clearAllEvents() {
 		peer.setCall();
 		peer.clearAllEvents();
 	}
 
-	public List<Event> getAllEvents() {
+	public final List<Event> getAllEvents() {
 		peer.getCall();
 		return peer.getAllEvents();
 	}
 
-	public List<StatusEvent> getStatusEvents() {
+	public final List<StatusEvent> getStatusEvents() {
 		peer.getCall();
 		return peer.getStatusEvents();
 	}
 
-	public List<BulletMissedEvent> getBulletMissedEvents() {
+	public final List<BulletMissedEvent> getBulletMissedEvents() {
 		peer.getCall();
 		return peer.getBulletMissedEvents();
 	}
 
-	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
+	public final List<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		peer.getCall();
 		return peer.getBulletHitBulletEvents();
 	}
 
-	public List<BulletHitEvent> getBulletHitEvents() {
+	public final List<BulletHitEvent> getBulletHitEvents() {
 		peer.getCall();
 		return peer.getBulletHitEvents();
 	}
 
-	public List<HitByBulletEvent> getHitByBulletEvents() {
+	public final List<HitByBulletEvent> getHitByBulletEvents() {
 		peer.getCall();
 		return peer.getHitByBulletEvents();
 	}
 
-	public List<HitRobotEvent> getHitRobotEvents() {
+	public final List<HitRobotEvent> getHitRobotEvents() {
 		peer.getCall();
 		return peer.getHitRobotEvents();
 	}
 
-	public List<HitWallEvent> getHitWallEvents() {
+	public final List<HitWallEvent> getHitWallEvents() {
 		peer.getCall();
 		return peer.getHitWallEvents();
 	}
 
-	public List<RobotDeathEvent> getRobotDeathEvents() {
+	public final List<RobotDeathEvent> getRobotDeathEvents() {
 		peer.getCall();
 		return peer.getRobotDeathEvents();
 	}
 
-	public List<ScannedRobotEvent> getScannedRobotEvents() {
+	public final List<ScannedRobotEvent> getScannedRobotEvents() {
 		peer.getCall();
 		return peer.getScannedRobotEvents();
 	}
 
-	public List<PaintEvent> getPaintEvents() {
+	public final List<PaintEvent> getPaintEvents() {
 		peer.getCall();
 		return peer.getPaintEvents();
 	}
 
 	// data
-	public File getDataDirectory() {
+	public final File getDataDirectory() {
 		peer.getCall();
 		return peer.getDataDirectory();
 	}
 
-	public File getDataFile(String filename) {
+	public final File getDataFile(String filename) {
 		peer.getCall();
 		return peer.getDataFile(filename);
 	}
 
-	public long getDataQuotaAvailable() {
+	public final long getDataQuotaAvailable() {
 		peer.getCall();
 		return peer.getDataQuotaAvailable();
 	}

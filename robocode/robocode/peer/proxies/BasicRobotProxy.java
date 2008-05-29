@@ -13,6 +13,7 @@ package robocode.peer.proxies;
 
 
 import robocode.Bullet;
+import robocode.peer.RobotPeer;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.awt.*;
@@ -22,177 +23,177 @@ import java.awt.*;
  * @author Pavel Savara (original)
  */
 public class BasicRobotProxy implements IBasicRobotPeer {
-	private IBasicRobotPeer peer;
+	protected RobotPeer peer;
 
-	public BasicRobotProxy(IBasicRobotPeer peer) {
+	public BasicRobotProxy(RobotPeer peer) {
 		this.peer = peer;
 	}
 
 	// asynchronous actions
-	public Bullet setFire(double power) {
+	public final Bullet setFire(double power) {
 		return peer.setFire(power);
 	}
 
 	// blocking actions
-	public void execute() {
+	public final void execute() {
 		peer.execute();
 	}
 
-	public void move(double distance) {
+	public final void move(double distance) {
 		peer.move(distance);
 	}
 
-	public void turnBody(double radians) {
+	public final void turnBody(double radians) {
 		peer.turnBody(radians);
 	}
 
-	public void turnGun(double radians) {
+	public final void turnGun(double radians) {
 		peer.turnGun(radians);
 	}
 
-	public Bullet fire(double power) {
+	public final Bullet fire(double power) {
 		return peer.fire(power);
 	}
 
 	// fast setters
-	public void setBodyColor(Color color) {
+	public final void setBodyColor(Color color) {
 		peer.setCall();
 		peer.setBodyColor(color);
 	}
 
-	public void setGunColor(Color color) {
+	public final void setGunColor(Color color) {
 		peer.setCall();
 		peer.setGunColor(color);
 	}
 
-	public void setRadarColor(Color color) {
+	public final void setRadarColor(Color color) {
 		peer.setCall();
 		peer.setRadarColor(color);
 	}
 
-	public void setBulletColor(Color color) {
+	public final void setBulletColor(Color color) {
 		peer.setCall();
 		peer.setBulletColor(color);
 	}
 
-	public void setScanColor(Color color) {
+	public final void setScanColor(Color color) {
 		peer.setCall();
 		peer.setScanColor(color);
 	}
 
 	// counters
-	public void getCall() {
+	public final void getCall() {
 		peer.getCall();
 	}
 
-	public void setCall() {
+	public final void setCall() {
 		peer.setCall();
 	}
 
 	// AdvancedRobot calls below
-	public double getRadarTurnRemaining() {
+	public final double getRadarTurnRemaining() {
 		peer.getCall();
 		return peer.getRadarTurnRemaining();
 	}
 
-	public double getDistanceRemaining() {
+	public final double getDistanceRemaining() {
 		peer.getCall();
 		return peer.getDistanceRemaining();
 	}
 
-	public double getBodyTurnRemaining() {
+	public final double getBodyTurnRemaining() {
 		peer.getCall();
 		return peer.getBodyTurnRemaining();
 	}
 
 	// Robot calls below
-	public double getVelocity() {
+	public final double getVelocity() {
 		peer.getCall();
 		return peer.getVelocity();
 	}
 
-	public double getRadarHeading() {
+	public final double getRadarHeading() {
 		peer.getCall();
 		return peer.getRadarHeading();
 	}
 
-	public double getGunCoolingRate() {
+	public final double getGunCoolingRate() {
 		peer.getCall();
 		return peer.getGunCoolingRate();
 	}
 
-	public String getName() {
+	public final String getName() {
 		peer.getCall();
 		return peer.getName();
 	}
 
-	public long getTime() {
+	public final long getTime() {
 		peer.getCall();
 		return peer.getTime();
 	}
 
 	// Junior calls below
-	public double getBodyHeading() {
+	public final double getBodyHeading() {
 		peer.getCall();
 		return peer.getBodyHeading();
 	}
 
-	public double getGunHeading() {
+	public final double getGunHeading() {
 		peer.getCall();
 		return peer.getGunHeading();
 	}
 
-	public double getGunTurnRemaining() {
+	public final double getGunTurnRemaining() {
 		peer.getCall();
 		return peer.getGunTurnRemaining();
 	}
 
-	public double getEnergy() {
+	public final double getEnergy() {
 		peer.getCall();
 		return peer.getEnergy();
 	}
 
-	public double getGunHeat() {
+	public final double getGunHeat() {
 		peer.getCall();
 		return peer.getGunHeat();
 	}
 
-	public double getBattleFieldHeight() {
+	public final double getBattleFieldHeight() {
 		peer.getCall();
 		return peer.getBattleFieldHeight();
 	}
 
-	public double getBattleFieldWidth() {
+	public final double getBattleFieldWidth() {
 		peer.getCall();
 		return peer.getBattleFieldWidth();
 	}
 
-	public double getX() {
+	public final double getX() {
 		peer.getCall();
 		return peer.getX();
 	}
 
-	public double getY() {
+	public final double getY() {
 		peer.getCall();
 		return peer.getY();
 	}
 
-	public int getOthers() {
+	public final int getOthers() {
 		peer.getCall();
 		return peer.getOthers();
 	}
 
-	public int getNumRounds() {
+	public final int getNumRounds() {
 		peer.getCall();
 		return peer.getNumRounds();
 	}
 
-	public int getRoundNum() {
+	public final int getRoundNum() {
 		peer.getCall();
 		return peer.getRoundNum();
 	}
 
-	public Graphics2D getGraphics() {
+	public final Graphics2D getGraphics() {
 		peer.getCall();
 		return peer.getGraphics();
 	}
