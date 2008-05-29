@@ -43,10 +43,6 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 		((IStandardRobotPeer) peer).turnRadar(radians);
 	}
 
-	public Bullet fire(double power) {
-		return peer.fire(power);
-	}
-
 	// fast setters
 	public void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
 		peer.setCall();
