@@ -135,7 +135,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private double energy;
 	private double velocity;
-	private double heading;
+	private double bodyHeading;
 	private double radarHeading;
 	private double gunHeading;
 	private double x;
@@ -145,7 +145,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private double maxVelocity = Rules.MAX_VELOCITY; // Can be changed by robot
 	private double maxTurnRate = Rules.MAX_TURN_RATE_RADIANS; // Can be changed by robot
 
-	private double turnRemaining;
+	private double bodyTurnRemaining;
 	private double radarTurnRemaining;
 	private double gunTurnRemaining;
 
@@ -373,11 +373,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 				// Bounce back
 				double angle = atan2(r.getX() - x, r.getY() - y);
 
-				double movedx = velocity * sin(heading);
-				double movedy = velocity * cos(heading);
+				double movedx = velocity * sin(bodyHeading);
+				double movedy = velocity * cos(bodyHeading);
 
 				boolean atFault;
-				double bearing = normalRelativeAngle(angle - heading);
+				double bearing = normalRelativeAngle(angle - bodyHeading);
 
 				if ((velocity > 0 && bearing > -PI / 2 && bearing < PI / 2)
 						|| (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2))) {
@@ -401,7 +401,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 						}
 					}
 					eventManager.add(
-							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
+							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - bodyHeading), r.getEnergy(), atFault));
 					r.eventManager.add(
 							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getBodyHeading()), energy, false));
 				}
@@ -420,33 +420,33 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		if (x > getBattleFieldWidth() - HALF_WIDTH_OFFSET) {
 			hitWall = true;
 			fixx = getBattleFieldWidth() - HALF_WIDTH_OFFSET - x;
-			angle = normalRelativeAngle(PI / 2 - heading);
+			angle = normalRelativeAngle(PI / 2 - bodyHeading);
 		}
 
 		if (x < HALF_WIDTH_OFFSET) {
 			hitWall = true;
 			fixx = HALF_WIDTH_OFFSET - x;
-			angle = normalRelativeAngle(3 * PI / 2 - heading);
+			angle = normalRelativeAngle(3 * PI / 2 - bodyHeading);
 		}
 
 		if (y > getBattleFieldHeight() - HALF_HEIGHT_OFFSET) {
 			hitWall = true;
 			fixy = getBattleFieldHeight() - HALF_HEIGHT_OFFSET - y;
-			angle = normalRelativeAngle(-heading);
+			angle = normalRelativeAngle(-bodyHeading);
 		}
 
 		if (y < HALF_HEIGHT_OFFSET) {
 			hitWall = true;
 			fixy = HALF_HEIGHT_OFFSET - y;
-			angle = normalRelativeAngle(PI - heading);
+			angle = normalRelativeAngle(PI - bodyHeading);
 		}
 
 		if (hitWall) {
 			eventManager.add(new HitWallEvent(angle));
 
 			// only fix both x and y values if hitting wall at an angle
-			if ((heading % (Math.PI / 2)) != 0) {
-				double tanHeading = tan(heading);
+			if ((bodyHeading % (Math.PI / 2)) != 0) {
+				double tanHeading = tan(bodyHeading);
 
 				// if it hits bottom or top wall
 				if (fixx == 0) {
@@ -512,7 +512,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public synchronized double getBodyHeading() {
-		return heading;
+		return bodyHeading;
 	}
 
 	public String getName() {
@@ -760,8 +760,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		gunHeading = newGunHeading;
 	}
 
-	public synchronized void setHeading(double heading) {
-		this.heading = heading;
+	public synchronized void setBodyHeading(double bodyHeading) {
+		this.bodyHeading = bodyHeading;
 	}
 
 	public synchronized void setRadarHeading(double newRadarHeading) {
@@ -860,7 +860,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public synchronized final void setTurnBody(double radians) {
 		if (energy > 0) {
-			turnRemaining = radians;
+			bodyTurnRemaining = radians;
 		}
 	}
 
@@ -890,7 +890,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 		updateGunHeat();
 
-		lastHeading = heading;
+		lastHeading = bodyHeading;
 		lastGunHeading = gunHeading;
 		lastRadarHeading = radarHeading;
 
@@ -914,7 +914,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		// Scan false means robot did not call scan() manually.
 		// But if we're moving, scan
 		if (!scan) {
-			scan = (lastHeading != heading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
+			scan = (lastHeading != bodyHeading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
 					|| lastX != x || lastY != y || waitCondition != null);
 		}
 	}
@@ -966,23 +966,23 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		double turnRate = min(maxTurnRate,
 				(.4 + .6 * (1 - (abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
 
-		if (turnRemaining > 0) {
-			if (turnRemaining < turnRate) {
-				heading += turnRemaining;
-				gunHeading += turnRemaining;
-				radarHeading += turnRemaining;
+		if (bodyTurnRemaining > 0) {
+			if (bodyTurnRemaining < turnRate) {
+				bodyHeading += bodyTurnRemaining;
+				gunHeading += bodyTurnRemaining;
+				radarHeading += bodyTurnRemaining;
 				if (isAdjustGunForBodyTurn()) {
-					gunTurnRemaining -= turnRemaining;
+					gunTurnRemaining -= bodyTurnRemaining;
 				}
 				if (isAdjustRadarForBodyTurn()) {
-					radarTurnRemaining -= turnRemaining;
+					radarTurnRemaining -= bodyTurnRemaining;
 				}
-				turnRemaining = 0;
+				bodyTurnRemaining = 0;
 			} else {
-				heading += turnRate;
+				bodyHeading += turnRate;
 				gunHeading += turnRate;
 				radarHeading += turnRate;
-				turnRemaining -= turnRate;
+				bodyTurnRemaining -= turnRate;
 				if (isAdjustGunForBodyTurn()) {
 					gunTurnRemaining -= turnRate;
 				}
@@ -990,23 +990,23 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 					radarTurnRemaining -= turnRate;
 				}
 			}
-		} else if (turnRemaining < 0) {
-			if (turnRemaining > -turnRate) {
-				heading += turnRemaining;
-				gunHeading += turnRemaining;
-				radarHeading += turnRemaining;
+		} else if (bodyTurnRemaining < 0) {
+			if (bodyTurnRemaining > -turnRate) {
+				bodyHeading += bodyTurnRemaining;
+				gunHeading += bodyTurnRemaining;
+				radarHeading += bodyTurnRemaining;
 				if (isAdjustGunForBodyTurn()) {
-					gunTurnRemaining -= turnRemaining;
+					gunTurnRemaining -= bodyTurnRemaining;
 				}
 				if (isAdjustRadarForBodyTurn()) {
-					radarTurnRemaining -= turnRemaining;
+					radarTurnRemaining -= bodyTurnRemaining;
 				}
-				turnRemaining = 0;
+				bodyTurnRemaining = 0;
 			} else {
-				heading -= turnRate;
+				bodyHeading -= turnRate;
 				gunHeading -= turnRate;
 				radarHeading -= turnRate;
-				turnRemaining += turnRate;
+				bodyTurnRemaining += turnRate;
 				if (isAdjustGunForBodyTurn()) {
 					gunTurnRemaining += turnRate;
 				}
@@ -1019,13 +1019,13 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 
 		if (normalizeHeading) {
-			if (turnRemaining == 0) {
-				heading = normalNearAbsoluteAngle(heading);
+			if (bodyTurnRemaining == 0) {
+				bodyHeading = normalNearAbsoluteAngle(bodyHeading);
 			} else {
-				heading = normalAbsoluteAngle(heading);
+				bodyHeading = normalAbsoluteAngle(bodyHeading);
 			}
 		}
-		if (Double.isNaN(heading)) {
+		if (Double.isNaN(bodyHeading)) {
 			System.out.println("HOW IS HEADING NAN HERE");
 		}
 	}
@@ -1127,8 +1127,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			velocity += min(Rules.DECELERATION, -velocity - maxVelocity);
 		}
 
-		double dx = velocity * sin(heading);
-		double dy = velocity * cos(heading);
+		double dx = velocity * sin(bodyHeading);
+		double dy = velocity * cos(bodyHeading);
 
 		x += dx;
 		y += dy;
@@ -1235,7 +1235,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		this.y = lastY = y;
 
 		setLastHeading();
-		this.heading = gunHeading = radarHeading = lastGunHeading = lastRadarHeading = heading;
+		this.bodyHeading = gunHeading = radarHeading = lastGunHeading = lastRadarHeading = heading;
 
 		acceleration = velocity = 0;
 
@@ -1250,7 +1250,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 		gunHeat = 3;
 
-		distanceRemaining = turnRemaining = gunTurnRemaining = radarTurnRemaining = 0;
+		distanceRemaining = bodyTurnRemaining = gunTurnRemaining = radarTurnRemaining = 0;
 
 		setStop(true);
 		setHalt(false);
@@ -1315,7 +1315,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		if (isStopped) {
 			isStopped = false;
 			distanceRemaining = saveDistanceToGo;
-			turnRemaining = saveAngleToTurn;
+			bodyTurnRemaining = saveAngleToTurn;
 			gunTurnRemaining = saveGunAngleToTurn;
 			radarTurnRemaining = saveRadarAngleToTurn;
 		}
@@ -1334,14 +1334,14 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public final synchronized void setStop(boolean overwrite) {
 		if (!isStopped || overwrite) {
 			this.saveDistanceToGo = distanceRemaining;
-			this.saveAngleToTurn = turnRemaining;
+			this.saveAngleToTurn = bodyTurnRemaining;
 			this.saveGunAngleToTurn = gunTurnRemaining;
 			this.saveRadarAngleToTurn = radarTurnRemaining;
 		}
 		isStopped = true;
 
 		this.distanceRemaining = 0;
-		this.turnRemaining = 0;
+		this.bodyTurnRemaining = 0;
 		this.gunTurnRemaining = 0;
 		this.radarTurnRemaining = 0;
 	}
@@ -1572,7 +1572,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public synchronized double getBodyTurnRemaining() {
-		return turnRemaining;
+		return bodyTurnRemaining;
 	}
 
 	public synchronized boolean isAdjustRadarForBodyTurn() {
@@ -1641,7 +1641,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		if (energy < .01) {
 			energy = 0;
 			distanceRemaining = 0;
-			turnRemaining = 0;
+			bodyTurnRemaining = 0;
 		}
 	}
 
@@ -1745,7 +1745,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		if (energy < .1) {
 			energy = 0;
 			distanceRemaining = 0;
-			turnRemaining = 0;
+			bodyTurnRemaining = 0;
 		}
 	}
 
@@ -1841,7 +1841,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		x = rr.x;
 		y = rr.y;
 		energy = (double) rr.energy / 10;
-		heading = Math.PI * rr.heading / 128;
+		bodyHeading = Math.PI * rr.heading / 128;
 		radarHeading = Math.PI * rr.radarHeading / 128;
 		gunHeading = Math.PI * rr.gunHeading / 128;
 		state = RobotState.toState(rr.state);
@@ -1852,7 +1852,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	private synchronized void setLastHeading() {
-		lastHeading = heading;
+		lastHeading = bodyHeading;
 	}
 
 	/**
