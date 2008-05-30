@@ -64,9 +64,11 @@ package robocode.peer;
 
 
 import robocode.*;
+import robocode.manager.NameManager;
 import robocode.battle.Battle;
 import robocode.battlefield.DefaultBattleField;
 import robocode.peer.robot.*;
+import robocode.peer.proxies.BasicRobotProxy;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
@@ -159,8 +161,7 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
 
         setTestingCondition(false);
 
-        setSetCallCount(0);
-        setGetCallCount(0);
+        ((BasicRobotProxy)peerProxy).resetCallCount();
         skippedTurns = 0;
 
         setAdjustGunForBodyTurn(false);
@@ -237,6 +238,22 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
         }
     }
 
+    public synchronized void setDuplicate(int count) {
+        isDuplicate = true;
+
+        String countString = " (" + (count + 1) + ')';
+
+        NameManager cnm = getRobotClassManager().getClassNameManager();
+
+        name = cnm.getFullClassNameWithVersion() + countString;
+        shortName = cnm.getUniqueShortClassNameWithVersion() + countString;
+        nonVersionedName = cnm.getFullClassName() + countString;
+    }
+
+    public synchronized boolean isDuplicate() {
+        return isDuplicate;
+    }
+
     public synchronized void updateBoundingBox() {
         boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
     }
@@ -251,6 +268,19 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
                 // Immediately reasserts the exception by interrupting the caller thread itself
                 Thread.currentThread().interrupt();
             }
+        }
+    }
+
+    public synchronized void zap(double zapAmount) {
+        if (energy == 0) {
+            kill();
+            return;
+        }
+        energy -= abs(zapAmount);
+        if (energy < .1) {
+            energy = 0;
+            distanceRemaining = 0;
+            bodyTurnRemaining = 0;
         }
     }
 

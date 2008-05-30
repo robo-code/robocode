@@ -577,7 +577,7 @@ public class Battle implements Runnable {
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 
-					initializeRobotPosition(r);
+					initializeRobotPositions(r);
 
 				} catch (Throwable e) {
 					r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
@@ -1364,7 +1364,7 @@ public class Battle implements Runnable {
 					e.printStackTrace(robotPeer.getOut());
 				}
 				if (roundNum > 0) {
-					initializeRobotPosition(robotPeer);
+					initializeRobotPositions(robotPeer);
 				}
 			} // for
 			manager.getThreadManager().setLoadingRobot(null);
@@ -1433,7 +1433,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private void initializeRobotPosition(RobotPeer robot) {
+	private void initializeRobotPositions(RobotPeer robot) {
 		if (initialRobotPositions != null) {
 			int index = robots.indexOf(robot);
 

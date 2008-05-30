@@ -44,17 +44,17 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 
 	// fast setters
 	public final void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
-		peer.setCall();
+		setCall();
 		peer.setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
 	}
 
 	public final void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
-		peer.setCall();
+		setCall();
 		peer.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
 	}
 
 	public final void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
-		peer.setCall();
+		setCall();
 		peer.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
 	}
 }

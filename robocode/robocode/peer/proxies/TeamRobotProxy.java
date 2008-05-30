@@ -32,7 +32,7 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 
 	// team
 	public final String[] getTeammates() {
-		peer.getCall();
+		getCall();
         robocode.peer.TeamPeer teamPeer = peer.getTeamPeer();
 
         if (teamPeer == null) {
@@ -51,12 +51,12 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 	}
 
 	public final boolean isTeammate(String name) {
-		peer.getCall();
+		getCall();
         return peer.getTeamPeer() != null && peer.getTeamPeer().contains(name);
 	}
 
 	public final void sendMessage(String name, Serializable message) throws IOException {
-		peer.setCall();
+		setCall();
         if (peer.getMessageManager() == null) {
             throw new IOException("You are not on a team.");
         }
@@ -64,7 +64,7 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 	}
 
 	public final void broadcastMessage(Serializable message) throws IOException {
-		peer.setCall();
+		setCall();
         if (peer.getMessageManager() == null) {
             throw new IOException("You are not on a team.");
         }
@@ -73,7 +73,7 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 
 	// events
 	public final List<MessageEvent> getMessageEvents() {
-		peer.getCall();
+		getCall();
         return peer.getEventManager().getMessageEvents();
 	}
 }

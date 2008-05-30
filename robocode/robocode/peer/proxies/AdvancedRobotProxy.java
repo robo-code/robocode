@@ -33,48 +33,48 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
     }
 
 	public final boolean isAdjustGunForBodyTurn() {
-		peer.getCall();
+		getCall();
 		return peer.isAdjustGunForBodyTurn();
 	}
 
 	public final boolean isAdjustRadarForGunTurn() {
-		peer.getCall();
+		getCall();
 		return peer.isAdjustRadarForGunTurn();
 	}
 
 	public final boolean isAdjustRadarForBodyTurn() {
-		peer.getCall();
+		getCall();
 		return peer.isAdjustRadarForBodyTurn();
 	}
 
 	// asynchronous actions
 	public final void setResume() {
-		peer.setCall();
+		setCall();
 		peer.setResume();
 	}
 
 	public final void setStop(boolean overwrite) {
-		peer.setCall();
+		setCall();
 		peer.setStop(overwrite);
 	}
 
 	public final void setMove(double distance) {
-		peer.setCall();
+		setCall();
 		peer.setMove(distance);
 	}
 
 	public final void setTurnBody(double radians) {
-		peer.setCall();
+		setCall();
 		peer.setTurnBody(radians);
 	}
 
 	public final void setTurnGun(double radians) {
-		peer.setCall();
+		setCall();
 		peer.setTurnGun(radians);
 	}
 
 	public final void setTurnRadar(double radians) {
-		peer.setCall();
+		setCall();
 		peer.setTurnRadar(radians);
 	}
 
@@ -85,116 +85,116 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 
 	// fast setters
 	public final void setMaxTurnRate(double newTurnRate) {
-		peer.setCall();
+		setCall();
 		peer.setMaxTurnRate(newTurnRate);
 	}
 
 	public final void setMaxVelocity(double newVelocity) {
-		peer.setCall();
+		setCall();
 		peer.setMaxVelocity(newVelocity);
 	}
 
 	// events manipulation
 	public final void setInterruptible(boolean interruptable) {
-		peer.setCall();
+		setCall();
 		peer.getEventManager().setInterruptible(interruptable);
 	}
 
 	public final void setEventPriority(String eventClass, int priority) {
-		peer.setCall();
+		setCall();
 		peer.getEventManager().setEventPriority(eventClass, priority);
 	}
 
 	public final int getEventPriority(String eventClass) {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getEventPriority(eventClass);
 	}
 
 	public final void removeCustomEvent(Condition condition) {
-		peer.setCall();
+		setCall();
 		peer.getEventManager().removeCustomEvent(condition);
 	}
 
 	public final void addCustomEvent(Condition condition) {
-		peer.setCall();
+		setCall();
 		peer.getEventManager().addCustomEvent(condition);
 	}
 
 	public final void clearAllEvents() {
-		peer.setCall();
+		setCall();
 		peer.getEventManager().clearAllEvents(false);
 	}
 
 	public final List<Event> getAllEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getAllEvents();
 	}
 
 	public final List<StatusEvent> getStatusEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getStatusEvents();
 	}
 
 	public final List<BulletMissedEvent> getBulletMissedEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getBulletMissedEvents();
 	}
 
 	public final List<BulletHitBulletEvent> getBulletHitBulletEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getBulletHitBulletEvents();
 	}
 
 	public final List<BulletHitEvent> getBulletHitEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getBulletHitEvents();
 	}
 
 	public final List<HitByBulletEvent> getHitByBulletEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getHitByBulletEvents();
 	}
 
 	public final List<HitRobotEvent> getHitRobotEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getHitRobotEvents();
 	}
 
 	public final List<HitWallEvent> getHitWallEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getHitWallEvents();
 	}
 
 	public final List<RobotDeathEvent> getRobotDeathEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getRobotDeathEvents();
 	}
 
 	public final List<ScannedRobotEvent> getScannedRobotEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getScannedRobotEvents();
 	}
 
 	public final List<PaintEvent> getPaintEvents() {
-		peer.getCall();
+		getCall();
 		return peer.getEventManager().getPaintEvents();
 	}
 
 	// data
 	public final File getDataDirectory() {
-		peer.getCall();
+		getCall();
         peer.setIORobot(true);
         return peer.getRobotFileSystemManager().getWritableDirectory();
 	}
 
 	public final File getDataFile(String filename) {
-		peer.getCall();
+		getCall();
         peer.setIORobot(true);
         return new File(peer.getRobotFileSystemManager().getWritableDirectory(), filename);
 	}
 
 	public final long getDataQuotaAvailable() {
-		peer.getCall();
+		getCall();
         return peer.getRobotFileSystemManager().getMaxQuota() - peer.getRobotFileSystemManager().getQuotaUsed();
 	}
 }

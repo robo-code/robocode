@@ -15,10 +15,7 @@ import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.ITeamRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.peer.robot.*;
-import robocode.peer.proxies.TeamRobotProxy;
-import robocode.peer.proxies.AdvancedRobotProxy;
-import robocode.peer.proxies.StandardRobotProxy;
-import robocode.peer.proxies.JuniorRobotProxy;
+import robocode.peer.proxies.*;
 import robocode.*;
 import static robocode.gfx.ColorUtil.toColor;
 import robocode.manager.NameManager;
@@ -57,10 +54,6 @@ public class RobotPeerBase {
     protected static final int
             HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
             HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
-
-    protected static final long
-            MAX_SET_CALL_COUNT = 10000,
-            MAX_GET_CALL_COUNT = 10000;
 
     protected IBasicRobot robot;
 
@@ -142,9 +135,6 @@ public class RobotPeerBase {
     protected String shortName;
     protected String nonVersionedName;
 
-    protected int setCallCount;
-    protected int getCallCount;
-
     protected RobotClassManager robotClassManager;
     protected RobotFileSystemManager robotFileSystemManager;
     protected RobotThreadManager robotThreadManager;
@@ -178,6 +168,8 @@ public class RobotPeerBase {
     protected Graphics2DProxy graphicsProxy;
 
     protected RobotState state;
+
+    protected IBasicRobotPeer peerProxy;
 
     public boolean isIORobot() {
         return isIORobot;
@@ -269,19 +261,24 @@ public class RobotPeerBase {
     }
 
     public IBasicRobotPeer getRobotProxy() {
-        if (isTeamRobot) {
-            return new TeamRobotProxy((RobotPeer)this);
+        if (peerProxy==null){
+            if (isTeamRobot) {
+                peerProxy = new TeamRobotProxy((RobotPeer)this);
+            }
+            else if (isAdvancedRobot) {
+                peerProxy = new AdvancedRobotProxy((RobotPeer)this);
+            }
+            else if (isInteractiveRobot) {
+                peerProxy = new StandardRobotProxy((RobotPeer)this);
+            }
+            else if (isJuniorRobot) {
+                peerProxy = new JuniorRobotProxy((RobotPeer)this);
+            }
+            else{
+                throw new AccessControlException("Unknown robot type");
+            }
         }
-        if (isAdvancedRobot) {
-            return new AdvancedRobotProxy((RobotPeer)this);
-        }
-        if (isInteractiveRobot) {
-            return new StandardRobotProxy((RobotPeer)this);
-        }
-        if (isJuniorRobot) {
-            return new JuniorRobotProxy((RobotPeer)this);
-        }
-        throw new AccessControlException("Unknown robot type");
+        return peerProxy;
     }
 
     public final void move(double distance) {
@@ -561,10 +558,6 @@ public class RobotPeerBase {
     }
 
     public final void execute() {
-        if (newBullet != null) {
-            battle.addBullet(newBullet);
-            newBullet = null;
-        }
 
         // Entering tick
         if (Thread.currentThread() != robotThreadManager.getRunThread()) {
@@ -575,8 +568,12 @@ public class RobotPeerBase {
                     "You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
         }
 
-        setSetCallCount(0);
-        setGetCallCount(0);
+        ((BasicRobotProxy)peerProxy).resetCallCount();
+
+        if (newBullet != null) {
+            battle.addBullet(newBullet);
+            newBullet = null;
+        }
 
         // This stops autoscan from scanning...
         if (waitCondition != null && waitCondition.test()) {
@@ -931,27 +928,12 @@ public class RobotPeerBase {
         return checkFileQuota;
     }
 
-    public synchronized void setCall() {
-        setCallCount++;
-        if (setCallCount == MAX_SET_CALL_COUNT) {
-            out.println("SYSTEM: You have made " + setCallCount + " calls to setXX methods without calling execute()");
-            throw new DisabledException("Too many calls to setXX methods");
-        }
-    }
-
-    public synchronized void getCall() {
-        getCallCount++;
-        if (getCallCount == MAX_GET_CALL_COUNT) {
-            out.println("SYSTEM: You have made " + getCallCount + " calls to getXX methods without calling execute()");
-            throw new DisabledException("Too many calls to getXX methods");
-        }
-    }
-
     public synchronized void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
         isAdjustRadarForBodyTurn = newAdjustRadarForBodyTurn;
         isAdjustRadarForBodyTurnSet = true;
     }
 
+    //TODO unused
     public void setCheckFileQuota(boolean newCheckFileQuota) {
         out.println("CheckFileQuota on");
         checkFileQuota = newCheckFileQuota;
@@ -959,22 +941,6 @@ public class RobotPeerBase {
 
     public synchronized void setDistanceRemaining(double new_distanceRemaining) {
         distanceRemaining = new_distanceRemaining;
-    }
-
-    public synchronized void setDuplicate(int count) {
-        isDuplicate = true;
-
-        String countString = " (" + (count + 1) + ')';
-
-        NameManager cnm = getRobotClassManager().getClassNameManager();
-
-        name = cnm.getFullClassNameWithVersion() + countString;
-        shortName = cnm.getUniqueShortClassNameWithVersion() + countString;
-        nonVersionedName = cnm.getFullClassName() + countString;
-    }
-
-    public synchronized boolean isDuplicate() {
-        return isDuplicate;
     }
 
     public synchronized void setEnergy(double newEnergy) {
@@ -1005,19 +971,6 @@ public class RobotPeerBase {
         statistics = newStatistics;
     }
 
-    public synchronized void zap(double zapAmount) {
-        if (energy == 0) {
-            kill();
-            return;
-        }
-        energy -= abs(zapAmount);
-        if (energy < .1) {
-            energy = 0;
-            distanceRemaining = 0;
-            bodyTurnRemaining = 0;
-        }
-    }
-
     public synchronized boolean isRunning() {
         return isRunning;
     }
@@ -1028,14 +981,6 @@ public class RobotPeerBase {
 
     public synchronized boolean isSleeping() {
         return isSleeping;
-    }
-
-    public synchronized void setSetCallCount(int setCallCount) {
-        this.setCallCount = setCallCount;
-    }
-
-    public synchronized void setGetCallCount(int getCallCount) {
-        this.getCallCount = getCallCount;
     }
 
     public Color getBodyColor() {
