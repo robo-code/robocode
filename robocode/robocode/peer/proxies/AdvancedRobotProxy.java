@@ -97,102 +97,104 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	// events manipulation
 	public final void setInterruptible(boolean interruptable) {
 		peer.setCall();
-		peer.setInterruptible(interruptable);
+		peer.getEventManager().setInterruptible(interruptable);
 	}
 
 	public final void setEventPriority(String eventClass, int priority) {
 		peer.setCall();
-		peer.setEventPriority(eventClass, priority);
+		peer.getEventManager().setEventPriority(eventClass, priority);
 	}
 
 	public final int getEventPriority(String eventClass) {
 		peer.getCall();
-		return peer.getEventPriority(eventClass);
+		return peer.getEventManager().getEventPriority(eventClass);
 	}
 
 	public final void removeCustomEvent(Condition condition) {
 		peer.setCall();
-		peer.removeCustomEvent(condition);
+		peer.getEventManager().removeCustomEvent(condition);
 	}
 
 	public final void addCustomEvent(Condition condition) {
 		peer.setCall();
-		peer.addCustomEvent(condition);
+		peer.getEventManager().addCustomEvent(condition);
 	}
 
 	public final void clearAllEvents() {
 		peer.setCall();
-		peer.clearAllEvents();
+		peer.getEventManager().clearAllEvents(false);
 	}
 
 	public final List<Event> getAllEvents() {
 		peer.getCall();
-		return peer.getAllEvents();
+		return peer.getEventManager().getAllEvents();
 	}
 
 	public final List<StatusEvent> getStatusEvents() {
 		peer.getCall();
-		return peer.getStatusEvents();
+		return peer.getEventManager().getStatusEvents();
 	}
 
 	public final List<BulletMissedEvent> getBulletMissedEvents() {
 		peer.getCall();
-		return peer.getBulletMissedEvents();
+		return peer.getEventManager().getBulletMissedEvents();
 	}
 
 	public final List<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		peer.getCall();
-		return peer.getBulletHitBulletEvents();
+		return peer.getEventManager().getBulletHitBulletEvents();
 	}
 
 	public final List<BulletHitEvent> getBulletHitEvents() {
 		peer.getCall();
-		return peer.getBulletHitEvents();
+		return peer.getEventManager().getBulletHitEvents();
 	}
 
 	public final List<HitByBulletEvent> getHitByBulletEvents() {
 		peer.getCall();
-		return peer.getHitByBulletEvents();
+		return peer.getEventManager().getHitByBulletEvents();
 	}
 
 	public final List<HitRobotEvent> getHitRobotEvents() {
 		peer.getCall();
-		return peer.getHitRobotEvents();
+		return peer.getEventManager().getHitRobotEvents();
 	}
 
 	public final List<HitWallEvent> getHitWallEvents() {
 		peer.getCall();
-		return peer.getHitWallEvents();
+		return peer.getEventManager().getHitWallEvents();
 	}
 
 	public final List<RobotDeathEvent> getRobotDeathEvents() {
 		peer.getCall();
-		return peer.getRobotDeathEvents();
+		return peer.getEventManager().getRobotDeathEvents();
 	}
 
 	public final List<ScannedRobotEvent> getScannedRobotEvents() {
 		peer.getCall();
-		return peer.getScannedRobotEvents();
+		return peer.getEventManager().getScannedRobotEvents();
 	}
 
 	public final List<PaintEvent> getPaintEvents() {
 		peer.getCall();
-		return peer.getPaintEvents();
+		return peer.getEventManager().getPaintEvents();
 	}
 
 	// data
 	public final File getDataDirectory() {
 		peer.getCall();
-		return peer.getDataDirectory();
+        peer.setIORobot(true);
+        return peer.getRobotFileSystemManager().getWritableDirectory();
 	}
 
 	public final File getDataFile(String filename) {
 		peer.getCall();
-		return peer.getDataFile(filename);
+        peer.setIORobot(true);
+        return new File(peer.getRobotFileSystemManager().getWritableDirectory(), filename);
 	}
 
 	public final long getDataQuotaAvailable() {
 		peer.getCall();
-		return peer.getDataQuotaAvailable();
+        return peer.getRobotFileSystemManager().getMaxQuota() - peer.getRobotFileSystemManager().getQuotaUsed();
 	}
 }

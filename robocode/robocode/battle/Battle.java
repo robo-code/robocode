@@ -696,7 +696,7 @@ public class Battle implements Runnable {
 
 		updateBullets();
 
-		moveRobots();
+		updateRobots();
 
 		handleDeathEvents();
 
@@ -798,7 +798,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private void moveRobots() {
+	private void updateRobots() {
 		boolean zap = (inactiveTurnCount > inactivityTime);
 
 		// Move all bots

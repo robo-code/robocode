@@ -1176,6 +1176,10 @@ public class EventManager implements IEventManager {
 		fireAssistValid = newFireAssistValid;
 	}
 
+    public void setInterruptible(boolean interruptable) {
+        setInterruptible(currentTopEventPriority, interruptable);
+    }
+
 	public void setInterruptible(int priority, boolean interruptable) {
 		if (priority < 0 || priority > 99) {
 			return;
