@@ -81,7 +81,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	// blocking actions
 	public final void waitFor(Condition condition) {
 		peer.waitFor(condition);
-	}
+    }
 
 	// fast setters
 	public final void setMaxTurnRate(double newTurnRate) {

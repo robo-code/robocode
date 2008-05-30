@@ -13,6 +13,7 @@ package robocode.peer.proxies;
 
 
 import robocode.peer.RobotPeer;
+import robocode.peer.robot.EventManager;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 
@@ -27,19 +28,38 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 
 	// blocking actions
 	public final void stop(boolean overwrite) {
-		peer.stop(overwrite);
+        peer.setStop(overwrite);
+        execute();
 	}
 
 	public final void resume() {
-		peer.resume();
+        peer.setResume();
+        execute();
 	}
 
 	public final void rescan() {
-		peer.rescan();
+        boolean reset = false;
+        boolean resetValue = false;
+        final EventManager eventManager = peer.getEventManager();
+        
+        if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority()) {
+            reset = true;
+            resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());
+            eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), true);
+        }
+
+        peer.setScan(true);
+        execute();
+        if (reset) {
+            eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), resetValue);
+        }
 	}
 
 	public final void turnRadar(double radians) {
-		peer.turnRadar(radians);
+        peer.setTurnRadar(radians);
+        do {
+            execute(); // Always tick at least once
+        } while (peer.getRadarTurnRemaining() != 0);
 	}
 
 	// fast setters

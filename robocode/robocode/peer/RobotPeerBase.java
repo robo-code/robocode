@@ -281,13 +281,6 @@ public class RobotPeerBase {
         return peerProxy;
     }
 
-    public final void move(double distance) {
-        setMove(distance);
-        do {
-            execute(); // Always tick at least once
-        } while (getDistanceRemaining() != 0);
-    }
-
     public Battle getBattle() {
         return battle;
     }
@@ -418,23 +411,6 @@ public class RobotPeerBase {
         return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
                 arc.getStartPoint().getY()))
                 || arc.intersects(rect);
-    }
-
-    public void rescan() {
-        boolean reset = false;
-        boolean resetValue = false;
-
-        if (getEventManager().getCurrentTopEventPriority() == getEventManager().getScannedRobotEventPriority()) {
-            reset = true;
-            resetValue = getEventManager().getInterruptible(getEventManager().getScannedRobotEventPriority());
-            getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), true);
-        }
-
-        setScan(true);
-        execute();
-        if (reset) {
-            getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), resetValue);
-        }
     }
 
     public void scan() {
@@ -632,35 +608,14 @@ public class RobotPeerBase {
         this.gunTurnRemaining = radians;
     }
 
-    public final void turnGun(double radians) {
-        setTurnGun(radians);
-        do {
-            execute(); // Always tick at least once
-        } while (getGunTurnRemaining() != 0);
-    }
-
     public synchronized final void setTurnBody(double radians) {
         if (energy > 0) {
             bodyTurnRemaining = radians;
         }
     }
 
-    public final void turnBody(double radians) {
-        setTurnBody(radians);
-        do {
-            execute(); // Always tick at least once
-        } while (getBodyTurnRemaining() != 0);
-    }
-
     public synchronized final void setTurnRadar(double radians) {
         this.radarTurnRemaining = radians;
-    }
-
-    public final void turnRadar(double radians) {
-        setTurnRadar(radians);
-        do {
-            execute(); // Always tick at least once
-        } while (getRadarTurnRemaining() != 0);
     }
 
     private synchronized boolean getHalt() {
@@ -700,11 +655,6 @@ public class RobotPeerBase {
 
     public boolean isWinner() {
         return isWinner;
-    }
-
-    public final void resume() {
-        setResume();
-        execute();
     }
 
     public synchronized void setMaxTurnRate(double newTurnRate) {
@@ -770,11 +720,6 @@ public class RobotPeerBase {
         }
     }
 
-    public final void stop(boolean overwrite) {
-        setStop(overwrite);
-        execute();
-    }
-
     public synchronized void waitFor(Condition condition) {
         waitCondition = condition;
         do {
@@ -798,13 +743,6 @@ public class RobotPeerBase {
 
     public synchronized void setScan(boolean scan) {
         this.scan = scan;
-    }
-
-    public synchronized Bullet fire(double power) {
-        Bullet bullet = setFire(power);
-
-        execute();
-        return bullet;
     }
 
     public synchronized Bullet setFire(double power) {
@@ -1063,90 +1001,6 @@ public class RobotPeerBase {
         gunColor = toColor(rr.gunColor);
         radarColor = toColor(rr.radarColor);
         scanColor = toColor(rr.scanColor);
-    }
-
-    public void turnAndMove(double distance, double radians) {
-        if (distance == 0) {
-            turnBody(radians);
-            return;
-        }
-
-        // Save current max. velocity and max. turn rate so they can be restored
-        final double savedMaxVelocity = getMaxVelocity();
-        final double savedMaxTurnRate = getMaxTurnRate();
-
-        final double absDegrees = Math.abs(Math.toDegrees(radians));
-        final double absDistance = Math.abs(distance);
-
-        // -- Calculate max. velocity for moving perfect in a circle --
-
-        // maxTurnRate = 10 * 0.75 * velocity  (Robocode rule), and
-        // maxTurnRate = velocity * degrees / distance  (curve turn rate)
-        //
-        // Hence, max. velocity = 10 / (degrees / distance + 0.75)
-
-        final double maxVelocity = Math.min(Rules.MAX_VELOCITY, 10 / (absDegrees / absDistance + 0.75));
-
-        // -- Calculate number of turns for acceleration + deceleration --
-
-        double accDist = 0; // accumulated distance during acceleration
-        double decDist = 0; // accumulated distance during deceleration
-
-        int turns = 0; // number of turns to it will take to move the distance
-
-        // Calculate the amount of turn it will take to accelerate + decelerate
-        // up to the max. velocity, but stop if the distance for used for
-        // acceleration + deceleration gets bigger than the total distance to move
-        for (int t = 1; t < maxVelocity; t++) {
-
-            // Add the current velocity to the acceleration distance
-            accDist += t;
-
-            // Every 2nd time we add the deceleration distance needed to
-            // get to a velocity of 0
-            if (t > 2 && (t % 2) > 0) {
-                decDist += t - 2;
-            }
-
-            // Stop if the acceleration + deceleration > total distance to move
-            if ((accDist + decDist) >= absDistance) {
-                break;
-            }
-
-            // Increment turn for acceleration
-            turns++;
-
-            // Every 2nd time we increment time for deceleration
-            if (t > 2 && (t % 2) > 0) {
-                turns++;
-            }
-        }
-
-        // Add number of turns for the remaining distance at max velocity
-        if ((accDist + decDist) < absDistance) {
-            turns += (int) ((absDistance - accDist - decDist) / maxVelocity + 1);
-        }
-
-        // -- Move and turn in a curve --
-
-        // Set the calculated max. velocity
-        setMaxVelocity(maxVelocity);
-
-        // Set the robot to move the specified distance
-        setMove(distance);
-        // Set the robot to turn its body to the specified amount of radians
-        setTurnBody(radians);
-
-        // Loop thru the number of turns it will take to move the distance and adjust
-        // the max. turn rate so it fit the current velocity of the robot
-        for (int t = turns; t >= 0; t--) {
-            setMaxTurnRate(getVelocity() * radians / absDistance);
-            execute(); // Perform next turn
-        }
-
-        // Restore the saved max. velocity and max. turn rate
-        setMaxVelocity(savedMaxVelocity);
-        setMaxTurnRate(savedMaxTurnRate);
     }
 
     public Graphics2D getGraphics() {
