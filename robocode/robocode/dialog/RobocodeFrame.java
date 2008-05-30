@@ -202,6 +202,7 @@ public class RobocodeFrame extends JFrame {
 
 		@Override
 		public void onBattleStarted(BattleSpecification battleSpecification) {
+			getPauseButton().setEnabled(true);
 			getStopButton().setEnabled(true);
 			getRestartButton().setEnabled(true);
 			getReplayButton().setEnabled(false);
@@ -219,6 +220,7 @@ public class RobocodeFrame extends JFrame {
 
 		@Override
 		public void onBattleEnded(boolean isAborted) {
+			getPauseButton().setEnabled(false);
 			getStopButton().setEnabled(false);
 			getReplayButton().setEnabled(manager.getBattleManager().getBattle().hasReplayRecord());
 		}
