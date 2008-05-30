@@ -119,7 +119,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public final double getGunCoolingRate() {
 		peer.getCall();
-		return peer.getGunCoolingRate();
+		return peer.getBattle().getGunCoolingRate();
 	}
 
 	public final String getName() {
@@ -129,7 +129,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public final long getTime() {
 		peer.getCall();
-		return peer.getTime();
+		return peer.getBattle().getCurrentTime();
 	}
 
 	// Junior calls below
@@ -180,7 +180,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public final int getOthers() {
 		peer.getCall();
-		return peer.getOthers();
+		return peer.getBattle().getActiveRobots() - (peer.isAlive() ? 1 : 0);
 	}
 
 	public final int getNumRounds() {

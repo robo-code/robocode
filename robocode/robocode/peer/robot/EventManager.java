@@ -42,6 +42,7 @@ package robocode.peer.robot;
 
 import robocode.*;
 import robocode.exception.EventInterruptedException;
+import robocode.exception.DeathException;
 import robocode.peer.RobotPeer;
 import robocode.robotinterfaces.*;
 import robocode.util.Utils;
@@ -586,7 +587,7 @@ public class EventManager implements IEventManager {
 	}
 
 	public long getTime() {
-		return robotPeer.getTime();
+		return robotPeer.getBattle().getCurrentTime();
 	}
 
 	public boolean isFireAssistValid() {
@@ -1061,7 +1062,7 @@ public class EventManager implements IEventManager {
 					onMessageReceived((MessageEvent) currentEvent);
 				} else if (currentEvent instanceof DeathEvent) {
 					onDeath((DeathEvent) currentEvent);
-					robotPeer.death();
+					throw new DeathException();
 				} else if (currentEvent instanceof WinEvent) {
 					onWin((WinEvent) currentEvent);
 				} else if (currentEvent instanceof CustomEvent) {
