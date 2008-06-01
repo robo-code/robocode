@@ -344,20 +344,35 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public void waitTillRunning() {
-		synchronized (battleMonitor) {
-			while (!running) {
-				try {
-					battleMonitor.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
+    public void waitTillStarted() {
+        synchronized (battleMonitor) {
+            while (!running) {
+                try {
+                    battleMonitor.wait();
+                } catch (InterruptedException e) {
+                    // Immediately reasserts the exception by interrupting the caller thread itself
+                    Thread.currentThread().interrupt();
 
-					return;
-				}
-			}
-		}
-	}
+                    return;
+                }
+            }
+        }
+    }
+
+    public void waitTillOver() {
+        synchronized (battleMonitor) {
+            while (running) {
+                try {
+                    battleMonitor.wait();
+                } catch (InterruptedException e) {
+                    // Immediately reasserts the exception by interrupting the caller thread itself
+                    Thread.currentThread().interrupt();
+
+                    return;
+                }
+            }
+        }
+    }
 
 	private RobotResults[] computeResults() {
 		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());

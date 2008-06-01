@@ -28,6 +28,7 @@ package robocode.dialog;
 
 
 import robocode.manager.RobocodeManager;
+import robocode.manager.BattleManager;
 import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
@@ -35,6 +36,7 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.event.*;
+import java.io.File;
 
 
 /**
@@ -201,12 +203,84 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleSaveActionPerformed() {
-		manager.getBattleManager().saveBattle();
+        BattleManager battleManager = manager.getBattleManager();
+        try{
+            battleManager.pauseBattle();
+            String path = battleManager.getBattleFilename();
+            if (path == null){
+                path = saveBattleDialog(battleManager.getBattlePath());
+            }
+            if (path !=null){
+                battleManager.setBattleFilename(path);
+                battleManager.saveBattleProperties();
+            }
+        }
+        finally {
+            battleManager.resumeBattle();
+        }
 	}
 
 	private void battleSaveAsActionPerformed() {
-		manager.getBattleManager().saveBattleAs();
+        BattleManager battleManager = manager.getBattleManager();
+        try{
+            battleManager.pauseBattle();
+            String path = saveBattleDialog(battleManager.getBattlePath());
+            if (path !=null){
+                battleManager.setBattleFilename(path);
+                battleManager.saveBattleProperties();
+            }
+        }
+        finally {
+            battleManager.resumeBattle();
+        }
 	}
+
+    private String saveBattleDialog(String path) {
+        File f = new File(path);
+
+        JFileChooser chooser;
+
+        chooser = new JFileChooser(f);
+
+        javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                if (pathname.isDirectory()) {
+                    return false;
+                }
+                String fn = pathname.getName();
+                int idx = fn.lastIndexOf('.');
+                String extension = "";
+
+                if (idx >= 0) {
+                    extension = fn.substring(idx);
+                }
+                return extension.equalsIgnoreCase(".battle");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Battles";
+            }
+        };
+
+        chooser.setFileFilter(filter);
+        int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
+        String result=null;
+        if (rv == JFileChooser.APPROVE_OPTION) {
+            result = chooser.getSelectedFile().getPath();
+            int idx = result.lastIndexOf('.');
+            String extension = "";
+
+            if (idx > 0) {
+                extension = result.substring(idx);
+            }
+            if (!(extension.equalsIgnoreCase(".battle"))) {
+                result += ".battle";
+            }
+        }
+        return result;
+    }
 
 	/**
 	 * Return the battleExitMenuItem.
