@@ -41,6 +41,7 @@ import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
 import robocode.peer.RobotPeer;
 import robocode.control.BattleSpecification;
+import robocode.security.SecurePrintStream;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -239,12 +240,12 @@ public class RobocodeFrame extends JFrame {
 
         @Override
         public void onBattleMessage(String message) {
-            System.out.println(message);
+            SecurePrintStream.realOut.println(message);
         }
 
         @Override
         public void onBattleError(String message) {
-            System.err.println(message);
+            SecurePrintStream.realErr.println(message);
         }
 	}
 
