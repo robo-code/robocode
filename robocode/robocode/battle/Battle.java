@@ -1164,6 +1164,9 @@ public class Battle implements Runnable {
 	}
 
 	private void wakeupRobots() {
+
+		final boolean isDebugging = System.getProperty("debug", "false").equals("true");
+
 		// Wake up all robot threads
 		synchronized (robots) {
 			for (RobotPeer r : getRobotsAtRandom()) {
@@ -1198,7 +1201,7 @@ public class Battle implements Runnable {
 							}
 						}
 					}
-					if (r.isSleeping() || !r.isRunning()) {
+					if (r.isSleeping() || !r.isRunning() || isDebugging) {
 						r.setSkippedTurns(0);
 					} else {
 						r.setSkippedTurns(r.getSkippedTurns() + 1);
@@ -1402,6 +1405,8 @@ public class Battle implements Runnable {
 		log("Round " + (roundNum + 1) + " initializing..", false);
 		currentTime = 0;
 
+		final boolean isNotDebugging = System.getProperty("debug", "false").equals("false");
+		
 		setRobotsLoaded(false);
 		while (!isUnsafeLoaderThreadRunning()) {
 			// waiting for loader to start
@@ -1468,23 +1473,24 @@ public class Battle implements Runnable {
 				long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
 				synchronized (r) {
-					try {
-						log(".", false);
+					log(".", false);
 
-						// Add StatusEvent for the first turn
-						r.getEventManager().add(new StatusEvent(r));
+					// Add StatusEvent for the first turn
+					r.getEventManager().add(new StatusEvent(r));
 
-						// Start the robot thread
-						r.getRobotThreadManager().start();
+					// Start the robot thread
+					r.getRobotThreadManager().start();
 
-						// Wait for the robot to go to sleep (take action)
-						r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
-
-					} catch (InterruptedException e) {
-						log("Wait for " + r + " interrupted.");
+					if (isNotDebugging) {
+						try {
+							// Wait for the robot to go to sleep (take action)
+							r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
+						} catch (InterruptedException e) {
+							log("Wait for " + r + " interrupted.");
+						}
 					}
 				}
-				if (!r.isSleeping()) {
+				if (!r.isSleeping() && isNotDebugging) {
 					log("\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 				}
 			}
