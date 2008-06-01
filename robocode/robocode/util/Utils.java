@@ -21,7 +21,10 @@
 package robocode.util;
 
 
+import robocode.control.RandomFactory;
+
 import static java.lang.Math.PI;
+import java.util.Random;
 
 
 /**
@@ -116,4 +119,13 @@ public class Utils {
 	public static boolean isNear(double value1, double value2) {
 		return (Math.abs(value1 - value2) < .00001);
 	}
+
+    /**
+     * Returns random number generator. It might be configured for repeatable behavior by seting -DRANDOMSEED option 
+     * @return random number generator
+     */
+    public static Random getRandom(){
+        return RandomFactory.getRandom();
+    }
+
 }

@@ -213,6 +213,8 @@ public class Robocode {
 						+ "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
 						+ "    -Ddebug=true|false         Enable or disable System.err messages\n"
 						+ "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n"
-						+ "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n");
+						+ "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n"
+                        + "    -DRANDOMSEED=<long-number> Set seed for deterministic behavior of Random number generator\n" + "\n"
+        );
 	}
 }

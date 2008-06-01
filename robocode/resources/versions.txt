@@ -9,7 +9,10 @@ o Changes
 - Extended allowed max. length of a robot's full package name from 16 to 32 characters
 - TPS slider, pause on 0 TPS, 
 - FPS now max 40, TPS very fast
-- -DPARALLEL option
+- -DPARALLEL option, allows robots run in parallel if you have more CPUs. May speedup 
+   battles with multiple CPU consuming robots. Time measuring is not per robot.
+- -DRANDOMSEED option, repeatable/deterministic Random generator is used by game 
+  as well as by Math.random(). So your robots will appear in same possition in battle and will be easily testable.
 - reworked BattleView, introduced IBattleListener, immutable turn snapshots, rendering in AWT thread
 - InterruptedException
 - Logging improvements

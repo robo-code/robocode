@@ -42,6 +42,7 @@ import java.awt.image.BufferedImage;
 import static java.lang.Math.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.Random;
 
 
 /**
@@ -236,7 +237,9 @@ public class BattleView extends Canvas {
 	private void createGroundImage() {
 		// Reinitialize ground tiles
 
-		final int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
+        Random r=new Random();//independent 
+
+        final int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
 		final int NUM_VERT_TILES = battleField.getHeight() / groundTileHeight + 1;
 
 		if ((groundTiles == null) || (groundTiles.length != NUM_VERT_TILES) || (groundTiles[0].length != NUM_HORZ_TILES)) {
@@ -244,7 +247,7 @@ public class BattleView extends Canvas {
 			groundTiles = new int[NUM_VERT_TILES][NUM_HORZ_TILES];
 			for (int y = NUM_VERT_TILES - 1; y >= 0; y--) {
 				for (int x = NUM_HORZ_TILES - 1; x >= 0; x--) {
-					groundTiles[y][x] = (int) round(random() * 4);
+					groundTiles[y][x] = (int) round(r.nextDouble() * 4);
 				}
 			}
 		}

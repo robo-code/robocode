@@ -63,6 +63,7 @@ import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
 import robocode.control.RobotResults;
+import robocode.control.RandomFactory;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
@@ -112,7 +113,7 @@ public class BattleManager {
 
 	public BattleManager(RobocodeManager manager) {
 		this.manager = manager;
-		
+
 		battleEventDispatcher.addListener(battleObserver);
 	}
 
@@ -298,6 +299,12 @@ public class BattleManager {
         if (manager.isSoundEnabled()) {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
+
+        //resets seed for deterministic behavior of Random
+        final String seed = System.getProperty("RANDOMSEED", "none");
+        if (!seed.equals("none")){
+            RandomFactory.resetDeterministic(Long.valueOf(seed));
+        }
 
 		battle = new Battle(battleField, manager, battleEventDispatcher);
 

@@ -105,6 +105,7 @@ import robocode.battle.record.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.control.RobotResults;
+import robocode.control.RandomFactory;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
@@ -529,7 +530,7 @@ public class Battle implements Runnable {
 	private List<RobotPeer> getRobotsAtRandom() {
 		List<RobotPeer> shuffledList = new ArrayList<RobotPeer>(robots);
 
-		Collections.shuffle(shuffledList);
+		Collections.shuffle(shuffledList, RandomFactory.getRandom());
 		return shuffledList;
 	}
 
