@@ -734,7 +734,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		battleField = battle.getBattleField();
 	}
 
-	public synchronized void kill() {
+    public synchronized void killFromUI() { //TODO get rid of it on this thread
+        kill();
+    }
+    
+    public synchronized void kill() {
 		battle.resetInactiveTurnCount(10.0);
 		if (isAlive()) {
 			eventManager.add(new DeathEvent());

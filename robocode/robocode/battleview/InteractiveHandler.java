@@ -40,7 +40,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 
 		if (battle != null && battle.isRunning()) {
 
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					switch (e.getID()) {
 					case KeyEvent.KEY_TYPED:
@@ -65,7 +65,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MouseClickedEvent(mirroredMouseEvent(e)));
 				}
@@ -77,7 +77,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MouseEnteredEvent(mirroredMouseEvent(e)));
 				}
@@ -89,7 +89,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) {  //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MouseExitedEvent(mirroredMouseEvent(e)));
 				}
@@ -101,7 +101,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MousePressedEvent(mirroredMouseEvent(e)));
 				}
@@ -113,7 +113,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MouseReleasedEvent(mirroredMouseEvent(e)));
 				}
@@ -125,7 +125,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MouseMovedEvent(mirroredMouseEvent(e)));
 				}
@@ -137,7 +137,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MouseDraggedEvent(mirroredMouseEvent(e)));
 				}
@@ -149,7 +149,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		Battle battle = manager.getBattleManager().getBattle();
 
 		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
+			for (RobotPeer robotPeer : battle.getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
 					robotPeer.onInteractiveEvent(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
 				}

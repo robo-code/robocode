@@ -211,7 +211,7 @@ public class RobocodeFrame extends JFrame {
 			getRobotButtonsPanel().removeAll();
 			getRobotButtonsPanel().repaint();
 
-			for (RobotPeer r : manager.getBattleManager().getBattle().getRobots()) {
+			for (RobotPeer r : manager.getBattleManager().getBattle().getRobots()) { //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 				r.preInitialize();
 				addRobotButton(new RobotButton(manager.getRobotDialogManager(), r));
 			}

@@ -45,7 +45,7 @@ public class RobotDialogManager {
 	}
 
 	public void setActiveBattle(Battle b) {
-		List<RobotPeer> robots = b.getRobots();
+		List<RobotPeer> robots = b.getRobots(); //TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
 
 		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
 
