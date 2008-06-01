@@ -35,19 +35,14 @@ package robocode.control;
 
 import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
-import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
-import robocode.security.SecureInputStream;
-import robocode.security.SecurePrintStream;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.security.Policy;
 import java.util.List;
 
@@ -63,25 +58,13 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeEngine {
-	private RobocodeListener listener;
-	private RobocodeManager manager;
-
-	static PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-	static PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-	static InputStream sysin = new SecureInputStream(System.in, "System.in");
+    private RobocodeManager manager;
 
 	static {
-		// Secure System.in, System.err, System.out
-        SecurePrintStream.realOut = System.out;
-        SecurePrintStream.realErr = System.err;
-		System.setOut(sysout);
-		if (!System.getProperty("debug", "false").equals("true")) {
-			System.setErr(syserr);
-		}
-		System.setIn(sysin);
+        RobocodeManager.initStreams();
 	}
 
-	/**
+    /**
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
@@ -126,7 +109,6 @@ public class RobocodeEngine {
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {
-		this.listener = listener;
 		manager = new RobocodeManager(true, listener);
 		manager.setEnableGUI(false);
 

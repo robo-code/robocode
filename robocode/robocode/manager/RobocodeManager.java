@@ -33,6 +33,8 @@ import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import robocode.sound.SoundManager;
+import robocode.security.SecurePrintStream;
+import robocode.security.SecureInputStream;
 
 import java.io.*;
 
@@ -236,6 +238,21 @@ public class RobocodeManager {
 	public void setListener(RobocodeListener listener) {
 		this.listener = listener;
 	}
+
+    public static void initStreams() {
+        PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
+        PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
+        InputStream sysin = new SecureInputStream(System.in, "System.in");
+
+        // Secure System.in, System.err, System.out
+        SecurePrintStream.realOut = System.out;
+        SecurePrintStream.realErr = System.err;
+        System.setOut(sysout);
+        if (!System.getProperty("debug", "false").equals("true")) {
+            System.setErr(syserr);
+        }
+        System.setIn(sysin);
+    }
 
 	public void runIntroBattle() {
 		getBattleManager().setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());

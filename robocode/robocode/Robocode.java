@@ -35,8 +35,6 @@ import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
-import robocode.security.SecureInputStream;
-import robocode.security.SecurePrintStream;
 
 import java.awt.*;
 import java.io.File;
@@ -114,17 +112,7 @@ public class Robocode {
 				}
 			}
 
-			SecurePrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-			SecurePrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-			SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
-
-            SecurePrintStream.realOut = System.out;
-            SecurePrintStream.realErr = System.err;
-            System.setOut(sysout);
-			if (!System.getProperty("debug", "false").equals("true")) {
-				System.setErr(syserr);
-			}
-			System.setIn(sysin);
+            RobocodeManager.initStreams();
 
 			boolean minimize = false;
 			String battleFilename = null;
