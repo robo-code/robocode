@@ -159,7 +159,7 @@ public class RobotPeerBase {
 
     protected RobotState state;
 
-    protected IBasicRobotPeer peerProxy;
+    protected IBasicRobotPeer robotProxy;
 
     public boolean isIORobot() {
         return isIORobot;
@@ -603,8 +603,12 @@ public class RobotPeerBase {
         return graphicsProxy;
     }
 
-    public void onInteractiveEvent(robocode.Event e) {
+    public void onInteractiveEvent(robocode.Event e) { //TODO get rid of it on this thread
         eventManager.add(e);
+    }
+
+    public synchronized void killFromUI() { //TODO get rid of it on this thread
+        kill();
     }
 
     public synchronized void kill() {
@@ -822,7 +826,7 @@ public class RobotPeerBase {
                     "You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
         }
 
-        ((BasicRobotProxy)peerProxy).resetCallCount();
+        ((BasicRobotProxy)robotProxy).resetCallCount();
 
         if (newBullet != null) {
             battle.addBullet(newBullet);

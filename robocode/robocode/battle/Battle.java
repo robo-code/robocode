@@ -344,7 +344,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public void waitTillRunning() {
+    public void waitTillStarted() {
 		synchronized (battleMonitor) {
 			while (!running) {
 				try {
@@ -358,6 +358,21 @@ public class Battle implements Runnable {
 			}
 		}
 	}
+
+    public void waitTillOver() {
+        synchronized (battleMonitor) {
+            while (running) {
+                try {
+                    battleMonitor.wait();
+                } catch (InterruptedException e) {
+                    // Immediately reasserts the exception by interrupting the caller thread itself
+                    Thread.currentThread().interrupt();
+
+                    return;
+                }
+            }
+        }
+    }
 
 	private RobotResults[] computeResults() {
 		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());
@@ -577,7 +592,10 @@ public class Battle implements Runnable {
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 
-					initializeRobotPositions(r);
+                    //create proxy
+                    r.createRobotProxy();
+
+                    initializeRobotPosition(r);
 
 				} catch (Throwable e) {
 					r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
@@ -696,7 +714,7 @@ public class Battle implements Runnable {
 
 		updateBullets();
 
-		updateRobots();
+		moveRobots();
 
 		handleDeathEvents();
 
@@ -798,7 +816,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private void updateRobots() {
+	private void moveRobots() {
 		boolean zap = (inactiveTurnCount > inactivityTime);
 
 		// Move all bots
@@ -1231,17 +1249,19 @@ public class Battle implements Runnable {
 		for (RobotPeer r : robots) {
 			name = r.getRobotClassManager().getClassNameManager().getFullPackage();
 			if (name != null && name.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				r.getOut().println(
-						"SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
-						+ " characters maximum please.");
+                final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+                        + " characters maximum please.";
+                r.getOut().println(message);
+                logMessage(message);
 				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 
 			name = r.getRobotClassManager().getClassNameManager().getShortClassName();
 			if (name != null && name.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-				r.getOut().println(
-						"SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH + " characters maximum please.");
+                final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH + " characters maximum please.";
+                r.getOut().println(message);
+                logMessage(message);
 				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
@@ -1357,14 +1377,16 @@ public class Battle implements Runnable {
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
+                    logMessage(e);
 				} catch (Throwable e) {
 					robotPeer.getOut().println(
 							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
 					robotPeer.getOut().println("SYSTEM: " + e);
 					e.printStackTrace(robotPeer.getOut());
+                    logMessage(e);
 				}
 				if (roundNum > 0) {
-					initializeRobotPositions(robotPeer);
+					initializeRobotPosition(robotPeer);
 				}
 			} // for
 			manager.getThreadManager().setLoadingRobot(null);
@@ -1433,7 +1455,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private void initializeRobotPositions(RobotPeer robot) {
+	private void initializeRobotPosition(RobotPeer robot) {
 		if (initialRobotPositions != null) {
 			int index = robots.indexOf(robot);
 

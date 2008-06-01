@@ -39,7 +39,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
-	private RobotPeer robotPeer;
+	private RobotPeer robotPeer; //TODO get rid of it on UI, we need rather some handle
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
@@ -300,7 +300,7 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Kill button has been activated
 	 */
 	private void killButtonActionPerformed() {
-		robotPeer.kill();
+		robotPeer.killFromUI();
 	}
 
 	/**

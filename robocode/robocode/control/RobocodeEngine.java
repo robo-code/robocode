@@ -35,19 +35,14 @@ package robocode.control;
 
 import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
-import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
-import robocode.security.SecureInputStream;
-import robocode.security.SecurePrintStream;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.security.Policy;
 import java.util.List;
 
@@ -63,23 +58,9 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeEngine {
-	private RobocodeListener listener;
-	private RobocodeManager manager;
+    private RobocodeManager manager;
 
-	static PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-	static PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-	static InputStream sysin = new SecureInputStream(System.in, "System.in");
-
-	static {
-		// Secure System.in, System.err, System.out
-		System.setOut(sysout);
-		if (!System.getProperty("debug", "false").equals("true")) {
-			System.setErr(syserr);
-		}
-		System.setIn(sysin);
-	}
-
-	/**
+    /**
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
@@ -124,7 +105,6 @@ public class RobocodeEngine {
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {
-		this.listener = listener;
 		manager = new RobocodeManager(true, listener);
 		manager.setEnableGUI(false);
 
@@ -135,20 +115,7 @@ public class RobocodeEngine {
 			return;
 		}
 
-		Thread.currentThread().setName("Application Thread");
-		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
-
-		Policy.setPolicy(securityPolicy);
-		System.setSecurityManager(
-				new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, false));
-		RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
-
-		ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-		while (tg != null) {
-			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
-			tg = tg.getParent();
-		}
+        manager.initSecurity(true, false);
 	}
 
 	/**
@@ -239,4 +206,45 @@ public class RobocodeEngine {
 	public void abortCurrentBattle() {
 		manager.getBattleManager().stop();
 	}
+
+    /**
+     * Prints out all running thread to the standard system out (console)
+     */
+    public static void printRunningThreads() {
+        ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+
+        if (currentGroup == null) {
+            return;
+        }
+
+        while (currentGroup.getParent() != null) {
+            currentGroup = currentGroup.getParent();
+        }
+
+        ThreadGroup groups[] = new ThreadGroup[256];
+        Thread threads[] = new Thread[256];
+
+        int numGroups = currentGroup.enumerate(groups, true);
+
+        for (int i = 0; i < numGroups; i++) {
+            currentGroup = groups[i];
+            if (currentGroup.isDaemon()) {
+                System.out.print("  ");
+            } else {
+                System.out.print("* ");
+            }
+            System.out.println("In group: " + currentGroup.getName());
+            int numThreads = currentGroup.enumerate(threads);
+
+            for (int j = 0; j < numThreads; j++) {
+                if (threads[j].isDaemon()) {
+                    System.out.print("  ");
+                } else {
+                    System.out.print("* ");
+                }
+                System.out.println(threads[j].getName());
+            }
+            System.out.println("---------------");
+        }
+    }
 }

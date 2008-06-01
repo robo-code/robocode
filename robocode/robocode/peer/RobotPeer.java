@@ -168,7 +168,7 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
 
         setTestingCondition(false);
 
-        ((BasicRobotProxy)peerProxy).resetCallCount();
+        ((BasicRobotProxy)robotProxy).resetCallCount();
         skippedTurns = 0;
 
         setAdjustGunForBodyTurn(false);
@@ -179,25 +179,29 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
         newBullet = null;
     }
 
-    public IBasicRobotPeer getRobotProxy() {
-        if (peerProxy==null){
-            if (isTeamRobot) {
-                peerProxy = new TeamRobotProxy((RobotPeer)this);
-            }
-            else if (isAdvancedRobot) {
-                peerProxy = new AdvancedRobotProxy((RobotPeer)this);
-            }
-            else if (isInteractiveRobot) {
-                peerProxy = new StandardRobotProxy((RobotPeer)this);
-            }
-            else if (isJuniorRobot) {
-                peerProxy = new JuniorRobotProxy((RobotPeer)this);
-            }
-            else{
-                throw new AccessControlException("Unknown robot type");
-            }
+    /**
+     * Creates and returns a new robot proxy
+     */
+    public void createRobotProxy() {
+        if (isTeamRobot) {
+            robotProxy = new TeamRobotProxy(this);
         }
-        return peerProxy;
+        else if (isAdvancedRobot) {
+            robotProxy = new AdvancedRobotProxy(this);
+        }
+        else if (isInteractiveRobot) {
+            robotProxy = new StandardRobotProxy(this);
+        }
+        else if (isJuniorRobot) {
+            robotProxy = new JuniorRobotProxy(this);
+        }
+        else{
+            throw new AccessControlException("Unknown robot type");
+        }
+    }
+
+    public IBasicRobotPeer getRobotProxy(){
+        return robotProxy;
     }
 
     /**

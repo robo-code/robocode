@@ -74,7 +74,6 @@ import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
 
-import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -179,48 +178,14 @@ public class BattleManager {
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				for (FileSpecification fileSpec : robotSpecificationsList) {
-					if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-						if (fileSpec instanceof RobotFileSpecification) {
-							battlingRobotsList.add(new RobotClassManager((RobotFileSpecification) fileSpec));
-							break;
-						} else if (fileSpec instanceof TeamSpecification) {
-							TeamSpecification currentTeam = (TeamSpecification) fileSpec;
-							TeamPeer teamManager = new TeamPeer(currentTeam.getName());
-
-							StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
-
-							while (teamTokenizer.hasMoreTokens()) {
-								bot = teamTokenizer.nextToken();
-								RobotFileSpecification match = null;
-
-								for (FileSpecification teamFileSpec : robotSpecificationsList) {
-									// Teams cannot include teams
-									if (teamFileSpec instanceof TeamSpecification) {
-										continue;
-									}
-									if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-										// Found team member
-										match = (RobotFileSpecification) teamFileSpec;
-										if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
-												|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
-											break;
-										}
-										// else, still looking
-									}
-								}
-								battlingRobotsList.add(new RobotClassManager(match, teamManager));
-							}
-							break;
-						}
-					}
-				}
-			}
+                boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, null, null);
+                if (failed) return;
+            }
 		}
 		startNewBattle(battlingRobotsList, exitOnComplete, replay, null);
 	}
 
-	public void startNewBattle(BattleSpecification spec, boolean replay) {
+    public void startNewBattle(BattleSpecification spec, boolean replay) {
 		battleProperties = new BattleProperties();
 		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
 		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -244,64 +209,71 @@ public class BattleManager {
 				bot += ' ' + battleRobotSpec.getVersion();
 			}
 
-			boolean found = false;
-
-			for (FileSpecification fileSpec : robotSpecificationsList) {
-				if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-					if (fileSpec instanceof RobotFileSpecification) {
-						RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec);
-
-						rcm.setControlRobotSpecification(battleRobotSpec);
-						battlingRobotsList.add(rcm);
-						found = true;
-						break;
-					} else if (fileSpec instanceof TeamSpecification) {
-						TeamSpecification currentTeam = (TeamSpecification) fileSpec;
-						TeamPeer teamManager = new TeamPeer(currentTeam.getName());
-
-						StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
-
-						while (teamTokenizer.hasMoreTokens()) {
-							bot = teamTokenizer.nextToken();
-							RobotFileSpecification match = null;
-
-							for (FileSpecification teamFileSpec : robotSpecificationsList) {
-								// Teams cannot include teams
-								if (teamFileSpec instanceof TeamSpecification) {
-									continue;
-								}
-								if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-									// Found team member
-									match = (RobotFileSpecification) teamFileSpec;
-									if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
-											|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
-										found = true;
-										break;
-									}
-									// else, still looking
-								}
-							}
-							RobotClassManager rcm = new RobotClassManager(match, teamManager);
-
-							rcm.setControlRobotSpecification(battleRobotSpec);
-							battlingRobotsList.add(rcm);
-						}
-						break;
-					}
-				}
-			}
-			if (!found) {
-				logError("Aborting battle, could not find robot: " + bot);
-				if (manager.getListener() != null) {
-					manager.getListener().battleAborted(spec);
-				}
-				return;
-			}
-		}
+            boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, spec, battleRobotSpec);
+            if (failed) return;
+        }
 		startNewBattle(battlingRobotsList, false, replay, spec);
 	}
 
-	private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
+    private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, BattleSpecification spec, robocode.control.RobotSpecification battleRobotSpec) {
+        boolean found = false;
+
+        for (FileSpecification fileSpec : robotSpecificationsList) {
+            if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+                if (fileSpec instanceof RobotFileSpecification) {
+                    RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec);
+                    if (battleRobotSpec!=null)
+                        rcm.setControlRobotSpecification(battleRobotSpec);
+                    battlingRobotsList.add(rcm);
+                    found = true;
+                    break;
+                } else if (fileSpec instanceof TeamSpecification) {
+                    TeamSpecification currentTeam = (TeamSpecification) fileSpec;
+                    TeamPeer teamManager = new TeamPeer(currentTeam.getName());
+
+                    StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+
+                    while (teamTokenizer.hasMoreTokens()) {
+                        bot = teamTokenizer.nextToken();
+                        RobotFileSpecification match = null;
+
+                        for (FileSpecification teamFileSpec : robotSpecificationsList) {
+                            // Teams cannot include teams
+                            if (teamFileSpec instanceof TeamSpecification) {
+                                continue;
+                            }
+                            if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+                                // Found team member
+                                match = (RobotFileSpecification) teamFileSpec;
+                                if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
+                                        || currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
+                                    found = true;
+                                    break;
+                                }
+                                // else, still looking
+                            }
+                        }
+                        RobotClassManager rcm = new RobotClassManager(match, teamManager);
+                        if (battleRobotSpec!=null)
+                            rcm.setControlRobotSpecification(battleRobotSpec);
+                        battlingRobotsList.add(rcm);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            logError("Aborting battle, could not find robot: " + bot);
+            if (spec!=null && manager.getListener() != null) {
+                manager.getListener().battleAborted(spec);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
 			BattleSpecification battleSpecification) {
 
 		this.battleSpecification = battleSpecification;
@@ -371,10 +343,11 @@ public class BattleManager {
 		// Start the battle thread
 		battleThread.start();
 
-		// Wait until the battle is running.
-		// This must be done as a new battle could be started immediately after this one causing
-		// multiple battle threads to run at the same time, which must be prevented!
-		battle.waitTillRunning();
+        // Wait until the battle is running and ended.
+        // This must be done as a new battle could be started immediately after this one causing
+        // multiple battle threads to run at the same time, which must be prevented!
+        battle.waitTillStarted();
+        battle.waitTillOver();
 	}
 
 	public String getBattleFilename() {
@@ -426,68 +399,13 @@ public class BattleManager {
 		return battlePath;
 	}
 
-	public void saveBattle() {
-		pauseBattle();
-		saveBattleProperties();
-		resumeBattle();
-	}
-
-	public void saveBattleAs() {
-		pauseBattle();
-		File f = new File(getBattlePath());
-
-		JFileChooser chooser;
-
-		chooser = new JFileChooser(f);
-
-		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-			@Override
-			public boolean accept(File pathname) {
-				if (pathname.isDirectory()) {
-					return false;
-				}
-				String fn = pathname.getName();
-				int idx = fn.lastIndexOf('.');
-				String extension = "";
-
-				if (idx >= 0) {
-					extension = fn.substring(idx);
-				}
-				return extension.equalsIgnoreCase(".battle");
-			}
-
-			@Override
-			public String getDescription() {
-				return "Battles";
-			}
-		};
-
-		chooser.setFileFilter(filter);
-		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
-
-		if (rv == JFileChooser.APPROVE_OPTION) {
-			battleFilename = chooser.getSelectedFile().getPath();
-			int idx = battleFilename.lastIndexOf('.');
-			String extension = "";
-
-			if (idx > 0) {
-				extension = battleFilename.substring(idx);
-			}
-			if (!(extension.equalsIgnoreCase(".battle"))) {
-				battleFilename += ".battle";
-			}
-			saveBattleProperties();
-		}
-		resumeBattle();
-	}
-
-	public void saveBattleProperties() {
+    public void saveBattleProperties() {
 		if (battleProperties == null) {
 			logError("Cannot save null battle properties");
 			return;
 		}
 		if (battleFilename == null) {
-			saveBattleAs();
+            logError("Cannot save battle to null path, use setBattleFilename()");
 			return;
 		}
 		FileOutputStream out = null;
@@ -502,7 +420,9 @@ public class BattleManager {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException e) {
+                    //swallow
+                }
 			}
 		}
 	}
@@ -521,7 +441,9 @@ public class BattleManager {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException e) {
+                    //swallow
+                }
 			}
 		}
 	}
@@ -584,7 +506,9 @@ public class BattleManager {
 		if (fos != null) {
 			try {
 				fos.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+                //swallow
+            }
 		}
 	}
 

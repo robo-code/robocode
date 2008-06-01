@@ -33,8 +33,14 @@ import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import robocode.sound.SoundManager;
+import robocode.security.SecurePrintStream;
+import robocode.security.SecureInputStream;
+import robocode.security.RobocodeSecurityPolicy;
+import robocode.security.RobocodeSecurityManager;
+import robocode.RobocodeFileOutputStream;
 
 import java.io.*;
+import java.security.Policy;
 
 
 /**
@@ -60,6 +66,10 @@ public class RobocodeManager {
 
 	private boolean isGUIEnabled = true;
 	private boolean isSoundEnabled = true;
+
+    static {
+        RobocodeManager.initStreams();
+    }
 
 	public RobocodeManager(boolean slave, RobocodeListener listener) {
 		this.slave = slave;
@@ -236,6 +246,43 @@ public class RobocodeManager {
 	public void setListener(RobocodeListener listener) {
 		this.listener = listener;
 	}
+
+    private static void initStreams() {
+        PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
+        PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
+        InputStream sysin = new SecureInputStream(System.in, "System.in");
+
+        // Secure System.in, System.err, System.out
+        SecurePrintStream.realOut = System.out;
+        SecurePrintStream.realErr = System.err;
+        System.setOut(sysout);
+        if (!System.getProperty("debug", "false").equals("true")) {
+            System.setErr(syserr);
+        }
+        System.setIn(sysin);
+    }
+
+    public void initSecurity(boolean securityOn, boolean experimentalOn) {
+        Thread.currentThread().setName("Application Thread");
+
+        RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
+
+        Policy.setPolicy(securityPolicy);
+
+        if (securityOn) {
+            System.setSecurityManager(
+                    new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(), true, experimentalOn));
+
+            RobocodeFileOutputStream.setThreadManager(getThreadManager());
+
+            ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+            while (tg != null) {
+                ((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
+                tg = tg.getParent();
+            }
+        }
+    }
 
 	public void runIntroBattle() {
 		getBattleManager().setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());

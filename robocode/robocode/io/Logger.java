@@ -16,6 +16,7 @@ package robocode.io;
 
 
 import robocode.battle.events.IBattleListener;
+import robocode.security.SecurePrintStream;
 
 
 /**
@@ -34,19 +35,28 @@ public class Logger {
 
 	public static void logMessage(String s) {
 		if (logListener == null) {
-			System.out.println(s);
+            SecurePrintStream.realOut.println(s);
 		} else {
 			logListener.onBattleMessage(s);
 		}
 	}
 
+    public static void logMessage(Throwable e) {
+        if (logListener == null) {
+            SecurePrintStream.realErr.println(e);
+            e.printStackTrace(SecurePrintStream.realErr);
+        } else {
+            logListener.onBattleMessage(e.toString());
+        }
+    }
+
 	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
 			if (newline) {
-				System.out.println(s);
+				SecurePrintStream.realOut.println(s);
 			} else {
-				System.out.print(s);
-				System.out.flush();
+				SecurePrintStream.realOut.print(s);
+				SecurePrintStream.realOut.flush();
 			}
 		} else {
 			if (newline) {
@@ -60,7 +70,7 @@ public class Logger {
 
     public static void logError(String s) {
         if (logListener == null) {
-            System.err.println(s);
+            SecurePrintStream.realErr.println(s);
         } else {
             logListener.onBattleMessage(s);
         }
@@ -68,8 +78,8 @@ public class Logger {
 
     public static void logError(String s, Throwable e) {
         if (logListener == null) {
-            System.err.println(s + ": " + e);
-            e.printStackTrace(System.err);
+            SecurePrintStream.realErr.println(s + ": " + e);
+            e.printStackTrace(SecurePrintStream.realErr);
         } else {
             logListener.onBattleError(s + ": " + e);
         }
@@ -77,10 +87,10 @@ public class Logger {
 
 	public static void logError(Throwable e) {
 		if (logListener == null) {
-			System.err.println(e);
-			e.printStackTrace(System.err);
+			SecurePrintStream.realErr.println(e);
+			e.printStackTrace(SecurePrintStream.realErr);
 		} else {
-			logListener.onBattleError("" + e);
+			logListener.onBattleError(e.toString());
 		}
 	}
 }
