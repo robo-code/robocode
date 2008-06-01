@@ -182,10 +182,10 @@ public class BattleManager {
                 if (failed) return;
             }
 		}
-		startNewBattle(battlingRobotsList, exitOnComplete, replay, null);
+		startNewBattle(battlingRobotsList, exitOnComplete, replay, null, false);
 	}
 
-    public void startNewBattle(BattleSpecification spec, boolean replay) {
+    public void startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
 		battleProperties = new BattleProperties();
 		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
 		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -212,7 +212,7 @@ public class BattleManager {
             boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, spec, battleRobotSpec);
             if (failed) return;
         }
-		startNewBattle(battlingRobotsList, false, replay, spec);
+		startNewBattle(battlingRobotsList, false, replay, spec, true);
 	}
 
     private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, BattleSpecification spec, robocode.control.RobotSpecification battleRobotSpec) {
@@ -274,7 +274,7 @@ public class BattleManager {
     }
 
     private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
-			BattleSpecification battleSpecification) {
+			BattleSpecification battleSpecification, boolean waitTillOver) {
 
 		this.battleSpecification = battleSpecification;
 		this.exitOnComplete = exitOnComplete;
@@ -347,8 +347,10 @@ public class BattleManager {
         // This must be done as a new battle could be started immediately after this one causing
         // multiple battle threads to run at the same time, which must be prevented!
         battle.waitTillStarted();
-        battle.waitTillOver();
-	}
+        if (waitTillOver){
+            battle.waitTillOver();
+        }
+    }
 
 	public String getBattleFilename() {
 		String filename = battleFilename;
