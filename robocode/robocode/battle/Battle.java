@@ -541,7 +541,7 @@ public class Battle implements Runnable {
 
 		unsafeThreadGroup.setDaemon(true);
 		unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
-		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
+        unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
@@ -577,7 +577,7 @@ public class Battle implements Runnable {
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 
-					initializeRobotPosition(r);
+                    initializeRobotPosition(r);
 
 				} catch (Throwable e) {
 					r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
@@ -1231,18 +1231,20 @@ public class Battle implements Runnable {
 		for (RobotPeer r : robots) {
 			name = r.getRobotClassManager().getClassNameManager().getFullPackage();
 			if (name != null && name.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				r.getOut().println(
-						"SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
-						+ " characters maximum please.");
+                final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+                        + " characters maximum please.";
+                r.getOut().println(message);
+                logMessage(message);
 				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 
 			name = r.getRobotClassManager().getClassNameManager().getShortClassName();
 			if (name != null && name.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-				r.getOut().println(
-						"SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH + " characters maximum please.");
-				r.getOut().println("SYSTEM: Robot disabled.");
+                final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH + " characters maximum please.";
+                r.getOut().println(message);
+                logMessage(message);
+                r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 		}
@@ -1357,12 +1359,14 @@ public class Battle implements Runnable {
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
+                    logMessage(e);
 				} catch (Throwable e) {
 					robotPeer.getOut().println(
 							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
 					robotPeer.getOut().println("SYSTEM: " + e);
 					e.printStackTrace(robotPeer.getOut());
-				}
+                    logMessage(e);
+                }
 				if (roundNum > 0) {
 					initializeRobotPosition(robotPeer);
 				}

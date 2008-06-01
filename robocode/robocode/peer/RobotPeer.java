@@ -607,12 +607,16 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			}
 			out.println("SYSTEM: Robot disabled" + msg);
 		} catch (Exception e) {
-			out.println(getName() + ": Exception: " + e);
-			out.printStackTrace(e);
-		} catch (Throwable t) {
+            final String message = getName() + ": Exception: " + e;
+            out.println(message);
+            out.printStackTrace(e);
+            logMessage(message);
+        } catch (Throwable t) {
 			if (!(t instanceof ThreadDeath)) {
-				out.println(getName() + ": Throwable: " + t);
+                final String message = getName() + ": Throwable: " + t;
+                out.println(message);
 				out.printStackTrace(t);
+                logMessage(message);
 			} else {
 				logMessage(getName() + " stopped successfully.");
 			}

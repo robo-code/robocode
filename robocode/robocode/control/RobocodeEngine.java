@@ -72,6 +72,8 @@ public class RobocodeEngine {
 
 	static {
 		// Secure System.in, System.err, System.out
+        SecurePrintStream.realOut = System.out;
+        SecurePrintStream.realErr = System.err;
 		System.setOut(sysout);
 		if (!System.getProperty("debug", "false").equals("true")) {
 			System.setErr(syserr);

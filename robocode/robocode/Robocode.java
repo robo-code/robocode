@@ -118,7 +118,9 @@ public class Robocode {
 			SecurePrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
 			SecureInputStream sysin = new SecureInputStream(System.in, "System.in");
 
-			System.setOut(sysout);
+            SecurePrintStream.realOut = System.out;
+            SecurePrintStream.realErr = System.err;
+            System.setOut(sysout);
 			if (!System.getProperty("debug", "false").equals("true")) {
 				System.setErr(syserr);
 			}
