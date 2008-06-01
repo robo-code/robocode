@@ -246,7 +246,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	protected RobotState state;
 
-	public RobotPeer(String name) {
+    private IBasicRobotPeer robotProxy;
+
+    public RobotPeer(String name) {
 		this.name = name;
 
 		battleField = new DefaultBattleField(800, 600);
@@ -340,23 +342,29 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	/**
 	 * Creates and returns a new robot proxy
 	 */
-	public IBasicRobotPeer getRobotProxy() {
+	public void createRobotProxy() {
 		if (isTeamRobot) {
-			return new TeamRobotProxy(this);
+			robotProxy = new TeamRobotProxy(this);
 		}
-		if (isAdvancedRobot) {
-			return new AdvancedRobotProxy(this);
+		else if (isAdvancedRobot) {
+			robotProxy = new AdvancedRobotProxy(this);
 		}
-		if (isInteractiveRobot) {
-			return new StandardRobotProxy(this);
+		else if (isInteractiveRobot) {
+			robotProxy = new StandardRobotProxy(this);
 		}
-		if (isJuniorRobot) {
-			return new JuniorRobotProxy(this);
+		else if (isJuniorRobot) {
+			robotProxy = new JuniorRobotProxy(this);
 		}
-		throw new AccessControlException("Unknown robot type");
-	}
+        else{
+            throw new AccessControlException("Unknown robot type");
+        }
+    }
 
-	public final void move(double distance) {
+    public IBasicRobotPeer getRobotProxy(){
+        return robotProxy;
+    }
+
+    public final void move(double distance) {
 		setMove(distance);
 		do {
 			execute(); // Always tick at least once

@@ -577,6 +577,9 @@ public class Battle implements Runnable {
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 
+                    //create proxy
+                    r.createRobotProxy();
+
                     initializeRobotPosition(r);
 
 				} catch (Throwable e) {
