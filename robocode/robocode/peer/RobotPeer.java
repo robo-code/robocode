@@ -64,18 +64,23 @@ package robocode.peer;
 
 
 import robocode.*;
+import static robocode.gfx.ColorUtil.toColor;
+import robocode.battle.record.RobotRecord;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.ITeamRobot;
 import robocode.manager.NameManager;
-import robocode.battle.Battle;
-import robocode.battlefield.DefaultBattleField;
 import robocode.peer.robot.*;
-import robocode.peer.proxies.BasicRobotProxy;
+import robocode.peer.proxies.*;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
+import java.awt.geom.Rectangle2D;
 import static java.lang.Math.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.security.AccessControlException;
 
 
 /**
@@ -92,14 +97,6 @@ import java.lang.reflect.Modifier;
  */
 public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer {
 
-
-    public RobotPeer(String name) {
-        this.name = name;
-
-        battleField = new DefaultBattleField(800, 600);
-        battle = new Battle(battleField, null, null); // FIXME: Avoid this
-    }
-
     public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota) {
         super();
         this.robotClassManager = robotClassManager;
@@ -112,6 +109,16 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
 
         // Create statistics after teamPeer set
         statistics = new RobotStatistics(this);
+    }
+
+    public void setRobot(IBasicRobot newRobot) {
+        robot = newRobot;
+        if (robot != null) {
+            if (robot instanceof ITeamRobot) {
+                messageManager = new RobotMessageManager((RobotPeer)this);
+            }
+            eventManager.setRobot(newRobot);
+        }
     }
 
     public synchronized void initialize(double x, double y, double heading) {
@@ -170,6 +177,27 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
         isAdjustRadarForBodyTurnSet = false;
 
         newBullet = null;
+    }
+
+    public IBasicRobotPeer getRobotProxy() {
+        if (peerProxy==null){
+            if (isTeamRobot) {
+                peerProxy = new TeamRobotProxy((RobotPeer)this);
+            }
+            else if (isAdvancedRobot) {
+                peerProxy = new AdvancedRobotProxy((RobotPeer)this);
+            }
+            else if (isInteractiveRobot) {
+                peerProxy = new StandardRobotProxy((RobotPeer)this);
+            }
+            else if (isJuniorRobot) {
+                peerProxy = new JuniorRobotProxy((RobotPeer)this);
+            }
+            else{
+                throw new AccessControlException("Unknown robot type");
+            }
+        }
+        return peerProxy;
     }
 
     /**
@@ -282,6 +310,61 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
             distanceRemaining = 0;
             bodyTurnRemaining = 0;
         }
+    }
+
+    public void setWinner(boolean newWinner) {
+        isWinner = newWinner;
+        if (isWinner) {
+            out.println("SYSTEM: " + getName() + " wins the round.");
+            eventManager.add(new WinEvent());
+        }
+    }
+
+    public void scan() {
+        if (isDroid) {
+            return;
+        }
+
+        double startAngle = getLastRadarHeading();
+        double scanRadians = getRadarHeading() - startAngle;
+
+        // Check if we passed through 360
+        if (scanRadians < -PI) {
+            scanRadians = 2 * PI + scanRadians;
+        } else if (scanRadians > PI) {
+            scanRadians = scanRadians - 2 * PI;
+        }
+
+        // In our coords, we are scanning clockwise, with +y up
+        // In java coords, we are scanning counterclockwise, with +y down
+        // All we need to do is adjust our angle by -90 for this to work.
+        startAngle -= PI / 2;
+
+        startAngle = normalAbsoluteAngle(startAngle);
+
+        scanArc.setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
+                2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
+
+        for (RobotPeer robotPeer : battle.getRobots()) {
+            if (!(robotPeer == null || robotPeer == this || robotPeer.isDead())
+                    && intersects(scanArc, robotPeer.boundingBox)) {
+                double dx = robotPeer.getX() - getX();
+                double dy = robotPeer.getY() - getY();
+                double angle = atan2(dx, dy);
+                double dist = Math.hypot(dx, dy);
+
+                eventManager.add(
+                        new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
+                        normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
+                        robotPeer.getVelocity()));
+            }
+        }
+    }
+
+    private boolean intersects(Arc2D arc, Rectangle2D rect) {
+        return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
+                arc.getStartPoint().getY()))
+                || arc.intersects(rect);
     }
 
     public synchronized void update() {
@@ -705,6 +788,20 @@ public class RobotPeer extends RobotPeerBase implements Runnable, ContestantPeer
         if (inCollision) {
             state = RobotState.HIT_ROBOT;
         }
+    }
+
+    public synchronized void set(RobotRecord rr) {
+        x = rr.x;
+        y = rr.y;
+        energy = (double) rr.energy / 10;
+        bodyHeading = Math.PI * rr.heading / 128;
+        radarHeading = Math.PI * rr.radarHeading / 128;
+        gunHeading = Math.PI * rr.gunHeading / 128;
+        state = RobotState.toState(rr.state);
+        bodyColor = toColor(rr.bodyColor);
+        gunColor = toColor(rr.gunColor);
+        radarColor = toColor(rr.radarColor);
+        scanColor = toColor(rr.scanColor);
     }
 
 }

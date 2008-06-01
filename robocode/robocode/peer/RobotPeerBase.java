@@ -12,13 +12,10 @@
 package robocode.peer;
 
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.ITeamRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.peer.robot.*;
 import robocode.peer.proxies.*;
 import robocode.*;
-import static robocode.gfx.ColorUtil.toColor;
-import robocode.manager.NameManager;
 import static robocode.io.Logger.logMessage;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
@@ -26,18 +23,11 @@ import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.battle.Battle;
-import robocode.battle.record.RobotRecord;
 import robocode.util.BoundingRectangle;
-import static robocode.util.Utils.normalRelativeAngle;
-import static robocode.util.Utils.normalAbsoluteAngle;
 import robocode.battlefield.BattleField;
 
 import java.awt.geom.Arc2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.*;
-import java.security.AccessControlException;
-import static java.lang.Math.atan2;
-import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import static java.lang.Math.max;
@@ -195,11 +185,6 @@ public class RobotPeerBase {
         this.isDroid = droid;
     }
 
-    /**
-     * Returns <code>true</code> if the robot is implementing the
-     * {@link robocode.robotinterfaces.IJuniorRobot}; <code>false</code> otherwise.
-     * @return flag
-     */
     public boolean isJuniorRobot() {
         return isJuniorRobot;
     }
@@ -208,11 +193,6 @@ public class RobotPeerBase {
         this.isJuniorRobot = value;
     }
 
-    /**
-     * Returns <code>true</code> if the robot is implementing the
-     * {@link robocode.robotinterfaces.IInteractiveRobot}; <code>false</code> otherwise.
-     * @return flag
-     */
     public boolean isInteractiveRobot() {
         return isInteractiveRobot;
     }
@@ -221,11 +201,6 @@ public class RobotPeerBase {
         this.isInteractiveRobot = value;
     }
 
-    /**
-     * Returns <code>true</code> if the robot is implementing the
-     * {@link robocode.robotinterfaces.IPaintRobot}; <code>false</code> otherwise.
-     * @return flag
-     */
     public boolean isPaintRobot() {
         return isPaintRobot;
     }
@@ -234,11 +209,6 @@ public class RobotPeerBase {
         this.isPaintRobot = value;
     }
 
-    /**
-     * Returns <code>true</code> if the robot is implementing the
-     * {@link robocode.robotinterfaces.IAdvancedRobot}; <code>false</code> otherwise.
-     * @return flag
-     */
     public boolean isAdvancedRobot() {
         return isAdvancedRobot;
     }
@@ -247,38 +217,12 @@ public class RobotPeerBase {
         this.isAdvancedRobot = value;
     }
 
-    /**
-     * Returns <code>true</code> if the robot is implementing the
-     * {@link robocode.robotinterfaces.ITeamRobot}; <code>false</code> otherwise.
-     * @return flag
-     */
     public boolean isTeamRobot() {
         return isTeamRobot;
     }
 
     public void setTeamRobot(boolean value) {
         this.isTeamRobot = value;
-    }
-
-    public IBasicRobotPeer getRobotProxy() {
-        if (peerProxy==null){
-            if (isTeamRobot) {
-                peerProxy = new TeamRobotProxy((RobotPeer)this);
-            }
-            else if (isAdvancedRobot) {
-                peerProxy = new AdvancedRobotProxy((RobotPeer)this);
-            }
-            else if (isInteractiveRobot) {
-                peerProxy = new StandardRobotProxy((RobotPeer)this);
-            }
-            else if (isJuniorRobot) {
-                peerProxy = new JuniorRobotProxy((RobotPeer)this);
-            }
-            else{
-                throw new AccessControlException("Unknown robot type");
-            }
-        }
-        return peerProxy;
     }
 
     public Battle getBattle() {
@@ -355,105 +299,6 @@ public class RobotPeerBase {
         return state != RobotState.DEAD;
     }
 
-    public void run() {
-        setRunning(true);
-
-        try {
-            if (robot != null) {
-
-                // Process all events for the first turn.
-                // This is done as the first robot status event must occur before the robot
-                // has started running.
-                eventManager.processEvents();
-
-                Runnable runnable = robot.getRobotRunnable();
-
-                if (runnable != null) {
-                    runnable.run();
-                }
-            }
-            for (;;) {
-                execute();
-            }
-        } catch (DeathException e) {
-            out.println("SYSTEM: " + getName() + " has died");
-        } catch (WinException e) {// Do nothing
-        } catch (DisabledException e) {
-            setEnergy(0);
-            String msg = e.getMessage();
-
-            if (msg == null) {
-                msg = "";
-            } else {
-                msg = ": " + msg;
-            }
-            out.println("SYSTEM: Robot disabled" + msg);
-        } catch (Exception e) {
-            out.println(getName() + ": Exception: " + e);
-            out.printStackTrace(e);
-        } catch (Throwable t) {
-            if (!(t instanceof ThreadDeath)) {
-                out.println(getName() + ": Throwable: " + t);
-                out.printStackTrace(t);
-            } else {
-                logMessage(getName() + " stopped successfully.");
-            }
-        }
-
-        // If battle is waiting for us, well, all done!
-        synchronized (this) {
-            isRunning = false;
-            notifyAll();
-        }
-    }
-
-    private boolean intersects(Arc2D arc, Rectangle2D rect) {
-        return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
-                arc.getStartPoint().getY()))
-                || arc.intersects(rect);
-    }
-
-    public void scan() {
-        if (isDroid) {
-            return;
-        }
-
-        double startAngle = getLastRadarHeading();
-        double scanRadians = getRadarHeading() - startAngle;
-
-        // Check if we passed through 360
-        if (scanRadians < -PI) {
-            scanRadians = 2 * PI + scanRadians;
-        } else if (scanRadians > PI) {
-            scanRadians = scanRadians - 2 * PI;
-        }
-
-        // In our coords, we are scanning clockwise, with +y up
-        // In java coords, we are scanning counterclockwise, with +y down
-        // All we need to do is adjust our angle by -90 for this to work.
-        startAngle -= PI / 2;
-
-        startAngle = normalAbsoluteAngle(startAngle);
-
-        scanArc.setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
-                2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
-
-        for (RobotPeer robotPeer : battle.getRobots()) {
-            if (!(robotPeer == null || robotPeer == this || robotPeer.isDead())
-                    && intersects(scanArc, robotPeer.boundingBox)) {
-                double dx = robotPeer.getX() - getX();
-                double dy = robotPeer.getY() - getY();
-                double angle = atan2(dx, dy);
-                double dist = Math.hypot(dx, dy);
-
-                eventManager.add(
-                        new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
-                        normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
-                        robotPeer.getVelocity()));
-            }
-        }
-    }
-
     public synchronized void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
         isAdjustGunForBodyTurn = newAdjustGunForBodyTurn;
     }
@@ -465,56 +310,9 @@ public class RobotPeerBase {
         }
     }
 
-    public final synchronized void setMove(double distance) {
-        if (energy == 0) {
-            return;
-        }
-        distanceRemaining = distance;
-        acceleration = 0;
-
-        if (distance == 0) {
-            moveDirection = 0;
-        } else if (distance > 0) {
-            moveDirection = 1;
-        } else {
-            moveDirection = -1;
-        }
-        slowingDown = false;
-    }
-
     public void setBattle(Battle newBattle) {
         battle = newBattle;
         battleField = battle.getBattleField();
-    }
-
-    public synchronized void kill() {
-        battle.resetInactiveTurnCount(10.0);
-        if (isAlive()) {
-            eventManager.add(new DeathEvent());
-            if (isTeamLeader()) {
-                for (RobotPeer teammate : teamPeer) {
-                    if (!(teammate.isDead() || teammate == this)) {
-                        teammate.setEnergy(teammate.getEnergy() - 30);
-
-                        BulletPeer sBullet = new BulletPeer((RobotPeer)this, battle);
-
-                        sBullet.setState(BulletState.HIT_VICTIM);
-                        sBullet.setX(teammate.getX());
-                        sBullet.setY(teammate.getY());
-                        sBullet.setVictim(teammate);
-                        sBullet.setPower(4);
-                        battle.addBullet(sBullet);
-                    }
-                }
-            }
-            battle.generateDeathEvents((RobotPeer)this);
-
-            // 'fake' bullet for explosion on self
-            battle.addBullet(new ExplosionPeer((RobotPeer)this, battle));
-        }
-        setEnergy(0);
-
-        state = RobotState.DEAD;
     }
 
     public synchronized void preInitialize() {
@@ -531,77 +329,6 @@ public class RobotPeerBase {
 
     public synchronized void setRadarHeading(double newRadarHeading) {
         radarHeading = newRadarHeading;
-    }
-
-    public final void execute() {
-
-        // Entering tick
-        if (Thread.currentThread() != robotThreadManager.getRunThread()) {
-            throw new RobotException("You cannot take action in this thread!");
-        }
-        if (getTestingCondition()) {
-            throw new RobotException(
-                    "You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
-        }
-
-        ((BasicRobotProxy)peerProxy).resetCallCount();
-
-        if (newBullet != null) {
-            battle.addBullet(newBullet);
-            newBullet = null;
-        }
-
-        // This stops autoscan from scanning...
-        if (waitCondition != null && waitCondition.test()) {
-            waitCondition = null;
-        }
-
-        // If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
-        if (getHalt()) {
-            if (isDead()) {
-                throw new DeathException();
-            } else if (isWinner) {
-                throw new WinException();
-            }
-        }
-
-        synchronized (this) {
-            // Notify the battle that we are now asleep.
-            // This ends any pending wait() call in battle.runRound().
-            // Should not actually take place until we release the lock in wait(), below.
-            isSleeping = true;
-            notifyAll();
-            // Notifying battle that we're asleep
-            // Sleeping and waiting for battle to wake us up.
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                // We are expecting this to happen when a round is ended!
-
-                // Immediately reasserts the exception by interrupting the caller thread itself
-                Thread.currentThread().interrupt();
-            }
-            isSleeping = false;
-            // Notify battle thread, which is waiting in
-            // our wakeup() call, to return.
-            // It's quite possible, by the way, that we'll be back in sleep (above)
-            // before the battle thread actually wakes up
-            notifyAll();
-        }
-
-        eventManager.setFireAssistValid(false);
-
-        if (isDead()) {
-            setHalt(true);
-        }
-
-        // Out's counter must be reset before processing event.
-        // Otherwise, it will not be reset when printing in the onScannedEvent()
-        // before a scan() call, which will potentially cause a new onScannedEvent()
-        // and therefore not be able to reset the counter.
-        out.resetCounter();
-
-        eventManager.processEvents();
     }
 
     public synchronized final void setTurnGun(double radians) {
@@ -624,17 +351,6 @@ public class RobotPeerBase {
 
     public synchronized void setHalt(boolean halt) {
         this.halt = halt;
-    }
-
-    public int compareTo(ContestantPeer cp) {
-        double score1 = statistics.getTotalScore();
-        double score2 = cp.getStatistics().getTotalScore();
-
-        if (battle.isRunning()) {
-            score1 += statistics.getCurrentScore();
-            score2 += cp.getStatistics().getCurrentScore();
-        }
-        return (int) (score2 + 0.5) - (int) (score1 + 0.5);
     }
 
     public IBasicRobot getRobot() {
@@ -673,60 +389,8 @@ public class RobotPeerBase {
         maxVelocity = min(abs(newVelocity), Rules.MAX_VELOCITY);
     }
 
-    public synchronized final void setResume() {
-        if (isStopped) {
-            isStopped = false;
-            distanceRemaining = saveDistanceToGo;
-            bodyTurnRemaining = saveAngleToTurn;
-            gunTurnRemaining = saveGunAngleToTurn;
-            radarTurnRemaining = saveRadarAngleToTurn;
-        }
-    }
-
-    public void setRobot(IBasicRobot newRobot) {
-        robot = newRobot;
-        if (robot != null) {
-            if (robot instanceof ITeamRobot) {
-                messageManager = new RobotMessageManager((RobotPeer)this);
-            }
-            eventManager.setRobot(newRobot);
-        }
-    }
-
-    public final synchronized void setStop(boolean overwrite) {
-        if (!isStopped || overwrite) {
-            this.saveDistanceToGo = distanceRemaining;
-            this.saveAngleToTurn = bodyTurnRemaining;
-            this.saveGunAngleToTurn = gunTurnRemaining;
-            this.saveRadarAngleToTurn = radarTurnRemaining;
-        }
-        isStopped = true;
-
-        this.distanceRemaining = 0;
-        this.bodyTurnRemaining = 0;
-        this.gunTurnRemaining = 0;
-        this.radarTurnRemaining = 0;
-    }
-
     public synchronized void setVelocity(double newVelocity) {
         velocity = newVelocity;
-    }
-
-    public void setWinner(boolean newWinner) {
-        isWinner = newWinner;
-        if (isWinner) {
-            out.println("SYSTEM: " + getName() + " wins the round.");
-            eventManager.add(new WinEvent());
-        }
-    }
-
-    public synchronized void waitFor(Condition condition) {
-        waitCondition = condition;
-        do {
-            execute(); // Always tick at least once
-        } while (!condition.test());
-
-        waitCondition = null;
     }
 
     public EventManager getEventManager() {
@@ -745,37 +409,6 @@ public class RobotPeerBase {
         this.scan = scan;
     }
 
-    public synchronized Bullet setFire(double power) {
-        if (Double.isNaN(power)) {
-            out.println("SYSTEM: You cannot call fire(NaN)");
-            return null;
-        }
-        if (gunHeat > 0 || energy == 0) {
-            return null;
-        }
-
-        double firePower = min(energy, min(max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
-
-        this.setEnergy(energy - firePower);
-
-        gunHeat += Rules.getGunHeat(firePower);
-
-        BulletPeer bullet = new BulletPeer((RobotPeer)this, battle);
-
-        bullet.setPower(firePower);
-        bullet.setVelocity(Rules.getBulletSpeed(firePower));
-        if (eventManager.isFireAssistValid()) {
-            bullet.setHeading(eventManager.getFireAssistAngle());
-        } else {
-            bullet.setHeading(getGunHeading());
-        }
-        bullet.setX(x);
-        bullet.setY(y);
-
-        newBullet = bullet;
-
-        return bullet.getBullet();
-    }
 
     public synchronized double getDistanceRemaining() {
         return distanceRemaining;
@@ -862,39 +495,13 @@ public class RobotPeerBase {
         return isAdjustRadarForBodyTurn;
     }
 
-    public boolean isCheckFileQuota() {
-        return checkFileQuota;
-    }
-
     public synchronized void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
         isAdjustRadarForBodyTurn = newAdjustRadarForBodyTurn;
         isAdjustRadarForBodyTurnSet = true;
     }
 
-    //TODO unused
-    public void setCheckFileQuota(boolean newCheckFileQuota) {
-        out.println("CheckFileQuota on");
-        checkFileQuota = newCheckFileQuota;
-    }
-
     public synchronized void setDistanceRemaining(double new_distanceRemaining) {
         distanceRemaining = new_distanceRemaining;
-    }
-
-    public synchronized void setEnergy(double newEnergy) {
-        setEnergy(newEnergy, true);
-    }
-
-    public synchronized void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
-        if (resetInactiveTurnCount && (energy != newEnergy)) {
-            battle.resetInactiveTurnCount(energy - newEnergy);
-        }
-        energy = newEnergy;
-        if (energy < .01) {
-            energy = 0;
-            distanceRemaining = 0;
-            bodyTurnRemaining = 0;
-        }
     }
 
     public synchronized void setGunHeat(double newGunHeat) {
@@ -989,20 +596,6 @@ public class RobotPeerBase {
         state = newState;
     }
 
-    public synchronized void set(RobotRecord rr) {
-        x = rr.x;
-        y = rr.y;
-        energy = (double) rr.energy / 10;
-        bodyHeading = Math.PI * rr.heading / 128;
-        radarHeading = Math.PI * rr.radarHeading / 128;
-        gunHeading = Math.PI * rr.gunHeading / 128;
-        state = RobotState.toState(rr.state);
-        bodyColor = toColor(rr.bodyColor);
-        gunColor = toColor(rr.gunColor);
-        radarColor = toColor(rr.radarColor);
-        scanColor = toColor(rr.scanColor);
-    }
-
     public Graphics2D getGraphics() {
         if (graphicsProxy == null) {
             graphicsProxy = new Graphics2DProxy();
@@ -1012,6 +605,281 @@ public class RobotPeerBase {
 
     public void onInteractiveEvent(robocode.Event e) {
         eventManager.add(e);
+    }
+
+    public synchronized void kill() {
+        battle.resetInactiveTurnCount(10.0);
+        if (isAlive()) {
+            eventManager.add(new DeathEvent());
+            if (isTeamLeader()) {
+                for (RobotPeer teammate : teamPeer) {
+                    if (!(teammate.isDead() || teammate == this)) {
+                        teammate.setEnergy(teammate.getEnergy() - 30);
+
+                        BulletPeer sBullet = new BulletPeer((RobotPeer)this, battle);
+
+                        sBullet.setState(BulletState.HIT_VICTIM);
+                        sBullet.setX(teammate.getX());
+                        sBullet.setY(teammate.getY());
+                        sBullet.setVictim(teammate);
+                        sBullet.setPower(4);
+                        battle.addBullet(sBullet);
+                    }
+                }
+            }
+            battle.generateDeathEvents((RobotPeer)this);
+
+            // 'fake' bullet for explosion on self
+            battle.addBullet(new ExplosionPeer((RobotPeer)this, battle));
+        }
+        setEnergy(0);
+
+        state = RobotState.DEAD;
+    }
+
+    //TODO unused ?
+    public int compareTo(ContestantPeer cp) {
+        double score1 = statistics.getTotalScore();
+        double score2 = cp.getStatistics().getTotalScore();
+
+        if (battle.isRunning()) {
+            score1 += statistics.getCurrentScore();
+            score2 += cp.getStatistics().getCurrentScore();
+        }
+        return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+    }
+
+    //TODO unused ?
+    public void setCheckFileQuota(boolean newCheckFileQuota) {
+        out.println("CheckFileQuota on");
+        checkFileQuota = newCheckFileQuota;
+    }
+
+    //TODO unused ?
+    public boolean isCheckFileQuota() {
+        return checkFileQuota;
+    }
+
+    public synchronized void setEnergy(double newEnergy) {
+        setEnergy(newEnergy, true);
+    }
+
+    public synchronized void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
+        if (resetInactiveTurnCount && (energy != newEnergy)) {
+            battle.resetInactiveTurnCount(energy - newEnergy);
+        }
+        energy = newEnergy;
+        if (energy < .01) {
+            energy = 0;
+            distanceRemaining = 0;
+            bodyTurnRemaining = 0;
+        }
+    }
+
+    public synchronized void waitFor(Condition condition) {
+        waitCondition = condition;
+        do {
+            execute(); // Always tick at least once
+        } while (!condition.test());
+
+        waitCondition = null;
+    }
+
+    public final synchronized void setMove(double distance) {
+        if (energy == 0) {
+            return;
+        }
+        distanceRemaining = distance;
+        acceleration = 0;
+
+        if (distance == 0) {
+            moveDirection = 0;
+        } else if (distance > 0) {
+            moveDirection = 1;
+        } else {
+            moveDirection = -1;
+        }
+        slowingDown = false;
+    }
+
+    public synchronized Bullet setFire(double power) {
+        if (Double.isNaN(power)) {
+            out.println("SYSTEM: You cannot call fire(NaN)");
+            return null;
+        }
+        if (gunHeat > 0 || energy == 0) {
+            return null;
+        }
+
+        double firePower = min(energy, min(max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+
+        this.setEnergy(energy - firePower);
+
+        gunHeat += Rules.getGunHeat(firePower);
+
+        BulletPeer bullet = new BulletPeer((RobotPeer)this, battle);
+
+        bullet.setPower(firePower);
+        bullet.setVelocity(Rules.getBulletSpeed(firePower));
+        if (eventManager.isFireAssistValid()) {
+            bullet.setHeading(eventManager.getFireAssistAngle());
+        } else {
+            bullet.setHeading(getGunHeading());
+        }
+        bullet.setX(x);
+        bullet.setY(y);
+
+        newBullet = bullet;
+
+        return bullet.getBullet();
+    }
+
+    public final synchronized void setStop(boolean overwrite) {
+        if (!isStopped || overwrite) {
+            this.saveDistanceToGo = distanceRemaining;
+            this.saveAngleToTurn = bodyTurnRemaining;
+            this.saveGunAngleToTurn = gunTurnRemaining;
+            this.saveRadarAngleToTurn = radarTurnRemaining;
+        }
+        isStopped = true;
+
+        this.distanceRemaining = 0;
+        this.bodyTurnRemaining = 0;
+        this.gunTurnRemaining = 0;
+        this.radarTurnRemaining = 0;
+    }
+
+    public synchronized final void setResume() {
+        if (isStopped) {
+            isStopped = false;
+            distanceRemaining = saveDistanceToGo;
+            bodyTurnRemaining = saveAngleToTurn;
+            gunTurnRemaining = saveGunAngleToTurn;
+            radarTurnRemaining = saveRadarAngleToTurn;
+        }
+    }
+
+    public void run() {
+        setRunning(true);
+
+        try {
+            if (robot != null) {
+
+                // Process all events for the first turn.
+                // This is done as the first robot status event must occur before the robot
+                // has started running.
+                eventManager.processEvents();
+
+                Runnable runnable = robot.getRobotRunnable();
+
+                if (runnable != null) {
+                    runnable.run();
+                }
+            }
+            for (;;) {
+                execute();
+            }
+        } catch (DeathException e) {
+            out.println("SYSTEM: " + getName() + " has died");
+        } catch (WinException e) {// Do nothing
+        } catch (DisabledException e) {
+            setEnergy(0);
+            String msg = e.getMessage();
+
+            if (msg == null) {
+                msg = "";
+            } else {
+                msg = ": " + msg;
+            }
+            out.println("SYSTEM: Robot disabled" + msg);
+        } catch (Exception e) {
+            out.println(getName() + ": Exception: " + e);
+            out.printStackTrace(e);
+        } catch (Throwable t) {
+            if (!(t instanceof ThreadDeath)) {
+                out.println(getName() + ": Throwable: " + t);
+                out.printStackTrace(t);
+            } else {
+                logMessage(getName() + " stopped successfully.");
+            }
+        }
+
+        // If battle is waiting for us, well, all done!
+        synchronized (this) {
+            isRunning = false;
+            notifyAll();
+        }
+    }
+
+    public final void execute() {
+
+        // Entering tick
+        if (Thread.currentThread() != robotThreadManager.getRunThread()) {
+            throw new RobotException("You cannot take action in this thread!");
+        }
+        if (getTestingCondition()) {
+            throw new RobotException(
+                    "You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
+        }
+
+        ((BasicRobotProxy)peerProxy).resetCallCount();
+
+        if (newBullet != null) {
+            battle.addBullet(newBullet);
+            newBullet = null;
+        }
+
+        // This stops autoscan from scanning...
+        if (waitCondition != null && waitCondition.test()) {
+            waitCondition = null;
+        }
+
+        // If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
+        if (getHalt()) {
+            if (isDead()) {
+                throw new DeathException();
+            } else if (isWinner) {
+                throw new WinException();
+            }
+        }
+
+        synchronized (this) {
+            // Notify the battle that we are now asleep.
+            // This ends any pending wait() call in battle.runRound().
+            // Should not actually take place until we release the lock in wait(), below.
+            isSleeping = true;
+            notifyAll();
+            // Notifying battle that we're asleep
+            // Sleeping and waiting for battle to wake us up.
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                // We are expecting this to happen when a round is ended!
+
+                // Immediately reasserts the exception by interrupting the caller thread itself
+                Thread.currentThread().interrupt();
+            }
+            isSleeping = false;
+            // Notify battle thread, which is waiting in
+            // our wakeup() call, to return.
+            // It's quite possible, by the way, that we'll be back in sleep (above)
+            // before the battle thread actually wakes up
+            notifyAll();
+        }
+
+        eventManager.setFireAssistValid(false);
+
+        if (isDead()) {
+            setHalt(true);
+        }
+
+        // Out's counter must be reset before processing event.
+        // Otherwise, it will not be reset when printing in the onScannedEvent()
+        // before a scan() call, which will potentially cause a new onScannedEvent()
+        // and therefore not be able to reset the counter.
+        out.resetCounter();
+
+        eventManager.processEvents();
     }
 
 }
