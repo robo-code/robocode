@@ -76,43 +76,24 @@ public class Robocode {
 				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
 			}
 
-			Thread.currentThread().setName("Application Thread");
+            // For John Burkey at Apple
+            boolean securityOn = true;
+            boolean experimentalOn = false;
 
-			RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
+            if (System.getProperty("NOSECURITY", "false").equals("true")) {
+                WindowUtil.messageWarning(
+                        "Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
+                        + "You should only run robots which you trust!");
+                securityOn = false;
+            }
+            if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+                WindowUtil.messageWarning(
+                        "Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
+                        + "You should only run robots which you trust!");
+                experimentalOn = true;
+            }
 
-			Policy.setPolicy(securityPolicy);
-
-			// For John Burkey at Apple
-			boolean securityOn = true;
-			boolean experimentalOn = false;
-
-			if (System.getProperty("NOSECURITY", "false").equals("true")) {
-				WindowUtil.messageWarning(
-						"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-						+ "You should only run robots which you trust!");
-				securityOn = false;
-			}
-			if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-				WindowUtil.messageWarning(
-						"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
-						+ "You should only run robots which you trust!");
-				experimentalOn = true;
-			}
-			if (securityOn) {
-				System.setSecurityManager(
-						new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, experimentalOn));
-
-				RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
-
-				ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-				while (tg != null) {
-					((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
-					tg = tg.getParent();
-				}
-			}
-
-            RobocodeManager.initStreams();
+            manager.initSecurity(securityOn, experimentalOn);
 
 			boolean minimize = false;
 			String battleFilename = null;
@@ -215,7 +196,7 @@ public class Robocode {
 		}
 	}
 
-	private void printUsage() {
+    private void printUsage() {
 		System.out.print(
 				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
 						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
@@ -233,46 +214,5 @@ public class Robocode {
 						+ "    -Ddebug=true|false         Enable or disable System.err messages\n"
 						+ "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n"
 						+ "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n");
-	}
-
-	/**
-	 * Prints out all running thread to the standard system out (console)
-	 */
-	public static void printRunningThreads() {
-		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
-
-		if (currentGroup == null) {
-			return;
-		}
-
-		while (currentGroup.getParent() != null) {
-			currentGroup = currentGroup.getParent();
-		}
-
-		ThreadGroup groups[] = new ThreadGroup[256];
-		Thread threads[] = new Thread[256];
-
-		int numGroups = currentGroup.enumerate(groups, true);
-
-		for (int i = 0; i < numGroups; i++) {
-			currentGroup = groups[i];
-			if (currentGroup.isDaemon()) {
-				System.out.print("  ");
-			} else {
-				System.out.print("* ");
-			}
-			System.out.println("In group: " + currentGroup.getName());
-			int numThreads = currentGroup.enumerate(threads);
-
-			for (int j = 0; j < numThreads; j++) {
-				if (threads[j].isDaemon()) {
-					System.out.print("  ");
-				} else {
-					System.out.print("* ");
-				}
-				System.out.println(threads[j].getName());
-			}
-			System.out.println("---------------");
-		}
 	}
 }
