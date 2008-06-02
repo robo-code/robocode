@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+//import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 import pimods.MVCManager;
 
@@ -39,15 +39,15 @@ public class XMLFileAnimator4Robocode extends NetXMLAnimator4Robocode {
 		super(manager);
 		this.setFPS( manager.DESIRED_FPS );
 		
-		DOMParser parser = new DOMParser();
+//		DOMParser parser = new DOMParser();
 		try{
 			FileReader fr = new FileReader( xmlFile );
 		    InputSource source = new InputSource(fr);
-		    parser.parse(source);
+//		    parser.parse(source);
 		    fr.close();
 		}catch(Exception e){
 		}
-	    doc = parser.getDocument();
+//	    doc = parser.getDocument();
 	    createBattle();
 	}
 	
