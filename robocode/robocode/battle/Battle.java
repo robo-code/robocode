@@ -678,6 +678,9 @@ public class Battle implements Runnable {
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 
+                    //create proxy
+                    r.createRobotProxy();
+
 					initializeRobotPosition(r);
 
 					if (battleView != null && !replay) {
@@ -1537,7 +1540,7 @@ public class Battle implements Runnable {
 					robotPeer.setRobot(bot);
 
 					bot.setOut(robotPeer.getOut());
-					bot.setPeer(robotPeer);
+					bot.setPeer(robotPeer.getRobotProxy());
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
