@@ -1,3 +1,15 @@
+Version 1.6.0.1
+(06/02/2008)
+-------------
+o Bugfixes
+  -- Could not debug robots from Eclipse anymore as TimeoutExceptions occurred
+     when trying to resume from a breakpoint.
+     -- Now, Robocode must be started by adding the option -Ddebug=true to the
+        VM arguments when debugging Robocode from Eclipse (or any other IDE).
+     -- The documentation (Wiki) about how to debug robots using Eclipse using the
+        -Ddebug=true option will be updated.
+  -- Fixed missing internal robot proxy layer introduced in Robocode 1.6.0.
+
 Version 1.6.0
 (05/01/2008)
 The "robot interfaces" release

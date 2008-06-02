@@ -197,6 +197,9 @@ public class Battle implements Runnable {
 	// Results related items
 	private boolean exitOnComplete;
 
+	// Flag specifying if debugging is enabled thru the debug command line option
+	private boolean isDebugging;
+
 	// Results for RobocodeEngine controller
 	private BattleSpecification battleSpecification;
 
@@ -223,7 +226,7 @@ public class Battle implements Runnable {
 
 	// Dummy component used to preventing robots in accessing the real source component
 	private static Component safeEventComponent;
-
+	
 	/**
 	 * Battle constructor
 	 */
@@ -243,6 +246,8 @@ public class Battle implements Runnable {
 			keyHandler = new KeyEventHandler(this, robots);
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyHandler);
 		}
+
+		isDebugging = System.getProperty("debug", "false").equals("true"); 
 	}
 
 	@Override
@@ -678,8 +683,8 @@ public class Battle implements Runnable {
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 
-                    //create proxy
-                    r.createRobotProxy();
+					// create proxy
+					r.createRobotProxy();
 
 					initializeRobotPosition(r);
 
@@ -1191,7 +1196,7 @@ public class Battle implements Runnable {
 							}
 						}
 					}
-					if (r.isSleeping() || !r.isRunning()) {
+					if (r.isSleeping() || !r.isRunning() || isDebugging) {
 						r.setSkippedTurns(0);
 					} else {
 						r.setSkippedTurns(r.getSkippedTurns() + 1);
@@ -1454,23 +1459,24 @@ public class Battle implements Runnable {
 				long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
 				synchronized (r) {
-					try {
-						log(".", false);
+					log(".", false);
 
-						// Add StatusEvent for the first turn
-						r.getEventManager().add(new StatusEvent(r));
+					// Add StatusEvent for the first turn
+					r.getEventManager().add(new StatusEvent(r));
 
-						// Start the robot thread
-						r.getRobotThreadManager().start();
+					// Start the robot thread
+					r.getRobotThreadManager().start();
 
-						// Wait for the robot to go to sleep (take action)
-						r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
-
-					} catch (InterruptedException e) {
-						log("Wait for " + r + " interrupted.");
+					if (!isDebugging) {
+						try {
+							// Wait for the robot to go to sleep (take action)
+							r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
+						} catch (InterruptedException e) {
+							log("Wait for " + r + " interrupted.");
+						}
 					}
 				}
-				if (!r.isSleeping()) {
+				if (!(r.isSleeping() || isDebugging)) {
 					log("\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 				}
 			}

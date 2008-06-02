@@ -242,7 +242,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	protected int state;
 
-    private IBasicRobotPeer robotProxy;
+	private IBasicRobotPeer robotProxy;
 
 	public RobotPeer(String name) {
 		this.name = name;
@@ -341,24 +341,20 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public void createRobotProxy() {
 		if (isTeamRobot) {
 			robotProxy = new TeamRobotProxy(this);
-		}
-		else if (isAdvancedRobot) {
+		} else if (isAdvancedRobot) {
 			robotProxy = new AdvancedRobotProxy(this);
-		}
-		else if (isInteractiveRobot) {
+		} else if (isInteractiveRobot) {
 			robotProxy = new StandardRobotProxy(this);
-		}
-		else if (isJuniorRobot) {
+		} else if (isJuniorRobot) {
 			robotProxy = new JuniorRobotProxy(this);
+		} else {
+			throw new AccessControlException("Unknown robot type");
 		}
-        else{
-            throw new AccessControlException("Unknown robot type");
-        }
-    }
+	}
 
-    public IBasicRobotPeer getRobotProxy(){
-        return robotProxy;
-    }
+	public IBasicRobotPeer getRobotProxy() {
+		return robotProxy;
+	}
 
 	public final void move(double distance) {
 		setMove(distance);
