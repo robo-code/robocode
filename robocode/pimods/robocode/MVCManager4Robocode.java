@@ -9,6 +9,8 @@
 
 package pimods.robocode;
 
+import javax.media.opengl.GLCanvas;
+
 import pimods.MVCManager;
 import pimods.MainFrame;
 
@@ -20,8 +22,8 @@ import pimods.MainFrame;
 
 public class MVCManager4Robocode extends MVCManager implements RobocodeOptionable {
 
-	public MVCManager4Robocode( MainFrame frame ) {
-		super(frame);
+	public MVCManager4Robocode( GLCanvas glcanvas ) {
+		super(glcanvas);
 	}
 
 	@Override
