@@ -30,6 +30,7 @@ package robocode.dialog;
 
 import robocode.battle.Battle;
 import robocode.battle.events.BattleAdaptor;
+import robocode.battleview.Battle3DView;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
@@ -75,7 +76,8 @@ public class RobocodeFrame extends JFrame {
 	private JPanel robocodeContentPane;
 	private JLabel statusLabel;
 
-	private BattleView battleView;
+//	private BattleView battleView;
+	private Battle3DView battleView;
 
 	public String version;
 
@@ -291,9 +293,9 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return robocode.BattleView
 	 */
-	public BattleView getBattleView() {
+	public Battle3DView getBattleView() {
 		if (battleView == null) {
-			battleView = new BattleView(manager, this);
+			battleView = new Battle3DView(manager, this);
 			battleView.addComponentListener(eventHandler);
 		}
 		return battleView;

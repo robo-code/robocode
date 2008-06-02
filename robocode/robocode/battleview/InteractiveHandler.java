@@ -166,7 +166,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 
 		double scale;
 		BattleProperties battleProps = manager.getBattleManager().getBattleProperties();
-		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+		Battle3DView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 		int vWidth = battleView.getWidth();
 		int vHeight = battleView.getHeight();
@@ -193,7 +193,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 
 		double scale;
 		BattleProperties battleProps = manager.getBattleManager().getBattleProperties();
-		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+		Battle3DView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 		int vWidth = battleView.getWidth();
 		int vHeight = battleView.getHeight();

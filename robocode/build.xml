@@ -56,6 +56,11 @@
     <copy todir="${build}">
       <fileset file="../robocodeextract/browser.*"/>
     </copy>
+  	
+    <!-- Copy pimods misc files -->
+    <copy todir="${build}/misc">
+      <fileset dir="../pimodsextract/misc"/>
+    </copy>
     
   </target>
 

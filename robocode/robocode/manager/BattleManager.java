@@ -59,6 +59,7 @@ import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.battleview.Battle3DView;
 import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RobocodeListener;
@@ -316,7 +317,8 @@ public class BattleManager {
 				battleProperties.getBattlefieldHeight());
 
 		if (manager.isGUIEnabled()) {
-			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+//			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			Battle3DView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 			battleView.setup(battleField, battleEventDispatcher);
 		}
@@ -345,7 +347,7 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			robocode.battleview.Battle3DView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 			battleView.setVisible(true);
 			battleView.setInitialized(false);
