@@ -29,7 +29,7 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletState;
 import robocode.pimods.PimodsClient;
-import robocode.pimods.XMLBattleStreamMaker;
+import robocode.pimods.XMLMessageMaker;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.GraphicsState;
 import robocode.control.BattleSpecification;
@@ -130,7 +130,7 @@ public class Battle3DView extends GLCanvas {
 	
 	private Animator animator;
 
-	private XMLBattleStreamMaker xmlMaker;
+	private XMLMessageMaker xmlMaker;
 	
 	private DataStore dataStore;
 
@@ -157,7 +157,7 @@ public class Battle3DView extends GLCanvas {
 
 		battleField = new DefaultBattleField(800, 600);
 		
-		xmlMaker = new XMLBattleStreamMaker();
+		xmlMaker = new XMLMessageMaker();
 	}
 
 	public int getFPS() {
@@ -284,12 +284,11 @@ public class Battle3DView extends GLCanvas {
 //		}
 		
 		if(lastSnapshot!=null){
+			xmlMaker.clear();
 			xmlMaker.setupField( battleField.getWidth(), battleField.getHeight() );
 			for(RobotSnapshot r : lastSnapshot.getRobots()){
 				xmlMaker.setupTank(r.getVeryShortName(), r.getBodyColor(), r.getGunColor(), r.getRadarColor(), r.getScanColor()); //the last will be bulletcolor
 			}
-			xmlMaker.addBattle(battleField.getWidth(), battleField.getHeight());
-			xmlMaker.addRound(1);
 			String message=xmlMaker.getSettings();			
 			dataStore.setData( message );
 			

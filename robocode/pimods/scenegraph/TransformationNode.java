@@ -95,7 +95,9 @@ public class TransformationNode implements Drawable {
 		gl.glTranslatef( -cx, -cy, -cz );
 		gl.glScalef( sx, sy, sz );
 		for( int i=0; i<drawables.size(); i++ ) {
-			(( Drawable )( drawables.get( i ) )).draw( gl );
+			if(drawables.get(i)!=null){
+				(( Drawable )( drawables.get( i ) )).draw( gl );
+			}
 		}
 		gl.glScalef( 1.0f/sx, 1.0f/sy, 1.0f/sz );
 		gl.glTranslatef( cx, cy, cz );
