@@ -31,7 +31,8 @@ import pimods.controller.ControlListener;
  * @author Matteo Foppiano - pixelinstrument.net
  */
 
-public class MVCManager implements Runnable {
+public class MVCManager //TODO HINT: implements Runnable
+{
 	public static final String pimodsVersion = "0.4";
 	private MainFrame mFrame;
 	private OptionFrame oFrame;
@@ -116,7 +117,8 @@ public class MVCManager implements Runnable {
 	 * and the display for the canvas. The {@link Scene#draw(javax.media.opengl.GL)} method is called
 	 * automatically by the {@link GraphicListener} when <code>GLCanvas</code> is displayed.
 	 */
-	public void run(){
+    /* TODO HINT:
+    public void run(){
 		displayMessage( "Starting new Scene..." );
 		this.animator.setScene( scene );
 //		mFrame.setGlCanvas( this.canvas );
@@ -141,8 +143,17 @@ public class MVCManager implements Runnable {
 			}
 		}
 	}
-	
-	public void stop(){
+	//TODO HINT: end */
+
+
+    public void update(){ //TODO HINT:
+        if( animator!=null ) animator.update(); //TODO HINT:
+        canvas.display(); //TODO HINT:
+    } //TODO HINT:
+
+
+
+    public void stop(){
 		this.runCondition = false;
 	}
 	
