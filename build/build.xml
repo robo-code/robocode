@@ -34,6 +34,8 @@
   <property name="src.robots" location="../robocodeextract/robots"/>
   <property name="src.roborumble" location="../roborumble"/>
   <property name="src.cachecleaner" location="../robocode/ar"/>
+  <property name="src.pimods" location="../robocode/pimods"/>
+  <property name="src.pimodsextract" location="../pimodsextract"/>
 
   <!-- License file -->
   <property name="license.file" location="${src.extract}/license/cpl-v10.html"/>
@@ -142,16 +144,23 @@
  
   	<!-- Copy libs into the build folder -->
   	<copy file="${src.extract}/libs/codesize.jar" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/gluegen-rt.dll" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/gluegen-rt.jar" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/jogl_awt.dll" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/jogl_cg.dll" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/jogl.dll" toDir="${build}/libs"/>
+  	<copy file="${src.pimodsextract}/libs/jogl.jar" toDir="${build}/libs"/>
  
     <!-- Compile Robocode -->
-    <compile srcdir="${src.robocode}" destdir="${build}" classpath="${build}/libs/codesize.jar"/>
-
+    <compile srcdir="${src.robocode}" destdir="${build}"
+    	classpath="${build}/libs/codesize.jar;${build}/libs/jogl.jar;${build}/libs/glugen-rt.jar"/>
     <!-- Flag that Robocode has been built -->
     <touch file="${build}/.robocode_build"/>
   </target>
 
   <uptodate property="robocode.uptodate" targetfile="${build}/.robocode_build">
-    <srcfiles dir="${src.robocode}/robocode"/>
+    <!-- <srcfiles dir="${src.robocode}/robocode"/> -->
+  	<srcfiles dir="${src.robocode}"/>
   </uptodate>
 
   <!-- ====================================== -->
