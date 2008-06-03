@@ -147,13 +147,9 @@ public class Battle3DView extends GLCanvas {
 		animator = new Animator4Robocode( mvcManager, dataStore );
 		mvcManager.setup( new GraphicListener4Robocode(), animator );
 		
-		System.out.println("pos1");
 		Thread t = new Thread(mvcManager);
 		t.start();
 		
-		System.out.println("pos2");
-		
-
 
 		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
@@ -176,10 +172,10 @@ public class Battle3DView extends GLCanvas {
 			initialize();
 		}
 
-//		if (robocodeFrame.isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
-//				|| (getHeight() <= 0)) {
-//			return;
-//		}
+		if (robocodeFrame.isIconified() /*|| offscreenImage == null */ || !isDisplayable() || (getWidth() <= 0)
+				|| (getHeight() <= 0)) {
+			return;
+		}
 		if(lastSnapshot!=null){
 //			System.out.println( lastSnapshot);
 			
@@ -191,12 +187,12 @@ public class Battle3DView extends GLCanvas {
 				}
 			}
 			for( BulletSnapshot b : lastSnapshot.getBullets()){
-				if( b.isExplosion()){
-					xmlMaker.addBullet( b.toString(), b.getX(), b.getY(), b.getPower());
+				if( b.getState().getValue()<2){
+					xmlMaker.addBullet( b.getId(), b.getX(), b.getY(), b.getPower());
 				}
 			}
 			String message=xmlMaker.getCurrentTurn();
-			System.out.println(message);
+//			System.out.println(message);
 			dataStore.setData(message);
 		}
 

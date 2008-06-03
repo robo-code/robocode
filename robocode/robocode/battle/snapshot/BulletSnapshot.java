@@ -74,6 +74,8 @@ public class BulletSnapshot implements java.io.Serializable {
 
 	// Index to which explosion image that must be rendered
 	private final int explosionImageIndex;
+	
+	private final String id;
 
 	/**
 	 * Constructs a snapshot of the bullet.
@@ -82,6 +84,8 @@ public class BulletSnapshot implements java.io.Serializable {
 	 */
 	public BulletSnapshot(BulletPeer peer) {
 		// ownerName = peer.getOwner().getName();
+		
+		id = peer.toString().substring(peer.toString().indexOf('@')+1);
 
 		state = peer.getState();
 
@@ -199,5 +203,13 @@ public class BulletSnapshot implements java.io.Serializable {
 	 */
 	public int getExplosionImageIndex() {
 		return explosionImageIndex;
+	}
+	
+	/**
+	 * Returns the index of the bullet
+	 * @return the index of the bullet
+	 */
+	public String getId(){
+		return id;
 	}
 }

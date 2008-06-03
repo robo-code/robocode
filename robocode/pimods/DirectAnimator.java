@@ -9,16 +9,8 @@
 
 package pimods;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,7 +62,7 @@ public abstract class DirectAnimator extends Animator {
 				e.printStackTrace();
 			}
 			Node el = XMLDoc.getFirstChild();
-			System.out.println(el.toString());
+//			System.out.println(el.toString());
 			processXMLNode( el );
 		}
 	}
