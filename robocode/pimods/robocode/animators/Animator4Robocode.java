@@ -69,9 +69,9 @@ public class Animator4Robocode extends DirectAnimator implements RobocodeOptiona
 		
 		time=0;
 		
-		tankTrack = false;
-		explosion = false;
-		bulletWake = false;
+		tankTrack = true;
+		explosion = true;
+		bulletWake = true;
 	}
 	
 	
