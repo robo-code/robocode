@@ -60,8 +60,8 @@
   <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
   <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
   <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
-  <defaultexcludes add="**/.svn"/>       <!-- Subversion directories -->
-  <defaultexcludes add="**/_svn"/>       <!-- Subversion directories -->
+  <defaultexcludes add="**/.svn/**"/>    <!-- Subversion directories -->
+  <defaultexcludes add="**/_svn/**"/>    <!-- Subversion directories -->
 
   <!-- ====================================== -->
   <!-- Target: init                           -->
@@ -144,12 +144,14 @@
  
   	<!-- Copy libs into the build folder -->
   	<copy file="${src.extract}/libs/codesize.jar" toDir="${build}/libs"/>
-  	<copy file="${src.pimodsextract}/libs/gluegen-rt.dll" toDir="${build}/libs"/>
-  	<copy file="${src.pimodsextract}/libs/gluegen-rt.jar" toDir="${build}/libs"/>
-  	<copy file="${src.pimodsextract}/libs/jogl_awt.dll" toDir="${build}/libs"/>
-  	<copy file="${src.pimodsextract}/libs/jogl_cg.dll" toDir="${build}/libs"/>
-  	<copy file="${src.pimodsextract}/libs/jogl.dll" toDir="${build}/libs"/>
-  	<copy file="${src.pimodsextract}/libs/jogl.jar" toDir="${build}/libs"/>
+	<copy todir="${build}/libs/">
+		<fileset dir="${src.pimodsextract}/libs">
+		</fileset>
+	</copy>
+	<copy todir="${build}/misc/">
+		<fileset dir="${src.pimodsextract}/misc">
+		</fileset>
+	</copy>
  
     <!-- Compile Robocode -->
     <compile srcdir="${src.robocode}" destdir="${build}"
@@ -159,8 +161,8 @@
   </target>
 
   <uptodate property="robocode.uptodate" targetfile="${build}/.robocode_build">
-    <!-- <srcfiles dir="${src.robocode}/robocode"/> -->
-  	<srcfiles dir="${src.robocode}"/>
+    <srcfiles dir="${src.robocode}/robocode"/>
+    <srcfiles dir="${src.robocode}/pimods"/>
   </uptodate>
 
   <!-- ====================================== -->
@@ -267,6 +269,8 @@
       <!-- Specify files to include -->
       <fileset dir="${build}" includes="robocode/**">   <!-- Class files -->
         <exclude name="robocode/AutoExtract.class"/>    <!-- Exclude AutoExtract.class -->
+      </fileset>
+      <fileset dir="${build}" includes="pimods/**">   <!-- Class files -->
       </fileset>
       <fileset dir="${src.robocode}" includes="resources/**"/>  <!-- Resource files -->
       <fileset file="${license.file}"/>                         <!-- License file -->

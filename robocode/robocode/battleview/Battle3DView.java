@@ -61,7 +61,6 @@ public class Battle3DView extends GLCanvas {
 	private RobocodeFrame robocodeFrame;
 
 	// The battle and battlefield,
-	private TurnSnapshot lastSnapshot;
 	private BattleField battleField;
 	private BattleObserver observer;
 
@@ -91,8 +90,6 @@ public class Battle3DView extends GLCanvas {
 		animator = new Animator4Robocode( mvcManager, dataStore );
 		mvcManager.setup( new GraphicListener4Robocode(), animator );
 		
-		//TODO HINT: Thread t = new Thread(mvcManager);
-
 		this.robocodeFrame = robocodeFrame;
 
 		battleField = new DefaultBattleField(800, 600);
@@ -107,26 +104,26 @@ public class Battle3DView extends GLCanvas {
 	/**
 	 * Shows the next frame. The game calls this every frame.
 	 */
-	private void update() {
+	private void update(TurnSnapshot snapshot) {
 		if (!initialized) {
-			initialize();
+			initialize(snapshot);
 		}
 
 		if (robocodeFrame.isIconified() /*|| offscreenImage == null */ || !isDisplayable() || (getWidth() <= 0)
 				|| (getHeight() <= 0)) {
 			return;
 		}
-		if(lastSnapshot!=null){
+		if(snapshot!=null){
 //			System.out.println( lastSnapshot);
 			
-			xmlMaker.addTurn(lastSnapshot.getTurn());
-			for( RobotSnapshot r : lastSnapshot.getRobots()){
+			xmlMaker.addTurn(snapshot.getTurn());
+			for( RobotSnapshot r : snapshot.getRobots()){
 				if( r.getState().isAlive()){
 					xmlMaker.addTankPosition(r.getVeryShortName(), r.getX(), r.getY(), r.getBodyHeading(), 
 							r.getEnergy(), r.getGunHeading(), r.getRadarHeading());
 				}
 			}
-			for( BulletSnapshot b : lastSnapshot.getBullets()){
+			for( BulletSnapshot b : snapshot.getBullets()){
 				if( b.getState().getValue()<2){
 					xmlMaker.addBullet( b.getId(), b.getX(), b.getY(), b.getPower());
 				}
@@ -142,7 +139,7 @@ public class Battle3DView extends GLCanvas {
 	@Override
 	public void paint(Graphics g) {
 		if (observer != null && observer.isRunning()) {
-			update();
+			update(observer.getLastSnapshot());
 		} else {
 			paintRobocodeLogo((Graphics2D) g);
 		}
@@ -152,13 +149,13 @@ public class Battle3DView extends GLCanvas {
 
 	}
 
-	private void initialize() {
+	private void initialize(TurnSnapshot snapshot) {
 		setDisplayOptions();
 
-		if(lastSnapshot!=null){
+		if(snapshot!=null){
 			xmlMaker.clear();
 			xmlMaker.setupField( battleField.getWidth(), battleField.getHeight() );
-			for(RobotSnapshot r : lastSnapshot.getRobots()){
+			for(RobotSnapshot r : snapshot.getRobots()){
 				xmlMaker.setupTank(r.getVeryShortName(), r.getBodyColor(), r.getGunColor(), r.getRadarColor(), r.getScanColor()); //the last will be bulletcolor
 			}
 			String message=xmlMaker.getSettings();			
@@ -175,7 +172,7 @@ public class Battle3DView extends GLCanvas {
 		if (observer != null) {
 			observer.dispose();
 		}
-		observer = new BattleObserver(this, battleEventDispatcher);
+		observer = new BattleObserver(battleEventDispatcher);
 	}
 
 	/**
@@ -204,124 +201,14 @@ public class Battle3DView extends GLCanvas {
 		this.initialized = initialized;
 	}
 
-	private class BattleObserver extends BattleAdaptor {
-		Battle3DView battleView;
-		AtomicReference<TurnSnapshot> snapshot;
-		AtomicBoolean isRunning;
-		AtomicBoolean isPaused;
-		BattleEventDispatcher dispatcher;
+    private class BattleObserver extends AwtBattleAdaptor {
+        public BattleObserver(BattleEventDispatcher dispatcher) {
+            super(dispatcher, TIMER_TICKS_PER_SECOND, false);
+        }
 
-		RepaintTask repaintTask = new RepaintTask();
-		Timer timer;
+        protected void updateView(TurnSnapshot snapshot) {
+            update(snapshot);
+        }
+    }
 
-		long measuredFrameCounter;
-		long measuredFrameStartTime;
-		
-		public BattleObserver(Battle3DView battleView, BattleEventDispatcher dispatcher) {
-			this.dispatcher = dispatcher;
-			this.battleView = battleView;
-			snapshot = new AtomicReference<TurnSnapshot>(null);
-			
-			timer = new Timer(1000 / TIMER_TICKS_PER_SECOND, new UpdateTask());
-			isRunning = new AtomicBoolean(false);
-			isPaused = new AtomicBoolean(false);
-			lastSnapshot = null;
-
-			dispatcher.addListener(this);
-		}
-
-		public void finalize() throws Throwable {
-			super.finalize();
-
-			dispose();
-		}
-		
-		public void dispose() {
-			timer.stop();
-			dispatcher.removeListener(this);
-		}
-
-		@Override
-		public void onBattleStarted(BattleSpecification battleSpecification) {
-			isRunning.set(true);
-			isPaused.set(false);
-			EventQueue.invokeLater(repaintTask);
-			timer.start();
-		}
-
-		@Override
-		public void onBattleEnded(boolean isAborted) {
-			timer.stop();
-			isRunning.set(false);
-			isPaused.set(false);
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		@Override
-		public void onBattleResumed() {
-			isPaused.set(false);
-			timer.start();
-		}
-
-		public void onBattlePaused() {
-			timer.stop();
-			isPaused.set(true);
-		}
-
-		public void onRoundStarted(int round) {
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		public void onRoundEnded() {
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		public void onTurnEnded(TurnSnapshot turnSnapshot) {
-			snapshot.set(turnSnapshot);
-		}
-
-		public boolean isRunning() {
-			return isRunning.get();
-		}
-
-		private class RepaintTask implements Runnable {
-			public void run() {
-				if (!isRunning.get()) {
-					lastSnapshot = null;
-				}
-				//TODO HINT: repaint();
-                update(); //TODO HINT: 
-            }
-		}
-
-
-		private class UpdateTask implements ActionListener {
-			public void actionPerformed(ActionEvent e) {
-				TurnSnapshot s = snapshot.get();
-
-				if (lastSnapshot != s) {
-					lastSnapshot = s;
-
-					battleView.update();
-
-					calculateFPS();
-				}
-			}
-		}
-
-		private void calculateFPS() {
-			// Calculate the current frames per second (FPS)
-
-			if (measuredFrameCounter++ == 0) {
-				measuredFrameStartTime = System.nanoTime();
-			}
-
-			long deltaTime = System.nanoTime() - measuredFrameStartTime;
-
-			if (deltaTime / 1000000000 >= 1) {
-				fps = (int) (measuredFrameCounter * 1000000000L / deltaTime);
-				measuredFrameCounter = 0;
-			}
-		}
-	}
 }
