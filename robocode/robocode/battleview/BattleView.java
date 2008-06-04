@@ -52,7 +52,7 @@ import java.util.Random;
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
-	private final static int TIMER_TICKS_PER_SECOND = 50;
+    private final static int TIMER_TICKS_PER_SECOND = 50;
 
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
@@ -65,7 +65,6 @@ public class BattleView extends Canvas {
 	private RobocodeFrame robocodeFrame;
 
 	// The battle and battlefield,
-	private TurnSnapshot lastSnapshot;
 	private BattleField battleField;
 	private BattleObserver observer;
 
@@ -91,9 +90,6 @@ public class BattleView extends Canvas {
 	private int numBuffers = 2; // defaults to double buffering
 
 	private RenderingHints renderingHints;
-
-	// FPS (frames per second) calculation
-	private int fps;
 
 	// Fonts and the like
 	private Font smallFont;
@@ -128,13 +124,22 @@ public class BattleView extends Canvas {
 	}
 
 	public int getFPS() {
-		return fps;
+		return observer.getFPS();
 	}
 	
+    @Override
+    public void paint(Graphics g) {
+        if (observer != null && observer.isRunning()) {
+            update(observer.getLastSnapshot());
+        } else {
+            paintRobocodeLogo((Graphics2D) g);
+        }
+    }
+
 	/**
 	 * Shows the next frame. The game calls this every frame.
 	 */
-	private void update() {
+	private void update(TurnSnapshot snapshot) {
 		if (!initialized) {
 			initialize();
 		}
@@ -148,7 +153,7 @@ public class BattleView extends Canvas {
 		if (offscreenGfx != null) {
 			offscreenGfx.setRenderingHints(renderingHints);
 
-			drawBattle(offscreenGfx, lastSnapshot);
+			drawBattle(offscreenGfx, snapshot);
 
 			if (bufferStrategy != null) {
 				Graphics2D g = null;
@@ -165,15 +170,6 @@ public class BattleView extends Canvas {
 					}
 				}
 			}
-		}
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		if (observer != null && observer.isRunning()) {
-			update();
-		} else {
-			paintRobocodeLogo((Graphics2D) g);
 		}
 	}
 
@@ -625,7 +621,7 @@ public class BattleView extends Canvas {
 		if (observer != null) {
 			observer.dispose();
 		}
-		observer = new BattleObserver(this, battleEventDispatcher);
+		observer = new BattleObserver(battleEventDispatcher);
 	}
 
 	/**
@@ -654,123 +650,13 @@ public class BattleView extends Canvas {
 		this.initialized = initialized;
 	}
 
-	private class BattleObserver extends BattleAdaptor {
-		BattleView battleView;
-		AtomicReference<TurnSnapshot> snapshot;
-		AtomicBoolean isRunning;
-		AtomicBoolean isPaused;
-		BattleEventDispatcher dispatcher;
+	private class BattleObserver extends AwtBattleAdaptor {
+        public BattleObserver(BattleEventDispatcher dispatcher) {
+            super(dispatcher, TIMER_TICKS_PER_SECOND, true);
+        }
 
-		RepaintTask repaintTask = new RepaintTask();
-		Timer timer;
-
-		long measuredFrameCounter;
-		long measuredFrameStartTime;
-		
-		public BattleObserver(BattleView battleView, BattleEventDispatcher dispatcher) {
-			this.dispatcher = dispatcher;
-			this.battleView = battleView;
-			snapshot = new AtomicReference<TurnSnapshot>(null);
-			
-			timer = new Timer(1000 / TIMER_TICKS_PER_SECOND, new UpdateTask());
-			isRunning = new AtomicBoolean(false);
-			isPaused = new AtomicBoolean(false);
-			lastSnapshot = null;
-
-			dispatcher.addListener(this);
-		}
-
-		public void finalize() throws Throwable {
-			super.finalize();
-
-			dispose();
-		}
-		
-		public void dispose() {
-			timer.stop();
-			dispatcher.removeListener(this);
-		}
-
-		@Override
-		public void onBattleStarted(BattleSpecification battleSpecification) {
-			isRunning.set(true);
-			isPaused.set(false);
-			EventQueue.invokeLater(repaintTask);
-			timer.start();
-		}
-
-		@Override
-		public void onBattleEnded(boolean isAborted) {
-			timer.stop();
-			isRunning.set(false);
-			isPaused.set(false);
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		@Override
-		public void onBattleResumed() {
-			isPaused.set(false);
-			timer.start();
-		}
-
-		public void onBattlePaused() {
-			timer.stop();
-			isPaused.set(true);
-		}
-
-		public void onRoundStarted(int round) {
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		public void onRoundEnded() {
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		public void onTurnEnded(TurnSnapshot turnSnapshot) {
-			snapshot.set(turnSnapshot);
-		}
-
-		public boolean isRunning() {
-			return isRunning.get();
-		}
-
-		private class RepaintTask implements Runnable {
-			public void run() {
-				if (!isRunning.get()) {
-					lastSnapshot = null;
-				}
-				repaint();
-			}
-		}
-
-
-		private class UpdateTask implements ActionListener {
-			public void actionPerformed(ActionEvent e) {
-				TurnSnapshot s = snapshot.get();
-
-				if (lastSnapshot != s) {
-					lastSnapshot = s;
-
-					battleView.update();
-
-					calculateFPS();
-				}
-			}
-		}
-
-		private void calculateFPS() {
-			// Calculate the current frames per second (FPS)
-
-			if (measuredFrameCounter++ == 0) {
-				measuredFrameStartTime = System.nanoTime();
-			}
-
-			long deltaTime = System.nanoTime() - measuredFrameStartTime;
-
-			if (deltaTime / 1000000000 >= 1) {
-				fps = (int) (measuredFrameCounter * 1000000000L / deltaTime);
-				measuredFrameCounter = 0;
-			}
-		}
-	}
+        protected void updateView(TurnSnapshot snapshot) {
+            update(snapshot);
+        }
+    }
 }

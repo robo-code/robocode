@@ -58,8 +58,8 @@
   <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
   <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
   <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
-  <defaultexcludes add="**/.svn"/>       <!-- Subversion directories -->
-  <defaultexcludes add="**/_svn"/>       <!-- Subversion directories -->
+  <defaultexcludes add="**/.svn/**"/>    <!-- Subversion directories -->
+  <defaultexcludes add="**/_svn/**"/>    <!-- Subversion directories -->
 
   <!-- ====================================== -->
   <!-- Target: init                           -->
