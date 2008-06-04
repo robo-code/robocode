@@ -50,7 +50,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
-	private Battle battle;
+	private Battle battle; //TODO get rid of it in UI
 	private String title;
 
 	public BattleResultsTableModel(Battle battle) {
@@ -129,7 +129,8 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public Object getValueAt(int row, int col) {
-		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(battle.getContestants());
+        //TODO get rid of it, statistics should be carried by battle events, not by peer interface
+        List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(battle.getContestants());
 
 		Collections.sort(orderedContestants);
 
