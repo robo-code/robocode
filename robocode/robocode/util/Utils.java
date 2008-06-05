@@ -120,12 +120,11 @@ public class Utils {
 		return (Math.abs(value1 - value2) < .00001);
 	}
 
-    /**
-     * Returns random number generator. It might be configured for repeatable behavior by seting -DRANDOMSEED option 
-     * @return random number generator
-     */
-    public static Random getRandom(){
-        return RandomFactory.getRandom();
-    }
-
+	/**
+	 * Returns random number generator. It might be configured for repeatable behavior by seting -DRANDOMSEED option 
+	 * @return random number generator
+	 */
+	public static Random getRandom() {
+		return RandomFactory.getRandom();
+	}
 }

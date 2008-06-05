@@ -187,6 +187,9 @@ public class Battle implements Runnable {
 	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
 
+	// Flag specifying if debugging is enabled thru the debug command line option
+	private boolean isDebugging;
+
 	// Robot loading related items
 	private Thread unsafeLoadRobotsThread;
 	private final Object unsafeLoaderMonitor = new Object();
@@ -221,6 +224,8 @@ public class Battle implements Runnable {
 		this.eventDispatcher = eventDispatcher;
 
 		battleManager = manager.getBattleManager();
+
+		isDebugging = System.getProperty("debug", "false").equals("true"); 
 	}
 
 	public int getTPS() {
@@ -329,7 +334,7 @@ public class Battle implements Runnable {
 		if (!isAborted()) {
 			eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleSpecification(), computeResults());
 		}
-        Logger.setLogListener(null);
+		Logger.setLogListener(null);
 
 		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
@@ -345,35 +350,35 @@ public class Battle implements Runnable {
 		}
 	}
 
-    public void waitTillStarted() {
-        synchronized (battleMonitor) {
-            while (!running) {
-                try {
-                    battleMonitor.wait();
-                } catch (InterruptedException e) {
-                    // Immediately reasserts the exception by interrupting the caller thread itself
-                    Thread.currentThread().interrupt();
+	public void waitTillStarted() {
+		synchronized (battleMonitor) {
+			while (!running) {
+				try {
+					battleMonitor.wait();
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
 
-                    return;
-                }
-            }
-        }
-    }
+					return;
+				}
+			}
+		}
+	}
 
-    public void waitTillOver() {
-        synchronized (battleMonitor) {
-            while (running) {
-                try {
-                    battleMonitor.wait();
-                } catch (InterruptedException e) {
-                    // Immediately reasserts the exception by interrupting the caller thread itself
-                    Thread.currentThread().interrupt();
+	public void waitTillOver() {
+		synchronized (battleMonitor) {
+			while (running) {
+				try {
+					battleMonitor.wait();
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
 
-                    return;
-                }
-            }
-        }
-    }
+					return;
+				}
+			}
+		}
+	}
 
 	private RobotResults[] computeResults() {
 		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());
@@ -557,7 +562,7 @@ public class Battle implements Runnable {
 
 		unsafeThreadGroup.setDaemon(true);
 		unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
-        unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
+		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
@@ -593,10 +598,10 @@ public class Battle implements Runnable {
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 
-                    //create proxy
-                    r.createRobotProxy();
+					// create proxy
+					r.createRobotProxy();
 
-                    initializeRobotPosition(r);
+					initializeRobotPosition(r);
 
 				} catch (Throwable e) {
 					r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
@@ -1046,7 +1051,7 @@ public class Battle implements Runnable {
 	}
 
 	private void setSkippedTurns(RobotPeer r) {
-		if (r.isSleeping() || !r.isRunning()) {
+		if (r.isSleeping() || !r.isRunning() || isDebugging) {
 			r.setSkippedTurns(0);
 		} else {
 			r.setSkippedTurns(r.getSkippedTurns() + 1);
@@ -1250,20 +1255,23 @@ public class Battle implements Runnable {
 		for (RobotPeer r : robots) {
 			name = r.getRobotClassManager().getClassNameManager().getFullPackage();
 			if (name != null && name.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-                final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
-                        + " characters maximum please.";
-                r.getOut().println(message);
-                logMessage(message);
+				final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+						+ " characters maximum please.";
+
+				r.getOut().println(message);
+				logMessage(message);
 				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 
 			name = r.getRobotClassManager().getClassNameManager().getShortClassName();
 			if (name != null && name.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-                final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH + " characters maximum please.";
-                r.getOut().println(message);
-                logMessage(message);
-                r.getOut().println("SYSTEM: Robot disabled.");
+				final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+						+ " characters maximum please.";
+
+				r.getOut().println(message);
+				logMessage(message);
+				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 		}
@@ -1288,9 +1296,10 @@ public class Battle implements Runnable {
 						// Start the robot thread
 						r.getRobotThreadManager().start();
 
-						// Wait for the robot to go to sleep (take action)
-						r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
-
+						if (!isDebugging) {
+							// Wait for the robot to go to sleep (take action)
+							r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
+						}
 					} catch (InterruptedException e) {
 						logMessage("Wait for " + r + " interrupted.");
 
@@ -1298,8 +1307,9 @@ public class Battle implements Runnable {
 						Thread.currentThread().interrupt();
 					}
 				}
-				if (!r.isSleeping()) {
-					logMessage("\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
+				if (!(r.isSleeping() || isDebugging)) {
+					logMessage(
+							"\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 				}
 			}
 		}
@@ -1378,14 +1388,14 @@ public class Battle implements Runnable {
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
-                    logMessage(e);
+					logMessage(e);
 				} catch (Throwable e) {
 					robotPeer.getOut().println(
 							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
 					robotPeer.getOut().println("SYSTEM: " + e);
 					e.printStackTrace(robotPeer.getOut());
-                    logMessage(e);
-                }
+					logMessage(e);
+				}
 				if (roundNum > 0) {
 					initializeRobotPosition(robotPeer);
 				}

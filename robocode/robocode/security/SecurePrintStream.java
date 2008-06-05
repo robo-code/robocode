@@ -24,10 +24,10 @@ import java.io.PrintStream;
  */
 public class SecurePrintStream extends PrintStream {
 
-    public static PrintStream realOut;
-    public static PrintStream realErr; 
+	public static PrintStream realOut;
+	public static PrintStream realErr; 
 
-    public SecurePrintStream(OutputStream out, String accessString) {
+	public SecurePrintStream(OutputStream out, String accessString) {
 		super(out);
 	}
 

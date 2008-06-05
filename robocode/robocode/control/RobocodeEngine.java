@@ -33,17 +33,13 @@
 package robocode.control;
 
 
-import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
-import robocode.security.RobocodeSecurityManager;
-import robocode.security.RobocodeSecurityPolicy;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Policy;
 import java.util.List;
 
 
@@ -58,9 +54,9 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeEngine {
-    private RobocodeManager manager;
+	private RobocodeManager manager;
 
-    /**
+	/**
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
@@ -115,7 +111,7 @@ public class RobocodeEngine {
 			return;
 		}
 
-        manager.initSecurity(true, false);
+		manager.initSecurity(true, false);
 	}
 
 	/**
@@ -207,44 +203,44 @@ public class RobocodeEngine {
 		manager.getBattleManager().stop();
 	}
 
-    /**
-     * Prints out all running thread to the standard system out (console)
-     */
-    public static void printRunningThreads() {
-        ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+	/**
+	 * Prints out all running thread to the standard system out (console)
+	 */
+	public static void printRunningThreads() {
+		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
 
-        if (currentGroup == null) {
-            return;
-        }
+		if (currentGroup == null) {
+			return;
+		}
 
-        while (currentGroup.getParent() != null) {
-            currentGroup = currentGroup.getParent();
-        }
+		while (currentGroup.getParent() != null) {
+			currentGroup = currentGroup.getParent();
+		}
 
-        ThreadGroup groups[] = new ThreadGroup[256];
-        Thread threads[] = new Thread[256];
+		ThreadGroup groups[] = new ThreadGroup[256];
+		Thread threads[] = new Thread[256];
 
-        int numGroups = currentGroup.enumerate(groups, true);
+		int numGroups = currentGroup.enumerate(groups, true);
 
-        for (int i = 0; i < numGroups; i++) {
-            currentGroup = groups[i];
-            if (currentGroup.isDaemon()) {
-                System.out.print("  ");
-            } else {
-                System.out.print("* ");
-            }
-            System.out.println("In group: " + currentGroup.getName());
-            int numThreads = currentGroup.enumerate(threads);
+		for (int i = 0; i < numGroups; i++) {
+			currentGroup = groups[i];
+			if (currentGroup.isDaemon()) {
+				System.out.print("  ");
+			} else {
+				System.out.print("* ");
+			}
+			System.out.println("In group: " + currentGroup.getName());
+			int numThreads = currentGroup.enumerate(threads);
 
-            for (int j = 0; j < numThreads; j++) {
-                if (threads[j].isDaemon()) {
-                    System.out.print("  ");
-                } else {
-                    System.out.print("* ");
-                }
-                System.out.println(threads[j].getName());
-            }
-            System.out.println("---------------");
-        }
-    }
+			for (int j = 0; j < numThreads; j++) {
+				if (threads[j].isDaemon()) {
+					System.out.print("  ");
+				} else {
+					System.out.print("* ");
+				}
+				System.out.println(threads[j].getName());
+			}
+			System.out.println("---------------");
+		}
+	}
 }

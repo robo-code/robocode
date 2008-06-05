@@ -18,7 +18,7 @@ package robocode.peer;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-//TODO get rid of it, statistics should be carried by battle events, not by peer interface
+// TODO get rid of it, statistics should be carried by battle events, not by peer interface
 public interface ContestantPeer extends Comparable<ContestantPeer> {
 	public ContestantStatistics getStatistics();
 

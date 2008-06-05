@@ -203,84 +203,87 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleSaveActionPerformed() {
-        BattleManager battleManager = manager.getBattleManager();
-        try{
-            battleManager.pauseBattle();
-            String path = battleManager.getBattleFilename();
-            if (path == null){
-                path = saveBattleDialog(battleManager.getBattlePath());
-            }
-            if (path !=null){
-                battleManager.setBattleFilename(path);
-                battleManager.saveBattleProperties();
-            }
-        }
-        finally {
-            battleManager.resumeBattle();
-        }
+		BattleManager battleManager = manager.getBattleManager();
+
+		try {
+			battleManager.pauseBattle();
+			String path = battleManager.getBattleFilename();
+
+			if (path == null) {
+				path = saveBattleDialog(battleManager.getBattlePath());
+			}
+			if (path != null) {
+				battleManager.setBattleFilename(path);
+				battleManager.saveBattleProperties();
+			}
+		} finally {
+			battleManager.resumeBattle();
+		}
 	}
 
 	private void battleSaveAsActionPerformed() {
-        BattleManager battleManager = manager.getBattleManager();
-        try{
-            battleManager.pauseBattle();
-            String path = saveBattleDialog(battleManager.getBattlePath());
-            if (path !=null){
-                battleManager.setBattleFilename(path);
-                battleManager.saveBattleProperties();
-            }
-        }
-        finally {
-            battleManager.resumeBattle();
-        }
+		BattleManager battleManager = manager.getBattleManager();
+
+		try {
+			battleManager.pauseBattle();
+			String path = saveBattleDialog(battleManager.getBattlePath());
+
+			if (path != null) {
+				battleManager.setBattleFilename(path);
+				battleManager.saveBattleProperties();
+			}
+		} finally {
+			battleManager.resumeBattle();
+		}
 	}
 
-    private String saveBattleDialog(String path) {
-        File f = new File(path);
+	private String saveBattleDialog(String path) {
+		File f = new File(path);
 
-        JFileChooser chooser;
+		JFileChooser chooser;
 
-        chooser = new JFileChooser(f);
+		chooser = new JFileChooser(f);
 
-        javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                if (pathname.isDirectory()) {
-                    return false;
-                }
-                String fn = pathname.getName();
-                int idx = fn.lastIndexOf('.');
-                String extension = "";
+		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory()) {
+					return false;
+				}
+				String fn = pathname.getName();
+				int idx = fn.lastIndexOf('.');
+				String extension = "";
 
-                if (idx >= 0) {
-                    extension = fn.substring(idx);
-                }
-                return extension.equalsIgnoreCase(".battle");
-            }
+				if (idx >= 0) {
+					extension = fn.substring(idx);
+				}
+				return extension.equalsIgnoreCase(".battle");
+			}
 
-            @Override
-            public String getDescription() {
-                return "Battles";
-            }
-        };
+			@Override
+			public String getDescription() {
+				return "Battles";
+			}
+		};
 
-        chooser.setFileFilter(filter);
-        int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
-        String result=null;
-        if (rv == JFileChooser.APPROVE_OPTION) {
-            result = chooser.getSelectedFile().getPath();
-            int idx = result.lastIndexOf('.');
-            String extension = "";
+		chooser.setFileFilter(filter);
+		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
+		String result = null;
 
-            if (idx > 0) {
-                extension = result.substring(idx);
-            }
-            if (!(extension.equalsIgnoreCase(".battle"))) {
-                result += ".battle";
-            }
-        }
-        return result;
-    }
+		if (rv == JFileChooser.APPROVE_OPTION) {
+			result = chooser.getSelectedFile().getPath();
+			int idx = result.lastIndexOf('.');
+			String extension = "";
+
+			if (idx > 0) {
+				extension = result.substring(idx);
+			}
+			if (!(extension.equalsIgnoreCase(".battle"))) {
+				result += ".battle";
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * Return the battleExitMenuItem.

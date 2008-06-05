@@ -67,9 +67,9 @@ public class RobocodeManager {
 	private boolean isGUIEnabled = true;
 	private boolean isSoundEnabled = true;
 
-    static {
-        RobocodeManager.initStreams();
-    }
+	static {
+		RobocodeManager.initStreams();
+	}
 
 	public RobocodeManager(boolean slave, RobocodeListener listener) {
 		this.slave = slave;
@@ -247,42 +247,42 @@ public class RobocodeManager {
 		this.listener = listener;
 	}
 
-    private static void initStreams() {
-        PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-        PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-        InputStream sysin = new SecureInputStream(System.in, "System.in");
+	private static void initStreams() {
+		PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
+		PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
+		InputStream sysin = new SecureInputStream(System.in, "System.in");
 
-        // Secure System.in, System.err, System.out
-        SecurePrintStream.realOut = System.out;
-        SecurePrintStream.realErr = System.err;
-        System.setOut(sysout);
-        if (!System.getProperty("debug", "false").equals("true")) {
-            System.setErr(syserr);
-        }
-        System.setIn(sysin);
-    }
+		// Secure System.in, System.err, System.out
+		SecurePrintStream.realOut = System.out;
+		SecurePrintStream.realErr = System.err;
+		System.setOut(sysout);
+		if (!System.getProperty("debug", "false").equals("true")) {
+			System.setErr(syserr);
+		}
+		System.setIn(sysin);
+	}
 
-    public void initSecurity(boolean securityOn, boolean experimentalOn) {
-        Thread.currentThread().setName("Application Thread");
+	public void initSecurity(boolean securityOn, boolean experimentalOn) {
+		Thread.currentThread().setName("Application Thread");
 
-        RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
+		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
-        Policy.setPolicy(securityPolicy);
+		Policy.setPolicy(securityPolicy);
 
-        if (securityOn) {
-            System.setSecurityManager(
-                    new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(), true, experimentalOn));
+		if (securityOn) {
+			System.setSecurityManager(
+					new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(), true, experimentalOn));
 
-            RobocodeFileOutputStream.setThreadManager(getThreadManager());
+			RobocodeFileOutputStream.setThreadManager(getThreadManager());
 
-            ThreadGroup tg = Thread.currentThread().getThreadGroup();
+			ThreadGroup tg = Thread.currentThread().getThreadGroup();
 
-            while (tg != null) {
-                ((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
-                tg = tg.getParent();
-            }
-        }
-    }
+			while (tg != null) {
+				((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
+				tg = tg.getParent();
+			}
+		}
+	}
 
 	public void runIntroBattle() {
 		getBattleManager().setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());

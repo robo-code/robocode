@@ -74,7 +74,6 @@ import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.exception.WinException;
 import static robocode.gfx.ColorUtil.toColor;
-import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.NameManager;
 import robocode.peer.proxies.AdvancedRobotProxy;
@@ -246,9 +245,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	protected RobotState state;
 
-    private IBasicRobotPeer robotProxy;
+	private IBasicRobotPeer robotProxy;
 
-    public RobotPeer(String name) {
+	public RobotPeer(String name) {
 		this.name = name;
 
 		battleField = new DefaultBattleField(800, 600);
@@ -345,26 +344,22 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public void createRobotProxy() {
 		if (isTeamRobot) {
 			robotProxy = new TeamRobotProxy(this);
-		}
-		else if (isAdvancedRobot) {
+		} else if (isAdvancedRobot) {
 			robotProxy = new AdvancedRobotProxy(this);
-		}
-		else if (isInteractiveRobot) {
+		} else if (isInteractiveRobot) {
 			robotProxy = new StandardRobotProxy(this);
-		}
-		else if (isJuniorRobot) {
+		} else if (isJuniorRobot) {
 			robotProxy = new JuniorRobotProxy(this);
+		} else {
+			throw new AccessControlException("Unknown robot type");
 		}
-        else{
-            throw new AccessControlException("Unknown robot type");
-        }
-    }
+	}
 
-    public IBasicRobotPeer getRobotProxy(){
-        return robotProxy;
-    }
+	public IBasicRobotPeer getRobotProxy() {
+		return robotProxy;
+	}
 
-    public final void move(double distance) {
+	public final void move(double distance) {
 		setMove(distance);
 		do {
 			execute(); // Always tick at least once
@@ -615,16 +610,18 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			}
 			out.println("SYSTEM: Robot disabled" + msg);
 		} catch (Exception e) {
-            final String message = getName() + ": Exception: " + e;
-            out.println(message);
-            out.printStackTrace(e);
-            logMessage(message);
-        } catch (Throwable t) {
+			final String message = getName() + ": Exception: " + e;
+
+			out.println(message);
+			out.printStackTrace(e);
+			logMessage(message);
+		} catch (Throwable t) {
 			if (!(t instanceof ThreadDeath)) {
-                final String message = getName() + ": Throwable: " + t;
-                out.println(message);
+				final String message = getName() + ": Throwable: " + t;
+
+				out.println(message);
 				out.printStackTrace(t);
-                logMessage(message);
+				logMessage(message);
 			} else {
 				logMessage(getName() + " stopped successfully.");
 			}
@@ -734,11 +731,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		battleField = battle.getBattleField();
 	}
 
-    public synchronized void killFromUI() { //TODO get rid of it on this thread
-        kill();
-    }
+	public synchronized void killFromUI() { // TODO get rid of it on this thread
+		kill();
+	}
     
-    public synchronized void kill() {
+	public synchronized void kill() {
 		battle.resetInactiveTurnCount(10.0);
 		if (isAlive()) {
 			eventManager.add(new DeathEvent());

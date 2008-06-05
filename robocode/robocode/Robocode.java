@@ -33,12 +33,9 @@ import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
-import robocode.security.RobocodeSecurityManager;
-import robocode.security.RobocodeSecurityPolicy;
 
 import java.awt.*;
 import java.io.File;
-import java.security.Policy;
 
 
 /**
@@ -76,24 +73,24 @@ public class Robocode {
 				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
 			}
 
-            // For John Burkey at Apple
-            boolean securityOn = true;
-            boolean experimentalOn = false;
+			// For John Burkey at Apple
+			boolean securityOn = true;
+			boolean experimentalOn = false;
 
-            if (System.getProperty("NOSECURITY", "false").equals("true")) {
-                WindowUtil.messageWarning(
-                        "Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-                        + "You should only run robots which you trust!");
-                securityOn = false;
-            }
-            if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-                WindowUtil.messageWarning(
-                        "Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
-                        + "You should only run robots which you trust!");
-                experimentalOn = true;
-            }
+			if (System.getProperty("NOSECURITY", "false").equals("true")) {
+				WindowUtil.messageWarning(
+						"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
+						+ "You should only run robots which you trust!");
+				securityOn = false;
+			}
+			if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+				WindowUtil.messageWarning(
+						"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
+						+ "You should only run robots which you trust!");
+				experimentalOn = true;
+			}
 
-            manager.initSecurity(securityOn, experimentalOn);
+			manager.initSecurity(securityOn, experimentalOn);
 
 			boolean minimize = false;
 			String battleFilename = null;
@@ -196,7 +193,7 @@ public class Robocode {
 		}
 	}
 
-    private void printUsage() {
+	private void printUsage() {
 		System.out.print(
 				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
 						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
@@ -214,7 +211,6 @@ public class Robocode {
 						+ "    -Ddebug=true|false         Enable or disable System.err messages\n"
 						+ "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n"
 						+ "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n"
-                        + "    -DRANDOMSEED=<long-number> Set seed for deterministic behavior of Random number generator\n" + "\n"
-        );
+						+ "    -DRANDOMSEED=<long-number> Set seed for deterministic behavior of Random number generator\n" + "\n");
 	}
 }

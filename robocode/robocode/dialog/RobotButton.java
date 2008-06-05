@@ -34,7 +34,7 @@ import java.awt.event.ActionListener;
  */
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
-	private RobotPeer robotPeer; //TODO get rid of it on UI, we need rather some handle
+	private RobotPeer robotPeer; // TODO get rid of it on UI, we need rather some handle
 	private RobotDialog robotDialog;
 	private RobotDialogManager robotDialogManager;
 	private String robotName;

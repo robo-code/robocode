@@ -97,15 +97,15 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-    public void onBattleMessage(String message) {
-        for (IBattleListener listener : listeners) {
-            listener.onBattleMessage(message);
-        }
-    }
+	public void onBattleMessage(String message) {
+		for (IBattleListener listener : listeners) {
+			listener.onBattleMessage(message);
+		}
+	}
 
-    public void onBattleError(String error) {
-        for (IBattleListener listener : listeners) {
-            listener.onBattleError(error);
-        }
-    }
+	public void onBattleError(String error) {
+		for (IBattleListener listener : listeners) {
+			listener.onBattleError(error);
+		}
+	}
 }

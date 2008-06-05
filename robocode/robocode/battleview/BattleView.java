@@ -15,7 +15,6 @@ package robocode.battleview;
 
 
 import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.events.BattleAdaptor;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
@@ -30,18 +29,12 @@ import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.GraphicsState;
-import robocode.control.BattleSpecification;
 
-import javax.swing.*;
+import static java.lang.Math.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import static java.lang.Math.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.Random;
 
 
@@ -52,7 +45,7 @@ import java.util.Random;
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
-    private final static int TIMER_TICKS_PER_SECOND = 50;
+	private final static int TIMER_TICKS_PER_SECOND = 50;
 
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
@@ -127,14 +120,14 @@ public class BattleView extends Canvas {
 		return observer.getFPS();
 	}
 	
-    @Override
-    public void paint(Graphics g) {
-        if (observer != null && observer.isRunning()) {
-            update(observer.getLastSnapshot());
-        } else {
-            paintRobocodeLogo((Graphics2D) g);
-        }
-    }
+	@Override
+	public void paint(Graphics g) {
+		if (observer != null && observer.isRunning()) {
+			update(observer.getLastSnapshot());
+		} else {
+			paintRobocodeLogo((Graphics2D) g);
+		}
+	}
 
 	/**
 	 * Shows the next frame. The game calls this every frame.
@@ -233,9 +226,9 @@ public class BattleView extends Canvas {
 	private void createGroundImage() {
 		// Reinitialize ground tiles
 
-        Random r=new Random();//independent 
+		Random r = new Random(); // independent 
 
-        final int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
+		final int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
 		final int NUM_VERT_TILES = battleField.getHeight() / groundTileHeight + 1;
 
 		if ((groundTiles == null) || (groundTiles.length != NUM_VERT_TILES) || (groundTiles[0].length != NUM_HORZ_TILES)) {
@@ -473,6 +466,10 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot) {
+		if (!robotSnapshot.isPaintRobot()) {
+			return;
+		}
+
 		// Save the graphics state
 		GraphicsState gfxState = new GraphicsState();
 
@@ -480,24 +477,15 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		if (robotSnapshot.isPaintRobot()) {
-			Graphics2DProxy gfxProxy = robotSnapshot.getGraphicsProxy();
+		Graphics2DProxy gfxProxy = robotSnapshot.getGraphicsProxy();
 
-			if (gfxProxy != null) {
-				// Do the painting
-				try {
-					if (robotSnapshot.isSGPaintEnabled()) {
-						gfxProxy.processTo(g);
-					} else {
-						mirroredGraphics.bind(g, battleField.getHeight());
-						gfxProxy.processTo(g);
-						mirroredGraphics.release();
-					}
-				} catch (Exception e) {
-					// Make sure that Robocode is not halted by an exception caused by letting the robot paint
-					robotSnapshot.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-					e.printStackTrace(robotSnapshot.getOut());
-				}
+		if (gfxProxy != null) {
+			if (robotSnapshot.isSGPaintEnabled()) {
+				gfxProxy.processTo(g);
+			} else {
+				mirroredGraphics.bind(g, battleField.getHeight());
+				gfxProxy.processTo(g);
+				mirroredGraphics.release();
 			}
 		}
 
@@ -651,12 +639,12 @@ public class BattleView extends Canvas {
 	}
 
 	private class BattleObserver extends AwtBattleAdaptor {
-        public BattleObserver(BattleEventDispatcher dispatcher) {
-            super(dispatcher, TIMER_TICKS_PER_SECOND, true);
-        }
+		public BattleObserver(BattleEventDispatcher dispatcher) {
+			super(dispatcher, TIMER_TICKS_PER_SECOND, true);
+		}
 
-        protected void updateView(TurnSnapshot snapshot) {
-            update(snapshot);
-        }
-    }
+		protected void updateView(TurnSnapshot snapshot) {
+			update(snapshot);
+		}
+	}
 }

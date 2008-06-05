@@ -49,7 +49,7 @@ import java.util.List;
 public class BattleRankingTableModel extends AbstractTableModel {
 
 	private RobocodeManager manager;
-	private Battle battle; //TODO get rid of it in UI
+	private Battle battle; // TODO get rid of it in UI
 
 	public BattleRankingTableModel(RobocodeManager manager) {
 		super();
@@ -182,8 +182,8 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		if (manager == null) {
 			return null;
 		}
-        //TODO get rid of it, statistics should be carried by battle events, not by peer interface
-        battle = manager.getBattleManager().getBattle();
+		// TODO get rid of it, statistics should be carried by battle events, not by peer interface
+		battle = manager.getBattleManager().getBattle();
 
 		return (battle != null) ? battle.getContestants() : null;
 	}
