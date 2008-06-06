@@ -19,7 +19,6 @@ import static robocode.util.ObjectCloner.deepCopy;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;
-import java.io.PrintStream;
 import java.io.Serializable;
 
 
@@ -137,9 +136,7 @@ public class RobotSnapshot implements Serializable {
 
 		graphicsProxy = peerGfx != null ? (Graphics2DProxy) peerGfx.create() : null;
 
-		PrintStream peerOut = peer.getOut(); 
-
-		printStreamProxy = peerOut != null ? new PrintStreamProxy(peerOut) : null;
+		printStreamProxy = new PrintStreamProxy();
 	}
 
 	/**
@@ -333,6 +330,6 @@ public class RobotSnapshot implements Serializable {
 	 * @return the output print stream proxy for this robot.
 	 */
 	public PrintStreamProxy getOutputProxy() {
-		return printStreamProxy != null ? printStreamProxy.copy() : null;
+		return printStreamProxy.copy();
 	}
 }

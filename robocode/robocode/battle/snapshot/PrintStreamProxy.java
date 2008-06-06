@@ -24,9 +24,8 @@ import java.util.Locale;
  * </p>
  * Example:
  * <pre>
- *    // Create the PrintStream proxy which works on a real PrintStream object
- *    // declared earlier as 'out'.
- *    PrintStream psProxy = new PrintStreamProxy(out);
+ *    // Create a PrintStream proxy
+ *    PrintStream psProxy = new PrintStreamProxy();
  *    ...
  *    // Call some standard PrintStream methods
  *    psProxy.println("Hello World!");
@@ -34,70 +33,61 @@ import java.util.Locale;
  *    ...
  *    psProxy.println("Another line");
  *    ...
- *    // Process all pending output to the real PrintStream object
- *    psProxy.processTo(out); // where 'out' is the real PrintStream object
+ *    // Process all pending output to the real output stream
+ *    psProxy.processTo(System.out); // Here the output stream is System.out
  *    ...
- *    // Now, the real PrintStream 'out' will contain the two lines
- *    // "Hello World!" and "Another line", and the output in the psProxy
- *    // has been cleared when processed.
+ *    // Now, the output stream 'out' will contain the two lines "Hello World!"
+ *    // and "Another line", and the output in the psProxy has been cleared
+ *    // when processed.
  * </pre>
  *
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public class PrintStreamProxy extends PrintStream {
+public class PrintStreamProxy implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	// Output stream for the internal output that is buffered up in this object
-	private final ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+	private transient ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 
 	// Buffered output stream for the internal output stream
-	private final BufferedOutputStream bufferedOut = new BufferedOutputStream(bytesOut);
+	private transient BufferedOutputStream bufferedOut = new BufferedOutputStream(bytesOut);
 
 	// Internal print stream that outputs to the buffered output stream, and hence the internal output stream
-	private final PrintStream printStream = new PrintStream(bufferedOut);
+	private transient PrintStream printStream = new PrintStream(bufferedOut);
 
 	// --------------------------------------------------------------------------
-	// PrintStream constructors
+	// Serialization
 	// --------------------------------------------------------------------------
 
-	public PrintStreamProxy(OutputStream out) {
-		super(out);
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		// Flush the internal PrintStream to the BufferedOutputStream
+		printStream.flush();
+
+		// Flush the BufferedOutputStream to the ByteArrayOutputStream
+		bufferedOut.flush();
+
+		// Write the output from ByteArrayOutputStream to the object output stream 
+		out.write(bytesOut.toByteArray());
 	}
 
-	public PrintStreamProxy(OutputStream out, boolean autoFlush) {
-		super(out, autoFlush);
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		bytesOut = new ByteArrayOutputStream();
+		bufferedOut = new BufferedOutputStream(bytesOut);
+		printStream = new PrintStream(bufferedOut);
+
+		// Read all bytes from input object stream into the ByteArrayOutputStream
+		byte[] bytes = new byte[1024];
+		int len;
+
+		do {
+			len = in.read(bytes);
+			if (len > 0) {
+				bytesOut.write(bytes, 0, len);
+			}
+		} while (len >= 0);
 	}
-
-	public PrintStreamProxy(OutputStream out, boolean autoFlush, String encoding) throws UnsupportedEncodingException {
-		super(out, autoFlush, encoding);
-	}
-
-	public PrintStreamProxy(String fileName) throws FileNotFoundException {
-		super(fileName);
-	}
-
-	public PrintStreamProxy(String fileName, String csn) throws FileNotFoundException, UnsupportedEncodingException {
-		super(fileName, csn);
-	}
-
-	public PrintStreamProxy(File file) throws FileNotFoundException {
-		super(file);
-	}
-
-	public PrintStreamProxy(File file, String csn) throws FileNotFoundException, UnsupportedEncodingException {
-		super(file, csn);
-	}
-
-	// --------------------------------------------------------------------------
-	// Finalizer
-	// --------------------------------------------------------------------------
-	/* Causes trouble!!
-	 public void finalize() throws Throwable {
-	 super.finalize();
-
-	 close();
-	 }
-	 */
 
 	// --------------------------------------------------------------------------
 	// Copying
@@ -109,7 +99,7 @@ public class PrintStreamProxy extends PrintStream {
 	 * @return a deep copy of this PrintStreamProxy.
 	 */
 	public PrintStreamProxy copy() {
-		PrintStreamProxy copy = new PrintStreamProxy(out);
+		PrintStreamProxy copy = new PrintStreamProxy();
 
 		try {
 			// Flush the BufferedOutputStream to the ByteArrayOutputStream
@@ -141,8 +131,6 @@ public class PrintStreamProxy extends PrintStream {
 	}
 
 	public void close() {
-		super.close();
-
 		printStream.close();
 		try {
 			bufferedOut.close();
@@ -246,37 +234,37 @@ public class PrintStreamProxy extends PrintStream {
 	
 	public PrintStream printf(String format, Object... args) {
 		printStream.printf(format, args);
-		return this;
+		return printStream;
 	}
 
 	public PrintStream printf(Locale l, String format, Object... args) {
 		printStream.printf(l, format, args);
-		return this;
+		return printStream;
 	}
 
 	public PrintStream format(String format, Object... args) {
 		printStream.format(format, args);
-		return this;
+		return printStream;
 	}
 
 	public PrintStream format(Locale l, String format, Object... args) {
 		printStream.format(l, format, args);
-		return this;
+		return printStream;
 	}
 
 	public PrintStream append(CharSequence csq) {
 		printStream.append(csq);
-		return this;
+		return printStream;
 	}
 
 	public PrintStream append(CharSequence csq, int start, int end) {
 		printStream.append(csq, start, end);
-		return this;
+		return printStream;
 	}
 
 	public PrintStream append(char c) {
 		printStream.append(c);
-		return this;
+		return printStream;
 	}
 
 	// --------------------------------------------------------------------------
@@ -288,9 +276,11 @@ public class PrintStreamProxy extends PrintStream {
 	 * The specified PrintStream is automatically flushed, and the output
 	 * buffered in this PrintStream proxy will be cleared.
 	 *
-	 * @throws IOException if an I/O exception occurs
+	 * @param out the output stream to process the buffered content of this
+	 *            print stream.
+	 * @throws IOException if an I/O exception occurs.
 	 */
-	public void process() throws IOException {
+	public void processTo(OutputStream out) throws IOException {
 		// Flush the internal PrintStream to the BufferedOutputStream
 		printStream.flush();
 
@@ -306,56 +296,83 @@ public class PrintStreamProxy extends PrintStream {
 		bytesOut.reset();
 	}
 
-	/*
 	 // For testing purposes
+	/*
+		 public static void main(String... args) {
+			 PrintStreamProxy proxy = new PrintStreamProxy();
+		
+			 proxy.println("1st");
+			 proxy.println("2nd");
+			 
+			 PrintStreamProxy proxyCopy = proxy.copy();
+		
+			 try {
+				 proxy.processTo(System.out);
+			 } catch (IOException e) {
+				 e.printStackTrace();
+				 System.exit(-1);
+			 }
 
-	 public static void main(String... args) {
-	 final ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-	 final BufferedOutputStream bufferedOut = new BufferedOutputStream(bytesOut);
+			 // proxy.flush();
+			 // proxy.close();
+			 
+			 // System.out.println("proxyCopy error: " + proxyCopy.checkError());
+		
+			 proxy.println("3rd");
+			 proxy.println("4th");
+			 // System.out.println("proxy error: " + proxy.checkError());
+			 try {
+				 proxy.processTo(System.out);
+			 } catch (IOException e) {
+				 e.printStackTrace();
+			 }
+		
+			 System.out.println("----");
+		
+			 try {
+				 proxyCopy.processTo(System.out);
+			 } catch (IOException e) {
+				 e.printStackTrace();
+			 }
+		 
+			 proxy.close();
+			 proxy.close(); // for testing what happens when done twice
+		 }
+	*/
+	/*
+		public static void main(String... args) {
+			 PrintStreamProxy proxy = new PrintStreamProxy();
 
-	 PrintStream out = new PrintStream(bufferedOut);
+			 proxy.println("Hello World!");
 
-	 PrintStreamProxy proxy = new PrintStreamProxy(out);
-
-	 proxy.println("1st");
-	 proxy.println("2nd");
-	 
-	 PrintStreamProxy proxyCopy = proxy.copy();
-
-	 try {
-	 proxy.process();
-	 } catch (IOException e) {
-	 e.printStackTrace();
-	 }
-
-	 // proxy.flush();
-	 // proxy.close();
-	 
-	 // System.out.println("proxyCopy error: " + proxyCopy.checkError());
-
-	 proxy.println("3rd");
-	 proxy.println("4th");
-	 // System.out.println("proxy error: " + proxy.checkError());
-	 try {
-	 proxy.process();
-	 } catch (IOException e) {
-	 e.printStackTrace();
-	 }
-
-	 System.out.print(bytesOut);
-	 bytesOut.reset();
-	 System.out.println("----");
-
-	 try {
-	 proxyCopy.process();
-	 } catch (IOException e) {
-	 e.printStackTrace();
-	 }
-
-	 System.out.print(bytesOut);
-	 bytesOut.reset();
-	 
-	 proxy.close();
-	 proxy.close(); // for testing what happens when done twice
-	 }*/
+			 final String filename = "C:/temp/tmp.bin";
+			 
+			 try {
+				 FileOutputStream fos = new FileOutputStream(filename);
+				 ObjectOutputStream oos = new ObjectOutputStream(fos);
+				 oos.writeObject(proxy);
+				 oos.close();
+			 } catch (Exception e) {
+				 e.printStackTrace();
+				 System.exit(-1);
+			 }
+			 
+			 PrintStreamProxy proxy2 = null;
+			 try {
+				 FileInputStream fis = new FileInputStream(filename);
+				 ObjectInputStream ois = new ObjectInputStream(fis);
+				 proxy2 = (PrintStreamProxy) ois.readObject();
+				 ois.close();
+			 } catch (Exception e) {
+				 e.printStackTrace();
+				 System.exit(-2);
+			 }
+			 
+			 try {
+				proxy2.processTo(System.out);
+			} catch (IOException e) {
+				e.printStackTrace();
+				 System.exit(-3);
+			}
+		}*/
 }
