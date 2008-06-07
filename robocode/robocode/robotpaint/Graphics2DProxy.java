@@ -25,14 +25,12 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
+//import java.io.*;
+//import javax.swing.*;
 import java.text.AttributedCharacterIterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-
-import java.io.*;
-import javax.swing.*;
-
 
 
 /**
@@ -128,40 +126,40 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	private Queue<QueuedCall> queuedCalls = new LinkedList<QueuedCall>();
 
 	// Needed for getTransform()
-	private AffineTransform transform;
+	private transient AffineTransform transform;
 
 	// Needed for getDeviceConfiguration()
-	private GraphicsConfiguration deviceConfiguration;
+	private transient GraphicsConfiguration deviceConfiguration;
 
 	// Needed for getComposite()
-	private Composite composite;
+	private transient Composite composite;
 
 	// Needed for getPaint()
-	private Paint paint;
+	private transient Paint paint;
 
 	// Needed for getStroke()
-	private Stroke stroke;
+	private transient Stroke stroke;
 
 	// Needed for getRenderingHint() and getRenderingHints()
-	private RenderingHints renderingHints;
+	private transient RenderingHints renderingHints;
 
 	// Needed for getBackground()
-	private Color background;
+	private transient Color background;
 
 	// Needed for getClip()
-	private Shape clip;
+	private transient Shape clip;
 
 	// Needed for getFontRenderContext()
-	private FontRenderContext fontRenderContext;
+	private transient FontRenderContext fontRenderContext;
 
 	// Needed for getColor()
-	private Color color;
+	private transient Color color;
 
 	// Needed for getFont()
-	private Font font;
+	private transient Font font;
 
 	// Flag indicating if this proxy has been initialized
-	private boolean isInitialized;
+	private transient boolean isInitialized;
 
 	// --------------------------------------------------------------------------
 	// Overriding all methods from the extended Graphics class
@@ -1438,7 +1436,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	// For testing purpose
 
 	public static void main(String... args) {
-		final Graphics2DProxy gfx = new Graphics2DProxy();
+		Graphics2DProxy gfx = new Graphics2DProxy();
 		gfx.setTransform(AffineTransform.getRotateInstance(0.5));
 		gfx.setColor(Color.red);
 		gfx.fillRect(0, 0, 100, 100);
@@ -1446,41 +1444,42 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		gfx.setFont(new Font("Monospace", Font.PLAIN, 22));
 		gfx.drawString("Hello World", 25, 25);
 
-		 final String filename = "C:/temp/tmp.bin";
+		final String filename = "C:/temp/tmp.bin";
 		 
-		 try {
-			 FileOutputStream fos = new FileOutputStream(filename);
-			 ObjectOutputStream oos = new ObjectOutputStream(fos);
-			 oos.writeObject(gfx);
-			 oos.close();
-		 } catch (Exception e) {
-			 e.printStackTrace();
-			 System.exit(-1);
-		 }
+		try {
+			FileOutputStream fos = new FileOutputStream(filename);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(gfx);
+			oos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
 		 
-		 Graphics2DProxy gfx2 = null;
-		 try {
-			 FileInputStream fis = new FileInputStream(filename);
-			 ObjectInputStream ois = new ObjectInputStream(fis);
-			 gfx2 = (Graphics2DProxy) ois.readObject();
-			 ois.close();
-		 } catch (Exception e) {
-			 e.printStackTrace();
-			 System.exit(-2);
-		 }
+		Graphics2DProxy gfx2 = null;
+		try {
+			FileInputStream fis = new FileInputStream(filename);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			gfx2 = (Graphics2DProxy) ois.readObject();
+			ois.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-2);
+		}
+
+		final Graphics2DProxy paintGfx = gfx2;
+
+		JFrame frame = new JFrame("Test");
+		frame.setBounds(50, 50, 300, 200);
 		
-		 JFrame frame = new JFrame("Test");
-		 frame.setBounds(50, 50, 300, 200);
-		
-		 JPanel panel = new JPanel() {
+		JPanel panel = new JPanel() {
 			private static final long serialVersionUID = 1L;
 			
 			public void paint(Graphics g) {
-				gfx.processTo((Graphics2D) g);
-			 }
-		 };
-		 frame.add(panel);
-		 frame.setVisible(true);
-	}
-*/
+				paintGfx.processTo((Graphics2D) g);
+			}
+		};
+		frame.add(panel);
+		frame.setVisible(true);
+	}*/
 }
