@@ -30,6 +30,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import java.io.*;
+import javax.swing.*;
+
+
 
 /**
  * The Graphics2DProxy is a Graphics2D class that is not able to render graphics
@@ -55,7 +59,9 @@ import java.util.Queue;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public class Graphics2DProxy extends Graphics2D {
+public class Graphics2DProxy extends Graphics2D implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private enum Method {
 		TRANSLATE_INT, // translate(int, int)
@@ -1401,7 +1407,9 @@ public class Graphics2DProxy extends Graphics2D {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	public class QueuedCall {
+	public class QueuedCall implements java.io.Serializable {
+		private static final long serialVersionUID = 1L;
+
 		public final Method method;
 		public final Object[] args;
 
@@ -1425,4 +1433,54 @@ public class Graphics2DProxy extends Graphics2D {
 			super(font);
 		}
 	}
+
+/*
+	// For testing purpose
+
+	public static void main(String... args) {
+		final Graphics2DProxy gfx = new Graphics2DProxy();
+		gfx.setTransform(AffineTransform.getRotateInstance(0.5));
+		gfx.setColor(Color.red);
+		gfx.fillRect(0, 0, 100, 100);
+		gfx.setColor(Color.BLACK);
+		gfx.setFont(new Font("Monospace", Font.PLAIN, 22));
+		gfx.drawString("Hello World", 25, 25);
+
+		 final String filename = "C:/temp/tmp.bin";
+		 
+		 try {
+			 FileOutputStream fos = new FileOutputStream(filename);
+			 ObjectOutputStream oos = new ObjectOutputStream(fos);
+			 oos.writeObject(gfx);
+			 oos.close();
+		 } catch (Exception e) {
+			 e.printStackTrace();
+			 System.exit(-1);
+		 }
+		 
+		 Graphics2DProxy gfx2 = null;
+		 try {
+			 FileInputStream fis = new FileInputStream(filename);
+			 ObjectInputStream ois = new ObjectInputStream(fis);
+			 gfx2 = (Graphics2DProxy) ois.readObject();
+			 ois.close();
+		 } catch (Exception e) {
+			 e.printStackTrace();
+			 System.exit(-2);
+		 }
+		
+		 JFrame frame = new JFrame("Test");
+		 frame.setBounds(50, 50, 300, 200);
+		
+		 JPanel panel = new JPanel() {
+			private static final long serialVersionUID = 1L;
+			
+			public void paint(Graphics g) {
+				gfx.processTo((Graphics2D) g);
+			 }
+		 };
+		 frame.add(panel);
+		 frame.setVisible(true);
+	}
+*/
 }
