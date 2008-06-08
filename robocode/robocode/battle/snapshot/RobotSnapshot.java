@@ -91,7 +91,7 @@ public class RobotSnapshot implements Serializable {
 	private final boolean isSGPaintEnabled;
 
 	// The scan arc
-	private final Arc2D scanArc;
+	private final SerializableArc scanArc;
 
 	// The Graphics2D proxy
 	private final Graphics2DProxy graphicsProxy;
@@ -130,7 +130,7 @@ public class RobotSnapshot implements Serializable {
 		isPaintEnabled = peer.isPaintEnabled();
 		isSGPaintEnabled = peer.isSGPaintEnabled();
 
-		scanArc = peer.getScanArc() != null ? (Arc2D) peer.getScanArc().clone() : null;
+		scanArc = peer.getScanArc() != null ? new SerializableArc((Arc2D.Double) peer.getScanArc()) : null;
 
 		Graphics2D peerGfx = peer.getGraphics();
 
@@ -331,5 +331,34 @@ public class RobotSnapshot implements Serializable {
 	 */
 	public PrintStreamProxy getOutputProxy() {
 		return printStreamProxy.copy();
+	}
+
+	/**
+	 * The purpose of this class it to serialize the Arc2D.Double class,
+	 * which does not support the Serializable interface itself.
+	 *
+	 * @author Flemming N. Larsen
+	 * @since 1.6.1
+	 */
+	private class SerializableArc extends Arc2D.Double implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Public constructor needed for Serialization.
+		 */
+		public SerializableArc() {
+			super();
+		}
+
+		/**
+		 * Copy constructor used for construction a SerializableArc based
+		 * on a Arc2D.Double.
+		 *
+		 * @param arc the Arc2D.Double object to copy
+		 */
+		public SerializableArc(Arc2D.Double arc) {
+			super(arc.getBounds(), arc.start, arc.extent, arc.getArcType());
+		}
 	}
 }
