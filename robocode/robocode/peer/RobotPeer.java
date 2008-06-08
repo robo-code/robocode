@@ -1902,6 +1902,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			waitCondition = null;
 		}
 
+		// Cleanup robot proxy
+		robotProxy = null;
+
 		// Cleanup graphics proxy
 		graphicsProxy = null;
 	}
