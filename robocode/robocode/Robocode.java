@@ -49,22 +49,28 @@ import java.io.IOException;
  */
 public class Robocode {
 
-	/**
-	 * Use the command-line to start Robocode.
-	 * The command is:
-	 * <pre>
-	 *    java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
-	 * </pre>
-	 *
-	 * @param args an array of command-line arguments
-	 */
-	public static void main(String[] args) {
-		Robocode robocode = new Robocode();
+    /**
+     * Use the command-line to start Robocode.
+     * The command is:
+     * <pre>
+     *    java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
+     * </pre>
+     *
+     * @param args an array of command-line arguments
+     */
+    public static void main(String[] args) {
+        Robocode robocode = new Robocode();
+        robocode.loadSetup(args);
+        robocode.run();
+    }
 
-		robocode.initialize(args);
-	}
+    private RobocodeManager manager;
+    private Setup setup;
 
-	private Robocode() {}
+    private Robocode() {
+        manager = new RobocodeManager(false, null);
+        setup = new Setup();
+    }
 
     private class Setup {
         boolean securityOn = true;
@@ -72,91 +78,90 @@ public class Robocode {
         boolean minimize = false;
         String battleFilename = null;
         String resultsFilename = null;
+        int tps;
     }
 
-    private boolean initialize(String args[]) {
-		try {
-			RobocodeManager manager = new RobocodeManager(false, null);
-
-            Setup setup = loadSetup(args, manager);
-
+    private boolean run() {
+        try {
             manager.initSecurity(setup.securityOn, setup.experimentalOn);
 
-			// Set the Look and Feel (LAF)
-			if (manager.isGUIEnabled()) {
-				robocode.manager.LookAndFeelManager.setLookAndFeel();
-			}
+            // Set the Look and Feel (LAF)
+            if (manager.isGUIEnabled()) {
+                robocode.manager.LookAndFeelManager.setLookAndFeel();
+            }
+
+            manager.getProperties().setOptionsBattleDesiredTPS(setup.tps);
 
             if (setup.resultsFilename != null) {
                 manager.getBattleManager().setResultsFile(setup.resultsFilename);
             }
-			if (setup.battleFilename != null) {
-				robocode.manager.BattleManager battleManager = manager.getBattleManager();
+            if (setup.battleFilename != null) {
+                robocode.manager.BattleManager battleManager = manager.getBattleManager();
 
-				battleManager.setBattleFilename(setup.battleFilename);
-				if (new File(battleManager.getBattleFilename()).exists()) {
-					battleManager.loadBattleProperties();
-					battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
-				} else {
-					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
-					System.exit(8);
-				}
-			}
-			if (!manager.isGUIEnabled()) {
-				return true;
-			}
+                battleManager.setBattleFilename(setup.battleFilename);
+                if (new File(battleManager.getBattleFilename()).exists()) {
+                    battleManager.loadBattleProperties();
+                    battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
+                } else {
+                    System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
+                    System.exit(8);
+                }
+            }
+            if (!manager.isGUIEnabled()) {
+                return true;
+            }
 
-			if (!setup.minimize && setup.battleFilename == null) {
-				if (manager.isSoundEnabled()) {
-					manager.getSoundManager().playThemeMusic();
-				}
-				manager.getWindowManager().showSplashScreen();
-			}
-			manager.getWindowManager().showRobocodeFrame(true);
-			if (!setup.minimize) {
-				manager.getVersionManager().checkUpdateCheck();
-			}
-			if (setup.minimize) {
-				manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
-			}
+            if (!setup.minimize && setup.battleFilename == null) {
+                if (manager.isSoundEnabled()) {
+                    manager.getSoundManager().playThemeMusic();
+                }
+                manager.getWindowManager().showSplashScreen();
+            }
+            manager.getWindowManager().showRobocodeFrame(true);
+            if (!setup.minimize) {
+                manager.getVersionManager().checkUpdateCheck();
+            }
+            if (setup.minimize) {
+                manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
+            }
 
-			if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
-				manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
-				manager.saveProperties();
-				manager.runIntroBattle();
-			}
+            if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
+                manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
+                manager.saveProperties();
+                manager.runIntroBattle();
+            }
 
-			return true;
-		} catch (Throwable e) {
-			Logger.logError(e);
-			return false;
-		}
-	}
+            return true;
+        } catch (Throwable e) {
+            Logger.logError(e);
+            return false;
+        }
+    }
 
-    private Setup loadSetup(String[] args, RobocodeManager manager) throws IOException {
-        Setup setup=new Setup();
-        if (System.getProperty("WORKINGDIRECTORY") != null) {
-            FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
+    private void loadSetup(String args[]) {
+        final String robocodeDir = System.getProperty("WORKINGDIRECTORY");
+        if (robocodeDir != null) {
+            changeDirectory(robocodeDir);
         }
 
         if (System.getProperty("NOSECURITY", "false").equals("true")) {
             WindowUtil.messageWarning(
                     "Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-                    + "You should only run robots which you trust!");
+                            + "You should only run robots which you trust!");
             setup.securityOn = false;
         }
         if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
             WindowUtil.messageWarning(
                     "Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
-                    + "You should only run robots which you trust!");
+                            + "You should only run robots which you trust!");
             setup.experimentalOn = true;
         }
 
-        int tps = manager.getProperties().getOptionsBattleDesiredTPS();
+        setup.tps = manager.getProperties().getOptionsBattleDesiredTPS();
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-cwd") && (i < args.length + 1)) {
-                FileUtil.setCwd(new File(args[i + 1]));
+                changeDirectory(args[i + 1]);
                 i++;
             } else if (args[i].equals("-battle") && (i < args.length + 1)) {
                 setup.battleFilename = args[i + 1];
@@ -165,8 +170,8 @@ public class Robocode {
                 setup.resultsFilename = args[i + 1];
                 i++;
             } else if (args[i].equals("-tps") && (i < args.length + 1)) {
-                tps = Integer.parseInt(args[i + 1]);
-                if (tps < 1) {
+                setup.tps = Integer.parseInt(args[i + 1]);
+                if (setup.tps < 1) {
                     System.out.println("tps must be > 0");
                     System.exit(8);
                 }
@@ -176,7 +181,7 @@ public class Robocode {
             } else if (args[i].equals("-nodisplay")) {
                 manager.setEnableGUI(false);
                 manager.setEnableSound(false);
-                tps = 10000; // set TPS to maximum
+                setup.tps = 10000; // set TPS to maximum
             } else if (args[i].equals("-nosound")) {
                 manager.setEnableSound(false);
             } else if (args[i].equals("-?") || args[i].equals("-help")) {
@@ -195,29 +200,35 @@ public class Robocode {
                     new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
             System.exit(8);
         }
+    }
 
-        manager.getProperties().setOptionsBattleDesiredTPS(tps);
-        return setup;
+    private void changeDirectory(String robocodeDir) {
+        try {
+            FileUtil.setCwd(new File(robocodeDir));
+        } catch (IOException e) {
+            System.err.println(robocodeDir + " is not a valid directory to start Robocode in.");
+            System.exit(8);
+        }
     }
 
     private void printUsage() {
-		System.out.print(
-				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
-						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
-						+ "    -cwd <path>             Change the current working directory\n"
-						+ "    -battle <battle file>   Run the battle specified in a battle file\n"
-						+ "    -results <file>         Save results to the specified text file\n"
-						+ "    -tps <tps>              Set the TPS (Turns Per Second) to use. TPS must be > 0\n"
-						+ "    -minimize               Run minimized when Robocode starts\n"
-						+ "    -nodisplay              Run with the display / GUI disabled\n"
-						+ "    -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
-						+ "    -DWORKINGDIRECTORY=<path>  Set the working directory\n"
-						+ "    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
-						+ "    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
-						+ "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
-						+ "    -Ddebug=true|false         Enable or disable System.err messages\n"
-						+ "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n"
-						+ "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n"
-						+ "    -DRANDOMSEED=<long-number> Set seed for deterministic behavior of Random number generator\n" + "\n");
-	}
+        System.out.print(
+                "Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
+                        + "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
+                        + "    -cwd <path>             Change the current working directory\n"
+                        + "    -battle <battle file>   Run the battle specified in a battle file\n"
+                        + "    -results <file>         Save results to the specified text file\n"
+                        + "    -tps <tps>              Set the TPS (Turns Per Second) to use. TPS must be > 0\n"
+                        + "    -minimize               Run minimized when Robocode starts\n"
+                        + "    -nodisplay              Run with the display / GUI disabled\n"
+                        + "    -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
+                        + "    -DWORKINGDIRECTORY=<path>  Set the working directory\n"
+                        + "    -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
+                        + "    -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
+                        + "    -DNOSECURITY=true|false    Enable or disable Robocode's security manager\n"
+                        + "    -Ddebug=true|false         Enable or disable System.err messages\n"
+                        + "    -DEXPERIMENTAL=true|false  Enable or disable access to peer in robot interfaces\n" + "\n"
+                        + "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n"
+                        + "    -DRANDOMSEED=<long-number> Set seed for deterministic behavior of Random number generator\n" + "\n");
+    }
 }
