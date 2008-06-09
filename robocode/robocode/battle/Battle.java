@@ -308,8 +308,6 @@ public class Battle implements Runnable {
 			if (!isAborted() && manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
 				manager.getWindowManager().showResultsDialog();
 			}
-
-			battleManager.printResultsData(this);
 		} else {
 			// Replay
 

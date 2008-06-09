@@ -186,7 +186,7 @@ public class BattleManager {
 				}
 			}
 		}
-		startNewBattle(battlingRobotsList, exitOnComplete, replay, null, false);
+		startNewBattleImpl(battlingRobotsList, exitOnComplete, replay, null, false);
 	}
 
 	public void startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
@@ -219,7 +219,7 @@ public class BattleManager {
 				return;
 			}
 		}
-		startNewBattle(battlingRobotsList, false, replay, spec, true);
+		startNewBattleImpl(battlingRobotsList, false, replay, spec, true);
 	}
 
 	private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, BattleSpecification spec, robocode.control.RobotSpecification battleRobotSpec) {
@@ -284,7 +284,7 @@ public class BattleManager {
 		return false;
 	}
 
-	private void startNewBattle(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
+	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
 			BattleSpecification battleSpecification, boolean waitTillOver) {
 
 		this.battleSpecification = battleSpecification;
@@ -492,42 +492,6 @@ public class BattleManager {
 		return resultsFile;
 	}
 
-	public void printResultsData(Battle battle) {
-		// Do not print out if no result file has been specified and the GUI is enabled
-		if (getResultsFile() == null && (!exitOnComplete || manager.isGUIEnabled())) {
-			return;
-		}
-
-		PrintStream out = null;
-		FileOutputStream fos = null;
-
-		if (getResultsFile() == null) {
-			out = System.out;
-		} else {
-			File f = new File(getResultsFile());
-
-			try {
-				fos = new FileOutputStream(f);
-				out = new PrintStream(fos);
-			} catch (IOException e) {
-				Logger.logError(e);
-			}
-		}
-
-		BattleResultsTableModel resultsTable = new BattleResultsTableModel(battle);
-
-		if (out != null) {
-			resultsTable.print(out);
-			out.close();
-		}
-		if (fos != null) {
-			try {
-				fos.close();
-			} catch (IOException e) {// swallow
-			}
-		}
-	}
-
 	public void addListener(IBattleListener listener) {
 		battleEventDispatcher.addListener(listener);
 	}
@@ -540,10 +504,48 @@ public class BattleManager {
 		return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
 	}
 
+    private void printResultsData(Battle battle) {
+        // Do not print out if no result file has been specified and the GUI is enabled
+        if (battle.isReplay() || (getResultsFile() == null && (!exitOnComplete || manager.isGUIEnabled()))) {
+            return;
+        }
+
+        PrintStream out = null;
+        FileOutputStream fos = null;
+
+        if (getResultsFile() == null) {
+            out = System.out;
+        } else {
+            File f = new File(getResultsFile());
+
+            try {
+                fos = new FileOutputStream(f);
+                out = new PrintStream(fos);
+            } catch (IOException e) {
+                Logger.logError(e);
+            }
+        }
+
+        BattleResultsTableModel resultsTable = new BattleResultsTableModel(battle);
+
+        if (out != null) {
+            resultsTable.print(out);
+            out.close();
+        }
+        if (fos != null) {
+            try {
+                fos.close();
+            } catch (IOException e) {// swallow
+            }
+        }
+    }
+
 	private class BattleObserver extends BattleAdaptor {
 		@Override
 		public void onBattleEnded(boolean isAborted) {
 			RobocodeListener listener = manager.getListener();
+
+            printResultsData(battle);
 
 			if (isAborted) {
 				if (listener != null) {
