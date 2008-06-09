@@ -36,6 +36,7 @@ import robocode.manager.RobocodeManager;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -65,118 +66,57 @@ public class Robocode {
 
 	private Robocode() {}
 
-	private boolean initialize(String args[]) {
+    private class Setup {
+        boolean securityOn = true;
+        boolean experimentalOn = false;
+        boolean minimize = false;
+        String battleFilename = null;
+        String resultsFilename = null;
+    }
+
+    private boolean initialize(String args[]) {
 		try {
 			RobocodeManager manager = new RobocodeManager(false, null);
 
-			if (System.getProperty("WORKINGDIRECTORY") != null) {
-				FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
-			}
+            Setup setup = loadSetup(args, manager);
 
-			// For John Burkey at Apple
-			boolean securityOn = true;
-			boolean experimentalOn = false;
-
-			if (System.getProperty("NOSECURITY", "false").equals("true")) {
-				WindowUtil.messageWarning(
-						"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-						+ "You should only run robots which you trust!");
-				securityOn = false;
-			}
-			if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-				WindowUtil.messageWarning(
-						"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
-						+ "You should only run robots which you trust!");
-				experimentalOn = true;
-			}
-
-			manager.initSecurity(securityOn, experimentalOn);
-
-			boolean minimize = false;
-			String battleFilename = null;
-			String resultsFilename = null;
-
-			int tps = manager.getProperties().getOptionsBattleDesiredTPS();
-
-			for (int i = 0; i < args.length; i++) {
-				if (args[i].equals("-cwd") && (i < args.length + 1)) {
-					FileUtil.setCwd(new File(args[i + 1]));
-					i++;
-				} else if (args[i].equals("-battle") && (i < args.length + 1)) {
-					battleFilename = args[i + 1];
-					i++;
-				} else if (args[i].equals("-results") && (i < args.length + 1)) {
-					resultsFilename = args[i + 1];
-					i++;
-				} else if (args[i].equals("-tps") && (i < args.length + 1)) {
-					tps = Integer.parseInt(args[i + 1]);
-					if (tps < 1) {
-						System.out.println("tps must be > 0");
-						System.exit(8);
-					}
-					i++;
-				} else if (args[i].equals("-minimize")) {
-					minimize = true;
-				} else if (args[i].equals("-nodisplay")) {
-					manager.setEnableGUI(false);
-					manager.setEnableSound(false);
-					tps = 10000; // set TPS to maximum
-				} else if (args[i].equals("-nosound")) {
-					manager.setEnableSound(false);
-				} else if (args[i].equals("-?") || args[i].equals("-help")) {
-					printUsage();
-					System.exit(0);
-				} else {
-					System.out.println("Not understood: " + args[i]);
-					printUsage();
-					System.exit(8);
-				}
-			}
-			File robots = FileUtil.getRobotsDir();
-
-			if (!robots.exists() || !robots.isDirectory()) {
-				System.err.println(
-						new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
-				System.exit(8);
-			}
-
-			manager.getProperties().setOptionsBattleDesiredTPS(tps);
+            manager.initSecurity(setup.securityOn, setup.experimentalOn);
 
 			// Set the Look and Feel (LAF)
 			if (manager.isGUIEnabled()) {
 				robocode.manager.LookAndFeelManager.setLookAndFeel();
 			}
 
-			if (battleFilename != null) {
+            if (setup.resultsFilename != null) {
+                manager.getBattleManager().setResultsFile(setup.resultsFilename);
+            }
+			if (setup.battleFilename != null) {
 				robocode.manager.BattleManager battleManager = manager.getBattleManager();
 
-				battleManager.setBattleFilename(battleFilename);
+				battleManager.setBattleFilename(setup.battleFilename);
 				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.loadBattleProperties();
 					battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
 				} else {
-					System.err.println("The specified battle file '" + battleFilename + "' was not be found");
+					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
 					System.exit(8);
 				}
-			}
-			if (resultsFilename != null) {
-				manager.getBattleManager().setResultsFile(resultsFilename);
 			}
 			if (!manager.isGUIEnabled()) {
 				return true;
 			}
 
-			if (!minimize && battleFilename == null) {
+			if (!setup.minimize && setup.battleFilename == null) {
 				if (manager.isSoundEnabled()) {
 					manager.getSoundManager().playThemeMusic();
 				}
 				manager.getWindowManager().showSplashScreen();
 			}
 			manager.getWindowManager().showRobocodeFrame(true);
-			if (!minimize) {
+			if (!setup.minimize) {
 				manager.getVersionManager().checkUpdateCheck();
 			}
-			if (minimize) {
+			if (setup.minimize) {
 				manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
 			}
 
@@ -193,7 +133,74 @@ public class Robocode {
 		}
 	}
 
-	private void printUsage() {
+    private Setup loadSetup(String[] args, RobocodeManager manager) throws IOException {
+        Setup setup=new Setup();
+        if (System.getProperty("WORKINGDIRECTORY") != null) {
+            FileUtil.setCwd(new File(System.getProperty("WORKINGDIRECTORY")));
+        }
+
+        if (System.getProperty("NOSECURITY", "false").equals("true")) {
+            WindowUtil.messageWarning(
+                    "Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
+                    + "You should only run robots which you trust!");
+            setup.securityOn = false;
+        }
+        if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+            WindowUtil.messageWarning(
+                    "Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
+                    + "You should only run robots which you trust!");
+            setup.experimentalOn = true;
+        }
+
+        int tps = manager.getProperties().getOptionsBattleDesiredTPS();
+
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-cwd") && (i < args.length + 1)) {
+                FileUtil.setCwd(new File(args[i + 1]));
+                i++;
+            } else if (args[i].equals("-battle") && (i < args.length + 1)) {
+                setup.battleFilename = args[i + 1];
+                i++;
+            } else if (args[i].equals("-results") && (i < args.length + 1)) {
+                setup.resultsFilename = args[i + 1];
+                i++;
+            } else if (args[i].equals("-tps") && (i < args.length + 1)) {
+                tps = Integer.parseInt(args[i + 1]);
+                if (tps < 1) {
+                    System.out.println("tps must be > 0");
+                    System.exit(8);
+                }
+                i++;
+            } else if (args[i].equals("-minimize")) {
+                setup.minimize = true;
+            } else if (args[i].equals("-nodisplay")) {
+                manager.setEnableGUI(false);
+                manager.setEnableSound(false);
+                tps = 10000; // set TPS to maximum
+            } else if (args[i].equals("-nosound")) {
+                manager.setEnableSound(false);
+            } else if (args[i].equals("-?") || args[i].equals("-help")) {
+                printUsage();
+                System.exit(0);
+            } else {
+                System.out.println("Not understood: " + args[i]);
+                printUsage();
+                System.exit(8);
+            }
+        }
+        File robots = FileUtil.getRobotsDir();
+
+        if (!robots.exists() || !robots.isDirectory()) {
+            System.err.println(
+                    new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
+            System.exit(8);
+        }
+
+        manager.getProperties().setOptionsBattleDesiredTPS(tps);
+        return setup;
+    }
+
+    private void printUsage() {
 		System.out.print(
 				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
 						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"

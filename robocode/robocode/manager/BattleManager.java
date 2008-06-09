@@ -186,7 +186,7 @@ public class BattleManager {
 				}
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, exitOnComplete, replay, null, false);
+		startNewBattleImpl(battlingRobotsList, null, false, exitOnComplete, replay);
 	}
 
 	public void startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
@@ -219,7 +219,7 @@ public class BattleManager {
 				return;
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, false, replay, spec, true);
+		startNewBattleImpl(battlingRobotsList, spec, waitTillOver, false, replay);
 	}
 
 	private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, BattleSpecification spec, robocode.control.RobotSpecification battleRobotSpec) {
@@ -284,8 +284,8 @@ public class BattleManager {
 		return false;
 	}
 
-	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean exitOnComplete, boolean replay,
-			BattleSpecification battleSpecification, boolean waitTillOver) {
+	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, BattleSpecification battleSpecification,
+                                    boolean waitTillOver, boolean exitOnComplete, boolean replay) {
 
 		this.battleSpecification = battleSpecification;
 		this.exitOnComplete = exitOnComplete;
