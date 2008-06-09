@@ -142,7 +142,7 @@ public class BattleView extends Canvas {
 			return;
 		}
 
-		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
+        offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 		if (offscreenGfx != null) {
 			offscreenGfx.setRenderingHints(renderingHints);
 
@@ -644,7 +644,12 @@ public class BattleView extends Canvas {
 		}
 
 		protected void updateView(TurnSnapshot snapshot) {
-			update(snapshot);
-		}
+            if (snapshot==null){
+                repaint();
+            }
+            else{
+                update(snapshot);
+            }
+        }
 	}
 }
