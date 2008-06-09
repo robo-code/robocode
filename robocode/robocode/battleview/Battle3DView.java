@@ -14,36 +14,24 @@
 package robocode.battleview;
 
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+
+import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLCapabilities;
+
+import pimods.robocode.GraphicListener4Robocode;
+import pimods.robocode.MVCManager4Robocode;
+import pimods.robocode.OptionFrame4Robocode;
+import pimods.robocode.animators.Animator4Robocode;
 import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.events.BattleAdaptor;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.BulletSnapshot;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.dialog.RobocodeFrame;
 import robocode.gfx.RobocodeLogo;
 import robocode.manager.RobocodeManager;
-import robocode.pimods.XMLMessageMaker;
-import robocode.control.BattleSpecification;
-
-import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLCapabilities;
-import javax.swing.*;
-
-import pimods.Animator;
-import pimods.DataStore;
-import pimods.robocode.GraphicListener4Robocode;
-import pimods.robocode.MVCManager4Robocode;
-import pimods.robocode.OptionFrame4Robocode;
-import pimods.robocode.animators.Animator4Robocode;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -72,10 +60,9 @@ public class Battle3DView extends GLCanvas {
 	private int fps;
 
 	private GeneralPath robocodeTextPath = new RobocodeLogo().getRobocodeText();
-	private Animator animator;
-	private XMLMessageMaker xmlMaker;
-	private DataStore dataStore;
+	private Animator4Robocode animator;
     private MVCManager4Robocode mvcManager; //TODO HINT
+    private TurnSnapshot lastSnapshot;
 
     /**
 	 * BattleView constructor.
@@ -86,15 +73,12 @@ public class Battle3DView extends GLCanvas {
 		OptionFrame4Robocode oFrame = new OptionFrame4Robocode( mvcManager );
 		mvcManager.setOptionFrame( oFrame );
 		oFrame.setVisible( true );
-		dataStore = new DataStore();
-		animator = new Animator4Robocode( mvcManager, dataStore );
+		animator = new Animator4Robocode( mvcManager );
 		mvcManager.setup( new GraphicListener4Robocode(), animator );
 		
 		this.robocodeFrame = robocodeFrame;
 
 		battleField = new DefaultBattleField(800, 600);
-		
-		xmlMaker = new XMLMessageMaker();
 	}
 
 	public int getFPS() {
@@ -113,26 +97,32 @@ public class Battle3DView extends GLCanvas {
 				|| (getHeight() <= 0)) {
 			return;
 		}
-		if(snapshot!=null){
-//			System.out.println( lastSnapshot);
+//		if(snapshot!=null){
+////			System.out.println( lastSnapshot);
+//			
+//			xmlMaker.addTurn(snapshot.getTurn());
+//			for( RobotSnapshot r : snapshot.getRobots()){
+//				if( r.getState().isAlive()){
+//					xmlMaker.addTankPosition(r.getVeryShortName(), r.getX(), r.getY(), r.getBodyHeading(), 
+//							r.getEnergy(), r.getGunHeading(), r.getRadarHeading());
+//				}
+//			}
+//			for( BulletSnapshot b : snapshot.getBullets()){
+//				if( b.getState().getValue()<2){
+//					xmlMaker.addBullet( b.getId(), b.getX(), b.getY(), b.getPower());
+//				}
+//			}
+//			String message=xmlMaker.getCurrentTurn();
+////			System.out.println(message);
+//			dataStore.setData(message);
+//            mvcManager.update(); //TODO HINT:
+//        }
+		if(snapshot!=null && snapshot!=lastSnapshot){
+			animator.processTurn( snapshot );
+			lastSnapshot = snapshot;
+		}
 			
-			xmlMaker.addTurn(snapshot.getTurn());
-			for( RobotSnapshot r : snapshot.getRobots()){
-				if( r.getState().isAlive()){
-					xmlMaker.addTankPosition(r.getVeryShortName(), r.getX(), r.getY(), r.getBodyHeading(), 
-							r.getEnergy(), r.getGunHeading(), r.getRadarHeading());
-				}
-			}
-			for( BulletSnapshot b : snapshot.getBullets()){
-				if( b.getState().getValue()<2){
-					xmlMaker.addBullet( b.getId(), b.getX(), b.getY(), b.getPower());
-				}
-			}
-			String message=xmlMaker.getCurrentTurn();
-//			System.out.println(message);
-			dataStore.setData(message);
-            mvcManager.update(); //TODO HINT:
-        }
+		mvcManager.update();
 
 	}
 
@@ -153,15 +143,7 @@ public class Battle3DView extends GLCanvas {
 		setDisplayOptions();
 
 		if(snapshot!=null){
-			xmlMaker.clear();
-			xmlMaker.setupField( battleField.getWidth(), battleField.getHeight() );
-			for(RobotSnapshot r : snapshot.getRobots()){
-				xmlMaker.setupTank(r.getVeryShortName(), r.getBodyColor(), r.getGunColor(), r.getRadarColor(), r.getScanColor()); //the last will be bulletcolor
-			}
-			String message=xmlMaker.getSettings();			
-			dataStore.setData( message );
-			
-			System.out.println("Initilize: "+message);	
+			animator.setupScene( battleField.getWidth(), battleField.getHeight() );	
 			initialized = true;
 		
 		}
@@ -204,6 +186,17 @@ public class Battle3DView extends GLCanvas {
     private class BattleObserver extends AwtBattleAdaptor {
         public BattleObserver(BattleEventDispatcher dispatcher) {
             super(dispatcher, TIMER_TICKS_PER_SECOND, false);
+        }
+        
+        @Override
+        public void onBattlePaused() {
+            //timer.stop();
+            //isPaused.set(true);
+        }
+        @Override
+        public void onRoundEnded() {
+            super.onRoundEnded();
+            animator.newRound();
         }
 
         protected void updateView(TurnSnapshot snapshot) {

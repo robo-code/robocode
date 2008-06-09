@@ -147,7 +147,7 @@ public class MVCManager //TODO HINT: implements Runnable
 
 
     public void update(){ //TODO HINT:
-        if( animator!=null ) animator.update(); //TODO HINT:
+//        if( animator!=null ) animator.update(); //TODO HINT:
         canvas.display(); //TODO HINT:
     } //TODO HINT:
 

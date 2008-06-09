@@ -9,26 +9,18 @@
 
 package pimods.robocode.animators;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import pimods.*;
-import pimods.robocode.BigExplosion;
-import pimods.robocode.Bullet;
-import pimods.robocode.BulletWake;
-import pimods.robocode.Explosion;
-import pimods.robocode.Field;
-import pimods.robocode.LittleExplosion;
-import pimods.robocode.RobocodeOptionable;
-import pimods.robocode.SkyDome;
-import pimods.robocode.Tank;
-import pimods.robocode.Track;
+import pimods.Animator;
+import pimods.MVCManager;
+import pimods.Scene;
+import pimods.robocode.*;
 import pimods.scenegraph.Drawable;
 import pimods.scenegraph.Light;
 import pimods.scenegraph.TransformationNode;
+import robocode.battle.snapshot.BulletSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -36,10 +28,7 @@ import pimods.scenegraph.TransformationNode;
  *
  */
 
-public class Animator4Robocode extends DirectAnimator implements RobocodeOptionable{
-	
-	private static final String TANK = "tank";
-	private static final String BULLET = "bullet";
+public class Animator4Robocode extends Animator implements RobocodeOptionable{
 	
 	/** Field is the battle-field and is the father of Tanks, Bullets, Tracks and Explosions in TrasformationNode tree 
 	 * @see Scene#root */
@@ -54,13 +43,12 @@ public class Animator4Robocode extends DirectAnimator implements RobocodeOptiona
 	
 	
 	/**
-	 * Initialize all class fields. FPS are set to 200 for take the same speed of the client. 
+	 * Initialize all class fields. 
 	 * @param manager the MVCManager
 	 * @param portNumber Port number for the connection
 	 */
-	public Animator4Robocode( MVCManager manager, DataStore ds ){
-		super( manager, ds );
-		this.setFPS( 200 ); //this is for take the same speed of the client
+	public Animator4Robocode( MVCManager manager ){
+		super( manager );
 		
 		tanks = new ArrayList<Tank>();
 		bullets = new ArrayList<Bullet>();
@@ -74,31 +62,20 @@ public class Animator4Robocode extends DirectAnimator implements RobocodeOptiona
 		bulletWake = true;
 	}
 	
-	
-	/**
-	 * Redirect the processing to {@link Animator4Robocode#setupScene(Node)} or
-	 * {@link Animator4Robocode#processTurn(Node)}.
-	 */
-	@Override
-	protected void processXMLNode( Node el ){
-		if( el.getNodeName().equals("settings") ){
-			setupScene( el );
-		}else if( el.getNodeName().equals("turn") ){
-//			this.turn = el;
-			processTurn( el);
-		}
-	}
-	
 	/**
 	 * Here Battlefield and Lights are created and added to Scene.
-	 * Tanks settings are read and passed to {@link Animator4Robocode#newTNode(Node)}
-	 * @param settings The XML-formed line with the settings
+	 * @param xField field width dimension
+	 * @param yField field heigth dimension
 	 * @see Field
 	 * @see Light
 	 */
-	protected void setupScene( Node settings ){
-		if( field!=null ){
+	public void setupScene( float xField, float yField ){
+		if( field != null ){
 			clearScene();
+			tanks = new ArrayList<Tank>();
+			bullets = new ArrayList<Bullet>();
+			tracks = new ArrayList<Track>();
+			explosions = new ArrayList<Explosion>();
 		}
 		
 		// First, set up Lights: some Lights are independent from the Field
@@ -122,30 +99,102 @@ public class Animator4Robocode extends DirectAnimator implements RobocodeOptiona
 		addDrawableToScene( new SkyDome() );
 		
 		//Third, the Field, with the parameters read from XML
-		NodeList nodelist = settings.getChildNodes();
-		float width = Float.parseFloat( nodelist.item(0).getAttributes().getNamedItem("sizeX").getNodeValue() );
-		float heigth = Float.parseFloat( nodelist.item(0).getAttributes().getNamedItem("sizeY").getNodeValue() );
-		this.field = new Field( width, heigth );
+		this.field = new Field( xField, yField );
 		addDrawableToScene( field );
-		
-		//Last, tanks settings passed at newTNode(Node)
-		for(int i=1; i<nodelist.getLength(); i++){
-			addPrimary( newTNode(nodelist.item(i)));
-		}
 		
 		displayMessage( "New Battle is now displaying" );
 	}
 	
-	private void processTurn( Node turn ){
-		this.time = Integer.parseInt( turn.getAttributes().getNamedItem("time").getNodeValue() );
+	/**
+	 * Cleen-up the scene 
+	 */
+	public void newRound(){
+		this.setupScene(this.field.getWidth(), this.field.getHeight());
+	}
+	
+	/**
+	 * Update the transormation node with the snapshot
+	 * @param turn
+	 */
+	public void processTurn( TurnSnapshot turn ){
+		this.time = turn.getTurn();
 		
-		// Second, process all the xml nodes
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		NodeList nodelist = turn.getChildNodes();
-		for(int i=0; i<nodelist.getLength(); i++){
-			nodes.add( nodelist.item(i));
+		// Tank management
+		for( RobotSnapshot robot : turn.getRobots() ){
+			if( robot.getState().isAlive() ){
+				boolean isNew = true;
+				for( Tank tank : tanks ){
+					if(tank.getName().equals( robot.getVeryShortName() )){
+						this.updateTank( tank, robot );
+						isNew = false;
+						break;
+					}
+				}
+				if( isNew ){
+					Tank tank = new Tank( robot.getVeryShortName() );
+					tank.setColors( robot.getBodyColor() ,robot.getGunColor(), robot.getRadarColor());
+					this.addPrimary( tank );
+					this.updateTank(tank, robot);
+				}
+			}else{
+				int i=0;
+				while( i<tanks.size() ){
+					Tank t = tanks.get(i);
+					if(t.getName().equals( robot.getVeryShortName() )){
+						removeDrawableFromScene( t );
+						break;
+					}else{
+						i++;
+					}
+				}
+			}
 		}
-		processNodesThisTurn( nodes );
+		
+		// Bullet management
+		boolean isActive = false;
+		for(int i=0; i<bullets.size(); ){
+			Bullet bulletTN = bullets.get(i);
+			for( BulletSnapshot bullet : turn.getBullets() ){
+				if( bulletTN.getName().equals( bullet.getId() )){
+					isActive = true;
+					break;
+				}
+			}
+			if( !isActive ){
+				this.removeDrawableFromScene( bulletTN );
+			}else{
+				i++;
+			}
+		}		
+		for( BulletSnapshot bullet : turn.getBullets() ){
+			if(bullet.getState().getValue()<2){
+				boolean isNew = true;
+				for( Bullet bulletTN : bullets ){
+					if( bulletTN.getName().equals( bullet.getId() )){
+						isNew = false;
+						this.updateBullet(bulletTN, bullet);
+						break;
+					}
+				}
+				if( isNew ){
+					Bullet b = new Bullet( bullet.getId() );
+					b.setPower( (float) bullet.getPower() );
+					this.addPrimary( b );
+					this.updateBullet(b, bullet);
+				}
+			}else{
+				for(int i=0; i<bullets.size(); ){
+					Bullet b = bullets.get(i);
+					if(b.getName().equals( bullet.getId())){
+						removeDrawableFromScene( b );
+						break;
+					}else{
+						i++;
+					}
+				}
+			}
+		}
+		
 				
 		// Tank Track management
 		int i=0;
@@ -171,42 +220,49 @@ public class Animator4Robocode extends DirectAnimator implements RobocodeOptiona
 		}
 	}
 	
-	private void processNodesThisTurn( ArrayList<Node> nodesThisTurn ) {
-		//Find Nodes to delete
-		for(TransformationNode tn : this.getTanksAndBullets()) {
-			boolean stillActive = false;
-			for(Node n : nodesThisTurn ){
-				if(tn.getName().equals(n.getAttributes().getNamedItem("name").getNodeValue())){
-					stillActive = true;
-					break;
-				}
-			}
-			if(!stillActive){
-				this.removeDrawableFromScene( tn);
-			}
-		}
+	private void updateTank( Tank t, RobotSnapshot s ){
+		// Reading information from snapshot
+		float xpos = (float) s.getX();
+		float ypos = (float) s.getY();
+		ypos = field.getHeight() - ypos;
+		float angle = (float) s.getBodyHeading();
+		float energy = (float) s.getEnergy();
+		float head = (float) s.getGunHeading();
+		float radar = (float) s.getRadarHeading();
 		
-		//Update existing Nodes and create new Nodes
-		for(Node n : nodesThisTurn){
-			String nName = n.getAttributes().getNamedItem("name").getNodeValue();
-			boolean isNew = true;
-			for(TransformationNode tn : this.getTanksAndBullets()) {
-				if(tn.getName().equals(nName)){
-					isNew = false;
-					updateNode(tn, n);
-				}
-			}
-			if(isNew){
-				addPrimary( newTNode( n));
-			}
+		// Normalization
+		angle = -(float) (angle*180/Math.PI)-180;
+		head = -(float) (head*180/Math.PI)-angle-180;
+		radar = -(float) (radar*180/Math.PI)-angle-head-180;
+		
+		// Scenegraph update
+		t.setRotate( angle, 0, 1, 0 );
+		t.setTranslate( xpos, 0, ypos );
+		t.head.setRotate( head, 0, 1, 0 );
+		t.radar.setRotate( radar, 0, 1, 0 );
+		t.setEnergy( energy );
+		
+		if( this.tankTrack ){
+			addPrimary( new Track( this.time, xpos, ypos, angle) );
 		}
+	}
+	
+	private void updateBullet( Bullet b, BulletSnapshot s){
+		float xpos = (float) s.getX();
+		float ypos = (float) s.getY();
+		ypos = field.getHeight() - ypos;
+		
+		if( this.bulletWake ) 
+			this.addPrimary( new BulletWake( b.getTx(), b.getTz(), xpos, ypos ) );
+		
+		b.setTranslate(xpos, 0.07f, ypos);
 	}
 	
 	/**
 	 * Primaries are children of Field, like tanks and bullets.
 	 * @param tn Tank, Bullet, Track or Explosion to add
 	 */
-	protected void addPrimary( TransformationNode tn ){
+	private void addPrimary( TransformationNode tn ){
 		field.addDrawable( tn );
 		if( tn instanceof Tank ){ 
 			tanks.add( (Tank)tn );
@@ -216,13 +272,6 @@ public class Animator4Robocode extends DirectAnimator implements RobocodeOptiona
 		else if( tn instanceof Bullet) bullets.add( (Bullet)tn );
 		else if( tn instanceof Track ) tracks.add( (Track)tn );
 		else if( tn instanceof Explosion ) explosions.add( (Explosion)tn );
-	}
-	
-	protected ArrayList<TransformationNode> getTanksAndBullets(){
-		ArrayList<TransformationNode> al = new ArrayList<TransformationNode>();
-		al.addAll(tanks);
-		al.addAll(bullets);
-		return al;
 	}
 	
 	/**
@@ -252,78 +301,6 @@ public class Animator4Robocode extends DirectAnimator implements RobocodeOptiona
 		else if( d instanceof Track ) tracks.remove( (Track)d );
 		else if( d instanceof Explosion ) explosions.remove(d);
 		super.removeDrawableFromScene( d);
-	}
-	
-	private TransformationNode newTNode( Node n) {
-		TransformationNode tn = null;
-		if( n.getNodeName().equals(TANK)){
-			Tank tank = new Tank( n.getAttributes().getNamedItem("name").getNodeValue() );
-			Color body=null,head=null,radar=null;
-			if(n.getAttributes().getNamedItem("body_color") != null)
-				body = new Color( Integer.parseInt(n.getAttributes().getNamedItem("body_color").getNodeValue()));
-			if(n.getAttributes().getNamedItem("head_color") != null)
-				head = new Color( Integer.parseInt(n.getAttributes().getNamedItem("head_color").getNodeValue()));
-			if(n.getAttributes().getNamedItem("radar_color") != null)
-				head = new Color( Integer.parseInt(n.getAttributes().getNamedItem("radar_color").getNodeValue()));
-			tank.setColors(body,head,radar);
-			tn = tank;
-		}
-		else if( n.getNodeName().equals(BULLET)){
-			tn = new Bullet( n.getAttributes().getNamedItem("name").getNodeValue());
-			((Bullet) (tn)).setPower(  Float.parseFloat(n.getAttributes().getNamedItem("power").getNodeValue()));
-			updateNode(tn, n);
-		}
-//		updateNode(tn, n);
-		return tn;
-	}
-	
-	/**
-	 * Read the XML {@link Node} and update the respective {@link TransformationNode}.
-	 * Here there are also the creations of tank {@link Track} and {@link BulletWake}.
-	 * @param tn {@link Bullet} or {@link Tank} to update
-	 * @param n the XML Node from which take data
-	 */
-	private void updateNode( TransformationNode tn, Node n ) {
-		if( n.getNodeName().equals(TANK)){
-			Tank tank = (Tank) tn;
-			// Reading information from XML
-			float xpos = Float.parseFloat(n.getAttributes().getNamedItem("xpos").getNodeValue());
-			float ypos = Float.parseFloat(n.getAttributes().getNamedItem("ypos").getNodeValue());
-			ypos = field.getHeight() - ypos;
-			float angle = Float.parseFloat(n.getAttributes().getNamedItem("angle").getNodeValue());
-			float energy = Float.parseFloat(n.getAttributes().getNamedItem("energy").getNodeValue());
-			Node xhead = n.getFirstChild();
-			float head = Float.parseFloat(xhead.getAttributes().getNamedItem("angle").getNodeValue());
-			Node xradar = n.getLastChild();
-			float radar = Float.parseFloat(xradar.getAttributes().getNamedItem("angle").getNodeValue());
-			
-			// Normalization
-			angle = -(float) (angle*180/Math.PI)-180;
-			head = -(float) (head*180/Math.PI)-angle-180;
-			radar = -(float) (radar*180/Math.PI)-angle-head-180;
-			
-			// Scenegraph update
-			tank.setRotate( angle, 0, 1, 0 );
-			tank.setTranslate( xpos, 0, ypos );
-			tank.head.setRotate( head, 0, 1, 0 );
-			tank.radar.setRotate( radar, 0, 1, 0 );
-			tank.setEnergy( energy );
-			
-			if( this.tankTrack /* && time%4==0 */ ){
-				addPrimary( new Track( this.time, xpos, ypos, angle) );
-			}
-		}
-		else if( n.getNodeName().equals(BULLET) ){
-			Bullet bullet = (Bullet) tn;
-			float xpos = Float.parseFloat(n.getAttributes().getNamedItem("xpos").getNodeValue());
-			float ypos = Float.parseFloat(n.getAttributes().getNamedItem("ypos").getNodeValue());
-			ypos = field.getHeight() - ypos;
-			
-			if( this.bulletWake ) 
-				this.addPrimary( new BulletWake( bullet.getTx(), bullet.getTz(), xpos, ypos ) );
-			
-			bullet.setTranslate(xpos, 0.07f, ypos);
-		}
 	}
 
 	@Override
@@ -378,5 +355,13 @@ public class Animator4Robocode extends DirectAnimator implements RobocodeOptiona
 			}
 		}
 	}
+
+
+	@Override
+	protected void setup() {}
+
+
+	@Override
+	protected void updateScene() {}
 
 }
