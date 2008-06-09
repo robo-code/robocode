@@ -53,16 +53,12 @@ package robocode.manager;
 
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
-import robocode.battle.BattleResultsTableModel;
-import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
-import robocode.control.RobocodeListener;
-import robocode.control.RobotResults;
 import robocode.control.RandomFactory;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -93,19 +89,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BattleManager {
 	private RobocodeManager manager;
 
-	private boolean exitOnComplete;
-
 	private Battle battle;
 	private BattleSpecification battleSpecification;
 	private BattleProperties battleProperties = new BattleProperties();
 
 	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
 
-	private BattleObserver battleObserver = new BattleObserver();
-
 	private String battleFilename;
 	private String battlePath;
-	private String resultsFile;
 
 	private AtomicInteger pauseCount = new AtomicInteger(0);
 
@@ -113,15 +104,12 @@ public class BattleManager {
 
 	public BattleManager(RobocodeManager manager) {
 		this.manager = manager;
-
-		battleEventDispatcher.addListener(battleObserver);
 	}
 
 	public void cleanup() {
 		battle = null;
 		manager = null;
 		battleEventDispatcher = null;
-		battleObserver = null;
 	}
 
 	/**
@@ -158,14 +146,14 @@ public class BattleManager {
 
 	public void restart() {
 		// Start new battle. The old battle is automatically stopped
-		startNewBattle(battleProperties, false, false);
+		startNewBattle(battleProperties, false);
 	}
 
 	public void replay() {
-		startNewBattle(battleProperties, false, true);
+		startNewBattle(battleProperties, true);
 	}
 
-	public void startNewBattle(BattleProperties battleProperties, boolean exitOnComplete, boolean replay) {
+	public void startNewBattle(BattleProperties battleProperties, boolean replay) {
 		this.battleProperties = battleProperties;
 
 		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
@@ -186,7 +174,7 @@ public class BattleManager {
 				}
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, null, false, exitOnComplete, replay);
+		startNewBattleImpl(battlingRobotsList, null, false, replay);
 	}
 
 	public void startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
@@ -219,7 +207,7 @@ public class BattleManager {
 				return;
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, spec, waitTillOver, false, replay);
+		startNewBattleImpl(battlingRobotsList, spec, waitTillOver, replay);
 	}
 
 	private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, BattleSpecification spec, robocode.control.RobotSpecification battleRobotSpec) {
@@ -285,10 +273,9 @@ public class BattleManager {
 	}
 
 	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, BattleSpecification battleSpecification,
-                                    boolean waitTillOver, boolean exitOnComplete, boolean replay) {
+                                    boolean waitTillOver, boolean replay) {
 
 		this.battleSpecification = battleSpecification;
-		this.exitOnComplete = exitOnComplete;
 
 		logMessage("Preparing battle...");
 		if (battle != null) {
@@ -484,14 +471,6 @@ public class BattleManager {
 		battleProperties = new BattleProperties();
 	}
 
-	public void setResultsFile(String newResultsFile) {
-		resultsFile = newResultsFile;
-	}
-
-	public String getResultsFile() {
-		return resultsFile;
-	}
-
 	public void addListener(IBattleListener listener) {
 		battleEventDispatcher.addListener(listener);
 	}
@@ -502,82 +481,5 @@ public class BattleManager {
 
 	public boolean isRunningMinimized() {
 		return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
-	}
-
-    private void printResultsData(Battle battle) {
-        // Do not print out if no result file has been specified and the GUI is enabled
-        if (battle.isReplay() || (getResultsFile() == null && (!exitOnComplete || manager.isGUIEnabled()))) {
-            return;
-        }
-
-        PrintStream out = null;
-        FileOutputStream fos = null;
-
-        if (getResultsFile() == null) {
-            out = System.out;
-        } else {
-            File f = new File(getResultsFile());
-
-            try {
-                fos = new FileOutputStream(f);
-                out = new PrintStream(fos);
-            } catch (IOException e) {
-                Logger.logError(e);
-            }
-        }
-
-        BattleResultsTableModel resultsTable = new BattleResultsTableModel(battle);
-
-        if (out != null) {
-            resultsTable.print(out);
-            out.close();
-        }
-        if (fos != null) {
-            try {
-                fos.close();
-            } catch (IOException e) {// swallow
-            }
-        }
-    }
-
-	private class BattleObserver extends BattleAdaptor {
-		@Override
-		public void onBattleEnded(boolean isAborted) {
-			RobocodeListener listener = manager.getListener();
-
-            printResultsData(battle);
-
-			if (isAborted) {
-				if (listener != null) {
-					listener.battleAborted(battleSpecification);
-				}
-				// We should only exit here, if the battle was aborted.
-				// Otherwise the results will not be given to the client when Robocode is closed down
-				if (exitOnComplete) {
-					System.exit(0);
-				}
-			}
-		}
-
-		@Override
-		public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
-			RobocodeListener listener = manager.getListener();
-
-			if (listener != null) {
-				listener.battleComplete(battleSpecification, results);
-			}
-			if (exitOnComplete) {
-				System.exit(0);
-			}
-		}
-
-		@Override
-		public void onBattleMessage(String message) {
-			RobocodeListener listener = manager.getListener();
-
-			if (listener != null) {
-				listener.battleMessage(message);
-			}
-		}
 	}
 }

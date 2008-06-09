@@ -33,10 +33,19 @@ import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
+import robocode.manager.BattleManager;
+import robocode.battle.events.BattleAdaptor;
+import robocode.battle.BattleResultsTableModel;
+import robocode.battle.Battle;
+import robocode.control.BattleSpecification;
+import robocode.control.RobotResults;
+import robocode.security.SecurePrintStream;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.FileOutputStream;
 
 
 /**
@@ -66,19 +75,21 @@ public class Robocode {
 
     private RobocodeManager manager;
     private Setup setup;
-
-    private Robocode() {
-        manager = new RobocodeManager(false, null);
-        setup = new Setup();
-    }
+    private BattleObserver battleObserver = new BattleObserver();
 
     private class Setup {
         boolean securityOn = true;
         boolean experimentalOn = false;
         boolean minimize = false;
+        boolean exitOnComplete = false;
         String battleFilename = null;
         String resultsFilename = null;
         int tps;
+    }
+
+    private Robocode() {
+        manager = new RobocodeManager(false, null);
+        setup = new Setup();
     }
 
     private boolean run() {
@@ -92,16 +103,16 @@ public class Robocode {
 
             manager.getProperties().setOptionsBattleDesiredTPS(setup.tps);
 
-            if (setup.resultsFilename != null) {
-                manager.getBattleManager().setResultsFile(setup.resultsFilename);
-            }
+            manager.getBattleManager().addListener(battleObserver);
+
             if (setup.battleFilename != null) {
+                setup.exitOnComplete=true;
                 robocode.manager.BattleManager battleManager = manager.getBattleManager();
 
                 battleManager.setBattleFilename(setup.battleFilename);
                 if (new File(battleManager.getBattleFilename()).exists()) {
                     battleManager.loadBattleProperties();
-                    battleManager.startNewBattle(battleManager.getBattleProperties(), true, false);
+                    battleManager.startNewBattle(battleManager.getBattleProperties(), false);
                 } else {
                     System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
                     System.exit(8);
@@ -231,4 +242,62 @@ public class Robocode {
                         + "    -DPARALLEL=true|false      Enable or disable parallel processing of robots turns\n" + "\n"
                         + "    -DRANDOMSEED=<long-number> Set seed for deterministic behavior of Random number generator\n" + "\n");
     }
+
+    private void printResultsData() {
+        BattleManager battleManager = manager.getBattleManager();
+        Battle battle = battleManager.getBattle();
+
+        // Do not print out if no result file has been specified and the GUI is enabled
+        if (battle.isReplay() || (setup.resultsFilename == null && (!setup.exitOnComplete || manager.isGUIEnabled()))) {
+            return;
+        }
+
+        PrintStream out = null;
+        FileOutputStream fos = null;
+
+        if (setup.resultsFilename == null) {
+            out = SecurePrintStream.realOut;
+        } else {
+            File f = new File(setup.resultsFilename);
+
+            try {
+                fos = new FileOutputStream(f);
+                out = new PrintStream(fos);
+            } catch (IOException e) {
+                Logger.logError(e);
+            }
+        }
+
+        BattleResultsTableModel resultsTable = new BattleResultsTableModel(battle);
+
+        if (out != null) {
+            resultsTable.print(out);
+            out.close();
+        }
+        if (fos != null) {
+            try {
+                fos.close();
+            } catch (IOException e) {// swallow
+            }
+        }
+    }
+
+    private class BattleObserver extends BattleAdaptor {
+
+        @Override
+        public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
+            printResultsData();
+        }
+
+        @Override
+        public void onBattleMessage(String message) {
+            SecurePrintStream.realOut.println(message);
+        }
+
+        @Override
+        public void onBattleError(String message) {
+            SecurePrintStream.realErr.println(message);
+        }
+    }
+    
 }

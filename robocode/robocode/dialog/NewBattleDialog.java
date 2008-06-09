@@ -107,7 +107,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		battleProperties.setInactivityTime(getRulesTab().getInactivityTime());
 		new Thread(new Runnable() {
 			public void run() {
-				manager.getBattleManager().startNewBattle(battleProperties, false, false);
+				manager.getBattleManager().startNewBattle(battleProperties, false);
 			}
 		}).start();
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));

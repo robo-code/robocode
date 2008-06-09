@@ -41,7 +41,6 @@ import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
 import robocode.peer.RobotPeer;
 import robocode.control.BattleSpecification;
-import robocode.security.SecurePrintStream;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -236,16 +235,6 @@ public class RobocodeFrame extends JFrame {
 		public void onBattleResumed() {
 			getPauseButton().setSelected(false);
 			getNextTurnButton().setEnabled(false);
-		}
-
-		@Override
-		public void onBattleMessage(String message) {
-			SecurePrintStream.realOut.println(message);
-		}
-
-		@Override
-		public void onBattleError(String message) {
-			SecurePrintStream.realErr.println(message);
 		}
 	}
 

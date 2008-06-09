@@ -37,6 +37,7 @@ import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
+import robocode.battle.events.BattleAdaptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,6 +56,7 @@ import java.util.List;
  */
 public class RobocodeEngine {
 	private RobocodeManager manager;
+    private BattleObserver battleObserver = new BattleObserver();
 
 	/**
 	 * Creates a new RobocodeEngine for controlling Robocode.
@@ -112,7 +114,8 @@ public class RobocodeEngine {
 		}
 
 		manager.initSecurity(true, false);
-	}
+        manager.getBattleManager().addListener(battleObserver);
+    }
 
 	/**
 	 * Closes the RobocodeEngine and releases any allocated resources.
@@ -123,6 +126,7 @@ public class RobocodeEngine {
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().dispose();
 		}
+        manager.getBattleManager().removeListener(battleObserver);
 		if (manager != null) {
 			manager.cleanup();
 			manager = null;
@@ -243,4 +247,36 @@ public class RobocodeEngine {
 			System.out.println("---------------");
 		}
 	}
+
+    private class BattleObserver extends BattleAdaptor {
+        @Override
+        public void onBattleEnded(boolean isAborted) {
+            RobocodeListener listener = manager.getListener();
+
+            if (isAborted) {
+                if (listener != null) {
+                    listener.battleAborted(manager.getBattleManager().getBattleSpecification());
+                }
+            }
+        }
+
+        @Override
+        public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
+            RobocodeListener listener = manager.getListener();
+
+            if (listener != null) {
+                listener.battleComplete(manager.getBattleManager().getBattleSpecification(), results);
+            }
+        }
+
+        @Override
+        public void onBattleMessage(String message) {
+            RobocodeListener listener = manager.getListener();
+
+            if (listener != null) {
+                listener.battleMessage(message);
+            }
+        }
+    }
+
 }

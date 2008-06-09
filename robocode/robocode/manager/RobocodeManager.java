@@ -310,7 +310,7 @@ public class RobocodeManager {
 			}
 		});
 
-		getBattleManager().startNewBattle(getBattleManager().getBattleProperties(), false, false);
+		getBattleManager().startNewBattle(getBattleManager().getBattleProperties(), false);
 	}
 
 	public boolean isGUIEnabled() {
