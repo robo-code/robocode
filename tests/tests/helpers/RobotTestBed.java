@@ -53,10 +53,12 @@ public abstract class RobotTestBed extends BattleAdaptor {
         System.out.println(turnSnapshot.getTurn());
         for(RobotSnapshot robot : turnSnapshot.getRobots()){
             System.out.print(robot.getVeryShortName());
-            System.out.print(" ");
+            System.out.print(" X:");
             System.out.print(robot.getX());
-            System.out.print(" ");
+            System.out.print(" Y:");
             System.out.print(robot.getY());
+            System.out.print(" V:");
+            System.out.print(robot.getVelocity());
             System.out.println();
         }
     }

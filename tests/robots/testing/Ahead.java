@@ -9,35 +9,17 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robots;
+package testing;
 
-import helpers.RobotTestBed;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.After;
-
-import java.io.File;
+import robocode.Robot;
+import robocode.AdvancedRobot;
+import robocode.exception.DeathException;
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestFileWrite extends RobotTestBed {
-
-    public String getRobotNames(){
-        return "sample.Walls,sample.SittingDuck";
-    }
-
-    File file=new File("robots/sample/SittingDuck.data/count.dat");
-
-    @Before
-    public void fileSetup() {
-        if (file.exists()){
-            file.delete();
-        }
-    }
-
-    @After
-    public void fileTearDown() {
-        Assert.assertTrue(file.exists());
+public class Ahead extends AdvancedRobot {
+    public void run() {
+        ahead(100);
     }
 }

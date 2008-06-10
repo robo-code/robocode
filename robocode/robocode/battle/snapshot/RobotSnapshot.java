@@ -58,6 +58,9 @@ public class RobotSnapshot implements Serializable {
 	// The energy level
 	private final double energy;
 
+    // The energy level
+    private final double velocity;
+
 	// The body heading in radians
 	private final double bodyHeading;
 	// The gun heading in radians
@@ -111,6 +114,7 @@ public class RobotSnapshot implements Serializable {
 		state = peer.getState();
 
 		energy = peer.getEnergy();
+        velocity = peer.getVelocity();
 
 		bodyHeading = peer.getBodyHeading();
 		gunHeading = peer.getGunHeading();
@@ -174,6 +178,15 @@ public class RobotSnapshot implements Serializable {
 	public double getEnergy() {
 		return energy;
 	}
+
+    /**
+     * Returns the velocity.
+     *
+     * @return the velocity.
+     */
+    public double getVelocity() {
+        return velocity;
+    }
 
 	/**
 	 * Returns the body heading in radians.

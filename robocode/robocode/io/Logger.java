@@ -78,7 +78,7 @@ public class Logger {
 
 	public static void logError(String s, Throwable e) {
 		if (logListener == null) {
-			SecurePrintStream.realErr.println(s + ": " + e);
+			SecurePrintStream.realErr.println(s + ": " + e.getMessage() + " " + e.toString() );
 			e.printStackTrace(SecurePrintStream.realErr);
 		} else {
 			logListener.onBattleError(s + ": " + e);
@@ -87,7 +87,7 @@ public class Logger {
 
 	public static void logError(Throwable e) {
 		if (logListener == null) {
-			SecurePrintStream.realErr.println(e);
+			SecurePrintStream.realErr.println(e.getMessage() + " " + e.toString());
 			e.printStackTrace(SecurePrintStream.realErr);
 		} else {
 			logListener.onBattleError(e.toString());
