@@ -20,7 +20,6 @@ import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.dialog.RobocodeFrame;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
@@ -54,8 +53,6 @@ public class BattleView extends Canvas {
 	private final static Area BULLET_AREA = new Area(new Ellipse2D.Double(-0.5, -0.5, 1, 1));
 
 	private final static int ROBOT_TEXT_Y_OFFSET = 24;
-
-	private RobocodeFrame robocodeFrame;
 
 	// The battle and battlefield,
 	private BattleField battleField;
@@ -106,11 +103,10 @@ public class BattleView extends Canvas {
 	/**
 	 * BattleView constructor.
 	 */
-	public BattleView(RobocodeManager manager, RobocodeFrame robocodeFrame) {
+	public BattleView(RobocodeManager manager) {
 		super();
 
 		this.manager = manager;
-		this.robocodeFrame = robocodeFrame;
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
@@ -137,7 +133,7 @@ public class BattleView extends Canvas {
 			initialize();
 		}
 
-		if (robocodeFrame.isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
+		if (manager.getBattleManager().isRunningMinimized() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
 				|| (getHeight() <= 0)) {
 			return;
 		}

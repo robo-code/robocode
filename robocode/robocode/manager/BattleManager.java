@@ -323,7 +323,7 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 			battleView.setVisible(true);
 			battleView.setInitialized(false);

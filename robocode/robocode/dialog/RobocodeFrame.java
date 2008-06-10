@@ -283,7 +283,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public BattleView getBattleView() {
 		if (battleView == null) {
-			battleView = new BattleView(manager, this);
+			battleView = new BattleView(manager);
 			battleView.addComponentListener(eventHandler);
 		}
 		return battleView;
