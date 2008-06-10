@@ -33,8 +33,6 @@ import robocode.battle.events.BattleAdaptor;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
-import robocode.io.FileUtil;
-import robocode.io.Logger;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
@@ -49,7 +47,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.io.*;
 
 
 /**
@@ -76,10 +73,6 @@ public class RobocodeFrame extends JFrame {
 	private JLabel statusLabel;
 
 	private BattleView battleView;
-
-	public String version;
-
-	public Thread appThread;
 
 	private JScrollPane robotButtonsScrollPane;
 
@@ -207,6 +200,9 @@ public class RobocodeFrame extends JFrame {
 			getRestartButton().setEnabled(true);
 			getReplayButton().setEnabled(false);
 
+			getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
+			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+
 			getRobotButtonsPanel().removeAll();
 			getRobotButtonsPanel().repaint();
 
@@ -249,10 +245,12 @@ public class RobocodeFrame extends JFrame {
 		initialize();
 	}
 
-	public void finalize() throws Throwable {
-		super.finalize();
-
-		manager.getBattleManager().removeListener(battleObserver);
+	protected void finalize() throws Throwable {
+		try {
+			manager.getBattleManager().removeListener(battleObserver);
+		} finally {
+			super.finalize();
+		}
 	}
 	
 	public void addRobotButton(JButton b) {
@@ -274,7 +272,7 @@ public class RobocodeFrame extends JFrame {
 	 * calculate the proper aspect ratio and set the battleview's size. We could
 	 * use a layout manager if someone wants to write one...
 	 */
-	public void battleViewPanelResized() {
+	private void battleViewPanelResized() {
 		battleView.setBounds(getBattleViewPanel().getBounds());
 	}
 
@@ -329,7 +327,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JPanel
 	 */
-	public JPanel getRobocodeContentPane() {
+	private JPanel getRobocodeContentPane() {
 		if (robocodeContentPane == null) {
 			robocodeContentPane = new JPanel();
 			robocodeContentPane.setLayout(new BorderLayout());
@@ -404,7 +402,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JToggleButton
 	 */
-	public JToggleButton getPauseButton() {
+	private JToggleButton getPauseButton() {
 		if (pauseButton == null) {
 			pauseButton = new JToggleButton("Pause/Debug");
 			pauseButton.setMnemonic('P');
@@ -440,7 +438,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JButton
 	 */
-	public JButton getStopButton() {
+	private JButton getStopButton() {
 		if (stopButton == null) {
 			stopButton = new JButton("Stop");
 			stopButton.setMnemonic('S');
@@ -459,7 +457,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JButton
 	 */
-	public JButton getRestartButton() {
+	private JButton getRestartButton() {
 		if (restartButton == null) {
 			restartButton = new JButton("Restart");
 			restartButton.setMnemonic('t');
@@ -478,7 +476,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JButton
 	 */
-	public JButton getReplayButton() {
+	private JButton getReplayButton() {
 		if (replayButton == null) {
 			replayButton = new JButton("Replay");
 			replayButton.setMnemonic('y');
@@ -510,7 +508,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JSlider
 	 */
-	public JSlider getTpsSlider() {
+	private JSlider getTpsSlider() {
 		if (tpsSlider == null) {
 			RobocodeProperties props = manager.getProperties();
 
@@ -557,7 +555,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JLabel
 	 */
-	public JLabel getTpsLabel() {
+	private JLabel getTpsLabel() {
 		if (tpsLabel == null) {
 			tpsLabel = new JLabel(getTpsFromSliderAsString());
 		}
@@ -634,47 +632,7 @@ public class RobocodeFrame extends JFrame {
 		titleTimer.schedule(new TitleTimerTask(), 0, 500);
 	}
 
-	public void loadVersionFile() {
-		String versionString = null;
-
-		FileReader reader = null;
-		BufferedReader in = null;
-
-		try {
-			reader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
-			in = new BufferedReader(reader);
-
-			versionString = in.readLine();
-			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
-				versionString = in.readLine();
-			}
-		} catch (FileNotFoundException e) {
-			Logger.logError("No version.txt file.");
-			versionString = "unknown";
-		} catch (IOException e) {
-			Logger.logError("IO Exception reading version.txt", e);
-			versionString = "unknown";
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {}
-			}
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
-		}
-		this.version = "";
-		if (versionString != null) {
-			this.version = versionString.substring(8);
-		} else {
-			versionString = "unknown";
-		}
-	}
-
-	public void pauseResumeButtonActionPerformed() {
+	private void pauseResumeButtonActionPerformed() {
 		BattleManager battleManager = manager.getBattleManager();
 
 		if (battleManager.isPaused()) {
@@ -698,7 +656,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @param iconified The iconified to set
 	 */
-	public void setIconified(boolean iconified) {
+	private void setIconified(boolean iconified) {
 		this.iconified = iconified;
 	}
 

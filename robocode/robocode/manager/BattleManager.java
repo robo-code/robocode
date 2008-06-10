@@ -334,15 +334,6 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.dialog.RobocodeFrame frame = manager.getWindowManager().getRobocodeFrame();
-
-			frame.getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
-			frame.getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
-
-			if (frame.getPauseButton().getText().equals("Resume")) {
-				frame.pauseResumeButtonActionPerformed();
-			}
-
 			manager.getRobotDialogManager().setActiveBattle(battle);
 		}
 
@@ -386,7 +377,7 @@ public class BattleManager {
 		}
 	}
 
-	public synchronized void resumeBattle() {
+	public void resumeBattle() {
 		int oldPauseCount = pauseCount.get();
 
 		pauseCount.set(Math.max(pauseCount.decrementAndGet(), 0));
