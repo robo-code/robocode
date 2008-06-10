@@ -13,6 +13,8 @@
 package helpers;
 
 import robocode.battle.events.BattleAdaptor;
+import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.*;
 import robocode.security.SecurePrintStream;
 import robocode.io.FileUtil;
@@ -47,12 +49,23 @@ public abstract class RobotTestBed extends BattleAdaptor {
         errors++;
     }
 
+    public void onTurnEnded(TurnSnapshot turnSnapshot) {
+        System.out.println(turnSnapshot.getTurn());
+        for(RobotSnapshot robot : turnSnapshot.getRobots()){
+            System.out.print(robot.getVeryShortName());
+            System.out.print(" ");
+            System.out.print(robot.getX());
+            System.out.print(" ");
+            System.out.print(robot.getY());
+            System.out.println();
+        }
+    }
+
     public abstract String getRobotNames();
 
     @Before
     public void setup() {
         RandomFactory.resetDeterministic(0);
-        Assert.assertThat(Math.random(), is(0.730967787376657));
         errors = 0;
         messages = 0;
     }
@@ -65,8 +78,8 @@ public abstract class RobotTestBed extends BattleAdaptor {
     @Test
     public void run() {
         final String list = getRobotNames();
-        final RobotSpecification[] crazy = engine.getLocalRepository(list);
-        Assert.assertEquals(list.split(",").length, crazy.length);
-        engine.runBattle(new BattleSpecification(1, battleFieldSpec, crazy));
+        final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
+        Assert.assertEquals(list.split(",").length, robotSpecifications.length);
+        engine.runBattle(new BattleSpecification(1, battleFieldSpec, robotSpecifications));
     }
 }

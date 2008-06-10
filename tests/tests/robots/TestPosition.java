@@ -20,9 +20,12 @@ import static org.hamcrest.CoreMatchers.*;
 import helpers.RobotTestBed;
 
 /**
+ *
+ * Repeatable robot possition test
+ *
  * @author Pavel Savara (original)
  */
-public class TestCrazy extends RobotTestBed {
+public class TestPosition extends RobotTestBed {
 
     public String getRobotNames(){
         return "sample.Crazy,sample.Target";        
@@ -39,5 +42,4 @@ public class TestCrazy extends RobotTestBed {
             Assert.assertEquals(288.2519884518413,target.getY(),0.0001);
         }
     }
-
 }
