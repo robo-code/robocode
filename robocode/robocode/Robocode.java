@@ -39,6 +39,7 @@ import robocode.battle.BattleResultsTableModel;
 import robocode.battle.Battle;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
+import robocode.control.RobocodeListener;
 import robocode.security.SecurePrintStream;
 
 import java.awt.*;
@@ -88,7 +89,7 @@ public class Robocode {
     }
 
     private Robocode() {
-        manager = new RobocodeManager(false, null);
+        manager = new RobocodeManager(false);
         setup = new Setup();
     }
 
@@ -111,8 +112,7 @@ public class Robocode {
 
                 battleManager.setBattleFilename(setup.battleFilename);
                 if (new File(battleManager.getBattleFilename()).exists()) {
-                    battleManager.loadBattleProperties();
-                    battleManager.startNewBattle(battleManager.getBattleProperties(), false);
+                    battleManager.startNewBattle(battleManager.loadBattleProperties(), false);
                 } else {
                     System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
                     System.exit(8);
@@ -139,7 +139,7 @@ public class Robocode {
             if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
                 manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
                 manager.saveProperties();
-                manager.runIntroBattle();
+                runIntroBattle();
             }
 
             return true;
@@ -147,6 +147,19 @@ public class Robocode {
             Logger.logError(e);
             return false;
         }
+    }
+
+    private void runIntroBattle() {
+        BattleManager battleManager = manager.getBattleManager();
+        battleManager.setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());
+        battleManager.loadBattleProperties();
+
+        boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
+
+        manager.getProperties().setOptionsCommonShowResults(false);
+        battleManager.startNewBattle(battleManager.loadBattleProperties(), false, true);
+        battleManager.setDefaultBattleProperties();
+        manager.getProperties().setOptionsCommonShowResults(origShowResults);
     }
 
     private void loadSetup(String args[]) {

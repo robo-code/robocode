@@ -153,7 +153,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void windowClosing(WindowEvent e) {
 			exitOnClose = true;
-			if (manager.getListener() != null) {
+			if (manager.isSlave()) {
 				WindowUtil.message("If you wish to exit Robocode, please exit the program controlling it.");
 				exitOnClose = false;
 				return;

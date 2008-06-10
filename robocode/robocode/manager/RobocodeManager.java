@@ -62,7 +62,6 @@ public class RobocodeManager {
 	private boolean slave;
 
 	private RobocodeProperties properties;
-	private RobocodeListener listener;
 
 	private boolean isGUIEnabled = true;
 	private boolean isSoundEnabled = true;
@@ -71,9 +70,8 @@ public class RobocodeManager {
 		RobocodeManager.initStreams();
 	}
 
-	public RobocodeManager(boolean slave, RobocodeListener listener) {
+	public RobocodeManager(boolean slave) {
 		this.slave = slave;
-		this.listener = listener;
 	}
 
 	/**
@@ -239,14 +237,6 @@ public class RobocodeManager {
 		return slave;
 	}
 
-	public RobocodeListener getListener() {
-		return listener;
-	}
-
-	public void setListener(RobocodeListener listener) {
-		this.listener = listener;
-	}
-
 	private static void initStreams() {
 		PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
 		PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
@@ -282,35 +272,6 @@ public class RobocodeManager {
 				tg = tg.getParent();
 			}
 		}
-	}
-
-	public void runIntroBattle() {
-		getBattleManager().setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());
-		getBattleManager().loadBattleProperties();
-
-		final boolean origShowResults = getProperties().getOptionsCommonShowResults();
-
-		getProperties().setOptionsCommonShowResults(false);
-
-		setListener(new RobocodeListener() {
-			public void battleComplete(BattleSpecification b, RobotResults c[]) {
-				cleanup();
-			}
-
-			public void battleAborted(BattleSpecification b) {
-				cleanup();
-			}
-
-			public void battleMessage(String s) {}
-
-			private void cleanup() {
-				setListener(null);
-				getBattleManager().setDefaultBattleProperties();
-				getProperties().setOptionsCommonShowResults(origShowResults);
-			}
-		});
-
-		getBattleManager().startNewBattle(getBattleManager().getBattleProperties(), false);
 	}
 
 	public boolean isGUIEnabled() {

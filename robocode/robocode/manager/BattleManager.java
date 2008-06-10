@@ -153,7 +153,11 @@ public class BattleManager {
 		startNewBattle(battleProperties, true);
 	}
 
-	public void startNewBattle(BattleProperties battleProperties, boolean replay) {
+    public void startNewBattle(BattleProperties battleProperties, boolean replay) {
+        startNewBattle(battleProperties, replay, false);
+    }
+
+    public void startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
 		this.battleProperties = battleProperties;
 
 		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
@@ -167,14 +171,14 @@ public class BattleManager {
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, null, null);
+				boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, null);
 
 				if (failed) {
 					return;
 				}
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, null, false, replay);
+		startNewBattleImpl(battlingRobotsList, null, replay, waitTillOver);
 	}
 
 	public void startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
@@ -201,16 +205,16 @@ public class BattleManager {
 				bot += ' ' + battleRobotSpec.getVersion();
 			}
 
-			boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, spec, battleRobotSpec);
+			boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, battleRobotSpec);
 
 			if (failed) {
 				return;
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, spec, waitTillOver, replay);
+		startNewBattleImpl(battlingRobotsList, spec, replay, waitTillOver);
 	}
 
-	private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, BattleSpecification spec, robocode.control.RobotSpecification battleRobotSpec) {
+	private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, robocode.control.RobotSpecification battleRobotSpec) {
 		boolean found = false;
 
 		for (FileSpecification fileSpec : robotSpecificationsList) {
@@ -264,16 +268,14 @@ public class BattleManager {
 
 		if (!found) {
 			logError("Aborting battle, could not find robot: " + bot);
-			if (spec != null && manager.getListener() != null) {
-				manager.getListener().battleAborted(spec);
-			}
+            this.battleEventDispatcher.onBattleEnded(true);
 			return true;
 		}
 		return false;
 	}
 
 	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, BattleSpecification battleSpecification,
-                                    boolean waitTillOver, boolean replay) {
+                                    boolean replay, boolean waitTillOver) {
 
 		this.battleSpecification = battleSpecification;
 
@@ -432,12 +434,13 @@ public class BattleManager {
 		}
 	}
 
-	public void loadBattleProperties() {
-		FileInputStream in = null;
+	public BattleProperties loadBattleProperties() {
+        BattleProperties res = new BattleProperties();
+        FileInputStream in = null;
 
 		try {
 			in = new FileInputStream(getBattleFilename());
-			getBattleProperties().load(in);
+			res.load(in);
 		} catch (FileNotFoundException e) {
 			logError("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {
@@ -450,7 +453,8 @@ public class BattleManager {
 				}
 			}
 		}
-	}
+        return res;
+    }
 
 	public Battle getBattle() {
 		return battle;

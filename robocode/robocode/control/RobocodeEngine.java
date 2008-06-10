@@ -57,8 +57,9 @@ import java.util.List;
 public class RobocodeEngine {
 	private RobocodeManager manager;
     private BattleObserver battleObserver = new BattleObserver();
-
-	/**
+    private RobocodeListener listener;
+    
+    /**
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
@@ -103,7 +104,8 @@ public class RobocodeEngine {
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {
-		manager = new RobocodeManager(true, listener);
+        this.listener=listener;
+        manager = new RobocodeManager(true);
 		manager.setEnableGUI(false);
 
 		try {
@@ -251,8 +253,6 @@ public class RobocodeEngine {
     private class BattleObserver extends BattleAdaptor {
         @Override
         public void onBattleEnded(boolean isAborted) {
-            RobocodeListener listener = manager.getListener();
-
             if (isAborted) {
                 if (listener != null) {
                     listener.battleAborted(manager.getBattleManager().getBattleSpecification());
@@ -262,8 +262,6 @@ public class RobocodeEngine {
 
         @Override
         public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
-            RobocodeListener listener = manager.getListener();
-
             if (listener != null) {
                 listener.battleComplete(manager.getBattleManager().getBattleSpecification(), results);
             }
@@ -271,8 +269,6 @@ public class RobocodeEngine {
 
         @Override
         public void onBattleMessage(String message) {
-            RobocodeListener listener = manager.getListener();
-
             if (listener != null) {
                 listener.battleMessage(message);
             }
