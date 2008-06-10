@@ -96,11 +96,13 @@ public class RobocodeEngine {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void finalize() throws Throwable {
-		super.finalize();
-
-		// Make sure close() is called to prevent memory leaks
-		close();
+	protected void finalize() throws Throwable {
+		try {
+			// Make sure close() is called to prevent memory leaks
+			close();
+		} finally {
+			super.finalize();
+		}
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {

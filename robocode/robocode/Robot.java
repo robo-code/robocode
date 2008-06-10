@@ -410,7 +410,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * You may not override this method.
 	 */
 	@Override
-	protected final void finalize() throws Throwable {
+	protected final void finalize() throws Throwable { // This method must be final!
 		super.finalize();
 	}
 

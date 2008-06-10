@@ -96,9 +96,11 @@ public class RobotDialog extends JFrame {
 
 	@Override
 	protected void finalize() throws Throwable {
-		super.finalize();
-
-		manager.getBattleManager().removeListener(battleObserver);
+		try {
+			manager.getBattleManager().removeListener(battleObserver);
+		} finally {
+			super.finalize();
+		}
 	}
 
 	/**

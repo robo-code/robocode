@@ -61,10 +61,13 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	protected abstract void updateView(TurnSnapshot snapshot);
 
-	public void finalize() throws Throwable {
-		super.finalize();
-		dispatcher.removeListener(this);
-		dispose();
+	protected void finalize() throws Throwable {
+		try {
+			dispatcher.removeListener(this);
+			dispose();
+		} finally {
+			super.finalize();
+		}
 	}
 
 	public int getFPS() {
