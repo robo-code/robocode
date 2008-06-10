@@ -26,9 +26,6 @@
 package robocode.manager;
 
 
-import robocode.control.BattleSpecification;
-import robocode.control.RobocodeListener;
-import robocode.control.RobotResults;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;

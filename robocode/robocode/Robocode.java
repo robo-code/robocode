@@ -39,7 +39,6 @@ import robocode.battle.BattleResultsTableModel;
 import robocode.battle.Battle;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
-import robocode.control.RobocodeListener;
 import robocode.security.SecurePrintStream;
 
 import java.awt.*;
