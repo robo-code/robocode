@@ -238,6 +238,7 @@
       <module fileurl="file://$PROJECT_DIR$/robocode/robocode.iml" filepath="$PROJECT_DIR$/robocode/robocode.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocodeextract/robocodeextract.iml" filepath="$PROJECT_DIR$/robocodeextract/robocodeextract.iml" />
       <module fileurl="file://$PROJECT_DIR$/roborumble/roborumble.iml" filepath="$PROJECT_DIR$/roborumble/roborumble.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tests/tests.iml" filepath="$PROJECT_DIR$/tests/tests.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">

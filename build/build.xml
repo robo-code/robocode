@@ -34,6 +34,8 @@
   <property name="src.robots" location="../robocodeextract/robots"/>
   <property name="src.roborumble" location="../roborumble"/>
   <property name="src.cachecleaner" location="../robocode/ar"/>
+  <property name="src.tests" location="../tests"/>
+  <property name="src.testrobots" location="../tests/robots"/>
 
   <!-- License file -->
   <property name="license.file" location="${src.extract}/license/cpl-v10.html"/>
@@ -175,6 +177,52 @@
   <uptodate property="robots.uptodate" targetfile="${build}/.robots_build">
     <srcfiles dir="${src.robots}"/>
   </uptodate>
+
+
+    <!-- ====================================== -->
+    <!-- Target: compile.testrobots             -->
+    <!-- ====================================== -->
+    <target
+        name="compile.testrobots"
+        description="Compile testing robots"
+        depends="init, compile.robocode"
+        unless="testrobots.uptodate">
+
+      <echo message="Compiling testrobots..."/>
+
+      <!-- Compile robots -->
+      <compile srcdir="${src.testrobots}" destdir="${build}/robots" classpath="${build}"/>
+
+      <!-- Flag that robots have been built -->
+      <touch file="${build}/.testrobots_build"/>
+    </target>
+
+    <uptodate property="testrobots.uptodate" targetfile="${build}/.testrobots_build">
+      <srcfiles dir="${src.testrobots}"/>
+    </uptodate>
+
+
+    <!-- ====================================== -->
+    <!-- Target: compile.tests                  -->
+    <!-- ====================================== -->
+    <target
+        name="compile.tests"
+        description="Compile tests"
+          depends="init, robocode.jar"
+        unless="tests.uptodate">
+
+      <echo message="Compiling tests..."/>
+
+      <!-- Compile Robocode -->
+      <compile srcdir="${src.tests}/tests" destdir="${build}/tests" classpath="${build}/libs/codesize.jar;${build}/libs/robocode.jar;${src.tests}/libs/junit-4.4.jar"/>
+
+      <!-- Flag that Robocode has been built -->
+      <touch file="${build}/.tests_build"/>
+    </target>
+
+    <uptodate property="tests.uptodate" targetfile="${build}/.tests_build">
+      <srcfiles dir="${src.tests}/tests"/>
+    </uptodate>
 
   <!-- ====================================== -->
   <!-- Target: compile.autoextract            -->
@@ -374,6 +422,43 @@
   <uptodate property="cachecleaner.jar.uptodate" targetfile="${build}/libs/cachecleaner.jar">
     <srcfiles dir="${src.cachecleaner}"/>
   </uptodate>
+
+    <!-- ====================================== -->
+    <!-- Target: run junit tests                -->
+    <!-- ====================================== -->
+    <target
+        name="run.tests"
+        description="Run tests"
+          depends="init, compile.tests, compile.testrobots, compile.robots"
+        unless="tests.green">
+
+      <echo message="Running tests..."/>
+
+    <junit printsummary="yes" haltonfailure="yes" dir="${build}">
+      <classpath>
+          <pathelement location="${build}/tests"/>
+          <pathelement location="${build}/libs/robocode.jar"/>
+          <pathelement location="${build}/libs/codesize.jar"/>
+          <pathelement location="${src.tests}/libs/junit-4.4.jar"/>
+      </classpath>
+      <formatter type="plain"/>
+        <batchtest fork="yes" todir="${build}/tests">
+          <fileset dir="${src.tests}/tests">
+            <include name="**/*Test*.java"/>
+            <exclude name="**/RobotTestBed.java"/>
+          </fileset>
+        </batchtest>
+    </junit>
+
+
+      <!-- Flag that Robocode has been built -->
+      <touch file="${build}/.tests_run"/>
+    </target>
+
+    <uptodate property="tests.green" targetfile="${build}/.tests_green">
+      <srcfiles dir="${src.tests}/tests"/>
+      <srcfiles dir="${src.robocode}/robocode"/>
+    </uptodate>
 
   <!-- ====================================== -->
   <!-- Target: javadoc                        -->
