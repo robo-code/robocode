@@ -55,10 +55,9 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeEngine {
-	private RobocodeManager manager;
-    private BattleObserver battleObserver = new BattleObserver();
-    private RobocodeListener listener;
-    
+	RobocodeManager manager;
+    private BattleObserver battleObserver;
+
     /**
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
@@ -106,7 +105,6 @@ public class RobocodeEngine {
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {
-        this.listener=listener;
         manager = new RobocodeManager(true);
 		manager.setEnableGUI(false);
 
@@ -118,7 +116,11 @@ public class RobocodeEngine {
 		}
 
 		manager.initSecurity(true, false);
-        manager.getBattleManager().addListener(battleObserver);
+        if (listener!=null){
+            battleObserver = new BattleObserver();
+            battleObserver.listener=listener;
+            manager.getBattleManager().addListener(battleObserver);
+        }
     }
 
 	/**
@@ -130,8 +132,10 @@ public class RobocodeEngine {
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().dispose();
 		}
-        manager.getBattleManager().removeListener(battleObserver);
-		if (manager != null) {
+        if (battleObserver!=null){
+            manager.getBattleManager().removeListener(battleObserver);
+        }
+        if (manager != null) {
 			manager.cleanup();
 			manager = null;
 		}
@@ -211,69 +215,27 @@ public class RobocodeEngine {
 		manager.getBattleManager().stop();
 	}
 
-	/**
-	 * Prints out all running thread to the standard system out (console)
-	 */
-	public static void printRunningThreads() {
-		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
-
-		if (currentGroup == null) {
-			return;
-		}
-
-		while (currentGroup.getParent() != null) {
-			currentGroup = currentGroup.getParent();
-		}
-
-		ThreadGroup groups[] = new ThreadGroup[256];
-		Thread threads[] = new Thread[256];
-
-		int numGroups = currentGroup.enumerate(groups, true);
-
-		for (int i = 0; i < numGroups; i++) {
-			currentGroup = groups[i];
-			if (currentGroup.isDaemon()) {
-				System.out.print("  ");
-			} else {
-				System.out.print("* ");
-			}
-			System.out.println("In group: " + currentGroup.getName());
-			int numThreads = currentGroup.enumerate(threads);
-
-			for (int j = 0; j < numThreads; j++) {
-				if (threads[j].isDaemon()) {
-					System.out.print("  ");
-				} else {
-					System.out.print("* ");
-				}
-				System.out.println(threads[j].getName());
-			}
-			System.out.println("---------------");
-		}
-	}
-
+    /**
+     * Registede only if listener in not null
+     */
     private class BattleObserver extends BattleAdaptor {
+        private RobocodeListener listener;
+
         @Override
         public void onBattleEnded(boolean isAborted) {
             if (isAborted) {
-                if (listener != null) {
-                    listener.battleAborted(manager.getBattleManager().getBattleSpecification());
-                }
+                listener.battleAborted(manager.getBattleManager().getBattleSpecification());
             }
         }
 
         @Override
         public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
-            if (listener != null) {
-                listener.battleComplete(manager.getBattleManager().getBattleSpecification(), results);
-            }
+            listener.battleComplete(manager.getBattleManager().getBattleSpecification(), results);
         }
 
         @Override
         public void onBattleMessage(String message) {
-            if (listener != null) {
-                listener.battleMessage(message);
-            }
+            listener.battleMessage(message);
         }
     }
 
