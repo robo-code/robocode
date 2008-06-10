@@ -8,6 +8,10 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Maintainance
+ *     Andrew Magargle
+ *     - Bugfix so that PrintStream is always closed, even when errors occurs
  *******************************************************************************/
 package sample;
 
@@ -23,7 +27,7 @@ import java.io.PrintStream;
 
 
 /**
- * SittingDuck - a sample robot by Mathew Nelson
+ * SittingDuck - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * <p/>
  * Along with sitting still doing nothing,
  * this robot demonstrates persistency.
@@ -57,7 +61,7 @@ public class SittingDuck extends AdvancedRobot {
 
 		// Increment the # of rounds
 		roundCount++;
-		// If we havenn't incremented # of battles already,
+		// If we haven't incremented # of battles already,
 		// (Note:  Because robots are only instantiated once per battle,
 		// member variables remain valid throughout it.
 		if (!incrementedBattles) {
@@ -66,8 +70,9 @@ public class SittingDuck extends AdvancedRobot {
 			incrementedBattles = true;
 		}
 
+		PrintStream w = null;
 		try {
-			PrintStream w = new PrintStream(new RobocodeFileOutputStream(getDataFile("count.dat")));
+			w = new PrintStream(new RobocodeFileOutputStream(getDataFile("count.dat")));
 
 			w.println(roundCount);
 			w.println(battleCount);
@@ -76,11 +81,14 @@ public class SittingDuck extends AdvancedRobot {
 			if (w.checkError()) {
 				out.println("I could not write the count!");
 			}
-			w.close();
 		} catch (IOException e) {
 			out.println("IOException trying to write: " + e);
+		} finally {
+			if (w != null) {
+				w.close();
+			}
 		}
 
-		out.println("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles.");
+		out.println("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles."); 
 	}
 }
