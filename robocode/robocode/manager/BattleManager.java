@@ -342,7 +342,7 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			manager.getRobotDialogManager().setActiveBattle(battle);
+			manager.getRobotDialogManager().initialize();
 		}
 
 		// Start the battle thread

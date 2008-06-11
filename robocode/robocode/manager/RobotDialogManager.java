@@ -22,9 +22,8 @@
 package robocode.manager;
 
 
-import robocode.battle.Battle;
+import robocode.battle.IRobotControl;
 import robocode.dialog.RobotDialog;
-import robocode.peer.RobotPeer;
 
 import java.util.*;
 
@@ -36,7 +35,7 @@ import java.util.*;
  */
 public class RobotDialogManager {
 
-	private Map<String, RobotDialog> robotDialogHashMap = new HashMap<String, RobotDialog>();
+	private Map<IRobotControl, RobotDialog> robotDialogMap = new HashMap<IRobotControl, RobotDialog>();
 	private RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {
@@ -44,51 +43,47 @@ public class RobotDialogManager {
 		this.manager = manager;
 	}
 
-	public void setActiveBattle(Battle b) {
-		List<RobotPeer> robots = b.getRobots(); // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
+	public void initialize() {
+		List<IRobotControl> robotControls = manager.getBattleManager().getRobotControls();
 
-		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
-
-		for (String name : keys) {
+		for (IRobotControl robotControlInMap : robotDialogMap.keySet()) {
 			boolean found = false;
 
-			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.getName().equals(name)) {
+			for (IRobotControl robotControl : robotControls) {
+				if (robotControl.getName().equals(robotControlInMap.getName())) {
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-				RobotDialog dialog = robotDialogHashMap.get(name);
+				RobotDialog dialog = robotDialogMap.get(robotControlInMap);
 
-				robotDialogHashMap.remove(name);
+				robotDialogMap.remove(robotControlInMap);
 				dialog.dispose();
 			}
 		}
 	}
 
 	public void reset() {
-		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
-
-		for (String name : keys) {
-			RobotDialog dialog = robotDialogHashMap.get(name);
+		for (IRobotControl robotControl : robotDialogMap.keySet()) {
+			RobotDialog dialog = robotDialogMap.get(robotControl);
 
 			if (!dialog.isVisible()) {
-				robotDialogHashMap.remove(name);
+				robotDialogMap.remove(robotControl);
 				dialog.dispose();
 			}
 		}
 	}
 
-	public RobotDialog getRobotDialog(String robotName, boolean create) {
-		RobotDialog dialog = robotDialogHashMap.get(robotName);
+	public RobotDialog getRobotDialog(IRobotControl robotControl, boolean create) {
+		RobotDialog dialog = robotDialogMap.get(robotControl);
 
 		if (create && dialog == null) {
-			if (robotDialogHashMap.size() > 10) {
+			if (robotDialogMap.size() > 10) {
 				reset();
 			}
 			dialog = new RobotDialog(manager);
-			robotDialogHashMap.put(robotName, dialog);
+			robotDialogMap.put(robotControl, dialog);
 		}
 		return dialog;
 	}

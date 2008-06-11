@@ -47,7 +47,7 @@ public class RobotButton extends JButton implements ActionListener {
 		this.robotDialogManager = robotDialogManager;
 
 		initialize();
-		robotDialog = robotDialogManager.getRobotDialog(robotControl.getName(), false);
+		robotDialog = robotDialogManager.getRobotDialog(robotControl, false);
 		if (robotDialog != null) {
 			robotDialog.reset(robotControl);
 			robotControl.setPaintEnabled(robotDialog.isPaintEnabled());
@@ -57,9 +57,8 @@ public class RobotButton extends JButton implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (robotDialog == null) {
-			String robotName = robotControl.getName();
-			robotDialog = robotDialogManager.getRobotDialog(robotName, true);
-			robotDialog.setTitle(robotName);
+			robotDialog = robotDialogManager.getRobotDialog(robotControl, true);
+			robotDialog.setTitle(robotControl.getName());
 			robotDialog.reset(robotControl);
 			if (!robotDialog.isVisible() || robotDialog.getState() != Frame.NORMAL) {
 				WindowUtil.packPlaceShow(robotDialog);
