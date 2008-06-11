@@ -99,7 +99,6 @@ import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.io.Logger;
 import robocode.*;
-import robocode.robotpaint.Graphics2DProxy;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.TurnSnapshot;
@@ -113,13 +112,15 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotpaint.Graphics2DProxy;
 import robocode.security.RobocodeClassLoader;
 
 import static java.lang.Math.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.io.InputStream;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -179,13 +180,13 @@ public class Battle implements Runnable {
 	private int activeRobots;
 	private boolean roundOver;
 
-	// Death events
-	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
-
 	// Objects in the battle
 	private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
+
+	// Death events
+	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
 
 	// Flag specifying if debugging is enabled thru the debug command line option
 	private boolean isDebugging;
@@ -433,6 +434,8 @@ public class Battle implements Runnable {
 			robotPeer.setDuplicate(count);
 		}
 		robots.add(robotPeer);
+
+		createRobotControl(robotPeer);
 	}
 
 	private void addContestant(ContestantPeer c) {
@@ -746,6 +749,8 @@ public class Battle implements Runnable {
 		turnStartTime = System.nanoTime();
 
 		eventDispatcher.onTurnStarted();
+		
+		processRequests();
 	}
 
 	private void finalizeTurn() {
@@ -1618,6 +1623,114 @@ public class Battle implements Runnable {
 		public void run() {
 			// Load robots
 			unsafeLoadRobots();
+		}
+	}
+
+	// --------------------------------------------------------------------------
+	// Processing and maintaining robot and battle controls
+	// --------------------------------------------------------------------------
+
+	private Map<RobotPeer, RobotControl> robotControlMap = java.util.Collections.synchronizedMap(new HashMap<RobotPeer, RobotControl>());
+	
+	private Queue<Request> pendingRequests = new ConcurrentLinkedQueue<Request>();
+
+	private enum Req {
+		KILL_ROBOT,
+		ENABLE_ROBOT_PAINT,
+		ENABLE_ROBOT_SG_PAINT,
+	}
+
+	public List<IRobotControl> getRobotControls() {
+		return new java.util.ArrayList<IRobotControl>(robotControlMap.values());
+	}
+
+	private void createRobotControl(RobotPeer robotPeer) {
+		robotControlMap.put(robotPeer, new RobotControl(robotPeer));
+	}
+
+	private void processRequests() {
+		for (Request request : pendingRequests) {
+			try {
+				processRequest(request);
+			} catch (Exception e) {
+				logError(e);
+			}
+		}
+	}
+
+	private void processRequest(Request request) {
+		switch (request.req) {
+		case KILL_ROBOT:
+			((RobotPeer) request.args[0]).kill();
+			break;
+
+		case ENABLE_ROBOT_PAINT:
+			((RobotPeer) request.args[0]).setPaintEnabled(((Boolean) request.args[1]).booleanValue());
+			break;
+
+		case ENABLE_ROBOT_SG_PAINT:
+			((RobotPeer) request.args[0]).setSGPaintEnabled(((Boolean) request.args[1]).booleanValue());
+			break;
+		}
+	}
+
+	private class RobotControl implements IRobotControl {
+
+		final RobotPeer robotPeer;
+		final String name;
+		final String shortName;
+		final String uniqueFullClassNameWithVersion;
+		final InputStream output;
+
+		RobotControl(RobotPeer robotPeer) {
+			assert(robotPeer != null);
+			this.robotPeer = robotPeer;
+			name = robotPeer.getName();
+			shortName = robotPeer.getShortName();
+			uniqueFullClassNameWithVersion = robotPeer.getRobotClassManager().getClassNameManager().getUniqueFullClassNameWithVersion();
+			output = robotPeer.getOut().getInputStream();
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getShortName() {
+			return shortName;
+		}
+
+		public String getUniqueFullClassNameWithVersion() {
+			return uniqueFullClassNameWithVersion;
+		}
+
+		public InputStream getOutput() {
+			return output;
+		}
+
+		public void kill() {
+			request(Req.KILL_ROBOT, robotPeer);
+		}
+
+		public void setPaintEnabled(boolean enable) {
+			request(Req.ENABLE_ROBOT_PAINT, robotPeer, enable);
+		}
+
+		public void setSGPaintEnabled(boolean enable) {
+			request(Req.ENABLE_ROBOT_SG_PAINT, robotPeer, enable);
+		}
+	}
+
+	private void request(Req req, Object... args) {
+		pendingRequests.add(new Request(req, args));
+	}
+
+	private class Request {
+		final Req req;
+		final Object[] args;
+
+		Request(Req req, Object... args) {
+			this.req = req;
+			this.args = args;
 		}
 	}
 }

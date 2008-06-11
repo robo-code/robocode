@@ -19,8 +19,8 @@
 package robocode.dialog;
 
 
+import robocode.battle.IRobotControl;
 import robocode.manager.RobotDialogManager;
-import robocode.peer.RobotPeer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,33 +34,33 @@ import java.awt.event.ActionListener;
  */
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
-	private RobotPeer robotPeer; // TODO get rid of it on UI, we need rather some handle
+
+	private final RobotDialogManager robotDialogManager;
+	private final IRobotControl robotControl;
 	private RobotDialog robotDialog;
-	private RobotDialogManager robotDialogManager;
-	private String robotName;
 
 	/**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, RobotPeer robotPeer) {
-		this.robotPeer = robotPeer;
+	public RobotButton(RobotDialogManager robotDialogManager, IRobotControl robotControl) {
+		this.robotControl = robotControl;
 		this.robotDialogManager = robotDialogManager;
-		robotName = robotPeer.getName();
 
 		initialize();
-		robotDialog = robotDialogManager.getRobotDialog(robotName, false);
+		robotDialog = robotDialogManager.getRobotDialog(robotControl.getName(), false);
 		if (robotDialog != null) {
-			robotDialog.setRobotPeer(robotPeer);
-			robotPeer.setPaintEnabled(robotDialog.isPaintEnabled());
-			robotPeer.setSGPaintEnabled(robotDialog.isSGPaintEnabled());
+			robotDialog.reset(robotControl);
+			robotControl.setPaintEnabled(robotDialog.isPaintEnabled());
+			robotControl.setSGPaintEnabled(robotDialog.isSGPaintEnabled());
 		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (robotDialog == null) {
+			String robotName = robotControl.getName();
 			robotDialog = robotDialogManager.getRobotDialog(robotName, true);
 			robotDialog.setTitle(robotName);
-			robotDialog.setRobotPeer(robotPeer);
+			robotDialog.reset(robotControl);
 			if (!robotDialog.isVisible() || robotDialog.getState() != Frame.NORMAL) {
 				WindowUtil.packPlaceShow(robotDialog);
 			}
@@ -73,9 +73,10 @@ public class RobotButton extends JButton implements ActionListener {
 	 * Initialize the class.
 	 */
 	private void initialize() {
-		setText(robotPeer.getShortName());
-		setToolTipText(robotPeer.getRobotClassManager().getClassNameManager().getUniqueFullClassNameWithVersion());
 		addActionListener(this);
+
+		setText(robotControl.getShortName());
+		setToolTipText(robotControl.getUniqueFullClassNameWithVersion());
 		setPreferredSize(new Dimension(110, 25));
 		setMinimumSize(new Dimension(110, 25));
 		setMaximumSize(new Dimension(110, 25));

@@ -29,6 +29,7 @@ package robocode.dialog;
 
 
 import robocode.battle.Battle;
+import robocode.battle.IRobotControl;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
@@ -37,7 +38,6 @@ import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.manager.WindowManager;
-import robocode.peer.RobotPeer;
 import robocode.control.BattleSpecification;
 
 import javax.swing.*;
@@ -206,9 +206,8 @@ public class RobocodeFrame extends JFrame {
 			getRobotButtonsPanel().removeAll();
 			getRobotButtonsPanel().repaint();
 
-			for (RobotPeer r : manager.getBattleManager().getBattle().getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				r.preInitialize();
-				addRobotButton(new RobotButton(manager.getRobotDialogManager(), r));
+			for (IRobotControl robotControl : manager.getBattleManager().getRobotControls()) {
+				addRobotButton(new RobotButton(manager.getRobotDialogManager(), robotControl));				
 			}
 
 			validate();

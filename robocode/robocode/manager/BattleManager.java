@@ -53,6 +53,7 @@ package robocode.manager;
 
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
+import robocode.battle.IRobotControl;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
 import robocode.battlefield.BattleField;
@@ -112,6 +113,13 @@ public class BattleManager {
 		battleEventDispatcher = null;
 	}
 
+	public List<IRobotControl> getRobotControls() {
+		if (battle == null) {
+			return null;
+		}
+		return battle.getRobotControls();
+	}
+	
 	/**
 	 * Steps for a single turn, then goes back to paused
 	 */

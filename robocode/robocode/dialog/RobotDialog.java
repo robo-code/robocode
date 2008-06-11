@@ -21,10 +21,10 @@
 package robocode.dialog;
 
 
+import robocode.battle.IRobotControl;
 import robocode.battle.events.BattleAdaptor;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
-import robocode.peer.RobotPeer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +39,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
-	private RobotPeer robotPeer; // TODO get rid of it on UI, we need rather some handle
+	private IRobotControl robotControl;
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
@@ -104,15 +104,17 @@ public class RobotDialog extends JFrame {
 	}
 
 	/**
-	 * Sets the robot peer of this dialog
+	 * Resets this robot dialog.
 	 *
-	 * @param robotPeer the robot peer of this dialog
+	 * @param robotControl the new robot control to use for this reset robot dialog.
 	 */
-	public void setRobotPeer(RobotPeer robotPeer) {
-		this.robotPeer = robotPeer;
+	public void reset(IRobotControl robotControl) {
+		this.robotControl = robotControl;
 		getConsoleScrollPane().setText("");
-		if (robotPeer != null && robotPeer.getOut() != null) {
-			getConsoleScrollPane().processStream(robotPeer.getOut().getInputStream());
+		
+		java.io.InputStream output = robotControl.getOutput();
+		if (output != null) {
+			getConsoleScrollPane().processStream(output);
 		}
 	}
 
@@ -302,21 +304,21 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Kill button has been activated
 	 */
 	private void killButtonActionPerformed() {
-		robotPeer.killFromUI();
+		robotControl.kill();
 	}
 
 	/**
 	 * Is called when the Paint button has been activated
 	 */
 	private void paintButtonActionPerformed() {
-		robotPeer.setPaintEnabled(getPaintButton().isSelected());
+		robotControl.setPaintEnabled(getPaintButton().isSelected());
 	}
 
 	/**
 	 * Is called when the SG check box has been activated
 	 */
 	private void sgCheckBoxActionPerformed() {
-		robotPeer.setSGPaintEnabled(getSGCheckBox().isSelected());
+		robotControl.setSGPaintEnabled(getSGCheckBox().isSelected());
 	}
 
 	/**
