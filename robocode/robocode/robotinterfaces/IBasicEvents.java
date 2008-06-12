@@ -274,4 +274,15 @@ public interface IBasicEvents {
 	 * @see Event
 	 */
 	void onWin(WinEvent event);
+
+    /**
+     * This method is called after end of the battle. Even in case that battle is aborted.
+     * <p/>
+     * Your robot could save lesons learned.
+     *
+     * @param event the win event set by the game
+     * @see WinEvent
+     * @see Event
+     */
+    void onBattleEnded(BattleEndedEvent event);
 }

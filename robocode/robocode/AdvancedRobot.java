@@ -1475,8 +1475,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	@Override
 	public void onDeath(DeathEvent event) {}
 
-    public void onBattleEnded(boolean aborted, BattleResults results) { }
-
 	/**
 	 * {@inheritDoc}
 	 */

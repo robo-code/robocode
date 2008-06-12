@@ -959,15 +959,15 @@ public class EventManager implements IEventManager {
 	}
 
     public void onBattleEnded(BattleEndedEvent e) {
-		IBasicRobot robot = getRobot();
+        IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isAdvancedRobot()) {
-			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+        if (robot != null) {
+            IBasicEvents listener = robot.getBasicEventListener();
 
-			if (listener != null) {
-				listener.onBattleEnded(e.getAborted(), e.getResults());
-			}
-		}
+            if (listener != null) {
+                listener.onBattleEnded(e);
+            }
+        }
 	}
 
     public void onPaint() {
@@ -1006,7 +1006,10 @@ public class EventManager implements IEventManager {
 		if (eventQueue.size() > 0) {
 			currentEvent = eventQueue.get(0);
 		}
-		while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority) {
+        if (currentEvent.getPriority()==-1){
+            int i=1;
+        }
+        while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority) {
 			if (currentEvent.getPriority() == currentTopEventPriority) {
 				if (currentTopEventPriority > Integer.MIN_VALUE && getInterruptible(currentTopEventPriority)) {
 					setInterruptible(currentTopEventPriority, false); // we're going to restart it, so reset.

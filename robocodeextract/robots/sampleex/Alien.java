@@ -85,5 +85,7 @@ public class Alien implements IBasicEvents, IBasicRobot, Runnable {
 
 	public void onWin(WinEvent e) {}
 
-	public void onPaint(Graphics2D g) {}
+    public void onBattleEnded(BattleEndedEvent event) {}
+
+    public void onPaint(Graphics2D g) {}
 }

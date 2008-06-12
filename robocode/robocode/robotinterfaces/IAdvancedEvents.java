@@ -16,7 +16,6 @@ package robocode.robotinterfaces;
 
 import robocode.CustomEvent;
 import robocode.SkippedTurnEvent;
-import robocode.BattleResults;
 
 
 /**
@@ -62,6 +61,4 @@ public interface IAdvancedEvents {
 	 * @see robocode.Event
 	 */
 	void onCustomEvent(CustomEvent event);
-
-    void onBattleEnded(boolean aborted, BattleResults results);
 }

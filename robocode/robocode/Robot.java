@@ -732,6 +732,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 */
 	public void onWin(WinEvent event) {}
 
+    /**
+     * {@inheritDoc}
+     */
+    public void onBattleEnded(BattleEndedEvent event) { }
+
 	/**
 	 * Scans for other robots. This method is called automatically by the game,
 	 * as long as the robot is moving, turning its body, turning its gun, or

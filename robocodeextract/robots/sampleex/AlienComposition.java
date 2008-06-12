@@ -96,7 +96,9 @@ public class AlienComposition implements IBasicRobot {
 
 		public void onWin(WinEvent e) {}
 
-		public void onPaint(Graphics2D g) {}
+        public void onBattleEnded(BattleEndedEvent event) {}
+
+        public void onPaint(Graphics2D g) {}
 	}
 }
 
