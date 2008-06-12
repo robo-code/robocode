@@ -15,6 +15,8 @@
  *******************************************************************************/
 package robocode.control;
 
+import robocode.BattleResults;
+
 
 /**
  * Contains the battle results for an individual robot, which is given as input
@@ -26,22 +28,11 @@ package robocode.control;
  * @author Flemming N. Larsen (contributor)
  * @see RobocodeListener
  */
-public class RobotResults implements java.io.Serializable {
+public class RobotResults extends BattleResults {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private RobotSpecification robot;
-	private int rank;
-	private double score;
-	private double survival;
-	private double lastSurvivorBonus;
-	private double bulletDamage;
-	private double bulletDamageBonus;
-	private double ramDamage;
-	private double ramDamageBonus;
-	private int firsts;
-	private int seconds;
-	private int thirds;
 
 	/**
 	 * Constructs a new RobotResults.
@@ -73,18 +64,8 @@ public class RobotResults implements java.io.Serializable {
 			int seconds,
 			int thirds
 			) {
-		this.robot = robot;
-		this.rank = rank;
-		this.score = score;
-		this.survival = survival;
-		this.lastSurvivorBonus = lastSurvivorBonus;
-		this.bulletDamage = bulletDamage;
-		this.bulletDamageBonus = bulletDamageBonus;
-		this.ramDamage = ramDamage;
-		this.ramDamageBonus = ramDamageBonus;
-		this.firsts = firsts;
-		this.seconds = seconds;
-		this.thirds = thirds;
+        super(rank, score, survival, lastSurvivorBonus, bulletDamage, bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, thirds);
+        this.robot = robot;
 	}
 
 	/**
@@ -94,104 +75,5 @@ public class RobotResults implements java.io.Serializable {
 	 */
 	public RobotSpecification getRobot() {
 		return robot;
-	}
-
-	/**
-	 * Returns the rank of this robot in the battle results.
-	 *
-	 * @return the rank of this robot in the battle results.
-	 */
-	public int getRank() {
-		return rank;
-	}
-
-	/**
-	 * Returns the total score of this robot in the battle.
-	 *
-	 * @return the total score of this robot in the battle.
-	 */
-	public int getScore() {
-		return (int) (score + 0.5);
-	}
-
-	/**
-	 * Returns the survival score of this robot in the battle.
-	 *
-	 * @return the survival score of this robot in the battle.
-	 */
-	public int getSurvival() {
-		return (int) (survival + 0.5);
-	}
-
-	/**
-	 * Returns the last survivor score of this robot in the battle.
-	 *
-	 * @return the last survivor score of this robot in the battle.
-	 */
-	public int getLastSurvivorBonus() {
-		return (int) (lastSurvivorBonus + 0.5);
-	}
-
-	/**
-	 * Returns the bullet damage score of this robot in the battle.
-	 *
-	 * @return the bullet damage score of this robot in the battle.
-	 */
-	public int getBulletDamage() {
-		return (int) (bulletDamage + 0.5);
-	}
-
-	/**
-	 * Returns the bullet damage bonus of this robot in the battle.
-	 *
-	 * @return the bullet damage bonus of this robot in the battle.
-	 */
-	public int getBulletDamageBonus() {
-		return (int) (bulletDamageBonus + 0.5);
-	}
-
-	/**
-	 * Returns the ram damage score of this robot in the battle.
-	 *
-	 * @return the ram damage score of this robot in the battle.
-	 */
-	public int getRamDamage() {
-		return (int) (ramDamage + 0.5);
-	}
-
-	/**
-	 * Returns the ram damage bonus of this robot in the battle.
-	 *
-	 * @return the ram damage bonus of this robot in the battle.
-	 */
-	public int getRamDamageBonus() {
-		return (int) (ramDamageBonus + 0.5);
-	}
-
-	/**
-	 * Returns the number of rounds this robot placed first in the battle.
-	 *
-	 * @return the number of rounds this robot placed first in the battle.
-	 */
-	public int getFirsts() {
-		return firsts;
-	}
-
-	/**
-	 * Returns the number of rounds this robot placed second in the battle.
-	 *
-	 * @return the number of rounds this robot placed second in the battle.
-	 */
-	public int getSeconds() {
-		return seconds;
-	}
-
-	/**
-	 * Returns the number of rounds this robot placed third in the battle.
-	 *
-	 * @return the number of rounds this robot placed third in the battle.
-	 */
-	public int getThirds() {
-		return thirds;
 	}
 }

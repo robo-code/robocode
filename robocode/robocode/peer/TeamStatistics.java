@@ -18,6 +18,8 @@
  *******************************************************************************/
 package robocode.peer;
 
+import robocode.BattleResults;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -175,4 +177,11 @@ public class TeamStatistics implements ContestantStatistics {
 		}
 		return d;
 	}
+
+    public BattleResults getResults(int rank) {
+        return new BattleResults(rank,
+                getTotalScore(), getTotalSurvivalScore(), getTotalLastSurvivorBonus(),
+                getTotalBulletDamageScore(), getTotalBulletKillBonus(), getTotalRammingDamageScore(),
+                getTotalRammingKillBonus(), getTotalFirsts(), getTotalSeconds(), getTotalThirds());
+    }
 }

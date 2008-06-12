@@ -16,6 +16,8 @@ o Changes
 - reworked BattleView, introduced IBattleListener, immutable turn snapshots, rendering in AWT thread
 - InterruptedException
 - Logging improvements
+- Junit test infrastructure
+- FR:1878233 - onBattleEnd() Event
 
 
 Version 1.6.0

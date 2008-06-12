@@ -28,6 +28,7 @@ package robocode;
 import robocode.robotinterfaces.IAdvancedEvents;
 import robocode.robotinterfaces.IAdvancedRobot;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
+import robocode.BattleResults;
 
 import java.io.File;
 import java.util.Vector;
@@ -968,7 +969,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *
 	 * @return a vector containing all PaintEvents currently in the robot's
 	 *         queue
-	 * @see #onPaint(Graphics2D) onPaint(Graphics2D)
+	 * @see #onPaint(java.awt.Graphics2D) onPaint(Graphics2D)
 	 * @see PaintEvent
 	 * @see #getAllEvents()
 	 *
@@ -1056,7 +1057,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void onCustomEvent(CustomEvent event) {}
 
-	/**
+    /**
 	 * Sets the priority of a class of events.
 	 * <p/>
 	 * Events are sent to the onXXX handlers in order of priority.
@@ -1473,6 +1474,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	@Override
 	public void onDeath(DeathEvent event) {}
+
+    public void onBattleEnded(boolean aborted, BattleResults results) { }
 
 	/**
 	 * {@inheritDoc}

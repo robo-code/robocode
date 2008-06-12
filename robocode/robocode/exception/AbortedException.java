@@ -9,15 +9,19 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package testing;
-
-import robocode.AdvancedRobot;
+package robocode.exception;
 
 /**
  * @author Pavel Savara (original)
  */
-public class Ahead extends AdvancedRobot {
-    public void run() {
-        ahead(100);
-    }
+@SuppressWarnings("serial")
+public class AbortedException extends Error {
+
+	public AbortedException() {
+		super();
+	}
+
+	public AbortedException(String message) {
+		super(message);
+	}
 }

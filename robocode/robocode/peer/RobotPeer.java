@@ -69,10 +69,7 @@ import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.exception.DeathException;
-import robocode.exception.DisabledException;
-import robocode.exception.RobotException;
-import robocode.exception.WinException;
+import robocode.exception.*;
 import static robocode.gfx.ColorUtil.toColor;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.NameManager;
@@ -490,10 +487,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 	}
 
-	public final void death() {
-		throw new DeathException();
-	}
-
 	public Battle getBattle() {
 		return battle;
 	}
@@ -596,9 +589,13 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			for (;;) {
 				execute();
 			}
+        } catch (AbortedException e) {
+            waitForBattleEndedEvent();
 		} catch (DeathException e) {
 			out.println("SYSTEM: " + getName() + " has died");
-		} catch (WinException e) {// Do nothing
+            waitForBattleEndedEvent();
+        } catch (WinException e) {// Do nothing
+            waitForBattleEndedEvent();
 		} catch (DisabledException e) {
 			setEnergy(0);
 			String msg = e.getMessage();
@@ -634,7 +631,15 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 	}
 
-	private boolean intersects(Arc2D arc, Rectangle2D rect) {
+    private void waitForBattleEndedEvent() {
+        if (battle.isAborted() || battle.getRoundNum()+1 == battle.getNumRounds()) {
+            while (!eventManager.processBattleEndedEvent() && !getHalt()) {
+                waitForNextRound();
+            }
+        }
+    }
+
+    private boolean intersects(Arc2D arc, Rectangle2D rect) {
 		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
 				arc.getStartPoint().getY()))
 				|| arc.intersects(rect);
@@ -815,37 +820,17 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (getHalt()) {
 			if (isDead()) {
-				death();
+				throw new DeathException();
 			} else if (isWinner) {
 				throw new WinException();
-			}
-		}
+			} else {
+                throw new AbortedException();
+            }
+        }
 
-		synchronized (this) {
-			// Notify the battle that we are now asleep.
-			// This ends any pending wait() call in battle.runRound().
-			// Should not actually take place until we release the lock in wait(), below.
-			isSleeping = true;
-			notifyAll();
-			// Notifying battle that we're asleep
-			// Sleeping and waiting for battle to wake us up.
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				// We are expecting this to happen when a round is ended!
+        waitForNextRound();
 
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-			}
-			isSleeping = false;
-			// Notify battle thread, which is waiting in
-			// our wakeup() call, to return.
-			// It's quite possible, by the way, that we'll be back in sleep (above)
-			// before the battle thread actually wakes up
-			notifyAll();
-		}
-
-		eventManager.setFireAssistValid(false);
+        eventManager.setFireAssistValid(false);
 
 		if (isDead()) {
 			setHalt(true);
@@ -860,7 +845,33 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		eventManager.processEvents();
 	}
 
-	public synchronized final void setTurnGun(double radians) {
+    public void waitForNextRound() {
+        synchronized (this) {
+            // Notify the battle that we are now asleep.
+            // This ends any pending wait() call in battle.runRound().
+            // Should not actually take place until we release the lock in wait(), below.
+            isSleeping = true;
+            notifyAll();
+            // Notifying battle that we're asleep
+            // Sleeping and waiting for battle to wake us up.
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                // We are expecting this to happen when a round is ended!
+
+                // Immediately reasserts the exception by interrupting the caller thread itself
+                Thread.currentThread().interrupt();
+            }
+            isSleeping = false;
+            // Notify battle thread, which is waiting in
+            // our wakeup() call, to return.
+            // It's quite possible, by the way, that we'll be back in sleep (above)
+            // before the battle thread actually wakes up
+            notifyAll();
+        }
+    }
+
+    public synchronized final void setTurnGun(double radians) {
 		this.gunTurnRemaining = radians;
 	}
 
@@ -1365,10 +1376,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public void setWinner(boolean newWinner) {
 		isWinner = newWinner;
-		if (isWinner) {
-			out.println("SYSTEM: " + getName() + " wins the round.");
-			eventManager.add(new WinEvent());
-		}
 	}
 
 	public final void stop(boolean overwrite) {

@@ -257,7 +257,7 @@ public class Battle implements Runnable {
 	 * @see java.lang.Thread#run()
 	 */
 	public void run() {
-		initialize();
+		initializeBattle();
 
 		roundNum = 0;
 
@@ -299,7 +299,7 @@ public class Battle implements Runnable {
 			roundNum++;
 		}
 
-		if (!replay) {
+        if (!replay) {
 			for (RobotPeer r : robots) {
 				r.getOut().close();
 				r.getRobotThreadManager().cleanup();
@@ -314,7 +314,7 @@ public class Battle implements Runnable {
 
 			if (!isAborted()) {
 				if (manager.getProperties().getOptionsCommonShowResults()) {
-					RobotResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
+					BattleResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
 
 					for (int i = 0; i < robots.size(); i++) {
 						RobotPeer robot = robots.get(i);
@@ -392,7 +392,7 @@ public class Battle implements Runnable {
 
 			ContestantStatistics stats = peer.getStatistics();
 
-			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
+            results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
 					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
 					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
 					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
@@ -479,6 +479,7 @@ public class Battle implements Runnable {
 
 	private void cleanupRound() {
 		if (!replay) {
+
 			logMessage("Round " + (roundNum + 1) + " cleaning up.");
 
 			for (RobotPeer r : robots) {
@@ -549,7 +550,7 @@ public class Battle implements Runnable {
 		return null;
 	}
 
-	private void initialize() {
+	private void initializeBattle() {
 		// Notify that the battle is now running
 		synchronized (battleMonitor) {
 			running = true;
@@ -612,7 +613,7 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private synchronized boolean isRobotsLoaded() {
+    private synchronized boolean isRobotsLoaded() {
 		return robotsLoaded;
 	}
 
@@ -857,19 +858,19 @@ public class Battle implements Runnable {
 
 			Collections.sort(orderedRobots);
 
-			RobotResults results[] = new RobotResults[robots.size()];
+			BattleResults results[] = new BattleResults[robots.size()];
 
-			int rank;
+			int index;
 
-			for (int i = 0; i < robots.size(); i++) {
-				RobotPeer r = orderedRobots.get(i);
+			for (int rank = 0; rank < robots.size(); rank++) {
+				RobotPeer r = orderedRobots.get(rank);
 
-				for (rank = 0; rank < robots.size(); rank++) {
-					if (robots.get(rank) == r) {
+				for (index = 0; index < robots.size(); index++) {
+					if (robots.get(index) == r) {
 						break;
 					}
 				}
-				results[rank] = r.getRobotStatistics().getResults(i + 1);
+				results[index] = r.getRobotStatistics().getResults(rank + 1);
 			}
 
 			currentRoundRecord.results = results;
@@ -1135,7 +1136,7 @@ public class Battle implements Runnable {
 
 		// Check game over
 		if (isAborted() || oneTeamRemaining()) {
-			if (endTimer == 0) {
+			if (endTimer == 0 && oneTeamRemaining()) {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
@@ -1144,6 +1145,8 @@ public class Battle implements Runnable {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreLastSurvivor();
 							r.setWinner(true);
+                            r.getOut().println("SYSTEM: " + r.getName() + " wins the round.");
+                            r.getEventManager().add(new WinEvent());
 							if (r.getTeamPeer() != null) {
 								if (r.isTeamLeader()) {
 									leaderFirsts = true;
@@ -1152,14 +1155,37 @@ public class Battle implements Runnable {
 								}
 							}
 						}
-					}
+                    }
 				}
 				if (!leaderFirsts && winningTeam != null) {
 					winningTeam.getTeamLeader().getRobotStatistics().scoreFirsts();
 				}
 			}
 
-			if (endTimer > 4 * 30) {
+            if (endTimer == 0 && isAborted()) {
+                for (RobotPeer r : getRobotsAtRandom()) {
+                    if (!r.isDead()) {
+                        r.setHalt(true);
+                        r.getOut().println("SYSTEM: game aborted.");
+                    }
+                }
+            }
+
+            if (endTimer == 1 && (isAborted() || roundNum+1==numRounds)){
+
+                List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
+
+                Collections.sort(orderedRobots);
+
+                for (int rank = 0; rank < robots.size(); rank++) {
+                    RobotPeer r = orderedRobots.get(rank);
+                    BattleResults resultsForRobots = r.getStatistics().getResults(rank + 1);
+                    r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots));
+                }
+            }
+
+
+            if (endTimer > 4 * 30) {
 				for (RobotPeer r : robots) {
 					if (!r.isDead()) {
 						r.setHalt(true);

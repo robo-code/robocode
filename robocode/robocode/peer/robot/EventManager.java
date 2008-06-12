@@ -42,6 +42,7 @@ package robocode.peer.robot;
 
 import robocode.*;
 import robocode.exception.EventInterruptedException;
+import robocode.exception.DeathException;
 import robocode.peer.RobotPeer;
 import robocode.robotinterfaces.*;
 import robocode.util.Utils;
@@ -92,6 +93,7 @@ public class EventManager implements IEventManager {
 	private int statusEventPriority = 99;
 	private final int skippedTurnEventPriority = 100; // System event -> cannot be changed!
 	private final int winEventPriority = 100; // System event -> cannot be changed!
+    private final int battleEndedEventPriority = 100; // System event -> cannot be changed!
 
 	private int currentTopEventPriority;
 
@@ -308,8 +310,8 @@ public class EventManager implements IEventManager {
 			return messageEventPriority;
 		} else if (eventClass.equals("SkippedTurnEvent")) {
 			return skippedTurnEventPriority;
-		} else if (eventClass.equals("WinEvent")) {
-			return winEventPriority;
+		} else if (eventClass.equals("BattleEndedEvent")) {
+			return battleEndedEventPriority;
 		} else if (eventClass.equals("BulletHitBulletEvent")) {
 			return bulletHitBulletEventPriority;
 		} else if (eventClass.equals("StatusEvent")) {
@@ -377,6 +379,9 @@ public class EventManager implements IEventManager {
 		if (e instanceof WinEvent) {
 			return winEventPriority;
 		}
+        if (e instanceof BattleEndedEvent) {
+            return battleEndedEventPriority;
+        }
 		if (e instanceof StatusEvent) {
 			return statusEventPriority;
 		}
@@ -951,7 +956,19 @@ public class EventManager implements IEventManager {
 		}
 	}
 
-	public void onPaint() {
+    public void onBattleEnded(BattleEndedEvent e) {
+		IBasicRobot robot = getRobot();
+
+		if (robot != null && robotPeer.isAdvancedRobot()) {
+			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+
+			if (listener != null) {
+				listener.onBattleEnded(e.getAborted(), e.getResults());
+			}
+		}
+	}
+
+    public void onPaint() {
 		IBasicRobot robot = getRobot();
 
 		if (robot != null && robotPeer.isPaintRobot()) {
@@ -1005,73 +1022,10 @@ public class EventManager implements IEventManager {
 
 			eventQueue.remove(currentEvent);
 			try {
-				if (currentEvent instanceof StatusEvent) {
-					onStatus((StatusEvent) currentEvent);
-				} else if (currentEvent instanceof HitWallEvent) {
-					onHitWall((HitWallEvent) currentEvent);
-				} else if (currentEvent instanceof HitRobotEvent) {
-					onHitRobot((HitRobotEvent) currentEvent);
-				} else if (currentEvent instanceof HitByBulletEvent) {
-					onHitByBullet((HitByBulletEvent) currentEvent);
-				} else if (currentEvent instanceof BulletHitEvent) {
-					onBulletHit((BulletHitEvent) currentEvent);
-				} else if (currentEvent instanceof BulletHitBulletEvent) {
-					onBulletHitBullet((BulletHitBulletEvent) currentEvent);
-				} else if (currentEvent instanceof BulletMissedEvent) {
-					onBulletMissed((BulletMissedEvent) currentEvent);
-				} else if (currentEvent instanceof MouseClickedEvent) {
-					onMouseClickedEvent((MouseClickedEvent) currentEvent);
-				} else if (currentEvent instanceof MouseDraggedEvent) {
-					onMouseDraggedEvent((MouseDraggedEvent) currentEvent);
-				} else if (currentEvent instanceof MouseEnteredEvent) {
-					onMouseEnteredEvent((MouseEnteredEvent) currentEvent);
-				} else if (currentEvent instanceof MouseExitedEvent) {
-					onMouseExitedEvent((MouseExitedEvent) currentEvent);
-				} else if (currentEvent instanceof MouseMovedEvent) {
-					onMouseMovedEvent((MouseMovedEvent) currentEvent);
-				} else if (currentEvent instanceof MousePressedEvent) {
-					onMousePressedEvent((MousePressedEvent) currentEvent);
-				} else if (currentEvent instanceof MouseReleasedEvent) {
-					onMouseReleasedEvent((MouseReleasedEvent) currentEvent);
-				} else if (currentEvent instanceof MouseWheelMovedEvent) {
-					onMouseWheelMovedEvent((MouseWheelMovedEvent) currentEvent);
-				} else if (currentEvent instanceof KeyTypedEvent) {
-					onKeyTypedEvent((KeyTypedEvent) currentEvent);
-				} else if (currentEvent instanceof KeyPressedEvent) {
-					onKeyPressedEvent((KeyPressedEvent) currentEvent);
-				} else if (currentEvent instanceof KeyReleasedEvent) {
-					onKeyReleasedEvent((KeyReleasedEvent) currentEvent);
-				} else if (currentEvent instanceof ScannedRobotEvent) {
-					if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
-							&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
-							&& !(robotPeer.isAdvancedRobot())) {
-						fireAssistAngle = Utils.normalAbsoluteAngle(
-								robotPeer.getBodyHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
-						if (useFireAssist) {
-							fireAssistValid = true;
-						}
-					}
-					onScannedRobot((ScannedRobotEvent) currentEvent);
-					fireAssistValid = false;
-				} else if (currentEvent instanceof RobotDeathEvent) {
-					onRobotDeath((RobotDeathEvent) currentEvent);
-				} else if (currentEvent instanceof SkippedTurnEvent) {
-					onSkippedTurn((SkippedTurnEvent) currentEvent);
-				} else if (currentEvent instanceof MessageEvent) {
-					onMessageReceived((MessageEvent) currentEvent);
-				} else if (currentEvent instanceof DeathEvent) {
-					onDeath((DeathEvent) currentEvent);
-					robotPeer.death();
-				} else if (currentEvent instanceof WinEvent) {
-					onWin((WinEvent) currentEvent);
-				} else if (currentEvent instanceof CustomEvent) {
-					onCustomEvent((CustomEvent) currentEvent);
-				} else if (currentEvent instanceof PaintEvent) {
-					onPaint();
-				} else {
-					robotPeer.getOut().println("Unknown event: " + currentEvent);
-				}
-				setInterruptible(currentTopEventPriority, false);
+
+                dispatchEvent(currentEvent);
+
+                setInterruptible(currentTopEventPriority, false);
 
 			} catch (EventInterruptedException e) {
 				fireAssistValid = false;
@@ -1087,7 +1041,91 @@ public class EventManager implements IEventManager {
 		}
 	}
 
-	public void removeCustomEvent(Condition condition) {
+    public boolean processBattleEndedEvent() {
+        synchronized (eventQueue) {
+            for (Event currentEvent : eventQueue) {
+                if (currentEvent instanceof BattleEndedEvent) {
+                    eventQueue.remove(currentEvent);
+                    dispatchEvent(currentEvent);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void dispatchEvent(Event currentEvent) {
+        if (currentEvent instanceof StatusEvent) {
+            onStatus((StatusEvent) currentEvent);
+        } else if (currentEvent instanceof HitWallEvent) {
+            onHitWall((HitWallEvent) currentEvent);
+        } else if (currentEvent instanceof HitRobotEvent) {
+            onHitRobot((HitRobotEvent) currentEvent);
+        } else if (currentEvent instanceof HitByBulletEvent) {
+            onHitByBullet((HitByBulletEvent) currentEvent);
+        } else if (currentEvent instanceof BulletHitEvent) {
+            onBulletHit((BulletHitEvent) currentEvent);
+        } else if (currentEvent instanceof BulletHitBulletEvent) {
+            onBulletHitBullet((BulletHitBulletEvent) currentEvent);
+        } else if (currentEvent instanceof BulletMissedEvent) {
+            onBulletMissed((BulletMissedEvent) currentEvent);
+        } else if (currentEvent instanceof MouseClickedEvent) {
+            onMouseClickedEvent((MouseClickedEvent) currentEvent);
+        } else if (currentEvent instanceof MouseDraggedEvent) {
+            onMouseDraggedEvent((MouseDraggedEvent) currentEvent);
+        } else if (currentEvent instanceof MouseEnteredEvent) {
+            onMouseEnteredEvent((MouseEnteredEvent) currentEvent);
+        } else if (currentEvent instanceof MouseExitedEvent) {
+            onMouseExitedEvent((MouseExitedEvent) currentEvent);
+        } else if (currentEvent instanceof MouseMovedEvent) {
+            onMouseMovedEvent((MouseMovedEvent) currentEvent);
+        } else if (currentEvent instanceof MousePressedEvent) {
+            onMousePressedEvent((MousePressedEvent) currentEvent);
+        } else if (currentEvent instanceof MouseReleasedEvent) {
+            onMouseReleasedEvent((MouseReleasedEvent) currentEvent);
+        } else if (currentEvent instanceof MouseWheelMovedEvent) {
+            onMouseWheelMovedEvent((MouseWheelMovedEvent) currentEvent);
+        } else if (currentEvent instanceof KeyTypedEvent) {
+            onKeyTypedEvent((KeyTypedEvent) currentEvent);
+        } else if (currentEvent instanceof KeyPressedEvent) {
+            onKeyPressedEvent((KeyPressedEvent) currentEvent);
+        } else if (currentEvent instanceof KeyReleasedEvent) {
+            onKeyReleasedEvent((KeyReleasedEvent) currentEvent);
+        } else if (currentEvent instanceof ScannedRobotEvent) {
+            if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
+                    && robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
+                    && !(robotPeer.isAdvancedRobot())) {
+                fireAssistAngle = Utils.normalAbsoluteAngle(
+                        robotPeer.getBodyHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
+                if (useFireAssist) {
+                    fireAssistValid = true;
+                }
+            }
+            onScannedRobot((ScannedRobotEvent) currentEvent);
+            fireAssistValid = false;
+        } else if (currentEvent instanceof RobotDeathEvent) {
+            onRobotDeath((RobotDeathEvent) currentEvent);
+        } else if (currentEvent instanceof SkippedTurnEvent) {
+            onSkippedTurn((SkippedTurnEvent) currentEvent);
+        } else if (currentEvent instanceof MessageEvent) {
+            onMessageReceived((MessageEvent) currentEvent);
+        } else if (currentEvent instanceof DeathEvent) {
+            onDeath((DeathEvent) currentEvent);
+            throw new DeathException();
+        } else if (currentEvent instanceof WinEvent) {
+            onWin((WinEvent) currentEvent);
+        } else if (currentEvent instanceof BattleEndedEvent) {
+            onBattleEnded((BattleEndedEvent) currentEvent);
+        } else if (currentEvent instanceof CustomEvent) {
+            onCustomEvent((CustomEvent) currentEvent);
+        } else if (currentEvent instanceof PaintEvent) {
+            onPaint();
+        } else {
+            robotPeer.getOut().println("Unknown event: " + currentEvent);
+        }
+    }
+
+    public void removeCustomEvent(Condition condition) {
 		customEvents.remove(condition);
 	}
 
@@ -1165,6 +1203,8 @@ public class EventManager implements IEventManager {
 					"SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
 		} else if (eventClass.equals("WinEvent")) {
 			robotPeer.getOut().println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
+        } else if (eventClass.equals("BattleEndedEvent")) {
+            robotPeer.getOut().println("SYSTEM: You may not change the priority of BattleEndedEvent.  setPriority ignored.");
 		} else if (eventClass.equals("DeathEvent")) {
 			robotPeer.getOut().println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
 		} else {

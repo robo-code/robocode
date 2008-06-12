@@ -16,6 +16,7 @@
  *******************************************************************************/
 package robocode.peer;
 
+import robocode.BattleResults;
 
 /**
  * @author Mathew A. Nelson (original)
@@ -54,4 +55,6 @@ public interface ContestantStatistics {
 	public double getCurrentRammingDamageScore();
 
 	public double getCurrentRammingKillBonus();
+
+    public BattleResults getResults(int rank);
 }

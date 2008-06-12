@@ -12,7 +12,7 @@
 package robocode.battle.record;
 
 
-import robocode.control.RobotResults;
+import robocode.BattleResults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +30,5 @@ public class RoundRecord {
 	public List<TurnRecord> turns = new ArrayList<TurnRecord>();
 
 	// Results
-	public RobotResults[] results;
+	public BattleResults[] results;
 }

@@ -9,15 +9,27 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package testing;
-
-import robocode.AdvancedRobot;
+package robocode;
 
 /**
  * @author Pavel Savara (original)
  */
-public class Ahead extends AdvancedRobot {
-    public void run() {
-        ahead(100);
+public class BattleEndedEvent extends Event {
+    private boolean aborted;
+    private BattleResults results;
+    public BattleEndedEvent(boolean aborted, BattleResults results){
+        this.aborted=aborted;
+        this.results=results;
     }
+
+    public boolean getAborted(){
+        return aborted;
+    }
+
+    public BattleResults getResults(){
+        return results;
+    }
+
+    
+
 }
