@@ -46,7 +46,8 @@ public class RobotDialogManager {
 	public void initialize() {
 		List<IRobotControl> robotControls = manager.getBattleManager().getRobotControls();
 
-		for (IRobotControl robotControlInMap : robotDialogMap.keySet()) {
+		// new ArrayList in order to prevent ConcurrentModificationException
+		for (IRobotControl robotControlInMap : new ArrayList<IRobotControl>(robotDialogMap.keySet())) {
 			boolean found = false;
 
 			for (IRobotControl robotControl : robotControls) {

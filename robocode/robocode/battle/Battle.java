@@ -469,6 +469,16 @@ public class Battle implements Runnable {
 			robots = null;
 		}
 
+		if (robotControls != null) {
+			robotControls.clear();
+			robotControls = null;
+		}
+
+		if (pendingRequests != null) {
+			pendingRequests.clear();
+			pendingRequests = null;
+		}
+
 		battleField = null;
 		battleManager = null;
 
@@ -1657,16 +1667,18 @@ public class Battle implements Runnable {
 	// Processing and maintaining robot and battle controls
 	// --------------------------------------------------------------------------
 
-	private Map<RobotPeer, RobotControl> robotControlMap = java.util.Collections.synchronizedMap(new HashMap<RobotPeer, RobotControl>());
-	
+	private List<IRobotControl> robotControls = java.util.Collections.synchronizedList(new ArrayList<IRobotControl>());
+
 	private Queue<Command> pendingRequests = new ConcurrentLinkedQueue<Command>();
 
 	public List<IRobotControl> getRobotControls() {
-		return new java.util.ArrayList<IRobotControl>(robotControlMap.values());
+		return new ArrayList<IRobotControl>(robotControls);
 	}
 
 	private void createRobotControl(RobotPeer robotPeer) {
-		robotControlMap.put(robotPeer, new RobotControl(robotPeer));
+		int index = robotControls.size();
+
+		robotControls.add(new RobotControl(robotPeer, index));
 	}
 
 	private void processRequests() {
@@ -1682,15 +1694,15 @@ public class Battle implements Runnable {
 
 	private class RobotControl implements IRobotControl {
 
-		final RobotPeer robotPeer;
+		final int index;
 		final String name;
 		final String shortName;
 		final String uniqueFullClassNameWithVersion;
 		final InputStream output;
 
-		RobotControl(RobotPeer robotPeer) {
+		RobotControl(RobotPeer robotPeer, int index) {
 			assert(robotPeer != null);
-			this.robotPeer = robotPeer;
+			this.index = index;
 			name = robotPeer.getName();
 			shortName = robotPeer.getShortName();
 			uniqueFullClassNameWithVersion = robotPeer.getRobotClassManager().getClassNameManager().getUniqueFullClassNameWithVersion();
@@ -1714,15 +1726,15 @@ public class Battle implements Runnable {
 		}
 
 		public void kill() {
-			request(new KillRobotRequest(robotPeer));
+			request(new KillRobotRequest(index));
 		}
 
 		public void setPaintEnabled(boolean enable) {
-			request(new EnableRobotPaintRequest(robotPeer, enable));
+			request(new EnableRobotPaintRequest(index, enable));
 		}
 
 		public void setSGPaintEnabled(boolean enable) {
-			request(new EnableRobotSGPaintRequest(robotPeer, enable));
+			request(new EnableRobotSGPaintRequest(index, enable));
 		}
 	}
 
@@ -1731,46 +1743,46 @@ public class Battle implements Runnable {
 	}
 
 	private class RobotRequest extends Command {
-		final RobotPeer robotPeer;
+		final int robotIndex;
 
-		RobotRequest(RobotPeer robotPeer) {
-			this.robotPeer = robotPeer;
+		RobotRequest(int robotIndex) {
+			this.robotIndex = robotIndex;
 		}
 	}
 
 	private class KillRobotRequest extends RobotRequest {
-		KillRobotRequest(RobotPeer robotPeer) {
-			super(robotPeer);
+		KillRobotRequest(int robotIndex) {
+			super(robotIndex);
 		}
 
 		public void execute() {
-			robotPeer.kill();
+			robots.get(robotIndex).kill();
 		}
 	}
 	
 	private class EnableRobotPaintRequest extends RobotRequest {
 		final boolean enablePaint;
 
-		EnableRobotPaintRequest(RobotPeer robotPeer, boolean enablePaint) {
-			super(robotPeer);
+		EnableRobotPaintRequest(int robotIndex, boolean enablePaint) {
+			super(robotIndex);
 			this.enablePaint = enablePaint;
 		}
 
 		public void execute() {
-			robotPeer.setPaintEnabled(enablePaint);
+			robots.get(robotIndex).setPaintEnabled(enablePaint);
 		}
 	}
 
 	private class EnableRobotSGPaintRequest extends RobotRequest {
 		final boolean enableSGPaint;
 
-		EnableRobotSGPaintRequest(RobotPeer robotPeer, boolean enableSGPaint) {
-			super(robotPeer);
+		EnableRobotSGPaintRequest(int robotIndex, boolean enableSGPaint) {
+			super(robotIndex);
 			this.enableSGPaint = enableSGPaint;
 		}
 
 		public void execute() {
-			robotPeer.setSGPaintEnabled(enableSGPaint);
+			robots.get(robotIndex).setSGPaintEnabled(enableSGPaint);
 		}
 	}
 }
