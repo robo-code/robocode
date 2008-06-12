@@ -12,7 +12,7 @@
 package robocode.battleview;
 
 
-import robocode.util.GraphicsState;
+import robocode.gfx.GraphicsState;
 
 import java.awt.*;
 import java.awt.RenderingHints.Key;

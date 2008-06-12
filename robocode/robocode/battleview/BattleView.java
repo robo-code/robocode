@@ -20,6 +20,7 @@ import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.gfx.GraphicsState;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
@@ -27,7 +28,6 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.util.GraphicsState;
 
 import static java.lang.Math.*;
 import java.awt.*;
