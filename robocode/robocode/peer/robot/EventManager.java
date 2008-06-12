@@ -310,6 +310,8 @@ public class EventManager implements IEventManager {
 			return messageEventPriority;
 		} else if (eventClass.equals("SkippedTurnEvent")) {
 			return skippedTurnEventPriority;
+		} else if (eventClass.equals("WinEvent")) {
+			return winEventPriority;
 		} else if (eventClass.equals("BattleEndedEvent")) {
 			return battleEndedEventPriority;
 		} else if (eventClass.equals("BulletHitBulletEvent")) {
