@@ -103,6 +103,7 @@ import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
+import robocode.common.Command;
 import robocode.control.RobotResults;
 import robocode.control.RandomFactory;
 import robocode.manager.BattleManager;
@@ -1658,13 +1659,7 @@ public class Battle implements Runnable {
 
 	private Map<RobotPeer, RobotControl> robotControlMap = java.util.Collections.synchronizedMap(new HashMap<RobotPeer, RobotControl>());
 	
-	private Queue<Request> pendingRequests = new ConcurrentLinkedQueue<Request>();
-
-	private enum Req {
-		KILL_ROBOT,
-		ENABLE_ROBOT_PAINT,
-		ENABLE_ROBOT_SG_PAINT,
-	}
+	private Queue<Command> pendingRequests = new ConcurrentLinkedQueue<Command>();
 
 	public List<IRobotControl> getRobotControls() {
 		return new java.util.ArrayList<IRobotControl>(robotControlMap.values());
@@ -1675,29 +1670,14 @@ public class Battle implements Runnable {
 	}
 
 	private void processRequests() {
-		for (Request request : pendingRequests) {
+		for (Command request : pendingRequests) {
 			try {
-				processRequest(request);
+				request.execute();
 			} catch (Exception e) {
 				logError(e);
 			}
 		}
-	}
-
-	private void processRequest(Request request) {
-		switch (request.req) {
-		case KILL_ROBOT:
-			((RobotPeer) request.args[0]).kill();
-			break;
-
-		case ENABLE_ROBOT_PAINT:
-			((RobotPeer) request.args[0]).setPaintEnabled(((Boolean) request.args[1]).booleanValue());
-			break;
-
-		case ENABLE_ROBOT_SG_PAINT:
-			((RobotPeer) request.args[0]).setSGPaintEnabled(((Boolean) request.args[1]).booleanValue());
-			break;
-		}
+		pendingRequests.clear();
 	}
 
 	private class RobotControl implements IRobotControl {
@@ -1734,29 +1714,63 @@ public class Battle implements Runnable {
 		}
 
 		public void kill() {
-			request(Req.KILL_ROBOT, robotPeer);
+			request(new KillRobotRequest(robotPeer));
 		}
 
 		public void setPaintEnabled(boolean enable) {
-			request(Req.ENABLE_ROBOT_PAINT, robotPeer, enable);
+			request(new EnableRobotPaintRequest(robotPeer, enable));
 		}
 
 		public void setSGPaintEnabled(boolean enable) {
-			request(Req.ENABLE_ROBOT_SG_PAINT, robotPeer, enable);
+			request(new EnableRobotSGPaintRequest(robotPeer, enable));
 		}
 	}
 
-	private void request(Req req, Object... args) {
-		pendingRequests.add(new Request(req, args));
+	private void request(Command request) {
+		pendingRequests.add(request);
 	}
 
-	private class Request {
-		final Req req;
-		final Object[] args;
+	private class RobotRequest extends Command {
+		final RobotPeer robotPeer;
 
-		Request(Req req, Object... args) {
-			this.req = req;
-			this.args = args;
+		RobotRequest(RobotPeer robotPeer) {
+			this.robotPeer = robotPeer;
+		}
+	}
+
+	private class KillRobotRequest extends RobotRequest {
+		KillRobotRequest(RobotPeer robotPeer) {
+			super(robotPeer);
+		}
+
+		public void execute() {
+			robotPeer.kill();
+		}
+	}
+	
+	private class EnableRobotPaintRequest extends RobotRequest {
+		final boolean enablePaint;
+
+		EnableRobotPaintRequest(RobotPeer robotPeer, boolean enablePaint) {
+			super(robotPeer);
+			this.enablePaint = enablePaint;
+		}
+
+		public void execute() {
+			robotPeer.setPaintEnabled(enablePaint);
+		}
+	}
+
+	private class EnableRobotSGPaintRequest extends RobotRequest {
+		final boolean enableSGPaint;
+
+		EnableRobotSGPaintRequest(RobotPeer robotPeer, boolean enableSGPaint) {
+			super(robotPeer);
+			this.enableSGPaint = enableSGPaint;
+		}
+
+		public void execute() {
+			robotPeer.setSGPaintEnabled(enableSGPaint);
 		}
 	}
 }
