@@ -169,7 +169,9 @@ public class RobocodeClassLoader extends ClassLoader {
 				protectionDomain = new ProtectionDomain(
 						new CodeSource(f.toURI().toURL(), (java.security.cert.Certificate[]) null), p);
 			} catch (MalformedURLException e) {
-				throw new ClassNotFoundException("Unable to build protection domain.");
+				ClassNotFoundException classNotFoundException = new ClassNotFoundException("Unable to build protection domain");
+				classNotFoundException.initCause(e);
+				throw classNotFoundException;
 			}
 		}
 		int size = (int) (f.length());
@@ -214,7 +216,9 @@ public class RobocodeClassLoader extends ClassLoader {
 			cachedClasses.put(name, c);
 			return c;
 		} catch (IOException e) {
-			throw new ClassNotFoundException("Could not find: " + name + ": " + e);
+			ClassNotFoundException classNotFoundException = new ClassNotFoundException("Could not find: " + name);
+			classNotFoundException.initCause(e);
+			throw classNotFoundException;
 		} finally {
 			if (fis != null) {
 				try {
