@@ -12,9 +12,9 @@
 package robots;
 
 import helpers.RobotTestBed;
+import helpers.Assert;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
-import org.junit.Assert;
 
 /**
  * @author Pavel Savara (original)
@@ -28,50 +28,50 @@ public class TestAcceleration extends RobotTestBed {
         RobotSnapshot ahead = turnSnapshot.getRobots().get(1);
         switch (turnSnapshot.getTurn()){
             case 1:
-                Assert.assertEquals(1.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(1.0,ahead.getVelocity());
                 break;
             case 2:
-                Assert.assertEquals(2.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(2.0,ahead.getVelocity());
                 break;
             case 3:
-                Assert.assertEquals(3.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(3.0,ahead.getVelocity());
                 break;
             case 4:
-                Assert.assertEquals(4.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(4.0,ahead.getVelocity());
                 break;
             case 5:
-                Assert.assertEquals(5.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(5.0,ahead.getVelocity());
                 break;
             case 6:
-                Assert.assertEquals(6.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(6.0,ahead.getVelocity());
                 break;
             case 7:
-                Assert.assertEquals(7.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(7.0,ahead.getVelocity());
                 break;
             case 8:
-                Assert.assertEquals(8.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(8.0,ahead.getVelocity());
                 break;
             case 9:
-                Assert.assertEquals(8.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(8.0,ahead.getVelocity());
                 break;
 
             case 14:
-                Assert.assertEquals(8.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(8.0,ahead.getVelocity());
                 break;
             case 15:
-                Assert.assertEquals(7.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(7.0,ahead.getVelocity());
                 break;
             case 16:
-                Assert.assertEquals(5.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(5.0,ahead.getVelocity());
                 break;
             case 17:
-                Assert.assertEquals(3.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(3.0,ahead.getVelocity());
                 break;
             case 18:
-                Assert.assertEquals(1.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(1.0,ahead.getVelocity());
                 break;
             case 19:
-                Assert.assertEquals(0.0,ahead.getVelocity(),0.0001);
+                Assert.assertNear(0.0,ahead.getVelocity());
                 break;
             default:
                 break;

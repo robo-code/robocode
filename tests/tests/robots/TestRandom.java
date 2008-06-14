@@ -14,32 +14,32 @@ package robots;
 import helpers.RobotTestBed;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
-import org.junit.Assert;
+import robocode.util.Utils;
+import helpers.Assert;
 
 /**
- *
  * Repeatable random test
  *
  * @author Pavel Savara (original)
  */
 public class TestRandom extends RobotTestBed {
     public String getRobotNames() {
-        return "sample.Fire,testing.Random";        
+        return "sample.Fire,testing.Random";
     }
 
     public void onTurnEnded(TurnSnapshot turnSnapshot) {
-        Assert.assertTrue(turnSnapshot.getTurn()<=1223);
+        Assert.assertTrue(turnSnapshot.getTurn() <= 1223);
         RobotSnapshot fire = turnSnapshot.getRobots().get(0);
         RobotSnapshot random = turnSnapshot.getRobots().get(1);
-        if (turnSnapshot.getTurn() == 1223){
+        if (turnSnapshot.getTurn() == 1223) {
             //System.out.println(fire.getX());
             //System.out.println(fire.getY());
             //System.out.println(random.getX());
             //System.out.println(random.getY());
-            Assert.assertEquals(566.296806911193,fire.getX(),0.0001);
-            Assert.assertEquals(165.07893614917265,fire.getY(),0.0001);
-            Assert.assertEquals(104.11480043566866,random.getX(),0.0001);
-            Assert.assertEquals(582.0,random.getY(),0.0001);
+            Assert.assertNear(566.296806911193, fire.getX());
+            Assert.assertNear(165.07893614917265, fire.getY());
+            Assert.assertNear(104.11480043566866, random.getX());
+            Assert.assertNear(582.0, random.getY());
         }
     }
 
