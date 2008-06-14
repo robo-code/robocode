@@ -18,6 +18,8 @@ o Changes
 - Logging improvements
 - Junit test infrastructure
 - FR:1878233 - onBattleEnd() Event
+o Bugfixes
+- The JuniorRobot.others was not updated properly when other robots dies
 
 
 Version 1.6.0

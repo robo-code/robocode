@@ -838,13 +838,13 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 		public void onBulletMissed(BulletMissedEvent event) {}
 
-		public void onRobotDeath(RobotDeathEvent event) {}
+		public void onRobotDeath(RobotDeathEvent event) {
+			others = peer.getOthers();
+		}
 
 		public void onWin(WinEvent event) {}
 
-        public void onDeath(DeathEvent event) {
-			others = peer.getOthers();
-		}
+        public void onDeath(DeathEvent event) {}
 
 		public void onHitByBullet(HitByBulletEvent event) {
 			double angle = peer.getBodyHeading() + event.getBearingRadians();
