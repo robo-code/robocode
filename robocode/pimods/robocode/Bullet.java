@@ -17,6 +17,8 @@ import pimods.model.Model;
 import pimods.scenegraph.ModelView;
 import pimods.scenegraph.TransformationNode;
 import pimods.scenegraph.TextureIndexLink;
+import pimods.scenegraph.DisplayListIndexLink;
+
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -27,6 +29,7 @@ import pimods.scenegraph.TextureIndexLink;
 public class Bullet extends TransformationNode {
 	public static final Model model = LoadModel.getModelFromFile( "bullet.pobj" );
 	private static final TextureIndexLink texture = new TextureIndexLink();
+	private static final DisplayListIndexLink displayList = new DisplayListIndexLink();
 	
 	private static final int PIXEL4BULLET = 5;
 	private static final float MAX_POWER = 4; //TODO da verificare!
@@ -35,7 +38,7 @@ public class Bullet extends TransformationNode {
 	
 
 	public Bullet( String name ) {
-		this.addDrawable(new ModelView( model, "Bullet", texture ));
+		this.addDrawable(new ModelView( model, "Bullet", displayList, texture ));
 		
 		this.name = name;
 		
@@ -65,5 +68,9 @@ public class Bullet extends TransformationNode {
 
 	public static void setTexture( Texture[][] t ) {
 		texture.setTextureIndexLink( t );
+	}
+
+	public static void setDisplayList( int[] grpIndex ) {
+		displayList.setDisplayListIndex( grpIndex );
 	}
 }

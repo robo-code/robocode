@@ -35,6 +35,16 @@ public class GraphicListener4Robocode extends GraphicListener {
 		SkyDome.setTexture( GraphicListener.loadTextureFromModel( gl, SkyDome.model ) );
 		Track.setTexture( GraphicListener.loadTextureFromModel( gl, Track.model ) );
 	
+		Field.setDisplayListBP( GraphicListener.loadDisplayListFromModel( gl, Field.modelBP ) );
+		Field.setDisplayListRW( GraphicListener.loadDisplayListFromModel( gl, Field.modelRW ) );
+		Field.setDisplayListWT( GraphicListener.loadDisplayListFromModel( gl, Field.modelWT ) );
+		Bullet.setDisplayList( GraphicListener.loadDisplayListFromModel( gl, Bullet.model ) );
+		Tank.setDisplayList( GraphicListener.loadDisplayListFromModel( gl, Tank.model ) );
+		Text3D.setDisplayList( GraphicListener.loadDisplayListFromModel( gl, Text3D.model ) );
+		Explosion.setDisplayListSparkle( GraphicListener.loadDisplayListFromModel( gl, Explosion.modelSparkle ) );
+		Explosion.setDisplayListSmoke( GraphicListener.loadDisplayListFromModel( gl, Explosion.modelSmoke ) );
+		SkyDome.setDisplayList( GraphicListener.loadDisplayListFromModel( gl, SkyDome.model ) );
+		Track.setDisplayList( GraphicListener.loadDisplayListFromModel( gl, Track.model ) );
 
 		gl.glTexEnvi( GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE );
 		gl.glLightModeli( GL.GL_LIGHT_MODEL_COLOR_CONTROL, GL.GL_SEPARATE_SPECULAR_COLOR );

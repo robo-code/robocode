@@ -17,6 +17,7 @@ import pimods.model.Model;
 import pimods.scenegraph.ModelView;
 import pimods.scenegraph.TransformationNode;
 import pimods.scenegraph.TextureIndexLink;
+import pimods.scenegraph.DisplayListIndexLink;
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -27,6 +28,7 @@ import pimods.scenegraph.TextureIndexLink;
 public class Tank extends TransformationNode {
 	public static final Model model = LoadModel.getModelFromFile( "yabusame.pobj" );;
 	private static final TextureIndexLink texture = new TextureIndexLink();
+	private static final DisplayListIndexLink displayList = new DisplayListIndexLink();
 	
 	public TransformationNode head, radar;
 	private ModelView mvBody, mvHead, mvRadar;
@@ -39,9 +41,9 @@ public class Tank extends TransformationNode {
 	public Tank( String name ) {
 		this.name = name;
 		
-		mvBody = new ModelView( model, "Body", texture );
-		mvHead = new ModelView( model, "Head", texture );
-		mvRadar = new ModelView( model, "Radar", texture );
+		mvBody = new ModelView( model, "Body", displayList, texture );
+		mvHead = new ModelView( model, "Head", displayList, texture );
+		mvRadar = new ModelView( model, "Radar", displayList, texture );
 		
 		head = new TankHead();
 		radar = new TransformationNode();
@@ -106,4 +108,9 @@ public class Tank extends TransformationNode {
 	public static void setTexture( Texture[][] t ) {
 		texture.setTextureIndexLink( t );
 	}
+	
+	public static void setDisplayList( int[] grpIndex ) {
+		displayList.setDisplayListIndex( grpIndex );
+	}
+	
 }

@@ -19,6 +19,9 @@ import com.sun.opengl.util.texture.TextureIO;
 
 import pimods.model.LoadModel;
 import pimods.model.Model;
+import pimods.model.ModelFace;
+import pimods.model.ModelGroup;
+import pimods.model.ModelObject;
 import pimods.model.ModelMaterial;
 import pimods.math.Vertex3f;
 
@@ -124,5 +127,83 @@ public class GraphicListener implements GLEventListener {
 		}
 		return( texture );
 	}
+	
+	public static int[] loadDisplayListFromModel( GL gl, Model model ) {
+		int grpIndex[] = new int[model.getNumberOfGroups()]; 
 
+		for( int i=0, c=0; i<model.getNumberOfGroups(); i++ ) {
+			grpIndex[i] = gl.glGenLists( model.getGroup( i ).getNumberOfObjects() );
+			for( int j=0; j<model.getGroup( i ).getNumberOfObjects(); j++ ) {
+				gl.glNewList( grpIndex[i]+j, GL.GL_COMPILE );
+					drawObject( gl, model, model.getGroup( i ).getObject( j ) );
+				gl.glEndList();
+			}
+		}
+		
+		return( grpIndex );
+	}
+
+	private static void drawObject( GL gl, Model model, ModelObject o ) {
+		Vertex3f vertex[] = model.getVertex();
+		Vertex3f normal[] = model.getNormals();
+		Vertex3f uv[] = model.getUV();
+		boolean useNormals = false;
+		boolean useUV = false;
+
+
+		if( normal.length > 0 )
+			useNormals = true;
+		if( uv.length > 0 )
+			useUV = true;
+
+		gl.glBegin( GL.GL_TRIANGLES );
+			
+			for( int i=0; i<o.getNumberOfFaces(); i++ ) {
+				ModelFace face = o.getFace( i );
+				
+				int nv1 = face.getVertexIndex( 0 ) - 1;
+				int nn1 = -1;
+				int nt1 = -1;
+				if( useNormals )
+					nn1 = face.getNormalIndex( 0 ) - 1;
+				if( useUV )
+					nt1 = face.getUVIndex( 0 ) - 1;
+
+				for( int j=1; j<face.getNumberOfVertexIndex()-1; j++ ) {
+					if( useNormals )
+						gl.glNormal3f( normal[nn1].x, normal[nn1].y, normal[nn1].z );
+					if( useUV )
+						gl.glTexCoord2f( uv[nt1].x, uv[nt1].y );
+					gl.glVertex3f( vertex[nv1].x, vertex[nv1].y, vertex[nv1].z );
+					
+					if( useNormals ) {
+						int nn2 = face.getNormalIndex( j ) - 1;
+						gl.glNormal3f( normal[nn2].x, normal[nn2].y, normal[nn2].z );
+					}
+					if( useUV ) {
+						int nt2 = face.getUVIndex( j ) - 1;
+						gl.glTexCoord2f( uv[nt2].x, uv[nt2].y );
+					}
+					int nv2 = face.getVertexIndex( j ) - 1;
+					gl.glVertex3f( vertex[nv2].x, vertex[nv2].y, vertex[nv2].z );
+					
+					if( useNormals ) {
+						int nn3 = face.getNormalIndex( j+1 ) - 1;
+						gl.glNormal3f( normal[nn3].x, normal[nn3].y, normal[nn3].z );
+					}
+					if( useUV ) {
+						int nt3 = face.getUVIndex( j+1 ) - 1;
+						gl.glTexCoord2f( uv[nt3].x, uv[nt3].y );
+					}
+					int nv3 = face.getVertexIndex( j+1 ) - 1;
+					gl.glVertex3f( vertex[nv3].x, vertex[nv3].y, vertex[nv3].z );
+
+				}
+			}
+		
+		gl.glEnd();
+		
+	}
+
+	
 }

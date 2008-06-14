@@ -15,6 +15,7 @@ import pimods.model.LoadModel;
 import pimods.model.Model;
 import pimods.scenegraph.ModelView;
 import pimods.scenegraph.TextureIndexLink;
+import pimods.scenegraph.DisplayListIndexLink;
 import pimods.scenegraph.TransformationNode;
 
 import com.sun.opengl.util.texture.Texture;
@@ -29,18 +30,14 @@ import com.sun.opengl.util.texture.Texture;
 public class SkyDome extends TransformationNode {
 	public static final Model model = LoadModel.getModelFromFile( "skydome.pobj" );
 	private static final TextureIndexLink texture = new TextureIndexLink();
+	private static final DisplayListIndexLink displayList = new DisplayListIndexLink();
 
 	public SkyDome() {
-		this.addDrawable( new ModelView( model, "SkyDome", texture ) );
+		this.addDrawable( new ModelView( model, "SkyDome", displayList, texture ) );
 		this.setTranslate( 0, -0.1f, 0 );
 		this.setScale( 15, 15, 15 );
 	}
 
-
-	public static void setTexture( Texture[][] t ) {
-		texture.setTextureIndexLink( t );
-	}
-	
 	@Override
 	public void draw(GL gl){
 		gl.glColor3f( 1, 1, 1 );
@@ -51,4 +48,12 @@ public class SkyDome extends TransformationNode {
 		//gl.glMaterialf(GL.GL_FRONT_AND_BACK,GL.GL_SHININESS, 128);
 	}
 
+
+	public static void setTexture( Texture[][] t ) {
+		texture.setTextureIndexLink( t );
+	}
+	
+	public static void setDisplayList( int[] grpIndex ) {
+		displayList.setDisplayListIndex( grpIndex );
+	}
 }

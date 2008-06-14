@@ -20,6 +20,8 @@ import pimods.scenegraph.Drawable;
 import pimods.scenegraph.ModelView;
 import pimods.scenegraph.TransformationNode;
 import pimods.scenegraph.TextureIndexLink;
+import pimods.scenegraph.DisplayListIndexLink;
+
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -34,6 +36,9 @@ public class Field extends TransformationNode {
 	private static final TextureIndexLink textureBP = new TextureIndexLink();
 	private static final TextureIndexLink textureRW = new TextureIndexLink();
 	private static final TextureIndexLink textureWT = new TextureIndexLink();
+	private static final DisplayListIndexLink displayListBP = new DisplayListIndexLink();
+	private static final DisplayListIndexLink displayListRW = new DisplayListIndexLink();
+	private static final DisplayListIndexLink displayListWT = new DisplayListIndexLink();
 	
 	private static final int PIXEL4WALL = 8;
 	private static final int PIXEL4TOWER = 10;
@@ -52,7 +57,7 @@ public class Field extends TransformationNode {
 		this.height=zL;
 		
 		TransformationNode battlePlane = new TransformationNode();
-		battlePlane.addDrawable( new ModelView( modelBP, "BattlePlane", textureBP ) );
+		battlePlane.addDrawable( new ModelView( modelBP, "BattlePlane", displayListBP, textureBP ) );
 		this.addDrawable( battlePlane );
 		//this.addDrawable( new Landscape() );
 		
@@ -161,7 +166,7 @@ public class Field extends TransformationNode {
 
 	private class RetainingWall extends TransformationNode{
 		public RetainingWall( float xpos, float ypos, float zpos){
-			ModelView rWallMV = new ModelView( modelRW, "RetainingWall", textureRW );
+			ModelView rWallMV = new ModelView( modelRW, "RetainingWall", displayListRW, textureRW );
 			rWallMV.setColor( new Color( 80, 80, 80 ) );
 			this.setScale(PIXEL4WALL, PIXEL4WALL, PIXEL4WALL);
 			this.addDrawable( rWallMV );
@@ -171,7 +176,7 @@ public class Field extends TransformationNode {
 
 	public class WallTower extends TransformationNode {
 		public WallTower( float xpos, float ypos, float zpos ) {
-			ModelView wTowerMV = new ModelView( modelWT, "WallTower", textureWT );
+			ModelView wTowerMV = new ModelView( modelWT, "WallTower", displayListWT, textureWT );
 			wTowerMV.setColor( new Color( 80, 80, 80 ) );
 			this.setScale( PIXEL4TOWER, PIXEL4TOWER, PIXEL4TOWER );
 			this.addDrawable( wTowerMV );
@@ -190,5 +195,17 @@ public class Field extends TransformationNode {
 
 	public static void setTextureWT( Texture[][] t ) {
 		textureWT.setTextureIndexLink( t );
+	}
+	
+	public static void setDisplayListBP( int[] grpIndex ) {
+		displayListBP.setDisplayListIndex( grpIndex );
+	}
+	
+	public static void setDisplayListRW( int[] grpIndex ) {
+		displayListRW.setDisplayListIndex( grpIndex );
+	}
+	
+	public static void setDisplayListWT( int[] grpIndex ) {
+		displayListWT.setDisplayListIndex( grpIndex );
 	}
 }

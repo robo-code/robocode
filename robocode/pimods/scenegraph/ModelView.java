@@ -31,9 +31,11 @@ import pimods.math.Vertex3f;
 public class ModelView implements Drawable {
 	private Model model;
 	private String nameGroup;
+	private int indexGroup;
 	private ModelGroup group;
 	private Color color;
 	private TextureIndexLink textureIndexLink;
+	private DisplayListIndexLink displayListIndexLink;
 
 	
 	private ModelView( Model model, String name ) {
@@ -42,17 +44,20 @@ public class ModelView implements Drawable {
 		this.group = null;
 
 		for( int i=0; i<this.model.getNumberOfGroups(); i++ ) {
-			if( ( this.group = this.model.getGroup( i ) ).getName().equals( this.nameGroup ) )
+			if( ( this.group = this.model.getGroup( i ) ).getName().equals( this.nameGroup ) ) {
+				this.indexGroup = i;
 				break;
+			}
 		}
 
 		if( this.group == null )
 			return;
 	}
 
-	public ModelView( Model model, String name, TextureIndexLink textureIndexLink ) {
+	public ModelView( Model model, String name, DisplayListIndexLink displayListIndexLink, TextureIndexLink textureIndexLink ) {
 		this( model, name );
 		this.textureIndexLink = textureIndexLink;
+		this.displayListIndexLink = displayListIndexLink;
 	}
 
 	public ModelGroup getGroup() {
@@ -72,6 +77,7 @@ public class ModelView implements Drawable {
 			gl.glColor3f( color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f );
 		}
 		if( this.group != null ) {
+			int grpIndex = this.displayListIndexLink.getGroupIndex( this.indexGroup );
 			for( int i=0; i<this.group.getNumberOfObjects(); i++ ) {
 				Texture texture[][] = this.textureIndexLink.getTextureIndexLink();
 				if( texture != null && texture.length > 0 && texture[i] != null && texture[i].length > 0 ) {
@@ -80,11 +86,11 @@ public class ModelView implements Drawable {
 						// TODO second index for multiple textures, for future versions
 						texture[materialIndex][0].enable();
 						texture[materialIndex][0].bind(); // --> gl.glBindTexture( , );
-						drawObject( gl, this.group.getObject( i ) );
+						gl.glCallList( grpIndex+i );
 						texture[materialIndex][0].disable();
 					}
 				} else {
-					drawObject( gl, this.group.getObject( i ) );
+					gl.glCallList( grpIndex+i );
 				}
 			
 			}
@@ -92,67 +98,6 @@ public class ModelView implements Drawable {
 			
 	}
 
-	private void drawObject( GL gl, ModelObject o ) {
-		Vertex3f vertex[] = model.getVertex();
-		Vertex3f normal[] = model.getNormals();
-		Vertex3f uv[] = model.getUV();
-		boolean useNormals = false;
-		boolean useUV = false;
-
-
-		if( normal.length > 0 )
-			useNormals = true;
-		if( uv.length > 0 )
-			useUV = true;
-
-		gl.glBegin( GL.GL_TRIANGLES );
-			
-			for( int i=0; i<o.getNumberOfFaces(); i++ ) {
-				ModelFace face = o.getFace( i );
-				
-				int nv1 = face.getVertexIndex( 0 ) - 1;
-				int nn1 = -1;
-				int nt1 = -1;
-				if( useNormals )
-					nn1 = face.getNormalIndex( 0 ) - 1;
-				if( useUV )
-					nt1 = face.getUVIndex( 0 ) - 1;
-
-				for( int j=1; j<face.getNumberOfVertexIndex()-1; j++ ) {
-					if( useNormals )
-						gl.glNormal3f( normal[nn1].x, normal[nn1].y, normal[nn1].z );
-					if( useUV )
-						gl.glTexCoord2f( uv[nt1].x, uv[nt1].y );
-					gl.glVertex3f( vertex[nv1].x, vertex[nv1].y, vertex[nv1].z );
-					
-					if( useNormals ) {
-						int nn2 = face.getNormalIndex( j ) - 1;
-						gl.glNormal3f( normal[nn2].x, normal[nn2].y, normal[nn2].z );
-					}
-					if( useUV ) {
-						int nt2 = face.getUVIndex( j ) - 1;
-						gl.glTexCoord2f( uv[nt2].x, uv[nt2].y );
-					}
-					int nv2 = face.getVertexIndex( j ) - 1;
-					gl.glVertex3f( vertex[nv2].x, vertex[nv2].y, vertex[nv2].z );
-					
-					if( useNormals ) {
-						int nn3 = face.getNormalIndex( j+1 ) - 1;
-						gl.glNormal3f( normal[nn3].x, normal[nn3].y, normal[nn3].z );
-					}
-					if( useUV ) {
-						int nt3 = face.getUVIndex( j+1 ) - 1;
-						gl.glTexCoord2f( uv[nt3].x, uv[nt3].y );
-					}
-					int nv3 = face.getVertexIndex( j+1 ) - 1;
-					gl.glVertex3f( vertex[nv3].x, vertex[nv3].y, vertex[nv3].z );
-
-				}
-			}
-		
-		gl.glEnd();
-		
-	}
 
 }
 

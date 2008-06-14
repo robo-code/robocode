@@ -20,6 +20,7 @@ import pimods.model.Model;
 import pimods.scenegraph.ModelView;
 import pimods.scenegraph.TransformationNode;
 import pimods.scenegraph.TextureIndexLink;
+import pimods.scenegraph.DisplayListIndexLink;
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -30,6 +31,7 @@ import pimods.scenegraph.TextureIndexLink;
 public class Text3D extends TransformationNode {
 	public static final Model model = LoadModel.getModelFromFile( "font.pobj" );;
 	private static final TextureIndexLink texture = new TextureIndexLink();
+	private static final DisplayListIndexLink displayList = new DisplayListIndexLink();
 	private static final String knownSymbols = "QWERTYUIOPLKJHGFDSAZXCVBNMmnbvcxzasdfghjklpoiuytrewq1234567890\t";
 	
 	private String text;
@@ -98,7 +100,7 @@ public class Text3D extends TransformationNode {
 				String c = line.substring(i, i+1);
 //				if( !knownSymbols.contains( c ) ) continue;
 				TransformationNode tn = new TransformationNode();
-				ModelView mv = new ModelView(model, c, texture);
+				ModelView mv = new ModelView( model, c, displayList, texture );
 				mv.setColor( color );
 				tn.addDrawable( mv );
 				tn.setTx( -mv.getGroup().getCenterX() + 0.75f*(i - length/2 - 0.5f) );
@@ -135,5 +137,9 @@ public class Text3D extends TransformationNode {
 
 	public static void setTexture( Texture[][] t ) {
 		texture.setTextureIndexLink( t );
+	}
+	
+	public static void setDisplayList( int[] grpIndex ) {
+		displayList.setDisplayListIndex( grpIndex );
 	}
 }

@@ -15,9 +15,11 @@ import pimods.scenegraph.Ageing;
 import pimods.scenegraph.ParticleSystem;
 import pimods.scenegraph.TransformationNode;
 import pimods.scenegraph.TextureIndexLink;
+import pimods.scenegraph.DisplayListIndexLink;
 import pimods.model.LoadModel;
 import pimods.model.Model;
 import pimods.scenegraph.ModelView;
+
 
 
 /**
@@ -31,6 +33,8 @@ public class Explosion extends TransformationNode implements Ageing{
 	public static final Model modelSmoke = LoadModel.getModelFromFile( "particle1-smoke.pobj" );
 	private static final TextureIndexLink textureSparkle = new TextureIndexLink();
 	private static final TextureIndexLink textureSmoke = new TextureIndexLink();
+	private static final DisplayListIndexLink displayListSparkle = new DisplayListIndexLink();
+	private static final DisplayListIndexLink displayListSmoke = new DisplayListIndexLink();
 
 	private ParticleSystem particleSystemSparkle;
 	private ParticleSystem particleSystemSmoke;
@@ -42,8 +46,8 @@ public class Explosion extends TransformationNode implements Ageing{
 			float velocity_var, int lifetime, int lifetime_var,
 			float direction_var, Vertex3f direction ) {
 
-		ModelView mvSparkle = new ModelView( modelSparkle, "Particle", textureSparkle );
-		ModelView mvSmoke = new ModelView( modelSmoke, "Particle", textureSmoke );
+		ModelView mvSparkle = new ModelView( modelSparkle, "Particle", displayListSparkle, textureSparkle );
+		ModelView mvSmoke = new ModelView( modelSmoke, "Particle", displayListSmoke, textureSmoke );
 		
 //		this.ttl = (int)(lifetime*0.3);
 		this.ttl = 4;
@@ -76,6 +80,14 @@ public class Explosion extends TransformationNode implements Ageing{
 
 	public static void setTextureSmoke( Texture[][] t ) {
 		textureSmoke.setTextureIndexLink( t );
+	}
+	
+	public static void setDisplayListSparkle( int[] grpIndex ) {
+		displayListSparkle.setDisplayListIndex( grpIndex );
+	}
+	
+	public static void setDisplayListSmoke( int[] grpIndex ) {
+		displayListSmoke.setDisplayListIndex( grpIndex );
 	}
 
 }

@@ -18,6 +18,7 @@ import pimods.scenegraph.Ageing;
 import pimods.scenegraph.ModelView;
 import pimods.scenegraph.TransformationNode;
 import pimods.scenegraph.TextureIndexLink;
+import pimods.scenegraph.DisplayListIndexLink;
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -28,6 +29,7 @@ import pimods.scenegraph.TextureIndexLink;
 public class Track extends TransformationNode implements Ageing {
 	public static final Model model = LoadModel.getModelFromFile( "track.pobj" );
 	private static final TextureIndexLink texture = new TextureIndexLink();
+	private static final DisplayListIndexLink displayList = new DisplayListIndexLink();
 	private static float mx = model.getDimension().x;
 	private static final int PIXEL4TRACK = 30;
 	
@@ -38,7 +40,7 @@ public class Track extends TransformationNode implements Ageing {
 
 	
 	public Track( int time, float x, float z, float angle ) {
-		this.addDrawable( new ModelView( model, "Track", texture ) );
+		this.addDrawable( new ModelView( model, "Track", displayList, texture ) );
 		this.creationTime = time;
 		this.ttl = LIFETIME;
 		
@@ -75,5 +77,9 @@ public class Track extends TransformationNode implements Ageing {
 
 	public static void setTexture( Texture[][] t ) {
 		texture.setTextureIndexLink( t );
+	}
+	
+	public static void setDisplayList( int[] grpIndex ) {
+		displayList.setDisplayListIndex( grpIndex );
 	}
 }
