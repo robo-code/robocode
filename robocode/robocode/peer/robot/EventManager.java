@@ -1006,9 +1006,6 @@ public class EventManager implements IEventManager {
 		if (eventQueue.size() > 0) {
 			currentEvent = eventQueue.get(0);
 		}
-        if (currentEvent.getPriority()==-1){
-            int i=1;
-        }
         while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority) {
 			if (currentEvent.getPriority() == currentTopEventPriority) {
 				if (currentTopEventPriority > Integer.MIN_VALUE && getInterruptible(currentTopEventPriority)) {
