@@ -26,6 +26,7 @@ import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
+import robocode.manager.BattleManager;
 import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
 
@@ -600,12 +601,12 @@ public class BattleView extends Canvas {
 		return scanArc.getBounds();
 	}
 
-	public void setup(BattleField battleField, BattleEventDispatcher battleEventDispatcher) {
+	public void setup(BattleField battleField) {
 		this.battleField = battleField;
 		if (observer != null) {
 			observer.dispose();
 		}
-		observer = new BattleObserver(battleEventDispatcher);
+		observer = new BattleObserver(manager.getBattleManager());
 	}
 
 	/**
@@ -635,8 +636,8 @@ public class BattleView extends Canvas {
 	}
 
 	private class BattleObserver extends AwtBattleAdaptor {
-		public BattleObserver(BattleEventDispatcher dispatcher) {
-			super(dispatcher, TIMER_TICKS_PER_SECOND, true);
+		public BattleObserver(BattleManager battleManager) {
+			super(battleManager, TIMER_TICKS_PER_SECOND, true);
 		}
 
 		protected void updateView(TurnSnapshot snapshot) {

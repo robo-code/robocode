@@ -148,8 +148,8 @@ public class BattleManager {
     }
 
     public void stop() {
-        if (getBattle() != null) {
-            getBattle().stop();
+        if (battle != null) {
+            battle.stop();
         }
     }
 
@@ -311,7 +311,7 @@ public class BattleManager {
         if (manager.isGUIEnabled()) {
             BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
-            battleView.setup(battleField, battleEventDispatcher);
+            battleView.setup(battleField);
         }
         Logger.setLogListener(battleEventDispatcher);
 
@@ -464,7 +464,7 @@ public class BattleManager {
         return res;
     }
 
-    public Battle getBattle() {
+    public Battle getBattle() { //TODO get rid of it, battle is private
         return battle;
     }
 

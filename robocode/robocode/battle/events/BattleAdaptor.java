@@ -8,7 +8,7 @@ import robocode.control.BattleSpecification;
 
 public class BattleAdaptor implements IBattleListener {
 
-	public void onBattleStarted(BattleSpecification battleSpecification) {}
+	public void onBattleStarted(BattleSpecification battleSpecification, boolean isReplay) {}
 
 	public void onBattleEnded(boolean isAborted) {}
 
