@@ -41,7 +41,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 *
 	 * @param fileSpecification the file specification of the robot
 	 */
-	RobotSpecification(robocode.repository.FileSpecification fileSpecification) {
+	public RobotSpecification(robocode.repository.FileSpecification fileSpecification) {
 		this.fileSpecification = fileSpecification;
 	}
 
