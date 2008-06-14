@@ -8,25 +8,34 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Redesigned to use IRobotControls instead of accessing the Battle's
+ *       RobotPeers directly.
  *******************************************************************************/
 package robocode.battleview;
 
 
-import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
+import robocode.battle.IRobotControl;
 import robocode.manager.RobocodeManager;
-import robocode.peer.RobotPeer;
 import robocode.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import static java.lang.Math.min;
 
 
 /**
+ * This handler is used for observing keyboard and mouse events from the battle view,
+ * which must be process to the all robots interactive event handlers.
+ * The mouse events y coordinates are mirrored to comply to the coordinate system
+ * used in Robocode.
+ *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public final class InteractiveHandler implements KeyEventDispatcher, MouseListener, MouseMotionListener, MouseWheelListener {
 	private RobocodeManager manager;
@@ -36,130 +45,69 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	}
 
 	public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
+		switch (e.getID()) {
+		case KeyEvent.KEY_TYPED:
+			handleInteractiveEvent(new KeyTypedEvent(cloneKeyEvent(e)));
+			break;
 
-		if (battle != null && battle.isRunning()) {
+		case KeyEvent.KEY_PRESSED:
+			handleInteractiveEvent(new KeyPressedEvent(cloneKeyEvent(e)));
+			break;
 
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					switch (e.getID()) {
-					case KeyEvent.KEY_TYPED:
-						robotPeer.onInteractiveEvent(new KeyTypedEvent(cloneKeyEvent(e)));
-						break;
-
-					case KeyEvent.KEY_PRESSED:
-						robotPeer.onInteractiveEvent(new KeyPressedEvent(cloneKeyEvent(e)));
-						break;
-
-					case KeyEvent.KEY_RELEASED:
-						robotPeer.onInteractiveEvent(new KeyReleasedEvent(cloneKeyEvent(e)));
-						break;
-					}
-				}
-			}
+		case KeyEvent.KEY_RELEASED:
+			handleInteractiveEvent(new KeyReleasedEvent(cloneKeyEvent(e)));
+			break;
 		}
+
+		// Allow KeyboardFocusManager to take further action with regard to the KeyEvent.
+		// This way the InteractiveHandler does not steal the event, but is only a keyboard observer.
 		return false;
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
-
-		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					robotPeer.onInteractiveEvent(new MouseClickedEvent(mirroredMouseEvent(e)));
-				}
-			}
-		}
+		handleInteractiveEvent(new MouseClickedEvent(mirroredMouseEvent(e)));
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
-
-		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					robotPeer.onInteractiveEvent(new MouseEnteredEvent(mirroredMouseEvent(e)));
-				}
-			}
-		}
+		handleInteractiveEvent(new MouseEnteredEvent(mirroredMouseEvent(e)));
 	}
 
 	public void mouseExited(MouseEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
-
-		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					robotPeer.onInteractiveEvent(new MouseExitedEvent(mirroredMouseEvent(e)));
-				}
-			}
-		}
+		handleInteractiveEvent(new MouseExitedEvent(mirroredMouseEvent(e)));
 	}
 
 	public void mousePressed(MouseEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
-
-		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					robotPeer.onInteractiveEvent(new MousePressedEvent(mirroredMouseEvent(e)));
-				}
-			}
-		}
+		handleInteractiveEvent(new MousePressedEvent(mirroredMouseEvent(e)));
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
-
-		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					robotPeer.onInteractiveEvent(new MouseReleasedEvent(mirroredMouseEvent(e)));
-				}
-			}
-		}
+		handleInteractiveEvent(new MouseReleasedEvent(mirroredMouseEvent(e)));
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
-
-		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					robotPeer.onInteractiveEvent(new MouseMovedEvent(mirroredMouseEvent(e)));
-				}
-			}
-		}
+		handleInteractiveEvent(new MouseMovedEvent(mirroredMouseEvent(e)));
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
-
-		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					robotPeer.onInteractiveEvent(new MouseDraggedEvent(mirroredMouseEvent(e)));
-				}
-			}
-		}
+		handleInteractiveEvent(new MouseDraggedEvent(mirroredMouseEvent(e)));
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		Battle battle = manager.getBattleManager().getBattle();
-
-		if (battle != null && battle.isRunning()) {
-			for (RobotPeer robotPeer : battle.getRobots()) { // TODO get rid of it on UI, we need rather some list of handles and dispatch thru some queue near Battle
-				if (robotPeer.isAlive() && robotPeer.isInteractiveRobot()) {
-					robotPeer.onInteractiveEvent(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
-				}
-			}
-		}
+		handleInteractiveEvent(new MouseWheelMovedEvent(mirroredMouseWheelEvent(e)));
 	}
 
 	public static KeyEvent cloneKeyEvent(final KeyEvent e) {
 		return new KeyEvent(SafeComponent.getSafeEventComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
 				e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
+	}
+
+	private void handleInteractiveEvent(robocode.Event event) {
+		List<IRobotControl> controls = manager.getBattleManager().getRobotControls();
+		if (controls != null) {
+			for (IRobotControl robotControl : controls) {
+				robotControl.sendInteractiveEvent(event);
+			}
+		}
 	}
 
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {

@@ -12,6 +12,8 @@
 package robocode.battle;
 
 
+import robocode.Event;
+
 import java.io.InputStream;
 
 
@@ -68,4 +70,11 @@ public interface IRobotControl {
 	 *               enabled when painting the robot; {@code false} otherwise.
 	 */
 	void setSGPaintEnabled(boolean enable);
+
+	/**
+	 * Sends an interactive event for the robot.
+	 *
+	 * @param event the interactive event that has occurred to the robot.
+	 */
+	void sendInteractiveEvent(Event event);
 }

@@ -1737,6 +1737,15 @@ public class Battle implements Runnable {
 		public void setSGPaintEnabled(boolean enable) {
 			sendCommand(new EnableRobotSGPaintCommand(index, enable));
 		}
+
+		public void sendInteractiveEvent(Event e) {
+			if (Battle.this.running) {
+				RobotPeer robotPeer = robots.get(index);
+				if (robotPeer.isInteractiveRobot() && robotPeer.isAlive()) {
+					sendCommand(new SendInteractiveEventCommand(index, e));
+				}
+			}
+		}
 	}
 
 	private void sendCommand(Command command) {
@@ -1784,6 +1793,19 @@ public class Battle implements Runnable {
 
 		public void execute() {
 			robots.get(robotIndex).setSGPaintEnabled(enableSGPaint);
+		}
+	}
+
+	private class SendInteractiveEventCommand extends RobotCommand {
+		public final Event event;
+
+		SendInteractiveEventCommand(int robotIndex, Event event) {
+			super(robotIndex);
+			this.event = event;
+		}
+
+		public void execute() {
+			robots.get(robotIndex).onInteractiveEvent(event);
 		}
 	}
 }
