@@ -18,6 +18,7 @@ import robocode.Robot;
  */
 public class Random extends Robot {
 
+    @Override
 	public void run() {
 
 		while (true) {

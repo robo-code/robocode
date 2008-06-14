@@ -842,8 +842,6 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 		public void onWin(WinEvent event) {}
 
-        public void onBattleEnded(BattleEndedEvent event) {}
-
         public void onDeath(DeathEvent event) {
 			others = peer.getOthers();
 		}

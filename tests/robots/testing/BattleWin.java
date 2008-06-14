@@ -17,6 +17,8 @@ import robocode.*;
  * @author Pavel Savara (original)
  */
 public class BattleWin extends Robot {
+
+    @Override
     public void run() {
         while (true) {
             ahead(100); // Move ahead 100
@@ -26,23 +28,28 @@ public class BattleWin extends Robot {
         }
     }
 
+    @Override
     public void onScannedRobot(ScannedRobotEvent e) {
         fire(1);
     }
 
+    @Override
     public void onHitByBullet(HitByBulletEvent e) {
         turnLeft(90 - e.getBearing());
     }
 
+    @Override
     public void onWin(WinEvent e) {
         out.println("Won!");
     }
 
+    @Override
     public void onDeath(DeathEvent e) {
         out.println("Died");
     }
 
-    public void onBattleEnd(BattleEndedEvent event) {
+    @Override
+    public void onBattleEnded(BattleEndedEvent event) {
         out.println("Battle ended "+event.getAborted());
     }
 }

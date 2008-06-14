@@ -6,6 +6,7 @@ import robocode.*;
  */
 public class BattleLost extends Robot
 {
+    @Override
 	public void run() {
         while (true) {
             ahead(1); // Move ahead 100
@@ -15,15 +16,18 @@ public class BattleLost extends Robot
         }
 	}
 
-	public void onWin(WinEvent e) {
+    @Override
+    public void onWin(WinEvent e) {
 		out.println("Won!");
 	}
 
+    @Override
 	public void onDeath(DeathEvent e) {
 		out.println("Died");
 	}
 
-	public void onBattleEnd(BattleEndedEvent event) {
+    @Override
+	public void onBattleEnded(BattleEndedEvent event) {
 		out.println("Battle ended "+event.getAborted());
 	}
 }

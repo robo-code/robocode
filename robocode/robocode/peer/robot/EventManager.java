@@ -964,8 +964,8 @@ public class EventManager implements IEventManager {
         if (robot != null) {
             IBasicEvents listener = robot.getBasicEventListener();
 
-            if (listener != null) {
-                listener.onBattleEnded(e);
+            if (listener != null && IBasicEvents2.class.isAssignableFrom(listener.getClass())) {
+                ((IBasicEvents2)listener).onBattleEnded(e);
             }
         }
 	}

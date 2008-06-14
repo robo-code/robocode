@@ -9,17 +9,24 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package testing;
+package robocode.robotinterfaces;
 
-import robocode.AdvancedRobot;
+import robocode.BattleEndedEvent;
 
 /**
+ * First extended version of IBasicEvents interface 
+ *
  * @author Pavel Savara (original)
  */
-public class Ahead extends AdvancedRobot {
-
-    @Override
-    public void run() {
-        ahead(100);
-    }
+public interface IBasicEvents2 extends IBasicEvents {
+    /**
+     * This method is called after end of the battle. Even in case that battle is aborted.
+     * <p/>
+     * Your robot could save lesons learned.
+     *
+     * @param event the win event set by the game
+     * @see robocode.WinEvent
+     * @see robocode.Event
+     */
+    void onBattleEnded(BattleEndedEvent event);
 }

@@ -69,7 +69,7 @@ import java.awt.event.MouseWheelEvent;
  * @see TeamRobot
  * @see Droid
  */
-public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents, IInteractiveEvents, IPaintEvents {
+public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents, IPaintEvents {
 
 	/**
 	 * Constructs a new robot.
