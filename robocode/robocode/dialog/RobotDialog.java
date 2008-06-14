@@ -22,6 +22,8 @@ package robocode.dialog;
 
 
 import robocode.battle.IRobotControl;
+import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.BattleAdaptor;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
@@ -40,6 +42,7 @@ import java.awt.event.ActionListener;
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
 	private IRobotControl robotControl;
+    private int robotIndex;
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
@@ -74,7 +77,7 @@ public class RobotDialog extends JFrame {
 
 	/**
 	 * RobotDialog constructor
-	 */
+     */
 	public RobotDialog(RobocodeManager manager) {
 		super();
 		this.manager = manager;
@@ -103,22 +106,19 @@ public class RobotDialog extends JFrame {
 		}
 	}
 
-	/**
-	 * Resets this robot dialog.
-	 *
-	 * @param robotControl the new robot control to use for this reset robot dialog.
-	 */
-	public void reset(IRobotControl robotControl) {
-		this.robotControl = robotControl;
-		getConsoleScrollPane().setText("");
-		
-		java.io.InputStream output = robotControl.getOutput();
-		if (output != null) {
-			getConsoleScrollPane().processStream(output);
-		}
-	}
+    /**
+     * Resets this robot dialog.
+     *
+     * @param robotControl the new robot control to use for this reset robot dialog.
+     */
+    public void reset(IRobotControl robotControl, int index, String name) {
+        this.robotControl = robotControl;
+        this.robotIndex = index;
+        this.setTitle(name);
+        getConsoleScrollPane().setText("");
+    }
 
-	/**
+    /**
 	 * When robotDialog is packed, we want to set a reasonable size. However,
 	 * after that, we need a null preferred size so the scrollpane will scroll.
 	 * (preferred size should be based on the text inside)
@@ -130,7 +130,7 @@ public class RobotDialog extends JFrame {
 		getConsoleScrollPane().setPreferredSize(null);
 	}
 
-	/**
+    /**
 	 * Returns true if Paint is enabled; false otherwise
 	 *
 	 * @return true if Paint is enabled; false otherwise
@@ -344,5 +344,13 @@ public class RobotDialog extends JFrame {
 		public void onBattleResumed() {
 			getPauseButton().setSelected(false);
 		}
-	}
+
+        @Override
+        public void onTurnEnded(TurnSnapshot turnSnapshot) {
+            final RobotSnapshot robotSnapshot = turnSnapshot.getRobots().get(robotIndex);
+            getConsoleScrollPane().append(robotSnapshot.getOutputStreamSnapshot());
+            getConsoleScrollPane().scrollToBottom();
+        }
+
+    }
 }

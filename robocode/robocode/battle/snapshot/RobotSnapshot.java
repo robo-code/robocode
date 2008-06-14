@@ -100,7 +100,7 @@ public class RobotSnapshot implements Serializable {
 	private final Graphics2DProxy graphicsProxy;
 
 	// The output print stream proxy
-	private final PrintStreamProxy printStreamProxy;
+	private final String outputStreamSnapshot;
 
 	/**
 	 * Constructs a snapshot of the robot.
@@ -140,7 +140,7 @@ public class RobotSnapshot implements Serializable {
 
 		graphicsProxy = peerGfx != null ? (Graphics2DProxy) peerGfx.create() : null;
 
-		printStreamProxy = new PrintStreamProxy();
+		outputStreamSnapshot = peer.getOut().readAndReset();
 	}
 
 	/**
@@ -338,12 +338,12 @@ public class RobotSnapshot implements Serializable {
 	}
 
 	/**
-	 * Returns the output print stream proxy for this robot.
+	 * Returns the output print stream snapshot for this robot.
 	 *
-	 * @return the output print stream proxy for this robot.
+	 * @return the output print stream snapshot for this robot.
 	 */
-	public PrintStreamProxy getOutputProxy() {
-		return printStreamProxy.copy();
+	public String getOutputStreamSnapshot() {
+		return outputStreamSnapshot;
 	}
 
 	/**

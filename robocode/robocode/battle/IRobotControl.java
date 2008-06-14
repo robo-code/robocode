@@ -27,33 +27,9 @@ import java.io.InputStream;
 public interface IRobotControl {
 
 	/**
-	 * Returns the name of the robot.
-	 * @return the name of the robot.
-	 */
-	String getName();
-
-	/**
-	 * Returns the short name of the robot.
-	 * @return the short name of the robot.
-	 */
-	String getShortName();
-
-	/**
-	 * Returns the unique full class name with version.
-	 * @return the unique full class name with version.
-	 */
-	String getUniqueFullClassNameWithVersion();
-
-	/**
 	 * Kills the robot.
 	 */
 	void kill();
-
-	/**
-	 * Returns the output stream of the robot, which is an input stream for us.
-	 * @return an input stream used for reading out the robot's output.
-	 */
-	InputStream getOutput();
 
 	/**
 	 * Enable or disable the robot paintings.

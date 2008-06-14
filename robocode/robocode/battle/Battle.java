@@ -1699,34 +1699,10 @@ public class Battle implements Runnable {
 	private class RobotControl implements IRobotControl {
 
 		final int index;
-		final String name;
-		final String shortName;
-		final String uniqueFullClassNameWithVersion;
-		final InputStream output;
 
 		RobotControl(RobotPeer robotPeer, int index) {
 			assert(robotPeer != null);
 			this.index = index;
-			name = robotPeer.getName();
-			shortName = robotPeer.getShortName();
-			uniqueFullClassNameWithVersion = robotPeer.getRobotClassManager().getClassNameManager().getUniqueFullClassNameWithVersion();
-			output = robotPeer.getOut().getInputStream();
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public String getShortName() {
-			return shortName;
-		}
-
-		public String getUniqueFullClassNameWithVersion() {
-			return uniqueFullClassNameWithVersion;
-		}
-
-		public InputStream getOutput() {
-			return output;
 		}
 
 		public void kill() {

@@ -354,10 +354,6 @@ public class BattleManager {
             battle.addRobot(robotClassMgr);
         }
 
-        if (manager.isGUIEnabled()) {
-            manager.getRobotDialogManager().initialize();
-        }
-
         // Start the battle thread
         battleThread.start();
 

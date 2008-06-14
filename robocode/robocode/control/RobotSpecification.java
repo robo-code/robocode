@@ -56,6 +56,14 @@ public class RobotSpecification implements java.io.Serializable {
 		return fileSpecification.getName();
 	}
 
+    public String getShortName() {
+        return fileSpecification.getNameManager().getUniqueShortClassNameWithVersion();
+    }
+
+    public String getUniqueFullClassNameWithVersion() {
+        return fileSpecification.getNameManager().getUniqueFullClassNameWithVersion();
+    }
+
 	/**
 	 * Returns the version of this robot or team.
 	 *

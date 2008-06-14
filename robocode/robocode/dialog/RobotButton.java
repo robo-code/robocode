@@ -38,18 +38,24 @@ public class RobotButton extends JButton implements ActionListener {
 	private final RobotDialogManager robotDialogManager;
 	private final IRobotControl robotControl;
 	private RobotDialog robotDialog;
+    private final String robotFullUniqueName;
+    private final int index;
+    private final String name;
 
 	/**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, IRobotControl robotControl) {
+	public RobotButton(RobotDialogManager robotDialogManager, IRobotControl robotControl, String robotFullUniqueName, String name, int index) {
 		this.robotControl = robotControl;
 		this.robotDialogManager = robotDialogManager;
+        this.robotFullUniqueName =robotFullUniqueName;
+        this.index=index;
+        this.name=name;
 
 		initialize();
-		robotDialog = robotDialogManager.getRobotDialog(robotControl, false);
+		robotDialog = robotDialogManager.getRobotDialog(robotFullUniqueName, false);
 		if (robotDialog != null) {
-			robotDialog.reset(robotControl);
+			robotDialog.reset(robotControl, index, name);
 			robotControl.setPaintEnabled(robotDialog.isPaintEnabled());
 			robotControl.setSGPaintEnabled(robotDialog.isSGPaintEnabled());
 		}
@@ -57,9 +63,8 @@ public class RobotButton extends JButton implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (robotDialog == null) {
-			robotDialog = robotDialogManager.getRobotDialog(robotControl, true);
-			robotDialog.setTitle(robotControl.getName());
-			robotDialog.reset(robotControl);
+			robotDialog = robotDialogManager.getRobotDialog(robotFullUniqueName, true);
+			robotDialog.reset(robotControl, index, name);
 			if (!robotDialog.isVisible() || robotDialog.getState() != Frame.NORMAL) {
 				WindowUtil.packPlaceShow(robotDialog);
 			}
@@ -73,9 +78,6 @@ public class RobotButton extends JButton implements ActionListener {
 	 */
 	private void initialize() {
 		addActionListener(this);
-
-		setText(robotControl.getShortName());
-		setToolTipText(robotControl.getUniqueFullClassNameWithVersion());
 		setPreferredSize(new Dimension(110, 25));
 		setMinimumSize(new Dimension(110, 25));
 		setMaximumSize(new Dimension(110, 25));

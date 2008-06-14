@@ -14,13 +14,11 @@
 package robocode.peer.robot;
 
 
-import robocode.io.BufferedPipedInputStream;
 import robocode.io.BufferedPipedOutputStream;
 
-import java.io.PrintStream;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -31,215 +29,282 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	private final static int MAX = 100;
 
-	private BufferedPipedOutputStream bufferedStream;
-	private PrintStream out;
-
 	private Thread battleThread;
 
-	private AtomicInteger count = new AtomicInteger();
+	private int count = 0;
+	private boolean messaged = false;
+    private StringBuilder text;
+    private final Object syncRoot=new Object(); 
 
-	private AtomicBoolean messaged = new AtomicBoolean(false);
-
-	public RobotOutputStream(Thread battleThread) {
-		super(new BufferedPipedOutputStream(8192, true));
-		bufferedStream = (BufferedPipedOutputStream) super.out;
-		out = new PrintStream(bufferedStream);
+    public RobotOutputStream(Thread battleThread) {
+		super(new BufferedPipedOutputStream(128, true));
 		this.battleThread = battleThread;
-	}
+        this.text=new StringBuilder(8192); 
+    }
 
-	public BufferedPipedInputStream getInputStream() {
-		return bufferedStream.getInputStream();
-	}
 
-	public final boolean isOkToPrint() {
-		if (count.incrementAndGet() > MAX) {
-			if (Thread.currentThread() == battleThread) {
-				return true;
-			}
-			if (!messaged.get()) {
-				out.println(
-						"SYSTEM: This robot is printing too much between actions.  Output stopped until next action.");
-				messaged.set(true);
-			}
-			return false;
-		}
-		messaged.set(false);
-		return true;
-	}
+    public String readAndReset(){
+        synchronized (syncRoot){
+            final String result = text.toString();
+            text.setLength(0);
+            return result;
+        }
+    }
+
+    private boolean isOkToPrint() {
+        synchronized (syncRoot){
+            if (count++ > MAX) {
+                if (Thread.currentThread() == battleThread) {
+                    return true;
+                }
+                if (!messaged) {
+                    text.append(
+                            "SYSTEM: This robot is printing too much between actions.  Output stopped until next action.");
+                    text.append("\n");
+                    messaged=true;
+                }
+                return false;
+            }
+            messaged=false;
+            return true;
+        }
+    }
 
 	public void resetCounter() {
-		count.set(0);
-	}
+        synchronized (syncRoot){
+		    count=0;
+        }
+    }
 
 	@Override
 	public void print(char[] s) {
-		if (isOkToPrint()) {
-			out.print(s);
-			if (s != null) {
-				count.addAndGet(s.length / 1000);
-			}
-		}
-	}
+        if (s != null) {
+            synchronized (syncRoot){
+                if (isOkToPrint()) {
+                    text.append(s);
+                    count+=(s.length / 1000);
+                }
+            }
+        }
+    }
 
 	@Override
 	public void print(char c) {
-		if (isOkToPrint()) {
-			out.print(c);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(c);
+            }
+        }
+    }
 
 	@Override
 	public void print(double d) {
-		if (isOkToPrint()) {
-			out.print(d);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(d);
+            }
+        }
+    }
 
 	@Override
 	public void print(float f) {
-		if (isOkToPrint()) {
-			out.print(f);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(f);
+            }
+        }
+    }
 
 	@Override
 	public void print(int i) {
-		if (isOkToPrint()) {
-			out.print(i);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(i);
+            }
+        }
+    }
 
 	@Override
 	public void print(long l) {
-		if (isOkToPrint()) {
-			out.print(l);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(l);
+            }
+        }
+    }
 
 	@Override
 	public void print(Object obj) {
-		if (isOkToPrint()) {
-			out.print(obj);
-			if (obj != null) {
-				count.addAndGet(obj.toString().length() / 1000);
-			}
-		}
-	}
+        if (obj != null) {
+            synchronized (syncRoot){
+                if (isOkToPrint()) {
+                    final String str = obj.toString();
+                    text.append(str);
+                    count+=(str.length() / 1000);
+                }
+            }
+        }
+    }
 
 	@Override
 	public void print(String s) {
-		if (isOkToPrint()) {
-			out.print(s);
-			if (s != null) {
-				count.addAndGet(s.length() / 1000);
-			}
-		}
+        if (s != null) {
+            synchronized (syncRoot){
+                if (isOkToPrint()) {
+                    text.append(s);
+                    count+=(s.length() / 1000);
+                }
+            }
+        }
 	}
 
 	@Override
 	public void print(boolean b) {
-		if (isOkToPrint()) {
-			out.print(b);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(b);
+            }
+        }
+    }
 
 	@Override
 	public void println() {
-		if (isOkToPrint()) {
-			out.println();
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append("\n");
+            }
+        }
+    }
 
 	@Override
 	public void println(char[] x) {
-		if (isOkToPrint()) {
-			out.println(x);
-			if (x != null) {
-				count.addAndGet(x.length / 1000);
-			}
-		}
-	}
+        if (x != null) {
+            synchronized (syncRoot){
+                if (isOkToPrint()) {
+                    text.append(x);
+                    text.append("\n");
+                    count+=(x.length / 1000);
+                }
+            }
+        }
+    }
 
 	@Override
 	public void println(char x) {
-		if (isOkToPrint()) {
-			out.println(x);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(x);
+                text.append("\n");
+            }
+        }
+    }
 
 	@Override
 	public void println(double x) {
-		if (isOkToPrint()) {
-			out.println(x);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(x);
+                text.append("\n");
+            }
+        }
+    }
 
 	@Override
 	public void println(float x) {
-		if (isOkToPrint()) {
-			out.println(x);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(x);
+                text.append("\n");
+            }
+        }
+    }
 
 	@Override
 	public void println(int x) {
-		if (isOkToPrint()) {
-			out.println(x);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(x);
+                text.append("\n");
+            }
+        }
+    }
 
 	@Override
 	public void println(long x) {
-		if (isOkToPrint()) {
-			out.println(x);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(x);
+                text.append("\n");
+            }
+        }
+    }
 
 	@Override
 	public void println(Object x) {
-		if (isOkToPrint()) {
-			out.println(x);
-			if (x != null) {
-				count.addAndGet(x.toString().length() / 1000);
-			}
-		}
-	}
+        if (x != null) {
+            synchronized (syncRoot){
+                if (isOkToPrint()) {
+                    text.append(x);
+                    text.append("\n");
+                    count+=(x.toString().length() / 1000);
+                }
+            }
+        }
+    }
 
 	@Override
 	public void println(String x) {
-		if (isOkToPrint()) {
-			out.println(x);
-			if (x != null) {
-				count.addAndGet(x.length() / 1000);
-			}
-		}
+        if (x != null) {
+            synchronized (syncRoot){
+                if (isOkToPrint()) {
+                    text.append(x);
+                    text.append("\n");
+                    count+=(x.length() / 1000);
+                }
+            }
+        }
 	}
 
 	@Override
 	public void println(boolean x) {
-		if (isOkToPrint()) {
-			out.println(x);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append("\n");
+                text.append(x);
+            }
+        }
+    }
 
 	@Override
 	public void write(byte[] buf) {
-		if (isOkToPrint()) {
-			out.print(Arrays.toString(buf));
-			count.addAndGet(buf.length / 1000);
-		}
-	}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(Arrays.toString(buf));
+                count+=(buf.length / 1000);
+            }
+        }
+    }
 
 	@Override
 	public void write(int b) {
-		if (isOkToPrint()) {
-			out.print(b);
-		}
+        synchronized (syncRoot){
+            if (isOkToPrint()) {
+                text.append(b);
+            }
+        }
 	}
 
-	public void printStackTrace(Throwable t) {
-		if (isOkToPrint()) {
-			t.printStackTrace(out);
-		}
-	}
+    public void printStackTrace(Throwable t) {
+        if (t != null) {
+            synchronized (syncRoot) {
+                if (isOkToPrint()) {
+                    StringWriter sw = new StringWriter();
+                    final PrintWriter writer = new PrintWriter(sw);
+                    t.printStackTrace(writer);
+                    writer.flush();
+                    text.append(sw.toString());
+                }
+            }
+        }
+    }
 }
