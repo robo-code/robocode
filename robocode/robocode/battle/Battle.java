@@ -474,9 +474,9 @@ public class Battle implements Runnable {
 			robotControls = null;
 		}
 
-		if (pendingRequests != null) {
-			pendingRequests.clear();
-			pendingRequests = null;
+		if (pendingCommands != null) {
+			pendingCommands.clear();
+			pendingCommands = null;
 		}
 
 		battleField = null;
@@ -762,7 +762,7 @@ public class Battle implements Runnable {
 
 		eventDispatcher.onTurnStarted();
 		
-		processRequests();
+		processCommand();
 	}
 
 	private void finalizeTurn() {
@@ -1669,7 +1669,7 @@ public class Battle implements Runnable {
 
 	private List<IRobotControl> robotControls = java.util.Collections.synchronizedList(new ArrayList<IRobotControl>());
 
-	private Queue<Command> pendingRequests = new ConcurrentLinkedQueue<Command>();
+	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
 	public List<IRobotControl> getRobotControls() {
 		return new ArrayList<IRobotControl>(robotControls);
@@ -1681,16 +1681,17 @@ public class Battle implements Runnable {
 		robotControls.add(new RobotControl(robotPeer, index));
 	}
 
-	private void processRequests() {
-		for (Command request : pendingRequests) {
-			try {
-				request.execute();
-			} catch (Exception e) {
-				logError(e);
-			}
-		}
-		pendingRequests.clear();
-	}
+	private void processCommand() {
+        Command command = pendingCommands.poll();
+        while(command!=null){
+            try {
+                command.execute();
+            } catch (Exception e) {
+                logError(e);
+            }
+            command = pendingCommands.poll();
+        }
+    }
 
 	private class RobotControl implements IRobotControl {
 
@@ -1726,32 +1727,32 @@ public class Battle implements Runnable {
 		}
 
 		public void kill() {
-			request(new KillRobotRequest(index));
+			sendCommand(new KillRobotCommand(index));
 		}
 
 		public void setPaintEnabled(boolean enable) {
-			request(new EnableRobotPaintRequest(index, enable));
+			sendCommand(new EnableRobotPaintCommand(index, enable));
 		}
 
 		public void setSGPaintEnabled(boolean enable) {
-			request(new EnableRobotSGPaintRequest(index, enable));
+			sendCommand(new EnableRobotSGPaintCommand(index, enable));
 		}
 	}
 
-	private void request(Command request) {
-		pendingRequests.add(request);
+	private void sendCommand(Command command) {
+		pendingCommands.add(command);
 	}
 
-	private class RobotRequest extends Command {
+	private class RobotCommand extends Command {
 		final int robotIndex;
 
-		RobotRequest(int robotIndex) {
+		RobotCommand(int robotIndex) {
 			this.robotIndex = robotIndex;
 		}
 	}
 
-	private class KillRobotRequest extends RobotRequest {
-		KillRobotRequest(int robotIndex) {
+	private class KillRobotCommand extends RobotCommand {
+		KillRobotCommand(int robotIndex) {
 			super(robotIndex);
 		}
 
@@ -1760,10 +1761,10 @@ public class Battle implements Runnable {
 		}
 	}
 	
-	private class EnableRobotPaintRequest extends RobotRequest {
+	private class EnableRobotPaintCommand extends RobotCommand {
 		final boolean enablePaint;
 
-		EnableRobotPaintRequest(int robotIndex, boolean enablePaint) {
+		EnableRobotPaintCommand(int robotIndex, boolean enablePaint) {
 			super(robotIndex);
 			this.enablePaint = enablePaint;
 		}
@@ -1773,10 +1774,10 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private class EnableRobotSGPaintRequest extends RobotRequest {
+	private class EnableRobotSGPaintCommand extends RobotCommand {
 		final boolean enableSGPaint;
 
-		EnableRobotSGPaintRequest(int robotIndex, boolean enableSGPaint) {
+		EnableRobotSGPaintCommand(int robotIndex, boolean enableSGPaint) {
 			super(robotIndex);
 			this.enableSGPaint = enableSGPaint;
 		}
