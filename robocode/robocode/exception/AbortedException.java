@@ -11,11 +11,12 @@
  *******************************************************************************/
 package robocode.exception;
 
+
 /**
  * @author Pavel Savara (original)
  */
-@SuppressWarnings("serial")
-public class AbortedException extends Error {
+public class AbortedException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
 
 	public AbortedException() {
 		super();
