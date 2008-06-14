@@ -1672,6 +1672,9 @@ public class Battle implements Runnable {
 	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
 	public List<IRobotControl> getRobotControls() {
+		if (robotControls == null) {
+			return null;
+		}
 		return new ArrayList<IRobotControl>(robotControls);
 	}
 
