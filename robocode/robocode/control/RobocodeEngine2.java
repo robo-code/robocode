@@ -34,6 +34,21 @@ public class RobocodeEngine2 extends RobocodeEngine{
         manager.getBattleManager().removeListener(listener);
     }
 
+    /**
+     * Runs the specified battle.
+     *
+     * @param battle the specification of the battle to play including the
+     *               participation robots.
+     * @param waitTillOver will block caller till end of battle
+     * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
+     * @see RobocodeListener#battleMessage(String)
+     * @see BattleSpecification
+     * @see #getLocalRepository()
+     */
+    public void runBattle(BattleSpecification battle, boolean waitTillOver) {
+        manager.getBattleManager().startNewBattle(battle, false, waitTillOver);
+    }
+
     public RobotSpecification[] getLocalRepository(String selectedRobotList){
         RobotSpecification[] repository = getLocalRepository();
 

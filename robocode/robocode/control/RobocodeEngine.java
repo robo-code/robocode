@@ -202,7 +202,7 @@ public class RobocodeEngine {
 	 * @see #getLocalRepository()
 	 */
 	public void runBattle(BattleSpecification battle) {
-		manager.getBattleManager().startNewBattle(battle, false, true);
+		manager.getBattleManager().startNewBattle(battle, false, false);
 	}
 
 	/**

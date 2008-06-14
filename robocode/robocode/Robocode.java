@@ -150,15 +150,18 @@ public class Robocode {
 
     private void runIntroBattle() {
         BattleManager battleManager = manager.getBattleManager();
-        battleManager.setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());
-        battleManager.loadBattleProperties();
+        final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
+        if (intro.exists()){
+            battleManager.setBattleFilename(intro.getPath());
+            battleManager.loadBattleProperties();
 
-        boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
+            boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
 
-        manager.getProperties().setOptionsCommonShowResults(false);
-        battleManager.startNewBattle(battleManager.loadBattleProperties(), false, true);
-        battleManager.setDefaultBattleProperties();
-        manager.getProperties().setOptionsCommonShowResults(origShowResults);
+            manager.getProperties().setOptionsCommonShowResults(false);
+            battleManager.startNewBattle(battleManager.loadBattleProperties(), false, true);
+            battleManager.setDefaultBattleProperties();
+            manager.getProperties().setOptionsCommonShowResults(origShowResults);
+        }
     }
 
     private void loadSetup(String args[]) {
