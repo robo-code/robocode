@@ -298,7 +298,7 @@ public class BattleManager {
 		if (manager.isGUIEnabled()) {
 			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
-			battleView.setup(battleField, battleEventDispatcher);
+            battleView.setup(battleField);
 		}
 		Logger.setLogListener(battleEventDispatcher);
 
@@ -341,7 +341,7 @@ public class BattleManager {
 			battle.addRobot(robotClassMgr);
 		}
 
-		if (manager.isGUIEnabled()) {
+		if (manager.isGUIEnabled()) { // get rid of this, rather onBattleStarted
 			manager.getRobotDialogManager().initialize();
 		}
 
@@ -455,7 +455,7 @@ public class BattleManager {
         return res;
     }
 
-	public Battle getBattle() {
+    public Battle getBattle() { //TODO get rid of it, battle is private
 		return battle;
 	}
 

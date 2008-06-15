@@ -13,9 +13,9 @@ package robocode.battleview;
 
 
 import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.control.BattleSpecification;
+import robocode.manager.BattleManager;
 
 import javax.swing.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,7 +34,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	private AtomicBoolean isRunning;
 	private AtomicBoolean isPaused;
-	private BattleEventDispatcher dispatcher;
+	private BattleManager battleManager;
 
 	private RepaintTask repaintTask = new RepaintTask();
 	private Timer timer;
@@ -46,8 +46,8 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	private long measuredFrameCounter;
 	private long measuredFrameStartTime;
 
-	public AwtBattleAdaptor(BattleEventDispatcher dispatcher, int maxFps, boolean skipSameFrames) {
-		this.dispatcher = dispatcher;
+	public AwtBattleAdaptor(BattleManager battleManager, int maxFps, boolean skipSameFrames) {
+		this.battleManager = battleManager;
 		this.skipSameFrames = skipSameFrames;
 		snapshot = new AtomicReference<TurnSnapshot>(null);
 
@@ -56,14 +56,14 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 		isPaused = new AtomicBoolean(false);
 		lastSnapshot = null;
 
-		dispatcher.addListener(this);
+		battleManager.addListener(this);
 	}
 
 	protected abstract void updateView(TurnSnapshot snapshot);
 
 	protected void finalize() throws Throwable {
 		try {
-			dispatcher.removeListener(this);
+			battleManager.removeListener(this);
 			dispose();
 		} finally {
 			super.finalize();
@@ -80,7 +80,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	public void dispose() {
 		timer.stop();
-		dispatcher.removeListener(this);
+		battleManager.removeListener(this);
 	}
 
 	@Override
