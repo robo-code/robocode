@@ -51,13 +51,15 @@ import java.awt.event.*;
  * @author Flemming N. Larsen (contributor)
  * @author Matthew Reeder (contributor)
  * @author Luis Crespo (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
 
 	private final static int MAX_TPS = 10000;
-
 	private final static int MAX_TPS_SLIDER_VALUE = 51;
+
+	private final static int UPDATE_TITLE_INTERVAL = 500; // milliseconds
 	
 	private EventHandler eventHandler = new EventHandler();
 	private BattleObserver battleObserver;
@@ -662,31 +664,31 @@ public class RobocodeFrame extends JFrame {
 
 
     private class BattleObserver extends BattleAdaptor {
-        private javax.swing.Timer timer;
-
-        private int tps=0;
-        private int roundNum = 0;
-        private int numRounds = 0;
-        private int turn = 0;
-        private boolean isPaused=false;
-        private boolean isRunning=false;
-        private boolean isReplay=false;
         private BattleManager battleManager;
+        private int tps;
+        private int currentRound;
+        private int numberOfRounds;
+        private int currentTurn;
+        private boolean isBattleRunning;
+        private boolean isBattlePaused;
+        private boolean isBattleReplay;
+        private long lastTitleUpdateTime;
 
         public BattleObserver(BattleManager battleManager){
-            timer = new javax.swing.Timer(1000 / 10, new UpdateTask());
-            timer.start();
             this.battleManager=battleManager;
             battleManager.addListener(this);
         }
 
         public void dispose(){
-            timer.stop();
             battleManager.removeListener(this);
         }
 
         @Override
         public void onBattleStarted(TurnSnapshot start, BattleSpecification battleSpecification, boolean isReplay) {
+            numberOfRounds = battleSpecification.getNumRounds();
+            isBattleRunning = true;
+            isBattleReplay = isReplay;
+
             getPauseButton().setEnabled(true);
             getStopButton().setEnabled(true);
             getRestartButton().setEnabled(true);
@@ -712,88 +714,97 @@ public class RobocodeFrame extends JFrame {
             dialogManager.initialize(start.getRobots(), controls);
             getRobotButtonsPanel().repaint();
 
-            numRounds=battleSpecification.getNumRounds();
-            isRunning=true;
-            this.isReplay=isReplay;
-
             validate();
+
+            updateTitle();
         }
 
         @Override
         public void onBattleEnded(boolean isAborted) {
+            isBattleRunning = false;
+
             getPauseButton().setEnabled(false);
             getStopButton().setEnabled(false);
             getReplayButton().setEnabled(manager.getBattleManager().getBattle().hasReplayRecord()); //TODO get rid of battle
-            isRunning=false;
+
+            updateTitle();
         }
 
         @Override
         public void onBattlePaused() {
+            isBattlePaused = true;
+
             getPauseButton().setSelected(true);
             getNextTurnButton().setEnabled(true);
-            isPaused=true;
+
+            updateTitle();
         }
 
         @Override
         public void onBattleResumed() {
+            isBattlePaused = false;
+
             getPauseButton().setSelected(false);
             getNextTurnButton().setEnabled(false);
-            isPaused=false;
-        }
 
+            updateTitle();
+        }
 
         public void onTurnEnded(TurnSnapshot turnSnapshot) {
-            tps=turnSnapshot.getTPS();
-            roundNum=turnSnapshot.getRound();
-            turn=turnSnapshot.getTurn();
-        }
+            tps = turnSnapshot.getTPS();
+            currentRound = turnSnapshot.getRound();
+            currentTurn = turnSnapshot.getTurn();
 
-        private void updateTitle() {
-            StringBuffer title = new StringBuffer("Robocode");
-
-            //Battle battle = manager.getBattleManager().getBattle(); //
-
-            if (isRunning) {
-                title.append(": ");
-
-                if (turn == 0) {
-                    title.append("Starting round");
-                } else {
-                    title.append(isReplay ? "Replaying round " : "Round ");
-                    title.append(roundNum + 1).append(" of ").append(numRounds);
-
-                    if (!isPaused) {
-                        boolean dispTps = manager.getProperties().getOptionsViewTPS();
-                        boolean dispFps = manager.getProperties().getOptionsViewFPS();
-
-                        if (dispTps | dispFps) {
-                            title.append(" (");
-
-                            if (dispTps) {
-                                title.append(tps).append(" TPS");
-                            }
-                            if (dispTps & dispFps) {
-                                title.append(", ");
-                            }
-                            if (dispFps) {
-                                title.append(battleView.getFPS()).append(" FPS");
-                            }
-                            title.append(')');
-                        }
-                    }
-                }
-            }
-            if (isPaused) {
-                title.append(" (paused)");
-            }
-            setTitle(title.toString());
-        }
-
-        private class UpdateTask implements ActionListener {
-            public void actionPerformed(ActionEvent e) {
-                updateTitle();
+            // Only update every half second to spare CPU cycles
+            if ((System.currentTimeMillis() - lastTitleUpdateTime) >= UPDATE_TITLE_INTERVAL) {
+            	updateTitle();
             }
         }
-    }
 
+		private void updateTitle() {
+			StringBuffer title = new StringBuffer("Robocode");
+
+			if (isBattleRunning) {
+				title.append(": ");
+
+				if (currentTurn == 0) {
+					title.append("Starting round");
+				} else {
+					if (isBattleReplay) {
+						title.append("Replaying: ");
+					}
+					title.append("Turn ");
+					title.append(currentTurn);
+					
+					title.append(", Round ");
+					title.append(currentRound + 1).append(" of ").append(numberOfRounds);
+
+					if (!manager.getBattleManager().isPaused()) {
+						boolean dispTps = manager.getProperties().getOptionsViewTPS();
+						boolean dispFps = manager.getProperties().getOptionsViewFPS();
+
+						if (dispTps | dispFps) {
+							title.append(", ");
+
+							if (dispTps) {
+								title.append(tps).append(" TPS");
+							}
+							if (dispTps & dispFps) {
+								title.append(", ");
+							}
+							if (dispFps) {
+								title.append(battleView.getFPS()).append(" FPS");
+							}
+						}
+					}
+				}
+			}
+			if (isBattlePaused) {
+				title.append(" (paused)");
+			}
+			setTitle(title.toString());
+
+			lastTitleUpdateTime = System.currentTimeMillis();
+		}
+	}
 }

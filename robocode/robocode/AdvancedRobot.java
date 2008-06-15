@@ -28,7 +28,6 @@ package robocode;
 import robocode.robotinterfaces.IAdvancedEvents;
 import robocode.robotinterfaces.IAdvancedRobot;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
-import robocode.BattleResults;
 
 import java.io.File;
 import java.util.Vector;

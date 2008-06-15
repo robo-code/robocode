@@ -14,8 +14,6 @@ package robocode.battle;
 
 import robocode.Event;
 
-import java.io.InputStream;
-
 
 /**
  * Used for controlling a robot from the e.g. the UI.

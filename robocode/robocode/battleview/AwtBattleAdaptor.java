@@ -13,7 +13,6 @@ package robocode.battleview;
 
 
 import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.control.BattleSpecification;
 import robocode.manager.BattleManager;

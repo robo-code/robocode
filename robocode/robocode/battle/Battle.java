@@ -118,7 +118,6 @@ import robocode.security.RobocodeClassLoader;
 
 import static java.lang.Math.*;
 
-import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
