@@ -18,6 +18,9 @@ package robocode.io;
 import robocode.battle.events.IBattleListener;
 import robocode.security.SecurePrintStream;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 
 /**
  * This is a class used for logging.
@@ -76,21 +79,19 @@ public class Logger {
 		}
 	}
 
-	public static void logError(String s, Throwable e) {
-		if (logListener == null) {
-			SecurePrintStream.realErr.println(s + ": " + e.getMessage() + " " + e.toString() );
-			e.printStackTrace(SecurePrintStream.realErr);
-		} else {
-			logListener.onBattleError(s + ": " + e);
-		}
+	public static void logError(String message, Throwable t) {
+		logError(message + ":\n" + toStackTraceString(t));
 	}
 
-	public static void logError(Throwable e) {
-		if (logListener == null) {
-			SecurePrintStream.realErr.println(e.getMessage() + " " + e.toString());
-			e.printStackTrace(SecurePrintStream.realErr);
-		} else {
-			logListener.onBattleError(e.toString());
-		}
+	public static void logError(Throwable t) {
+		logError(toStackTraceString(t));
+	}
+
+	private static String toStackTraceString(Throwable t) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(baos);
+		t.printStackTrace(ps);
+		ps.close();
+		return baos.toString();
 	}
 }
