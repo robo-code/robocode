@@ -40,16 +40,16 @@ public class BattleWin extends Robot {
 
     @Override
     public void onWin(WinEvent e) {
-        out.println("Won!");
+        out.println("Win!");
     }
 
     @Override
     public void onDeath(DeathEvent e) {
-        out.println("Died");
+        out.println("Death!");
     }
 
     @Override
     public void onBattleEnded(BattleEndedEvent event) {
-        out.println("Battle ended "+event.getAborted());
+        out.println("BattleEnded!");
     }
 }

@@ -50,24 +50,35 @@ public abstract class RobotTestBed extends BattleAdaptor {
     }
 
     public void onTurnEnded(TurnSnapshot turnSnapshot) {
-        System.out.println(turnSnapshot.getTurn());
+        SecurePrintStream.realOut.println(turnSnapshot.getTurn());
         for(RobotSnapshot robot : turnSnapshot.getRobots()){
-            System.out.print(robot.getVeryShortName());
-            System.out.print(" X:");
-            System.out.print(robot.getX());
-            System.out.print(" Y:");
-            System.out.print(robot.getY());
-            System.out.print(" V:");
-            System.out.print(robot.getVelocity());
-            System.out.println();
+            SecurePrintStream.realOut.print(robot.getVeryShortName());
+            SecurePrintStream.realOut.print(" X:");
+            SecurePrintStream.realOut.print(robot.getX());
+            SecurePrintStream.realOut.print(" Y:");
+            SecurePrintStream.realOut.print(robot.getY());
+            SecurePrintStream.realOut.print(" V:");
+            SecurePrintStream.realOut.print(robot.getVelocity());
+            SecurePrintStream.realOut.println();
+            SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
         }
     }
 
     public abstract String getRobotNames();
 
+    public int getNumRounds(){
+        return 1;
+    }
+
+    public boolean isDeterministic(){
+        return true;
+    }
+
     @Before
     public void setup() {
-        RandomFactory.resetDeterministic(0);
+        if (isDeterministic()){
+            RandomFactory.resetDeterministic(0);
+        }
         errors = 0;
         messages = 0;
     }
@@ -82,6 +93,6 @@ public abstract class RobotTestBed extends BattleAdaptor {
         final String list = getRobotNames();
         final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
         Assert.assertEquals(list.split(",").length, robotSpecifications.length);
-        engine.runBattle(new BattleSpecification(1, battleFieldSpec, robotSpecifications), true);
+        engine.runBattle(new BattleSpecification(getNumRounds(), battleFieldSpec, robotSpecifications), true);
     }
 }

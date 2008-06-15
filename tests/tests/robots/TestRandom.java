@@ -32,10 +32,6 @@ public class TestRandom extends RobotTestBed {
         RobotSnapshot fire = turnSnapshot.getRobots().get(0);
         RobotSnapshot random = turnSnapshot.getRobots().get(1);
         if (turnSnapshot.getTurn() == 1223) {
-            //System.out.println(fire.getX());
-            //System.out.println(fire.getY());
-            //System.out.println(random.getX());
-            //System.out.println(random.getY());
             Assert.assertNear(566.296806911193, fire.getX());
             Assert.assertNear(165.07893614917265, fire.getY());
             Assert.assertNear(104.11480043566866, random.getX());
