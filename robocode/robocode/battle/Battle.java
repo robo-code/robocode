@@ -568,7 +568,7 @@ public class Battle implements Runnable {
 			battleMonitor.notifyAll();
 		}
 
-		eventDispatcher.onBattleStarted(manager.getBattleManager().getBattleSpecification());
+		eventDispatcher.onBattleStarted(manager.getBattleManager().getBattleSpecification(), replay);
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");

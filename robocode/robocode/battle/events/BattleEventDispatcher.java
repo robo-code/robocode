@@ -44,10 +44,10 @@ public class BattleEventDispatcher implements IBattleListener {
 		listeners.remove(listener);
 	}
 
-	public void onBattleStarted(BattleSpecification battleSpecification) {
+	public void onBattleStarted(BattleSpecification battleSpecification, boolean isReplay) {
 		for (IBattleListener listener : listeners) {
             try{
-                listener.onBattleStarted(battleSpecification);
+                listener.onBattleStarted(battleSpecification, isReplay);
             }
             catch (Throwable ex){
                 logError("onBattleStarted", ex);
