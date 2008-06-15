@@ -60,7 +60,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
             SecurePrintStream.realOut.print(" V:");
             SecurePrintStream.realOut.print(robot.getVelocity());
             SecurePrintStream.realOut.println();
-            SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
+            //TODO SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
         }
     }
 
