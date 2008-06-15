@@ -84,7 +84,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	}
 
 	@Override
-	public void onBattleStarted(BattleSpecification battleSpecification) {
+	public void onBattleStarted(BattleSpecification battleSpecification, boolean isReplay) {
 		isRunning.set(true);
 		isPaused.set(false);
 		EventQueue.invokeLater(repaintTask);
