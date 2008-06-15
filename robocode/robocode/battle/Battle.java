@@ -568,8 +568,6 @@ public class Battle implements Runnable {
 			battleMonitor.notifyAll();
 		}
 
-		eventDispatcher.onBattleStarted(manager.getBattleManager().getBattleSpecification(), isReplay());
-
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
 
@@ -622,7 +620,10 @@ public class Battle implements Runnable {
 				}
 			}
 		}
-	}
+
+        eventDispatcher.onBattleStarted(new TurnSnapshot(this), manager.getBattleManager().getBattleSpecification(), isReplay());
+        
+    }
 
     private synchronized boolean isRobotsLoaded() {
 		return robotsLoaded;

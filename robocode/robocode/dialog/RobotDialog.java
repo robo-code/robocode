@@ -100,11 +100,15 @@ public class RobotDialog extends JFrame {
 	@Override
 	protected void finalize() throws Throwable {
 		try {
-			manager.getBattleManager().removeListener(battleObserver);
-		} finally {
+            detach();
+        } finally {
 			super.finalize();
 		}
 	}
+
+    public void detach() {
+        manager.getBattleManager().removeListener(battleObserver);
+    }
 
     /**
      * Resets this robot dialog.
@@ -348,8 +352,11 @@ public class RobotDialog extends JFrame {
         @Override
         public void onTurnEnded(TurnSnapshot turnSnapshot) {
             final RobotSnapshot robotSnapshot = turnSnapshot.getRobots().get(robotIndex);
-            getConsoleScrollPane().append(robotSnapshot.getOutputStreamSnapshot());
-            getConsoleScrollPane().scrollToBottom();
+            final String text = robotSnapshot.getOutputStreamSnapshot();
+            if (text!=null && text.length()>0 ){
+                getConsoleScrollPane().append(text);
+                getConsoleScrollPane().scrollToBottom();
+            }
         }
 
     }

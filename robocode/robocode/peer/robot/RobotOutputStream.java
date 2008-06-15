@@ -45,9 +45,12 @@ public class RobotOutputStream extends java.io.PrintStream {
 
     public String readAndReset(){
         synchronized (syncRoot){
-            final String result = text.toString();
-            text.setLength(0);
-            return result;
+            if (text.length()>0){
+                final String result = text.toString();
+                text.setLength(0);
+                return result;
+            }
+            return "";
         }
     }
 

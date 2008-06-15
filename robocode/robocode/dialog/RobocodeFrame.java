@@ -28,11 +28,10 @@
 package robocode.dialog;
 
 
-import robocode.battle.Battle;
 import robocode.battle.IRobotControl;
 import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleEventDispatcher;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
@@ -96,245 +95,13 @@ public class RobocodeFrame extends JFrame {
 
 	private WindowManager windowManager;
 
-	private class EventHandler implements ComponentListener, ActionListener, ContainerListener, WindowListener,
-			ChangeListener {
-
-		public void actionPerformed(ActionEvent e) {
-			final Object source = e.getSource();
-
-			if (source == getPauseButton()) {
-				pauseResumeButtonActionPerformed();
-			} else if (source == getStopButton()) {
-				manager.getBattleManager().stop();
-			} else if (source == getRestartButton()) {
-				manager.getBattleManager().restart();
-			} else if (source == getNextTurnButton()) {
-				manager.getBattleManager().nextTurn();
-			} else if (source == getReplayButton()) {
-				manager.getBattleManager().replay();
-			}
-		}
-
-		public void componentResized(ComponentEvent e) {
-			if (e.getSource() == getBattleView()) {
-				battleViewResized();
-			}
-			if (e.getSource() == getBattleViewPanel()) {
-				battleViewPanelResized();
-			}
-		}
-
-		public void componentShown(ComponentEvent e) {}
-
-		public void componentHidden(ComponentEvent e) {}
-
-		public void componentRemoved(ContainerEvent e) {}
-
-		public void componentAdded(ContainerEvent e) {}
-
-		public void componentMoved(ComponentEvent e) {}
-
-		public void windowActivated(WindowEvent e) {}
-
-		public void windowClosed(WindowEvent e) {
-			if (exitOnClose) {
-				System.exit(0);
-			}
-		}
-
-		public void windowClosing(WindowEvent e) {
-			exitOnClose = true;
-			if (manager.isSlave()) {
-				WindowUtil.message("If you wish to exit Robocode, please exit the program controlling it.");
-				exitOnClose = false;
-				return;
-			}
-			if (windowManager.closeRobocodeEditor()) {
-				WindowUtil.saveWindowPositions();
-				dispose();
-                battleObserver.dispose();
-            }
-			manager.saveProperties();
-		}
-
-		public void windowDeactivated(WindowEvent e) {}
-
-		public void windowDeiconified(WindowEvent e) {
-			setIconified(false);
-		}
-
-		public void windowIconified(WindowEvent e) {
-			setIconified(true);
-		}
-
-		public void windowOpened(WindowEvent e) {}
-
-		public void stateChanged(ChangeEvent e) {
-			if (e.getSource() == getTpsSlider()) {
-				int tps = getTpsFromSlider();
-				
-				if (tps == 0) {
-					manager.getBattleManager().pauseBattle();
-				} else {
-					if (manager.getBattleManager().isPaused()) {
-						manager.getBattleManager().resumeBattle();
-					}
-
-					// Only set desired TPS if it is not set to zero
-					manager.getProperties().setOptionsBattleDesiredTPS(tps);
-				}
-
-				tpsLabel.setText(getTpsFromSliderAsString());
-			}
-		}
-	}
-
-
-	private class BattleObserver extends BattleAdaptor {
-        private javax.swing.Timer timer;
-        
-        private int tps=0;
-        private int roundNum = 0;
-        private int numRounds = 0;
-        private int turn = 0;
-        private boolean isPaused=false;
-        private boolean isRunning=false;
-        private boolean isReplay=false;
-        private BattleManager battleManager;
-
-        public BattleObserver(BattleManager battleManager){
-            timer = new javax.swing.Timer(1000 / 10, new UpdateTask());
-            timer.start();
-            this.battleManager=battleManager;
-            battleManager.addListener(this);
-        }
-
-        public void dispose(){
-            timer.stop();
-            battleManager.removeListener(this);
-        }
-
-        @Override
-		public void onBattleStarted(BattleSpecification battleSpecification, boolean isReplay) {
-			getPauseButton().setEnabled(true);
-			getStopButton().setEnabled(true);
-			getRestartButton().setEnabled(true);
-			getReplayButton().setEnabled(false);
-
-			getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
-			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
-
-			getRobotButtonsPanel().removeAll();
-
-            final RobotSpecification[] robots = battleSpecification.getRobots();
-            final java.util.List<IRobotControl> controls = manager.getBattleManager().getRobotControls();
-            final RobotDialogManager dialogManager = manager.getRobotDialogManager();
-            for(int index=0;index<robots.length;index++){
-                final RobotSpecification specification = robots[index];
-                final IRobotControl control = controls.get(index);
-                final String uniqueName = specification.getUniqueFullClassNameWithVersion();
-                final RobotButton button = new RobotButton(dialogManager, control, uniqueName, specification.getName(), index);
-                button.setText(specification.getShortName());
-                button.setToolTipText(uniqueName);
-                addRobotButton(button);
-            }
-            dialogManager.initialize(robots);
-            getRobotButtonsPanel().repaint();
-
-            numRounds=battleSpecification.getNumRounds();
-            isRunning=true;
-            this.isReplay=isReplay;
-
-            validate();
-		}
-
-		@Override
-		public void onBattleEnded(boolean isAborted) {
-			getPauseButton().setEnabled(false);
-			getStopButton().setEnabled(false);
-			getReplayButton().setEnabled(manager.getBattleManager().getBattle().hasReplayRecord()); //TODO get rid of battle
-            isRunning=false;
-        }
-
-		@Override
-		public void onBattlePaused() {
-			getPauseButton().setSelected(true);
-			getNextTurnButton().setEnabled(true);
-            isPaused=true;
-		}
-
-		@Override
-		public void onBattleResumed() {
-			getPauseButton().setSelected(false);
-			getNextTurnButton().setEnabled(false);
-            isPaused=false;
-        }
-
-
-        public void onTurnEnded(TurnSnapshot turnSnapshot) {
-            tps=turnSnapshot.getTPS();
-            roundNum=turnSnapshot.getRound();
-            turn=turnSnapshot.getTurn();
-        }
-
-        private void updateTitle() {
-            StringBuffer title = new StringBuffer("Robocode");
-
-            //Battle battle = manager.getBattleManager().getBattle(); //
-
-            if (isRunning) {
-                title.append(": ");
-
-                if (turn == 0) {
-                    title.append("Starting round");
-                } else {
-                    title.append(isReplay ? "Replaying round " : "Round ");
-                    title.append(roundNum + 1).append(" of ").append(numRounds);
-
-                    if (!isPaused) {
-                        boolean dispTps = manager.getProperties().getOptionsViewTPS();
-                        boolean dispFps = manager.getProperties().getOptionsViewFPS();
-
-                        if (dispTps | dispFps) {
-                            title.append(" (");
-
-                            if (dispTps) {
-                                title.append(tps).append(" TPS");
-                            }
-                            if (dispTps & dispFps) {
-                                title.append(", ");
-                            }
-                            if (dispFps) {
-                                title.append(battleView.getFPS()).append(" FPS");
-                            }
-                            title.append(')');
-                        }
-                    }
-                }
-            }
-            if (isPaused) {
-                title.append(" (paused)");
-            }
-            setTitle(title.toString());
-        }
-
-        private class UpdateTask implements ActionListener {
-            public void actionPerformed(ActionEvent e) {
-                updateTitle();
-            }
-        }
+    public RobocodeFrame(RobocodeManager manager) {
+        super();
+        interactiveHandler = new InteractiveHandler(manager);
+        this.windowManager = manager.getWindowManager();
+        this.manager = manager;
+        initialize();
     }
-
-	/**
-	 * RobocodeFrame constructor
-	 */
-	public RobocodeFrame(RobocodeManager manager) {
-		super();
-		interactiveHandler = new InteractiveHandler(manager);
-		this.windowManager = manager.getWindowManager();
-		this.manager = manager;
-		initialize();
-	}
 
 	protected void finalize() throws Throwable {
 		try {
@@ -799,4 +566,234 @@ public class RobocodeFrame extends JFrame {
 
 		return "  " + ((tps == MAX_TPS) ? "max" : "" + tps) + "  ";
 	}
+
+    private class EventHandler implements ComponentListener, ActionListener, ContainerListener, WindowListener,
+            ChangeListener {
+
+        public void actionPerformed(ActionEvent e) {
+            final Object source = e.getSource();
+
+            if (source == getPauseButton()) {
+                pauseResumeButtonActionPerformed();
+            } else if (source == getStopButton()) {
+                manager.getBattleManager().stop();
+            } else if (source == getRestartButton()) {
+                manager.getBattleManager().restart();
+            } else if (source == getNextTurnButton()) {
+                manager.getBattleManager().nextTurn();
+            } else if (source == getReplayButton()) {
+                manager.getBattleManager().replay();
+            }
+        }
+
+        public void componentResized(ComponentEvent e) {
+            if (e.getSource() == getBattleView()) {
+                battleViewResized();
+            }
+            if (e.getSource() == getBattleViewPanel()) {
+                battleViewPanelResized();
+            }
+        }
+
+        public void componentShown(ComponentEvent e) {}
+
+        public void componentHidden(ComponentEvent e) {}
+
+        public void componentRemoved(ContainerEvent e) {}
+
+        public void componentAdded(ContainerEvent e) {}
+
+        public void componentMoved(ComponentEvent e) {}
+
+        public void windowActivated(WindowEvent e) {}
+
+        public void windowClosed(WindowEvent e) {
+            if (exitOnClose) {
+                System.exit(0);
+            }
+        }
+
+        public void windowClosing(WindowEvent e) {
+            exitOnClose = true;
+            if (manager.isSlave()) {
+                WindowUtil.message("If you wish to exit Robocode, please exit the program controlling it.");
+                exitOnClose = false;
+                return;
+            }
+            if (windowManager.closeRobocodeEditor()) {
+                WindowUtil.saveWindowPositions();
+                battleObserver.dispose();
+                dispose();
+            }
+            manager.saveProperties();
+        }
+
+        public void windowDeactivated(WindowEvent e) {}
+
+        public void windowDeiconified(WindowEvent e) {
+            setIconified(false);
+        }
+
+        public void windowIconified(WindowEvent e) {
+            setIconified(true);
+        }
+
+        public void windowOpened(WindowEvent e) {}
+
+        public void stateChanged(ChangeEvent e) {
+            if (e.getSource() == getTpsSlider()) {
+                int tps = getTpsFromSlider();
+
+                if (tps == 0) {
+                    manager.getBattleManager().pauseBattle();
+                } else {
+                    if (manager.getBattleManager().isPaused()) {
+                        manager.getBattleManager().resumeBattle();
+                    }
+
+                    // Only set desired TPS if it is not set to zero
+                    manager.getProperties().setOptionsBattleDesiredTPS(tps);
+                }
+
+                tpsLabel.setText(getTpsFromSliderAsString());
+            }
+        }
+    }
+
+
+    private class BattleObserver extends BattleAdaptor {
+        private javax.swing.Timer timer;
+
+        private int tps=0;
+        private int roundNum = 0;
+        private int numRounds = 0;
+        private int turn = 0;
+        private boolean isPaused=false;
+        private boolean isRunning=false;
+        private boolean isReplay=false;
+        private BattleManager battleManager;
+
+        public BattleObserver(BattleManager battleManager){
+            timer = new javax.swing.Timer(1000 / 10, new UpdateTask());
+            timer.start();
+            this.battleManager=battleManager;
+            battleManager.addListener(this);
+        }
+
+        public void dispose(){
+            timer.stop();
+            battleManager.removeListener(this);
+        }
+
+        @Override
+        public void onBattleStarted(TurnSnapshot start, BattleSpecification battleSpecification, boolean isReplay) {
+            getPauseButton().setEnabled(true);
+            getStopButton().setEnabled(true);
+            getRestartButton().setEnabled(true);
+            getReplayButton().setEnabled(false);
+
+            getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
+            getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+
+            getRobotButtonsPanel().removeAll();
+
+            final RobotSpecification[] robots = battleSpecification.getRobots();
+            final java.util.List<IRobotControl> controls = manager.getBattleManager().getRobotControls();
+            final RobotDialogManager dialogManager = manager.getRobotDialogManager();
+            for(int index=0;index<robots.length;index++){
+                final IRobotControl control = controls.get(index);
+                final RobotSnapshot robot = start.getRobots().get(index);
+                final String name = robot.getName();
+                final RobotButton button = new RobotButton(dialogManager, control, name, index);
+                button.setText(robot.getShortName());
+                button.setToolTipText(name);
+                addRobotButton(button);
+            }
+            dialogManager.initialize(start.getRobots(), controls);
+            getRobotButtonsPanel().repaint();
+
+            numRounds=battleSpecification.getNumRounds();
+            isRunning=true;
+            this.isReplay=isReplay;
+
+            validate();
+        }
+
+        @Override
+        public void onBattleEnded(boolean isAborted) {
+            getPauseButton().setEnabled(false);
+            getStopButton().setEnabled(false);
+            getReplayButton().setEnabled(manager.getBattleManager().getBattle().hasReplayRecord()); //TODO get rid of battle
+            isRunning=false;
+        }
+
+        @Override
+        public void onBattlePaused() {
+            getPauseButton().setSelected(true);
+            getNextTurnButton().setEnabled(true);
+            isPaused=true;
+        }
+
+        @Override
+        public void onBattleResumed() {
+            getPauseButton().setSelected(false);
+            getNextTurnButton().setEnabled(false);
+            isPaused=false;
+        }
+
+
+        public void onTurnEnded(TurnSnapshot turnSnapshot) {
+            tps=turnSnapshot.getTPS();
+            roundNum=turnSnapshot.getRound();
+            turn=turnSnapshot.getTurn();
+        }
+
+        private void updateTitle() {
+            StringBuffer title = new StringBuffer("Robocode");
+
+            //Battle battle = manager.getBattleManager().getBattle(); //
+
+            if (isRunning) {
+                title.append(": ");
+
+                if (turn == 0) {
+                    title.append("Starting round");
+                } else {
+                    title.append(isReplay ? "Replaying round " : "Round ");
+                    title.append(roundNum + 1).append(" of ").append(numRounds);
+
+                    if (!isPaused) {
+                        boolean dispTps = manager.getProperties().getOptionsViewTPS();
+                        boolean dispFps = manager.getProperties().getOptionsViewFPS();
+
+                        if (dispTps | dispFps) {
+                            title.append(" (");
+
+                            if (dispTps) {
+                                title.append(tps).append(" TPS");
+                            }
+                            if (dispTps & dispFps) {
+                                title.append(", ");
+                            }
+                            if (dispFps) {
+                                title.append(battleView.getFPS()).append(" FPS");
+                            }
+                            title.append(')');
+                        }
+                    }
+                }
+            }
+            if (isPaused) {
+                title.append(" (paused)");
+            }
+            setTitle(title.toString());
+        }
+
+        private class UpdateTask implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                updateTitle();
+            }
+        }
+    }
+
 }

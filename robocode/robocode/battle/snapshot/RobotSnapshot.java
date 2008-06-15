@@ -47,7 +47,10 @@ public class RobotSnapshot implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// The name of the robot
-	// private final String name;
+	private final String name;
+
+    // The short name of the robot
+    private final String shortName;
 
 	// The very short name of the robot
 	private final String veryShortName;
@@ -108,8 +111,9 @@ public class RobotSnapshot implements Serializable {
 	 * @param peer the robot peer to make a snapshot of.
 	 */
 	public RobotSnapshot(RobotPeer peer) {
-		// name = peer.getName();
-		veryShortName = peer.getName();
+		name = peer.getName();
+        shortName = peer.getShortName();
+		veryShortName = peer.getVeryShortName();
 
 		state = peer.getState();
 
@@ -148,9 +152,18 @@ public class RobotSnapshot implements Serializable {
 	 *
 	 * @return the name of the robot.
 	 */
-	// public String getName() {
-	// return name;
-	// }
+	public String getName() {
+	    return name;
+	}
+
+    /**
+     * Returns the very short name of this robot.
+     *
+     * @return the very short name of this robot.
+     */
+    public String getShortName() {
+        return shortName;
+    }
 
 	/**
 	 * Returns the very short name of this robot.

@@ -36,24 +36,18 @@ import java.awt.event.ActionListener;
 public class RobotButton extends JButton implements ActionListener {
 
 	private final RobotDialogManager robotDialogManager;
-	private final IRobotControl robotControl;
 	private RobotDialog robotDialog;
-    private final String robotFullUniqueName;
-    private final int index;
     private final String name;
 
 	/**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, IRobotControl robotControl, String robotFullUniqueName, String name, int index) {
-		this.robotControl = robotControl;
+	public RobotButton(RobotDialogManager robotDialogManager, IRobotControl robotControl, String name, int index) {
 		this.robotDialogManager = robotDialogManager;
-        this.robotFullUniqueName =robotFullUniqueName;
-        this.index=index;
         this.name=name;
 
 		initialize();
-		robotDialog = robotDialogManager.getRobotDialog(robotFullUniqueName, false);
+		robotDialog = robotDialogManager.getRobotDialog(name, false);
 		if (robotDialog != null) {
 			robotDialog.reset(robotControl, index, name);
 			robotControl.setPaintEnabled(robotDialog.isPaintEnabled());
@@ -63,8 +57,7 @@ public class RobotButton extends JButton implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (robotDialog == null) {
-			robotDialog = robotDialogManager.getRobotDialog(robotFullUniqueName, true);
-			robotDialog.reset(robotControl, index, name);
+			robotDialog = robotDialogManager.getRobotDialog(name, true);
 			if (!robotDialog.isVisible() || robotDialog.getState() != Frame.NORMAL) {
 				WindowUtil.packPlaceShow(robotDialog);
 			}
