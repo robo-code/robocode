@@ -16,6 +16,8 @@
 package robocode.battle;
 
 
+import robocode.control.BattlefieldSpecification;
+import robocode.control.BattleSpecification;
 import robocode.control.RobotSpecification;
 
 import java.io.FileInputStream;
@@ -213,5 +215,11 @@ public class BattleProperties {
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
+	}
+
+	public BattleSpecification toBattleSpecification() {
+		BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification(battlefieldWidth, battlefieldHeight);
+
+		return new BattleSpecification(numRounds, inactivityTime, gunCoolingRate, battleFieldSpec, null); // TODO: RobotSpecifications should not be null
 	}
 }

@@ -64,7 +64,9 @@ public class BattleSpecification implements java.io.Serializable {
 		battleProperties.setGunCoolingRate(gunCoolingRate);
 		battleProperties.setBattlefieldWidth(battlefieldSize.getWidth());
 		battleProperties.setBattlefieldHeight(battlefieldSize.getHeight());
-		battleProperties.setSelectedRobots(robots);
+		if (robots != null) {
+			battleProperties.setSelectedRobots(robots);
+		}
 
 		this.robots = robots;
 	}

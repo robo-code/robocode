@@ -161,10 +161,12 @@ public class BattleManager {
 		startNewBattle(battleProperties, true);
 	}
 
+    // Called when starting a new battle from GUI
     public void startNewBattle(BattleProperties battleProperties, boolean replay) {
         startNewBattle(battleProperties, replay, false);
     }
 
+    // Called when starting a new battle from GUI
     public void startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
 		this.battleProperties = battleProperties;
 
@@ -186,9 +188,11 @@ public class BattleManager {
 				}
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, null, replay, waitTillOver);
+
+		startNewBattleImpl(battlingRobotsList, battleProperties.toBattleSpecification(), replay, waitTillOver);
 	}
 
+    // Called from the RobocodeEngine
 	public void startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
 		battleProperties = new BattleProperties();
 		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
