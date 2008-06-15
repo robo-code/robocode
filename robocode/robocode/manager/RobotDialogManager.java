@@ -27,6 +27,7 @@ import robocode.battle.IRobotControl;
 import robocode.dialog.RobotDialog;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -36,7 +37,7 @@ import java.util.*;
  */
 public class RobotDialogManager {
 
-	private Map<String, RobotDialog> robotDialogMap = new HashMap<String, RobotDialog>();
+	private Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
 	private RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {

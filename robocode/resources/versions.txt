@@ -4,7 +4,7 @@ Version 1.6.1 Alpha
 o Changes
 - onPaint() in robot event queue. Robot will pay CPU time, added PaintEvent
 - onMouse(), onKey() in robot event queue
-- getGraphics() robot could paint anytime
+- getGraphics() robot could paint any time
 - Added getStatusEvents() and getPaintEvents() to AdvancedRobot and IAdvancedRobotPeer
 - Extended allowed max. length of a robot's full package name from 16 to 32 characters
 - TPS slider, pause on 0 TPS, 
@@ -12,12 +12,13 @@ o Changes
 - -DPARALLEL option, allows robots run in parallel if you have more CPUs. May speedup 
    battles with multiple CPU consuming robots. Time measuring is not per robot.
 - -DRANDOMSEED option, repeatable/deterministic Random generator is used by game 
-  as well as by Math.random(). So your robots will appear in same possition in battle and will be easily testable.
+  as well as by Math.random(). So your robots will appear in same position in battle and will be easily testable.
 - reworked BattleView, introduced IBattleListener, immutable turn snapshots, rendering in AWT thread
 - InterruptedException
-- Logging improvements
+- Logging improvements (logError/logMessage + stack trace always included) 
 - Junit test infrastructure
 - FR:1878233 - onBattleEnd() Event
+- Title in Robocode window is now showing the current turn
 o Bugfixes
 - The JuniorRobot.others was not updated properly when other robots dies
 
