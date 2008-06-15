@@ -75,9 +75,9 @@ public class RobocodeCompiler {
 
 			in = p.getInputStream();
 			err = p.getErrorStream();
-			p.waitFor();
 			console.processStream(in);
 			console.processStream(err);
+			p.waitFor();
 			if (p.exitValue() == 0) {
 				console.append("Compiled successfully.\n");
 				console.setTitle("Compiled successfully.");

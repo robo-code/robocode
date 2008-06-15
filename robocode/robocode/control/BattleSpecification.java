@@ -34,11 +34,6 @@ public class BattleSpecification implements java.io.Serializable {
 	private final RobotSpecification[] robots;
 	private final BattleProperties battleProperties;
 
-    public BattleSpecification(BattleProperties battleProperties, RobotSpecification[] robots) {
-        this.battleProperties = battleProperties; 
-        this.robots = robots;
-    }
-
 	/**
 	 * Creates a new BattleSpecification with the given number of rounds,
 	 * battlefield size, and robots. Inactivity time for the robots defaults to

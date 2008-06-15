@@ -64,6 +64,9 @@ public class CpuManager {
 		Logger.logMessage(
 				"Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
 
+		// TODO ZAMO setWaitConstant();
+		// TODO ZAMO Logger.logError("Java is able to sleep minimum " + waitConstant + " nanoseconds on this system.");
+
 		manager.getProperties().setCpuConstant(cpuConstant);
 		manager.saveProperties();
 

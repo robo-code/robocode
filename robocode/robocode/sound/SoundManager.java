@@ -331,7 +331,7 @@ public class SoundManager {
 		}
 
 		@Override
-		public void onBattleStarted(BattleSpecification battleSpecification, boolean isReplay) {
+		public void onBattleStarted(BattleSpecification battleSpecification) {
 			playBackgroundMusic();
 		}
 

@@ -16,7 +16,6 @@ import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.control.BattleSpecification;
-import robocode.manager.BattleManager;
 
 import javax.swing.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -35,7 +34,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	private AtomicBoolean isRunning;
 	private AtomicBoolean isPaused;
-	private BattleManager battleManager;
+	private BattleEventDispatcher dispatcher;
 
 	private RepaintTask repaintTask = new RepaintTask();
 	private Timer timer;
@@ -47,8 +46,8 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	private long measuredFrameCounter;
 	private long measuredFrameStartTime;
 
-	public AwtBattleAdaptor(BattleManager battleManager, int maxFps, boolean skipSameFrames) {
-		this.battleManager = battleManager;
+	public AwtBattleAdaptor(BattleEventDispatcher dispatcher, int maxFps, boolean skipSameFrames) {
+		this.dispatcher = dispatcher;
 		this.skipSameFrames = skipSameFrames;
 		snapshot = new AtomicReference<TurnSnapshot>(null);
 
@@ -57,14 +56,14 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 		isPaused = new AtomicBoolean(false);
 		lastSnapshot = null;
 
-		battleManager.addListener(this);
+		dispatcher.addListener(this);
 	}
 
 	protected abstract void updateView(TurnSnapshot snapshot);
 
 	protected void finalize() throws Throwable {
 		try {
-			battleManager.removeListener(this);
+			dispatcher.removeListener(this);
 			dispose();
 		} finally {
 			super.finalize();
@@ -81,11 +80,11 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	public void dispose() {
 		timer.stop();
-		battleManager.removeListener(this);
+		dispatcher.removeListener(this);
 	}
 
 	@Override
-	public void onBattleStarted(BattleSpecification battleSpecification, boolean isReplay) {
+	public void onBattleStarted(BattleSpecification battleSpecification) {
 		isRunning.set(true);
 		isPaused.set(false);
 		EventQueue.invokeLater(repaintTask);

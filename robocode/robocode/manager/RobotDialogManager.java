@@ -24,8 +24,6 @@ package robocode.manager;
 
 import robocode.battle.IRobotControl;
 import robocode.dialog.RobotDialog;
-import robocode.control.BattleSpecification;
-import robocode.control.RobotSpecification;
 
 import java.util.*;
 
@@ -37,7 +35,7 @@ import java.util.*;
  */
 public class RobotDialogManager {
 
-	private Map<String, RobotDialog> robotDialogMap = new HashMap<String, RobotDialog>();
+	private Map<IRobotControl, RobotDialog> robotDialogMap = new HashMap<IRobotControl, RobotDialog>();
 	private RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {
@@ -45,47 +43,48 @@ public class RobotDialogManager {
 		this.manager = manager;
 	}
 
-	public void initialize(RobotSpecification[] robots) {
+	public void initialize() {
+		List<IRobotControl> robotControls = manager.getBattleManager().getRobotControls();
 
 		// new ArrayList in order to prevent ConcurrentModificationException
-		for (String robotFullUniqueName : new ArrayList<String>(robotDialogMap.keySet())) {
+		for (IRobotControl robotControlInMap : new ArrayList<IRobotControl>(robotDialogMap.keySet())) {
 			boolean found = false;
 
-			for (RobotSpecification robot : robots) {
-				if (robot.getUniqueFullClassNameWithVersion().equals(robotFullUniqueName)) {
+			for (IRobotControl robotControl : robotControls) {
+				if (robotControl.getName().equals(robotControlInMap.getName())) {
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-				RobotDialog dialog = robotDialogMap.get(robotFullUniqueName);
+				RobotDialog dialog = robotDialogMap.get(robotControlInMap);
 
-				robotDialogMap.remove(robotFullUniqueName);
+				robotDialogMap.remove(robotControlInMap);
 				dialog.dispose();
 			}
 		}
 	}
 
 	public void reset() {
-		for (String robotFullUniqueName : robotDialogMap.keySet()) {
-			RobotDialog dialog = robotDialogMap.get(robotFullUniqueName);
+		for (IRobotControl robotControl : robotDialogMap.keySet()) {
+			RobotDialog dialog = robotDialogMap.get(robotControl);
 
 			if (!dialog.isVisible()) {
-				robotDialogMap.remove(robotFullUniqueName);
+				robotDialogMap.remove(robotControl);
 				dialog.dispose();
 			}
 		}
 	}
 
-	public RobotDialog getRobotDialog(String robotFullUniqueName, boolean create) {
-		RobotDialog dialog = robotDialogMap.get(robotFullUniqueName);
+	public RobotDialog getRobotDialog(IRobotControl robotControl, boolean create) {
+		RobotDialog dialog = robotDialogMap.get(robotControl);
 
 		if (create && dialog == null) {
 			if (robotDialogMap.size() > 10) {
 				reset();
 			}
 			dialog = new RobotDialog(manager);
-			robotDialogMap.put(robotFullUniqueName, dialog);
+			robotDialogMap.put(robotControl, dialog);
 		}
 		return dialog;
 	}
