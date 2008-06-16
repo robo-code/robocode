@@ -68,7 +68,7 @@ public class RankingDialog extends JDialog {
 	 * RankingDialog constructor
 	 */
 	public RankingDialog(RobocodeManager manager, boolean isCurrentRankings) {
-		super(manager.getWindowManager().getRobocodeFrame(), true);
+		super(manager.getWindowManager().getRobocodeFrame(), !isCurrentRankings);
         this.manager = manager;
 		this.isCurrentRankings = isCurrentRankings;
 		initialize();
