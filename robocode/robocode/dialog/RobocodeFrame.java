@@ -76,8 +76,7 @@ public class RobocodeFrame extends JFrame {
 	private JPanel robocodeContentPane;
 	private JLabel statusLabel;
 
-//	private BattleView battleView;
-	private Battle3DView battleView;
+	private BattleView battleView;
 
 	public String version;
 
@@ -275,7 +274,7 @@ public class RobocodeFrame extends JFrame {
 	 * Called when the battle view is resized
 	 */
 	private void battleViewResized() {
-		battleView.validate();
+		battleView.getCanvas().validate();
 		battleView.setInitialized(false);
 	}
 
@@ -285,7 +284,7 @@ public class RobocodeFrame extends JFrame {
 	 * use a layout manager if someone wants to write one...
 	 */
 	public void battleViewPanelResized() {
-		battleView.setBounds(getBattleViewPanel().getBounds());
+		battleView.getCanvas().setBounds(getBattleViewPanel().getBounds());
 	}
 
 	/**
@@ -293,10 +292,10 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return robocode.BattleView
 	 */
-	public Battle3DView getBattleView() {
+	public BattleView getBattleView() {
 		if (battleView == null) {
 			battleView = new Battle3DView(manager, this);
-			battleView.addComponentListener(eventHandler);
+			battleView.getCanvas().addComponentListener(eventHandler);
 		}
 		return battleView;
 	}
@@ -328,7 +327,7 @@ public class RobocodeFrame extends JFrame {
 			battleViewPanel = new JPanel();
 			battleViewPanel.setPreferredSize(new Dimension(800, 600));
 			battleViewPanel.setLayout(null);
-			battleViewPanel.add(getBattleView());
+			battleViewPanel.add(getBattleView().getCanvas());
 			battleViewPanel.addComponentListener(eventHandler);
 		}
 		return battleViewPanel;
@@ -623,10 +622,10 @@ public class RobocodeFrame extends JFrame {
 
 		addWindowListener(eventHandler);
 
-		getBattleView().addMouseListener(interactiveHandler);
-		getBattleView().addMouseMotionListener(interactiveHandler);
-		getBattleView().addMouseWheelListener(interactiveHandler);
-		getBattleView().setFocusable(true);
+		getBattleView().getCanvas().addMouseListener(interactiveHandler);
+		getBattleView().getCanvas().addMouseMotionListener(interactiveHandler);
+		getBattleView().getCanvas().addMouseWheelListener(interactiveHandler);
+		getBattleView().getCanvas().setFocusable(true);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(interactiveHandler);
 
 		if (manager.isSlave()) {

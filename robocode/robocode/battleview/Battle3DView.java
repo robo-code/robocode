@@ -41,7 +41,7 @@ import robocode.manager.RobocodeManager;
  * @author Marco Della Vedova
  */
 @SuppressWarnings("serial")
-public class Battle3DView extends GLCanvas {
+public class Battle3DView extends BattleView {
 	private final static int TIMER_TICKS_PER_SECOND = 50;
 
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
@@ -61,15 +61,17 @@ public class Battle3DView extends GLCanvas {
 
 	private GeneralPath robocodeTextPath = new RobocodeLogo().getRobocodeText();
 	private Animator4Robocode animator;
-    private MVCManager4Robocode mvcManager; //TODO HINT
+    private MVCManager4Robocode mvcManager;
     private TurnSnapshot lastSnapshot;
 
     /**
 	 * BattleView constructor.
 	 */
 	public Battle3DView(RobocodeManager manager, RobocodeFrame robocodeFrame) {
-		super( new GLCapabilities() );
-		mvcManager = new MVCManager4Robocode( this ); //TODO HINT
+		super(manager, robocodeFrame);
+		canvas = new GLCanvas( new GLCapabilities() );
+		
+		mvcManager = new MVCManager4Robocode( (GLCanvas)canvas );
 		OptionFrame4Robocode oFrame = new OptionFrame4Robocode( mvcManager );
 		mvcManager.setOptionFrame( oFrame );
 		oFrame.setVisible( true );
@@ -93,8 +95,8 @@ public class Battle3DView extends GLCanvas {
 			initialize(snapshot);
 		}
 
-		if (robocodeFrame.isIconified() /*|| offscreenImage == null */ || !isDisplayable() || (getWidth() <= 0)
-				|| (getHeight() <= 0)) {
+		if (robocodeFrame.isIconified() /*|| offscreenImage == null */ || !canvas.isDisplayable() || (canvas.getWidth() <= 0)
+				|| (canvas.getHeight() <= 0)) {
 			return;
 		}
 //		if(snapshot!=null){
@@ -126,7 +128,6 @@ public class Battle3DView extends GLCanvas {
 
 	}
 
-	@Override
 	public void paint(Graphics g) {
 		if (observer != null && observer.isRunning()) {
 			update(observer.getLastSnapshot());
@@ -161,12 +162,12 @@ public class Battle3DView extends GLCanvas {
 	 * Draws the Robocode logo
 	 */
 	private void paintRobocodeLogo(Graphics2D g) {
-		setBackground(Color.BLACK);
-		g.clearRect(0, 0, getWidth(), getHeight());
+		canvas.setBackground(Color.BLACK);
+		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2.0, (getHeight() - 46) / 2.0));
+		g.transform(AffineTransform.getTranslateInstance((canvas.getWidth() - 320) / 2.0, (canvas.getHeight() - 46) / 2.0));
 		g.setColor(new Color(0, 0x40, 0));
 		g.fill(robocodeTextPath);
 
@@ -176,7 +177,7 @@ public class Battle3DView extends GLCanvas {
 		g.setTransform(new AffineTransform());
 		g.setFont(font);
 		g.setColor(new Color(0, 0x50, 0));
-		g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
+		g.drawString(ROBOCODE_SLOGAN, (float) ((canvas.getWidth() - width) / 2.0), (float) (canvas.getHeight() / 2.0 + 50));
 	}
 
 	public void setInitialized(boolean initialized) {

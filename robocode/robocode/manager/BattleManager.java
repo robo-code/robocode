@@ -317,8 +317,7 @@ public class BattleManager {
 				battleProperties.getBattlefieldHeight());
 
 		if (manager.isGUIEnabled()) {
-//			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-			Battle3DView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 			battleView.setup(battleField, battleEventDispatcher);
 		}
@@ -347,9 +346,9 @@ public class BattleManager {
 		}
 
 		if (manager.isGUIEnabled()) {
-			robocode.battleview.Battle3DView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
+			robocode.battleview.BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
-			battleView.setVisible(true);
+			battleView.getCanvas().setVisible(true);
 			battleView.setInitialized(false);
 		}
 
