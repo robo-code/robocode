@@ -44,6 +44,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 
 /**
@@ -699,19 +700,19 @@ public class RobocodeFrame extends JFrame {
 
             getRobotButtonsPanel().removeAll();
 
-            final RobotSpecification[] robots = battleSpecification.getRobots();
             final java.util.List<IRobotControl> controls = manager.getBattleManager().getRobotControls();
             final RobotDialogManager dialogManager = manager.getRobotDialogManager();
-            for(int index=0;index<robots.length;index++){
+            final java.util.List<RobotSnapshot> robots = start.getRobots();
+            for(int index=0;index<robots.size();index++){
                 final IRobotControl control = controls.get(index);
-                final RobotSnapshot robot = start.getRobots().get(index);
+                final RobotSnapshot robot = robots.get(index);
                 final String name = robot.getName();
                 final RobotButton button = new RobotButton(dialogManager, control, name, index);
                 button.setText(robot.getShortName());
                 button.setToolTipText(name);
                 addRobotButton(button);
             }
-            dialogManager.initialize(start.getRobots(), controls);
+            dialogManager.initialize(robots, controls);
             getRobotButtonsPanel().repaint();
 
             validate();
