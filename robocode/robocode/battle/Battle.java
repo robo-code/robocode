@@ -397,7 +397,7 @@ public class Battle implements Runnable {
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
-		RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota());
+		RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota(), robots.size());
 		TeamPeer teamManager = robotClassManager.getTeamManager();
 
 		if (teamManager != null) {

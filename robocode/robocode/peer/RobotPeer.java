@@ -127,7 +127,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	IBasicRobot robot;
 
-	private RobotOutputStream out;
+    int index; //robot index in battle
+
+    private RobotOutputStream out;
 
 	private double energy;
 	private double velocity;
@@ -244,14 +246,29 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private IBasicRobotPeer robotProxy;
 
-	public RobotPeer(String name) {
-		this.name = name;
+    /**
+     * RobotPeer constructor
+     */
+    public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota, int index) {
+        super();
+        this.robotClassManager = robotClassManager;
+        robotThreadManager = new RobotThreadManager(this);
+        robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
+        eventManager = new EventManager(this);
+        boundingBox = new BoundingRectangle();
+        scanArc = new Arc2D.Double();
+        teamPeer = robotClassManager.getTeamManager();
+        this.index=index;
 
-		battleField = new DefaultBattleField(800, 600);
-		battle = new Battle(battleField, null, null); // FIXME: Avoid this
-	}
+        // Create statistics after teamPeer set
+        statistics = new RobotStatistics(this);
+    }
 
-	public boolean isIORobot() {
+    public int getIndex() {
+        return index;
+    }
+
+    public boolean isIORobot() {
 		return isIORobot;
 	}
 
@@ -1452,23 +1469,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public boolean isTeammate(String name) {
 		return getTeamPeer() != null && getTeamPeer().contains(name);
-	}
-
-	/**
-	 * RobotPeer constructor
-	 */
-	public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota) {
-		super();
-		this.robotClassManager = robotClassManager;
-		robotThreadManager = new RobotThreadManager(this);
-		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
-		eventManager = new EventManager(this);
-		boundingBox = new BoundingRectangle();
-		scanArc = new Arc2D.Double();
-		teamPeer = robotClassManager.getTeamManager();
-
-		// Create statistics after teamPeer set
-		statistics = new RobotStatistics(this);
 	}
 
 	public synchronized Bullet fire(double power) {
