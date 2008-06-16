@@ -33,6 +33,7 @@ import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.RobotState;
@@ -331,7 +332,7 @@ public class SoundManager {
 		}
 
 		@Override
-		public void onBattleStarted(TurnSnapshot start, BattleSpecification battleSpecification, boolean isReplay) {
+		public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
 			playBackgroundMusic();
 		}
 

@@ -323,7 +323,7 @@ public class Battle implements Runnable {
 
 		eventDispatcher.onBattleEnded(isAborted());
 		if (!isAborted()) {
-			eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleSpecification(), computeResults());
+			eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleProperties(), computeResults());
 		}
 		Logger.setLogListener(null);
 
@@ -612,7 +612,7 @@ public class Battle implements Runnable {
 			}
 		}
 
-        eventDispatcher.onBattleStarted(new TurnSnapshot(this), manager.getBattleManager().getBattleSpecification(), isReplay());
+        eventDispatcher.onBattleStarted(new TurnSnapshot(this), manager.getBattleManager().getBattleProperties(), isReplay());
         
     }
 

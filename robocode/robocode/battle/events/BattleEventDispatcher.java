@@ -14,6 +14,7 @@ package robocode.battle.events;
 
 import static robocode.io.Logger.logError;
 import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.BattleProperties;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
 
@@ -44,10 +45,10 @@ public class BattleEventDispatcher implements IBattleListener {
 		listeners.remove(listener);
 	}
 
-	public void onBattleStarted(TurnSnapshot start, BattleSpecification battleSpecification, boolean isReplay) {
+	public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
 		for (IBattleListener listener : listeners) {
             try{
-                listener.onBattleStarted(start, battleSpecification, isReplay);
+                listener.onBattleStarted(start, battleProperties, isReplay);
             }
             catch (Throwable ex){
                 logError("onBattleStarted", ex);
@@ -55,10 +56,10 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-	public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
+	public void onBattleCompleted(BattleProperties battleProperties, RobotResults[] results) {
 		for (IBattleListener listener : listeners) {
             try{
-                listener.onBattleCompleted(battleSpecification, results);
+                listener.onBattleCompleted(battleProperties, results);
             }
             catch (Throwable ex){
                 logError("onBattleCompleted", ex);

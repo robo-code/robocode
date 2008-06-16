@@ -37,6 +37,7 @@ import robocode.manager.BattleManager;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.BattleResultsTableModel;
 import robocode.battle.Battle;
+import robocode.battle.BattleProperties;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotResults;
 import robocode.security.SecurePrintStream;
@@ -300,7 +301,7 @@ public class Robocode {
     private class BattleObserver extends BattleAdaptor {
 
         @Override
-        public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
+        public void onBattleCompleted(BattleProperties battleProperties, RobotResults[] results) {
             printResultsData();
         }
 

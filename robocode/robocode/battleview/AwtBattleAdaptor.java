@@ -14,7 +14,7 @@ package robocode.battleview;
 
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.control.BattleSpecification;
+import robocode.battle.BattleProperties;
 import robocode.manager.BattleManager;
 
 import javax.swing.*;
@@ -84,7 +84,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	}
 
 	@Override
-	public void onBattleStarted(TurnSnapshot start, BattleSpecification battleSpecification, boolean isReplay) {
+	public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
 		isRunning.set(true);
 		isPaused.set(false);
 		EventQueue.invokeLater(repaintTask);

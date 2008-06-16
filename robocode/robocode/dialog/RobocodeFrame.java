@@ -29,6 +29,7 @@ package robocode.dialog;
 
 
 import robocode.battle.IRobotControl;
+import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.BattleAdaptor;
@@ -685,8 +686,8 @@ public class RobocodeFrame extends JFrame {
         }
 
         @Override
-        public void onBattleStarted(TurnSnapshot start, BattleSpecification battleSpecification, boolean isReplay) {
-            numberOfRounds = battleSpecification.getNumRounds();
+        public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
+            numberOfRounds = battleProperties.getNumRounds();
             isBattleRunning = true;
             isBattleReplay = isReplay;
 

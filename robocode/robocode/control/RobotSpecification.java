@@ -41,7 +41,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 *
 	 * @param fileSpecification the file specification of the robot
 	 */
-	public RobotSpecification(robocode.repository.FileSpecification fileSpecification) {
+	RobotSpecification(robocode.repository.FileSpecification fileSpecification) {
 		this.fileSpecification = fileSpecification;
 	}
 
@@ -55,14 +55,6 @@ public class RobotSpecification implements java.io.Serializable {
 	public String getName() {
 		return fileSpecification.getName();
 	}
-
-    public String getShortName() {
-        return fileSpecification.getNameManager().getUniqueShortClassNameWithVersion();
-    }
-
-    public String getUniqueFullClassNameWithVersion() {
-        return fileSpecification.getNameManager().getUniqueFullClassNameWithVersion();
-    }
 
 	/**
 	 * Returns the version of this robot or team.

@@ -38,6 +38,7 @@ import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
 import robocode.battle.events.BattleAdaptor;
+import robocode.battle.BattleProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,6 +58,7 @@ import java.util.List;
 public class RobocodeEngine {
 	RobocodeManager manager;
     private BattleObserver battleObserver;
+    private BattleSpecification battleSpecification;
 
     /**
 	 * Creates a new RobocodeEngine for controlling Robocode.
@@ -194,15 +196,16 @@ public class RobocodeEngine {
 	/**
 	 * Runs the specified battle.
 	 *
-	 * @param battle the specification of the battle to play including the
+	 * @param battleSpecification the specification of the battle to play including the
 	 *               participation robots.
 	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
 	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification
 	 * @see #getLocalRepository()
 	 */
-	public void runBattle(BattleSpecification battle) {
-		manager.getBattleManager().startNewBattle(battle, false, false);
+	public void runBattle(BattleSpecification battleSpecification) {
+        this.battleSpecification=battleSpecification;
+        manager.getBattleManager().startNewBattle(battleSpecification, false, false);
 	}
 
 	/**
@@ -224,13 +227,13 @@ public class RobocodeEngine {
         @Override
         public void onBattleEnded(boolean isAborted) {
             if (isAborted) {
-                listener.battleAborted(manager.getBattleManager().getBattleSpecification());
+                listener.battleAborted(battleSpecification);
             }
         }
 
         @Override
-        public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
-            listener.battleComplete(manager.getBattleManager().getBattleSpecification(), results);
+        public void onBattleCompleted(BattleProperties battleProperties, RobotResults[] results) {
+            listener.battleComplete(battleSpecification, results);
         }
 
         @Override

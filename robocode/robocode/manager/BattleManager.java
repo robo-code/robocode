@@ -92,7 +92,6 @@ public class BattleManager {
     private RobocodeManager manager;
 
     private Battle battle;
-    private BattleSpecification battleSpecification;
     private BattleProperties battleProperties = new BattleProperties();
 
     private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
@@ -162,10 +161,12 @@ public class BattleManager {
         startNewBattle(battleProperties, true);
     }
 
+    // Called when starting a new battle from GUI
     public void startNewBattle(BattleProperties battleProperties, boolean replay) {
         startNewBattle(battleProperties, replay, false);
     }
 
+    // Called when starting a new battle from GUI
     public boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
         this.battleProperties = battleProperties;
 
@@ -188,19 +189,11 @@ public class BattleManager {
             }
         }
 
-        final RobotSpecification[] specifications = new RobotSpecification[battlingRobotsList.size()];
-        for (int index = 0; index < battlingRobotsList.size(); index++) {
-            RobotClassManager rcm = battlingRobotsList.get(index);
-            RobotSpecification rs = new RobotSpecification(rcm.getRobotSpecification());
-            rcm.setControlRobotSpecification(rs);
-            specifications[index] = rs;
+        startNewBattleImpl(battlingRobotsList, replay, waitTillOver);
+        return true;
         }
 
-        BattleSpecification specification = new BattleSpecification(battleProperties, specifications);
-        startNewBattleImpl(battlingRobotsList, specification, replay, waitTillOver);
-        return true;
-    }
-
+    // Called from the RobocodeEngine
 	public boolean startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
         battleProperties = new BattleProperties();
         battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
@@ -231,7 +224,7 @@ public class BattleManager {
 				return false;
             }
         }
-        startNewBattleImpl(battlingRobotsList, spec, replay, waitTillOver);
+        startNewBattleImpl(battlingRobotsList, replay, waitTillOver);
         return true;
     }
 
@@ -295,10 +288,7 @@ public class BattleManager {
         return false;
     }
 
-    private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, BattleSpecification battleSpecification,
-                                    boolean replay, boolean waitTillOver) {
-
-        this.battleSpecification = battleSpecification;
+    private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
 
         logMessage("Preparing battle...");
         if (battle != null) {
@@ -473,10 +463,6 @@ public class BattleManager {
             battleProperties = new BattleProperties();
         }
         return battleProperties;
-    }
-
-    public BattleSpecification getBattleSpecification() {
-        return battleSpecification;
     }
 
     public void setDefaultBattleProperties() {

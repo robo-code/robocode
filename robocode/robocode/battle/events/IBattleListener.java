@@ -2,17 +2,18 @@ package robocode.battle.events;
 
 
 import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.BattleProperties;
 import robocode.control.RobotResults;
 import robocode.control.BattleSpecification;
 
 
 public interface IBattleListener {
 
-	public void onBattleStarted(TurnSnapshot start, BattleSpecification battleSpecification, boolean isReplay);
+	public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay);
 
 	public void onBattleEnded(boolean isAborted);
 
-	public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results);
+	public void onBattleCompleted(BattleProperties battleProperties, RobotResults[] results);
 
 	public void onBattlePaused();
 
