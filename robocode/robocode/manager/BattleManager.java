@@ -378,19 +378,52 @@ public class BattleManager {
         return (pauseCount.get() != 0);
     }
 
+    public boolean toglePauseBattle() {
+        if (isPaused()){
+            resumeBattle();
+            return true;
+        }
+        else{
+            pauseBattle();
+            return true;
+        }
+    }
+    
     public void pauseBattle() {
         if (pauseCount.incrementAndGet() == 1) {
-            battleEventDispatcher.onBattlePaused();
+            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
+                battleEventDispatcher.onBattlePaused();
+            }
+        }
+    }
+
+
+    public void pauseIfResumedBattle() {
+        if (pauseCount.compareAndSet(0,1)){
+            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
+                battleEventDispatcher.onBattlePaused();
+            }
+        }
+    }
+
+    public void resumeIfPausedBattle() {
+        if (pauseCount.compareAndSet(1,0)){
+            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
+                battleEventDispatcher.onBattleResumed();
+            }
         }
     }
 
     public void resumeBattle() {
-        int oldPauseCount = pauseCount.get();
-
-        pauseCount.set(Math.max(pauseCount.decrementAndGet(), 0));
-
-        if (oldPauseCount == 1) {
-            battleEventDispatcher.onBattleResumed();
+        final int current = pauseCount.decrementAndGet();
+        if (current < 0){
+            pauseCount.set(0);
+            logError("SYSTEM: pause game bug!");
+        }
+        else if (current == 0) {
+            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
+                battleEventDispatcher.onBattleResumed();
+            }
         }
     }
 

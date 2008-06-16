@@ -71,6 +71,8 @@ public class RobotDialogManager {
             final String name = robot.getName();
             final RobotDialog robotDialog = getRobotDialog(name, true);
             robotDialog.reset(control, index, name);
+            control.setPaintEnabled(robotDialog.isPaintEnabled());
+            control.setSGPaintEnabled(robotDialog.isSGPaintEnabled());
         }
 
     }

@@ -82,42 +82,45 @@ public class WindowManager {
 	}
 
 	public void showBattleOpenDialog() {
-		manager.getBattleManager().pauseBattle();
+        BattleManager battleManager = manager.getBattleManager();
+        try{
+            battleManager.pauseBattle();
 
-		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
+            JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 
-		chooser.setFileFilter(new FileFilter() {
-			@Override
-			public boolean accept(File pathname) {
-				if (pathname.isDirectory()) {
-					return true;
-				}
-				String filename = pathname.getName();
-				int idx = filename.lastIndexOf('.');
+            chooser.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    if (pathname.isDirectory()) {
+                        return true;
+                    }
+                    String filename = pathname.getName();
+                    int idx = filename.lastIndexOf('.');
 
-				String extension = "";
+                    String extension = "";
 
-				if (idx >= 0) {
-					extension = filename.substring(idx);
-				}
-				return extension.equalsIgnoreCase(".battle");
-			}
+                    if (idx >= 0) {
+                        extension = filename.substring(idx);
+                    }
+                    return extension.equalsIgnoreCase(".battle");
+                }
 
-			@Override
-			public String getDescription() {
-				return "Battles";
-			}
-		});
+                @Override
+                public String getDescription() {
+                    return "Battles";
+                }
+            });
 
-		BattleManager battleManager = manager.getBattleManager();
 
-		if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
-			battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
-			battleManager.loadBattleProperties();
-			showNewBattleDialog(battleManager.getBattleProperties());
-		}
-
-		battleManager.resumeBattle();
+            if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
+                battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
+                battleManager.loadBattleProperties();
+                showNewBattleDialog(battleManager.getBattleProperties());
+            }
+        }
+        finally {
+            battleManager.resumeBattle();
+        }
 	}
 
 	public void showVersionsTxt() {
@@ -161,14 +164,19 @@ public class WindowManager {
 	}
 
 	public void showOptionsPreferences() {
-		manager.getBattleManager().pauseBattle();
+        try{
+            manager.getBattleManager().pauseBattle();
 
-		// Create the preferencesDialog
-		PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
+            // Create the preferencesDialog
+            PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
 
-		// Show it
-		WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
-	}
+            // Show it
+            WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
+        }
+        finally {
+            manager.getBattleManager().resumeBattle();
+        }
+    }
 
 	public void showResultsDialog() {
 		packCenterShow(new ResultsDialog(manager));
@@ -244,13 +252,18 @@ public class WindowManager {
 	}
 
 	public void showNewBattleDialog(BattleProperties battleProperties) {
-		manager.getBattleManager().pauseBattle();
+        try{
+            manager.getBattleManager().pauseBattle();
 
-		NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
+            NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
 
-		// Pack, center, and show it
-		WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
-	}
+            // Pack, center, and show it
+            WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
+        }
+        finally {
+            manager.getBattleManager().resumeBattle();            
+        }
+    }
 
 	public boolean closeRobocodeEditor() {
 		return robocodeEditor == null || !robocodeEditor.isVisible() || robocodeEditor.close();

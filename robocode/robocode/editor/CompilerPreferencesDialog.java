@@ -76,7 +76,7 @@ public class CompilerPreferencesDialog extends JDialog {
 	 * PackagerOptionsPanel constructor comment.
 	 */
 	public CompilerPreferencesDialog(JFrame owner) {
-		super(owner);
+		super(owner, true);
 		this.compilerProperties = RobocodeCompilerFactory.getCompilerProperties();
 		initialize();
 	}

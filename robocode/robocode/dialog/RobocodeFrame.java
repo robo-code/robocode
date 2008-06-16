@@ -512,13 +512,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private void pauseResumeButtonActionPerformed() {
-		BattleManager battleManager = manager.getBattleManager();
-
-		if (battleManager.isPaused()) {
-			battleManager.resumeBattle();
-		} else {
-			battleManager.pauseBattle();
-		}
+        manager.getBattleManager().toglePauseBattle();
 	}
 
 	/**
@@ -670,14 +664,11 @@ public class RobocodeFrame extends JFrame {
                 int tps = getTpsFromSlider();
 
                 if (tps == 0) {
-                    manager.getBattleManager().pauseBattle();
+                    manager.getBattleManager().pauseIfResumedBattle();
                 } else {
-                    if (manager.getBattleManager().isPaused()) {
-                        manager.getBattleManager().resumeBattle();
-                    }
-
                     // Only set desired TPS if it is not set to zero
                     manager.getProperties().setOptionsBattleDesiredTPS(tps);
+                    manager.getBattleManager().resumeIfPausedBattle();
                 }
 
                 tpsLabel.setText(getTpsFromSliderAsString());

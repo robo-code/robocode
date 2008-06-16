@@ -22,6 +22,7 @@ package robocode.dialog;
 
 
 import robocode.battle.IRobotControl;
+import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.BattleAdaptor;
@@ -329,17 +330,24 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Pause/Resume button has been activated
 	 */
 	private void pauseResumeButtonActionPerformed() {
-		BattleManager battleManager = manager.getBattleManager();
-
-		if (battleManager.isPaused()) {
-			battleManager.resumeBattle();
-		} else {
-			battleManager.pauseBattle();
-		}
+        manager.getBattleManager().toglePauseBattle();
 	}
 
 	private class BattleObserver extends BattleAdaptor {
-		@Override
+
+        @Override
+        public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
+            getPauseButton().setEnabled(true);
+            getKillButton().setEnabled(true);
+        }
+        
+        @Override
+        public void onBattleEnded(boolean isAborted) {
+            getPauseButton().setEnabled(false);
+            getKillButton().setEnabled(false);
+        }
+
+        @Override
 		public void onBattlePaused() {
 			getPauseButton().setSelected(true);
 		}

@@ -118,7 +118,7 @@ public final class AboutBox extends JDialog {
 	 * AboutBox constructor
 	 */
 	public AboutBox(Frame owner, RobocodeManager manager) {
-		super(owner);
+		super(owner, true);
 
 		robocodeVersion = manager.getVersionManager().getVersion();
 

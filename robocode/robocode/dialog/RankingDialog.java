@@ -41,7 +41,7 @@ import java.awt.event.*;
  * @author Nathaniel Troutman (contributor)
  */
 @SuppressWarnings("serial")
-public class RankingDialog extends JFrame {
+public class RankingDialog extends JDialog {
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -68,8 +68,8 @@ public class RankingDialog extends JFrame {
 	 * RankingDialog constructor
 	 */
 	public RankingDialog(RobocodeManager manager, boolean isCurrentRankings) {
-		super();
-		this.manager = manager;
+		super(manager.getWindowManager().getRobocodeFrame(), true);
+        this.manager = manager;
 		this.isCurrentRankings = isCurrentRankings;
 		initialize();
 	}
