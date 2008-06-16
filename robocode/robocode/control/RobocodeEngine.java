@@ -39,6 +39,7 @@ import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.BattleProperties;
+import robocode.BattleResults;
 
 import java.io.File;
 import java.io.IOException;
@@ -232,8 +233,13 @@ public class RobocodeEngine {
         }
 
         @Override
-        public void onBattleCompleted(BattleProperties battleProperties, RobotResults[] results) {
-            listener.battleComplete(battleSpecification, results);
+        public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {
+            RobotResults[] robotResults = new RobotResults[results.length];
+            RobotSpecification[] robots = battleSpecification.getRobots();
+            for(int index=0;index<results.length;index++){
+                robotResults[index]=new RobotResults(robots[index], results[index]);
+            }
+            listener.battleComplete(battleSpecification, robotResults);
         }
 
         @Override

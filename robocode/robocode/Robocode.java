@@ -38,8 +38,6 @@ import robocode.battle.events.BattleAdaptor;
 import robocode.battle.BattleResultsTableModel;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
-import robocode.control.BattleSpecification;
-import robocode.control.RobotResults;
 import robocode.security.SecurePrintStream;
 
 import java.awt.*;
@@ -301,7 +299,7 @@ public class Robocode {
     private class BattleObserver extends BattleAdaptor {
 
         @Override
-        public void onBattleCompleted(BattleProperties battleProperties, RobotResults[] results) {
+        public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {
             printResultsData();
         }
 

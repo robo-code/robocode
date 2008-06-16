@@ -3,8 +3,7 @@ package robocode.battle.events;
 
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.BattleProperties;
-import robocode.control.RobotResults;
-import robocode.control.BattleSpecification;
+import robocode.BattleResults;
 
 
 public class BattleAdaptor implements IBattleListener {
@@ -13,7 +12,7 @@ public class BattleAdaptor implements IBattleListener {
 
 	public void onBattleEnded(boolean isAborted) {}
 
-	public void onBattleCompleted(BattleProperties battleProperties, RobotResults[] results) {}
+	public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {}
 
 	public void onBattlePaused() {}
 

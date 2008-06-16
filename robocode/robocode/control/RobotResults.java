@@ -68,6 +68,15 @@ public class RobotResults extends BattleResults {
         this.robot = robot;
 	}
 
+    public RobotResults(
+            RobotSpecification robot,
+            BattleResults results) {
+        super(results.getRank(), results.getScore(), results.getSurvival(), results.getLastSurvivorBonus(),
+                results.getBulletDamage(), results.getBulletDamageBonus(), results.getRamDamage(), results.getRamDamageBonus(),
+                results.getFirsts(), results.getSeconds(), results.getThirds());
+        this.robot = robot;
+    }
+
 	/**
 	 * Returns the robot these results are meant for.
 	 *

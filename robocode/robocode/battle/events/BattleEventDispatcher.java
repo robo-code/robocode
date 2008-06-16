@@ -15,8 +15,7 @@ package robocode.battle.events;
 import static robocode.io.Logger.logError;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.BattleProperties;
-import robocode.control.BattleSpecification;
-import robocode.control.RobotResults;
+import robocode.BattleResults;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-	public void onBattleCompleted(BattleProperties battleProperties, RobotResults[] results) {
+	public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {
 		for (IBattleListener listener : listeners) {
             try{
                 listener.onBattleCompleted(battleProperties, results);

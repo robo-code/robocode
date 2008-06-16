@@ -104,7 +104,6 @@ import robocode.battle.record.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.common.Command;
-import robocode.control.RobotResults;
 import robocode.control.RandomFactory;
 import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
@@ -371,23 +370,16 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private RobotResults[] computeResults() {
+	private BattleResults[] computeResults() {
 		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());
 
 		Collections.sort(orderedPeers);
 
-		RobotResults results[] = new RobotResults[orderedPeers.size()];
+		BattleResults results[] = new BattleResults[orderedPeers.size()];
 
 		for (int i = 0; i < results.length; i++) {
 			ContestantPeer peer = orderedPeers.get(i);
-			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
-
-			ContestantStatistics stats = peer.getStatistics();
-
-            results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
-					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
-					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
-					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
+			results[i] = peer.getStatistics().getResults(i + 1);
 		}
 		return results;
 	}
