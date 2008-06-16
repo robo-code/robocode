@@ -40,6 +40,7 @@ import robocode.manager.*;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotSpecification;
 import robocode.io.FileUtil;
+import robocode.BattleResults;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -742,10 +743,6 @@ public class RobocodeFrame extends JFrame {
             getReplayButton().setEnabled(manager.getBattleManager().getBattle().hasReplayRecord()); //TODO get rid of battle
 
             updateTitle();
-
-            if (!isAborted && manager.getProperties().getOptionsCommonShowResults()){
-                manager.getWindowManager().showResultsDialog();
-            }
         }
 
         @Override
@@ -824,5 +821,27 @@ public class RobocodeFrame extends JFrame {
 
 			lastTitleUpdateTime = System.currentTimeMillis();
 		}
-	}
+
+        @Override
+        public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {
+            if (manager.getProperties().getOptionsCommonShowResults()){
+                //show on ATW thread
+                ResultsTask resultTask=new ResultsTask(battleProperties, results);
+                EventQueue.invokeLater(resultTask);
+            }
+        }
+
+        private class ResultsTask implements Runnable {
+            BattleProperties battleProperties;
+            BattleResults[] results;
+            ResultsTask(BattleProperties battleProperties, BattleResults[] results){
+                this.battleProperties=battleProperties;
+                this.results=results;
+            }
+
+            public void run() {
+                manager.getWindowManager().showResultsDialog();
+            }
+        }
+    }
 }
