@@ -62,6 +62,7 @@ public class RobotDialogManager {
 
 				robotDialogMap.remove(name);
 				dialog.dispose();
+                dialog.detach();
 			}
 		}
 
