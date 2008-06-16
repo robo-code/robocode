@@ -116,50 +116,32 @@ public class Robocode {
                     System.exit(8);
                 }
             }
-            if (!manager.isGUIEnabled()) {
-                return true;
-            }
-
-            if (!setup.minimize && setup.battleFilename == null) {
-                if (manager.isSoundEnabled()) {
-                    manager.getSoundManager().playThemeMusic();
+            if (manager.isGUIEnabled()) {
+                if (!setup.minimize && setup.battleFilename == null) {
+                    if (manager.isSoundEnabled()) {
+                        manager.getSoundManager().playThemeMusic();
+                    }
+                    manager.getWindowManager().showSplashScreen();
                 }
-                manager.getWindowManager().showSplashScreen();
-            }
-            manager.getWindowManager().showRobocodeFrame(true);
-            if (!setup.minimize) {
-                manager.getVersionManager().checkUpdateCheck();
-            }
-            if (setup.minimize) {
-                manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
-            }
+                manager.getWindowManager().showRobocodeFrame(true);
+                if (!setup.minimize) {
+                    manager.getVersionManager().checkUpdateCheck();
+                }
+                if (setup.minimize) {
+                    manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
+                }
 
-            if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
-                manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
-                manager.saveProperties();
-                runIntroBattle();
+                if (!manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
+                    manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
+                    manager.saveProperties();
+                    manager.getWindowManager().getRobocodeFrame().runIntroBattle();
+                }
             }
 
             return true;
         } catch (Throwable e) {
             Logger.logError(e);
             return false;
-        }
-    }
-
-    private void runIntroBattle() {
-        BattleManager battleManager = manager.getBattleManager();
-        final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
-        if (intro.exists()){
-            battleManager.setBattleFilename(intro.getPath());
-            battleManager.loadBattleProperties();
-
-            boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
-
-            manager.getProperties().setOptionsCommonShowResults(false);
-            battleManager.startNewBattle(battleManager.loadBattleProperties(), false, true);
-            battleManager.setDefaultBattleProperties();
-            manager.getProperties().setOptionsCommonShowResults(origShowResults);
         }
     }
 

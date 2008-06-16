@@ -39,6 +39,7 @@ import robocode.gfx.ImageUtil;
 import robocode.manager.*;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotSpecification;
+import robocode.io.FileUtil;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -46,6 +47,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.io.File;
 
 
 /**
@@ -120,6 +122,25 @@ public class RobocodeFrame extends JFrame {
 		b.setVisible(true);
 		getRobotButtonsPanel().validate();
 	}
+
+    public void runIntroBattle() {
+        BattleManager battleManager = manager.getBattleManager();
+        final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
+        if (intro.exists()){
+            battleManager.setBattleFilename(intro.getPath());
+            battleManager.loadBattleProperties();
+
+            boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
+
+            manager.getProperties().setOptionsCommonShowResults(false);
+            battleManager.startNewBattle(battleManager.loadBattleProperties(), false, true);
+            battleManager.setDefaultBattleProperties();
+            manager.getProperties().setOptionsCommonShowResults(origShowResults);
+            restartButton.setEnabled(false);
+            getRobotButtonsPanel().removeAll();
+            getRobotButtonsPanel().repaint();
+        }
+    }
 
 	/**
 	 * Called when the battle view is resized
