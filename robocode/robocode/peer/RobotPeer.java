@@ -205,6 +205,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private String name;
 	private String shortName;
+    private String veryShortName;
 	private String nonVersionedName;
 
 	private int setCallCount;
@@ -529,7 +530,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public String getName() {
-		return (name != null) ? shortName : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
 	}
 
 	public String getShortName() {
@@ -539,8 +540,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public String getVeryShortName() {
-		return (shortName != null)
-				? shortName
+		return (veryShortName != null)
+				? veryShortName
 				: robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
 	}
 
@@ -1638,8 +1639,18 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 		name = cnm.getFullClassNameWithVersion() + countString;
 		shortName = cnm.getUniqueShortClassNameWithVersion() + countString;
-		nonVersionedName = cnm.getFullClassName() + countString;
+        veryShortName =cnm.getUniqueVeryShortClassNameWithVersion() + countString; 
+        nonVersionedName = cnm.getFullClassName() + countString;
 	}
+
+    public synchronized void setUnicate() {
+        NameManager cnm = getRobotClassManager().getClassNameManager();
+
+        name = cnm.getFullClassNameWithVersion();
+        shortName = cnm.getUniqueShortClassNameWithVersion();
+        veryShortName =cnm.getUniqueVeryShortClassNameWithVersion();
+        nonVersionedName = cnm.getFullClassName();
+    }
 
 	public synchronized boolean isDuplicate() {
 		return isDuplicate;

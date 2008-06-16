@@ -417,7 +417,10 @@ public class Battle implements Runnable {
 		if (count > 0) {
 			robotPeer.setDuplicate(count);
 		}
-		robots.add(robotPeer);
+        else{
+            robotPeer.setUnicate();
+        }
+        robots.add(robotPeer);
 
 		createRobotControl(robotPeer);
 	}
