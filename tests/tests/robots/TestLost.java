@@ -27,17 +27,12 @@ public class TestLost extends RobotTestBed {
 
     @Override
     public int getNumRounds(){
-        return 20;
-    }
-
-    @Override
-    public boolean isDeterministic(){
-        return false;
+        return 5;
     }
 
     @Override
     public String getRobotNames(){
-        return "sample.Crazy,testing.BattleLost";
+        return "sample.Fire,testing.BattleLost";
     }
 
     public void onTurnEnded(TurnSnapshot turnSnapshot) {

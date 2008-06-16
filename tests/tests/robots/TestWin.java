@@ -27,12 +27,7 @@ public class TestWin extends RobotTestBed {
 
     @Override
     public int getNumRounds(){
-        return 20;
-    }
-
-    @Override
-    public boolean isDeterministic(){
-        return false;
+        return 5;
     }
 
     @Override

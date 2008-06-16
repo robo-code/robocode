@@ -728,7 +728,11 @@ public class Battle implements Runnable {
 
 		deathEvents.clear();
 
-		roundOver = checkBattleOver();
+        if (isAborted() || oneTeamRemaining()) {
+            processShutdown();
+        }
+        
+        roundOver = (endTimer > 5 * 30);
 
 		inactiveTurnCount++;
 
@@ -1129,74 +1133,65 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private boolean checkBattleOver() {
-		boolean battleOver = false;
-
-		// Check game over
-		if (isAborted() || oneTeamRemaining()) {
-			if (endTimer == 0 && oneTeamRemaining()) {
-				boolean leaderFirsts = false;
-				TeamPeer winningTeam = null;
-
-				for (RobotPeer r : getRobotsAtRandom()) {
-					if (!r.isDead()) {
-						if (!r.isWinner()) {
-							r.getRobotStatistics().scoreLastSurvivor();
-							r.setWinner(true);
-                            r.getOut().println("SYSTEM: " + r.getName() + " wins the round.");
-                            r.getEventManager().add(new WinEvent());
-							if (r.getTeamPeer() != null) {
-								if (r.isTeamLeader()) {
-									leaderFirsts = true;
-								} else {
-									winningTeam = r.getTeamPeer();
-								}
-							}
-						}
-                    }
-				}
-				if (!leaderFirsts && winningTeam != null) {
-					winningTeam.getTeamLeader().getRobotStatistics().scoreFirsts();
-				}
-			}
-
-            if (endTimer == 0 && isAborted()) {
+	private void processShutdown() {
+        if (endTimer == 0) {
+            if (isAborted()) {
                 for (RobotPeer r : getRobotsAtRandom()) {
                     if (!r.isDead()) {
-                        r.setHalt(true);
                         r.getOut().println("SYSTEM: game aborted.");
                     }
                 }
             }
+            else if (oneTeamRemaining()) {
+                boolean leaderFirsts = false;
+                TeamPeer winningTeam = null;
 
-            if (endTimer == 1 && (isAborted() || roundNum+1==numRounds)){
-
-                List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
-
-                Collections.sort(orderedRobots);
-
-                for (int rank = 0; rank < robots.size(); rank++) {
-                    RobotPeer r = orderedRobots.get(rank);
-                    BattleResults resultsForRobots = r.getStatistics().getResults(rank + 1);
-                    r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots));
+                for (RobotPeer r : getRobotsAtRandom()) {
+                    if (!r.isDead()) {
+                        if (!r.isWinner()) {
+                            r.getRobotStatistics().scoreLastSurvivor();
+                            r.setWinner(true);
+                            r.getOut().println("SYSTEM: " + r.getName() + " wins the round.");
+                            r.getEventManager().add(new WinEvent());
+                            if (r.getTeamPeer() != null) {
+                                if (r.isTeamLeader()) {
+                                    leaderFirsts = true;
+                                } else {
+                                    winningTeam = r.getTeamPeer();
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!leaderFirsts && winningTeam != null) {
+                    winningTeam.getTeamLeader().getRobotStatistics().scoreFirsts();
                 }
             }
+        }
+        
+        if (endTimer == 1 && (isAborted() || isLastRound())){
+
+            List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
+
+            Collections.sort(orderedRobots);
+
+            for (int rank = 0; rank < robots.size(); rank++) {
+                RobotPeer r = orderedRobots.get(rank);
+                BattleResults resultsForRobots = r.getStatistics().getResults(rank + 1);
+                r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots));
+            }
+        }
 
 
-            if (endTimer > 4 * 30) {
-				for (RobotPeer r : robots) {
-					if (!r.isDead()) {
-						r.setHalt(true);
-					}
-				}
-			}
+        if (endTimer > 4 * 30) {
+            for (RobotPeer r : robots) {
+                if (!r.isDead()) {
+                    r.setHalt(true);
+                }
+            }
+        }
 
-			endTimer++;
-			if (endTimer > 5 * 30) {
-				battleOver = true;
-			}
-		}
-		return battleOver;
+        endTimer++;
 	}
 
 	private int getActiveContestantCount(RobotPeer peer) {
@@ -1586,6 +1581,10 @@ public class Battle implements Runnable {
 	public int getRoundNum() {
 		return roundNum;
 	}
+
+    public boolean isLastRound() {
+        return (roundNum + 1 == numRounds);
+    }
 
 	/**
 	 * Sets the roundNum.

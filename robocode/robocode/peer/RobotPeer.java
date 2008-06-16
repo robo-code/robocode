@@ -587,76 +587,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return state != RobotState.DEAD;
 	}
 
-	public void run() {
-		setRunning(true);
-
-		try {
-			if (robot != null) {
-
-				// Process all events for the first turn.
-				// This is done as the first robot status event must occur before the robot
-				// has started running.
-				eventManager.processEvents();
-
-				Runnable runnable = robot.getRobotRunnable();
-
-				if (runnable != null) {
-					runnable.run();
-				}
-			}
-			for (;;) {
-				execute();
-			}
-        } catch (AbortedException e) {
-            waitForBattleEndedEvent();
-		} catch (DeathException e) {
-			out.println("SYSTEM: " + getName() + " has died");
-            waitForBattleEndedEvent();
-        } catch (WinException e) {// Do nothing
-            waitForBattleEndedEvent();
-		} catch (DisabledException e) {
-			setEnergy(0);
-			String msg = e.getMessage();
-
-			if (msg == null) {
-				msg = "";
-			} else {
-				msg = ": " + msg;
-			}
-			out.println("SYSTEM: Robot disabled" + msg);
-		} catch (Exception e) {
-			final String message = getName() + ": Exception: " + e;
-
-			out.println(message);
-			out.printStackTrace(e);
-			logMessage(message);
-		} catch (Throwable t) {
-			if (!(t instanceof ThreadDeath)) {
-				final String message = getName() + ": Throwable: " + t;
-
-				out.println(message);
-				out.printStackTrace(t);
-				logMessage(message);
-			} else {
-				logMessage(getName() + " stopped successfully.");
-			}
-		}
-
-		// If battle is waiting for us, well, all done!
-		synchronized (this) {
-			isRunning = false;
-			notifyAll();
-		}
-	}
-
-    private void waitForBattleEndedEvent() {
-        if (battle.isAborted() || battle.getRoundNum()+1 == battle.getNumRounds()) {
-            while (!eventManager.processBattleEndedEvent() && !getHalt()) {
-                waitForNextRound();
-            }
-        }
-    }
-
     private boolean intersects(Arc2D arc, Rectangle2D rect) {
 		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
 				arc.getStartPoint().getY()))
@@ -808,12 +738,69 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		y = newY;
 	}
 
-	public final void execute() {
-		if (newBullet != null) {
-			battle.addBullet(newBullet);
-			newBullet = null;
-		}
+    public void run() {
+        setRunning(true);
 
+        try {
+            if (robot != null) {
+
+                // Process all events for the first turn.
+                // This is done as the first robot status event must occur before the robot
+                // has started running.
+                eventManager.processEvents();
+
+                Runnable runnable = robot.getRobotRunnable();
+
+                if (runnable != null) {
+                    runnable.run();
+                }
+            }
+            for (;;) {
+                execute();
+            }
+        } catch (AbortedException e) {
+            waitForBattleEndedEvent();
+        } catch (DeathException e) {
+            out.println("SYSTEM: " + getName() + " has died");
+            waitForBattleEndedEvent();
+        } catch (WinException e) {// Do nothing
+            waitForBattleEndedEvent();
+        } catch (DisabledException e) {
+            setEnergy(0);
+            String msg = e.getMessage();
+
+            if (msg == null) {
+                msg = "";
+            } else {
+                msg = ": " + msg;
+            }
+            out.println("SYSTEM: Robot disabled" + msg);
+        } catch (Exception e) {
+            final String message = getName() + ": Exception: " + e;
+
+            out.println(message);
+            out.printStackTrace(e);
+            logMessage(message);
+        } catch (Throwable t) {
+            if (!(t instanceof ThreadDeath)) {
+                final String message = getName() + ": Throwable: " + t;
+
+                out.println(message);
+                out.printStackTrace(t);
+                logMessage(message);
+            } else {
+                logMessage(getName() + " stopped successfully.");
+            }
+        }
+
+        // If battle is waiting for us, well, all done!
+        synchronized (this) {
+            isRunning = false;
+            notifyAll();
+        }
+    }
+
+	public final void execute() {
 		// Entering tick
 		if (Thread.currentThread() != robotThreadManager.getRunThread()) {
 			throw new RobotException("You cannot take action in this thread!");
@@ -826,18 +813,27 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		setSetCallCount(0);
 		setGetCallCount(0);
 
+        if (newBullet != null) {
+            battle.addBullet(newBullet);
+            newBullet = null;
+        }
+
 		// This stops autoscan from scanning...
 		if (waitCondition != null && waitCondition.test()) {
 			waitCondition = null;
 		}
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
+        if (battle.isAborted()){
+            throw new AbortedException();
+        }
+        if (isDead()) {
+            throw new DeathException();
+        }
 		if (getHalt()) {
-			if (isDead()) {
-				throw new DeathException();
-			} else if (isWinner) {
+            if (isWinner) {
 				throw new WinException();
-			} else {
+			} else{
                 throw new AbortedException();
             }
         }
@@ -845,10 +841,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
         waitForNextRound();
 
         eventManager.setFireAssistValid(false);
-
-		if (isDead()) {
-			setHalt(true);
-		}
 
 		// Out's counter must be reset before processing event.
 		// Otherwise, it will not be reset when printing in the onScannedEvent()
@@ -859,7 +851,15 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		eventManager.processEvents();
 	}
 
-    public void waitForNextRound() {
+    private void waitForBattleEndedEvent() {
+        if (battle.isAborted() || (battle.isLastRound() && isDead())) {
+            while (!getHalt() && !eventManager.processBattleEndedEvent()) {
+                waitForNextRound();
+            }
+        }
+    }
+
+    private void waitForNextRound() {
         synchronized (this) {
             // Notify the battle that we are now asleep.
             // This ends any pending wait() call in battle.runRound().
