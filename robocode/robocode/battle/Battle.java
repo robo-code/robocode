@@ -305,27 +305,19 @@ public class Battle implements Runnable {
 				r.getRobotThreadManager().cleanup();
 			}
 			unsafeLoadRobotsThread.interrupt();
-
-			if (!isAborted() && manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
-				manager.getWindowManager().showResultsDialog();
-			}
 		} else {
 			// Replay
 
 			if (!isAborted()) {
-				if (manager.getProperties().getOptionsCommonShowResults()) {
-					BattleResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
+                BattleResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
 
-					for (int i = 0; i < robots.size(); i++) {
-						RobotPeer robot = robots.get(i);
+                for (int i = 0; i < robots.size(); i++) {
+                    RobotPeer robot = robots.get(i);
 
-						RobotStatistics stats = new RobotStatistics(robot, results[i]);
+                    RobotStatistics stats = new RobotStatistics(robot, results[i]);
 
-						robot.setStatistics(stats);
-					}
-
-					manager.getWindowManager().showResultsDialog();
-				}
+                    robot.setStatistics(stats);
+                }
 			}
 		}
 

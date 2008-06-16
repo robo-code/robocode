@@ -728,6 +728,10 @@ public class RobocodeFrame extends JFrame {
             getReplayButton().setEnabled(manager.getBattleManager().getBattle().hasReplayRecord()); //TODO get rid of battle
 
             updateTitle();
+
+            if (!isAborted && manager.getProperties().getOptionsCommonShowResults()){
+                manager.getWindowManager().showResultsDialog();
+            }
         }
 
         @Override
