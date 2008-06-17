@@ -597,7 +597,7 @@ public class RobocodeFrame extends JFrame {
             } else if (source == getRestartButton()) {
                 manager.getBattleManager().restart();
             } else if (source == getNextTurnButton()) {
-                manager.getBattleManager().nextTurn();
+                manager.getBattleManager().getBattleControl().nextTurn();
             } else if (source == getReplayButton()) {
                 manager.getBattleManager().replay();
             }

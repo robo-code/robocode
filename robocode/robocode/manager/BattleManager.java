@@ -102,8 +102,6 @@ public class BattleManager {
 
     private AtomicInteger pauseCount = new AtomicInteger(0);
 
-    private int stepTurn;
-
     public BattleManager(RobocodeManager manager) {
         this.manager = manager;
     }
@@ -123,32 +121,6 @@ public class BattleManager {
 
     public IBattleControl getBattleControl() {
     	return battle.getBattleControl();
-    }
-
-    /**
-     * Steps for a single turn, then goes back to paused
-     */
-    public void nextTurn() {
-        if (battle != null && battle.isRunning()) {
-            stepTurn = battle.getCurrentTime() + 1;
-        }
-    }
-
-    /**
-     * If the battle is paused, this method determines if it should perform one turn and then stop again.
-     *
-     * @return true if the battle should perform one turn, false otherwise
-     */
-    public boolean shouldStep() {
-        // This code assumes it is called only if the battle is paused.
-        return stepTurn > battle.getCurrentTime();
-    }
-
-    /**
-     * This method should be called to inform the battle manager that a new round is starting
-     */
-    public void startNewRound() {
-        stepTurn = 0;
     }
 
     public void stop() {

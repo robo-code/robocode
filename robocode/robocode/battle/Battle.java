@@ -653,14 +653,13 @@ public class Battle implements Runnable {
 		endTimer = 0;
 		currentTime = 0;
 		inactiveTurnCount = 0;
+		currentStepTurn = 0;
 
 		eventDispatcher.onRoundStarted(roundNum);
 
 		if (isRecordingEnabled) {
 			currentRoundRecord = new RoundRecord();
 		}
-
-		battleManager.startNewRound();
 
 		while (!roundOver) {
 			runTurn();
@@ -680,10 +679,9 @@ public class Battle implements Runnable {
 
 		endTimer = 0;
 		currentTime = 0;
+		currentStepTurn = 0;
 
 		eventDispatcher.onRoundStarted(roundNum);
-
-		battleManager.startNewRound();
 
 		while (!(roundOver || isAborted())) {
 			replayTurn();
@@ -695,7 +693,9 @@ public class Battle implements Runnable {
 	}
 
 	private void replayTurn() {
-		if (shouldPause() && !battleManager.shouldStep()) {
+		processCommands();
+
+		if (shouldPause() && !shouldStep()) {
 			shortSleep();
 			return;
 		}
@@ -710,7 +710,9 @@ public class Battle implements Runnable {
 	}
 
 	private void runTurn() {
-		if (shouldPause() && !battleManager.shouldStep()) {
+		processCommands();
+
+		if (shouldPause() && !shouldStep()) {
 			shortSleep();
 			return;
 		}
@@ -755,8 +757,6 @@ public class Battle implements Runnable {
 		turnStartTime = System.nanoTime();
 
 		eventDispatcher.onTurnStarted();
-		
-		processCommands();
 	}
 
 	private void finalizeTurn() {
@@ -1923,12 +1923,5 @@ public class Battle implements Runnable {
     private boolean shouldStep() {
         // This code assumes it is called only if the battle is paused.
         return currentStepTurn > getCurrentTime();
-    }
-
-    /**
-     * This method should be called to inform the battle manager that a new round is starting
-     */
-    private void startNewRound() {
-        currentStepTurn = 0;
     }
 }
