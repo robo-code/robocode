@@ -53,6 +53,7 @@ package robocode.manager;
 
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
+import robocode.battle.IBattleControl;
 import robocode.battle.IRobotControl;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
@@ -118,6 +119,10 @@ public class BattleManager {
             return null;
         }
         return battle.getRobotControls();
+    }
+
+    public IBattleControl getBattleControl() {
+    	return battle.getBattleControl();
     }
 
     /**
@@ -378,14 +383,11 @@ public class BattleManager {
         return (pauseCount.get() != 0);
     }
 
-    public boolean toglePauseBattle() {
-        if (isPaused()){
+    public void togglePauseBattle() {
+        if (isPaused()) {
             resumeBattle();
-            return true;
-        }
-        else{
+        } else {
             pauseBattle();
-            return true;
         }
     }
     

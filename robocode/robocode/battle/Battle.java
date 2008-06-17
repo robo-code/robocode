@@ -120,6 +120,8 @@ import static java.lang.Math.*;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -154,8 +156,8 @@ public class Battle implements Runnable {
 	// Battle items
 	private Thread battleThread;
 	private final Object battleMonitor = new Object();
-	private volatile boolean running;
-	private volatile boolean aborted;
+	private volatile boolean isRunning;
+	private volatile boolean isAborted;
 
 	// Option related items
 	private double gunCoolingRate = .1;
@@ -335,14 +337,14 @@ public class Battle implements Runnable {
 
 		// Notify that the battle is over
 		synchronized (battleMonitor) {
-			running = false;
+			isRunning = false;
 			battleMonitor.notifyAll();
 		}
 	}
 
 	public void waitTillStarted() {
 		synchronized (battleMonitor) {
-			while (!running) {
+			while (!isRunning) {
 				try {
 					battleMonitor.wait();
 				} catch (InterruptedException e) {
@@ -357,7 +359,7 @@ public class Battle implements Runnable {
 
 	public void waitTillOver() {
 		synchronized (battleMonitor) {
-			while (running) {
+			while (isRunning) {
 				try {
 					battleMonitor.wait();
 				} catch (InterruptedException e) {
@@ -550,7 +552,7 @@ public class Battle implements Runnable {
 	private void initializeBattle() {
 		// Notify that the battle is now running
 		synchronized (battleMonitor) {
-			running = true;
+			isRunning = true;
 			battleMonitor.notifyAll();
 		}
 
@@ -607,8 +609,9 @@ public class Battle implements Runnable {
 			}
 		}
 
+		battleControl.set(new BattleControl());
+
         eventDispatcher.onBattleStarted(new TurnSnapshot(this), manager.getBattleManager().getBattleProperties(), isReplay());
-        
     }
 
     private synchronized boolean isRobotsLoaded() {
@@ -753,7 +756,7 @@ public class Battle implements Runnable {
 
 		eventDispatcher.onTurnStarted();
 		
-		processCommand();
+		processCommands();
 	}
 
 	private void finalizeTurn() {
@@ -1342,16 +1345,16 @@ public class Battle implements Runnable {
 	public void stop() {
 		synchronized (battleMonitor) {
 			// Return immediately if the battle is not running
-			if (!running) {
+			if (!isRunning) {
 				return;
 			}
 
 			// Notify that the battle is aborted
-			aborted = true;
+			isAborted = true;
 			battleMonitor.notifyAll();
 
 			// Wait till the battle is not running anymore
-			while (running) {
+			while (isRunning) {
 				try {
 					battleMonitor.wait();
 				} catch (InterruptedException e) {
@@ -1620,7 +1623,7 @@ public class Battle implements Runnable {
 	 */
 	public boolean isRunning() {
 		synchronized (battleMonitor) {
-			return running;
+			return isRunning;
 		}
 	}
 
@@ -1631,8 +1634,17 @@ public class Battle implements Runnable {
 	 */
 	public boolean isAborted() {
 		synchronized (battleMonitor) {
-			return aborted;
+			return isAborted;
 		}
+	}
+
+	/**
+	 * Informs on whether the battle is paused or not.
+	 *
+	 * @return true if the battle is paused, false otherwise
+	 */
+	public boolean isPaused() {
+        return (pauseCount.get() != 0);
 	}
 
 	private class UnsafeLoadRobotsThread extends Thread {
@@ -1653,7 +1665,9 @@ public class Battle implements Runnable {
 	// Processing and maintaining robot and battle controls
 	// --------------------------------------------------------------------------
 
-	private List<IRobotControl> robotControls = java.util.Collections.synchronizedList(new ArrayList<IRobotControl>());
+	private AtomicReference<IBattleControl> battleControl = new AtomicReference<IBattleControl>(null);
+
+	private List<IRobotControl> robotControls = Collections.synchronizedList(new ArrayList<IRobotControl>());
 
 	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
@@ -1664,13 +1678,21 @@ public class Battle implements Runnable {
 		return new ArrayList<IRobotControl>(robotControls);
 	}
 
+	public IBattleControl getBattleControl() {
+		return battleControl.get();
+	}
+
 	private void createRobotControl(RobotPeer robotPeer) {
 		int index = robotControls.size();
 
 		robotControls.add(new RobotControl(robotPeer, index));
 	}
 
-	private void processCommand() {
+	private void sendCommand(Command command) {
+		pendingCommands.add(command);
+	}
+
+	private void processCommands() {
         Command command = pendingCommands.poll();
         while(command!=null){
             try {
@@ -1704,17 +1726,13 @@ public class Battle implements Runnable {
 		}
 
 		public void sendInteractiveEvent(Event e) {
-			if (Battle.this.running) {
+			if (Battle.this.isRunning) {
 				RobotPeer robotPeer = robots.get(index);
 				if (robotPeer.isInteractiveRobot() && robotPeer.isAlive()) {
 					sendCommand(new SendInteractiveEventCommand(index, e));
 				}
 			}
 		}
-	}
-
-	private void sendCommand(Command command) {
-		pendingCommands.add(command);
 	}
 
 	private class RobotCommand extends Command {
@@ -1773,4 +1791,144 @@ public class Battle implements Runnable {
 			robots.get(robotIndex).onInteractiveEvent(event);
 		}
 	}
+
+
+    private AtomicInteger pauseCount = new AtomicInteger(0);
+    private int currentStepTurn;
+
+    private class BattleControl implements IBattleControl {
+
+		public void stop() {
+			sendCommand(new StopBattleCommand());
+		}
+
+		public void restart() {
+			sendCommand(new RestartBattleCommand());
+		}
+
+		public void replay() {
+			sendCommand(new ReplayBattleCommand());
+		}
+
+		public void pause() {
+			sendCommand(new PauseBattleCommand());
+		}
+
+		public void resume() {
+			sendCommand(new ResumeBattleCommand());
+		}
+
+		public void pauseIfResumed() {
+			sendCommand(new PauseBattleIfResumedCommand());
+		}
+
+		public void resumeIfPaused() {
+			sendCommand(new ResumeBattleIfPausedCommand());
+		}
+
+		public void togglePauseResume() {
+			sendCommand(new TogglePauseResumeBattleCommand());
+		}
+
+		public void nextTurn() {
+			sendCommand(new NextBattleTurnCommand());
+		}
+	}
+
+	private class StopBattleCommand extends Command {
+		public void execute() {
+			stop();
+		}
+	}
+
+	private class RestartBattleCommand extends Command {
+		public void execute() {
+			battleManager.startNewBattle(battleManager.getBattleProperties(), false);
+		}
+	}
+
+	private class ReplayBattleCommand extends Command {
+		public void execute() {
+			battleManager.startNewBattle(battleManager.getBattleProperties(), true);
+		}
+	}
+
+	private class PauseBattleCommand extends Command {
+		public void execute() {
+			pauseBattle();
+		}
+	}
+
+	private class ResumeBattleCommand extends Command {
+		public void execute() {
+			resumeBattle();
+		}
+	}
+
+	private class PauseBattleIfResumedCommand extends Command {
+		public void execute() {
+	        if (isRunning && pauseCount.compareAndSet(0,1)) {
+	        	eventDispatcher.onBattlePaused();
+	        }
+		}
+	}
+
+	private class ResumeBattleIfPausedCommand extends Command {
+		public void execute() {
+	        if (isRunning && pauseCount.compareAndSet(1,0)) {
+	        	eventDispatcher.onBattleResumed();
+	        }
+		}
+	}
+
+	private class TogglePauseResumeBattleCommand extends Command {
+		public void execute() {
+	        if (isPaused()) {
+	            resumeBattle();
+	        } else {
+	            pauseBattle();
+	        }
+		}
+	}
+
+	private class NextBattleTurnCommand extends Command {
+		public void execute() {
+	        if (isRunning) {
+	            currentStepTurn = getCurrentTime() + 1;
+	        }
+		}
+	}
+
+	private void pauseBattle() {
+        if (isRunning && pauseCount.incrementAndGet() == 1) {
+        	eventDispatcher.onBattlePaused();
+        }
+	}
+
+	private void resumeBattle() {
+        final int current = pauseCount.decrementAndGet();
+        if (current < 0){
+            pauseCount.set(0);
+            logError("SYSTEM: pause game bug!");
+        } else if (isRunning && current == 0) {
+        	eventDispatcher.onBattleResumed();
+        }
+	}
+
+    /**
+     * If the battle is paused, this method determines if it should perform one turn and then stop again.
+     *
+     * @return true if the battle should perform one turn, false otherwise
+     */
+    private boolean shouldStep() {
+        // This code assumes it is called only if the battle is paused.
+        return currentStepTurn > getCurrentTime();
+    }
+
+    /**
+     * This method should be called to inform the battle manager that a new round is starting
+     */
+    private void startNewRound() {
+        currentStepTurn = 0;
+    }
 }

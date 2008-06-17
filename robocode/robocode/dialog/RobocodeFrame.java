@@ -37,8 +37,6 @@ import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
 import robocode.manager.*;
-import robocode.control.BattleSpecification;
-import robocode.control.RobotSpecification;
 import robocode.io.FileUtil;
 import robocode.BattleResults;
 
@@ -47,7 +45,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import java.io.File;
 
 
@@ -513,7 +510,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private void pauseResumeButtonActionPerformed() {
-        manager.getBattleManager().toglePauseBattle();
+        manager.getBattleManager().togglePauseBattle();
 	}
 
 	/**

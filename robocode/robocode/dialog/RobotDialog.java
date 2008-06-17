@@ -26,7 +26,6 @@ import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.BattleAdaptor;
-import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
@@ -330,7 +329,7 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Pause/Resume button has been activated
 	 */
 	private void pauseResumeButtonActionPerformed() {
-        manager.getBattleManager().toglePauseBattle();
+        manager.getBattleManager().togglePauseBattle();
 	}
 
 	private class BattleObserver extends BattleAdaptor {
