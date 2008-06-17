@@ -84,7 +84,7 @@ public class WindowManager {
 	public void showBattleOpenDialog() {
         BattleManager battleManager = manager.getBattleManager();
         try{
-            battleManager.pauseBattle();
+            battleManager.getBattleControl().pause();
 
             JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 
@@ -119,7 +119,7 @@ public class WindowManager {
             }
         }
         finally {
-            battleManager.resumeBattle();
+            battleManager.getBattleControl().resume();
         }
 	}
 
@@ -165,7 +165,7 @@ public class WindowManager {
 
 	public void showOptionsPreferences() {
         try{
-            manager.getBattleManager().pauseBattle();
+        	manager.getBattleManager().getBattleControl().pause();
 
             // Create the preferencesDialog
             PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
@@ -174,7 +174,7 @@ public class WindowManager {
             WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
         }
         finally {
-            manager.getBattleManager().resumeBattle();
+        	manager.getBattleManager().getBattleControl().resume();
         }
     }
 
@@ -253,7 +253,7 @@ public class WindowManager {
 
 	public void showNewBattleDialog(BattleProperties battleProperties) {
         try{
-            manager.getBattleManager().pauseBattle();
+        	manager.getBattleManager().getBattleControl().pause();
 
             NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
 
@@ -261,7 +261,7 @@ public class WindowManager {
             WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
         }
         finally {
-            manager.getBattleManager().resumeBattle();            
+        	manager.getBattleManager().getBattleControl().resume();
         }
     }
 

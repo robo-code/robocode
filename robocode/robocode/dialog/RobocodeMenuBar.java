@@ -160,11 +160,11 @@ public class RobocodeMenuBar extends JMenuBar {
 		}
 
 		public void menuDeselected(MenuEvent e) {
-			manager.getBattleManager().resumeBattle();
+			manager.getBattleManager().getBattleControl().resume();
 		}
 
 		public void menuSelected(MenuEvent e) {
-			manager.getBattleManager().pauseBattle();
+			manager.getBattleManager().getBattleControl().pause();
 		}
 
 		public void menuCanceled(MenuEvent e) {}
@@ -206,7 +206,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		BattleManager battleManager = manager.getBattleManager();
 
 		try {
-			battleManager.pauseBattle();
+			battleManager.getBattleControl().pause();
 			String path = battleManager.getBattleFilename();
 
 			if (path == null) {
@@ -217,7 +217,7 @@ public class RobocodeMenuBar extends JMenuBar {
 				battleManager.saveBattleProperties();
 			}
 		} finally {
-			battleManager.resumeBattle();
+			battleManager.getBattleControl().resume();
 		}
 	}
 
@@ -225,7 +225,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		BattleManager battleManager = manager.getBattleManager();
 
 		try {
-			battleManager.pauseBattle();
+			battleManager.getBattleControl().pause();
 			String path = saveBattleDialog(battleManager.getBattlePath());
 
 			if (path != null) {
@@ -233,7 +233,7 @@ public class RobocodeMenuBar extends JMenuBar {
 				battleManager.saveBattleProperties();
 			}
 		} finally {
-			battleManager.resumeBattle();
+			battleManager.getBattleControl().resume();
 		}
 	}
 

@@ -216,7 +216,7 @@ public class RobocodeEngine {
 	 * @see RobocodeListener#battleAborted(BattleSpecification)
 	 */
 	public void abortCurrentBattle() {
-		manager.getBattleManager().stop();
+		manager.getBattleManager().getBattleControl().stop();
 	}
 
     /**

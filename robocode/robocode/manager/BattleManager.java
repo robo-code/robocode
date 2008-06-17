@@ -79,7 +79,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -100,7 +99,6 @@ public class BattleManager {
     private String battleFilename;
     private String battlePath;
 
-    private AtomicInteger pauseCount = new AtomicInteger(0);
 
     public BattleManager(RobocodeManager manager) {
         this.manager = manager;
@@ -121,21 +119,6 @@ public class BattleManager {
 
     public IBattleControl getBattleControl() {
     	return battle.getBattleControl();
-    }
-
-    public void stop() {
-        if (battle != null) {
-            battle.stop();
-        }
-    }
-
-    public void restart() {
-        // Start new battle. The old battle is automatically stopped
-        startNewBattle(battleProperties, false);
-    }
-
-    public void replay() {
-        startNewBattle(battleProperties, true);
     }
 
     // Called when starting a new battle from GUI
@@ -352,54 +335,9 @@ public class BattleManager {
     }
 
     public boolean isPaused() {
-        return (pauseCount.get() != 0);
+        return battle.isPaused();
     }
 
-    public void togglePauseBattle() {
-        if (isPaused()) {
-            resumeBattle();
-        } else {
-            pauseBattle();
-        }
-    }
-    
-    public void pauseBattle() {
-        if (pauseCount.incrementAndGet() == 1) {
-            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
-                battleEventDispatcher.onBattlePaused();
-            }
-        }
-    }
-
-
-    public void pauseIfResumedBattle() {
-        if (pauseCount.compareAndSet(0,1)){
-            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
-                battleEventDispatcher.onBattlePaused();
-            }
-        }
-    }
-
-    public void resumeIfPausedBattle() {
-        if (pauseCount.compareAndSet(1,0)){
-            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
-                battleEventDispatcher.onBattleResumed();
-            }
-        }
-    }
-
-    public void resumeBattle() {
-        final int current = pauseCount.decrementAndGet();
-        if (current < 0){
-            pauseCount.set(0);
-            logError("SYSTEM: pause game bug!");
-        }
-        else if (current == 0) {
-            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
-                battleEventDispatcher.onBattleResumed();
-            }
-        }
-    }
 
     public String getBattlePath() {
         if (battlePath == null) {
