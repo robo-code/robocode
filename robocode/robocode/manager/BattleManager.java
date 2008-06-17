@@ -118,6 +118,9 @@ public class BattleManager {
     }
 
     public IBattleControl getBattleControl() {
+        if (battle == null) {
+            return null;
+        }
     	return battle.getBattleControl();
     }
 

@@ -160,11 +160,15 @@ public class RobocodeMenuBar extends JMenuBar {
 		}
 
 		public void menuDeselected(MenuEvent e) {
-			manager.getBattleManager().getBattleControl().resume();
+			if (manager.getBattleManager().getBattleControl() != null) {
+				manager.getBattleManager().getBattleControl().resume();
+			}
 		}
 
 		public void menuSelected(MenuEvent e) {
-			manager.getBattleManager().getBattleControl().pause();
+			if (manager.getBattleManager().getBattleControl() != null) {
+				manager.getBattleManager().getBattleControl().pause();
+			}
 		}
 
 		public void menuCanceled(MenuEvent e) {}

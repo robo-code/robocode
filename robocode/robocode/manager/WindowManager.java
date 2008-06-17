@@ -84,7 +84,9 @@ public class WindowManager {
 	public void showBattleOpenDialog() {
         BattleManager battleManager = manager.getBattleManager();
         try{
-            battleManager.getBattleControl().pause();
+        	if (battleManager.getBattleControl() != null) {
+        		battleManager.getBattleControl().pause();
+        	}
 
             JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 
@@ -119,7 +121,9 @@ public class WindowManager {
             }
         }
         finally {
-            battleManager.getBattleControl().resume();
+        	if (battleManager.getBattleControl() != null) {
+        		battleManager.getBattleControl().resume();
+        	}
         }
 	}
 
@@ -165,7 +169,9 @@ public class WindowManager {
 
 	public void showOptionsPreferences() {
         try{
-        	manager.getBattleManager().getBattleControl().pause();
+        	if (manager.getBattleManager().getBattleControl() != null) {
+        		manager.getBattleManager().getBattleControl().pause();
+        	}
 
             // Create the preferencesDialog
             PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
@@ -174,7 +180,9 @@ public class WindowManager {
             WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
         }
         finally {
-        	manager.getBattleManager().getBattleControl().resume();
+        	if (manager.getBattleManager().getBattleControl() != null) {
+        		manager.getBattleManager().getBattleControl().resume();
+        	}
         }
     }
 
@@ -253,7 +261,9 @@ public class WindowManager {
 
 	public void showNewBattleDialog(BattleProperties battleProperties) {
         try{
-        	manager.getBattleManager().getBattleControl().pause();
+        	if (manager.getBattleManager().getBattleControl() != null) {
+        		manager.getBattleManager().getBattleControl().pause();
+        	}
 
             NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
 
@@ -261,7 +271,9 @@ public class WindowManager {
             WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
         }
         finally {
-        	manager.getBattleManager().getBattleControl().resume();
+        	if (manager.getBattleManager().getBattleControl() != null) {
+        		manager.getBattleManager().getBattleControl().resume();
+        	}
         }
     }
 
