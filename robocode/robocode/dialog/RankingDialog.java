@@ -62,8 +62,6 @@ public class RankingDialog extends JDialog {
 
 	private boolean isCurrentRankings;
 
-	private Battle battle;
-
 	/**
 	 * RankingDialog constructor
 	 */
@@ -78,10 +76,6 @@ public class RankingDialog extends JDialog {
 	 * Initializes the frame
 	 */
 	private void initialize() {
-		// We need to know what battle we are showing results for so that we can
-		// clean it up later.
-		battle = manager.getBattleManager().getBattle();
-
 		setTitle(isCurrentRankings ? "Ranking" : ((BattleResultsTableModel) getTableModel()).getTitle());
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getDialogContentPane());
@@ -241,7 +235,7 @@ public class RankingDialog extends JDialog {
 
 	private AbstractTableModel getTableModel() {
 		if (tableModel == null) {
-			tableModel = isCurrentRankings ? new BattleRankingTableModel(manager) : new BattleResultsTableModel(battle);
+			tableModel = isCurrentRankings ? new BattleRankingTableModel(manager) : new BattleResultsTableModel(manager);
 		}
 		return tableModel;
 	}
@@ -342,8 +336,7 @@ public class RankingDialog extends JDialog {
 
 		// Since we are displaying the results we have to keep the battle
 		// around, but now that we are done we need to clean things up.
-		battle.cleanup();
-		battle = null;
+		manager.getBattleManager().getBattle().cleanup();// TODO remove after rework to results on shown on onBattleCompleted
 	}
 
 	private void saveButtonActionPerformed() {

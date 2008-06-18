@@ -737,7 +737,7 @@ public class RobocodeFrame extends JFrame {
 
             getPauseButton().setEnabled(false);
             getStopButton().setEnabled(false);
-            getReplayButton().setEnabled(manager.getBattleManager().getBattle().hasReplayRecord()); //TODO get rid of battle
+            getReplayButton().setEnabled(manager.getBattleManager().hasReplayRecord());
 
             updateTitle();
         }

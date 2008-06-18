@@ -420,7 +420,7 @@ public class WindowManager {
 		chooser.setDialogTitle("Save battle results");
 
 		if (chooser.showSaveDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
-			BattleResultsTableModel tableModel = new BattleResultsTableModel(manager.getBattleManager().getBattle());
+			BattleResultsTableModel tableModel = new BattleResultsTableModel(manager);
 
 			String filename = chooser.getSelectedFile().getPath();
 

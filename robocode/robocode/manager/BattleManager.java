@@ -423,4 +423,9 @@ public class BattleManager {
     public boolean isRunningMinimized() {
         return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
     }
+
+    public boolean hasReplayRecord() {   //TODO get rid of this after recording rework
+        return battle.hasReplayRecord();
+    }
+
 }

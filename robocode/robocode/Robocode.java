@@ -264,7 +264,7 @@ public class Robocode {
             }
         }
 
-        BattleResultsTableModel resultsTable = new BattleResultsTableModel(battle);
+        BattleResultsTableModel resultsTable = new BattleResultsTableModel(manager);
 
         if (out != null) {
             resultsTable.print(out);

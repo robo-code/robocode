@@ -31,6 +31,7 @@ import robocode.peer.ContestantPeer;
 import robocode.peer.ContestantStatistics;
 import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
+import robocode.manager.RobocodeManager;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,12 +51,12 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
-	private Battle battle; // TODO get rid of it in UI
+    private Battle battle; // TODO get rid of it in UI
 	private String title;
 
-	public BattleResultsTableModel(Battle battle) {
+	public BattleResultsTableModel(RobocodeManager manager) {
 		super();
-		this.battle = battle;
+        this.battle = manager.getBattleManager().getBattle();    // TODO get rid of it in UI
 	}
 
 	public int getColumnCount() {

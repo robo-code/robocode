@@ -331,7 +331,7 @@ public class Battle implements Runnable {
 		// The results dialog needs the battle object to be complete, so we
 		// won't clean it up just yet, instead the ResultsDialog is responsible
 		// for cleaning up the battle when its done with it.
-		if (!manager.isGUIEnabled()) {
+		if (!manager.isGUIEnabled()) { //TODO call always after rework to results on shown on onBattleCompleted
 			cleanup();
 		}
 
