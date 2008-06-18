@@ -118,6 +118,7 @@ import robocode.security.RobocodeClassLoader;
 import static java.lang.Math.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
@@ -151,11 +152,12 @@ public class Battle implements Runnable {
 	private BattleManager battleManager;
 	private RobocodeManager manager;
 
-	// Battle items
+	// Battle thread
 	private Thread battleThread;
-	private final Object battleMonitor = new Object();
-	private volatile boolean running;
-	private volatile boolean aborted;
+
+	// Battle state
+	private AtomicBoolean isRunning = new AtomicBoolean(false);
+	private AtomicBoolean isAborted = new AtomicBoolean(false);
 
 	// Option related items
 	private double gunCoolingRate = .1;
@@ -210,12 +212,12 @@ public class Battle implements Runnable {
 	// TPS (turns per second) calculation stuff
 	private int tps;
 	private long turnStartTime;
-	long measuredTurnStartTime;
-	int measuredTurnCounter;
+	private long measuredTurnStartTime;
+	private int measuredTurnCounter;
 
-    //battle control
-    boolean isPaused;
-    int stepCount;
+    // Battle control
+    private boolean isPaused;
+    private int stepCount;
 
     /**
 	 * Battle constructor
@@ -340,37 +342,37 @@ public class Battle implements Runnable {
 		}
 
 		// Notify that the battle is over
-		synchronized (battleMonitor) {
-			running = false;
-			battleMonitor.notifyAll();
+		synchronized (isRunning) {
+			isRunning.set(false);
+			isRunning.notifyAll();
 		}
 	}
 
 	public void waitTillStarted() {
-		synchronized (battleMonitor) {
-			while (!running) {
+		synchronized (isRunning) {
+			while (!isRunning.get()) {
 				try {
-					battleMonitor.wait();
+					isRunning.wait();
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 
-					return;
+					return; // Break out
 				}
 			}
 		}
 	}
 
 	public void waitTillOver() {
-		synchronized (battleMonitor) {
-			while (running) {
+		synchronized (isRunning) {
+			while (isRunning.get()) {
 				try {
-					battleMonitor.wait();
+					isRunning.wait();
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 
-					return;
+					return; // Break out
 				}
 			}
 		}
@@ -548,9 +550,9 @@ public class Battle implements Runnable {
 
 	private void initializeBattle() {
 		// Notify that the battle is now running
-		synchronized (battleMonitor) {
-			running = true;
-			battleMonitor.notifyAll();
+		synchronized (isRunning) {
+			isRunning.set(true);
+			isRunning.notifyAll();
 		}
 
 		// Starting loader thread
@@ -1602,9 +1604,7 @@ public class Battle implements Runnable {
 	 * @return true if the battle is running, false otherwise
 	 */
 	public boolean isRunning() {
-		synchronized (battleMonitor) {
-			return running;
-		}
+		return isRunning.get();
 	}
 
 	/**
@@ -1613,9 +1613,7 @@ public class Battle implements Runnable {
 	 * @return true if the battle is aborted, false otherwise
 	 */
 	public boolean isAborted() {
-		synchronized (battleMonitor) {
-			return aborted;
-		}
+		return isAborted.get();
 	}
 
 	private class UnsafeLoadRobotsThread extends Thread {
@@ -1640,21 +1638,7 @@ public class Battle implements Runnable {
         sendCommand(new AbortCommand());
 
         if (waitTillEnd){
-            synchronized (battleMonitor) {
-                // Notify that the battle is aborted
-                battleMonitor.notifyAll();
-
-                // Wait till the battle is not running anymore
-                while (running) {
-                    try {
-                        battleMonitor.wait();
-                    } catch (InterruptedException e) {
-                        // Immediately reasserts the exception by interrupting the caller thread itself
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-            }
+        	waitTillOver();
         }
     }
 
@@ -1750,7 +1734,10 @@ public class Battle implements Runnable {
 
     private class AbortCommand extends Command {
         public void execute() {
-            aborted=true;
+        	synchronized (isAborted) {
+        		isAborted.set(true);
+        		isAborted.notifyAll();
+        	}
         }
     }
 
