@@ -310,7 +310,7 @@ public class BattleManager implements IBattleControl {
             RandomFactory.resetDeterministic(Long.valueOf(seed));
         }
 
-        battle = new Battle(battleField, manager, battleEventDispatcher);
+        battle = new Battle(battleField, manager, battleEventDispatcher, isPaused());
 
         // Set stuff the view needs to know
         battle.setProperties(battleProperties);
@@ -368,25 +368,23 @@ public class BattleManager implements IBattleControl {
         battleFilename = newBattleFilename;
     }
 
-    public boolean isPaused() {
+    private boolean isPaused() {
         return (pauseCount.get() != 0);
     }
 
-    public boolean toglePauseBattle() {
+    public void toglePauseBattle() {
         if (isPaused()){
             resumeBattle();
-            return true;
         }
         else{
             pauseBattle();
-            return true;
         }
     }
     
     public void pauseBattle() {
         if (pauseCount.incrementAndGet() == 1) {
-            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
-                battleEventDispatcher.onBattlePaused();
+            if (battle!=null){
+                battle.pause();
             }
         }
     }
@@ -394,16 +392,16 @@ public class BattleManager implements IBattleControl {
 
     public void pauseIfResumedBattle() {
         if (pauseCount.compareAndSet(0,1)){
-            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
-                battleEventDispatcher.onBattlePaused();
+            if (battle!=null){
+                battle.pause();
             }
         }
     }
 
     public void resumeIfPausedBattle() {
         if (pauseCount.compareAndSet(1,0)){
-            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
-                battleEventDispatcher.onBattleResumed();
+            if (battle!=null){
+                battle.resume();
             }
         }
     }
@@ -415,8 +413,8 @@ public class BattleManager implements IBattleControl {
             logError("SYSTEM: pause game bug!");
         }
         else if (current == 0) {
-            if (battle!=null && battle.isRunning()){ // TODO should move to battle thread
-                battleEventDispatcher.onBattleResumed();
+            if (battle!=null){
+                battle.resume();
             }
         }
     }
@@ -489,6 +487,10 @@ public class BattleManager implements IBattleControl {
         return battle;
     }
 
+    public boolean isRunningMinimized() { //TODO get rid of it, rather use SetTPS to max during minimization of window
+        return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
+    }
+
     public BattleProperties getBattleProperties() {
         if (battleProperties == null) {
             battleProperties = new BattleProperties();
@@ -508,12 +510,8 @@ public class BattleManager implements IBattleControl {
         battleEventDispatcher.removeListener(listener);
     }
 
-    public boolean isRunningMinimized() {
-        return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
-    }
-
-    public void kill(int robotIndex) {
-        battle.kill(robotIndex);
+    public void killRobot(int robotIndex) {
+        battle.killRobot(robotIndex);
     }
 
     public void setPaintEnabled(int robotIndex, boolean enable) {
@@ -525,6 +523,8 @@ public class BattleManager implements IBattleControl {
     }
 
     public void sendInteractiveEvent(Event event) {
-        battle.sendInteractiveEvent(event);
+        if (battle!=null && battle.isRunning() && !isPaused()){
+            battle.sendInteractiveEvent(event);
+        }
     }
 }

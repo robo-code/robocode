@@ -308,7 +308,7 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Kill button has been activated
 	 */
 	private void killButtonActionPerformed() {
-		battleControl.kill(robotIndex);
+		battleControl.killRobot(robotIndex);
 	}
 
 	/**

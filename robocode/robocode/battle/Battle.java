@@ -213,13 +213,17 @@ public class Battle implements Runnable {
 	long measuredTurnStartTime;
 	int measuredTurnCounter;
 
-	/**
+    //battle control
+    boolean isPaused;
+
+    /**
 	 * Battle constructor
 	 */
-	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher) {
+	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		super();
+        isPaused=paused;
 
-		this.battleField = battleField;
+        this.battleField = battleField;
 		this.manager = manager;
 		this.eventDispatcher = eventDispatcher;
 
@@ -556,7 +560,7 @@ public class Battle implements Runnable {
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
-		// Pre-load robot classes without security...
+        // Pre-load robot classes without security...
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 		// in the safe robot loader the class is linked.
 		synchronized (robots) {
@@ -685,6 +689,8 @@ public class Battle implements Runnable {
 	}
 
 	private void replayTurn() {
+        processCommand();
+
 		if (shouldPause() && !battleManager.shouldStep()) {
 			shortSleep();
 			return;
@@ -700,6 +706,8 @@ public class Battle implements Runnable {
 	}
 
 	private void runTurn() {
+        processCommand();
+
 		if (shouldPause() && !battleManager.shouldStep()) {
 			shortSleep();
 			return;
@@ -745,8 +753,6 @@ public class Battle implements Runnable {
 		turnStartTime = System.nanoTime();
 
 		eventDispatcher.onTurnStarted();
-		
-		processCommand();
 	}
 
 	private void finalizeTurn() {
@@ -945,7 +951,7 @@ public class Battle implements Runnable {
 	}
 
 	private boolean shouldPause() {
-		if (battleManager.isPaused() && !isAborted()) {
+		if (isPaused && !isAborted()) {
 			return true;
 		}
 		return false;
@@ -1646,21 +1652,15 @@ public class Battle implements Runnable {
 	// Processing and maintaining robot and battle controls
 	// --------------------------------------------------------------------------
 
-	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
-
-	private void processCommand() {
-        Command command = pendingCommands.poll();
-        while(command!=null){
-            try {
-                command.execute();
-            } catch (Exception e) {
-                logError(e);
-            }
-            command = pendingCommands.poll();
-        }
+    public void pause() {
+        sendCommand(new PauseCommand());
     }
 
-    public void kill(int robotIndex) {
+    public void resume() {
+        sendCommand(new ResumeCommand());
+    }
+
+    public void killRobot(int robotIndex) {
         sendCommand(new KillRobotCommand(robotIndex));
     }
 
@@ -1674,6 +1674,20 @@ public class Battle implements Runnable {
 
     public void sendInteractiveEvent(Event e) {
         sendCommand(new SendInteractiveEventCommand(e));
+    }
+
+	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
+
+	private void processCommand() {
+        Command command = pendingCommands.poll();
+        while(command!=null){
+            try {
+                command.execute();
+            } catch (Exception e) {
+                logError(e);
+            }
+            command = pendingCommands.poll();
+        }
     }
 
 	private void sendCommand(Command command) {
@@ -1723,6 +1737,20 @@ public class Battle implements Runnable {
 			robots.get(robotIndex).setSGPaintEnabled(enableSGPaint);
 		}
 	}
+
+    private class PauseCommand extends Command {
+        public void execute() {
+            isPaused=true;
+            eventDispatcher.onBattlePaused();
+        }
+    }
+
+    private class ResumeCommand extends Command {
+        public void execute() {
+            isPaused=false;
+            eventDispatcher.onBattleResumed();
+        }
+    }
 
 	private class SendInteractiveEventCommand extends Command {
 		public final Event event;

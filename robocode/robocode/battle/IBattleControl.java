@@ -27,7 +27,7 @@ public interface IBattleControl {
 	/**
 	 * Kills the robot.
 	 */
-	void kill(int robotIndex);
+	void killRobot(int robotIndex);
 
 	/**
 	 * Enable or disable the robot paintings.
