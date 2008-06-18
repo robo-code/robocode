@@ -157,7 +157,7 @@ public class Battle implements Runnable {
 
 	// Battle state
 	private AtomicBoolean isRunning = new AtomicBoolean(false);
-	private AtomicBoolean isAborted = new AtomicBoolean(false);
+	private boolean isAborted;
 
 	// Option related items
 	private double gunCoolingRate = .1;
@@ -1613,7 +1613,7 @@ public class Battle implements Runnable {
 	 * @return true if the battle is aborted, false otherwise
 	 */
 	public boolean isAborted() {
-		return isAborted.get();
+		return isAborted;
 	}
 
 	private class UnsafeLoadRobotsThread extends Thread {
@@ -1734,10 +1734,7 @@ public class Battle implements Runnable {
 
     private class AbortCommand extends Command {
         public void execute() {
-        	synchronized (isAborted) {
-        		isAborted.set(true);
-        		isAborted.notifyAll();
-        	}
+       		isAborted = true;
         }
     }
 
