@@ -241,7 +241,7 @@ public class RankingDialog extends JDialog {
 
 	private AbstractTableModel getTableModel() {
 		if (tableModel == null) {
-			tableModel = isCurrentRankings ? new BattleRankingTableModel(manager) : new BattleResultsTableModel(battle);
+			tableModel = isCurrentRankings ? new BattleRankingTableModel(manager) : new BattleResultsTableModel(manager);
 		}
 		return tableModel;
 	}

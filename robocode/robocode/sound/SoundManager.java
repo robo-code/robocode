@@ -344,7 +344,7 @@ public class SoundManager {
 
 		@Override
 		public void onTurnEnded(TurnSnapshot turnSnapshot) {
-			int battleFieldWidth = manager.getBattleManager().getBattle().getBattleField().getWidth();
+			int battleFieldWidth = manager.getBattleManager().getBattleProperties().getBattlefieldWidth();
 
 			for (BulletSnapshot bp : turnSnapshot.getBullets()) {
 				if (bp.getFrame() == 0) {
