@@ -337,11 +337,6 @@ public class BattleManager {
         battleFilename = newBattleFilename;
     }
 
-    public boolean isPaused() {
-        return battle.isPaused();
-    }
-
-
     public String getBattlePath() {
         if (battlePath == null) {
             battlePath = System.getProperty("BATTLEPATH");

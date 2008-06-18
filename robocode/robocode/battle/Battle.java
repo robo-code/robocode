@@ -955,7 +955,7 @@ public class Battle implements Runnable {
 	}
 
 	private boolean shouldPause() {
-		if (battleManager.isPaused() && !isAborted()) {
+		if (isPaused() && !isAborted()) {
 			return true;
 		}
 		return false;
