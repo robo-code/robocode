@@ -87,7 +87,8 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
 		isRunning.set(true);
 		isPaused.set(false);
-		EventQueue.invokeLater(repaintTask);
+        snapshot.set(start);
+        EventQueue.invokeLater(repaintTask);
 		timer.start();
 	}
 
@@ -120,7 +121,10 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	public void onTurnEnded(TurnSnapshot turnSnapshot) {
 		snapshot.set(turnSnapshot);
-	}
+        if (isPaused.get()){
+            EventQueue.invokeLater(repaintTask);
+        }
+    }
 
 	public boolean isRunning() {
 		return isRunning.get();
@@ -130,9 +134,20 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 		public void run() {
 			if (!isRunning.get()) {
 				lastSnapshot = null;
+                updateView(null);
 			}
-			updateView(lastSnapshot);
-		}
+            else{
+                TurnSnapshot s = snapshot.get();
+
+                if (lastSnapshot != s || !skipSameFrames) {
+                    lastSnapshot = s;
+
+                    updateView(lastSnapshot);
+
+                    calculateFPS();
+                }
+            }
+        }
 	}
 
 
