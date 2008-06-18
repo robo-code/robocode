@@ -21,12 +21,11 @@
 package robocode.dialog;
 
 
-import robocode.battle.IRobotControl;
+import robocode.battle.IBattleControl;
 import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.BattleAdaptor;
-import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
@@ -42,7 +41,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
-	private IRobotControl robotControl;
+	private IBattleControl battleControl;
     private int robotIndex;
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
@@ -114,10 +113,10 @@ public class RobotDialog extends JFrame {
     /**
      * Resets this robot dialog.
      *
-     * @param robotControl the new robot control to use for this reset robot dialog.
+     * @param battleControl the new robot control to use for this reset robot dialog.
      */
-    public void reset(IRobotControl robotControl, int index, String name) {
-        this.robotControl = robotControl;
+    public void reset(IBattleControl battleControl, int index, String name) {
+        this.battleControl = battleControl;
         this.robotIndex = index;
         this.setTitle(name);
         getConsoleScrollPane().setText("");
@@ -309,21 +308,21 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Kill button has been activated
 	 */
 	private void killButtonActionPerformed() {
-		robotControl.kill();
+		battleControl.kill(robotIndex);
 	}
 
 	/**
 	 * Is called when the Paint button has been activated
 	 */
 	private void paintButtonActionPerformed() {
-		robotControl.setPaintEnabled(getPaintButton().isSelected());
+		battleControl.setPaintEnabled(robotIndex, getPaintButton().isSelected());
 	}
 
 	/**
 	 * Is called when the SG check box has been activated
 	 */
 	private void sgCheckBoxActionPerformed() {
-		robotControl.setSGPaintEnabled(getSGCheckBox().isSelected());
+		battleControl.setSGPaintEnabled(robotIndex, getSGCheckBox().isSelected());
 	}
 
 	/**

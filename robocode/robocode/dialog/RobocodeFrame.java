@@ -28,7 +28,7 @@
 package robocode.dialog;
 
 
-import robocode.battle.IRobotControl;
+import robocode.battle.IBattleControl;
 import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
@@ -37,8 +37,6 @@ import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
 import robocode.manager.*;
-import robocode.control.BattleSpecification;
-import robocode.control.RobotSpecification;
 import robocode.io.FileUtil;
 import robocode.BattleResults;
 
@@ -47,7 +45,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import java.io.File;
 
 
@@ -714,19 +711,17 @@ public class RobocodeFrame extends JFrame {
 
             getRobotButtonsPanel().removeAll();
 
-            final java.util.List<IRobotControl> controls = manager.getBattleManager().getRobotControls();
             final RobotDialogManager dialogManager = manager.getRobotDialogManager();
             final java.util.List<RobotSnapshot> robots = start.getRobots();
             for(int index=0;index<robots.size();index++){
-                final IRobotControl control = controls.get(index);
                 final RobotSnapshot robot = robots.get(index);
                 final String name = robot.getName();
-                final RobotButton button = new RobotButton(dialogManager, control, name, index);
+                final RobotButton button = new RobotButton(dialogManager, manager.getBattleManager(), name, index);
                 button.setText(robot.getShortName());
                 button.setToolTipText(name);
                 addRobotButton(button);
             }
-            dialogManager.initialize(robots, controls);
+            dialogManager.initialize(robots);
             getRobotButtonsPanel().repaint();
 
             validate();

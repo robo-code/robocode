@@ -23,7 +23,7 @@ package robocode.manager;
 
 
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.IRobotControl;
+import robocode.battle.IBattleControl;
 import robocode.dialog.RobotDialog;
 
 import java.util.*;
@@ -45,7 +45,7 @@ public class RobotDialogManager {
 		this.manager = manager;
 	}
 
-	public void initialize(List<RobotSnapshot> robots, List<IRobotControl> controls) {
+	public void initialize(List<RobotSnapshot> robots) {
 
 		// new ArrayList in order to prevent ConcurrentModificationException
 		for (String name : new ArrayList<String>(robotDialogMap.keySet())) {
@@ -67,13 +67,13 @@ public class RobotDialogManager {
 		}
 
         for(int index=0;index<robots.size();index++){
-            final IRobotControl control = controls.get(index);
             final RobotSnapshot robot = robots.get(index);
             final String name = robot.getName();
             final RobotDialog robotDialog = getRobotDialog(name, true);
-            robotDialog.reset(control, index, name);
-            control.setPaintEnabled(robotDialog.isPaintEnabled());
-            control.setSGPaintEnabled(robotDialog.isSGPaintEnabled());
+            BattleManager battleControl = manager.getBattleManager();
+            robotDialog.reset(battleControl, index, name);
+            battleControl.setPaintEnabled(index, robotDialog.isPaintEnabled());
+            battleControl.setSGPaintEnabled(index, robotDialog.isSGPaintEnabled());
         }
 
     }

@@ -22,19 +22,19 @@ import robocode.Event;
  *
  * @since 1.6.1
  */
-public interface IRobotControl {
+public interface IBattleControl {
 
 	/**
 	 * Kills the robot.
 	 */
-	void kill();
+	void kill(int robotIndex);
 
 	/**
 	 * Enable or disable the robot paintings.
 	 *
 	 * @param enable {@code true} if paint must be enabled; {@code false} otherwise.
 	 */
-	void setPaintEnabled(boolean enable);
+	void setPaintEnabled(int robotIndex, boolean enable);
 
 	/**
 	 * Enable or disable the robot paintings using the RobocodeSG coordinate system
@@ -43,7 +43,7 @@ public interface IRobotControl {
 	 * @param enable {@code true} if RobocodeSG paint coordinate system must be
 	 *               enabled when painting the robot; {@code false} otherwise.
 	 */
-	void setSGPaintEnabled(boolean enable);
+	void setSGPaintEnabled(int robotIndex, boolean enable);
 
 	/**
 	 * Sends an interactive event for the robot.

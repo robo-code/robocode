@@ -421,8 +421,6 @@ public class Battle implements Runnable {
             robotPeer.setUnicate();
         }
         robots.add(robotPeer);
-
-		createRobotControl(robotPeer);
 	}
 
 	private void addContestant(ContestantPeer c) {
@@ -453,11 +451,6 @@ public class Battle implements Runnable {
 		if (robots != null) {
 			robots.clear();
 			robots = null;
-		}
-
-		if (robotControls != null) {
-			robotControls.clear();
-			robotControls = null;
 		}
 
 		if (pendingCommands != null) {
@@ -1653,22 +1646,7 @@ public class Battle implements Runnable {
 	// Processing and maintaining robot and battle controls
 	// --------------------------------------------------------------------------
 
-	private List<IRobotControl> robotControls = java.util.Collections.synchronizedList(new ArrayList<IRobotControl>());
-
 	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
-
-	public List<IRobotControl> getRobotControls() {
-		if (robotControls == null) {
-			return null;
-		}
-		return new ArrayList<IRobotControl>(robotControls);
-	}
-
-	private void createRobotControl(RobotPeer robotPeer) {
-		int index = robotControls.size();
-
-		robotControls.add(new RobotControl(robotPeer, index));
-	}
 
 	private void processCommand() {
         Command command = pendingCommands.poll();
@@ -1682,36 +1660,21 @@ public class Battle implements Runnable {
         }
     }
 
-	private class RobotControl implements IRobotControl {
+    public void kill(int robotIndex) {
+        sendCommand(new KillRobotCommand(robotIndex));
+    }
 
-		final int index;
+    public void setPaintEnabled(int robotIndex, boolean enable) {
+        sendCommand(new EnableRobotPaintCommand(robotIndex, enable));
+    }
 
-		RobotControl(RobotPeer robotPeer, int index) {
-			assert(robotPeer != null);
-			this.index = index;
-		}
+    public void setSGPaintEnabled(int robotIndex, boolean enable) {
+        sendCommand(new EnableRobotSGPaintCommand(robotIndex, enable));
+    }
 
-		public void kill() {
-			sendCommand(new KillRobotCommand(index));
-		}
-
-		public void setPaintEnabled(boolean enable) {
-			sendCommand(new EnableRobotPaintCommand(index, enable));
-		}
-
-		public void setSGPaintEnabled(boolean enable) {
-			sendCommand(new EnableRobotSGPaintCommand(index, enable));
-		}
-
-		public void sendInteractiveEvent(Event e) {
-			if (Battle.this.running) {
-				RobotPeer robotPeer = robots.get(index);
-				if (robotPeer.isInteractiveRobot() && robotPeer.isAlive()) {
-					sendCommand(new SendInteractiveEventCommand(index, e));
-				}
-			}
-		}
-	}
+    public void sendInteractiveEvent(Event e) {
+        sendCommand(new SendInteractiveEventCommand(e));
+    }
 
 	private void sendCommand(Command command) {
 		pendingCommands.add(command);
@@ -1761,16 +1724,17 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private class SendInteractiveEventCommand extends RobotCommand {
+	private class SendInteractiveEventCommand extends Command {
 		public final Event event;
 
-		SendInteractiveEventCommand(int robotIndex, Event event) {
-			super(robotIndex);
+		SendInteractiveEventCommand(Event event) {
 			this.event = event;
 		}
 
 		public void execute() {
-			robots.get(robotIndex).onInteractiveEvent(event);
+            for(RobotPeer robot : robots){
+                robot.onInteractiveEvent(event);
+            }
 		}
 	}
 }

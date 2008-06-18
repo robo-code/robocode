@@ -53,7 +53,7 @@ package robocode.manager;
 
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
-import robocode.battle.IRobotControl;
+import robocode.battle.IBattleControl;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
 import robocode.battlefield.BattleField;
@@ -72,6 +72,7 @@ import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
+import robocode.Event;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class BattleManager {
+public class BattleManager implements IBattleControl {
     private RobocodeManager manager;
 
     private Battle battle;
@@ -111,13 +112,6 @@ public class BattleManager {
         battle = null;
         manager = null;
         battleEventDispatcher = null;
-    }
-
-    public List<IRobotControl> getRobotControls() {
-        if (battle == null) {
-            return null;
-        }
-        return battle.getRobotControls();
     }
 
     /**
@@ -512,5 +506,21 @@ public class BattleManager {
 
     public boolean isRunningMinimized() {
         return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
+    }
+
+    public void kill(int robotIndex) {
+        battle.kill(robotIndex);
+    }
+
+    public void setPaintEnabled(int robotIndex, boolean enable) {
+        battle.setPaintEnabled(robotIndex, enable);
+    }
+
+    public void setSGPaintEnabled(int robotIndex, boolean enable) {
+        battle.setSGPaintEnabled(robotIndex, enable);
+    }
+
+    public void sendInteractiveEvent(Event event) {
+        battle.sendInteractiveEvent(event);
     }
 }

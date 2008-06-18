@@ -16,7 +16,7 @@ package robocode.battleview;
 
 
 import robocode.battle.BattleProperties;
-import robocode.battle.IRobotControl;
+import robocode.battle.IBattleControl;
 import robocode.manager.RobocodeManager;
 import robocode.*;
 
@@ -102,13 +102,8 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	}
 
 	private void handleInteractiveEvent(robocode.Event event) {
-		List<IRobotControl> controls = manager.getBattleManager().getRobotControls();
-		if (controls != null) {
-			for (IRobotControl robotControl : controls) {
-				robotControl.sendInteractiveEvent(event);
-			}
-		}
-	}
+        manager.getBattleManager().sendInteractiveEvent(event);
+    }
 
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 
