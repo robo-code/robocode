@@ -102,8 +102,6 @@ public class BattleManager implements IBattleControl {
 
     private AtomicInteger pauseCount = new AtomicInteger(0);
 
-    private int stepTurn;
-
     public BattleManager(RobocodeManager manager) {
         this.manager = manager;
     }
@@ -112,37 +110,6 @@ public class BattleManager implements IBattleControl {
         battle = null;
         manager = null;
         battleEventDispatcher = null;
-    }
-
-    /**
-     * Steps for a single turn, then goes back to paused
-     */
-    public void nextTurn() {
-        if (battle != null && battle.isRunning()) {
-            battle.step();
-        }
-    }
-
-    /**
-     * This method should be called to inform the battle manager that a new round is starting
-     */
-    public void startNewRound() {
-        stepTurn = 0;
-    }
-
-    public void stop() {
-        if (battle != null) {
-            battle.stop();
-        }
-    }
-
-    public void restart() {
-        // Start new battle. The old battle is automatically stopped
-        startNewBattle(battleProperties, false);
-    }
-
-    public void replay() {
-        startNewBattle(battleProperties, true);
     }
 
     // Called when starting a new battle from GUI
@@ -358,57 +325,6 @@ public class BattleManager implements IBattleControl {
         battleFilename = newBattleFilename;
     }
 
-    private boolean isPaused() {
-        return (pauseCount.get() != 0);
-    }
-
-    public void toglePauseBattle() {
-        if (isPaused()){
-            resumeBattle();
-        }
-        else{
-            pauseBattle();
-        }
-    }
-    
-    public void pauseBattle() {
-        if (pauseCount.incrementAndGet() == 1) {
-            if (battle!=null){
-                battle.pause();
-            }
-        }
-    }
-
-
-    public void pauseIfResumedBattle() {
-        if (pauseCount.compareAndSet(0,1)){
-            if (battle!=null){
-                battle.pause();
-            }
-        }
-    }
-
-    public void resumeIfPausedBattle() {
-        if (pauseCount.compareAndSet(1,0)){
-            if (battle!=null){
-                battle.resume();
-            }
-        }
-    }
-
-    public void resumeBattle() {
-        final int current = pauseCount.decrementAndGet();
-        if (current < 0){
-            pauseCount.set(0);
-            logError("SYSTEM: pause game bug!");
-        }
-        else if (current == 0) {
-            if (battle!=null){
-                battle.resume();
-            }
-        }
-    }
-
     public String getBattlePath() {
         if (battlePath == null) {
             battlePath = System.getProperty("BATTLEPATH");
@@ -469,6 +385,17 @@ public class BattleManager implements IBattleControl {
         return res;
     }
 
+    public BattleProperties getBattleProperties() {
+        if (battleProperties == null) {
+            battleProperties = new BattleProperties();
+        }
+        return battleProperties;
+    }
+
+    public void setDefaultBattleProperties() {
+        battleProperties = new BattleProperties();
+    }
+
     public boolean hasReplayRecord() {  //TODO get rid of this after redording rework
         return battle.hasReplayRecord();
     }
@@ -481,16 +408,6 @@ public class BattleManager implements IBattleControl {
         return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
     }
 
-    public BattleProperties getBattleProperties() {
-        if (battleProperties == null) {
-            battleProperties = new BattleProperties();
-        }
-        return battleProperties;
-    }
-
-    public void setDefaultBattleProperties() {
-        battleProperties = new BattleProperties();
-    }
 
     public void addListener(IBattleListener listener) {
         battleEventDispatcher.addListener(listener);
@@ -498,6 +415,82 @@ public class BattleManager implements IBattleControl {
 
     public void removeListener(IBattleListener listener) {
         battleEventDispatcher.removeListener(listener);
+    }
+
+    public void stop() {
+        if (battle != null) {
+            battle.stop();
+        }
+    }
+
+    public void restart() {
+        // Start new battle. The old battle is automatically stopped
+        startNewBattle(battleProperties, false);
+    }
+
+    public void replay() {
+        startNewBattle(battleProperties, true);
+    }
+
+
+    private boolean isPaused() {
+        return (pauseCount.get() != 0);
+    }
+
+    public void toglePauseBattle() {
+        if (isPaused()){
+            resumeBattle();
+        }
+        else{
+            pauseBattle();
+        }
+    }
+
+    public void pauseBattle() {
+        if (pauseCount.incrementAndGet() == 1) {
+            if (battle!=null){
+                battle.pause();
+            }
+        }
+    }
+
+
+    public void pauseIfResumedBattle() {
+        if (pauseCount.compareAndSet(0,1)){
+            if (battle!=null){
+                battle.pause();
+            }
+        }
+    }
+
+    public void resumeIfPausedBattle() {
+        if (pauseCount.compareAndSet(1,0)){
+            if (battle!=null){
+                battle.resume();
+            }
+        }
+    }
+
+    public void resumeBattle() {
+        final int current = pauseCount.decrementAndGet();
+        if (current < 0){
+            pauseCount.set(0);
+            logError("SYSTEM: pause game bug!");
+        }
+        else if (current == 0) {
+            if (battle!=null){
+                battle.resume();
+            }
+        }
+    }
+
+    /**
+     * Steps for a single turn, then goes back to paused
+     */
+    public void nextTurn() {
+        if (battle != null && battle.isRunning()) {
+            battle.step();
+        }
     }
 
     public void killRobot(int robotIndex) {

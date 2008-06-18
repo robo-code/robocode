@@ -658,8 +658,6 @@ public class Battle implements Runnable {
 			currentRoundRecord = new RoundRecord();
 		}
 
-		battleManager.startNewRound();
-
 		while (!roundOver) {
 			runTurn();
 		}
@@ -680,8 +678,6 @@ public class Battle implements Runnable {
 		currentTime = 0;
 
 		eventDispatcher.onRoundStarted(roundNum);
-
-		battleManager.startNewRound();
 
 		while (!(roundOver || isAborted())) {
 			replayTurn();
