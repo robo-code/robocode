@@ -1346,30 +1346,6 @@ public class Battle implements Runnable {
 		logError("");
 	}
 
-	public void stop() {
-		synchronized (battleMonitor) {
-			// Return immediately if the battle is not running
-			if (!running) {
-				return;
-			}
-
-			// Notify that the battle is aborted
-			aborted = true;
-			battleMonitor.notifyAll();
-
-			// Wait till the battle is not running anymore
-			while (running) {
-				try {
-					battleMonitor.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-					break;
-				}
-			}
-		}
-	}
-
 	private void shortSleep() {
 		try {
 			Thread.sleep(100);
@@ -1660,6 +1636,28 @@ public class Battle implements Runnable {
 	// Processing and maintaining robot and battle controls
 	// --------------------------------------------------------------------------
 
+    public void stop(boolean waitTillEnd) {
+        sendCommand(new AbortCommand());
+
+        if (waitTillEnd){
+            synchronized (battleMonitor) {
+                // Notify that the battle is aborted
+                battleMonitor.notifyAll();
+
+                // Wait till the battle is not running anymore
+                while (running) {
+                    try {
+                        battleMonitor.wait();
+                    } catch (InterruptedException e) {
+                        // Immediately reasserts the exception by interrupting the caller thread itself
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     public void pause() {
         sendCommand(new PauseCommand());
     }
@@ -1749,6 +1747,12 @@ public class Battle implements Runnable {
 			robots.get(robotIndex).setSGPaintEnabled(enableSGPaint);
 		}
 	}
+
+    private class AbortCommand extends Command {
+        public void execute() {
+            aborted=true;
+        }
+    }
 
     private class PauseCommand extends Command {
         public void execute() {

@@ -593,7 +593,7 @@ public class RobocodeFrame extends JFrame {
             if (source == getPauseButton()) {
                 pauseResumeButtonActionPerformed();
             } else if (source == getStopButton()) {
-                manager.getBattleManager().stop();
+                manager.getBattleManager().stop(false);
             } else if (source == getRestartButton()) {
                 manager.getBattleManager().restart();
             } else if (source == getNextTurnButton()) {
@@ -701,7 +701,6 @@ public class RobocodeFrame extends JFrame {
             isBattleRunning = true;
             isBattleReplay = isReplay;
 
-            getPauseButton().setEnabled(true);
             getStopButton().setEnabled(true);
             getRestartButton().setEnabled(true);
             getReplayButton().setEnabled(false);
@@ -733,9 +732,9 @@ public class RobocodeFrame extends JFrame {
         public void onBattleEnded(boolean isAborted) {
             isBattleRunning = false;
 
-            getPauseButton().setEnabled(false);
             getStopButton().setEnabled(false);
             getReplayButton().setEnabled(manager.getBattleManager().hasReplayRecord()); //TODO get rid of battle
+            getNextTurnButton().setEnabled(false);
 
             updateTitle();
         }
