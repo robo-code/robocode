@@ -119,18 +119,8 @@ public class BattleManager implements IBattleControl {
      */
     public void nextTurn() {
         if (battle != null && battle.isRunning()) {
-            stepTurn = battle.getCurrentTime() + 1;
+            battle.step();
         }
-    }
-
-    /**
-     * If the battle is paused, this method determines if it should perform one turn and then stop again.
-     *
-     * @return true if the battle should perform one turn, false otherwise
-     */
-    public boolean shouldStep() {
-        // This code assumes it is called only if the battle is paused.
-        return stepTurn > battle.getCurrentTime();
     }
 
     /**

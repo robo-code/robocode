@@ -215,6 +215,7 @@ public class Battle implements Runnable {
 
     //battle control
     boolean isPaused;
+    int stepCount;
 
     /**
 	 * Battle constructor
@@ -222,6 +223,7 @@ public class Battle implements Runnable {
 	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		super();
         isPaused=paused;
+        stepCount=0;
 
         this.battleField = battleField;
 		this.manager = manager;
@@ -605,7 +607,9 @@ public class Battle implements Runnable {
 		}
 
         eventDispatcher.onBattleStarted(new TurnSnapshot(this), manager.getBattleManager().getBattleProperties(), isReplay());
-        
+        if (isPaused){
+            eventDispatcher.onBattlePaused();
+        }
     }
 
     private synchronized boolean isRobotsLoaded() {
@@ -691,7 +695,7 @@ public class Battle implements Runnable {
 	private void replayTurn() {
         processCommand();
 
-		if (shouldPause() && !battleManager.shouldStep()) {
+		if (shouldPause() && !shouldStep() ) {
 			shortSleep();
 			return;
 		}
@@ -708,7 +712,7 @@ public class Battle implements Runnable {
 	private void runTurn() {
         processCommand();
 
-		if (shouldPause() && !battleManager.shouldStep()) {
+		if (shouldPause() && !shouldStep()) {
 			shortSleep();
 			return;
 		}
@@ -956,6 +960,14 @@ public class Battle implements Runnable {
 		}
 		return false;
 	}
+
+    private boolean shouldStep() {
+        if (stepCount>0){
+            stepCount--;
+            return true;
+        }
+        return false;
+    }
 
 	private void computeActiveRobots() {
 		int ar = 0;
@@ -1660,6 +1672,10 @@ public class Battle implements Runnable {
         sendCommand(new ResumeCommand());
     }
 
+    public void step() {
+        sendCommand(new StepCommand());
+    }
+
     public void killRobot(int robotIndex) {
         sendCommand(new KillRobotCommand(robotIndex));
     }
@@ -1741,6 +1757,7 @@ public class Battle implements Runnable {
     private class PauseCommand extends Command {
         public void execute() {
             isPaused=true;
+            stepCount=0;
             eventDispatcher.onBattlePaused();
         }
     }
@@ -1748,7 +1765,16 @@ public class Battle implements Runnable {
     private class ResumeCommand extends Command {
         public void execute() {
             isPaused=false;
+            stepCount=0;
             eventDispatcher.onBattleResumed();
+        }
+    }
+
+    private class StepCommand extends Command {
+        public void execute() {
+            if (isPaused){
+                stepCount++;
+            }
         }
     }
 

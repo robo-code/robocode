@@ -51,4 +51,8 @@ public interface IBattleControl {
 	 * @param event the interactive event that has occurred to the robot.
 	 */
 	void sendInteractiveEvent(Event event);
+
+    void nextTurn();
+    void pauseBattle();
+    void resumeBattle();
 }
