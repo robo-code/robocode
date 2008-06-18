@@ -397,7 +397,10 @@ public class BattleManager implements IBattleControl {
     }
 
     public boolean hasReplayRecord() {  //TODO get rid of this after redording rework
-        return battle.hasReplayRecord();
+    	if (battle == null) {
+    		return false;
+    	}
+    	return battle.hasReplayRecord();	
     }
     
     public Battle getBattle() { //TODO get rid of it, battle is private
