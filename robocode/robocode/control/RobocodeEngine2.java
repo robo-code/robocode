@@ -8,28 +8,64 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control;
 
+
 import robocode.battle.events.IBattleListener;
+
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
+
 /**
+ * The RobocodeEngine2 is the new version and extension of the old
+ * {@link RobocodeEngine}. Hence, it is the new interface provided for external
+ * applications in order to let these applications run battles within the
+ * Robocode application, and to get the results from these battles.
+ *
+ * @see RobocodeEngine
+ *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6.1
  */
-public class RobocodeEngine2 extends RobocodeEngine{
+public class RobocodeEngine2 extends RobocodeEngine {
+
+	/**
+	 * Creates a new RobocodeEngine for controlling Robocode.
+	 *
+	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
+	 * @see RobocodeEngine#RobocodeEngine(RobocodeListener)
+	 * @see RobocodeEngine#RobocodeEngine(File, RobocodeListener)
+	 * @see #close()
+	 */
     public RobocodeEngine2(File robocodeHome) {
         super(robocodeHome, null);
     }
 
+    /**
+	 * Adds a battle listener that must receive events occurring in battles.
+	 *
+     * @param listener the battle listener that must retrieve the event from
+     *                 the battles.
+     * @see #addBattleListener(IBattleListener)
+     */
     public void addBattleListener(IBattleListener listener) {
         manager.getBattleManager().addListener(listener);
     }
 
+    /**
+	 * Removes a battle listener that has previously been added to this object.
+	 *
+     * @param listener the battle listener that must be removed.
+     * @see #removeBattleListener(IBattleListener)
+     */
     public void removeBattleListener(IBattleListener listener) {
         manager.getBattleManager().removeListener(listener);
     }
@@ -37,9 +73,10 @@ public class RobocodeEngine2 extends RobocodeEngine{
     /**
      * Runs the specified battle.
      *
-     * @param battle the specification of the battle to play including the
-     *               participation robots.
-     * @param waitTillOver will block caller till end of battle
+     * @param battle the specification of the battle to run including the
+     *               participating robots.
+     * @param waitTillOver will block caller till end of battle if set
+     * @see robocode.battle.events.IBattleListener
      * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
      * @see RobocodeListener#battleMessage(String)
      * @see BattleSpecification
@@ -49,6 +86,24 @@ public class RobocodeEngine2 extends RobocodeEngine{
         manager.getBattleManager().startNewBattle(battle, false, waitTillOver);
     }
 
+	/**
+	 * Returns a selection of robots available from the local robot repository
+	 * of Robocode. These robots must exists in the /robocode/robots directory,
+	 * and must be compiled in advance.
+	 * </p>
+	 * Notice: If a specified robot cannot be found in the repository, it will
+	 * not be returned in the array of robots returned by this method.
+	 *
+	 * @return an array containing the available robots from the local robot
+	 *         repository based on the selected robots specified with the
+	 *         {@code selectedRobotList} parameter.
+	 * @param selectedRobotList a comma or space separated list of robots to
+	 *                          return. The full class name must be used for
+	 *                          specifying the individual robot, e.g.
+	 *                          "sample.Corners, sample.Crazy"
+	 * @see RobotSpecification
+	 * @see RobocodeEngine#getLocalRepository()
+	 */
     public RobotSpecification[] getLocalRepository(String selectedRobotList){
         RobotSpecification[] repository = getLocalRepository();
 
@@ -58,7 +113,7 @@ public class RobocodeEngine2 extends RobocodeEngine{
             robotSpecMap.put(spec.getNameAndVersion(), spec);
         }
 
-        String[] selectedRobots = selectedRobotList.split(",");
+        String[] selectedRobots = selectedRobotList.split("[\\s,;]+");
 
         List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
 
@@ -74,7 +129,7 @@ public class RobocodeEngine2 extends RobocodeEngine{
     }
 
     /**
-     * Prints out all running thread to the standard system out (console)
+     * Prints out all running threads to the standard system out (console).
      */
     public static void printRunningThreads() {
         ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
@@ -112,6 +167,5 @@ public class RobocodeEngine2 extends RobocodeEngine{
             }
             System.out.println("---------------");
         }
-    }
-    
+    }    
 }

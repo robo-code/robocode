@@ -47,9 +47,23 @@ import java.util.List;
 
 
 /**
- * The RobocodeEngine is meant for 3rd party applications to let them run
- * battles in Robocode and receive the results. This class in the main class
- * of the {@code robocode.control} package.
+ * The RobocodeEngine is the old interface provided for external applications
+ * in order to let these applications run battles within the Robocode application,
+ * and to get the results from these battles.
+ * </p>
+ * This class in the main class of the {@code robocode.control} package, and the
+ * reason for having this control package.
+ * </p>
+ * Please notice, that this class has been extended with the new class
+ * {@link RobocodeEngine2}, which serves as the new interface for external
+ * applications. However, this old version is kept for backwards compatibility.
+ * </p>
+ * The RobocodeEngine is used by RoboRumble@Home, which is integrated in
+ * Robocode, but also RoboLeague and RobocodeJGAP. In addition, the
+ * RobocodeEngine is also used by the test units for testing the Robocode
+ * application itself.
+ *
+ * @see RobocodeEngine2
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -57,6 +71,7 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeEngine {
+
 	RobocodeManager manager;
     private BattleObserver battleObserver;
     private BattleSpecification battleSpecification;
@@ -68,6 +83,7 @@ public class RobocodeEngine {
 	 * @param listener     the listener that must receive the callbacks from this
 	 *                     RobocodeEngine.
 	 * @see #RobocodeEngine(RobocodeListener)
+	 * @see RobocodeEngine2#RobocodeEngine2(File)
 	 * @see #close()
 	 */
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
@@ -82,6 +98,8 @@ public class RobocodeEngine {
 	 * @param listener the listener that must receive the callbacks from this
 	 *                 RobocodeEngine.
 	 * @see #RobocodeEngine(File, RobocodeListener)
+	 * @see RobocodeEngine2#RobocodeEngine2(File)
+	 * @see RobocodeEngine2#addBattleListener(robocode.battle.events.IBattleListener)
 	 * @see #close()
 	 */
 	public RobocodeEngine(RobocodeListener listener) {
@@ -175,12 +193,13 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Returns the robots available for for battle from the local robot
-	 * repository in the Robocode home folder.
+	 * Returns all robots available from the local robot repository of Robocode.
+	 * These robots must exists in the /robocode/robots directory, and must be
+	 * compiled in advance.
 	 *
-	 * @return an array of all available robots for battle from the local robot
-	 *         repository.
+	 * @return an array of all available robots from the local robot repository.
 	 * @see RobotSpecification
+	 * @see RobocodeEngine2#getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
@@ -247,5 +266,4 @@ public class RobocodeEngine {
             listener.battleMessage(message);
         }
     }
-
 }

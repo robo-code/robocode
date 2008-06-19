@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control;
 
@@ -19,10 +21,25 @@ import java.lang.reflect.Field;
 
 
 /**
+ * The RandomFactory is used for controlling the generation of random numbers,
+ * and supports generating random numbers that are deterministic, which is
+ * useful for testing purposes. 
+ *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6.1
  */
 public class RandomFactory {
 	private static Random randomNumberGenerator;
+
+	/**
+	 * Returns the random number generator used for generating a stream of
+	 * random numbers.
+	 *
+	 * @see java.lang.Random
+	 *
+	 * @return a {@link java.util.Random} instance.
+	 */
 	public static Random getRandom() {
 		if (randomNumberGenerator == null) {
 			try {
@@ -43,6 +60,14 @@ public class RandomFactory {
 		return randomNumberGenerator;
 	}
 
+	/**
+	 * Sets the random number generator instance used for generating a
+	 * stream of random numbers.
+	 *
+	 * @see java.lang.Random
+	 *
+	 * @param random a {@link java.util.Random} instance.
+	 */
 	public static void setRandom(Random random) {
 		randomNumberGenerator = random;
 		try {
@@ -61,6 +86,12 @@ public class RandomFactory {
 		// TODO ZAMO using Robot classloader inject seed also for all instances being created by robots
 	}
 
+	/**
+	 * Resets the random number generator instance to be deterministic when
+	 * generating random numbers.
+	 *
+	 * @param seed the seed to use for the new deterministic random generator.
+	 */
 	public static void resetDeterministic(long seed) {
 		setRandom(new Random(seed));
 	}

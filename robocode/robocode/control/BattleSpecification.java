@@ -22,7 +22,8 @@ import robocode.battle.BattleProperties;
 
 
 /**
- * A BattleSpecification defines the settings of a battle.
+ * A BattleSpecification defines battle configuration used by the
+ * {@link RobocodeEngine}.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)

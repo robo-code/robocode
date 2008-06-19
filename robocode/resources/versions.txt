@@ -11,6 +11,7 @@ o Changes
 - FPS now max 40, TPS very fast
 - -DPARALLEL option, allows robots run in parallel if you have more CPUs. May speedup 
    battles with multiple CPU consuming robots. Time measuring is not per robot.
+- New robocode.control.RandomFactory
 - -DRANDOMSEED option, repeatable/deterministic Random generator is used by game 
   as well as by Math.random(). So your robots will appear in same position in battle and will be easily testable.
 - reworked BattleView, introduced IBattleListener, immutable turn snapshots, rendering in AWT thread
@@ -19,6 +20,7 @@ o Changes
 - Junit test infrastructure
 - FR:1878233 - onBattleEnd() Event
 - Title in Robocode window is now showing the current turn
+- New robocode.control.RobocodeEngine2, which is an replacement and extension of the old RobocodeEngine
 o Bugfixes
 - The JuniorRobot.others was not updated properly when other robots dies
 
