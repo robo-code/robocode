@@ -342,7 +342,7 @@ public class RankingDialog extends JDialog {
 
 		// Since we are displaying the results we have to keep the battle
 		// around, but now that we are done we need to clean things up.
-		battle.cleanup();
+		battle.cleanup();     //TODO remove
 		battle = null;
 	}
 

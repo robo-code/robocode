@@ -106,19 +106,22 @@ public class BattleManager implements IBattleControl {
         this.manager = manager;
     }
 
-    public void cleanup() {
-        battle = null;
+    public synchronized void cleanup() {
+        if (battle!=null){
+            battle.cleanup();
+            battle = null;
+        }
         manager = null;
         battleEventDispatcher = null;
     }
 
     // Called when starting a new battle from GUI
-    public void startNewBattle(BattleProperties battleProperties, boolean replay) {
+    public synchronized void startNewBattle(BattleProperties battleProperties, boolean replay) {
         startNewBattle(battleProperties, replay, false);
     }
 
     // Called when starting a new battle from GUI
-    public boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
+    public synchronized boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
         this.battleProperties = battleProperties;
 
         List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
@@ -145,7 +148,7 @@ public class BattleManager implements IBattleControl {
         }
 
     // Called from the RobocodeEngine
-	public boolean startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
+	public synchronized boolean startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
         battleProperties = new BattleProperties();
         battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
         battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -242,7 +245,7 @@ public class BattleManager implements IBattleControl {
     private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
 
         logMessage("Preparing battle...");
-        if (battle != null) { // TODO is that good way ? should we rather throw exception here when battle is running ?
+        if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
             battle.stop(true);
         }
 
@@ -412,26 +415,26 @@ public class BattleManager implements IBattleControl {
     }
 
 
-    public void addListener(IBattleListener listener) {
+    public synchronized void addListener(IBattleListener listener) {
         battleEventDispatcher.addListener(listener);
     }
 
-    public void removeListener(IBattleListener listener) {
+    public synchronized void removeListener(IBattleListener listener) {
         battleEventDispatcher.removeListener(listener);
     }
 
-    public void stop(boolean waitTillEnd) {
+    public synchronized void stop(boolean waitTillEnd) {
         if (battle != null && battle.isRunning()) {
             battle.stop(waitTillEnd);
         }
     }
 
-    public void restart() {
+    public synchronized void restart() {
         // Start new battle. The old battle is automatically stopped
         startNewBattle(battleProperties, false);
     }
 
-    public void replay() {
+    public synchronized void replay() {
         startNewBattle(battleProperties, true);
     }
 
@@ -440,7 +443,7 @@ public class BattleManager implements IBattleControl {
         return (pauseCount.get() != 0);
     }
 
-    public void toglePauseBattle() {
+    public synchronized void toglePauseBattle() {
         if (isPaused()){
             resumeBattle();
         }
@@ -449,39 +452,39 @@ public class BattleManager implements IBattleControl {
         }
     }
 
-    public void pauseBattle() {
+    public synchronized void pauseBattle() {
         if (pauseCount.incrementAndGet() == 1) {
-            if (battle!=null){
+            if (battle!=null && battle.isRunning()){
                 battle.pause();
             }
         }
     }
 
 
-    public void pauseIfResumedBattle() {
+    public synchronized void pauseIfResumedBattle() {
         if (pauseCount.compareAndSet(0,1)){
-            if (battle!=null){
+            if (battle!=null && battle.isRunning()){
                 battle.pause();
             }
         }
     }
 
-    public void resumeIfPausedBattle() {
+    public synchronized void resumeIfPausedBattle() {
         if (pauseCount.compareAndSet(1,0)){
-            if (battle!=null){
+            if (battle!=null && battle.isRunning()){
                 battle.resume();
             }
         }
     }
 
-    public void resumeBattle() {
+    public synchronized void resumeBattle() {
         final int current = pauseCount.decrementAndGet();
         if (current < 0){
             pauseCount.set(0);
             logError("SYSTEM: pause game bug!");
         }
         else if (current == 0) {
-            if (battle!=null){
+            if (battle!=null && battle.isRunning()){
                 battle.resume();
             }
         }
@@ -490,25 +493,31 @@ public class BattleManager implements IBattleControl {
     /**
      * Steps for a single turn, then goes back to paused
      */
-    public void nextTurn() {
+    public synchronized void nextTurn() {
         if (battle != null && battle.isRunning()) {
             battle.step();
         }
     }
 
-    public void killRobot(int robotIndex) {
-        battle.killRobot(robotIndex);
+    public synchronized void killRobot(int robotIndex) {
+        if (battle!=null && battle.isRunning()){
+            battle.killRobot(robotIndex);
+        }
     }
 
-    public void setPaintEnabled(int robotIndex, boolean enable) {
-        battle.setPaintEnabled(robotIndex, enable);
+    public synchronized void setPaintEnabled(int robotIndex, boolean enable) {
+        if (battle!=null && battle.isRunning()){
+            battle.setPaintEnabled(robotIndex, enable);
+        }
     }
 
-    public void setSGPaintEnabled(int robotIndex, boolean enable) {
-        battle.setSGPaintEnabled(robotIndex, enable);
+    public synchronized void setSGPaintEnabled(int robotIndex, boolean enable) {
+        if (battle!=null && battle.isRunning()){
+            battle.setSGPaintEnabled(robotIndex, enable);
+        }
     }
 
-    public void sendInteractiveEvent(Event event) {
+    public synchronized void sendInteractiveEvent(Event event) {
         if (battle!=null && battle.isRunning() && !isPaused()){
             battle.sendInteractiveEvent(event);
         }

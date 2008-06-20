@@ -463,7 +463,7 @@ public class Battle implements Runnable {
 
 		if (pendingCommands != null) {
 			pendingCommands.clear();
-			pendingCommands = null;
+			//don't pendingCommands = null;
 		}
 
 		battleField = null;
