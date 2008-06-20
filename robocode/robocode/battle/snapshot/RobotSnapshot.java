@@ -55,6 +55,9 @@ public class RobotSnapshot implements Serializable {
 	// The very short name of the robot
 	private final String veryShortName;
 
+    // The very short name of the robot
+    private final String teamLeaderName;
+
 	// The robot state
 	private final RobotState state;
 
@@ -114,8 +117,9 @@ public class RobotSnapshot implements Serializable {
 		name = peer.getName();
         shortName = peer.getShortName();
 		veryShortName = peer.getVeryShortName();
+        teamLeaderName = peer.getTeamPeer().getTeamLeader().getName();
 
-		state = peer.getState();
+        state = peer.getState();
 
 		energy = peer.getEnergy();
         velocity = peer.getVelocity();
@@ -173,6 +177,15 @@ public class RobotSnapshot implements Serializable {
 	public String getVeryShortName() {
 		return veryShortName;
 	}
+
+    /**
+     * Returns the name of the robot.
+     *
+     * @return the name of the robot.
+     */
+    public String getTeamLeaderName() {
+        return teamLeaderName;
+    }
 
 	/**
 	 * Returns the robot status.
