@@ -55,7 +55,7 @@ public class RobotSnapshot implements Serializable {
 	// The very short name of the robot
 	private final String veryShortName;
 
-    // The very short name of the robot
+    // The very short name of the team leader robot (might be null)
     private final String teamLeaderName;
 
 	// The robot state
@@ -179,9 +179,9 @@ public class RobotSnapshot implements Serializable {
 	}
 
     /**
-     * Returns the name of the robot.
+     * Returns the name of the team leader robot or null if the robot is not a part of a team.
      *
-     * @return the name of the robot.
+     * @return the name of the team leader robot or null if the robot is not a part of a team.
      */
     public String getTeamLeaderName() {
         return teamLeaderName;
