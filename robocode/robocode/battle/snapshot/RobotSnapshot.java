@@ -14,6 +14,7 @@ package robocode.battle.snapshot;
 
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
+import robocode.peer.TeamPeer;
 import robocode.robotpaint.Graphics2DProxy;
 import static robocode.util.ObjectCloner.deepCopy;
 
@@ -117,7 +118,16 @@ public class RobotSnapshot implements Serializable {
 		name = peer.getName();
         shortName = peer.getShortName();
 		veryShortName = peer.getVeryShortName();
-        teamLeaderName = peer.getTeamPeer().getTeamLeader().getName();
+
+		String tmpTeamLeaderName = null;
+		TeamPeer teamPeer = peer.getTeamPeer();
+		if (teamPeer != null) {
+			RobotPeer teamLeader = teamPeer.getTeamLeader();
+			if (teamLeader != null) {
+				tmpTeamLeaderName = teamLeader.getName();
+			}
+		}
+		teamLeaderName = tmpTeamLeaderName;
 
         state = peer.getState();
 
