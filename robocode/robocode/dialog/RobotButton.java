@@ -38,26 +38,28 @@ public class RobotButton extends JButton implements ActionListener {
 	private final RobotDialogManager robotDialogManager;
 	private RobotDialog robotDialog;
     private final String name;
+    private final int index;
 
-	/**
+    /**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, IBattleControl battleControl, String name, int index) {
+	public RobotButton(RobotDialogManager robotDialogManager, IBattleControl battleControl, String name, int index, boolean attach) {
 		this.robotDialogManager = robotDialogManager;
         this.name=name;
+        this.index=index;
 
-		initialize();
-		robotDialog = robotDialogManager.getRobotDialog(name, false);
-		if (robotDialog != null) {
-			robotDialog.reset(battleControl, index, name);
-			battleControl.setPaintEnabled(index, robotDialog.isPaintEnabled());
-			battleControl.setSGPaintEnabled(index, robotDialog.isSGPaintEnabled());
-		}
+        initialize();
+		if (attach){
+            attach();
+            robotDialog.reset();
+            battleControl.setPaintEnabled(index, robotDialog.isPaintEnabled());
+            battleControl.setSGPaintEnabled(index, robotDialog.isSGPaintEnabled());
+        }
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (robotDialog == null) {
-			robotDialog = robotDialogManager.getRobotDialog(name, true);
+            attach();
 			if (!robotDialog.isVisible() || robotDialog.getState() != Frame.NORMAL) {
 				WindowUtil.packPlaceShow(robotDialog);
 			}
@@ -76,5 +78,25 @@ public class RobotButton extends JButton implements ActionListener {
 		setMaximumSize(new Dimension(110, 25));
 		setHorizontalAlignment(SwingConstants.LEFT);
 		setMargin(new Insets(0, 0, 0, 0));
-	}
+        setToolTipText(name);
+    }
+
+    public void attach(){
+        if (robotDialog == null) {
+            robotDialog = robotDialogManager.getRobotDialog(this, name, true);
+        }
+        robotDialog.attach();
+    }
+
+    public void detach(){
+        robotDialog=null;
+    }
+
+    public int getRobotIndex(){
+        return index;
+    }
+
+    public String getRobotName(){
+        return name;
+    }
 }

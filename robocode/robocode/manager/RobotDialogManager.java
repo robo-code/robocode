@@ -23,8 +23,8 @@ package robocode.manager;
 
 
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.IBattleControl;
 import robocode.dialog.RobotDialog;
+import robocode.dialog.RobotButton;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,15 +37,17 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class RobotDialogManager {
 
+    public static final int MAX_PRE_ATTACHED = 10;
+
 	private Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
 	private RobocodeManager manager;
 
-	public RobotDialogManager(RobocodeManager manager) {
+    public RobotDialogManager(RobocodeManager manager) {
 		super();
 		this.manager = manager;
 	}
 
-	public void initialize(List<RobotSnapshot> robots) {
+	public void trim(List<RobotSnapshot> robots) {
 
 		// new ArrayList in order to prevent ConcurrentModificationException
 		for (String name : new ArrayList<String>(robotDialogMap.keySet())) {
@@ -65,17 +67,6 @@ public class RobotDialogManager {
                 dialog.detach();
 			}
 		}
-
-        for(int index=0;index<robots.size();index++){
-            final RobotSnapshot robot = robots.get(index);
-            final String name = robot.getName();
-            final RobotDialog robotDialog = getRobotDialog(name, true);
-            BattleManager battleControl = manager.getBattleManager();
-            robotDialog.reset(battleControl, index, name);
-            battleControl.setPaintEnabled(index, robotDialog.isPaintEnabled());
-            battleControl.setSGPaintEnabled(index, robotDialog.isSGPaintEnabled());
-        }
-
     }
 
 	public void reset() {
@@ -90,14 +81,14 @@ public class RobotDialogManager {
 		}
 	}
 
-	public RobotDialog getRobotDialog(String name, boolean create) {
+	public RobotDialog getRobotDialog(RobotButton robotButton, String name, boolean create) {
 		RobotDialog dialog = robotDialogMap.get(name);
 
 		if (create && dialog == null) {
-			if (robotDialogMap.size() > 10) {
+			if (robotDialogMap.size() > MAX_PRE_ATTACHED) {
 				reset();
 			}
-			dialog = new RobotDialog(manager);
+			dialog = new RobotDialog(manager, robotButton);
 			robotDialogMap.put(name, dialog);
 		}
 		return dialog;

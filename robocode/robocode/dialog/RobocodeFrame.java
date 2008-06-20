@@ -28,7 +28,6 @@
 package robocode.dialog;
 
 
-import robocode.battle.IBattleControl;
 import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
@@ -712,15 +711,16 @@ public class RobocodeFrame extends JFrame {
 
             final RobotDialogManager dialogManager = manager.getRobotDialogManager();
             final java.util.List<RobotSnapshot> robots = start.getRobots();
+            dialogManager.trim(robots);
             for(int index=0;index<robots.size();index++){
                 final RobotSnapshot robot = robots.get(index);
                 final String name = robot.getName();
-                final RobotButton button = new RobotButton(dialogManager, manager.getBattleManager(), name, index);
+                final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
+                final RobotButton button = new RobotButton(dialogManager, manager.getBattleManager(), name, index, attach);
                 button.setText(robot.getShortName());
-                button.setToolTipText(name);
                 addRobotButton(button);
             }
-            dialogManager.initialize(robots);
+
             getRobotButtonsPanel().repaint();
 
             validate();
