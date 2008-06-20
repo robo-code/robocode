@@ -118,16 +118,7 @@ public class RobotSnapshot implements Serializable {
 		name = peer.getName();
         shortName = peer.getShortName();
 		veryShortName = peer.getVeryShortName();
-
-		String tmpTeamLeaderName = null;
-		TeamPeer teamPeer = peer.getTeamPeer();
-		if (teamPeer != null) {
-			RobotPeer teamLeader = teamPeer.getTeamLeader();
-			if (teamLeader != null) {
-				tmpTeamLeaderName = teamLeader.getName();
-			}
-		}
-		teamLeaderName = tmpTeamLeaderName;
+        teamLeaderName = peer.getTeamLeaderName();
 
         state = peer.getState();
 
@@ -161,7 +152,7 @@ public class RobotSnapshot implements Serializable {
 		outputStreamSnapshot = peer.getOut().readAndReset();
 	}
 
-	/**
+    /**
 	 * Returns the name of the robot.
 	 *
 	 * @return the name of the robot.

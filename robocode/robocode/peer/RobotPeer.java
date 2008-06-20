@@ -1253,6 +1253,16 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return teamPeer;
 	}
 
+    public String getTeamLeaderName() {
+        if (teamPeer != null) {
+            RobotPeer teamLeader = teamPeer.getTeamLeader();
+            if (teamLeader != null) {
+                return teamLeader.getName();
+            }
+        }
+        return getName();
+    }
+
 	public boolean isTeamLeader() {
 		return (getTeamPeer() != null && getTeamPeer().getTeamLeader() == this);
 	}
