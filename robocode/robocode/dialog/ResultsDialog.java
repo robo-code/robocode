@@ -16,6 +16,8 @@ package robocode.dialog;
 
 import robocode.manager.RobocodeManager;
 import robocode.ui.BattleResultsTableModel;
+import robocode.BattleResults;
+import robocode.battle.events.BattleCompletedEvent;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -39,21 +41,22 @@ public class ResultsDialog extends BaseScoreDialog {
     private JPanel buttonPanel;
     private JButton okButton;
     private JButton saveButton;
-    private AbstractTableModel tableModel;
+    private BattleResultsTableModel tableModel;
     private ButtonEventHandler buttonEventHandler;
 
     /**
      * RankingDialog constructor
      */
-    public ResultsDialog(RobocodeManager manager) {
+    public ResultsDialog(RobocodeManager manager, BattleCompletedEvent event) {
         super(manager, true);
+        tableModel = new BattleResultsTableModel(event);
         buttonEventHandler=new ButtonEventHandler();
         initialize();
         setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
     }
 
     private void saveButtonActionPerformed() {
-        manager.getWindowManager().showSaveResultsDialog();
+        manager.getWindowManager().showSaveResultsDialog(tableModel);
     }
 
     private void okButtonActionPerformed() {
@@ -62,9 +65,6 @@ public class ResultsDialog extends BaseScoreDialog {
 
     @Override
     protected AbstractTableModel getTableModel() {
-        if (tableModel == null) {
-            tableModel = new BattleResultsTableModel(manager);
-        }
         return tableModel;
     }
 

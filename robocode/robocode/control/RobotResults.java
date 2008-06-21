@@ -38,7 +38,8 @@ public class RobotResults extends BattleResults {
 	 * Constructs a new RobotResults.
 	 *
 	 * @param robot             the robot these results are for
-	 * @param rank              the rank of the robot in the battle
+	 * @param teamLeaderName    team name
+     * @param rank              the rank of the robot in the battle
 	 * @param score             the total score for the robot in the battle
 	 * @param survival          the survival score for the robot in the battle
 	 * @param lastSurvivorBonus the last survivor bonus for the robot in the battle
@@ -52,6 +53,7 @@ public class RobotResults extends BattleResults {
 	 */
 	public RobotResults(
 			RobotSpecification robot,
+            String teamLeaderName,
 			int rank,
 			double score,
 			double survival,
@@ -64,14 +66,14 @@ public class RobotResults extends BattleResults {
 			int seconds,
 			int thirds
 			) {
-        super(rank, score, survival, lastSurvivorBonus, bulletDamage, bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, thirds);
+        super(teamLeaderName, rank, score, survival, lastSurvivorBonus, bulletDamage, bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, thirds);
         this.robot = robot;
 	}
 
     public RobotResults(
             RobotSpecification robot,
             BattleResults results) {
-        super(results.getRank(), results.getScore(), results.getSurvival(), results.getLastSurvivorBonus(),
+        super(results.getTeamLeaderName(), results.getRank(), results.getScore(), results.getSurvival(), results.getLastSurvivorBonus(),
                 results.getBulletDamage(), results.getBulletDamageBonus(), results.getRamDamage(), results.getRamDamageBonus(),
                 results.getFirsts(), results.getSeconds(), results.getThirds());
         this.robot = robot;

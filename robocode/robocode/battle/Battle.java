@@ -336,12 +336,7 @@ public class Battle implements Runnable {
 		}
 		Logger.setLogListener(null);
 
-		// The results dialog needs the battle object to be complete, so we
-		// won't clean it up just yet, instead the ResultsDialog is responsible
-		// TODO for cleaning up the battle when its done with it.
-		if (!manager.isGUIEnabled()) {
-			cleanup();
-		}
+        cleanup();
 
 		// Notify that the battle is over
 		synchronized (isRunning) {

@@ -819,21 +819,19 @@ public class RobocodeFrame extends JFrame {
         public void onBattleCompleted(BattleCompletedEvent event) {
             if (manager.getProperties().getOptionsCommonShowResults()){
                 //show on ATW thread
-                ResultsTask resultTask=new ResultsTask(event.getBattleProperties(), event.getResults());
+                ResultsTask resultTask=new ResultsTask(event);
                 EventQueue.invokeLater(resultTask);
             }
         }
 
         private class ResultsTask implements Runnable {
-            BattleProperties battleProperties;
-            BattleResults[] results;
-            ResultsTask(BattleProperties battleProperties, BattleResults[] results){
-                this.battleProperties=battleProperties;
-                this.results=results;
+            BattleCompletedEvent event;
+            ResultsTask(BattleCompletedEvent event){
+                this.event=event;
             }
 
             public void run() {
-                manager.getWindowManager().showResultsDialog();
+                manager.getWindowManager().showResultsDialog(event);
             }
         }
     }

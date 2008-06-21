@@ -33,6 +33,8 @@ import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
 import robocode.manager.RobocodeManager;
 import robocode.battle.Battle;
+import robocode.battle.events.BattleCompletedEvent;
+import robocode.BattleResults;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,12 +54,11 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
-	private Battle battle; // TODO get rid of it in UI
 	private String title;
+    private BattleCompletedEvent event;
 
-	public BattleResultsTableModel(RobocodeManager manger) {
-		super();
-		this.battle = manger.getBattleManager().getBattle();
+    public BattleResultsTableModel(BattleCompletedEvent event) {
+		this.event=event;
 	}
 
 	public int getColumnCount() {
@@ -109,18 +110,12 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public int getRowCount() {
-		// Due to the lovely nature of threads and race conditions we have to
-		// verify that the battle object is still around and hasn't been cleaned
-		// up removing the contestants.
-		if (battle == null || battle.getContestants() == null) {
-			return 0;
-		}
-		return battle.getContestants().size();
+		return event.getResults().length;
 	}
 
 	public String getTitle() {
-		if (title == null && battle != null) {
-			int round = battle.getRoundNum();
+		if (title == null ) {
+			int round = event.getBattleProperties().getNumRounds();
 
 			title = "Results for " + round + " round";
 			if (round > 1) {
@@ -131,57 +126,53 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public Object getValueAt(int row, int col) {
-		// TODO get rid of it, statistics should be carried by battle events, not by peer interface
-		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(battle.getContestants());
+		BattleResults statistics = event.getResults()[row];
 
-		Collections.sort(orderedContestants);
-
-		ContestantPeer r = orderedContestants.get(row);
-		ContestantStatistics statistics = r.getStatistics();
-
-		switch (col) {
+        switch (col) {
 		case 0: {
 			int place = row + 1;
-
-			while (place < getRowCount()
+            //TODO huh ?
+            /*
+            while (place < getRowCount()
 					&& statistics.getTotalScore() == orderedContestants.get(place).getStatistics().getTotalScore()) {
 				place++;
 			}
+			*/
 			return StringUtil.getPlacementString(place);
 		}
 
 		case 1:
-			return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
+			return statistics.getTeamLeaderName();
 
 		case 2:
-			return "" + (int) (statistics.getTotalScore() + 0.5);
+			return "" + (int) (statistics.getScore() + 0.5);
 
 		case 3:
-			return "" + (int) (statistics.getTotalSurvivalScore() + 0.5);
+			return "" + (int) (statistics.getSurvival() + 0.5);
 
 		case 4:
-			return "" + (int) (statistics.getTotalLastSurvivorBonus() + 0.5);
+			return "" + (int) (statistics.getLastSurvivorBonus() + 0.5);
 
 		case 5:
-			return "" + (int) (statistics.getTotalBulletDamageScore() + 0.5);
+			return "" + (int) (statistics.getBulletDamage() + 0.5);
 
 		case 6:
-			return "" + (int) (statistics.getTotalBulletKillBonus() + 0.5);
+			return "" + (int) (statistics.getBulletDamageBonus() + 0.5);
 
 		case 7:
-			return "" + (int) (statistics.getTotalRammingDamageScore() + 0.5);
+			return "" + (int) (statistics.getRamDamage() + 0.5);
 
 		case 8:
-			return "" + (int) (statistics.getTotalRammingKillBonus() + 0.5);
+			return "" + (int) (statistics.getRamDamageBonus() + 0.5);
 
 		case 9:
-			return "" + statistics.getTotalFirsts();
+			return "" + statistics.getFirsts();
 
 		case 10:
-			return "" + statistics.getTotalSeconds();
+			return "" + statistics.getSeconds();
 
 		case 11:
-			return "" + statistics.getTotalThirds();
+			return "" + statistics.getThirds();
 
 		default:
 			return "";

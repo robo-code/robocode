@@ -179,7 +179,7 @@ public class TeamStatistics implements ContestantStatistics {
 	}
 
     public BattleResults getResults(int rank) {
-        return new BattleResults(rank,
+        return new BattleResults(teamPeer.getName(), rank,
                 getTotalScore(), getTotalSurvivalScore(), getTotalLastSurvivorBonus(),
                 getTotalBulletDamageScore(), getTotalBulletKillBonus(), getTotalRammingDamageScore(),
                 getTotalRammingKillBonus(), getTotalFirsts(), getTotalSeconds(), getTotalThirds());

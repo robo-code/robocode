@@ -17,17 +17,18 @@ package robocode;
 public class BattleResults implements java.io.Serializable {
     private static final long serialVersionUID = 2L;
 
-    private int rank;
-    private double score;
-    private double survival;
-    private double lastSurvivorBonus;
-    private double bulletDamage;
-    private double bulletDamageBonus;
-    private double ramDamage;
-    private double ramDamageBonus;
-    private int firsts;
-    private int seconds;
-    private int thirds;
+    private final String teamLeaderName;
+    private final int rank;
+    private final double score;
+    private final double survival;
+    private final double lastSurvivorBonus;
+    private final double bulletDamage;
+    private final double bulletDamageBonus;
+    private final double ramDamage;
+    private final double ramDamageBonus;
+    private final int firsts;
+    private final int seconds;
+    private final int thirds;
 
 
     /**
@@ -46,6 +47,7 @@ public class BattleResults implements java.io.Serializable {
      * @param thirds            the number of rounds this robot placed third
      */
     public BattleResults(
+            String teamLeaderName,
             int rank,
             double score,
             double survival,
@@ -58,6 +60,7 @@ public class BattleResults implements java.io.Serializable {
             int seconds,
             int thirds
     ) {
+        this.teamLeaderName=teamLeaderName;
         this.rank = rank;
         this.score = score;
         this.survival = survival;
@@ -69,6 +72,10 @@ public class BattleResults implements java.io.Serializable {
         this.firsts = firsts;
         this.seconds = seconds;
         this.thirds = thirds;
+    }
+
+    public String getTeamLeaderName() {
+        return teamLeaderName;
     }
 
     /**

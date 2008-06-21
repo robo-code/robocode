@@ -34,10 +34,7 @@ import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.manager.BattleManager;
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.BattleMessageEvent;
-import robocode.battle.events.BattleErrorEvent;
+import robocode.battle.events.*;
 import robocode.ui.BattleResultsTableModel;
 import robocode.battle.Battle;
 import robocode.security.SecurePrintStream;
@@ -241,12 +238,9 @@ public class Robocode {
                         + "    -DRANDOMSEED=<long-number> Set seed for deterministic behavior of Random number generator\n" + "\n");
     }
 
-    private void printResultsData() {
-        BattleManager battleManager = manager.getBattleManager();
-        Battle battle = battleManager.getBattle();
-
+    private void printResultsData(BattleCompletedEvent event) {
         // Do not print out if no result file has been specified and the GUI is enabled
-        if (battle.isReplay() || (setup.resultsFilename == null && (!setup.exitOnComplete || manager.isGUIEnabled()))) {
+        if ((setup.resultsFilename == null && (!setup.exitOnComplete || manager.isGUIEnabled()))) {
             return;
         }
 
@@ -266,7 +260,7 @@ public class Robocode {
             }
         }
 
-        BattleResultsTableModel resultsTable = new BattleResultsTableModel(manager);
+        BattleResultsTableModel resultsTable = new BattleResultsTableModel(event);
 
         if (out != null) {
             resultsTable.print(out);
@@ -281,10 +275,18 @@ public class Robocode {
     }
 
     private class BattleObserver extends BattleAdaptor {
+        boolean isReplay;
+
+        @Override
+        public void onBattleStarted(BattleStartedEvent event) {
+            isReplay=event.isReplay();
+        }
 
         @Override
         public void onBattleCompleted(BattleCompletedEvent event) {
-            printResultsData();
+            if (!isReplay){            
+                printResultsData(event);
+            }
         }
 
         @Override

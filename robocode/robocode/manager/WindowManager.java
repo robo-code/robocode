@@ -24,12 +24,14 @@ package robocode.manager;
 
 
 import robocode.battle.BattleProperties;
+import robocode.battle.events.BattleCompletedEvent;
 import robocode.ui.BattleResultsTableModel;
 import robocode.dialog.*;
 import robocode.dialog.SplashScreen;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
+import robocode.BattleResults;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -178,8 +180,8 @@ public class WindowManager {
         }
     }
 
-	public void showResultsDialog() {
-		packCenterShow(new ResultsDialog(manager));
+	public void showResultsDialog(BattleCompletedEvent event) {
+		packCenterShow(new ResultsDialog(manager, event));
 	}
 
 	public void showRankingDialog(boolean visible) {
@@ -375,7 +377,7 @@ public class WindowManager {
 		}
 	}
 
-	public void showSaveResultsDialog() {
+	public void showSaveResultsDialog(BattleResultsTableModel tableModel) {
 		JFileChooser chooser = new JFileChooser();
 
 		chooser.setFileFilter(new FileFilter() {
@@ -408,7 +410,6 @@ public class WindowManager {
 		chooser.setDialogTitle("Save battle results");
 
 		if (chooser.showSaveDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
-			BattleResultsTableModel tableModel = new BattleResultsTableModel(manager);
 
 			String filename = chooser.getSelectedFile().getPath();
 
