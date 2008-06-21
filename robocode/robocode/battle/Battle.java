@@ -399,7 +399,8 @@ public class Battle implements Runnable {
 
 		if (teamManager != null) {
 			teamManager.add(robotPeer);
-			addContestant(teamManager);
+            addContestant(teamManager);
+
 		} else {
 			addContestant(robotPeer);
 		}
@@ -430,6 +431,20 @@ public class Battle implements Runnable {
 
 	private void addContestant(ContestantPeer c) {
 		if (!contestants.contains(c)) {
+            int count = 0;
+            for (ContestantPeer cp : contestants) {
+                if (cp.getName().equals(c.getName())) {
+                    if (count == 0) {
+                        if (!cp.isDuplicate()) {
+                            cp.setDuplicate(0);
+                        }
+                    }
+                    count++;
+                }
+            }
+            if (count > 0) {
+                c.setDuplicate(count);
+            }
 			contestants.add(c);
 		}
 	}

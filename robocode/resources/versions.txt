@@ -21,8 +21,14 @@ o Changes
 - FR:1878233 - onBattleEnd() Event
 - Title in Robocode window is now showing the current turn
 - New robocode.control.RobocodeEngine2, which is an replacement and extension of the old RobocodeEngine
+- Battle is now private
+- battle commands -> pause, resume (IBattleControl)
+
 o Bugfixes
 - The JuniorRobot.others was not updated properly when other robots dies
+- Fixed issue with duplicate team name
+- short name in RobotPeer was name for duplicit robots
+- after intro battle restart button disabled
 
 
 Version 1.6.0

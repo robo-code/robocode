@@ -309,12 +309,12 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
     public BattleResults getResults(int rank) {
         if (robotPeer.getBattle().isRunning()) {
-            return new BattleResults(robotPeer.getTeamLeaderName(), rank, totalScore + getCurrentScore(), totalSurvivalScore + survivalScore,
+            return new BattleResults(robotPeer.getTeamName(), rank, totalScore + getCurrentScore(), totalSurvivalScore + survivalScore,
                     totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore, totalBulletKillBonus + bulletKillBonus,
                     totalRammingDamageScore + rammingDamageScore, totalRammingKillBonus + rammingKillBonus, totalFirsts,
                     totalSeconds, totalThirds);
         }
-        return new BattleResults(robotPeer.getTeamLeaderName(), rank, totalScore, totalSurvivalScore, totalLastSurvivorBonus,
+        return new BattleResults(robotPeer.getTeamName(), rank, totalScore, totalSurvivalScore, totalLastSurvivorBonus,
                 totalBulletDamageScore, totalBulletKillBonus, totalRammingDamageScore, totalRammingKillBonus, totalFirsts,
                 totalSeconds, totalThirds);
     }

@@ -160,7 +160,7 @@ public class TurnSnapshot implements java.io.Serializable {
         
         Hashtable<String,ScoreSnapshot> teams= new Hashtable<String,ScoreSnapshot>();
         for(RobotSnapshot robot : robots){
-            final String name = robot.getTeamLeaderName();
+            final String name = robot.getTeamName();
             if (!teams.containsKey(name)){
                 teams.put(name, robot.getRobotScoreSnapshot());
             }
