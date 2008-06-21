@@ -85,7 +85,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		}
 
 		if (classesField == null) {
-			System.err.println("Failed to find classes field in:" + this);
+			logError("RobocodeClassLoader: Failed to find classes field in: " + this);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class RobocodeClassLoader extends ClassLoader {
 
 	@Override
 	public InputStream getResourceAsStream(String resource) {
-		logMessage("Classloader:  getResourceAsStream: " + resource);
+		logMessage("RobocodeClassLoader: getResourceAsStream: " + resource);
 		return super.getResourceAsStream(resource);
 	}
 
@@ -242,11 +242,15 @@ public class RobocodeClassLoader extends ClassLoader {
 			cachedClasses.clear();
 		}
 
+		// Set ClassLoader.class.classes to null to prevent memory leaks
 		if (classesField != null) {
 			try {
+				classesField.setAccessible(true);
 				classesField.set(this, null);
-			} catch (IllegalArgumentException e) {// TODO Graceful error handling
-			} catch (IllegalAccessException e) {// TODO Graceful error handling
+			} catch (IllegalArgumentException e) {
+				logError(e);
+			} catch (IllegalAccessException e) {
+				logError(e);
 			}
 		}
 
