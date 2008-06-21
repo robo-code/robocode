@@ -247,11 +247,9 @@ public class BattleManager implements IBattleControl {
 
     private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
 
-        synchronized (this){
-            logMessage("Preparing battle...");
-            if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
-                battle.stop(true);
-            }
+        logMessage("Preparing battle...");
+        if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
+            battle.stop(true);
         }
 
         BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
