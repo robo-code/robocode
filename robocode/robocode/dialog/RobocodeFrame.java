@@ -508,7 +508,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private void pauseResumeButtonActionPerformed() {
-        manager.getBattleManager().toglePauseBattle();
+        manager.getBattleManager().togglePauseResumeBattle();
 	}
 
 	/**

@@ -335,7 +335,7 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Pause/Resume button has been activated
 	 */
 	private void pauseResumeButtonActionPerformed() {
-        manager.getBattleManager().toglePauseBattle();
+        manager.getBattleManager().togglePauseResumeBattle();
 	}
 
 	private class BattleObserver extends BattleAdaptor {

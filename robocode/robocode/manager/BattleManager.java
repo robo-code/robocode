@@ -80,7 +80,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -445,7 +444,7 @@ public class BattleManager implements IBattleControl {
         return (pauseCount != 0);
     }
 
-    public synchronized void toglePauseBattle() {
+    public synchronized void togglePauseResumeBattle() {
         if (isPaused()){
             resumeBattle();
         }
