@@ -15,6 +15,13 @@ package robocode.dialog;
 
 
 import robocode.manager.RobocodeManager;
+import robocode.ui.BattleResultsTableModel;
+
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.awt.event.*;
 
 
 /**
@@ -27,12 +34,110 @@ import robocode.manager.RobocodeManager;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class ResultsDialog extends RankingDialog {
+public class ResultsDialog extends BaseScoreDialog {
 
-	/**
-	 * ResultsDialog constructor.
-	 */
-	public ResultsDialog(RobocodeManager manager) {
-		super(manager, false);
-	}
+    private JPanel buttonPanel;
+    private JButton okButton;
+    private JButton saveButton;
+    private AbstractTableModel tableModel;
+    private ButtonEventHandler buttonEventHandler;
+
+    /**
+     * RankingDialog constructor
+     */
+    public ResultsDialog(RobocodeManager manager) {
+        super(manager, true);
+        buttonEventHandler=new ButtonEventHandler();
+        initialize();
+        setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
+    }
+
+    private void saveButtonActionPerformed() {
+        manager.getWindowManager().showSaveResultsDialog();
+    }
+
+    private void okButtonActionPerformed() {
+        setVisible(false);
+    }
+
+    @Override
+    protected AbstractTableModel getTableModel() {
+        if (tableModel == null) {
+            tableModel = new BattleResultsTableModel(manager);
+        }
+        return tableModel;
+    }
+
+    /**
+     * Return the content pane.
+     *
+     * @return JPanel
+     */
+    @Override
+    protected JPanel getDialogContentPane() {
+        if (contentPane == null) {
+            contentPane = new JPanel();
+            contentPane.setLayout(new BorderLayout());
+            contentPane.add(getScrollPane(), "Center");
+            contentPane.add(getButtonPanel(), "South");
+        }
+        return contentPane;
+    }
+
+    /**
+     * Return the buttonPanel.
+     *
+     * @return JPanel
+     */
+    private JPanel getButtonPanel() {
+        if (buttonPanel == null) {
+            buttonPanel = new JPanel();
+            buttonPanel.setLayout(new BorderLayout());
+            buttonPanel.add(getOkButton(), "East");
+            buttonPanel.add(getSaveButton(), "West");
+        }
+        return buttonPanel;
+    }
+
+    /**
+     * Return the okButton
+     *
+     * @return JButton
+     */
+    private JButton getOkButton() {
+        if (okButton == null) {
+            okButton = new JButton();
+            okButton.setText("OK");
+            okButton.addActionListener(buttonEventHandler);
+            WindowUtil.setFixedSize(okButton, new Dimension(80, 25));
+        }
+        return okButton;
+    }
+
+    /**
+     * Return the saveButton
+     *
+     * @return JButton
+     */
+    private JButton getSaveButton() {
+        if (saveButton == null) {
+            saveButton = new JButton();
+            saveButton.setText("Save");
+            saveButton.addActionListener(buttonEventHandler);
+            WindowUtil.setFixedSize(saveButton, new Dimension(80, 25));
+        }
+        return saveButton;
+    }
+
+    private class ButtonEventHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            Object source = e.getSource();
+
+            if (source == ResultsDialog.this.getOkButton()) {
+                okButtonActionPerformed();
+            } else if (source == ResultsDialog.this.getSaveButton()) {
+                saveButtonActionPerformed();
+            }
+        }
+    }
 }

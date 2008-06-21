@@ -35,8 +35,8 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	private AtomicBoolean isPaused;
 	private BattleManager battleManager;
 
-	private RepaintTask repaintTask = new RepaintTask();
-	private Timer timer;
+	private QueuedTask repaintTask = new QueuedTask();
+	private Timer timerTask;
 	private boolean skipSameFrames;
 
 	// FPS (frames per second) calculation
@@ -49,7 +49,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 		this.skipSameFrames = skipSameFrames;
 		snapshot = new AtomicReference<TurnSnapshot>(null);
 
-		timer = new Timer(1000 / maxFps, new UpdateTask());
+		timerTask = new Timer(1000 / maxFps, new TimerTask());
 		isRunning = new AtomicBoolean(false);
 		isPaused = new AtomicBoolean(false);
 		lastSnapshot = null;
@@ -77,7 +77,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	}
 
 	public void dispose() {
-		timer.stop();
+		timerTask.stop();
 		battleManager.removeListener(this);
 	}
 
@@ -87,12 +87,12 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 		isPaused.set(false);
         snapshot.set(event.getTurnSnapshot());
         EventQueue.invokeLater(repaintTask);
-		timer.start();
+		timerTask.start();
 	}
 
 	@Override
 	public void onBattleEnded(BattleEndedEvent event) {
-		timer.stop();
+		timerTask.stop();
 		isRunning.set(false);
 		isPaused.set(false);
 		EventQueue.invokeLater(repaintTask);
@@ -101,11 +101,11 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	@Override
 	public void onBattleResumed(BattleResumedEvent event) {
 		isPaused.set(false);
-		timer.start();
+		timerTask.start();
 	}
 
 	public void onBattlePaused(BattlePausedEvent event) {
-		timer.stop();
+		timerTask.stop();
 		isPaused.set(true);
 	}
 
@@ -128,7 +128,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 		return isRunning.get();
 	}
 
-	private class RepaintTask implements Runnable {
+	private class QueuedTask implements Runnable {
 		public void run() {
 			if (!isRunning.get()) {
 				lastSnapshot = null;
@@ -149,7 +149,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	}
 
 
-	private class UpdateTask implements ActionListener {
+	private class TimerTask implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			TurnSnapshot s = snapshot.get();
 

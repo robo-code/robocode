@@ -184,7 +184,7 @@ public class WindowManager {
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
-			rankingDialog = new RankingDialog(manager, true);
+			rankingDialog = new RankingDialog(manager);
 		}
 		packCenterShow(rankingDialog);
 	}

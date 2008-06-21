@@ -256,6 +256,7 @@ public class RobocodeEngine {
 
         @Override
         public void onBattleCompleted(BattleCompletedEvent event) {
+            // assumption there is that RobocodeEngine is unable to start team battles
             final BattleResults[] results = event.getResults();
             RobotResults[] robotResults = new RobotResults[results.length];
             RobotSpecification[] robots = battleSpecification.getRobots();
