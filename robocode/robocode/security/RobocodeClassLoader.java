@@ -245,12 +245,13 @@ public class RobocodeClassLoader extends ClassLoader {
 		// Set ClassLoader.class.classes to null to prevent memory leaks
 		if (classesField != null) {
 			try {
-				classesField.setAccessible(true);
+                // don't do that Internal Error (44494354494F4E4152590E4350500100)
+                //classesField.setAccessible(true);
 				classesField.set(this, null);
 			} catch (IllegalArgumentException e) {
-				logError(e);
+				//logError(e);
 			} catch (IllegalAccessException e) {
-				logError(e);
+				//logError(e);
 			}
 		}
 
