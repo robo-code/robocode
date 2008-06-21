@@ -41,7 +41,6 @@ import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.events.BattleMessageEvent;
-import robocode.battle.BattleProperties;
 import robocode.BattleResults;
 
 import java.io.File;
@@ -57,16 +56,10 @@ import java.util.List;
  * This class in the main class of the {@code robocode.control} package, and the
  * reason for having this control package.
  * </p>
- * Please notice, that this class has been extended with the new class
- * {@link RobocodeEngine2}, which serves as the new interface for external
- * applications. However, this old version is kept for backwards compatibility.
- * </p>
  * The RobocodeEngine is used by RoboRumble@Home, which is integrated in
  * Robocode, but also RoboLeague and RobocodeJGAP. In addition, the
  * RobocodeEngine is also used by the test units for testing the Robocode
  * application itself.
- *
- * @see RobocodeEngine2
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -86,7 +79,6 @@ public class RobocodeEngine {
 	 * @param listener     the listener that must receive the callbacks from this
 	 *                     RobocodeEngine.
 	 * @see #RobocodeEngine(RobocodeListener)
-	 * @see RobocodeEngine2#RobocodeEngine2(File)
 	 * @see #close()
 	 */
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
@@ -101,8 +93,6 @@ public class RobocodeEngine {
 	 * @param listener the listener that must receive the callbacks from this
 	 *                 RobocodeEngine.
 	 * @see #RobocodeEngine(File, RobocodeListener)
-	 * @see RobocodeEngine2#RobocodeEngine2(File)
-	 * @see RobocodeEngine2#addBattleListener(robocode.battle.events.IBattleListener)
 	 * @see #close()
 	 */
 	public RobocodeEngine(RobocodeListener listener) {
@@ -202,7 +192,6 @@ public class RobocodeEngine {
 	 *
 	 * @return an array of all available robots from the local robot repository.
 	 * @see RobotSpecification
-	 * @see RobocodeEngine2#getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();

@@ -27,7 +27,6 @@ import java.io.File;
 /**
  * Defines the properties of a robot, which is returned from
  * {@link RobocodeEngine#getLocalRepository()} or
- * {@link RobocodeEngine2#getLocalRepository(String).
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
