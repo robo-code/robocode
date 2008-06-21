@@ -124,7 +124,7 @@ public class BattleManager implements IBattleControl {
     }
 
     // Called when starting a new battle from GUI
-    public synchronized boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
+    public boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
         this.battleProperties = battleProperties;
 
         List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
@@ -151,7 +151,7 @@ public class BattleManager implements IBattleControl {
         }
 
     // Called from the RobocodeEngine
-	public synchronized boolean startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
+	public boolean startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
         battleProperties = new BattleProperties();
         battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
         battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -247,9 +247,11 @@ public class BattleManager implements IBattleControl {
 
     private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
 
-        logMessage("Preparing battle...");
-        if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
-            battle.stop(true);
+        synchronized (this){
+            logMessage("Preparing battle...");
+            if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
+                battle.stop(true);
+            }
         }
 
         BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
