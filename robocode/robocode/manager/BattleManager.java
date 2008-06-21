@@ -102,7 +102,7 @@ public class BattleManager implements IBattleControl {
     private String battleFilename;
     private String battlePath;
 
-    private AtomicInteger pauseCount = new AtomicInteger(0);
+    private int pauseCount = 0;
     private AtomicBoolean isManagedTPS=new AtomicBoolean(false); 
 
     public BattleManager(RobocodeManager manager) {
@@ -442,7 +442,7 @@ public class BattleManager implements IBattleControl {
 
 
     private boolean isPaused() {
-        return (pauseCount.get() != 0);
+        return (pauseCount != 0);
     }
 
     public synchronized void toglePauseBattle() {
@@ -455,7 +455,7 @@ public class BattleManager implements IBattleControl {
     }
 
     public synchronized void pauseBattle() {
-        if (pauseCount.incrementAndGet() == 1) {
+        if (++pauseCount == 1) {
             if (battle!=null && battle.isRunning()){
                 battle.pause();
             }
@@ -464,7 +464,8 @@ public class BattleManager implements IBattleControl {
 
 
     public synchronized void pauseIfResumedBattle() {
-        if (pauseCount.compareAndSet(0,1)){
+        if (pauseCount==0){
+            pauseCount++;
             if (battle!=null && battle.isRunning()){
                 battle.pause();
             }
@@ -472,7 +473,8 @@ public class BattleManager implements IBattleControl {
     }
 
     public synchronized void resumeIfPausedBattle() {
-        if (pauseCount.compareAndSet(1,0)){
+        if (pauseCount == 1){
+            pauseCount--;
             if (battle!=null && battle.isRunning()){
                 battle.resume();
             }
@@ -480,12 +482,11 @@ public class BattleManager implements IBattleControl {
     }
 
     public synchronized void resumeBattle() {
-        final int current = pauseCount.decrementAndGet();
-        if (current < 0){
-            pauseCount.set(0);
+        if (--pauseCount < 0){
+            pauseCount= 0;
             logError("SYSTEM: pause game bug!");
         }
-        else if (current == 0) {
+        else if (pauseCount == 0) {
             if (battle!=null && battle.isRunning()){
                 battle.resume();
             }

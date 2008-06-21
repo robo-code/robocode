@@ -454,7 +454,7 @@ public class Battle implements Runnable {
 	}
 
 	public void cleanup() {
-		for (RobotPeer r : robots) {
+        for (RobotPeer r : robots) {
 			// Clear all static field on the robot (at class level)
 			r.cleanupStaticFields();
 
@@ -1359,7 +1359,7 @@ public class Battle implements Runnable {
 			}
 		}
 
-		logError("");
+		logMessage("");
 	}
 
 	private void shortSleep() {
