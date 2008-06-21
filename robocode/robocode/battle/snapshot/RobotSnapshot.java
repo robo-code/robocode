@@ -109,7 +109,10 @@ public class RobotSnapshot implements Serializable {
 	// The output print stream proxy
 	private final String outputStreamSnapshot;
 
-	/**
+    // Snapshot of score for robot
+    private final RobotScoreSnapshot robotScoreSnapshot;
+
+    /**
 	 * Constructs a snapshot of the robot.
 	 *
 	 * @param peer the robot peer to make a snapshot of.
@@ -150,7 +153,9 @@ public class RobotSnapshot implements Serializable {
 		graphicsProxy = peerGfx != null ? (Graphics2DProxy) peerGfx.create() : null;
 
 		outputStreamSnapshot = peer.getOut().readAndReset();
-	}
+
+        robotScoreSnapshot = new RobotScoreSnapshot(peer.getRobotStatistics());
+    }
 
     /**
 	 * Returns the name of the robot.
@@ -372,6 +377,15 @@ public class RobotSnapshot implements Serializable {
 	public String getOutputStreamSnapshot() {
 		return outputStreamSnapshot;
 	}
+
+    /**
+     * Returns snapshot of score for robot
+     *
+     * @return snapshot of score for robot
+     */
+    public RobotScoreSnapshot getRobotScoreSnapshot() {
+        return robotScoreSnapshot;
+    }
 
 	/**
 	 * The purpose of this class it to serialize the Arc2D.Double class,
