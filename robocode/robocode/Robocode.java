@@ -36,6 +36,8 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.BattleManager;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleCompletedEvent;
+import robocode.battle.events.BattleMessageEvent;
+import robocode.battle.events.BattleErrorEvent;
 import robocode.battle.BattleResultsTableModel;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
@@ -287,13 +289,13 @@ public class Robocode {
         }
 
         @Override
-        public void onBattleMessage(String message) {
-            SecurePrintStream.realOut.println(message);
+        public void onBattleMessage(BattleMessageEvent event) {
+            SecurePrintStream.realOut.println(event.getMessage());
         }
 
         @Override
-        public void onBattleError(String message) {
-            SecurePrintStream.realErr.println(message);
+        public void onBattleError(BattleErrorEvent event) {
+            SecurePrintStream.realErr.println(event.getError());
         }
     }
     

@@ -30,9 +30,9 @@ public class BattleAdaptor implements IBattleListener {
     public void onTurnEnded(TurnEndedEvent event) {
     }
 
-    public void onBattleMessage(String message) {
+    public void onBattleMessage(BattleMessageEvent event) {
     }
 
-    public void onBattleError(String error) {
+    public void onBattleError(BattleErrorEvent event) {
     }
 }

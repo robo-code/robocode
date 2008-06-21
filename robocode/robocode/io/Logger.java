@@ -16,6 +16,8 @@ package robocode.io;
 
 
 import robocode.battle.events.IBattleListener;
+import robocode.battle.events.BattleMessageEvent;
+import robocode.battle.events.BattleErrorEvent;
 import robocode.security.SecurePrintStream;
 
 import java.io.ByteArrayOutputStream;
@@ -40,7 +42,7 @@ public class Logger {
 		if (logListener == null) {
 			SecurePrintStream.realOut.println(s);
 		} else {
-			logListener.onBattleMessage(s);
+			logListener.onBattleMessage(new BattleMessageEvent(s));
 		}
 	}
 
@@ -49,7 +51,7 @@ public class Logger {
 			SecurePrintStream.realErr.println(e);
 			e.printStackTrace(SecurePrintStream.realErr);
 		} else {
-			logListener.onBattleMessage(e.toString());
+			logListener.onBattleMessage(new BattleMessageEvent(e.toString()));
 		}
 	}
 
@@ -63,7 +65,7 @@ public class Logger {
 			}
 		} else {
 			if (newline) {
-				logListener.onBattleMessage(logBuffer + s);
+				logListener.onBattleMessage(new BattleMessageEvent(logBuffer + s));
 				logBuffer.setLength(0);
 			} else {
 				logBuffer.append(s);
@@ -75,7 +77,7 @@ public class Logger {
 		if (logListener == null) {
 			SecurePrintStream.realErr.println(s);
 		} else {
-			logListener.onBattleMessage(s);
+			logListener.onBattleError(new BattleErrorEvent(s));
 		}
 	}
 

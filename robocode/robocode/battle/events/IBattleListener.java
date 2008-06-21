@@ -28,10 +28,10 @@ public interface IBattleListener {
      * <p/>
      * Note: may be called from multiple threads
      *
-     * @param message the message logged by the game
+     * @param event the message logged by the game
      * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
      */
-    void onBattleMessage(String message);
+    void onBattleMessage(BattleMessageEvent event);
 
     /**
      * This method is called when the game logs messages that is normally
@@ -39,8 +39,8 @@ public interface IBattleListener {
      * <p/>
      * Note: may be called from multiple threads
      *
-     * @param error the message logged by the game
+     * @param event the message logged by the game
      * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
      */
-	void onBattleError(String error);
+	void onBattleError(BattleErrorEvent event);
 }

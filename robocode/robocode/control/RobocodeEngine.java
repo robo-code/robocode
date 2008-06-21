@@ -40,6 +40,7 @@ import robocode.repository.Repository;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.events.BattleCompletedEvent;
+import robocode.battle.events.BattleMessageEvent;
 import robocode.battle.BattleProperties;
 import robocode.BattleResults;
 
@@ -265,8 +266,8 @@ public class RobocodeEngine {
         }
 
         @Override
-        public void onBattleMessage(String message) {
-            listener.battleMessage(message);
+        public void onBattleMessage(BattleMessageEvent event) {
+            listener.battleMessage(event.getMessage());
         }
     }
 }

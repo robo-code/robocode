@@ -14,6 +14,8 @@ package helpers;
 
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.events.BattleMessageEvent;
+import robocode.battle.events.BattleErrorEvent;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.*;
@@ -40,13 +42,13 @@ public abstract class RobotTestBed extends BattleAdaptor {
         engine.addBattleListener(this);
     }
 
-    public void onBattleMessage(String message) {
-        SecurePrintStream.realOut.println(message);
+    public void onBattleMessage(BattleMessageEvent event) {
+        SecurePrintStream.realOut.println(event.getMessage());
         messages++;
     }
 
-    public void onBattleError(String error) {
-        SecurePrintStream.realErr.println(error);
+    public void onBattleError(BattleErrorEvent event) {
+        SecurePrintStream.realErr.println(event.getError());
         errors++;
     }
 

@@ -141,10 +141,10 @@ public class BattleEventDispatcher implements IBattleListener {
         }
     }
 
-    public void onBattleMessage(String message) {
+    public void onBattleMessage(BattleMessageEvent event) {
         for (IBattleListener listener : listeners) {
             try {
-                listener.onBattleMessage(message);
+                listener.onBattleMessage(event);
             }
             catch (Throwable ex) {
                 logError("onBattleMessage" + listener.getClass(), ex);
@@ -152,10 +152,10 @@ public class BattleEventDispatcher implements IBattleListener {
         }
     }
 
-    public void onBattleError(String error) {
+    public void onBattleError(BattleErrorEvent event) {
         for (IBattleListener listener : listeners) {
             try {
-                listener.onBattleError(error);
+                listener.onBattleError(event);
             }
             catch (Throwable ex) {
                 logError("onBattleError" + listener.getClass(), ex);
