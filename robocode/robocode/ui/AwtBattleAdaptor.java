@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battleview;
+package robocode.ui;
 
 
 import robocode.battle.events.BattleAdaptor;

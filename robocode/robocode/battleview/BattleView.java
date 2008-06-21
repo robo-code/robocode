@@ -28,6 +28,7 @@ import robocode.manager.RobocodeProperties;
 import robocode.manager.BattleManager;
 import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
+import robocode.ui.AwtBattleAdaptor;
 
 import static java.lang.Math.*;
 import java.awt.*;
