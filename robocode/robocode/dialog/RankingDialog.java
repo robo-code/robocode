@@ -20,16 +20,16 @@
 package robocode.dialog;
 
 
-import robocode.battle.Battle;
+import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.ui.BattleRankingTableModel;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -42,50 +42,67 @@ import java.awt.event.*;
  */
 @SuppressWarnings("serial")
 public class RankingDialog extends BaseScoreDialog {
-    private AbstractTableModel tableModel;
+    private BattleRankingTableModel tableModel;
     private Timer timerTask;
-    private int rows;
+    private BattleObserver battleObserver;
+    private AtomicReference<TurnSnapshot> snapshot;
+    private TurnSnapshot lastSnapshot; 
+    private int lastRows;
 
     /**
 	 * RankingDialog constructor
 	 */
 	public RankingDialog(RobocodeManager manager) {
 		super(manager, false);
+        battleObserver = new BattleObserver();
         timerTask = new Timer(1000 / 2, new TimerTask());
+        snapshot=new AtomicReference<TurnSnapshot>(); 
+        lastRows = 0;
+        tableModel = new BattleRankingTableModel();
         initialize();
         setTitle("Ranking");
-	}
+    }
 
     @Override
     protected AbstractTableModel getTableModel() {
-		if (tableModel == null) {
-			tableModel = new BattleRankingTableModel(manager);
-		}
 		return tableModel;
 	}
 
     private void update() {
-        if (table.getModel().getRowCount() != rows) {
-            rows = table.getModel().getRowCount();
+        final TurnSnapshot current = snapshot.get();
+        if (lastSnapshot!=current){
+            lastSnapshot=current;
+            tableModel.updateSource(lastSnapshot);
+            if (table.getModel().getRowCount() != lastRows) {
+                lastRows = table.getModel().getRowCount();
 
-            table.setPreferredSize(
-                    new Dimension(table.getColumnModel().getTotalColumnWidth(),
-                    table.getModel().getRowCount() * table.getRowHeight()));
-            table.setPreferredScrollableViewportSize(table.getPreferredSize());
-            pack();
+                table.setPreferredSize(
+                        new Dimension(table.getColumnModel().getTotalColumnWidth(),
+                        table.getModel().getRowCount() * table.getRowHeight()));
+                table.setPreferredScrollableViewportSize(table.getPreferredSize());
+                pack();
+            }
+            repaint();
         }
-        repaint();
     }
 
     protected void onDialogShown() {
-        rows = table.getModel().getRowCount();
+        manager.getBattleManager().addListener(battleObserver);
         timerTask.start();
     }
 
     protected void onDialogHidden() {
         manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(false);
         timerTask.stop();
+        manager.getBattleManager().removeListener(battleObserver);
         dispose();
+    }
+
+    private class BattleObserver extends BattleAdaptor {
+        @Override
+        public void onTurnEnded(TurnEndedEvent event) {
+            snapshot.set(event.getTurnSnapshot());
+        }
     }
 
     private class TimerTask implements ActionListener {
@@ -94,3 +111,4 @@ public class RankingDialog extends BaseScoreDialog {
         }
     }
 }
+

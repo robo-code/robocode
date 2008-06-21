@@ -55,11 +55,13 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
 	private String title;
-    private BattleCompletedEvent event;
+    private final BattleResults[] results;
+    private final int numRounds;
 
-    public BattleResultsTableModel(BattleCompletedEvent event) {
-		this.event=event;
-	}
+    public BattleResultsTableModel(BattleResults[] results, int numRounds) {
+		this.results=results;
+        this.numRounds=numRounds;
+    }
 
 	public int getColumnCount() {
 		return 12;
@@ -110,12 +112,12 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public int getRowCount() {
-		return event.getResults().length;
+		return results.length;
 	}
 
 	public String getTitle() {
 		if (title == null ) {
-			int round = event.getBattleProperties().getNumRounds();
+			int round = numRounds;
 
 			title = "Results for " + round + " round";
 			if (round > 1) {
@@ -126,18 +128,15 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public Object getValueAt(int row, int col) {
-		BattleResults statistics = event.getResults()[row];
+
+        BattleResults statistics = results[row];
 
         switch (col) {
 		case 0: {
 			int place = row + 1;
-            //TODO huh ?
-            /*
-            while (place < getRowCount()
-					&& statistics.getTotalScore() == orderedContestants.get(place).getStatistics().getTotalScore()) {
+            while (place < getRowCount() && statistics.getScore() == results[place].getScore()) {
 				place++;
 			}
-			*/
 			return StringUtil.getPlacementString(place);
 		}
 

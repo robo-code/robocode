@@ -181,7 +181,7 @@ public class WindowManager {
     }
 
 	public void showResultsDialog(BattleCompletedEvent event) {
-		packCenterShow(new ResultsDialog(manager, event));
+		packCenterShow(new ResultsDialog(manager, event.getResults(), event.getBattleProperties().getNumRounds()));
 	}
 
 	public void showRankingDialog(boolean visible) {

@@ -47,9 +47,9 @@ public class ResultsDialog extends BaseScoreDialog {
     /**
      * RankingDialog constructor
      */
-    public ResultsDialog(RobocodeManager manager, BattleCompletedEvent event) {
+    public ResultsDialog(RobocodeManager manager, BattleResults[] results, int numRounds) {
         super(manager, true);
-        tableModel = new BattleResultsTableModel(event);
+        tableModel = new BattleResultsTableModel(results, numRounds);
         buttonEventHandler=new ButtonEventHandler();
         initialize();
         setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
