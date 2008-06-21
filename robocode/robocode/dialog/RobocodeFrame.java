@@ -31,7 +31,7 @@ package robocode.dialog;
 import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.*;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
@@ -695,10 +695,10 @@ public class RobocodeFrame extends JFrame {
         }
 
         @Override
-        public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
-            numberOfRounds = battleProperties.getNumRounds();
+        public void onBattleStarted(BattleStartedEvent event) {
+            numberOfRounds = event.getBattleProperties().getNumRounds();
             isBattleRunning = true;
-            isBattleReplay = isReplay;
+            isBattleReplay = event.isReplay();
 
             getStopButton().setEnabled(true);
             getRestartButton().setEnabled(true);
@@ -710,7 +710,7 @@ public class RobocodeFrame extends JFrame {
             getRobotButtonsPanel().removeAll();
 
             final RobotDialogManager dialogManager = manager.getRobotDialogManager();
-            final java.util.List<RobotSnapshot> robots = start.getRobots();
+            final java.util.List<RobotSnapshot> robots = event.getStart().getRobots();
             dialogManager.trim(robots);
             for(int index=0;index<robots.size();index++){
                 final RobotSnapshot robot = robots.get(index);
@@ -729,7 +729,7 @@ public class RobocodeFrame extends JFrame {
         }
 
         @Override
-        public void onBattleEnded(boolean isAborted) {
+        public void onBattleEnded(BattleEndedEvent event) {
             isBattleRunning = false;
 
             getStopButton().setEnabled(false);
@@ -740,7 +740,7 @@ public class RobocodeFrame extends JFrame {
         }
 
         @Override
-        public void onBattlePaused() {
+        public void onBattlePaused(BattlePausedEvent event) {
             isBattlePaused = true;
 
             getPauseButton().setSelected(true);
@@ -750,7 +750,7 @@ public class RobocodeFrame extends JFrame {
         }
 
         @Override
-        public void onBattleResumed() {
+        public void onBattleResumed(BattleResumedEvent event) {
             isBattlePaused = false;
 
             getPauseButton().setSelected(false);
@@ -759,10 +759,10 @@ public class RobocodeFrame extends JFrame {
             updateTitle();
         }
 
-        public void onTurnEnded(TurnSnapshot turnSnapshot) {
-            tps = turnSnapshot.getTPS();
-            currentRound = turnSnapshot.getRound();
-            currentTurn = turnSnapshot.getTurn();
+        public void onTurnEnded(TurnEndedEvent event) {
+            tps = event.getTurnSnapshot().getTPS();
+            currentRound = event.getTurnSnapshot().getRound();
+            currentTurn = event.getTurnSnapshot().getTurn();
 
             // Only update every half second to spare CPU cycles
             if ((System.currentTimeMillis() - lastTitleUpdateTime) >= UPDATE_TITLE_INTERVAL) {
@@ -817,10 +817,10 @@ public class RobocodeFrame extends JFrame {
 		}
 
         @Override
-        public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {
+        public void onBattleCompleted(BattleCompletedEvent event) {
             if (manager.getProperties().getOptionsCommonShowResults()){
                 //show on ATW thread
-                ResultsTask resultTask=new ResultsTask(battleProperties, results);
+                ResultsTask resultTask=new ResultsTask(event.getBattleProperties(), event.getResults());
                 EventQueue.invokeLater(resultTask);
             }
         }

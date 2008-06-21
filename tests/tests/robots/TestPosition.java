@@ -14,6 +14,7 @@ package robots;
 
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.events.TurnEndedEvent;
 import helpers.RobotTestBed;
 import helpers.Assert;
 
@@ -28,11 +29,11 @@ public class TestPosition extends RobotTestBed {
         return "sample.Crazy,sample.Target";
     }
 
-    public void onTurnEnded(TurnSnapshot turnSnapshot) {
-        Assert.assertTrue(turnSnapshot.getTurn() <= 2572);
-        RobotSnapshot crazy = turnSnapshot.getRobots().get(0);
-        RobotSnapshot target = turnSnapshot.getRobots().get(1);
-        if (turnSnapshot.getTurn() == 2572) {
+    public void onTurnEnded(TurnEndedEvent event) {
+        Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 2572);
+        RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
+        RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
+        if (event.getTurnSnapshot().getTurn() == 2572) {
             Assert.assertNear(280.5541067939999, crazy.getX());
             Assert.assertNear(467.00715337600445, crazy.getY());
             Assert.assertNear(495.85159572106136, target.getX());

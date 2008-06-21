@@ -99,7 +99,8 @@ import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.io.Logger;
 import robocode.*;
-import robocode.battle.events.BattleEventDispatcher;
+import robocode.BattleEndedEvent;
+import robocode.battle.events.*;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
@@ -185,6 +186,7 @@ public class Battle implements Runnable {
 	private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
+    private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
 	// Death events
 	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
@@ -328,9 +330,9 @@ public class Battle implements Runnable {
 			}
 		}
 
-		eventDispatcher.onBattleEnded(isAborted());
+		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
 		if (!isAborted()) {
-			eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleProperties(), computeResults());
+			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(manager.getBattleManager().getBattleProperties(), computeResults()));
 		}
 		Logger.setLogListener(null);
 
@@ -608,9 +610,11 @@ public class Battle implements Runnable {
 			}
 		}
 
-        eventDispatcher.onBattleStarted(new TurnSnapshot(this), manager.getBattleManager().getBattleProperties(), isReplay());
+        final TurnSnapshot snapshot = new TurnSnapshot(this);
+        final BattleProperties battleProperties = manager.getBattleManager().getBattleProperties();
+        eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleProperties, isReplay()));
         if (isPaused){
-            eventDispatcher.onBattlePaused();
+            eventDispatcher.onBattlePaused(new BattlePausedEvent());
         }
     }
 
@@ -654,7 +658,7 @@ public class Battle implements Runnable {
 		currentTime = 0;
 		inactiveTurnCount = 0;
 
-		eventDispatcher.onRoundStarted(roundNum);
+		eventDispatcher.onRoundStarted(new RoundStartedEvent(roundNum));
 
 		if (isRecordingEnabled) {
 			currentRoundRecord = new RoundRecord();
@@ -668,7 +672,7 @@ public class Battle implements Runnable {
 
 		bullets.clear();
 
-		eventDispatcher.onRoundEnded();
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(roundNum-1));
 	}
 
 	private void replayRound() {
@@ -679,7 +683,7 @@ public class Battle implements Runnable {
 		endTimer = 0;
 		currentTime = 0;
 
-		eventDispatcher.onRoundStarted(roundNum);
+		eventDispatcher.onRoundStarted(new RoundStartedEvent(roundNum));
 
 		while (!(roundOver || isAborted())) {
 			replayTurn();
@@ -687,7 +691,7 @@ public class Battle implements Runnable {
 
 		bullets.clear();
 
-		eventDispatcher.onRoundEnded();
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(roundNum-1));
 	}
 
 	private void replayTurn() {
@@ -754,11 +758,11 @@ public class Battle implements Runnable {
 	private void prepareTurn() {
 		turnStartTime = System.nanoTime();
 
-		eventDispatcher.onTurnStarted();
+		eventDispatcher.onTurnStarted(new TurnStartedEvent());
 	}
 
 	private void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnSnapshot(this));
+		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this)));
 
 		synchronizeTPS();
 
@@ -1670,8 +1674,6 @@ public class Battle implements Runnable {
         sendCommand(new SendInteractiveEventCommand(e));
     }
 
-	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
-
 	private void processCommand() {
         Command command = pendingCommands.poll();
         while(command!=null){
@@ -1742,7 +1744,7 @@ public class Battle implements Runnable {
         public void execute() {
             isPaused=true;
             stepCount=0;
-            eventDispatcher.onBattlePaused();
+            eventDispatcher.onBattlePaused(new BattlePausedEvent());
         }
     }
 
@@ -1750,7 +1752,7 @@ public class Battle implements Runnable {
         public void execute() {
             isPaused=false;
             stepCount=0;
-            eventDispatcher.onBattleResumed();
+            eventDispatcher.onBattleResumed(new BattleResumedEvent());
         }
     }
 

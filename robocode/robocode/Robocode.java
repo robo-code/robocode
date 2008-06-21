@@ -35,6 +35,7 @@ import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.manager.BattleManager;
 import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.BattleResultsTableModel;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
@@ -281,7 +282,7 @@ public class Robocode {
     private class BattleObserver extends BattleAdaptor {
 
         @Override
-        public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {
+        public void onBattleCompleted(BattleCompletedEvent event) {
             printResultsData();
         }
 

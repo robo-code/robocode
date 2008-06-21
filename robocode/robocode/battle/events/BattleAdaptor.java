@@ -1,32 +1,38 @@
 package robocode.battle.events;
 
 
-import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.BattleProperties;
-import robocode.BattleResults;
-
-
 public class BattleAdaptor implements IBattleListener {
 
-	public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {}
+    public void onBattleStarted(BattleStartedEvent event) {
+    }
 
-	public void onBattleEnded(boolean isAborted) {}
+    public void onBattleEnded(BattleEndedEvent event) {
+    }
 
-	public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {}
+    public void onBattleCompleted(BattleCompletedEvent event) {
+    }
 
-	public void onBattlePaused() {}
+    public void onBattlePaused(BattlePausedEvent event) {
+    }
 
-	public void onBattleResumed() {}
+    public void onBattleResumed(BattleResumedEvent event) {
+    }
 
-	public void onRoundStarted(int round) {}
+    public void onRoundStarted(RoundStartedEvent event) {
+    }
 
-	public void onRoundEnded() {}
+    public void onRoundEnded(RoundEndedEvent event) {
+    }
 
-	public void onTurnStarted() {}
-    
-	public void onTurnEnded(TurnSnapshot turnSnapshot) {}
+    public void onTurnStarted(TurnStartedEvent event) {
+    }
 
-	public void onBattleMessage(String message) {}
+    public void onTurnEnded(TurnEndedEvent event) {
+    }
 
-	public void onBattleError(String error) {}
+    public void onBattleMessage(String message) {
+    }
+
+    public void onBattleError(String error) {
+    }
 }

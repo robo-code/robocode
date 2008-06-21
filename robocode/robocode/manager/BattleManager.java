@@ -56,6 +56,7 @@ import robocode.battle.BattleProperties;
 import robocode.battle.IBattleControl;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
+import robocode.battle.events.BattleEndedEvent;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.battleview.BattleView;
@@ -236,7 +237,7 @@ public class BattleManager implements IBattleControl {
 
         if (!found) {
             logError("Aborting battle, could not find robot: " + bot);
-            this.battleEventDispatcher.onBattleEnded(true);
+            this.battleEventDispatcher.onBattleEnded(new BattleEndedEvent(true));
             return true;
         }
         return false;

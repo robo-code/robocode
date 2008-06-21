@@ -24,7 +24,7 @@ package robocode.dialog;
 import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.*;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
@@ -341,30 +341,30 @@ public class RobotDialog extends JFrame {
 	private class BattleObserver extends BattleAdaptor {
 
         @Override
-        public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
+        public void onBattleStarted(BattleStartedEvent event) {
             getPauseButton().setEnabled(true);
             getKillButton().setEnabled(true);
         }
         
         @Override
-        public void onBattleEnded(boolean isAborted) {
+        public void onBattleEnded(BattleEndedEvent event) {
             getPauseButton().setEnabled(false);
             getKillButton().setEnabled(false);
         }
 
         @Override
-		public void onBattlePaused() {
+		public void onBattlePaused(BattlePausedEvent event) {
 			getPauseButton().setSelected(true);
 		}
 
 		@Override
-		public void onBattleResumed() {
+		public void onBattleResumed(BattleResumedEvent event) {
 			getPauseButton().setSelected(false);
 		}
 
         @Override
-        public void onTurnEnded(TurnSnapshot turnSnapshot) {
-            final RobotSnapshot robotSnapshot = turnSnapshot.getRobots().get(robotIndex);
+        public void onTurnEnded(TurnEndedEvent event) {
+            final RobotSnapshot robotSnapshot = event.getTurnSnapshot().getRobots().get(robotIndex);
             final String text = robotSnapshot.getOutputStreamSnapshot();
             if (text!=null && text.length()>0 ){
                 getConsoleScrollPane().append(text);

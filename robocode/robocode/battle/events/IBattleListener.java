@@ -1,51 +1,46 @@
 package robocode.battle.events;
 
-
-import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.BattleProperties;
 import robocode.control.BattleSpecification;
-import robocode.BattleResults;
-
 
 public interface IBattleListener {
 
-	public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay);
+    public void onBattleStarted(BattleStartedEvent event);
 
-	public void onBattleEnded(boolean isAborted);
+    public void onBattleEnded(BattleEndedEvent event);
 
-	public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results);
+    public void onBattleCompleted(BattleCompletedEvent event);
 
-	public void onBattlePaused();
+    public void onBattlePaused(BattlePausedEvent event);
 
-	public void onBattleResumed();
+    public void onBattleResumed(BattleResumedEvent event);
 
-	public void onRoundStarted(int round);
+    public void onRoundStarted(RoundStartedEvent event);
 
-	public void onRoundEnded();
+    public void onRoundEnded(RoundEndedEvent event);
 
-	public void onTurnStarted();
-    
-	public void onTurnEnded(TurnSnapshot turnSnapshot);
+    public void onTurnStarted(TurnStartedEvent event);
 
-	/**
-	 * This method is called when the game logs messages that is normally
-	 * written out to the console.
-	 *
-	 * Note: may be called from multiple threads
-	 *
-	 * @param message the message logged by the game
-	 * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
-	 */
-	void onBattleMessage(String message);
+    public void onTurnEnded(TurnEndedEvent event);
 
-	/**
-	 * This method is called when the game logs messages that is normally
-	 * written out to the err console.
-	 *
-	 * Note: may be called from multiple threads
-	 *
-	 * @param error the message logged by the game
-	 * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
-	 */
+    /**
+     * This method is called when the game logs messages that is normally
+     * written out to the console.
+     * <p/>
+     * Note: may be called from multiple threads
+     *
+     * @param message the message logged by the game
+     * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
+     */
+    void onBattleMessage(String message);
+
+    /**
+     * This method is called when the game logs messages that is normally
+     * written out to the err console.
+     * <p/>
+     * Note: may be called from multiple threads
+     *
+     * @param error the message logged by the game
+     * @see robocode.control.RobocodeEngine#runBattle(BattleSpecification)
+     */
 	void onBattleError(String error);
 }

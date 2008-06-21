@@ -38,6 +38,8 @@ import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
 import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.BattleProperties;
 import robocode.BattleResults;
 
@@ -245,17 +247,18 @@ public class RobocodeEngine {
         private RobocodeListener listener;
 
         @Override
-        public void onBattleEnded(boolean isAborted) {
-            if (isAborted) {
+        public void onBattleEnded(BattleEndedEvent event) {
+            if (event.isAborted()) {
                 listener.battleAborted(battleSpecification);
             }
         }
 
         @Override
-        public void onBattleCompleted(BattleProperties battleProperties, BattleResults[] results) {
+        public void onBattleCompleted(BattleCompletedEvent event) {
+            final BattleResults[] results = event.getResults();
             RobotResults[] robotResults = new RobotResults[results.length];
             RobotSpecification[] robots = battleSpecification.getRobots();
-            for(int index=0;index<results.length;index++){
+            for(int index=0;index< results.length;index++){
                 robotResults[index]=new RobotResults(robots[index], results[index]);
             }
             listener.battleComplete(battleSpecification, robotResults);

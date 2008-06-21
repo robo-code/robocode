@@ -13,6 +13,7 @@
 package helpers;
 
 import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.*;
@@ -49,9 +50,9 @@ public abstract class RobotTestBed extends BattleAdaptor {
         errors++;
     }
 
-    public void onTurnEnded(TurnSnapshot turnSnapshot) {
-        SecurePrintStream.realOut.println(turnSnapshot.getTurn());
-        for(RobotSnapshot robot : turnSnapshot.getRobots()){
+    public void onTurnEnded(TurnEndedEvent event) {
+        SecurePrintStream.realOut.println(event.getTurnSnapshot().getTurn());
+        for(RobotSnapshot robot : event.getTurnSnapshot().getRobots()){
             SecurePrintStream.realOut.print(robot.getVeryShortName());
             SecurePrintStream.realOut.print(" X:");
             SecurePrintStream.realOut.print(robot.getX());

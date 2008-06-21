@@ -12,7 +12,7 @@
 package robocode.ui;
 
 
-import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.BattleProperties;
 import robocode.manager.BattleManager;
@@ -84,16 +84,16 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	}
 
 	@Override
-	public void onBattleStarted(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
+	public void onBattleStarted(BattleStartedEvent event) {
 		isRunning.set(true);
 		isPaused.set(false);
-        snapshot.set(start);
+        snapshot.set(event.getStart());
         EventQueue.invokeLater(repaintTask);
 		timer.start();
 	}
 
 	@Override
-	public void onBattleEnded(boolean isAborted) {
+	public void onBattleEnded(BattleEndedEvent event) {
 		timer.stop();
 		isRunning.set(false);
 		isPaused.set(false);
@@ -101,26 +101,26 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	}
 
 	@Override
-	public void onBattleResumed() {
+	public void onBattleResumed(BattleResumedEvent event) {
 		isPaused.set(false);
 		timer.start();
 	}
 
-	public void onBattlePaused() {
+	public void onBattlePaused(BattlePausedEvent event) {
 		timer.stop();
 		isPaused.set(true);
 	}
 
-	public void onRoundStarted(int round) {
+	public void onRoundStarted(RoundStartedEvent event) {
 		EventQueue.invokeLater(repaintTask);
 	}
 
-	public void onRoundEnded() {
+	public void onRoundEnded(RoundEndedEvent event) {
 		EventQueue.invokeLater(repaintTask);
 	}
 
-	public void onTurnEnded(TurnSnapshot turnSnapshot) {
-		snapshot.set(turnSnapshot);
+	public void onTurnEnded(TurnEndedEvent event) {
+		snapshot.set(event.getTurnSnapshot());
         if (isPaused.get()){
             EventQueue.invokeLater(repaintTask);
         }

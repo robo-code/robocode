@@ -13,6 +13,7 @@ package robots;
 
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.events.TurnEndedEvent;
 import org.junit.Assert;
 import org.junit.After;
 import static org.hamcrest.CoreMatchers.is;
@@ -35,8 +36,8 @@ public class TestLost extends RobotTestBed {
         return "sample.Fire,testing.BattleLost";
     }
 
-    public void onTurnEnded(TurnSnapshot turnSnapshot) {
-        RobotSnapshot robot = turnSnapshot.getRobots().get(1);
+    public void onTurnEnded(TurnEndedEvent event) {
+        RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
         final String streamSnapshot = robot.getOutputStreamSnapshot();
         if (streamSnapshot.contains("Death!")){
             lost++;

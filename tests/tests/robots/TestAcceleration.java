@@ -15,6 +15,7 @@ import helpers.RobotTestBed;
 import helpers.Assert;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.events.TurnEndedEvent;
 
 /**
  * @author Pavel Savara (original)
@@ -24,9 +25,9 @@ public class TestAcceleration extends RobotTestBed {
         return "sample.Target,testing.Ahead";        
     }
 
-    public void onTurnEnded(TurnSnapshot turnSnapshot) {
-        RobotSnapshot ahead = turnSnapshot.getRobots().get(1);
-        switch (turnSnapshot.getTurn()){
+    public void onTurnEnded(TurnEndedEvent event) {
+        RobotSnapshot ahead = event.getTurnSnapshot().getRobots().get(1);
+        switch (event.getTurnSnapshot().getTurn()){
             case 1:
                 Assert.assertNear(1.0,ahead.getVelocity());
                 break;
