@@ -16,7 +16,8 @@ import robocode.peer.robot.RobotStatistics;
 /**
  * @author Pavel Savara (original)
  */
-public class RobotScoreSnapshot {
+public class ScoreSnapshot implements Comparable<ScoreSnapshot> {
+    private final String name;
     private final double totalScore;
     private final double totalSurvivalScore;
     private final double totalLastSurvivorBonus;
@@ -34,7 +35,8 @@ public class RobotScoreSnapshot {
     private final double currentRammingDamageScore;
     private final double currentRammingKillBonus;
 
-    public RobotScoreSnapshot(RobotStatistics statistics) {
+    public ScoreSnapshot(RobotStatistics statistics, String name) {
+        this.name=name;
         totalScore = statistics.getTotalScore();
         totalSurvivalScore = statistics.getTotalSurvivalScore();
         totalLastSurvivorBonus = statistics.getTotalLastSurvivorBonus();
@@ -51,6 +53,30 @@ public class RobotScoreSnapshot {
         currentBulletKillBonus = statistics.getCurrentBulletKillBonus();
         currentRammingDamageScore = statistics.getCurrentRammingDamageScore();
         currentRammingKillBonus = statistics.getCurrentBulletKillBonus();
+    }
+
+    public ScoreSnapshot(ScoreSnapshot left, ScoreSnapshot right, String name) {
+        this.name=name;
+        totalScore = left.getTotalScore() + right.getTotalScore();
+        totalSurvivalScore = left.getTotalSurvivalScore() + right.getTotalSurvivalScore();
+        totalLastSurvivorBonus = left.getTotalLastSurvivorBonus() + right.getTotalLastSurvivorBonus();
+        totalBulletDamageScore = left.getTotalBulletDamageScore() + right.getTotalBulletDamageScore();
+        totalBulletKillBonus = left.getTotalBulletKillBonus() + right.getTotalBulletKillBonus();
+        totalRammingDamageScore = left.getTotalRammingDamageScore() + right.getTotalRammingDamageScore();
+        totalRammingKillBonus = left.getTotalRammingKillBonus() + right.getTotalRammingKillBonus();
+        totalFirsts = left.getTotalFirsts() + right.getTotalFirsts();
+        totalSeconds = left.getTotalSeconds() + right.getTotalSeconds();
+        totalThirds = left.getTotalThirds() + right.getTotalThirds();
+        currentScore = left.getCurrentScore() + right.getCurrentScore();
+        currentSurvivalScore = left.getCurrentSurvivalScore() + right.getCurrentSurvivalScore();
+        currentBulletDamageScore = left.getCurrentBulletDamageScore() + right.getCurrentBulletDamageScore();
+        currentBulletKillBonus = left.getCurrentBulletKillBonus() + right.getCurrentBulletKillBonus();
+        currentRammingDamageScore = left.getCurrentRammingDamageScore() + right.getCurrentRammingDamageScore();
+        currentRammingKillBonus = left.getCurrentBulletKillBonus() + right.getCurrentBulletKillBonus();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public double getTotalScore() {
@@ -115,5 +141,13 @@ public class RobotScoreSnapshot {
 
     public double getCurrentRammingKillBonus() {
         return currentRammingKillBonus;
+    }
+
+    public int compareTo(ScoreSnapshot o) {
+        double myScore = getTotalScore();
+        double hisScore = o.getTotalScore();
+        myScore += getCurrentScore();
+        hisScore += o.getCurrentScore();
+        return (int) ((hisScore + 0.5) - (myScore + 0.5));
     }
 }

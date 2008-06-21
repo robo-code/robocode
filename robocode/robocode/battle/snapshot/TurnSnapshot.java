@@ -16,9 +16,7 @@ import robocode.battle.Battle;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -153,4 +151,28 @@ public class TurnSnapshot implements java.io.Serializable {
 	public int getTurn() {
 		return turn;
 	}
+
+    /**
+     * @return scores grouped by teams, ordered by position
+     */
+    public List<ScoreSnapshot> getTeamScores() {
+        //team scores are computed on demand from team scores to not duplicate data in the snapshot
+        
+        Hashtable<String,ScoreSnapshot> teams= new Hashtable<String,ScoreSnapshot>();
+        for(RobotSnapshot robot : robots){
+            final String name = robot.getTeamLeaderName();
+            if (!teams.containsKey(name)){
+                teams.put(name, robot.getRobotScoreSnapshot());
+            }
+            else{
+                final ScoreSnapshot sum = new ScoreSnapshot(teams.get(name), robot.getRobotScoreSnapshot(), name);
+                teams.put(name, sum);
+            }
+        }
+
+        List<ScoreSnapshot> res=new ArrayList<ScoreSnapshot>(teams.values());
+        Collections.sort(res);
+
+        return res;
+    }
 }

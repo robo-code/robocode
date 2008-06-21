@@ -40,14 +40,14 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 	}
 
 	public int compareTo(ContestantPeer cp) {
-		double score1 = teamStatistics.getTotalScore();
-		double score2 = cp.getStatistics().getTotalScore();
+		double myScore = teamStatistics.getTotalScore();
+		double hisScore = cp.getStatistics().getTotalScore();
 
 		if (teamLeader != null && teamLeader.getBattle().isRunning()) {
-			score1 += teamStatistics.getCurrentScore();
-			score2 += cp.getStatistics().getCurrentScore();
+			myScore += teamStatistics.getCurrentScore();
+			hisScore += cp.getStatistics().getCurrentScore();
 		}
-		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+		return (int) ((hisScore + 0.5) - (myScore + 0.5));
 	}
 
 	public ContestantStatistics getStatistics() {

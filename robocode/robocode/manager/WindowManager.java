@@ -24,7 +24,7 @@ package robocode.manager;
 
 
 import robocode.battle.BattleProperties;
-import robocode.battle.BattleResultsTableModel;
+import robocode.ui.BattleResultsTableModel;
 import robocode.dialog.*;
 import robocode.dialog.SplashScreen;
 import robocode.editor.RobocodeEditor;

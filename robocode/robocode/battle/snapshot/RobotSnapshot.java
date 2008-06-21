@@ -14,7 +14,6 @@ package robocode.battle.snapshot;
 
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
-import robocode.peer.TeamPeer;
 import robocode.robotpaint.Graphics2DProxy;
 import static robocode.util.ObjectCloner.deepCopy;
 
@@ -110,7 +109,7 @@ public class RobotSnapshot implements Serializable {
 	private final String outputStreamSnapshot;
 
     // Snapshot of score for robot
-    private final RobotScoreSnapshot robotScoreSnapshot;
+    private final ScoreSnapshot robotScoreSnapshot;
 
     /**
 	 * Constructs a snapshot of the robot.
@@ -154,7 +153,7 @@ public class RobotSnapshot implements Serializable {
 
 		outputStreamSnapshot = peer.getOut().readAndReset();
 
-        robotScoreSnapshot = new RobotScoreSnapshot(peer.getRobotStatistics());
+        robotScoreSnapshot = new ScoreSnapshot(peer.getRobotStatistics(), peer.getName());
     }
 
     /**
@@ -383,7 +382,7 @@ public class RobotSnapshot implements Serializable {
      *
      * @return snapshot of score for robot
      */
-    public RobotScoreSnapshot getRobotScoreSnapshot() {
+    public ScoreSnapshot getRobotScoreSnapshot() {
         return robotScoreSnapshot;
     }
 

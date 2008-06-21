@@ -38,9 +38,8 @@ import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.events.BattleMessageEvent;
 import robocode.battle.events.BattleErrorEvent;
-import robocode.battle.BattleResultsTableModel;
+import robocode.ui.BattleResultsTableModel;
 import robocode.battle.Battle;
-import robocode.battle.BattleProperties;
 import robocode.security.SecurePrintStream;
 
 import java.awt.*;

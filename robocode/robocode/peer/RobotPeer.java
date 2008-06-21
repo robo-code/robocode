@@ -1235,14 +1235,14 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public int compareTo(ContestantPeer cp) {
-		double score1 = statistics.getTotalScore();
-		double score2 = cp.getStatistics().getTotalScore();
+		double myScore = statistics.getTotalScore();
+		double hisScore = cp.getStatistics().getTotalScore();
 
 		if (battle.isRunning()) {
-			score1 += statistics.getCurrentScore();
-			score2 += cp.getStatistics().getCurrentScore();
+			myScore += statistics.getCurrentScore();
+			hisScore += cp.getStatistics().getCurrentScore();
 		}
-		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+		return (int) ((hisScore + 0.5) - (myScore + 0.5));
 	}
 
 	public IBasicRobot getRobot() {

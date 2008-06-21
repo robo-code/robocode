@@ -21,8 +21,8 @@ package robocode.dialog;
 
 
 import robocode.battle.Battle;
-import robocode.battle.BattleRankingTableModel;
-import robocode.battle.BattleResultsTableModel;
+import robocode.ui.BattleRankingTableModel;
+import robocode.ui.BattleResultsTableModel;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;

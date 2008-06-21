@@ -23,7 +23,7 @@
  *     Nathaniel Troutman
  *     - Added sanity check on battle object in getRowCount()
  *******************************************************************************/
-package robocode.battle;
+package robocode.ui;
 
 
 import robocode.io.Logger;
@@ -32,6 +32,7 @@ import robocode.peer.ContestantStatistics;
 import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
 import robocode.manager.RobocodeManager;
+import robocode.battle.Battle;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
