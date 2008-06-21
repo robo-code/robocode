@@ -17,7 +17,7 @@ import robocode.battle.snapshot.TurnSnapshot;
  * @author Pavel Savara (original)
  */
 public class TurnEndedEvent extends BattleEvent {
-    private TurnSnapshot turnSnapshot;
+    private final TurnSnapshot turnSnapshot;
 
     public TurnEndedEvent(TurnSnapshot turnSnapshot) {
         this.turnSnapshot = turnSnapshot;

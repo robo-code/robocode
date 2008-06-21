@@ -14,5 +14,5 @@ package robocode.battle.events;
 /**
  * @author Pavel Savara (original)
  */
-public class BattleEvent {
+public abstract class BattleEvent {
 }

@@ -18,8 +18,8 @@ import robocode.battle.BattleProperties;
  * @author Pavel Savara (original)
  */
 public class BattleCompletedEvent extends BattleEvent {
-    private BattleProperties battleProperties;
-    private BattleResults[] results;
+    private final BattleProperties battleProperties;
+    private final BattleResults[] results;
 
     public BattleCompletedEvent(BattleProperties battleProperties, BattleResults[] results) {
         this.battleProperties = battleProperties;

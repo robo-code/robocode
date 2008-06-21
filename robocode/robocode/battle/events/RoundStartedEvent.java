@@ -15,7 +15,7 @@ package robocode.battle.events;
  * @author Pavel Savara (original)
  */
 public class RoundStartedEvent extends BattleEvent {
-    private int round;
+    private final int round;
 
     public RoundStartedEvent(int round) {
         this.round = round;

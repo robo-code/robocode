@@ -15,7 +15,8 @@ package robocode.battle.events;
  * @author Pavel Savara (original)
  */
 public class BattleErrorEvent extends BattleEvent {
-    private String error;
+    private final String error;
+
     public BattleErrorEvent(String error){
         this.error=error;
     }

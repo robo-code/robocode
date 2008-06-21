@@ -18,9 +18,9 @@ import robocode.battle.snapshot.TurnSnapshot;
  * @author Pavel Savara (original)
  */
 public class BattleStartedEvent extends BattleEvent {
-    private TurnSnapshot start;
-    private BattleProperties battleProperties;
-    private boolean isReplay;
+    private final TurnSnapshot start;
+    private final BattleProperties battleProperties;
+    private final boolean isReplay;
 
     public BattleStartedEvent(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
         this.start = start;
