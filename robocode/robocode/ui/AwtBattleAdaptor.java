@@ -14,7 +14,6 @@ package robocode.ui;
 
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.BattleProperties;
 import robocode.manager.BattleManager;
 
 import javax.swing.*;
@@ -42,7 +41,6 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	// FPS (frames per second) calculation
 	private int fps;
-
 	private long measuredFrameCounter;
 	private long measuredFrameStartTime;
 
@@ -87,7 +85,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	public void onBattleStarted(BattleStartedEvent event) {
 		isRunning.set(true);
 		isPaused.set(false);
-        snapshot.set(event.getStart());
+        snapshot.set(event.getTurnSnapshot());
         EventQueue.invokeLater(repaintTask);
 		timer.start();
 	}

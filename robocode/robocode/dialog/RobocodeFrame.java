@@ -29,7 +29,6 @@ package robocode.dialog;
 
 
 import robocode.battle.BattleProperties;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.*;
 import robocode.battleview.BattleView;
@@ -710,7 +709,7 @@ public class RobocodeFrame extends JFrame {
             getRobotButtonsPanel().removeAll();
 
             final RobotDialogManager dialogManager = manager.getRobotDialogManager();
-            final java.util.List<RobotSnapshot> robots = event.getStart().getRobots();
+            final java.util.List<RobotSnapshot> robots = event.getTurnSnapshot().getRobots();
             dialogManager.trim(robots);
             for(int index=0;index<robots.size();index++){
                 final RobotSnapshot robot = robots.get(index);

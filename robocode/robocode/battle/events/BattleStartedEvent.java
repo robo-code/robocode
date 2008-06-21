@@ -28,7 +28,7 @@ public class BattleStartedEvent extends BattleEvent {
         this.isReplay = isReplay;
     }
 
-    public TurnSnapshot getStart() {
+    public TurnSnapshot getTurnSnapshot() {
         return start;
     }
 
