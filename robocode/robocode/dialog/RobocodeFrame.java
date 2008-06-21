@@ -647,13 +647,17 @@ public class RobocodeFrame extends JFrame {
 
         public void windowDeiconified(WindowEvent e) {
             setIconified(false);
+            manager.getBattleManager().setManagedTPS(true);
         }
 
         public void windowIconified(WindowEvent e) {
             setIconified(true);
+            manager.getBattleManager().setManagedTPS(false);
         }
 
-        public void windowOpened(WindowEvent e) {}
+        public void windowOpened(WindowEvent e) {
+            manager.getBattleManager().setManagedTPS(true);
+        }
 
         public void stateChanged(ChangeEvent e) {
             if (e.getSource() == getTpsSlider()) {

@@ -81,6 +81,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -102,6 +103,7 @@ public class BattleManager implements IBattleControl {
     private String battlePath;
 
     private AtomicInteger pauseCount = new AtomicInteger(0);
+    private AtomicBoolean isManagedTPS=new AtomicBoolean(false); 
 
     public BattleManager(RobocodeManager manager) {
         this.manager = manager;
@@ -406,15 +408,14 @@ public class BattleManager implements IBattleControl {
     	}
     	return battle.hasReplayRecord();	
     }
-    
-    public Battle getBattle() { //TODO get rid of it, battle is private
-        return battle;
+
+    public boolean isManagedTPS(){
+        return isManagedTPS.get();
     }
 
-    public boolean isRunningMinimized() { //TODO get rid of it, rather use SetTPS to max during minimization of window
-        return !manager.isGUIEnabled() || manager.getWindowManager().getRobocodeFrame().isIconified();
+    public void setManagedTPS(boolean value){
+        isManagedTPS.set(value);
     }
-
 
     public synchronized void addListener(IBattleListener listener) {
         battleEventDispatcher.addListener(listener);

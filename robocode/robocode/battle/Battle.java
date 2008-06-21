@@ -798,7 +798,7 @@ public class Battle implements Runnable {
 		// Let the battle sleep is the GUI is enabled and is not minimized
 		// in order to keep the desired TPS
 
-		if (!battleManager.isRunningMinimized()) {
+		if (battleManager.isManagedTPS()) {
 			long delay = 0;
 
 			if (!isAborted() && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
