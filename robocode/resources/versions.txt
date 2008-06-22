@@ -18,17 +18,25 @@ o Changes
 - InterruptedException
 - Logging improvements (logError/logMessage + stack trace always included) 
 - Junit test infrastructure
-- FR:1878233 - onBattleEnd() Event
+- FR:1878233 - IBasicEvents2.onBattleEnded()
+- AboutBox, NewBattleDialog, PreferencesDialog, RankingDialog, CompilerPreferencesDialog made modal.
 - Title in Robocode window is now showing the current turn
 - New robocode.control.RobocodeEngine2, which is an replacement and extension of the old RobocodeEngine
 - Battle is now private
-- battle commands -> pause, resume (IBattleControl)
+- battle commands -> pause, resume (IBattleControl) thru queue
+- new battle and resultdialog could be closed by esc key
+- multiple inned threads turned to AWT timers
+- Turned all Robocode exceptions (for the battles) into RuntimeExceptions.
+- Refactored Robocode main class
+
 
 o Bugfixes
 - The JuniorRobot.others was not updated properly when other robots dies
 - Fixed issue with duplicate team name
 - short name in RobotPeer was name for duplicit robots
 - after intro battle restart button disabled
+- new battle dialog resize after robot selection
+- duplicate team names are dedupped
 
 
 Version 1.6.0
