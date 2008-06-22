@@ -53,6 +53,7 @@ public class ResultsDialog extends BaseScoreDialog {
         buttonEventHandler=new ButtonEventHandler();
         initialize();
         setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
+        addCancelByEscapeKey();
     }
 
     private void saveButtonActionPerformed() {
@@ -127,6 +128,21 @@ public class ResultsDialog extends BaseScoreDialog {
             WindowUtil.setFixedSize(saveButton, new Dimension(80, 25));
         }
         return saveButton;
+    }
+
+    private void addCancelByEscapeKey(){
+      String CANCEL_ACTION_KEY = "CANCEL_ACTION_KEY";
+      int noModifiers = 0;
+      KeyStroke escapeKey = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, noModifiers, false);
+      InputMap inputMap = getRootPane().
+                          getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+      inputMap.put(escapeKey, CANCEL_ACTION_KEY);
+      AbstractAction cancelAction = new AbstractAction(){
+          public void actionPerformed(ActionEvent e){
+              okButtonActionPerformed();
+          }
+      };
+      getRootPane().getActionMap().put(CANCEL_ACTION_KEY, cancelAction);
     }
 
     private class ButtonEventHandler implements ActionListener {

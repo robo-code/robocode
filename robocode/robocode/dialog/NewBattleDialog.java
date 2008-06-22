@@ -58,13 +58,21 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	private RobocodeManager manager;
 
-	class EventHandler extends WindowAdapter implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
-			}
-		}
-	}
+    /**
+     * NewBattleDialog constructor comment.
+     * @param manager robocode main manager
+     * @param battleProperties properties for current game
+     */
+    public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
+        super(manager.getWindowManager().getRobocodeFrame(), true);
+        this.manager = manager;
+        this.battleProperties = battleProperties;
+
+        initialize();
+
+        battleProperties.setNumRounds(manager.getProperties().getNumberOfRounds());
+        processBattleProperties();
+    }
 
 	public void cancelButtonActionPerformed() {
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -160,21 +168,23 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		setTitle("New Battle");
 		setContentPane(getNewBattleDialogContentPane());
 		addWindowListener(eventHandler);
-	}
+        addCancelByEscapeKey();
+    }
 
-	/**
-	 * NewBattleDialog constructor comment.
-	 */
-	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
-		super(manager.getWindowManager().getRobocodeFrame(), true);
-		this.manager = manager;
-		this.battleProperties = battleProperties;
-
-		initialize();
-
-		battleProperties.setNumRounds(manager.getProperties().getNumberOfRounds());
-		processBattleProperties();
-	}
+    private void addCancelByEscapeKey(){
+      String CANCEL_ACTION_KEY = "CANCEL_ACTION_KEY";
+      int noModifiers = 0;
+      KeyStroke escapeKey = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, noModifiers, false);
+      InputMap inputMap = getRootPane().
+                          getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+      inputMap.put(escapeKey, CANCEL_ACTION_KEY);
+      AbstractAction cancelAction = new AbstractAction(){
+          public void actionPerformed(ActionEvent e){
+              cancelButtonActionPerformed();
+          }
+      };
+      getRootPane().getActionMap().put(CANCEL_ACTION_KEY, cancelAction);
+    }
 
 	/**
 	 * Return the wizardController
@@ -241,4 +251,13 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		getRulesTab().setGunCoolingRate(battleProperties.getGunCoolingRate());
 		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
 	}
+
+    class EventHandler extends WindowAdapter implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals("Refresh")) {
+                getRobotSelectionPanel().refreshRobotList();
+            }
+        }
+    }
+
 }
