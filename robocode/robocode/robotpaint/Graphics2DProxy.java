@@ -528,7 +528,20 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	@Override
 	public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
-		return s.intersects(rect); // TODO: Improve to support onStroke
+		if (onStroke && getStroke() != null) {
+			s = getStroke().createStrokedShape(s);
+		}
+ 
+		if (getTransform() != null) {
+			s = getTransform().createTransformedShape(s);
+		}
+ 
+		Area area = new Area(s);
+		if (getClip() != null) {
+			area.intersect(new Area(getClip()));
+		}
+		
+		return area.intersects(rect);
 	}
 
 	@Override
