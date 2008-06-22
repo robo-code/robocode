@@ -210,4 +210,22 @@ public class ScannedRobotEvent extends Event {
 	public double getVelocity() {
 		return velocity;
 	}
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(Event event) {
+        final int res = super.compareTo(event);
+        if (res!=0){
+            return res;
+        }
+        // Compare the distance, if the events are ScannedRobotEvents
+        // The shorter distance to the robot, the higher priority
+        if (event instanceof ScannedRobotEvent) {
+            return (int) (this.getDistance() - ((ScannedRobotEvent) event).getDistance());
+        }
+        // No difference found
+        return 0;
+    }    
 }

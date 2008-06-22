@@ -59,7 +59,7 @@ public class Event implements Comparable<Event> {
 	 *         has a lower precedence, i.e. must be listed after the specified event.
 	 *         0 means that the precedence of the two events are equal.
 	 */
-	public int compareTo(Event event) {
+    public int compareTo(Event event) {
 		// Compare the time difference which has precedence over priority.
 		int timeDiff = (int) (time - event.time);
 
@@ -75,22 +75,9 @@ public class Event implements Comparable<Event> {
 		}
 
 		// Same time and priority -> Compare specific event types
+        //look at overrides in ScannedRobotEvent and HitRobotEvent
 
-		// Compare the distance, if the events are ScannedRobotEvents
-		// The shorter distance to the robot, the higher priority
-		if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
-			return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
-		}
-		// Compare the isMyFault, if the events are HitRobotEvents
-		// The isMyFault has higher priority when it is set compared to when it is not set
-		if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
-			int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
-			int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
-
-			return compare1 - compare2;
-		}
-
-		// No difference found
+        // No difference found
 		return 0;
 	}
 

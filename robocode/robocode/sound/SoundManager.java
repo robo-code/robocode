@@ -29,14 +29,11 @@ package robocode.sound;
 
 
 import robocode.battle.events.*;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.RobotState;
-import robocode.control.BattleSpecification;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
