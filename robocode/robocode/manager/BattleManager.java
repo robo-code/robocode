@@ -53,7 +53,7 @@ package robocode.manager;
 
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
-import robocode.battle.IBattleControl;
+import robocode.battle.IBattleManager;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
 import robocode.battle.events.BattleEndedEvent;
@@ -90,7 +90,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class BattleManager implements IBattleControl {
+public class BattleManager implements IBattleManager {
     private RobocodeManager manager;
 
     private Battle battle;
@@ -115,11 +115,6 @@ public class BattleManager implements IBattleControl {
         }
         manager = null;
         battleEventDispatcher = null;
-    }
-
-    // Called when starting a new battle from GUI
-    public synchronized void startNewBattle(BattleProperties battleProperties, boolean replay) {
-        startNewBattle(battleProperties, replay, false);
     }
 
     // Called when starting a new battle from GUI
@@ -150,7 +145,7 @@ public class BattleManager implements IBattleControl {
         }
 
     // Called from the RobocodeEngine
-	public boolean startNewBattle(BattleSpecification spec, boolean replay, boolean waitTillOver) {
+	public boolean startNewBattle(BattleSpecification spec, boolean waitTillOver) {
         battleProperties = new BattleProperties();
         battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
         battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -180,7 +175,7 @@ public class BattleManager implements IBattleControl {
 				return false;
             }
         }
-        startNewBattleImpl(battlingRobotsList, replay, waitTillOver);
+        startNewBattleImpl(battlingRobotsList, false, waitTillOver);
         return true;
     }
 
@@ -432,11 +427,11 @@ public class BattleManager implements IBattleControl {
 
     public synchronized void restart() {
         // Start new battle. The old battle is automatically stopped
-        startNewBattle(battleProperties, false);
+        startNewBattle(battleProperties, false, false);
     }
 
     public synchronized void replay() {
-        startNewBattle(battleProperties, true);
+        startNewBattle(battleProperties, true, false);
     }
 
 

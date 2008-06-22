@@ -19,7 +19,7 @@
 package robocode.dialog;
 
 
-import robocode.battle.IBattleControl;
+import robocode.battle.IBattleManager;
 import robocode.manager.RobotDialogManager;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class RobotButton extends JButton implements ActionListener {
     /**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, IBattleControl battleControl, String name, int index, boolean attach) {
+	public RobotButton(RobotDialogManager robotDialogManager, IBattleManager battleControl, String name, int index, boolean attach) {
 		this.robotDialogManager = robotDialogManager;
         this.name=name;
         this.index=index;

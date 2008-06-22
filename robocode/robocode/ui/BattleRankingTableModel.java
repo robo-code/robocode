@@ -25,19 +25,11 @@
 package robocode.ui;
 
 
-import robocode.manager.RobocodeManager;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
-import robocode.peer.TeamPeer;
 import robocode.text.StringUtil;
-import robocode.battle.Battle;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.ScoreSnapshot;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 

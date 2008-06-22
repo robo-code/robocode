@@ -68,7 +68,6 @@ import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
-import robocode.battlefield.DefaultBattleField;
 import robocode.exception.*;
 import static robocode.gfx.ColorUtil.toColor;
 import static robocode.io.Logger.logMessage;

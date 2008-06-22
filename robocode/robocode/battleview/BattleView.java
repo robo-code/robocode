@@ -17,6 +17,7 @@ package robocode.battleview;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.IBattleManager;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.gfx.GraphicsState;
@@ -25,7 +26,6 @@ import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.manager.BattleManager;
 import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.ui.AwtBattleAdaptor;
@@ -636,7 +636,7 @@ public class BattleView extends Canvas {
 	}
 
 	private class BattleObserver extends AwtBattleAdaptor {
-		public BattleObserver(BattleManager battleManager) {
+		public BattleObserver(IBattleManager battleManager) {
 			super(battleManager, TIMER_TICKS_PER_SECOND, true);
 		}
 

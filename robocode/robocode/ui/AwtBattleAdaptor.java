@@ -14,7 +14,7 @@ package robocode.ui;
 
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.manager.BattleManager;
+import robocode.battle.IBattleManager;
 
 import javax.swing.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -33,7 +33,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	private AtomicBoolean isRunning;
 	private AtomicBoolean isPaused;
-	private BattleManager battleManager;
+	private IBattleManager battleManager;
 
 	private QueuedTask repaintTask = new QueuedTask();
 	private Timer timerTask;
@@ -44,7 +44,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	private long measuredFrameCounter;
 	private long measuredFrameStartTime;
 
-	public AwtBattleAdaptor(BattleManager battleManager, int maxFps, boolean skipSameFrames) {
+	public AwtBattleAdaptor(IBattleManager battleManager, int maxFps, boolean skipSameFrames) {
 		this.battleManager = battleManager;
 		this.skipSameFrames = skipSameFrames;
 		snapshot = new AtomicReference<TurnSnapshot>(null);

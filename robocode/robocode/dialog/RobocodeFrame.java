@@ -29,6 +29,7 @@ package robocode.dialog;
 
 
 import robocode.battle.BattleProperties;
+import robocode.battle.IBattleManager;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.*;
 import robocode.battleview.BattleView;
@@ -120,7 +121,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
     public void runIntroBattle() {
-        BattleManager battleManager = manager.getBattleManager();
+        IBattleManager battleManager = manager.getBattleManager();
         final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
         if (intro.exists()){
             battleManager.setBattleFilename(intro.getPath());
@@ -678,7 +679,7 @@ public class RobocodeFrame extends JFrame {
 
 
     private class BattleObserver extends BattleAdaptor {
-        private BattleManager battleManager;
+        private IBattleManager battleManager;
         private int tps;
         private int currentRound;
         private int numberOfRounds;
@@ -688,7 +689,7 @@ public class RobocodeFrame extends JFrame {
         private boolean isBattleReplay;
         private long lastTitleUpdateTime;
 
-        public BattleObserver(BattleManager battleManager){
+        public BattleObserver(IBattleManager battleManager){
             this.battleManager=battleManager;
             battleManager.addListener(this);
         }
@@ -736,7 +737,7 @@ public class RobocodeFrame extends JFrame {
             isBattleRunning = false;
 
             getStopButton().setEnabled(false);
-            getReplayButton().setEnabled(manager.getBattleManager().hasReplayRecord()); //TODO get rid of battle
+            getReplayButton().setEnabled(battleManager.hasReplayRecord());
             getNextTurnButton().setEnabled(false);
 
             updateTitle();

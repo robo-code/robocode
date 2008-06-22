@@ -28,9 +28,9 @@ package robocode.dialog;
 
 
 import robocode.manager.RobocodeManager;
-import robocode.manager.BattleManager;
 import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import robocode.battle.IBattleManager;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -203,7 +203,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleSaveActionPerformed() {
-		BattleManager battleManager = manager.getBattleManager();
+		IBattleManager battleManager = manager.getBattleManager();
 
 		try {
 			battleManager.pauseBattle();
@@ -222,7 +222,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleSaveAsActionPerformed() {
-		BattleManager battleManager = manager.getBattleManager();
+		IBattleManager battleManager = manager.getBattleManager();
 
 		try {
 			battleManager.pauseBattle();

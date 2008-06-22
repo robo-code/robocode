@@ -24,6 +24,7 @@ package robocode.manager;
 
 
 import robocode.battle.BattleProperties;
+import robocode.battle.IBattleManager;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.ui.BattleResultsTableModel;
 import robocode.dialog.*;
@@ -84,7 +85,7 @@ public class WindowManager {
 	}
 
 	public void showBattleOpenDialog() {
-        BattleManager battleManager = manager.getBattleManager();
+        IBattleManager battleManager = manager.getBattleManager();
         try{
             battleManager.pauseBattle();
 

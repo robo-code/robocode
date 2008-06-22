@@ -106,7 +106,6 @@ import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.common.Command;
 import robocode.control.RandomFactory;
-import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
@@ -150,7 +149,7 @@ public class Battle implements Runnable {
 
 	// Objects we use
 	private BattleField battleField;
-	private BattleManager battleManager;
+	private IBattleManager battleManager;
 	private RobocodeManager manager;
 
 	// Battle thread

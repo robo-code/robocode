@@ -33,10 +33,9 @@ import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
-import robocode.manager.BattleManager;
 import robocode.battle.events.*;
 import robocode.ui.BattleResultsTableModel;
-import robocode.battle.Battle;
+import robocode.battle.IBattleManager;
 import robocode.security.SecurePrintStream;
 
 import java.awt.*;
@@ -105,11 +104,11 @@ public class Robocode {
 
             if (setup.battleFilename != null) {
                 setup.exitOnComplete=true;
-                robocode.manager.BattleManager battleManager = manager.getBattleManager();
+                IBattleManager battleManager = manager.getBattleManager();
 
                 battleManager.setBattleFilename(setup.battleFilename);
                 if (new File(battleManager.getBattleFilename()).exists()) {
-                    battleManager.startNewBattle(battleManager.loadBattleProperties(), false);
+                    battleManager.startNewBattle(battleManager.loadBattleProperties(), false, false);
                 } else {
                     System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
                     System.exit(8);

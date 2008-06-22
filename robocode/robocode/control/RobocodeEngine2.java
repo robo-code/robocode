@@ -83,7 +83,7 @@ public class RobocodeEngine2 extends RobocodeEngine {
      * @see #getLocalRepository()
      */
     public void runBattle(BattleSpecification battle, boolean waitTillOver) {
-        manager.getBattleManager().startNewBattle(battle, false, waitTillOver);
+        manager.getBattleManager().startNewBattle(battle, waitTillOver);
     }
 
 	/**

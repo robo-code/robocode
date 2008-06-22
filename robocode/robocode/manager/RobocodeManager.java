@@ -35,6 +35,7 @@ import robocode.security.SecureInputStream;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.RobocodeSecurityManager;
 import robocode.RobocodeFileOutputStream;
+import robocode.battle.IBattleManager;
 
 import java.io.*;
 import java.security.Policy;
@@ -76,7 +77,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a BattleManager
 	 */
-	public BattleManager getBattleManager() {
+	public IBattleManager getBattleManager() {
 		if (battleManager == null) {
 			battleManager = new BattleManager(this);
 		}

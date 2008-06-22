@@ -217,7 +217,7 @@ public class RobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification) {
         this.battleSpecification=battleSpecification;
-        manager.getBattleManager().startNewBattle(battleSpecification, false, false);
+        manager.getBattleManager().startNewBattle(battleSpecification, false);
 	}
 
 	/**

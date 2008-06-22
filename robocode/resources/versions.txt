@@ -23,7 +23,7 @@ o Changes
 - Title in Robocode window is now showing the current turn
 - New robocode.control.RobocodeEngine2, which is an replacement and extension of the old RobocodeEngine
 - Battle is now private
-- battle commands -> pause, resume (IBattleControl) thru queue
+- battle commands -> pause, resume (IBattleManager) thru queue
 - new battle and resultdialog could be closed by esc key
 - multiple inned threads turned to AWT timers
 - Turned all Robocode exceptions (for the battles) into RuntimeExceptions.
