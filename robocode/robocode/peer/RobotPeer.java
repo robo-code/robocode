@@ -1241,7 +1241,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			myScore += statistics.getCurrentScore();
 			hisScore += cp.getStatistics().getCurrentScore();
 		}
-		return (int) ((hisScore + 0.5) - (myScore + 0.5));
+        return  ((int)(hisScore + 0.5) - (int)(myScore + 0.5));
 	}
 
 	public IBasicRobot getRobot() {

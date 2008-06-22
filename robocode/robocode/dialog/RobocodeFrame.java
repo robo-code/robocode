@@ -28,7 +28,6 @@
 package robocode.dialog;
 
 
-import robocode.battle.BattleProperties;
 import robocode.battle.IBattleManager;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.*;
@@ -37,7 +36,6 @@ import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
 import robocode.manager.*;
 import robocode.io.FileUtil;
-import robocode.BattleResults;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
