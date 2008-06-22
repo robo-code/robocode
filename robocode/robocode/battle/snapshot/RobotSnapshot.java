@@ -184,9 +184,9 @@ public class RobotSnapshot implements Serializable {
 	}
 
     /**
-     * Returns the name of the team leader robot or null if the robot is not a part of a team.
+     * Returns the name of the team or name of the robot if the robot is not a part of a team.
      *
-     * @return the name of the team leader robot or null if the robot is not a part of a team.
+     * @return the name of the team or name of the robot if the robot is not a part of a team.
      */
     public String getTeamName() {
         return teamName;
