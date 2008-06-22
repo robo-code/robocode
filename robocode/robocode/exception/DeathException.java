@@ -15,7 +15,7 @@ package robocode.exception;
 /**
  * @author Mathew A. Nelson (original)
  */
-public class DeathException extends RuntimeException {
+public class DeathException extends Error { // Must be error!
 	private static final long serialVersionUID = 1L;
 
 	public DeathException() {

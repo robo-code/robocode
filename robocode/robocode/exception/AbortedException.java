@@ -14,8 +14,10 @@ package robocode.exception;
 
 /**
  * @author Pavel Savara (original)
+ * 
+ * @since 1.6.1
  */
-public class AbortedException extends RuntimeException {
+public class AbortedException extends Error { // Must be error!
 	private static final long serialVersionUID = 1L;
 
 	public AbortedException() {
