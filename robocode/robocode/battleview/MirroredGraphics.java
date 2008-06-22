@@ -52,7 +52,7 @@ public class MirroredGraphics extends Graphics2D {
 
 	/**
 	 * Binds a Graphics2D object to this wrapper object.
-	 * When painting using this wrapper has finnished the
+	 * When painting using this wrapper has finished the
 	 * {@link #release() } method must be called.
 	 *
 	 * @param g      the Graphics2D object to wrap
@@ -334,7 +334,8 @@ public class MirroredGraphics extends Graphics2D {
 	}
 
 	@Override
-	public void dispose() {// TODO: Ignored here, as the robot should not be allowed to dispose this object
+	public void dispose() {
+		g.dispose();
 	}
 
 	@Override
