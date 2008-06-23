@@ -258,6 +258,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
         boundingBox = new BoundingRectangle();
         scanArc = new Arc2D.Double();
         teamPeer = robotClassManager.getTeamManager();
+        state = RobotState.ACTIVE;
         this.index=index;
 
         // Create statistics after teamPeer set
