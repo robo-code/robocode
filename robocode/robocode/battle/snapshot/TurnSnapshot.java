@@ -172,6 +172,7 @@ public class TurnSnapshot implements java.io.Serializable {
 
         List<ScoreSnapshot> res=new ArrayList<ScoreSnapshot>(teams.values());
         Collections.sort(res);
+        Collections.reverse(res);
 
         return res;
     }

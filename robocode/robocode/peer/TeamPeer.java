@@ -48,7 +48,13 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 			myScore += teamStatistics.getCurrentScore();
 			hisScore += cp.getStatistics().getCurrentScore();
 		}
-        return ((int)(hisScore + 0.5) - (int)(myScore + 0.5));
+        if (myScore < hisScore) {
+            return -1;
+        }
+        if (myScore > hisScore) {
+            return 1;
+        }
+        return 0;
 	}
 
 	public ContestantStatistics getStatistics() {

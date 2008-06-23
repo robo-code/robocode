@@ -378,8 +378,9 @@ public class Battle implements Runnable {
 		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());
 
 		Collections.sort(orderedPeers);
+        Collections.reverse(orderedPeers);
 
-		BattleResults results[] = new BattleResults[orderedPeers.size()];
+        BattleResults results[] = new BattleResults[orderedPeers.size()];
 
 		for (int i = 0; i < results.length; i++) {
 			ContestantPeer peer = orderedPeers.get(i);
@@ -873,6 +874,7 @@ public class Battle implements Runnable {
 			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
 
 			Collections.sort(orderedRobots);
+            Collections.reverse(orderedRobots);
 
 			BattleResults results[] = new BattleResults[robots.size()];
 
@@ -1196,6 +1198,7 @@ public class Battle implements Runnable {
             List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
 
             Collections.sort(orderedRobots);
+            Collections.reverse(orderedRobots);
 
             for (int rank = 0; rank < robots.size(); rank++) {
                 RobotPeer r = orderedRobots.get(rank);

@@ -148,6 +148,13 @@ public class ScoreSnapshot implements Comparable<ScoreSnapshot> {
         double hisScore = o.getTotalScore();
         myScore += getCurrentScore();
         hisScore += o.getCurrentScore();
-        return  ((int)(hisScore + 0.5) - (int)(myScore + 0.5));
+
+        if (myScore < hisScore) {
+            return -1;
+        }
+        if (myScore > hisScore) {
+            return 1;
+        }
+        return 0;
     }
 }
