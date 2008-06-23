@@ -64,6 +64,15 @@ public class ThreadManager {
 		return null;
 	}
 
+    public synchronized RobotPeer getLoadedOrLoadingRobotPeer(Thread t) {
+        RobotPeer robotPeer = getRobotPeer(t);
+        if (robotPeer == null) {
+            robotPeer = getLoadingRobotPeer(t);
+        }
+        return robotPeer; 
+    }
+
+
 	public RobotPeer getRobotPeer(Thread t) {
 		ThreadGroup g = t.getThreadGroup();
 
