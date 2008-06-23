@@ -18,6 +18,7 @@ import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.IBattleManager;
+import robocode.battle.events.BattleStartedEvent;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.gfx.GraphicsState;
@@ -111,6 +112,7 @@ public class BattleView extends Canvas {
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
+        observer = new BattleObserver(manager.getBattleManager());
 	}
 
 	public int getFPS() {
@@ -601,14 +603,6 @@ public class BattleView extends Canvas {
 		return scanArc.getBounds();
 	}
 
-	public void setup(BattleField battleField) {
-		this.battleField = battleField;
-		if (observer != null) {
-			observer.dispose();
-		}
-		observer = new BattleObserver(manager.getBattleManager());
-	}
-
 	/**
 	 * Draws the Robocode logo
 	 */
@@ -640,7 +634,15 @@ public class BattleView extends Canvas {
 			super(battleManager, TIMER_TICKS_PER_SECOND, true);
 		}
 
-		protected void updateView(TurnSnapshot snapshot) {
+        @Override
+        public void onBattleStarted(BattleStartedEvent event) {
+            battleField = new DefaultBattleField(event.getBattleProperties().getBattlefieldWidth(), event.getBattleProperties().getBattlefieldHeight());
+            setVisible(true);
+            setInitialized(false);
+            super.onBattleStarted(event);
+        }
+
+        protected void updateView(TurnSnapshot snapshot) {
             if (snapshot==null){
                 repaint();
             }

@@ -59,7 +59,6 @@ import robocode.battle.events.IBattleListener;
 import robocode.battle.events.BattleEndedEvent;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.battleview.BattleView;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
@@ -249,11 +248,6 @@ public class BattleManager implements IBattleManager {
         BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
                 battleProperties.getBattlefieldHeight());
 
-        if (manager.isGUIEnabled()) {
-            BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-
-            battleView.setup(battleField);
-        }
         Logger.setLogListener(battleEventDispatcher);
 
         if (manager.isSoundEnabled()) {
@@ -282,13 +276,6 @@ public class BattleManager implements IBattleManager {
         if (!System.getProperty("NOSECURITY", "false").equals("true")) {
             ((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
             ((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
-        }
-
-        if (manager.isGUIEnabled()) {
-            BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
-
-            battleView.setVisible(true);
-            battleView.setInitialized(false);
         }
 
         for (RobotClassManager robotClassMgr : battlingRobotsList) {
