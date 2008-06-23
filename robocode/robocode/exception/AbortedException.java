@@ -18,7 +18,9 @@ package robocode.exception;
  * @since 1.6.1
  */
 public class AbortedException extends Error { // Must be error!
-	private static final long serialVersionUID = 1L;
+    // From viewpoint of the Robot, an Error is a JVM error:
+    // Robot died, their CPU exploded, the JVM for the robot's brain has an error.
+    private static final long serialVersionUID = 1L;
 
 	public AbortedException() {
 		super();
