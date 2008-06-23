@@ -15,11 +15,15 @@ package robocode.control;
 
 
 /**
- * A Listener interface for receiving callbacks from the {@link RobocodeEngine}.
+ * A listener interface for receiving callbacks from the {@link RobocodeEngine}.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
- * @see RobocodeEngine
+ *
+ * @see RobocodeEngine#RobocodeEngine(RobocodeListener)
+ * RobocodeEngine(RobocodeListener)
+ * @see RobocodeEngine#RobocodeEngine(java.io.File, RobocodeListener)
+ * RobocodeEngine(java.io.File, RobocodeListener)
  */
 public interface RobocodeListener {
 

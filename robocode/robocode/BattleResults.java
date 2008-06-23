@@ -8,14 +8,24 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode;
 
 /**
+ * Contains the battle results returned by {@link BattleEndedEvent#getResults()}
+ * when a battle has ended.
+ *
  * @author Pavel Savara (original)
+ *
+ * @see BattleEndedEvent#getResults()
+ * @see Robot#onBattleEnded(BattleEndedEvent)
+ *
+ * @since 1.6.1
  */
 public class BattleResults implements java.io.Serializable {
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 1L;
 
     private final String teamLeaderName;
     private final int rank;
@@ -74,6 +84,12 @@ public class BattleResults implements java.io.Serializable {
         this.thirds = thirds;
     }
 
+    /**
+     * Returns the name of the team leader in the team or the name of the
+     * robot if the robot is not participating in a team.
+     *
+     * @return the name of the team leader in the team or the name of the robot.
+     */
     public String getTeamLeaderName() {
         return teamLeaderName;
     }

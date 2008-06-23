@@ -110,9 +110,9 @@ public class BattleSpecification implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the robots participating in this battle.
+	 * Returns the specifications of the robots participating in this battle.
 	 *
-	 * @return the robots participating in this battle.
+	 * @return the specifications of the robots participating in this battle.
 	 */
 	public RobotSpecification[] getRobots() {
 		if (robots == null) {

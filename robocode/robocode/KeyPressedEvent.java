@@ -8,15 +8,32 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
+ * A KeyPressedEvent is sent to {@link Robot#onKeyPressed(java.awt.event.KeyEvent)}
+ * when a key has been pressed on the keyboard.
+ *
  * @author Pavel Savara (original)
+ *
+ * @see Robot#onKeyPressed(java.awt.event.KeyEvent)
+ * @see KeyReleasedEvent
+ * @see KeyTypedEvent
+ *
+ * @since 1.6.1
  */
 public final class KeyPressedEvent extends KeyEvent {
-	public KeyPressedEvent(java.awt.event.KeyEvent inner) {
-		super(inner);
+
+	/**
+	 * Called by the game to create a new KeyPressedEvent.
+	 *
+     * @param source the source key event originating from the AWT.
+     */
+	public KeyPressedEvent(java.awt.event.KeyEvent source) {
+		super(source);
 	}
 }
