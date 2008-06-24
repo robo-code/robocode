@@ -1400,6 +1400,7 @@ public class Battle implements Runnable {
 					robotClass = robotPeer.getRobotClassManager().getRobotClass();
 					if (robotClass == null) {
 						robotPeer.getOut().println("SYSTEM: Skipping robot: " + robotPeer.getName());
+                        robotPeer.setEnergy(0);
 						continue;
 					}
 					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
@@ -1411,12 +1412,16 @@ public class Battle implements Runnable {
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
-					logMessage(e);
+                    robotPeer.setEnergy(0);
+                    robotPeer.setRobot(null);
+                    logMessage(e);
 				} catch (Throwable e) {
 					robotPeer.getOut().println(
 							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
 					robotPeer.getOut().println("SYSTEM: " + e);
 					e.printStackTrace(robotPeer.getOut());
+                    robotPeer.setRobot(null);
+                    robotPeer.setEnergy(0);
 					logMessage(e);
 				}
 				if (roundNum > 0) {
