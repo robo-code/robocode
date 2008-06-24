@@ -8,15 +8,38 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode;
 
+import java.awt.event.MouseWheelEvent;
+
 
 /**
+ * A MouseWheelMovedEvent is sent to {@link Robot#onMouseWheelMoved(MouseWheelEvent)
+ * Robot#onMouseWheelMoved()} when the mouse wheel is rotated inside the battle view.
+ *
  * @author Pavel Savara (original)
+ *
+ * @see MouseClickedEvent
+ * @see MousePressedEvent
+ * @see MouseReleasedEvent
+ * @see MouseEnteredEvent
+ * @see MouseExitedEvent
+ * @see MouseMovedEvent
+ * @see MouseDraggedEvent
+ *
+ * @since 1.6.1
  */
 public final class MouseWheelMovedEvent extends MouseEvent {
-	public MouseWheelMovedEvent(java.awt.event.MouseEvent inner) {
-		super(inner);
+
+	/**
+	 * Called by the game to create a new MouseWheelMovedEvent.
+	 *
+     * @param source the source mouse event originating from the AWT.
+     */
+	public MouseWheelMovedEvent(java.awt.event.MouseEvent source) {
+		super(source);
 	}
 }

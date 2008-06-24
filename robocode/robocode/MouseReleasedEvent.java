@@ -8,15 +8,36 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
+ * A MouseReleasedEvent is sent to {@link Robot#onMouseReleased(java.awt.event.MouseEvent)
+ * Robot#onMouseReleased()} when the mouse is released inside the battle view.
+ *
  * @author Pavel Savara (original)
+ *
+ * @see MouseClickedEvent
+ * @see MousePressedEvent
+ * @see MouseEnteredEvent
+ * @see MouseExitedEvent
+ * @see MouseMovedEvent
+ * @see MouseDraggedEvent
+ * @see MouseWheelMovedEvent
+ *
+ * @since 1.6.1
  */
 public final class MouseReleasedEvent extends MouseEvent {
-	public MouseReleasedEvent(java.awt.event.MouseEvent inner) {
-		super(inner);
+
+	/**
+	 * Called by the game to create a new MouseReleasedEvent.
+	 *
+     * @param source the source mouse event originating from the AWT.
+     */
+	public MouseReleasedEvent(java.awt.event.MouseEvent source) {
+		super(source);
 	}
 }

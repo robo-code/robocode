@@ -8,21 +8,40 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
+ * Super class of all events that originates from the mouse.
+ *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6.1
  */
 public abstract class MouseEvent extends Event {
-	private java.awt.event.MouseEvent inner;
+	private java.awt.event.MouseEvent source;
 
-	public MouseEvent(java.awt.event.MouseEvent inner) {
-		this.inner = inner;
+	/**
+	 * Called by the game to create a new MouseEvent.
+	 *
+     * @param source the source mouse event originating from the AWT.
+     */
+	public MouseEvent(java.awt.event.MouseEvent source) {
+		this.source = source;
 	}
 
-	public java.awt.event.MouseEvent getInnerEvent() {
-		return inner;
+	/**
+	 * Do not call this method!
+	 * <p/>
+	 * This method is used by the game to determine the type of the source mouse
+	 * event that occurred in the AWT.
+	 *
+	 * @return the source mouse event that originates from the AWT.
+	 */
+	public java.awt.event.MouseEvent getSourceEvent() {
+		return source;
 	}
 }

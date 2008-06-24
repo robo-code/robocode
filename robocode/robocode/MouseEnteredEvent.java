@@ -8,15 +8,36 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode;
 
 
 /**
+ * A MouseEnteredEvent is sent to {@link Robot#onMouseEntered(java.awt.event.MouseEvent)
+ * Robot#onMouseEntered()} when the mouse has entered the battle view.
+ *
  * @author Pavel Savara (original)
+ *
+ * @see MouseClickedEvent
+ * @see MousePressedEvent
+ * @see MouseReleasedEvent
+ * @see MouseExitedEvent
+ * @see MouseMovedEvent
+ * @see MouseDraggedEvent
+ * @see MouseWheelMovedEvent
+ *
+ * @since 1.6.1
  */
 public final class MouseEnteredEvent extends MouseEvent {
-	public MouseEnteredEvent(java.awt.event.MouseEvent inner) {
-		super(inner);
+
+	/**
+	 * Called by the game to create a new MouseEnteredEvent.
+	 *
+     * @param source the source mouse event originating from the AWT.
+     */
+	public MouseEnteredEvent(java.awt.event.MouseEvent source) {
+		super(source);
 	}
 }

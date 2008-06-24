@@ -15,7 +15,7 @@ package robocode;
 
 
 /**
- * Super class of all event that originates from the keyboard.
+ * Super class of all events that originates from the keyboard.
  *
  * @author Pavel Savara (original)
  *
@@ -39,7 +39,7 @@ public abstract class KeyEvent extends Event {
 	 * This method is used by the game to determine the type of the source key
 	 * event that occurred in the AWT.
 	 *
-	 * @return the source key event from origination from the AWT.
+	 * @return the source key event that originates from the AWT.
 	 */
 	public java.awt.event.KeyEvent getSourceEvent() {
 		return source;
