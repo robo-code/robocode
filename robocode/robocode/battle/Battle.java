@@ -454,14 +454,6 @@ public class Battle implements Runnable {
 	}
 
 	public void cleanup() {
-        for (RobotPeer r : robots) {
-			// Clear all static field on the robot (at class level)
-			r.cleanupStaticFields();
-
-			// Clear the robot object by removing the reference to it
-			r.setRobot(null);
-			r.cleanup();
-		}
 
 		if (contestants != null) {
 			contestants.clear();
@@ -469,6 +461,14 @@ public class Battle implements Runnable {
 		}
 
 		if (robots != null) {
+            for (RobotPeer r : robots) {
+                // Clear all static field on the robot (at class level)
+                r.cleanupStaticFields();
+
+                // Clear the robot object by removing the reference to it
+                r.setRobot(null);
+                r.cleanup();
+            }
 			robots.clear();
 			robots = null;
 		}
