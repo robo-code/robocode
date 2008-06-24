@@ -453,7 +453,7 @@ public class Battle implements Runnable {
 		return contestants;
 	}
 
-	public void cleanup() {
+	public synchronized void cleanup() {
 
 		if (contestants != null) {
 			contestants.clear();
