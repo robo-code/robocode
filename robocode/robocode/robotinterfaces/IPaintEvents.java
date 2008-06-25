@@ -45,6 +45,8 @@ public interface IPaintEvents {
 	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
 	 *
+	 * @see java.awt.Graphics2D
+	 *
 	 * @param g the graphics context to use for painting graphical items for the
 	 *          robot
 	 * @since 1.1

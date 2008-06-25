@@ -15,8 +15,8 @@ package robocode;
 
 
 /**
- * A HitRobotEvent is sent to {@link Robot#onHitRobot(HitRobotEvent)
- * onHitRobot(HitRobotEvent)} when your robot collides with another robot.
+ * A HitRobotEvent is sent to {@link Robot#onHitRobot(HitRobotEvent) onHitRobot()}
+ * when your robot collides with another robot.
  * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)

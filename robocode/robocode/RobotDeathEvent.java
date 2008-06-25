@@ -15,8 +15,8 @@ package robocode;
 
 
 /**
- * This event is sent to {@link Robot#onRobotDeath(RobotDeathEvent)
- * onRobotDeath(RobotDeathEvent)} when another robot (not your robot) dies.
+ * This event is sent to {@link Robot#onRobotDeath(RobotDeathEvent) onRobotDeath()}
+ * when another robot (not your robot) dies.
  *
  * @author Mathew A. Nelson (original)
  */
@@ -44,6 +44,8 @@ public class RobotDeathEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getName()} instead.
+     *
+     * @return the name of the robot that died
 	 */
 	@Deprecated
 	public String getRobotName() {

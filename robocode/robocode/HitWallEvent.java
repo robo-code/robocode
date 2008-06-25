@@ -15,9 +15,9 @@ package robocode;
 
 
 /**
- * A HitWallEvent is sent to {@link Robot#onHitWall(HitWallEvent)
- * onHitWall(HitWallEvent)} when you collide a wall. You can use the information
- * contained in this event to determine what to do.
+ * A HitWallEvent is sent to {@link Robot#onHitWall(HitWallEvent) onHitWall()}
+ * when you collide a wall.
+ * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)
  */

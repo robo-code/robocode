@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A KeyReleasedEvent is sent to {@link Robot#onKeyReleased(java.awt.event.KeyEvent)
- * Robot#onKeyReleased()} when a key has been released on the keyboard.
+ * onKeyReleased()} when a key has been released on the keyboard.
  *
  * @author Pavel Savara (original)
  *

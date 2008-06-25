@@ -731,7 +731,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *
 	 * @return a vector containing all PaintEvents currently in the robot's
 	 *         queue
-	 * @see robocode.robotinterfaces.IPaintEvents#onPaint(Graphics2D)
+	 * @see robocode.robotinterfaces.IPaintEvents#onPaint(java.awt.Graphics2D)
 	 *      onPaint(Graphics2D)
 	 * @see PaintEvent
 	 * @see #getAllEvents()

@@ -32,7 +32,7 @@ import java.io.*;
 /**
  * RobocodeFileOutputStream is similar to a {@link java.io.FileOutputStream}
  * and is used for streaming/writing data out to a file, which you got
- * previously by calling {@link AdvancedRobot#getDataFile(String)}.
+ * previously by calling {@link AdvancedRobot#getDataFile(String) getDataFile()}.
  * <p/>
  * You should read {@link java.io.FileOutputStream} for documentation of this
  * class.

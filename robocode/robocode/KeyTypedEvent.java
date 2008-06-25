@@ -16,8 +16,7 @@ package robocode;
 
 /**
  * A KeyTypedEvent is sent to {@link Robot#onKeyTyped(java.awt.event.KeyEvent)
- * Robot#onKeyTyped()} when a key has been typed (pressed and released) on the
- * keyboard.
+ * onKeyTyped()} when a key has been typed (pressed and released) on the keyboard.
  *
  * @author Pavel Savara (original)
  *

@@ -15,8 +15,8 @@ package robocode;
 
 
 /**
- * This event is sent to {@link Robot#onWin(WinEvent) onWin(WinEvent)} when your
- * robot wins the round in a battle.
+ * This event is sent to {@link Robot#onWin(WinEvent) onWin()} when your robot
+ * wins the round in a battle.
  *
  * @author Mathew A. Nelson (original)
  */

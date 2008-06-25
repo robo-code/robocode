@@ -8,24 +8,32 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
+
 import robocode.BattleEndedEvent;
 
+
 /**
- * First extended version of IBasicEvents interface 
+ * First extended version of the {@link IBasicEvents} interface.
  *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6.1
  */
 public interface IBasicEvents2 extends IBasicEvents {
     /**
-     * This method is called after end of the battle. Even in case that battle is aborted.
+     * This method is called after end of the battle, even when the battle is aborted.
      * <p/>
-     * Your robot could save lesons learned.
+     * Your robot could save lessons learned.
      *
      * @param event the win event set by the game
+     * @see robocode.BattleEndedEvent
      * @see robocode.WinEvent
+     * @see robocode.DeathEvent
      * @see robocode.Event
      */
     void onBattleEnded(BattleEndedEvent event);

@@ -22,7 +22,7 @@ import java.io.IOException;
 /**
  * RobocodeFileWriter is similar to a {@link java.io.FileWriter} and is used for
  * writing data out to a file, which you got by calling {@link
- * AdvancedRobot#getDataFile(String)}.
+ * AdvancedRobot#getDataFile(String) getDataFile()}.
  * <p/>
  * You should read {@link java.io.FileWriter} for documentation of this class.
  * <p/>
@@ -41,7 +41,9 @@ public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 	 * See {@link java.io.FileWriter#FileWriter(File)} for documentation about
 	 * this constructor.
 	 *
-	 * @see java.io.FileWriter#FileWriter(File)
+     * @see java.io.FileWriter#FileWriter(File)
+	 * @param file the file to write to.
+     * @throws java.io.IOException if an I/O exception occurs.
 	 */
 	public RobocodeFileWriter(File file) throws IOException {
 		super(new RobocodeFileOutputStream(file));
@@ -52,7 +54,8 @@ public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 	 * See {@link java.io.FileWriter#FileWriter(FileDescriptor)} for
 	 * documentation about this constructor.
 	 *
-	 * @see java.io.FileWriter#FileWriter(FileDescriptor)
+     * @see java.io.FileWriter#FileWriter(FileDescriptor)
+	 * @param fd the file descriptor of the file to write to.
 	 */
 	public RobocodeFileWriter(FileDescriptor fd) {
 		super(new RobocodeFileOutputStream(fd));
@@ -63,7 +66,9 @@ public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 	 * See {@link java.io.FileWriter#FileWriter(String)} for documentation about
 	 * this constructor.
 	 *
-	 * @see java.io.FileWriter#FileWriter(String)
+     * @see java.io.FileWriter#FileWriter(String)
+     * @param fileName the filename of the file to write to.
+     * @throws java.io.IOException if an I/O exception occurs.
 	 */
 	public RobocodeFileWriter(String fileName) throws IOException {
 		super(new RobocodeFileOutputStream(fileName));
@@ -74,7 +79,10 @@ public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 	 * See {@link java.io.FileWriter#FileWriter(String, boolean)} for
 	 * documentation about this constructor.
 	 *
-	 * @see java.io.FileWriter#FileWriter(String, boolean)
+     * @see java.io.FileWriter#FileWriter(String, boolean)
+     * @param fileName the filename of the file to write to.
+     * @param append set this to true if the output must be appended to the file.
+     * @throws java.io.IOException if an I/O exception occurs.
 	 */
 	public RobocodeFileWriter(String fileName, boolean append) throws IOException {
 		super(new RobocodeFileOutputStream(fileName, append));

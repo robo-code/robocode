@@ -18,7 +18,7 @@ import java.awt.event.MouseWheelEvent;
 
 /**
  * A MouseWheelMovedEvent is sent to {@link Robot#onMouseWheelMoved(MouseWheelEvent)
- * Robot#onMouseWheelMoved()} when the mouse wheel is rotated inside the battle view.
+ * onMouseWheelMoved()} when the mouse wheel is rotated inside the battle view.
  *
  * @author Pavel Savara (original)
  *

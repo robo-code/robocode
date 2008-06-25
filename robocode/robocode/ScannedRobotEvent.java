@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot(ScannedRobotEvent)
- * onScannedRobot(ScannedRobotEvent)} when you scan a robot.
+ * onScannedRobot()} when you scan a robot.
  * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)
@@ -107,6 +107,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getEnergy()} instead.
+     * @return the energy of the robot
 	 */
 	@Deprecated
 	public double getLife() {
@@ -124,6 +125,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getBearing()} instead.
+     * @return the bearing to the robot you scanned, in degrees
 	 */
 	@Deprecated
 	public double getRobotBearing() {
@@ -132,6 +134,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getBearing()} instead.
+     * @return the robot bearing in degrees
 	 */
 	@Deprecated
 	public double getRobotBearingDegrees() {
@@ -140,6 +143,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getBearingRadians()} instead.
+     * @return the bearing to the robot you scanned, in radians
 	 */
 	@Deprecated
 	public double getRobotBearingRadians() {
@@ -148,6 +152,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getDistance()} instead.
+     * @return the distance to the robot.
 	 */
 	@Deprecated
 	public double getRobotDistance() {
@@ -156,6 +161,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getHeading()} instead.
+     * @return the heading of the robot, in degrees
 	 */
 	@Deprecated
 	public double getRobotHeading() {
@@ -164,6 +170,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getHeading()} instead.
+     * @return the heading of the robot, in degrees
 	 */
 	@Deprecated
 	public double getRobotHeadingDegrees() {
@@ -172,6 +179,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getHeadingRadians()} instead.
+     * @return the heading of the robot, in radians
 	 */
 	@Deprecated
 	public double getRobotHeadingRadians() {
@@ -180,6 +188,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getEnergy()} instead.
+     * @return the energy of the robot
 	 */
 	@Deprecated
 	public double getRobotLife() {
@@ -188,6 +197,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getName()} instead.
+     * @return the name of the robot
 	 */
 	@Deprecated
 	public String getRobotName() {
@@ -196,6 +206,7 @@ public class ScannedRobotEvent extends Event {
 
 	/**
 	 * @deprecated Use {@link #getVelocity()} instead.
+     * @return the velocity of the robot
 	 */
 	@Deprecated
 	public double getRobotVelocity() {

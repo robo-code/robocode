@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A HitByBulletEvent is sent to {@link Robot#onHitByBullet(HitByBulletEvent)
- * onHitByBullet(HitByBulletEvent)} when your robot has been hit by a bullet.
+ * onHitByBullet()} when your robot has been hit by a bullet.
  * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)

@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A MouseExitedEvent is sent to {@link Robot#onMouseExited(java.awt.event.MouseEvent)
- * Robot#onMouseExited()} when the mouse has exited the battle view.
+ * onMouseExited()} when the mouse has exited the battle view.
  *
  * @author Pavel Savara (original)
  *

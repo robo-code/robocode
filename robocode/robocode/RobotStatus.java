@@ -16,7 +16,8 @@ import robocode.peer.RobotPeer;
 
 
 /**
- * Contains the status of a robot for a specific time/turn.
+ * Contains the status of a robot for a specific time/turn returned by
+ * {@link StatusEvent#getStatus()}.
  *
  * @author Flemming N. Larsen (original)
  *

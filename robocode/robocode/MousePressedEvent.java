@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A MousePressedEvent is sent to {@link Robot#onMousePressed(java.awt.event.MouseEvent)
- * Robot#onMousePressed()} when the mouse is pressed inside the battle view.
+ * onMousePressed()} when the mouse is pressed inside the battle view.
  *
  * @author Pavel Savara (original)
  *

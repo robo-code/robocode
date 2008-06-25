@@ -14,8 +14,8 @@
 package robocode;
 
 /**
- * A BattleEndedEvent is sent to {@link Robot#onBattleEnded(BattleEndedEvent)}
- * when the battle is ended.
+ * A BattleEndedEvent is sent to {@link Robot#onBattleEnded(BattleEndedEvent)
+ * onBattleEnded()} when the battle is ended.
  * You can use the information contained in this event to determine if the
  * battle was aborted and also get the results of the battle.
  *

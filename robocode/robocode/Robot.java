@@ -1435,6 +1435,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
 	 * @see #onPaint(Graphics2D)
+     * @return a graphics context used for painting graphical items for the robot.
 	 * @since 1.6.1
 	 */
 	public Graphics2D getGraphics() {

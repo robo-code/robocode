@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A MouseReleasedEvent is sent to {@link Robot#onMouseReleased(java.awt.event.MouseEvent)
- * Robot#onMouseReleased()} when the mouse is released inside the battle view.
+ * onMouseReleased()} when the mouse is released inside the battle view.
  *
  * @author Pavel Savara (original)
  *

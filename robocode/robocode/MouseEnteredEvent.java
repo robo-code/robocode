@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A MouseEnteredEvent is sent to {@link Robot#onMouseEntered(java.awt.event.MouseEvent)
- * Robot#onMouseEntered()} when the mouse has entered the battle view.
+ * onMouseEntered()} when the mouse has entered the battle view.
  *
  * @author Pavel Savara (original)
  *

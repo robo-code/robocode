@@ -16,8 +16,8 @@ import java.awt.Graphics2D;
 
 
 /**
- * This event is sent to {@link Robot#onPaint(Graphics2D) onPaint(Graphics2D)}
- * when your robot should paint.
+ * This event is sent to {@link Robot#onPaint(Graphics2D) onPaint()} when your
+ * robot should paint.
  *
  * @author Flemming N. Larsen (original)
  */

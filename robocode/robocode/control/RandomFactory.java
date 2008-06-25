@@ -36,7 +36,7 @@ public class RandomFactory {
 	 * Returns the random number generator used for generating a stream of
 	 * random numbers.
 	 *
-	 * @see java.lang.Random
+	 * @see java.util.Random
 	 *
 	 * @return a {@link java.util.Random} instance.
 	 */
@@ -64,7 +64,7 @@ public class RandomFactory {
 	 * Sets the random number generator instance used for generating a
 	 * stream of random numbers.
 	 *
-	 * @see java.lang.Random
+	 * @see java.util.Random
 	 *
 	 * @param random a {@link java.util.Random} instance.
 	 */

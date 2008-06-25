@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A MouseDraggedEvent is sent to {@link Robot#onMouseDragged(java.awt.event.MouseEvent)
- * Robot#onMouseDragged()} when the mouse is dragged inside the battle view.
+ * onMouseDragged()} when the mouse is dragged inside the battle view.
  *
  * @author Pavel Savara (original)
  *
