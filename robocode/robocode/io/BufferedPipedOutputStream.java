@@ -103,6 +103,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 					Thread.currentThread().interrupt();
 
 					IOException ioException = new IOException("read interrupted");
+
 					ioException.initCause(e);
 					throw ioException;
 				}

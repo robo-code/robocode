@@ -19,7 +19,6 @@ package robocode;
  * onMouseReleased()} when the mouse is released inside the battle view.
  *
  * @author Pavel Savara (original)
- *
  * @see MouseClickedEvent
  * @see MousePressedEvent
  * @see MouseEnteredEvent
@@ -27,7 +26,6 @@ package robocode;
  * @see MouseMovedEvent
  * @see MouseDraggedEvent
  * @see MouseWheelMovedEvent
- *
  * @since 1.6.1
  */
 public final class MouseReleasedEvent extends MouseEvent {
@@ -35,8 +33,8 @@ public final class MouseReleasedEvent extends MouseEvent {
 	/**
 	 * Called by the game to create a new MouseReleasedEvent.
 	 *
-     * @param source the source mouse event originating from the AWT.
-     */
+	 * @param source the source mouse event originating from the AWT.
+	 */
 	public MouseReleasedEvent(java.awt.event.MouseEvent source) {
 		super(source);
 	}

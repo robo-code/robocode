@@ -18,6 +18,7 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 import robocode.BattleResults;
 
 
@@ -178,10 +179,10 @@ public class TeamStatistics implements ContestantStatistics {
 		return d;
 	}
 
-    public BattleResults getResults(int rank) {
-        return new BattleResults(teamPeer.getName(), rank,
-                getTotalScore(), getTotalSurvivalScore(), getTotalLastSurvivorBonus(),
-                getTotalBulletDamageScore(), getTotalBulletKillBonus(), getTotalRammingDamageScore(),
-                getTotalRammingKillBonus(), getTotalFirsts(), getTotalSeconds(), getTotalThirds());
-    }
+	public BattleResults getResults(int rank) {
+		return new BattleResults(teamPeer.getName(), rank, getTotalScore(), getTotalSurvivalScore(),
+				getTotalLastSurvivorBonus(), getTotalBulletDamageScore(), getTotalBulletKillBonus(),
+				getTotalRammingDamageScore(), getTotalRammingKillBonus(), getTotalFirsts(), getTotalSeconds(),
+				getTotalThirds());
+	}
 }

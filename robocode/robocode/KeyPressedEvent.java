@@ -19,10 +19,8 @@ package robocode;
  * onKeyPressed()} when a key has been pressed on the keyboard.
  *
  * @author Pavel Savara (original)
- *
  * @see KeyReleasedEvent
  * @see KeyTypedEvent
- *
  * @since 1.6.1
  */
 public final class KeyPressedEvent extends KeyEvent {
@@ -30,8 +28,8 @@ public final class KeyPressedEvent extends KeyEvent {
 	/**
 	 * Called by the game to create a new KeyPressedEvent.
 	 *
-     * @param source the source key event originating from the AWT.
-     */
+	 * @param source the source key event originating from the AWT.
+	 */
 	public KeyPressedEvent(java.awt.event.KeyEvent source) {
 		super(source);
 	}

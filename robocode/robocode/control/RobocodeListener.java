@@ -19,11 +19,10 @@ package robocode.control;
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
- *
  * @see RobocodeEngine#RobocodeEngine(RobocodeListener)
- * RobocodeEngine(RobocodeListener)
+ *      RobocodeEngine(RobocodeListener)
  * @see RobocodeEngine#RobocodeEngine(java.io.File, RobocodeListener)
- * RobocodeEngine(java.io.File, RobocodeListener)
+ *      RobocodeEngine(java.io.File, RobocodeListener)
  */
 public interface RobocodeListener {
 

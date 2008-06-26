@@ -66,7 +66,7 @@ public class BattleSpecification implements java.io.Serializable {
 		battleProperties.setBattlefieldWidth(battlefieldSize.getWidth());
 		battleProperties.setBattlefieldHeight(battlefieldSize.getHeight());
 		if (robots != null) {
-		    battleProperties.setSelectedRobots(robots);
+			battleProperties.setSelectedRobots(robots);
 		}
 
 		this.robots = robots;

@@ -11,8 +11,8 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public class TurnStartedEvent extends BattleEvent {
-}
+public class TurnStartedEvent extends BattleEvent {}

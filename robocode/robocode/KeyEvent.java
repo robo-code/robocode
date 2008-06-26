@@ -18,7 +18,6 @@ package robocode;
  * Super class of all events that originates from the keyboard.
  *
  * @author Pavel Savara (original)
- *
  * @since 1.6.1
  */
 public abstract class KeyEvent extends Event {
@@ -27,8 +26,8 @@ public abstract class KeyEvent extends Event {
 	/**
 	 * Called by the game to create a new KeyEvent.
 	 *
-     * @param source the source key event originating from the AWT.
-     */
+	 * @param source the source key event originating from the AWT.
+	 */
 	public KeyEvent(java.awt.event.KeyEvent source) {
 		this.source = source;
 	}

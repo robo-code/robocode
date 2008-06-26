@@ -19,7 +19,6 @@ package robocode;
  * onMouseEntered()} when the mouse has entered the battle view.
  *
  * @author Pavel Savara (original)
- *
  * @see MouseClickedEvent
  * @see MousePressedEvent
  * @see MouseReleasedEvent
@@ -27,7 +26,6 @@ package robocode;
  * @see MouseMovedEvent
  * @see MouseDraggedEvent
  * @see MouseWheelMovedEvent
- *
  * @since 1.6.1
  */
 public final class MouseEnteredEvent extends MouseEvent {
@@ -35,8 +33,8 @@ public final class MouseEnteredEvent extends MouseEvent {
 	/**
 	 * Called by the game to create a new MouseEnteredEvent.
 	 *
-     * @param source the source mouse event originating from the AWT.
-     */
+	 * @param source the source mouse event originating from the AWT.
+	 */
 	public MouseEnteredEvent(java.awt.event.MouseEvent source) {
 		super(source);
 	}

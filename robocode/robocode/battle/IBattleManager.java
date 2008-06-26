@@ -13,15 +13,14 @@ package robocode.battle;
 
 
 import robocode.Event;
-import robocode.control.BattleSpecification;
 import robocode.battle.events.IBattleListener;
+import robocode.control.BattleSpecification;
 
 
 /**
  * Used for controlling a robot from the e.g. the UI or RobocodeEngine.
  *
  * @author Flemming N. Larsen
- *
  * @since 1.6.1
  */
 public interface IBattleManager {
@@ -54,31 +53,49 @@ public interface IBattleManager {
 	 */
 	void sendInteractiveEvent(Event event);
 
-    boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver);
-    boolean startNewBattle(BattleSpecification spec, boolean waitTillOver);
-    void nextTurn();
-    void pauseBattle();
-    void resumeBattle();
-    void togglePauseResumeBattle();
-    void resumeIfPausedBattle();
-    void pauseIfResumedBattle();
-    void restart();
-    void replay();
-    void stop(boolean waitTillEnd);
+	boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver);
 
-    void addListener(IBattleListener listener) ;
-    void removeListener(IBattleListener listener);
+	boolean startNewBattle(BattleSpecification spec, boolean waitTillOver);
 
+	void nextTurn();
 
-    boolean hasReplayRecord();
-    boolean isManagedTPS();
-    void setManagedTPS(boolean value);
+	void pauseBattle();
 
-    String getBattlePath();
-    String getBattleFilename();
-    void setBattleFilename(String newBattleFilename);
-    BattleProperties loadBattleProperties();
-    void saveBattleProperties();
-    BattleProperties getBattleProperties();
-    void setDefaultBattleProperties();
+	void resumeBattle();
+
+	void togglePauseResumeBattle();
+
+	void resumeIfPausedBattle();
+
+	void pauseIfResumedBattle();
+
+	void restart();
+
+	void replay();
+
+	void stop(boolean waitTillEnd);
+
+	void addListener(IBattleListener listener);
+
+	void removeListener(IBattleListener listener);
+
+	boolean hasReplayRecord();
+
+	boolean isManagedTPS();
+
+	void setManagedTPS(boolean value);
+
+	String getBattlePath();
+
+	String getBattleFilename();
+
+	void setBattleFilename(String newBattleFilename);
+
+	BattleProperties loadBattleProperties();
+
+	void saveBattleProperties();
+
+	BattleProperties getBattleProperties();
+
+	void setDefaultBattleProperties();
 }

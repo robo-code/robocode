@@ -13,6 +13,7 @@
  *******************************************************************************/
 package robocode;
 
+
 import java.awt.event.MouseWheelEvent;
 
 
@@ -21,7 +22,6 @@ import java.awt.event.MouseWheelEvent;
  * onMouseWheelMoved()} when the mouse wheel is rotated inside the battle view.
  *
  * @author Pavel Savara (original)
- *
  * @see MouseClickedEvent
  * @see MousePressedEvent
  * @see MouseReleasedEvent
@@ -29,7 +29,6 @@ import java.awt.event.MouseWheelEvent;
  * @see MouseExitedEvent
  * @see MouseMovedEvent
  * @see MouseDraggedEvent
- *
  * @since 1.6.1
  */
 public final class MouseWheelMovedEvent extends MouseEvent {
@@ -37,8 +36,8 @@ public final class MouseWheelMovedEvent extends MouseEvent {
 	/**
 	 * Called by the game to create a new MouseWheelMovedEvent.
 	 *
-     * @param source the source mouse event originating from the AWT.
-     */
+	 * @param source the source mouse event originating from the AWT.
+	 */
 	public MouseWheelMovedEvent(java.awt.event.MouseEvent source) {
 		super(source);
 	}

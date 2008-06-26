@@ -33,15 +33,15 @@
 package robocode.control;
 
 
+import robocode.BattleResults;
+import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.BattleCompletedEvent;
+import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.events.BattleMessageEvent;
 import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.BattleMessageEvent;
-import robocode.BattleResults;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,10 +69,10 @@ import java.util.List;
 public class RobocodeEngine {
 
 	RobocodeManager manager;
-    private BattleObserver battleObserver;
-    private BattleSpecification battleSpecification;
+	private BattleObserver battleObserver;
+	private BattleSpecification battleSpecification;
 
-    /**
+	/**
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
@@ -119,7 +119,7 @@ public class RobocodeEngine {
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {
-        manager = new RobocodeManager(true);
+		manager = new RobocodeManager(true);
 		manager.setEnableGUI(false);
 
 		try {
@@ -130,12 +130,12 @@ public class RobocodeEngine {
 		}
 
 		manager.initSecurity(true, false);
-        if (listener!=null){
-            battleObserver = new BattleObserver();
-            battleObserver.listener=listener;
-            manager.getBattleManager().addListener(battleObserver);
-        }
-    }
+		if (listener != null) {
+			battleObserver = new BattleObserver();
+			battleObserver.listener = listener;
+			manager.getBattleManager().addListener(battleObserver);
+		}
+	}
 
 	/**
 	 * Closes the RobocodeEngine and releases any allocated resources.
@@ -146,10 +146,10 @@ public class RobocodeEngine {
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().dispose();
 		}
-        if (battleObserver!=null){
-            manager.getBattleManager().removeListener(battleObserver);
-        }
-        if (manager != null) {
+		if (battleObserver != null) {
+			manager.getBattleManager().removeListener(battleObserver);
+		}
+		if (manager != null) {
 			manager.cleanup();
 			manager = null;
 		}
@@ -209,15 +209,15 @@ public class RobocodeEngine {
 	 * Runs the specified battle.
 	 *
 	 * @param battleSpecification the specification of the battle to play including the
-	 *               participation robots.
+	 *                            participation robots.
 	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
 	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification
 	 * @see #getLocalRepository()
 	 */
 	public void runBattle(BattleSpecification battleSpecification) {
-        this.battleSpecification=battleSpecification;
-        manager.getBattleManager().startNewBattle(battleSpecification, false);
+		this.battleSpecification = battleSpecification;
+		manager.getBattleManager().startNewBattle(battleSpecification, false);
 	}
 
 	/**
@@ -230,34 +230,35 @@ public class RobocodeEngine {
 		manager.getBattleManager().stop(true);
 	}
 
-    /**
-     * Registede only if listener in not null
-     */
-    private class BattleObserver extends BattleAdaptor {
-        private RobocodeListener listener;
+	/**
+	 * Registede only if listener in not null
+	 */
+	private class BattleObserver extends BattleAdaptor {
+		private RobocodeListener listener;
 
-        @Override
-        public void onBattleEnded(BattleEndedEvent event) {
-            if (event.isAborted()) {
-                listener.battleAborted(battleSpecification);
-            }
-        }
+		@Override
+		public void onBattleEnded(BattleEndedEvent event) {
+			if (event.isAborted()) {
+				listener.battleAborted(battleSpecification);
+			}
+		}
 
-        @Override
-        public void onBattleCompleted(BattleCompletedEvent event) {
-            // assumption there is that RobocodeEngine is unable to start team battles
-            final BattleResults[] results = event.getResults();
-            RobotResults[] robotResults = new RobotResults[results.length];
-            RobotSpecification[] robots = battleSpecification.getRobots();
-            for(int index=0;index< results.length;index++){
-                robotResults[index]=new RobotResults(robots[index], results[index]);
-            }
-            listener.battleComplete(battleSpecification, robotResults);
-        }
+		@Override
+		public void onBattleCompleted(BattleCompletedEvent event) {
+			// assumption there is that RobocodeEngine is unable to start team battles
+			final BattleResults[] results = event.getResults();
+			RobotResults[] robotResults = new RobotResults[results.length];
+			RobotSpecification[] robots = battleSpecification.getRobots();
 
-        @Override
-        public void onBattleMessage(BattleMessageEvent event) {
-            listener.battleMessage(event.getMessage());
-        }
-    }
+			for (int index = 0; index < results.length; index++) {
+				robotResults[index] = new RobotResults(robots[index], results[index]);
+			}
+			listener.battleComplete(battleSpecification, robotResults);
+		}
+
+		@Override
+		public void onBattleMessage(BattleMessageEvent event) {
+			listener.battleMessage(event.getMessage());
+		}
+	}
 }

@@ -49,14 +49,14 @@ public class RobotSnapshot implements Serializable {
 	// The name of the robot
 	private final String name;
 
-    // The short name of the robot
-    private final String shortName;
+	// The short name of the robot
+	private final String shortName;
 
 	// The very short name of the robot
 	private final String veryShortName;
 
-    // The very short name of the team leader robot (might be null)
-    private final String teamName;
+	// The very short name of the team leader robot (might be null)
+	private final String teamName;
 
 	// The robot state
 	private final RobotState state;
@@ -64,8 +64,8 @@ public class RobotSnapshot implements Serializable {
 	// The energy level
 	private final double energy;
 
-    // The energy level
-    private final double velocity;
+	// The energy level
+	private final double velocity;
 
 	// The body heading in radians
 	private final double bodyHeading;
@@ -108,24 +108,24 @@ public class RobotSnapshot implements Serializable {
 	// The output print stream proxy
 	private final String outputStreamSnapshot;
 
-    // Snapshot of score for robot
-    private final ScoreSnapshot robotScoreSnapshot;
+	// Snapshot of score for robot
+	private final ScoreSnapshot robotScoreSnapshot;
 
-    /**
+	/**
 	 * Constructs a snapshot of the robot.
 	 *
 	 * @param peer the robot peer to make a snapshot of.
 	 */
 	public RobotSnapshot(RobotPeer peer) {
 		name = peer.getName();
-        shortName = peer.getShortName();
+		shortName = peer.getShortName();
 		veryShortName = peer.getVeryShortName();
-        teamName = peer.getTeamName();
+		teamName = peer.getTeamName();
 
-        state = peer.getState();
+		state = peer.getState();
 
 		energy = peer.getEnergy();
-        velocity = peer.getVelocity();
+		velocity = peer.getVelocity();
 
 		bodyHeading = peer.getBodyHeading();
 		gunHeading = peer.getGunHeading();
@@ -153,26 +153,26 @@ public class RobotSnapshot implements Serializable {
 
 		outputStreamSnapshot = peer.getOut().readAndReset();
 
-        robotScoreSnapshot = new ScoreSnapshot(peer.getRobotStatistics(), peer.getName());
-    }
+		robotScoreSnapshot = new ScoreSnapshot(peer.getRobotStatistics(), peer.getName());
+	}
 
-    /**
+	/**
 	 * Returns the name of the robot.
 	 *
 	 * @return the name of the robot.
 	 */
 	public String getName() {
-	    return name;
+		return name;
 	}
 
-    /**
-     * Returns the very short name of this robot.
-     *
-     * @return the very short name of this robot.
-     */
-    public String getShortName() {
-        return shortName;
-    }
+	/**
+	 * Returns the very short name of this robot.
+	 *
+	 * @return the very short name of this robot.
+	 */
+	public String getShortName() {
+		return shortName;
+	}
 
 	/**
 	 * Returns the very short name of this robot.
@@ -183,14 +183,14 @@ public class RobotSnapshot implements Serializable {
 		return veryShortName;
 	}
 
-    /**
-     * Returns the name of the team or name of the robot if the robot is not a part of a team.
-     *
-     * @return the name of the team or name of the robot if the robot is not a part of a team.
-     */
-    public String getTeamName() {
-        return teamName;
-    }
+	/**
+	 * Returns the name of the team or name of the robot if the robot is not a part of a team.
+	 *
+	 * @return the name of the team or name of the robot if the robot is not a part of a team.
+	 */
+	public String getTeamName() {
+		return teamName;
+	}
 
 	/**
 	 * Returns the robot status.
@@ -210,14 +210,14 @@ public class RobotSnapshot implements Serializable {
 		return energy;
 	}
 
-    /**
-     * Returns the velocity.
-     *
-     * @return the velocity.
-     */
-    public double getVelocity() {
-        return velocity;
-    }
+	/**
+	 * Returns the velocity.
+	 *
+	 * @return the velocity.
+	 */
+	public double getVelocity() {
+		return velocity;
+	}
 
 	/**
 	 * Returns the body heading in radians.
@@ -377,14 +377,14 @@ public class RobotSnapshot implements Serializable {
 		return outputStreamSnapshot;
 	}
 
-    /**
-     * Returns snapshot of score for robot
-     *
-     * @return snapshot of score for robot
-     */
-    public ScoreSnapshot getRobotScoreSnapshot() {
-        return robotScoreSnapshot;
-    }
+	/**
+	 * Returns snapshot of score for robot
+	 *
+	 * @return snapshot of score for robot
+	 */
+	public ScoreSnapshot getRobotScoreSnapshot() {
+		return robotScoreSnapshot;
+	}
 
 	/**
 	 * The purpose of this class it to serialize the Arc2D.Double class,

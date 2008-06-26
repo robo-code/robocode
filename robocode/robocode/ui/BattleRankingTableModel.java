@@ -25,9 +25,9 @@
 package robocode.ui;
 
 
-import robocode.text.StringUtil;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.ScoreSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
+import robocode.text.StringUtil;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
@@ -44,23 +44,22 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
-    List<ScoreSnapshot> scoreSnapshotList;
+	List<ScoreSnapshot> scoreSnapshotList;
 
+	public void updateSource(TurnSnapshot snapshot) {
+		if (snapshot != null) {
+			scoreSnapshotList = snapshot.getTeamScores();
+		} else {
+			scoreSnapshotList = null;
+		}
+	}
 
-    public void updateSource(TurnSnapshot snapshot) {
-        if (snapshot!=null){
-            scoreSnapshotList = snapshot.getTeamScores();
-        }else{
-            scoreSnapshotList = null;
-        }
-    }
-
-    public int getColumnCount() {
+	public int getColumnCount() {
 		return 12;
 	}
 
 	public int getRowCount() {
-		return scoreSnapshotList==null ? 0 : scoreSnapshotList.size();
+		return scoreSnapshotList == null ? 0 : scoreSnapshotList.size();
 	}
 
 	@Override
@@ -109,9 +108,9 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 	public Object getValueAt(int row, int col) {
 
-        final ScoreSnapshot statistics = scoreSnapshotList.get(row);
+		final ScoreSnapshot statistics = scoreSnapshotList.get(row);
 
-        switch (col) {
+		switch (col) {
 		case 0:
 			return StringUtil.getPlacementString(row + 1);
 
@@ -120,14 +119,16 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 		case 2: {
 			final double current = statistics.getCurrentScore();
-            final double total = statistics.getTotalScore();
-            return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
+			final double total = statistics.getTotalScore();
+
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 3: {
 			final double current = statistics.getCurrentSurvivalScore();
-            final double total = statistics.getTotalSurvivalScore();
-            return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
+			final double total = statistics.getTotalSurvivalScore();
+
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 4:
@@ -135,28 +136,30 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 		case 5: {
 			final double current = statistics.getCurrentBulletDamageScore();
-            final double total = statistics.getTotalBulletDamageScore();
+			final double total = statistics.getTotalBulletDamageScore();
 
-            return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 6: {
-			final double current =statistics.getCurrentBulletKillBonus();
-            final double total = statistics.getTotalBulletKillBonus();
-            return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
+			final double current = statistics.getCurrentBulletKillBonus();
+			final double total = statistics.getTotalBulletKillBonus();
+
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 7: {
 			final double current = statistics.getCurrentRammingDamageScore();
-            final double total = statistics.getTotalRammingDamageScore();
-            return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
+			final double total = statistics.getTotalRammingDamageScore();
+
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 8: {
 			final double current = statistics.getCurrentRammingKillBonus();
-            final double total = statistics.getTotalRammingKillBonus();
+			final double total = statistics.getTotalRammingKillBonus();
 
-            return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 9:

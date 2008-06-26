@@ -21,7 +21,6 @@ import java.awt.*;
  *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (javadoc)
- *
  * @see robocode.robotinterfaces.IPaintRobot
  * @since 1.6
  */
@@ -45,10 +44,9 @@ public interface IPaintEvents {
 	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
 	 *
-	 * @see java.awt.Graphics2D
-	 *
 	 * @param g the graphics context to use for painting graphical items for the
 	 *          robot
+	 * @see java.awt.Graphics2D
 	 * @since 1.1
 	 */
 	void onPaint(Graphics2D g);

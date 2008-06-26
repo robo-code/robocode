@@ -18,7 +18,6 @@ package robocode;
  * Super class of all events that originates from the mouse.
  *
  * @author Pavel Savara (original)
- *
  * @since 1.6.1
  */
 public abstract class MouseEvent extends Event {
@@ -27,8 +26,8 @@ public abstract class MouseEvent extends Event {
 	/**
 	 * Called by the game to create a new MouseEvent.
 	 *
-     * @param source the source mouse event originating from the AWT.
-     */
+	 * @param source the source mouse event originating from the AWT.
+	 */
 	public MouseEvent(java.awt.event.MouseEvent source) {
 		this.source = source;
 	}

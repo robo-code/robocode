@@ -74,8 +74,8 @@ public class RobotDescriptionPanel extends JPanel {
 	private JLabel getFilePathLabel() {
 		if (filePathLabel == null) {
 			filePathLabel = new JLabel();
-            filePathLabel.setText(" ");
-        }
+			filePathLabel.setText(" ");
+		}
 		return filePathLabel;
 	}
 
@@ -125,8 +125,8 @@ public class RobotDescriptionPanel extends JPanel {
 		if (robotNameLabel == null) {
 			robotNameLabel = new JLabel();
 			robotNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            robotNameLabel.setText(" ");
-        }
+			robotNameLabel.setText(" ");
+		}
 		return robotNameLabel;
 	}
 

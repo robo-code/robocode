@@ -11,26 +11,28 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 import robocode.BattleResults;
 import robocode.battle.BattleProperties;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class BattleCompletedEvent extends BattleEvent {
-    private final BattleProperties battleProperties;
-    private final BattleResults[] results;
+	private final BattleProperties battleProperties;
+	private final BattleResults[] results;
 
-    public BattleCompletedEvent(BattleProperties battleProperties, BattleResults[] results) {
-        this.battleProperties = battleProperties;
-        this.results = results;
-    }
+	public BattleCompletedEvent(BattleProperties battleProperties, BattleResults[] results) {
+		this.battleProperties = battleProperties;
+		this.results = results;
+	}
 
-    public BattleProperties getBattleProperties() {
-        return battleProperties;
-    }
+	public BattleProperties getBattleProperties() {
+		return battleProperties;
+	}
 
-    public BattleResults[] getResults() {
-        return results;
-    }
+	public BattleResults[] getResults() {
+		return results;
+	}
 }

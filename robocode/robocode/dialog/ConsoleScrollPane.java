@@ -78,25 +78,25 @@ public class ConsoleScrollPane extends JScrollPane {
 	}
 
 	public void processStream(InputStream input) {
-        BufferedReader in = new BufferedReader(new InputStreamReader(input));
-        String line;
+		BufferedReader in = new BufferedReader(new InputStreamReader(input));
+		String line;
 
-        try {
-            line = in.readLine();
-            while (line != null) {
-                int tabIndex = line.indexOf("\t");
+		try {
+			line = in.readLine();
+			while (line != null) {
+				int tabIndex = line.indexOf("\t");
 
-                while (tabIndex >= 0) {
-                    line = line.substring(0, tabIndex) + "    " + line.substring(tabIndex + 1);
-                    tabIndex = line.indexOf("\t");
-                }
-                append(line + "\n");
-                line = in.readLine();
-            }
-        } catch (IOException e) {
-            append("IOException: " + e);
-        }
-        scrollToBottom();
+				while (tabIndex >= 0) {
+					line = line.substring(0, tabIndex) + "    " + line.substring(tabIndex + 1);
+					tabIndex = line.indexOf("\t");
+				}
+				append(line + "\n");
+				line = in.readLine();
+			}
+		} catch (IOException e) {
+			append("IOException: " + e);
+		}
+		scrollToBottom();
 	}
 
 	private Runnable scroller = new Runnable() {

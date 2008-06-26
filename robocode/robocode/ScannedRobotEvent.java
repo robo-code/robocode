@@ -106,8 +106,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the energy of the robot
 	 * @deprecated Use {@link #getEnergy()} instead.
-     * @return the energy of the robot
 	 */
 	@Deprecated
 	public double getLife() {
@@ -124,8 +124,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the bearing to the robot you scanned, in degrees
 	 * @deprecated Use {@link #getBearing()} instead.
-     * @return the bearing to the robot you scanned, in degrees
 	 */
 	@Deprecated
 	public double getRobotBearing() {
@@ -133,8 +133,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the robot bearing in degrees
 	 * @deprecated Use {@link #getBearing()} instead.
-     * @return the robot bearing in degrees
 	 */
 	@Deprecated
 	public double getRobotBearingDegrees() {
@@ -142,8 +142,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the bearing to the robot you scanned, in radians
 	 * @deprecated Use {@link #getBearingRadians()} instead.
-     * @return the bearing to the robot you scanned, in radians
 	 */
 	@Deprecated
 	public double getRobotBearingRadians() {
@@ -151,8 +151,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the distance to the robot.
 	 * @deprecated Use {@link #getDistance()} instead.
-     * @return the distance to the robot.
 	 */
 	@Deprecated
 	public double getRobotDistance() {
@@ -160,8 +160,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the heading of the robot, in degrees
 	 * @deprecated Use {@link #getHeading()} instead.
-     * @return the heading of the robot, in degrees
 	 */
 	@Deprecated
 	public double getRobotHeading() {
@@ -169,8 +169,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the heading of the robot, in degrees
 	 * @deprecated Use {@link #getHeading()} instead.
-     * @return the heading of the robot, in degrees
 	 */
 	@Deprecated
 	public double getRobotHeadingDegrees() {
@@ -178,8 +178,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the heading of the robot, in radians
 	 * @deprecated Use {@link #getHeadingRadians()} instead.
-     * @return the heading of the robot, in radians
 	 */
 	@Deprecated
 	public double getRobotHeadingRadians() {
@@ -187,8 +187,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the energy of the robot
 	 * @deprecated Use {@link #getEnergy()} instead.
-     * @return the energy of the robot
 	 */
 	@Deprecated
 	public double getRobotLife() {
@@ -196,8 +196,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the name of the robot
 	 * @deprecated Use {@link #getName()} instead.
-     * @return the name of the robot
 	 */
 	@Deprecated
 	public String getRobotName() {
@@ -205,8 +205,8 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the velocity of the robot
 	 * @deprecated Use {@link #getVelocity()} instead.
-     * @return the velocity of the robot
 	 */
 	@Deprecated
 	public double getRobotVelocity() {
@@ -222,21 +222,22 @@ public class ScannedRobotEvent extends Event {
 		return velocity;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(Event event) {
-        final int res = super.compareTo(event);
-        if (res!=0){
-            return res;
-        }
-        // Compare the distance, if the events are ScannedRobotEvents
-        // The shorter distance to the robot, the higher priority
-        if (event instanceof ScannedRobotEvent) {
-            return (int) (this.getDistance() - ((ScannedRobotEvent) event).getDistance());
-        }
-        // No difference found
-        return 0;
-    }    
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(Event event) {
+		final int res = super.compareTo(event);
+
+		if (res != 0) {
+			return res;
+		}
+		// Compare the distance, if the events are ScannedRobotEvents
+		// The shorter distance to the robot, the higher priority
+		if (event instanceof ScannedRobotEvent) {
+			return (int) (this.getDistance() - ((ScannedRobotEvent) event).getDistance());
+		}
+		// No difference found
+		return 0;
+	}    
 }

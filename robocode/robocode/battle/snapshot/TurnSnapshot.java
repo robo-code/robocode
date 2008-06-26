@@ -16,7 +16,10 @@ import robocode.battle.Battle;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.List;
 
 
 /**
@@ -61,8 +64,8 @@ public class TurnSnapshot implements java.io.Serializable {
 	// Current turn
 	private final int turn;
 
-    // Current round
-    private final int round;
+	// Current round
+	private final int round;
 
 	/**
 	 * Constructs a snapshot of the battle.
@@ -86,7 +89,7 @@ public class TurnSnapshot implements java.io.Serializable {
 
 		tps = battle.getTPS();
 		turn = battle.getCurrentTime();
-        round = battle.getRoundNum();
+		round = battle.getRoundNum();
 	}
 
 	/**
@@ -134,14 +137,14 @@ public class TurnSnapshot implements java.io.Serializable {
 		return tps;
 	}
 
-    /**
-     * Returns the current turn.
-     *
-     * @return the current turn.
-     */
-    public int getRound() {
-        return round;
-    }
+	/**
+	 * Returns the current turn.
+	 *
+	 * @return the current turn.
+	 */
+	public int getRound() {
+		return round;
+	}
 
 	/**
 	 * Returns the current turn.
@@ -152,28 +155,31 @@ public class TurnSnapshot implements java.io.Serializable {
 		return turn;
 	}
 
-    /**
-     * @return scores grouped by teams, ordered by position
-     */
-    public List<ScoreSnapshot> getTeamScores() {
-        //team scores are computed on demand from team scores to not duplicate data in the snapshot
-        
-        Hashtable<String,ScoreSnapshot> teams= new Hashtable<String,ScoreSnapshot>();
-        for(RobotSnapshot robot : robots){
-            final String name = robot.getTeamName();
-            if (!teams.containsKey(name)){
-                teams.put(name, robot.getRobotScoreSnapshot());
-            }
-            else{
-                final ScoreSnapshot sum = new ScoreSnapshot(teams.get(name), robot.getRobotScoreSnapshot(), name);
-                teams.put(name, sum);
-            }
-        }
+	/**
+	 * @return scores grouped by teams, ordered by position
+	 */
+	public List<ScoreSnapshot> getTeamScores() {
+		// team scores are computed on demand from team scores to not duplicate data in the snapshot
 
-        List<ScoreSnapshot> res=new ArrayList<ScoreSnapshot>(teams.values());
-        Collections.sort(res);
-        Collections.reverse(res);
+		Hashtable<String, ScoreSnapshot> teams = new Hashtable<String, ScoreSnapshot>();
 
-        return res;
-    }
+		for (RobotSnapshot robot : robots) {
+			final String name = robot.getTeamName();
+
+			if (!teams.containsKey(name)) {
+				teams.put(name, robot.getRobotScoreSnapshot());
+			} else {
+				final ScoreSnapshot sum = new ScoreSnapshot(teams.get(name), robot.getRobotScoreSnapshot(), name);
+
+				teams.put(name, sum);
+			}
+		}
+
+		List<ScoreSnapshot> res = new ArrayList<ScoreSnapshot>(teams.values());
+
+		Collections.sort(res);
+		Collections.reverse(res);
+
+		return res;
+	}
 }

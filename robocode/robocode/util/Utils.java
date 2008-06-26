@@ -38,9 +38,9 @@ public class Utils {
 	private final static double TWO_PI = 2 * PI;
 	private final static double THREE_PI_OVER_TWO = 3 * PI / 2;
 	private final static double PI_OVER_TWO = PI / 2;
-    public static final double NEAR_DELTA = .00001;
+	public static final double NEAR_DELTA = .00001;
 
-    // Hide the default constructor as this class only provides static method
+	// Hide the default constructor as this class only provides static method
 	private Utils() {}
 
 	/**
@@ -122,7 +122,8 @@ public class Utils {
 	}
 
 	/**
-	 * Returns random number generator. It might be configured for repeatable behavior by seting -DRANDOMSEED option 
+	 * Returns random number generator. It might be configured for repeatable behavior by seting -DRANDOMSEED option
+	 *
 	 * @return random number generator
 	 */
 	public static Random getRandom() {

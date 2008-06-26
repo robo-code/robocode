@@ -16,17 +16,16 @@ package robocode.control;
 
 import static robocode.io.Logger.logError;
 
-import java.util.Random;
 import java.lang.reflect.Field;
+import java.util.Random;
 
 
 /**
  * The RandomFactory is used for controlling the generation of random numbers,
  * and supports generating random numbers that are deterministic, which is
- * useful for testing purposes. 
+ * useful for testing purposes.
  *
  * @author Pavel Savara (original)
- *
  * @since 1.6.1
  */
 public class RandomFactory {
@@ -36,9 +35,8 @@ public class RandomFactory {
 	 * Returns the random number generator used for generating a stream of
 	 * random numbers.
 	 *
-	 * @see java.util.Random
-	 *
 	 * @return a {@link java.util.Random} instance.
+	 * @see java.util.Random
 	 */
 	public static Random getRandom() {
 		if (randomNumberGenerator == null) {
@@ -64,9 +62,8 @@ public class RandomFactory {
 	 * Sets the random number generator instance used for generating a
 	 * stream of random numbers.
 	 *
-	 * @see java.util.Random
-	 *
 	 * @param random a {@link java.util.Random} instance.
+	 * @see java.util.Random
 	 */
 	public static void setRandom(Random random) {
 		randomNumberGenerator = random;
@@ -82,7 +79,7 @@ public class RandomFactory {
 		} catch (IllegalAccessException e) {
 			logError(e);
 		}
-        
+
 		// TODO ZAMO using Robot classloader inject seed also for all instances being created by robots
 	}
 

@@ -668,8 +668,9 @@ public interface IBasicRobotPeer {
 	 * paint items fits for the Robocode coordinate system where (0, 0) is at
 	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
+	 *
+	 * @return a graphics context used for painting graphical items for the robot.
 	 * @see robocode.robotinterfaces.IPaintEvents#onPaint(Graphics2D)
-     * @return a graphics context used for painting graphical items for the robot.
 	 * @since 1.6.1
 	 */
 	Graphics2D getGraphics();

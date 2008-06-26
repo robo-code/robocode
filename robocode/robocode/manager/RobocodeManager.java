@@ -26,16 +26,16 @@
 package robocode.manager;
 
 
+import robocode.RobocodeFileOutputStream;
+import robocode.battle.IBattleManager;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
-import robocode.sound.SoundManager;
-import robocode.security.SecurePrintStream;
-import robocode.security.SecureInputStream;
-import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.RobocodeSecurityManager;
-import robocode.RobocodeFileOutputStream;
-import robocode.battle.IBattleManager;
+import robocode.security.RobocodeSecurityPolicy;
+import robocode.security.SecureInputStream;
+import robocode.security.SecurePrintStream;
+import robocode.sound.SoundManager;
 
 import java.io.*;
 import java.security.Policy;

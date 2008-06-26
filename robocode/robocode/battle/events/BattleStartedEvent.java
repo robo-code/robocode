@@ -11,32 +11,34 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 import robocode.battle.BattleProperties;
 import robocode.battle.snapshot.TurnSnapshot;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class BattleStartedEvent extends BattleEvent {
-    private final TurnSnapshot start;
-    private final BattleProperties battleProperties;
-    private final boolean isReplay;
+	private final TurnSnapshot start;
+	private final BattleProperties battleProperties;
+	private final boolean isReplay;
 
-    public BattleStartedEvent(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
-        this.start = start;
-        this.battleProperties = battleProperties;
-        this.isReplay = isReplay;
-    }
+	public BattleStartedEvent(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
+		this.start = start;
+		this.battleProperties = battleProperties;
+		this.isReplay = isReplay;
+	}
 
-    public TurnSnapshot getTurnSnapshot() {
-        return start;
-    }
+	public TurnSnapshot getTurnSnapshot() {
+		return start;
+	}
 
-    public BattleProperties getBattleProperties() {
-        return battleProperties;
-    }
+	public BattleProperties getBattleProperties() {
+		return battleProperties;
+	}
 
-    public boolean isReplay() {
-        return isReplay;
-    }
+	public boolean isReplay() {
+		return isReplay;
+	}
 }

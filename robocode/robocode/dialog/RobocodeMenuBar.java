@@ -27,10 +27,10 @@
 package robocode.dialog;
 
 
+import robocode.battle.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
-import robocode.battle.IBattleManager;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;

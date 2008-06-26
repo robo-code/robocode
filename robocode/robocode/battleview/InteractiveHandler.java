@@ -15,14 +15,14 @@
 package robocode.battleview;
 
 
+import robocode.*;
 import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
-import robocode.*;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import static java.lang.Math.min;
 
 
@@ -100,8 +100,8 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	}
 
 	private void handleInteractiveEvent(robocode.Event event) {
-        manager.getBattleManager().sendInteractiveEvent(event);
-    }
+		manager.getBattleManager().sendInteractiveEvent(event);
+	}
 
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 

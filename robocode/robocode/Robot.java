@@ -732,10 +732,10 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 */
 	public void onWin(WinEvent event) {}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void onBattleEnded(BattleEndedEvent event) { }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onBattleEnded(BattleEndedEvent event) {}
 
 	/**
 	 * Scans for other robots. This method is called automatically by the game,
@@ -1434,8 +1434,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * paint items fits for the Robocode coordinate system where (0, 0) is at
 	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
+	 *
+	 * @return a graphics context used for painting graphical items for the robot.
 	 * @see #onPaint(Graphics2D)
-     * @return a graphics context used for painting graphical items for the robot.
 	 * @since 1.6.1
 	 */
 	public Graphics2D getGraphics() {
@@ -1504,7 +1505,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseWheelMoved(MouseWheelEvent e) {} 
+	public void onMouseWheelMoved(MouseWheelEvent e) {}
 
 	/**
 	 * {@inheritDoc}

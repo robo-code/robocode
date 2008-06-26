@@ -43,9 +43,8 @@ public class RobotDeathEvent extends Event {
 	}
 
 	/**
+	 * @return the name of the robot that died
 	 * @deprecated Use {@link #getName()} instead.
-     *
-     * @return the name of the robot that died
 	 */
 	@Deprecated
 	public String getRobotName() {

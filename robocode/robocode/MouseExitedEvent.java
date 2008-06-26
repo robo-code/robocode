@@ -19,7 +19,6 @@ package robocode;
  * onMouseExited()} when the mouse has exited the battle view.
  *
  * @author Pavel Savara (original)
- *
  * @see MouseClickedEvent
  * @see MousePressedEvent
  * @see MouseReleasedEvent
@@ -27,7 +26,6 @@ package robocode;
  * @see MouseMovedEvent
  * @see MouseDraggedEvent
  * @see MouseWheelMovedEvent
- *
  * @since 1.6.1
  */
 public final class MouseExitedEvent extends MouseEvent {
@@ -35,8 +33,8 @@ public final class MouseExitedEvent extends MouseEvent {
 	/**
 	 * Called by the game to create a new MouseExitedEvent.
 	 *
-     * @param source the source mouse event originating from the AWT.
-     */
+	 * @param source the source mouse event originating from the AWT.
+	 */
 	public MouseExitedEvent(java.awt.event.MouseEvent source) {
 		super(source);
 	}

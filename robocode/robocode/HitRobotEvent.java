@@ -116,27 +116,28 @@ public class HitRobotEvent extends Event {
 		return atFault;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(Event event) {
-        final int res = super.compareTo(event);
-        if (res!=0){
-            return res;
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(Event event) {
+		final int res = super.compareTo(event);
 
-        // Compare the isMyFault, if the events are HitRobotEvents
-        // The isMyFault has higher priority when it is set compared to when it is not set
-        if (event instanceof HitRobotEvent) {
-            int compare1 = (this).isMyFault() ? -1 : 0;
-            int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
+		if (res != 0) {
+			return res;
+		}
 
-            return compare1 - compare2;
-        }
+		// Compare the isMyFault, if the events are HitRobotEvents
+		// The isMyFault has higher priority when it is set compared to when it is not set
+		if (event instanceof HitRobotEvent) {
+			int compare1 = (this).isMyFault() ? -1 : 0;
+			int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
 
-        // No difference found
-        return 0;
-    }
+			return compare1 - compare2;
+		}
+
+		// No difference found
+		return 0;
+	}
 
 }

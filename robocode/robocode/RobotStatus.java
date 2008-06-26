@@ -20,7 +20,6 @@ import robocode.peer.RobotPeer;
  * {@link StatusEvent#getStatus()}.
  *
  * @author Flemming N. Larsen (original)
- *
  * @since 1.5
  */
 public class RobotStatus {

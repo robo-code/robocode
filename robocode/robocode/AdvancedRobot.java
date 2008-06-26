@@ -43,7 +43,6 @@ import java.util.Vector;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Pavel Savara (contributor)
- *
  * @see <a target="_top" href="http://robocode.sourceforge.net">
  *      robocode.sourceforge.net</a>
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
@@ -929,7 +928,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @see #onStatus(StatusEvent) onStatus(StatusEvent)
 	 * @see StatusEvent
 	 * @see #getAllEvents()
-	 *
 	 * @since 1.6.1
 	 */
 	public Vector<StatusEvent> getStatusEvents() {
@@ -956,7 +954,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @see #onPaint(java.awt.Graphics2D) onPaint(Graphics2D)
 	 * @see PaintEvent
 	 * @see #getAllEvents()
-	 *
 	 * @since 1.6.1
 	 */
 	public Vector<PaintEvent> getPaintEvents() {
@@ -1041,7 +1038,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 */
 	public void onCustomEvent(CustomEvent event) {}
 
-    /**
+	/**
 	 * Sets the priority of a class of events.
 	 * <p/>
 	 * Events are sent to the onXXX handlers in order of priority.

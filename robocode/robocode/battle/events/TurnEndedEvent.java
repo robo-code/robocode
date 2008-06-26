@@ -11,19 +11,21 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 import robocode.battle.snapshot.TurnSnapshot;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class TurnEndedEvent extends BattleEvent {
-    private final TurnSnapshot turnSnapshot;
+	private final TurnSnapshot turnSnapshot;
 
-    public TurnEndedEvent(TurnSnapshot turnSnapshot) {
-        this.turnSnapshot = turnSnapshot;
-    }
+	public TurnEndedEvent(TurnSnapshot turnSnapshot) {
+		this.turnSnapshot = turnSnapshot;
+	}
 
-    public TurnSnapshot getTurnSnapshot() {
-        return turnSnapshot;
-    }
+	public TurnSnapshot getTurnSnapshot() {
+		return turnSnapshot;
+	}
 }

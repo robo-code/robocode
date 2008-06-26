@@ -26,9 +26,9 @@
 package robocode.ui;
 
 
+import robocode.BattleResults;
 import robocode.io.Logger;
 import robocode.text.StringUtil;
-import robocode.BattleResults;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,13 +46,13 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
 	private String title;
-    private final BattleResults[] results;
-    private final int numRounds;
+	private final BattleResults[] results;
+	private final int numRounds;
 
-    public BattleResultsTableModel(BattleResults[] results, int numRounds) {
-		this.results=results;
-        this.numRounds=numRounds;
-    }
+	public BattleResultsTableModel(BattleResults[] results, int numRounds) {
+		this.results = results;
+		this.numRounds = numRounds;
+	}
 
 	public int getColumnCount() {
 		return 12;
@@ -107,7 +107,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	}
 
 	public String getTitle() {
-		if (title == null ) {
+		if (title == null) {
 			int round = numRounds;
 
 			title = "Results for " + round + " round";
@@ -120,12 +120,13 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 	public Object getValueAt(int row, int col) {
 
-        BattleResults statistics = results[row];
+		BattleResults statistics = results[row];
 
-        switch (col) {
+		switch (col) {
 		case 0: {
 			int place = row + 1;
-            while (place < getRowCount() && statistics.getScore() == results[place].getScore()) {
+
+			while (place < getRowCount() && statistics.getScore() == results[place].getScore()) {
 				place++;
 			}
 			return StringUtil.getPlacementString(place);

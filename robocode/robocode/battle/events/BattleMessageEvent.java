@@ -11,17 +11,18 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public class BattleMessageEvent extends BattleEvent{
-    private final String message;
+public class BattleMessageEvent extends BattleEvent {
+	private final String message;
 
-    public BattleMessageEvent(String message){
-        this.message=message;
-    }
+	public BattleMessageEvent(String message) {
+		this.message = message;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 }

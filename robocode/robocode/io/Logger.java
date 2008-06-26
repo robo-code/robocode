@@ -15,9 +15,9 @@
 package robocode.io;
 
 
-import robocode.battle.events.IBattleListener;
-import robocode.battle.events.BattleMessageEvent;
 import robocode.battle.events.BattleErrorEvent;
+import robocode.battle.events.BattleMessageEvent;
+import robocode.battle.events.IBattleListener;
 import robocode.security.SecurePrintStream;
 
 import java.io.ByteArrayOutputStream;
@@ -92,6 +92,7 @@ public class Logger {
 	private static String toStackTraceString(Throwable t) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(baos);
+
 		t.printStackTrace(ps);
 		ps.close();
 		return baos.toString();

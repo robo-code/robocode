@@ -30,7 +30,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
-    private boolean isDuplicate;
+	private boolean isDuplicate;
 	private String name;
 	private RobotPeer teamLeader;
 	private TeamStatistics teamStatistics;
@@ -48,13 +48,13 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 			myScore += teamStatistics.getCurrentScore();
 			hisScore += cp.getStatistics().getCurrentScore();
 		}
-        if (myScore < hisScore) {
-            return -1;
-        }
-        if (myScore > hisScore) {
-            return 1;
-        }
-        return 0;
+		if (myScore < hisScore) {
+			return -1;
+		}
+		if (myScore > hisScore) {
+			return 1;
+		}
+		return 0;
 	}
 
 	public ContestantStatistics getStatistics() {
@@ -65,15 +65,16 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		return name;
 	}
 
-    public void setDuplicate(int count){
-        isDuplicate=true;
-        String countString = " (" + (count + 1) + ')';
-        name=name+countString;
-    }
+	public void setDuplicate(int count) {
+		isDuplicate = true;
+		String countString = " (" + (count + 1) + ')';
 
-    public boolean isDuplicate(){
-        return isDuplicate;
-    }
+		name = name + countString;
+	}
+
+	public boolean isDuplicate() {
+		return isDuplicate;
+	}
 
 	public RobotPeer getTeamLeader() {
 		return teamLeader;

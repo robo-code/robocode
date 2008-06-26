@@ -51,12 +51,13 @@
 package robocode.manager;
 
 
+import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattleManager;
+import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.events.IBattleListener;
-import robocode.battle.events.BattleEndedEvent;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.control.BattleSpecification;
@@ -72,7 +73,6 @@ import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
-import robocode.Event;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -90,420 +90,416 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Nathaniel Troutman (contributor)
  */
 public class BattleManager implements IBattleManager {
-    private RobocodeManager manager;
+	private RobocodeManager manager;
 
-    private Battle battle;
-    private BattleProperties battleProperties = new BattleProperties();
+	private Battle battle;
+	private BattleProperties battleProperties = new BattleProperties();
 
-    private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
+	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
 
-    private String battleFilename;
-    private String battlePath;
+	private String battleFilename;
+	private String battlePath;
 
-    private int pauseCount = 0;
-    private AtomicBoolean isManagedTPS=new AtomicBoolean(false); 
+	private int pauseCount = 0;
+	private AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
-    public BattleManager(RobocodeManager manager) {
-        this.manager = manager;
-    }
+	public BattleManager(RobocodeManager manager) {
+		this.manager = manager;
+	}
 
-    public synchronized void cleanup() {
-        if (battle!=null){
-            battle.cleanup();
-            battle = null;
-        }
-        manager = null;
-        battleEventDispatcher = null;
-    }
+	public synchronized void cleanup() {
+		if (battle != null) {
+			battle.cleanup();
+			battle = null;
+		}
+		manager = null;
+		battleEventDispatcher = null;
+	}
 
-    // Called when starting a new battle from GUI
-    public boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
-        this.battleProperties = battleProperties;
+	// Called when starting a new battle from GUI
+	public boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
+		this.battleProperties = battleProperties;
 
-        List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
-                false, false, false, false, false, false);
+		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
+				false, false, false, false, false, false);
 
-        List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
+		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
 
-        if (battleProperties.getSelectedRobots() != null) {
-            StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
+		if (battleProperties.getSelectedRobots() != null) {
+			StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
 
-            while (tokenizer.hasMoreTokens()) {
-                String bot = tokenizer.nextToken();
+			while (tokenizer.hasMoreTokens()) {
+				String bot = tokenizer.nextToken();
 
-                boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, null);
+				boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, null);
 
-                if (failed) {
-                    return false;
-                }
-            }
-        }
+				if (failed) {
+					return false;
+				}
+			}
+		}
 
-        startNewBattleImpl(battlingRobotsList, replay, waitTillOver);
-        return true;
-        }
+		startNewBattleImpl(battlingRobotsList, replay, waitTillOver);
+		return true;
+	}
 
-    // Called from the RobocodeEngine
+	// Called from the RobocodeEngine
 	public boolean startNewBattle(BattleSpecification spec, boolean waitTillOver) {
-        battleProperties = new BattleProperties();
-        battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
-        battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
-        battleProperties.setGunCoolingRate(spec.getGunCoolingRate());
-        battleProperties.setInactivityTime(spec.getInactivityTime());
-        battleProperties.setNumRounds(spec.getNumRounds());
-        battleProperties.setSelectedRobots(spec.getRobots());
+		battleProperties = new BattleProperties();
+		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
+		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
+		battleProperties.setGunCoolingRate(spec.getGunCoolingRate());
+		battleProperties.setInactivityTime(spec.getInactivityTime());
+		battleProperties.setNumRounds(spec.getNumRounds());
+		battleProperties.setSelectedRobots(spec.getRobots());
 
-        List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
-                false, false, false, false, false, false);
-        List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
+		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
+				false, false, false, false, false, false);
+		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
 
-        for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
-            if (battleRobotSpec == null) {
-                break;
-            }
+		for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
+			if (battleRobotSpec == null) {
+				break;
+			}
 
-            String bot = battleRobotSpec.getClassName();
+			String bot = battleRobotSpec.getClassName();
 
-            if (!(battleRobotSpec.getVersion() == null || battleRobotSpec.getVersion().length() == 0)) {
-                bot += ' ' + battleRobotSpec.getVersion();
-            }
+			if (!(battleRobotSpec.getVersion() == null || battleRobotSpec.getVersion().length() == 0)) {
+				bot += ' ' + battleRobotSpec.getVersion();
+			}
 
-            boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, battleRobotSpec);
+			boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, battleRobotSpec);
 
-            if (failed) {
+			if (failed) {
 				return false;
-            }
-        }
-        startNewBattleImpl(battlingRobotsList, false, waitTillOver);
-        return true;
-    }
+			}
+		}
+		startNewBattleImpl(battlingRobotsList, false, waitTillOver);
+		return true;
+	}
 
 	private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, RobotSpecification battleRobotSpec) {
-        boolean found = false;
+		boolean found = false;
 
-        for (FileSpecification fileSpec : robotSpecificationsList) {
-            if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-                if (fileSpec instanceof RobotFileSpecification) {
-                    RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec);
+		for (FileSpecification fileSpec : robotSpecificationsList) {
+			if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+				if (fileSpec instanceof RobotFileSpecification) {
+					RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec);
 
-                    if (battleRobotSpec != null) {
-                        rcm.setControlRobotSpecification(battleRobotSpec);
-                    }
-                    battlingRobotsList.add(rcm);
-                    found = true;
-                    break;
-                } else if (fileSpec instanceof TeamSpecification) {
-                    TeamSpecification currentTeam = (TeamSpecification) fileSpec;
-                    TeamPeer teamManager = new TeamPeer(currentTeam.getName());
+					if (battleRobotSpec != null) {
+						rcm.setControlRobotSpecification(battleRobotSpec);
+					}
+					battlingRobotsList.add(rcm);
+					found = true;
+					break;
+				} else if (fileSpec instanceof TeamSpecification) {
+					TeamSpecification currentTeam = (TeamSpecification) fileSpec;
+					TeamPeer teamManager = new TeamPeer(currentTeam.getName());
 
-                    StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+					StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
 
-                    while (teamTokenizer.hasMoreTokens()) {
-                        bot = teamTokenizer.nextToken();
-                        RobotFileSpecification match = null;
+					while (teamTokenizer.hasMoreTokens()) {
+						bot = teamTokenizer.nextToken();
+						RobotFileSpecification match = null;
 
-                        for (FileSpecification teamFileSpec : robotSpecificationsList) {
-                            // Teams cannot include teams
-                            if (teamFileSpec instanceof TeamSpecification) {
-                                continue;
-                            }
-                            if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-                                // Found team member
-                                match = (RobotFileSpecification) teamFileSpec;
-                                if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
-                                        || currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
-                                    found = true;
-                                    break;
-                                }
-                                // else, still looking
-                            }
-                        }
-                        RobotClassManager rcm = new RobotClassManager(match, teamManager);
+						for (FileSpecification teamFileSpec : robotSpecificationsList) {
+							// Teams cannot include teams
+							if (teamFileSpec instanceof TeamSpecification) {
+								continue;
+							}
+							if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+								// Found team member
+								match = (RobotFileSpecification) teamFileSpec;
+								if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
+										|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
+									found = true;
+									break;
+								}
+								// else, still looking
+							}
+						}
+						RobotClassManager rcm = new RobotClassManager(match, teamManager);
 
-                        if (battleRobotSpec != null) {
-                            rcm.setControlRobotSpecification(battleRobotSpec);
-                        }
-                        battlingRobotsList.add(rcm);
-                    }
-                    break;
-                }
-            }
-        }
+						if (battleRobotSpec != null) {
+							rcm.setControlRobotSpecification(battleRobotSpec);
+						}
+						battlingRobotsList.add(rcm);
+					}
+					break;
+				}
+			}
+		}
 
-        if (!found) {
-            logError("Aborting battle, could not find robot: " + bot);
-            this.battleEventDispatcher.onBattleEnded(new BattleEndedEvent(true));
-            return true;
-        }
-        return false;
-    }
+		if (!found) {
+			logError("Aborting battle, could not find robot: " + bot);
+			this.battleEventDispatcher.onBattleEnded(new BattleEndedEvent(true));
+			return true;
+		}
+		return false;
+	}
 
-    private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
+	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
 
-        logMessage("Preparing battle...");
-        if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
-            battle.stop(true);
-        }
+		logMessage("Preparing battle...");
+		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
+			battle.stop(true);
+		}
 
-        BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
-                battleProperties.getBattlefieldHeight());
+		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
+				battleProperties.getBattlefieldHeight());
 
-        Logger.setLogListener(battleEventDispatcher);
+		Logger.setLogListener(battleEventDispatcher);
 
-        if (manager.isSoundEnabled()) {
-            manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
-        }
+		if (manager.isSoundEnabled()) {
+			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
+		}
 
-        // resets seed for deterministic behavior of Random
-        final String seed = System.getProperty("RANDOMSEED", "none");
+		// resets seed for deterministic behavior of Random
+		final String seed = System.getProperty("RANDOMSEED", "none");
 
-        if (!seed.equals("none")) {
-            RandomFactory.resetDeterministic(Long.valueOf(seed));
-        }
+		if (!seed.equals("none")) {
+			RandomFactory.resetDeterministic(Long.valueOf(seed));
+		}
 
-        battle = new Battle(battleField, manager, battleEventDispatcher, isPaused());
+		battle = new Battle(battleField, manager, battleEventDispatcher, isPaused());
 
-        // Set stuff the view needs to know
-        battle.setProperties(battleProperties);
+		// Set stuff the view needs to know
+		battle.setProperties(battleProperties);
 
-        Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
+		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
 
-        battleThread.setPriority(Thread.NORM_PRIORITY);
-        battleThread.setName("Battle Thread");
-        battle.setBattleThread(battleThread);
-        battle.setReplay(replay);
+		battleThread.setPriority(Thread.NORM_PRIORITY);
+		battleThread.setName("Battle Thread");
+		battle.setBattleThread(battleThread);
+		battle.setReplay(replay);
 
-        if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-            ((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
-            ((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
-        }
+		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
+			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
+			((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
+		}
 
-        for (RobotClassManager robotClassMgr : battlingRobotsList) {
-            battle.addRobot(robotClassMgr);
-        }
+		for (RobotClassManager robotClassMgr : battlingRobotsList) {
+			battle.addRobot(robotClassMgr);
+		}
 
-        // Start the battle thread
-        battleThread.start();
+		// Start the battle thread
+		battleThread.start();
 
-        // Wait until the battle is running and ended.
-        // This must be done as a new battle could be started immediately after this one causing
-        // multiple battle threads to run at the same time, which must be prevented!
-        battle.waitTillStarted();
-        if (waitTillOver) {
-            battle.waitTillOver();
-        }
-    }
+		// Wait until the battle is running and ended.
+		// This must be done as a new battle could be started immediately after this one causing
+		// multiple battle threads to run at the same time, which must be prevented!
+		battle.waitTillStarted();
+		if (waitTillOver) {
+			battle.waitTillOver();
+		}
+	}
 
-    public String getBattleFilename() {
-        String filename = battleFilename;
+	public String getBattleFilename() {
+		String filename = battleFilename;
 
-        if (filename != null) {
-            if (filename.indexOf(File.separatorChar) < 0) {
-                filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
-            }
-            if (!filename.endsWith(".battle")) {
-                filename += ".battle";
-            }
-        }
-        return filename;
-    }
+		if (filename != null) {
+			if (filename.indexOf(File.separatorChar) < 0) {
+				filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
+			}
+			if (!filename.endsWith(".battle")) {
+				filename += ".battle";
+			}
+		}
+		return filename;
+	}
 
-    public void setBattleFilename(String newBattleFilename) {
-        battleFilename = newBattleFilename;
-    }
+	public void setBattleFilename(String newBattleFilename) {
+		battleFilename = newBattleFilename;
+	}
 
-    public String getBattlePath() {
-        if (battlePath == null) {
-            battlePath = System.getProperty("BATTLEPATH");
-            if (battlePath == null) {
-                battlePath = "battles";
-            }
-            battlePath = new File(FileUtil.getCwd(), battlePath).getAbsolutePath();
-        }
-        return battlePath;
-    }
+	public String getBattlePath() {
+		if (battlePath == null) {
+			battlePath = System.getProperty("BATTLEPATH");
+			if (battlePath == null) {
+				battlePath = "battles";
+			}
+			battlePath = new File(FileUtil.getCwd(), battlePath).getAbsolutePath();
+		}
+		return battlePath;
+	}
 
-    public void saveBattleProperties() {
-        if (battleProperties == null) {
-            logError("Cannot save null battle properties");
-            return;
-        }
-        if (battleFilename == null) {
-            logError("Cannot save battle to null path, use setBattleFilename()");
-            return;
-        }
-        FileOutputStream out = null;
+	public void saveBattleProperties() {
+		if (battleProperties == null) {
+			logError("Cannot save null battle properties");
+			return;
+		}
+		if (battleFilename == null) {
+			logError("Cannot save battle to null path, use setBattleFilename()");
+			return;
+		}
+		FileOutputStream out = null;
 
-        try {
-            out = new FileOutputStream(battleFilename);
+		try {
+			out = new FileOutputStream(battleFilename);
 
-            battleProperties.store(out, "Battle Properties");
-        } catch (IOException e) {
-            logError("IO Exception saving battle properties: " + e);
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {// swallow
-                }
-            }
-        }
-    }
+			battleProperties.store(out, "Battle Properties");
+		} catch (IOException e) {
+			logError("IO Exception saving battle properties: " + e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {// swallow
+				}
+			}
+		}
+	}
 
-    public BattleProperties loadBattleProperties() {
-        BattleProperties res = new BattleProperties();
-        FileInputStream in = null;
+	public BattleProperties loadBattleProperties() {
+		BattleProperties res = new BattleProperties();
+		FileInputStream in = null;
 
-        try {
-            in = new FileInputStream(getBattleFilename());
-            res.load(in);
-        } catch (FileNotFoundException e) {
-            logError("No file " + battleFilename + " found, using defaults.");
-        } catch (IOException e) {
-            logError("IO Exception reading " + getBattleFilename() + ": " + e);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {// swallow
-                }
-            }
-        }
-        return res;
-    }
+		try {
+			in = new FileInputStream(getBattleFilename());
+			res.load(in);
+		} catch (FileNotFoundException e) {
+			logError("No file " + battleFilename + " found, using defaults.");
+		} catch (IOException e) {
+			logError("IO Exception reading " + getBattleFilename() + ": " + e);
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {// swallow
+				}
+			}
+		}
+		return res;
+	}
 
-    public BattleProperties getBattleProperties() {
-        if (battleProperties == null) {
-            battleProperties = new BattleProperties();
-        }
-        return battleProperties;
-    }
+	public BattleProperties getBattleProperties() {
+		if (battleProperties == null) {
+			battleProperties = new BattleProperties();
+		}
+		return battleProperties;
+	}
 
-    public void setDefaultBattleProperties() {
-        battleProperties = new BattleProperties();
-    }
+	public void setDefaultBattleProperties() {
+		battleProperties = new BattleProperties();
+	}
 
-    public boolean hasReplayRecord() {  //TODO get rid of this after redording rework
-    	if (battle == null) {
-    		return false;
-    	}
-    	return battle.hasReplayRecord();	
-    }
+	public boolean hasReplayRecord() { // TODO get rid of this after redording rework
+		if (battle == null) {
+			return false;
+		}
+		return battle.hasReplayRecord();
+	}
 
-    public boolean isManagedTPS(){
-        return isManagedTPS.get();
-    }
+	public boolean isManagedTPS() {
+		return isManagedTPS.get();
+	}
 
-    public void setManagedTPS(boolean value){
-        isManagedTPS.set(value);
-    }
+	public void setManagedTPS(boolean value) {
+		isManagedTPS.set(value);
+	}
 
-    public synchronized void addListener(IBattleListener listener) {
-        battleEventDispatcher.addListener(listener);
-    }
+	public synchronized void addListener(IBattleListener listener) {
+		battleEventDispatcher.addListener(listener);
+	}
 
-    public synchronized void removeListener(IBattleListener listener) {
-        battleEventDispatcher.removeListener(listener);
-    }
+	public synchronized void removeListener(IBattleListener listener) {
+		battleEventDispatcher.removeListener(listener);
+	}
 
-    public synchronized void stop(boolean waitTillEnd) {
-        if (battle != null && battle.isRunning()) {
-            battle.stop(waitTillEnd);
-        }
-    }
+	public synchronized void stop(boolean waitTillEnd) {
+		if (battle != null && battle.isRunning()) {
+			battle.stop(waitTillEnd);
+		}
+	}
 
-    public synchronized void restart() {
-        // Start new battle. The old battle is automatically stopped
-        startNewBattle(battleProperties, false, false);
-    }
+	public synchronized void restart() {
+		// Start new battle. The old battle is automatically stopped
+		startNewBattle(battleProperties, false, false);
+	}
 
-    public synchronized void replay() {
-        startNewBattle(battleProperties, true, false);
-    }
+	public synchronized void replay() {
+		startNewBattle(battleProperties, true, false);
+	}
 
+	private boolean isPaused() {
+		return (pauseCount != 0);
+	}
 
-    private boolean isPaused() {
-        return (pauseCount != 0);
-    }
+	public synchronized void togglePauseResumeBattle() {
+		if (isPaused()) {
+			resumeBattle();
+		} else {
+			pauseBattle();
+		}
+	}
 
-    public synchronized void togglePauseResumeBattle() {
-        if (isPaused()){
-            resumeBattle();
-        }
-        else{
-            pauseBattle();
-        }
-    }
+	public synchronized void pauseBattle() {
+		if (++pauseCount == 1) {
+			if (battle != null && battle.isRunning()) {
+				battle.pause();
+			}
+		}
+	}
 
-    public synchronized void pauseBattle() {
-        if (++pauseCount == 1) {
-            if (battle!=null && battle.isRunning()){
-                battle.pause();
-            }
-        }
-    }
+	public synchronized void pauseIfResumedBattle() {
+		if (pauseCount == 0) {
+			pauseCount++;
+			if (battle != null && battle.isRunning()) {
+				battle.pause();
+			}
+		}
+	}
 
+	public synchronized void resumeIfPausedBattle() {
+		if (pauseCount == 1) {
+			pauseCount--;
+			if (battle != null && battle.isRunning()) {
+				battle.resume();
+			}
+		}
+	}
 
-    public synchronized void pauseIfResumedBattle() {
-        if (pauseCount==0){
-            pauseCount++;
-            if (battle!=null && battle.isRunning()){
-                battle.pause();
-            }
-        }
-    }
+	public synchronized void resumeBattle() {
+		if (--pauseCount < 0) {
+			pauseCount = 0;
+			logError("SYSTEM: pause game bug!");
+		} else if (pauseCount == 0) {
+			if (battle != null && battle.isRunning()) {
+				battle.resume();
+			}
+		}
+	}
 
-    public synchronized void resumeIfPausedBattle() {
-        if (pauseCount == 1){
-            pauseCount--;
-            if (battle!=null && battle.isRunning()){
-                battle.resume();
-            }
-        }
-    }
+	/**
+	 * Steps for a single turn, then goes back to paused
+	 */
+	public synchronized void nextTurn() {
+		if (battle != null && battle.isRunning()) {
+			battle.step();
+		}
+	}
 
-    public synchronized void resumeBattle() {
-        if (--pauseCount < 0){
-            pauseCount= 0;
-            logError("SYSTEM: pause game bug!");
-        }
-        else if (pauseCount == 0) {
-            if (battle!=null && battle.isRunning()){
-                battle.resume();
-            }
-        }
-    }
+	public synchronized void killRobot(int robotIndex) {
+		if (battle != null && battle.isRunning()) {
+			battle.killRobot(robotIndex);
+		}
+	}
 
-    /**
-     * Steps for a single turn, then goes back to paused
-     */
-    public synchronized void nextTurn() {
-        if (battle != null && battle.isRunning()) {
-            battle.step();
-        }
-    }
+	public synchronized void setPaintEnabled(int robotIndex, boolean enable) {
+		if (battle != null && battle.isRunning()) {
+			battle.setPaintEnabled(robotIndex, enable);
+		}
+	}
 
-    public synchronized void killRobot(int robotIndex) {
-        if (battle!=null && battle.isRunning()){
-            battle.killRobot(robotIndex);
-        }
-    }
+	public synchronized void setSGPaintEnabled(int robotIndex, boolean enable) {
+		if (battle != null && battle.isRunning()) {
+			battle.setSGPaintEnabled(robotIndex, enable);
+		}
+	}
 
-    public synchronized void setPaintEnabled(int robotIndex, boolean enable) {
-        if (battle!=null && battle.isRunning()){
-            battle.setPaintEnabled(robotIndex, enable);
-        }
-    }
-
-    public synchronized void setSGPaintEnabled(int robotIndex, boolean enable) {
-        if (battle!=null && battle.isRunning()){
-            battle.setSGPaintEnabled(robotIndex, enable);
-        }
-    }
-
-    public synchronized void sendInteractiveEvent(Event event) {
-        if (battle!=null && battle.isRunning() && !isPaused()){
-            battle.sendInteractiveEvent(event);
-        }
-    }
+	public synchronized void sendInteractiveEvent(Event event) {
+		if (battle != null && battle.isRunning() && !isPaused()) {
+			battle.sendInteractiveEvent(event);
+		}
+	}
 }

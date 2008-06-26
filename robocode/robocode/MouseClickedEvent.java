@@ -19,7 +19,6 @@ package robocode;
  * onMouseClicked()} when the mouse is clicked inside the battle view.
  *
  * @author Pavel Savara (original)
- *
  * @see MousePressedEvent
  * @see MouseReleasedEvent
  * @see MouseEnteredEvent
@@ -27,7 +26,6 @@ package robocode;
  * @see MouseMovedEvent
  * @see MouseDraggedEvent
  * @see MouseWheelMovedEvent
- *
  * @since 1.6.1
  */
 public final class MouseClickedEvent extends MouseEvent {
@@ -35,8 +33,8 @@ public final class MouseClickedEvent extends MouseEvent {
 	/**
 	 * Called by the game to create a new MouseClickedEvent.
 	 *
-     * @param source the source mouse event originating from the AWT.
-     */
+	 * @param source the source mouse event originating from the AWT.
+	 */
 	public MouseClickedEvent(java.awt.event.MouseEvent source) {
 		super(source);
 	}

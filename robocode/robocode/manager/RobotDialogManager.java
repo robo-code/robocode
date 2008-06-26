@@ -23,10 +23,12 @@ package robocode.manager;
 
 
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.dialog.RobotDialog;
 import robocode.dialog.RobotButton;
+import robocode.dialog.RobotDialog;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -37,12 +39,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class RobotDialogManager {
 
-    public static final int MAX_PRE_ATTACHED = 10;
+	public static final int MAX_PRE_ATTACHED = 10;
 
 	private Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
 	private RobocodeManager manager;
 
-    public RobotDialogManager(RobocodeManager manager) {
+	public RobotDialogManager(RobocodeManager manager) {
 		super();
 		this.manager = manager;
 	}
@@ -64,10 +66,10 @@ public class RobotDialogManager {
 
 				robotDialogMap.remove(name);
 				dialog.dispose();
-                dialog.detach();
+				dialog.detach();
 			}
 		}
-    }
+	}
 
 	public void reset() {
 		for (String name : robotDialogMap.keySet()) {
@@ -75,9 +77,9 @@ public class RobotDialogManager {
 
 			if (!dialog.isVisible()) {
 				robotDialogMap.remove(name);
-                dialog.detach();
+				dialog.detach();
 				dialog.dispose();
-            }
+			}
 		}
 	}
 

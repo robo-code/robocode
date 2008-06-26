@@ -26,13 +26,11 @@ package robocode.manager;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattleManager;
 import robocode.battle.events.BattleCompletedEvent;
-import robocode.ui.BattleResultsTableModel;
 import robocode.dialog.*;
-import robocode.dialog.SplashScreen;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
-import robocode.BattleResults;
+import robocode.ui.BattleResultsTableModel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -85,45 +83,44 @@ public class WindowManager {
 	}
 
 	public void showBattleOpenDialog() {
-        IBattleManager battleManager = manager.getBattleManager();
-        try{
-            battleManager.pauseBattle();
+		IBattleManager battleManager = manager.getBattleManager();
 
-            JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
+		try {
+			battleManager.pauseBattle();
 
-            chooser.setFileFilter(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    if (pathname.isDirectory()) {
-                        return true;
-                    }
-                    String filename = pathname.getName();
-                    int idx = filename.lastIndexOf('.');
+			JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 
-                    String extension = "";
+			chooser.setFileFilter(new FileFilter() {
+				@Override
+				public boolean accept(File pathname) {
+					if (pathname.isDirectory()) {
+						return true;
+					}
+					String filename = pathname.getName();
+					int idx = filename.lastIndexOf('.');
 
-                    if (idx >= 0) {
-                        extension = filename.substring(idx);
-                    }
-                    return extension.equalsIgnoreCase(".battle");
-                }
+					String extension = "";
 
-                @Override
-                public String getDescription() {
-                    return "Battles";
-                }
-            });
+					if (idx >= 0) {
+						extension = filename.substring(idx);
+					}
+					return extension.equalsIgnoreCase(".battle");
+				}
 
+				@Override
+				public String getDescription() {
+					return "Battles";
+				}
+			});
 
-            if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
-                battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
-                battleManager.loadBattleProperties();
-                showNewBattleDialog(battleManager.getBattleProperties());
-            }
-        }
-        finally {
-            battleManager.resumeBattle();
-        }
+			if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
+				battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
+				battleManager.loadBattleProperties();
+				showNewBattleDialog(battleManager.getBattleProperties());
+			}
+		} finally {
+			battleManager.resumeBattle();
+		}
 	}
 
 	public void showVersionsTxt() {
@@ -167,19 +164,18 @@ public class WindowManager {
 	}
 
 	public void showOptionsPreferences() {
-        try{
-            manager.getBattleManager().pauseBattle();
+		try {
+			manager.getBattleManager().pauseBattle();
 
-            // Create the preferencesDialog
-            PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
+			// Create the preferencesDialog
+			PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
 
-            // Show it
-            WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
-        }
-        finally {
-            manager.getBattleManager().resumeBattle();
-        }
-    }
+			// Show it
+			WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
+		} finally {
+			manager.getBattleManager().resumeBattle();
+		}
+	}
 
 	public void showResultsDialog(BattleCompletedEvent event) {
 		packCenterShow(new ResultsDialog(manager, event.getResults(), event.getBattleProperties().getNumRounds()));
@@ -255,18 +251,17 @@ public class WindowManager {
 	}
 
 	public void showNewBattleDialog(BattleProperties battleProperties) {
-        try{
-            manager.getBattleManager().pauseBattle();
+		try {
+			manager.getBattleManager().pauseBattle();
 
-            NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
+			NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
 
-            // Pack, center, and show it
-            WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
-        }
-        finally {
-            manager.getBattleManager().resumeBattle();            
-        }
-    }
+			// Pack, center, and show it
+			WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
+		} finally {
+			manager.getBattleManager().resumeBattle();
+		}
+	}
 
 	public boolean closeRobocodeEditor() {
 		return robocodeEditor == null || !robocodeEditor.isVisible() || robocodeEditor.close();

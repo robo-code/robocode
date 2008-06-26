@@ -12,16 +12,16 @@
 package robocode.ui;
 
 
+import robocode.battle.IBattleManager;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.IBattleManager;
 
 import javax.swing.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -85,8 +85,8 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 	public void onBattleStarted(BattleStartedEvent event) {
 		isRunning.set(true);
 		isPaused.set(false);
-        snapshot.set(event.getTurnSnapshot());
-        EventQueue.invokeLater(repaintTask);
+		snapshot.set(event.getTurnSnapshot());
+		EventQueue.invokeLater(repaintTask);
 		timerTask.start();
 	}
 
@@ -119,10 +119,10 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		snapshot.set(event.getTurnSnapshot());
-        if (isPaused.get()){
-            EventQueue.invokeLater(repaintTask);
-        }
-    }
+		if (isPaused.get()) {
+			EventQueue.invokeLater(repaintTask);
+		}
+	}
 
 	public boolean isRunning() {
 		return isRunning.get();
@@ -132,20 +132,19 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 		public void run() {
 			if (!isRunning.get()) {
 				lastSnapshot = null;
-                updateView(null);
+				updateView(null);
+			} else {
+				TurnSnapshot s = snapshot.get();
+
+				if (lastSnapshot != s || !skipSameFrames) {
+					lastSnapshot = s;
+
+					updateView(lastSnapshot);
+
+					calculateFPS();
+				}
 			}
-            else{
-                TurnSnapshot s = snapshot.get();
-
-                if (lastSnapshot != s || !skipSameFrames) {
-                    lastSnapshot = s;
-
-                    updateView(lastSnapshot);
-
-                    calculateFPS();
-                }
-            }
-        }
+		}
 	}
 
 

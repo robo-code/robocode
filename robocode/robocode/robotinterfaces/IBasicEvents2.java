@@ -21,7 +21,6 @@ import robocode.BattleEndedEvent;
  * First extended version of the {@link IBasicEvents} interface.
  *
  * @author Pavel Savara (original)
- *
  * @since 1.6.1
  */
 public interface IBasicEvents2 extends IBasicEvents {
@@ -37,11 +36,11 @@ public interface IBasicEvents2 extends IBasicEvents {
 	 *   }
 	 * </pre>
 	 *
-     * @param event the battle-ended event set by the game
-     * @see BattleEndedEvent
-     * @see robocode.WinEvent
-     * @see robocode.DeathEvent
-     * @see robocode.Event
+	 * @param event the battle-ended event set by the game
+	 * @see BattleEndedEvent
+	 * @see robocode.WinEvent
+	 * @see robocode.DeathEvent
+	 * @see robocode.Event
 	 */
-    void onBattleEnded(BattleEndedEvent event);
+	void onBattleEnded(BattleEndedEvent event);
 }

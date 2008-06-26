@@ -22,6 +22,8 @@ public interface ContestantPeer extends Comparable<ContestantPeer> {
 	public ContestantStatistics getStatistics();
 
 	public String getName();
-    public void setDuplicate(int count);
-    public boolean isDuplicate();
+
+	public void setDuplicate(int count);
+
+	public boolean isDuplicate();
 }

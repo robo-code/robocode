@@ -42,7 +42,6 @@ public class StatusEvent extends Event {
 	 * Returns the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
 	 *
 	 * @return the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
-	 *
 	 * @see #getTime()
 	 */
 	public RobotStatus getStatus() {

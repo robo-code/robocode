@@ -11,17 +11,18 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public class RoundEndedEvent extends BattleEvent {
-    private final int round;
+	private final int round;
 
-    public RoundEndedEvent(int round) {
-        this.round = round;
-    }
+	public RoundEndedEvent(int round) {
+		this.round = round;
+	}
 
-    public int getRound() {
-        return round;
-    }
+	public int getRound() {
+		return round;
+	}
 }

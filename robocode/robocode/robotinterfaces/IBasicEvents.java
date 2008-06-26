@@ -15,8 +15,6 @@ package robocode.robotinterfaces;
 
 
 import robocode.*;
-import robocode.Event;
-import robocode.Robot;
 
 
 /**

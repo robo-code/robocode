@@ -37,9 +37,9 @@
 package robocode.peer.robot;
 
 
+import robocode.BattleResults;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
-import robocode.BattleResults;
 
 import java.util.List;
 
@@ -199,7 +199,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		return rammingKillBonus;
 	}
 
-    public void scoreSurvival() {
+	public void scoreSurvival() {
 		if (isActive) {
 			survivalScore += 50;
 		}
@@ -307,17 +307,17 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		isActive = false;
 	}
 
-    public BattleResults getResults(int rank) {
-        if (robotPeer.getBattle().isRunning()) {
-            return new BattleResults(robotPeer.getTeamName(), rank, totalScore + getCurrentScore(), totalSurvivalScore + survivalScore,
-                    totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore, totalBulletKillBonus + bulletKillBonus,
-                    totalRammingDamageScore + rammingDamageScore, totalRammingKillBonus + rammingKillBonus, totalFirsts,
-                    totalSeconds, totalThirds);
-        }
-        return new BattleResults(robotPeer.getTeamName(), rank, totalScore, totalSurvivalScore, totalLastSurvivorBonus,
-                totalBulletDamageScore, totalBulletKillBonus, totalRammingDamageScore, totalRammingKillBonus, totalFirsts,
-                totalSeconds, totalThirds);
-    }
+	public BattleResults getResults(int rank) {
+		if (robotPeer.getBattle().isRunning()) {
+			return new BattleResults(robotPeer.getTeamName(), rank, totalScore + getCurrentScore(),
+					totalSurvivalScore + survivalScore, totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore,
+					totalBulletKillBonus + bulletKillBonus, totalRammingDamageScore + rammingDamageScore,
+					totalRammingKillBonus + rammingKillBonus, totalFirsts, totalSeconds, totalThirds);
+		}
+		return new BattleResults(robotPeer.getTeamName(), rank, totalScore, totalSurvivalScore, totalLastSurvivorBonus,
+				totalBulletDamageScore, totalBulletKillBonus, totalRammingDamageScore, totalRammingKillBonus, totalFirsts,
+				totalSeconds, totalThirds);
+	}
 
 	private double[] getRobotDamage() {
 		if (robotDamage == null) {

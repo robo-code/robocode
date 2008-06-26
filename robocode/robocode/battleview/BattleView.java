@@ -14,11 +14,11 @@
 package robocode.battleview;
 
 
-import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.BulletSnapshot;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.IBattleManager;
 import robocode.battle.events.BattleStartedEvent;
+import robocode.battle.snapshot.BulletSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.gfx.GraphicsState;
@@ -31,11 +31,11 @@ import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.ui.AwtBattleAdaptor;
 
-import static java.lang.Math.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import static java.lang.Math.*;
 import java.util.Random;
 
 
@@ -112,13 +112,13 @@ public class BattleView extends Canvas {
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
-        observer = new BattleObserver(manager.getBattleManager());
+		observer = new BattleObserver(manager.getBattleManager());
 	}
 
 	public int getFPS() {
 		return observer.getFPS();
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		if (observer != null && observer.isRunning()) {
@@ -136,12 +136,12 @@ public class BattleView extends Canvas {
 			initialize();
 		}
 
-		if (manager.getWindowManager().getRobocodeFrame().isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
-				|| (getHeight() <= 0)) {
+		if (manager.getWindowManager().getRobocodeFrame().isIconified() || offscreenImage == null || !isDisplayable()
+				|| (getWidth() <= 0) || (getHeight() <= 0)) {
 			return;
 		}
 
-        offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
+		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 		if (offscreenGfx != null) {
 			offscreenGfx.setRenderingHints(renderingHints);
 
@@ -225,7 +225,7 @@ public class BattleView extends Canvas {
 	private void createGroundImage() {
 		// Reinitialize ground tiles
 
-		Random r = new Random(); // independent 
+		Random r = new Random(); // independent
 
 		final int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
 		final int NUM_VERT_TILES = battleField.getHeight() / groundTileHeight + 1;
@@ -634,21 +634,21 @@ public class BattleView extends Canvas {
 			super(battleManager, TIMER_TICKS_PER_SECOND, true);
 		}
 
-        @Override
-        public void onBattleStarted(BattleStartedEvent event) {
-            battleField = new DefaultBattleField(event.getBattleProperties().getBattlefieldWidth(), event.getBattleProperties().getBattlefieldHeight());
-            setVisible(true);
-            setInitialized(false);
-            super.onBattleStarted(event);
-        }
+		@Override
+		public void onBattleStarted(BattleStartedEvent event) {
+			battleField = new DefaultBattleField(event.getBattleProperties().getBattlefieldWidth(),
+					event.getBattleProperties().getBattlefieldHeight());
+			setVisible(true);
+			setInitialized(false);
+			super.onBattleStarted(event);
+		}
 
-        protected void updateView(TurnSnapshot snapshot) {
-            if (snapshot==null){
-                repaint();
-            }
-            else{
-                update(snapshot);
-            }
-        }
+		protected void updateView(TurnSnapshot snapshot) {
+			if (snapshot == null) {
+				repaint();
+			} else {
+				update(snapshot);
+			}
+		}
 	}
 }

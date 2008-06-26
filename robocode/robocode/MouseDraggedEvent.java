@@ -19,7 +19,6 @@ package robocode;
  * onMouseDragged()} when the mouse is dragged inside the battle view.
  *
  * @author Pavel Savara (original)
- *
  * @see MouseClickedEvent
  * @see MousePressedEvent
  * @see MouseReleasedEvent
@@ -27,7 +26,6 @@ package robocode;
  * @see MouseExitedEvent
  * @see MouseMovedEvent
  * @see MouseWheelMovedEvent
- *
  * @since 1.6.1
  */
 public final class MouseDraggedEvent extends MouseEvent {
@@ -35,8 +33,8 @@ public final class MouseDraggedEvent extends MouseEvent {
 	/**
 	 * Called by the game to create a new MouseDraggedEvent.
 	 *
-     * @param source the source mouse event originating from the AWT.
-     */
+	 * @param source the source mouse event originating from the AWT.
+	 */
 	public MouseDraggedEvent(java.awt.event.MouseEvent source) {
 		super(source);
 	}

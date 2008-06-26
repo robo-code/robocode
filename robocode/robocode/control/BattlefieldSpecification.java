@@ -19,12 +19,11 @@ package robocode.control;
  * Defines the size of a battlefield, which is a part of the
  * {@link BattleSpecification}.
  *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  * @see BattleSpecification#BattleSpecification(int, BattlefieldSpecification, RobotSpecification[])
  * @see BattleSpecification#BattleSpecification(int, long, double, BattlefieldSpecification, RobotSpecification[])
  * @see BattleSpecification#getBattlefield()
- *
- * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
  */
 public class BattlefieldSpecification implements java.io.Serializable {
 

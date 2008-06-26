@@ -549,7 +549,6 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *      onStatus(StatusEvent)
 	 * @see StatusEvent
 	 * @see #getAllEvents()
-	 *
 	 * @since 1.6.1
 	 */
 	List<StatusEvent> getStatusEvents();
@@ -735,7 +734,6 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *      onPaint(Graphics2D)
 	 * @see PaintEvent
 	 * @see #getAllEvents()
-	 *
 	 * @since 1.6.1
 	 */
 	List<PaintEvent> getPaintEvents();

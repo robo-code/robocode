@@ -11,17 +11,18 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public class BattleEndedEvent extends BattleEvent {
-    private final boolean isAborted;
+	private final boolean isAborted;
 
-    public BattleEndedEvent(boolean isAborted) {
-        this.isAborted = isAborted;
-    }
+	public BattleEndedEvent(boolean isAborted) {
+		this.isAborted = isAborted;
+	}
 
-    public boolean isAborted() {
-        return isAborted;
-    }
+	public boolean isAborted() {
+		return isAborted;
+	}
 }

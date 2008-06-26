@@ -11,8 +11,8 @@
  *******************************************************************************/
 package robocode.battle.events;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public class BattlePausedEvent extends BattleEvent {
-}
+public class BattlePausedEvent extends BattleEvent {}
