@@ -18,6 +18,7 @@ import robocode.battle.snapshot.TurnSnapshot;
 
 /**
  * @author Pavel Savara (original)
+ * @since 1.6.1
  */
 public class BattleStartedEvent extends BattleEvent {
 	private final TurnSnapshot start;

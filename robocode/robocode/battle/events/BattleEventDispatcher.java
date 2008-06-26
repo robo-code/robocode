@@ -21,6 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * @author Flemming N. Larsen (original)
  * @author Pavel Savara (original)
+ * @since 1.6.1
  */
 public class BattleEventDispatcher implements IBattleListener {
 	// This list is guaranteed to be thread-safe, which is necessary as it will be accessed

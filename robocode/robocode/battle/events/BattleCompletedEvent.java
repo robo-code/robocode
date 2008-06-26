@@ -18,6 +18,7 @@ import robocode.battle.BattleProperties;
 
 /**
  * @author Pavel Savara (original)
+ * @since 1.6.1
  */
 public class BattleCompletedEvent extends BattleEvent {
 	private final BattleProperties battleProperties;

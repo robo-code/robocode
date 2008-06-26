@@ -17,6 +17,7 @@ import robocode.peer.robot.RobotStatistics;
 
 /**
  * @author Pavel Savara (original)
+ * @since 1.6.1
  */
 public class ScoreSnapshot implements Comparable<ScoreSnapshot> {
 	private final String name;

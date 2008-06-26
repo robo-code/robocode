@@ -14,6 +14,7 @@ package robocode.battle.events;
 
 /**
  * @author Pavel Savara (original)
+ * @since 1.6.1
  */
 public class BattleEndedEvent extends BattleEvent {
 	private final boolean isAborted;

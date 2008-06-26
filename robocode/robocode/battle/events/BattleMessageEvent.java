@@ -14,6 +14,7 @@ package robocode.battle.events;
 
 /**
  * @author Pavel Savara (original)
+ * @since 1.6.1
  */
 public class BattleMessageEvent extends BattleEvent {
 	private final String message;
