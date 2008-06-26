@@ -1759,10 +1759,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return eventManager.getMessageEvents();
 	}
 
-	public List<PaintEvent> getPaintEvents() {
-		return eventManager.getPaintEvents();
-	}
-
 	public void setSkippedTurns(int newSkippedTurns) {
 		skippedTurns = newSkippedTurns;
 	}

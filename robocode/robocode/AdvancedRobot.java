@@ -15,7 +15,7 @@
  *       parameter anymore
  *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
  *       robots process events before they die
- *     - Added getStatusEvents() and getPaintEvents()
+ *     - Added getStatusEvents()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -592,7 +592,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * @see #getBulletMissedEvents()
 	 * @see #getBulletHitBulletEvents()
 	 * @see #getRobotDeathEvents()
-	 * @see #getPaintEvents()
 	 */
 	public Vector<Event> getAllEvents() {
 		if (peer != null) {
@@ -933,32 +932,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public Vector<StatusEvent> getStatusEvents() {
 		if (peer != null) {
 			return new Vector<StatusEvent>(((IAdvancedRobotPeer) peer).getStatusEvents());
-		}
-		uninitializedException();
-		return null; // never called
-	}
-
-	/**
-	 * Returns a vector containing all PaintEvents currently in the robot's
-	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   for (PaintEvent event : getPaintEvents()) {
-	 *       <i>// do something with the event</i>
-	 *   }
-	 * </pre>
-	 *
-	 * @return a vector containing all PaintEvents currently in the robot's
-	 *         queue
-	 * @see #onPaint(java.awt.Graphics2D) onPaint(Graphics2D)
-	 * @see PaintEvent
-	 * @see #getAllEvents()
-	 * @since 1.6.1
-	 */
-	public Vector<PaintEvent> getPaintEvents() {
-		if (peer != null) {
-			return new Vector<PaintEvent>(((IAdvancedRobotPeer) peer).getPaintEvents());
 		}
 		uninitializedException();
 		return null; // never called

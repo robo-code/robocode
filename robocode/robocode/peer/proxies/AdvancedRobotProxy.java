@@ -175,11 +175,6 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 		return ((IAdvancedRobotPeer) peer).getScannedRobotEvents();
 	}
 
-	public List<PaintEvent> getPaintEvents() {
-		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getPaintEvents();
-	}
-
 	// data
 	public File getDataDirectory() {
 		peer.getCall();

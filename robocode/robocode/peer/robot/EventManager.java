@@ -1285,34 +1285,4 @@ public class EventManager implements IEventManager {
 		}
 		return events;
 	}
-
-	/**
-	 * Returns a vector containing all PaintEvents currently in the robot's
-	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   for (PaintEvent e : getPaintEvents()) {
-	 *      <i> (do something with e) </i>
-	 *   }
-	 * </pre>
-	 *
-	 * @return a vector containing all PaintEvents currently in the robot's
-	 *         queue.
-	 * @see #onPaint()
-	 * @see PaintEvent
-	 * @since 1.6.1
-	 */
-	public List<PaintEvent> getPaintEvents() {
-		List<PaintEvent> events = Collections.synchronizedList(new ArrayList<PaintEvent>());
-
-		synchronized (eventQueue) {
-			for (Event e : eventQueue) {
-				if (e instanceof PaintEvent) {
-					events.add((PaintEvent) e);
-				}
-			}
-		}
-		return events;
-	}
 }

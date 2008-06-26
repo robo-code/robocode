@@ -16,8 +16,12 @@ import java.awt.*;
 
 
 /**
- * This event is sent to {@link Robot#onPaint(Graphics2D) onPaint()} when your
- * robot should paint.
+ * This event occurs when your robot should paint, where the {@link
+ * Robot#onPaint(Graphics2D) onPaint()} is called on your robot.
+ * </p>
+ * You can use this event for setting the event priority by calling
+ * {@link AdvancedRobot#setEventPriority(String, int)
+ * setEventPriority("PaintEvent", priority)}
  *
  * @author Flemming N. Larsen (original)
  */
