@@ -17,6 +17,7 @@ import pimods.scenegraph.ModelView;
 import pimods.scenegraph.TransformationNode;
 import pimods.scenegraph.TextureIndexLink;
 import pimods.scenegraph.DisplayListIndexLink;
+import java.awt.Color;
 
 
 /**
@@ -34,10 +35,12 @@ public class Bullet extends TransformationNode {
 	private static final float MAX_POWER = 4; //TODO da verificare!
 
 	private float power=1;
+	private ModelView mvBullet;
 	
 
 	public Bullet( String name ) {
-		this.addDrawable(new ModelView( model, "Bullet", displayList, texture ));
+		this.mvBullet = new ModelView( model, "Bullet", displayList, texture );
+		this.addDrawable( this.mvBullet );
 		
 		this.name = name;
 		
@@ -47,8 +50,9 @@ public class Bullet extends TransformationNode {
 		this.setScale(scaling, scaling, scaling);
 	}
 	
-	public void setPower( float p){
+	public void setPower( float p ){
 		this.power = p;
+		this.mvBullet.setColor( new Color( this.power/MAX_POWER, 0.001f, 0.001f ) );
 	}
 	
 	@Override
@@ -57,7 +61,7 @@ public class Bullet extends TransformationNode {
 		float noEmissionColor[]= { 0f, 0f, 0f };
 
 		this.setTy(16);
-		gl.glColor3f(power/MAX_POWER, 0.001f, 0.001f);
+		//gl.glColor3f(power/MAX_POWER, 0.001f, 0.001f);
 		
 		gl.glMaterialfv( GL.GL_FRONT, GL.GL_EMISSION, emissionColor, 0 );
 		super.draw(gl);

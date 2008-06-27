@@ -40,7 +40,7 @@ public class SkyDome extends TransformationNode {
 
 	@Override
 	public void draw(GL gl){
-		gl.glColor3f( 1, 1, 1 );
+		//gl.glColor3f( 1, 1, 1 );
 		//gl.glMaterialf(GL.GL_FRONT_AND_BACK,GL.GL_SHININESS, 0 );
 		gl.glDisable( GL.GL_NORMALIZE );
 		super.draw(gl);

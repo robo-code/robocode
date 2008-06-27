@@ -66,16 +66,18 @@ public class ModelView implements Drawable {
 	public Color getColor(){
 		return color;
 	}
-	public void setColor( Color c){
+	public void setColor( Color c ){
 		this.color = c;
 	}
 	
 	@Override
 	public void draw( GL gl ) {
 
-		if( color!=null ) {
-			gl.glColor3f( color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f );
-		}
+		if( color!=null )
+			gl.glColor4f( color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f );
+		else
+			gl.glColor4f( 1, 1, 1, 1 );
+
 		if( this.group != null ) {
 			int grpIndex = this.displayListIndexLink.getGroupIndex( this.indexGroup );
 			for( int i=0; i<this.group.getNumberOfObjects(); i++ ) {

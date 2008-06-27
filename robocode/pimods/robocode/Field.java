@@ -138,13 +138,13 @@ public class Field extends TransformationNode {
 		this.addDrawable( tower );
 }
 
-	@Override
-	public void draw( GL gl){
+//	@Override
+//	public void draw( GL gl){
 //		gl.glPolygonMode( GL.GL_FRONT_AND_BACK, GL.GL_LINE );
-		gl.glColor3f(1f, 1f, 1f);
-		super.draw( gl);
+//		gl.glColor3f(1f, 1f, 1f);
+//		super.draw( gl);
 //		gl.glPolygonMode( GL.GL_FRONT_AND_BACK, GL.GL_FILL );
-	}
+//	}
 
 /*	
 	private class Landscape implements Drawable{

@@ -10,7 +10,6 @@
 package pimods.robocode;
 
 import javax.media.opengl.GL;
-//import com.sun.opengl.util.texture.Texture;
 
 import pimods.model.LoadModel;
 import pimods.model.Model;
@@ -19,6 +18,9 @@ import pimods.scenegraph.ModelView;
 import pimods.scenegraph.TransformationNode;
 import pimods.scenegraph.TextureIndexLink;
 import pimods.scenegraph.DisplayListIndexLink;
+
+import java.awt.Color;
+
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -37,10 +39,12 @@ public class Track extends TransformationNode implements Ageing {
 	
 	private int ttl;
 	private int creationTime;
+	private ModelView mvTrack;
 
 	
 	public Track( int time, float x, float z, float angle ) {
-		this.addDrawable( new ModelView( model, "Track", displayList, texture ) );
+		this.mvTrack = new ModelView( model, "Track", displayList, texture );
+		this.addDrawable( this.mvTrack );
 		this.creationTime = time;
 		this.ttl = LIFETIME;
 		
@@ -60,13 +64,18 @@ public class Track extends TransformationNode implements Ageing {
 	
 	public boolean heartBeat(){
 		boolean alive = true;
+		
 		this.ttl--;
-		if( this.ttl <= 0) alive = false;
+		if( this.ttl <= 0)
+			alive = false;
 		this.setTy( this.getTy() - 0.5f/LIFETIME );
-		return alive;
+		if( alive )
+			this.mvTrack.setColor( new Color( 1, 1, 1, ( float )ttl / LIFETIME ) );
+		
+		return( alive );
 	}
 	
-	@Override
+/*	@Override
 	public void draw(GL gl){
 		if( ttl > 0 ){
 			gl.glColor4f(1, 1, 1, (float)ttl/LIFETIME);
@@ -74,7 +83,7 @@ public class Track extends TransformationNode implements Ageing {
 			gl.glColor4f(1, 1, 1, 1);
 		}
 	}
-
+*/
 	public static void setTexture( int[][] t ) {
 		texture.setTextureIndexLink( t );
 	}
