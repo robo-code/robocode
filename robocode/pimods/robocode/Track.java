@@ -10,7 +10,7 @@
 package pimods.robocode;
 
 import javax.media.opengl.GL;
-import com.sun.opengl.util.texture.Texture;
+//import com.sun.opengl.util.texture.Texture;
 
 import pimods.model.LoadModel;
 import pimods.model.Model;
@@ -75,7 +75,7 @@ public class Track extends TransformationNode implements Ageing {
 		}
 	}
 
-	public static void setTexture( Texture[][] t ) {
+	public static void setTexture( int[][] t ) {
 		texture.setTextureIndexLink( t );
 	}
 	

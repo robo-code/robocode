@@ -17,8 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import javax.imageio.ImageIO;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
+import java.awt.image.BufferedImage;
 
 import pimods.math.Vertex3f;
 
@@ -183,16 +182,43 @@ public class LoadModel {
 		return( model );
 	}
 
-	public static TextureData getTextureFromFile( String filename ) {
-		TextureData td = null;
+	public static BufferedImage getTextureFromFile( String filename ) {
+		BufferedImage bi = null;
 
 		try {
-			td = TextureIO.newTextureData( new File( LoadModel.texturesPath + filename ), true, TextureIO.TGA );
+			BufferedImage biOrig = ImageIO.read( new File( LoadModel.texturesPath + filename ) );
+			
+			bi = new BufferedImage( biOrig.getWidth(), biOrig.getHeight(), /*biOrig.getType()*/ BufferedImage.TYPE_INT_ARGB );
+			int height = bi.getHeight();
+			for( int r=0; r<height; r++ ) {
+				for( int c=0; c<bi.getWidth(); c++ ) {
+					// Conversion from ARGB to RGBA
+					int color = biOrig.getRGB( c, r );
+					
+					int blue = color & 0x000000ff;
+					int green = ( color & 0x0000ff00 ) >> 8;
+					int red = ( color & 0x00ff0000 ) >> 16;
+					int alpha = ( color & 0xff000000 ) >> 24;
+						
+					//float grey = ( ( red+green+blue )*0.333f );
+					//if( grey<200 ) {
+					//	alpha = ( int )( 255*grey*0.005f );
+					//} else {
+					//	alpha = 255;
+					//}
+						
+					color = red*0x1000000 + green*0x10000 + blue*0x100 + alpha;
+					// OpenGL wants the bottom of the image on the first row -> we must flip images vertically
+					bi.setRGB( c, height-r-1, color );
+				}
+			}
+			
+			
 		} catch( IOException e ) {
 			System.err.println( "Error: I/O exception: " + e );
 		}
 
-		return( td );
+		return( bi );
 	}
 
 }

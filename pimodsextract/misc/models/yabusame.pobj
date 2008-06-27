@@ -3,17 +3,17 @@
 
 [TextureBegin]
 t TexRadar
-ti yabusame-radar.tga
+ti yabusame-radar.jpg
 [TextureEnd]
 
 [TextureBegin]
 t TexHead
-ti yabusame-head.tga
+ti yabusame-head.jpg
 [TextureEnd]
 
 [TextureBegin]
 t TexBody
-ti yabusame-body.tga
+ti yabusame-body.jpg
 [TextureEnd]
 
 [MaterialBegin]

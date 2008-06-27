@@ -3,7 +3,7 @@
 
 [TextureBegin]
 t TexRetainingWall
-ti retainingwall.tga
+ti retainingwall.jpg
 [TextureEnd]
 
 [MaterialBegin]

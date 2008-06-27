@@ -3,7 +3,7 @@
 
 [TextureBegin]
 t TexParticle
-ti particle1-smoke.tga
+ti particle1-smoke.jpg
 [TextureEnd]
 
 [MaterialBegin]

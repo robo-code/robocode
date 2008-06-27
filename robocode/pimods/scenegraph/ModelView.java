@@ -10,7 +10,7 @@
 package pimods.scenegraph;
 
 import javax.media.opengl.GL;
-import com.sun.opengl.util.texture.Texture;
+//import com.sun.opengl.util.texture.Texture;
 
 import java.awt.Color;
 
@@ -79,18 +79,16 @@ public class ModelView implements Drawable {
 		if( this.group != null ) {
 			int grpIndex = this.displayListIndexLink.getGroupIndex( this.indexGroup );
 			for( int i=0; i<this.group.getNumberOfObjects(); i++ ) {
-				Texture texture[][] = this.textureIndexLink.getTextureIndexLink();
+				int texture[][] = this.textureIndexLink.getTextureIndexLink();
 				if( texture != null && texture.length > 0 && texture[i] != null && texture[i].length > 0 ) {
 					int materialIndex = this.group.getObject( i ).getMaterialIndex();
-					if( texture[materialIndex][0] != null ) {
-						// TODO second index for multiple textures, for future versions
-						texture[materialIndex][0].enable();
-						texture[materialIndex][0].bind(); // --> gl.glBindTexture( , );
-						gl.glCallList( grpIndex+i );
-						texture[materialIndex][0].disable();
-					}
-				} else {
+					// TODO second index for multiple textures, for future versions
+					gl.glBindTexture( GL.GL_TEXTURE_2D, texture[materialIndex][0] );
 					gl.glCallList( grpIndex+i );
+				} else {
+					gl.glDisable( GL.GL_TEXTURE_2D );
+					gl.glCallList( grpIndex+i );
+					gl.glEnable( GL.GL_TEXTURE_2D );
 				}
 			
 			}

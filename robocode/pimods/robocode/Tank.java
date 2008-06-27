@@ -10,7 +10,6 @@
 package pimods.robocode;
 
 import java.awt.Color;
-import com.sun.opengl.util.texture.Texture;
 
 import pimods.model.LoadModel;
 import pimods.model.Model;
@@ -105,7 +104,7 @@ public class Tank extends TransformationNode {
 	}
 
 
-	public static void setTexture( Texture[][] t ) {
+	public static void setTexture( int[][] t ) {
 		texture.setTextureIndexLink( t );
 	}
 	

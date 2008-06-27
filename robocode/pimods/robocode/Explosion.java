@@ -74,11 +74,11 @@ public class Explosion extends TransformationNode implements Ageing{
 		return( alive1 || alive2 );
 	}
 
-	public static void setTextureSparkle( Texture[][] t ) {
+	public static void setTextureSparkle( int[][] t ) {
 		textureSparkle.setTextureIndexLink( t );
 	}
 
-	public static void setTextureSmoke( Texture[][] t ) {
+	public static void setTextureSmoke( int[][] t ) {
 		textureSmoke.setTextureIndexLink( t );
 	}
 	

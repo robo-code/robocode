@@ -3,7 +3,7 @@
 
 [TextureBegin]
 t TexParticle
-ti particle1-sparkle.tga
+ti particle1-sparkle.jpg
 [TextureEnd]
 
 [MaterialBegin]

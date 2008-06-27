@@ -10,7 +10,7 @@
 package pimods.scenegraph;
 
 
-import com.sun.opengl.util.texture.Texture;
+//import com.sun.opengl.util.texture.Texture;
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -19,20 +19,20 @@ import com.sun.opengl.util.texture.Texture;
  */
 
 public class TextureIndexLink {
-	private Texture textureIndexLink[][];
+	private int[][] textureIndexLink;
 
 	public TextureIndexLink() {
 	}
 
-	public TextureIndexLink( Texture[][] textureIndexLink ) {
+	public TextureIndexLink( int[][] textureIndexLink ) {
 		this.textureIndexLink = textureIndexLink;
 	}
 
-	public void setTextureIndexLink( Texture[][] textureIndexLink ) {
+	public void setTextureIndexLink( int[][] textureIndexLink ) {
 		this.textureIndexLink = textureIndexLink;
 	}
 
-	public Texture[][] getTextureIndexLink() {
+	public int[][] getTextureIndexLink() {
 		return( this.textureIndexLink );
 	}
 }

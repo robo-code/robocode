@@ -12,7 +12,7 @@ package pimods.robocode;
 import java.awt.Color;
 
 import javax.media.opengl.GL;
-import com.sun.opengl.util.texture.Texture;
+//import com.sun.opengl.util.texture.Texture;
 
 import pimods.model.LoadModel;
 import pimods.model.Model;
@@ -185,15 +185,15 @@ public class Field extends TransformationNode {
 	}
 
 
-	public static void setTextureBP( Texture[][] t ) {
+	public static void setTextureBP( int[][] t ) {
 		textureBP.setTextureIndexLink( t );
 	}
 
-	public static void setTextureRW( Texture[][] t ) {
+	public static void setTextureRW( int[][] t ) {
 		textureRW.setTextureIndexLink( t );
 	}
 
-	public static void setTextureWT( Texture[][] t ) {
+	public static void setTextureWT( int[][] t ) {
 		textureWT.setTextureIndexLink( t );
 	}
 	

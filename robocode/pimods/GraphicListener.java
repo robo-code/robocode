@@ -13,9 +13,9 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import pimods.model.LoadModel;
 import pimods.model.Model;
@@ -74,7 +74,7 @@ public class GraphicListener implements GLEventListener {
 		gl.glEnable( GL.GL_CULL_FACE );
 		gl.glCullFace( GL.GL_BACK );
 
-		gl.glEnable(GL.GL_TEXTURE_2D);
+		gl.glEnable( GL.GL_TEXTURE_2D );
 		
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA,GL.GL_ONE_MINUS_SRC_ALPHA);
@@ -113,15 +113,32 @@ public class GraphicListener implements GLEventListener {
 	}
 
 
-	public static Texture[][] loadTextureFromModel( GL gl, Model model ) {
-		Texture[][] texture = new Texture[model.getNumberOfMaterials()][];
+	// TODO the time required for texture loading cause a NullPointerException on first execution
+	public static int[][] loadTextureFromModel( GL gl, Model model ) {
+		int[][] texture = new int[model.getNumberOfMaterials()][];
 		for( int m=0; m<texture.length; m++ ) {
 			ModelMaterial mat = model.getMaterial( m );
-			texture[m] = new Texture[mat.getNumberOfTextures()];
+			texture[m] = new int[mat.getNumberOfTextures()];
+			gl.glGenTextures( texture[m].length, texture[m], 0 );
 			for( int t=0; t<texture[m].length; t++ ) {
-				TextureData tex = LoadModel.getTextureFromFile( mat.getTexture( t ).getImage() );
-				if( tex != null ) {
-					texture[m][t] = TextureIO.newTexture( tex );
+				BufferedImage image = LoadModel.getTextureFromFile( mat.getTexture( t ).getImage() );
+				if( image != null ) {
+					ByteBuffer buffer = ByteBuffer.allocateDirect( image.getHeight()*image.getWidth()*4 );
+					IntBuffer bufferInt = buffer.asIntBuffer();
+					for( int r=0; r<image.getHeight(); r++ )
+						for( int c=0; c<image.getWidth(); c++ )
+							bufferInt.put( image.getRGB( c, r ) );
+					
+					gl.glBindTexture( GL.GL_TEXTURE_2D, texture[m][t] );
+					( new GLU() ).gluBuild2DMipmaps( GL.GL_TEXTURE_2D,GL.GL_RGBA, image.getWidth(), image.getHeight(), GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, buffer );
+					//gl.glTexImage2D( GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, image.getWidth(), image.getHeight(), 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, buffer );
+
+					//gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR );
+					gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR );
+					gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR );
+					gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE );
+					gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE );
+					gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_GENERATE_MIPMAP, GL.GL_TRUE );
 				}
 			}
 		}

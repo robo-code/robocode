@@ -13,7 +13,7 @@ import javax.media.opengl.GL;
 
 import java.awt.Color;
 import java.util.StringTokenizer;
-import com.sun.opengl.util.texture.Texture;
+//import com.sun.opengl.util.texture.Texture;
 
 import pimods.model.LoadModel;
 import pimods.model.Model;
@@ -135,7 +135,7 @@ public class Text3D extends TransformationNode {
 		gl.glMaterialfv( GL.GL_FRONT, GL.GL_EMISSION, noEmissionColor, 0 );
 	}
 
-	public static void setTexture( Texture[][] t ) {
+	public static void setTexture( int[][] t ) {
 		texture.setTextureIndexLink( t );
 	}
 	

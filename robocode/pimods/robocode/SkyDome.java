@@ -49,7 +49,7 @@ public class SkyDome extends TransformationNode {
 	}
 
 
-	public static void setTexture( Texture[][] t ) {
+	public static void setTexture( int[][] t ) {
 		texture.setTextureIndexLink( t );
 	}
 	
