@@ -14,14 +14,14 @@
 package robocode.battleview;
 
 
-import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.IBattleManager;
+import robocode.battle.events.BattleStartedEvent;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.dialog.RobocodeFrame;
+import robocode.gfx.GraphicsState;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
@@ -29,19 +29,14 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.util.GraphicsState;
-import robocode.control.BattleSpecification;
+import robocode.ui.AwtBattleAdaptor;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Random;
 
 
 /**
@@ -61,10 +56,7 @@ public class BattleView extends Canvas {
 
 	private final static int ROBOT_TEXT_Y_OFFSET = 24;
 
-	private RobocodeFrame robocodeFrame;
-
 	// The battle and battlefield,
-	private TurnSnapshot lastSnapshot;
 	private BattleField battleField;
 	private BattleObserver observer;
 
@@ -91,9 +83,6 @@ public class BattleView extends Canvas {
 
 	private RenderingHints renderingHints;
 
-	// FPS (frames per second) calculation
-	private int fps;
-
 	// Fonts and the like
 	private Font smallFont;
 	private FontMetrics smallFontMetrics;
@@ -116,30 +105,39 @@ public class BattleView extends Canvas {
 	/**
 	 * BattleView constructor.
 	 */
-	public BattleView(RobocodeManager manager, RobocodeFrame robocodeFrame) {
+	public BattleView(RobocodeManager manager) {
 		super();
 
 		this.manager = manager;
-		this.robocodeFrame = robocodeFrame;
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
+		observer = new BattleObserver(manager.getBattleManager());
 	}
 
 	public int getFPS() {
-		return fps;
+		return observer.getFPS();
 	}
-	
+
+	@Override
+	public void paint(Graphics g) {
+		if (observer != null && observer.isRunning()) {
+			update(observer.getLastSnapshot());
+		} else {
+			paintRobocodeLogo((Graphics2D) g);
+		}
+	}
+
 	/**
 	 * Shows the next frame. The game calls this every frame.
 	 */
-	private void update() {
+	private void update(TurnSnapshot snapshot) {
 		if (!initialized) {
 			initialize();
 		}
 
-		if (robocodeFrame.isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
-				|| (getHeight() <= 0)) {
+		if (manager.getWindowManager().getRobocodeFrame().isIconified() || offscreenImage == null || !isDisplayable()
+				|| (getWidth() <= 0) || (getHeight() <= 0)) {
 			return;
 		}
 
@@ -147,7 +145,7 @@ public class BattleView extends Canvas {
 		if (offscreenGfx != null) {
 			offscreenGfx.setRenderingHints(renderingHints);
 
-			drawBattle(offscreenGfx, lastSnapshot);
+			drawBattle(offscreenGfx, snapshot);
 
 			if (bufferStrategy != null) {
 				Graphics2D g = null;
@@ -164,15 +162,6 @@ public class BattleView extends Canvas {
 					}
 				}
 			}
-		}
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		if (observer != null && observer.isRunning()) {
-			update();
-		} else {
-			paintRobocodeLogo((Graphics2D) g);
 		}
 	}
 
@@ -236,6 +225,8 @@ public class BattleView extends Canvas {
 	private void createGroundImage() {
 		// Reinitialize ground tiles
 
+		Random r = new Random(); // independent
+
 		final int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
 		final int NUM_VERT_TILES = battleField.getHeight() / groundTileHeight + 1;
 
@@ -244,7 +235,7 @@ public class BattleView extends Canvas {
 			groundTiles = new int[NUM_VERT_TILES][NUM_HORZ_TILES];
 			for (int y = NUM_VERT_TILES - 1; y >= 0; y--) {
 				for (int x = NUM_HORZ_TILES - 1; x >= 0; x--) {
-					groundTiles[y][x] = (int) round(random() * 4);
+					groundTiles[y][x] = (int) round(r.nextDouble() * 4);
 				}
 			}
 		}
@@ -474,6 +465,10 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot) {
+		if (!robotSnapshot.isPaintRobot()) {
+			return;
+		}
+
 		// Save the graphics state
 		GraphicsState gfxState = new GraphicsState();
 
@@ -481,24 +476,15 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		if (robotSnapshot.isPaintRobot()) {
-			Graphics2DProxy gfxProxy = robotSnapshot.getGraphicsProxy();
+		Graphics2DProxy gfxProxy = robotSnapshot.getGraphicsProxy();
 
-			if (gfxProxy != null) {
-				// Do the painting
-				try {
-					if (robotSnapshot.isSGPaintEnabled()) {
-						gfxProxy.processTo(g);
-					} else {
-						mirroredGraphics.bind(g, battleField.getHeight());
-						gfxProxy.processTo(g);
-						mirroredGraphics.release();
-					}
-				} catch (Exception e) {
-					// Make sure that Robocode is not halted by an exception caused by letting the robot paint
-					robotSnapshot.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-					e.printStackTrace(robotSnapshot.getOut());
-				}
+		if (gfxProxy != null) {
+			if (robotSnapshot.isSGPaintEnabled()) {
+				gfxProxy.processTo(g);
+			} else {
+				mirroredGraphics.bind(g, battleField.getHeight());
+				gfxProxy.processTo(g);
+				mirroredGraphics.release();
 			}
 		}
 
@@ -617,14 +603,6 @@ public class BattleView extends Canvas {
 		return scanArc.getBounds();
 	}
 
-	public void setup(BattleField battleField, BattleEventDispatcher battleEventDispatcher) {
-		this.battleField = battleField;
-		if (observer != null) {
-			observer.dispose();
-		}
-		observer = new BattleObserver(this, battleEventDispatcher);
-	}
-
 	/**
 	 * Draws the Robocode logo
 	 */
@@ -651,122 +629,25 @@ public class BattleView extends Canvas {
 		this.initialized = initialized;
 	}
 
-	private class BattleObserver extends BattleAdaptor {
-		BattleView battleView;
-		AtomicReference<TurnSnapshot> snapshot;
-		AtomicBoolean isRunning;
-		AtomicBoolean isPaused;
-		BattleEventDispatcher dispatcher;
-
-		RepaintTask repaintTask = new RepaintTask();
-		Timer timer;
-
-		long measuredFrameCounter;
-		long measuredFrameStartTime;
-		
-		public BattleObserver(BattleView battleView, BattleEventDispatcher dispatcher) {
-			this.dispatcher = dispatcher;
-			this.battleView = battleView;
-			snapshot = new AtomicReference<TurnSnapshot>(null);
-			
-			timer = new Timer(1000 / TIMER_TICKS_PER_SECOND, new UpdateTask());
-			isRunning = new AtomicBoolean(false);
-			isPaused = new AtomicBoolean(false);
-			lastSnapshot = null;
-
-			dispatcher.addListener(this);
-		}
-
-		public void finalize() throws Throwable {
-			super.finalize();
-
-			dispose();
-		}
-		
-		public void dispose() {
-			timer.stop();
-			dispatcher.removeListener(this);
+	private class BattleObserver extends AwtBattleAdaptor {
+		public BattleObserver(IBattleManager battleManager) {
+			super(battleManager, TIMER_TICKS_PER_SECOND, true);
 		}
 
 		@Override
-		public void onBattleStarted(BattleSpecification battleSpecification) {
-			isRunning.set(true);
-			isPaused.set(false);
-			EventQueue.invokeLater(repaintTask);
-			timer.start();
+		public void onBattleStarted(BattleStartedEvent event) {
+			battleField = new DefaultBattleField(event.getBattleProperties().getBattlefieldWidth(),
+					event.getBattleProperties().getBattlefieldHeight());
+			setVisible(true);
+			setInitialized(false);
+			super.onBattleStarted(event);
 		}
 
-		@Override
-		public void onBattleEnded(boolean isAborted) {
-			timer.stop();
-			isRunning.set(false);
-			isPaused.set(false);
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		@Override
-		public void onBattleResumed() {
-			isPaused.set(false);
-			timer.start();
-		}
-
-		public void onBattlePaused() {
-			timer.stop();
-			isPaused.set(true);
-		}
-
-		public void onRoundStarted(int round) {
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		public void onRoundEnded() {
-			EventQueue.invokeLater(repaintTask);
-		}
-
-		public void onTurnEnded(TurnSnapshot turnSnapshot) {
-			snapshot.set(turnSnapshot);
-		}
-
-		public boolean isRunning() {
-			return isRunning.get();
-		}
-
-		private class RepaintTask implements Runnable {
-			public void run() {
-				if (!isRunning.get()) {
-					lastSnapshot = null;
-				}
+		protected void updateView(TurnSnapshot snapshot) {
+			if (snapshot == null) {
 				repaint();
-			}
-		}
-
-
-		private class UpdateTask implements ActionListener {
-			public void actionPerformed(ActionEvent e) {
-				TurnSnapshot s = snapshot.get();
-
-				if (lastSnapshot != s) {
-					lastSnapshot = s;
-
-					battleView.update();
-
-					calculateFPS();
-				}
-			}
-		}
-
-		private void calculateFPS() {
-			// Calculate the current frames per second (FPS)
-
-			if (measuredFrameCounter++ == 0) {
-				measuredFrameStartTime = System.nanoTime();
-			}
-
-			long deltaTime = System.nanoTime() - measuredFrameStartTime;
-
-			if (deltaTime / 1000000000 >= 1) {
-				fps = (int) (measuredFrameCounter * 1000000000L / deltaTime);
-				measuredFrameCounter = 0;
+			} else {
+				update(snapshot);
 			}
 		}
 	}

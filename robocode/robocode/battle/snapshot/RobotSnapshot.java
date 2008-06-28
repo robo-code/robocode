@@ -19,7 +19,6 @@ import static robocode.util.ObjectCloner.deepCopy;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;
-import java.io.PrintStream;
 import java.io.Serializable;
 
 
@@ -48,16 +47,25 @@ public class RobotSnapshot implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// The name of the robot
-	// private final String name;
+	private final String name;
+
+	// The short name of the robot
+	private final String shortName;
 
 	// The very short name of the robot
 	private final String veryShortName;
+
+	// The very short name of the team leader robot (might be null)
+	private final String teamName;
 
 	// The robot state
 	private final RobotState state;
 
 	// The energy level
 	private final double energy;
+
+	// The energy level
+	private final double velocity;
 
 	// The body heading in radians
 	private final double bodyHeading;
@@ -92,13 +100,16 @@ public class RobotSnapshot implements Serializable {
 	private final boolean isSGPaintEnabled;
 
 	// The scan arc
-	private final Arc2D scanArc;
+	private final SerializableArc scanArc;
 
 	// The Graphics2D proxy
 	private final Graphics2DProxy graphicsProxy;
 
-	// The output print stream
-	private final PrintStream out;
+	// The output print stream proxy
+	private final String outputStreamSnapshot;
+
+	// Snapshot of score for robot
+	private final ScoreSnapshot robotScoreSnapshot;
 
 	/**
 	 * Constructs a snapshot of the robot.
@@ -106,12 +117,15 @@ public class RobotSnapshot implements Serializable {
 	 * @param peer the robot peer to make a snapshot of.
 	 */
 	public RobotSnapshot(RobotPeer peer) {
-		// name = peer.getName();
-		veryShortName = peer.getName();
+		name = peer.getName();
+		shortName = peer.getShortName();
+		veryShortName = peer.getVeryShortName();
+		teamName = peer.getTeamName();
 
 		state = peer.getState();
 
 		energy = peer.getEnergy();
+		velocity = peer.getVelocity();
 
 		bodyHeading = peer.getBodyHeading();
 		gunHeading = peer.getGunHeading();
@@ -131,13 +145,15 @@ public class RobotSnapshot implements Serializable {
 		isPaintEnabled = peer.isPaintEnabled();
 		isSGPaintEnabled = peer.isSGPaintEnabled();
 
-		scanArc = peer.getScanArc() != null ? (Arc2D) peer.getScanArc().clone() : null;
+		scanArc = peer.getScanArc() != null ? new SerializableArc((Arc2D.Double) peer.getScanArc()) : null;
 
-		Graphics2D tmpGfxProxy = peer.getGraphics();
+		Graphics2D peerGfx = peer.getGraphics();
 
-		graphicsProxy = tmpGfxProxy != null ? (Graphics2DProxy) tmpGfxProxy.create() : null;
+		graphicsProxy = peerGfx != null ? (Graphics2DProxy) peerGfx.create() : null;
 
-		out = new PrintStream(peer.getOut());
+		outputStreamSnapshot = peer.getOut().readAndReset();
+
+		robotScoreSnapshot = new ScoreSnapshot(peer.getRobotStatistics(), peer.getName());
 	}
 
 	/**
@@ -145,9 +161,18 @@ public class RobotSnapshot implements Serializable {
 	 *
 	 * @return the name of the robot.
 	 */
-	// public String getName() {
-	// return name;
-	// }
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Returns the very short name of this robot.
+	 *
+	 * @return the very short name of this robot.
+	 */
+	public String getShortName() {
+		return shortName;
+	}
 
 	/**
 	 * Returns the very short name of this robot.
@@ -156,6 +181,15 @@ public class RobotSnapshot implements Serializable {
 	 */
 	public String getVeryShortName() {
 		return veryShortName;
+	}
+
+	/**
+	 * Returns the name of the team or name of the robot if the robot is not a part of a team.
+	 *
+	 * @return the name of the team or name of the robot if the robot is not a part of a team.
+	 */
+	public String getTeamName() {
+		return teamName;
 	}
 
 	/**
@@ -174,6 +208,15 @@ public class RobotSnapshot implements Serializable {
 	 */
 	public double getEnergy() {
 		return energy;
+	}
+
+	/**
+	 * Returns the velocity.
+	 *
+	 * @return the velocity.
+	 */
+	public double getVelocity() {
+		return velocity;
 	}
 
 	/**
@@ -326,11 +369,49 @@ public class RobotSnapshot implements Serializable {
 	}
 
 	/**
-	 * Returns the output print stream for this robot.
+	 * Returns the output print stream snapshot for this robot.
 	 *
-	 * @return the output print stream for this robot.
+	 * @return the output print stream snapshot for this robot.
 	 */
-	public PrintStream getOut() {
-		return new PrintStream(out);
+	public String getOutputStreamSnapshot() {
+		return outputStreamSnapshot;
+	}
+
+	/**
+	 * Returns snapshot of score for robot
+	 *
+	 * @return snapshot of score for robot
+	 */
+	public ScoreSnapshot getRobotScoreSnapshot() {
+		return robotScoreSnapshot;
+	}
+
+	/**
+	 * The purpose of this class it to serialize the Arc2D.Double class,
+	 * which does not support the Serializable interface itself.
+	 *
+	 * @author Flemming N. Larsen
+	 * @since 1.6.1
+	 */
+	private class SerializableArc extends Arc2D.Double implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Public constructor needed for Serialization.
+		 */
+		public SerializableArc() {
+			super();
+		}
+
+		/**
+		 * Copy constructor used for construction a SerializableArc based
+		 * on a Arc2D.Double.
+		 *
+		 * @param arc the Arc2D.Double object to copy
+		 */
+		public SerializableArc(Arc2D.Double arc) {
+			super(arc.getBounds(), arc.start, arc.extent, arc.getArcType());
+		}
 	}
 }

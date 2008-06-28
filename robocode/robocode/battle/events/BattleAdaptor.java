@@ -1,32 +1,42 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Flemming N. Larsen
+ *     - Initial implementation
+ *******************************************************************************/
 package robocode.battle.events;
 
 
-import robocode.battle.snapshot.TurnSnapshot;
-import robocode.control.RobotResults;
-import robocode.control.BattleSpecification;
-
-
+/**
+ * @author Flemming N. Larsen (original)
+ * @since 1.6.1
+ */
 public class BattleAdaptor implements IBattleListener {
 
-	public void onBattleStarted(BattleSpecification battleSpecification) {}
+	public void onBattleStarted(BattleStartedEvent event) {}
 
-	public void onBattleEnded(boolean isAborted) {}
+	public void onBattleEnded(BattleEndedEvent event) {}
 
-	public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {}
+	public void onBattleCompleted(BattleCompletedEvent event) {}
 
-	public void onBattlePaused() {}
+	public void onBattlePaused(BattlePausedEvent event) {}
 
-	public void onBattleResumed() {}
+	public void onBattleResumed(BattleResumedEvent event) {}
 
-	public void onRoundStarted(int round) {}
+	public void onRoundStarted(RoundStartedEvent event) {}
 
-	public void onRoundEnded() {}
+	public void onRoundEnded(RoundEndedEvent event) {}
 
-	public void onTurnStarted() {}
-    
-	public void onTurnEnded(TurnSnapshot turnSnapshot) {}
+	public void onTurnStarted(TurnStartedEvent event) {}
 
-    public void onBattleMessage(String message) {}
+	public void onTurnEnded(TurnEndedEvent event) {}
 
-    public void onBattleError(String error) {}
+	public void onBattleMessage(BattleMessageEvent event) {}
+
+	public void onBattleError(BattleErrorEvent event) {}
 }

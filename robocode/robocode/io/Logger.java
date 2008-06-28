@@ -15,7 +15,13 @@
 package robocode.io;
 
 
+import robocode.battle.events.BattleErrorEvent;
+import robocode.battle.events.BattleMessageEvent;
 import robocode.battle.events.IBattleListener;
+import robocode.security.SecurePrintStream;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 
 /**
@@ -34,23 +40,32 @@ public class Logger {
 
 	public static void logMessage(String s) {
 		if (logListener == null) {
-			System.out.println(s);
+			SecurePrintStream.realOut.println(s);
 		} else {
-			logListener.onBattleMessage(s);
+			logListener.onBattleMessage(new BattleMessageEvent(s));
+		}
+	}
+
+	public static void logMessage(Throwable e) {
+		if (logListener == null) {
+			SecurePrintStream.realErr.println(e);
+			e.printStackTrace(SecurePrintStream.realErr);
+		} else {
+			logListener.onBattleMessage(new BattleMessageEvent(e.toString()));
 		}
 	}
 
 	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
 			if (newline) {
-				System.out.println(s);
+				SecurePrintStream.realOut.println(s);
 			} else {
-				System.out.print(s);
-				System.out.flush();
+				SecurePrintStream.realOut.print(s);
+				SecurePrintStream.realOut.flush();
 			}
 		} else {
 			if (newline) {
-				logListener.onBattleMessage(logBuffer + s);
+				logListener.onBattleMessage(new BattleMessageEvent(logBuffer + s));
 				logBuffer.setLength(0);
 			} else {
 				logBuffer.append(s);
@@ -58,29 +73,28 @@ public class Logger {
 		}
 	}
 
-    public static void logError(String s) {
-        if (logListener == null) {
-            System.err.println(s);
-        } else {
-            logListener.onBattleMessage(s);
-        }
-    }
-
-    public static void logError(String s, Throwable e) {
-        if (logListener == null) {
-            System.err.println(s + ": " + e);
-            e.printStackTrace(System.err);
-        } else {
-            logListener.onBattleError(s + ": " + e);
-        }
-    }
-
-	public static void logError(Throwable e) {
+	public static void logError(String s) {
 		if (logListener == null) {
-			System.err.println(e);
-			e.printStackTrace(System.err);
+			SecurePrintStream.realErr.println(s);
 		} else {
-			logListener.onBattleError("" + e);
+			logListener.onBattleError(new BattleErrorEvent(s));
 		}
+	}
+
+	public static void logError(String message, Throwable t) {
+		logError(message + ":\n" + toStackTraceString(t));
+	}
+
+	public static void logError(Throwable t) {
+		logError(toStackTraceString(t));
+	}
+
+	private static String toStackTraceString(Throwable t) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(baos);
+
+		t.printStackTrace(ps);
+		ps.close();
+		return baos.toString();
 	}
 }

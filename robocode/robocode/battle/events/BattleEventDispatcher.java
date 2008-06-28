@@ -12,17 +12,16 @@
 package robocode.battle.events;
 
 
-import robocode.battle.snapshot.TurnSnapshot;
-import robocode.control.BattleSpecification;
-import robocode.control.RobotResults;
+import static robocode.io.Logger.logError;
 
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
  * @author Flemming N. Larsen (original)
  * @author Pavel Savara (original)
+ * @since 1.6.1
  */
 public class BattleEventDispatcher implements IBattleListener {
 	// This list is guaranteed to be thread-safe, which is necessary as it will be accessed
@@ -43,69 +42,113 @@ public class BattleEventDispatcher implements IBattleListener {
 		listeners.remove(listener);
 	}
 
-	public void onBattleStarted(BattleSpecification battleSpecification) {
+	public void onBattleStarted(BattleStartedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onBattleStarted(battleSpecification);
+			try {
+				listener.onBattleStarted(event);
+			} catch (Throwable ex) {
+				logError("onBattleStarted" + listener.getClass(), ex);
+			}
 		}
 	}
 
-	public void onBattleCompleted(BattleSpecification battleSpecification, RobotResults[] results) {
+	public void onBattleCompleted(BattleCompletedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onBattleCompleted(battleSpecification, results);
+			try {
+				listener.onBattleCompleted(event);
+			} catch (Throwable ex) {
+				logError("onBattleCompleted" + listener.getClass(), ex);
+			}
 		}
 	}
 
-	public void onBattleEnded(boolean isAborted) {
+	public void onBattleEnded(BattleEndedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onBattleEnded(isAborted);
+			try {
+				listener.onBattleEnded(event);
+			} catch (Throwable ex) {
+				logError("onBattleEnded" + listener.getClass(), ex);
+			}
 		}
 	}
 
-	public void onBattlePaused() {
+	public void onBattlePaused(BattlePausedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onBattlePaused();
+			try {
+				listener.onBattlePaused(event);
+			} catch (Throwable ex) {
+				logError("onBattlePaused" + listener.getClass(), ex);
+			}
 		}
 	}
 
-	public void onBattleResumed() {
+	public void onBattleResumed(BattleResumedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onBattleResumed();
+			try {
+				listener.onBattleResumed(event);
+			} catch (Throwable ex) {
+				logError("onBattleResumed" + listener.getClass(), ex);
+			}
 		}
 	}
 
-	public void onRoundStarted(int round) {
+	public void onRoundStarted(RoundStartedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onRoundStarted(round);
+			try {
+				listener.onRoundStarted(event);
+			} catch (Throwable ex) {
+				logError("onRoundStarted" + listener.getClass(), ex);
+			}
 		}
 	}
 
-	public void onRoundEnded() {
+	public void onRoundEnded(RoundEndedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onRoundEnded();
+			try {
+				listener.onRoundEnded(event);
+			} catch (Throwable ex) {
+				logError("onRoundEnded" + listener.getClass(), ex);
+			}
 		}
 	}
 
-	public void onTurnStarted() {
+	public void onTurnStarted(TurnStartedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onTurnStarted();
+			try {
+				listener.onTurnStarted(event);
+			} catch (Throwable ex) {
+				logError("onTurnStarted" + listener.getClass(), ex);
+			}
 		}
 	}
 
-	public void onTurnEnded(TurnSnapshot turnSnapshot) {
+	public void onTurnEnded(TurnEndedEvent event) {
 		for (IBattleListener listener : listeners) {
-			listener.onTurnEnded(turnSnapshot);
+			try {
+				listener.onTurnEnded(event);
+			} catch (Throwable ex) {
+				logError("onTurnEnded" + listener.getClass(), ex);
+			}
 		}
 	}
 
-    public void onBattleMessage(String message) {
-        for (IBattleListener listener : listeners) {
-            listener.onBattleMessage(message);
-        }
-    }
+	public void onBattleMessage(BattleMessageEvent event) {
+		for (IBattleListener listener : listeners) {
+			try {
+				listener.onBattleMessage(event);
+			} catch (Throwable ex) {
+				logError("onBattleMessage" + listener.getClass(), ex);
+			}
+		}
+	}
 
-    public void onBattleError(String error) {
-        for (IBattleListener listener : listeners) {
-            listener.onBattleError(error);
-        }
-    }
+	public void onBattleError(BattleErrorEvent event) {
+		for (IBattleListener listener : listeners) {
+			try {
+				listener.onBattleError(event);
+			} catch (Throwable ex) {
+				logError("onBattleError" + listener.getClass(), ex);
+			}
+		}
+	}
 }

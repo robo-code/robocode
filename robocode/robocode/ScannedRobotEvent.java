@@ -16,7 +16,7 @@ package robocode;
 
 /**
  * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot(ScannedRobotEvent)
- * onScannedRobot(ScannedRobotEvent)} when you scan a robot.
+ * onScannedRobot()} when you scan a robot.
  * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)
@@ -106,6 +106,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the energy of the robot
 	 * @deprecated Use {@link #getEnergy()} instead.
 	 */
 	@Deprecated
@@ -123,6 +124,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the bearing to the robot you scanned, in degrees
 	 * @deprecated Use {@link #getBearing()} instead.
 	 */
 	@Deprecated
@@ -131,6 +133,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the robot bearing in degrees
 	 * @deprecated Use {@link #getBearing()} instead.
 	 */
 	@Deprecated
@@ -139,6 +142,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the bearing to the robot you scanned, in radians
 	 * @deprecated Use {@link #getBearingRadians()} instead.
 	 */
 	@Deprecated
@@ -147,6 +151,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the distance to the robot.
 	 * @deprecated Use {@link #getDistance()} instead.
 	 */
 	@Deprecated
@@ -155,6 +160,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the heading of the robot, in degrees
 	 * @deprecated Use {@link #getHeading()} instead.
 	 */
 	@Deprecated
@@ -163,6 +169,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the heading of the robot, in degrees
 	 * @deprecated Use {@link #getHeading()} instead.
 	 */
 	@Deprecated
@@ -171,6 +178,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the heading of the robot, in radians
 	 * @deprecated Use {@link #getHeadingRadians()} instead.
 	 */
 	@Deprecated
@@ -179,6 +187,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the energy of the robot
 	 * @deprecated Use {@link #getEnergy()} instead.
 	 */
 	@Deprecated
@@ -187,6 +196,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the name of the robot
 	 * @deprecated Use {@link #getName()} instead.
 	 */
 	@Deprecated
@@ -195,6 +205,7 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * @return the velocity of the robot
 	 * @deprecated Use {@link #getVelocity()} instead.
 	 */
 	@Deprecated
@@ -210,4 +221,23 @@ public class ScannedRobotEvent extends Event {
 	public double getVelocity() {
 		return velocity;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(Event event) {
+		final int res = super.compareTo(event);
+
+		if (res != 0) {
+			return res;
+		}
+		// Compare the distance, if the events are ScannedRobotEvents
+		// The shorter distance to the robot, the higher priority
+		if (event instanceof ScannedRobotEvent) {
+			return (int) (this.getDistance() - ((ScannedRobotEvent) event).getDistance());
+		}
+		// No difference found
+		return 0;
+	}    
 }

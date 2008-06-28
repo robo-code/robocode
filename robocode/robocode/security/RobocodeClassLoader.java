@@ -85,7 +85,7 @@ public class RobocodeClassLoader extends ClassLoader {
 		}
 
 		if (classesField == null) {
-			System.err.println("Failed to find classes field in:" + this);
+			logError("RobocodeClassLoader: Failed to find classes field in: " + this);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class RobocodeClassLoader extends ClassLoader {
 
 	@Override
 	public InputStream getResourceAsStream(String resource) {
-		logMessage("Classloader:  getResourceAsStream: " + resource);
+		logMessage("RobocodeClassLoader: getResourceAsStream: " + resource);
 		return super.getResourceAsStream(resource);
 	}
 
@@ -169,7 +169,11 @@ public class RobocodeClassLoader extends ClassLoader {
 				protectionDomain = new ProtectionDomain(
 						new CodeSource(f.toURI().toURL(), (java.security.cert.Certificate[]) null), p);
 			} catch (MalformedURLException e) {
-				throw new ClassNotFoundException("Unable to build protection domain.");
+				ClassNotFoundException classNotFoundException = new ClassNotFoundException(
+						"Unable to build protection domain");
+
+				classNotFoundException.initCause(e);
+				throw classNotFoundException;
 			}
 		}
 		int size = (int) (f.length());
@@ -214,7 +218,10 @@ public class RobocodeClassLoader extends ClassLoader {
 			cachedClasses.put(name, c);
 			return c;
 		} catch (IOException e) {
-			throw new ClassNotFoundException("Could not find: " + name + ": " + e);
+			ClassNotFoundException classNotFoundException = new ClassNotFoundException("Could not find: " + name);
+
+			classNotFoundException.initCause(e);
+			throw classNotFoundException;
 		} finally {
 			if (fis != null) {
 				try {
@@ -238,11 +245,14 @@ public class RobocodeClassLoader extends ClassLoader {
 			cachedClasses.clear();
 		}
 
+		// Set ClassLoader.class.classes to null to prevent memory leaks
 		if (classesField != null) {
 			try {
+				// don't do that Internal Error (44494354494F4E4152590E4350500100)
+				// classesField.setAccessible(true);
 				classesField.set(this, null);
-			} catch (IllegalArgumentException e) {// TODO Graceful error handling
-			} catch (IllegalAccessException e) {// TODO Graceful error handling
+			} catch (IllegalArgumentException e) {// logError(e);
+			} catch (IllegalAccessException e) {// logError(e);
 			}
 		}
 

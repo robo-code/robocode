@@ -30,6 +30,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
+	private boolean isDuplicate;
 	private String name;
 	private RobotPeer teamLeader;
 	private TeamStatistics teamStatistics;
@@ -40,14 +41,20 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 	}
 
 	public int compareTo(ContestantPeer cp) {
-		double score1 = teamStatistics.getTotalScore();
-		double score2 = cp.getStatistics().getTotalScore();
+		double myScore = teamStatistics.getTotalScore();
+		double hisScore = cp.getStatistics().getTotalScore();
 
 		if (teamLeader != null && teamLeader.getBattle().isRunning()) {
-			score1 += teamStatistics.getCurrentScore();
-			score2 += cp.getStatistics().getCurrentScore();
+			myScore += teamStatistics.getCurrentScore();
+			hisScore += cp.getStatistics().getCurrentScore();
 		}
-		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+		if (myScore < hisScore) {
+			return -1;
+		}
+		if (myScore > hisScore) {
+			return 1;
+		}
+		return 0;
 	}
 
 	public ContestantStatistics getStatistics() {
@@ -56,6 +63,17 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setDuplicate(int count) {
+		isDuplicate = true;
+		String countString = " (" + (count + 1) + ')';
+
+		name = name + countString;
+	}
+
+	public boolean isDuplicate() {
+		return isDuplicate;
 	}
 
 	public RobotPeer getTeamLeader() {

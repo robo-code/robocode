@@ -33,29 +33,33 @@
 package robocode.control;
 
 
-import robocode.RobocodeFileOutputStream;
+import robocode.BattleResults;
+import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.BattleCompletedEvent;
+import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.events.BattleMessageEvent;
 import robocode.io.FileUtil;
-import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
-import robocode.security.RobocodeSecurityManager;
-import robocode.security.RobocodeSecurityPolicy;
-import robocode.security.SecureInputStream;
-import robocode.security.SecurePrintStream;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.security.Policy;
 import java.util.List;
 
 
 /**
- * The RobocodeEngine is meant for 3rd party applications to let them run
- * battles in Robocode and receive the results. This class in the main class
- * of the {@code robocode.control} package.
+ * The RobocodeEngine is the old interface provided for external applications
+ * in order to let these applications run battles within the Robocode application,
+ * and to get the results from these battles.
+ * </p>
+ * This class in the main class of the {@code robocode.control} package, and the
+ * reason for having this control package.
+ * </p>
+ * The RobocodeEngine is used by RoboRumble@Home, which is integrated in
+ * Robocode, but also RoboLeague and RobocodeJGAP. In addition, the
+ * RobocodeEngine is also used by the test units for testing the Robocode
+ * application itself.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -63,21 +67,10 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeEngine {
-	private RobocodeListener listener;
-	private RobocodeManager manager;
 
-	static PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-	static PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-	static InputStream sysin = new SecureInputStream(System.in, "System.in");
-
-	static {
-		// Secure System.in, System.err, System.out
-		System.setOut(sysout);
-		if (!System.getProperty("debug", "false").equals("true")) {
-			System.setErr(syserr);
-		}
-		System.setIn(sysin);
-	}
+	RobocodeManager manager;
+	private BattleObserver battleObserver;
+	private BattleSpecification battleSpecification;
 
 	/**
 	 * Creates a new RobocodeEngine for controlling Robocode.
@@ -116,16 +109,17 @@ public class RobocodeEngine {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void finalize() throws Throwable {
-		super.finalize();
-
-		// Make sure close() is called to prevent memory leaks
-		close();
+	protected void finalize() throws Throwable {
+		try {
+			// Make sure close() is called to prevent memory leaks
+			close();
+		} finally {
+			super.finalize();
+		}
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {
-		this.listener = listener;
-		manager = new RobocodeManager(true, listener);
+		manager = new RobocodeManager(true);
 		manager.setEnableGUI(false);
 
 		try {
@@ -135,19 +129,11 @@ public class RobocodeEngine {
 			return;
 		}
 
-		Thread.currentThread().setName("Application Thread");
-		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
-
-		Policy.setPolicy(securityPolicy);
-		System.setSecurityManager(
-				new RobocodeSecurityManager(Thread.currentThread(), manager.getThreadManager(), true, false));
-		RobocodeFileOutputStream.setThreadManager(manager.getThreadManager());
-
-		ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-		while (tg != null) {
-			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
-			tg = tg.getParent();
+		manager.initSecurity(true, false);
+		if (listener != null) {
+			battleObserver = new BattleObserver();
+			battleObserver.listener = listener;
+			manager.getBattleManager().addListener(battleObserver);
 		}
 	}
 
@@ -159,6 +145,9 @@ public class RobocodeEngine {
 	public void close() {
 		if (manager.isGUIEnabled()) {
 			manager.getWindowManager().getRobocodeFrame().dispose();
+		}
+		if (battleObserver != null) {
+			manager.getBattleManager().removeListener(battleObserver);
 		}
 		if (manager != null) {
 			manager.cleanup();
@@ -197,11 +186,11 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Returns the robots available for for battle from the local robot
-	 * repository in the Robocode home folder.
+	 * Returns all robots available from the local robot repository of Robocode.
+	 * These robots must exists in the /robocode/robots directory, and must be
+	 * compiled in advance.
 	 *
-	 * @return an array of all available robots for battle from the local robot
-	 *         repository.
+	 * @return an array of all available robots from the local robot repository.
 	 * @see RobotSpecification
 	 */
 	public RobotSpecification[] getLocalRepository() {
@@ -219,15 +208,16 @@ public class RobocodeEngine {
 	/**
 	 * Runs the specified battle.
 	 *
-	 * @param battle the specification of the battle to play including the
-	 *               participation robots.
+	 * @param battleSpecification the specification of the battle to play including the
+	 *                            participation robots.
 	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
 	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification
 	 * @see #getLocalRepository()
 	 */
-	public void runBattle(BattleSpecification battle) {
-		manager.getBattleManager().startNewBattle(battle, false);
+	public void runBattle(BattleSpecification battleSpecification) {
+		this.battleSpecification = battleSpecification;
+		manager.getBattleManager().startNewBattle(battleSpecification, false);
 	}
 
 	/**
@@ -237,6 +227,38 @@ public class RobocodeEngine {
 	 * @see RobocodeListener#battleAborted(BattleSpecification)
 	 */
 	public void abortCurrentBattle() {
-		manager.getBattleManager().stop();
+		manager.getBattleManager().stop(true);
+	}
+
+	/**
+	 * Registede only if listener in not null
+	 */
+	private class BattleObserver extends BattleAdaptor {
+		private RobocodeListener listener;
+
+		@Override
+		public void onBattleEnded(BattleEndedEvent event) {
+			if (event.isAborted()) {
+				listener.battleAborted(battleSpecification);
+			}
+		}
+
+		@Override
+		public void onBattleCompleted(BattleCompletedEvent event) {
+			// assumption there is that RobocodeEngine is unable to start team battles
+			final BattleResults[] results = event.getResults();
+			RobotResults[] robotResults = new RobotResults[results.length];
+			RobotSpecification[] robots = battleSpecification.getRobots();
+
+			for (int index = 0; index < results.length; index++) {
+				robotResults[index] = new RobotResults(robots[index], results[index]);
+			}
+			listener.battleComplete(battleSpecification, robotResults);
+		}
+
+		@Override
+		public void onBattleMessage(BattleMessageEvent event) {
+			listener.battleMessage(event.getMessage());
+		}
 	}
 }

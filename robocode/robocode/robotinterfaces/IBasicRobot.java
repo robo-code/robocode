@@ -37,7 +37,7 @@ public interface IBasicRobot {
 
 	/**
 	 * This method is called by the game to invoke the
-	 * {@link java.lang.Runnable#run()} method of your robot, where the program
+	 * {@link java.lang.Runnable#run() run()} method of your robot, where the program
 	 * of your robot is implemented.
 	 *
 	 * @return a runnable implementation

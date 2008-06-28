@@ -21,9 +21,9 @@
 package robocode.peer.robot;
 
 
+import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
-import robocode.io.Logger;
 import robocode.peer.RobotPeer;
 
 

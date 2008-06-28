@@ -16,37 +16,30 @@
 package robocode.control;
 
 
+import robocode.BattleResults;
+
+
 /**
  * Contains the battle results for an individual robot, which is given as input
  * parameter with the
- * {@link RobocodeListener#battleComplete(BattleSpecification, RobotResults[])}
- * event handler.
+ * {@link RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
+ * RobocodeListener#battleComplete()} event handler.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @see RobocodeListener
  */
-public class RobotResults implements java.io.Serializable {
+public class RobotResults extends BattleResults {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private RobotSpecification robot;
-	private int rank;
-	private double score;
-	private double survival;
-	private double lastSurvivorBonus;
-	private double bulletDamage;
-	private double bulletDamageBonus;
-	private double ramDamage;
-	private double ramDamageBonus;
-	private int firsts;
-	private int seconds;
-	private int thirds;
 
 	/**
 	 * Constructs a new RobotResults.
 	 *
 	 * @param robot             the robot these results are for
+	 * @param teamLeaderName    team name
 	 * @param rank              the rank of the robot in the battle
 	 * @param score             the total score for the robot in the battle
 	 * @param survival          the survival score for the robot in the battle
@@ -61,6 +54,7 @@ public class RobotResults implements java.io.Serializable {
 	 */
 	public RobotResults(
 			RobotSpecification robot,
+			String teamLeaderName,
 			int rank,
 			double score,
 			double survival,
@@ -73,18 +67,19 @@ public class RobotResults implements java.io.Serializable {
 			int seconds,
 			int thirds
 			) {
+		super(teamLeaderName, rank, score, survival, lastSurvivorBonus, bulletDamage, bulletDamageBonus, ramDamage,
+				ramDamageBonus, firsts, seconds, thirds);
 		this.robot = robot;
-		this.rank = rank;
-		this.score = score;
-		this.survival = survival;
-		this.lastSurvivorBonus = lastSurvivorBonus;
-		this.bulletDamage = bulletDamage;
-		this.bulletDamageBonus = bulletDamageBonus;
-		this.ramDamage = ramDamage;
-		this.ramDamageBonus = ramDamageBonus;
-		this.firsts = firsts;
-		this.seconds = seconds;
-		this.thirds = thirds;
+	}
+
+	public RobotResults(
+			RobotSpecification robot,
+			BattleResults results) {
+		super(results.getTeamLeaderName(), results.getRank(), results.getScore(), results.getSurvival(),
+				results.getLastSurvivorBonus(), results.getBulletDamage(), results.getBulletDamageBonus(),
+				results.getRamDamage(), results.getRamDamageBonus(), results.getFirsts(), results.getSeconds(),
+				results.getThirds());
+		this.robot = robot;
 	}
 
 	/**
@@ -94,104 +89,5 @@ public class RobotResults implements java.io.Serializable {
 	 */
 	public RobotSpecification getRobot() {
 		return robot;
-	}
-
-	/**
-	 * Returns the rank of this robot in the battle results.
-	 *
-	 * @return the rank of this robot in the battle results.
-	 */
-	public int getRank() {
-		return rank;
-	}
-
-	/**
-	 * Returns the total score of this robot in the battle.
-	 *
-	 * @return the total score of this robot in the battle.
-	 */
-	public int getScore() {
-		return (int) (score + 0.5);
-	}
-
-	/**
-	 * Returns the survival score of this robot in the battle.
-	 *
-	 * @return the survival score of this robot in the battle.
-	 */
-	public int getSurvival() {
-		return (int) (survival + 0.5);
-	}
-
-	/**
-	 * Returns the last survivor score of this robot in the battle.
-	 *
-	 * @return the last survivor score of this robot in the battle.
-	 */
-	public int getLastSurvivorBonus() {
-		return (int) (lastSurvivorBonus + 0.5);
-	}
-
-	/**
-	 * Returns the bullet damage score of this robot in the battle.
-	 *
-	 * @return the bullet damage score of this robot in the battle.
-	 */
-	public int getBulletDamage() {
-		return (int) (bulletDamage + 0.5);
-	}
-
-	/**
-	 * Returns the bullet damage bonus of this robot in the battle.
-	 *
-	 * @return the bullet damage bonus of this robot in the battle.
-	 */
-	public int getBulletDamageBonus() {
-		return (int) (bulletDamageBonus + 0.5);
-	}
-
-	/**
-	 * Returns the ram damage score of this robot in the battle.
-	 *
-	 * @return the ram damage score of this robot in the battle.
-	 */
-	public int getRamDamage() {
-		return (int) (ramDamage + 0.5);
-	}
-
-	/**
-	 * Returns the ram damage bonus of this robot in the battle.
-	 *
-	 * @return the ram damage bonus of this robot in the battle.
-	 */
-	public int getRamDamageBonus() {
-		return (int) (ramDamageBonus + 0.5);
-	}
-
-	/**
-	 * Returns the number of rounds this robot placed first in the battle.
-	 *
-	 * @return the number of rounds this robot placed first in the battle.
-	 */
-	public int getFirsts() {
-		return firsts;
-	}
-
-	/**
-	 * Returns the number of rounds this robot placed second in the battle.
-	 *
-	 * @return the number of rounds this robot placed second in the battle.
-	 */
-	public int getSeconds() {
-		return seconds;
-	}
-
-	/**
-	 * Returns the number of rounds this robot placed third in the battle.
-	 *
-	 * @return the number of rounds this robot placed third in the battle.
-	 */
-	public int getThirds() {
-		return thirds;
 	}
 }

@@ -102,7 +102,10 @@ public class BufferedPipedOutputStream extends OutputStream {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 
-					throw new IOException("read interrupted");
+					IOException ioException = new IOException("read interrupted");
+
+					ioException.initCause(e);
+					throw ioException;
 				}
 			}
 			int result = buf[readIndex++];

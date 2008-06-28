@@ -12,7 +12,6 @@
 package robocode.peer.proxies;
 
 
-import robocode.Bullet;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
@@ -41,10 +40,6 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 
 	public void turnRadar(double radians) {
 		((IStandardRobotPeer) peer).turnRadar(radians);
-	}
-
-	public Bullet fire(double power) {
-		return peer.fire(power);
 	}
 
 	// fast setters

@@ -28,15 +28,12 @@
 package robocode.sound;
 
 
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.events.*;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.RobotState;
-import robocode.control.BattleSpecification;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -331,21 +328,21 @@ public class SoundManager {
 		}
 
 		@Override
-		public void onBattleStarted(BattleSpecification battleSpecification) {
+		public void onBattleStarted(BattleStartedEvent event) {
 			playBackgroundMusic();
 		}
 
 		@Override
-		public void onBattleEnded(boolean isAborted) {
+		public void onBattleEnded(BattleEndedEvent event) {
 			stopBackgroundMusic();
 			playEndOfBattleMusic();
 		}
 
 		@Override
-		public void onTurnEnded(TurnSnapshot turnSnapshot) {
-			int battleFieldWidth = manager.getBattleManager().getBattle().getBattleField().getWidth();
+		public void onTurnEnded(TurnEndedEvent event) {
+			int battleFieldWidth = manager.getBattleManager().getBattleProperties().getBattlefieldWidth();
 
-			for (BulletSnapshot bp : turnSnapshot.getBullets()) {
+			for (BulletSnapshot bp : event.getTurnSnapshot().getBullets()) {
 				if (bp.getFrame() == 0) {
 					playBulletSound(bp, battleFieldWidth);
 				}
@@ -353,7 +350,7 @@ public class SoundManager {
 
 			boolean playedRobotHitRobot = false;
 
-			for (RobotSnapshot rp : turnSnapshot.getRobots()) {
+			for (RobotSnapshot rp : event.getTurnSnapshot().getRobots()) {
 				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
 				if (rp.getState() == RobotState.HIT_ROBOT) {
 					if (playedRobotHitRobot) {

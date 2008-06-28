@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.util;
+package robocode.gfx;
 
 
 import java.awt.*;

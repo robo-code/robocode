@@ -59,13 +59,13 @@ public class Repository {
 
 				if (spec instanceof RobotFileSpecification) {
 					RobotFileSpecification robotSpec = (RobotFileSpecification) spec;
-				
+
 					if (onlyWithSource && !robotSpec.getRobotJavaSourceIncluded()) {
 						continue;
 					}
 				} else if (spec instanceof TeamSpecification) {
 					TeamSpecification teamSpec = (TeamSpecification) spec;
-				
+
 					if (onlyWithSource && !teamSpec.getTeamJavaSourceIncluded()) {
 						continue;
 					}

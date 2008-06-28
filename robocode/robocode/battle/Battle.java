@@ -95,30 +95,34 @@
 package robocode.battle;
 
 
-import static robocode.io.Logger.logError;
-import static robocode.io.Logger.logMessage;
-import robocode.io.Logger;
+import robocode.BattleEndedEvent;
 import robocode.*;
-import robocode.robotpaint.Graphics2DProxy;
-import robocode.battle.events.BattleEventDispatcher;
+import robocode.battle.events.*;
 import robocode.battle.record.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
-import robocode.control.RobotResults;
-import robocode.manager.BattleManager;
+import robocode.common.Command;
+import robocode.control.RandomFactory;
+import robocode.io.Logger;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.RobotStatistics;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotpaint.Graphics2DProxy;
 import robocode.security.RobocodeClassLoader;
 
 import static java.lang.Math.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -147,14 +151,15 @@ public class Battle implements Runnable {
 
 	// Objects we use
 	private BattleField battleField;
-	private BattleManager battleManager;
+	private IBattleManager battleManager;
 	private RobocodeManager manager;
 
-	// Battle items
+	// Battle thread
 	private Thread battleThread;
-	private final Object battleMonitor = new Object();
-	private volatile boolean running;
-	private volatile boolean aborted;
+
+	// Battle state
+	private AtomicBoolean isRunning = new AtomicBoolean(false);
+	private boolean isAborted;
 
 	// Option related items
 	private double gunCoolingRate = .1;
@@ -168,7 +173,7 @@ public class Battle implements Runnable {
 	private int maxSkippedTurns = 30;
 	private int maxSkippedTurnsWithIO = 240;
 	private boolean parallelOn;
-	private double parallelConstant; 
+	private double parallelConstant;
 
 	// Current round items
 	private int numRounds;
@@ -178,13 +183,17 @@ public class Battle implements Runnable {
 	private int activeRobots;
 	private boolean roundOver;
 
-	// Death events
-	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
-
 	// Objects in the battle
 	private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
+	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
+
+	// Death events
+	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
+
+	// Flag specifying if debugging is enabled thru the debug command line option
+	private boolean isDebugging;
 
 	// Robot loading related items
 	private Thread unsafeLoadRobotsThread;
@@ -206,26 +215,34 @@ public class Battle implements Runnable {
 	// TPS (turns per second) calculation stuff
 	private int tps;
 	private long turnStartTime;
-	long measuredTurnStartTime;
-	int measuredTurnCounter;
+	private long measuredTurnStartTime;
+	private int measuredTurnCounter;
+
+	// Battle control
+	private boolean isPaused;
+	private int stepCount;
 
 	/**
 	 * Battle constructor
 	 */
-	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher) {
+	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		super();
+		isPaused = paused;
+		stepCount = 0;
 
 		this.battleField = battleField;
 		this.manager = manager;
 		this.eventDispatcher = eventDispatcher;
 
 		battleManager = manager.getBattleManager();
+
+		isDebugging = System.getProperty("debug", "false").equals("true");
 	}
 
 	public int getTPS() {
 		return tps;
 	}
-	
+
 	public void setReplay(boolean replay) {
 		this.replay = replay;
 	}
@@ -237,7 +254,7 @@ public class Battle implements Runnable {
 	public boolean hasReplayRecord() {
 		return battleRecord != null;
 	}
-	
+
 	/**
 	 * When an object implementing interface {@code Runnable} is used
 	 * to create a thread, starting the thread causes the object's
@@ -250,7 +267,7 @@ public class Battle implements Runnable {
 	 * @see java.lang.Thread#run()
 	 */
 	public void run() {
-		initialize();
+		initializeBattle();
 
 		roundNum = 0;
 
@@ -258,7 +275,7 @@ public class Battle implements Runnable {
 		if (parallelOn) {
 			// how could robots share CPUs ?
 			parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
-			// four CPUs can't run two single threaded robot faster than two CPUs 
+			// four CPUs can't run two single threaded robot faster than two CPUs
 			if (parallelConstant < 1) {
 				parallelConstant = 1;
 			}
@@ -298,84 +315,80 @@ public class Battle implements Runnable {
 				r.getRobotThreadManager().cleanup();
 			}
 			unsafeLoadRobotsThread.interrupt();
-
-			if (!isAborted() && manager.isGUIEnabled() && manager.getProperties().getOptionsCommonShowResults()) {
-				manager.getWindowManager().showResultsDialog();
-			}
-
-			battleManager.printResultsData(this);
 		} else {
 			// Replay
 
 			if (!isAborted()) {
-				if (manager.getProperties().getOptionsCommonShowResults()) {
-					RobotResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
+				BattleResults[] results = battleRecord.rounds.get(battleRecord.rounds.size() - 1).results;
 
-					for (int i = 0; i < robots.size(); i++) {
-						RobotPeer robot = robots.get(i);
+				for (int i = 0; i < robots.size(); i++) {
+					RobotPeer robot = robots.get(i);
 
-						RobotStatistics stats = new RobotStatistics(robot, results[i]);
+					RobotStatistics stats = new RobotStatistics(robot, results[i]);
 
-						robot.setStatistics(stats);
-					}
-
-					manager.getWindowManager().showResultsDialog();
+					robot.setStatistics(stats);
 				}
 			}
 		}
 
-		eventDispatcher.onBattleEnded(isAborted());
+		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
 		if (!isAborted()) {
-			eventDispatcher.onBattleCompleted(manager.getBattleManager().getBattleSpecification(), computeResults());
+			eventDispatcher.onBattleCompleted(
+					new BattleCompletedEvent(manager.getBattleManager().getBattleProperties(), computeResults()));
 		}
-        Logger.setLogListener(null);
+		Logger.setLogListener(null);
 
-		// The results dialog needs the battle object to be complete, so we
-		// won't clean it up just yet, instead the ResultsDialog is responsible
-		// for cleaning up the battle when its done with it.
-		if (!manager.isGUIEnabled()) {
-			cleanup();
-		}
+		cleanup();
 
 		// Notify that the battle is over
-		synchronized (battleMonitor) {
-			running = false;
-			battleMonitor.notifyAll();
+		synchronized (isRunning) {
+			isRunning.set(false);
+			isRunning.notifyAll();
 		}
 	}
 
-	public void waitTillRunning() {
-		synchronized (battleMonitor) {
-			while (!running) {
+	public void waitTillStarted() {
+		synchronized (isRunning) {
+			while (!isRunning.get()) {
 				try {
-					battleMonitor.wait();
+					isRunning.wait();
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 
-					return;
+					return; // Break out
 				}
 			}
 		}
 	}
 
-	private RobotResults[] computeResults() {
+	public void waitTillOver() {
+		synchronized (isRunning) {
+			while (isRunning.get()) {
+				try {
+					isRunning.wait();
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+
+					return; // Break out
+				}
+			}
+		}
+	}
+
+	private BattleResults[] computeResults() {
 		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(getContestants());
 
 		Collections.sort(orderedPeers);
+		Collections.reverse(orderedPeers);
 
-		RobotResults results[] = new RobotResults[orderedPeers.size()];
+		BattleResults results[] = new BattleResults[orderedPeers.size()];
 
 		for (int i = 0; i < results.length; i++) {
 			ContestantPeer peer = orderedPeers.get(i);
-			RobotPeer robotPeer = (peer instanceof RobotPeer) ? (RobotPeer) peer : ((TeamPeer) peer).getTeamLeader();
 
-			ContestantStatistics stats = peer.getStatistics();
-
-			results[i] = new RobotResults(robotPeer.getRobotClassManager().getControlRobotSpecification(), (i + 1),
-					stats.getTotalScore(), stats.getTotalSurvivalScore(), stats.getTotalLastSurvivorBonus(),
-					stats.getTotalBulletDamageScore(), stats.getTotalBulletKillBonus(), stats.getTotalRammingDamageScore(),
-					stats.getTotalRammingKillBonus(), stats.getTotalFirsts(), stats.getTotalSeconds(), stats.getTotalThirds());
+			results[i] = peer.getStatistics().getResults(i + 1);
 		}
 		return results;
 	}
@@ -385,12 +398,14 @@ public class Battle implements Runnable {
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
-		RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota());
+		RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota(),
+				robots.size());
 		TeamPeer teamManager = robotClassManager.getTeamManager();
 
 		if (teamManager != null) {
 			teamManager.add(robotPeer);
 			addContestant(teamManager);
+
 		} else {
 			addContestant(robotPeer);
 		}
@@ -412,12 +427,29 @@ public class Battle implements Runnable {
 		}
 		if (count > 0) {
 			robotPeer.setDuplicate(count);
+		} else {
+			robotPeer.setUnicate();
 		}
 		robots.add(robotPeer);
 	}
 
 	private void addContestant(ContestantPeer c) {
 		if (!contestants.contains(c)) {
+			int count = 0;
+
+			for (ContestantPeer cp : contestants) {
+				if (cp.getName().equals(c.getName())) {
+					if (count == 0) {
+						if (!cp.isDuplicate()) {
+							cp.setDuplicate(0);
+						}
+					}
+					count++;
+				}
+			}
+			if (count > 0) {
+				c.setDuplicate(count);
+			}
 			contestants.add(c);
 		}
 	}
@@ -426,15 +458,7 @@ public class Battle implements Runnable {
 		return contestants;
 	}
 
-	public void cleanup() {
-		for (RobotPeer r : robots) {
-			// Clear all static field on the robot (at class level)
-			r.cleanupStaticFields();
-
-			// Clear the robot object by removing the reference to it
-			r.setRobot(null);
-			r.cleanup();
-		}
+	public synchronized void cleanup() {
 
 		if (contestants != null) {
 			contestants.clear();
@@ -442,8 +466,21 @@ public class Battle implements Runnable {
 		}
 
 		if (robots != null) {
+			for (RobotPeer r : robots) {
+				// Clear all static field on the robot (at class level)
+				r.cleanupStaticFields();
+
+				// Clear the robot object by removing the reference to it
+				r.setRobot(null);
+				r.cleanup();
+			}
 			robots.clear();
 			robots = null;
+		}
+
+		if (pendingCommands != null) {
+			pendingCommands.clear();
+			// don't pendingCommands = null;
 		}
 
 		battleField = null;
@@ -457,6 +494,7 @@ public class Battle implements Runnable {
 
 	private void cleanupRound() {
 		if (!replay) {
+
 			logMessage("Round " + (roundNum + 1) + " cleaning up.");
 
 			for (RobotPeer r : robots) {
@@ -514,7 +552,7 @@ public class Battle implements Runnable {
 	private List<RobotPeer> getRobotsAtRandom() {
 		List<RobotPeer> shuffledList = new ArrayList<RobotPeer>(robots);
 
-		Collections.shuffle(shuffledList);
+		Collections.shuffle(shuffledList, RandomFactory.getRandom());
 		return shuffledList;
 	}
 
@@ -527,14 +565,12 @@ public class Battle implements Runnable {
 		return null;
 	}
 
-	private void initialize() {
+	private void initializeBattle() {
 		// Notify that the battle is now running
-		synchronized (battleMonitor) {
-			running = true;
-			battleMonitor.notifyAll();
+		synchronized (isRunning) {
+			isRunning.set(true);
+			isRunning.notifyAll();
 		}
-
-		eventDispatcher.onBattleStarted(manager.getBattleManager().getBattleSpecification());
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
@@ -577,6 +613,9 @@ public class Battle implements Runnable {
 					r.setTeamRobot(robotFileSpecification.isTeamRobot());
 					r.setDroid(robotFileSpecification.isDroid());
 
+					// create proxy
+					r.createRobotProxy();
+
 					initializeRobotPosition(r);
 
 				} catch (Throwable e) {
@@ -584,6 +623,14 @@ public class Battle implements Runnable {
 					e.printStackTrace(r.getOut());
 				}
 			}
+		}
+
+		final TurnSnapshot snapshot = new TurnSnapshot(this);
+		final BattleProperties battleProperties = manager.getBattleManager().getBattleProperties();
+
+		eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleProperties, isReplay()));
+		if (isPaused) {
+			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
 	}
 
@@ -627,13 +674,11 @@ public class Battle implements Runnable {
 		currentTime = 0;
 		inactiveTurnCount = 0;
 
-		eventDispatcher.onRoundStarted(roundNum);
+		eventDispatcher.onRoundStarted(new RoundStartedEvent(roundNum));
 
 		if (isRecordingEnabled) {
 			currentRoundRecord = new RoundRecord();
 		}
-
-		battleManager.startNewRound();
 
 		while (!roundOver) {
 			runTurn();
@@ -643,7 +688,7 @@ public class Battle implements Runnable {
 
 		bullets.clear();
 
-		eventDispatcher.onRoundEnded();
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(roundNum - 1));
 	}
 
 	private void replayRound() {
@@ -654,9 +699,7 @@ public class Battle implements Runnable {
 		endTimer = 0;
 		currentTime = 0;
 
-		eventDispatcher.onRoundStarted(roundNum);
-
-		battleManager.startNewRound();
+		eventDispatcher.onRoundStarted(new RoundStartedEvent(roundNum));
 
 		while (!(roundOver || isAborted())) {
 			replayTurn();
@@ -664,11 +707,13 @@ public class Battle implements Runnable {
 
 		bullets.clear();
 
-		eventDispatcher.onRoundEnded();
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(roundNum - 1));
 	}
 
 	private void replayTurn() {
-		if (shouldPause() && !battleManager.shouldStep()) {
+		processCommand();
+
+		if (shouldPause() && !shouldStep()) {
 			shortSleep();
 			return;
 		}
@@ -683,7 +728,9 @@ public class Battle implements Runnable {
 	}
 
 	private void runTurn() {
-		if (shouldPause() && !battleManager.shouldStep()) {
+		processCommand();
+
+		if (shouldPause() && !shouldStep()) {
 			shortSleep();
 			return;
 		}
@@ -704,7 +751,11 @@ public class Battle implements Runnable {
 
 		deathEvents.clear();
 
-		roundOver = checkBattleOver();
+		if (isAborted() || oneTeamRemaining()) {
+			processShutdown();
+		}
+
+		roundOver = (endTimer > 5 * 30);
 
 		inactiveTurnCount++;
 
@@ -723,11 +774,11 @@ public class Battle implements Runnable {
 	private void prepareTurn() {
 		turnStartTime = System.nanoTime();
 
-		eventDispatcher.onTurnStarted();
+		eventDispatcher.onTurnStarted(new TurnStartedEvent());
 	}
 
 	private void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnSnapshot(this));
+		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this)));
 
 		synchronizeTPS();
 
@@ -736,7 +787,7 @@ public class Battle implements Runnable {
 
 	private void calculateTPS() {
 		// Calculate the current turns per second (TPS)
-		
+
 		if (measuredTurnCounter++ == 0) {
 			measuredTurnStartTime = turnStartTime;
 		}
@@ -753,7 +804,7 @@ public class Battle implements Runnable {
 		// Let the battle sleep is the GUI is enabled and is not minimized
 		// in order to keep the desired TPS
 
-		if (!battleManager.isRunningMinimized()) {
+		if (battleManager.isManagedTPS()) {
 			long delay = 0;
 
 			if (!isAborted() && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
@@ -829,20 +880,21 @@ public class Battle implements Runnable {
 			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
 
 			Collections.sort(orderedRobots);
+			Collections.reverse(orderedRobots);
 
-			RobotResults results[] = new RobotResults[robots.size()];
+			BattleResults results[] = new BattleResults[robots.size()];
 
-			int rank;
+			int index;
 
-			for (int i = 0; i < robots.size(); i++) {
-				RobotPeer r = orderedRobots.get(i);
+			for (int rank = 0; rank < robots.size(); rank++) {
+				RobotPeer r = orderedRobots.get(rank);
 
-				for (rank = 0; rank < robots.size(); rank++) {
-					if (robots.get(rank) == r) {
+				for (index = 0; index < robots.size(); index++) {
+					if (robots.get(index) == r) {
 						break;
 					}
 				}
-				results[rank] = r.getRobotStatistics().getResults(i + 1);
+				results[index] = r.getRobotStatistics().getResults(rank + 1);
 			}
 
 			currentRoundRecord.results = results;
@@ -922,7 +974,15 @@ public class Battle implements Runnable {
 	}
 
 	private boolean shouldPause() {
-		if (battleManager.isPaused() && !isAborted()) {
+		if (isPaused && !isAborted()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean shouldStep() {
+		if (stepCount > 0) {
+			stepCount--;
 			return true;
 		}
 		return false;
@@ -1027,7 +1087,7 @@ public class Battle implements Runnable {
 	}
 
 	private void setSkippedTurns(RobotPeer r) {
-		if (r.isSleeping() || !r.isRunning()) {
+		if (r.isSleeping() || !r.isRunning() || isDebugging) {
 			r.setSkippedTurns(0);
 		} else {
 			r.setSkippedTurns(r.getSkippedTurns() + 1);
@@ -1103,12 +1163,15 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private boolean checkBattleOver() {
-		boolean battleOver = false;
-
-		// Check game over
-		if (isAborted() || oneTeamRemaining()) {
-			if (endTimer == 0) {
+	private void processShutdown() {
+		if (endTimer == 0) {
+			if (isAborted()) {
+				for (RobotPeer r : getRobotsAtRandom()) {
+					if (!r.isDead()) {
+						r.getOut().println("SYSTEM: game aborted.");
+					}
+				}
+			} else if (oneTeamRemaining()) {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
@@ -1117,6 +1180,8 @@ public class Battle implements Runnable {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreLastSurvivor();
 							r.setWinner(true);
+							r.getOut().println("SYSTEM: " + r.getName() + " wins the round.");
+							r.getEventManager().add(new WinEvent());
 							if (r.getTeamPeer() != null) {
 								if (r.isTeamLeader()) {
 									leaderFirsts = true;
@@ -1131,21 +1196,32 @@ public class Battle implements Runnable {
 					winningTeam.getTeamLeader().getRobotStatistics().scoreFirsts();
 				}
 			}
+		}
 
-			if (endTimer > 4 * 30) {
-				for (RobotPeer r : robots) {
-					if (!r.isDead()) {
-						r.setHalt(true);
-					}
-				}
-			}
+		if (endTimer == 1 && (isAborted() || isLastRound())) {
 
-			endTimer++;
-			if (endTimer > 5 * 30) {
-				battleOver = true;
+			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
+
+			Collections.sort(orderedRobots);
+			Collections.reverse(orderedRobots);
+
+			for (int rank = 0; rank < robots.size(); rank++) {
+				RobotPeer r = orderedRobots.get(rank);
+				BattleResults resultsForRobots = r.getStatistics().getResults(rank + 1);
+
+				r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots));
 			}
 		}
-		return battleOver;
+
+		if (endTimer > 4 * 30) {
+			for (RobotPeer r : robots) {
+				if (!r.isDead()) {
+					r.setHalt(true);
+				}
+			}
+		}
+
+		endTimer++;
 	}
 
 	private int getActiveContestantCount(RobotPeer peer) {
@@ -1231,17 +1307,22 @@ public class Battle implements Runnable {
 		for (RobotPeer r : robots) {
 			name = r.getRobotClassManager().getClassNameManager().getFullPackage();
 			if (name != null && name.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				r.getOut().println(
-						"SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
-						+ " characters maximum please.");
+				final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+						+ " characters maximum please.";
+
+				r.getOut().println(message);
+				logMessage(message);
 				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 
 			name = r.getRobotClassManager().getClassNameManager().getShortClassName();
 			if (name != null && name.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-				r.getOut().println(
-						"SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH + " characters maximum please.");
+				final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+						+ " characters maximum please.";
+
+				r.getOut().println(message);
+				logMessage(message);
 				r.getOut().println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
@@ -1267,9 +1348,10 @@ public class Battle implements Runnable {
 						// Start the robot thread
 						r.getRobotThreadManager().start();
 
-						// Wait for the robot to go to sleep (take action)
-						r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
-
+						if (!isDebugging) {
+							// Wait for the robot to go to sleep (take action)
+							r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
+						}
 					} catch (InterruptedException e) {
 						logMessage("Wait for " + r + " interrupted.");
 
@@ -1277,37 +1359,14 @@ public class Battle implements Runnable {
 						Thread.currentThread().interrupt();
 					}
 				}
-				if (!r.isSleeping()) {
-					logMessage("\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
+				if (!(r.isSleeping() || isDebugging)) {
+					logMessage(
+							"\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 				}
 			}
 		}
 
-		logError("");
-	}
-
-	public void stop() {
-		synchronized (battleMonitor) {
-			// Return immediately if the battle is not running
-			if (!running) {
-				return;
-			}
-
-			// Notify that the battle is aborted
-			aborted = true;
-			battleMonitor.notifyAll();
-
-			// Wait till the battle is not running anymore
-			while (running) {
-				try {
-					battleMonitor.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-					break;
-				}
-			}
-		}
+		logMessage("");
 	}
 
 	private void shortSleep() {
@@ -1346,6 +1405,7 @@ public class Battle implements Runnable {
 					robotClass = robotPeer.getRobotClassManager().getRobotClass();
 					if (robotClass == null) {
 						robotPeer.getOut().println("SYSTEM: Skipping robot: " + robotPeer.getName());
+						robotPeer.setEnergy(0);
 						continue;
 					}
 					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
@@ -1353,15 +1413,21 @@ public class Battle implements Runnable {
 					robotPeer.setRobot(bot);
 
 					bot.setOut(robotPeer.getOut());
-					bot.setPeer(robotPeer);
+					bot.setPeer(robotPeer.getRobotProxy());
 				} catch (IllegalAccessException e) {
 					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
 					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
+					robotPeer.setEnergy(0);
+					robotPeer.setRobot(null);
+					logMessage(e);
 				} catch (Throwable e) {
 					robotPeer.getOut().println(
 							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
 					robotPeer.getOut().println("SYSTEM: " + e);
 					e.printStackTrace(robotPeer.getOut());
+					robotPeer.setRobot(null);
+					robotPeer.setEnergy(0);
+					logMessage(e);
 				}
 				if (roundNum > 0) {
 					initializeRobotPosition(robotPeer);
@@ -1527,6 +1593,10 @@ public class Battle implements Runnable {
 		return roundNum;
 	}
 
+	public boolean isLastRound() {
+		return (roundNum + 1 == numRounds);
+	}
+
 	/**
 	 * Sets the roundNum.
 	 *
@@ -1560,9 +1630,7 @@ public class Battle implements Runnable {
 	 * @return true if the battle is running, false otherwise
 	 */
 	public boolean isRunning() {
-		synchronized (battleMonitor) {
-			return running;
-		}
+		return isRunning.get();
 	}
 
 	/**
@@ -1571,9 +1639,7 @@ public class Battle implements Runnable {
 	 * @return true if the battle is aborted, false otherwise
 	 */
 	public boolean isAborted() {
-		synchronized (battleMonitor) {
-			return aborted;
-		}
+		return isAborted;
 	}
 
 	private class UnsafeLoadRobotsThread extends Thread {
@@ -1587,6 +1653,159 @@ public class Battle implements Runnable {
 		public void run() {
 			// Load robots
 			unsafeLoadRobots();
+		}
+	}
+
+	// --------------------------------------------------------------------------
+	// Processing and maintaining robot and battle controls
+	// --------------------------------------------------------------------------
+
+	public void stop(boolean waitTillEnd) {
+		sendCommand(new AbortCommand());
+
+		if (waitTillEnd) {
+			waitTillOver();
+		}
+	}
+
+	public void pause() {
+		sendCommand(new PauseCommand());
+	}
+
+	public void resume() {
+		sendCommand(new ResumeCommand());
+	}
+
+	public void step() {
+		sendCommand(new StepCommand());
+	}
+
+	public void killRobot(int robotIndex) {
+		sendCommand(new KillRobotCommand(robotIndex));
+	}
+
+	public void setPaintEnabled(int robotIndex, boolean enable) {
+		sendCommand(new EnableRobotPaintCommand(robotIndex, enable));
+	}
+
+	public void setSGPaintEnabled(int robotIndex, boolean enable) {
+		sendCommand(new EnableRobotSGPaintCommand(robotIndex, enable));
+	}
+
+	public void sendInteractiveEvent(Event e) {
+		sendCommand(new SendInteractiveEventCommand(e));
+	}
+
+	private void processCommand() {
+		Command command = pendingCommands.poll();
+
+		while (command != null) {
+			try {
+				command.execute();
+			} catch (Exception e) {
+				logError(e);
+			}
+			command = pendingCommands.poll();
+		}
+	}
+
+	private void sendCommand(Command command) {
+		pendingCommands.add(command);
+	}
+
+	private class RobotCommand extends Command {
+		final int robotIndex;
+
+		RobotCommand(int robotIndex) {
+			this.robotIndex = robotIndex;
+		}
+	}
+
+
+	private class KillRobotCommand extends RobotCommand {
+		KillRobotCommand(int robotIndex) {
+			super(robotIndex);
+		}
+
+		public void execute() {
+			robots.get(robotIndex).kill();
+		}
+	}
+
+
+	private class EnableRobotPaintCommand extends RobotCommand {
+		final boolean enablePaint;
+
+		EnableRobotPaintCommand(int robotIndex, boolean enablePaint) {
+			super(robotIndex);
+			this.enablePaint = enablePaint;
+		}
+
+		public void execute() {
+			robots.get(robotIndex).setPaintEnabled(enablePaint);
+		}
+	}
+
+
+	private class EnableRobotSGPaintCommand extends RobotCommand {
+		final boolean enableSGPaint;
+
+		EnableRobotSGPaintCommand(int robotIndex, boolean enableSGPaint) {
+			super(robotIndex);
+			this.enableSGPaint = enableSGPaint;
+		}
+
+		public void execute() {
+			robots.get(robotIndex).setSGPaintEnabled(enableSGPaint);
+		}
+	}
+
+
+	private class AbortCommand extends Command {
+		public void execute() {
+			isAborted = true;
+		}
+	}
+
+
+	private class PauseCommand extends Command {
+		public void execute() {
+			isPaused = true;
+			stepCount = 0;
+			eventDispatcher.onBattlePaused(new BattlePausedEvent());
+		}
+	}
+
+
+	private class ResumeCommand extends Command {
+		public void execute() {
+			isPaused = false;
+			stepCount = 0;
+			eventDispatcher.onBattleResumed(new BattleResumedEvent());
+		}
+	}
+
+
+	private class StepCommand extends Command {
+		public void execute() {
+			if (isPaused) {
+				stepCount++;
+			}
+		}
+	}
+
+
+	private class SendInteractiveEventCommand extends Command {
+		public final Event event;
+
+		SendInteractiveEventCommand(Event event) {
+			this.event = event;
+		}
+
+		public void execute() {
+			for (RobotPeer robot : robots) {
+				robot.onInteractiveEvent(event);
+			}
 		}
 	}
 }

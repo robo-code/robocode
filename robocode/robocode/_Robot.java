@@ -23,7 +23,7 @@ package robocode;
 
 /**
  * This class is used by the system, as well as being a placeholder for all deprecated
- * (meaning, you should not use them) calls for Robot.
+ * (meaning, you should not use them) calls for {@link Robot}.
  * <p/>
  * You should create a {@link Robot} instead.
  * <p/>

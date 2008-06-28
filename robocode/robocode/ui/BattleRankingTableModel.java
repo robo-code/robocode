@@ -22,18 +22,14 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.battle;
+package robocode.ui;
 
 
-import robocode.manager.RobocodeManager;
-import robocode.peer.ContestantPeer;
-import robocode.peer.ContestantStatistics;
-import robocode.peer.TeamPeer;
+import robocode.battle.snapshot.ScoreSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.text.StringUtil;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -48,12 +44,14 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
-	private RobocodeManager manager;
-	private Battle battle;
+	List<ScoreSnapshot> scoreSnapshotList;
 
-	public BattleRankingTableModel(RobocodeManager manager) {
-		super();
-		this.manager = manager;
+	public void updateSource(TurnSnapshot snapshot) {
+		if (snapshot != null) {
+			scoreSnapshotList = snapshot.getTeamScores();
+		} else {
+			scoreSnapshotList = null;
+		}
 	}
 
 	public int getColumnCount() {
@@ -61,9 +59,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		List<ContestantPeer> contestants = getContestants();
-
-		return (contestants != null) ? contestants.size() : 0;
+		return scoreSnapshotList == null ? 0 : scoreSnapshotList.size();
 	}
 
 	@Override
@@ -111,57 +107,59 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int row, int col) {
-		List<ContestantPeer> contestants = new ArrayList<ContestantPeer>(getContestants());
 
-		Collections.sort(contestants);
-
-		ContestantPeer r = contestants.get(row);
-		ContestantStatistics statistics = r.getStatistics();
+		final ScoreSnapshot statistics = scoreSnapshotList.get(row);
 
 		switch (col) {
 		case 0:
 			return StringUtil.getPlacementString(row + 1);
 
 		case 1:
-			return ((r instanceof TeamPeer) ? "Team: " : "") + r.getName();
+			return statistics.getName();
 
 		case 2: {
-			double current = battle.isRunning() ? statistics.getCurrentScore() : 0;
+			final double current = statistics.getCurrentScore();
+			final double total = statistics.getTotalScore();
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalScore() + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 3: {
-			double current = battle.isRunning() ? statistics.getCurrentSurvivalScore() : 0;
+			final double current = statistics.getCurrentSurvivalScore();
+			final double total = statistics.getTotalSurvivalScore();
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalSurvivalScore() + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 4:
 			return (int) (statistics.getTotalLastSurvivorBonus() + 0.5);
 
 		case 5: {
-			double current = battle.isRunning() ? statistics.getCurrentBulletDamageScore() : 0;
+			final double current = statistics.getCurrentBulletDamageScore();
+			final double total = statistics.getTotalBulletDamageScore();
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletDamageScore() + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 6: {
-			double current = battle.isRunning() ? statistics.getCurrentBulletKillBonus() : 0;
+			final double current = statistics.getCurrentBulletKillBonus();
+			final double total = statistics.getTotalBulletKillBonus();
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalBulletKillBonus() + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 7: {
-			double current = battle.isRunning() ? statistics.getCurrentRammingDamageScore() : 0;
+			final double current = statistics.getCurrentRammingDamageScore();
+			final double total = statistics.getTotalRammingDamageScore();
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingDamageScore() + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 8: {
-			double current = battle.isRunning() ? statistics.getCurrentRammingKillBonus() : 0;
+			final double current = statistics.getCurrentRammingKillBonus();
+			final double total = statistics.getTotalRammingKillBonus();
 
-			return (int) (current + 0.5) + " / " + (int) (statistics.getTotalRammingKillBonus() + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
 		}
 
 		case 9:
@@ -176,14 +174,5 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		default:
 			return "";
 		}
-	}
-
-	private List<ContestantPeer> getContestants() {
-		if (manager == null) {
-			return null;
-		}
-		battle = manager.getBattleManager().getBattle();
-
-		return (battle != null) ? battle.getContestants() : null;
 	}
 }

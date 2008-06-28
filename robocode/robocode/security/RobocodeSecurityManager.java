@@ -244,35 +244,32 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// Ok, we need to figure out who our robot is.
 		Thread c = Thread.currentThread();
 
-		RobotPeer robotPeer = threadManager.getRobotPeer(c);
+		RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
 
+		// We don't know who this is, so deny permission.
 		if (robotPeer == null) {
-			robotPeer = threadManager.getLoadingRobotPeer(c);
-			// We don't know who this is, so deny permission.
-			if (robotPeer == null) {
-				if (perm instanceof RobocodePermission) {
-					if (perm.getName().equals("System.out") || perm.getName().equals("System.err")
-							|| perm.getName().equals("System.in")) {
-						return;
-					}
+			if (perm instanceof RobocodePermission) {
+				if (perm.getName().equals("System.out") || perm.getName().equals("System.err")
+						|| perm.getName().equals("System.in")) {
+					return;
 				}
-
-				// Show warning on console.
-				syserr.println("Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
-				syserr.flush();
-
-				// Attempt to stop the window from displaying
-				// This is a hack.
-				if (perm instanceof java.awt.AWTPermission) {
-					if (perm.getName().equals("showWindowWithoutWarningBanner")) {
-						throw new ThreadDeath();
-					}
-				}
-
-				// Throw the exception
-				throw new AccessControlException(
-						"Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
 			}
+
+			// Show warning on console.
+			syserr.println("Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
+			syserr.flush();
+
+			// Attempt to stop the window from displaying
+			// This is a hack.
+			if (perm instanceof java.awt.AWTPermission) {
+				if (perm.getName().equals("showWindowWithoutWarningBanner")) {
+					throw new ThreadDeath();
+				}
+			}
+
+			// Throw the exception
+			throw new AccessControlException(
+					"Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
 		}
 
 		// At this point, we have robotPeer set to the RobotPeer object requesting permission.
@@ -478,11 +475,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	public void threadOut(String s) {
 		Thread c = Thread.currentThread();
-		RobotPeer robotPeer = threadManager.getRobotPeer(c);
+		RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
 
-		if (robotPeer == null) {
-			robotPeer = threadManager.getLoadingRobotPeer(c);
-		}
 		if (robotPeer == null) {
 			throw new AccessControlException("Cannot call threadOut from unknown thread.");
 		}
@@ -507,11 +501,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		try {
-			RobotPeer robotPeer = threadManager.getRobotPeer(c);
+			RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
 
-			if (robotPeer == null) {
-				robotPeer = threadManager.getLoadingRobotPeer(c);
-			}
 			return (robotPeer != null) ? robotPeer.getOut() : null;
 
 		} catch (Exception e) {
@@ -543,7 +534,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			String subPkg = pkg.substring(9);
 
 			// Only access to robocode.util or robocode.robotinterfaces is allowed
-			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces") || subPkg.equals("exception")
+			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
 					|| (experimental && subPkg.equals("robotinterfaces.peer")) || (subPkg.equals("robotpaint")))) {
 
 				Thread c = Thread.currentThread();
@@ -552,21 +543,17 @@ public class RobocodeSecurityManager extends SecurityManager {
 					return;
 				}
 
-				RobotPeer robotPeer = threadManager.getRobotPeer(c);
+				RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
 
-				if (robotPeer == null) {
-					robotPeer = threadManager.getLoadingRobotPeer(c);
-				}
 				if (robotPeer != null) {
 					robotPeer.setEnergy(0);
-				}
-
-				if (!experimental && subPkg.equals("robotinterfaces.peer")) {
-					robotPeer.getOut().println(
-							"SYSTEM: " + robotPeer.getName() + " is not allowed to access the internal Robocode package: "
-							+ pkg + "\n"
-							+ "SYSTEM: Perhaps you did not set the -DEXPERIMENTAL=true option in the robocode.bat or robocode.sh file?\n"
-							+ "SYSTEM: ----");
+					if (!experimental && subPkg.equals("robotinterfaces.peer")) {
+						robotPeer.getOut().println(
+								"SYSTEM: " + robotPeer.getName() + " is not allowed to access the internal Robocode package: "
+								+ pkg + "\n"
+								+ "SYSTEM: Perhaps you did not set the -DEXPERIMENTAL=true option in the robocode.bat or robocode.sh file?\n"
+								+ "SYSTEM: ----");
+					}
 				}
 
 				throw new AccessControlException(

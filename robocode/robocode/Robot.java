@@ -69,7 +69,7 @@ import java.awt.event.MouseWheelEvent;
  * @see TeamRobot
  * @see Droid
  */
-public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents, IInteractiveEvents, IPaintEvents {
+public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents, IPaintEvents {
 
 	/**
 	 * Constructs a new robot.
@@ -410,7 +410,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * You may not override this method.
 	 */
 	@Override
-	protected final void finalize() throws Throwable {
+	protected final void finalize() throws Throwable { // This method must be final!
 		super.finalize();
 	}
 
@@ -731,6 +731,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@inheritDoc}
 	 */
 	public void onWin(WinEvent event) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onBattleEnded(BattleEndedEvent event) {}
 
 	/**
 	 * Scans for other robots. This method is called automatically by the game,
@@ -1429,6 +1434,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * paint items fits for the Robocode coordinate system where (0, 0) is at
 	 * the bottom left corner of the battlefield, where X is towards right and Y
 	 * is upwards.
+	 *
+	 * @return a graphics context used for painting graphical items for the robot.
 	 * @see #onPaint(Graphics2D)
 	 * @since 1.6.1
 	 */
@@ -1498,7 +1505,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseWheelMoved(MouseWheelEvent e) {} 
+	public void onMouseWheelMoved(MouseWheelEvent e) {}
 
 	/**
 	 * {@inheritDoc}

@@ -21,7 +21,10 @@
 package robocode.util;
 
 
+import robocode.control.RandomFactory;
+
 import static java.lang.Math.PI;
+import java.util.Random;
 
 
 /**
@@ -35,6 +38,7 @@ public class Utils {
 	private final static double TWO_PI = 2 * PI;
 	private final static double THREE_PI_OVER_TWO = 3 * PI / 2;
 	private final static double PI_OVER_TWO = PI / 2;
+	public static final double NEAR_DELTA = .00001;
 
 	// Hide the default constructor as this class only provides static method
 	private Utils() {}
@@ -114,6 +118,15 @@ public class Utils {
 	 *         {@code false} otherwise.
 	 */
 	public static boolean isNear(double value1, double value2) {
-		return (Math.abs(value1 - value2) < .00001);
+		return (Math.abs(value1 - value2) < NEAR_DELTA);
+	}
+
+	/**
+	 * Returns random number generator. It might be configured for repeatable behavior by seting -DRANDOMSEED option
+	 *
+	 * @return random number generator
+	 */
+	public static Random getRandom() {
+		return RandomFactory.getRandom();
 	}
 }

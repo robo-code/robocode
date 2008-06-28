@@ -498,7 +498,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			} catch (FileNotFoundException e) {
 				logError("No " + FileUtil.getRobocodeConfigFile().getName() + " file, using defaults.");
 			} catch (IOException e) {
-				logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() , e);
+				logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName(), e);
 			} finally {
 				if (in != null) {
 					try {

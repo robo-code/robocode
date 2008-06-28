@@ -19,12 +19,14 @@
 package robocode.control;
 
 
+import robocode.repository.FileSpecification;
+
 import java.io.File;
 
 
 /**
  * Defines the properties of a robot, which is returned from
- * {@link RobocodeEngine#getLocalRepository()}.
+ * {@link RobocodeEngine#getLocalRepository()} or
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -33,7 +35,7 @@ public class RobotSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private robocode.repository.FileSpecification fileSpecification;
+	private FileSpecification fileSpecification;
 
 	/**
 	 * This constructor is called by the game in order to construct a new
@@ -41,7 +43,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 *
 	 * @param fileSpecification the file specification of the robot
 	 */
-	RobotSpecification(robocode.repository.FileSpecification fileSpecification) {
+	RobotSpecification(FileSpecification fileSpecification) {
 		this.fileSpecification = fileSpecification;
 	}
 

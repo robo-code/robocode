@@ -22,11 +22,14 @@
 package robocode.manager;
 
 
-import robocode.battle.Battle;
+import robocode.battle.snapshot.RobotSnapshot;
+import robocode.dialog.RobotButton;
 import robocode.dialog.RobotDialog;
-import robocode.peer.RobotPeer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -36,7 +39,9 @@ import java.util.*;
  */
 public class RobotDialogManager {
 
-	private Map<String, RobotDialog> robotDialogHashMap = new HashMap<String, RobotDialog>();
+	public static final int MAX_PRE_ATTACHED = 10;
+
+	private Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
 	private RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {
@@ -44,51 +49,49 @@ public class RobotDialogManager {
 		this.manager = manager;
 	}
 
-	public void setActiveBattle(Battle b) {
-		List<RobotPeer> robots = b.getRobots();
+	public void trim(List<RobotSnapshot> robots) {
 
-		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
-
-		for (String name : keys) {
+		// new ArrayList in order to prevent ConcurrentModificationException
+		for (String name : new ArrayList<String>(robotDialogMap.keySet())) {
 			boolean found = false;
 
-			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.getName().equals(name)) {
+			for (RobotSnapshot robot : robots) {
+				if (robot.getName().equals(name)) {
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-				RobotDialog dialog = robotDialogHashMap.get(name);
+				RobotDialog dialog = robotDialogMap.get(name);
 
-				robotDialogHashMap.remove(name);
+				robotDialogMap.remove(name);
 				dialog.dispose();
+				dialog.detach();
 			}
 		}
 	}
 
 	public void reset() {
-		Set<String> keys = new HashSet<String>(robotDialogHashMap.keySet());
-
-		for (String name : keys) {
-			RobotDialog dialog = robotDialogHashMap.get(name);
+		for (String name : robotDialogMap.keySet()) {
+			RobotDialog dialog = robotDialogMap.get(name);
 
 			if (!dialog.isVisible()) {
-				robotDialogHashMap.remove(name);
+				robotDialogMap.remove(name);
+				dialog.detach();
 				dialog.dispose();
 			}
 		}
 	}
 
-	public RobotDialog getRobotDialog(String robotName, boolean create) {
-		RobotDialog dialog = robotDialogHashMap.get(robotName);
+	public RobotDialog getRobotDialog(RobotButton robotButton, String name, boolean create) {
+		RobotDialog dialog = robotDialogMap.get(name);
 
 		if (create && dialog == null) {
-			if (robotDialogHashMap.size() > 10) {
+			if (robotDialogMap.size() > MAX_PRE_ATTACHED) {
 				reset();
 			}
-			dialog = new RobotDialog(manager);
-			robotDialogHashMap.put(robotName, dialog);
+			dialog = new RobotDialog(manager, robotButton);
+			robotDialogMap.put(name, dialog);
 		}
 		return dialog;
 	}
