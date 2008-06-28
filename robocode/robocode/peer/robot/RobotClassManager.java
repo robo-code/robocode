@@ -85,7 +85,7 @@ public class RobotClassManager {
 			String className = refClass.replace('/', '.');
 
 			if (getRootPackage() == null
-					|| !(className.startsWith("java") || className.startsWith("robocode") || className.startsWith("scala"))) { // TODO ZAMO configure ?
+					|| !(className.startsWith("java") || className.startsWith("robocode") )) { // TODO ZAMO || className.startsWith("scala")
 				if (getRootPackage() == null && !className.equals(fullClassName)) {
 					continue;
 				}
