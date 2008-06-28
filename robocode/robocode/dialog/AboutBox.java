@@ -61,7 +61,7 @@ public final class AboutBox extends JDialog {
 			+ "Originally designed and programmed by Mathew A. Nelson<br>" + "Graphics by Garett S. Hourihan<br><br>"
 			+ "<b>Featuring RoboRumble@Home</b><br><br>Originally designed and programmed by Albert Pérez<br><br>"
 			+ "<b>Contributors:</b><br><br>Flemming N. Larsen (main developer, integrator and admin),<br>"
-			+ "Pavel Savara (robot interfaces in the robocode.robotinterfaces package),<br>"
+			+ "Pavel Savara (robot interfaces, battle events, refactorings),<br>"
 			+ "Cubic Creative (the design and ideas for the JuniorRobot class),<br>"
 			+ "Christian D. Schnell (for the Codesize utility),<br>"
 			+ "Luis Crespo (sound engine, single-step debugging, ranking panel),<br>"
@@ -72,7 +72,8 @@ public final class AboutBox extends JDialog {
 			+ "Ascander Jr (graphics for ground tiles),<br>" + "Stefan Westen (onPaint method from RobocodeSG),<br>"
 			+ "Nathaniel Troutman (fixing memory leaks due to circular references)<br>"
 			+ "Aaron Rotenberg (for the Robot Cache Cleaner utility),<br>"
-			+ "Julian Kent (nano precision timing of allowed robot time),<br>" + "<br>You are using Java " + TAG_JAVA_VERSION
+			+ "Julian Kent (nano precision timing of allowed robot time),<br>"
+            + "<br>You are using Java " + TAG_JAVA_VERSION
 			+ " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
 
 	// Robocode version
