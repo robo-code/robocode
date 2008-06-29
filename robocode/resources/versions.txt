@@ -1,43 +1,103 @@
-Version 1.6.1 Alpha
-(04/20/2008)
+Version 1.6.1 Beta
+(06/29/2008)
 -------------
 o Changes
-- onPaint() in robot event queue. Robot will pay CPU time, added PaintEvent
-- onMouse(), onKey() in robot event queue
-- getGraphics() robot could paint any time
-- Added getStatusEvents() and getPaintEvents() to AdvancedRobot and IAdvancedRobotPeer
-- Extended allowed max. length of a robot's full package name from 16 to 32 characters
-- TPS slider, pause on 0 TPS, 
-- FPS now max 40, TPS very fast
-- -DPARALLEL option, allows robots run in parallel if you have more CPUs. May speedup 
-   battles with multiple CPU consuming robots. Time measuring is not per robot.
-- New robocode.control.RandomFactory
-- -DRANDOMSEED option, repeatable/deterministic Random generator is used by game 
-  as well as by Math.random(). So your robots will appear in same position in battle and will be easily testable.
-- reworked BattleView, introduced IBattleListener, immutable turn snapshots, rendering in AWT thread
-- InterruptedException
-- Logging improvements (logError/logMessage + stack trace always included) 
-- Junit test infrastructure
-- FR:1878233 - IBasicEvents2.onBattleEnded()
-- AboutBox, NewBattleDialog, PreferencesDialog, RankingDialog, CompilerPreferencesDialog made modal.
-- Title in Robocode window is now showing the current turn
-- New robocode.control.RobocodeEngine2, which is an replacement and extension of the old RobocodeEngine
-- Battle is now private
-- battle commands -> pause, resume (IBattleManager) thru queue
-- new battle and resultdialog could be closed by esc key
-- multiple inned threads turned to AWT timers
-- Turned all Robocode exceptions (for the battles) into RuntimeExceptions.
-- Refactored Robocode main class
+-- New methods:
+   -- Added getGraphics() to Robot and IBasicRobotPeer, meaning that a robot is now able to paint
+      itself at any time, and not only using the onPaint() event handler.
+   -- Added getStatusEvents() to AdvancedRobot and IAdvancedRobotPeer, so a robot is now able to
+      handle status events in the middle of an event handler.
+-- New event:
+   -- The new event BattleEndedEvent has been added, and will call the new event handler
+      onBattleEnded() on the robots, when the battle is ended (Feature Request 1878233).
+   -- When reading the BattleEndedEvent it is possible to read out the results of the battle of the
+      individual robot or team. In addition, it is possible to check if the battle was aborted by
+      the game or user. The battle results will only be available if the battle is not aborted
+      (where the results does not count).
+   -- The the onBattleEnded() event handler is provided through the new IBasicEvents2 class.
+-- Paint events:
+   -- Paint events are now put in the robot event queue, meaning that the robots will pay CPU time
+      when their onPaint() event handler is called.
+   -- Added the PaintEvent, which makes it possible to set the event priority of paint events using
+      the AdvancedRobot.setEventPriority().
+-- Mouse and keyboard events:
+   -- Mouse and keyboard event have also been put in the robot event queue, and thus the robots
+      will pay CPU time when their onMouse*() and onKey*() event handlers are called.
+   -- Mouse and Keyboard events have been added as public classes as well.
+-- Package name:
+   -- The max. length of a robot's full package name has been extended from 16 to 32 characters
+      (Feature Request 1954853).
+   -- The Robocode Repository is able to handle this (verified with Dan Lynn).
+-- New TPS slider:
+   -- The TPS slider has been redesigned to be more exponential, so it covers battle in slow
+      speed (1-30 TPS), higher speed (30 - 120 TPS), and fast speed (120 - 1000 TPS).
+   -- If you set the slider to max. TPS the game will run as fast as possible. This feature
+      already existed in earlier versions.
+   -- If you set the slider to min. (0 TPS) the game will pause. This is a new feature.
+-- The FPS (frames per second):
+   -- The max. FPS is now fixed to be max. 50 FPS allowing the TPS (turns per second) to be even
+      faster.
+-- New title bar:
+   -- The title on the Robocode window is now showing the current turn in a battle, and is
+      updated every half second.
+   -- The layout of the information shown in the title has been improved a bit.
+-- Dialogs:
+   -- The About box, New Battle Dialog, Preferences Dialog, Ranking Dialog, and the Compiler
+      Preferences Dialog are now modal.
+   -- It is now possible to close the New Battle and Results Dialog by pressing the Esc key.
+-- Command-line options:
+   -- Added the new -DPARALLEL option (set to true or false), which allows robots to run in
+      parallel intended to take advantage of more CPU's available in the system. This option may
+      speedup battles with multiple CPU time consuming robots. However, the time measuring is not
+      per robot.
+   -- Added the new -DRANDOMSEED option (set to a random seed value), which enables the new
+      repeatable and deterministic random generator. The benefit of using this option to make it
+      easier to test and debug your robots, as your robots will appear in the exactly same
+      positions, when you rerun a battle.
+-- New Random Generator:
+   -- Added a new deterministic and repeatable random generator is used by the game and overrides
+      the random generator used throughout the whole virtual Java machine, so methods like e.g.
+      Math.random() will be using the exactly the same deterministic random generator forced by
+      Robocode.
+   -- The new random generator will only be deterministic, if the -DRANDOMSEED option is enabled,
+      i.e. when -DRANDOMSEED=12345678 (or another value). Otherwise the the battles will run
+      truly randomized.
+-- System logging:
+   -- The system log output has now been split, so that logged errors are sent to System.err and
+      logged messages are sent to System.out. This makes it possible to filter out messages from
+      errors when reading out the logs from Robocode.
+   -- The system log now also includes a full stack trace when errors are logged, making it easier
+      to detirmine where an error has occurred.
 
+o Internal changes
+-- Refactoring between the BattleView and Battle:
+   -- With this version of Robocode a big effort has been made by Pavel Savara and Flemming Larsen
+      to split the dependencies between the BattleView and Battle class. Now, the Battle is not
+      calling methods on the BattleView anymore and vice versa.
+   -- Both the BattleView and Battle class has been reworked. The Battle now sends battle events to
+      battle listeners like e.g. the BattleView, SoundManager, RobotButton/Dialog, Interactive-
+      Handler etc. through the new IBattleListener interface.
+   -- The Battle is now private, and should not be accesses directly anymore.
+   -- Instead of calling methods on the Battle instance, Battle commands has now been introduced on
+      the BattleManager to e.g. pause, resume and stop the battle. The commands are queue inside
+      the Battle, which processes all commands each turn in its own thread, i.e. the battle thread.
+      This prevents concurrency problems between the battle thread, main thread, and the AWT/Swing
+      thread.
+   -- All rendering handled in the BattleView is now occurring entirely within the AWT/Swing thread.
+-- InterruptedException:
+   -- InterruptedException are now being handled properly by interrupting the current thread, so it
+      will keep its interrupted state after the InterruptedException has been catch.
+-- Miscellaneous:
+   -- The Robocode main class has been refactored.
+   -- Several inner threads have now been turned into Timers/TimerTasks.
+   -- Messages from robots to console are now dispatched on end of each turn.
 
 o Bugfixes
-- The JuniorRobot.others was not updated properly when other robots dies
-- Fixed issue with duplicate team name
-- short name in RobotPeer was name for duplicit robots
-- after intro battle restart button disabled
-- new battle dialog resize after robot selection
-- duplicate team names are dedupped
-
+  -- The field 'others' on the JuniorRobot was not updated properly when other robots dies.
+  -- Fixed issue with duplicate team name. The 'short name' in RobotPeer was same as 'name' for
+     duplicate robots. Now, duplicate team named are dedupped.
+  -- After the intro battle, the Restart button was disabled.
+  -- The New Battle Dialog was resized after the robot selection.
 
 Version 1.6.0
 (05/01/2008)
@@ -87,7 +147,7 @@ o Minor changes
 Version 1.5.4
 (02/15/2008)
 -------------
-o Bugfix:
+o Bugfix
   -- The CPU constant was way too little compared to version 1.4.9
      -- This is a critical bug when Robocode is used for competitions
      -- Now the CPU calculation has been improved, where a heavy math benchmark
