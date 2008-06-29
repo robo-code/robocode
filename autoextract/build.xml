@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!--  Apache Ant build script for building the Robocode Auto-extract        -->
+<!-- ====================================================================== -->
+
+<project name="autoextract" default="build" basedir="../build">
+  <description>Apache Ant build script for building the Robocode Auto-extract</description>
+
+  <!-- Enable debug information when compiling -->  
+  <property name="debug" value="on"/>
+
+  <!-- Import common build file -->
+  <import file="../build/build.xml"/>
+
+  <!-- ====================================== -->
+  <!-- Target: build                          -->
+  <!-- ====================================== -->
+  <target
+      name="build"
+      description="Build the Robocode Auto-extract"
+  	  depends="compile.autoextract, extract.jar">
+  </target>
+
+</project>
