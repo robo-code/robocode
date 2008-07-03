@@ -483,7 +483,7 @@ public class BattleView extends Canvas {
 				gfxProxy.processTo(g);
 			} else {
 				mirroredGraphics.bind(g, battleField.getHeight());
-				gfxProxy.processTo(g);
+				gfxProxy.processTo(mirroredGraphics);
 				mirroredGraphics.release();
 			}
 		}
