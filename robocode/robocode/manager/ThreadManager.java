@@ -88,8 +88,6 @@ public class ThreadManager {
 	}
 
 	public void reset() {
-		robotLoaderThread = null;
-		loadingRobot = null;
 		groups.clear();
 		robots.clear();
 	}
