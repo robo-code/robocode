@@ -299,8 +299,6 @@ public class Battle implements Runnable {
 				} else {
 					runRound();
 				}
-
-				cleanupRound();
 			} catch (Exception e) {
 				e.printStackTrace();
 				logError("Exception running a battle: ", e);
@@ -336,6 +334,9 @@ public class Battle implements Runnable {
 			eventDispatcher.onBattleCompleted(
 					new BattleCompletedEvent(manager.getBattleManager().getBattleProperties(), computeResults()));
 		}
+
+		cleanupRound(); // Computes the totals in the robot results, and must hence be placed AFTER the onBattleCompleted notification
+
 		Logger.setLogListener(null);
 
 		cleanup();
