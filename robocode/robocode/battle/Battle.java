@@ -496,7 +496,7 @@ public class Battle implements Runnable {
 	private void cleanupRound() {
 		if (!replay) {
 
-			logMessage("Round " + (roundNum + 1) + " cleaning up.");
+			logMessage("Round " + roundNum + " cleaning up.");
 
 			for (RobotPeer r : robots) {
 				r.getRobotThreadManager().waitForStop();
