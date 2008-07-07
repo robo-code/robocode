@@ -185,7 +185,7 @@ public class ConsoleDialog extends JDialog {
 	}
 
 	public void okButtonActionPerformed() {
-		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		dispose();
 	}
 
 	public void processStream(java.io.InputStream in) {

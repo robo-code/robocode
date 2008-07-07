@@ -84,9 +84,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	}
 
 	public void cancelButtonActionPerformed() {
-		AWTEvent evt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-
-		this.dispatchEvent(evt);
+		dispose();
 	}
 
 	public void finishButtonActionPerformed() {

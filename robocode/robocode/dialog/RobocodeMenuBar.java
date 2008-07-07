@@ -186,9 +186,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleExitActionPerformed() {
-		java.awt.AWTEvent evt = new WindowEvent(robocodeFrame, WindowEvent.WINDOW_CLOSING);
-
-		robocodeFrame.dispatchEvent(evt);
+		robocodeFrame.dispose();
 	}
 
 	/**

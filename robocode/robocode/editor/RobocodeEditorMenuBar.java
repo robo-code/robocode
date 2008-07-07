@@ -220,7 +220,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	}
 
 	public void fileExitActionPerformed() {
-		editor.dispatchEvent(new WindowEvent(editor, WindowEvent.WINDOW_CLOSING));
+		editor.dispose();
 	}
 
 	public void fileNewJavaFileActionPerformed() {
