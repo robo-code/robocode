@@ -179,10 +179,20 @@ public class TeamStatistics implements ContestantStatistics {
 		return d;
 	}
 
-	public BattleResults getResults(int rank) {
+	public BattleResults getFinalResults(int rank) {
 		return new BattleResults(teamPeer.getName(), rank, getTotalScore(), getTotalSurvivalScore(),
 				getTotalLastSurvivorBonus(), getTotalBulletDamageScore(), getTotalBulletKillBonus(),
 				getTotalRammingDamageScore(), getTotalRammingKillBonus(), getTotalFirsts(), getTotalSeconds(),
+				getTotalThirds());
+	}
+
+	public BattleResults getCurrentResults(int rank) {
+		return new BattleResults(teamPeer.getName(), rank, getTotalScore() + getCurrentScore(),
+				getTotalSurvivalScore() + getCurrentSurvivalScore(), getTotalLastSurvivorBonus(),
+				getTotalBulletDamageScore() + getCurrentBulletDamageScore(),
+				getTotalBulletKillBonus() + getCurrentBulletKillBonus(),
+				getTotalRammingDamageScore() + getCurrentRammingDamageScore(),
+				getTotalRammingKillBonus() + getCurrentRammingKillBonus(), getTotalFirsts(), getTotalSeconds(),
 				getTotalThirds());
 	}
 }
