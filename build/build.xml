@@ -62,6 +62,7 @@
   <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
   <defaultexcludes add="**/.svn/**"/>    <!-- Subversion directories -->
   <defaultexcludes add="**/_svn/**"/>    <!-- Subversion directories -->
+  <defaultexcludes add="**/launch/**"/>  <!-- Robocode launch directory -->
 
   <!-- ====================================== -->
   <!-- Target: init                           -->
