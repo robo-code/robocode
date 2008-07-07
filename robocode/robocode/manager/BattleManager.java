@@ -238,7 +238,7 @@ public class BattleManager implements IBattleManager {
 		return false;
 	}
 
-	private synchronized void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
+	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
 
 		logMessage("Preparing battle...");
 		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
