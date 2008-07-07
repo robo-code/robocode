@@ -113,7 +113,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		isActive = true;
 	}
 
-	private void resetScores() {
+	public void resetScores() {
 		survivalScore = 0;
 		lastSurvivorBonus = 0;
 		bulletDamageScore = 0;

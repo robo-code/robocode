@@ -501,18 +501,19 @@ public class Battle implements Runnable {
 			logMessage("Round " + (roundNum + 1) + " cleaning up.");
 
 			for (RobotPeer r : robots) {
+                r.getRobotStatistics().generateTotals();
 				r.getRobotThreadManager().waitForStop();
 			}
 		}
 	}
 
-	private void finalizeBattle() {
-		if (!replay) {
-			for (RobotPeer r : robots) {
-				r.getRobotStatistics().generateTotals();
-			}
-		}
-	}
+    private void finalizeBattle() {
+        if (!replay) {
+            for (RobotPeer r : robots) {
+                r.getRobotStatistics().resetScores();
+            }
+        }
+    }
 
 	public void generateDeathEvents(RobotPeer r) {
 		deathEvents.add(r);
