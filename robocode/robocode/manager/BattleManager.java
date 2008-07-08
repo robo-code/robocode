@@ -55,9 +55,7 @@ import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattleManager;
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.events.IBattleListener;
+import robocode.battle.events.*;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 import robocode.control.BattleSpecification;
@@ -438,7 +436,10 @@ public class BattleManager implements IBattleManager {
 			if (battle != null && battle.isRunning()) {
 				battle.pause();
 			}
-		}
+            else{
+                battleEventDispatcher.onBattlePaused(new BattlePausedEvent());
+            }
+        }
 	}
 
 	public synchronized void pauseIfResumedBattle() {
@@ -447,6 +448,9 @@ public class BattleManager implements IBattleManager {
 			if (battle != null && battle.isRunning()) {
 				battle.pause();
 			}
+            else{
+                battleEventDispatcher.onBattlePaused(new BattlePausedEvent());
+            }
 		}
 	}
 
@@ -456,6 +460,9 @@ public class BattleManager implements IBattleManager {
 			if (battle != null && battle.isRunning()) {
 				battle.resume();
 			}
+            else{
+                battleEventDispatcher.onBattleResumed(new BattleResumedEvent());
+            }
 		}
 	}
 
@@ -467,6 +474,9 @@ public class BattleManager implements IBattleManager {
 			if (battle != null && battle.isRunning()) {
 				battle.resume();
 			}
+            else{
+                battleEventDispatcher.onBattleResumed(new BattleResumedEvent());
+            }
 		}
 	}
 

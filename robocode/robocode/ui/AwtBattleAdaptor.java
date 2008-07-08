@@ -95,6 +95,7 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 		timerTask.stop();
 		isRunning.set(false);
 		isPaused.set(false);
+        snapshot.set(null);
 		EventQueue.invokeLater(repaintTask);
 	}
 
