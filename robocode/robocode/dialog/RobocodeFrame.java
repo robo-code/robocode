@@ -93,7 +93,7 @@ public class RobocodeFrame extends JFrame {
 	private JLabel tpsLabel;
 
 	private boolean iconified;
-	private boolean exitOnClose;
+	private boolean exitOnClose=true;
 
 	private RobocodeManager manager;
 
@@ -509,7 +509,8 @@ public class RobocodeFrame extends JFrame {
 			getNextTurnButton().setEnabled(false);
 			getRestartButton().setEnabled(false);
 			getReplayButton().setEnabled(false);
-		}
+            exitOnClose=false;
+        }
 	}
 
 	private void pauseResumeButtonActionPerformed() {
