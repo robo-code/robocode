@@ -628,6 +628,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsShowRankingCheckBoxMenuItem.setMnemonic('R');
 			optionsShowRankingCheckBoxMenuItem.setDisplayedMnemonicIndex(0);
 			optionsShowRankingCheckBoxMenuItem.addActionListener(eventHandler);
+			optionsShowRankingCheckBoxMenuItem.setEnabled(false);
 		}
 		return optionsShowRankingCheckBoxMenuItem;
 	}

@@ -186,7 +186,11 @@ public class WindowManager {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(manager);
 		}
-		packCenterShow(rankingDialog);
+		if (visible) {
+			packCenterShow(rankingDialog);
+		} else {
+			rankingDialog.dispose();
+		}
 	}
 
 	public void showRobocodeEditor() {
