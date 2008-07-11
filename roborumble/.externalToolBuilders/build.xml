@@ -6,26 +6,25 @@
 
 <project name="roborumble" default="build" basedir="..">
 
-  <property name="robocode.dir" location="../robocode"/>
-  <property name="launch.dir" location="${robocode.dir}/launch"/>
-  <property name="roborumble.launch.dir" location="${launch.dir}/roborumble"/>
+  <property name="launch.dir" location="../robocode/launch"/>
 
   <!-- ====================================== -->
   <!-- Target: build                          -->
   <!-- ====================================== -->
   <target name="build">
 
-  	<ant antfile="${robocode.dir}/.externalToolBuilders/build.xml" target="build"/>
+  	<ant antfile="../robocode/.externalToolBuilders/build.xml" target="build"/>
   	
-  	<!-- Make RoboRumble dir -->
-  	<mkdir dir="${roborumble.launch.dir}"/>
-  	<mkdir dir="${roborumble.launch.dir}/temp"/>
- 	<mkdir dir="${roborumble.launch.dir}/files"/>
+  	<!-- Make launch dir -->
+  	<mkdir dir="${launch.dir}"/>
+  	<mkdir dir="${launch.dir}/roborumble"/>
+  	<mkdir dir="${launch.dir}/roborumble/temp"/>
+ 	<mkdir dir="${launch.dir}/roborumble/files"/>
 
   	<!-- Copy config files -->
-    <copy todir="${roborumble.launch.dir}">
+    <copy todir="${launch.dir}/roborumble/">
       <fileset dir="config"/>
     </copy>
   </target>
-	
+
 </project>
