@@ -18,7 +18,6 @@ import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
-import java.awt.*;
 import java.io.PrintStream;
 
 

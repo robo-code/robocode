@@ -121,7 +121,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		}
 
 		double dx = (vWidth - scale * fWidth) / 2;
-		double dy = (fHeight - scale * fHeight) / 2;
+		double dy = (vHeight - scale * fHeight) / 2;
 
 		int x = (int) ((e.getX() - dx) / scale + 0.5);
 		int y = (int) (fHeight - (e.getY() - dy) / scale + 0.5);
@@ -148,7 +148,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		}
 
 		double dx = (vWidth - scale * fWidth) / 2;
-		double dy = (fHeight - scale * fHeight) / 2;
+		double dy = (vHeight - scale * fHeight) / 2;
 
 		int x = (int) ((e.getX() - dx) / scale + 0.5);
 		int y = (int) (fHeight - (e.getY() - dy) / scale + 0.5);

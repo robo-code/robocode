@@ -34,7 +34,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -84,9 +83,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	}
 
 	public void cancelButtonActionPerformed() {
-		AWTEvent evt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-
-		this.dispatchEvent(evt);
+		dispose();
 	}
 
 	public void finishButtonActionPerformed() {

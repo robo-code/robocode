@@ -59,7 +59,7 @@ import java.io.File;
 public class RobocodeFrame extends JFrame {
 
 	private final static int MAX_TPS = 10000;
-	private final static int MAX_TPS_SLIDER_VALUE = 51;
+	private final static int MAX_TPS_SLIDER_VALUE = 61;
 
 	private final static int UPDATE_TITLE_INTERVAL = 500; // milliseconds
 
@@ -93,7 +93,7 @@ public class RobocodeFrame extends JFrame {
 	private JLabel tpsLabel;
 
 	private boolean iconified;
-	private boolean exitOnClose;
+	private boolean exitOnClose=true;
 
 	private RobocodeManager manager;
 
@@ -408,19 +408,21 @@ public class RobocodeFrame extends JFrame {
 			labels.put(0, new JLabel("0"));
 			labels.put(5, new JLabel("5"));
 			labels.put(10, new JLabel("10"));
-			labels.put(15, new JLabel("20"));
-			labels.put(20, new JLabel("30"));
-			labels.put(25, new JLabel("55"));
-			labels.put(30, new JLabel("80"));
-			labels.put(35, new JLabel("120"));
-			labels.put(40, new JLabel("240"));
-			labels.put(45, new JLabel("500"));
-			labels.put(50, new JLabel("1000"));
+			labels.put(15, new JLabel("15"));
+			labels.put(20, new JLabel("20"));
+			labels.put(25, new JLabel("25"));
+			labels.put(30, new JLabel("30"));
+			labels.put(35, new JLabel("40"));
+			labels.put(40, new JLabel("50"));
+			labels.put(45, new JLabel("65"));
+			labels.put(50, new JLabel("90"));
+			labels.put(55, new JLabel("150"));
+			labels.put(60, new JLabel("1000"));
 
 			tpsSlider.setMajorTickSpacing(5);
 			tpsSlider.setLabelTable(labels);
 
-			WindowUtil.setFixedSize(tpsSlider, new Dimension(300, 40));
+			WindowUtil.setFixedSize(tpsSlider, new Dimension((MAX_TPS_SLIDER_VALUE + 1) * 6, 40));
 
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override
@@ -507,7 +509,8 @@ public class RobocodeFrame extends JFrame {
 			getNextTurnButton().setEnabled(false);
 			getRestartButton().setEnabled(false);
 			getReplayButton().setEnabled(false);
-		}
+            exitOnClose=false;
+        }
 	}
 
 	private void pauseResumeButtonActionPerformed() {
@@ -533,25 +536,37 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private int getTpsFromSlider() {
-		int value = getTpsSlider().getValue();
-
-		if (value <= 10) {
+		final int value = getTpsSlider().getValue();
+		
+		if (value <= 30) {
 			return value;
 		}
-		if (value <= 20) {
-			return 2 * value - 10;
+		if (value <= 40) {
+			return 2 * value - 30;
 		}
-		if (value <= 34) {
-			return 5 * value - 70;
+		if (value <= 45) {
+			return 3 * value - 70;
 		}
-		if (value <= 39) {
-			return 20 * value - 580;
+		if (value <= 52) {
+			return 5 * value - 160;
 		}
-		if (value <= 44) {
-			return 40 * value - 1360;
-		}
-		if (value <= 50) {
-			return 100 * value - 4000;
+		switch (value) {
+		case 53:
+			return 110;
+		case 54:
+			return 130;
+		case 55:
+			return 150;
+		case 56:
+			return 200;
+		case 57:
+			return 300;
+		case 58:
+			return 500;
+		case 59:
+			return 750;
+		case 60:
+			return 1000;
 		}
 		return MAX_TPS;
 	}
@@ -561,22 +576,43 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private int tpsToSliderValue(int tps) {
-		int value = MAX_TPS_SLIDER_VALUE;
-
-		if (tps <= 10) {
-			value = tps;
-		} else if (tps <= 30) {
-			value = (tps + 10) / 2;
-		} else if (tps <= 100) {
-			value = (tps + 70) / 5;
-		} else if (tps <= 200) {
-			value = (tps + 580) / 20;
-		} else if (tps <= 400) {
-			value = (tps + 1360) / 40;
-		} else if (tps <= 1000) {
-			value = (tps + 4000) / 100;
+		if (tps <= 30) {
+			return tps;
 		}
-		return value;
+		if (tps <= 50) {
+			return (tps + 30) / 2;
+		}
+		if (tps <= 65) {
+			return (tps + 70) / 3;
+		}
+		if (tps <= 100) {
+			return (tps + 160) / 5;
+		}
+		if (tps <= 110) {
+			return 53;
+		}
+		if (tps <= 130) {
+			return 54;
+		}
+		if (tps <= 150) {
+			return 55;
+		}
+		if (tps <= 200) {
+			return 56;
+		}
+		if (tps <= 300) {
+			return 57;
+		}
+		if (tps <= 500) {
+			return 58;
+		}
+		if (tps <= 750) {
+			return 59;
+		}
+		if (tps <= 1000) {
+			return 60;
+		}
+		return MAX_TPS_SLIDER_VALUE;
 	}
 
 	private String getTpsFromSliderAsString() {
@@ -713,6 +749,12 @@ public class RobocodeFrame extends JFrame {
 			getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
 			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 
+			JCheckBoxMenuItem rankingCheckBoxMenuItem = getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem();
+			rankingCheckBoxMenuItem.setEnabled(!isBattleReplay);
+			if (rankingCheckBoxMenuItem.isSelected()) {
+				manager.getWindowManager().showRankingDialog(!isBattleReplay);
+			}
+
 			getRobotButtonsPanel().removeAll();
 
 			final RobotDialogManager dialogManager = manager.getRobotDialogManager();
@@ -744,6 +786,8 @@ public class RobocodeFrame extends JFrame {
 			getStopButton().setEnabled(false);
 			getReplayButton().setEnabled(battleManager.hasReplayRecord());
 			getNextTurnButton().setEnabled(false);
+
+			getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setEnabled(false);
 
 			updateTitle();
 		}

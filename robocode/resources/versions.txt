@@ -1,3 +1,28 @@
+Version 1.6.1 Beta 2
+(07/08/2008)
+-------------
+o Bugfixes
+-- [2009283] Error in bullet damage calculation:
+   -- The bullets scoring was incorrect compared to version 1.6.0.1. It was too high.
+-- The Battle Results showed scores that was doubled (in the 1.6.1 Beta) compared to the real
+   results.
+-- Robot paintings:
+   -- Fixed issue with robot paintings, which mirrored the paintings.
+   -- Fixed issue with painting with the alpha channel (translucent color).
+-- The mouse y coordinate of the mouse events was not scaled correctly.
+-- When starting up a new battle, the battle would sometimes appear to be paused, even though the
+   user did not pause the game.
+-- [2009432] Leaking System.out:
+   -- outputting to System.out from the constructor of a robot would go to the actual console
+      instead of being properly redirected.
+
+o Changes
+-- The new TPS slider was readjusted, so the are more slower speeds, and less higher speeds.
+-- The menu item for the Ranking Panel is now hidden when replaying a battle, and the panel is now
+   being hidden, if it is visible, while the battle is being replayed.
+   -- The reason for hiding the Ranking Panel is that the replay feature does not support
+      displaying the current rankings during the replay, i.e. the current scores are not recorded. 
+
 Version 1.6.1 Beta
 (06/29/2008)
 -------------

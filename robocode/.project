@@ -3,7 +3,6 @@
 	<name>robocode</name>
 	<comment></comment>
 	<projects>
-		<project>build</project>
 		<project>robocodeextract</project>
 	</projects>
 	<buildSpec>
@@ -17,7 +16,7 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/robocode build.xml [Builder].launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/Ant Builder - prepare robocode launch dir.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>

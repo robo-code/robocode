@@ -86,6 +86,6 @@ public class ObjectCloner {
 	 *         {@code Color} is {@code null}.
 	 */
 	public static Color deepCopy(Color c) {
-		return (c != null) ? new Color(c.getRGB()) : null;
+		return (c != null) ? new Color(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()) : null;
 	}
 }

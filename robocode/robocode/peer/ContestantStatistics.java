@@ -58,5 +58,7 @@ public interface ContestantStatistics {
 
 	public double getCurrentRammingKillBonus();
 
-	public BattleResults getResults(int rank);
+	public BattleResults getCurrentResults(int rank);
+
+	public BattleResults getFinalResults(int rank);
 }

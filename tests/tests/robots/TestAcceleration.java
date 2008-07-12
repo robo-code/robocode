@@ -13,7 +13,6 @@ package robots;
 
 import helpers.RobotTestBed;
 import helpers.Assert;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
 

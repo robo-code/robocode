@@ -336,6 +336,9 @@ public class Battle implements Runnable {
 			eventDispatcher.onBattleCompleted(
 					new BattleCompletedEvent(manager.getBattleManager().getBattleProperties(), computeResults()));
 		}
+
+		finalizeBattle();
+
 		Logger.setLogListener(null);
 
 		cleanup();
@@ -388,7 +391,7 @@ public class Battle implements Runnable {
 		for (int i = 0; i < results.length; i++) {
 			ContestantPeer peer = orderedPeers.get(i);
 
-			results[i] = peer.getStatistics().getResults(i + 1);
+			results[i] = peer.getStatistics().getFinalResults(i + 1);
 		}
 		return results;
 	}
@@ -498,8 +501,16 @@ public class Battle implements Runnable {
 			logMessage("Round " + (roundNum + 1) + " cleaning up.");
 
 			for (RobotPeer r : robots) {
-				r.getRobotThreadManager().waitForStop();
 				r.getRobotStatistics().generateTotals();
+				r.getRobotThreadManager().waitForStop();
+			}
+		}
+	}
+
+	private void finalizeBattle() {
+		if (!replay) {
+			for (RobotPeer r : robots) {
+				r.getRobotStatistics().resetScores();
 			}
 		}
 	}
@@ -894,7 +905,7 @@ public class Battle implements Runnable {
 						break;
 					}
 				}
-				results[index] = r.getRobotStatistics().getResults(rank + 1);
+				results[index] = r.getRobotStatistics().getCurrentResults(rank + 1);
 			}
 
 			currentRoundRecord.results = results;
@@ -1207,7 +1218,7 @@ public class Battle implements Runnable {
 
 			for (int rank = 0; rank < robots.size(); rank++) {
 				RobotPeer r = orderedRobots.get(rank);
-				BattleResults resultsForRobots = r.getStatistics().getResults(rank + 1);
+				BattleResults resultsForRobots = r.getStatistics().getFinalResults(rank + 1);
 
 				r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots));
 			}

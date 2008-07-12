@@ -77,5 +77,7 @@ public class PaintingRobot extends Robot {
 	public void onPaint(Graphics2D g) {
 		g.setColor(Color.red);
 		g.drawOval((int) (getX() - 50), (int) (getY() - 50), 100, 100);
+        g.setColor(new Color(0,0xFF,0,30));
+        g.fillOval((int) (getX() - 60), (int) (getY() - 60), 120, 120);
 	}
 }

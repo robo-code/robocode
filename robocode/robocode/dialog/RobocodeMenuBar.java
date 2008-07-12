@@ -186,9 +186,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleExitActionPerformed() {
-		java.awt.AWTEvent evt = new WindowEvent(robocodeFrame, WindowEvent.WINDOW_CLOSING);
-
-		robocodeFrame.dispatchEvent(evt);
+		robocodeFrame.dispose();
 	}
 
 	/**
@@ -630,6 +628,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsShowRankingCheckBoxMenuItem.setMnemonic('R');
 			optionsShowRankingCheckBoxMenuItem.setDisplayedMnemonicIndex(0);
 			optionsShowRankingCheckBoxMenuItem.addActionListener(eventHandler);
+			optionsShowRankingCheckBoxMenuItem.setEnabled(false);
 		}
 		return optionsShowRankingCheckBoxMenuItem;
 	}

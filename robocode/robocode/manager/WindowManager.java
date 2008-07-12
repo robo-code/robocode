@@ -37,6 +37,7 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import robocode.dialog.SplashScreen;
 
 
 /**
@@ -185,7 +186,11 @@ public class WindowManager {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(manager);
 		}
-		packCenterShow(rankingDialog);
+		if (visible) {
+			packCenterShow(rankingDialog);
+		} else {
+			rankingDialog.dispose();
+		}
 	}
 
 	public void showRobocodeEditor() {

@@ -11,7 +11,6 @@
  *******************************************************************************/
 package robots;
 
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
 import org.junit.Assert;

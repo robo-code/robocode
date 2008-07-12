@@ -16,7 +16,6 @@ import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.events.BattleMessageEvent;
 import robocode.battle.events.BattleErrorEvent;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.*;
 import robocode.security.SecurePrintStream;
@@ -95,7 +94,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
     public void run() {
         final String list = getRobotNames();
         final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
-        Assert.assertEquals(list.split(",").length, robotSpecifications.length);
+        Assert.assertEquals(list.split("[\\s,;]+").length, robotSpecifications.length);
         engine.runBattle(new BattleSpecification(getNumRounds(), battleFieldSpec, robotSpecifications), true);
     }
 }

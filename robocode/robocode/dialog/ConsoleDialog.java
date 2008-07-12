@@ -20,7 +20,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 
 
 /**
@@ -185,7 +184,7 @@ public class ConsoleDialog extends JDialog {
 	}
 
 	public void okButtonActionPerformed() {
-		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		dispose();
 	}
 
 	public void processStream(java.io.InputStream in) {

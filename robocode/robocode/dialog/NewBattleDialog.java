@@ -76,7 +76,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	}
 
 	public void cancelButtonActionPerformed() {
-		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		dispose();
 	}
 
 	public void finishButtonActionPerformed() {
@@ -107,12 +107,12 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());
 		battleProperties.setGunCoolingRate(getRulesTab().getGunCoolingRate());
 		battleProperties.setInactivityTime(getRulesTab().getInactivityTime());
-		new Thread(new Runnable() {
-			public void run() {
-				manager.getBattleManager().startNewBattle(battleProperties, false, false);
-			}
-		}).start();
-		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+
+		// Dispose this dialog before starting the battle due to pause/resume battle state
+		dispose();
+
+		// Start new battle after the dialog has been disposed and hence has called resumeBattle()
+		manager.getBattleManager().startNewBattle(battleProperties, false, false);
 	}
 
 	/**
@@ -254,12 +254,11 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
 	}
 
-	class EventHandler extends WindowAdapter implements ActionListener {
+	private class EventHandler extends WindowAdapter implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
 				getRobotSelectionPanel().refreshRobotList();
 			}
 		}
 	}
-
 }
