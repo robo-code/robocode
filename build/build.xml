@@ -340,6 +340,7 @@
       <!-- Specify files to include -->
       <fileset dir="${src.extract}">      <!-- Files from the extract folder -->
         <exclude name="build/**"/>        <!-- Exclude build files (if any) -->
+        <exclude name="bin/**"/>          <!-- Binary files (Eclipse build) -->
         <exclude name="**/.svn/**"/>      <!-- Exclude subversion files (if any) -->
         <exclude name="**/_svn/**"/>      <!-- Exclude subversion files (if any) -->
       </fileset>
@@ -347,6 +348,7 @@
         <include name="*.bat"/>           <!-- Windows batch files -->
         <include name="*.sh"/>            <!-- Shell files (Mac, Linux, and similar) -->
       	<include name="config/*"/>        <!-- Configuration files -->
+        <exclude name="bin/**"/>          <!-- Binary files (Eclipse build) -->
         <exclude name="**/.svn/**"/>      <!-- Exclude subversion files (if any) -->
         <exclude name="**/_svn/**"/>      <!-- Exclude subversion files (if any) -->
       </fileset>
