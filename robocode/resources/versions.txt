@@ -2,9 +2,13 @@ Version 1.6.1
 (07/20/2008)
 -------------
 o Bugfixes
--- [2022774]Various usability issues:
+-- [2022774] Various usability issues:
    -- Preferences: If TPS was changed from the Preferences during a battle, the error
       "SYSTEM: pause game bug!" occurred.
+
+o Changes
+-- [2022774] Various usability issues:
+   -- Added "Enable all" and "Disable all" button in the View Options of the Preferences.
 
 Version 1.6.1 Beta 2
 (07/08/2008)
