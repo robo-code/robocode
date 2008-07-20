@@ -174,7 +174,7 @@ public class WindowManager {
 			// Show it
 			WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
 		} finally {
-			manager.getBattleManager().resumeBattle();
+			manager.getBattleManager().resumeIfPausedBattle();
 		}
 	}
 
