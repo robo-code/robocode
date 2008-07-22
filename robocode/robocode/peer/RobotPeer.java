@@ -79,8 +79,6 @@ import robocode.peer.proxies.TeamRobotProxy;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
-import robocode.robotinterfaces.peer.ITeamRobotPeer;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
@@ -110,7 +108,7 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
+public class RobotPeer implements Runnable, ContestantPeer {
 
 	public static final int
 			WIDTH = 40,

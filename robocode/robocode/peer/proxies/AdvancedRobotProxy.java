@@ -15,8 +15,8 @@ package robocode.peer.proxies;
 
 
 import robocode.*;
+import robocode.peer.RobotPeer;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.io.File;
 import java.util.List;
@@ -28,166 +28,166 @@ import java.util.List;
  */
 public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-	public AdvancedRobotProxy(IBasicRobotPeer peer) {
+	public AdvancedRobotProxy(RobotPeer peer) {
 		super(peer);
 	}
 
 	public boolean isAdjustGunForBodyTurn() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).isAdjustGunForBodyTurn();
+		return peer.isAdjustGunForBodyTurn();
 	}
 
 	public boolean isAdjustRadarForGunTurn() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).isAdjustRadarForGunTurn();
+		return peer.isAdjustRadarForGunTurn();
 	}
 
 	public boolean isAdjustRadarForBodyTurn() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).isAdjustRadarForBodyTurn();
+		return peer.isAdjustRadarForBodyTurn();
 	}
 
 	// asynchronous actions
 	public void setResume() {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setResume();
+		peer.setResume();
 	}
 
 	public void setStop(boolean overwrite) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setStop(overwrite);
+		peer.setStop(overwrite);
 	}
 
 	public void setMove(double distance) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setMove(distance);
+		peer.setMove(distance);
 	}
 
 	public void setTurnBody(double radians) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setTurnBody(radians);
+		peer.setTurnBody(radians);
 	}
 
 	public void setTurnGun(double radians) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setTurnGun(radians);
+		peer.setTurnGun(radians);
 	}
 
 	public void setTurnRadar(double radians) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setTurnRadar(radians);
+		peer.setTurnRadar(radians);
 	}
 
 	// blocking actions
 	public void waitFor(Condition condition) {
-		((IAdvancedRobotPeer) peer).waitFor(condition);
+		peer.waitFor(condition);
 	}
 
 	// fast setters
 	public void setMaxTurnRate(double newTurnRate) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setMaxTurnRate(newTurnRate);
+		peer.setMaxTurnRate(newTurnRate);
 	}
 
 	public void setMaxVelocity(double newVelocity) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setMaxVelocity(newVelocity);
+		peer.setMaxVelocity(newVelocity);
 	}
 
 	// events manipulation
 	public void setInterruptible(boolean interruptable) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setInterruptible(interruptable);
+		peer.setInterruptible(interruptable);
 	}
 
 	public void setEventPriority(String eventClass, int priority) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).setEventPriority(eventClass, priority);
+		peer.setEventPriority(eventClass, priority);
 	}
 
 	public int getEventPriority(String eventClass) {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getEventPriority(eventClass);
+		return peer.getEventPriority(eventClass);
 	}
 
 	public void removeCustomEvent(Condition condition) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).removeCustomEvent(condition);
+		peer.removeCustomEvent(condition);
 	}
 
 	public void addCustomEvent(Condition condition) {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).addCustomEvent(condition);
+		peer.addCustomEvent(condition);
 	}
 
 	public void clearAllEvents() {
 		peer.setCall();
-		((IAdvancedRobotPeer) peer).clearAllEvents();
+		peer.clearAllEvents();
 	}
 
 	public List<Event> getAllEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getAllEvents();
+		return peer.getAllEvents();
 	}
 
 	public List<StatusEvent> getStatusEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getStatusEvents();
+		return peer.getStatusEvents();
 	}
 
 	public List<BulletMissedEvent> getBulletMissedEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getBulletMissedEvents();
+		return peer.getBulletMissedEvents();
 	}
 
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getBulletHitBulletEvents();
+		return peer.getBulletHitBulletEvents();
 	}
 
 	public List<BulletHitEvent> getBulletHitEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getBulletHitEvents();
+		return peer.getBulletHitEvents();
 	}
 
 	public List<HitByBulletEvent> getHitByBulletEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getHitByBulletEvents();
+		return peer.getHitByBulletEvents();
 	}
 
 	public List<HitRobotEvent> getHitRobotEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getHitRobotEvents();
+		return peer.getHitRobotEvents();
 	}
 
 	public List<HitWallEvent> getHitWallEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getHitWallEvents();
+		return peer.getHitWallEvents();
 	}
 
 	public List<RobotDeathEvent> getRobotDeathEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getRobotDeathEvents();
+		return peer.getRobotDeathEvents();
 	}
 
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getScannedRobotEvents();
+		return peer.getScannedRobotEvents();
 	}
 
 	// data
 	public File getDataDirectory() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getDataDirectory();
+		return peer.getDataDirectory();
 	}
 
 	public File getDataFile(String filename) {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getDataFile(filename);
+		return peer.getDataFile(filename);
 	}
 
 	public long getDataQuotaAvailable() {
 		peer.getCall();
-		return ((IAdvancedRobotPeer) peer).getDataQuotaAvailable();
+		return peer.getDataQuotaAvailable();
 	}
 }
