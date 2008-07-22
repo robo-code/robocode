@@ -427,6 +427,7 @@ public class RobocodeFrame extends JFrame {
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override
 				public void desiredTpsChanged(int tps) {
+                    //TODO refactor, causing cycles
 					setTpsOnSlider(tps);
 				}
 			});
@@ -702,12 +703,13 @@ public class RobocodeFrame extends JFrame {
 			if (e.getSource() == getTpsSlider()) {
 				int tps = getTpsFromSlider();
 
+                //TODO refactor
 				if (tps == 0) {
 					manager.getBattleManager().pauseIfResumedBattle();
 				} else {
 					// Only set desired TPS if it is not set to zero
 					manager.getProperties().setOptionsBattleDesiredTPS(tps);
-					manager.getBattleManager().resumeIfPausedBattle();
+					manager.getBattleManager().resumeIfPausedBattle();  //TODO causing problems when called from PreferencesViewOptionsTab.storePreferences()
 				}
 
 				tpsLabel.setText(getTpsFromSliderAsString());
