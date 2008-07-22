@@ -40,19 +40,31 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	}
 
 	public void move(double distance) {
-		peer.move(distance);
+        setMoveImpl(distance);
+        do {
+            execute(); // Always tick at least once
+        } while (getDistanceRemaining() != 0);
 	}
 
 	public void turnBody(double radians) {
-		peer.turnBody(radians);
+        setTurnBodyImpl(radians);
+        do {
+            execute(); // Always tick at least once
+        } while (getBodyTurnRemaining() != 0);
 	}
 
 	public void turnGun(double radians) {
-		peer.turnGun(radians);
+        setTurnGunImpl(radians);
+        do {
+            execute(); // Always tick at least once
+        } while (getGunTurnRemaining() != 0);
 	}
 
 	public Bullet fire(double power) {
-		return peer.fire(power);
+        Bullet bullet = setFire(power);
+
+        execute();
+        return bullet;
 	}
 
 	// fast setters
@@ -197,4 +209,28 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		peer.getCall();
 		return peer.getGraphics();
 	}
+
+    protected void setMoveImpl(double distance){
+        peer.setMove(distance);
+    }
+
+    protected void setMaxVelocityImpl(double newVelocity){
+        peer.setMaxVelocity(newVelocity);
+    }
+
+    protected void setTurnBodyImpl(double radians){
+        peer.setTurnBody(radians);
+    }
+
+    protected void setTurnGunImpl(double radians){
+        peer.setTurnGun(radians);
+    }
+
+    protected void setTurnRadarImpl(double radians){
+        peer.setTurnRadar(radians);
+    }
+
+    protected void setMaxTurnRateImpl(double newTurnRate){
+        peer.setMaxTurnRate(newTurnRate);
+    }
 }

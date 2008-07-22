@@ -27,11 +27,13 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 
 	// blocking actions
 	public void stop(boolean overwrite) {
-		peer.stop(overwrite);
+        setStopImpl(overwrite);
+        execute();
 	}
 
 	public void resume() {
-		peer.resume();
+        setResumeImpl();
+        execute();
 	}
 
 	public void rescan() {
@@ -39,7 +41,10 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 	}
 
 	public void turnRadar(double radians) {
-		peer.turnRadar(radians);
+        setTurnRadarImpl(radians);
+        do {
+            execute(); // Always tick at least once
+        } while (getRadarTurnRemaining() != 0);
 	}
 
 	// fast setters
@@ -57,4 +62,12 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 		peer.setCall();
 		peer.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
 	}
+
+    private void setStopImpl(boolean overwrite){
+        peer.setStop(overwrite);
+    }
+
+    private void setResumeImpl(){
+        peer.setResume();
+    }
 }
