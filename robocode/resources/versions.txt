@@ -5,6 +5,9 @@ o Bugfixes
 -- [2022774] Various usability issues:
    -- Preferences: If TPS was changed from the Preferences during a battle, the error
       "SYSTEM: pause game bug!" occurred.
+-- [2024568] Sometimes the compiler window hangs:
+   -- This bug occurred on some systems when compiling a robot - especially when a compiler error
+      was returned by the compiler.
 
 o Changes
 -- [2022774] Various usability issues:

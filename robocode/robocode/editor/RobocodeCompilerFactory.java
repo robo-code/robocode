@@ -419,7 +419,10 @@ public class RobocodeCompilerFactory {
 			err = p.getErrorStream();
 			console.processStream(in);
 			console.processStream(err);
+
+			// The waitFor() must done after reading the input and error stream of the process
 			p.waitFor();
+
 			if (p.exitValue() == 0) {
 				console.append("Finished building Jikes\n");
 				console.scrollToBottom();
@@ -498,7 +501,10 @@ public class RobocodeCompilerFactory {
 			err = p.getErrorStream();
 			console.processStream(in);
 			console.processStream(err);
+
+			// The waitFor() must done after reading the input and error stream of the process
 			p.waitFor();
+
 			if (p.exitValue() == 0) {
 				javacOk = true;
 			}
@@ -536,7 +542,10 @@ public class RobocodeCompilerFactory {
 			err = p.getErrorStream();
 			console.processStream(in);
 			console.processStream(err);
+
+			// The waitFor() must done after reading the input and error stream of the process
 			p.waitFor();
+
 			if (p.exitValue() == 0) {
 				jikesOk = true;
 			}
