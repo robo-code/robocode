@@ -65,9 +65,9 @@ public interface IBattleManager {
 
 	void togglePauseResumeBattle();
 
-	void resumeIfPausedBattle();
+	void resumeIfPausedBattle(); //TODO refactor, remove
 
-	void pauseIfResumedBattle();
+	void pauseIfResumedBattle(); //TODO refactor, remove
 
 	void restart();
 

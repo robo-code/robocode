@@ -174,7 +174,7 @@ public class WindowManager {
 			// Show it
 			WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
 		} finally {
-			manager.getBattleManager().resumeIfPausedBattle();
+			manager.getBattleManager().resumeIfPausedBattle(); //THIS is just dirty hack-fix of more complex problem with desiredTPS and pausing.  resumeBattle() belongs here.
 		}
 	}
 
