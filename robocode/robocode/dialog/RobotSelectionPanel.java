@@ -154,8 +154,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			selectedRobots.add(selected);
 		}
 
-		availableRobotsPanel.clearSelection();
-
 		selectedList.clearSelection();
 		selectedModel.changed();
 		fireStateChanged();
@@ -164,6 +162,8 @@ public class RobotSelectionPanel extends WizardPanel {
 		} else if (selectedModel.getSize() > maxRobots) {
 			showWrongNumInstructions();
 		}
+
+		availableRobotsPanel.getAvailableRobotsList().requestFocus();
 	}
 
 	private void addButtonActionPerformed() {
@@ -173,7 +173,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		for (FileSpecification move : moves) {
 			selectedRobots.add(move);
 		}
-		availableRobotsPanel.clearSelection();
+
 		selectedModel.changed();
 		fireStateChanged();
 		if (selectedModel.getSize() >= minRobots && selectedModel.getSize() <= maxRobots) {
@@ -181,6 +181,8 @@ public class RobotSelectionPanel extends WizardPanel {
 		} else if (selectedModel.getSize() > maxRobots) {
 			showWrongNumInstructions();
 		}
+
+		availableRobotsPanel.getAvailableRobotsList().requestFocus();
 	}
 
 	/**

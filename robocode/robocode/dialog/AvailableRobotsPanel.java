@@ -137,7 +137,7 @@ public class AvailableRobotsPanel extends JPanel {
 	 *
 	 * @return JList
 	 */
-	private JList getAvailableRobotsList() {
+	public JList getAvailableRobotsList() {
 		if (availableRobotsList == null) {
 			availableRobotsList = new JList();
 			availableRobotsList.setModel(new AvailableRobotsModel());
