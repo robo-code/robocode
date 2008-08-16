@@ -811,6 +811,11 @@ public class RobocodeFrame extends JFrame {
 			getPauseButton().setSelected(false);
 			getNextTurnButton().setEnabled(false);
 
+			// TODO: Refactor?
+			if (getTpsFromSlider() == 0) {
+				setTpsOnSlider(1);
+			}
+
 			updateTitle();
 		}
 
