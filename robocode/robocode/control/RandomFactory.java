@@ -15,6 +15,7 @@ package robocode.control;
 
 
 import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
 
 import java.lang.reflect.Field;
 import java.util.Random;
@@ -31,6 +32,8 @@ import java.util.Random;
 public class RandomFactory {
 	private static Random randomNumberGenerator;
 
+	private static boolean warningNotSupportedLogged;
+
 	/**
 	 * Returns the random number generator used for generating a stream of
 	 * random numbers.
@@ -43,13 +46,13 @@ public class RandomFactory {
 			try {
 				Math.random();
 				final Field field = Math.class.getDeclaredField("randomNumberGenerator");
+				final boolean savedFieldAccessible = field.isAccessible();
 
 				field.setAccessible(true);
 				randomNumberGenerator = (Random) field.get(null);
-				field.setAccessible(false);
+				field.setAccessible(savedFieldAccessible);
 			} catch (NoSuchFieldException e) {
-                logError("The non-deterministic feature of Math.random() is not supported on this JVM.");
-                //logError(e);
+				logWarningNotSupported();
 				randomNumberGenerator = new Random();
 			} catch (IllegalAccessException e) {
 				logError(e);
@@ -71,12 +74,13 @@ public class RandomFactory {
 		try {
 			Math.random();
 			final Field field = Math.class.getDeclaredField("randomNumberGenerator");
+			final boolean savedFieldAccessible = field.isAccessible();
 
 			field.setAccessible(true);
 			field.set(null, randomNumberGenerator);
-			field.setAccessible(false);
+			field.setAccessible(savedFieldAccessible);
 		} catch (NoSuchFieldException e) {
-			logError(e);
+			logWarningNotSupported();
 		} catch (IllegalAccessException e) {
 			logError(e);
 		}
@@ -92,5 +96,18 @@ public class RandomFactory {
 	 */
 	public static void resetDeterministic(long seed) {
 		setRandom(new Random(seed));
+	}
+
+	/**
+	 * Logs a warning that the deterministic random feature is not supported by the JVM.
+	 */
+	private static void logWarningNotSupported() {
+		if (!(warningNotSupportedLogged || System.getProperty("RANDOMSEED", "none").equals("none"))) {
+			logMessage("Warning: The deterministic random generator feature is not supported by this JVM:\n" +
+				System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " " +
+				System.getProperty("java.vm.version"));
+
+			warningNotSupportedLogged = true;
+		}
 	}
 }
