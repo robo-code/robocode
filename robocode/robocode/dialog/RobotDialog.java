@@ -361,6 +361,14 @@ public class RobotDialog extends JFrame {
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
+			// TODO: Get rid of this check (bugfix) if possible:
+			// Make sanity check as a new battle could have been started since the dialog was initialized,
+			// and thus the robot index can be too high compared to the robot's array size causing an
+			// ArrayOutOfBoundsException. This is a bugfix
+			if (robotIndex >= event.getTurnSnapshot().getRobots().size()) {
+				return;
+			}
+
 			final RobotSnapshot robotSnapshot = event.getTurnSnapshot().getRobots().get(robotIndex);
 			final String text = robotSnapshot.getOutputStreamSnapshot();
 
