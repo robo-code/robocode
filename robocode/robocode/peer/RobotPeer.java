@@ -844,6 +844,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 		eventManager.setFireAssistValid(false);
 
+		// Halt robot if it is dead, so we do not need to force killing its thread
+		if (isDead()) {
+			setHalt(true);
+		}
+
 		// Out's counter must be reset before processing event.
 		// Otherwise, it will not be reset when printing in the onScannedEvent()
 		// before a scan() call, which will potentially cause a new onScannedEvent()
