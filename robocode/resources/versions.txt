@@ -1,17 +1,34 @@
-Version 1.6.1
-(07/20/2008)
+Version 1.6.1 Beta 3
+(08/12/2008)
 -------------
 o Bugfixes
+-- [2042289] Frequent errors stopping bots:
+   -- This error was introduced in one of the 1.6.1 Beta versions, where some robots got this error
+      message: "Waiting for robot XXX to stop. Robot XXX is not stopping.  Forcing a stop."
 -- [2022774] Various usability issues:
    -- Preferences: If TPS was changed from the Preferences during a battle, the error
       "SYSTEM: pause game bug!" occurred.
 -- [2024568] Sometimes the compiler window hangs:
    -- This bug occurred on some systems when compiling a robot - especially when a compiler error
       was returned by the compiler.
+-- [2034395] Battles don't open again with selected robots:
+   -- When opening and starting a battle from a .battle file with selected robots (in the .battle
+      file) the New Battle dialog was showing the robots of the previous battle instead of the
+      selected robots from the .battle file.
 
 o Changes
 -- [2022774] Various usability issues:
    -- Added "Enable all" and "Disable all" button in the View Options of the Preferences.
+   -- When the TPS slider is set to 0, the game is paused, and the Pause/Resume button set to
+      paused mode. Now, if the Pause/Resume button is pressed, the game will resume at 1 TPS, and
+      the TPS slider will now move to 1. Previously it will set to 0.  
+   -- In the New Battle window, the focus is now kept in the list of available robots when one of
+      the two 'Add' buttons has been pressed. Previously the focus was lost, and you had to
+      reselect robots in the list of available robots in order to add more robots.
+      -- It is now possible to add multiple robots using only the arrow keys with e.g. the Alt+A
+         in order to add more robots to the battle.
+   -- Improved some menus a bit with better names, and did some rearrangements of the order of the
+      menu items here and there.
 
 Version 1.6.1 Beta 2
 (07/08/2008)
