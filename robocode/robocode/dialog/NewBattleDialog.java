@@ -99,9 +99,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 				return;
 			}
 		}
-		String selectedRobotsProperty = robotSelectionPanel.getSelectedRobotsAsString();
-
-		battleProperties.setSelectedRobots(selectedRobotsProperty);
+		battleProperties.setSelectedRobots(robotSelectionPanel.getSelectedRobotsAsString());
 		battleProperties.setBattlefieldWidth(getBattleFieldTab().getBattleFieldWidth());
 		battleProperties.setBattlefieldHeight(getBattleFieldTab().getBattleFieldHeight());
 		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());

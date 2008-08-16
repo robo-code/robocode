@@ -116,8 +116,9 @@ public class WindowManager {
 
 			if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
 				battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
-				battleManager.loadBattleProperties();
-				showNewBattleDialog(battleManager.getBattleProperties());
+				BattleProperties battleProperties = battleManager.loadBattleProperties();
+
+				showNewBattleDialog(battleProperties);
 			}
 		} finally {
 			battleManager.resumeBattle();

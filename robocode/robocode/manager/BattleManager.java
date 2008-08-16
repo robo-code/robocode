@@ -342,7 +342,8 @@ public class BattleManager implements IBattleManager {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {// swallow
+				} catch (IOException e) {
+					Logger.logError(e);
 				}
 			}
 		}
@@ -363,7 +364,8 @@ public class BattleManager implements IBattleManager {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {// swallow
+				} catch (IOException e) {
+					Logger.logError(e);
 				}
 			}
 		}

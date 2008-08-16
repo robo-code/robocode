@@ -122,7 +122,7 @@ public class Utils {
 	}
 
 	/**
-	 * Returns random number generator. It might be configured for repeatable behavior by seting -DRANDOMSEED option
+	 * Returns random number generator. It might be configured for repeatable behavior by setting -DRANDOMSEED option.
 	 *
 	 * @return random number generator
 	 */
