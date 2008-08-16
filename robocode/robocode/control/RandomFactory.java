@@ -48,7 +48,8 @@ public class RandomFactory {
 				randomNumberGenerator = (Random) field.get(null);
 				field.setAccessible(false);
 			} catch (NoSuchFieldException e) {
-				logError(e);
+                logError("The non-deterministic feature of Math.random() is not supported on this JVM.");
+                //logError(e);
 				randomNumberGenerator = new Random();
 			} catch (IllegalAccessException e) {
 				logError(e);
