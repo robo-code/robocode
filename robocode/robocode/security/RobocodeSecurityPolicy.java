@@ -44,6 +44,7 @@ public class RobocodeSecurityPolicy extends Policy {
 		trustedCodeUrls = new ArrayList<URL>();
 
 		CodeSource codeSrc = getClass().getProtectionDomain().getCodeSource();
+
 		if (codeSrc != null) {
 			trustedCodeUrls.add(codeSrc.getLocation());
 		}

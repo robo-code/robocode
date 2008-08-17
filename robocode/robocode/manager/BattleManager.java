@@ -437,11 +437,10 @@ public class BattleManager implements IBattleManager {
 		if (++pauseCount == 1) {
 			if (battle != null && battle.isRunning()) {
 				battle.pause();
+			} else {
+				battleEventDispatcher.onBattlePaused(new BattlePausedEvent());
 			}
-            else{
-                battleEventDispatcher.onBattlePaused(new BattlePausedEvent());
-            }
-        }
+		}
 	}
 
 	public synchronized void pauseIfResumedBattle() {
@@ -449,10 +448,9 @@ public class BattleManager implements IBattleManager {
 			pauseCount++;
 			if (battle != null && battle.isRunning()) {
 				battle.pause();
+			} else {
+				battleEventDispatcher.onBattlePaused(new BattlePausedEvent());
 			}
-            else{
-                battleEventDispatcher.onBattlePaused(new BattlePausedEvent());
-            }
 		}
 	}
 
@@ -461,10 +459,9 @@ public class BattleManager implements IBattleManager {
 			pauseCount--;
 			if (battle != null && battle.isRunning()) {
 				battle.resume();
+			} else {
+				battleEventDispatcher.onBattleResumed(new BattleResumedEvent());
 			}
-            else{
-                battleEventDispatcher.onBattleResumed(new BattleResumedEvent());
-            }
 		}
 	}
 
@@ -475,10 +472,9 @@ public class BattleManager implements IBattleManager {
 		} else if (pauseCount == 0) {
 			if (battle != null && battle.isRunning()) {
 				battle.resume();
+			} else {
+				battleEventDispatcher.onBattleResumed(new BattleResumedEvent());
 			}
-            else{
-                battleEventDispatcher.onBattleResumed(new BattleResumedEvent());
-            }
 		}
 	}
 

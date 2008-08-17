@@ -93,7 +93,7 @@ public class RobocodeFrame extends JFrame {
 	private JLabel tpsLabel;
 
 	private boolean iconified;
-	private boolean exitOnClose=true;
+	private boolean exitOnClose = true;
 
 	private RobocodeManager manager;
 
@@ -427,7 +427,7 @@ public class RobocodeFrame extends JFrame {
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override
 				public void desiredTpsChanged(int tps) {
-                    //TODO refactor, causing cycles
+					// TODO refactor, causing cycles
 					setTpsOnSlider(tps);
 				}
 			});
@@ -510,8 +510,8 @@ public class RobocodeFrame extends JFrame {
 			getNextTurnButton().setEnabled(false);
 			getRestartButton().setEnabled(false);
 			getReplayButton().setEnabled(false);
-            exitOnClose=false;
-        }
+			exitOnClose = false;
+		}
 	}
 
 	private void pauseResumeButtonActionPerformed() {
@@ -554,18 +554,25 @@ public class RobocodeFrame extends JFrame {
 		switch (value) {
 		case 53:
 			return 110;
+
 		case 54:
 			return 130;
+
 		case 55:
 			return 150;
+
 		case 56:
 			return 200;
+
 		case 57:
 			return 300;
+
 		case 58:
 			return 500;
+
 		case 59:
 			return 750;
+
 		case 60:
 			return 1000;
 		}
@@ -703,13 +710,13 @@ public class RobocodeFrame extends JFrame {
 			if (e.getSource() == getTpsSlider()) {
 				int tps = getTpsFromSlider();
 
-                //TODO refactor
-                if (tps == 0) {
+				// TODO refactor
+				if (tps == 0) {
 					manager.getBattleManager().pauseIfResumedBattle();
 				} else {
 					// Only set desired TPS if it is not set to zero
 					manager.getProperties().setOptionsBattleDesiredTPS(tps);
-					manager.getBattleManager().resumeIfPausedBattle();  //TODO causing problems when called from PreferencesViewOptionsTab.storePreferences()
+					manager.getBattleManager().resumeIfPausedBattle(); // TODO causing problems when called from PreferencesViewOptionsTab.storePreferences()
 				}
 
 				tpsLabel.setText(getTpsFromSliderAsString());
@@ -752,6 +759,7 @@ public class RobocodeFrame extends JFrame {
 			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 
 			JCheckBoxMenuItem rankingCheckBoxMenuItem = getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem();
+
 			rankingCheckBoxMenuItem.setEnabled(!isBattleReplay);
 			if (rankingCheckBoxMenuItem.isSelected()) {
 				manager.getWindowManager().showRankingDialog(!isBattleReplay);

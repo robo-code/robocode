@@ -103,9 +103,10 @@ public class RandomFactory {
 	 */
 	private static void logWarningNotSupported() {
 		if (!(warningNotSupportedLogged || System.getProperty("RANDOMSEED", "none").equals("none"))) {
-			logMessage("Warning: The deterministic random generator feature is not supported by this JVM:\n" +
-				System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " " +
-				System.getProperty("java.vm.version"));
+			logMessage(
+					"Warning: The deterministic random generator feature is not supported by this JVM:\n"
+							+ System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " "
+							+ System.getProperty("java.vm.version"));
 
 			warningNotSupportedLogged = true;
 		}

@@ -36,19 +36,9 @@ public class FileTransfer {
 	 * @author Flemming N. Larsen
 	 */
 	public enum DownloadStatus {
-
-		/**
-		 * The download was succesful
-		 */
-		OK,
-		/**
-		 * Connection problem
-		 */
-		COULD_NOT_CONNECT,
-		/**
-		 * The file to download was not found
-		 */
-		FILE_NOT_FOUND
+		OK, // The download was succesful
+		COULD_NOT_CONNECT, // Connection problem
+		FILE_NOT_FOUND, // The file to download was not found
 	}
 
 

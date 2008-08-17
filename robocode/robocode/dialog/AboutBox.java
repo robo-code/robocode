@@ -73,7 +73,8 @@ public final class AboutBox extends JDialog {
 			+ "Nathaniel Troutman (fixing memory leaks due to circular references)<br>"
 			+ "Aaron Rotenberg (for the Robot Cache Cleaner utility),<br>"
 			+ "Julian Kent (nano precision timing of allowed robot time),<br><br>"
-            + "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR + "</center></td></tr></table></body>";
+			+ "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
+			+ "</center></td></tr></table></body>";
 
 	// Robocode version
 	private String robocodeVersion;

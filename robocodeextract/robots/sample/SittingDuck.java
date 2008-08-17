@@ -71,6 +71,7 @@ public class SittingDuck extends AdvancedRobot {
 		}
 
 		PrintStream w = null;
+
 		try {
 			w = new PrintStream(new RobocodeFileOutputStream(getDataFile("count.dat")));
 

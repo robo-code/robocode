@@ -221,7 +221,7 @@ public class Robocode {
 
 	private void printUsage() {
 		System.out.print(
-					"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
+				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
 						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
 						+ "  -cwd <path>             Change the current working directory\n"
 						+ "  -battle <battle file>   Run the battle specified in a battle file\n"
