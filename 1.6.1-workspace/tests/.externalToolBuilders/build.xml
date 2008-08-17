@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==================================================================== -->
+<!--  Ant build script for building preparing launch directory in Eclipse -->
+<!-- ==================================================================== -->
+
+<project name="tests" default="build" basedir="..">
+
+  <property name="launch.dir" location="../robocode/launch"/>
+
+  <!-- ====================================== -->
+  <!-- Target: build                          -->
+  <!-- ====================================== -->
+  <target name="build">
+  	<!-- Make launch dir -->
+  	<mkdir dir="${launch.dir}"/>
+
+   	<!-- Copy compiled test robots -->
+    <copy todir="${launch.dir}/robots/testing">
+      <fileset dir="bin/testing"/>
+    </copy>
+  </target>
+
+</project>

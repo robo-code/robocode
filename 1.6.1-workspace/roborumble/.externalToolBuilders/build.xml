@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==================================================================== -->
+<!--  Ant build script for building preparing launch directory in Eclipse -->
+<!-- ==================================================================== -->
+
+<project name="roborumble" default="build" basedir="..">
+
+  <property name="launch.dir" location="../robocode/launch"/>
+
+  <!-- ====================================== -->
+  <!-- Target: build                          -->
+  <!-- ====================================== -->
+  <target name="build">
+
+  	<ant antfile="../robocode/.externalToolBuilders/build.xml" target="build"/>
+  	
+  	<!-- Make launch dir -->
+  	<mkdir dir="${launch.dir}"/>
+  	<mkdir dir="${launch.dir}/roborumble"/>
+  	<mkdir dir="${launch.dir}/roborumble/temp"/>
+ 	<mkdir dir="${launch.dir}/roborumble/files"/>
+
+  	<!-- Copy config files -->
+    <copy todir="${launch.dir}/roborumble/">
+      <fileset dir="config"/>
+    </copy>
+  </target>
+
+</project>
