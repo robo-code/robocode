@@ -19,8 +19,8 @@
 package robocode.dialog;
 
 
+import robocode.battle.IBattleManager;
 import robocode.manager.RobotDialogManager;
-import robocode.peer.RobotPeer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,33 +34,32 @@ import java.awt.event.ActionListener;
  */
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
-	private RobotPeer robotPeer;
+
+	private final RobotDialogManager robotDialogManager;
 	private RobotDialog robotDialog;
-	private RobotDialogManager robotDialogManager;
-	private String robotName;
+	private final String name;
+	private final int index;
 
 	/**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, RobotPeer robotPeer) {
-		this.robotPeer = robotPeer;
+	public RobotButton(RobotDialogManager robotDialogManager, IBattleManager battleControl, String name, int index, boolean attach) {
 		this.robotDialogManager = robotDialogManager;
-		robotName = robotPeer.getName();
+		this.name = name;
+		this.index = index;
 
 		initialize();
-		robotDialog = robotDialogManager.getRobotDialog(robotName, false);
-		if (robotDialog != null) {
-			robotDialog.setRobotPeer(robotPeer);
-			robotPeer.setPaintEnabled(robotDialog.isPaintEnabled());
-			robotPeer.setSGPaintEnabled(robotDialog.isSGPaintEnabled());
+		if (attach) {
+			attach();
+			robotDialog.reset();
+			battleControl.setPaintEnabled(index, robotDialog.isPaintEnabled());
+			battleControl.setSGPaintEnabled(index, robotDialog.isSGPaintEnabled());
 		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (robotDialog == null) {
-			robotDialog = robotDialogManager.getRobotDialog(robotName, true);
-			robotDialog.setTitle(robotName);
-			robotDialog.setRobotPeer(robotPeer);
+			attach();
 			if (!robotDialog.isVisible() || robotDialog.getState() != Frame.NORMAL) {
 				WindowUtil.packPlaceShow(robotDialog);
 			}
@@ -73,13 +72,31 @@ public class RobotButton extends JButton implements ActionListener {
 	 * Initialize the class.
 	 */
 	private void initialize() {
-		setText(robotPeer.getShortName());
-		setToolTipText(robotPeer.getRobotClassManager().getClassNameManager().getUniqueFullClassNameWithVersion());
 		addActionListener(this);
 		setPreferredSize(new Dimension(110, 25));
 		setMinimumSize(new Dimension(110, 25));
 		setMaximumSize(new Dimension(110, 25));
 		setHorizontalAlignment(SwingConstants.LEFT);
 		setMargin(new Insets(0, 0, 0, 0));
+		setToolTipText(name);
+	}
+
+	public void attach() {
+		if (robotDialog == null) {
+			robotDialog = robotDialogManager.getRobotDialog(this, name, true);
+		}
+		robotDialog.attach();
+	}
+
+	public void detach() {
+		robotDialog = null;
+	}
+
+	public int getRobotIndex() {
+		return index;
+	}
+
+	public String getRobotName() {
+		return name;
 	}
 }

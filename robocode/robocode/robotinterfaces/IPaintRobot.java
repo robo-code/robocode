@@ -16,7 +16,7 @@ package robocode.robotinterfaces;
 
 /**
  * A robot interface that makes it possible for a robot to receive paint events.
- * 
+ *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (javadoc)
  * @since 1.6

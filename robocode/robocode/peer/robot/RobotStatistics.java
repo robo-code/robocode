@@ -37,7 +37,7 @@
 package robocode.peer.robot;
 
 
-import robocode.control.RobotResults;
+import robocode.BattleResults;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
 
@@ -88,7 +88,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		this.teamPeer = robotPeer.getTeamPeer();
 	}
 
-	public RobotStatistics(RobotPeer robotPeer, RobotResults results) {
+	public RobotStatistics(RobotPeer robotPeer, BattleResults results) {
 		this(robotPeer);
 
 		totalScore = results.getScore();
@@ -113,7 +113,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		isActive = true;
 	}
 
-	private void resetScores() {
+	public void resetScores() {
 		survivalScore = 0;
 		lastSurvivorBonus = 0;
 		bulletDamageScore = 0;
@@ -307,14 +307,15 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		isActive = false;
 	}
 
-	public RobotResults getResults(int rank) {
-		if (robotPeer.getBattle().isRunning()) {
-			return new RobotResults(null, rank, totalScore + getCurrentScore(), totalSurvivalScore + survivalScore,
-					totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore, totalBulletKillBonus + bulletKillBonus,
-					totalRammingDamageScore + rammingDamageScore, totalRammingKillBonus + rammingKillBonus, totalFirsts,
-					totalSeconds, totalThirds);
-		}
-		return new RobotResults(null, rank, totalScore, totalSurvivalScore, totalLastSurvivorBonus,
+	public BattleResults getCurrentResults(int rank) {
+		return new BattleResults(robotPeer.getTeamName(), rank, totalScore + getCurrentScore(),
+				totalSurvivalScore + survivalScore, totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore,
+				totalBulletKillBonus + bulletKillBonus, totalRammingDamageScore + rammingDamageScore,
+				totalRammingKillBonus + rammingKillBonus, totalFirsts, totalSeconds, totalThirds);
+	}
+
+	public BattleResults getFinalResults(int rank) {
+		return new BattleResults(robotPeer.getTeamName(), rank, totalScore, totalSurvivalScore, totalLastSurvivorBonus,
 				totalBulletDamageScore, totalBulletKillBonus, totalRammingDamageScore, totalRammingKillBonus, totalFirsts,
 				totalSeconds, totalThirds);
 	}

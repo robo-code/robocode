@@ -27,6 +27,7 @@
 package robocode.dialog;
 
 
+import robocode.battle.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
@@ -35,6 +36,7 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.event.*;
+import java.io.File;
 
 
 /**
@@ -184,9 +186,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleExitActionPerformed() {
-		java.awt.AWTEvent evt = new WindowEvent(robocodeFrame, WindowEvent.WINDOW_CLOSING);
-
-		robocodeFrame.dispatchEvent(evt);
+		robocodeFrame.dispose();
 	}
 
 	/**
@@ -201,11 +201,86 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleSaveActionPerformed() {
-		manager.getBattleManager().saveBattle();
+		IBattleManager battleManager = manager.getBattleManager();
+
+		try {
+			battleManager.pauseBattle();
+			String path = battleManager.getBattleFilename();
+
+			if (path == null) {
+				path = saveBattleDialog(battleManager.getBattlePath());
+			}
+			if (path != null) {
+				battleManager.setBattleFilename(path);
+				battleManager.saveBattleProperties();
+			}
+		} finally {
+			battleManager.resumeBattle();
+		}
 	}
 
 	private void battleSaveAsActionPerformed() {
-		manager.getBattleManager().saveBattleAs();
+		IBattleManager battleManager = manager.getBattleManager();
+
+		try {
+			battleManager.pauseBattle();
+			String path = saveBattleDialog(battleManager.getBattlePath());
+
+			if (path != null) {
+				battleManager.setBattleFilename(path);
+				battleManager.saveBattleProperties();
+			}
+		} finally {
+			battleManager.resumeBattle();
+		}
+	}
+
+	private String saveBattleDialog(String path) {
+		File f = new File(path);
+
+		JFileChooser chooser;
+
+		chooser = new JFileChooser(f);
+
+		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory()) {
+					return false;
+				}
+				String fn = pathname.getName();
+				int idx = fn.lastIndexOf('.');
+				String extension = "";
+
+				if (idx >= 0) {
+					extension = fn.substring(idx);
+				}
+				return extension.equalsIgnoreCase(".battle");
+			}
+
+			@Override
+			public String getDescription() {
+				return "Battles";
+			}
+		};
+
+		chooser.setFileFilter(filter);
+		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
+		String result = null;
+
+		if (rv == JFileChooser.APPROVE_OPTION) {
+			result = chooser.getSelectedFile().getPath();
+			int idx = result.lastIndexOf('.');
+			String extension = "";
+
+			if (idx > 0) {
+				extension = result.substring(idx);
+			}
+			if (!(extension.equalsIgnoreCase(".battle"))) {
+				result += ".battle";
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -364,13 +439,14 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpMenu.setDisplayedMnemonicIndex(0);
 			helpMenu.add(getHelpOnlineHelpMenuItem());
 			helpMenu.add(getHelpRobocodeApiMenuItem());
-			helpMenu.add(getHelpJavaDocumentationMenuItem());
+			helpMenu.add(getHelpRoboWikiMenuItem());
+			helpMenu.add(getHelpYahooGroupRobocodeMenuItem());
 			helpMenu.add(getHelpFaqMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpRobocodeMenuItem());
-			helpMenu.add(getHelpRoboWikiMenuItem());
-			helpMenu.add(getHelpYahooGroupRobocodeMenuItem());
 			helpMenu.add(getHelpRobocodeRepositoryMenuItem());
+			helpMenu.add(new JSeparator());
+			helpMenu.add(getHelpJavaDocumentationMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpCheckForNewVersionMenuItem());
 			helpMenu.add(getHelpVersionsTxtMenuItem());
@@ -405,7 +481,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getHelpOnlineHelpMenuItem() {
 		if (helpOnlineHelpMenuItem == null) {
 			helpOnlineHelpMenuItem = new JMenuItem();
-			helpOnlineHelpMenuItem.setText("Online Help");
+			helpOnlineHelpMenuItem.setText("Online help");
 			helpOnlineHelpMenuItem.setMnemonic('O');
 			helpOnlineHelpMenuItem.setDisplayedMnemonicIndex(0);
 			helpOnlineHelpMenuItem.addActionListener(eventHandler);
@@ -421,7 +497,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getHelpVersionsTxtMenuItem() {
 		if (helpVersionsTxtMenuItem == null) {
 			helpVersionsTxtMenuItem = new JMenuItem();
-			helpVersionsTxtMenuItem.setText("Version Info");
+			helpVersionsTxtMenuItem.setText("Version info");
 			helpVersionsTxtMenuItem.setMnemonic('V');
 			helpVersionsTxtMenuItem.setDisplayedMnemonicIndex(0);
 			helpVersionsTxtMenuItem.addActionListener(eventHandler);
@@ -453,7 +529,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getHelpRobocodeMenuItem() {
 		if (helpRobocodeMenuItem == null) {
 			helpRobocodeMenuItem = new JMenuItem();
-			helpRobocodeMenuItem.setText("Robocode Home");
+			helpRobocodeMenuItem.setText("Robocode home page");
 			helpRobocodeMenuItem.setMnemonic('H');
 			helpRobocodeMenuItem.setDisplayedMnemonicIndex(9);
 			helpRobocodeMenuItem.addActionListener(eventHandler);
@@ -469,7 +545,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getHelpJavaDocumentationMenuItem() {
 		if (helpJavaDocumentationMenuItem == null) {
 			helpJavaDocumentationMenuItem = new JMenuItem();
-			helpJavaDocumentationMenuItem.setText("Java 5.0 Documentation");
+			helpJavaDocumentationMenuItem.setText("Java 5.0 documentation");
 			helpJavaDocumentationMenuItem.setMnemonic('J');
 			helpJavaDocumentationMenuItem.setDisplayedMnemonicIndex(0);
 			helpJavaDocumentationMenuItem.addActionListener(eventHandler);
@@ -485,7 +561,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getHelpRoboWikiMenuItem() {
 		if (helpRoboWikiMenuItem == null) {
 			helpRoboWikiMenuItem = new JMenuItem();
-			helpRoboWikiMenuItem.setText("RoboWiki");
+			helpRoboWikiMenuItem.setText("RoboWiki site");
 			helpRoboWikiMenuItem.setMnemonic('W');
 			helpRoboWikiMenuItem.setDisplayedMnemonicIndex(4);
 			helpRoboWikiMenuItem.addActionListener(eventHandler);
@@ -501,7 +577,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getHelpYahooGroupRobocodeMenuItem() {
 		if (helpYahooGroupRobocodeMenuItem == null) {
 			helpYahooGroupRobocodeMenuItem = new JMenuItem();
-			helpYahooGroupRobocodeMenuItem.setText("Yahoo Group: Robocode");
+			helpYahooGroupRobocodeMenuItem.setText("Yahoo Group for Robocode");
 			helpYahooGroupRobocodeMenuItem.setMnemonic('Y');
 			helpYahooGroupRobocodeMenuItem.setDisplayedMnemonicIndex(0);
 			helpYahooGroupRobocodeMenuItem.addActionListener(eventHandler);
@@ -533,7 +609,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getOptionsFitWindowMenuItem() {
 		if (optionsFitWindowMenuItem == null) {
 			optionsFitWindowMenuItem = new JMenuItem();
-			optionsFitWindowMenuItem.setText("Default Window Size");
+			optionsFitWindowMenuItem.setText("Default window size");
 			optionsFitWindowMenuItem.setMnemonic('D');
 			optionsFitWindowMenuItem.setDisplayedMnemonicIndex(0);
 			optionsFitWindowMenuItem.addActionListener(eventHandler);
@@ -549,10 +625,11 @@ public class RobocodeMenuBar extends JMenuBar {
 	public JCheckBoxMenuItem getOptionsShowRankingCheckBoxMenuItem() {
 		if (optionsShowRankingCheckBoxMenuItem == null) {
 			optionsShowRankingCheckBoxMenuItem = new JCheckBoxMenuItem();
-			optionsShowRankingCheckBoxMenuItem.setText("Ranking Panel");
-			optionsShowRankingCheckBoxMenuItem.setMnemonic('R');
-			optionsShowRankingCheckBoxMenuItem.setDisplayedMnemonicIndex(0);
+			optionsShowRankingCheckBoxMenuItem.setText("Show current rankings");
+			optionsShowRankingCheckBoxMenuItem.setMnemonic('r');
+			optionsShowRankingCheckBoxMenuItem.setDisplayedMnemonicIndex(13);
 			optionsShowRankingCheckBoxMenuItem.addActionListener(eventHandler);
+			optionsShowRankingCheckBoxMenuItem.setEnabled(false);
 		}
 		return optionsShowRankingCheckBoxMenuItem;
 	}
@@ -581,7 +658,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getOptionsCleanRobotCacheMenuItem() {
 		if (optionsCleanRobotCacheMenuItem == null) {
 			optionsCleanRobotCacheMenuItem = new JMenuItem();
-			optionsCleanRobotCacheMenuItem.setText("Clean Robot Cache");
+			optionsCleanRobotCacheMenuItem.setText("Clean robot cache");
 			optionsCleanRobotCacheMenuItem.setMnemonic('C');
 			optionsCleanRobotCacheMenuItem.setDisplayedMnemonicIndex(0);
 			optionsCleanRobotCacheMenuItem.addActionListener(eventHandler);
@@ -602,6 +679,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsMenu.setDisplayedMnemonicIndex(0);
 			optionsMenu.add(getOptionsPreferencesMenuItem());
 			optionsMenu.add(getOptionsFitWindowMenuItem());
+			optionsMenu.add(new JSeparator());
 			optionsMenu.add(getOptionsShowRankingCheckBoxMenuItem());
 			optionsMenu.add(new JSeparator());
 			optionsMenu.add(getOptionsRecalculateCpuConstantMenuItem());
@@ -722,7 +800,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem getTeamCreateTeamMenuItem() {
 		if (teamCreateTeamMenuItem == null) {
 			teamCreateTeamMenuItem = new JMenuItem();
-			teamCreateTeamMenuItem.setText("Create Team");
+			teamCreateTeamMenuItem.setText("Create a robot team");
 			teamCreateTeamMenuItem.setMnemonic('C');
 			teamCreateTeamMenuItem.setDisplayedMnemonicIndex(0);
 			teamCreateTeamMenuItem.addActionListener(eventHandler);

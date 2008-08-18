@@ -26,7 +26,8 @@ package robocode.editor;
 
 import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
-import static robocode.io.Logger.log;
+import robocode.io.Logger;
+import static robocode.io.Logger.logError;
 import robocode.manager.BrowserManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
@@ -495,9 +496,9 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 				robocodeProperties.load(in);
 			} catch (FileNotFoundException e) {
-				log("No " + FileUtil.getRobocodeConfigFile().getName() + " file, using defaults.");
+				logError("No " + FileUtil.getRobocodeConfigFile().getName() + " file, using defaults.");
 			} catch (IOException e) {
-				log("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+				logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName(), e);
 			} finally {
 				if (in != null) {
 					try {
@@ -621,7 +622,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			// 2nd time for bug in some JREs
 			robocodeEditor.setVisible(true);
 		} catch (Throwable e) {
-			log("Exception in RoboCodeEditor.main", e);
+			Logger.logError("Exception in RoboCodeEditor.main", e);
 		}
 	}
 
@@ -687,7 +688,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				addPlaceShowFocus(editWindow);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, e.toString());
-				log(e);
+				Logger.logError(e);
 			} finally {
 				if (fileReader != null) {
 					try {
@@ -716,7 +717,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	public void saveRobocodeProperties() {
 		if (robocodeProperties == null) {
-			log("Cannot save null robocode properties");
+			logError("Cannot save null robocode properties");
 			return;
 		}
 		FileOutputStream out = null;
@@ -726,7 +727,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 			robocodeProperties.store(out, "Robocode Properties");
 		} catch (IOException e) {
-			log(e);
+			Logger.logError(e);
 		} finally {
 			if (out != null) {
 				try {

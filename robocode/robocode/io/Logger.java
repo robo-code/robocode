@@ -15,7 +15,13 @@
 package robocode.io;
 
 
-import robocode.control.RobocodeListener;
+import robocode.battle.events.BattleErrorEvent;
+import robocode.battle.events.BattleMessageEvent;
+import robocode.battle.events.IBattleListener;
+import robocode.security.SecurePrintStream;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 
 /**
@@ -25,54 +31,70 @@ import robocode.control.RobocodeListener;
  * @author Mathew A. Nelson (original)
  */
 public class Logger {
-	private static RobocodeListener logListener;
-	private static String logBuffer = "";
+	private static IBattleListener logListener;
+	private static StringBuffer logBuffer = new StringBuffer();
 
-	public static void setLogListener(RobocodeListener logListener) {
+	public static void setLogListener(IBattleListener logListener) {
 		Logger.logListener = logListener;
 	}
 
-	public static void log(String s) {
+	public static void logMessage(String s) {
 		if (logListener == null) {
-			System.err.println(s);
+			SecurePrintStream.realOut.println(s);
 		} else {
-			logListener.battleMessage(s);
+			logListener.onBattleMessage(new BattleMessageEvent(s));
 		}
 	}
 
-	public static void log(String s, Throwable e) {
+	public static void logMessage(Throwable e) {
 		if (logListener == null) {
-			System.err.println(s + ": " + e);
-			e.printStackTrace(System.err);
+			SecurePrintStream.realErr.println(e);
+			e.printStackTrace(SecurePrintStream.realErr);
 		} else {
-			logListener.battleMessage(s + ": " + e);
+			logListener.onBattleMessage(new BattleMessageEvent(e.toString()));
 		}
 	}
 
-	public static void log(String s, boolean newline) {
+	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
 			if (newline) {
-				System.err.println(s);
+				SecurePrintStream.realOut.println(s);
 			} else {
-				System.err.print(s);
-				System.err.flush();
+				SecurePrintStream.realOut.print(s);
+				SecurePrintStream.realOut.flush();
 			}
 		} else {
 			if (newline) {
-				logListener.battleMessage(logBuffer + s);
-				logBuffer = "";
+				logListener.onBattleMessage(new BattleMessageEvent(logBuffer + s));
+				logBuffer.setLength(0);
 			} else {
-				logBuffer += s;
+				logBuffer.append(s);
 			}
 		}
 	}
 
-	public static void log(Throwable e) {
+	public static void logError(String s) {
 		if (logListener == null) {
-			System.err.println(e);
-			e.printStackTrace(System.err);
+			SecurePrintStream.realErr.println(s);
 		} else {
-			logListener.battleMessage("" + e);
+			logListener.onBattleError(new BattleErrorEvent(s));
 		}
+	}
+
+	public static void logError(String message, Throwable t) {
+		logError(message + ":\n" + toStackTraceString(t));
+	}
+
+	public static void logError(Throwable t) {
+		logError(toStackTraceString(t));
+	}
+
+	private static String toStackTraceString(Throwable t) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(baos);
+
+		t.printStackTrace(ps);
+		ps.close();
+		return baos.toString();
 	}
 }

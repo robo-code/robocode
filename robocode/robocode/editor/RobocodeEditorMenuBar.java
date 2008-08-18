@@ -35,7 +35,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 
 
 /**
@@ -220,7 +219,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	}
 
 	public void fileExitActionPerformed() {
-		editor.dispatchEvent(new WindowEvent(editor, WindowEvent.WINDOW_CLOSING));
+		editor.dispose();
 	}
 
 	public void fileNewJavaFileActionPerformed() {

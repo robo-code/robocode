@@ -32,40 +32,6 @@ public class ConsoleScrollPane extends JScrollPane {
 	private JTextArea textPane;
 	private Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);
 
-	class StreamReader implements Runnable {
-		private InputStream in;
-
-		public StreamReader(InputStream in) {
-			this.in = in;
-		}
-
-		public void start() {
-			new Thread(this).start();
-		}
-
-		public void run() {
-			BufferedReader in = new BufferedReader(new InputStreamReader(this.in));
-			String line;
-
-			try {
-				line = in.readLine();
-				while (line != null) {
-					int tabIndex = line.indexOf("\t");
-
-					while (tabIndex >= 0) {
-						line = line.substring(0, tabIndex) + "    " + line.substring(tabIndex + 1);
-						tabIndex = line.indexOf("\t");
-					}
-					append(line + "\n");
-					scrollToBottom();
-					line = in.readLine();
-				}
-			} catch (IOException e) {
-				append("IOException: " + e);
-			}
-		}
-	}
-
 	public ConsoleScrollPane() {
 		super();
 		initialize();
@@ -111,8 +77,26 @@ public class ConsoleScrollPane extends JScrollPane {
 		setViewportView(getTextPane());
 	}
 
-	public void processStream(InputStream in) {
-		new StreamReader(in).start();
+	public void processStream(InputStream input) {
+		BufferedReader in = new BufferedReader(new InputStreamReader(input));
+		String line;
+
+		try {
+			line = in.readLine();
+			while (line != null) {
+				int tabIndex = line.indexOf("\t");
+
+				while (tabIndex >= 0) {
+					line = line.substring(0, tabIndex) + "    " + line.substring(tabIndex + 1);
+					tabIndex = line.indexOf("\t");
+				}
+				append(line + "\n");
+				line = in.readLine();
+			}
+		} catch (IOException e) {
+			append("IOException: " + e);
+		}
+		scrollToBottom();
 	}
 
 	private Runnable scroller = new Runnable() {

@@ -73,7 +73,7 @@ public class RobotRecord {
 		heading = (byte) (128 * robot.getBodyHeading() / Math.PI);
 		radarHeading = (byte) (128 * robot.getRadarHeading() / Math.PI);
 		gunHeading = (byte) (128 * robot.getGunHeading() / Math.PI);
-		state = (byte) robot.getState();
+		state = (byte) robot.getState().getValue();
 		bodyColor = toRGB565(robot.getBodyColor());
 		gunColor = toRGB565(robot.getGunColor());
 		radarColor = toRGB565(robot.getRadarColor());

@@ -11,6 +11,7 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     - Added getGraphics()
  *     Flemming N. Larsen
  *     - Javadocs
  *******************************************************************************/
@@ -651,4 +652,26 @@ public interface IBasicRobotPeer {
 	 * @see #getCall()
 	 */
 	void setCall();
+
+	/**
+	 * Returns a graphics context used for painting graphical items for the robot.
+	 * <p/>
+	 * This method is very useful for debugging your robot.
+	 * <p/>
+	 * Note that the robot will only be painted if the "Paint" is enabled on the
+	 * robot's console window; otherwise the robot will never get painted (the
+	 * reason being that all robots might have graphical items that must be
+	 * painted, and then you might not be able to tell what graphical items that
+	 * have been painted for your robot).
+	 * <p/>
+	 * Also note that the coordinate system for the graphical context where you
+	 * paint items fits for the Robocode coordinate system where (0, 0) is at
+	 * the bottom left corner of the battlefield, where X is towards right and Y
+	 * is upwards.
+	 *
+	 * @return a graphics context used for painting graphical items for the robot.
+	 * @see robocode.robotinterfaces.IPaintEvents#onPaint(Graphics2D)
+	 * @since 1.6.1
+	 */
+	Graphics2D getGraphics();
 }

@@ -61,8 +61,9 @@ public class CpuManager {
 		WindowUtil.setStatus("Estimating CPU speed, please wait...");
 
 		setCpuConstant();
+		Logger.logMessage(
+				"Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
 
-		Logger.log("Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
 		manager.getProperties().setCpuConstant(cpuConstant);
 		manager.saveProperties();
 
@@ -84,7 +85,7 @@ public class CpuManager {
 
 		// to cheat optimizer, almost never happen
 		if (d == 0.0) {
-			Logger.log("bingo!");
+			Logger.logMessage("bingo!");
 		}
 
 		cpuConstant = Math.max(1, (long) (1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));

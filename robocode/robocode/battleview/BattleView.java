@@ -14,34 +14,40 @@
 package robocode.battleview;
 
 
-import robocode.battle.Battle;
+import robocode.battle.IBattleManager;
+import robocode.battle.events.BattleStartedEvent;
+import robocode.battle.snapshot.BulletSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.dialog.RobocodeFrame;
+import robocode.gfx.GraphicsState;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
 import robocode.manager.ImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.peer.BulletPeer;
-import robocode.peer.ExplosionPeer;
-import robocode.peer.RobotPeer;
-import robocode.robotinterfaces.*;
-import robocode.util.GraphicsState;
+import robocode.peer.BulletState;
+import robocode.robotpaint.Graphics2DProxy;
+import robocode.ui.AwtBattleAdaptor;
 
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.*;
+import java.util.Random;
 
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
+	private final static int TIMER_TICKS_PER_SECOND = 50;
+
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
@@ -50,11 +56,9 @@ public class BattleView extends Canvas {
 
 	private final static int ROBOT_TEXT_Y_OFFSET = 24;
 
-	private RobocodeFrame robocodeFrame;
-
 	// The battle and battlefield,
-	private Battle battle;
 	private BattleField battleField;
+	private BattleObserver observer;
 
 	private boolean initialized;
 	private double scale = 1.0;
@@ -79,10 +83,6 @@ public class BattleView extends Canvas {
 
 	private RenderingHints renderingHints;
 
-	// TPS and FPS
-	private boolean displayTPS;
-	private boolean displayFPS;
-
 	// Fonts and the like
 	private Font smallFont;
 	private FontMetrics smallFontMetrics;
@@ -105,68 +105,69 @@ public class BattleView extends Canvas {
 	/**
 	 * BattleView constructor.
 	 */
-	public BattleView(RobocodeManager manager, RobocodeFrame robocodeFrame) {
+	public BattleView(RobocodeManager manager) {
 		super();
 
 		this.manager = manager;
-		this.robocodeFrame = robocodeFrame;
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
+		observer = new BattleObserver(manager.getBattleManager());
+	}
+
+	public int getFPS() {
+		return observer.getFPS();
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		if (observer != null && observer.isRunning()) {
+			update(observer.getLastSnapshot());
+		} else {
+			paintRobocodeLogo((Graphics2D) g);
+		}
 	}
 
 	/**
 	 * Shows the next frame. The game calls this every frame.
 	 */
-	public void update() {
-		if (robocodeFrame.isIconified() || (getWidth() <= 0) || (getHeight() <= 0)) {
-			return;
-		}
-
+	private void update(TurnSnapshot snapshot) {
 		if (!initialized) {
 			initialize();
 		}
 
-		if (offscreenImage != null && isDisplayable()) {
-			offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-			if (offscreenGfx != null) {
-				offscreenGfx.setRenderingHints(renderingHints);
+		if (manager.getWindowManager().getRobocodeFrame().isIconified() || offscreenImage == null || !isDisplayable()
+				|| (getWidth() <= 0) || (getHeight() <= 0)) {
+			return;
+		}
 
-				drawBattle(offscreenGfx);
+		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
+		if (offscreenGfx != null) {
+			offscreenGfx.setRenderingHints(renderingHints);
 
-				if (bufferStrategy != null) {
-					Graphics2D g = null;
+			drawBattle(offscreenGfx, snapshot);
 
-					try {
-						g = (Graphics2D) bufferStrategy.getDrawGraphics();
-						g.drawImage(offscreenImage, 0, 0, null);
+			if (bufferStrategy != null) {
+				Graphics2D g = null;
 
-						bufferStrategy.show();
-					} catch (NullPointerException e) {// Occurs sometimes for no reason?!
-					} finally {
-						if (g != null) {
-							g.dispose();
-						}
+				try {
+					g = (Graphics2D) bufferStrategy.getDrawGraphics();
+					g.drawImage(offscreenImage, 0, 0, null);
+
+					bufferStrategy.show();
+				} catch (NullPointerException e) {// Occurs sometimes for no reason?!
+				} finally {
+					if (g != null) {
+						g.dispose();
 					}
 				}
 			}
 		}
 	}
 
-	@Override
-	public void paint(Graphics g) {
-		if (battle != null && battle.isRunning()) {
-			update();
-		} else {
-			paintRobocodeLogo((Graphics2D) g);
-		}
-	}
-
 	public void setDisplayOptions() {
 		RobocodeProperties props = manager.getProperties();
 
-		displayTPS = props.getOptionsViewTPS();
-		displayFPS = props.getOptionsViewFPS();
 		drawRobotName = props.getOptionsViewRobotNames();
 		drawRobotEnergy = props.getOptionsViewRobotEnergy();
 		drawScanArcs = props.getOptionsViewScanArcs();
@@ -224,6 +225,8 @@ public class BattleView extends Canvas {
 	private void createGroundImage() {
 		// Reinitialize ground tiles
 
+		Random r = new Random(); // independent
+
 		final int NUM_HORZ_TILES = battleField.getWidth() / groundTileWidth + 1;
 		final int NUM_VERT_TILES = battleField.getHeight() / groundTileHeight + 1;
 
@@ -232,7 +235,7 @@ public class BattleView extends Canvas {
 			groundTiles = new int[NUM_VERT_TILES][NUM_HORZ_TILES];
 			for (int y = NUM_VERT_TILES - 1; y >= 0; y--) {
 				for (int x = NUM_HORZ_TILES - 1; x >= 0; x--) {
-					groundTiles[y][x] = (int) round(random() * 4);
+					groundTiles[y][x] = (int) round(r.nextDouble() * 4);
 				}
 			}
 		}
@@ -261,7 +264,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawBattle(Graphics2D g) {
+	private void drawBattle(Graphics2D g, TurnSnapshot snapShot) {
 		// Save the graphics state
 		graphicsState.save(g);
 
@@ -291,20 +294,24 @@ public class BattleView extends Canvas {
 		// Draw ground
 		drawGround(g);
 
-		// Draw scan arcs
-		drawScanArcs(g);
+		if (snapShot != null) {
+			// Draw scan arcs
+			drawScanArcs(g, snapShot);
 
-		// Draw robots
-		drawRobots(g);
+			// Draw robots
+			drawRobots(g, snapShot);
+		}
 
 		// Draw the border of the battlefield
 		drawBorder(g);
 
-		// Draw all bullets
-		drawBullets(g);
+		if (snapShot != null) {
+			// Draw all bullets
+			drawBullets(g, snapShot);
 
-		// Draw all text
-		drawText(g);
+			// Draw all text
+			drawText(g, snapShot);
+		}
 
 		// Restore the graphics state
 		graphicsState.restore(g);
@@ -351,28 +358,28 @@ public class BattleView extends Canvas {
 		g.setClip(savedClip);
 	}
 
-	private void drawScanArcs(Graphics2D g) {
+	private void drawScanArcs(Graphics2D g, TurnSnapshot snapShot) {
 		if (drawScanArcs) {
-			for (RobotPeer robotPeer : battle.getRobots()) {
-				if (robotPeer.isAlive()) {
-					drawScanArc(g, robotPeer);
+			for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+				if (robotSnapshot.getState().isAlive()) {
+					drawScanArc(g, robotSnapshot);
 				}
 			}
 		}
 	}
 
-	private void drawRobots(Graphics2D g) {
+	private void drawRobots(Graphics2D g, TurnSnapshot snapShot) {
 		double x, y;
 		AffineTransform at;
-		int battleFieldHeight = battle.getBattleField().getHeight();
+		int battleFieldHeight = battleField.getHeight();
 
-		if (drawGround && drawExplosionDebris && battle.isRobotsLoaded()) {
+		if (drawGround && drawExplosionDebris) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
-			for (RobotPeer robotPeer : battle.getRobots()) {
-				if (robotPeer.isDead()) {
-					x = robotPeer.getX();
-					y = battleFieldHeight - robotPeer.getY();
+			for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+				if (robotSnapshot.getState().isDead()) {
+					x = robotSnapshot.getX();
+					y = battleFieldHeight - robotSnapshot.getY();
 
 					at = AffineTransform.getTranslateInstance(x, y);
 
@@ -382,32 +389,32 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		for (RobotPeer robotPeer : battle.getRobots()) {
-			if (robotPeer.isAlive()) {
-				x = robotPeer.getX();
-				y = battleFieldHeight - robotPeer.getY();
+		for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+			if (robotSnapshot.getState().isAlive()) {
+				x = robotSnapshot.getX();
+				y = battleFieldHeight - robotSnapshot.getY();
 
 				at = AffineTransform.getTranslateInstance(x, y);
-				at.rotate(robotPeer.getBodyHeading());
+				at.rotate(robotSnapshot.getBodyHeading());
 
-				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(robotPeer.getBodyColor());
+				RenderImage robotRenderImage = imageManager.getColoredBodyRenderImage(robotSnapshot.getBodyColor());
 
 				robotRenderImage.setTransform(at);
 				robotRenderImage.paint(g);
 
 				at = AffineTransform.getTranslateInstance(x, y);
-				at.rotate(robotPeer.getGunHeading());
+				at.rotate(robotSnapshot.getGunHeading());
 
-				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(robotPeer.getGunColor());
+				RenderImage gunRenderImage = imageManager.getColoredGunRenderImage(robotSnapshot.getGunColor());
 
 				gunRenderImage.setTransform(at);
 				gunRenderImage.paint(g);
 
-				if (!robotPeer.isDroid()) {
+				if (!robotSnapshot.isDroid()) {
 					at = AffineTransform.getTranslateInstance(x, y);
-					at.rotate(robotPeer.getRadarHeading());
+					at.rotate(robotSnapshot.getRadarHeading());
 
-					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(robotPeer.getRadarColor());
+					RenderImage radarRenderImage = imageManager.getColoredRadarRenderImage(robotSnapshot.getRadarColor());
 
 					radarRenderImage.setTransform(at);
 					radarRenderImage.paint(g);
@@ -416,29 +423,29 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawText(Graphics2D g) {
+	private void drawText(Graphics2D g, TurnSnapshot snapShot) {
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
 
-		for (RobotPeer robotPeer : battle.getRobots()) {
-			if (robotPeer.isDead()) {
+		for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+			if (robotSnapshot.getState().isDead()) {
 				continue;
 			}
-			int x = (int) robotPeer.getX();
-			int y = battle.getBattleField().getHeight() - (int) robotPeer.getY();
+			int x = (int) robotSnapshot.getX();
+			int y = battleField.getHeight() - (int) robotSnapshot.getY();
 
-			if (drawRobotEnergy && robotPeer.getRobot() != null) {
+			if (drawRobotEnergy) {
 				g.setColor(Color.white);
-				int ll = (int) robotPeer.getEnergy();
-				int rl = (int) ((robotPeer.getEnergy() - ll + .001) * 10.0);
+				int ll = (int) robotSnapshot.getEnergy();
+				int rl = (int) ((robotSnapshot.getEnergy() - ll + .001) * 10.0);
 
 				if (rl == 10) {
 					rl = 9;
 				}
 				String energyString = ll + "." + rl;
 
-				if (robotPeer.getEnergy() == 0 && robotPeer.isAlive()) {
+				if (robotSnapshot.getEnergy() == 0 && robotSnapshot.getState().isAlive()) {
 					energyString = "Disabled";
 				}
 				centerString(g, energyString, x, y - ROBOT_TEXT_Y_OFFSET - smallFontMetrics.getHeight() / 2, smallFont,
@@ -446,18 +453,22 @@ public class BattleView extends Canvas {
 			}
 			if (drawRobotName) {
 				g.setColor(Color.white);
-				centerString(g, robotPeer.getVeryShortName(), x,
+				centerString(g, robotSnapshot.getVeryShortName(), x,
 						y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2, smallFont, smallFontMetrics);
 			}
-			if (robotPeer.isPaintEnabled() && robotPeer.getRobot() != null) {
-				drawRobotPaint(g, robotPeer);
+			if (robotSnapshot.isPaintEnabled()) {
+				drawRobotPaint(g, robotSnapshot);
 			}
 		}
 
 		g.setClip(savedClip);
 	}
 
-	private void drawRobotPaint(Graphics2D g, RobotPeer robotPeer) {
+	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot) {
+		if (!robotSnapshot.isPaintRobot()) {
+			return;
+		}
+
 		// Save the graphics state
 		GraphicsState gfxState = new GraphicsState();
 
@@ -465,27 +476,15 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		if (robotPeer.getRobot() != null && robotPeer.isPaintRobot()) {
+		Graphics2DProxy gfxProxy = robotSnapshot.getGraphicsProxy();
 
-			IPaintRobot robot = (IPaintRobot) robotPeer.getRobot();
-			IPaintEvents basicEvents = robot.getPaintEventListener();
-
-			// Do the painting
-			try {
-				if (basicEvents != null) {
-					if (robotPeer.isSGPaintEnabled()) {
-						basicEvents.onPaint(g);
-					} else {
-						mirroredGraphics.bind(g, battleField.getHeight());
-						basicEvents.onPaint(mirroredGraphics);
-						mirroredGraphics.release();
-					}
-				}
-			} catch (Exception e) {
-				// Make sure that Robocode is not halted by an exception caused by letting the robot paint
-
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onPaint(Graphics2D):");
-				e.printStackTrace(robotPeer.getOut());
+		if (gfxProxy != null) {
+			if (robotSnapshot.isSGPaintEnabled()) {
+				gfxProxy.processTo(g);
+			} else {
+				mirroredGraphics.bind(g, battleField.getHeight());
+				gfxProxy.processTo(mirroredGraphics);
+				mirroredGraphics.release();
 			}
 		}
 
@@ -493,23 +492,23 @@ public class BattleView extends Canvas {
 		gfxState.restore(g);
 	}
 
-	private void drawBullets(Graphics2D g) {
+	private void drawBullets(Graphics2D g, TurnSnapshot snapShot) {
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
 
 		double x, y;
 
-		for (BulletPeer bullet : battle.getBullets()) {
-			x = bullet.getPaintX();
-			y = battle.getBattleField().getHeight() - bullet.getPaintY();
+		for (BulletSnapshot bulletSnapshot : snapShot.getBullets()) {
+			x = bulletSnapshot.getPaintX();
+			y = battleField.getHeight() - bulletSnapshot.getPaintY();
 
 			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
-			if (bullet.getState() <= BulletPeer.STATE_MOVING) {
+			if (bulletSnapshot.getState().getValue() <= BulletState.MOVING.getValue()) {
 
 				// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
-				double scale = max(2 * sqrt(2.5 * bullet.getPower()), 2 / this.scale);
+				double scale = max(2 * sqrt(2.5 * bulletSnapshot.getPower()), 2 / this.scale);
 
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
@@ -519,7 +518,7 @@ public class BattleView extends Canvas {
 				if (manager.getProperties().getOptionsRenderingForceBulletColor()) {
 					bulletColor = Color.WHITE;
 				} else {
-					bulletColor = bullet.getColor();
+					bulletColor = bulletSnapshot.getColor();
 					if (bulletColor == null) {
 						bulletColor = Color.WHITE;
 					}
@@ -528,24 +527,20 @@ public class BattleView extends Canvas {
 				g.fill(bulletArea);
 
 			} else if (drawExplosions) {
-				if (!(bullet instanceof ExplosionPeer)) {
-					double scale = sqrt(1000 * bullet.getPower()) / 128;
+				if (!bulletSnapshot.isExplosion()) {
+					double scale = sqrt(1000 * bulletSnapshot.getPower()) / 128;
 
 					at.scale(scale, scale);
 				}
 
-				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(bullet.getExplosionImageIndex(),
-						bullet.getFrame());
+				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(
+						bulletSnapshot.getExplosionImageIndex(), bulletSnapshot.getFrame());
 
 				explosionRenderImage.setTransform(at);
 				explosionRenderImage.paint(g);
 			}
 		}
 		g.setClip(savedClip);
-	}
-
-	public void setBattle(Battle battle) {
-		this.battle = battle;
 	}
 
 	private void centerString(Graphics2D g, String s, int x, int y, Font font, FontMetrics fm) {
@@ -579,21 +574,19 @@ public class BattleView extends Canvas {
 		g.drawString(s, (int) (left + 0.5), (int) (top + height - descent + 0.5));
 	}
 
-	public void setTitle(String s) {
-		if (robocodeFrame != null) {
-			robocodeFrame.setTitle(s);
-		}
-	}
+	private Rectangle drawScanArc(Graphics2D g, RobotSnapshot robotSnapshot) {
+		Arc2D.Double scanArc = (Arc2D.Double) robotSnapshot.getScanArc();
 
-	private Rectangle drawScanArc(Graphics2D g, RobotPeer robot) {
+		if (scanArc == null) {
+			return null;
+		}
+
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
 
-		Arc2D.Double scanArc = (Arc2D.Double) robot.getScanArc().clone();
-
 		scanArc.setAngleStart((360 - scanArc.getAngleStart() - scanArc.getAngleExtent()) % 360);
-		scanArc.y = battle.getBattleField().getHeight() - robot.getY() - robocode.Rules.RADAR_SCAN_RADIUS;
+		scanArc.y = battleField.getHeight() - robotSnapshot.getY() - robocode.Rules.RADAR_SCAN_RADIUS;
 
-		Color scanColor = robot.getScanColor();
+		Color scanColor = robotSnapshot.getScanColor();
 
 		if (scanColor == null) {
 			scanColor = Color.BLUE;
@@ -608,10 +601,6 @@ public class BattleView extends Canvas {
 		g.setComposite(AlphaComposite.SrcOver);
 
 		return scanArc.getBounds();
-	}
-
-	public void setBattleField(BattleField battleField) {
-		this.battleField = battleField;
 	}
 
 	/**
@@ -636,15 +625,30 @@ public class BattleView extends Canvas {
 		g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
 	}
 
-	public boolean isDisplayTPS() {
-		return displayTPS;
-	}
-
-	public boolean isDisplayFPS() {
-		return displayFPS;
-	}
-
 	public void setInitialized(boolean initialized) {
 		this.initialized = initialized;
+	}
+
+	private class BattleObserver extends AwtBattleAdaptor {
+		public BattleObserver(IBattleManager battleManager) {
+			super(battleManager, TIMER_TICKS_PER_SECOND, true);
+		}
+
+		@Override
+		public void onBattleStarted(BattleStartedEvent event) {
+			battleField = new DefaultBattleField(event.getBattleProperties().getBattlefieldWidth(),
+					event.getBattleProperties().getBattlefieldHeight());
+			setVisible(true);
+			setInitialized(false);
+			super.onBattleStarted(event);
+		}
+
+		protected void updateView(TurnSnapshot snapshot) {
+			if (snapshot == null) {
+				repaint();
+			} else {
+				update(snapshot);
+			}
+		}
 	}
 }

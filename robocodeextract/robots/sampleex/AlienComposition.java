@@ -18,7 +18,6 @@ import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
-import java.awt.*;
 import java.io.PrintStream;
 
 
@@ -95,8 +94,6 @@ public class AlienComposition implements IBasicRobot {
 		public void onRobotDeath(RobotDeathEvent e) {}
 
 		public void onWin(WinEvent e) {}
-
-		public void onPaint(Graphics2D g) {}
 	}
 }
 

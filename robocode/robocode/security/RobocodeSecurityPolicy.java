@@ -42,14 +42,19 @@ public class RobocodeSecurityPolicy extends Policy {
 		this.permissionCollection = new Permissions();
 		this.permissionCollection.add(new AllPermission());
 		trustedCodeUrls = new ArrayList<URL>();
-		trustedCodeUrls.add(getClass().getProtectionDomain().getCodeSource().getLocation());
+
+		CodeSource codeSrc = getClass().getProtectionDomain().getCodeSource();
+
+		if (codeSrc != null) {
+			trustedCodeUrls.add(codeSrc.getLocation());
+		}
 
 		String classPath = System.getProperty("java.class.path");
 		StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator);
 
 		while (tokenizer.hasMoreTokens()) {
 			try {
-				URL u = new File(tokenizer.nextToken()).toURL();
+				URL u = new File(tokenizer.nextToken()).toURI().toURL();
 
 				if (!trustedCodeUrls.contains(u)) {
 					trustedCodeUrls.add(u);

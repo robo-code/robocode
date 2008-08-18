@@ -15,8 +15,8 @@ package robocode;
 
 
 /**
- * A HitRobotEvent is sent to {@link Robot#onHitRobot(HitRobotEvent)
- * onHitRobot(HitRobotEvent)} when your robot collides with another robot.
+ * A HitRobotEvent is sent to {@link Robot#onHitRobot(HitRobotEvent) onHitRobot()}
+ * when your robot collides with another robot.
  * You can use the information contained in this event to determine what to do.
  *
  * @author Mathew A. Nelson (original)
@@ -115,4 +115,29 @@ public class HitRobotEvent extends Event {
 	public boolean isMyFault() {
 		return atFault;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(Event event) {
+		final int res = super.compareTo(event);
+
+		if (res != 0) {
+			return res;
+		}
+
+		// Compare the isMyFault, if the events are HitRobotEvents
+		// The isMyFault has higher priority when it is set compared to when it is not set
+		if (event instanceof HitRobotEvent) {
+			int compare1 = (this).isMyFault() ? -1 : 0;
+			int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
+
+			return compare1 - compare2;
+		}
+
+		// No difference found
+		return 0;
+	}
+
 }

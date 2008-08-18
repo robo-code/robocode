@@ -15,8 +15,6 @@ package robocode.robotinterfaces;
 
 
 import robocode.*;
-import robocode.Event;
-import robocode.Robot;
 
 
 /**
@@ -47,6 +45,8 @@ public interface IBasicEvents {
 	 * call.
 	 *
 	 * @param event the event containing the robot status at the time it occurred.
+	 * @see StatusEvent
+	 * @see Event
 	 * @since 1.5
 	 */
 	void onStatus(StatusEvent event);
@@ -115,6 +115,8 @@ public interface IBasicEvents {
 	 *
 	 * @param event the death event set by the game
 	 * @see DeathEvent
+	 * @see WinEvent
+	 * @see BattleEndedEvent
 	 * @see Event
 	 */
 	public void onDeath(DeathEvent event);
@@ -270,7 +272,8 @@ public interface IBasicEvents {
 	 * Your robot could perform a victory dance here! :-)
 	 *
 	 * @param event the win event set by the game
-	 * @see WinEvent
+	 * @see DeathEvent
+	 * @see BattleEndedEvent
 	 * @see Event
 	 */
 	void onWin(WinEvent event);

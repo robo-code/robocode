@@ -356,19 +356,23 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * <p/>
 	 * The default priorities are, from highest to lowest:
 	 * <pre>
-	 * 	 {@link WinEvent}:             100 (reserved)
-	 * 	 {@link SkippedTurnEvent}:     100 (reserved)
-	 * 	 {@link CustomEvent}:           80
-	 * 	 {@link MessageEvent}:          75
-	 * 	 {@link RobotDeathEvent}:       70
-	 * 	 {@link BulletMissedEvent}:     60
-	 * 	 {@link BulletHitBulletEvent}:  55
-	 * 	 {@link BulletHitEvent}:        50
-	 * 	 {@link HitByBulletEvent}:      40
-	 * 	 {@link HitWallEvent}:          30
-	 * 	 {@link HitRobotEvent}:         20
-	 * 	 {@link ScannedRobotEvent}:     10
-	 * 	 {@link DeathEvent}:            -1 (reserved)
+	 *   {@link BattleEndedEvent}:     100 (reserved)
+	 *   {@link WinEvent}:             100 (reserved)
+	 *   {@link SkippedTurnEvent}:     100 (reserved)
+	 *   {@link StatusEvent}:           99
+	 *   Key and mouse events:  98
+	 *   {@link CustomEvent}:           80 (default value)
+	 *   {@link MessageEvent}:          75
+	 *   {@link RobotDeathEvent}:       70
+	 *   {@link BulletMissedEvent}:     60
+	 *   {@link BulletHitBulletEvent}:  55
+	 *   {@link BulletHitEvent}:        50
+	 *   {@link HitByBulletEvent}:      40
+	 *   {@link HitWallEvent}:          30
+	 *   {@link HitRobotEvent}:         20
+	 *   {@link ScannedRobotEvent}:     10
+	 *   {@link PaintEvent}:             5
+	 *   {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
 	 * <p/>
 	 * Note that you cannot change the priority for events with the special
@@ -391,11 +395,32 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Returns the current priority of a class of events.
 	 * An event priority is a value from 0 - 99. The higher value, the higher
-	 * priority. The default priority is 80.
+	 * priority.
 	 * <p/>
 	 * Example:
 	 * <pre>
 	 *   int myHitRobotPriority = getEventPriority("HitRobotEvent");
+	 * </pre>
+	 * <p/>
+	 * The default priorities are, from highest to lowest:
+	 * <pre>
+	 *   {@link BattleEndedEvent}:     100 (reserved)
+	 *   {@link WinEvent}:             100 (reserved)
+	 *   {@link SkippedTurnEvent}:     100 (reserved)
+	 *   {@link StatusEvent}:           99
+	 *   Key and mouse events:  98
+	 *   {@link CustomEvent}:           80 (default value)
+	 *   {@link MessageEvent}:          75
+	 *   {@link RobotDeathEvent}:       70
+	 *   {@link BulletMissedEvent}:     60
+	 *   {@link BulletHitBulletEvent}:  55
+	 *   {@link BulletHitEvent}:        50
+	 *   {@link HitByBulletEvent}:      40
+	 *   {@link HitWallEvent}:          30
+	 *   {@link HitRobotEvent}:         20
+	 *   {@link ScannedRobotEvent}:     10
+	 *   {@link PaintEvent}:             5
+	 *   {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
 	 *
 	 * @param eventClass the name of the event class (string)
@@ -486,44 +511,35 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * @return a vector containing all events currently in the robot's queue
 	 * @see Event
 	 * @see #clearAllEvents()
-	 * @see ScannedRobotEvent
-	 * @see BulletHitBulletEvent
-	 * @see BulletMissedEvent
-	 * @see HitByBulletEvent
-	 * @see HitRobotEvent
-	 * @see HitWallEvent
-	 * @see SkippedTurnEvent
-	 * @see CustomEvent
-	 * @see DeathEvent
-	 * @see WinEvent
-	 * @see MessageEvent
-	 * @see robocode.robotinterfaces.IBasicEvents#onScannedRobot(ScannedRobotEvent)
-	 *      onScannedRobot(ScannedRobotEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHit(BulletHitEvent)
-	 *      onBulletHit(BulletHitEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onBulletHitBullet(BulletHitBulletEvent)
-	 *      onBulletHitBullet(BulletHitBulletEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onBulletMissed(BulletMissedEvent)
-	 *      onBulletMissed(BulletMissedEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onHitByBullet(HitByBulletEvent)
-	 *      onHitByBullet(HitByBulletEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onHitRobot(HitRobotEvent)
-	 *      onHitRobot(HitRobotEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onHitWall(HitWallEvent)
-	 *      onHitWall(HitWallEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onDeath(DeathEvent)
-	 *      onDeath(DeathEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onRobotDeath(RobotDeathEvent)
-	 *      onRobotDeath(DeathEvent)
-	 * @see robocode.robotinterfaces.IBasicEvents#onWin(WinEvent)
-	 *      onWin(WinEvent)
-	 * @see robocode.robotinterfaces.IAdvancedEvents#onSkippedTurn(SkippedTurnEvent)
-	 *      onSkippedTurn(SkippedTurnEvent)
-	 * @see robocode.robotinterfaces.IAdvancedEvents#onCustomEvent(CustomEvent)
-	 *      onCustomEvent(CustomEvent)
-	 * @see robocode.robotinterfaces.ITeamEvents#onMessageReceived(MessageEvent)
+	 * @see #getStatusEvents()
+	 * @see #getScannedRobotEvents()
+	 * @see #getBulletHitEvents()
+	 * @see #getBulletMissedEvents()
+	 * @see #getBulletHitBulletEvents()
+	 * @see #getRobotDeathEvents()
 	 */
 	java.util.List<Event> getAllEvents();
+
+	/**
+	 * Returns a vector containing all StatusEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   for (StatusEvent event : getStatusEvents()) {
+	 *       <i>// do something with the event</i>
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all StatusEvents currently in the robot's
+	 *         queue
+	 * @see robocode.robotinterfaces.IBasicEvents#onStatus(StatusEvent)
+	 *      onStatus(StatusEvent)
+	 * @see StatusEvent
+	 * @see #getAllEvents()
+	 * @since 1.6.1
+	 */
+	List<StatusEvent> getStatusEvents();
 
 	/**
 	 * Returns a vector containing all BulletMissedEvents currently in the

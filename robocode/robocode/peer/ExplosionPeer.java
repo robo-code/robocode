@@ -48,7 +48,7 @@ public class ExplosionPeer extends BulletPeer {
 		y = owner.getY();
 		victim = owner;
 		power = 1;
-		state = STATE_EXPLODED;
+		state = BulletState.EXPLODED;
 		explosionImageIndex = 1;
 	}
 
@@ -57,7 +57,7 @@ public class ExplosionPeer extends BulletPeer {
 
 		victim = owner;
 		power = 1;
-		state = STATE_EXPLODED;
+		state = BulletState.EXPLODED;
 		explosionImageIndex = 1;
 	}
 

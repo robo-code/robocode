@@ -57,9 +57,12 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JCheckBox visibleGroundCheckBox;
 	private JCheckBox visibleExplosionDebrisCheckBox;
 
+	private JButton defaultViewOptionsButton;
+	private JButton enableAllViewOptionsButton;
+	private JButton disableAllViewOptionsButton;
+
 	private JTextField desiredTpsTextField;
 	private JLabel desiredTpsLabel;
-	private JButton defaultsButton;
 	private JCheckBox displayFpsCheckBox;
 	private JCheckBox displayTpsCheckBox;
 
@@ -75,19 +78,21 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == PreferencesViewOptionsTab.this.getDefaultsButton()) {
-				defaultsButtonActionPerformed();
-			}
-			if (e.getSource() == PreferencesViewOptionsTab.this.getDefaultTpsButton()) {
+			Object src = e.getSource();
+
+			if (src == enableAllViewOptionsButton) {
+				enableAllViewOptionsButtonActionPerformed();
+			} else if (src == disableAllViewOptionsButton) {
+				disableAllViewOptionsButtonActionPerformed();
+			} else if (src == defaultViewOptionsButton) {
+				defaultViewOptionsButtonActionPerformed();
+			} else if (src == defaultTpsButton) {
 				defaultTpsButtonActionPerformed();
-			}
-			if (e.getSource() == PreferencesViewOptionsTab.this.getMinTpsButton()) {
+			} else if (src == minTpsButton) {
 				minTpsButtonActionPerformed();
-			}
-			if (e.getSource() == PreferencesViewOptionsTab.this.getFastTpsButton()) {
+			} else if (src == fastTpsButton) {
 				fastTpsButtonActionPerformed();
-			}
-			if (e.getSource() == PreferencesViewOptionsTab.this.getMaxTpsButton()) {
+			} else if (src == maxTpsButton) {
 				maxTpsButtonActionPerformed();
 			}
 		}
@@ -114,12 +119,27 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		initialize();
 	}
 
-	private void defaultsButtonActionPerformed() {
+	private void defaultViewOptionsButtonActionPerformed() {
+		enableAllViewOptionsButtonActionPerformed();
+		getVisibleScanArcsCheckBox().setSelected(false);
+	}
+
+	private void enableAllViewOptionsButtonActionPerformed() {
 		getVisibleRobotEnergyCheckBox().setSelected(true);
 		getVisibleRobotNameCheckBox().setSelected(true);
-		getVisibleScanArcsCheckBox().setSelected(false);
+		getVisibleScanArcsCheckBox().setSelected(true);
 		getVisibleExplosionsCheckBox().setSelected(true);
 		getVisibleGroundCheckBox().setSelected(true);
+		getVisibleExplosionDebrisCheckBox().setSelected(true);
+	}
+
+	private void disableAllViewOptionsButtonActionPerformed() {
+		getVisibleRobotEnergyCheckBox().setSelected(false);
+		getVisibleRobotNameCheckBox().setSelected(false);
+		getVisibleScanArcsCheckBox().setSelected(false);
+		getVisibleExplosionsCheckBox().setSelected(false);
+		getVisibleGroundCheckBox().setSelected(false);
+		getVisibleExplosionDebrisCheckBox().setSelected(false);
 	}
 
 	private void desiredTpsTextFieldStateChanged() {
@@ -156,18 +176,48 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	/**
-	 * Return the defaultsButton
+	 * Return the defaultViewOptionsButton
 	 *
 	 * @return JButton
 	 */
-	private JButton getDefaultsButton() {
-		if (defaultsButton == null) {
-			defaultsButton = new JButton("Defaults");
-			defaultsButton.setMnemonic('u');
-			defaultsButton.setDisplayedMnemonicIndex(4);
-			defaultsButton.addActionListener(eventHandler);
+	private JButton getDefaultViewOptionsButton() {
+		if (defaultViewOptionsButton == null) {
+			defaultViewOptionsButton = new JButton("Defaults");
+			defaultViewOptionsButton.setMnemonic('u');
+			defaultViewOptionsButton.setDisplayedMnemonicIndex(4);
+			defaultViewOptionsButton.addActionListener(eventHandler);
 		}
-		return defaultsButton;
+		return defaultViewOptionsButton;
+	}
+
+	/**
+	 * Return the enableAllViewOptionsButton
+	 *
+	 * @return JButton
+	 */
+	private JButton getEnableAllViewOptionsButton() {
+		if (enableAllViewOptionsButton == null) {
+			enableAllViewOptionsButton = new JButton("Enable all");
+			enableAllViewOptionsButton.setMnemonic('a');
+			enableAllViewOptionsButton.setDisplayedMnemonicIndex(7);
+			enableAllViewOptionsButton.addActionListener(eventHandler);
+		}
+		return enableAllViewOptionsButton;
+	}
+
+	/**
+	 * Return the disableAllViewOptionsButton
+	 *
+	 * @return JButton
+	 */
+	private JButton getDisableAllViewOptionsButton() {
+		if (disableAllViewOptionsButton == null) {
+			disableAllViewOptionsButton = new JButton("Disable all");
+			disableAllViewOptionsButton.setMnemonic('i');
+			disableAllViewOptionsButton.setDisplayedMnemonicIndex(1);
+			disableAllViewOptionsButton.addActionListener(eventHandler);
+		}
+		return disableAllViewOptionsButton;
 	}
 
 	/**
@@ -225,21 +275,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	/**
-	 * Return the maxTpsButton
-	 *
-	 * @return JButton
-	 */
-	private JButton getMaxTpsButton() {
-		if (maxTpsButton == null) {
-			maxTpsButton = new JButton("Max");
-			maxTpsButton.setMnemonic('M');
-			maxTpsButton.setDisplayedMnemonicIndex(0);
-			maxTpsButton.addActionListener(eventHandler);
-		}
-		return maxTpsButton;
-	}
-
-	/**
 	 * Return the defaultTpsButton
 	 *
 	 * @return JButton
@@ -247,8 +282,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton getDefaultTpsButton() {
 		if (defaultTpsButton == null) {
 			defaultTpsButton = new JButton("Default");
-			defaultTpsButton.setMnemonic('l');
-			defaultTpsButton.setDisplayedMnemonicIndex(5);
 			defaultTpsButton.addActionListener(eventHandler);
 		}
 		return defaultTpsButton;
@@ -262,11 +295,22 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton getMinTpsButton() {
 		if (minTpsButton == null) {
 			minTpsButton = new JButton("Minimum");
-			minTpsButton.setMnemonic('i');
-			minTpsButton.setDisplayedMnemonicIndex(1);
 			minTpsButton.addActionListener(eventHandler);
 		}
 		return minTpsButton;
+	}
+
+	/**
+	 * Return the maxTpsButton
+	 *
+	 * @return JButton
+	 */
+	private JButton getMaxTpsButton() {
+		if (maxTpsButton == null) {
+			maxTpsButton = new JButton("Max");
+			maxTpsButton.addActionListener(eventHandler);
+		}
+		return maxTpsButton;
 	}
 
 	/**
@@ -277,8 +321,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton getFastTpsButton() {
 		if (fastTpsButton == null) {
 			fastTpsButton = new JButton("Fast");
-			fastTpsButton.setMnemonic('a');
-			fastTpsButton.setDisplayedMnemonicIndex(1);
 			fastTpsButton.addActionListener(eventHandler);
 		}
 		return fastTpsButton;
@@ -305,12 +347,9 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			tpsOptionsPanel.add(getDisplayTpsCheckBox(), c);
 			tpsOptionsPanel.add(getDisplayFpsCheckBox(), c);
-
-			JLabel label = new JLabel(" ");
-
-			tpsOptionsPanel.add(label, c);
-			c.gridwidth = GridBagConstraints.REMAINDER;
+			tpsOptionsPanel.add(new JLabel(" "), c);
 			tpsOptionsPanel.add(getDesiredTpsLabel(), c);
+
 			getDesiredTpsLabel().setHorizontalAlignment(SwingConstants.CENTER);
 
 			JPanel p = new JPanel();
@@ -326,9 +365,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			tpsOptionsPanel.add(p, c);
-			JLabel label2 = new JLabel(" ");
+			tpsOptionsPanel.add(new JLabel(" "), c);
 
-			tpsOptionsPanel.add(label2, c);
 			c.gridwidth = 1;
 			c.fill = 0;
 			c.weighty = 1;
@@ -336,8 +374,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			tpsOptionsPanel.add(getMinTpsButton(), c);
 			tpsOptionsPanel.add(getDefaultTpsButton(), c);
 			tpsOptionsPanel.add(getFastTpsButton(), c);
-			c.weightx = 1;
-			c.gridwidth = GridBagConstraints.REMAINDER;
 			tpsOptionsPanel.add(getMaxTpsButton(), c);
 		}
 		return tpsOptionsPanel;
@@ -352,15 +388,31 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		if (visibleOptionsPanel == null) {
 			visibleOptionsPanel = new JPanel();
 			visibleOptionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Arena"));
-			visibleOptionsPanel.setLayout(new BoxLayout(visibleOptionsPanel, BoxLayout.Y_AXIS));
-			visibleOptionsPanel.add(getVisibleRobotEnergyCheckBox());
-			visibleOptionsPanel.add(getVisibleRobotNameCheckBox());
-			visibleOptionsPanel.add(getVisibleScanArcsCheckBox());
-			visibleOptionsPanel.add(getVisibleExplosionsCheckBox());
-			visibleOptionsPanel.add(getVisibleGroundCheckBox());
-			visibleOptionsPanel.add(getVisibleExplosionDebrisCheckBox());
-			visibleOptionsPanel.add(new JLabel(" "));
-			visibleOptionsPanel.add(getDefaultsButton());
+			visibleOptionsPanel.setLayout(new GridBagLayout());
+
+			GridBagConstraints c = new GridBagConstraints();
+
+			c.fill = 1;
+			c.weightx = 1;
+			c.anchor = GridBagConstraints.NORTHWEST;
+
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			visibleOptionsPanel.add(getVisibleRobotEnergyCheckBox(), c);
+			visibleOptionsPanel.add(getVisibleRobotNameCheckBox(), c);
+			visibleOptionsPanel.add(getVisibleScanArcsCheckBox(), c);
+			visibleOptionsPanel.add(getVisibleExplosionsCheckBox(), c);
+			visibleOptionsPanel.add(getVisibleGroundCheckBox(), c);
+			visibleOptionsPanel.add(getVisibleExplosionDebrisCheckBox(), c);
+			visibleOptionsPanel.add(new JLabel(" "), c);
+
+			c.gridwidth = 1;
+			c.fill = 0;
+			c.weighty = 1;
+			c.weightx = 0;
+			visibleOptionsPanel.add(getEnableAllViewOptionsButton(), c);
+			visibleOptionsPanel.add(getDisableAllViewOptionsButton(), c);
+			visibleOptionsPanel.add(new JLabel("     "), c);
+			visibleOptionsPanel.add(getDefaultViewOptionsButton(), c);
 		}
 		return visibleOptionsPanel;
 	}

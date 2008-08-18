@@ -21,9 +21,9 @@
 package robocode.dialog;
 
 
-import robocode.manager.BattleManager;
+import robocode.battle.events.*;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.manager.RobocodeManager;
-import robocode.peer.RobotPeer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +38,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
-	private RobotPeer robotPeer;
+	private RobotButton robotButton;
 	private ConsoleScrollPane scrollPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
@@ -48,43 +48,18 @@ public class RobotDialog extends JFrame {
 	private JToggleButton paintButton;
 	private JCheckBox sgCheckBox;
 	private JToggleButton pauseButton;
+	private boolean isListening;
+	private int robotIndex;
 
-	private ActionListener eventHandler = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			Object src = e.getSource();
-
-			if (src == RobotDialog.this.getOkButton()) {
-				okButtonActionPerformed();
-			} else if (src == RobotDialog.this.getClearButton()) {
-				clearButtonActionPerformed();
-			} else if (src == RobotDialog.this.getKillButton()) {
-				killButtonActionPerformed();
-			} else if (src == RobotDialog.this.getPaintButton()) {
-				paintButtonActionPerformed();
-			} else if (src == RobotDialog.this.getSGCheckBox()) {
-				sgCheckBoxActionPerformed();
-			} else if (src == RobotDialog.this.getPauseButton()) {
-				pauseResumeButtonActionPerformed();
-			}
-		}
-	};
-
-	private BattleManager.PauseResumeListener pauseResumeHandler = new BattleManager.PauseResumeListener() {
-		public void battlePaused() {
-			getPauseButton().setSelected(true);
-		}
-
-		public void battleResumed() {
-			getPauseButton().setSelected(false);
-		}
-	};
+	private BattleObserver battleObserver = new BattleObserver();
 
 	/**
 	 * RobotDialog constructor
 	 */
-	public RobotDialog(RobocodeManager manager) {
+	public RobotDialog(RobocodeManager manager, RobotButton robotButton) {
 		super();
 		this.manager = manager;
+		this.robotButton = robotButton;
 		initialize();
 	}
 
@@ -92,32 +67,42 @@ public class RobotDialog extends JFrame {
 	 * Initialize the dialog
 	 */
 	private void initialize() {
+		robotIndex = robotButton.getRobotIndex();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getRobotDialogContentPane());
 		if (manager.isSlave()) {
 			getKillButton().setEnabled(false);
 		}
-
-		manager.getBattleManager().addListener(pauseResumeHandler);
+		this.setTitle(robotButton.getRobotName());
+		pack();
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
-		super.finalize();
-		manager.getBattleManager().removeListener(pauseResumeHandler);
+		try {
+			detach();
+		} finally {
+			super.finalize();
+		}
 	}
 
-	/**
-	 * Sets the robot peer of this dialog
-	 *
-	 * @param robotPeer the robot peer of this dialog
-	 */
-	public void setRobotPeer(RobotPeer robotPeer) {
-		this.robotPeer = robotPeer;
-		getConsoleScrollPane().setText("");
-		if (robotPeer != null && robotPeer.getOut() != null) {
-			getConsoleScrollPane().processStream(robotPeer.getOut().getInputStream());
+	public void detach() {
+		if (isListening) {
+			manager.getBattleManager().removeListener(battleObserver);
+			isListening = false;
 		}
+		robotButton.detach();
+	}
+
+	public void attach() {
+		if (!isListening) {
+			isListening = true;
+			manager.getBattleManager().addListener(battleObserver);
+		}
+	}
+
+	public void reset() {
+		getConsoleScrollPane().setText(null);
 	}
 
 	/**
@@ -149,6 +134,26 @@ public class RobotDialog extends JFrame {
 	public boolean isSGPaintEnabled() {
 		return getSGCheckBox().isSelected();
 	}
+
+	private ActionListener eventHandler = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			Object src = e.getSource();
+
+			if (src == RobotDialog.this.getOkButton()) {
+				okButtonActionPerformed();
+			} else if (src == RobotDialog.this.getClearButton()) {
+				clearButtonActionPerformed();
+			} else if (src == RobotDialog.this.getKillButton()) {
+				killButtonActionPerformed();
+			} else if (src == RobotDialog.this.getPaintButton()) {
+				paintButtonActionPerformed();
+			} else if (src == RobotDialog.this.getSGCheckBox()) {
+				sgCheckBoxActionPerformed();
+			} else if (src == RobotDialog.this.getPauseButton()) {
+				pauseResumeButtonActionPerformed();
+			}
+		}
+	};
 
 	/**
 	 * Returns the dialog's content pane
@@ -299,40 +304,79 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Clear button has been activated
 	 */
 	private void clearButtonActionPerformed() {
-		getConsoleScrollPane().setText("");
+		reset();
 	}
 
 	/**
 	 * Is called when the Kill button has been activated
 	 */
 	private void killButtonActionPerformed() {
-		robotPeer.kill();
+		manager.getBattleManager().killRobot(robotIndex);
 	}
 
 	/**
 	 * Is called when the Paint button has been activated
 	 */
 	private void paintButtonActionPerformed() {
-		robotPeer.setPaintEnabled(getPaintButton().isSelected());
+		manager.getBattleManager().setPaintEnabled(robotIndex, getPaintButton().isSelected());
 	}
 
 	/**
 	 * Is called when the SG check box has been activated
 	 */
 	private void sgCheckBoxActionPerformed() {
-		robotPeer.setSGPaintEnabled(getSGCheckBox().isSelected());
+		manager.getBattleManager().setSGPaintEnabled(robotIndex, getSGCheckBox().isSelected());
 	}
 
 	/**
 	 * Is called when the Pause/Resume button has been activated
 	 */
 	private void pauseResumeButtonActionPerformed() {
-		BattleManager battleManager = manager.getBattleManager();
+		manager.getBattleManager().togglePauseResumeBattle();
+	}
 
-		if (battleManager.isPaused()) {
-			battleManager.resumeBattle();
-		} else {
-			battleManager.pauseBattle();
+	private class BattleObserver extends BattleAdaptor {
+
+		@Override
+		public void onBattleStarted(BattleStartedEvent event) {
+			getPauseButton().setEnabled(true);
+			getKillButton().setEnabled(true);
 		}
+
+		@Override
+		public void onBattleEnded(BattleEndedEvent event) {
+			getPauseButton().setEnabled(false);
+			getKillButton().setEnabled(false);
+		}
+
+		@Override
+		public void onBattlePaused(BattlePausedEvent event) {
+			getPauseButton().setSelected(true);
+		}
+
+		@Override
+		public void onBattleResumed(BattleResumedEvent event) {
+			getPauseButton().setSelected(false);
+		}
+
+		@Override
+		public void onTurnEnded(TurnEndedEvent event) {
+			// TODO: Get rid of this check (bugfix) if possible:
+			// Make sanity check as a new battle could have been started since the dialog was initialized,
+			// and thus the robot index can be too high compared to the robot's array size causing an
+			// ArrayOutOfBoundsException. This is a bugfix
+			if (robotIndex >= event.getTurnSnapshot().getRobots().size()) {
+				return;
+			}
+
+			final RobotSnapshot robotSnapshot = event.getTurnSnapshot().getRobots().get(robotIndex);
+			final String text = robotSnapshot.getOutputStreamSnapshot();
+
+			if (text != null && text.length() > 0) {
+				getConsoleScrollPane().append(text);
+				getConsoleScrollPane().scrollToBottom();
+			}
+		}
+
 	}
 }

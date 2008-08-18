@@ -177,6 +177,9 @@ public class FilenamePanel extends WizardPanel {
 		try {
 			SwingUtilities.invokeAndWait(new ShowFrameWorker(frame));
 		} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();

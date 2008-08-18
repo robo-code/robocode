@@ -28,10 +28,12 @@
 package robocode.sound;
 
 
+import robocode.battle.events.*;
+import robocode.battle.snapshot.BulletSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.peer.BulletPeer;
-import robocode.peer.RobotPeer;
+import robocode.peer.RobotState;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -55,6 +57,8 @@ public class SoundManager {
 
 	// Access to properties
 	private RobocodeProperties properties;
+	private BattleObserver battleObserver = null;
+	private RobocodeManager manager;
 
 	/**
 	 * Constructs a new sound manager.
@@ -62,6 +66,7 @@ public class SoundManager {
 	 * @param manager the Robocode manager
 	 */
 	public SoundManager(RobocodeManager manager) {
+		this.manager = manager;
 		properties = manager.getProperties();
 	}
 
@@ -184,36 +189,36 @@ public class SoundManager {
 	 *
 	 * @param bp the bullet peer
 	 */
-	public void playBulletSound(BulletPeer bp) {
+	public void playBulletSound(BulletSnapshot bp, int battleFieldWidth) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) bp.getX(), bp.getBattleField().getWidth());
+			pan = calcPan((float) bp.getX(), battleFieldWidth);
 		}
 		switch (bp.getState()) {
-		case BulletPeer.STATE_SHOT:
+		case FIRED:
 			if (properties.getOptionsSoundEnableGunshot()) {
 				playSound("gunshot", pan, calcBulletVolume(bp), 0);
 			}
 			break;
 
-		case BulletPeer.STATE_HIT_VICTIM:
+		case HIT_VICTIM:
 			if (properties.getOptionsSoundEnableBulletHit()) {
 				playSound("bullet hits robot", pan);
 			}
 			break;
 
-		case BulletPeer.STATE_HIT_BULLET:
+		case HIT_BULLET:
 			if (properties.getOptionsSoundEnableBulletHit()) {
 				playSound("bullet hits bullet", pan);
 			}
 			break;
 
-		case BulletPeer.STATE_HIT_WALL:
+		case HIT_WALL:
 			// Currently, no sound
 			break;
 
-		case BulletPeer.STATE_EXPLODED:
+		case EXPLODED:
 			if (properties.getOptionsSoundEnableRobotDeath()) {
 				playSound("robot death", pan);
 			}
@@ -226,20 +231,20 @@ public class SoundManager {
 	 *
 	 * @param robotPeer the robot peer
 	 */
-	public void playRobotSound(RobotPeer robotPeer) {
+	public void playRobotSound(RobotSnapshot robotPeer, int battleFieldWidth) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) robotPeer.getX(), robotPeer.getBattle().getBattleField().getWidth());
+			pan = calcPan((float) robotPeer.getX(), battleFieldWidth);
 		}
 		switch (robotPeer.getState()) {
-		case RobotPeer.STATE_HIT_ROBOT:
+		case HIT_ROBOT:
 			if (properties.getOptionsSoundEnableRobotCollision()) {
 				playSound("robot collision", pan);
 			}
 			break;
 
-		case RobotPeer.STATE_HIT_WALL:
+		case HIT_WALL:
 			if (properties.getOptionsSoundEnableWallCollision()) {
 				playSound("wall collision", pan);
 			}
@@ -298,7 +303,64 @@ public class SoundManager {
 	 * @param bp the bullet peer
 	 * @return the volume value, ranging from 0 to 1
 	 */
-	private float calcBulletVolume(BulletPeer bp) {
+	private float calcBulletVolume(BulletSnapshot bp) {
 		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
+	}
+
+	public void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher) {
+		if (battleObserver != null) {
+			battleObserver.dispose();
+		}
+		battleObserver = new BattleObserver(battleEventDispatcher);
+	}
+
+	private class BattleObserver extends BattleAdaptor {
+
+		robocode.battle.events.BattleEventDispatcher dispatcher;
+
+		public BattleObserver(BattleEventDispatcher dispatcher) {
+			this.dispatcher = dispatcher;
+			dispatcher.addListener(this);
+		}
+
+		public void dispose() {
+			dispatcher.removeListener(this);
+		}
+
+		@Override
+		public void onBattleStarted(BattleStartedEvent event) {
+			playBackgroundMusic();
+		}
+
+		@Override
+		public void onBattleEnded(BattleEndedEvent event) {
+			stopBackgroundMusic();
+			playEndOfBattleMusic();
+		}
+
+		@Override
+		public void onTurnEnded(TurnEndedEvent event) {
+			int battleFieldWidth = manager.getBattleManager().getBattleProperties().getBattlefieldWidth();
+
+			for (BulletSnapshot bp : event.getTurnSnapshot().getBullets()) {
+				if (bp.getFrame() == 0) {
+					playBulletSound(bp, battleFieldWidth);
+				}
+			}
+
+			boolean playedRobotHitRobot = false;
+
+			for (RobotSnapshot rp : event.getTurnSnapshot().getRobots()) {
+				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
+				if (rp.getState() == RobotState.HIT_ROBOT) {
+					if (playedRobotHitRobot) {
+						continue;
+					}
+					playedRobotHitRobot = true;
+				}
+
+				playRobotSound(rp, battleFieldWidth);
+			}
+		}
 	}
 }

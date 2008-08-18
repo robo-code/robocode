@@ -191,4 +191,9 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		peer.getCall();
 		return peer.getRoundNum();
 	}
+
+	public Graphics2D getGraphics() {
+		peer.getCall();
+		return peer.getGraphics();
+	}
 }

@@ -76,7 +76,7 @@ public class CompilerPreferencesDialog extends JDialog {
 	 * PackagerOptionsPanel constructor comment.
 	 */
 	public CompilerPreferencesDialog(JFrame owner) {
-		super(owner);
+		super(owner, true);
 		this.compilerProperties = RobocodeCompilerFactory.getCompilerProperties();
 		initialize();
 	}
@@ -166,7 +166,7 @@ public class CompilerPreferencesDialog extends JDialog {
 
 	public void saveCompilerProperties() {
 		if (compilerProperties == null) {
-			Logger.log("Cannot save null compiler properties");
+			Logger.logError("Cannot save null compiler properties");
 			return;
 		}
 		FileOutputStream out = null;
@@ -176,7 +176,7 @@ public class CompilerPreferencesDialog extends JDialog {
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
-			Logger.log(e);
+			Logger.logError(e);
 		} finally {
 			if (out != null) {
 				try {

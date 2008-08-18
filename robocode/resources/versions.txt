@@ -1,18 +1,95 @@
-Version 1.6.0.1
-(06/02/2008)
+Version 1.6.1
+(08/17/2008)
 -------------
-o Bugfixes
-  -- Could not debug robots from Eclipse anymore as TimeoutExceptions occurred
-     when trying to resume from a breakpoint.
-     -- Now, Robocode must be started by adding the option -Ddebug=true to the
-        VM arguments when debugging Robocode from Eclipse (or any other IDE).
-     -- The documentation (Wiki) about how to debug robots using Eclipse using the
-        -Ddebug=true option will be updated.
-  -- Fixed missing internal robot proxy layer introduced in Robocode 1.6.0.
+o Changes
+-- New methods:
+   -- Added getGraphics() to Robot and IBasicRobotPeer, meaning that a robot is now able to paint
+      itself at any time, and not only using the onPaint() event handler.
+   -- Added getStatusEvents() to AdvancedRobot and IAdvancedRobotPeer, so a robot is now able to
+      handle status events in the middle of an event handler.
+-- New event:
+   -- The new event BattleEndedEvent has been added, and will call the new event handler
+      onBattleEnded() on the robots, when the battle is ended (Feature Request 1878233).
+   -- When reading the BattleEndedEvent it is possible to read out the results of the battle of the
+      individual robot or team. In addition, it is possible to check if the battle was aborted by
+      the game or user. The battle results will only be available if the battle is not aborted
+      (where the results does not count).
+   -- The the onBattleEnded() event handler is provided through the new IBasicEvents2 class.
+-- Paint events:
+   -- Paint events are now put in the robot event queue, meaning that the robots will pay CPU time
+      when their onPaint() event handler is called.
+   -- Added the PaintEvent, which makes it possible to set the event priority of paint events using
+      the AdvancedRobot.setEventPriority().
+-- Mouse and keyboard events:
+   -- Mouse and keyboard event have also been put in the robot event queue, and thus the robots
+      will pay CPU time when their onMouse*() and onKey*() event handlers are called.
+   -- Mouse and Keyboard events have been added as public classes as well.
+-- Package name:
+   -- The max. length of a robot's full package name has been extended from 16 to 32 characters
+      (Feature Request 1954853).
+   -- The Robocode Repository is able to handle this (verified with Dan Lynn).
+-- New TPS slider:
+   -- The TPS slider has been redesigned to be more exponential, so it covers battle in slow
+      speed (1-30 TPS), higher speed (30 - 120 TPS), and fast speed (120 - 1000 TPS).
+   -- If you set the slider to max. TPS the game will run as fast as possible. This feature
+      already existed in earlier versions.
+   -- If you set the slider to minimum (0 TPS) the game will pause. This is a new feature.
+-- The FPS (frames per second):
+   -- The max. FPS is now fixed to be max. 50 FPS allowing the TPS (turns per second) to be even
+      faster.
+-- New title bar:
+   -- The title on the Robocode window is now showing the current turn in a battle, and is
+      updated every half second.
+   -- The layout of the information shown in the title has been improved a bit.
+-- Dialogs:
+   -- The About box, New Battle Dialog, Preferences Dialog, Ranking Dialog, and the Compiler
+      Preferences Dialog are now modal.
+   -- It is now possible to close the New Battle and Results Dialog by pressing the Esc key.
+-- Ranking panel:
+   -- The menu item for the Ranking Panel is now hidden when replaying a battle, and the panel is
+      now being hidden, if it is visible, while the battle is being replayed. The reason for hiding
+      the Ranking Panel is that the replay feature does not support displaying the current rankings
+      during the replay, i.e. the current scores are not recorded.
+-- Command-line options:
+   -- Added the new -DPARALLEL option (set to true or false), which allows robots to run in
+      parallel intended to take advantage of more CPU's available in the system. This option may
+      speedup battles with multiple CPU time consuming robots. However, the time measuring is not
+      per robot.
+   -- Added the new -DRANDOMSEED option (set to a random seed value), which enables the new
+      repeatable and deterministic random generator. The benefit of using this option to make it
+      easier to test and debug your robots, as your robots will appear in the exactly same
+      positions, when you rerun a battle.
+   -- The -DPARALLEL and -DRANDOMSEED option has no effect when running RoboRumble, MeleeRumble,
+      and TeamRumble.
+-- New Random Generator:
+   -- Added a new deterministic and repeatable random generator is used by the game and overrides
+      the random generator used throughout the whole virtual Java machine, so methods like e.g.
+      Math.random() will be using the exactly the same deterministic random generator forced by
+      Robocode.
+   -- The new random generator will only be deterministic, if the -DRANDOMSEED option is enabled,
+      i.e. when -DRANDOMSEED=12345678 (or another value). Otherwise the the battles will run
+      truly randomized.
+-- System logging:
+   -- The system log output has now been split, so that logged errors are sent to System.err and
+      logged messages are sent to System.out. This makes it possible to filter out messages from
+      errors when reading out the logs from Robocode.
+   -- The system log now also includes a full stack trace when errors are logged, making it easier
+      to determine where an error has occurred.
+-- [2022774] Various usability issues:
+   -- Added "Enable all" and "Disable all" button in the View Options of the Preferences.
+   -- When the TPS slider is set to 0, the game is paused, and the Pause/Resume button set to
+      paused mode. Now, if the Pause/Resume button is pressed, the game will resume at 1 TPS, and
+      the TPS slider will now move to 1. Previously it will set to 0.
+   -- In the New Battle window, the focus is now kept in the list of available robots when one of
+      the two 'Add' buttons has been pressed. Previously the focus was lost, and you had to
+      reselect robots in the list of available robots in order to add more robots.
+      -- It is now possible to add multiple robots using only the arrow keys with e.g. the Alt+A
+         in order to add more robots to the battle.
+   -- Improved some menus a bit with better names, and did some rearrangements of the order of the
+      menu items here and there.
 
 Version 1.6.0
 (05/01/2008)
-The "robot interfaces" release
 -------------
 o Bugfixes
   -- The CPU constant was not calculated the first time Robocode was started up.
@@ -59,7 +136,7 @@ o Minor changes
 Version 1.5.4
 (02/15/2008)
 -------------
-o Bugfix:
+o Bugfix
   -- The CPU constant was way too little compared to version 1.4.9
      -- This is a critical bug when Robocode is used for competitions
      -- Now the CPU calculation has been improved, where a heavy math benchmark

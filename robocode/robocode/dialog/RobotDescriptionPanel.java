@@ -74,6 +74,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JLabel getFilePathLabel() {
 		if (filePathLabel == null) {
 			filePathLabel = new JLabel();
+			filePathLabel.setText(" ");
 		}
 		return filePathLabel;
 	}
@@ -124,6 +125,7 @@ public class RobotDescriptionPanel extends JPanel {
 		if (robotNameLabel == null) {
 			robotNameLabel = new JLabel();
 			robotNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			robotNameLabel.setText(" ");
 		}
 		return robotNameLabel;
 	}
@@ -180,8 +182,8 @@ public class RobotDescriptionPanel extends JPanel {
 				getDescriptionLabel(i).setText(BLANK_STRING);
 			}
 			getDetailsButton().setVisible(false);
-			getRobocodeVersionLabel().setText("");
-			getFilePathLabel().setText("");
+			getRobocodeVersionLabel().setText(" ");
+			getFilePathLabel().setText(" ");
 		} else {
 			String name = robotSpecification.getNameManager().getUniqueFullClassNameWithVersion();
 

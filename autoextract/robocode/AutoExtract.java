@@ -429,10 +429,9 @@ public class AutoExtract implements ActionListener {
 			out.println("WScript.Echo(\"Shortcuts created.\");");
 
 			out.close();
-			Process p = Runtime.getRuntime().exec(command + " makeshortcut.js", null, installDir);
 
-			p.waitFor();
-			int rv = p.exitValue();
+			Process p = Runtime.getRuntime().exec(command + " makeshortcut.js", null, installDir);
+			int rv = p.waitFor();
 
 			try {
 				shortcutMaker.delete();

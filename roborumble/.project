@@ -3,26 +3,22 @@
 	<name>roborumble</name>
 	<comment></comment>
 	<projects>
-		<project>build</project>
+		<project>robocode</project>
 		<project>robocodeextract</project>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
 			<triggers>full,incremental,</triggers>
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/org.eclipse.jdt.core.javabuilder.launch</value>
-				</dictionary>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
-			<arguments>
-				<dictionary>
-					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/roborumble build.xml [Builder].launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/Ant Builder - prepare roborumble launch dir.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>

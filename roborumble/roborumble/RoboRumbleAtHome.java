@@ -112,6 +112,10 @@ public class RoboRumbleAtHome {
 
 				battles = null;
 
+				// Disable the -DPRARALLEL and -DRANDOMSEED options
+				System.setProperty("PARALLEL", "false"); // TODO: Remove when robot thread CPU time can be measured
+				System.setProperty("RANDOMSEED", "none"); // In tournaments, robots should not be deterministic!
+
 				// Execute battles
 				if (ready) {
 					BattlesRunner engine = new BattlesRunner(parameters);

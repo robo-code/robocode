@@ -27,6 +27,7 @@
  *     - Added onPaint() method for painting the robot
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - Added getGraphics()
  *******************************************************************************/
 package robocode;
 
@@ -68,7 +69,7 @@ import java.awt.event.MouseWheelEvent;
  * @see TeamRobot
  * @see Droid
  */
-public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents, IInteractiveEvents, IPaintEvents {
+public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents, IPaintEvents {
 
 	/**
 	 * Constructs a new robot.
@@ -409,7 +410,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * You may not override this method.
 	 */
 	@Override
-	protected final void finalize() throws Throwable {
+	protected final void finalize() throws Throwable { // This method must be final!
 		super.finalize();
 	}
 
@@ -730,6 +731,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@inheritDoc}
 	 */
 	public void onWin(WinEvent event) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onBattleEnded(BattleEndedEvent event) {}
 
 	/**
 	 * Scans for other robots. This method is called automatically by the game,
@@ -1414,6 +1420,34 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * Returns a graphics context used for painting graphical items for the robot.
+	 * <p/>
+	 * This method is very useful for debugging your robot.
+	 * <p/>
+	 * Note that the robot will only be painted if the "Paint" is enabled on the
+	 * robot's console window; otherwise the robot will never get painted (the
+	 * reason being that all robots might have graphical items that must be
+	 * painted, and then you might not be able to tell what graphical items that
+	 * have been painted for your robot).
+	 * <p/>
+	 * Also note that the coordinate system for the graphical context where you
+	 * paint items fits for the Robocode coordinate system where (0, 0) is at
+	 * the bottom left corner of the battlefield, where X is towards right and Y
+	 * is upwards.
+	 *
+	 * @return a graphics context used for painting graphical items for the robot.
+	 * @see #onPaint(Graphics2D)
+	 * @since 1.6.1
+	 */
+	public Graphics2D getGraphics() {
+		if (peer != null) {
+			return peer.getGraphics();
+		}
+		uninitializedException();
+		return null; // never called
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public void onPaint(Graphics2D g) {}
@@ -1471,7 +1505,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseWheelMoved(MouseWheelEvent e) {} 
+	public void onMouseWheelMoved(MouseWheelEvent e) {}
 
 	/**
 	 * {@inheritDoc}

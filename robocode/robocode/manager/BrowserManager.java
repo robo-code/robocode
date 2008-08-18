@@ -43,7 +43,10 @@ public class BrowserManager {
 
 		try {
 			p.waitFor();
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+		}
 
 		if (p.exitValue() < 0) {
 			throw new IOException(
@@ -53,7 +56,7 @@ public class BrowserManager {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// Set the thread status back to being interrupted
+			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
 		}
 	}

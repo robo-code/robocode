@@ -26,14 +26,19 @@
 package robocode.manager;
 
 
-import robocode.control.BattleSpecification;
-import robocode.control.RobocodeListener;
-import robocode.control.RobotResults;
+import robocode.RobocodeFileOutputStream;
+import robocode.battle.IBattleManager;
 import robocode.io.FileUtil;
-import static robocode.io.Logger.log;
+import robocode.io.Logger;
+import static robocode.io.Logger.logError;
+import robocode.security.RobocodeSecurityManager;
+import robocode.security.RobocodeSecurityPolicy;
+import robocode.security.SecureInputStream;
+import robocode.security.SecurePrintStream;
 import robocode.sound.SoundManager;
 
 import java.io.*;
+import java.security.Policy;
 
 
 /**
@@ -55,14 +60,16 @@ public class RobocodeManager {
 	private boolean slave;
 
 	private RobocodeProperties properties;
-	private RobocodeListener listener;
 
 	private boolean isGUIEnabled = true;
 	private boolean isSoundEnabled = true;
 
-	public RobocodeManager(boolean slave, RobocodeListener listener) {
+	static {
+		RobocodeManager.initStreams();
+	}
+
+	public RobocodeManager(boolean slave) {
 		this.slave = slave;
-		this.listener = listener;
 	}
 
 	/**
@@ -70,7 +77,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a BattleManager
 	 */
-	public BattleManager getBattleManager() {
+	public IBattleManager getBattleManager() {
 		if (battleManager == null) {
 			battleManager = new BattleManager(this);
 		}
@@ -135,9 +142,9 @@ public class RobocodeManager {
 				in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 				properties.load(in);
 			} catch (FileNotFoundException e) {
-				log("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
+				logError("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
 			} catch (IOException e) {
-				log("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+				logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 			} finally {
 				if (in != null) {
 					try {
@@ -150,9 +157,8 @@ public class RobocodeManager {
 	}
 
 	public void saveProperties() {
-		getBattleManager().setOptions();
 		if (properties == null) {
-			log("Cannot save null robocode properties");
+			logError("Cannot save null robocode properties");
 			return;
 		}
 		FileOutputStream out = null;
@@ -162,7 +168,7 @@ public class RobocodeManager {
 
 			properties.store(out, "Robocode Properties");
 		} catch (IOException e) {
-			log(e);
+			Logger.logError(e);
 		} finally {
 			if (out != null) {
 				try {
@@ -229,42 +235,41 @@ public class RobocodeManager {
 		return slave;
 	}
 
-	public RobocodeListener getListener() {
-		return listener;
+	private static void initStreams() {
+		PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
+		PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
+		InputStream sysin = new SecureInputStream(System.in, "System.in");
+
+		// Secure System.in, System.err, System.out
+		SecurePrintStream.realOut = System.out;
+		SecurePrintStream.realErr = System.err;
+		System.setOut(sysout);
+		if (!System.getProperty("debug", "false").equals("true")) {
+			System.setErr(syserr);
+		}
+		System.setIn(sysin);
 	}
 
-	public void setListener(RobocodeListener listener) {
-		this.listener = listener;
-	}
+	public void initSecurity(boolean securityOn, boolean experimentalOn) {
+		Thread.currentThread().setName("Application Thread");
 
-	public void runIntroBattle() {
-		getBattleManager().setBattleFilename(new File(FileUtil.getCwd(), "battles/intro.battle").getPath());
-		getBattleManager().loadBattleProperties();
+		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 
-		final boolean origShowResults = getProperties().getOptionsCommonShowResults();
+		Policy.setPolicy(securityPolicy);
 
-		getProperties().setOptionsCommonShowResults(false);
+		if (securityOn) {
+			System.setSecurityManager(
+					new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(), true, experimentalOn));
 
-		setListener(new RobocodeListener() {
-			public void battleComplete(BattleSpecification b, RobotResults c[]) {
-				cleanup();
+			RobocodeFileOutputStream.setThreadManager(getThreadManager());
+
+			ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+			while (tg != null) {
+				((RobocodeSecurityManager) System.getSecurityManager()).addSafeThreadGroup(tg);
+				tg = tg.getParent();
 			}
-
-			public void battleAborted(BattleSpecification b) {
-				cleanup();
-			}
-
-			public void battleMessage(String s) {}
-
-			private void cleanup() {
-				setListener(null);
-				getWindowManager().getRobocodeFrame().clearRobotButtons();
-				getBattleManager().setDefaultBattleProperties();
-				getProperties().setOptionsCommonShowResults(origShowResults);
-			}
-		});
-
-		getBattleManager().startNewBattle(getBattleManager().getBattleProperties(), false, false);
+		}
 	}
 
 	public boolean isGUIEnabled() {

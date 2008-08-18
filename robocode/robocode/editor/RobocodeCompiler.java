@@ -69,7 +69,7 @@ public class RobocodeCompiler {
 		try {
 			String command = compilerBinary + " " + compilerOptions + " " + compilerClassPath + " " + fileName;
 
-			Logger.log("Compile command: " + command);
+			Logger.logMessage("Compile command: " + command);
 
 			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
@@ -77,7 +77,10 @@ public class RobocodeCompiler {
 			err = p.getErrorStream();
 			console.processStream(in);
 			console.processStream(err);
+
+			// The waitFor() must done after reading the input and error stream of the process
 			p.waitFor();
+
 			if (p.exitValue() == 0) {
 				console.append("Compiled successfully.\n");
 				console.setTitle("Compiled successfully.");
@@ -91,6 +94,9 @@ public class RobocodeCompiler {
 			console.append("Does " + compilerBinary + " exist?\n");
 			console.setTitle("Exception while compiling");
 		} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+
 			console.append("Compile interrupted.\n");
 			console.setTitle("Compile interrupted.");
 		} finally {

@@ -36,7 +36,8 @@ import robocode.Droid;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
-import static robocode.io.Logger.log;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
 import robocode.robotinterfaces.*;
@@ -99,11 +100,11 @@ public class RobotRepositoryManager {
 			try {
 				robotDatabase.load(new File(FileUtil.getRobotsDir(), "robot.database"));
 			} catch (FileNotFoundException e) {
-				log("Building robot database.");
+				logMessage("Building robot database.");
 			} catch (IOException e) {
-				log("Rebuilding robot database.");
+				logMessage("Rebuilding robot database.");
 			} catch (ClassNotFoundException e) {
-				log("Rebuilding robot database.");
+				logMessage("Rebuilding robot database.");
 			}
 		}
 		return robotDatabase;
@@ -252,7 +253,7 @@ public class RobotRepositoryManager {
 				File rootDir = fs.getRootDir();
 
 				if (rootDir == null) {
-					log("Warning, null root directory: " + fs.getFilePath());
+					logError("Warning, null root directory: " + fs.getFilePath());
 					continue;
 				}
 
@@ -297,7 +298,7 @@ public class RobotRepositoryManager {
 		File files[] = dir.listFiles(new FileTypeFilter(fileTypes));
 
 		if (files == null) {
-			log("Warning:  Unable to read directory " + dir);
+			logError("Warning:  Unable to read directory " + dir);
 			return robotList;
 		}
 
@@ -372,13 +373,13 @@ public class RobotRepositoryManager {
 
 	private void saveRobotDatabase() {
 		if (robotDatabase == null) {
-			log("Cannot save a null robot database.");
+			logError("Cannot save a null robot database.");
 			return;
 		}
 		try {
 			robotDatabase.store(new File(FileUtil.getRobotsDir(), "robot.database"));
 		} catch (IOException e) {
-			log("IO Exception writing robot database: " + e);
+			logError("IO Exception writing robot database: " + e);
 		}
 	}
 
@@ -446,7 +447,7 @@ public class RobotRepositoryManager {
 				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
 			} catch (Throwable t) {
 				getRobotDatabase().put(key, robotFileSpecification);
-				log(robotFileSpecification.getName() + ": Got an error with this class: " + t);
+				logError(robotFileSpecification.getName() + ": Got an error with this class: " + t);
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
@@ -506,9 +507,9 @@ public class RobotRepositoryManager {
 	}
 
 	private void conflictLog(String s) {
-		log(s);
+		logError(s);
 
-		File f = new File(FileUtil.getCwd(), "conflict.log");
+		File f = new File(FileUtil.getCwd(), "conflict.logError");
 		FileWriter writer = null;
 		BufferedWriter out = null;
 
@@ -517,7 +518,7 @@ public class RobotRepositoryManager {
 			out = new BufferedWriter(writer);
 			out.write(s + "\n");
 		} catch (IOException e) {
-			log("Warning:  Could not write to conflict.log");
+			logError("Warning:  Could not write to conflict.logError");
 		} finally {
 			if (out != null) {
 				try {
@@ -583,7 +584,7 @@ public class RobotRepositoryManager {
 
 			return extractJar(jarIS, dest, statusPrefix, extractJars, close, alwaysReplace);
 		} catch (IOException e) {
-			log("Exception reading " + f + ": " + e);
+			logError("Exception reading " + f + ": " + e);
 		} finally {
 			if (fis != null) {
 				try {
@@ -672,7 +673,7 @@ public class RobotRepositoryManager {
 				jarIS.close();
 			}
 		} catch (IOException e) {
-			log("IOException " + statusPrefix + ": " + e);
+			logError("IOException " + statusPrefix + ": " + e);
 		}
 		return rc;
 	}
@@ -693,7 +694,7 @@ public class RobotRepositoryManager {
 				if (!sampleBot.isDirectory()) {
 					for (String oldSampleBot : oldSampleList) {
 						if (sampleBot.getName().equals(oldSampleBot)) {
-							log("Deleting old sample file: " + sampleBot.getName());
+							logMessage("Deleting old sample file: " + sampleBot.getName());
 							if (delete) {
 								sampleBot.delete();
 							} else {
@@ -715,7 +716,7 @@ public class RobotRepositoryManager {
 		if (!newFile.exists()) {
 			File oldFile = new File(dir, name);
 
-			log("Renaming " + oldFile.getName() + " to " + newFile.getName());
+			logError("Renaming " + oldFile.getName() + " to " + newFile.getName());
 			oldFile.renameTo(newFile);
 		}
 	}
@@ -728,7 +729,7 @@ public class RobotRepositoryManager {
 			String rootPackage = robotName.substring(0, lIndex);
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
-				log("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
+				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
 				return false;
 			}
 			if (rootPackage.equalsIgnoreCase("sample")) {

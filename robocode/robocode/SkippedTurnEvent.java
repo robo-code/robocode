@@ -16,13 +16,17 @@ package robocode;
 
 /**
  * A SkippedTurnEvent is sent to {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)
- * onSkippedTurn(SkippedTurnEvent)} when your robot is forced to skipping a turn.
+ * onSkippedTurn()} when your robot is forced to skipping a turn.
  * You must take an action every turn in order to participate in the game.
  * For example,
  * <pre>
  *    try {
  *        Thread.sleep(1000);
- *    } catch (InterruptedException e) {}
+ *    } catch (InterruptedException e) {
+ *        // Immediately reasserts the exception by interrupting the caller thread
+ *        // itself.
+ *        Thread.currentThread().interrupt();
+ *    }
  * </pre>
  * will cause many SkippedTurnEvents, because you are not responding to the game.
  * If you receive 30 SkippedTurnEvents, you will be removed from the round.

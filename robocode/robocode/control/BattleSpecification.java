@@ -22,7 +22,8 @@ import robocode.battle.BattleProperties;
 
 
 /**
- * A BattleSpecification defines the settings of a battle.
+ * A BattleSpecification defines battle configuration used by the
+ * {@link RobocodeEngine}.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -64,7 +65,9 @@ public class BattleSpecification implements java.io.Serializable {
 		battleProperties.setGunCoolingRate(gunCoolingRate);
 		battleProperties.setBattlefieldWidth(battlefieldSize.getWidth());
 		battleProperties.setBattlefieldHeight(battlefieldSize.getHeight());
-		battleProperties.setSelectedRobots(robots);
+		if (robots != null) {
+			battleProperties.setSelectedRobots(robots);
+		}
 
 		this.robots = robots;
 	}
@@ -107,9 +110,9 @@ public class BattleSpecification implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the robots participating in this battle.
+	 * Returns the specifications of the robots participating in this battle.
 	 *
-	 * @return the robots participating in this battle.
+	 * @return the specifications of the robots participating in this battle.
 	 */
 	public RobotSpecification[] getRobots() {
 		if (robots == null) {

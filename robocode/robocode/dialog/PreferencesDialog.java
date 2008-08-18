@@ -24,8 +24,6 @@ import robocode.manager.RobocodeManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 
 /**
@@ -48,20 +46,11 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	private RobocodeManager manager;
 
-	private WindowAdapter eventHandler = new WindowAdapter() {
-		@Override
-		public void windowClosing(WindowEvent e) {
-			if (e.getSource() == PreferencesDialog.this) {
-				manager.getBattleManager().resumeBattle();
-			}
-		}
-	};
-
 	/**
 	 * PreferencesDialog constructor
 	 */
 	public PreferencesDialog(RobocodeManager manager) {
-		super(manager.getWindowManager().getRobocodeFrame());
+		super(manager.getWindowManager().getRobocodeFrame(), true);
 		this.manager = manager;
 		initialize();
 	}
@@ -73,11 +62,10 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Preferences");
 		setContentPane(getPreferencesDialogContentPane());
-		addWindowListener(eventHandler);
 	}
 
 	public void cancelButtonActionPerformed() {
-		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		dispose();
 	}
 
 	/**
@@ -182,6 +170,9 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		developmentOptionsTab.storePreferences();
 		commonOptionsTab.storePreferences();
 
-		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		// Make sure the BattleView will use the new setting immediately
+		manager.getWindowManager().getRobocodeFrame().getBattleView().setDisplayOptions(); // TODO: Find better solution?
+
+		dispose();
 	}
 }

@@ -51,7 +51,7 @@ public class ConfirmPanel extends WizardPanel {
 		}
 
 		public void componentShown(ComponentEvent e) {
-			// log("confirm panel shown.");
+			// logError("confirm panel shown.");
 			if (robotPackager == null) {
 				return;
 			}

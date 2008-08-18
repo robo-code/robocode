@@ -44,7 +44,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -102,9 +101,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	}
 
 	public void cancelButtonActionPerformed() {
-		AWTEvent evt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-
-		this.dispatchEvent(evt);
+		dispose();
 	}
 
 	public void copy(FileInputStream in, NoDuplicateJarOutputStream out) throws IOException {
@@ -513,7 +510,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 		synchronized (thread) {
 			try {
 				thread.wait();
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		securityManager.removeSafeThread(thread);
@@ -550,7 +550,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 			} catch (Throwable e) {
 				rv = 8;
-				Logger.log(e);
+				Logger.logError(e);
 				out.println(e);
 			}
 		} else {

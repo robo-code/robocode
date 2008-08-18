@@ -45,7 +45,7 @@ public class JarSpecification extends FileSpecification {
 			try {
 				setFilePath(f.getCanonicalPath());
 			} catch (IOException e) {
-				Logger.log("Warning:  Unable to determine canonical path for " + f.getPath());
+				Logger.logError("Warning:  Unable to determine canonical path for " + f.getPath());
 				setFilePath(f.getPath());
 			}
 			setFileName(f.getName());

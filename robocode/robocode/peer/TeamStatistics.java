@@ -19,6 +19,9 @@
 package robocode.peer;
 
 
+import robocode.BattleResults;
+
+
 /**
  * @author Mathew A. Nelson (original)
  * @author Luis Crespo (contributor)
@@ -174,5 +177,22 @@ public class TeamStatistics implements ContestantStatistics {
 			d += teammate.getRobotStatistics().getCurrentRammingKillBonus();
 		}
 		return d;
+	}
+
+	public BattleResults getFinalResults(int rank) {
+		return new BattleResults(teamPeer.getName(), rank, getTotalScore(), getTotalSurvivalScore(),
+				getTotalLastSurvivorBonus(), getTotalBulletDamageScore(), getTotalBulletKillBonus(),
+				getTotalRammingDamageScore(), getTotalRammingKillBonus(), getTotalFirsts(), getTotalSeconds(),
+				getTotalThirds());
+	}
+
+	public BattleResults getCurrentResults(int rank) {
+		return new BattleResults(teamPeer.getName(), rank, getTotalScore() + getCurrentScore(),
+				getTotalSurvivalScore() + getCurrentSurvivalScore(), getTotalLastSurvivorBonus(),
+				getTotalBulletDamageScore() + getCurrentBulletDamageScore(),
+				getTotalBulletKillBonus() + getCurrentBulletKillBonus(),
+				getTotalRammingDamageScore() + getCurrentRammingDamageScore(),
+				getTotalRammingKillBonus() + getCurrentRammingKillBonus(), getTotalFirsts(), getTotalSeconds(),
+				getTotalThirds());
 	}
 }

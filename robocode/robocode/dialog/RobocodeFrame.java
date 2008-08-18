@@ -28,14 +28,16 @@
 package robocode.dialog;
 
 
-import robocode.battle.Battle;
+import robocode.battle.IBattleManager;
+import robocode.battle.events.*;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battleview.BattleView;
+import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
-import robocode.io.Logger;
-import robocode.manager.BattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
+import robocode.manager.RobotDialogManager;
 import robocode.manager.WindowManager;
 
 import javax.swing.*;
@@ -43,7 +45,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
+import java.io.File;
 
 
 /**
@@ -51,11 +53,20 @@ import java.io.*;
  * @author Flemming N. Larsen (contributor)
  * @author Matthew Reeder (contributor)
  * @author Luis Crespo (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class RobocodeFrame extends JFrame {
+
+	private final static int MAX_TPS = 10000;
+	private final static int MAX_TPS_SLIDER_VALUE = 61;
+
+	private final static int UPDATE_TITLE_INTERVAL = 500; // milliseconds
+
 	private EventHandler eventHandler = new EventHandler();
-	private PauseResumeHandler pauseResumeHandler = new PauseResumeHandler();
+	private BattleObserver battleObserver;
+
+	private InteractiveHandler interactiveHandler;
 
 	private RobocodeMenuBar robocodeMenuBar;
 
@@ -63,10 +74,6 @@ public class RobocodeFrame extends JFrame {
 	private JLabel statusLabel;
 
 	private BattleView battleView;
-
-	public String version;
-
-	public Thread appThread;
 
 	private JScrollPane robotButtonsScrollPane;
 
@@ -86,189 +93,52 @@ public class RobocodeFrame extends JFrame {
 	private JLabel tpsLabel;
 
 	private boolean iconified;
-	private boolean exitOnClose;
+	private boolean exitOnClose = true;
 
 	private RobocodeManager manager;
 
 	private WindowManager windowManager;
 
-	private class EventHandler implements ComponentListener, ActionListener, ContainerListener, WindowListener,
-			ChangeListener, MouseListener, MouseMotionListener, MouseWheelListener {
-
-		public void actionPerformed(ActionEvent e) {
-			final Object source = e.getSource();
-
-			if (source == getPauseButton()) {
-				pauseResumeButtonActionPerformed();
-			} else if (source == getStopButton()) {
-				manager.getBattleManager().stop();
-			} else if (source == getRestartButton()) {
-				manager.getBattleManager().restart();
-			} else if (source == getNextTurnButton()) {
-				manager.getBattleManager().nextTurn();
-			} else if (source == getReplayButton()) {
-				manager.getBattleManager().replay();
-			}
-		}
-
-		public void componentResized(ComponentEvent e) {
-			if (e.getSource() == getBattleView()) {
-				battleViewResized();
-			}
-			if (e.getSource() == getBattleViewPanel()) {
-				battleViewPanelResized();
-			}
-		}
-
-		public void componentShown(ComponentEvent e) {}
-
-		public void componentHidden(ComponentEvent e) {}
-
-		public void componentRemoved(ContainerEvent e) {}
-
-		public void componentAdded(ContainerEvent e) {}
-
-		public void componentMoved(ComponentEvent e) {}
-
-		public void windowActivated(WindowEvent e) {}
-
-		public void windowClosed(WindowEvent e) {
-			if (exitOnClose) {
-				System.exit(0);
-			}
-		}
-
-		public void windowClosing(WindowEvent e) {
-			exitOnClose = true;
-			if (manager.getListener() != null) {
-				WindowUtil.message("If you wish to exit Robocode, please exit the program controlling it.");
-				exitOnClose = false;
-				return;
-			}
-			if (windowManager.closeRobocodeEditor()) {
-				WindowUtil.saveWindowPositions();
-				dispose();
-			}
-			manager.saveProperties();
-		}
-
-		public void windowDeactivated(WindowEvent e) {}
-
-		public void windowDeiconified(WindowEvent e) {
-			setIconified(false);
-		}
-
-		public void windowIconified(WindowEvent e) {
-			setIconified(true);
-		}
-
-		public void windowOpened(WindowEvent e) {}
-
-		public void stateChanged(ChangeEvent e) {
-			if (e.getSource() == getTpsSlider()) {
-				int tps = tpsSlider.getValue();
-
-				if (tps == tpsSlider.getMaximum()) {
-					tps = 10000;
-				}
-				manager.getProperties().setOptionsBattleDesiredTPS(tps);
-				tpsLabel.setText("  " + tps);
-			}
-		}
-
-		public void mouseClicked(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseClicked(e);
-			}
-		}
-
-		public void mouseEntered(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseEntered(e);
-			}
-		}
-
-		public void mouseExited(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseExited(e);
-			}
-		}
-
-		public void mousePressed(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mousePressed(e);
-			}
-		}
-
-		public void mouseReleased(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseReleased(e);
-			}
-		}
-
-		public void mouseMoved(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseMoved(e);
-			}
-		}
-
-		public void mouseDragged(MouseEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseDragged(e);
-			}
-		}
-
-		public void mouseWheelMoved(MouseWheelEvent e) {
-			Battle battle = manager.getBattleManager().getBattle();
-
-			if (battle != null) {
-				battle.mouseWheelMoved(e);
-			}
-		}
-	}
-
-
-	private class PauseResumeHandler implements BattleManager.PauseResumeListener {
-
-		public void battlePaused() {
-			getPauseButton().setSelected(true);
-			getNextTurnButton().setEnabled(true);
-		}
-
-		public void battleResumed() {
-			getPauseButton().setSelected(false);
-			getNextTurnButton().setEnabled(false);
-		}
-	}
-
-	/**
-	 * RobocodeFrame constructor
-	 */
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
+		interactiveHandler = new InteractiveHandler(manager);
 		this.windowManager = manager.getWindowManager();
 		this.manager = manager;
 		initialize();
+	}
+
+	protected void finalize() throws Throwable {
+		try {
+			manager.getBattleManager().removeListener(battleObserver);
+		} finally {
+			super.finalize();
+		}
 	}
 
 	public void addRobotButton(JButton b) {
 		getRobotButtonsPanel().add(b);
 		b.setVisible(true);
 		getRobotButtonsPanel().validate();
+	}
+
+	public void runIntroBattle() {
+		IBattleManager battleManager = manager.getBattleManager();
+		final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
+
+		if (intro.exists()) {
+			battleManager.setBattleFilename(intro.getPath());
+			battleManager.loadBattleProperties();
+
+			boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
+
+			manager.getProperties().setOptionsCommonShowResults(false);
+			battleManager.startNewBattle(battleManager.loadBattleProperties(), false, true);
+			battleManager.setDefaultBattleProperties();
+			manager.getProperties().setOptionsCommonShowResults(origShowResults);
+			restartButton.setEnabled(false);
+			getRobotButtonsPanel().removeAll();
+			getRobotButtonsPanel().repaint();
+		}
 	}
 
 	/**
@@ -284,13 +154,8 @@ public class RobocodeFrame extends JFrame {
 	 * calculate the proper aspect ratio and set the battleview's size. We could
 	 * use a layout manager if someone wants to write one...
 	 */
-	public void battleViewPanelResized() {
+	private void battleViewPanelResized() {
 		battleView.setBounds(getBattleViewPanel().getBounds());
-	}
-
-	public void clearRobotButtons() {
-		getRobotButtonsPanel().removeAll();
-		getRobotButtonsPanel().repaint();
 	}
 
 	/**
@@ -300,7 +165,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	public BattleView getBattleView() {
 		if (battleView == null) {
-			battleView = new BattleView(manager, this);
+			battleView = new BattleView(manager);
 			battleView.addComponentListener(eventHandler);
 		}
 		return battleView;
@@ -344,7 +209,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JPanel
 	 */
-	public JPanel getRobocodeContentPane() {
+	private JPanel getRobocodeContentPane() {
 		if (robocodeContentPane == null) {
 			robocodeContentPane = new JPanel();
 			robocodeContentPane.setLayout(new BorderLayout());
@@ -419,7 +284,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JToggleButton
 	 */
-	public JToggleButton getPauseButton() {
+	private JToggleButton getPauseButton() {
 		if (pauseButton == null) {
 			pauseButton = new JToggleButton("Pause/Debug");
 			pauseButton.setMnemonic('P');
@@ -455,7 +320,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JButton
 	 */
-	public JButton getStopButton() {
+	private JButton getStopButton() {
 		if (stopButton == null) {
 			stopButton = new JButton("Stop");
 			stopButton.setMnemonic('S');
@@ -474,7 +339,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JButton
 	 */
-	public JButton getRestartButton() {
+	private JButton getRestartButton() {
 		if (restartButton == null) {
 			restartButton = new JButton("Restart");
 			restartButton.setMnemonic('t');
@@ -493,7 +358,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JButton
 	 */
-	public JButton getReplayButton() {
+	private JButton getReplayButton() {
 		if (replayButton == null) {
 			replayButton = new JButton("Replay");
 			replayButton.setMnemonic('y');
@@ -525,25 +390,45 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JSlider
 	 */
-	public JSlider getTpsSlider() {
+	private JSlider getTpsSlider() {
 		if (tpsSlider == null) {
 			RobocodeProperties props = manager.getProperties();
 
 			int tps = Math.max(props.getOptionsBattleDesiredTPS(), 1);
 
-			if (tps > 200) {
-				tps = 201;
-			}
+			tpsSlider = new JSlider(0, MAX_TPS_SLIDER_VALUE, tpsToSliderValue(tps));
+			tpsSlider.setPaintLabels(true);
+			tpsSlider.setPaintTicks(true);
+			tpsSlider.setMinorTickSpacing(1);
 
-			tpsSlider = new JSlider(1, 201, tps);
 			tpsSlider.addChangeListener(eventHandler);
 
-			WindowUtil.setFixedSize(tpsSlider, new Dimension(300, 20));
+			java.util.Hashtable<Integer, JLabel> labels = new java.util.Hashtable<Integer, JLabel>();
+
+			labels.put(0, new JLabel("0"));
+			labels.put(5, new JLabel("5"));
+			labels.put(10, new JLabel("10"));
+			labels.put(15, new JLabel("15"));
+			labels.put(20, new JLabel("20"));
+			labels.put(25, new JLabel("25"));
+			labels.put(30, new JLabel("30"));
+			labels.put(35, new JLabel("40"));
+			labels.put(40, new JLabel("50"));
+			labels.put(45, new JLabel("65"));
+			labels.put(50, new JLabel("90"));
+			labels.put(55, new JLabel("150"));
+			labels.put(60, new JLabel("1000"));
+
+			tpsSlider.setMajorTickSpacing(5);
+			tpsSlider.setLabelTable(labels);
+
+			WindowUtil.setFixedSize(tpsSlider, new Dimension((MAX_TPS_SLIDER_VALUE + 1) * 6, 40));
 
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override
 				public void desiredTpsChanged(int tps) {
-					tpsSlider.setValue(tps);
+					// TODO refactor, causing cycles
+					setTpsOnSlider(tps);
 				}
 			});
 		}
@@ -555,14 +440,9 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JLabel
 	 */
-	public JLabel getTpsLabel() {
+	private JLabel getTpsLabel() {
 		if (tpsLabel == null) {
-			int tps = getTpsSlider().getValue();
-
-			if (tps > 200) {
-				tps = 10000;
-			}
-			tpsLabel = new JLabel("" + tps);
+			tpsLabel = new JLabel(getTpsFromSliderAsString());
 		}
 		return tpsLabel;
 	}
@@ -612,14 +492,15 @@ public class RobocodeFrame extends JFrame {
 		setContentPane(getRobocodeContentPane());
 		setJMenuBar(getRobocodeMenuBar());
 
-		manager.getBattleManager().addListener(pauseResumeHandler);
+		battleObserver = new BattleObserver(manager.getBattleManager());
 
 		addWindowListener(eventHandler);
 
-		getBattleView().addMouseListener(eventHandler);
-		getBattleView().addMouseMotionListener(eventHandler);
-		getBattleView().addMouseWheelListener(eventHandler);
+		getBattleView().addMouseListener(interactiveHandler);
+		getBattleView().addMouseMotionListener(interactiveHandler);
+		getBattleView().addMouseWheelListener(interactiveHandler);
 		getBattleView().setFocusable(true);
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(interactiveHandler);
 
 		if (manager.isSlave()) {
 			getRobocodeMenuBar().getBattleMenu().setEnabled(false);
@@ -629,57 +510,12 @@ public class RobocodeFrame extends JFrame {
 			getNextTurnButton().setEnabled(false);
 			getRestartButton().setEnabled(false);
 			getReplayButton().setEnabled(false);
+			exitOnClose = false;
 		}
 	}
 
-	public void loadVersionFile() {
-		String versionString = null;
-
-		FileReader reader = null;
-		BufferedReader in = null;
-
-		try {
-			reader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
-			in = new BufferedReader(reader);
-
-			versionString = in.readLine();
-			while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
-				versionString = in.readLine();
-			}
-		} catch (FileNotFoundException e) {
-			Logger.log("No version.txt file.");
-			versionString = "unknown";
-		} catch (IOException e) {
-			Logger.log("IO Exception reading version.txt" + e);
-			versionString = "unknown";
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {}
-			}
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
-		}
-		this.version = "";
-		if (versionString != null) {
-			this.version = versionString.substring(8);
-		} else {
-			versionString = "unknown";
-		}
-	}
-
-	public void pauseResumeButtonActionPerformed() {
-		BattleManager battleManager = manager.getBattleManager();
-
-		if (battleManager.isPaused()) {
-			battleManager.resumeBattle();
-		} else {
-			battleManager.pauseBattle();
-		}
+	private void pauseResumeButtonActionPerformed() {
+		manager.getBattleManager().togglePauseResumeBattle();
 	}
 
 	/**
@@ -696,19 +532,378 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @param iconified The iconified to set
 	 */
-	public void setIconified(boolean iconified) {
+	private void setIconified(boolean iconified) {
 		this.iconified = iconified;
 	}
 
-	public void setEnableStopButton(boolean enable) {
-		getStopButton().setEnabled(enable);
+	private int getTpsFromSlider() {
+		final int value = getTpsSlider().getValue();
+		
+		if (value <= 30) {
+			return value;
+		}
+		if (value <= 40) {
+			return 2 * value - 30;
+		}
+		if (value <= 45) {
+			return 3 * value - 70;
+		}
+		if (value <= 52) {
+			return 5 * value - 160;
+		}
+		switch (value) {
+		case 53:
+			return 110;
+
+		case 54:
+			return 130;
+
+		case 55:
+			return 150;
+
+		case 56:
+			return 200;
+
+		case 57:
+			return 300;
+
+		case 58:
+			return 500;
+
+		case 59:
+			return 750;
+
+		case 60:
+			return 1000;
+		}
+		return MAX_TPS;
 	}
 
-	public void setEnableRestartButton(boolean enable) {
-		getRestartButton().setEnabled(enable);
+	private void setTpsOnSlider(int tps) {
+		tpsSlider.setValue(tpsToSliderValue(tps));
 	}
 
-	public void setEnableReplayButton(boolean enable) {
-		getReplayButton().setEnabled(enable);
+	private int tpsToSliderValue(int tps) {
+		if (tps <= 30) {
+			return tps;
+		}
+		if (tps <= 50) {
+			return (tps + 30) / 2;
+		}
+		if (tps <= 65) {
+			return (tps + 70) / 3;
+		}
+		if (tps <= 100) {
+			return (tps + 160) / 5;
+		}
+		if (tps <= 110) {
+			return 53;
+		}
+		if (tps <= 130) {
+			return 54;
+		}
+		if (tps <= 150) {
+			return 55;
+		}
+		if (tps <= 200) {
+			return 56;
+		}
+		if (tps <= 300) {
+			return 57;
+		}
+		if (tps <= 500) {
+			return 58;
+		}
+		if (tps <= 750) {
+			return 59;
+		}
+		if (tps <= 1000) {
+			return 60;
+		}
+		return MAX_TPS_SLIDER_VALUE;
+	}
+
+	private String getTpsFromSliderAsString() {
+		int tps = getTpsFromSlider();
+
+		return "  " + ((tps == MAX_TPS) ? "max" : "" + tps) + "  ";
+	}
+
+	private class EventHandler implements ComponentListener, ActionListener, ContainerListener, WindowListener,
+			ChangeListener {
+
+		public void actionPerformed(ActionEvent e) {
+			final Object source = e.getSource();
+
+			if (source == getPauseButton()) {
+				pauseResumeButtonActionPerformed();
+			} else if (source == getStopButton()) {
+				manager.getBattleManager().stop(false);
+			} else if (source == getRestartButton()) {
+				manager.getBattleManager().restart();
+			} else if (source == getNextTurnButton()) {
+				manager.getBattleManager().nextTurn();
+			} else if (source == getReplayButton()) {
+				manager.getBattleManager().replay();
+			}
+		}
+
+		public void componentResized(ComponentEvent e) {
+			if (e.getSource() == getBattleView()) {
+				battleViewResized();
+			}
+			if (e.getSource() == getBattleViewPanel()) {
+				battleViewPanelResized();
+			}
+		}
+
+		public void componentShown(ComponentEvent e) {}
+
+		public void componentHidden(ComponentEvent e) {}
+
+		public void componentRemoved(ContainerEvent e) {}
+
+		public void componentAdded(ContainerEvent e) {}
+
+		public void componentMoved(ComponentEvent e) {}
+
+		public void windowActivated(WindowEvent e) {}
+
+		public void windowClosed(WindowEvent e) {
+			if (exitOnClose) {
+				System.exit(0);
+			}
+		}
+
+		public void windowClosing(WindowEvent e) {
+			exitOnClose = true;
+			if (manager.isSlave()) {
+				WindowUtil.message("If you wish to exit Robocode, please exit the program controlling it.");
+				exitOnClose = false;
+				return;
+			}
+			if (windowManager.closeRobocodeEditor()) {
+				WindowUtil.saveWindowPositions();
+				battleObserver.dispose();
+				dispose();
+			}
+			manager.saveProperties();
+		}
+
+		public void windowDeactivated(WindowEvent e) {}
+
+		public void windowDeiconified(WindowEvent e) {
+			setIconified(false);
+			manager.getBattleManager().setManagedTPS(true);
+		}
+
+		public void windowIconified(WindowEvent e) {
+			setIconified(true);
+			manager.getBattleManager().setManagedTPS(false);
+		}
+
+		public void windowOpened(WindowEvent e) {
+			manager.getBattleManager().setManagedTPS(true);
+		}
+
+		public void stateChanged(ChangeEvent e) {
+			if (e.getSource() == getTpsSlider()) {
+				int tps = getTpsFromSlider();
+
+				// TODO refactor
+				if (tps == 0) {
+					manager.getBattleManager().pauseIfResumedBattle();
+				} else {
+					// Only set desired TPS if it is not set to zero
+					manager.getProperties().setOptionsBattleDesiredTPS(tps);
+					manager.getBattleManager().resumeIfPausedBattle(); // TODO causing problems when called from PreferencesViewOptionsTab.storePreferences()
+				}
+
+				tpsLabel.setText(getTpsFromSliderAsString());
+			}
+		}
+	}
+
+
+	private class BattleObserver extends BattleAdaptor {
+		private IBattleManager battleManager;
+		private int tps;
+		private int currentRound;
+		private int numberOfRounds;
+		private int currentTurn;
+		private boolean isBattleRunning;
+		private boolean isBattlePaused;
+		private boolean isBattleReplay;
+		private long lastTitleUpdateTime;
+
+		public BattleObserver(IBattleManager battleManager) {
+			this.battleManager = battleManager;
+			battleManager.addListener(this);
+		}
+
+		public void dispose() {
+			battleManager.removeListener(this);
+		}
+
+		@Override
+		public void onBattleStarted(BattleStartedEvent event) {
+			numberOfRounds = event.getBattleProperties().getNumRounds();
+			isBattleRunning = true;
+			isBattleReplay = event.isReplay();
+
+			getStopButton().setEnabled(true);
+			getRestartButton().setEnabled(true);
+			getReplayButton().setEnabled(false);
+
+			getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
+			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+
+			JCheckBoxMenuItem rankingCheckBoxMenuItem = getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem();
+
+			rankingCheckBoxMenuItem.setEnabled(!isBattleReplay);
+			if (rankingCheckBoxMenuItem.isSelected()) {
+				manager.getWindowManager().showRankingDialog(!isBattleReplay);
+			}
+
+			getRobotButtonsPanel().removeAll();
+
+			final RobotDialogManager dialogManager = manager.getRobotDialogManager();
+			final java.util.List<RobotSnapshot> robots = event.getTurnSnapshot().getRobots();
+
+			dialogManager.trim(robots);
+			for (int index = 0; index < robots.size(); index++) {
+				final RobotSnapshot robot = robots.get(index);
+				final String name = robot.getName();
+				final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
+				final RobotButton button = new RobotButton(dialogManager, manager.getBattleManager(), name, index,
+						attach);
+
+				button.setText(robot.getShortName());
+				addRobotButton(button);
+			}
+
+			getRobotButtonsPanel().repaint();
+
+			validate();
+
+			updateTitle();
+		}
+
+		@Override
+		public void onBattleEnded(BattleEndedEvent event) {
+			isBattleRunning = false;
+
+			getStopButton().setEnabled(false);
+			getReplayButton().setEnabled(battleManager.hasReplayRecord());
+			getNextTurnButton().setEnabled(false);
+
+			getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setEnabled(false);
+
+			updateTitle();
+		}
+
+		@Override
+		public void onBattlePaused(BattlePausedEvent event) {
+			isBattlePaused = true;
+
+			getPauseButton().setSelected(true);
+			getNextTurnButton().setEnabled(true);
+
+			updateTitle();
+		}
+
+		@Override
+		public void onBattleResumed(BattleResumedEvent event) {
+			isBattlePaused = false;
+
+			getPauseButton().setSelected(false);
+			getNextTurnButton().setEnabled(false);
+
+			// TODO: Refactor?
+			if (getTpsFromSlider() == 0) {
+				setTpsOnSlider(1);
+			}
+
+			updateTitle();
+		}
+
+		public void onTurnEnded(TurnEndedEvent event) {
+			tps = event.getTurnSnapshot().getTPS();
+			currentRound = event.getTurnSnapshot().getRound();
+			currentTurn = event.getTurnSnapshot().getTurn();
+
+			// Only update every half second to spare CPU cycles
+			if ((System.currentTimeMillis() - lastTitleUpdateTime) >= UPDATE_TITLE_INTERVAL) {
+				updateTitle();
+			}
+		}
+
+		private void updateTitle() {
+			StringBuffer title = new StringBuffer("Robocode");
+
+			if (isBattleRunning) {
+				title.append(": ");
+
+				if (currentTurn == 0) {
+					title.append("Starting round");
+				} else {
+					if (isBattleReplay) {
+						title.append("Replaying: ");
+					}
+					title.append("Turn ");
+					title.append(currentTurn);
+
+					title.append(", Round ");
+					title.append(currentRound + 1).append(" of ").append(numberOfRounds);
+
+					if (!isBattlePaused) {
+						boolean dispTps = manager.getProperties().getOptionsViewTPS();
+						boolean dispFps = manager.getProperties().getOptionsViewFPS();
+
+						if (dispTps | dispFps) {
+							title.append(", ");
+
+							if (dispTps) {
+								title.append(tps).append(" TPS");
+							}
+							if (dispTps & dispFps) {
+								title.append(", ");
+							}
+							if (dispFps) {
+								title.append(battleView.getFPS()).append(" FPS");
+							}
+						}
+					}
+				}
+			}
+			if (isBattlePaused) {
+				title.append(" (paused)");
+			}
+			setTitle(title.toString());
+
+			lastTitleUpdateTime = System.currentTimeMillis();
+		}
+
+		@Override
+		public void onBattleCompleted(BattleCompletedEvent event) {
+			if (manager.getProperties().getOptionsCommonShowResults()) {
+				// show on ATW thread
+				ResultsTask resultTask = new ResultsTask(event);
+
+				EventQueue.invokeLater(resultTask);
+			}
+		}
+
+		private class ResultsTask implements Runnable {
+			BattleCompletedEvent event;
+
+			ResultsTask(BattleCompletedEvent event) {
+				this.event = event;
+			}
+
+			public void run() {
+				manager.getWindowManager().showResultsDialog(event);
+			}
+		}
 	}
 }

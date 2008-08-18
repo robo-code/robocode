@@ -75,20 +75,7 @@ public class Event implements Comparable<Event> {
 		}
 
 		// Same time and priority -> Compare specific event types
-
-		// Compare the distance, if the events are ScannedRobotEvents
-		// The shorter distance to the robot, the higher priority
-		if (event instanceof ScannedRobotEvent && this instanceof ScannedRobotEvent) {
-			return (int) (((ScannedRobotEvent) this).getDistance() - ((ScannedRobotEvent) event).getDistance());
-		}
-		// Compare the isMyFault, if the events are HitRobotEvents
-		// The isMyFault has higher priority when it is set compared to when it is not set
-		if (event instanceof HitRobotEvent && this instanceof HitRobotEvent) {
-			int compare1 = ((HitRobotEvent) this).isMyFault() ? -1 : 0;
-			int compare2 = ((HitRobotEvent) event).isMyFault() ? -1 : 0;
-
-			return compare1 - compare2;
-		}
+		// look at overrides in ScannedRobotEvent and HitRobotEvent
 
 		// No difference found
 		return 0;

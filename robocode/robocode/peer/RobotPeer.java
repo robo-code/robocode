@@ -45,6 +45,8 @@
  *       are only created and sent to robot when damage do occur. Previously, a
  *       robot could receive HitRobotEvents even when no damage was done
  *     - Renamed scanReset() to rescan()
+ *     - Added getStatusEvents()
+ *     - Added getGraphicsProxy(), getPaintEvents()
  *     Luis Crespo
  *     - Added states
  *     Titus Chen
@@ -66,13 +68,9 @@ import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
-import robocode.battlefield.DefaultBattleField;
-import robocode.exception.DeathException;
-import robocode.exception.DisabledException;
-import robocode.exception.RobotException;
-import robocode.exception.WinException;
+import robocode.exception.*;
 import static robocode.gfx.ColorUtil.toColor;
-import static robocode.io.Logger.log;
+import static robocode.io.Logger.logMessage;
 import robocode.manager.NameManager;
 import robocode.peer.proxies.AdvancedRobotProxy;
 import robocode.peer.proxies.JuniorRobotProxy;
@@ -83,6 +81,7 @@ import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
+import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
@@ -113,13 +112,6 @@ import java.util.List;
  */
 public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
 
-	// Robot States: all states last one turn, except ALIVE and DEAD
-	public static final int
-			STATE_ACTIVE = 0,
-			STATE_HIT_WALL = 1,
-			STATE_HIT_ROBOT = 2,
-			STATE_DEAD = 3;
-
 	public static final int
 			WIDTH = 40,
 			HEIGHT = 40;
@@ -133,6 +125,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			MAX_GET_CALL_COUNT = 10000;
 
 	IBasicRobot robot;
+
+	int index; // robot index in battle
 
 	private RobotOutputStream out;
 
@@ -169,9 +163,14 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private boolean isTeamRobot;
 	private boolean isDroid;
 	private boolean isIORobot;
+
+	// thread is running
 	private boolean isRunning;
-	private boolean isStopped;
+
+	// waiting for next tick
 	private boolean isSleeping;
+
+	private boolean isStopped;
 	private boolean isWinner;
 
 	private double lastGunHeading;
@@ -205,6 +204,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private String name;
 	private String shortName;
+	private String veryShortName;
 	private String nonVersionedName;
 
 	private int setCallCount;
@@ -240,15 +240,33 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
 
-	protected int state;
+	private Graphics2DProxy graphicsProxy;
+
+	protected RobotState state;
 
 	private IBasicRobotPeer robotProxy;
 
-	public RobotPeer(String name) {
-		this.name = name;
+	/**
+	 * RobotPeer constructor
+	 */
+	public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota, int index) {
+		super();
+		this.robotClassManager = robotClassManager;
+		robotThreadManager = new RobotThreadManager(this);
+		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
+		eventManager = new EventManager(this);
+		boundingBox = new BoundingRectangle();
+		scanArc = new Arc2D.Double();
+		teamPeer = robotClassManager.getTeamManager();
+		state = RobotState.ACTIVE;
+		this.index = index;
 
-		battleField = new DefaultBattleField(800, 600);
-		battle = new Battle(battleField, null);
+		// Create statistics after teamPeer set
+		statistics = new RobotStatistics(this);
+	}
+
+	public int getIndex() {
+		return index;
 	}
 
 	public boolean isIORobot() {
@@ -408,7 +426,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			}
 		}
 		if (inCollision) {
-			state = STATE_HIT_ROBOT;
+			state = RobotState.HIT_ROBOT;
 		}
 	}
 
@@ -483,12 +501,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			acceleration = 0;
 		}
 		if (hitWall) {
-			state = STATE_HIT_WALL;
+			state = RobotState.HIT_WALL;
 		}
-	}
-
-	public final void death() {
-		throw new DeathException();
 	}
 
 	public Battle getBattle() {
@@ -516,7 +530,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public String getName() {
-		return (name != null) ? shortName : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
 	}
 
 	public String getShortName() {
@@ -526,8 +540,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public String getVeryShortName() {
-		return (shortName != null)
-				? shortName
+		return (veryShortName != null)
+				? veryShortName
 				: robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
 	}
 
@@ -566,63 +580,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public synchronized boolean isDead() {
-		return state == STATE_DEAD;
+		return state == RobotState.DEAD;
 	}
 
 	public synchronized boolean isAlive() {
-		return state != STATE_DEAD;
-	}
-
-	public void run() {
-		setRunning(true);
-
-		try {
-			if (robot != null) {
-
-				// Process all events for the first turn.
-				// This is done as the first robot status event must occur before the robot
-				// has started running.
-				eventManager.processEvents();
-
-				Runnable runnable = robot.getRobotRunnable();
-
-				if (runnable != null) {
-					runnable.run();
-				}
-			}
-			for (;;) {
-				execute();
-			}
-		} catch (DeathException e) {
-			out.println("SYSTEM: " + getName() + " has died");
-		} catch (WinException e) {// Do nothing
-		} catch (DisabledException e) {
-			setEnergy(0);
-			String msg = e.getMessage();
-
-			if (msg == null) {
-				msg = "";
-			} else {
-				msg = ": " + msg;
-			}
-			out.println("SYSTEM: Robot disabled" + msg);
-		} catch (Exception e) {
-			out.println(getName() + ": Exception: " + e);
-			out.printStackTrace(e);
-		} catch (Throwable t) {
-			if (!(t instanceof ThreadDeath)) {
-				out.println(getName() + ": Throwable: " + t);
-				out.printStackTrace(t);
-			} else {
-				log(getName() + " stopped successfully.");
-			}
-		}
-
-		// If battle is waiting for us, well, all done!
-		synchronized (this) {
-			isRunning = false;
-			notifyAll();
-		}
+		return state != RobotState.DEAD;
 	}
 
 	private boolean intersects(Arc2D arc, Rectangle2D rect) {
@@ -733,7 +695,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 						BulletPeer sBullet = new BulletPeer(this, battle);
 
-						sBullet.setState(BulletPeer.STATE_HIT_VICTIM);
+						sBullet.setState(BulletState.HIT_VICTIM);
 						sBullet.setX(teammate.getX());
 						sBullet.setY(teammate.getY());
 						sBullet.setVictim(teammate);
@@ -749,11 +711,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 		setEnergy(0);
 
-		state = STATE_DEAD;
+		state = RobotState.DEAD;
 	}
 
 	public synchronized void preInitialize() {
-		state = STATE_DEAD;
+		state = RobotState.DEAD;
 	}
 
 	public synchronized void setGunHeading(double newGunHeading) {
@@ -776,12 +738,71 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		y = newY;
 	}
 
-	public final void execute() {
-		if (newBullet != null) {
-			battle.addBullet(newBullet);
-			newBullet = null;
+	public void run() {
+		setRunning(true);
+
+		try {
+			if (robot != null) {
+
+				// Process all events for the first turn.
+				// This is done as the first robot status event must occur before the robot
+				// has started running.
+				eventManager.processEvents();
+
+				Runnable runnable = robot.getRobotRunnable();
+
+				if (runnable != null) {
+					runnable.run();
+				}
+			}
+			for (;;) {
+				execute();
+			}
+		} catch (AbortedException e) {
+			waitForBattleEndedEvent();
+		} catch (DeathException e) {
+			out.println("SYSTEM: " + getName() + " has died");
+			waitForBattleEndedEvent();
+		} catch (WinException e) { // Do nothing
+			waitForBattleEndedEvent();
+		} catch (DisabledException e) {
+			setEnergy(0);
+			String msg = e.getMessage();
+
+			if (msg == null) {
+				msg = "";
+			} else {
+				msg = ": " + msg;
+			}
+			out.println("SYSTEM: Robot disabled" + msg);
+		} catch (Exception e) {
+			setEnergy(0);
+			final String message = getName() + ": Exception: " + e;
+
+			out.println(message);
+			out.printStackTrace(e);
+			logMessage(message);
+		} catch (Throwable t) {
+			setEnergy(0);
+			if (!(t instanceof ThreadDeath)) {
+				final String message = getName() + ": Throwable: " + t;
+
+				out.println(message);
+				out.printStackTrace(t);
+				logMessage(message);
+			} else {
+				logMessage(getName() + " stopped successfully.");
+			}
 		}
 
+		// If battle is waiting for us, well, all done!
+		synchronized (this) {
+			isRunning = false;
+			notifyAll();
+		}
+	}
+
+	public final void execute() {
 		// Entering tick
 		if (Thread.currentThread() != robotThreadManager.getRunThread()) {
 			throw new RobotException("You cannot take action in this thread!");
@@ -794,42 +815,36 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		setSetCallCount(0);
 		setGetCallCount(0);
 
+		if (newBullet != null) {
+			battle.addBullet(newBullet);
+			newBullet = null;
+		}
+
 		// This stops autoscan from scanning...
 		if (waitCondition != null && waitCondition.test()) {
 			waitCondition = null;
 		}
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
+		if (battle.isAborted()) {
+			throw new AbortedException();
+		}
+		if (isDead()) {
+			throw new DeathException();
+		}
 		if (getHalt()) {
-			if (isDead()) {
-				death();
-			} else if (isWinner) {
+			if (isWinner) {
 				throw new WinException();
+			} else {
+				throw new AbortedException();
 			}
 		}
 
-		synchronized (this) {
-			// Notify the battle that we are now asleep.
-			// This ends any pending wait() call in battle.runRound().
-			// Should not actually take place until we release the lock in wait(), below.
-			isSleeping = true;
-			notifyAll();
-			// Notifying battle that we're asleep
-			// Sleeping and waiting for battle to wake us up.
-			try {
-				wait();
-			} catch (InterruptedException e) {// We are expecting this to happen when a round is ended!
-			}
-			isSleeping = false;
-			// Notify battle thread, which is waiting in
-			// our wakeup() call, to return.
-			// It's quite possible, by the way, that we'll be back in sleep (above)
-			// before the battle thread actually wakes up
-			notifyAll();
-		}
+		waitForNextRound();
 
 		eventManager.setFireAssistValid(false);
 
+		// Halt robot if it is dead, so we do not need to force killing its thread
 		if (isDead()) {
 			setHalt(true);
 		}
@@ -841,6 +856,40 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		out.resetCounter();
 
 		eventManager.processEvents();
+	}
+
+	private void waitForBattleEndedEvent() {
+		if (battle.isAborted() || (battle.isLastRound() && isDead())) {
+			while (!getHalt() && !eventManager.processBattleEndedEvent()) {
+				waitForNextRound();
+			}
+		}
+	}
+
+	private void waitForNextRound() {
+		synchronized (this) {
+			// Notify the battle that we are now asleep.
+			// This ends any pending wait() call in battle.runRound().
+			// Should not actually take place until we release the lock in wait(), below.
+			isSleeping = true;
+			notifyAll();
+			// Notifying battle that we're asleep
+			// Sleeping and waiting for battle to wake us up.
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// We are expecting this to happen when a round is ended!
+
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+			}
+			isSleeping = false;
+			// Notify battle thread, which is waiting in
+			// our wakeup() call, to return.
+			// It's quite possible, by the way, that we'll be back in sleep (above)
+			// before the battle thread actually wakes up
+			notifyAll();
+		}
 	}
 
 	public synchronized final void setTurnGun(double radians) {
@@ -881,7 +930,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public final synchronized void update() {
 		// Reset robot state to active if it is not dead
 		if (isAlive()) {
-			state = STATE_ACTIVE;
+			state = RobotState.ACTIVE;
 		}
 
 		updateGunHeat();
@@ -1177,7 +1226,10 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			notifyAll();
 			try {
 				wait(10000);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+			}
 		}
 	}
 
@@ -1190,14 +1242,20 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public int compareTo(ContestantPeer cp) {
-		double score1 = statistics.getTotalScore();
-		double score2 = cp.getStatistics().getTotalScore();
+		double myScore = statistics.getTotalScore();
+		double hisScore = cp.getStatistics().getTotalScore();
 
 		if (battle.isRunning()) {
-			score1 += statistics.getCurrentScore();
-			score2 += cp.getStatistics().getCurrentScore();
+			myScore += statistics.getCurrentScore();
+			hisScore += cp.getStatistics().getCurrentScore();
 		}
-		return (int) (score2 + 0.5) - (int) (score1 + 0.5);
+		if (myScore < hisScore) {
+			return -1;
+		}
+		if (myScore > hisScore) {
+			return 1;
+		}
+		return 0;
 	}
 
 	public IBasicRobot getRobot() {
@@ -1206,6 +1264,13 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public TeamPeer getTeamPeer() {
 		return teamPeer;
+	}
+
+	public String getTeamName() {
+		if (teamPeer != null) {
+			return teamPeer.getName();
+		}
+		return getName();
 	}
 
 	public boolean isTeamLeader() {
@@ -1221,7 +1286,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public synchronized void initialize(double x, double y, double heading) {
-		state = STATE_ACTIVE;
+		state = RobotState.ACTIVE;
 
 		isWinner = false;
 		this.x = lastX = x;
@@ -1345,10 +1410,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public void setWinner(boolean newWinner) {
 		isWinner = newWinner;
-		if (isWinner) {
-			out.println("SYSTEM: " + getName() + " wins the round.");
-			eventManager.add(new WinEvent());
-		}
 	}
 
 	public final void stop(boolean overwrite) {
@@ -1429,23 +1490,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public boolean isTeammate(String name) {
 		return getTeamPeer() != null && getTeamPeer().contains(name);
-	}
-
-	/**
-	 * RobotPeer constructor
-	 */
-	public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota) {
-		super();
-		this.robotClassManager = robotClassManager;
-		robotThreadManager = new RobotThreadManager(this);
-		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
-		eventManager = new EventManager(this);
-		boundingBox = new BoundingRectangle();
-		scanArc = new Arc2D.Double();
-		teamPeer = robotClassManager.getTeamManager();
-
-		// Create statistics after teamPeer set
-		statistics = new RobotStatistics(this);
 	}
 
 	public synchronized Bullet fire(double power) {
@@ -1615,7 +1659,17 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 		name = cnm.getFullClassNameWithVersion() + countString;
 		shortName = cnm.getUniqueShortClassNameWithVersion() + countString;
+		veryShortName = cnm.getUniqueVeryShortClassNameWithVersion() + countString;
 		nonVersionedName = cnm.getFullClassName() + countString;
+	}
+
+	public synchronized void setUnicate() {
+		NameManager cnm = getRobotClassManager().getClassNameManager();
+
+		name = cnm.getFullClassNameWithVersion();
+		shortName = cnm.getUniqueShortClassNameWithVersion();
+		veryShortName = cnm.getUniqueVeryShortClassNameWithVersion();
+		nonVersionedName = cnm.getFullClassName();
 	}
 
 	public synchronized boolean isDuplicate() {
@@ -1670,6 +1724,10 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return eventManager.getAllEvents();
 	}
 
+	public List<StatusEvent> getStatusEvents() {
+		return eventManager.getStatusEvents();
+	}
+
 	public List<BulletMissedEvent> getBulletMissedEvents() {
 		return eventManager.getBulletMissedEvents();
 	}
@@ -1700,6 +1758,10 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		return eventManager.getScannedRobotEvents();
+	}
+
+	public List<MessageEvent> getMessageEvents() {
+		return eventManager.getMessageEvents();
 	}
 
 	public void setSkippedTurns(int newSkippedTurns) {
@@ -1810,11 +1872,11 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return sgPaintEnabled;
 	}
 
-	public synchronized int getState() {
+	public synchronized RobotState getState() {
 		return state;
 	}
 
-	public synchronized void setState(int newState) {
+	public synchronized void setState(RobotState newState) {
 		state = newState;
 	}
 
@@ -1825,7 +1887,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		heading = Math.PI * rr.heading / 128;
 		radarHeading = Math.PI * rr.radarHeading / 128;
 		gunHeading = Math.PI * rr.gunHeading / 128;
-		state = rr.state;
+		state = RobotState.toState(rr.state);
 		bodyColor = toColor(rr.bodyColor);
 		gunColor = toColor(rr.gunColor);
 		radarColor = toColor(rr.radarColor);
@@ -1872,6 +1934,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 		// Cleanup robot proxy
 		robotProxy = null;
+
+		// Cleanup graphics proxy
+		graphicsProxy = null;
 	}
 
 	public void cleanupStaticFields() {
@@ -1986,7 +2051,14 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		setMaxTurnRate(savedMaxTurnRate);
 	}
 
-	public List<MessageEvent> getMessageEvents() {
-		return eventManager.getMessageEvents();
+	public Graphics2D getGraphics() {
+		if (graphicsProxy == null) {
+			graphicsProxy = new Graphics2DProxy();
+		}
+		return graphicsProxy;
+	}
+
+	public void onInteractiveEvent(robocode.Event e) {
+		eventManager.add(e);
 	}
 }

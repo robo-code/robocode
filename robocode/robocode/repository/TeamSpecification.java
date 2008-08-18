@@ -60,7 +60,7 @@ public class TeamSpecification extends FileSpecification {
 
 				load(in);
 			} catch (IOException e) {
-				Logger.log("Warning:  Could not load team: " + f);
+				Logger.logError("Warning:  Could not load team: " + f);
 			}
 			if (filename.indexOf(" ") >= 0) {
 				setName(prefix + FileUtil.getClassName(filename.substring(0, filename.indexOf(" "))));
@@ -73,7 +73,7 @@ public class TeamSpecification extends FileSpecification {
 			try {
 				setFilePath(f.getCanonicalPath());
 			} catch (IOException e) {
-				Logger.log("Warning:  Unable to determine canonical path for " + f.getPath());
+				Logger.logError("Warning:  Unable to determine canonical path for " + f.getPath());
 				setFilePath(f.getPath());
 			}
 			setThisFileName(f.getPath());

@@ -1009,7 +1009,7 @@ public class RobocodeProperties {
 		try {
 			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
 		} catch (Exception e) {
-			Logger.log("Initializing version check date.");
+			Logger.logMessage("Initializing version check date.");
 			setVersionChecked(new Date());
 		}
 

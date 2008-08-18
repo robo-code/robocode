@@ -116,7 +116,7 @@ public class RobotFileSpecification extends FileSpecification {
 			}
 		} catch (IOException e) {
 			// Oh well.
-			Logger.log("Warning:  Could not load properties file: " + pfn);
+			Logger.logError("Warning:  Could not load properties file: " + pfn);
 		} finally {
 			if (in != null) {
 				try {
@@ -131,7 +131,7 @@ public class RobotFileSpecification extends FileSpecification {
 
 		if (htmlFile.exists() && (getWebpage() == null || getWebpage().toString().length() == 0)) {
 			try {
-				setRobotWebpage(htmlFile.toURL());
+				setRobotWebpage(htmlFile.toURI().toURL());
 			} catch (MalformedURLException e) {
 				setRobotWebpage(null);
 			}
@@ -145,7 +145,7 @@ public class RobotFileSpecification extends FileSpecification {
 			try {
 				setFilePath(classFile.getCanonicalPath());
 			} catch (IOException e) {
-				Logger.log("Warning:  Unable to determine canonical path for " + classFile.getPath());
+				Logger.logError("Warning:  Unable to determine canonical path for " + classFile.getPath());
 				setFilePath(classFile.getPath());
 			}
 			setFileName(classFile.getName());

@@ -116,7 +116,7 @@ public class JavaDocument extends PlainDocument {
 			Element changedElements[] = deltas.getChildrenAdded();
 
 			if (changedElements == null || changedElements.length == 0) {
-				Logger.log("Unknown insert even, 0 children added.");
+				Logger.logError("Unknown insert even, 0 children added.");
 			} else {
 				for (Element element : changedElements) {
 					processMultilineComments(element, true);
@@ -158,7 +158,7 @@ public class JavaDocument extends PlainDocument {
 		try {
 			elementText = getText(startOffset, endOffset - startOffset);
 		} catch (BadLocationException e) {
-			Logger.log("Error processing updates: " + e);
+			Logger.logError("Error processing updates: " + e);
 			return;
 		}
 		boolean followingLineComment = false,
