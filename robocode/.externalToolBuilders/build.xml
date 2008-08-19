@@ -21,6 +21,11 @@
       <fileset dir="${robocodeextract.dir}/bin"/>
     </copy>
 
+  	<!-- Copy battle files -->
+    <copy todir="${launch.dir}/battles">
+      <fileset dir="${robocodeextract.dir}/battles"/>
+    </copy>
+
   	<!-- Copy robot templates -->
     <copy todir="${launch.dir}/templates">
       <fileset dir="${robocodeextract.dir}/templates"/>
