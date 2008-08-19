@@ -257,12 +257,10 @@ public class RobocodeManager {
 
 		Policy.setPolicy(securityPolicy);
 
+		System.setSecurityManager(new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(), securityOn, experimentalOn));
+		RobocodeFileOutputStream.setThreadManager(getThreadManager());
+
 		if (securityOn) {
-			System.setSecurityManager(
-					new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(), true, experimentalOn));
-
-			RobocodeFileOutputStream.setThreadManager(getThreadManager());
-
 			ThreadGroup tg = Thread.currentThread().getThreadGroup();
 
 			while (tg != null) {
