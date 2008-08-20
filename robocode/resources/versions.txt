@@ -1,9 +1,10 @@
 Version 1.6.1.1
 (08/20/2008)
 -------------
-o Bugfix
+o Bugfixes
   -- When disabling the security (-DNOSECURITY=true) it would not be possible to run any battles as
      the following error would occur: 'RobocodeFileOutputStream.threadManager cannot be null!'
+  -- When using a battle file, the battles were not displayed one the GUI. 
 
 Version 1.6.1
 (08/17/2008)

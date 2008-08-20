@@ -104,18 +104,6 @@ public class Robocode {
 
 			manager.getBattleManager().addListener(battleObserver);
 
-			if (setup.battleFilename != null) {
-				setup.exitOnComplete = true;
-				IBattleManager battleManager = manager.getBattleManager();
-
-				battleManager.setBattleFilename(setup.battleFilename);
-				if (new File(battleManager.getBattleFilename()).exists()) {
-					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, false);
-				} else {
-					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
-					System.exit(8);
-				}
-			}
 			if (manager.isGUIEnabled()) {
 				if (!setup.minimize && setup.battleFilename == null) {
 					if (manager.isSoundEnabled()) {
@@ -135,6 +123,20 @@ public class Robocode {
 					manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
 					manager.saveProperties();
 					manager.getWindowManager().getRobocodeFrame().runIntroBattle();
+				}
+			}
+
+			// Note: At this point the GUI should be opened (if enabled) before starting the battle from a battle file
+			if (setup.battleFilename != null) {
+				setup.exitOnComplete = true;
+				IBattleManager battleManager = manager.getBattleManager();
+
+				battleManager.setBattleFilename(setup.battleFilename);
+				if (new File(battleManager.getBattleFilename()).exists()) {
+					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, false);
+				} else {
+					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
+					System.exit(8);
 				}
 			}
 
