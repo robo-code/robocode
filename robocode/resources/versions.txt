@@ -4,7 +4,12 @@ Version 1.6.1.1
 o Bugfixes
   -- When disabling the security (-DNOSECURITY=true) it would not be possible to run any battles as
      the following error would occur: 'RobocodeFileOutputStream.threadManager cannot be null!'
-  -- When using a battle file, the battles were not displayed one the GUI. 
+  -- When using a battle file, the battles were not displayed one the GUI.
+
+o Changes
+  -- The intro battle will only be shown if a battle file has not been specified using the -battle
+     command-line argument and Robocode is being run for the first time since installation.
+     Previously, the intro battle was always shown even though a battle file had been specified.
 
 Version 1.6.1
 (08/17/2008)
