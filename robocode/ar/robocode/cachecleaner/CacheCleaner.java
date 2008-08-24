@@ -15,10 +15,7 @@
 package ar.robocode.cachecleaner;
 
 
-import robocode.control.BattleSpecification;
 import robocode.control.RobocodeEngine;
-import robocode.control.RobocodeListener;
-import robocode.control.RobotResults;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,17 +26,10 @@ import java.io.IOException;
  * for RoboRumble
  *
  * @author AaronR
+ * @author Flemming N. Larsen (minor optimizations)
  */
 public final class CacheCleaner {
 	private CacheCleaner() {}
-
-	private static class NullListener implements RobocodeListener {
-		public void battleAborted(BattleSpecification battleSpec) {}
-
-		public void battleComplete(BattleSpecification battleSpec, RobotResults[] results) {}
-
-		public void battleMessage(String message) {}
-	}
 
 	public static void main(String[] args) {
 		clean();
@@ -58,9 +48,10 @@ public final class CacheCleaner {
 		}
 
 		System.out.print("Rebuilding robot database... ");
-		RobocodeEngine engine = new RobocodeEngine(new NullListener());
+		RobocodeEngine engine = new RobocodeEngine(null);
 
 		engine.getLocalRepository(); // Force rebuild.
+
 		System.out.println("done.");
 	}
 
