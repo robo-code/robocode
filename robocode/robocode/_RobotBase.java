@@ -76,7 +76,7 @@ public abstract class _RobotBase implements IBasicRobot, Runnable {
 	 */
 	static void uninitializedException() {
 		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
-		String methodName = trace[1].getMethodName();
+		String methodName = trace[2].getMethodName();
 
 		throw new RobotException(
 				"You cannot call the " + methodName
