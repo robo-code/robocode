@@ -1,5 +1,5 @@
 Version 1.6.1.1
-(08/27/2008)
+(08/28/2008)
 -------------
 o Bugfixes
   -- Issues with the scoring. Sometimes the robots were ranked incorrectly compared to their total
@@ -11,6 +11,8 @@ o Bugfixes
      data file, like e.g. sample.SittingDuck got a java.security.AccessControlException.
   -- Sometimes the compiler window would hang when trying to compile, but only when the compiler
      gave compilation errors.
+  -- IllegalArgumentException occurred when calling setStroke() or setComposite() on the Graphics2D
+     object returned by the new getGraphics() method on the Robot.
 
 o Changes
   -- The intro battle will only be shown if a battle file has not been specified using the -battle

@@ -126,9 +126,6 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	// Needed for getTransform()
 	private transient AffineTransform transform;
 
-	// Needed for getDeviceConfiguration()
-	private transient GraphicsConfiguration deviceConfiguration;
-
 	// Needed for getComposite()
 	private transient Composite composite;
 
@@ -146,9 +143,6 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	// Needed for getClip()
 	private transient Shape clip;
-
-	// Needed for getFontRenderContext()
-	private transient FontRenderContext fontRenderContext;
 
 	// Needed for getColor()
 	private transient Color color;
@@ -173,14 +167,12 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 		gfxProxyCopy.queuedCalls = new LinkedList<QueuedCall>(queuedCalls);
 		gfxProxyCopy.transform = copyOf(transform);
-		gfxProxyCopy.deviceConfiguration = copyOf(deviceConfiguration);
 		gfxProxyCopy.composite = copyOf(composite);
 		gfxProxyCopy.paint = copyOf(paint);
 		gfxProxyCopy.stroke = copyOf(stroke);
 		gfxProxyCopy.renderingHints = copyOf(renderingHints);
 		gfxProxyCopy.background = deepCopy(background);
 		gfxProxyCopy.clip = copyOf(clip);
-		gfxProxyCopy.fontRenderContext = copyOf(fontRenderContext);
 		gfxProxyCopy.color = deepCopy(color);
 		gfxProxyCopy.font = copyOf(font);
 		gfxProxyCopy.isInitialized = isInitialized;
@@ -216,7 +208,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getColor()
 		this.color = c;
 
-		queueCall(Method.SET_COLOR, deepCopy(c));
+		queueCall(Method.SET_COLOR, copyOf(c));
 	}
 
 	@Override
@@ -226,7 +218,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	@Override
 	public void setXORMode(Color c1) {
-		queueCall(Method.SET_XOR_MODE, deepCopy(c1));
+		queueCall(Method.SET_XOR_MODE, copyOf(c1));
 	}
 
 	@Override
@@ -416,14 +408,14 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
-		queueCall(Method.DRAW_IMAGE_3, copyOf(img), x, y, deepCopy(bgcolor), copyOf(observer));
+		queueCall(Method.DRAW_IMAGE_3, copyOf(img), x, y, copyOf(bgcolor), copyOf(observer));
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
-		queueCall(Method.DRAW_IMAGE_4, copyOf(img), x, y, width, height, deepCopy(bgcolor), copyOf(observer));
+		queueCall(Method.DRAW_IMAGE_4, copyOf(img), x, y, width, height, copyOf(bgcolor), copyOf(observer));
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
 	}
@@ -441,7 +433,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
 			Color bgcolor, ImageObserver observer) {
 
-		queueCall(Method.DRAW_IMAGE_6, copyOf(img), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, deepCopy(bgcolor),
+		queueCall(Method.DRAW_IMAGE_6, copyOf(img), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, copyOf(bgcolor),
 				copyOf(observer));
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
@@ -488,7 +480,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	@Override
 	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-		queueCall(Method.DRAW_IMAGE_8, deepCopy(img), deepCopy(op), x, y);
+		queueCall(Method.DRAW_IMAGE_8, copyOf(img), deepCopy(op), x, y);
 	}
 
 	@Override
@@ -545,7 +537,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	@Override
 	public GraphicsConfiguration getDeviceConfiguration() {
-		return deviceConfiguration;
+		return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 	}
 
 	@Override
@@ -553,7 +545,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getComposite()
 		this.composite = comp;
 
-		queueCall(Method.SET_COMPOSITE, deepCopy(comp));
+		queueCall(Method.SET_COMPOSITE, copyOf(comp));
 	}
 
 	@Override
@@ -561,7 +553,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getPaint()
 		this.paint = paint;
 
-		queueCall(Method.SET_PAINT, deepCopy(paint));
+		queueCall(Method.SET_PAINT, copyOf(paint));
 	}
 
 	@Override
@@ -569,7 +561,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getStroke()
 		this.stroke = s;
 
-		queueCall(Method.SET_STROKE, deepCopy(s));
+		queueCall(Method.SET_STROKE, copyOf(s));
 	}
 
 	@Override
@@ -683,7 +675,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getBackground()
 		background = color;
 
-		queueCall(Method.SET_BACKGROUND, deepCopy(color));
+		queueCall(Method.SET_BACKGROUND, copyOf(color));
 	}
 
 	@Override
@@ -716,7 +708,14 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	@Override
 	public FontRenderContext getFontRenderContext() {
-		return fontRenderContext;
+		RenderingHints hints = getRenderingHints();
+
+		boolean isAntiAliased = (hints.get(RenderingHints.KEY_TEXT_ANTIALIASING).equals(
+				RenderingHints.VALUE_FRACTIONALMETRICS_ON));
+		boolean usesFractionalMetrics = (hints.get(RenderingHints.KEY_FRACTIONALMETRICS).equals(
+				RenderingHints.VALUE_FRACTIONALMETRICS_ON));
+
+		return new FontRenderContext(null, isAntiAliased, usesFractionalMetrics);
 	}
 
 	// --------------------------------------------------------------------------
@@ -764,7 +763,10 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	}
 
 	private Shape copyOf(Shape s) {
-		return (Shape) deepCopy(s);
+		if (s == null) {
+			return null;
+		}
+		return new Area(s);
 	}
 
 	private AttributedCharacterIterator copyOf(AttributedCharacterIterator it) {
@@ -783,12 +785,16 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		return tx != null ? (AffineTransform) tx.clone() : null;
 	}
 
-	private GraphicsConfiguration copyOf(GraphicsConfiguration gc) {
-		return (GraphicsConfiguration) deepCopy(gc);
-	}
-
 	private Composite copyOf(Composite c) {
-		return (Composite) deepCopy(c);
+		if (c == null) {
+			return null;
+		}
+		if (c instanceof AlphaComposite) {
+			AlphaComposite ac = (AlphaComposite) c;
+
+			return AlphaComposite.getInstance(ac.getRule(), ac.getAlpha());
+		}
+		throw new UnsupportedOperationException("The Composite type '" + c.getClass().getName() + "' is not supported");
 	}
 
 	private Paint copyOf(Paint p) {
@@ -796,15 +802,20 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	}
 
 	private Stroke copyOf(Stroke s) {
-		return (Stroke) deepCopy(s);
+		if (s == null) {
+			return null;
+		}
+		if (s instanceof BasicStroke) {
+			BasicStroke bs = (BasicStroke) s;
+
+			return new BasicStroke(bs.getLineWidth(), bs.getEndCap(), bs.getLineJoin(), bs.getMiterLimit(),
+					bs.getDashArray(), bs.getDashPhase());
+		}
+		throw new UnsupportedOperationException("The Stroke type '" + s.getClass().getName() + "' is not supported");
 	}
 
 	private RenderingHints copyOf(RenderingHints hints) {
 		return hints != null ? (RenderingHints) hints.clone() : null;
-	}
-
-	private FontRenderContext copyOf(FontRenderContext frc) {
-		return (FontRenderContext) deepCopy(frc);
 	}
 
 	// --------------------------------------------------------------------------
@@ -844,8 +855,6 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 		clip = copyOf(g.getClip());
 
-		deviceConfiguration = copyOf(g.getDeviceConfiguration());
-
 		composite = copyOf(g.getComposite());
 
 		paint = copyOf(g.getPaint());
@@ -855,8 +864,6 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		renderingHints = copyOf(g.getRenderingHints());
 
 		background = deepCopy(g.getBackground());
-
-		fontRenderContext = copyOf(g.getFontRenderContext());
 
 		isInitialized = true;
 	}
