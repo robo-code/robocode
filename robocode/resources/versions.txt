@@ -1,5 +1,5 @@
 Version 1.6.1.1
-(08/24/2008)
+(08/27/2008)
 -------------
 o Bugfixes
   -- Issues with the scoring. Sometimes the robots were ranked incorrectly compared to their total
@@ -9,6 +9,8 @@ o Bugfixes
   -- [2066996] -battle broken: When using a battle file, the battles were not displayed one the GUI.
   -- [2064834] Robot problem after Options -> Clean robot cache: Robots that tried to access their
      data file, like e.g. sample.SittingDuck got a java.security.AccessControlException.
+  -- Sometimes the compiler window would hang when trying to compile, but only when the compiler
+     gave compilation errors.
 
 o Changes
   -- The intro battle will only be shown if a battle file has not been specified using the -battle

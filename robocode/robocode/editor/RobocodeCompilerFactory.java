@@ -405,7 +405,6 @@ public class RobocodeCompilerFactory {
 
 		console.append("\nRobocode building Jikes...\n");
 
-		InputStream in = null;
 		InputStream err = null;
 
 		try {
@@ -415,9 +414,7 @@ public class RobocodeCompilerFactory {
 
 			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
-			in = p.getInputStream();
 			err = p.getErrorStream();
-			console.processStream(in);
 			console.processStream(err);
 
 			// The waitFor() must done after reading the input and error stream of the process
@@ -451,11 +448,6 @@ public class RobocodeCompilerFactory {
 			console.scrollToBottom();
 			rv = false;
 		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
 			if (err != null) {
 				try {
 					err.close();
@@ -491,15 +483,12 @@ public class RobocodeCompilerFactory {
 		console.append("Testing compile with javac...\n");
 		boolean javacOk = false;
 
-		InputStream in = null;
 		InputStream err = null;
 
 		try {
 			Process p = Runtime.getRuntime().exec("javac compilers/CompilerTest.java", null, FileUtil.getCwd());
 
-			in = p.getInputStream();
 			err = p.getErrorStream();
-			console.processStream(in);
 			console.processStream(err);
 
 			// The waitFor() must done after reading the input and error stream of the process
@@ -508,12 +497,10 @@ public class RobocodeCompilerFactory {
 			if (p.exitValue() == 0) {
 				javacOk = true;
 			}
-		} catch (IOException e) {} catch (InterruptedException e) {} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
+		} catch (IOException e) {} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+		} finally {
 			if (err != null) {
 				try {
 					err.close();
@@ -532,15 +519,12 @@ public class RobocodeCompilerFactory {
 		console.append("\nTesting compile with Jikes...\n");
 		boolean jikesOk = false;
 
-		InputStream in = null;
 		InputStream err = null;
 
 		try {
 			Process p = Runtime.getRuntime().exec(jikesBinary + " compilers/CompilerTest.java", null, FileUtil.getCwd());
 
-			in = p.getInputStream();
 			err = p.getErrorStream();
-			console.processStream(in);
 			console.processStream(err);
 
 			// The waitFor() must done after reading the input and error stream of the process
@@ -549,12 +533,10 @@ public class RobocodeCompilerFactory {
 			if (p.exitValue() == 0) {
 				jikesOk = true;
 			}
-		} catch (IOException e) {} catch (InterruptedException e) {} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
+		} catch (IOException e) {} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+		} finally {
 			if (err != null) {
 				try {
 					err.close();

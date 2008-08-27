@@ -63,7 +63,6 @@ public class RobocodeCompiler {
 		console.setText("Compiling...\n");
 		WindowUtil.centerShow(editor, console);
 
-		InputStream in = null;
 		InputStream err = null;
 
 		try {
@@ -73,9 +72,7 @@ public class RobocodeCompiler {
 
 			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
 
-			in = p.getInputStream();
 			err = p.getErrorStream();
-			console.processStream(in);
 			console.processStream(err);
 
 			// The waitFor() must done after reading the input and error stream of the process
@@ -100,11 +97,6 @@ public class RobocodeCompiler {
 			console.append("Compile interrupted.\n");
 			console.setTitle("Compile interrupted.");
 		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
-			}
 			if (err != null) {
 				try {
 					err.close();
