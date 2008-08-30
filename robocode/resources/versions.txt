@@ -1,3 +1,12 @@
+Version 1.6.1.2
+(08/31/2008)
+-------------
+o Bugfixes
+  -- ArrayOutOfBoundsException could occur when accessing the Graphics2D object returned by the
+     getGraphics() method on the Robot.
+  -- The setStroke() method on the Graphics2D object returned by the getGraphics() method could not
+     draw lines.
+
 Version 1.6.1.1
 (08/28/2008)
 -------------

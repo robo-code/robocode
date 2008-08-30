@@ -20,15 +20,17 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 
 /**
@@ -120,8 +122,8 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		CLIP, // clip(Shape)
 	}
 
-	// Queue of calls
-	private Queue<QueuedCall> queuedCalls = new LinkedList<QueuedCall>();
+	// Queue of calls. Must be synchronized to avoid ArrayOutOfBoundsException when it is being copied
+	private List<QueuedCall> queuedCalls = Collections.synchronizedList(new LinkedList<QueuedCall>());
 
 	// Needed for getTransform()
 	private transient AffineTransform transform;
@@ -165,7 +167,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	public Graphics create() {
 		Graphics2DProxy gfxProxyCopy = new Graphics2DProxy();
 
-		gfxProxyCopy.queuedCalls = new LinkedList<QueuedCall>(queuedCalls);
+		gfxProxyCopy.queuedCalls = Collections.synchronizedList(new LinkedList<QueuedCall>(queuedCalls));
 		gfxProxyCopy.transform = copyOf(transform);
 		gfxProxyCopy.composite = copyOf(composite);
 		gfxProxyCopy.paint = copyOf(paint);
@@ -763,10 +765,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	}
 
 	private Shape copyOf(Shape s) {
-		if (s == null) {
-			return null;
-		}
-		return new Area(s);
+		return (s != null) ? new GeneralPath(s) : null;
 	}
 
 	private AttributedCharacterIterator copyOf(AttributedCharacterIterator it) {
