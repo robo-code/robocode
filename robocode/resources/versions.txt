@@ -1,10 +1,13 @@
 Version 1.6.1.2
-(08/31/2008)
+(09/04/2008)
 -------------
 o Bugfixes
+  -- RoboRumble: Sometimes results were given to the wrong robots, which gives a problem with the
+     robot rankings in the RoboRumble, TeamRumble and MeleeRumble
+     -- Thanks goes to Joachim Hofer AKA Qohnil for fixing this issue! :-) 
   -- ArrayOutOfBoundsException could occur when accessing the Graphics2D object returned by the
      getGraphics() method on the Robot.
-  -- The setStroke() method on the Graphics2D object returned by the getGraphics() method could not
+  -- The draw(Shape) method on the Graphics2D object returned by the getGraphics() method could not
      draw lines.
 
 Version 1.6.1.1

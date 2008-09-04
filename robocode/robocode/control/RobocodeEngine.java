@@ -29,6 +29,10 @@
  *     Nathaniel Troutman
  *     - Bugfix: Inconsistent Behavior of RobocodeEngine.setVisible()
  *     - Bugfix: Added cleanup of the Robocode manager to the close() method
+ *     Joachim Hofer
+ *     - Bugfix in onBattleCompleted() where the RobotResults were ordered
+ *       incorrectly when calling the battleComplete() so the results were given
+ *       for the wrong robots
  *******************************************************************************/
 package robocode.control;
 
@@ -65,6 +69,7 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Joachim Hofer (contributor)
  */
 public class RobocodeEngine {
 
@@ -251,9 +256,15 @@ public class RobocodeEngine {
 			RobotSpecification[] robots = battleSpecification.getRobots();
 
 			for (int index = 0; index < results.length; index++) {
-				robotResults[index] = new RobotResults(robots[index], results[index]);
+				// find respective robot for these battle results...
+				for (final RobotSpecification robot : robots) {
+					if (results[index].getTeamLeaderName().equals(robot.getNameAndVersion())) {
+						robotResults[index] = new RobotResults(robot, results[index]);
+						break;
+					}
+				}
 			}
-			listener.battleComplete(battleSpecification, robotResults);
+ 			listener.battleComplete(battleSpecification, robotResults);
 		}
 
 		@Override

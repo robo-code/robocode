@@ -72,7 +72,8 @@ public final class AboutBox extends JDialog {
 			+ "Ascander Jr (graphics for ground tiles),<br>" + "Stefan Westen (onPaint method from RobocodeSG),<br>"
 			+ "Nathaniel Troutman (fixing memory leaks due to circular references)<br>"
 			+ "Aaron Rotenberg (for the Robot Cache Cleaner utility),<br>"
-			+ "Julian Kent (nano precision timing of allowed robot time),<br><br>"
+			+ "Julian Kent (nano precision timing of allowed robot time),<br>"
+			+ "Joachim Hofer (fixing problem with wrong results in RoboRumble)<br><br>"
 			+ "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
 			+ "</center></td></tr></table></body>";
 
