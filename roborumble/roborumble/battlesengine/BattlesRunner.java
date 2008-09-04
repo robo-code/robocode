@@ -18,6 +18,8 @@
  *       RobocodeEngineAtHome
  *     - Properties are now read using PropertiesUtil.getProperties()
  *     - Added missing close() to buffered readers
+ *     Joachim Hofer
+ *     - Fixing problem with wrong results in RoboRumble due to wrong ordering
  *******************************************************************************/
 package roborumble.battlesengine;
 
@@ -29,6 +31,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -39,6 +42,7 @@ import java.util.Properties;
  *
  * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Joachim Hofer (contributor)
  */
 public class BattlesRunner {
 	private String inputfile;
@@ -48,6 +52,7 @@ public class BattlesRunner {
 	private String outfile;
 	private String user;
 	private String game;
+	private Map<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
@@ -59,11 +64,23 @@ public class BattlesRunner {
 		fieldhei = Integer.parseInt(parameters.getProperty("FIELDH", "600"));
 		outfile = parameters.getProperty("OUTPUT", "");
 		user = parameters.getProperty("USER", "");
+
 		game = propertiesfile;
 		while (game.indexOf("/") != -1) {
 			game = game.substring(game.indexOf("/") + 1);
 		}
 		game = game.substring(0, game.indexOf("."));
+
+		initialize();
+	}
+
+	private void initialize() {
+		RobocodeEngine engine = new RobocodeEngine(null);
+		RobotSpecification[] repository = engine.getLocalRepository();
+
+		for (RobotSpecification spec : repository) {
+			robotSpecMap.put(spec.getNameAndVersion(), spec);
+		}
 	}
 
 	public boolean runBattles() {
@@ -244,22 +261,11 @@ public class BattlesRunner {
 	}
 
 	private void runBattle(RobocodeEngine engine, BattleSpecification battle, String selectedRobotList) {
-		RobotSpecification[] repository = engine.getLocalRepository();
-
-		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
-
-		for (RobotSpecification spec : repository) {
-			robotSpecMap.put(spec.getNameAndVersion(), spec);
-		}
-
 		String[] selectedRobots = selectedRobotList.split(",");
-
 		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
 
-		RobotSpecification spec;
-
 		for (String robot : selectedRobots) {
-			spec = robotSpecMap.get(robot);
+			RobotSpecification spec = robotSpecMap.get(robot);
 			if (spec != null) {
 				selectedRobotSpecs.add(spec);
 			}
