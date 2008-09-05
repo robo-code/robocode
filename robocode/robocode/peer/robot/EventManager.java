@@ -742,7 +742,6 @@ public class EventManager implements IEventManager {
 
 				if (listener != null) {
 					listener.onMousePressed(e.getSourceEvent());
-					listener.onMousePressed(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
 				robotPeer.getOut().println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
