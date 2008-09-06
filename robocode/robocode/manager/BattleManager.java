@@ -192,7 +192,7 @@ public class BattleManager implements IBattleManager {
 					break;
 				} else if (fileSpec instanceof TeamSpecification) {
 					TeamSpecification currentTeam = (TeamSpecification) fileSpec;
-					TeamPeer teamManager = new TeamPeer(currentTeam.getName());
+					TeamPeer teamManager = new TeamPeer(currentTeam.getName(), currentTeam.getVersion());
 
 					StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
 

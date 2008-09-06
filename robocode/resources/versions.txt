@@ -1,5 +1,5 @@
 Version 1.6.1.2
-(09/04/2008)
+(09/05/2008)
 -------------
 o Bugfixes
   -- RoboRumble: Sometimes results were given to the wrong robots, which gives a problem with the
@@ -9,6 +9,7 @@ o Bugfixes
      getGraphics() method on the Robot.
   -- The draw(Shape) method on the Graphics2D object returned by the getGraphics() method could not
      draw lines.
+  -- The onMousePressed() event was called twice instead of only one time per mouse press.
 
 Version 1.6.1.1
 (08/28/2008)

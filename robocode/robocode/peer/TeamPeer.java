@@ -30,12 +30,16 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
-	private boolean isDuplicate;
 	private String name;
+	private boolean isDuplicate;
 	private RobotPeer teamLeader;
 	private TeamStatistics teamStatistics;
 
-	public TeamPeer(String name) {
+	public TeamPeer(String name, String version) {
+		if (version != null) {
+			name += " " + version;
+		}
+
 		this.name = name;
 		this.teamStatistics = new TeamStatistics(this);
 	}

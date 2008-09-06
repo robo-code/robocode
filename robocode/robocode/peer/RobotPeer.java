@@ -530,7 +530,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public String getName() {
-		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		return (name != null)
+				? name
+				: robotClassManager.getClassNameManager().getFullClassNameWithVersion();
 	}
 
 	public String getShortName() {
@@ -1653,9 +1655,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public synchronized void setDuplicate(int count) {
 		isDuplicate = true;
 
-		String countString = " (" + (count + 1) + ')';
-
 		NameManager cnm = getRobotClassManager().getClassNameManager();
+
+		String countString = " (" + (count + 1) + ')';
 
 		name = cnm.getFullClassNameWithVersion() + countString;
 		shortName = cnm.getUniqueShortClassNameWithVersion() + countString;
@@ -1664,6 +1666,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public synchronized void setUnicate() {
+		isDuplicate = false;
+
 		NameManager cnm = getRobotClassManager().getClassNameManager();
 
 		name = cnm.getFullClassNameWithVersion();
