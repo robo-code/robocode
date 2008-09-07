@@ -52,7 +52,7 @@ public class BattlesRunner {
 	private String outfile;
 	private String user;
 	private String game;
-	private Map<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
+	private Map<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>(500);
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
@@ -263,9 +263,10 @@ public class BattlesRunner {
 	private void runBattle(RobocodeEngine engine, BattleSpecification battle, String selectedRobotList) {
 		String[] selectedRobots = selectedRobotList.split(",");
 		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
+		RobotSpecification spec;
 
 		for (String robot : selectedRobots) {
-			RobotSpecification spec = robotSpecMap.get(robot);
+			spec = robotSpecMap.get(robot);
 			if (spec != null) {
 				selectedRobotSpecs.add(spec);
 			}
