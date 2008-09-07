@@ -36,7 +36,7 @@ public class RobotResults extends BattleResults {
 	private RobotSpecification robot;
 
 	/**
-	 * Constructs a new RobotResults.
+	 * Constructs new RobotResults.
 	 *
 	 * @param robot             the robot these results are for
 	 * @param teamLeaderName    team name
@@ -72,6 +72,13 @@ public class RobotResults extends BattleResults {
 		this.robot = robot;
 	}
 
+	/**
+	 * Constructs new RobotResults based on a {@link RobotSpecification} and {@link robocode.BattleResults
+	 * BattleResults}.
+	 *
+	 * @param robot the robot these results are for
+	 * @param result the battle results for the robot
+	 */
 	public RobotResults(
 			RobotSpecification robot,
 			BattleResults results) {

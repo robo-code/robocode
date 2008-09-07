@@ -120,7 +120,8 @@ public class Robocode {
 				}
 
 				// Play the intro battle if a battle file is not specified and this is the first time Robocode is being run
-				if (setup.battleFilename == null && !manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
+				if (setup.battleFilename == null
+						&& !manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
 					manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
 					manager.saveProperties();
 					manager.getWindowManager().getRobocodeFrame().runIntroBattle();

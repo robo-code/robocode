@@ -37,7 +37,6 @@
 package robocode.control;
 
 
-import robocode.BattleResults;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.events.BattleEndedEvent;
@@ -250,21 +249,7 @@ public class RobocodeEngine {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			// assumption there is that RobocodeEngine is unable to start team battles
-			final BattleResults[] results = event.getResults();
-			RobotResults[] robotResults = new RobotResults[results.length];
-			RobotSpecification[] robots = battleSpecification.getRobots();
-
-			for (int index = 0; index < results.length; index++) {
-				// find respective robot for these battle results...
-				for (final RobotSpecification robot : robots) {
-					if (results[index].getTeamLeaderName().equals(robot.getNameAndVersion())) {
-						robotResults[index] = new RobotResults(robot, results[index]);
-						break;
-					}
-				}
-			}
- 			listener.battleComplete(battleSpecification, robotResults);
+			listener.battleComplete(battleSpecification, (RobotResults[]) event.getResults());
 		}
 
 		@Override

@@ -530,9 +530,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public String getName() {
-		return (name != null)
-				? name
-				: robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
 	}
 
 	public String getShortName() {

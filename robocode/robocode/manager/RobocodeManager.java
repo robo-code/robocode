@@ -259,9 +259,12 @@ public class RobocodeManager {
 		Thread.currentThread().setName("Application Thread");
 
 		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
+
 		Policy.setPolicy(securityPolicy);
 
-		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(), securityOn, experimentalOn);
+		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(),
+				securityOn, experimentalOn);
+
 		System.setSecurityManager(securityManager);
 
 		RobocodeFileOutputStream.setThreadManager(getThreadManager());
