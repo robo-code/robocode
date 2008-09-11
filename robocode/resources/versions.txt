@@ -4,7 +4,9 @@ Version 1.6.1.2
 o Bugfixes
   -- RoboRumble: Sometimes results were given to the wrong robots, which gives a problem with the
      robot rankings in the RoboRumble, TeamRumble and MeleeRumble
-     -- Thanks goes to Joachim Hofer AKA Qohnil for fixing this issue! :-) 
+     -- Thanks goes to Joachim Hofer AKA Qohnil for fixing this issue! :-)
+  -- RoboRumble: Robots that read their data file got the following error message:
+     'Preventing unknown thread <robot name> from access: (java.io.FilePermission...'
   -- ArrayOutOfBoundsException could occur when accessing the Graphics2D object returned by the
      getGraphics() method on the Robot.
   -- The draw(Shape) method on the Graphics2D object returned by the getGraphics() method could not

@@ -251,11 +251,6 @@ public class RobocodeManager {
 	}
 
 	public void initSecurity(boolean securityOn, boolean experimentalOn) {
-		// Check if the RobocodeSecurityManager has already been set
-		if (System.getSecurityManager() != null && System.getSecurityManager() instanceof RobocodeSecurityManager) {
-			return; // yes -> Don't set it again as this causes some file access issues later
-		}
-
 		Thread.currentThread().setName("Application Thread");
 
 		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
