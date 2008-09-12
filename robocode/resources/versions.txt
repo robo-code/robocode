@@ -1,5 +1,5 @@
 Version 1.6.1.2
-(09/05/2008)
+(09/12/2008)
 -------------
 o Bugfixes
   -- RoboRumble: Sometimes results were given to the wrong robots, which gives a problem with the
