@@ -81,10 +81,10 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	@Override
 	public void print(char[] s) {
-		if (s != null) {
-			synchronized (syncRoot) {
-				if (isOkToPrint()) {
-					text.append(s);
+		synchronized (syncRoot) {
+			if (isOkToPrint()) {
+				text.append(s);
+				if (s != null) {
 					count += (s.length / 1000);
 				}
 			}
@@ -138,13 +138,14 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	@Override
 	public void print(Object obj) {
-		if (obj != null) {
-			synchronized (syncRoot) {
-				if (isOkToPrint()) {
-					final String str = obj.toString();
-
-					text.append(str);
-					count += (str.length() / 1000);
+		synchronized (syncRoot) {
+			if (isOkToPrint()) {
+				if (obj != null) {
+					String s = obj.toString();
+					text.append(s);
+					count += (s.length() / 1000);
+				} else {
+					text.append((Object)null);
 				}
 			}
 		}
@@ -152,10 +153,10 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	@Override
 	public void print(String s) {
-		if (s != null) {
-			synchronized (syncRoot) {
-				if (isOkToPrint()) {
-					text.append(s);
+		synchronized (syncRoot) {
+			if (isOkToPrint()) {
+				text.append(s);
+				if (s != null) {
 					count += (s.length() / 1000);
 				}
 			}
@@ -173,110 +174,61 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	@Override
 	public void println() {
-		synchronized (syncRoot) {
-			if (isOkToPrint()) {
-				text.append("\n");
-			}
-		}
+		print('\n');
 	}
 
 	@Override
 	public void println(char[] x) {
-		if (x != null) {
-			synchronized (syncRoot) {
-				if (isOkToPrint()) {
-					text.append(x);
-					text.append("\n");
-					count += (x.length / 1000);
-				}
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
 	public void println(char x) {
-		synchronized (syncRoot) {
-			if (isOkToPrint()) {
-				text.append(x);
-				text.append("\n");
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
 	public void println(double x) {
-		synchronized (syncRoot) {
-			if (isOkToPrint()) {
-				text.append(x);
-				text.append("\n");
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
 	public void println(float x) {
-		synchronized (syncRoot) {
-			if (isOkToPrint()) {
-				text.append(x);
-				text.append("\n");
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
 	public void println(int x) {
-		synchronized (syncRoot) {
-			if (isOkToPrint()) {
-				text.append(x);
-				text.append("\n");
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
 	public void println(long x) {
-		synchronized (syncRoot) {
-			if (isOkToPrint()) {
-				text.append(x);
-				text.append("\n");
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
 	public void println(Object x) {
-		if (x != null) {
-			synchronized (syncRoot) {
-				if (isOkToPrint()) {
-					text.append(x);
-					text.append("\n");
-					count += (x.toString().length() / 1000);
-				}
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
 	public void println(String x) {
-		if (x != null) {
-			synchronized (syncRoot) {
-				if (isOkToPrint()) {
-					text.append(x);
-					text.append("\n");
-					count += (x.length() / 1000);
-				}
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
 	public void println(boolean x) {
-		synchronized (syncRoot) {
-			if (isOkToPrint()) {
-				text.append("\n");
-				text.append(x);
-			}
-		}
+		print(x);
+		print('\n');
 	}
 
 	@Override
@@ -284,7 +236,9 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				text.append(Arrays.toString(buf));
-				count += (buf.length / 1000);
+				if (buf != null) {
+					count += (buf.length / 1000);
+				}
 			}
 		}
 	}
