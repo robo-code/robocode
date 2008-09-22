@@ -205,11 +205,13 @@ public class Robocode {
 				System.exit(8);
 			}
 		}
-		File robots = FileUtil.getRobotsDir();
+		File robotsDir = FileUtil.getRobotsDir();
 
-		if (!robots.exists() || !robots.isDirectory()) {
-			System.err.println(
-					new File(FileUtil.getCwd(), "").getAbsolutePath() + " is not a valid directory to start Robocode in.");
+		if (robotsDir == null) {
+			System.err.println("No valid robot directory is specified");
+			System.exit(8);
+		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
+			System.err.println('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
 			System.exit(8);
 		}
 	}

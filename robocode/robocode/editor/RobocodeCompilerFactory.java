@@ -43,10 +43,9 @@ import java.util.jar.JarInputStream;
 public class RobocodeCompilerFactory {
 
 	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator
-			+ "libs/robocode.jar" + File.pathSeparator + getRobotPath();
+			+ "libs/robocode.jar" + File.pathSeparator + FileUtil.getRobotsDir();
 
 	private static CompilerProperties compilerProperties;
-	private static String robotPath;
 	private static boolean compilerInstalling;
 
 	private static final char SPINNER[] = {
@@ -178,18 +177,20 @@ public class RobocodeCompilerFactory {
 			compilerProperties = new CompilerProperties();
 
 			FileInputStream in = null;
+			File file = null;
 
 			try {
-				in = new FileInputStream(FileUtil.getCompilerConfigFile());
+				file = FileUtil.getCompilerConfigFile();
+				in = new FileInputStream(file);
 				compilerProperties.load(in);
 				if (compilerProperties.getRobocodeVersion() == null) {
 					logMessage("Setting up new compiler");
 					compilerProperties.setCompilerBinary("");
 				}
 			} catch (FileNotFoundException e) {
-				logError("Setting up compiler failed.", e);
+				logMessage("Compiler configuration file was not found. A new one will be created.");
 			} catch (IOException e) {
-				logError("IO Exception reading " + FileUtil.getCompilerConfigFile().getName(), e);
+				logError("IO Exception reading " + file, e);
 			} finally {
 				if (in != null) {
 					try {
@@ -213,14 +214,6 @@ public class RobocodeCompilerFactory {
 		}
 
 		return FileUtil.quoteFileName(javalib);
-	}
-
-	private static String getRobotPath() {
-		if (robotPath == null) {
-			robotPath = System.getProperty("ROBOTPATH", "robots");
-		}
-
-		return FileUtil.quoteFileName(robotPath);
 	}
 
 	public static boolean installCompiler(RobocodeEditor editor) {

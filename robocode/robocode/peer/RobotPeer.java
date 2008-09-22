@@ -1560,10 +1560,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public synchronized RobotOutputStream getOut() {
-		if (out == null) {
-			if (battle != null) {
-				out = new RobotOutputStream(battle.getBattleThread());
-			}
+		if (out == null && battle != null) {
+			out = new RobotOutputStream(battle.getBattleThread());
 		}
 		return out;
 	}

@@ -77,18 +77,14 @@ public class RobotRepositoryManager {
 
 	public File getRobotCache() {
 		if (robotCache == null) {
-			// Doesn't work with my cwd(), File does not resolve absolute path correctly
-			// (as far as I can see from the Javadocs for this constructor)
-			// ---> robotCache = System.getProperty("ROBOTCACHE");
-
-
-			File oldRobotCache = new File(FileUtil.getRobotsDir(), "robotcache");
+			File oldRobotCache = new File(getRobotsDirectory(), "robotcache");
+			File newRobotCache = new File(getRobotsDirectory(), ".robotcache");
 
 			if (oldRobotCache.exists()) {
-				oldRobotCache.renameTo(new File(FileUtil.getRobotsDir(), ".robotcache"));
+				oldRobotCache.renameTo(newRobotCache);
 			}
 
-			robotCache = new File(FileUtil.getRobotsDir(), ".robotcache");
+			robotCache = newRobotCache;
 		}
 		return robotCache;
 	}
@@ -98,7 +94,7 @@ public class RobotRepositoryManager {
 			WindowUtil.setStatus("Reading robot database");
 			robotDatabase = new FileSpecificationDatabase();
 			try {
-				robotDatabase.load(new File(FileUtil.getRobotsDir(), "robot.database"));
+				robotDatabase.load(new File(getRobotsDirectory(), "robot.database"));
 			} catch (FileNotFoundException e) {
 				logMessage("Building robot database.");
 			} catch (IOException e) {
@@ -377,7 +373,7 @@ public class RobotRepositoryManager {
 			return;
 		}
 		try {
-			robotDatabase.store(new File(FileUtil.getRobotsDir(), "robot.database"));
+			robotDatabase.store(new File(getRobotsDirectory(), "robot.database"));
 		} catch (IOException e) {
 			logError("IO Exception writing robot database: " + e);
 		}

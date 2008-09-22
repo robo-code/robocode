@@ -183,7 +183,7 @@ public class FileUtil {
 	 * @return the created directory
 	 */
 	public static File createDir(File dir) {
-		if (dir != null && !dir.isDirectory()) {
+		if (dir != null && !dir.exists() && dir.isDirectory()) {
 			dir.mkdir();
 		}
 		return dir;
@@ -213,7 +213,15 @@ public class FileUtil {
 	 * @return a File that is the directory containing the robots
 	 */
 	public static File getRobotsDir() {
-		return createDir(new File(cwd, "/robots"));
+		File file;
+		String robotPath = System.getProperty("ROBOTPATH");
+
+		if (robotPath != null) {
+			file = new File(robotPath);
+		} else {
+			file = new File(cwd, "/robots");
+		}
+		return createDir(file);
 	}
 
 	/**

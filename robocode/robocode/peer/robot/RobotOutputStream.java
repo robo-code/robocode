@@ -142,10 +142,11 @@ public class RobotOutputStream extends java.io.PrintStream {
 			if (isOkToPrint()) {
 				if (obj != null) {
 					String s = obj.toString();
+
 					text.append(s);
 					count += (s.length() / 1000);
 				} else {
-					text.append((Object)null);
+					text.append((Object) null);
 				}
 			}
 		}

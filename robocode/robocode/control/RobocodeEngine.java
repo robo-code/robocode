@@ -102,11 +102,12 @@ public class RobocodeEngine {
 	public RobocodeEngine(RobocodeListener listener) {
 		File robotsDir = FileUtil.getRobotsDir();
 
-		if (robotsDir.exists()) {
-			init(FileUtil.getCwd(), listener);
-		} else {
-			throw new RuntimeException("File not found: " + robotsDir);
+		if (robotsDir == null) {
+			throw new RuntimeException("No valid robot directory is specified");
+		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
+			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
 		}
+		init(FileUtil.getCwd(), listener);
 	}
 
 	/**

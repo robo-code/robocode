@@ -1,3 +1,9 @@
+Version 1.6.1.3
+(09/22/2008)
+-------------
+o Bugfixes
+  -- [2121034] The -DROBOTPATH=<path> option does not work: Now it works.
+
 Version 1.6.1.2
 (09/12/2008)
 -------------
