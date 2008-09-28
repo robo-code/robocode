@@ -5,6 +5,7 @@ o Bugfixes
   -- [2070840] Roborumble "ITERATE" broken: When running RoboRumble with ITERATE=YES, DOWNLOAD=YES,
      and RUNONLY=SERVER, the ratings were only read once, not per iteration. 
   -- [2121034] The -DROBOTPATH=<path> option does not work: Now it works.
+  -- [2134416] Broken .sh files. Add extra colon character was included in the teamrumble.sh file.
 
 Version 1.6.1.2
 (09/12/2008)
