@@ -11,6 +11,9 @@
  *     Flemming N. Larsen
  *     - Properties are now read using PropertiesUtil.getProperties()
  *     - Renamed UpdateRatings() into updateRatings()
+ *     - Bugfix: Roborumble "ITERATE" broken: When running RoboRumble with
+ *       ITERATE=YES, DOWNLOAD=YES, and RUNONLY=SERVER, the ratings were only
+ *       read once, not per iteration
  *******************************************************************************/
 package roborumble;
 
@@ -64,28 +67,30 @@ public class RoboRumbleAtHome {
 			System.out.println("Iteration number " + iterations);
 
 			// Download data from Internet if downloads is YES and it has not been download for two hours
-			if (downloads.equals("YES") && (System.currentTimeMillis() - lastdownload) > 2 * 3600 * 1000) {
+			if (downloads.equals("YES")) {
 				BotsDownload download = new BotsDownload(parameters);
 
-				System.out.println("Downloading participants list ...");
-				participantsdownloaded = download.downloadParticipantsList();
-				System.out.println("Downloading missing bots ...");
-				download.downloadMissingBots();
-				download.updateCodeSize();
 				if (runonly.equals("SERVER")) {
 					// Download rating files and update ratings downloaded
 					System.out.println("Downloading rating files ...");
 					ratingsdownloaded = download.downloadRatings();
 				}
-				// Send the order to the server to remove old participants from the ratings file
-				if (ratingsdownloaded && participantsdownloaded) {
-					System.out.println("Removing old participants from server ...");
-					// Send unwanted participants to the server
-					download.notifyServerForOldParticipants();
-				}
+				if ((System.currentTimeMillis() - lastdownload) > 2 * 3600 * 1000) {
+					System.out.println("Downloading participants list ...");
+					participantsdownloaded = download.downloadParticipantsList();
+					System.out.println("Downloading missing bots ...");
+					download.downloadMissingBots();
+					download.updateCodeSize();
+					// Send the order to the server to remove old participants from the ratings file
+					if (ratingsdownloaded && participantsdownloaded) {
+						System.out.println("Removing old participants from server ...");
+						// Send unwanted participants to the server
+						download.notifyServerForOldParticipants();
+					}
 
-				download = null;
-				lastdownload = System.currentTimeMillis();
+					download = null;
+					lastdownload = System.currentTimeMillis();
+				}
 			}
 
 			// Create battles file (and delete old ones), and execute battles
