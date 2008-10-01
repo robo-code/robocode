@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Code cleanup
  *******************************************************************************/
 package robocode.editor;
 
@@ -18,10 +20,11 @@ import java.io.IOException;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class SegmentInputStream extends java.io.InputStream {
-	public javax.swing.text.Segment segment;
-	public int index;
+	private Segment segment;
+	private int index;
 
 	/**
 	 * SegmentInputStream constructor

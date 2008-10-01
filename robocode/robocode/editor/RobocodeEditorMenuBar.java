@@ -52,8 +52,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem fileSaveAsMenuItem;
 	private JMenuItem fileExitMenuItem;
 
-	private JMenu functionsMenu;
-
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == RobocodeEditorMenuBar.this.getFileNewRobotMenuItem()) {
@@ -136,12 +134,11 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenu compilerOptionsMenu;
 	private JMenuItem compilerOptionsPreferencesMenuItem;
 	private JMenuItem compilerOptionsResetCompilerMenuItem;
-	public RobocodeEditor editor;
+	private RobocodeEditor editor;
 	private EventHandler eventHandler = new EventHandler();
 	private JMenuItem fileNewJavaFileMenuItem;
 	private JMenu fileNewMenu;
 	private JMenuItem fileNewRobotMenuItem;
-	private JMenuItem functionsComingSoonMenuItem;
 	private JMenu helpMenu;
 	private JMenuItem helpRobocodeApiMenuItem;
 
@@ -174,16 +171,15 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		initialize();
 	}
 
-	public void compilerCompileActionPerformed() {
+	private void compilerCompileActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
-			editWindow.setFrame(editor);
 			editWindow.compile();
 		}
 	}
 
-	public void compilerOptionsPreferencesActionPerformed() {
+	private void compilerOptionsPreferencesActionPerformed() {
 		CompilerPreferencesDialog d = new CompilerPreferencesDialog(editor);
 
 		WindowUtil.packCenterShow(editor, d);
@@ -204,49 +200,41 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}).start();
 	}
 
-	public void disableMenus() {
-		getFileNewMenu().setEnabled(false);
-		getFileOpenMenuItem().setEnabled(false);
-		getFunctionsMenu().setEnabled(false);
-		getCompilerMenu().setEnabled(false);
-	}
-
-	public void enableMenus() {
-		getFileNewMenu().setEnabled(true);
-		getFileOpenMenuItem().setEnabled(true);
-		getFunctionsMenu().setEnabled(false); // eventually true
-		getCompilerMenu().setEnabled(true);
-	}
-
-	public void fileExitActionPerformed() {
+	private void fileExitActionPerformed() {
 		editor.dispose();
 	}
 
-	public void fileNewJavaFileActionPerformed() {
+	private void fileNewJavaFileActionPerformed() {
 		editor.createNewJavaFile();
+
+		getFileSaveMenuItem().setEnabled(true);
+		getFileSaveAsMenuItem().setEnabled(true);
 	}
 
-	public void fileNewRobotActionPerformed() {
+	private void fileNewRobotActionPerformed() {
 		editor.createNewRobot();
+
+		getFileSaveMenuItem().setEnabled(true);
+		getFileSaveAsMenuItem().setEnabled(true);
 	}
 
-	public void fileOpenActionPerformed() {
+	private void fileOpenActionPerformed() {
 		editor.openRobot();
 	}
 
-	public void fileExtractActionPerformed() {
+	private void fileExtractActionPerformed() {
 		editor.extractRobot();
 	}
 
-	public void fileSaveActionPerformed() {
+	private void fileSaveActionPerformed() {
 		editor.saveRobot();
 	}
 
-	public void fileSaveAsActionPerformed() {
+	private void fileSaveAsActionPerformed() {
 		editor.saveAsRobot();
 	}
 
-	public void editUndoActionPerformed() {
+	private void editUndoActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
@@ -254,7 +242,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void editRedoActionPerformed() {
+	private void editRedoActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
@@ -262,7 +250,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void editCutActionPerformed() {
+	private void editCutActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
@@ -270,7 +258,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void editCopyActionPerformed() {
+	private void editCopyActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
@@ -278,7 +266,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void editPasteActionPerformed() {
+	private void editPasteActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
@@ -286,7 +274,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void editDeleteActionPerformed() {
+	private void editDeleteActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
@@ -294,7 +282,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void editSelectAllActionPerformed() {
+	private void editSelectAllActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
@@ -302,19 +290,19 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void editFindActionPerformed() {
+	private void editFindActionPerformed() {
 		editor.findDialog();
 	}
 
-	public void editReplaceActionPerformed() {
+	private void editReplaceActionPerformed() {
 		editor.replaceDialog();
 	}
 
-	public void editFindNextActionPerformed() {
+	private void editFindNextActionPerformed() {
 		editor.getFindReplaceDialog().findNext();
 	}
 
-	public void windowCloseActionPerformed() {
+	private void windowCloseActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
@@ -322,7 +310,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void windowCloseAllActionPerformed() {
+	private void windowCloseAllActionPerformed() {
 		JInternalFrame[] frames = editor.getDesktopPane().getAllFrames();
 
 		if (frames != null) {
@@ -332,7 +320,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		}
 	}
 
-	public void windowMoreWindowsActionPerformed() {
+	private void windowMoreWindowsActionPerformed() {
 		getMoreWindowsDialog().setVisible(true);
 	}
 
@@ -542,7 +530,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	 *
 	 * @return JMenuItem
 	 */
-	private JMenuItem getFileSaveAsMenuItem() {
+	public JMenuItem getFileSaveAsMenuItem() {
 		if (fileSaveAsMenuItem == null) {
 			fileSaveAsMenuItem = new JMenuItem();
 			fileSaveAsMenuItem.setText("Save As");
@@ -551,6 +539,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileSaveAsMenuItem.setAccelerator(
 					KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_KEY_MASK | Event.SHIFT_MASK));
 			fileSaveAsMenuItem.addActionListener(eventHandler);
+			fileSaveAsMenuItem.setEnabled(false);
 		}
 		return fileSaveAsMenuItem;
 	}
@@ -560,7 +549,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	 *
 	 * @return JMenuItem
 	 */
-	private JMenuItem getFileSaveMenuItem() {
+	public JMenuItem getFileSaveMenuItem() {
 		if (fileSaveMenuItem == null) {
 			fileSaveMenuItem = new JMenuItem();
 			fileSaveMenuItem.setText("Save");
@@ -568,37 +557,9 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileSaveMenuItem.setDisplayedMnemonicIndex(0);
 			fileSaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_KEY_MASK));
 			fileSaveMenuItem.addActionListener(eventHandler);
+			fileSaveMenuItem.setEnabled(false);
 		}
 		return fileSaveMenuItem;
-	}
-
-	/**
-	 * Return the functionsComingSoonMenuItem
-	 *
-	 * @return JMenuItem
-	 */
-	private JMenuItem getFunctionsComingSoonMenuItem() {
-		if (functionsComingSoonMenuItem == null) {
-			functionsComingSoonMenuItem = new JMenuItem();
-			functionsComingSoonMenuItem.setText("Coming Soon");
-			functionsComingSoonMenuItem.setEnabled(false);
-			functionsComingSoonMenuItem.addActionListener(eventHandler);
-		}
-		return functionsComingSoonMenuItem;
-	}
-
-	/**
-	 * Return the functionsMenu
-	 *
-	 * @return JMenu
-	 */
-	private JMenu getFunctionsMenu() {
-		if (functionsMenu == null) {
-			functionsMenu = new JMenu();
-			functionsMenu.setText("Functions");
-			functionsMenu.add(getFunctionsComingSoonMenuItem());
-		}
-		return functionsMenu;
 	}
 
 	/**
@@ -639,7 +600,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	 *
 	 * @return JMenu
 	 */
-	public JMenu getEditMenu() {
+	private JMenu getEditMenu() {
 		if (editMenu == null) {
 			editMenu = new JMenu();
 			editMenu.setText("Edit");
@@ -912,7 +873,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return moreWindowsDialog;
 	}
 
-	public void helpRobocodeApiActionPerformed() {
+	private void helpRobocodeApiActionPerformed() {
 		editor.showHelpApi();
 	}
 

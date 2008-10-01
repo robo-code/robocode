@@ -33,10 +33,10 @@ import java.io.InputStream;
  */
 public class RobocodeCompiler {
 
-	public String compilerBinary;
-	public RobocodeEditor editor;
-	public String compilerOptions;
-	public String compilerClassPath;
+	private String compilerBinary;
+	private RobocodeEditor editor;
+	private String compilerOptions;
+	private String compilerClassPath;
 
 	/**
 	 * RobocodeCompiler constructor comment.

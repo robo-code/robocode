@@ -1,5 +1,5 @@
-Version 1.6.1.3 Alpha
-(09/28/2008)
+Version 1.6.1.3
+(10/02/2008)
 -------------
 o Bugfixes
   -- [2070840] Roborumble "ITERATE" broken: When running RoboRumble with ITERATE=YES, DOWNLOAD=YES,
@@ -11,7 +11,9 @@ o Changes
   -- [2022774] Various usability issues:
      -- The list of available robots in the 'New Battle' dialog is now automatically refreshed
         before it is being shown, when a new robot has been compiled or a robot has been removed.
-
+     -- The 'Save' and 'Save As' in the File menu of the Robot Editor is now enabled and disabled
+        depending if there is anything to save or not.
+     
 Version 1.6.1.2
 (09/12/2008)
 -------------

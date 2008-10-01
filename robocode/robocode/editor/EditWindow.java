@@ -44,15 +44,14 @@ import java.util.StringTokenizer;
 @SuppressWarnings("serial")
 public class EditWindow extends JInternalFrame implements CaretListener {
 
-	public RobocodeEditorKit editorKit;
-	public String fileName;
-	public String robotName;
+	private RobocodeEditorKit editorKit;
+	private String fileName;
+	private String robotName;
 	public boolean modified;
 	private RobocodeEditor editor;
 	private JEditorPane editorPane;
 	private JPanel editWindowContentPane;
-	public JFrame frame;
-	public File robotsDirectory;
+	private File robotsDirectory;
 	private JScrollPane scrollPane;
 
 	private LineNumbers lineNumbers;
@@ -155,6 +154,8 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 				setTitle("Editing");
 			}
 		}
+
+		editor.setSaveFileMenuItemsEnabled(modified);
 	}
 
 	public void setRobotName(String newRobotName) {
@@ -188,7 +189,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		}
 	}
 
-	public void error(String msg) {
+	private void error(String msg) {
 		Object[] options = {
 			"OK"
 		};
@@ -201,7 +202,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		return fileSave(confirm, false);
 	}
 
-	public boolean fileSave(boolean confirm, boolean mustSave) {
+	private boolean fileSave(boolean confirm, boolean mustSave) {
 		if (confirm) {
 			if (!modified) {
 				return true;
@@ -409,10 +410,6 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		return true;
 	}
 
-	public RobocodeEditorKit getEditorKit() {
-		return editorKit;
-	}
-
 	private JPanel getEditWindowContentPane() {
 		if (editWindowContentPane == null) {
 			editWindowContentPane = new JPanel();
@@ -421,10 +418,6 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			editWindowContentPane.add(getScrollPane(), "Center");
 		}
 		return editWindowContentPane;
-	}
-
-	public JFrame getFrame() {
-		return frame;
 	}
 
 	public String getPackage() {
@@ -441,7 +434,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		return "";
 	}
 
-	public String getReasonableFilename() {
+	private String getReasonableFilename() {
 		String fileName = robotsDirectory.getPath() + File.separatorChar;
 		String javaFileName = null;
 		String packageTree = null;
@@ -515,22 +508,5 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 	public void redo() {
 		((JavaDocument) getEditorPane().getDocument()).redo();
 		repaint();
-	}
-
-	public void scrollToTop() {
-		getEditorPane().scrollRectToVisible(new Rectangle(0, 0, 10, 10));
-	}
-
-	public void setFrame(JFrame newFrame) {
-		frame = newFrame;
-	}
-
-	public void success(String msg) {
-		Object[] options = {
-			"OK"
-		};
-
-		JOptionPane.showOptionDialog(this, msg, "Success", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-				null, options, options[0]);
 	}
 }

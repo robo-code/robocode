@@ -244,71 +244,72 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		while (!done) {
 			name = (String) JOptionPane.showInputDialog(this, message, "New Robot", JOptionPane.PLAIN_MESSAGE, null,
 					null, name);
-			if (name == null) {
+			if (name == null || name.trim().length() == 0) {
 				return;
 			}
-			done = true;
 			if (name.length() > 32) {
 				message = "Please choose a shorter name.  (32 characters or less)";
-				done = false;
 				continue;
 			}
+
 			char firstLetter = name.charAt(0);
 
 			if (!Character.isJavaIdentifierStart(firstLetter)) {
 				message = "Please start your name with a letter (A-Z)";
-				done = false;
 				continue;
 			}
+
+			done = true;
 			for (int t = 1; done && t < name.length(); t++) {
 				if (!Character.isJavaIdentifierPart(name.charAt(t))) {
 					message = "Your name contains an invalid character.\nPlease use only letters and/or digits.";
 					done = false;
+					break;
 				}
-
 			}
 			if (!done) {
 				continue;
 			}
 
-			if (!Character.isUpperCase(firstLetter)) // popup
-			{
+			if (!Character.isUpperCase(firstLetter)) { // popup
 				message = "The first character should be uppercase,\nas should the first letter of all words in the name.\nExample: MyFirstRobot";
 				name = name.substring(0, 1).toUpperCase() + name.substring(1);
 				done = false;
 			}
 		}
 
-		done = false;
 		message = "Please enter your initials.\n" + "To avoid name conflicts with other robots named " + name + ",\n"
 				+ "we need a short string to identify this one as one of yours.\n" + "Your initials will work well here,\n"
 				+ "but you may choose any short string that you like.\n"
 				+ "You should enter the same thing for all your robots.";
 		String packageName = "";
 
+		done = false;
 		while (!done) {
 			packageName = (String) JOptionPane.showInputDialog(this, message, name + " - package name",
 					JOptionPane.PLAIN_MESSAGE, null, null, packageName);
 			if (packageName == null) {
 				return;
 			}
-			done = true;
+
 			if (packageName.length() > 16) {
 				message = "Please choose a shorter name.  (16 characters or less)";
-				done = false;
 				continue;
 			}
+
 			char firstLetter = packageName.charAt(0);
 
 			if (!Character.isJavaIdentifierStart(firstLetter)) {
 				message = "Please start with a letter (a-z)";
-				done = false;
 				continue;
 			}
+
+			done = true;
 			for (int t = 1; done && t < packageName.length(); t++) {
 				if (!Character.isJavaIdentifierPart(packageName.charAt(t))) {
 					message = "The string you entered contains an invalid character.\nPlease use only letters and/or digits.";
 					done = false;
+					break;
 				}
 			}
 			if (!done) {
@@ -320,6 +321,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			for (int i = 0; i < packageName.length(); i++) {
 				if (!Character.isLowerCase(packageName.charAt(i)) && !Character.isDigit(packageName.charAt(i))) {
 					lowercased = true;
+					break;
 				}
 			}
 			if (lowercased) {
@@ -327,6 +329,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				message = "Please use all lowercase letters here.";
 				done = false;
 			}
+
 			if (done && manager != null) {
 				done = manager.getRobotRepositoryManager().verifyRootPackage(packageName + "." + name);
 				if (!done) {
@@ -425,12 +428,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public RobocodeCompiler getCompiler() {
-		RobocodeCompiler compiler = RobocodeCompilerFactory.createCompiler(this);
-
-		if (compiler != null) {
-			getRobocodeEditorMenuBar().enableMenus();
-		}
-		return compiler;
+		return RobocodeCompilerFactory.createCompiler(this);
 	}
 
 	/**
@@ -780,5 +778,10 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	 */
 	public RobocodeManager getManager() {
 		return manager;
+	}
+
+	public void setSaveFileMenuItemsEnabled(boolean enabled) {
+		robocodeEditorMenuBar.getFileSaveAsMenuItem().setEnabled(enabled);
+		robocodeEditorMenuBar.getFileSaveMenuItem().setEnabled(enabled);
 	}
 }
