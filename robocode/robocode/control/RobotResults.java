@@ -77,7 +77,7 @@ public class RobotResults extends BattleResults {
 	 * BattleResults}.
 	 *
 	 * @param robot the robot these results are for
-	 * @param result the battle results for the robot
+	 * @param results the battle results for the robot
 	 */
 	public RobotResults(
 			RobotSpecification robot,

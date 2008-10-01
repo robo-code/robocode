@@ -199,9 +199,8 @@ public class Battle implements Runnable {
 
 	// Robot loading related items
 	private Thread unsafeLoadRobotsThread;
-	private final Object unsafeLoaderMonitor = new Object();
-	private boolean unsafeLoaderThreadRunning;
-	private boolean robotsLoaded;
+	private AtomicBoolean isUnsafeLoaderThreadRunning = new AtomicBoolean(false);
+	private AtomicBoolean isRobotsLoaded = new AtomicBoolean(false);
 
 	// Replay related items
 	private boolean replay;
@@ -289,7 +288,7 @@ public class Battle implements Runnable {
 			battleRecord = isRecordingEnabled ? new BattleRecord(battleField, robots) : null;
 		}
 
-		while (!isAborted() && roundNum < numRounds) {
+		while (!isAborted && roundNum < numRounds) {
 			try {
 				setupRound();
 
@@ -658,10 +657,6 @@ public class Battle implements Runnable {
 		}
 	}
 
-	private synchronized boolean isRobotsLoaded() {
-		return robotsLoaded;
-	}
-
 	public void printSystemThreads() {
 		Thread systemThreads[] = new Thread[256];
 
@@ -725,7 +720,7 @@ public class Battle implements Runnable {
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(roundNum));
 
-		while (!(roundOver || isAborted())) {
+		while (!(roundOver || isAborted)) {
 			replayTurn();
 		}
 
@@ -775,7 +770,7 @@ public class Battle implements Runnable {
 
 		deathEvents.clear();
 
-		if (isAborted() || oneTeamRemaining()) {
+		if (isAborted || oneTeamRemaining()) {
 			processShutdown();
 		}
 
@@ -881,10 +876,8 @@ public class Battle implements Runnable {
 			if (!r.isDead()) {
 				r.update();
 			}
-			boolean aborted = isAborted();
-
-			if ((zap || aborted) && !r.isDead()) {
-				if (aborted) {
+			if ((zap || isAborted) && !r.isDead()) {
+				if (isAborted) {
 					r.zap(5);
 				} else {
 					r.zap(.1);
@@ -998,10 +991,7 @@ public class Battle implements Runnable {
 	}
 
 	private boolean shouldPause() {
-		if (isPaused && !isAborted()) {
-			return true;
-		}
-		return false;
+		return (isPaused && !isAborted);
 	}
 
 	private boolean shouldStep() {
@@ -1189,7 +1179,7 @@ public class Battle implements Runnable {
 
 	private void processShutdown() {
 		if (endTimer == 0) {
-			if (isAborted()) {
+			if (isAborted) {
 				for (RobotPeer r : getRobotsAtRandom()) {
 					if (!r.isDead()) {
 						r.getOut().println("SYSTEM: game aborted.");
@@ -1222,7 +1212,7 @@ public class Battle implements Runnable {
 			}
 		}
 
-		if (endTimer == 1 && (isAborted() || isLastRound())) {
+		if (endTimer == 1 && (isAborted || isLastRound())) {
 
 			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
 
@@ -1233,7 +1223,7 @@ public class Battle implements Runnable {
 				RobotPeer r = orderedRobots.get(rank);
 				BattleResults resultsForRobots = r.getStatistics().getFinalResults(rank + 1);
 
-				r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots));
+				r.getEventManager().add(new BattleEndedEvent(isAborted, resultsForRobots));
 			}
 		}
 
@@ -1293,20 +1283,29 @@ public class Battle implements Runnable {
 		}
 	}
 
-	public synchronized void setRobotsLoaded(boolean newRobotsLoaded) {
-		robotsLoaded = newRobotsLoaded;
-	}
-
 	public void setupRound() {
 		logMessage("----------------------");
 		Logger.logMessage("Round " + (roundNum + 1) + " initializing..", false);
 		currentTime = 0;
 
-		setRobotsLoaded(false);
-		while (!isUnsafeLoaderThreadRunning()) {
-			// waiting for loader to start
-			shortSleep();
+		// Flag that robots are not loaded
+		synchronized (isRobotsLoaded) {
+			isRobotsLoaded.set(false);
+			isRobotsLoaded.notifyAll();
 		}
+
+		// Wait for the unsafe loader thread to start running
+		synchronized (isUnsafeLoaderThreadRunning) {
+			while (!isUnsafeLoaderThreadRunning.get()) {
+				try {
+					isUnsafeLoaderThreadRunning.wait();
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+				}
+			}
+		}
+		// At this point the unsafe loader thread will now set itself to wait for a notify
 
 		for (RobotPeer r : robots) {
 			if (roundNum > 0) {
@@ -1318,12 +1317,22 @@ public class Battle implements Runnable {
 			r.getOut().println("=========================");
 		}
 
-		// Notifying loader
-		synchronized (unsafeLoaderMonitor) {
-			unsafeLoaderMonitor.notifyAll();
+		// At this point the unsafe loader thread is still waiting for a signal.
+		// So, notify it to continue the loading.
+		synchronized (isUnsafeLoaderThreadRunning) {
+			isUnsafeLoaderThreadRunning.notifyAll();
 		}
-		while (!isRobotsLoaded()) {
-			shortSleep();
+
+		// Wait for the robots to become loaded
+		synchronized (isRobotsLoaded) {
+			while (!isRobotsLoaded.get()) {
+				try {
+					isRobotsLoaded.wait();
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+				}
+			}
 		}
 
 		String name;
@@ -1404,18 +1413,21 @@ public class Battle implements Runnable {
 
 	public void unsafeLoadRobots() {
 		while (true) {
-			// Loader waiting
-			synchronized (unsafeLoaderMonitor) {
+			synchronized (isUnsafeLoaderThreadRunning) {
 				try {
-					setUnsafeLoaderThreadRunning(true);
-					unsafeLoaderMonitor.wait();
+					// Notify that the unsafe loader thread is now running
+					isUnsafeLoaderThreadRunning.set(true);
+					isUnsafeLoaderThreadRunning.notifyAll();
+
+					// Wait for a notify in order to continue
+					isUnsafeLoaderThreadRunning.wait();
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 				}
 			}
 			// Loader awake
-			if (roundNum >= numRounds || isAborted()) {
+			if (roundNum >= numRounds || isAborted) {
 				// Robot loader thread terminating
 				return;
 			}
@@ -1457,8 +1469,14 @@ public class Battle implements Runnable {
 					initializeRobotPosition(robotPeer);
 				}
 			} // for
+
 			manager.getThreadManager().setLoadingRobot(null);
-			setRobotsLoaded(true);
+
+			// Notify that the robots has been loaded
+			synchronized (isRobotsLoaded) {
+				isRobotsLoaded.set(true);
+				isRobotsLoaded.notifyAll();
+			}
 		}
 	}
 
@@ -1628,24 +1646,6 @@ public class Battle implements Runnable {
 	 */
 	public void setRoundNum(int roundNum) {
 		this.roundNum = roundNum;
-	}
-
-	/**
-	 * Gets the unsafeLoaderThreadRunning.
-	 *
-	 * @return Returns a boolean
-	 */
-	public synchronized boolean isUnsafeLoaderThreadRunning() {
-		return unsafeLoaderThreadRunning;
-	}
-
-	/**
-	 * Sets the unsafeLoaderThreadRunning.
-	 *
-	 * @param unsafeLoaderThreadRunning The unsafeLoaderThreadRunning to set
-	 */
-	private synchronized void setUnsafeLoaderThreadRunning(boolean unsafeLoaderThreadRunning) {
-		this.unsafeLoaderThreadRunning = unsafeLoaderThreadRunning;
 	}
 
 	/**
