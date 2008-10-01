@@ -90,9 +90,8 @@ public class RobotSelectionPanel extends WizardPanel {
 	private List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
 	private boolean showNumRoundsPanel;
 	private RobotRepositoryManager repositoryManager;
-	private boolean listBuilt;
 
-	private class EventHandler implements ActionListener, ListSelectionListener, HierarchyListener {
+	private class EventHandler implements ActionListener, ListSelectionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == getAddAllButton()) {
 				addAllButtonActionPerformed();
@@ -111,13 +110,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			}
 			if (e.getSource() == getSelectedRobotsList()) {
 				selectedRobotsListSelectionChanged();
-			}
-		}
-
-		public void hierarchyChanged(HierarchyEvent e) {
-			if (!listBuilt && isShowing()) {
-				listBuilt = true;
-				buildRobotList();
 			}
 		}
 	}
@@ -143,7 +135,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		this.preSelectedRobots = preSelectedRobots;
 		this.repositoryManager = robotManager;
 		initialize();
-		showInstructions();
 	}
 
 	private void addAllButtonActionPerformed() {
@@ -367,8 +358,9 @@ public class RobotSelectionPanel extends WizardPanel {
 		add(getInstructionsLabel(), BorderLayout.NORTH);
 		add(getMainPanel(), BorderLayout.CENTER);
 		add(getDescriptionPanel(), BorderLayout.SOUTH);
-		addHierarchyListener(eventHandler);
 		setVisible(true);
+		showInstructions();
+		refreshRobotList();
 	}
 
 	private void removeAllButtonActionPerformed() {
@@ -465,24 +457,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		public Object getElementAt(int which) {
 			return selectedRobots.get(which);
 		}
-	}
-
-	public void buildRobotList() {
-		SwingUtilities.invokeLater(
-				new Runnable() {
-			public void run() {
-				getAvailableRobotsPanel().setRobotList(null);
-				List<FileSpecification> l = repositoryManager.getRobotRepository().getRobotSpecificationsList(
-						onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged,
-						ignoreTeamRobots);
-
-				getAvailableRobotsPanel().setRobotList(l);
-				if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
-					setSelectedRobots(getAvailableRobotsPanel().getRobotList(), preSelectedRobots);
-					preSelectedRobots = null;
-				}
-			}
-		});
 	}
 
 	public AvailableRobotsPanel getAvailableRobotsPanel() {
@@ -636,9 +610,22 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	public void refreshRobotList() {
-		getAvailableRobotsPanel().setRobotList(null);
-		repositoryManager.clearRobotList();
-		buildRobotList();
+		SwingUtilities.invokeLater(
+				new Runnable() {
+			public void run() {
+				repositoryManager.clearRobotList();
+
+				List<FileSpecification> robotList = repositoryManager.getRobotRepository().getRobotSpecificationsList(
+						onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged,
+						ignoreTeamRobots);
+
+				getAvailableRobotsPanel().setRobotList(robotList);
+				if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
+					setSelectedRobots(robotList, preSelectedRobots);
+					preSelectedRobots = null;
+				}
+			}
+		});
 	}
 
 	private void selectedRobotsListSelectionChanged() {

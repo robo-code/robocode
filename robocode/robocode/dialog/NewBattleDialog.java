@@ -70,9 +70,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		this.battleProperties = battleProperties;
 
 		initialize();
-
-		battleProperties.setNumRounds(manager.getProperties().getNumberOfRounds());
-		processBattleProperties();
 	}
 
 	public void cancelButtonActionPerformed() {
@@ -166,8 +163,10 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("New Battle");
 		setContentPane(getNewBattleDialogContentPane());
-		addWindowListener(eventHandler);
 		addCancelByEscapeKey();
+
+		battleProperties.setNumRounds(manager.getProperties().getNumberOfRounds());
+		processBattleProperties();
 	}
 
 	private void addCancelByEscapeKey() {

@@ -7,6 +7,11 @@ o Bugfixes
   -- [2121034] The -DROBOTPATH=<path> option does not work: Now it works.
   -- [2134416] Broken .sh files: An misplaced colon character was included in the teamrumble.sh file.
 
+o Changes
+  -- [2022774] Various usability issues:
+     -- The list of available robots in the 'New Battle' dialog is now automatically refreshed
+        before it is being shown, when a new robot has been compiled or a robot has been removed.
+
 Version 1.6.1.2
 (09/12/2008)
 -------------
