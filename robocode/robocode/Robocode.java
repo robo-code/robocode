@@ -135,7 +135,7 @@ public class Robocode {
 
 				battleManager.setBattleFilename(setup.battleFilename);
 				if (new File(battleManager.getBattleFilename()).exists()) {
-					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, false);
+					battleManager.startNewBattle(battleManager.loadBattleProperties(), false);
 				} else {
 					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
 					System.exit(8);

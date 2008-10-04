@@ -1,0 +1,179 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Pavel Savara
+ *     - Initial implementation
+ *******************************************************************************/
+package robocode.recording;
+
+import static robocode.io.Logger.logError;
+
+import robocode.battle.events.*;
+import robocode.battle.snapshot.TurnSnapshot;
+import robocode.manager.RobocodeManager;
+
+import java.io.*;
+
+/**
+ * @author Pavel Savara (original)
+ */
+public class BattleRecorder implements IBattleRecorder {
+
+    private RobocodeManager manager;
+    private BattleObserver battleObserver = null;
+    private boolean recordingEnabled = false;
+    private BattleRecord currentRecord = null;
+
+    public BattleRecorder(RobocodeManager manager) {
+        this.manager = manager;
+    }
+
+    public void loadRecord(String fileName) {
+        FileInputStream fileStream;
+        ObjectInputStream objectStream;
+        try {
+            fileStream = new FileInputStream(fileName);
+            objectStream = new ObjectInputStream(fileStream);
+            currentRecord = (BattleRecord) objectStream.readObject();
+            objectStream.close();
+            fileStream.close();
+        } catch (IOException e) {
+            logError(e);
+        } catch (ClassNotFoundException e) {
+            logError(e);
+        }
+    }
+
+    public void saveRecord(String fileName) {
+        FileOutputStream fileStream;
+        ObjectOutputStream objectStream;
+        try {
+            fileStream = new FileOutputStream(fileName);
+            objectStream = new ObjectOutputStream(fileStream);
+            objectStream.writeObject(currentRecord);
+            objectStream.close();
+            fileStream.close();
+        } catch (IOException e) {
+            logError(e);
+        }
+    }
+
+    public boolean hasRecord() {
+        return currentRecord != null;
+    }
+
+    public BattleRecord getRecord() {
+        return currentRecord;
+    }
+
+    public void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher) {
+        if (battleObserver != null) {
+            battleObserver.dispose();
+        }
+        battleObserver = new BattleObserver(battleEventDispatcher);
+    }
+
+    private class BattleObserver extends BattleAdaptor {
+
+        final int initialSize = 16 * 1024 * 1024; //prealocate to prevent realocation
+
+        private robocode.battle.events.BattleEventDispatcher dispatcher;
+        private ByteArrayOutputStream byteStream;
+        private ObjectOutputStream objectStream;
+        private int currentTurn;
+        private int currentRound;
+
+
+        public BattleObserver(BattleEventDispatcher dispatcher) {
+            this.dispatcher = dispatcher;
+            dispatcher.addListener(this);
+        }
+
+        public void dispose() {
+            dispatcher.removeListener(this);
+        }
+
+        @Override
+        public void onBattleStarted(BattleStartedEvent event) {
+            recordingEnabled = manager.getProperties().getOptionsCommonEnableReplayRecording();
+            if (!recordingEnabled) {
+                currentRecord = null;
+                return;
+            }
+            try {
+                if (byteStream == null) {
+                    byteStream = new ByteArrayOutputStream(initialSize);
+                }
+                byteStream.reset();
+                objectStream = new ObjectOutputStream(byteStream);
+            } catch (IOException e) {
+                logError(e);
+            }
+
+            currentRecord = new BattleRecord();
+            currentRecord.robotCount = event.getTurnSnapshot().getRobots().size();
+            currentRecord.recordsInTurns = new int[event.getBattleProperties().getNumRounds()];
+            currentRecord.battleProperties = event.getBattleProperties();
+            currentRound = 0;
+            currentTurn = 1;
+            writeTurn(event.getTurnSnapshot());
+        }
+
+        @Override
+        public void onBattleEnded(BattleEndedEvent event) {
+            if (!recordingEnabled) {
+                return;
+            }
+            if (event.isAborted()) {
+                currentRecord.recordsInTurns[currentRound] = currentTurn;
+            }
+            currentRecord.rounds=currentRound;
+            try {
+                objectStream.flush();
+                objectStream.close();
+                byteStream.flush();
+            } catch (IOException e) {
+                logError(e);
+            }
+            currentRecord.records = byteStream.toByteArray();
+            byteStream.reset();
+        }
+
+        @Override
+        public void onBattleCompleted(BattleCompletedEvent event) {
+            currentRecord.results = event.getResults();
+        }
+
+        @Override
+        public void onRoundEnded(RoundEndedEvent event) {
+            if (!recordingEnabled) {
+                return;
+            }
+            currentRecord.recordsInTurns[currentRound] = currentTurn;
+            currentTurn = 0;
+            currentRound++;
+        }
+
+        @Override
+        public void onTurnEnded(TurnEndedEvent event) {
+            if (!recordingEnabled) {
+                return;
+            }
+            currentTurn++;
+            writeTurn(event.getTurnSnapshot());
+        }
+
+        private void writeTurn(TurnSnapshot turn) {
+            try {
+                objectStream.writeObject(turn);
+            } catch (IOException e) {
+                logError(e);
+            }
+        }
+    }
+}

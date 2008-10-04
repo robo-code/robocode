@@ -9,27 +9,18 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.recording;
 
+import robocode.battle.events.BattleEventDispatcher;
 
 /**
  * @author Pavel Savara (original)
- * @since 1.6.1
  */
-public class RoundEndedEvent extends BattleEvent {
-	private final int round;
-    private final int turns;
+public interface IBattleRecorder {
 
-	public RoundEndedEvent(int round, int turns) {
-		this.round = round;
-        this.turns = turns;
-	}
-
-	public int getRound() {
-		return round;
-	}
-
-    public int getTurns() {
-        return turns;
-    }
+    void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher);
+    void loadRecord(String fileName);
+    void saveRecord(String fileName);
+    boolean hasRecord();
+    BattleRecord getRecord();
 }

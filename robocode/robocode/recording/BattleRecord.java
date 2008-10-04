@@ -6,29 +6,27 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Flemming N. Larsen
+ *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.record;
+package robocode.recording;
 
-
+import robocode.battle.BattleProperties;
+import robocode.control.RobotResults;
 import robocode.BattleResults;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.Serializable;
 
 /**
- * Round record used for replaying battles containing a list of all turn, which
- * includes robot and bullet states, and the final battle results of the round.
- *
- * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (original)
  */
-public class RoundRecord {
+    public class BattleRecord implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-	// List of turns
-	public List<TurnRecord> turns = new ArrayList<TurnRecord>();
-
-	// Results
-	public BattleResults[] results;
+    public int robotCount;
+    public int rounds;
+    public BattleProperties battleProperties;
+    public int[] recordsInTurns;
+    public byte[] records;
+    public BattleResults[] results;
 }

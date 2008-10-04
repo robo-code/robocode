@@ -27,6 +27,8 @@ package robocode.manager;
 
 
 import robocode.RobocodeFileOutputStream;
+import robocode.recording.BattleRecorder;
+import robocode.recording.IBattleRecorder;
 import robocode.battle.IBattleManager;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
@@ -56,6 +58,7 @@ public class RobocodeManager {
 	private WindowManager windowManager;
 	private VersionManager versionManager;
 	private SoundManager soundManager;
+    private IBattleRecorder battleRecorder;
 
 	private boolean slave;
 
@@ -225,6 +228,18 @@ public class RobocodeManager {
 		}
 		return soundManager;
 	}
+
+    /**
+     * Gets the Sound Manager.
+     *
+     * @return Returns a SoundManager
+     */
+    public IBattleRecorder getBattleRecorder() {
+        if (battleRecorder == null) {
+            battleRecorder = new BattleRecorder(this);
+        }
+        return battleRecorder;
+    }
 
 	/**
 	 * Gets the slave.

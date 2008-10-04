@@ -28,7 +28,9 @@ package robocode.dialog;
 
 
 import robocode.battle.IBattleManager;
+import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
@@ -57,6 +59,8 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem battleSaveMenuItem;
 	private JMenuItem battleSaveAsMenuItem;
 	private JMenuItem battleExitMenuItem;
+    private JMenuItem recordSaveAsMenuItem;
+    private JMenuItem recordOpenMenuItem;
 
 	// Robot menu
 	private JMenu robotMenu;
@@ -102,10 +106,14 @@ public class RobocodeMenuBar extends JMenuBar {
 				battleNewActionPerformed();
 			} else if (source == mb.getBattleOpenMenuItem()) {
 				battleOpenActionPerformed();
+            } else if (source == mb.getRecordOpenMenuItem()) {
+                recordOpenActionPerformed();
 			} else if (source == mb.getBattleSaveMenuItem()) {
 				battleSaveActionPerformed();
 			} else if (source == mb.getBattleSaveAsMenuItem()) {
 				battleSaveAsActionPerformed();
+            } else if (source == mb.getRecordSaveAsMenuItem()) {
+                recordSaveAsActionPerformed();
 			} else if (source == mb.getBattleExitMenuItem()) {
 				battleExitActionPerformed();
 
@@ -197,7 +205,22 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleOpenActionPerformed() {
-		manager.getWindowManager().showBattleOpenDialog();
+        IBattleManager battleManager = manager.getBattleManager();
+        if (manager.getBattleRecorder().hasRecord()){
+            try {
+                battleManager.pauseBattle();
+
+                String path = manager.getWindowManager().showBattleOpenDialog(".battle", "Battles");
+                if (path!=null){
+                    battleManager.setBattleFilename(path);
+                    BattleProperties battleProperties = battleManager.loadBattleProperties();
+                    manager.getWindowManager().showNewBattleDialog(battleProperties);
+                }
+
+            } finally {
+                battleManager.resumeBattle();
+            }
+        }
 	}
 
 	private void battleSaveActionPerformed() {
@@ -208,7 +231,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			String path = battleManager.getBattleFilename();
 
 			if (path == null) {
-				path = saveBattleDialog(battleManager.getBattlePath());
+				path = manager.getWindowManager().saveBattleDialog(battleManager.getBattlePath(), ".battle", "Battles");
 			}
 			if (path != null) {
 				battleManager.setBattleFilename(path);
@@ -224,7 +247,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 		try {
 			battleManager.pauseBattle();
-			String path = saveBattleDialog(battleManager.getBattlePath());
+			String path = manager.getWindowManager().saveBattleDialog(battleManager.getBattlePath(), ".battle", "Battles");
 
 			if (path != null) {
 				battleManager.setBattleFilename(path);
@@ -235,53 +258,39 @@ public class RobocodeMenuBar extends JMenuBar {
 		}
 	}
 
-	private String saveBattleDialog(String path) {
-		File f = new File(path);
+    private void recordOpenActionPerformed() {
+        IBattleManager battleManager = manager.getBattleManager();
+        try {
+            battleManager.pauseBattle();
 
-		JFileChooser chooser;
+            String path = manager.getWindowManager().showBattleOpenDialog(".battleRecord", "Records");
+            if (path!=null){
+                manager.getBattleRecorder().loadRecord(path);
+                robocodeFrame.getReplayButton().setEnabled(true);
+                getRecordSaveAsMenuItem().setEnabled(true);
+            }
 
-		chooser = new JFileChooser(f);
+        } finally {
+            battleManager.resumeBattle();
+        }
+    }
 
-		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-			@Override
-			public boolean accept(File pathname) {
-				if (pathname.isDirectory()) {
-					return false;
-				}
-				String fn = pathname.getName();
-				int idx = fn.lastIndexOf('.');
-				String extension = "";
+    private void recordSaveAsActionPerformed() {
+        IBattleManager battleManager = manager.getBattleManager();
+        if (manager.getBattleRecorder().hasRecord()){
+            try {
+                battleManager.pauseBattle();
 
-				if (idx >= 0) {
-					extension = fn.substring(idx);
-				}
-				return extension.equalsIgnoreCase(".battle");
-			}
+                String path = manager.getWindowManager().saveBattleDialog(battleManager.getBattlePath(), ".battleRecord", "Records");
 
-			@Override
-			public String getDescription() {
-				return "Battles";
-			}
-		};
-
-		chooser.setFileFilter(filter);
-		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
-		String result = null;
-
-		if (rv == JFileChooser.APPROVE_OPTION) {
-			result = chooser.getSelectedFile().getPath();
-			int idx = result.lastIndexOf('.');
-			String extension = "";
-
-			if (idx > 0) {
-				extension = result.substring(idx);
-			}
-			if (!(extension.equalsIgnoreCase(".battle"))) {
-				result += ".battle";
-			}
-		}
-		return result;
-	}
+                if (path != null) {
+                    manager.getBattleRecorder().saveRecord(path);
+                }
+            } finally {
+                battleManager.resumeBattle();
+            }
+        }
+    }
 
 	/**
 	 * Return the battleExitMenuItem.
@@ -316,6 +325,9 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleMenu.add(getBattleSaveMenuItem());
 			battleMenu.add(getBattleSaveAsMenuItem());
 			battleMenu.add(new JSeparator());
+            battleMenu.add(getRecordOpenMenuItem());
+            battleMenu.add(getRecordSaveAsMenuItem());
+            battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleExitMenuItem());
 			battleMenu.addMenuListener(eventHandler);
 		}
@@ -356,6 +368,34 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleOpenMenuItem;
 	}
 
+    /**
+     * Return the recordOpenMenuItem.
+     *
+     * @return JMenuItem
+     */
+    private JMenuItem getRecordOpenMenuItem() {
+        if (recordOpenMenuItem == null) {
+            recordOpenMenuItem = new JMenuItem();
+            recordOpenMenuItem.setText("Open Record");
+            recordOpenMenuItem.setMnemonic('D');
+            recordOpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, MENU_SHORTCUT_KEY_MASK| InputEvent.SHIFT_MASK, false));
+            recordOpenMenuItem.addActionListener(eventHandler);
+
+            RobocodeProperties props = manager.getProperties();
+            recordOpenMenuItem.setVisible(props.getOptionsCommonEnableReplayRecording());
+
+            props.addPropertyListener(
+                    props.new PropertyListener() {
+                @Override
+                public void enableReplayRecordingChanged(boolean enabled) {
+                    recordOpenMenuItem.setVisible(
+                            RobocodeMenuBar.this.manager.getProperties().getOptionsCommonEnableReplayRecording());
+                }
+            });
+        }
+        return recordOpenMenuItem;
+    }
+
 	/**
 	 * Return the battleSaveAsMenuItem.
 	 *
@@ -392,6 +432,41 @@ public class RobocodeMenuBar extends JMenuBar {
 		}
 		return battleSaveMenuItem;
 	}
+
+
+    /**
+     * Return the recordSaveAsMenuItem.
+     *
+     * @return JMenuItem
+     */
+    public JMenuItem getRecordSaveAsMenuItem() {
+        if (recordSaveAsMenuItem == null) {
+            recordSaveAsMenuItem = new JMenuItem();
+            recordSaveAsMenuItem.setText("Save Record");
+            recordSaveAsMenuItem.setMnemonic('R');
+            recordSaveAsMenuItem.setDisplayedMnemonicIndex(5);
+            recordSaveAsMenuItem.setAccelerator(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK | InputEvent.SHIFT_MASK, false));
+            recordSaveAsMenuItem.setEnabled(false);
+            recordSaveAsMenuItem.addActionListener(eventHandler);
+
+            RobocodeProperties props = manager.getProperties();
+            recordSaveAsMenuItem.setVisible(props.getOptionsCommonEnableReplayRecording());
+
+            props.addPropertyListener(
+                    props.new PropertyListener() {
+                @Override
+                public void enableReplayRecordingChanged(boolean enabled) {
+                    recordSaveAsMenuItem.setVisible(
+                            RobocodeMenuBar.this.manager.getProperties().getOptionsCommonEnableReplayRecording());
+                }
+            });
+
+        }
+        return recordSaveAsMenuItem;
+    }
+
+
 
 	/**
 	 * Return the helpAboutMenuItem.

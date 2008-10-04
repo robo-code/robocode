@@ -107,7 +107,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		dispose();
 
 		// Start new battle after the dialog has been disposed and hence has called resumeBattle()
-		manager.getBattleManager().startNewBattle(battleProperties, false, false);
+		manager.getBattleManager().startNewBattle(battleProperties, false);
 	}
 
 	/**

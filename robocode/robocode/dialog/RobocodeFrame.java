@@ -132,7 +132,7 @@ public class RobocodeFrame extends JFrame {
 			boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
 
 			manager.getProperties().setOptionsCommonShowResults(false);
-			battleManager.startNewBattle(battleManager.loadBattleProperties(), false, true);
+			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
 			battleManager.setDefaultBattleProperties();
 			manager.getProperties().setOptionsCommonShowResults(origShowResults);
 			restartButton.setEnabled(false);
@@ -358,7 +358,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JButton
 	 */
-	private JButton getReplayButton() {
+	public JButton getReplayButton() {
 		if (replayButton == null) {
 			replayButton = new JButton("Replay");
 			replayButton.setMnemonic('y');
@@ -752,10 +752,11 @@ public class RobocodeFrame extends JFrame {
 			isBattleReplay = event.isReplay();
 
 			getStopButton().setEnabled(true);
-			getRestartButton().setEnabled(true);
-			getReplayButton().setEnabled(false);
+			getRestartButton().setEnabled(!event.isReplay());
+			getReplayButton().setEnabled(event.isReplay());
+            getRobocodeMenuBar().getRecordSaveAsMenuItem().setEnabled(false);
 
-			getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
+            getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
 			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 
 			JCheckBoxMenuItem rankingCheckBoxMenuItem = getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem();
@@ -794,7 +795,8 @@ public class RobocodeFrame extends JFrame {
 			isBattleRunning = false;
 
 			getStopButton().setEnabled(false);
-			getReplayButton().setEnabled(battleManager.hasReplayRecord());
+			getReplayButton().setEnabled(manager.getBattleRecorder().hasRecord());
+            getRobocodeMenuBar().getRecordSaveAsMenuItem().setEnabled(manager.getBattleRecorder().hasRecord());
 			getNextTurnButton().setEnabled(false);
 
 			getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setEnabled(false);

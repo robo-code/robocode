@@ -88,7 +88,7 @@ public class TurnSnapshot implements java.io.Serializable {
 		}
 
 		tps = battle.getTPS();
-		turn = battle.getCurrentTime();
+		turn = battle.getCurrentTurn();
 		round = battle.getRoundNum();
 	}
 

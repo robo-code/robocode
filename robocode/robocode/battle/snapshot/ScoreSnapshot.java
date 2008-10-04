@@ -14,12 +14,16 @@ package robocode.battle.snapshot;
 
 import robocode.peer.robot.RobotStatistics;
 
+import java.io.Serializable;
+
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class ScoreSnapshot implements Comparable<ScoreSnapshot> {
+public class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializable {
+    private static final long serialVersionUID = 1L;
+
 	private final String name;
 	private final double totalScore;
 	private final double totalSurvivalScore;

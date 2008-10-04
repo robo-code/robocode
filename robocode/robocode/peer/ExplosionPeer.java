@@ -28,7 +28,6 @@ package robocode.peer;
 
 
 import robocode.battle.Battle;
-import robocode.battle.record.BulletRecord;
 
 
 /**
@@ -46,15 +45,6 @@ public class ExplosionPeer extends BulletPeer {
 
 		x = owner.getX();
 		y = owner.getY();
-		victim = owner;
-		power = 1;
-		state = BulletState.EXPLODED;
-		explosionImageIndex = 1;
-	}
-
-	public ExplosionPeer(RobotPeer owner, Battle battle, BulletRecord br) {
-		super(owner, battle, br);
-
 		victim = owner;
 		power = 1;
 		state = BulletState.EXPLODED;

@@ -45,7 +45,6 @@ package robocode.peer;
 
 import robocode.*;
 import robocode.battle.Battle;
-import robocode.battle.record.BulletRecord;
 import robocode.battlefield.BattleField;
 import static robocode.gfx.ColorUtil.toColor;
 
@@ -115,17 +114,6 @@ public class BulletPeer {
 		bullet = new Bullet(this);
 		state = BulletState.FIRED;
 		color = owner.getBulletColor(); // Store current bullet color set on robot
-	}
-
-	public BulletPeer(RobotPeer owner, Battle battle, BulletRecord br) {
-		this(owner, battle);
-
-		x = br.x;
-		y = br.y;
-		power = ((double) br.power) / 10;
-		frame = br.frame;
-		state = BulletState.toState(br.state);
-		color = toColor(br.color);
 	}
 
 	private void checkBulletCollision() {

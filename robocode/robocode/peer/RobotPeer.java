@@ -66,7 +66,6 @@ package robocode.peer;
 import robocode.*;
 import robocode.Event;
 import robocode.battle.Battle;
-import robocode.battle.record.RobotRecord;
 import robocode.battlefield.BattleField;
 import robocode.exception.*;
 import static robocode.gfx.ColorUtil.toColor;
@@ -1278,7 +1277,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	public long getTime() {
-		return battle.getCurrentTime();
+		return battle.getCurrentTurn();
 	}
 
 	public synchronized double getVelocity() {
@@ -1878,20 +1877,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public synchronized void setState(RobotState newState) {
 		state = newState;
-	}
-
-	public synchronized void set(RobotRecord rr) {
-		x = rr.x;
-		y = rr.y;
-		energy = (double) rr.energy / 10;
-		heading = Math.PI * rr.heading / 128;
-		radarHeading = Math.PI * rr.radarHeading / 128;
-		gunHeading = Math.PI * rr.gunHeading / 128;
-		state = RobotState.toState(rr.state);
-		bodyColor = toColor(rr.bodyColor);
-		gunColor = toColor(rr.gunColor);
-		radarColor = toColor(rr.radarColor);
-		scanColor = toColor(rr.scanColor);
 	}
 
 	private synchronized void setLastHeading() {

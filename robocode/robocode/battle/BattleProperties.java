@@ -21,6 +21,7 @@ import robocode.control.RobotSpecification;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Properties;
 
 
@@ -28,7 +29,9 @@ import java.util.Properties;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class BattleProperties {
+public class BattleProperties implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
 	private final static String
 			BATTLEFIELD_WIDTH = "robocode.battleField.width",

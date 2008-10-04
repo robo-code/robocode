@@ -53,7 +53,7 @@ public interface IBattleManager {
 	 */
 	void sendInteractiveEvent(Event event);
 
-	boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver);
+	boolean startNewBattle(BattleProperties battleProperties, boolean waitTillOver);
 
 	boolean startNewBattle(BattleSpecification spec, boolean waitTillOver);
 
@@ -78,8 +78,6 @@ public interface IBattleManager {
 	void addListener(IBattleListener listener);
 
 	void removeListener(IBattleListener listener);
-
-	boolean hasReplayRecord();
 
 	boolean isManagedTPS();
 

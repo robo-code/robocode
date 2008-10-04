@@ -6,26 +6,21 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Flemming N. Larsen
+ *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.record;
-
-
-import java.util.List;
-
+package robocode.battle;
 
 /**
- * Round record used for replaying battles containing the current state of all
- * robots and bullets, i.e. a snapshot of a turn.
- *
- * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (original)
  */
-public class TurnRecord {
-
-	// List of robot states
-	public List<RobotRecord> robotStates;
-
-	// List of bullet states
-	public List<BulletRecord> bulletStates;
+public interface IBattle {
+    void cleanup();
+    boolean isRunning();
+    void stop(boolean waitTillEnd);
+    void pause();
+    void resume();
+    void step();
+    void waitTillStarted();
+    void waitTillOver();
 }

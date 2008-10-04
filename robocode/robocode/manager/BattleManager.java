@@ -52,9 +52,11 @@ package robocode.manager;
 
 
 import robocode.Event;
+import robocode.recording.BattlePlayer;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattleManager;
+import robocode.battle.IBattle;
 import robocode.battle.events.*;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
@@ -90,7 +92,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class BattleManager implements IBattleManager {
 	private RobocodeManager manager;
 
-	private Battle battle;
+	private IBattle battle;
 	private BattleProperties battleProperties = new BattleProperties();
 
 	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
@@ -115,7 +117,7 @@ public class BattleManager implements IBattleManager {
 	}
 
 	// Called when starting a new battle from GUI
-	public boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
+	public boolean startNewBattle(BattleProperties battleProperties, boolean waitTillOver) {
 		this.battleProperties = battleProperties;
 
 		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
@@ -137,7 +139,7 @@ public class BattleManager implements IBattleManager {
 			}
 		}
 
-		startNewBattleImpl(battlingRobotsList, replay, waitTillOver);
+		startNewBattleImpl(battlingRobotsList, waitTillOver);
 		return true;
 	}
 
@@ -172,7 +174,7 @@ public class BattleManager implements IBattleManager {
 				return false;
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, false, waitTillOver);
+		startNewBattleImpl(battlingRobotsList, waitTillOver);
 		return true;
 	}
 
@@ -236,10 +238,10 @@ public class BattleManager implements IBattleManager {
 		return false;
 	}
 
-	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
+	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean waitTillOver) {
 
 		logMessage("Preparing battle...");
-		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
+		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when realBattle is running ?
 			battle.stop(true);
 		}
 
@@ -252,24 +254,26 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		// resets seed for deterministic behavior of Random
+        manager.getBattleRecorder().setBattleEventDispatcher(battleEventDispatcher);
+
+        // resets seed for deterministic behavior of Random
 		final String seed = System.getProperty("RANDOMSEED", "none");
 
 		if (!seed.equals("none")) {
 			RandomFactory.resetDeterministic(Long.valueOf(seed));
 		}
 
-		battle = new Battle(battleField, manager, battleEventDispatcher, isPaused());
+		Battle realBattle = new Battle(battleField, manager, battleEventDispatcher, isPaused());
+        battle=realBattle;
 
-		// Set stuff the view needs to know
-		battle.setProperties(battleProperties);
+        // Set stuff the view needs to know
+		realBattle.setProperties(battleProperties);
 
-		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
+		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), realBattle);
 
 		battleThread.setPriority(Thread.NORM_PRIORITY);
 		battleThread.setName("Battle Thread");
-		battle.setBattleThread(battleThread);
-		battle.setReplay(replay);
+		realBattle.setBattleThread(battleThread);
 
 		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
 			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
@@ -277,20 +281,45 @@ public class BattleManager implements IBattleManager {
 		}
 
 		for (RobotClassManager robotClassMgr : battlingRobotsList) {
-			battle.addRobot(robotClassMgr);
+			realBattle.addRobot(robotClassMgr);
 		}
 
-		// Start the battle thread
+		// Start the realBattle thread
 		battleThread.start();
 
-		// Wait until the battle is running and ended.
-		// This must be done as a new battle could be started immediately after this one causing
-		// multiple battle threads to run at the same time, which must be prevented!
-		battle.waitTillStarted();
+		// Wait until the realBattle is running and ended.
+		// This must be done as a new realBattle could be started immediately after this one causing
+		// multiple realBattle threads to run at the same time, which must be prevented!
+		realBattle.waitTillStarted();
 		if (waitTillOver) {
-			battle.waitTillOver();
+			realBattle.waitTillOver();
 		}
 	}
+
+    private void replayBattle() {
+
+        logMessage("Preparing replay...");
+        if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battlePlayer is running ?
+            battle.stop(true);
+        }
+
+        Logger.setLogListener(battleEventDispatcher);
+
+        if (manager.isSoundEnabled()) {
+            manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
+        }
+
+        BattlePlayer battlePlayer = new BattlePlayer(manager.getBattleRecorder().getRecord(), manager, battleEventDispatcher, isPaused());
+        battle=battlePlayer;
+
+        Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battlePlayer);
+
+        battleThread.setPriority(Thread.NORM_PRIORITY);
+        battleThread.setName("BattlePlayer Thread");
+
+        // Start the battlePlayer thread
+        battleThread.start();
+    }
 
 	public String getBattleFilename() {
 		String filename = battleFilename;
@@ -383,14 +412,7 @@ public class BattleManager implements IBattleManager {
 		battleProperties = new BattleProperties();
 	}
 
-	public boolean hasReplayRecord() { // TODO get rid of this after redording rework
-		if (battle == null) {
-			return false;
-		}
-		return battle.hasReplayRecord();
-	}
-
-	public boolean isManagedTPS() {
+    public boolean isManagedTPS() {
 		return isManagedTPS.get();
 	}
 
@@ -414,11 +436,11 @@ public class BattleManager implements IBattleManager {
 
 	public synchronized void restart() {
 		// Start new battle. The old battle is automatically stopped
-		startNewBattle(battleProperties, false, false);
+		startNewBattle(battleProperties, false);
 	}
 
 	public synchronized void replay() {
-		startNewBattle(battleProperties, true, false);
+        replayBattle();
 	}
 
 	private boolean isPaused() {
@@ -488,26 +510,26 @@ public class BattleManager implements IBattleManager {
 	}
 
 	public synchronized void killRobot(int robotIndex) {
-		if (battle != null && battle.isRunning()) {
-			battle.killRobot(robotIndex);
+		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
+			((Battle)battle).killRobot(robotIndex);
 		}
 	}
 
 	public synchronized void setPaintEnabled(int robotIndex, boolean enable) {
-		if (battle != null && battle.isRunning()) {
-			battle.setPaintEnabled(robotIndex, enable);
+		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
+			((Battle)battle).setPaintEnabled(robotIndex, enable);
 		}
 	}
 
 	public synchronized void setSGPaintEnabled(int robotIndex, boolean enable) {
-		if (battle != null && battle.isRunning()) {
-			battle.setSGPaintEnabled(robotIndex, enable);
+		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
+			((Battle)battle).setSGPaintEnabled(robotIndex, enable);
 		}
 	}
 
 	public synchronized void sendInteractiveEvent(Event event) {
-		if (battle != null && battle.isRunning() && !isPaused()) {
-			battle.sendInteractiveEvent(event);
+		if (battle != null && battle.isRunning() && !isPaused() && Battle.class.isAssignableFrom(battle.getClass())) {
+			((Battle)battle).sendInteractiveEvent(event);
 		}
 	}
 }
