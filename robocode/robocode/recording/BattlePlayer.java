@@ -24,7 +24,7 @@ import java.io.ByteArrayInputStream;
 /**
  * @author Pavel Savara (original)
  */
-public class BattlePlayer extends BaseBattle {
+public final class BattlePlayer extends BaseBattle {
 
     private BattleRecord record;
     private ByteArrayInputStream byteStream;
