@@ -174,8 +174,8 @@ public final class Battle extends BaseBattle {
 
     // Robot loading related items
     private Thread unsafeLoadRobotsThread;
-    private AtomicBoolean isUnsafeLoaderThreadRunning = new AtomicBoolean(false);
-    private AtomicBoolean isRobotsLoaded = new AtomicBoolean(false);
+    private final AtomicBoolean isUnsafeLoaderThreadRunning = new AtomicBoolean(false);
+    private final AtomicBoolean isRobotsLoaded = new AtomicBoolean(false);
 
     // Initial robot start positions (if any)
     private double[][] initialRobotPositions;

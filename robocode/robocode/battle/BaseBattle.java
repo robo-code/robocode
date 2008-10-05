@@ -49,7 +49,7 @@ public abstract class BaseBattle implements IBattle, Runnable{
     private int measuredTurnCounter;
 
     // Battle state
-    private AtomicBoolean isRunning = new AtomicBoolean(false);
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
     private boolean isAborted;
 
     // Battle control
