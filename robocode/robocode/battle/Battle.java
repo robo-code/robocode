@@ -180,10 +180,6 @@ public final class Battle extends BaseBattle {
     // Initial robot start positions (if any)
     private double[][] initialRobotPositions;
 
-
-    /**
-     * Battle constructor
-     */
     public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
         super(manager, eventDispatcher, paused);
 
@@ -400,8 +396,6 @@ public final class Battle extends BaseBattle {
 
         // Turning on robots
         startRobots();
-
-        logMessage("");
     }
 
     @Override
@@ -431,6 +425,13 @@ public final class Battle extends BaseBattle {
     }
 
     @Override
+    protected void initializeTurn() {
+        super.initializeTurn();
+
+        eventDispatcher.onTurnStarted(new TurnStartedEvent());
+    }
+
+    @Override
     protected void runTurn() {
 
         super.runTurn();
@@ -445,8 +446,6 @@ public final class Battle extends BaseBattle {
 
         performScans();
 
-        deathEvents.clear();
-
         if (isAborted() || oneTeamRemaining()) {
             shutdownTurn();
         }
@@ -459,13 +458,6 @@ public final class Battle extends BaseBattle {
 
         // Robot time!
         wakeupRobots();
-    }
-
-    @Override
-    protected void initializeTurn() {
-        super.initializeTurn();
-
-        eventDispatcher.onTurnStarted(new TurnStartedEvent());
     }
 
     @Override
@@ -672,21 +664,6 @@ public final class Battle extends BaseBattle {
         return shuffledList;
     }
 
-    private void addRobotEventsForTurnEnded() {
-        // Add events for the current turn to all robots that are alive
-        for (RobotPeer r : robots) {
-            if (!r.isDead()) {
-                // Add status event
-                r.getEventManager().add(new StatusEvent(r));
-
-                // Add paint event, if robot is a paint robot and its painting is enabled
-                if (r.isPaintRobot() && r.isPaintEnabled()) {
-                    r.getEventManager().add(new PaintEvent());
-                }
-            }
-        }
-    }
-
     private void cleanRobotEvents() {
         for (RobotPeer r : robots) {
             r.getEventManager().clear(getCurrentTurn() - 2); //TODO really -2 ?
@@ -694,6 +671,12 @@ public final class Battle extends BaseBattle {
             // Clear the queue of calls in the graphics proxy as these have already
             // been processed, so calling onPaint() will add the new calls
             ((Graphics2DProxy) r.getGraphics()).clearQueue();
+        }
+    }
+
+    private void updateBullets() {
+        for (BulletPeer b : bullets) {
+            b.update();
         }
     }
 
@@ -715,9 +698,78 @@ public final class Battle extends BaseBattle {
         }
     }
 
-    private void updateBullets() {
-        for (BulletPeer b : bullets) {
-            b.update();
+    private void handleDeathEvents() {
+        if (deathEvents.size() > 0) {
+            for (RobotPeer r : robots) {
+                if (!r.isDead()) {
+                    for (RobotPeer de : deathEvents) {
+                        r.getEventManager().add(new RobotDeathEvent(de.getName()));
+                        if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
+                            r.getRobotStatistics().scoreSurvival();
+                        }
+                    }
+                }
+            }
+        }
+        // Compute scores for dead robots
+        for (RobotPeer r : deathEvents) {
+            if (r.getTeamPeer() == null) {
+                r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
+            } else {
+                boolean teammatesalive = false;
+
+                for (RobotPeer tm : robots) {
+                    if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
+                        teammatesalive = true;
+                        break;
+                    }
+                }
+                if (!teammatesalive) {
+                    r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
+                }
+            }
+        }
+
+        deathEvents.clear();
+    }
+
+    private void performScans() {
+        // Perform scans, handle messages
+        for (RobotPeer r : getRobotsAtRandom()) {
+            if (!r.isDead()) {
+                if (r.getScan()) {
+                    // Enter scan
+                    System.err.flush();
+
+                    r.scan();
+                    // Exit scan
+                    r.setScan(false);
+                }
+
+                if (r.getMessageManager() != null) {
+                    List<MessageEvent> messageEvents = r.getMessageManager().getMessageEvents();
+
+                    for (MessageEvent me : messageEvents) {
+                        r.getEventManager().add(me);
+                    }
+                    messageEvents.clear();
+                }
+            }
+        }
+    }
+
+    private void addRobotEventsForTurnEnded() {
+        // Add events for the current turn to all robots that are alive
+        for (RobotPeer r : robots) {
+            if (!r.isDead()) {
+                // Add status event
+                r.getEventManager().add(new StatusEvent(r));
+
+                // Add paint event, if robot is a paint robot and its painting is enabled
+                if (r.isPaintRobot() && r.isPaintEnabled()) {
+                    r.getEventManager().add(new PaintEvent());
+                }
+            }
         }
     }
 
@@ -739,7 +791,7 @@ public final class Battle extends BaseBattle {
             final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
 
             if (parallelOn) {
-                wakeParallel(robotsAtRandom);
+                wakeupParallel(robotsAtRandom);
             } else {
                 wakeupSerial(robotsAtRandom);
             }
@@ -784,7 +836,7 @@ public final class Battle extends BaseBattle {
         }
     }
 
-    private void wakeParallel(List<RobotPeer> robotsAtRandom) {
+    private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
         final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
         int millisWait = (int) (waitTime / 1000000);
 
@@ -834,64 +886,6 @@ public final class Battle extends BaseBattle {
                 r.getOut().println("SYSTEM: No score will be generated.");
                 r.getRobotStatistics().setInactive();
                 r.getRobotThreadManager().forceStop();
-            }
-        }
-    }
-
-    private void handleDeathEvents() {
-        if (deathEvents.size() > 0) {
-            for (RobotPeer r : robots) {
-                if (!r.isDead()) {
-                    for (RobotPeer de : deathEvents) {
-                        r.getEventManager().add(new RobotDeathEvent(de.getName()));
-                        if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
-                            r.getRobotStatistics().scoreSurvival();
-                        }
-                    }
-                }
-            }
-        }
-        // Compute scores for dead robots
-        for (RobotPeer r : deathEvents) {
-            if (r.getTeamPeer() == null) {
-                r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
-            } else {
-                boolean teammatesalive = false;
-
-                for (RobotPeer tm : robots) {
-                    if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
-                        teammatesalive = true;
-                        break;
-                    }
-                }
-                if (!teammatesalive) {
-                    r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
-                }
-            }
-        }
-    }
-
-    private void performScans() {
-        // Perform scans, handle messages
-        for (RobotPeer r : getRobotsAtRandom()) {
-            if (!r.isDead()) {
-                if (r.getScan()) {
-                    // Enter scan
-                    System.err.flush();
-
-                    r.scan();
-                    // Exit scan
-                    r.setScan(false);
-                }
-
-                if (r.getMessageManager() != null) {
-                    List<MessageEvent> messageEvents = r.getMessageManager().getMessageEvents();
-
-                    for (MessageEvent me : messageEvents) {
-                        r.getEventManager().add(me);
-                    }
-                    messageEvents.clear();
-                }
             }
         }
     }

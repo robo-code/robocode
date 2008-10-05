@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     Pavel Savara
- *     - Initial implementation
+ *     - Refactoring
  *******************************************************************************/
 package robocode.battle;
 
@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Queue;
 
 /**
- * @author Pavel Savara (original)
+ * @author Pavel Savara (refactoring)
  */
 public abstract class BaseBattle implements IBattle, Runnable{
 
@@ -195,7 +195,15 @@ public abstract class BaseBattle implements IBattle, Runnable{
         while (!isAborted && roundNum < numRounds) {
             try {
 
+                preloadRound();
+
+                initializeRound();
+
                 runRound();
+
+                finalizeRound();
+
+                cleanupRound();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -222,12 +230,32 @@ public abstract class BaseBattle implements IBattle, Runnable{
         }
     }
 
-    protected void runRound() {
-        preloadRound();
+    protected void shutdownBattle() {
+        // Notify that the battle is over
+        synchronized (isRunning) {
+            isRunning.set(false);
+            isRunning.notifyAll();
+        }
+    }
 
+    protected void finalizeBattle() {
+    }
+
+    protected void preloadRound() {
+        logMessage("----------------------");
+        Logger.logMessage("Round " + (roundNum + 1) + " initializing..", false);
+    }
+
+    protected void initializeRound() {
+        logMessage("");
         logMessage("Let the games begin!");
 
-        initializeRound();
+        roundOver = false;
+        endTimer = 0;
+        currentTurn = 0;
+    }
+
+    private void runRound() {
 
         while (!roundOver) {
             processCommand();
@@ -245,54 +273,25 @@ public abstract class BaseBattle implements IBattle, Runnable{
 
             finalizeTurn();
         }
-
-        finalizeRound();
-
-        cleanupRound();
     }
 
     protected boolean isRoundOver() {
         return (endTimer > 5 * TURNS_DISPLAYED_AFTER_ENDING);
     }
 
-    protected void shutdownBattle() {
-        // Notify that the battle is over
-        synchronized (isRunning) {
-            isRunning.set(false);
-            isRunning.notifyAll();
-        }
-    }
-
-    protected void finalizeBattle() {
-    }
-
-
-    protected void preloadRound() {
-        logMessage("----------------------");
-        Logger.logMessage("Round " + (roundNum + 1) + " initializing..", false);
-    }
-
-    protected void initializeRound() {
-        roundOver = false;
-        endTimer = 0;
-        currentTurn = 0;
-    }
-
-
     protected void finalizeRound() {
     }
-
 
     protected void cleanupRound() {
         logMessage("Round " + (roundNum + 1) + " cleaning up.");
     }
 
-    protected void runTurn() {
-        currentTurn++;
-    }
-
     protected void initializeTurn() {
         turnStartTime = System.nanoTime();
+    }
+
+    protected void runTurn() {
+        currentTurn++;
     }
 
     protected void shutdownTurn() {
@@ -303,21 +302,6 @@ public abstract class BaseBattle implements IBattle, Runnable{
         synchronizeTPS();
 
         calculateTPS();
-    }
-
-    private void calculateTPS() {
-        // Calculate the current turns per second (TPS)
-
-        if (measuredTurnCounter++ == 0) {
-            measuredTurnStartTime = turnStartTime;
-        }
-
-        long deltaTime = System.nanoTime() - measuredTurnStartTime;
-
-        if (deltaTime / 500000000 >= 1) {
-            tps = (int) (measuredTurnCounter * 1000000000L / deltaTime);
-            measuredTurnCounter = 0;
-        }
     }
 
     private void synchronizeTPS() {
@@ -341,6 +325,21 @@ public abstract class BaseBattle implements IBattle, Runnable{
                     Thread.currentThread().interrupt();
                 }
             }
+        }
+    }
+
+    private void calculateTPS() {
+        // Calculate the current turns per second (TPS)
+
+        if (measuredTurnCounter++ == 0) {
+            measuredTurnStartTime = turnStartTime;
+        }
+
+        long deltaTime = System.nanoTime() - measuredTurnStartTime;
+
+        if (deltaTime / 500000000 >= 1) {
+            tps = (int) (measuredTurnCounter * 1000000000L / deltaTime);
+            measuredTurnCounter = 0;
         }
     }
 

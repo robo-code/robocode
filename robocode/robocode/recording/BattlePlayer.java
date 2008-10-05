@@ -43,6 +43,7 @@ public final class BattlePlayer extends BaseBattle {
         record = null;
     }
 
+    @Override
     protected void initializeBattle() {
         super.initializeBattle();
 
