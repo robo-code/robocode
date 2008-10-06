@@ -74,8 +74,6 @@ import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
-import robocode.robotinterfaces.peer.ITeamRobotPeer;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
@@ -1989,9 +1987,23 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
     public void updateStatus(){
+        final long currentTurn = getTime();
+        eventManager.clear(currentTurn - 2); //TODO really -2 ?
+
         RobotStatus status = new RobotStatus(this);
-        getEventManager().add(new StatusEvent(status));
         robotProxy.updateStatus(status);
+
+        // Clear the queue of calls in the graphics proxy as these have already
+        // been processed, so calling onPaint() will add the new calls
+        ((Graphics2DProxy) getGraphics()).clearQueue();
+
+        if (!isDead()) {
+            eventManager.add(new StatusEvent(status));
+            // Add paint event, if robot is a paint robot and its painting is enabled
+            if (isPaintRobot() && isPaintEnabled() && currentTurn >0) {
+                eventManager.add(new PaintEvent());
+            }
+        }
     }
 
     /**

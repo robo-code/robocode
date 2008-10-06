@@ -111,7 +111,6 @@ import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotpaint.Graphics2DProxy;
 import robocode.security.RobocodeClassLoader;
 
 import static java.lang.Math.*;
@@ -334,7 +333,7 @@ public final class Battle extends BaseBattle {
         // loadClass WILL NOT LINK the class, so static "cheats" will not work.
         // in the safe robot loader the class is linked.
         synchronized (robots) {
-            initRobot();
+            initRobots();
 
             parallelOn = System.getProperty("PARALLEL", "false").equals("true");
             if (parallelOn) {
@@ -436,8 +435,6 @@ public final class Battle extends BaseBattle {
 
         super.runTurn();
 
-        cleanRobotEvents();
-
         updateBullets();
 
         moveRobots();
@@ -454,7 +451,7 @@ public final class Battle extends BaseBattle {
 
         computeActiveRobots();
 
-        addRobotEventsForTurnEnded();
+        updateRobots();
 
         // Robot time!
         wakeupRobots();
@@ -529,7 +526,7 @@ public final class Battle extends BaseBattle {
         super.finalizeTurn();
     }
 
-    private void initRobot() {
+    private void initRobots() {
         for (RobotPeer r : robots) {
             try {
                 Class<?> c;
@@ -664,16 +661,6 @@ public final class Battle extends BaseBattle {
         return shuffledList;
     }
 
-    private void cleanRobotEvents() {
-        for (RobotPeer r : robots) {
-            r.getEventManager().clear(getCurrentTurn() - 2); //TODO really -2 ?
-
-            // Clear the queue of calls in the graphics proxy as these have already
-            // been processed, so calling onPaint() will add the new calls
-            ((Graphics2DProxy) r.getGraphics()).clearQueue();
-        }
-    }
-
     private void updateBullets() {
         for (BulletPeer b : bullets) {
             b.update();
@@ -758,18 +745,9 @@ public final class Battle extends BaseBattle {
         }
     }
 
-    private void addRobotEventsForTurnEnded() {
-        // Add events for the current turn to all robots that are alive
+    private void updateRobots() {
         for (RobotPeer r : robots) {
-            if (!r.isDead()) {
-                // Add status event
-                r.updateStatus();
-
-                // Add paint event, if robot is a paint robot and its painting is enabled
-                if (r.isPaintRobot() && r.isPaintEnabled()) {
-                    r.getEventManager().add(new PaintEvent());
-                }
-            }
+            r.updateStatus();
         }
     }
 
