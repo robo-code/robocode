@@ -754,9 +754,9 @@ public class RobocodeFrame extends JFrame {
 			getStopButton().setEnabled(true);
 			getRestartButton().setEnabled(!event.isReplay());
 			getReplayButton().setEnabled(event.isReplay());
-            getRobocodeMenuBar().getRecordSaveAsMenuItem().setEnabled(false);
+			getRobocodeMenuBar().getBattleSaveRecordAsMenuItem().setEnabled(false);
 
-            getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
+			getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
 			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 
 			JCheckBoxMenuItem rankingCheckBoxMenuItem = getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem();
@@ -796,7 +796,7 @@ public class RobocodeFrame extends JFrame {
 
 			getStopButton().setEnabled(false);
 			getReplayButton().setEnabled(manager.getBattleRecorder().hasRecord());
-            getRobocodeMenuBar().getRecordSaveAsMenuItem().setEnabled(manager.getBattleRecorder().hasRecord());
+			getRobocodeMenuBar().getBattleSaveRecordAsMenuItem().setEnabled(manager.getBattleRecorder().hasRecord());
 			getNextTurnButton().setEnabled(false);
 
 			getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setEnabled(false);
