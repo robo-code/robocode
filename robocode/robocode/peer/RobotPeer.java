@@ -277,9 +277,9 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	/**
-     * @return <code>true</code> if the robot is implementing the
+	 * @return <code>true</code> if the robot is implementing the
 	 * {@link IJuniorRobot}; <code>false</code> otherwise.
-     */
+	 */
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;
 	}
@@ -774,7 +774,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
 		}
 
-        robotProxy.setSetCallCount(0);
+		robotProxy.setSetCallCount(0);
 		robotProxy.setGetCallCount(0);
 
 		if (newBullet != null) {
@@ -1986,44 +1986,46 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		eventManager.add(e);
 	}
 
-    public void updateStatus(){
-        final long currentTurn = getTime();
-        eventManager.clear(currentTurn - 2); //TODO really -2 ?
+	public void updateStatus() {
+		final long currentTurn = getTime();
 
-        RobotStatus status = new RobotStatus(this);
-        robotProxy.updateStatus(status);
+		eventManager.clear(currentTurn - 2); // TODO really -2 ?
 
-        // Clear the queue of calls in the graphics proxy as these have already
-        // been processed, so calling onPaint() will add the new calls
-        ((Graphics2DProxy) getGraphics()).clearQueue();
+		RobotStatus status = new RobotStatus(this);
 
-        if (!isDead()) {
-            eventManager.add(new StatusEvent(status));
-            // Add paint event, if robot is a paint robot and its painting is enabled
-            if (isPaintRobot() && isPaintEnabled() && currentTurn >0) {
-                eventManager.add(new PaintEvent());
-            }
-        }
-    }
+		robotProxy.updateStatus(status);
 
-    /**
-     * Creates and returns a new robot proxy
-     */
-    public void createRobotProxy() {
-        if (isTeamRobot) {
-            robotProxy = new TeamRobotProxy(this);
-        } else if (isAdvancedRobot) {
-            robotProxy = new AdvancedRobotProxy(this);
-        } else if (isInteractiveRobot) {
-            robotProxy = new StandardRobotProxy(this);
-        } else if (isJuniorRobot) {
-            robotProxy = new JuniorRobotProxy(this);
-        } else {
-            throw new AccessControlException("Unknown robot type");
-        }
-    }
+		// Clear the queue of calls in the graphics proxy as these have already
+		// been processed, so calling onPaint() will add the new calls
+		((Graphics2DProxy) getGraphics()).clearQueue();
 
-    public IBasicRobotPeer getRobotProxy() {
-        return robotProxy;
-    }
+		if (!isDead()) {
+			eventManager.add(new StatusEvent(status));
+			// Add paint event, if robot is a paint robot and its painting is enabled
+			if (isPaintRobot() && isPaintEnabled() && currentTurn > 0) {
+				eventManager.add(new PaintEvent());
+			}
+		}
+	}
+
+	/**
+	 * Creates and returns a new robot proxy
+	 */
+	public void createRobotProxy() {
+		if (isTeamRobot) {
+			robotProxy = new TeamRobotProxy(this);
+		} else if (isAdvancedRobot) {
+			robotProxy = new AdvancedRobotProxy(this);
+		} else if (isInteractiveRobot) {
+			robotProxy = new StandardRobotProxy(this);
+		} else if (isJuniorRobot) {
+			robotProxy = new JuniorRobotProxy(this);
+		} else {
+			throw new AccessControlException("Unknown robot type");
+		}
+	}
+
+	public IBasicRobotPeer getRobotProxy() {
+		return robotProxy;
+	}
 }

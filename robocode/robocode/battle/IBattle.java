@@ -11,16 +11,17 @@
  *******************************************************************************/
 package robocode.battle;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IBattle {
-    void cleanup();
-    boolean isRunning();
-    void stop(boolean waitTillEnd);
-    void pause();
-    void resume();
-    void step();
-    void waitTillStarted();
-    void waitTillOver();
+	void cleanup();
+	boolean isRunning();
+	void stop(boolean waitTillEnd);
+	void pause();
+	void resume();
+	void step();
+	void waitTillStarted();
+	void waitTillOver();
 }

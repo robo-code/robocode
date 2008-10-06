@@ -31,7 +31,7 @@ import java.util.Properties;
  */
 public class BattleProperties implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	private final static String
 			BATTLEFIELD_WIDTH = "robocode.battleField.width",

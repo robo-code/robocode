@@ -112,8 +112,8 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * EventManager constructor comment.
-     * @param robotPeer robotPeer
-     */
+	 * @param robotPeer robotPeer
+	 */
 	public EventManager(RobotPeer robotPeer) {
 		super();
 		this.robotPeer = robotPeer;

@@ -58,7 +58,7 @@ public class RobocodeManager {
 	private WindowManager windowManager;
 	private VersionManager versionManager;
 	private SoundManager soundManager;
-    private IBattleRecorder battleRecorder;
+	private IBattleRecorder battleRecorder;
 
 	private boolean slave;
 
@@ -229,17 +229,17 @@ public class RobocodeManager {
 		return soundManager;
 	}
 
-    /**
-     * Gets the Battle Recoder.
-     *
-     * @return Returns a BattleRecoder
-     */
-    public IBattleRecorder getBattleRecorder() {
-        if (battleRecorder == null) {
-            battleRecorder = new BattleRecorder(this);
-        }
-        return battleRecorder;
-    }
+	/**
+	 * Gets the Battle Recoder.
+	 *
+	 * @return Returns a BattleRecoder
+	 */
+	public IBattleRecorder getBattleRecorder() {
+		if (battleRecorder == null) {
+			battleRecorder = new BattleRecorder(this);
+		}
+		return battleRecorder;
+	}
 
 	/**
 	 * Gets the slave.

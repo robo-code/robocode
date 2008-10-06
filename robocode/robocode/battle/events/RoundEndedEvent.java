@@ -18,18 +18,18 @@ package robocode.battle.events;
  */
 public class RoundEndedEvent extends BattleEvent {
 	private final int round;
-    private final int turns;
+	private final int turns;
 
 	public RoundEndedEvent(int round, int turns) {
 		this.round = round;
-        this.turns = turns;
+		this.turns = turns;
 	}
 
 	public int getRound() {
 		return round;
 	}
 
-    public int getTurns() {
-        return turns;
-    }
+	public int getTurns() {
+		return turns;
+	}
 }

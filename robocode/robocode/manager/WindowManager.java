@@ -24,7 +24,6 @@ package robocode.manager;
 
 
 import robocode.battle.BattleProperties;
-import robocode.battle.IBattleManager;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.dialog.*;
 import robocode.editor.RobocodeEditor;
@@ -84,84 +83,84 @@ public class WindowManager {
 	}
 
 	public String showBattleOpenDialog(final String defExt, final String name) {
-        JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
+		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 
-        chooser.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                if (pathname.isDirectory()) {
-                    return true;
-                }
-                String filename = pathname.getName();
-                int idx = filename.lastIndexOf('.');
+		chooser.setFileFilter(new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory()) {
+					return true;
+				}
+				String filename = pathname.getName();
+				int idx = filename.lastIndexOf('.');
 
-                String extension = "";
+				String extension = "";
 
-                if (idx >= 0) {
-                    extension = filename.substring(idx);
-                }
-                return extension.equalsIgnoreCase(defExt);
-            }
+				if (idx >= 0) {
+					extension = filename.substring(idx);
+				}
+				return extension.equalsIgnoreCase(defExt);
+			}
 
-            @Override
-            public String getDescription() {
-                return name;
-            }
-        });
+			@Override
+			public String getDescription() {
+				return name;
+			}
+		});
 
-        if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
-            return chooser.getSelectedFile().getPath();
-        }
-        return null;
-    }
+		if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile().getPath();
+		}
+		return null;
+	}
 
-    public String saveBattleDialog(String path, final String defExt, final String name) {
-        File f = new File(path);
+	public String saveBattleDialog(String path, final String defExt, final String name) {
+		File f = new File(path);
 
-        JFileChooser chooser;
+		JFileChooser chooser;
 
-        chooser = new JFileChooser(f);
+		chooser = new JFileChooser(f);
 
-        javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                if (pathname.isDirectory()) {
-                    return false;
-                }
-                String fn = pathname.getName();
-                int idx = fn.lastIndexOf('.');
-                String extension = "";
+		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory()) {
+					return false;
+				}
+				String fn = pathname.getName();
+				int idx = fn.lastIndexOf('.');
+				String extension = "";
 
-                if (idx >= 0) {
-                    extension = fn.substring(idx);
-                }
-                return extension.equalsIgnoreCase(defExt);
-            }
+				if (idx >= 0) {
+					extension = fn.substring(idx);
+				}
+				return extension.equalsIgnoreCase(defExt);
+			}
 
-            @Override
-            public String getDescription() {
-                return name;
-            }
-        };
+			@Override
+			public String getDescription() {
+				return name;
+			}
+		};
 
-        chooser.setFileFilter(filter);
-        int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
-        String result = null;
+		chooser.setFileFilter(filter);
+		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
+		String result = null;
 
-        if (rv == JFileChooser.APPROVE_OPTION) {
-            result = chooser.getSelectedFile().getPath();
-            int idx = result.lastIndexOf('.');
-            String extension = "";
+		if (rv == JFileChooser.APPROVE_OPTION) {
+			result = chooser.getSelectedFile().getPath();
+			int idx = result.lastIndexOf('.');
+			String extension = "";
 
-            if (idx > 0) {
-                extension = result.substring(idx);
-            }
-            if (!(extension.equalsIgnoreCase(defExt))) {
-                result += defExt;
-            }
-        }
-        return result;
-    }
+			if (idx > 0) {
+				extension = result.substring(idx);
+			}
+			if (!(extension.equalsIgnoreCase(defExt))) {
+				result += defExt;
+			}
+		}
+		return result;
+	}
 
 	public void showVersionsTxt() {
 		showInBrowser(

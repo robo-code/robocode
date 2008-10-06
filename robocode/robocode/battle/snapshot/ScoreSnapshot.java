@@ -22,7 +22,7 @@ import java.io.Serializable;
  * @since 1.6.1
  */
 public class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	private final String name;
 	private final double totalScore;

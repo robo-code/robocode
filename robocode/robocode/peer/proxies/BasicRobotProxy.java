@@ -27,16 +27,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Pavel Savara (original)
  */
 public class BasicRobotProxy implements IBasicRobotPeer {
-    private static final long
-            MAX_SET_CALL_COUNT = 10000,
-            MAX_GET_CALL_COUNT = 10000;
+	private static final long
+			MAX_SET_CALL_COUNT = 10000,
+			MAX_GET_CALL_COUNT = 10000;
 
 	RobotPeer peer;
-    AtomicReference<RobotStatus> status=new AtomicReference<RobotStatus>();
-    private AtomicInteger setCallCount = new AtomicInteger(0);
-    private AtomicInteger getCallCount = new AtomicInteger(0);
+	AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
+	private AtomicInteger setCallCount = new AtomicInteger(0);
+	private AtomicInteger getCallCount = new AtomicInteger(0);
 
-    public BasicRobotProxy(RobotPeer peer) {
+	public BasicRobotProxy(RobotPeer peer) {
 		this.peer = peer;
 	}
 
@@ -93,21 +93,23 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	}
 
 	// counters
-    public void setCall() {
-        final int res = setCallCount.incrementAndGet();
-        if (res >= MAX_SET_CALL_COUNT) {
-            peer.getOut().println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
-            throw new DisabledException("Too many calls to setXX methods");
-        }
-    }
+	public void setCall() {
+		final int res = setCallCount.incrementAndGet();
 
-    public void getCall() {
-        final int res = getCallCount.incrementAndGet();
-        if (res >= MAX_GET_CALL_COUNT) {
-            peer.getOut().println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
-            throw new DisabledException("Too many calls to getXX methods");
-        }
-    }
+		if (res >= MAX_SET_CALL_COUNT) {
+			peer.getOut().println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
+			throw new DisabledException("Too many calls to setXX methods");
+		}
+	}
+
+	public void getCall() {
+		final int res = getCallCount.incrementAndGet();
+
+		if (res >= MAX_GET_CALL_COUNT) {
+			peer.getOut().println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
+			throw new DisabledException("Too many calls to getXX methods");
+		}
+	}
 
 	// AdvancedRobot calls below
 	public double getRadarTurnRemaining() {
@@ -217,17 +219,17 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		return peer.getGraphics();
 	}
 
-    //battle driven methods
+	// battle driven methods
     
-    public void updateStatus(RobotStatus status){
-        this.status.set(status);
-    }
+	public void updateStatus(RobotStatus status) {
+		this.status.set(status);
+	}
 
-    public synchronized void setSetCallCount(int setCallCount) {
-        this.setCallCount.set(setCallCount);
-    }
+	public synchronized void setSetCallCount(int setCallCount) {
+		this.setCallCount.set(setCallCount);
+	}
 
-    public synchronized void setGetCallCount(int getCallCount) {
-        this.getCallCount.set(getCallCount);
-    }
+	public synchronized void setGetCallCount(int getCallCount) {
+		this.getCallCount.set(getCallCount);
+	}
 }

@@ -12,9 +12,6 @@
 package robocode;
 
 
-import robocode.peer.RobotPeer;
-
-
 /**
  * This event is sent to {@link Robot#onStatus(StatusEvent) onStatus()} every
  * turn in a battle to provide the status of the robot.

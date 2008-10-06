@@ -254,9 +254,9 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-        manager.getBattleRecorder().setBattleEventDispatcher(battleEventDispatcher);
+		manager.getBattleRecorder().setBattleEventDispatcher(battleEventDispatcher);
 
-        // resets seed for deterministic behavior of Random
+		// resets seed for deterministic behavior of Random
 		final String seed = System.getProperty("RANDOMSEED", "none");
 
 		if (!seed.equals("none")) {
@@ -264,9 +264,10 @@ public class BattleManager implements IBattleManager {
 		}
 
 		Battle realBattle = new Battle(battleField, manager, battleEventDispatcher, isPaused());
-        battle=realBattle;
 
-        // Set stuff the view needs to know
+		battle = realBattle;
+
+		// Set stuff the view needs to know
 		realBattle.setProperties(battleProperties);
 
 		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), realBattle);
@@ -296,30 +297,32 @@ public class BattleManager implements IBattleManager {
 		}
 	}
 
-    private void replayBattle() {
+	private void replayBattle() {
 
-        logMessage("Preparing replay...");
-        if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battlePlayer is running ?
-            battle.stop(true);
-        }
+		logMessage("Preparing replay...");
+		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battlePlayer is running ?
+			battle.stop(true);
+		}
 
-        Logger.setLogListener(battleEventDispatcher);
+		Logger.setLogListener(battleEventDispatcher);
 
-        if (manager.isSoundEnabled()) {
-            manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
-        }
+		if (manager.isSoundEnabled()) {
+			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
+		}
 
-        BattlePlayer battlePlayer = new BattlePlayer(manager.getBattleRecorder().getRecord(), manager, battleEventDispatcher, isPaused());
-        battle=battlePlayer;
+		BattlePlayer battlePlayer = new BattlePlayer(manager.getBattleRecorder().getRecord(), manager,
+				battleEventDispatcher, isPaused());
 
-        Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battlePlayer);
+		battle = battlePlayer;
 
-        battleThread.setPriority(Thread.NORM_PRIORITY);
-        battleThread.setName("BattlePlayer Thread");
+		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battlePlayer);
 
-        // Start the battlePlayer thread
-        battleThread.start();
-    }
+		battleThread.setPriority(Thread.NORM_PRIORITY);
+		battleThread.setName("BattlePlayer Thread");
+
+		// Start the battlePlayer thread
+		battleThread.start();
+	}
 
 	public String getBattleFilename() {
 		String filename = battleFilename;
@@ -412,7 +415,7 @@ public class BattleManager implements IBattleManager {
 		battleProperties = new BattleProperties();
 	}
 
-    public boolean isManagedTPS() {
+	public boolean isManagedTPS() {
 		return isManagedTPS.get();
 	}
 
@@ -440,7 +443,7 @@ public class BattleManager implements IBattleManager {
 	}
 
 	public synchronized void replay() {
-        replayBattle();
+		replayBattle();
 	}
 
 	private boolean isPaused() {
@@ -511,25 +514,25 @@ public class BattleManager implements IBattleManager {
 
 	public synchronized void killRobot(int robotIndex) {
 		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
-			((Battle)battle).killRobot(robotIndex);
+			((Battle) battle).killRobot(robotIndex);
 		}
 	}
 
 	public synchronized void setPaintEnabled(int robotIndex, boolean enable) {
 		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
-			((Battle)battle).setPaintEnabled(robotIndex, enable);
+			((Battle) battle).setPaintEnabled(robotIndex, enable);
 		}
 	}
 
 	public synchronized void setSGPaintEnabled(int robotIndex, boolean enable) {
 		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
-			((Battle)battle).setSGPaintEnabled(robotIndex, enable);
+			((Battle) battle).setSGPaintEnabled(robotIndex, enable);
 		}
 	}
 
 	public synchronized void sendInteractiveEvent(Event event) {
 		if (battle != null && battle.isRunning() && !isPaused() && Battle.class.isAssignableFrom(battle.getClass())) {
-			((Battle)battle).sendInteractiveEvent(event);
+			((Battle) battle).sendInteractiveEvent(event);
 		}
 	}
 }

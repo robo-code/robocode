@@ -11,16 +11,18 @@
  *******************************************************************************/
 package robocode.recording;
 
+
 import robocode.battle.events.BattleEventDispatcher;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IBattleRecorder {
 
-    void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher);
-    void loadRecord(String fileName);
-    void saveRecord(String fileName);
-    boolean hasRecord();
-    BattleRecord getRecord();
+	void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher);
+	void loadRecord(String fileName);
+	void saveRecord(String fileName);
+	boolean hasRecord();
+	BattleRecord getRecord();
 }

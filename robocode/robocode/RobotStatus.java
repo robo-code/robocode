@@ -36,12 +36,12 @@ public final class RobotStatus {
 	private final double gunTurnRemaining;
 	private final double distanceRemaining;
 	private final double gunHeat;
-    private final long dataQuotaAvailable;
-    private final int others;
-    private final int numRounds;
-    private final int roundNum;
+	private final long dataQuotaAvailable;
+	private final int others;
+	private final int numRounds;
+	private final int roundNum;
 
-    /**
+	/**
 	 * Creates a new RobotStatus based a a RobotPeer.
 	 * This constructor is called internally from the game.
 	 *
@@ -60,12 +60,12 @@ public final class RobotStatus {
 			radarTurnRemaining = robotPeer.getRadarTurnRemaining();
 			gunTurnRemaining = robotPeer.getGunTurnRemaining();
 			distanceRemaining = robotPeer.getDistanceRemaining();
-            gunHeat = robotPeer.getGunHeat();
-            dataQuotaAvailable = robotPeer.getDataQuotaAvailable();
-            others = robotPeer.getOthers();
-            numRounds = robotPeer.getNumRounds();
-            roundNum = robotPeer.getRoundNum();
-        }
+			gunHeat = robotPeer.getGunHeat();
+			dataQuotaAvailable = robotPeer.getDataQuotaAvailable();
+			others = robotPeer.getOthers();
+			numRounds = robotPeer.getNumRounds();
+			roundNum = robotPeer.getRoundNum();
+		}
 	}
 
 	/**
@@ -299,24 +299,24 @@ public final class RobotStatus {
 	 * @see Robot#getGunCoolingRate()
 	 * @see Robot#fire(double)
 	 * @see Robot#fireBullet(double)
-     */
-    public double getGunHeat() {
-        return gunHeat;
-    }
+	 */
+	public double getGunHeat() {
+		return gunHeat;
+	}
 
-    public long getDataQuotaAvailable() {
-        return dataQuotaAvailable;
-    }
+	public long getDataQuotaAvailable() {
+		return dataQuotaAvailable;
+	}
 
-    public int getOthers() {
-        return others;
-    }
+	public int getOthers() {
+		return others;
+	}
 
-    public int getNumRounds() {
-        return numRounds;
-    }
+	public int getNumRounds() {
+		return numRounds;
+	}
 
-    public int getRoundNum() {
-        return roundNum;
-    }
+	public int getRoundNum() {
+		return roundNum;
+	}
 }

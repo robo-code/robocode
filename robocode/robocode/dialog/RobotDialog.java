@@ -23,6 +23,7 @@ package robocode.dialog;
 
 import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
@@ -365,11 +366,21 @@ public class RobotDialog extends JFrame {
 			// Make sanity check as a new battle could have been started since the dialog was initialized,
 			// and thus the robot index can be too high compared to the robot's array size causing an
 			// ArrayOutOfBoundsException. This is a bugfix
-			if (robotIndex >= event.getTurnSnapshot().getRobots().size()) {
+			if (event == null) {
+				return;
+			}
+			final TurnSnapshot turn = event.getTurnSnapshot();
+
+			if (turn == null) {
+				return;
+			}
+			java.util.List<RobotSnapshot> robots = turn.getRobots();
+
+			if (robots == null || robotIndex >= robots.size()) {
 				return;
 			}
 
-			final RobotSnapshot robotSnapshot = event.getTurnSnapshot().getRobots().get(robotIndex);
+			final RobotSnapshot robotSnapshot = robots.get(robotIndex);
 			final String text = robotSnapshot.getOutputStreamSnapshot();
 
 			if (text != null && text.length() > 0) {

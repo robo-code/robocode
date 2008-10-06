@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robocode.recording;
 
+
 import robocode.battle.BaseBattle;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.events.*;
@@ -21,113 +22,115 @@ import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public final class BattlePlayer extends BaseBattle {
 
-    private BattleRecord record;
-    private ByteArrayInputStream byteStream;
-    private ObjectInputStream objectStream;
+	private BattleRecord record;
+	private ByteArrayInputStream byteStream;
+	private ObjectInputStream objectStream;
 
-    public BattlePlayer(BattleRecord record, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
-        super(manager, eventDispatcher, paused);
-        this.record = record;
-    }
+	public BattlePlayer(BattleRecord record, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
+		super(manager, eventDispatcher, paused);
+		this.record = record;
+	}
 
-    @Override
-    public synchronized void cleanup() {
-        super.cleanup();
-        byteStream = null;
-        objectStream = null;
-        record = null;
-    }
+	@Override
+	public synchronized void cleanup() {
+		super.cleanup();
+		byteStream = null;
+		objectStream = null;
+		record = null;
+	}
 
-    @Override
-    protected void initializeBattle() {
-        super.initializeBattle();
+	@Override
+	protected void initializeBattle() {
+		super.initializeBattle();
 
-        try {
-            byteStream = new ByteArrayInputStream(record.records);
-            byteStream.reset();
-            objectStream = new ObjectInputStream(byteStream);
-        } catch (IOException e) {
-            logError(e);
-        }
+		try {
+			byteStream = new ByteArrayInputStream(record.records);
+			byteStream.reset();
+			objectStream = new ObjectInputStream(byteStream);
+		} catch (IOException e) {
+			logError(e);
+		}
 
-        setNumRounds(record.rounds);
+		setNumRounds(record.rounds);
 
-        eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), record.battleProperties, true));
-        if (isPaused()) {
-            eventDispatcher.onBattlePaused(new BattlePausedEvent());
-        }
-    }
+		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), record.battleProperties, true));
+		if (isPaused()) {
+			eventDispatcher.onBattlePaused(new BattlePausedEvent());
+		}
+	}
 
-    @Override
-    protected void shutdownBattle() {
-        super.shutdownBattle();
+	@Override
+	protected void shutdownBattle() {
+		super.shutdownBattle();
 
-        boolean aborted = record.results == null || isAborted();
-        eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(aborted));
+		boolean aborted = record.results == null || isAborted();
 
-        if (!aborted) {
-            eventDispatcher.onBattleCompleted(
-                    new BattleCompletedEvent(record.battleProperties, record.results));
-        }
-        try {
-            objectStream.close();
-            byteStream.close();
-            byteStream = null;
-            objectStream = null;
-            record = null;
-        } catch (IOException e) {
-            logError(e);
-        }
-    }
+		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(aborted));
 
-    @Override
-    protected void initializeRound() {
-        super.initializeRound();
+		if (!aborted) {
+			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(record.battleProperties, record.results));
+		}
+		try {
+			objectStream.close();
+			byteStream.close();
+			byteStream = null;
+			objectStream = null;
+			record = null;
+		} catch (IOException e) {
+			logError(e);
+		}
+	}
 
-        eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
-    }
+	@Override
+	protected void initializeRound() {
+		super.initializeRound();
 
-    @Override
-    protected void finalizeRound() {
-        super.finalizeRound();
+		eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
+	}
 
-        eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getCurrentTurn()));
-    }
+	@Override
+	protected void finalizeRound() {
+		super.finalizeRound();
 
-    @Override
-    protected void initializeTurn() {
-        super.initializeTurn();
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getCurrentTurn()));
+	}
 
-        eventDispatcher.onTurnStarted(new TurnStartedEvent());
-    }
+	@Override
+	protected void initializeTurn() {
+		super.initializeTurn();
 
-    @Override
-    protected void finalizeTurn() {
-        eventDispatcher.onTurnEnded(new TurnEndedEvent(readSnapshot()));
+		eventDispatcher.onTurnStarted(new TurnStartedEvent());
+	}
 
-        super.finalizeTurn();
-    }
+	@Override
+	protected void finalizeTurn() {
+		eventDispatcher.onTurnEnded(new TurnEndedEvent(readSnapshot()));
 
-    @Override
-    protected boolean isRoundOver() {
-        return (isAborted() || getCurrentTurn() > record.recordsInTurns[getRoundNum()]);
-    }
+		super.finalizeTurn();
+	}
 
-    private TurnSnapshot readSnapshot() {
-        try {
-            return (TurnSnapshot) objectStream.readObject();
-        } catch (IOException e) {
-            logError(e);
-            return null;
-        } catch (ClassNotFoundException e) {
-            logError(e);
-            return null;
-        }
-    }
+	@Override
+	protected boolean isRoundOver() {
+		return (isAborted() || getCurrentTurn() > record.recordsInTurns[getRoundNum()]);
+	}
 
+	private TurnSnapshot readSnapshot() {
+		if (objectStream == null) {
+			return null;
+		}
+		try {
+			return (TurnSnapshot) objectStream.readObject();
+		} catch (java.io.EOFException e) {
+			return null;
+		} catch (Exception e) {
+			logError(e);
+			return null;
+		} 
+	}
 }

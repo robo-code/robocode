@@ -11,22 +11,23 @@
  *******************************************************************************/
 package robocode.recording;
 
+
 import robocode.battle.BattleProperties;
-import robocode.control.RobotResults;
 import robocode.BattleResults;
 
 import java.io.Serializable;
 
+
 /**
  * @author Pavel Savara (original)
  */
-    public class BattleRecord implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class BattleRecord implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    public int robotCount;
-    public int rounds;
-    public BattleProperties battleProperties;
-    public int[] recordsInTurns;
-    public byte[] records;
-    public BattleResults[] results;
+	public int robotCount;
+	public int rounds;
+	public BattleProperties battleProperties;
+	public int[] recordsInTurns;
+	public byte[] records;
+	public BattleResults[] results;
 }

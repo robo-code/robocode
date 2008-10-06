@@ -31,6 +31,7 @@ package robocode.dialog;
 import robocode.battle.IBattleManager;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
@@ -830,6 +831,15 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		public void onTurnEnded(TurnEndedEvent event) {
+			if (event == null) {
+				return;
+			}
+			final TurnSnapshot turn = event.getTurnSnapshot();
+
+			if (turn == null) {
+				return;
+			}
+			
 			tps = event.getTurnSnapshot().getTPS();
 			currentRound = event.getTurnSnapshot().getRound();
 			currentTurn = event.getTurnSnapshot().getTurn();
