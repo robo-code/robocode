@@ -188,6 +188,6 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 
 	public long getDataQuotaAvailable() {
 		getCall();
-		return peer.getDataQuotaAvailable();
+		return status.get().getDataQuotaAvailable();
 	}
 }

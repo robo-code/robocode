@@ -194,22 +194,22 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public double getY() {
 		getCall();
-		return peer.getY();
+		return status.get().getY();
 	}
 
 	public int getOthers() {
 		getCall();
-		return peer.getOthers();
+		return status.get().getOthers();
 	}
 
 	public int getNumRounds() {
 		getCall();
-		return peer.getNumRounds();
+		return status.get().getNumRounds();
 	}
 
 	public int getRoundNum() {
 		getCall();
-		return peer.getRoundNum();
+		return status.get().getRoundNum();
 	}
 
 	public Graphics2D getGraphics() {
