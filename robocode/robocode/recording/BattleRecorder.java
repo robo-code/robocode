@@ -146,6 +146,9 @@ public class BattleRecorder implements IBattleRecorder {
 
         @Override
         public void onBattleCompleted(BattleCompletedEvent event) {
+            if (!recordingEnabled) {
+                return;
+            }
             currentRecord.results = event.getResults();
         }
 
