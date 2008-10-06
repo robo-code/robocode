@@ -558,10 +558,10 @@ public final class Battle extends BaseBattle {
                 r.setTeamRobot(robotFileSpecification.isTeamRobot());
                 r.setDroid(robotFileSpecification.isDroid());
 
+                initializeRobotPosition(r);
+
                 // create proxy
                 r.createRobotProxy();
-
-                initializeRobotPosition(r);
 
             } catch (Throwable e) {
                 r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
@@ -580,7 +580,7 @@ public final class Battle extends BaseBattle {
                     Logger.logMessage(".", false);
 
                     // Add StatusEvent for the first turn
-                    r.getEventManager().add(new StatusEvent(r));
+                    r.getEventManager().add(new StatusEvent(new RobotStatus(r)));
 
                     // Start the robot thread
                     r.getRobotThreadManager().start();
@@ -763,7 +763,7 @@ public final class Battle extends BaseBattle {
         for (RobotPeer r : robots) {
             if (!r.isDead()) {
                 // Add status event
-                r.getEventManager().add(new StatusEvent(r));
+                r.getEventManager().add(new StatusEvent(new RobotStatus(r)));
 
                 // Add paint event, if robot is a paint robot and its painting is enabled
                 if (r.isPaintRobot() && r.isPaintEnabled()) {

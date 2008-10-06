@@ -46,7 +46,6 @@ package robocode.peer;
 import robocode.*;
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
-import static robocode.gfx.ColorUtil.toColor;
 
 import java.awt.*;
 import java.awt.geom.Line2D;

@@ -98,7 +98,7 @@ public class EventManager implements IEventManager {
 	private int currentTopEventPriority;
 
 	private List<Condition> customEvents = new CopyOnWriteArrayList<Condition>();
-	private EventQueue eventQueue;
+	private final EventQueue eventQueue;
 
 	private double fireAssistAngle;
 	private boolean fireAssistValid;
@@ -112,7 +112,8 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * EventManager constructor comment.
-	 */
+     * @param robotPeer robotPeer
+     */
 	public EventManager(RobotPeer robotPeer) {
 		super();
 		this.robotPeer = robotPeer;

@@ -22,7 +22,7 @@ import robocode.peer.RobotPeer;
  * @author Flemming N. Larsen (original)
  * @since 1.5
  */
-public class StatusEvent extends Event {
+public final class StatusEvent extends Event {
 
 	private final RobotStatus status;
 
@@ -30,12 +30,12 @@ public class StatusEvent extends Event {
 	 * This constructor is called internally from the game in order to create
 	 * a new {@link RobotStatus}.
 	 *
-	 * @param robotPeer the RobotPeer containing the current states
+	 * @param status the current states
 	 */
-	public StatusEvent(RobotPeer robotPeer) {
+	public StatusEvent(RobotStatus status) {
 		super();
 
-		status = new RobotStatus(robotPeer);
+		this.status = status;
 	}
 
 	/**

@@ -22,20 +22,20 @@ import robocode.peer.RobotPeer;
  * @author Flemming N. Larsen (original)
  * @since 1.5
  */
-public class RobotStatus {
+public final class RobotStatus {
 
-	private double energy;
-	private double x;
-	private double y;
-	private double heading;
-	private double gunHeading;
-	private double radarHeading;
-	private double velocity;
-	private double turnRemaining;
-	private double radarTurnRemaining;
-	private double gunTurnRemaining;
-	private double distanceRemaining;
-	private double gunHeat;
+	private final double energy;
+	private final double x;
+	private final double y;
+	private final double heading;
+	private final double gunHeading;
+	private final double radarHeading;
+	private final double velocity;
+	private final double turnRemaining;
+	private final double radarTurnRemaining;
+	private final double gunTurnRemaining;
+	private final double distanceRemaining;
+	private final double gunHeat;
 
 	/**
 	 * Creates a new RobotStatus based a a RobotPeer.

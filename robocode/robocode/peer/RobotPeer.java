@@ -68,7 +68,6 @@ import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battlefield.BattleField;
 import robocode.exception.*;
-import static robocode.gfx.ColorUtil.toColor;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.NameManager;
 import robocode.peer.proxies.AdvancedRobotProxy;
@@ -245,9 +244,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	private IBasicRobotPeer robotProxy;
 
-	/**
-	 * RobotPeer constructor
-	 */
 	public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota, int index) {
 		super();
 		this.robotClassManager = robotClassManager;
@@ -293,9 +289,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
+     * @return <code>true</code> if the robot is implementing the
 	 * {@link IJuniorRobot}; <code>false</code> otherwise.
-	 */
+     */
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;
 	}
@@ -305,7 +301,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
+	 * @return <code>true</code> if the robot is implementing the
 	 * {@link IInteractiveRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isInteractiveRobot() {
@@ -317,7 +313,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
+	 * @return <code>true</code> if the robot is implementing the
 	 * {@link IPaintRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isPaintRobot() {
@@ -329,7 +325,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
+	 * @return <code>true</code> if the robot is implementing the
 	 * {@link IAdvancedRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isAdvancedRobot() {
@@ -341,7 +337,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	}
 
 	/**
-	 * Returns <code>true</code> if the robot is implementing the
+	 * @return <code>true</code> if the robot is implementing the
 	 * {@link ITeamRobot}; <code>false</code> otherwise.
 	 */
 	public boolean isTeamRobot() {
