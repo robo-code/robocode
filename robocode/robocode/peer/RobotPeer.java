@@ -70,10 +70,7 @@ import robocode.battlefield.BattleField;
 import robocode.exception.*;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.NameManager;
-import robocode.peer.proxies.AdvancedRobotProxy;
-import robocode.peer.proxies.JuniorRobotProxy;
-import robocode.peer.proxies.StandardRobotProxy;
-import robocode.peer.proxies.TeamRobotProxy;
+import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
@@ -108,7 +105,7 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
+public class RobotPeer implements Runnable, ContestantPeer {
 
 	public static final int
 			WIDTH = 40,
@@ -117,10 +114,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private static final int
 			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
 			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
-
-	private static final long
-			MAX_SET_CALL_COUNT = 10000,
-			MAX_GET_CALL_COUNT = 10000;
 
 	IBasicRobot robot;
 
@@ -205,9 +198,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private String veryShortName;
 	private String nonVersionedName;
 
-	private int setCallCount;
-	private int getCallCount;
-
 	private RobotClassManager robotClassManager;
 	private RobotFileSystemManager robotFileSystemManager;
 	private RobotThreadManager robotThreadManager;
@@ -242,7 +232,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	protected RobotState state;
 
-	private IBasicRobotPeer robotProxy;
+	private BasicRobotProxy robotProxy;
 
 	public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota, int index) {
 		super();
@@ -346,27 +336,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public void setTeamRobot(boolean value) {
 		this.isTeamRobot = value;
-	}
-
-	/**
-	 * Creates and returns a new robot proxy
-	 */
-	public void createRobotProxy() {
-		if (isTeamRobot) {
-			robotProxy = new TeamRobotProxy(this);
-		} else if (isAdvancedRobot) {
-			robotProxy = new AdvancedRobotProxy(this);
-		} else if (isInteractiveRobot) {
-			robotProxy = new StandardRobotProxy(this);
-		} else if (isJuniorRobot) {
-			robotProxy = new JuniorRobotProxy(this);
-		} else {
-			throw new AccessControlException("Unknown robot type");
-		}
-	}
-
-	public IBasicRobotPeer getRobotProxy() {
-		return robotProxy;
 	}
 
 	public final void move(double distance) {
@@ -807,8 +776,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
 		}
 
-		setSetCallCount(0);
-		setGetCallCount(0);
+        robotProxy.setSetCallCount(0);
+		robotProxy.setGetCallCount(0);
 
 		if (newBullet != null) {
 			battle.addBullet(newBullet);
@@ -1327,8 +1296,8 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 		setTestingCondition(false);
 
-		setSetCallCount(0);
-		setGetCallCount(0);
+		robotProxy.setSetCallCount(0);
+		robotProxy.setGetCallCount(0);
 		skippedTurns = 0;
 
 		setAdjustGunForBodyTurn(false);
@@ -1613,22 +1582,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return checkFileQuota;
 	}
 
-	public synchronized void setCall() {
-		setCallCount++;
-		if (setCallCount == MAX_SET_CALL_COUNT) {
-			out.println("SYSTEM: You have made " + setCallCount + " calls to setXX methods without calling execute()");
-			throw new DisabledException("Too many calls to setXX methods");
-		}
-	}
-
-	public synchronized void getCall() {
-		getCallCount++;
-		if (getCallCount == MAX_GET_CALL_COUNT) {
-			out.println("SYSTEM: You have made " + getCallCount + " calls to getXX methods without calling execute()");
-			throw new DisabledException("Too many calls to getXX methods");
-		}
-	}
-
 	public synchronized void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
 		isAdjustRadarForBodyTurn = newAdjustRadarForBodyTurn;
 		isAdjustRadarForBodyTurnSet = true;
@@ -1797,14 +1750,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public synchronized boolean isSleeping() {
 		return isSleeping;
-	}
-
-	public synchronized void setSetCallCount(int setCallCount) {
-		this.setCallCount = setCallCount;
-	}
-
-	public synchronized void setGetCallCount(int getCallCount) {
-		this.getCallCount = getCallCount;
 	}
 
 	public Color getBodyColor() {
@@ -2042,4 +1987,31 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	public void onInteractiveEvent(robocode.Event e) {
 		eventManager.add(e);
 	}
+
+    public void updateStatus(){
+        RobotStatus status = new RobotStatus(this);
+        getEventManager().add(new StatusEvent(status));
+        robotProxy.updateStatus(status);
+    }
+
+    /**
+     * Creates and returns a new robot proxy
+     */
+    public void createRobotProxy() {
+        if (isTeamRobot) {
+            robotProxy = new TeamRobotProxy(this);
+        } else if (isAdvancedRobot) {
+            robotProxy = new AdvancedRobotProxy(this);
+        } else if (isInteractiveRobot) {
+            robotProxy = new StandardRobotProxy(this);
+        } else if (isJuniorRobot) {
+            robotProxy = new JuniorRobotProxy(this);
+        } else {
+            throw new AccessControlException("Unknown robot type");
+        }
+    }
+
+    public IBasicRobotPeer getRobotProxy() {
+        return robotProxy;
+    }
 }

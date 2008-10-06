@@ -13,18 +13,30 @@ package robocode.peer.proxies;
 
 
 import robocode.Bullet;
+import robocode.RobotStatus;
+import robocode.peer.RobotPeer;
+import robocode.exception.DisabledException;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class BasicRobotProxy implements IBasicRobotPeer {
-	IBasicRobotPeer peer;
+    private static final long
+            MAX_SET_CALL_COUNT = 10000,
+            MAX_GET_CALL_COUNT = 10000;
 
-	public BasicRobotProxy(IBasicRobotPeer peer) {
+	RobotPeer peer;
+    AtomicReference<RobotStatus> status=new AtomicReference<RobotStatus>();
+    private AtomicInteger setCallCount = new AtomicInteger(0);
+    private AtomicInteger getCallCount = new AtomicInteger(0);
+
+    public BasicRobotProxy(RobotPeer peer) {
 		this.peer = peer;
 	}
 
@@ -56,144 +68,166 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	// fast setters
 	public void setBodyColor(Color color) {
-		peer.setCall();
+		setCall();
 		peer.setBodyColor(color);
 	}
 
 	public void setGunColor(Color color) {
-		peer.setCall();
+		setCall();
 		peer.setGunColor(color);
 	}
 
 	public void setRadarColor(Color color) {
-		peer.setCall();
+		setCall();
 		peer.setRadarColor(color);
 	}
 
 	public void setBulletColor(Color color) {
-		peer.setCall();
+		setCall();
 		peer.setBulletColor(color);
 	}
 
 	public void setScanColor(Color color) {
-		peer.setCall();
+		setCall();
 		peer.setScanColor(color);
 	}
 
 	// counters
-	public void getCall() {
-		peer.getCall();
-	}
+    public void setCall() {
+        final int res = setCallCount.incrementAndGet();
+        if (res >= MAX_SET_CALL_COUNT) {
+            peer.getOut().println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
+            throw new DisabledException("Too many calls to setXX methods");
+        }
+    }
 
-	public void setCall() {
-		peer.setCall();
-	}
+    public void getCall() {
+        final int res = getCallCount.incrementAndGet();
+        if (res >= MAX_GET_CALL_COUNT) {
+            peer.getOut().println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
+            throw new DisabledException("Too many calls to getXX methods");
+        }
+    }
 
 	// AdvancedRobot calls below
 	public double getRadarTurnRemaining() {
-		peer.getCall();
+		getCall();
 		return peer.getRadarTurnRemaining();
 	}
 
 	public double getDistanceRemaining() {
-		peer.getCall();
+		getCall();
 		return peer.getDistanceRemaining();
 	}
 
 	public double getBodyTurnRemaining() {
-		peer.getCall();
+		getCall();
 		return peer.getBodyTurnRemaining();
 	}
 
 	// Robot calls below
 	public double getVelocity() {
-		peer.getCall();
+		getCall();
 		return peer.getVelocity();
 	}
 
 	public double getRadarHeading() {
-		peer.getCall();
+		getCall();
 		return peer.getRadarHeading();
 	}
 
 	public double getGunCoolingRate() {
-		peer.getCall();
+		getCall();
 		return peer.getGunCoolingRate();
 	}
 
 	public String getName() {
-		peer.getCall();
+		getCall();
 		return peer.getName();
 	}
 
 	public long getTime() {
-		peer.getCall();
+		getCall();
 		return peer.getTime();
 	}
 
 	// Junior calls below
 	public double getBodyHeading() {
-		peer.getCall();
+		getCall();
 		return peer.getBodyHeading();
 	}
 
 	public double getGunHeading() {
-		peer.getCall();
+		getCall();
 		return peer.getGunHeading();
 	}
 
 	public double getGunTurnRemaining() {
-		peer.getCall();
+		getCall();
 		return peer.getGunTurnRemaining();
 	}
 
 	public double getEnergy() {
-		peer.getCall();
+		getCall();
 		return peer.getEnergy();
 	}
 
 	public double getGunHeat() {
-		peer.getCall();
+		getCall();
 		return peer.getGunHeat();
 	}
 
 	public double getBattleFieldHeight() {
-		peer.getCall();
+		getCall();
 		return peer.getBattleFieldHeight();
 	}
 
 	public double getBattleFieldWidth() {
-		peer.getCall();
+		getCall();
 		return peer.getBattleFieldWidth();
 	}
 
 	public double getX() {
-		peer.getCall();
+		getCall();
 		return peer.getX();
 	}
 
 	public double getY() {
-		peer.getCall();
+		getCall();
 		return peer.getY();
 	}
 
 	public int getOthers() {
-		peer.getCall();
+		getCall();
 		return peer.getOthers();
 	}
 
 	public int getNumRounds() {
-		peer.getCall();
+		getCall();
 		return peer.getNumRounds();
 	}
 
 	public int getRoundNum() {
-		peer.getCall();
+		getCall();
 		return peer.getRoundNum();
 	}
 
 	public Graphics2D getGraphics() {
-		peer.getCall();
+		getCall();
 		return peer.getGraphics();
 	}
+
+    //battle driven methods
+    
+    public void updateStatus(RobotStatus status){
+        this.status.set(status);
+    }
+
+    public synchronized void setSetCallCount(int setCallCount) {
+        this.setCallCount.set(setCallCount);
+    }
+
+    public synchronized void setGetCallCount(int getCallCount) {
+        this.getCallCount.set(getCallCount);
+    }
 }
