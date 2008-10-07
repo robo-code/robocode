@@ -206,22 +206,19 @@ public class RobocodeMenuBar extends JMenuBar {
 	private void battleOpenActionPerformed() {
 		IBattleManager battleManager = manager.getBattleManager();
 
-		if (manager.getBattleRecorder().hasRecord()) {
-			try {
-				battleManager.pauseBattle();
+		try {
+			battleManager.pauseBattle();
 
-				String path = manager.getWindowManager().showBattleOpenDialog(".battle", "Battles");
+			String path = manager.getWindowManager().showBattleOpenDialog(".battle", "Battles");
 
-				if (path != null) {
-					battleManager.setBattleFilename(path);
-					BattleProperties battleProperties = battleManager.loadBattleProperties();
+			if (path != null) {
+				battleManager.setBattleFilename(path);
+				BattleProperties battleProperties = battleManager.loadBattleProperties();
 
-					manager.getWindowManager().showNewBattleDialog(battleProperties);
-				}
-
-			} finally {
-				battleManager.resumeBattle();
+				manager.getWindowManager().showNewBattleDialog(battleProperties);
 			}
+		} finally {
+			battleManager.resumeBattle();
 		}
 	}
 
@@ -274,7 +271,6 @@ public class RobocodeMenuBar extends JMenuBar {
 				robocodeFrame.getReplayButton().setEnabled(true);
 				getBattleSaveRecordAsMenuItem().setEnabled(true);
 			}
-
 		} finally {
 			battleManager.resumeBattle();
 		}
