@@ -18,9 +18,10 @@ import robocode.battle.events.*;
 import robocode.manager.RobocodeManager;
 import static robocode.io.Logger.logError;
 
-import java.io.ObjectInputStream;
-import java.io.IOException;
 import java.io.ByteArrayInputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 
 /**
@@ -28,7 +29,7 @@ import java.io.ByteArrayInputStream;
  */
 public final class BattlePlayer extends BaseBattle {
 
-	private BattleRecord record;
+	private final BattleRecord record; // Do not cleanup or null this!
 	private ByteArrayInputStream byteStream;
 	private ObjectInputStream objectStream;
 
@@ -40,9 +41,24 @@ public final class BattlePlayer extends BaseBattle {
 	@Override
 	public synchronized void cleanup() {
 		super.cleanup();
-		byteStream = null;
-		objectStream = null;
-		record = null;
+
+		if (objectStream != null) {
+			try {
+				objectStream.close();
+			} catch (IOException e) {/* Ignore here */}
+
+			objectStream = null;
+		}
+
+		if (byteStream != null) {
+			try {
+				byteStream.close();
+			} catch (IOException e) {/* Ignore here */}
+
+			byteStream = null;
+		}
+
+		// record = null;
 	}
 
 	@Override
@@ -50,6 +66,7 @@ public final class BattlePlayer extends BaseBattle {
 		super.initializeBattle();
 
 		try {
+			// Assuming that 'record' is never nulled here
 			byteStream = new ByteArrayInputStream(record.records);
 			byteStream.reset();
 			objectStream = new ObjectInputStream(byteStream);
@@ -76,15 +93,8 @@ public final class BattlePlayer extends BaseBattle {
 		if (!aborted) {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(record.battleProperties, record.results));
 		}
-		try {
-			objectStream.close();
-			byteStream.close();
-			byteStream = null;
-			objectStream = null;
-			record = null;
-		} catch (IOException e) {
-			logError(e);
-		}
+
+		cleanup();
 	}
 
 	@Override
@@ -126,7 +136,7 @@ public final class BattlePlayer extends BaseBattle {
 		}
 		try {
 			return (TurnSnapshot) objectStream.readObject();
-		} catch (java.io.EOFException e) {
+		} catch (EOFException e) {
 			return null;
 		} catch (Exception e) {
 			logError(e);
