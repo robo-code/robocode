@@ -425,20 +425,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleOpenRecordMenuItem.setAccelerator(
 					KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU_SHORTCUT_KEY_MASK | InputEvent.SHIFT_MASK, false));
 			battleOpenRecordMenuItem.addActionListener(eventHandler);
-
-			/*
-			 RobocodeProperties props = manager.getProperties();
-
-			 battleOpenRecordMenuItem.setEnabled(props.getOptionsCommonEnableReplayRecording());
-
-			 props.addPropertyListener(
-			 props.new PropertyListener() {
-			 @Override
-			 public void enableReplayRecordingChanged(boolean enabled) {
-			 battleOpenRecordMenuItem.setEnabled(
-			 RobocodeMenuBar.this.manager.getProperties().getOptionsCommonEnableReplayRecording());
-			 }
-			 });*/
 		}
 		return battleOpenRecordMenuItem;
 	}
@@ -456,21 +442,19 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleSaveRecordAsMenuItem.setDisplayedMnemonicIndex(5);
 			battleSaveRecordAsMenuItem.setAccelerator(
 					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK, false));
+			battleSaveRecordAsMenuItem.setEnabled(false);
 			battleSaveRecordAsMenuItem.addActionListener(eventHandler);
 
 			RobocodeProperties props = manager.getProperties();
 
-			battleSaveRecordAsMenuItem.setEnabled(props.getOptionsCommonEnableReplayRecording());
-
-			props.addPropertyListener(
-					props.new PropertyListener() {
+			props.addPropertyListener(props.new PropertyListener() {
 				@Override
 				public void enableReplayRecordingChanged(boolean enabled) {
-					battleSaveRecordAsMenuItem.setEnabled(
-							RobocodeMenuBar.this.manager.getProperties().getOptionsCommonEnableReplayRecording());
+					final boolean enableSaveRecord = enabled & manager.getBattleRecorder().hasRecord();
+
+					battleSaveRecordAsMenuItem.setEnabled(enableSaveRecord);
 				}
 			});
-
 		}
 		return battleSaveRecordAsMenuItem;
 	}
