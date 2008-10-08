@@ -24,7 +24,6 @@ import robocode.io.FileUtil;
 import robocode.io.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 
 /**
@@ -63,19 +62,17 @@ public class RobocodeCompiler {
 		console.setText("Compiling...\n");
 		WindowUtil.centerShow(editor, console);
 
-		InputStream err = null;
-
 		try {
-			String command = compilerBinary + " " + compilerOptions + " " + compilerClassPath + " " + fileName;
+			StringBuffer command = new StringBuffer(compilerBinary).append(' ').append(compilerOptions).append(' ').append(compilerClassPath).append(' ').append(fileName);
 
 			Logger.logMessage("Compile command: " + command);
 
-			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
-
-			err = p.getErrorStream();
-			console.processStream(err);
+			ProcessBuilder pb = new ProcessBuilder(command.toString().split(" "));
+			pb.directory(FileUtil.getCwd());
+			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
+			console.processStream(p.getErrorStream());
 			p.waitFor();
 
 			if (p.exitValue() == 0) {
@@ -96,12 +93,6 @@ public class RobocodeCompiler {
 
 			console.append("Compile interrupted.\n");
 			console.setTitle("Compile interrupted.");
-		} finally {
-			if (err != null) {
-				try {
-					err.close();
-				} catch (IOException e) {}
-			}
 		}
 	}
 }

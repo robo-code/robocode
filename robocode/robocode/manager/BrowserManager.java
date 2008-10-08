@@ -16,7 +16,6 @@ package robocode.manager;
 
 import robocode.io.FileUtil;
 
-import java.io.File;
 import java.io.IOException;
 
 
@@ -32,14 +31,18 @@ public class BrowserManager {
 		if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
 			browserCommand = "rundll32 url.dll, FileProtocolHandler";
 		} else {
-			browserCommand = FileUtil.quoteFileName(FileUtil.getCwd() + File.separator + "browser.sh");
+			browserCommand = "browser.sh";
 		}
 	}
 
 	public static void openURL(String url) throws IOException {
 		url = FileUtil.quoteFileName(url);
 
-		Process p = Runtime.getRuntime().exec(browserCommand + " " + url);
+		final String command = browserCommand + ' ' + url;
+
+		ProcessBuilder pb = new ProcessBuilder(command.split(" "));
+		pb.directory(FileUtil.getCwd());
+		Process p = pb.start();
 
 		try {
 			p.waitFor();
@@ -51,13 +54,6 @@ public class BrowserManager {
 		if (p.exitValue() < 0) {
 			throw new IOException(
 					"Unable to launch " + browserCommand + ".  Please check it, or launch " + url + " in your browser.");
-		}
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// Immediately reasserts the exception by interrupting the caller thread itself
-			Thread.currentThread().interrupt();
 		}
 	}
 }
