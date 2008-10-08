@@ -246,6 +246,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 		try {
 			battleManager.pauseBattle();
+
 			String path = manager.getWindowManager().saveBattleDialog(battleManager.getBattlePath(), ".battle",
 					"Battles");
 
@@ -268,8 +269,13 @@ public class RobocodeMenuBar extends JMenuBar {
 
 			if (path != null) {
 				manager.getBattleRecorder().loadRecord(path);
+
+				robocodeFrame.getReplayButton().setVisible(true);
 				robocodeFrame.getReplayButton().setEnabled(true);
+
 				getBattleSaveRecordAsMenuItem().setEnabled(true);
+
+				battleManager.replay();
 			}
 		} finally {
 			battleManager.resumeBattle();

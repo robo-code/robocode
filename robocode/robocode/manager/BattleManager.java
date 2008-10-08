@@ -101,7 +101,7 @@ public class BattleManager implements IBattleManager {
 	private String battlePath;
 
 	private int pauseCount = 0;
-	private AtomicBoolean isManagedTPS = new AtomicBoolean(false);
+	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
 	public BattleManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -311,7 +311,7 @@ public class BattleManager implements IBattleManager {
 		}
 
 		BattlePlayer battlePlayer = new BattlePlayer(manager.getBattleRecorder().getRecord(), manager,
-				battleEventDispatcher, isPaused());
+				battleEventDispatcher, false); // Replays are set to start immediately, i.e. not paused
 
 		battle = battlePlayer;
 
