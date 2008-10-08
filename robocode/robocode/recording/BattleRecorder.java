@@ -26,7 +26,7 @@ import java.io.*;
  */
 public class BattleRecorder implements IBattleRecorder {
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 	private BattleObserver battleObserver;
 	private boolean recordingEnabled;
 	private BattleRecord currentRecord;
@@ -36,34 +36,60 @@ public class BattleRecorder implements IBattleRecorder {
 	}
 
 	public void loadRecord(String fileName) {
-		FileInputStream fileStream;
-		ObjectInputStream objectStream;
+		FileInputStream fileStream = null;
+		ObjectInputStream objectStream = null;
 
 		try {
 			fileStream = new FileInputStream(fileName);
 			objectStream = new ObjectInputStream(fileStream);
 			currentRecord = (BattleRecord) objectStream.readObject();
-			objectStream.close();
-			fileStream.close();
 		} catch (IOException e) {
 			logError(e);
 		} catch (ClassNotFoundException e) {
 			logError(e);
+		} finally {
+			if (objectStream != null) {
+				try {
+					objectStream.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+			if (fileStream != null) {
+				try {
+					fileStream.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
 		}
 	}
 
 	public void saveRecord(String fileName) {
-		FileOutputStream fileStream;
-		ObjectOutputStream objectStream;
+		FileOutputStream fileStream = null;
+		ObjectOutputStream objectStream = null;
 
 		try {
 			fileStream = new FileOutputStream(fileName);
 			objectStream = new ObjectOutputStream(fileStream);
 			objectStream.writeObject(currentRecord);
-			objectStream.close();
-			fileStream.close();
 		} catch (IOException e) {
 			logError(e);
+		} finally {
+			if (objectStream != null) {
+				try {
+					objectStream.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+			if (fileStream != null) {
+				try {
+					fileStream.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
 		}
 	}
 
