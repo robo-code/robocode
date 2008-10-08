@@ -129,11 +129,11 @@ public class BattleRecorder implements IBattleRecorder {
 
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			recordingEnabled = manager.getProperties().getOptionsCommonEnableReplayRecording();
+			recordingEnabled = !event.isReplay() && manager.getProperties().getOptionsCommonEnableReplayRecording();
 			if (!recordingEnabled) {
-				currentRecord = null;
 				return;
 			}
+            currentRecord = null;
 			try {
 				if (byteStream == null) {
 					byteStream = new ByteArrayOutputStream(initialSize);

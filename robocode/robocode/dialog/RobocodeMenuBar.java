@@ -268,7 +268,8 @@ public class RobocodeMenuBar extends JMenuBar {
 			String path = manager.getWindowManager().showBattleOpenDialog(".battleRecord", "Records");
 
 			if (path != null) {
-				manager.getBattleRecorder().loadRecord(path);
+                manager.getBattleManager().stop(true);
+                manager.getBattleRecorder().loadRecord(path);
 
 				robocodeFrame.getReplayButton().setVisible(true);
 				robocodeFrame.getReplayButton().setEnabled(true);
