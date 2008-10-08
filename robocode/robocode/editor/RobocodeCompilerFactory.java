@@ -393,61 +393,44 @@ public class RobocodeCompilerFactory {
 	}
 
 	private static boolean makeJikes(RobocodeEditor editor, ConsoleDialog console, String jikesBinary) {
-		String result = "";
-		boolean rv = true;
+		boolean result = false;
 
 		console.append("\nRobocode building Jikes...\n");
-
-		InputStream err = null;
 
 		try {
 			String command = "./compilers/buildJikes.sh";
 
 			logMessage(command);
 
-			Process p = Runtime.getRuntime().exec(command, null, FileUtil.getCwd());
-
-			err = p.getErrorStream();
-			console.processStream(err);
+			ProcessBuilder pb = new ProcessBuilder(command);
+			pb.directory(FileUtil.getCwd());
+			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
+			console.processStream(p.getErrorStream());
 			p.waitFor();
 
 			if (p.exitValue() == 0) {
 				console.append("Finished building Jikes\n");
-				console.scrollToBottom();
-				if (testJikes(console, jikesBinary)) {
-					rv = true;
-				} else {
-					rv = false;
-				}
+				result = testJikes(console, jikesBinary);
 			} else {
-				result = "Jikes compile Failed (" + p.exitValue() + ")\n";
-				console.append(result);
-				console.scrollToBottom();
-				rv = false;
+				console.append("Jikes compile Failed (" + p.exitValue() + ")\n");
 			}
 		} catch (IOException e) {
 			console.append("\n" + e.toString() + "\n");
 			console.setTitle("Jikes compile failed.\n");
-			console.scrollToBottom();
-			rv = false;
+
 		} catch (InterruptedException e) {
 			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
 
 			console.append("\n" + e.toString() + "\n");
 			console.setTitle("Jikes compile failed.\n");
-			console.scrollToBottom();
-			rv = false;
+
 		} finally {
-			if (err != null) {
-				try {
-					err.close();
-				} catch (IOException e) {}
-			}
+			console.scrollToBottom();
 		}
-		return rv;
+		return result;
 	}
 
 	public static void saveCompilerProperties() {
@@ -474,72 +457,65 @@ public class RobocodeCompilerFactory {
 
 	private static boolean testJavac(ConsoleDialog console) {
 		console.append("Testing compile with javac...\n");
+
 		boolean javacOk = false;
 
-		InputStream err = null;
-
 		try {
-			Process p = Runtime.getRuntime().exec("javac compilers/CompilerTest.java", null, FileUtil.getCwd());
-
-			err = p.getErrorStream();
-			console.processStream(err);
+			ProcessBuilder pb = new ProcessBuilder("javac", "compilers/CompilerTest.java");
+			pb.directory(FileUtil.getCwd());
+			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
+			console.processStream(p.getErrorStream());
 			p.waitFor();
 
-			if (p.exitValue() == 0) {
-				javacOk = true;
-			}
-		} catch (IOException e) {} catch (InterruptedException e) {
+			javacOk = (p.exitValue() == 0);
+
+		} catch (IOException e) {
+			logError(e);
+
+		} catch (InterruptedException e) {
 			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
-		} finally {
-			if (err != null) {
-				try {
-					err.close();
-				} catch (IOException e) {}
-			}
 		}
-		if (!javacOk) {
-			console.append("javac does not exist.\n");
-		} else {
+
+		if (javacOk) {
 			console.append("javac ok.\n");
+		} else {
+			console.append("javac does not exist.\n");
 		}
 		return javacOk;
 	}
 
 	private static boolean testJikes(ConsoleDialog console, String jikesBinary) {
 		console.append("\nTesting compile with Jikes...\n");
+
 		boolean jikesOk = false;
 
-		InputStream err = null;
-
+		final String command = jikesBinary + " compilers/CompilerTest.java";
 		try {
-			Process p = Runtime.getRuntime().exec(jikesBinary + " compilers/CompilerTest.java", null, FileUtil.getCwd());
-
-			err = p.getErrorStream();
-			console.processStream(err);
+			ProcessBuilder pb = new ProcessBuilder(command.split(" "));
+			pb.directory(FileUtil.getCwd());
+			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
+			console.processStream(p.getErrorStream());
 			p.waitFor();
 
-			if (p.exitValue() == 0) {
-				jikesOk = true;
-			}
-		} catch (IOException e) {} catch (InterruptedException e) {
+			jikesOk = (p.exitValue() == 0);
+
+		} catch (IOException e) {
+			logError(e);
+
+		} catch (InterruptedException e) {
 			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
-		} finally {
-			if (err != null) {
-				try {
-					err.close();
-				} catch (IOException e) {}
-			}
 		}
-		if (!jikesOk) {
-			console.append("Unable to compile with Jikes!\n");
-		} else {
+
+		if (jikesOk) {
 			console.append("Jikes ok.\n");
+		} else {
+			console.append("Unable to compile with Jikes!\n");
 		}
 		return jikesOk;
 	}

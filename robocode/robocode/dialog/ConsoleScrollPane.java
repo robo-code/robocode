@@ -82,8 +82,7 @@ public class ConsoleScrollPane extends JScrollPane {
 		String line;
 
 		try {
-			line = in.readLine();
-			while (line != null) {
+			for (line = in.readLine(); line != null; line = in.readLine()) {
 				int tabIndex = line.indexOf("\t");
 
 				while (tabIndex >= 0) {
@@ -91,7 +90,6 @@ public class ConsoleScrollPane extends JScrollPane {
 					tabIndex = line.indexOf("\t");
 				}
 				append(line + "\n");
-				line = in.readLine();
 			}
 		} catch (IOException e) {
 			append("IOException: " + e);
