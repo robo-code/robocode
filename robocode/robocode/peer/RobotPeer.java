@@ -161,12 +161,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	private boolean isStopped;
 	private boolean isWinner;
 
-	private double lastGunHeading;
-	private double lastHeading;
-	private double lastRadarHeading;
-	private double lastX;
-	private double lastY;
-
 	private double saveAngleToTurn;
 	private double saveDistanceToGo;
 	private double saveGunAngleToTurn;
@@ -564,19 +558,19 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), true);
 		}
 
-		setScan(true);
+		scan =  true;
 		execute();
 		if (reset) {
 			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), resetValue);
 		}
 	}
 
-	public void scan() {
+	public void scan(double lastGunHeading, double lastRadarHeading) {
 		if (isDroid) {
 			return;
 		}
 
-		double startAngle = getLastRadarHeading();
+		double startAngle = lastRadarHeading;
 		double scanRadians = getRadarHeading() - startAngle;
 
 		// Check if we passed through 360
@@ -604,10 +598,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 
-				eventManager.add(
-						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
-						normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
-						robotPeer.getVelocity()));
+                final ScannedRobotEvent event = new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
+                        normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
+                        robotPeer.getVelocity(),
+                        lastGunHeading == lastRadarHeading);
+                eventManager.add(event);
 			}
 		}
 	}
@@ -665,7 +660,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 					}
 				}
 			}
-			battle.generateDeathEvents(this);
+			battle.registerDeathRobot(this);
 
 			// 'fake' bullet for explosion on self
 			battle.addBullet(new ExplosionPeer(this, battle));
@@ -888,17 +883,20 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		} while (getRadarTurnRemaining() != 0);
 	}
 
-	public final synchronized void update() {
+	public final synchronized void update(double zapEnergy) {
 		// Reset robot state to active if it is not dead
-		if (isAlive()) {
-			state = RobotState.ACTIVE;
+		if (isDead()) {
+            return;
 		}
+        state = RobotState.ACTIVE;
 
-		updateGunHeat();
+        updateGunHeat();
 
-		lastHeading = heading;
-		lastGunHeading = gunHeading;
-		lastRadarHeading = radarHeading;
+		final double lastHeading = heading;
+		final double lastGunHeading = gunHeading;
+		final double lastRadarHeading = radarHeading;
+        final double lastX = x;
+        final double lastY = y;
 
 		if (!inCollision) {
 			updateHeading();
@@ -923,7 +921,30 @@ public class RobotPeer implements Runnable, ContestantPeer {
 			scan = (lastHeading != heading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
 					|| lastX != x || lastY != y || waitCondition != null);
 		}
-	}
+        if (isDead()) {
+            return;
+        }
+
+        //zap
+        if (zapEnergy!=0){
+            zap(zapEnergy);
+        }
+
+        if (isDead()) {
+            return;
+        }
+
+        //scan
+        if (scan){
+            scan(lastGunHeading, lastRadarHeading);
+            scan = false;
+        }
+
+        //publishMessages
+        if (isTeamRobot){
+            getMessageManager().publishMessages();
+        }
+    }
 
 	public synchronized void updateBoundingBox() {
 		boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
@@ -1040,9 +1061,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		if (distanceRemaining == 0 && velocity == 0) {
 			return;
 		}
-
-		lastX = x;
-		lastY = y;
 
 		if (!slowingDown) {
 			// Set moveDir and slow down for move(0)
@@ -1250,11 +1268,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		state = RobotState.ACTIVE;
 
 		isWinner = false;
-		this.x = lastX = x;
-		this.y = lastY = y;
+		this.x = x;
+		this.y = y;
 
-		setLastHeading();
-		this.heading = gunHeading = radarHeading = lastGunHeading = lastRadarHeading = heading;
+        this.heading = gunHeading = radarHeading = heading;
 
 		acceleration = velocity = 0;
 
@@ -1274,7 +1291,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		setStop(true);
 		setHalt(false);
 
-		setScan(false);
+		scan = false;
 
 		inCollision = false;
 
@@ -1389,18 +1406,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public EventManager getEventManager() {
 		return eventManager;
-	}
-
-	public synchronized double getLastGunHeading() {
-		return lastGunHeading;
-	}
-
-	public synchronized double getLastRadarHeading() {
-		return lastRadarHeading;
-	}
-
-	public synchronized void setScan(boolean scan) {
-		this.scan = scan;
 	}
 
 	public File getDataDirectory() {
@@ -1545,10 +1550,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public int getRoundNum() {
 		return getBattle().getRoundNum();
-	}
-
-	public synchronized boolean getScan() {
-		return scan;
 	}
 
 	public Arc2D getScanArc() {
@@ -1724,7 +1725,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public synchronized void zap(double zapAmount) {
+	private void zap(double zapAmount) {
 		if (energy == 0) {
 			kill();
 			return;
@@ -1811,14 +1812,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized RobotState getState() {
 		return state;
-	}
-
-	public synchronized void setState(RobotState newState) {
-		state = newState;
-	}
-
-	private synchronized void setLastHeading() {
-		lastHeading = heading;
 	}
 
 	/**
@@ -1985,7 +1978,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		eventManager.add(e);
 	}
 
-	public void updateStatus() {
+	public void publishStatus() {
 		final long currentTurn = getTime();
 
 		eventManager.clear(currentTurn - 2); // TODO really -2 ?

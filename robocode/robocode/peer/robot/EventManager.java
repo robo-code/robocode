@@ -911,6 +911,15 @@ public class EventManager implements IEventManager {
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
+        final boolean assist = useFireAssist
+                && getTime() == e.getTime()
+                && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
+                && e.getCanFireAssist();
+        if (assist) {
+            fireAssistAngle = Utils.normalAbsoluteAngle(robotPeer.getBodyHeading() + e.getBearingRadians());
+            fireAssistValid = true;
+        }
+
 		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
@@ -920,6 +929,7 @@ public class EventManager implements IEventManager {
 				listener.onScannedRobot(e);
 			}
 		}
+        fireAssistValid = false;
 	}
 
 	public void onSkippedTurn(SkippedTurnEvent e) {
@@ -1094,17 +1104,7 @@ public class EventManager implements IEventManager {
 		} else if (currentEvent instanceof KeyReleasedEvent) {
 			onKeyReleasedEvent((KeyReleasedEvent) currentEvent);
 		} else if (currentEvent instanceof ScannedRobotEvent) {
-			if (getTime() == currentEvent.getTime() && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
-					&& robotPeer.getLastGunHeading() == robotPeer.getLastRadarHeading() && getRobot() != null
-					&& !(robotPeer.isAdvancedRobot())) {
-				fireAssistAngle = Utils.normalAbsoluteAngle(
-						robotPeer.getBodyHeading() + ((ScannedRobotEvent) currentEvent).getBearingRadians());
-				if (useFireAssist) {
-					fireAssistValid = true;
-				}
-			}
 			onScannedRobot((ScannedRobotEvent) currentEvent);
-			fireAssistValid = false;
 		} else if (currentEvent instanceof RobotDeathEvent) {
 			onRobotDeath((RobotDeathEvent) currentEvent);
 		} else if (currentEvent instanceof SkippedTurnEvent) {

@@ -158,7 +158,7 @@ public final class Battle extends BaseBattle {
 	private int activeRobots;
 
 	// Death events
-	private List<RobotPeer> deathEvents = new CopyOnWriteArrayList<RobotPeer>();
+	private List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
 
 	// Flag specifying if debugging is enabled thru the debug command line option
 	private boolean isDebugging;
@@ -226,8 +226,8 @@ public final class Battle extends BaseBattle {
 		robots.add(robotPeer);
 	}
 
-	public void generateDeathEvents(RobotPeer r) {
-		deathEvents.add(r);
+	public void registerDeathRobot(RobotPeer r) {
+		deathRobots.add(r);
 	}
 
     public BattleRules getBattleRules() {
@@ -419,13 +419,11 @@ public final class Battle extends BaseBattle {
 
 		updateBullets();
 
-		moveRobots();
+		updateRobots();
 
-		handleDeathEvents();
+        handleDeathRobots();
 
-		performScans();
-
-		if (isAborted() || oneTeamRemaining()) {
+        if (isAborted() || oneTeamRemaining()) {
 			shutdownTurn();
 		}
 
@@ -433,7 +431,7 @@ public final class Battle extends BaseBattle {
 
 		computeActiveRobots();
 
-		updateRobots();
+		publishStatuses();
 
 		// Robot time!
 		wakeupRobots();
@@ -559,7 +557,7 @@ public final class Battle extends BaseBattle {
 					Logger.logMessage(".", false);
 
 					// Add StatusEvent for the first turn
-					r.updateStatus();
+					r.publishStatus();
 
 					// Start the robot thread
 					r.getRobotThreadManager().start();
@@ -649,87 +647,55 @@ public final class Battle extends BaseBattle {
 		}
 	}
 
-	private void moveRobots() {
+	private void updateRobots() {
 		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
 
 		// Move all bots
 		for (RobotPeer r : getRobotsAtRandom()) {
-			if (!r.isDead()) {
-				r.update();
-			}
-			if ((zap || isAborted()) && !r.isDead()) {
-				if (isAborted()) {
-					r.zap(5);
-				} else {
-					r.zap(.1);
-				}
-			}
+
+            // update robots
+            final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
+            r.update(zapEnergy);
+
+            //publish deaths to live robots
+            if (!r.isDead()) {
+                for (RobotPeer de : deathRobots) {
+                    r.getEventManager().add(new RobotDeathEvent(de.getName()));
+                    if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
+                        r.getRobotStatistics().scoreSurvival();
+                    }
+                }
+            }
 		}
 	}
 
-	private void handleDeathEvents() {
-		if (deathEvents.size() > 0) {
-			for (RobotPeer r : robots) {
-				if (!r.isDead()) {
-					for (RobotPeer de : deathEvents) {
-						r.getEventManager().add(new RobotDeathEvent(de.getName()));
-						if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
-							r.getRobotStatistics().scoreSurvival();
-						}
-					}
-				}
-			}
-		}
-		// Compute scores for dead robots
-		for (RobotPeer r : deathEvents) {
-			if (r.getTeamPeer() == null) {
-				r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
-			} else {
-				boolean teammatesalive = false;
+    private void handleDeathRobots() {
 
-				for (RobotPeer tm : robots) {
-					if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
-						teammatesalive = true;
-						break;
-					}
-				}
-				if (!teammatesalive) {
-					r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
-				}
-			}
-		}
+        // Compute scores for dead robots
+        for (RobotPeer r : deathRobots) {
+            if (r.getTeamPeer() == null) {
+                r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
+            } else {
+                boolean teammatesalive = false;
 
-		deathEvents.clear();
-	}
+                for (RobotPeer tm : robots) {
+                    if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
+                        teammatesalive = true;
+                        break;
+                    }
+                }
+                if (!teammatesalive) {
+                    r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
+                }
+            }
+        }
 
-	private void performScans() {
-		// Perform scans, handle messages
-		for (RobotPeer r : getRobotsAtRandom()) {
-			if (!r.isDead()) {
-				if (r.getScan()) {
-					// Enter scan
-					System.err.flush();
+        deathRobots.clear();
+    }
 
-					r.scan();
-					// Exit scan
-					r.setScan(false);
-				}
-
-				if (r.getMessageManager() != null) {
-					List<MessageEvent> messageEvents = r.getMessageManager().getMessageEvents();
-
-					for (MessageEvent me : messageEvents) {
-						r.getEventManager().add(me);
-					}
-					messageEvents.clear();
-				}
-			}
-		}
-	}
-
-	private void updateRobots() {
+	private void publishStatuses() {
 		for (RobotPeer r : robots) {
-			r.updateStatus();
+			r.publishStatus();
 		}
 	}
 
