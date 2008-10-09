@@ -111,31 +111,29 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		}
 	}
 
-	// AdvancedRobot calls below
+    public double getDistanceRemaining() {
+        getCall();
+        return status.get().getDistanceRemaining();
+    }
+
 	public double getRadarTurnRemaining() {
 		getCall();
-		return status.get().getRadarTurnRemaining();
-	}
-
-	public double getDistanceRemaining() {
-		getCall();
-		return status.get().getDistanceRemaining();
+		return status.get().getRadarTurnRemainingRadians();
 	}
 
 	public double getBodyTurnRemaining() {
 		getCall();
-		return status.get().getTurnRemaining();
+		return status.get().getTurnRemainingRadians();
 	}
 
-	// Robot calls below
+    public double getGunTurnRemaining() {
+        getCall();
+        return status.get().getGunTurnRemainingRadians();
+    }
+
 	public double getVelocity() {
 		getCall();
 		return status.get().getVelocity();
-	}
-
-	public double getRadarHeading() {
-		getCall();
-		return status.get().getRadarHeading();
 	}
 
 	public double getGunCoolingRate() {
@@ -153,21 +151,20 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		return status.get().getTime();
 	}
 
-	// Junior calls below
 	public double getBodyHeading() {
 		getCall();
-		return status.get().getHeading();
+		return status.get().getHeadingRadians();
 	}
 
 	public double getGunHeading() {
 		getCall();
-		return status.get().getGunHeading();
+		return status.get().getRadarHeadingRadians();
 	}
 
-	public double getGunTurnRemaining() {
-		getCall();
-		return status.get().getGunTurnRemaining();
-	}
+    public double getRadarHeading() {
+        getCall();
+        return status.get().getRadarHeadingRadians();
+    }
 
 	public double getEnergy() {
 		getCall();
