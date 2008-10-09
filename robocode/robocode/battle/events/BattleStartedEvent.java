@@ -12,7 +12,7 @@
 package robocode.battle.events;
 
 
-import robocode.battle.BattleProperties;
+import robocode.BattleRules;
 import robocode.battle.snapshot.TurnSnapshot;
 
 
@@ -22,12 +22,12 @@ import robocode.battle.snapshot.TurnSnapshot;
  */
 public class BattleStartedEvent extends BattleEvent {
 	private final TurnSnapshot start;
-	private final BattleProperties battleProperties;
+	private final BattleRules battleRules;
 	private final boolean isReplay;
 
-	public BattleStartedEvent(TurnSnapshot start, BattleProperties battleProperties, boolean isReplay) {
+	public BattleStartedEvent(TurnSnapshot start, BattleRules battleRules, boolean isReplay) {
 		this.start = start;
-		this.battleProperties = battleProperties;
+		this.battleRules = battleRules;
 		this.isReplay = isReplay;
 	}
 
@@ -35,8 +35,8 @@ public class BattleStartedEvent extends BattleEvent {
 		return start;
 	}
 
-	public BattleProperties getBattleProperties() {
-		return battleProperties;
+	public BattleRules getBattleRules() {
+		return battleRules;
 	}
 
 	public boolean isReplay() {

@@ -269,7 +269,7 @@ public class Robocode {
 		}
 
 		BattleResultsTableModel resultsTable = new BattleResultsTableModel(event.getResults(),
-				event.getBattleProperties().getNumRounds());
+				event.getBattleRules().getNumRounds());
 
 		if (out != null) {
 			resultsTable.print(out);

@@ -58,8 +58,6 @@ import robocode.battle.BattleProperties;
 import robocode.battle.IBattleManager;
 import robocode.battle.IBattle;
 import robocode.battle.events.*;
-import robocode.battlefield.BattleField;
-import robocode.battlefield.DefaultBattleField;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
@@ -245,9 +243,6 @@ public class BattleManager implements IBattleManager {
 			battle.stop(true);
 		}
 
-		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
-				battleProperties.getBattlefieldHeight());
-
 		Logger.setLogListener(battleEventDispatcher);
 
 		if (manager.isSoundEnabled()) {
@@ -263,7 +258,7 @@ public class BattleManager implements IBattleManager {
 			RandomFactory.resetDeterministic(Long.valueOf(seed));
 		}
 
-		Battle realBattle = new Battle(battleField, manager, battleEventDispatcher, isPaused());
+		Battle realBattle = new Battle(manager, battleEventDispatcher, isPaused());
 
 		battle = realBattle;
 

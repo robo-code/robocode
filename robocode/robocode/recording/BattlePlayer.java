@@ -74,9 +74,9 @@ public final class BattlePlayer extends BaseBattle {
 			logError(e);
 		}
 
-		setNumRounds(record.rounds);
+		setBattleRules(record.battleRules);
 
-		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), record.battleProperties, true));
+		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), record.battleRules, true));
 		if (isPaused()) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
@@ -91,7 +91,7 @@ public final class BattlePlayer extends BaseBattle {
 		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(aborted));
 
 		if (!aborted) {
-			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(record.battleProperties, record.results));
+			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(record.battleRules, record.results));
 		}
 
 		cleanup();

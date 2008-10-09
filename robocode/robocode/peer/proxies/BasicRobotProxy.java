@@ -114,84 +114,74 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	// AdvancedRobot calls below
 	public double getRadarTurnRemaining() {
 		getCall();
-		return peer.getRadarTurnRemaining();
+		return status.get().getRadarTurnRemaining();
 	}
 
 	public double getDistanceRemaining() {
 		getCall();
-		return peer.getDistanceRemaining();
+		return status.get().getDistanceRemaining();
 	}
 
 	public double getBodyTurnRemaining() {
 		getCall();
-		return peer.getBodyTurnRemaining();
+		return status.get().getTurnRemaining();
 	}
 
 	// Robot calls below
 	public double getVelocity() {
 		getCall();
-		return peer.getVelocity();
+		return status.get().getVelocity();
 	}
 
 	public double getRadarHeading() {
 		getCall();
-		return peer.getRadarHeading();
+		return status.get().getRadarHeading();
 	}
 
 	public double getGunCoolingRate() {
 		getCall();
-		return peer.getGunCoolingRate();
+		return status.get().getBattleRules().getGunCoolingRate();
 	}
 
 	public String getName() {
 		getCall();
-		return peer.getName();
+		return peer.getName(); //TODO status ?
 	}
 
 	public long getTime() {
 		getCall();
-		return peer.getTime();
+		return status.get().getTime();
 	}
 
 	// Junior calls below
 	public double getBodyHeading() {
 		getCall();
-		return peer.getBodyHeading();
+		return status.get().getHeading();
 	}
 
 	public double getGunHeading() {
 		getCall();
-		return peer.getGunHeading();
+		return status.get().getGunHeading();
 	}
 
 	public double getGunTurnRemaining() {
 		getCall();
-		return peer.getGunTurnRemaining();
+		return status.get().getGunTurnRemaining();
 	}
 
 	public double getEnergy() {
 		getCall();
-		return peer.getEnergy();
+		return status.get().getEnergy();
 	}
 
 	public double getGunHeat() {
 		getCall();
-		return peer.getGunHeat();
-	}
-
-	public double getBattleFieldHeight() {
-		getCall();
-		return peer.getBattleFieldHeight();
-	}
-
-	public double getBattleFieldWidth() {
-		getCall();
-		return peer.getBattleFieldWidth();
+		return status.get().getGunHeat();
 	}
 
 	public double getX() {
 		getCall();
-		return peer.getX();
+		return status.get().getX();
 	}
 
 	public double getY() {
@@ -204,9 +194,19 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		return status.get().getOthers();
 	}
 
+	public double getBattleFieldHeight() {
+		getCall();
+        return status.get().getBattleRules().getBattlefieldHeight();
+	}
+
+	public double getBattleFieldWidth() {
+		getCall();
+		return status.get().getBattleRules().getBattlefieldWidth();
+	}
+
 	public int getNumRounds() {
 		getCall();
-		return status.get().getNumRounds();
+		return status.get().getBattleRules().getNumRounds();
 	}
 
 	public int getRoundNum() {

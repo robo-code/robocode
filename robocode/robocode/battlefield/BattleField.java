@@ -14,11 +14,13 @@
 package robocode.battlefield;
 
 
+import java.io.Serializable;
+
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public interface BattleField {
+public interface BattleField extends Serializable {
 	public java.awt.geom.Rectangle2D getBoundingBox();
 
 	public int getHeight();

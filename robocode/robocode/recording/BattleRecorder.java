@@ -146,8 +146,8 @@ public class BattleRecorder implements IBattleRecorder {
 
 			currentRecord = new BattleRecord();
 			currentRecord.robotCount = event.getTurnSnapshot().getRobots().size();
-			currentRecord.recordsInTurns = new int[event.getBattleProperties().getNumRounds()];
-			currentRecord.battleProperties = event.getBattleProperties();
+			currentRecord.recordsInTurns = new int[event.getBattleRules().getNumRounds()];
+			currentRecord.battleRules = event.getBattleRules();
 			currentRound = 0;
 			currentTurn = 1;
 			writeTurn(event.getTurnSnapshot());

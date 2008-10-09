@@ -14,6 +14,7 @@ package robocode.recording;
 
 import robocode.battle.BattleProperties;
 import robocode.BattleResults;
+import robocode.BattleRules;
 
 import java.io.Serializable;
 
@@ -26,7 +27,7 @@ public class BattleRecord implements Serializable {
 
 	public int robotCount;
 	public int rounds;
-	public BattleProperties battleProperties;
+	public BattleRules battleRules;
 	public int[] recordsInTurns;
 	public byte[] records;
 	public BattleResults[] results;

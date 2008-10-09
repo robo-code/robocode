@@ -748,7 +748,7 @@ public class RobocodeFrame extends JFrame {
 
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			numberOfRounds = event.getBattleProperties().getNumRounds();
+			numberOfRounds = event.getBattleRules().getNumRounds();
 			isBattleRunning = true;
 			isBattleReplay = event.isReplay();
 

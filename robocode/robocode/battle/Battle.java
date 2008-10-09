@@ -99,7 +99,6 @@ import robocode.BattleEndedEvent;
 import robocode.*;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battlefield.BattleField;
 import robocode.common.Command;
 import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
@@ -142,16 +141,9 @@ public final class Battle extends BaseBattle {
 	// Allowed maximum length for a robot's short class name
 	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
 
-	// Objects we use
-	private BattleField battleField;
-
-	// Option related items
-	private double gunCoolingRate = .1;
-
 	// Inactivity related items
 	private int inactiveTurnCount;
 	private double inactivityEnergy;
-	private long inactivityTime;
 
 	// Turn skip related items
 	private int maxSkippedTurns = 30;
@@ -179,18 +171,15 @@ public final class Battle extends BaseBattle {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	public Battle(BattleField battleField, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
+	public Battle(RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		super(manager, eventDispatcher, paused);
 
-		this.battleField = battleField;
 		isDebugging = System.getProperty("debug", "false").equals("true");
 	}
 
 	public void setProperties(BattleProperties battleProperties) {
 		try {
-			setNumRounds(battleProperties.getNumRounds());
-			gunCoolingRate = battleProperties.getGunCoolingRate();
-			inactivityTime = battleProperties.getInactivityTime();
+            setBattleRules(new BattleRules(battleProperties));
 			setInitialPositions(battleProperties.getInitialPositions());
 		} catch (Exception e) {
 			Logger.logError("Exception setting battle properties", e);
@@ -241,16 +230,12 @@ public final class Battle extends BaseBattle {
 		deathEvents.add(r);
 	}
 
-	public BattleField getBattleField() {
-		return battleField;
-	}
+    public BattleRules getBattleRules() {
+        return battleRules;
+    }
 
 	public List<BulletPeer> getBullets() {
 		return bullets;
-	}
-
-	public double getGunCoolingRate() {
-		return gunCoolingRate;
 	}
 
 	public List<RobotPeer> getRobots() {
@@ -304,7 +289,6 @@ public final class Battle extends BaseBattle {
 
 		super.cleanup();
 
-		battleField = null;
 		battleManager = null;
 
 		Logger.setLogListener(null);
@@ -346,9 +330,8 @@ public final class Battle extends BaseBattle {
 		}
 
 		final TurnSnapshot snapshot = new TurnSnapshot(this);
-		final BattleProperties battleProperties = manager.getBattleManager().getBattleProperties();
 
-		eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleProperties, false));
+		eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
 		if (isPaused()) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
@@ -371,7 +354,7 @@ public final class Battle extends BaseBattle {
 
 		if (!isAborted()) {
 			eventDispatcher.onBattleCompleted(
-					new BattleCompletedEvent(manager.getBattleManager().getBattleProperties(), computeResults()));
+					new BattleCompletedEvent(battleRules, computeResults()));
 		}
 	}
 
@@ -667,7 +650,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	private void moveRobots() {
-		boolean zap = (inactiveTurnCount > inactivityTime);
+		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
 
 		// Move all bots
 		for (RobotPeer r : getRobotsAtRandom()) {
@@ -991,8 +974,8 @@ public final class Battle extends BaseBattle {
 		for (int i = 0; i < positions.size(); i++) {
 			coords = positions.get(i).split(",");
 
-			x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
-			y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
+			x = RobotPeer.WIDTH + random() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+			y = RobotPeer.HEIGHT + random() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
 			heading = 2 * PI * random();
 
 			int len = coords.length;
@@ -1037,8 +1020,8 @@ public final class Battle extends BaseBattle {
 		double x, y, heading;
 
 		for (int j = 0; j < 1000; j++) {
-			x = RobotPeer.WIDTH + random() * (battleField.getWidth() - 2 * RobotPeer.WIDTH);
-			y = RobotPeer.HEIGHT + random() * (battleField.getHeight() - 2 * RobotPeer.HEIGHT);
+			x = RobotPeer.WIDTH + random() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+			y = RobotPeer.HEIGHT + random() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
 			heading = 2 * PI * random();
 
 			robot.initialize(x, y, heading);

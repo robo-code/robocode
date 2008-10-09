@@ -18,6 +18,7 @@ import static robocode.io.Logger.logError;
 import robocode.io.Logger;
 import robocode.common.Command;
 import robocode.manager.RobocodeManager;
+import robocode.BattleRules;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -38,8 +39,10 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected final BattleEventDispatcher eventDispatcher;
 	protected RobocodeManager manager;
 
+    //rules
+    protected BattleRules battleRules;
+
 	// Current round items
-	private int numRounds;
 	private int roundNum;
 	private int currentTurn;
 	private int endTimer;
@@ -91,8 +94,8 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		this.roundNum = roundNum;
 	}
 
-	public void setNumRounds(int numRounds) {
-		this.numRounds = numRounds;
+    protected void setBattleRules(BattleRules battleRules) {
+		this.battleRules = battleRules;
 	}
 
 	/**
@@ -105,7 +108,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	public int getNumRounds() {
-		return numRounds;
+		return battleRules.getNumRounds();
 	}
 
 	public Thread getBattleThread() {
@@ -117,7 +120,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	public boolean isLastRound() {
-		return (roundNum + 1 == numRounds);
+		return (roundNum + 1 == getNumRounds());
 	}
 
 	public int getTPS() {
@@ -143,6 +146,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	public synchronized void cleanup() {
+        battleRules = null;
 		if (pendingCommands != null) {
 			pendingCommands.clear();
 			// don't pendingCommands = null;
@@ -193,7 +197,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	public void run() {
 		initializeBattle();
 
-		while (!isAborted && roundNum < numRounds) {
+		while (!isAborted && roundNum < getNumRounds()) {
 			try {
 
 				preloadRound();

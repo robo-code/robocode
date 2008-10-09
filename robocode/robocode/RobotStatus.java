@@ -38,10 +38,11 @@ public final class RobotStatus {
 	private final double gunHeat;
 	private final long dataQuotaAvailable;
 	private final int others;
-	private final int numRounds;
 	private final int roundNum;
+    private final long time;
+    private final BattleRules battleRules;
 
-	/**
+    /**
 	 * Creates a new RobotStatus based a a RobotPeer.
 	 * This constructor is called internally from the game.
 	 *
@@ -63,9 +64,10 @@ public final class RobotStatus {
 			gunHeat = robotPeer.getGunHeat();
 			dataQuotaAvailable = robotPeer.getDataQuotaAvailable();
 			others = robotPeer.getOthers();
-			numRounds = robotPeer.getNumRounds();
 			roundNum = robotPeer.getRoundNum();
-		}
+            time = robotPeer.getTime();
+            battleRules =robotPeer.getBattleRules();
+        }
 	}
 
 	/**
@@ -312,11 +314,15 @@ public final class RobotStatus {
 		return others;
 	}
 
-	public int getNumRounds() {
-		return numRounds;
-	}
-
 	public int getRoundNum() {
 		return roundNum;
 	}
+
+    public long getTime() {
+        return time;
+    }
+
+    public BattleRules getBattleRules() {
+        return battleRules;
+    }
 }

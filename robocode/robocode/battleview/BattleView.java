@@ -636,8 +636,8 @@ public class BattleView extends Canvas {
 
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			battleField = new DefaultBattleField(event.getBattleProperties().getBattlefieldWidth(),
-					event.getBattleProperties().getBattlefieldHeight());
+			battleField = new DefaultBattleField(event.getBattleRules().getBattlefieldWidth(),
+					event.getBattleRules().getBattlefieldHeight());
 			setVisible(true);
 			setInitialized(false);
 			super.onBattleStarted(event);

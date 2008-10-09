@@ -45,7 +45,6 @@ package robocode.peer;
 
 import robocode.*;
 import robocode.battle.Battle;
-import robocode.battlefield.BattleField;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -69,7 +68,7 @@ public class BulletPeer {
 
 	protected final RobotPeer owner;
 	protected final Battle battle;
-	private final BattleField battleField;
+	private final BattleRules battleRules;
 
 	private Bullet bullet;
 	protected RobotPeer victim;
@@ -109,7 +108,7 @@ public class BulletPeer {
 
 		this.owner = owner;
 		this.battle = battle;
-		battleField = battle.getBattleField();
+		battleRules = battle.getBattleRules();
 		bullet = new Bullet(this);
 		state = BulletState.FIRED;
 		color = owner.getBulletColor(); // Store current bullet color set on robot
@@ -205,15 +204,11 @@ public class BulletPeer {
 	}
 
 	private void checkWallCollision() {
-		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
-				|| (y + RADIUS >= battleField.getHeight())) {
+		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
+				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
 			owner.getEventManager().add(new BulletMissedEvent(bullet));
 		}
-	}
-
-	public BattleField getBattleField() {
-		return battleField;
 	}
 
 	public Bullet getBullet() {

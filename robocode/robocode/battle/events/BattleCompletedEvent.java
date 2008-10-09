@@ -13,7 +13,7 @@ package robocode.battle.events;
 
 
 import robocode.BattleResults;
-import robocode.battle.BattleProperties;
+import robocode.BattleRules;
 
 
 /**
@@ -21,17 +21,17 @@ import robocode.battle.BattleProperties;
  * @since 1.6.1
  */
 public class BattleCompletedEvent extends BattleEvent {
-	private final BattleProperties battleProperties;
+    private final BattleRules battleRules;
 	private final BattleResults[] results;
 
-	public BattleCompletedEvent(BattleProperties battleProperties, BattleResults[] results) {
-		this.battleProperties = battleProperties;
+	public BattleCompletedEvent(BattleRules battleRules, BattleResults[] results) {
+        this.battleRules = battleRules;
 		this.results = results;
 	}
 
-	public BattleProperties getBattleProperties() {
-		return battleProperties;
-	}
+    public BattleRules getBattleRules() {
+        return battleRules;
+    }
 
 	public BattleResults[] getResults() {
 		return results;

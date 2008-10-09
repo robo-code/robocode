@@ -66,7 +66,6 @@ package robocode.peer;
 import robocode.*;
 import robocode.Event;
 import robocode.battle.Battle;
-import robocode.battlefield.BattleField;
 import robocode.exception.*;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.NameManager;
@@ -139,7 +138,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	private double gunHeat;
 
-	private BattleField battleField;
+	private BattleRules battleRules;
 
 	private BoundingRectangle boundingBox;
 
@@ -471,13 +470,17 @@ public class RobotPeer implements Runnable, ContestantPeer {
 		return battle;
 	}
 
-	public double getBattleFieldHeight() {
-		return battleField.getHeight();
+	private double getBattleFieldHeight() {
+		return battleRules.getBattlefieldHeight();
 	}
 
-	public double getBattleFieldWidth() {
-		return battleField.getWidth();
+	private double getBattleFieldWidth() {
+        return battleRules.getBattlefieldWidth();
 	}
+
+    public BattleRules getBattleRules() {
+        return battle.getBattleRules(); 
+    }
 
 	public BoundingRectangle getBoundingBox() {
 		return boundingBox;
@@ -519,10 +522,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized double getRadarHeading() {
 		return radarHeading;
-	}
-
-	public double getGunCoolingRate() {
-		return battle.getGunCoolingRate();
 	}
 
 	public synchronized double getX() {
@@ -643,7 +642,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 	public void setBattle(Battle newBattle) {
 		battle = newBattle;
-		battleField = battle.getBattleField();
+		battleRules = battle.getBattleRules();
 	}
 
 	public synchronized void kill() {
@@ -1719,7 +1718,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	private synchronized void updateGunHeat() {
-		gunHeat -= battle.getGunCoolingRate();
+		gunHeat -= battleRules.getGunCoolingRate();
 		if (gunHeat < 0) {
 			gunHeat = 0;
 		}
