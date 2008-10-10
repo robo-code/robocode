@@ -51,19 +51,31 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	}
 
 	public void move(double distance) {
-		peer.move(distance);
+        peer.setMove(distance);
+        do {
+            execute(); // Always tick at least once
+        } while (getDistanceRemaining() != 0);
 	}
 
 	public void turnBody(double radians) {
-		peer.turnBody(radians);
+        peer.setTurnBody(radians);
+        do {
+            execute(); // Always tick at least once
+        } while (getBodyTurnRemaining() != 0);
 	}
 
 	public void turnGun(double radians) {
-		peer.turnGun(radians);
+        peer.setTurnGun(radians);
+        do {
+            execute(); // Always tick at least once
+        } while (getGunTurnRemaining() != 0);
 	}
 
 	public Bullet fire(double power) {
-		return peer.fire(power);
+        Bullet bullet = setFire(power);
+
+        execute();
+        return bullet;
 	}
 
 	// fast setters

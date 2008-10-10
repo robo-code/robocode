@@ -44,7 +44,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	// Current round items
 	private int roundNum;
-	private int time;
+	private int currentTurn;
 	private int endTimer;
 
 	// TPS (turns per second) calculation stuff
@@ -116,7 +116,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	public int getTime() {
-		return time;
+		return currentTurn;
 	}
 
 	public boolean isLastRound() {
@@ -256,7 +256,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 		roundOver = false;
 		endTimer = 0;
-		time = 0;
+		currentTurn = 0;
 	}
 
 	private void runRound() {
@@ -294,7 +294,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	protected void runTurn() {
-		time++;
+		currentTurn++;
 	}
 
 	protected void shutdownTurn() {

@@ -136,522 +136,515 @@ import java.util.regex.Pattern;
  */
 public final class Battle extends BaseBattle {
 
-	// Allowed maximum length for a robot's full package name
-	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
-	// Allowed maximum length for a robot's short class name
-	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
+    // Allowed maximum length for a robot's full package name
+    private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+    // Allowed maximum length for a robot's short class name
+    private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
 
-	// Inactivity related items
-	private int inactiveTurnCount;
-	private double inactivityEnergy;
+    // Inactivity related items
+    private int inactiveTurnCount;
+    private double inactivityEnergy;
 
-	// Turn skip related items
-	private int maxSkippedTurns = 30;
-	private int maxSkippedTurnsWithIO = 240;
-	private boolean parallelOn;
-	private double parallelConstant;
+    // Turn skip related items
+    private boolean parallelOn;
+    private double parallelConstant;
 
-	// Objects in the battle
-	private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
-	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
-	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
-	private int activeRobots;
+    // Objects in the battle
+    private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
+    private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
+    private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
+    private int activeRobots;
 
-	// Death events
-	private List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
+    // Death events
+    private List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
 
-	// Flag specifying if debugging is enabled thru the debug command line option
-	private boolean isDebugging;
+    // Flag specifying if debugging is enabled thru the debug command line option
+    private boolean isDebugging;
 
-	// Robot loading related items
-	private Thread unsafeLoadRobotsThread;
-	private final AtomicBoolean isUnsafeLoaderThreadRunning = new AtomicBoolean(false);
-	private final AtomicBoolean isRobotsLoaded = new AtomicBoolean(false);
+    // Robot loading related items
+    private Thread unsafeLoadRobotsThread;
+    private final AtomicBoolean isUnsafeLoaderThreadRunning = new AtomicBoolean(false);
+    private final AtomicBoolean isRobotsLoaded = new AtomicBoolean(false);
 
-	// Initial robot start positions (if any)
-	private double[][] initialRobotPositions;
+    // Initial robot start positions (if any)
+    private double[][] initialRobotPositions;
 
-	public Battle(RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
-		super(manager, eventDispatcher, paused);
+    public Battle(RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
+        super(manager, eventDispatcher, paused);
 
-		isDebugging = System.getProperty("debug", "false").equals("true");
-	}
+        isDebugging = System.getProperty("debug", "false").equals("true");
+    }
 
-	public void setProperties(BattleProperties battleProperties) {
-		try {
+    public void setProperties(BattleProperties battleProperties) {
+        try {
             setBattleRules(new BattleRules(battleProperties));
-			setInitialPositions(battleProperties.getInitialPositions());
-		} catch (Exception e) {
-			Logger.logError("Exception setting battle properties", e);
-		}
-	}
+            setInitialPositions(battleProperties.getInitialPositions());
+        } catch (Exception e) {
+            Logger.logError("Exception setting battle properties", e);
+        }
+    }
 
-	public void addBullet(BulletPeer bullet) {
-		bullets.add(bullet);
-	}
+    public void addBullet(BulletPeer bullet) {
+        bullets.add(bullet);
+    }
 
-	public void addRobot(RobotClassManager robotClassManager) {
-		RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota(),
-				robots.size());
-		TeamPeer teamManager = robotClassManager.getTeamManager();
+    public void addRobot(RobotClassManager robotClassManager) {
+        RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota(),
+                robots.size());
+        TeamPeer teamManager = robotClassManager.getTeamManager();
 
-		if (teamManager != null) {
-			teamManager.add(robotPeer);
-			addContestant(teamManager);
+        if (teamManager != null) {
+            teamManager.add(robotPeer);
+            addContestant(teamManager);
 
-		} else {
-			addContestant(robotPeer);
-		}
-		robotPeer.setBattle(this);
-		robotPeer.getOut();
+        } else {
+            addContestant(robotPeer);
+        }
+        robotPeer.setBattle(this);
+        robotPeer.getOut();
 
-		int count = 0;
+        int count = 0;
 
-		for (RobotPeer rp : robots) {
-			if (rp.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion().equals(
-					robotPeer.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion())) {
-				if (count == 0) {
-					if (!rp.isDuplicate()) {
-						rp.setDuplicate(0);
-					}
-				}
-				count++;
-			}
-		}
-		if (count > 0) {
-			robotPeer.setDuplicate(count);
-		} else {
-			robotPeer.setUnicate();
-		}
-		robots.add(robotPeer);
-	}
+        for (RobotPeer rp : robots) {
+            if (rp.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion().equals(
+                    robotPeer.getRobotClassManager().getClassNameManager().getFullClassNameWithVersion())) {
+                if (count == 0) {
+                    if (!rp.isDuplicate()) {
+                        rp.setDuplicate(0);
+                    }
+                }
+                count++;
+            }
+        }
+        robotPeer.setDuplicate(count);
+        robots.add(robotPeer);
+    }
 
-	public void registerDeathRobot(RobotPeer r) {
-		deathRobots.add(r);
-	}
+    private void addContestant(ContestantPeer c) {
+        if (!contestants.contains(c)) {
+            int count = 0;
+
+            for (ContestantPeer cp : contestants) {
+                if (cp.getName().equals(c.getName())) {
+                    if (count == 0) {
+                        if (!cp.isDuplicate()) {
+                            cp.setDuplicate(0);
+                        }
+                    }
+                    count++;
+                }
+            }
+            if (count > 0) {
+                c.setDuplicate(count);
+            }
+            contestants.add(c);
+        }
+    }
+
+    public void registerDeathRobot(RobotPeer r) {
+        deathRobots.add(r);
+    }
 
     public BattleRules getBattleRules() {
         return battleRules;
     }
 
-	public List<BulletPeer> getBullets() {
-		return bullets;
-	}
+    public List<BulletPeer> getBullets() {
+        return bullets;
+    }
 
-	public List<RobotPeer> getRobots() {
-		return robots;
-	}
+    public List<RobotPeer> getRobots() {
+        return robots;
+    }
 
-	public void removeBullet(BulletPeer bullet) {
-		bullets.remove(bullet);
-	}
+    public boolean isDebugging() {
+        return isDebugging;
+    }
 
-	public void resetInactiveTurnCount(double energyLoss) {
-		if (energyLoss < 0) {
-			return;
-		}
-		inactivityEnergy += energyLoss;
-		while (inactivityEnergy >= 10) {
-			inactivityEnergy -= 10;
-			inactiveTurnCount = 0;
-		}
-	}
+    public void removeBullet(BulletPeer bullet) {
+        bullets.remove(bullet);
+    }
 
-	/**
-	 * Gets the activeRobots.
-	 *
-	 * @return Returns a int
-	 */
-	public synchronized int getActiveRobots() {
-		return activeRobots;
-	}
+    public void resetInactiveTurnCount(double energyLoss) {
+        if (energyLoss < 0) {
+            return;
+        }
+        inactivityEnergy += energyLoss;
+        while (inactivityEnergy >= 10) {
+            inactivityEnergy -= 10;
+            inactiveTurnCount = 0;
+        }
+    }
 
-	@Override
-	public synchronized void cleanup() {
+    /**
+     * Gets the activeRobots.
+     *
+     * @return Returns a int
+     */
+    public synchronized int getActiveRobots() {
+        return activeRobots;
+    }
 
-		if (contestants != null) {
-			contestants.clear();
-			contestants = null;
-		}
+    @Override
+    public synchronized void cleanup() {
 
-		if (robots != null) {
-			for (RobotPeer r : robots) {
-				// Clear all static field on the robot (at class level)
-				r.cleanupStaticFields();
+        if (contestants != null) {
+            contestants.clear();
+            contestants = null;
+        }
 
-				// Clear the robot object by removing the reference to it
-				r.setRobot(null);
-				r.cleanup();
-			}
-			robots.clear();
-			robots = null;
-		}
+        if (robots != null) {
+            for (RobotPeer r : robots) {
+                r.cleanup();
+            }
+            robots.clear();
+            robots = null;
+        }
 
-		super.cleanup();
+        super.cleanup();
 
-		battleManager = null;
+        battleManager = null;
 
-		Logger.setLogListener(null);
+        Logger.setLogListener(null);
 
-		// Request garbage collecting
-		for (int i = 4; i >= 0; i--) { // Make sure it is run
-			System.gc();
-		}
-	}
+        // Request garbage collecting
+        for (int i = 4; i >= 0; i--) { // Make sure it is run
+            System.gc();
+        }
+    }
 
-	@Override
-	protected void initializeBattle() {
-		super.initializeBattle();
+    @Override
+    protected void initializeBattle() {
+        super.initializeBattle();
 
-		// Starting loader thread
-		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
+        // Starting loader thread
+        ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
 
-		unsafeThreadGroup.setDaemon(true);
-		unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
-		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
-		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
-		unsafeLoadRobotsThread.start();
+        unsafeThreadGroup.setDaemon(true);
+        unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
+        unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
+        manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
+        unsafeLoadRobotsThread.start();
 
-		// Pre-load robot classes without security...
-		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
-		// in the safe robot loader the class is linked.
-		synchronized (robots) {
-			initRobots();
+        // Pre-load robot classes without security...
+        // loadClass WILL NOT LINK the class, so static "cheats" will not work.
+        // in the safe robot loader the class is linked.
+        synchronized (robots) {
+            initRobots();
 
-			parallelOn = System.getProperty("PARALLEL", "false").equals("true");
-			if (parallelOn) {
-				// how could robots share CPUs ?
-				parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
-				// four CPUs can't run two single threaded robot faster than two CPUs
-				if (parallelConstant < 1) {
-					parallelConstant = 1;
-				}
-			}
-		}
+            parallelOn = System.getProperty("PARALLEL", "false").equals("true");
+            if (parallelOn) {
+                // how could robots share CPUs ?
+                parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
+                // four CPUs can't run two single threaded robot faster than two CPUs
+                if (parallelConstant < 1) {
+                    parallelConstant = 1;
+                }
+            }
+        }
 
-		final TurnSnapshot snapshot = new TurnSnapshot(this);
+        final TurnSnapshot snapshot = new TurnSnapshot(this);
 
-		eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
-		if (isPaused()) {
-			eventDispatcher.onBattlePaused(new BattlePausedEvent());
-		}
-	}
+        eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
+        if (isPaused()) {
+            eventDispatcher.onBattlePaused(new BattlePausedEvent());
+        }
+    }
 
-	@Override
-	protected void shutdownBattle() {
-		for (RobotPeer r : robots) {
-			r.getOut().close();
-			r.getRobotThreadManager().cleanup();
-		}
+    @Override
+    protected void shutdownBattle() {
+        for (RobotPeer r : robots) {
+            r.getOut().close();
+            r.getRobotThreadManager().cleanup();
+        }
 
-		unsafeLoadRobotsThread.interrupt();
+        unsafeLoadRobotsThread.interrupt();
 
-		super.shutdownBattle();
+        super.shutdownBattle();
 
-		// At this point the 'running' state should be false = not running, before the scores are calculated
+        // At this point the 'running' state should be false = not running, before the scores are calculated
 
-		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
+        eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
 
-		if (!isAborted()) {
-			eventDispatcher.onBattleCompleted(
-					new BattleCompletedEvent(battleRules, computeResults()));
-		}
-	}
+        if (!isAborted()) {
+            eventDispatcher.onBattleCompleted(
+                    new BattleCompletedEvent(battleRules, computeResults()));
+        }
+    }
 
-	@Override
-	protected void finalizeBattle() {
-		super.finalizeBattle();
-		for (RobotPeer r : robots) {
-			r.getRobotStatistics().resetScores();
-		}
-	}
+    @Override
+    protected void finalizeBattle() {
+        super.finalizeBattle();
+        for (RobotPeer r : robots) {
+            r.getRobotStatistics().resetScores();
+        }
+    }
 
-	@Override
-	protected void preloadRound() {
-		super.preloadRound();
-		loadRobots();
+    @Override
+    protected void preloadRound() {
+        super.preloadRound();
+        loadRobots();
 
-		computeActiveRobots();
+        computeActiveRobots();
 
-		manager.getThreadManager().reset();
+        manager.getThreadManager().reset();
 
-		// Turning on robots
-		startRobots();
-	}
+        // Turning on robots
+        startRobots();
+    }
 
-	@Override
-	protected void initializeRound() {
-		super.initializeRound();
-		inactiveTurnCount = 0;
+    @Override
+    protected void initializeRound() {
+        super.initializeRound();
+        inactiveTurnCount = 0;
 
-		eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
-	}
+        eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
+    }
 
-	@Override
-	protected void finalizeRound() {
-		super.finalizeRound();
+    @Override
+    protected void finalizeRound() {
+        super.finalizeRound();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime()));
-	}
+        eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime()));
+    }
 
-	@Override
-	protected void cleanupRound() {
-		super.cleanupRound();
+    @Override
+    protected void cleanupRound() {
+        super.cleanupRound();
 
-		bullets.clear();
-		for (RobotPeer r : robots) {
-			r.getRobotStatistics().generateTotals();
-			r.getRobotThreadManager().waitForStop();
-		}
-	}
+        bullets.clear();
+        for (RobotPeer r : robots) {
+            r.getRobotStatistics().generateTotals();
+            r.getRobotThreadManager().waitForStop();
+        }
+    }
 
-	@Override
-	protected void initializeTurn() {
-		super.initializeTurn();
+    @Override
+    protected void initializeTurn() {
+        super.initializeTurn();
 
-		eventDispatcher.onTurnStarted(new TurnStartedEvent());
-	}
+        eventDispatcher.onTurnStarted(new TurnStartedEvent());
+    }
 
-	@Override
-	protected void runTurn() {
+    @Override
+    protected void runTurn() {
 
-		super.runTurn();
+        super.runTurn();
 
-		updateBullets();
+        updateBullets();
 
-		updateRobots();
+        updateRobots();
 
         handleDeathRobots();
 
         if (isAborted() || oneTeamRemaining()) {
-			shutdownTurn();
-		}
+            shutdownTurn();
+        }
 
-		inactiveTurnCount++;
+        inactiveTurnCount++;
 
-		computeActiveRobots();
+        computeActiveRobots();
 
-		publishStatuses();
+        publishStatuses();
 
-		// Robot time!
-		wakeupRobots();
-	}
+        // Robot time!
+        wakeupRobots();
+    }
 
-	@Override
-	protected void shutdownTurn() {
-		if (getEndTimer() == 0) {
-			if (isAborted()) {
-				for (RobotPeer r : getRobotsAtRandom()) {
-					if (!r.isDead()) {
-						r.getOut().println("SYSTEM: game aborted.");
-					}
-				}
-			} else if (oneTeamRemaining()) {
-				boolean leaderFirsts = false;
-				TeamPeer winningTeam = null;
+    @Override
+    protected void shutdownTurn() {
+        if (getEndTimer() == 0) {
+            if (isAborted()) {
+                for (RobotPeer r : getRobotsAtRandom()) {
+                    if (!r.isDead()) {
+                        r.getOut().println("SYSTEM: game aborted.");
+                    }
+                }
+            } else if (oneTeamRemaining()) {
+                boolean leaderFirsts = false;
+                TeamPeer winningTeam = null;
 
-				for (RobotPeer r : getRobotsAtRandom()) {
-					if (!r.isDead()) {
-						if (!r.isWinner()) {
-							r.getRobotStatistics().scoreLastSurvivor();
-							r.setWinner(true);
-							r.getOut().println("SYSTEM: " + r.getName() + " wins the round.");
-							r.getEventManager().add(new WinEvent());
-							if (r.getTeamPeer() != null) {
-								if (r.isTeamLeader()) {
-									leaderFirsts = true;
-								} else {
-									winningTeam = r.getTeamPeer();
-								}
-							}
-						}
-					}
-				}
-				if (!leaderFirsts && winningTeam != null) {
-					winningTeam.getTeamLeader().getRobotStatistics().scoreFirsts();
-				}
-			}
-		}
+                for (RobotPeer r : getRobotsAtRandom()) {
+                    if (!r.isDead()) {
+                        if (!r.isWinner()) {
+                            r.getRobotStatistics().scoreLastSurvivor();
+                            r.setWinner(true);
+                            r.getOut().println("SYSTEM: " + r.getName() + " wins the round.");
+                            r.getEventManager().add(new WinEvent());
+                            if (r.getTeamPeer() != null) {
+                                if (r.isTeamLeader()) {
+                                    leaderFirsts = true;
+                                } else {
+                                    winningTeam = r.getTeamPeer();
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!leaderFirsts && winningTeam != null) {
+                    winningTeam.getTeamLeader().getRobotStatistics().scoreFirsts();
+                }
+            }
+        }
 
-		if (getEndTimer() == 1 && (isAborted() || isLastRound())) {
+        if (getEndTimer() == 1 && (isAborted() || isLastRound())) {
 
-			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
+            List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
 
-			Collections.sort(orderedRobots);
-			Collections.reverse(orderedRobots);
+            Collections.sort(orderedRobots);
+            Collections.reverse(orderedRobots);
 
-			for (int rank = 0; rank < robots.size(); rank++) {
-				RobotPeer r = orderedRobots.get(rank);
-				BattleResults resultsForRobots = r.getStatistics().getFinalResults(rank + 1);
+            for (int rank = 0; rank < robots.size(); rank++) {
+                RobotPeer r = orderedRobots.get(rank);
+                BattleResults resultsForRobots = r.getStatistics().getFinalResults(rank + 1);
 
-				r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots));
-			}
-		}
+                r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots));
+            }
+        }
 
-		if (getEndTimer() > 4 * 30) {
-			for (RobotPeer r : robots) {
-				if (!r.isDead()) {
-					r.setHalt(true);
-				}
-			}
-		}
+        if (getEndTimer() > 4 * 30) {
+            for (RobotPeer r : robots) {
+                if (!r.isDead()) {
+                    r.setHalt(true);
+                }
+            }
+        }
 
-		super.shutdownTurn();
-	}
+        super.shutdownTurn();
+    }
 
-	@Override
-	protected void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this)));
+    @Override
+    protected void finalizeTurn() {
+        eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this)));
 
-		super.finalizeTurn();
-	}
+        super.finalizeTurn();
+    }
 
-	private void initRobots() {
-		for (RobotPeer r : robots) {
-			try {
-				Class<?> c;
+    private void initRobots() {
+        for (RobotPeer r : robots) {
+            try {
+                Class<?> c;
 
-				RobotClassManager classManager = r.getRobotClassManager();
-				String className = classManager.getFullClassName();
+                RobotClassManager classManager = r.getRobotClassManager();
+                String className = classManager.getFullClassName();
 
-				RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
+                RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
 
-				if (RobotClassManager.isSecutityOn()) {
-					c = classLoader.loadRobotClass(className, true);
-				} else {
-					c = classLoader.loadClass(className);
-				}
+                if (RobotClassManager.isSecutityOn()) {
+                    c = classLoader.loadRobotClass(className, true);
+                } else {
+                    c = classLoader.loadClass(className);
+                }
 
-				classManager.setRobotClass(c);
+                classManager.setRobotClass(c);
 
-				r.getRobotFileSystemManager().initializeQuota();
+                r.getRobotFileSystemManager().initializeQuota();
 
-				RobotFileSpecification robotFileSpecification = classManager.getRobotSpecification();
+                RobotFileSpecification robotFileSpecification = classManager.getRobotSpecification();
 
-				r.setJuniorRobot(robotFileSpecification.isJuniorRobot());
-				r.setAdvancedRobot(robotFileSpecification.isAdvancedRobot());
-				r.setInteractiveRobot(robotFileSpecification.isInteractiveRobot());
-				r.setPaintRobot(robotFileSpecification.isPaintRobot());
-				r.setTeamRobot(robotFileSpecification.isTeamRobot());
-				r.setDroid(robotFileSpecification.isDroid());
+                r.setJuniorRobot(robotFileSpecification.isJuniorRobot());
+                r.setAdvancedRobot(robotFileSpecification.isAdvancedRobot());
+                r.setInteractiveRobot(robotFileSpecification.isInteractiveRobot());
+                r.setPaintRobot(robotFileSpecification.isPaintRobot());
+                r.setTeamRobot(robotFileSpecification.isTeamRobot());
+                r.setDroid(robotFileSpecification.isDroid());
 
-				// create proxy
-				r.createRobotProxy();
+                // create proxy
+                r.createRobotProxy();
 
-				initializeRobotPosition(r);
+                initializeRobotPosition(r);
 
-			} catch (Throwable e) {
-				r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
-				e.printStackTrace(r.getOut());
-			}
-		}
-	}
+            } catch (Throwable e) {
+                r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
+                e.printStackTrace(r.getOut());
+            }
+        }
+    }
 
-	private void startRobots() {
-		for (RobotPeer r : getRobotsAtRandom()) {
-			manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
-			long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
+    private void startRobots() {
+        for (RobotPeer r : getRobotsAtRandom()) {
+            manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
+            long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
-			synchronized (r) {
-				try {
-					Logger.logMessage(".", false);
+            synchronized (r) {
+                try {
+                    Logger.logMessage(".", false);
 
-					// Add StatusEvent for the first turn
-					r.publishStatus();
+                    // Add StatusEvent for the first turn
+                    r.publishStatus();
 
-					// Start the robot thread
-					r.getRobotThreadManager().start();
+                    // Start the robot thread
+                    r.getRobotThreadManager().start();
 
-					if (!isDebugging) {
-						// Wait for the robot to go to sleep (take action)
-						r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
-					}
-				} catch (InterruptedException e) {
-					logMessage("Wait for " + r + " interrupted.");
+                    if (!isDebugging) {
+                        // Wait for the robot to go to sleep (take action)
+                        r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
+                    }
+                } catch (InterruptedException e) {
+                    logMessage("Wait for " + r + " interrupted.");
 
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-			if (!(r.isSleeping() || isDebugging)) {
-				logMessage(
-						"\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
-			}
-		}
-	}
+                    // Immediately reasserts the exception by interrupting the caller thread itself
+                    Thread.currentThread().interrupt();
+                }
+            }
+            if (!(r.isSleeping() || isDebugging)) {
+                logMessage(
+                        "\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
+            }
+        }
+    }
 
-	private RobotResults[] computeResults() {
-		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(contestants);
+    private RobotResults[] computeResults() {
+        List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(contestants);
 
-		Collections.sort(orderedPeers);
-		Collections.reverse(orderedPeers);
+        Collections.sort(orderedPeers);
+        Collections.reverse(orderedPeers);
 
-		RobotResults results[] = new RobotResults[orderedPeers.size()];
+        RobotResults results[] = new RobotResults[orderedPeers.size()];
 
-		for (int i = 0; i < results.length; i++) {
-			ContestantPeer cp = orderedPeers.get(i);
-			RobotSpecification robotSpec = null;
+        for (int i = 0; i < results.length; i++) {
+            ContestantPeer cp = orderedPeers.get(i);
+            RobotSpecification robotSpec = null;
 
-			if (cp instanceof RobotPeer) {
-				robotSpec = ((RobotPeer) cp).getRobotClassManager().getControlRobotSpecification();
-			} else if (cp instanceof TeamPeer) {
-				robotSpec = ((TeamPeer) cp).getTeamLeader().getRobotClassManager().getControlRobotSpecification();
-			}
-			BattleResults battleResults = cp.getStatistics().getFinalResults(i + 1);
+            if (cp instanceof RobotPeer) {
+                robotSpec = ((RobotPeer) cp).getRobotClassManager().getControlRobotSpecification();
+            } else if (cp instanceof TeamPeer) {
+                robotSpec = ((TeamPeer) cp).getTeamLeader().getRobotClassManager().getControlRobotSpecification();
+            }
+            BattleResults battleResults = cp.getStatistics().getFinalResults(i + 1);
 
-			results[i] = new RobotResults(robotSpec, battleResults);
-		}
-		return results;
-	}
+            results[i] = new RobotResults(robotSpec, battleResults);
+        }
+        return results;
+    }
 
-	private void addContestant(ContestantPeer c) {
-		if (!contestants.contains(c)) {
-			int count = 0;
+    /**
+     * Returns a list of all robots in random order. This method is used to gain fair play in Robocode,
+     * so that a robot placed before another robot in the list will not gain any benefit when the game
+     * checks if a robot has won, is dead, etc.
+     * This method was introduced as two equal robots like sample.RamFire got different scores even
+     * though the code was exactly the same.
+     *
+     * @return a list of robots
+     */
+    private List<RobotPeer> getRobotsAtRandom() {
+        List<RobotPeer> shuffledList = new ArrayList<RobotPeer>(robots);
 
-			for (ContestantPeer cp : contestants) {
-				if (cp.getName().equals(c.getName())) {
-					if (count == 0) {
-						if (!cp.isDuplicate()) {
-							cp.setDuplicate(0);
-						}
-					}
-					count++;
-				}
-			}
-			if (count > 0) {
-				c.setDuplicate(count);
-			}
-			contestants.add(c);
-		}
-	}
+        Collections.shuffle(shuffledList, RandomFactory.getRandom());
+        return shuffledList;
+    }
 
-	/**
-	 * Returns a list of all robots in random order. This method is used to gain fair play in Robocode,
-	 * so that a robot placed before another robot in the list will not gain any benefit when the game
-	 * checks if a robot has won, is dead, etc.
-	 * This method was introduced as two equal robots like sample.RamFire got different scores even
-	 * though the code was exactly the same.
-	 *
-	 * @return a list of robots
-	 */
-	private List<RobotPeer> getRobotsAtRandom() {
-		List<RobotPeer> shuffledList = new ArrayList<RobotPeer>(robots);
+    private void updateBullets() {
+        for (BulletPeer b : bullets) {
+            b.update();
+        }
+    }
 
-		Collections.shuffle(shuffledList, RandomFactory.getRandom());
-		return shuffledList;
-	}
+    private void updateRobots() {
+        boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
 
-	private void updateBullets() {
-		for (BulletPeer b : bullets) {
-			b.update();
-		}
-	}
-
-	private void updateRobots() {
-		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
-
-		// Move all bots
-		for (RobotPeer r : getRobotsAtRandom()) {
+        // Move all bots
+        for (RobotPeer r : getRobotsAtRandom()) {
 
             // update robots
             final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
@@ -666,8 +659,8 @@ public final class Battle extends BaseBattle {
                     }
                 }
             }
-		}
-	}
+        }
+    }
 
     private void handleDeathRobots() {
 
@@ -693,511 +686,495 @@ public final class Battle extends BaseBattle {
         deathRobots.clear();
     }
 
-	private void publishStatuses() {
-		for (RobotPeer r : robots) {
-			r.publishStatus();
-		}
-	}
-
-	private synchronized void computeActiveRobots() {
-		int ar = 0;
-
-		// Compute active robots
-		for (RobotPeer r : robots) {
-			if (!r.isDead()) {
-				ar++;
-			}
-		}
-		this.activeRobots = ar;
-	}
-
-	private void wakeupRobots() {
-		// Wake up all robot threads
-		synchronized (robots) {
-			final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
-
-			if (parallelOn) {
-				wakeupParallel(robotsAtRandom);
-			} else {
-				wakeupSerial(robotsAtRandom);
-			}
-		}
-	}
-
-	private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
-		final long waitTime = manager.getCpuManager().getCpuConstant();
-		int millisWait = (int) (waitTime / 1000000);
-
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning()) {
-				// This call blocks until the
-				// robot's thread actually wakes up.
-				r.wakeup();
-
-				if (r.isAlive()) {
-					synchronized (r) {
-						// It's quite possible for simple robots to
-						// complete their processing before we get here,
-						// so we test if the robot is already asleep.
-
-						if (!r.isSleeping()) {
-							try {
-								for (int i = millisWait; i > 0 && !r.isSleeping(); i--) {
-									r.wait(0, 999999);
-								}
-								if (!r.isSleeping()) {
-									r.wait(0, (int) (waitTime % 1000000));
-								}
-							} catch (InterruptedException e) {
-								// Immediately reasserts the exception by interrupting the caller thread itself
-								Thread.currentThread().interrupt();
-
-								logMessage("Wait for " + r + " interrupted.");
-							}
-						}
-					}
-					setSkippedTurns(r);
-				}
-			}
-		}
-	}
-
-	private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
-		final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
-		int millisWait = (int) (waitTime / 1000000);
-
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning()) {
-				r.wakeup();
-			}
-		}
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning() && r.isAlive()) {
-				try {
-					synchronized (r) {
-						for (; millisWait > 0 && !r.isSleeping(); millisWait--) {
-							r.wait(0, 999999);
-						}
-						if (!r.isSleeping()) {
-							r.wait(0, (int) (waitTime % 1000000));
-						}
-					}
-				} catch (InterruptedException e) {
-					logMessage("Wait for " + r + " interrupted.");
-
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning() && r.isAlive()) {
-				setSkippedTurns(r);
-			}
-		}
-	}
-
-	private void setSkippedTurns(RobotPeer r) {
-		if (r.isSleeping() || !r.isRunning() || isDebugging) {
-			r.setSkippedTurns(0);
-		} else {
-			r.setSkippedTurns(r.getSkippedTurns() + 1);
-
-			r.getEventManager().add(new SkippedTurnEvent());
-
-			if ((!r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurns))
-					|| (r.isIORobot() && (r.getSkippedTurns() > maxSkippedTurnsWithIO))) {
-				r.getOut().println(
-						"SYSTEM: " + r.getName() + " has not performed any actions in a reasonable amount of time.");
-				r.getOut().println("SYSTEM: No score will be generated.");
-				r.getRobotStatistics().setInactive();
-				r.getRobotThreadManager().forceStop();
-			}
-		}
-	}
-
-	private int getActiveContestantCount(RobotPeer peer) {
-		int count = 0;
-
-		for (ContestantPeer c : contestants) {
-			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
-				count++;
-			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
-				for (RobotPeer r : (TeamPeer) c) {
-					if (!r.isDead()) {
-						count++;
-						break;
-					}
-				}
-			}
-		}
-		return count;
-	}
-
-	private void loadRobots() {
-		// Flag that robots are not loaded
-		synchronized (isRobotsLoaded) {
-			isRobotsLoaded.set(false);
-			isRobotsLoaded.notifyAll();
-		}
-
-		// Wait for the unsafe loader thread to start running
-		synchronized (isUnsafeLoaderThreadRunning) {
-			while (!isUnsafeLoaderThreadRunning.get()) {
-				try {
-					isUnsafeLoaderThreadRunning.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
-		// At this point the unsafe loader thread will now set itself to wait for a notify
-
-		for (RobotPeer r : robots) {
-			if (getRoundNum() > 0) {
-				r.preInitialize();
-			} // fake dead so robot won't display
-
-			r.getOut().println("=========================");
-			r.getOut().println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
-			r.getOut().println("=========================");
-		}
-
-		// At this point the unsafe loader thread is still waiting for a signal.
-		// So, notify it to continue the loading.
-		synchronized (isUnsafeLoaderThreadRunning) {
-			isUnsafeLoaderThreadRunning.notifyAll();
-		}
-
-		// Wait for the robots to become loaded
-		synchronized (isRobotsLoaded) {
-			while (!isRobotsLoaded.get()) {
-				try {
-					isRobotsLoaded.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
-		String name;
-
-		for (RobotPeer r : robots) {
-			name = r.getRobotClassManager().getClassNameManager().getFullPackage();
-			if (name != null && name.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
-						+ " characters maximum please.";
-
-				r.getOut().println(message);
-				logMessage(message);
-				r.getOut().println("SYSTEM: Robot disabled.");
-				r.setEnergy(0);
-			}
-
-			name = r.getRobotClassManager().getClassNameManager().getShortClassName();
-			if (name != null && name.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-				final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
-						+ " characters maximum please.";
-
-				r.getOut().println(message);
-				logMessage(message);
-				r.getOut().println("SYSTEM: Robot disabled.");
-				r.setEnergy(0);
-			}
-		}
-	}
-
-	private void setInitialPositions(String initialPositions) {
-		initialRobotPositions = null;
-
-		if (initialPositions == null || initialPositions.trim().length() == 0) {
-			return;
-		}
-
-		List<String> positions = new ArrayList<String>();
-
-		Pattern pattern = Pattern.compile("([^,(]*[(][^)]*[)])?[^,]*,?");
-		Matcher matcher = pattern.matcher(initialPositions);
-
-		while (matcher.find()) {
-			String pos = matcher.group();
-
-			if (pos.length() > 0) {
-				positions.add(pos);
-			}
-		}
-
-		if (positions.size() == 0) {
-			return;
-		}
-
-		initialRobotPositions = new double[positions.size()][3];
-
-		String[] coords;
-		double x, y, heading;
-
-		for (int i = 0; i < positions.size(); i++) {
-			coords = positions.get(i).split(",");
-
-			x = RobotPeer.WIDTH + random() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-			y = RobotPeer.HEIGHT + random() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
-			heading = 2 * PI * random();
-
-			int len = coords.length;
-
-			if (len >= 1) {
-				try {
-					x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
-				} catch (NumberFormatException e) {}
-
-				if (len >= 2) {
-					try {
-						y = Double.parseDouble(coords[1].replaceAll("[\\D]", ""));
-					} catch (NumberFormatException e) {}
-
-					if (len >= 3) {
-						try {
-							heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[\\D]", "")));
-						} catch (NumberFormatException e) {}
-					}
-				}
-			}
-			initialRobotPositions[i][0] = x;
-			initialRobotPositions[i][1] = y;
-			initialRobotPositions[i][2] = heading;
-		}
-	}
-
-	private void initializeRobotPosition(RobotPeer robot) {
-		if (initialRobotPositions != null) {
-			int index = robots.indexOf(robot);
-
-			if (index >= 0 && index < initialRobotPositions.length) {
-				double[] pos = initialRobotPositions[index];
-
-				robot.initialize(pos[0], pos[1], pos[2]);
-				if (validSpot(robot)) {
-					return;
-				}
-			}
-		}
-
-		double x, y, heading;
-
-		for (int j = 0; j < 1000; j++) {
-			x = RobotPeer.WIDTH + random() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-			y = RobotPeer.HEIGHT + random() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
-			heading = 2 * PI * random();
-
-			robot.initialize(x, y, heading);
-
-			if (validSpot(robot)) {
-				break;
-			}
-		}
-	}
-
-	private boolean validSpot(RobotPeer robot) {
-		robot.updateBoundingBox();
-		for (RobotPeer r : robots) {
-			if (r != null && r != robot) {
-				if (robot.getBoundingBox().intersects(r.getBoundingBox())) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	private boolean oneTeamRemaining() {
-		if (getActiveRobots() <= 1) {
-			return true;
-		}
-
-		boolean found = false;
-		TeamPeer currentTeam = null;
-
-		for (RobotPeer currentRobot : robots) {
-			if (!currentRobot.isDead()) {
-				if (!found) {
-					found = true;
-					currentTeam = currentRobot.getRobotClassManager().getTeamManager();
-				} else {
-					if (currentTeam == null && currentRobot.getRobotClassManager().getTeamManager() == null) {
-						return false;
-					}
-					if (currentTeam != currentRobot.getRobotClassManager().getTeamManager()) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
-
-	private void unsafeLoadRobots() {
-		while (true) {
-			synchronized (isUnsafeLoaderThreadRunning) {
-				try {
-					// Notify that the unsafe loader thread is now running
-					isUnsafeLoaderThreadRunning.set(true);
-					isUnsafeLoaderThreadRunning.notifyAll();
-
-					// Wait for a notify in order to continue
-					isUnsafeLoaderThreadRunning.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-			// Loader awake
-			if (getRoundNum() >= getNumRounds() || isAborted()) {
-				// Robot loader thread terminating
-				return;
-			}
-			// Loading robots
-			for (RobotPeer robotPeer : robots) {
-				robotPeer.setRobot(null);
-				Class<?> robotClass;
-
-				try {
-					manager.getThreadManager().setLoadingRobot(robotPeer);
-					robotClass = robotPeer.getRobotClassManager().getRobotClass();
-					if (robotClass == null) {
-						robotPeer.getOut().println("SYSTEM: Skipping robot: " + robotPeer.getName());
-						robotPeer.setEnergy(0);
-						continue;
-					}
-					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
-
-					robotPeer.setRobot(bot);
-
-					bot.setOut(robotPeer.getOut());
-					bot.setPeer(robotPeer.getRobotProxy());
-				} catch (IllegalAccessException e) {
-					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
-					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
-					robotPeer.setEnergy(0);
-					robotPeer.setRobot(null);
-					logMessage(e);
-				} catch (Throwable e) {
-					robotPeer.getOut().println(
-							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
-					robotPeer.getOut().println("SYSTEM: " + e);
-					e.printStackTrace(robotPeer.getOut());
-					robotPeer.setRobot(null);
-					robotPeer.setEnergy(0);
-					logMessage(e);
-				}
-				if (getRoundNum() > 0) {
-					initializeRobotPosition(robotPeer);
-				}
-			} // for
-
-			manager.getThreadManager().setLoadingRobot(null);
-
-			// Notify that the robots has been loaded
-			synchronized (isRobotsLoaded) {
-				isRobotsLoaded.set(true);
-				isRobotsLoaded.notifyAll();
-			}
-		}
-	}
-
-	private class UnsafeLoadRobotsThread extends Thread {
-
-		public UnsafeLoadRobotsThread() {
-			super(new ThreadGroup("Robot Loader Group"), "Robot Loader");
-			setDaemon(true);
-		}
-
-		@Override
-		public void run() {
-			// Load robots
-			unsafeLoadRobots();
-		}
-	}
-
-	// --------------------------------------------------------------------------
-	// Processing and maintaining robot and battle controls
-	// --------------------------------------------------------------------------
-
-	public void killRobot(int robotIndex) {
-		sendCommand(new KillRobotCommand(robotIndex));
-	}
-
-	public void setPaintEnabled(int robotIndex, boolean enable) {
-		sendCommand(new EnableRobotPaintCommand(robotIndex, enable));
-	}
-
-	public void setSGPaintEnabled(int robotIndex, boolean enable) {
-		sendCommand(new EnableRobotSGPaintCommand(robotIndex, enable));
-	}
-
-	public void sendInteractiveEvent(Event e) {
-		sendCommand(new SendInteractiveEventCommand(e));
-	}
-
-	private class RobotCommand extends Command {
-		final int robotIndex;
-
-		RobotCommand(int robotIndex) {
-			this.robotIndex = robotIndex;
-		}
-	}
-
-
-	private class KillRobotCommand extends RobotCommand {
-		KillRobotCommand(int robotIndex) {
-			super(robotIndex);
-		}
-
-		public void execute() {
-			robots.get(robotIndex).kill();
-		}
-	}
-
-
-	private class EnableRobotPaintCommand extends RobotCommand {
-		final boolean enablePaint;
-
-		EnableRobotPaintCommand(int robotIndex, boolean enablePaint) {
-			super(robotIndex);
-			this.enablePaint = enablePaint;
-		}
-
-		public void execute() {
-			robots.get(robotIndex).setPaintEnabled(enablePaint);
-		}
-	}
-
-
-	private class EnableRobotSGPaintCommand extends RobotCommand {
-		final boolean enableSGPaint;
-
-		EnableRobotSGPaintCommand(int robotIndex, boolean enableSGPaint) {
-			super(robotIndex);
-			this.enableSGPaint = enableSGPaint;
-		}
-
-		public void execute() {
-			robots.get(robotIndex).setSGPaintEnabled(enableSGPaint);
-		}
-	}
-
-
-	private class SendInteractiveEventCommand extends Command {
-		public final Event event;
-
-		SendInteractiveEventCommand(Event event) {
-			this.event = event;
-		}
-
-		public void execute() {
-			for (RobotPeer robot : robots) {
-				robot.onInteractiveEvent(event);
-			}
-		}
-	}
+    private void publishStatuses() {
+        for (RobotPeer r : robots) {
+            r.publishStatus();
+        }
+    }
+
+    private synchronized void computeActiveRobots() {
+        int ar = 0;
+
+        // Compute active robots
+        for (RobotPeer r : robots) {
+            if (!r.isDead()) {
+                ar++;
+            }
+        }
+        this.activeRobots = ar;
+    }
+
+    private void wakeupRobots() {
+        // Wake up all robot threads
+        synchronized (robots) {
+            final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
+
+            if (parallelOn) {
+                wakeupParallel(robotsAtRandom);
+            } else {
+                wakeupSerial(robotsAtRandom);
+            }
+        }
+    }
+
+    private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
+        final long waitTime = manager.getCpuManager().getCpuConstant();
+        int millisWait = (int) (waitTime / 1000000);
+
+        for (RobotPeer r : robotsAtRandom) {
+            if (r.isRunning()) {
+                // This call blocks until the
+                // robot's thread actually wakes up.
+                r.wakeup();
+
+                if (r.isAlive()) {
+                    synchronized (r) {
+                        // It's quite possible for simple robots to
+                        // complete their processing before we get here,
+                        // so we test if the robot is already asleep.
+
+                        if (!r.isSleeping()) {
+                            try {
+                                for (int i = millisWait; i > 0 && !r.isSleeping(); i--) {
+                                    r.wait(0, 999999);
+                                }
+                                if (!r.isSleeping()) {
+                                    r.wait(0, (int) (waitTime % 1000000));
+                                }
+                            } catch (InterruptedException e) {
+                                // Immediately reasserts the exception by interrupting the caller thread itself
+                                Thread.currentThread().interrupt();
+
+                                logMessage("Wait for " + r + " interrupted.");
+                            }
+                        }
+                    }
+                    r.setSkippedTurns();
+                }
+            }
+        }
+    }
+
+    private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
+        final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
+        int millisWait = (int) (waitTime / 1000000);
+
+        for (RobotPeer r : robotsAtRandom) {
+            if (r.isRunning()) {
+                r.wakeup();
+            }
+        }
+        for (RobotPeer r : robotsAtRandom) {
+            if (r.isRunning() && r.isAlive()) {
+                try {
+                    synchronized (r) {
+                        for (; millisWait > 0 && !r.isSleeping(); millisWait--) {
+                            r.wait(0, 999999);
+                        }
+                        if (!r.isSleeping()) {
+                            r.wait(0, (int) (waitTime % 1000000));
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    logMessage("Wait for " + r + " interrupted.");
+
+                    // Immediately reasserts the exception by interrupting the caller thread itself
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+        for (RobotPeer r : robotsAtRandom) {
+            if (r.isRunning() && r.isAlive()) {
+                r.setSkippedTurns();
+            }
+        }
+    }
+
+    private int getActiveContestantCount(RobotPeer peer) {
+        int count = 0;
+
+        for (ContestantPeer c : contestants) {
+            if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
+                count++;
+            } else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
+                for (RobotPeer r : (TeamPeer) c) {
+                    if (!r.isDead()) {
+                        count++;
+                        break;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    private void loadRobots() {
+        // Flag that robots are not loaded
+        synchronized (isRobotsLoaded) {
+            isRobotsLoaded.set(false);
+            isRobotsLoaded.notifyAll();
+        }
+
+        // Wait for the unsafe loader thread to start running
+        synchronized (isUnsafeLoaderThreadRunning) {
+            while (!isUnsafeLoaderThreadRunning.get()) {
+                try {
+                    isUnsafeLoaderThreadRunning.wait();
+                } catch (InterruptedException e) {
+                    // Immediately reasserts the exception by interrupting the caller thread itself
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+        // At this point the unsafe loader thread will now set itself to wait for a notify
+
+        for (RobotPeer r : robots) {
+            if (getRoundNum() > 0) {
+                r.preInitialize();
+            } // fake dead so robot won't display
+
+            r.getOut().println("=========================");
+            r.getOut().println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
+            r.getOut().println("=========================");
+        }
+
+        // At this point the unsafe loader thread is still waiting for a signal.
+        // So, notify it to continue the loading.
+        synchronized (isUnsafeLoaderThreadRunning) {
+            isUnsafeLoaderThreadRunning.notifyAll();
+        }
+
+        // Wait for the robots to become loaded
+        synchronized (isRobotsLoaded) {
+            while (!isRobotsLoaded.get()) {
+                try {
+                    isRobotsLoaded.wait();
+                } catch (InterruptedException e) {
+                    // Immediately reasserts the exception by interrupting the caller thread itself
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+        String name;
+
+        for (RobotPeer r : robots) {
+            name = r.getRobotClassManager().getClassNameManager().getFullPackage();
+            if (name != null && name.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+                final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+                        + " characters maximum please.";
+
+                r.getOut().println(message);
+                logMessage(message);
+                r.getOut().println("SYSTEM: Robot disabled.");
+                r.setEnergy(0);
+            }
+
+            name = r.getRobotClassManager().getClassNameManager().getShortClassName();
+            if (name != null && name.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
+                final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+                        + " characters maximum please.";
+
+                r.getOut().println(message);
+                logMessage(message);
+                r.getOut().println("SYSTEM: Robot disabled.");
+                r.setEnergy(0);
+            }
+        }
+    }
+
+    private void setInitialPositions(String initialPositions) {
+        initialRobotPositions = null;
+
+        if (initialPositions == null || initialPositions.trim().length() == 0) {
+            return;
+        }
+
+        List<String> positions = new ArrayList<String>();
+
+        Pattern pattern = Pattern.compile("([^,(]*[(][^)]*[)])?[^,]*,?");
+        Matcher matcher = pattern.matcher(initialPositions);
+
+        while (matcher.find()) {
+            String pos = matcher.group();
+
+            if (pos.length() > 0) {
+                positions.add(pos);
+            }
+        }
+
+        if (positions.size() == 0) {
+            return;
+        }
+
+        initialRobotPositions = new double[positions.size()][3];
+
+        String[] coords;
+        double x, y, heading;
+
+        for (int i = 0; i < positions.size(); i++) {
+            coords = positions.get(i).split(",");
+
+            x = RobotPeer.WIDTH + random() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+            y = RobotPeer.HEIGHT + random() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+            heading = 2 * PI * random();
+
+            int len = coords.length;
+
+            if (len >= 1) {
+                try {
+                    x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
+                } catch (NumberFormatException e) {
+                }
+
+                if (len >= 2) {
+                    try {
+                        y = Double.parseDouble(coords[1].replaceAll("[\\D]", ""));
+                    } catch (NumberFormatException e) {
+                    }
+
+                    if (len >= 3) {
+                        try {
+                            heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[\\D]", "")));
+                        } catch (NumberFormatException e) {
+                        }
+                    }
+                }
+            }
+            initialRobotPositions[i][0] = x;
+            initialRobotPositions[i][1] = y;
+            initialRobotPositions[i][2] = heading;
+        }
+    }
+
+    private void initializeRobotPosition(RobotPeer robot) {
+        if (initialRobotPositions != null) {
+            int index = robots.indexOf(robot);
+
+            if (index >= 0 && index < initialRobotPositions.length) {
+                double[] pos = initialRobotPositions[index];
+
+                robot.initialize(pos[0], pos[1], pos[2]);
+                if (validSpot(robot)) {
+                    return;
+                }
+            }
+        }
+
+        double x, y, heading;
+
+        for (int j = 0; j < 1000; j++) {
+            x = RobotPeer.WIDTH + random() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+            y = RobotPeer.HEIGHT + random() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+            heading = 2 * PI * random();
+
+            robot.initialize(x, y, heading);
+
+            if (validSpot(robot)) {
+                break;
+            }
+        }
+    }
+
+    private boolean validSpot(RobotPeer robot) {
+        robot.updateBoundingBox();
+        for (RobotPeer r : robots) {
+            if (r != null && r != robot) {
+                if (robot.getBoundingBox().intersects(r.getBoundingBox())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean oneTeamRemaining() {
+        if (getActiveRobots() <= 1) {
+            return true;
+        }
+
+        boolean found = false;
+        TeamPeer currentTeam = null;
+
+        for (RobotPeer currentRobot : robots) {
+            if (!currentRobot.isDead()) {
+                if (!found) {
+                    found = true;
+                    currentTeam = currentRobot.getRobotClassManager().getTeamManager();
+                } else {
+                    if (currentTeam == null && currentRobot.getRobotClassManager().getTeamManager() == null) {
+                        return false;
+                    }
+                    if (currentTeam != currentRobot.getRobotClassManager().getTeamManager()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private void unsafeLoadRobots() {
+        while (true) {
+            synchronized (isUnsafeLoaderThreadRunning) {
+                try {
+                    // Notify that the unsafe loader thread is now running
+                    isUnsafeLoaderThreadRunning.set(true);
+                    isUnsafeLoaderThreadRunning.notifyAll();
+
+                    // Wait for a notify in order to continue
+                    isUnsafeLoaderThreadRunning.wait();
+                } catch (InterruptedException e) {
+                    // Immediately reasserts the exception by interrupting the caller thread itself
+                    Thread.currentThread().interrupt();
+                }
+            }
+            // Loader awake
+            if (getRoundNum() >= getNumRounds() || isAborted()) {
+                // Robot loader thread terminating
+                return;
+            }
+            // Loading robots
+            for (RobotPeer robotPeer : robots) {
+                robotPeer.setRobot(null);
+                Class<?> robotClass;
+
+                try {
+                    manager.getThreadManager().setLoadingRobot(robotPeer);
+                    robotClass = robotPeer.getRobotClassManager().getRobotClass();
+                    if (robotClass == null) {
+                        robotPeer.getOut().println("SYSTEM: Skipping robot: " + robotPeer.getName());
+                        robotPeer.setEnergy(0);
+                        continue;
+                    }
+                    IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
+
+                    robotPeer.setRobot(bot);
+
+                    bot.setOut(robotPeer.getOut());
+                    bot.setPeer(robotPeer.getRobotProxy());
+                } catch (IllegalAccessException e) {
+                    robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
+                    robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
+                    robotPeer.setEnergy(0);
+                    robotPeer.setRobot(null);
+                    logMessage(e);
+                } catch (Throwable e) {
+                    robotPeer.getOut().println(
+                            "SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
+                    robotPeer.getOut().println("SYSTEM: " + e);
+                    e.printStackTrace(robotPeer.getOut());
+                    robotPeer.setRobot(null);
+                    robotPeer.setEnergy(0);
+                    logMessage(e);
+                }
+                if (getRoundNum() > 0) {
+                    initializeRobotPosition(robotPeer);
+                }
+            } // for
+
+            manager.getThreadManager().setLoadingRobot(null);
+
+            // Notify that the robots has been loaded
+            synchronized (isRobotsLoaded) {
+                isRobotsLoaded.set(true);
+                isRobotsLoaded.notifyAll();
+            }
+        }
+    }
+
+    private class UnsafeLoadRobotsThread extends Thread {
+
+        public UnsafeLoadRobotsThread() {
+            super(new ThreadGroup("Robot Loader Group"), "Robot Loader");
+            setDaemon(true);
+        }
+
+        @Override
+        public void run() {
+            // Load robots
+            unsafeLoadRobots();
+        }
+    }
+
+    // --------------------------------------------------------------------------
+    // Processing and maintaining robot and battle controls
+    // --------------------------------------------------------------------------
+
+    public void killRobot(int robotIndex) {
+        sendCommand(new KillRobotCommand(robotIndex));
+    }
+
+    public void setPaintEnabled(int robotIndex, boolean enable) {
+        sendCommand(new EnableRobotPaintCommand(robotIndex, enable));
+    }
+
+    public void setSGPaintEnabled(int robotIndex, boolean enable) {
+        sendCommand(new EnableRobotSGPaintCommand(robotIndex, enable));
+    }
+
+    public void sendInteractiveEvent(Event e) {
+        sendCommand(new SendInteractiveEventCommand(e));
+    }
+
+    private class RobotCommand extends Command {
+        final int robotIndex;
+
+        RobotCommand(int robotIndex) {
+            this.robotIndex = robotIndex;
+        }
+    }
+
+
+    private class KillRobotCommand extends RobotCommand {
+        KillRobotCommand(int robotIndex) {
+            super(robotIndex);
+        }
+
+        public void execute() {
+            robots.get(robotIndex).kill();
+        }
+    }
+
+
+    private class EnableRobotPaintCommand extends RobotCommand {
+        final boolean enablePaint;
+
+        EnableRobotPaintCommand(int robotIndex, boolean enablePaint) {
+            super(robotIndex);
+            this.enablePaint = enablePaint;
+        }
+
+        public void execute() {
+            robots.get(robotIndex).setPaintEnabled(enablePaint);
+        }
+    }
+
+
+    private class EnableRobotSGPaintCommand extends RobotCommand {
+        final boolean enableSGPaint;
+
+        EnableRobotSGPaintCommand(int robotIndex, boolean enableSGPaint) {
+            super(robotIndex);
+            this.enableSGPaint = enableSGPaint;
+        }
+
+        public void execute() {
+            robots.get(robotIndex).setSGPaintEnabled(enableSGPaint);
+        }
+    }
+
+
+    private class SendInteractiveEventCommand extends Command {
+        public final Event event;
+
+        SendInteractiveEventCommand(Event event) {
+            this.event = event;
+        }
+
+        public void execute() {
+            for (RobotPeer robot : robots) {
+                robot.onInteractiveEvent(event);
+            }
+        }
+    }
 }

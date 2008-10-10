@@ -13,6 +13,7 @@ package robocode;
 
 
 import robocode.peer.RobotPeer;
+import robocode.battle.Battle;
 
 
 /**
@@ -36,7 +37,7 @@ public final class RobotStatus {
 	private final double gunTurnRemaining;
 	private final double distanceRemaining;
 	private final double gunHeat;
-	private final long dataQuotaAvailable;
+	private final long dataQuotaAvailable; //TODO move to hosting
 	private final int others;
 	private final int roundNum;
     private final long time;
@@ -48,7 +49,7 @@ public final class RobotStatus {
 	 *
 	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
 	 */
-	public RobotStatus(RobotPeer robotPeer) {
+	public RobotStatus(RobotPeer robotPeer, Battle battle) {
 		synchronized (robotPeer) {
 			energy = robotPeer.getEnergy();
 			x = robotPeer.getX();
@@ -63,9 +64,9 @@ public final class RobotStatus {
 			distanceRemaining = robotPeer.getDistanceRemaining();
 			gunHeat = robotPeer.getGunHeat();
 			dataQuotaAvailable = robotPeer.getDataQuotaAvailable();
-			others = robotPeer.getOthers();
-			roundNum = robotPeer.getRoundNum();
-            time = robotPeer.getTime();
+			others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
+			roundNum = battle.getRoundNum();
+            time = battle.getTime();
             battleRules =robotPeer.getBattleRules();
         }
 	}
