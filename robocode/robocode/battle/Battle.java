@@ -391,7 +391,7 @@ public final class Battle extends BaseBattle {
 	protected void finalizeRound() {
 		super.finalizeRound();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getCurrentTurn()));
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime()));
 	}
 
 	@Override

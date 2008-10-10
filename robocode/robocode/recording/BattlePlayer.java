@@ -108,7 +108,7 @@ public final class BattlePlayer extends BaseBattle {
 	protected void finalizeRound() {
 		super.finalizeRound();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getCurrentTurn()));
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime()));
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected boolean isRoundOver() {
-		return (isAborted() || getCurrentTurn() > record.recordsInTurns[getRoundNum()]);
+		return (isAborted() || getTime() > record.recordsInTurns[getRoundNum()]);
 	}
 
 	private TurnSnapshot readSnapshot() {

@@ -1257,7 +1257,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public long getTime() {
-		return battle.getCurrentTurn();
+		return battle.getTime();
 	}
 
 	public synchronized double getVelocity() {
