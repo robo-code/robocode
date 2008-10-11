@@ -35,8 +35,8 @@ public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPee
         }
 
         // Save current max. velocity and max. turn rate so they can be restored
-        final double savedMaxVelocity = peer.getMaxVelocity();
-        final double savedMaxTurnRate = peer.getMaxTurnRate();
+        final double savedMaxVelocity = commands.getMaxVelocity();
+        final double savedMaxTurnRate = commands.getMaxTurnRate();
 
         final double absDegrees = Math.abs(Math.toDegrees(radians));
         final double absDistance = Math.abs(distance);
@@ -93,22 +93,22 @@ public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPee
         // -- Move and turn in a curve --
 
         // Set the calculated max. velocity
-        peer.setMaxVelocity(maxVelocity);
+        commands.setMaxVelocity(maxVelocity);
 
         // Set the robot to move the specified distance
-        peer.setMove(distance);
+        setMoveImpl(distance);
         // Set the robot to turn its body to the specified amount of radians
-        peer.setTurnBody(radians);
+        setTurnBodyImpl(radians);
 
         // Loop thru the number of turns it will take to move the distance and adjust
         // the max. turn rate so it fit the current velocity of the robot
         for (int t = turns; t >= 0; t--) {
-            peer.setMaxTurnRate(getVelocity() * radians / absDistance);
+            commands.setMaxTurnRate(getVelocity() * radians / absDistance);
             execute(); // Perform next turn
         }
 
         // Restore the saved max. velocity and max. turn rate
-        peer.setMaxVelocity(savedMaxVelocity);
-        peer.setMaxTurnRate(savedMaxTurnRate);
+        commands.setMaxVelocity(savedMaxVelocity);
+        commands.setMaxTurnRate(savedMaxTurnRate);
 	}
 }

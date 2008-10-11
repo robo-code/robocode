@@ -34,64 +34,77 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 
 	public boolean isAdjustGunForBodyTurn() {
 		getCall();
-		return peer.isAdjustGunForBodyTurn();
+		return commands.isAdjustGunForBodyTurn();
 	}
 
 	public boolean isAdjustRadarForGunTurn() {
 		getCall();
-		return peer.isAdjustRadarForGunTurn();
+		return commands.isAdjustRadarForGunTurn();
 	}
 
 	public boolean isAdjustRadarForBodyTurn() {
 		getCall();
-		return peer.isAdjustRadarForBodyTurn();
+		return commands.isAdjustRadarForBodyTurn();
 	}
 
 	// asynchronous actions
 	public void setResume() {
 		setCall();
-		peer.setResume();
+		setResumeImpl();
 	}
 
 	public void setStop(boolean overwrite) {
 		setCall();
-		peer.setStop(overwrite);
+		setStopImpl(overwrite);
 	}
 
 	public void setMove(double distance) {
 		setCall();
-		peer.setMove(distance);
+		setMoveImpl(distance);
 	}
 
 	public void setTurnBody(double radians) {
 		setCall();
-		peer.setTurnBody(radians);
+		setTurnBodyImpl(radians);
 	}
 
 	public void setTurnGun(double radians) {
 		setCall();
-		peer.setTurnGun(radians);
+		setTurnGunImpl(radians);
 	}
 
 	public void setTurnRadar(double radians) {
 		setCall();
-		peer.setTurnRadar(radians);
+		setTurnRadarImpl(radians);
 	}
 
 	// blocking actions
 	public void waitFor(Condition condition) {
-		peer.waitFor(condition);
+        waitCondition = condition;
+        do {
+            execute(); // Always tick at least once
+        } while (!condition.test());
+
+        waitCondition = null;
 	}
 
 	// fast setters
 	public void setMaxTurnRate(double newTurnRate) {
 		setCall();
-		peer.setMaxTurnRate(newTurnRate);
+        if (Double.isNaN(newTurnRate)) {
+            peer.getOut().println("You cannot setMaxTurnRate to: " + newTurnRate);
+            return;
+        }
+        commands.setMaxTurnRate(newTurnRate);
 	}
 
 	public void setMaxVelocity(double newVelocity) {
 		setCall();
-		peer.setMaxVelocity(newVelocity);
+        if (Double.isNaN(newVelocity)) {
+            peer.getOut().println("You cannot setMaxVelocity to: " + newVelocity);
+            return;
+        }
+        commands.setMaxVelocity(newVelocity);
 	}
 
 	// events manipulation
@@ -188,6 +201,6 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 
 	public long getDataQuotaAvailable() {
 		getCall();
-		return status.get().getDataQuotaAvailable();
+		return peer.getDataQuotaAvailable();
 	}
 }

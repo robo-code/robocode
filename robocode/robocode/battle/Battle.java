@@ -571,7 +571,7 @@ public final class Battle extends BaseBattle {
                     Logger.logMessage(".", false);
 
                     // Add StatusEvent for the first turn
-                    r.publishStatus();
+                    r.publishStatus(true);
 
                     // Start the robot thread
                     r.getRobotThreadManager().start();
@@ -688,7 +688,7 @@ public final class Battle extends BaseBattle {
 
     private void publishStatuses() {
         for (RobotPeer r : robots) {
-            r.publishStatus();
+            r.publishStatus(false);
         }
     }
 

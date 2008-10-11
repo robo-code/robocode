@@ -13,6 +13,7 @@ package robocode;
 
 
 import robocode.peer.RobotPeer;
+import robocode.peer.RobotCommands;
 import robocode.battle.Battle;
 
 
@@ -37,7 +38,6 @@ public final class RobotStatus {
 	private final double gunTurnRemaining;
 	private final double distanceRemaining;
 	private final double gunHeat;
-	private final long dataQuotaAvailable; //TODO move to hosting
 	private final int others;
 	private final int roundNum;
     private final long time;
@@ -49,7 +49,7 @@ public final class RobotStatus {
 	 *
 	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
 	 */
-	public RobotStatus(RobotPeer robotPeer, Battle battle) {
+	public RobotStatus(RobotPeer robotPeer, RobotCommands commands, Battle battle) {
 		synchronized (robotPeer) {
 			energy = robotPeer.getEnergy();
 			x = robotPeer.getX();
@@ -58,16 +58,15 @@ public final class RobotStatus {
 			gunHeading = robotPeer.getGunHeading();
 			radarHeading = robotPeer.getRadarHeading();
 			velocity = robotPeer.getVelocity();
-			bodyTurnRemaining = robotPeer.getBodyTurnRemaining();
-			radarTurnRemaining = robotPeer.getRadarTurnRemaining();
-			gunTurnRemaining = robotPeer.getGunTurnRemaining();
-			distanceRemaining = robotPeer.getDistanceRemaining();
+            bodyTurnRemaining = commands.getBodyTurnRemaining();
+            radarTurnRemaining = commands.getRadarTurnRemaining();
+            gunTurnRemaining = commands.getGunTurnRemaining();
+            distanceRemaining = commands.getDistanceRemaining();
 			gunHeat = robotPeer.getGunHeat();
-			dataQuotaAvailable = robotPeer.getDataQuotaAvailable();
 			others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
 			roundNum = battle.getRoundNum();
             time = battle.getTime();
-            battleRules =robotPeer.getBattleRules();
+            battleRules = robotPeer.getBattleRules();
         }
 	}
 
@@ -313,10 +312,6 @@ public final class RobotStatus {
 	 */
 	public double getGunHeat() {
 		return gunHeat;
-	}
-
-	public long getDataQuotaAvailable() {
-		return dataQuotaAvailable;
 	}
 
 	public int getOthers() {
