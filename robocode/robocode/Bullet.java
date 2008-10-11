@@ -31,14 +31,28 @@ import robocode.peer.BulletPeer;
  */
 public class Bullet {
 	private BulletPeer peer;
+    private double heading;
+    private double x;
+    private double y;
+    private double power;
+    private String name;
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
-	 *
-	 * @param peer the bullet peer of the {@code Bullet}
 	 */
-	public Bullet(BulletPeer peer) {
+    public Bullet(double heading, double x, double y, double power, String name) {
+        this.heading = heading;
+        this.x = x;
+        this.y = y;
+        this.power = power;
+        this.name = name;
+    }
+
+    public void setPeer(BulletPeer peer){
 		this.peer = peer;
+		heading = peer.getHeading();
+		name = peer.getOwner().getName();
+		power = peer.getPower();
 	}
 
 	/**
@@ -49,7 +63,7 @@ public class Bullet {
 	 * @return the direction the bullet is/was heading, in degrees
 	 */
 	public double getHeading() {
-		return Math.toDegrees(peer.getHeading());
+		return Math.toDegrees(heading);
 	}
 
 	/**
@@ -60,7 +74,7 @@ public class Bullet {
 	 * @return the direction the bullet is/was heading, in radians
 	 */
 	public double getHeadingRadians() {
-		return peer.getHeading();
+		return heading;
 	}
 
 	/**
@@ -69,7 +83,7 @@ public class Bullet {
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getName() {
-		return peer.getOwner().getName();
+		return name;
 	}
 
 	/**
@@ -82,7 +96,7 @@ public class Bullet {
 	 * @return the power of the bullet
 	 */
 	public double getPower() {
-		return peer.getPower();
+		return power;
 	}
 
 	/**
@@ -92,7 +106,7 @@ public class Bullet {
 	 * @return the velocity of the bullet
 	 */
 	public double getVelocity() {
-		return peer.getVelocity();
+        return Rules.getBulletSpeed(getPower());
 	}
 
 	/**
@@ -103,7 +117,7 @@ public class Bullet {
 	 *         the bullet has not hit a robot.
 	 */
 	public String getVictim() {
-		return (peer.getVictim() != null) ? peer.getVictim().getName() : null;
+		return peer == null ? null : (peer.getVictim() == null) ? null : peer.getVictim().getName();
 	}
 
 	/**
@@ -112,7 +126,7 @@ public class Bullet {
 	 * @return the X position of the bullet
 	 */
 	public double getX() {
-		return peer.getX();
+		return peer == null ? x : peer.getX();
 	}
 
 	/**
@@ -121,7 +135,7 @@ public class Bullet {
 	 * @return the Y position of the bullet
 	 */
 	public double getY() {
-		return peer.getY();
+		return peer == null ? y : peer.getY();
 	}
 
 	/**
@@ -131,6 +145,6 @@ public class Bullet {
 	 *         {@code false} otherwise
 	 */
 	public boolean isActive() {
-		return peer.isActive();
+		return peer == null || peer.isActive();
 	}
 }

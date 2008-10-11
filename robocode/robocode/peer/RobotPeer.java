@@ -115,9 +115,19 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private static final int maxSkippedTurns = 30;
     private static final int maxSkippedTurnsWithIO = 240;
 
-    IBasicRobot robot;
+    private Battle battle;
+    private EventManager eventManager;
+    private RobotClassManager robotClassManager;
+    private RobotFileSystemManager robotFileSystemManager;
+    private RobotThreadManager robotThreadManager;
+    private RobotStatistics statistics;
+    private RobotMessageManager messageManager;
+    private TeamPeer teamPeer;
 
-    int index; // robot index in battle
+    private IBasicRobot robot;
+    private BasicRobotProxy robotProxy;
+
+    private int index; // robot index in battle
 
     private RobotOutputStream out;
 
@@ -126,27 +136,17 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private double bodyHeading;
     private double radarHeading;
     private double gunHeading;
+    private double gunHeat;
     private double x;
     private double y;
+    private int skippedTurns;
 
+    private boolean slowingDown;
+    private int moveDirection;
     private double acceleration;
-    private double maxVelocity = Rules.MAX_VELOCITY; // Can be changed by robot
-    private double maxTurnRate = Rules.MAX_TURN_RATE_RADIANS; // Can be changed by robot
-
-    private double turnRemaining;
-    private double radarTurnRemaining;
-    private double gunTurnRemaining;
-
-    private double distanceRemaining;
-
-    private double gunHeat;
+    private boolean scan;
 
     private BattleRules battleRules;
-
-    private BoundingRectangle boundingBox;
-
-    private Arc2D scanArc;
-
     private boolean isJuniorRobot;
     private boolean isInteractiveRobot;
     private boolean isPaintRobot;
@@ -154,79 +154,51 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private boolean isTeamRobot;
     private boolean isDroid;
     private boolean isIORobot;
-
-    // thread is running
-    private boolean isRunning;
-
-    // waiting for next tick
-    private boolean isSleeping;
-
-    private boolean isStopped;
-    private boolean isWinner;
-
-    private double saveAngleToTurn;
-    private double saveDistanceToGo;
-    private double saveGunAngleToTurn;
-    private double saveRadarAngleToTurn;
-    private boolean scan;
-
-    private Battle battle;
-
-    private EventManager eventManager;
-
-    private Condition waitCondition;
-
-    private boolean isAdjustGunForBodyTurn;
-    private boolean isAdjustRadarForGunTurn;
-    private boolean isAdjustRadarForBodyTurn;
-
-    private boolean isAdjustRadarForBodyTurnSet;
-
+    private boolean isDuplicate;
+    private boolean paintEnabled;
+    private boolean sgPaintEnabled;
     private boolean checkFileQuota;
-
-    private boolean halt;
-    private boolean inCollision;
-
     private String name;
     private String shortName;
     private String veryShortName;
     private String nonVersionedName;
 
-    private RobotClassManager robotClassManager;
-    private RobotFileSystemManager robotFileSystemManager;
-    private RobotThreadManager robotThreadManager;
+    private boolean isStopped;
+    private double saveAngleToTurn;
+    private double saveDistanceToGo;
+    private double saveGunAngleToTurn;
+    private double saveRadarAngleToTurn;
+    private Condition waitCondition;
+    private boolean isAdjustGunForBodyTurn;
+    private boolean isAdjustRadarForGunTurn;
+    private boolean isAdjustRadarForBodyTurn;
+    private boolean isAdjustRadarForBodyTurnSet;
 
-    private int skippedTurns;
-
-    private RobotStatistics statistics;
-
+    private double maxVelocity = Rules.MAX_VELOCITY; // Can be changed by robot
+    private double maxTurnRate = Rules.MAX_TURN_RATE_RADIANS; // Can be changed by robot
+    private double turnRemaining;
+    private double radarTurnRemaining;
+    private double gunTurnRemaining;
+    private double distanceRemaining;
     private Color bodyColor;
     private Color gunColor;
     private Color radarColor;
     private Color bulletColor;
     private Color scanColor;
 
-    private RobotMessageManager messageManager;
-
-    private TeamPeer teamPeer;
-
-    private boolean isDuplicate;
-    private boolean slowingDown;
-
-    private int moveDirection;
-
-    private boolean testingCondition;
-
-    private BulletPeer newBullet;
-
-    private boolean paintEnabled;
-    private boolean sgPaintEnabled;
-
-    private Graphics2DProxy graphicsProxy;
-
+    // thread is running
+    private boolean isRunning;
+    // waiting for next tick
+    private boolean isSleeping;
+    private boolean isWinner;
+    private boolean halt;
+    private boolean inCollision;
     protected RobotState state;
-
-    private BasicRobotProxy robotProxy;
+    private boolean testingCondition;
+    private BulletPeer newBullet;
+    private Arc2D scanArc;
+    private BoundingRectangle boundingBox;
+    private Graphics2DProxy graphicsProxy;
 
     public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota, int index) {
         super();
@@ -277,7 +249,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
         }
     }
 
-    public IBasicRobotPeer getRobotProxy() {
+    public BasicRobotProxy getRobotProxy() {
         return robotProxy;
     }
 
@@ -874,21 +846,25 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
         gunHeat += Rules.getGunHeat(firePower);
 
-        BulletPeer bullet = new BulletPeer(this, battle);
+        double angle;
+        if (eventManager.isFireAssistValid()) {
+            angle  = eventManager.getFireAssistAngle();
+        } else {
+            angle = getGunHeading();
+        }
+
+        Bullet robotBullet = new Bullet(angle, x,y,firePower, getName());
+        BulletPeer bullet = new BulletPeer(this, battle, robotBullet);
 
         bullet.setPower(firePower);
-        bullet.setVelocity(Rules.getBulletSpeed(firePower));
-        if (eventManager.isFireAssistValid()) {
-            bullet.setHeading(eventManager.getFireAssistAngle());
-        } else {
-            bullet.setHeading(getGunHeading());
-        }
+        bullet.setHeading(angle);
         bullet.setX(x);
         bullet.setY(y);
+        robotBullet.setPeer(bullet);
 
         newBullet = bullet;
 
-        return bullet.getBullet();
+        return robotBullet;
     }
 
     public final synchronized void setMove(double distance) {
@@ -1122,9 +1098,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
         }
         gunHeat = 3;
 
-        distanceRemaining = turnRemaining = gunTurnRemaining = radarTurnRemaining = 0;
-
-        setStop(true);
         setHalt(false);
 
         scan = false;
@@ -1137,8 +1110,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
         eventManager.reset();
 
-        setMaxVelocity(Double.MAX_VALUE);
-        setMaxTurnRate(Double.MAX_VALUE);
 
         statistics.initialize();
 
@@ -1150,6 +1121,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
         robotProxy.setGetCallCount(0);
         skippedTurns = 0;
 
+        distanceRemaining = turnRemaining = gunTurnRemaining = radarTurnRemaining = 0;
+        setStop(true);
+        setMaxVelocity(Double.MAX_VALUE);
+        setMaxTurnRate(Double.MAX_VALUE);
         setAdjustGunForBodyTurn(false);
         setAdjustRadarForBodyTurn(false);
         setAdjustRadarForGunTurn(false);
@@ -1703,13 +1678,14 @@ public class RobotPeer implements Runnable, ContestantPeer {
                     if (!(teammate.isDead() || teammate == this)) {
                         teammate.setEnergy(teammate.getEnergy() - 30);
 
-                        BulletPeer sBullet = new BulletPeer(this, battle);
-
+                        Bullet robotBullet = new Bullet(0, teammate.getX(), teammate.getY(), 4, getName());
+                        BulletPeer sBullet = new BulletPeer(this, battle, robotBullet);
                         sBullet.setState(BulletState.HIT_VICTIM);
                         sBullet.setX(teammate.getX());
                         sBullet.setY(teammate.getY());
                         sBullet.setVictim(teammate);
                         sBullet.setPower(4);
+                        robotBullet.setPeer(sBullet);
                         battle.addBullet(sBullet);
                     }
                 }
@@ -1717,7 +1693,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
             battle.registerDeathRobot(this);
 
             // 'fake' bullet for explosion on self
-            battle.addBullet(new ExplosionPeer(this, battle));
+            Bullet robotBullet = new Bullet(0, getX(), getY(), 1, getName());
+            final ExplosionPeer fake = new ExplosionPeer(this, battle, robotBullet);
+            battle.addBullet(fake);
+            robotBullet.setPeer(fake);
         }
         setEnergy(0);
 

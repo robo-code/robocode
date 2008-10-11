@@ -75,7 +75,6 @@ public class BulletPeer {
 
 	protected BulletState state;
 
-	private double velocity;
 	private double heading;
 
 	protected double x;
@@ -103,13 +102,13 @@ public class BulletPeer {
 	 * @param owner  who fire the bullet
 	 * @param battle root battle
 	 */
-	public BulletPeer(RobotPeer owner, Battle battle) {
+	public BulletPeer(RobotPeer owner, Battle battle, Bullet bullet) {
 		super();
 
 		this.owner = owner;
 		this.battle = battle;
 		battleRules = battle.getBattleRules();
-		bullet = new Bullet(this);
+		this.bullet = bullet;
 		state = BulletState.FIRED;
 		color = owner.getBulletColor(); // Store current bullet color set on robot
 	}
@@ -232,7 +231,7 @@ public class BulletPeer {
 	}
 
 	public synchronized double getVelocity() {
-		return velocity;
+		return Rules.getBulletSpeed(power);
 	}
 
 	public synchronized RobotPeer getVictim() {
@@ -273,10 +272,6 @@ public class BulletPeer {
 
 	public synchronized void setPower(double newPower) {
 		power = newPower;
-	}
-
-	public synchronized void setVelocity(double newVelocity) {
-		velocity = newVelocity;
 	}
 
 	public synchronized void setVictim(RobotPeer newVictim) {

@@ -28,6 +28,7 @@ package robocode.peer;
 
 
 import robocode.battle.Battle;
+import robocode.Bullet;
 
 
 /**
@@ -40,8 +41,8 @@ public class ExplosionPeer extends BulletPeer {
 
 	private static final int EXPLOSION_LENGTH = 71;
 
-	public ExplosionPeer(RobotPeer owner, Battle battle) {
-		super(owner, battle);
+	public ExplosionPeer(RobotPeer owner, Battle battle, Bullet bullet) {
+		super(owner, battle, bullet);
 
 		x = owner.getX();
 		y = owner.getY();
