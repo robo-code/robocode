@@ -170,7 +170,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public double getGunHeading() {
 		getCall();
-		return status.get().getRadarHeadingRadians();
+		return status.get().getGunHeadingRadians();
 	}
 
     public double getRadarHeading() {
