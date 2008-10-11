@@ -135,7 +135,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public double getBodyTurnRemaining() {
 		getCall();
-		return status.get().getTurnRemainingRadians();
+		return status.get().getBodyTurnRemainingRadians();
 	}
 
     public double getGunTurnRemaining() {
@@ -155,7 +155,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public String getName() {
 		getCall();
-		return peer.getName(); //TODO status ?
+		return peer.getName();
 	}
 
 	public long getTime() {
@@ -165,7 +165,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public double getBodyHeading() {
 		getCall();
-		return status.get().getHeadingRadians();
+		return status.get().getBodyHeadingRadians();
 	}
 
 	public double getGunHeading() {

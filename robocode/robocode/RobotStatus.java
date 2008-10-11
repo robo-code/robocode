@@ -28,11 +28,11 @@ public final class RobotStatus {
 	private final double energy;
 	private final double x;
 	private final double y;
-	private final double heading;
+	private final double bodyHeading;
 	private final double gunHeading;
 	private final double radarHeading;
 	private final double velocity;
-	private final double turnRemaining;
+	private final double bodyTurnRemaining;
 	private final double radarTurnRemaining;
 	private final double gunTurnRemaining;
 	private final double distanceRemaining;
@@ -54,11 +54,11 @@ public final class RobotStatus {
 			energy = robotPeer.getEnergy();
 			x = robotPeer.getX();
 			y = robotPeer.getY();
-			heading = robotPeer.getBodyHeading();
+			bodyHeading = robotPeer.getBodyHeading();
 			gunHeading = robotPeer.getGunHeading();
 			radarHeading = robotPeer.getRadarHeading();
 			velocity = robotPeer.getVelocity();
-			turnRemaining = robotPeer.getBodyTurnRemaining();
+			bodyTurnRemaining = robotPeer.getBodyTurnRemaining();
 			radarTurnRemaining = robotPeer.getRadarTurnRemaining();
 			gunTurnRemaining = robotPeer.getGunTurnRemaining();
 			distanceRemaining = robotPeer.getDistanceRemaining();
@@ -112,8 +112,12 @@ public final class RobotStatus {
 	 * @return the direction that the robot's body is facing, in radians.
 	 */
 	public double getHeadingRadians() {
-		return heading;
+		return bodyHeading;
 	}
+
+    public double getBodyHeadingRadians() {
+        return bodyHeading;
+    }
 
 	/**
 	 * Returns the direction that the robot's body is facing, in degrees.
@@ -125,7 +129,7 @@ public final class RobotStatus {
 	 * @return the direction that the robot's body is facing, in degrees.
 	 */
 	public double getHeading() {
-		return Math.toDegrees(heading);
+		return Math.toDegrees(bodyHeading);
 	}
 
 	/**
@@ -203,8 +207,12 @@ public final class RobotStatus {
 	 * @return the angle remaining in the robots's turn, in radians
 	 */
 	public double getTurnRemainingRadians() {
-		return turnRemaining;
+		return bodyTurnRemaining;
 	}
+
+    public double getBodyTurnRemainingRadians() {
+        return bodyTurnRemaining;
+    }
 
 	/**
 	 * Returns the angle remaining in the robots's turn, in degrees.
@@ -216,7 +224,7 @@ public final class RobotStatus {
 	 * @return the angle remaining in the robots's turn, in degrees
 	 */
 	public double getTurnRemaining() {
-		return Math.toDegrees(turnRemaining);
+		return Math.toDegrees(bodyTurnRemaining);
 	}
 
 	/**
