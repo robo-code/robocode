@@ -189,8 +189,7 @@ public final class Battle extends BaseBattle {
     }
 
     public void addRobot(RobotClassManager robotClassManager) {
-        RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota(),
-                robots.size());
+        RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota());
         TeamPeer teamManager = robotClassManager.getTeamManager();
 
         if (teamManager != null) {
@@ -353,12 +352,17 @@ public final class Battle extends BaseBattle {
 
     @Override
     protected void shutdownBattle() {
+        unsafeLoadRobotsThread.interrupt();
+        try {
+            unsafeLoadRobotsThread.join();
+        } catch (InterruptedException e) {
+            Logger.logError(e);
+        }
+
         for (RobotPeer r : robots) {
             r.getOut().close();
             r.getRobotThreadManager().cleanup();
         }
-
-        unsafeLoadRobotsThread.interrupt();
 
         super.shutdownBattle();
 

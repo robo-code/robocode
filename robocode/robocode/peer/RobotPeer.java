@@ -134,8 +134,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
     protected AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
     protected RobotStatics statics;
 
-    private int index; // robot index in battle
-
     private RobotOutputStream out;
 
     private double energy;
@@ -172,7 +170,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private BoundingRectangle boundingBox;
     private Graphics2DProxy graphicsProxy;
 
-    public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota, int index) {
+    public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota) {
         super();
         this.robotClassManager = robotClassManager;
         robotThreadManager = new RobotThreadManager(this);
@@ -181,7 +179,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
         scanArc = new Arc2D.Double();
         teamPeer = robotClassManager.getTeamManager();
         state = RobotState.ACTIVE;
-        this.index = index;
 
         // Create statistics after teamPeer set
         statistics = new RobotStatistics(this);
@@ -658,8 +655,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
         final RobotCommands resCommands = new RobotCommands(this.commands.get(), true);
         final RobotStatus resStatus = new RobotStatus(this, resCommands, battle);
-        final ExecResult result = new ExecResult(resCommands, resStatus);
-        return result;
+        return new ExecResult(resCommands, resStatus);
     }
 
     private void loadCommands(RobotCommands newCommands) {
