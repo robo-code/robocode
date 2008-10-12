@@ -65,13 +65,13 @@ package robocode.peer;
 
 import robocode.*;
 import robocode.Event;
+import robocode.repository.RobotFileSpecification;
 import robocode.battle.Battle;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
-import robocode.manager.NameManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
@@ -132,6 +132,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private BasicRobotProxy robotProxy;
     protected AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
     protected AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
+    protected RobotStatics statics;
 
     private int index; // robot index in battle
 
@@ -153,21 +154,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private boolean scan;
 
     private BattleRules battleRules;
-    private boolean isJuniorRobot;
-    private boolean isInteractiveRobot;
-    private boolean isPaintRobot;
-    private boolean isAdvancedRobot;
-    private boolean isTeamRobot;
-    private boolean isDroid;
     private boolean isIORobot;
-    private boolean isDuplicate;
     private boolean paintEnabled;
     private boolean sgPaintEnabled;
     private boolean checkFileQuota;
-    private String name;
-    private String shortName;
-    private String veryShortName;
-    private String nonVersionedName;
 
     // thread is running
     private boolean isRunning;
@@ -177,7 +167,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private boolean halt;
     private boolean inCollision;
     protected RobotState state;
-    private boolean testingCondition;
     private BulletPeer newBullet;
     private Arc2D scanArc;
     private BoundingRectangle boundingBox;
@@ -188,7 +177,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
         this.robotClassManager = robotClassManager;
         robotThreadManager = new RobotThreadManager(this);
         robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
-        eventManager = new EventManager(this);
         boundingBox = new BoundingRectangle();
         scanArc = new Arc2D.Double();
         teamPeer = robotClassManager.getTeamManager();
@@ -219,18 +207,22 @@ public class RobotPeer implements Runnable, ContestantPeer {
         state = RobotState.DEAD;
     }
 
-    public void createRobotProxy() {
-        if (isTeamRobot) {
-            robotProxy = new TeamRobotProxy(this);
-        } else if (isAdvancedRobot) {
-            robotProxy = new AdvancedRobotProxy(this);
-        } else if (isInteractiveRobot) {
-            robotProxy = new StandardRobotProxy(this);
-        } else if (isJuniorRobot) {
-            robotProxy = new JuniorRobotProxy(this);
+    public void createRobotProxy(RobotFileSpecification robotFileSpecification) {
+        //update statics
+        statics = new RobotStatics(robotFileSpecification, statics);
+
+        if (statics.isTeamRobot()) {
+            robotProxy = new TeamRobotProxy(this, statics);
+        } else if (statics.isAdvancedRobot()) {
+            robotProxy = new AdvancedRobotProxy(this, statics);
+        } else if (statics.isInteractiveRobot()) {
+            robotProxy = new StandardRobotProxy(this, statics);
+        } else if (statics.isJuniorRobot()) {
+            robotProxy = new JuniorRobotProxy(this, statics);
         } else {
             throw new AccessControlException("Unknown robot type");
         }
+        eventManager = new EventManager(robotProxy);
     }
 
     public BasicRobotProxy getRobotProxy() {
@@ -284,80 +276,36 @@ public class RobotPeer implements Runnable, ContestantPeer {
     // statics 
     // -------------------
 
-    public synchronized void setDuplicate(int count) {
-        if (count > 0) {
-            isDuplicate = true;
-
-            NameManager cnm = getRobotClassManager().getClassNameManager();
-
-            String countString = " (" + (count + 1) + ')';
-
-            name = cnm.getFullClassNameWithVersion() + countString;
-            shortName = cnm.getUniqueShortClassNameWithVersion() + countString;
-            veryShortName = cnm.getUniqueVeryShortClassNameWithVersion() + countString;
-            nonVersionedName = cnm.getFullClassName() + countString;
-        } else {
-            isDuplicate = false;
-
-            NameManager cnm = getRobotClassManager().getClassNameManager();
-
-            name = cnm.getFullClassNameWithVersion();
-            shortName = cnm.getUniqueShortClassNameWithVersion();
-            veryShortName = cnm.getUniqueVeryShortClassNameWithVersion();
-            nonVersionedName = cnm.getFullClassName();
-        }
+    public void setDuplicate(int count) {
+        statics = new RobotStatics(getRobotClassManager().getClassNameManager() , count);
     }
 
-    public synchronized boolean isDuplicate() {
-        return isDuplicate;
+    public boolean isDuplicate() {
+        return statics.isDuplicate();
     }
 
     public boolean isDroid() {
-        return isDroid;
-    }
-
-    public void setDroid(boolean droid) {
-        this.isDroid = droid;
+        return statics.isDroid();
     }
 
     public boolean isJuniorRobot() {
-        return isJuniorRobot;
-    }
-
-    public void setJuniorRobot(boolean value) {
-        this.isJuniorRobot = value;
+        return statics.isJuniorRobot();
     }
 
     public boolean isInteractiveRobot() {
-        return isInteractiveRobot;
-    }
-
-    public void setInteractiveRobot(boolean value) {
-        this.isInteractiveRobot = value;
+        return statics.isInteractiveRobot();
     }
 
     public boolean isPaintRobot() {
-        return isPaintRobot;
-    }
-
-    public void setPaintRobot(boolean value) {
-        this.isPaintRobot = value;
+        return statics.isPaintRobot();
     }
 
     public boolean isAdvancedRobot() {
-        return isAdvancedRobot;
-    }
-
-    public void setAdvancedRobot(boolean value) {
-        this.isAdvancedRobot = value;
+        return statics.isAdvancedRobot();
     }
 
     public boolean isTeamRobot() {
-        return isTeamRobot;
-    }
-
-    public void setTeamRobot(boolean value) {
-        this.isTeamRobot = value;
+        return statics.isTeamRobot();
     }
 
     public BattleRules getBattleRules() {
@@ -365,24 +313,24 @@ public class RobotPeer implements Runnable, ContestantPeer {
     }
 
     public String getName() {
-        return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+        return (statics != null) ? statics.getName() : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
     }
 
     public String getShortName() {
-        return (shortName != null)
-                ? shortName
+        return (statics != null)
+                ? statics.getShortName()
                 : robotClassManager.getClassNameManager().getUniqueShortClassNameWithVersion();
     }
 
     public String getVeryShortName() {
-        return (veryShortName != null)
-                ? veryShortName
+        return (statics != null)
+                ? statics.getVeryShortName()
                 : robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
     }
 
     public String getNonVersionedName() {
-        return (nonVersionedName != null)
-                ? nonVersionedName
+        return (statics != null)
+                ? statics.getNonVersionedName()
                 : robotClassManager.getClassNameManager().getFullClassName();
     }
 
@@ -512,14 +460,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
     public Color getScanColor() {
         return commands.get().getScanColor();
-    }
-
-    public synchronized void setTestingCondition(boolean testingCondition) {
-        this.testingCondition = testingCondition;
-    }
-
-    public synchronized boolean getTestingCondition() {
-        return testingCondition;
     }
 
     public synchronized void setInterruptible(boolean interruptable) {
@@ -894,11 +834,11 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
         acceleration = velocity = 0;
 
-        if (isTeamLeader() && isDroid) {
+        if (isTeamLeader() && statics.isDroid()) {
             energy = 220;
         } else if (isTeamLeader()) {
             energy = 200;
-        } else if (isDroid) {
+        } else if (statics.isDroid()) {
             energy = 120;
         } else {
             energy = 100;
@@ -920,10 +860,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
 
         statistics.initialize();
-
-        out.resetCounter();
-
-        setTestingCondition(false);
 
         robotProxy.setSetCallCount(0);
         robotProxy.setGetCallCount(0);
@@ -994,7 +930,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
         }
 
         //publishMessages
-        if (isTeamRobot) {
+        if (statics.isTeamRobot()) {
             getMessageManager().publishMessages();
         }
     }
@@ -1108,7 +1044,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
                     : ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
 
             // Update energy, but do not reset inactiveTurnCount
-            if (isAdvancedRobot) {
+            if (statics.isAdvancedRobot()) {
                 this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
             }
 
@@ -1392,7 +1328,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
     }
 
     private void scan(double lastGunHeading, double lastRadarHeading) {
-        if (isDroid) {
+        if (statics.isDroid()) {
             return;
         }
 

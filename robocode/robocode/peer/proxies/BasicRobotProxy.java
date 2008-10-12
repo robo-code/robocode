@@ -18,6 +18,8 @@ import robocode.Condition;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotCommands;
 import robocode.peer.ExecResult;
+import robocode.peer.RobotStatics;
+import robocode.peer.robot.RobotOutputStream;
 import robocode.exception.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
@@ -36,14 +38,17 @@ public class BasicRobotProxy implements IBasicRobotPeer {
     protected RobotPeer peer;
     protected RobotStatus status;
     protected RobotCommands commands;
+    protected RobotStatics statics;
 
     private AtomicInteger setCallCount = new AtomicInteger(0);
     private AtomicInteger getCallCount = new AtomicInteger(0);
 
     protected Condition waitCondition;
+    protected boolean testingCondition;
 
-    public BasicRobotProxy(RobotPeer peer) {
+    public BasicRobotProxy(RobotPeer peer, RobotStatics statics) {
         this.peer = peer;
+        this.statics=statics;
     }
 
     public void initialize() {
@@ -255,7 +260,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
         if (Thread.currentThread() != peer.getRobotThreadManager().getRunThread()) {
             throw new RobotException("You cannot take action in this thread!");
         }
-        if (peer.getTestingCondition()) {
+        if (testingCondition) {
             throw new RobotException(
                     "You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
         }
@@ -271,12 +276,6 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
         ExecResult result = peer.executeImpl(commands);
         updateStatus(result.commands, result.status);
-
-        // Out's counter must be reset before processing event.
-        // Otherwise, it will not be reset when printing in the onScannedEvent()
-        // before a scan() call, which will potentially cause a new onScannedEvent()
-        // and therefore not be able to reset the counter.
-        peer.getOut().resetCounter();
 
         peer.getEventManager().processEvents();
     }
@@ -338,4 +337,42 @@ public class BasicRobotProxy implements IBasicRobotPeer {
     public void setGetCallCount(int getCallCount) {
         this.getCallCount.set(getCallCount);
     }
+
+    public RobotOutputStream getOut() {
+        return peer.getOut();
+    }
+
+    // -----------
+    // statics for robot thread
+    // -----------
+
+    public void setTestingCondition(boolean testingCondition) {
+        this.testingCondition = testingCondition;
+    }
+
+    public boolean isDroid() {
+        return statics.isDroid();
+    }
+
+    public boolean isJuniorRobot() {
+        return statics.isJuniorRobot();
+    }
+
+    public boolean isInteractiveRobot() {
+        return statics.isInteractiveRobot();
+    }
+
+    public boolean isPaintRobot() {
+        return statics.isPaintRobot();
+    }
+
+    public boolean isAdvancedRobot() {
+        return statics.isAdvancedRobot();
+    }
+
+    public boolean isTeamRobot() {
+        return statics.isTeamRobot();
+    }
+
+
 }

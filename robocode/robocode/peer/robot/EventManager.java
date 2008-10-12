@@ -43,7 +43,7 @@ package robocode.peer.robot;
 import robocode.*;
 import robocode.exception.DeathException;
 import robocode.exception.EventInterruptedException;
-import robocode.peer.RobotPeer;
+import robocode.peer.proxies.BasicRobotProxy;
 import robocode.robotinterfaces.*;
 import robocode.util.Utils;
 
@@ -62,7 +62,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Pavel Savara (contributor)
  */
 public class EventManager implements IEventManager {
-	private RobotPeer robotPeer;
+	private BasicRobotProxy robotProxy;
 
 	private final int MAX_PRIORITY = 100;
 
@@ -112,11 +112,11 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * EventManager constructor comment.
-	 * @param robotPeer robotPeer
+	 * @param robotProxy robotProxy
 	 */
-	public EventManager(RobotPeer robotPeer) {
+	public EventManager(BasicRobotProxy robotProxy) {
 		super();
-		this.robotPeer = robotPeer;
+		this.robotProxy = robotProxy;
 		eventQueue = new EventQueue(this);
 		reset();
 	}
@@ -125,7 +125,7 @@ public class EventManager implements IEventManager {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				System.out.println(
-						"Not adding to " + robotPeer.getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE + " events in queue.");
+						"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE + " events in queue.");
 				return false;
 			}
 			return eventQueue.add(e);
@@ -151,7 +151,7 @@ public class EventManager implements IEventManager {
 
 		// Remove all references to robots
 		robot = null;
-		robotPeer = null;
+		robotProxy = null;
 	}
 
 	/**
@@ -528,7 +528,7 @@ public class EventManager implements IEventManager {
 
 	public void setRobot(IBasicRobot r) {
 		this.robot = r;
-		if (robotPeer.isAdvancedRobot()) {
+		if (robotProxy.isAdvancedRobot()) {
 			useFireAssist = false;
 		}
 	}
@@ -594,7 +594,7 @@ public class EventManager implements IEventManager {
 	}
 
 	public long getTime() {
-		return robotPeer.getTime();
+		return robotProxy.getTime();
 	}
 
 	public boolean isFireAssistValid() {
@@ -652,7 +652,7 @@ public class EventManager implements IEventManager {
 	public void onMouseClickedEvent(MouseClickedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -660,8 +660,8 @@ public class EventManager implements IEventManager {
 					listener.onMouseClicked(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onMouseClicked(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -669,7 +669,7 @@ public class EventManager implements IEventManager {
 	public void onMouseDraggedEvent(MouseDraggedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -677,8 +677,8 @@ public class EventManager implements IEventManager {
 					listener.onMouseDragged(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onMouseDragged(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -686,7 +686,7 @@ public class EventManager implements IEventManager {
 	public void onMouseEnteredEvent(MouseEnteredEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -694,8 +694,8 @@ public class EventManager implements IEventManager {
 					listener.onMouseEntered(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onMouseEntered(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -703,7 +703,7 @@ public class EventManager implements IEventManager {
 	public void onMouseExitedEvent(MouseExitedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -711,8 +711,8 @@ public class EventManager implements IEventManager {
 					listener.onMouseExited(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onMouseExited(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -720,7 +720,7 @@ public class EventManager implements IEventManager {
 	public void onMouseMovedEvent(MouseMovedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -728,8 +728,8 @@ public class EventManager implements IEventManager {
 					listener.onMouseMoved(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onMouseMoved(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -737,7 +737,7 @@ public class EventManager implements IEventManager {
 	public void onMousePressedEvent(MousePressedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -745,8 +745,8 @@ public class EventManager implements IEventManager {
 					listener.onMousePressed(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onMousePressed(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -754,7 +754,7 @@ public class EventManager implements IEventManager {
 	public void onMouseReleasedEvent(MouseReleasedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -762,8 +762,8 @@ public class EventManager implements IEventManager {
 					listener.onMouseReleased(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -771,7 +771,7 @@ public class EventManager implements IEventManager {
 	public void onMouseWheelMovedEvent(MouseWheelMovedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -779,8 +779,8 @@ public class EventManager implements IEventManager {
 					listener.onMouseWheelMoved((java.awt.event.MouseWheelEvent) e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onMouseReleased(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -788,7 +788,7 @@ public class EventManager implements IEventManager {
 	public void onKeyTypedEvent(KeyTypedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -796,8 +796,8 @@ public class EventManager implements IEventManager {
 					listener.onKeyTyped(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyTyped(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onKeyTyped(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -805,7 +805,7 @@ public class EventManager implements IEventManager {
 	public void onKeyPressedEvent(KeyPressedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -813,8 +813,8 @@ public class EventManager implements IEventManager {
 					listener.onKeyPressed(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyPressed(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onKeyPressed(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -822,7 +822,7 @@ public class EventManager implements IEventManager {
 	public void onKeyReleasedEvent(KeyReleasedEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isInteractiveRobot()) {
+		if (robot != null && robotProxy.isInteractiveRobot()) {
 			try {
 				IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 
@@ -830,8 +830,8 @@ public class EventManager implements IEventManager {
 					listener.onKeyReleased(e.getSourceEvent());
 				}
 			} catch (Exception e2) {
-				robotPeer.getOut().println("SYSTEM: Exception occurred on onKeyReleasedEvent(MouseEvent):");
-				e2.printStackTrace(robotPeer.getOut());
+				robotProxy.getOut().println("SYSTEM: Exception occurred on onKeyReleasedEvent(MouseEvent):");
+				e2.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
@@ -840,7 +840,7 @@ public class EventManager implements IEventManager {
 		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
-			if (robotPeer.isAdvancedRobot()) {
+			if (robotProxy.isAdvancedRobot()) {
 				IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
 				if (listener != null) {
@@ -913,10 +913,10 @@ public class EventManager implements IEventManager {
 	public void onScannedRobot(ScannedRobotEvent e) {
         final boolean assist = useFireAssist
                 && getTime() == e.getTime()
-                && robotPeer.getGunHeading() == robotPeer.getRadarHeading()
+                && robotProxy.getGunHeading() == robotProxy.getRadarHeading()
                 && e.getCanFireAssist();
         if (assist) {
-            fireAssistAngle = Utils.normalAbsoluteAngle(robotPeer.getBodyHeading() + e.getBearingRadians());
+            fireAssistAngle = Utils.normalAbsoluteAngle(robotProxy.getBodyHeading() + e.getBearingRadians());
             fireAssistValid = true;
         }
 
@@ -935,7 +935,7 @@ public class EventManager implements IEventManager {
 	public void onSkippedTurn(SkippedTurnEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isAdvancedRobot()) {
+		if (robot != null && robotProxy.isAdvancedRobot()) {
 			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
 			if (listener != null) {
@@ -947,7 +947,7 @@ public class EventManager implements IEventManager {
 	public void onMessageReceived(MessageEvent e) {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isTeamRobot()) {
+		if (robot != null && robotProxy.isTeamRobot()) {
 			ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
 
 			if (listener != null) {
@@ -983,11 +983,11 @@ public class EventManager implements IEventManager {
 	public void onPaint() {
 		IBasicRobot robot = getRobot();
 
-		if (robot != null && robotPeer.isPaintRobot()) {
+		if (robot != null && robotProxy.isPaintRobot()) {
 			IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
 
 			if (listener != null) {
-				listener.onPaint(robotPeer.getGraphics());
+				listener.onPaint(robotProxy.getGraphics());
 			}
 		}
 	}
@@ -1000,9 +1000,9 @@ public class EventManager implements IEventManager {
 			// Do not turn this into a "for each" loop as this will cause a
 			// ConcurrentModificationException!
 			for (Condition customEvent : customEvents) {
-				robotPeer.setTestingCondition(true);
+				robotProxy.setTestingCondition(true);
 				conditionSatisfied = customEvent.test();
-				robotPeer.setTestingCondition(false);
+				robotProxy.setTestingCondition(false);
 				if (conditionSatisfied) {
 					eventQueue.add(new CustomEvent(customEvent));
 				}
@@ -1123,7 +1123,7 @@ public class EventManager implements IEventManager {
 		} else if (currentEvent instanceof PaintEvent) {
 			onPaint();
 		} else {
-			robotPeer.getOut().println("Unknown event: " + currentEvent);
+			robotProxy.getOut().println("Unknown event: " + currentEvent);
 		}
 	}
 
@@ -1142,12 +1142,12 @@ public class EventManager implements IEventManager {
 			return;
 		}
 		if (priority < 0) {
-			robotPeer.getOut().println("SYSTEM: Priority must be between 0 and 99.");
-			robotPeer.getOut().println("SYSTEM: Priority for " + eventClass + " will be 0.");
+			robotProxy.getOut().println("SYSTEM: Priority must be between 0 and 99.");
+			robotProxy.getOut().println("SYSTEM: Priority for " + eventClass + " will be 0.");
 			priority = 0;
 		} else if (priority > 99) {
-			robotPeer.getOut().println("SYSTEM: Priority must be between 0 and 99.");
-			robotPeer.getOut().println("SYSTEM: Priority for " + eventClass + " will be 99.");
+			robotProxy.getOut().println("SYSTEM: Priority must be between 0 and 99.");
+			robotProxy.getOut().println("SYSTEM: Priority for " + eventClass + " will be 99.");
 			priority = 99;
 		}
 		if (eventClass.startsWith("robocode.")) {
@@ -1198,20 +1198,20 @@ public class EventManager implements IEventManager {
 		} else if (eventClass.equals("PaintEvent")) {
 			paintEventPriority = priority;
 		} else if (eventClass.equals("CustomEvent")) {
-			robotPeer.getOut().println(
+			robotProxy.getOut().println(
 					"SYSTEM: To change the priority of a CustomEvent, set it in the Condition.  setPriority ignored.");
 		} else if (eventClass.equals("SkippedTurnEvent")) {
-			robotPeer.getOut().println(
+			robotProxy.getOut().println(
 					"SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
 		} else if (eventClass.equals("WinEvent")) {
-			robotPeer.getOut().println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
+			robotProxy.getOut().println("SYSTEM: You may not change the priority of WinEvent.  setPriority ignored.");
 		} else if (eventClass.equals("BattleEndedEvent")) {
-			robotPeer.getOut().println(
+			robotProxy.getOut().println(
 					"SYSTEM: You may not change the priority of BattleEndedEvent.  setPriority ignored.");
 		} else if (eventClass.equals("DeathEvent")) {
-			robotPeer.getOut().println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
+			robotProxy.getOut().println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
 		} else {
-			robotPeer.getOut().println("SYSTEM: Unknown event class: " + eventClass);
+			robotProxy.getOut().println("SYSTEM: Unknown event class: " + eventClass);
 		}
 	}
 

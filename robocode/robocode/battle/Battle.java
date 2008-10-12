@@ -540,17 +540,8 @@ public final class Battle extends BaseBattle {
 
                 r.getRobotFileSystemManager().initializeQuota();
 
-                RobotFileSpecification robotFileSpecification = classManager.getRobotSpecification();
-
-                r.setJuniorRobot(robotFileSpecification.isJuniorRobot());
-                r.setAdvancedRobot(robotFileSpecification.isAdvancedRobot());
-                r.setInteractiveRobot(robotFileSpecification.isInteractiveRobot());
-                r.setPaintRobot(robotFileSpecification.isPaintRobot());
-                r.setTeamRobot(robotFileSpecification.isTeamRobot());
-                r.setDroid(robotFileSpecification.isDroid());
-
                 // create proxy
-                r.createRobotProxy();
+                r.createRobotProxy(classManager.getRobotSpecification());
 
                 initializeRobotPosition(r);
 
@@ -830,8 +821,9 @@ public final class Battle extends BaseBattle {
 
         for (RobotPeer r : robots) {
             if (getRoundNum() > 0) {
+                // fake dead so robot won't display
                 r.preInitialize();
-            } // fake dead so robot won't display
+            } 
 
             r.getOut().println("=========================");
             r.getOut().println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());

@@ -14,6 +14,7 @@ package robocode.peer.proxies;
 
 import robocode.MessageEvent;
 import robocode.peer.RobotPeer;
+import robocode.peer.RobotStatics;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.IOException;
@@ -25,8 +26,8 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer {
-	public TeamRobotProxy(RobotPeer peer) {
-		super(peer);
+	public TeamRobotProxy(RobotPeer peer, RobotStatics statics) {
+		super(peer, statics);
 	}
 
 	// team
