@@ -106,7 +106,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements Runnable, ContestantPeer {
+public final class RobotPeer implements Runnable, ContestantPeer {
 
     public static final int
             WIDTH = 40,
@@ -130,9 +130,10 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
     private IBasicRobot robot;
     private BasicRobotProxy robotProxy;
-    protected AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
-    protected AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
-    protected RobotStatics statics;
+    private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
+    private AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
+    private RobotStatics statics;
+    private BattleRules battleRules;
 
     private RobotOutputStream out;
 
@@ -151,7 +152,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private double acceleration;
     private boolean scan;
 
-    private BattleRules battleRules;
     private boolean isIORobot;
     private boolean paintEnabled;
     private boolean sgPaintEnabled;
@@ -164,7 +164,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
     private boolean isWinner;
     private boolean halt;
     private boolean inCollision;
-    protected RobotState state;
+    private RobotState state;
     private BulletPeer newBullet;
     private Arc2D scanArc;
     private BoundingRectangle boundingBox;
@@ -201,7 +201,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
     }
 
     public synchronized void preInitialize() {
-        state = RobotState.DEAD;
+        setState(RobotState.DEAD);
     }
 
     public void createRobotProxy(RobotFileSpecification robotFileSpecification) {
@@ -263,10 +263,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
     public EventManager getEventManager() {
         return eventManager;
-    }
-
-    public long getTime() { //TODO get rid of
-        return battle.getTime();
     }
 
     // -------------------
@@ -359,6 +355,14 @@ public class RobotPeer implements Runnable, ContestantPeer {
         this.isIORobot = ioRobot;
     }
 
+    public synchronized RobotState getState() {
+        return state;
+    }
+
+    public synchronized void setState(RobotState state) {
+        this.state = state;
+    }
+
     public synchronized boolean isDead() {
         return state == RobotState.DEAD;
     }
@@ -389,10 +393,6 @@ public class RobotPeer implements Runnable, ContestantPeer {
 
     public synchronized void setHalt(boolean halt) {
         this.halt = halt;
-    }
-
-    public synchronized RobotState getState() {
-        return state;
     }
 
     public BoundingRectangle getBoundingBox() {
@@ -820,7 +820,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
     // -----------
 
     public synchronized void initialize(double x, double y, double heading) {
-        state = RobotState.ACTIVE;
+        setState(RobotState.ACTIVE);
 
         isWinner = false;
         this.x = x;
@@ -872,7 +872,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
         if (isDead()) {
             return;
         }
-        state = RobotState.ACTIVE;
+        setState(RobotState.ACTIVE);
 
         RobotCommands currentCommands = commands.get();
         updateGunHeat();
@@ -976,7 +976,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
             }
         }
         if (inCollision) {
-            state = RobotState.HIT_ROBOT;
+            setState(RobotState.HIT_ROBOT);
         }
     }
 
@@ -1051,7 +1051,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
             acceleration = 0;
         }
         if (hitWall) {
-            state = RobotState.HIT_WALL;
+            setState(RobotState.HIT_WALL);
         }
     }
 
@@ -1436,7 +1436,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
         }
         setEnergy(0);
 
-        state = RobotState.DEAD;
+        setState(RobotState.DEAD);
     }
 
     /**
@@ -1555,7 +1555,7 @@ public class RobotPeer implements Runnable, ContestantPeer {
         return stat;
     }
 
-    public synchronized void wakeup() {
+    public synchronized void waitWakeup() {
         if (isSleeping) {
             // Wake up the thread
             notifyAll();
@@ -1564,6 +1564,28 @@ public class RobotPeer implements Runnable, ContestantPeer {
             } catch (InterruptedException e) {
                 // Immediately reasserts the exception by interrupting the caller thread itself
                 Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    public synchronized void waitSleeping(long waitTime, int millisWait) {
+        // It's quite possible for simple robots to
+        // complete their processing before we get here,
+        // so we test if the robot is already asleep.
+
+        if (!isSleeping()) {
+            try {
+                for (int i = millisWait; i > 0 && isSleeping(); i--) {
+                    wait(0, 999999);
+                }
+                if (!isSleeping()) {
+                    wait(0, (int) (waitTime % 1000000));
+                }
+            } catch (InterruptedException e) {
+                // Immediately reasserts the exception by interrupting the caller thread itself
+                Thread.currentThread().interrupt();
+
+                logMessage("Wait for " + getName() + " interrupted.");
             }
         }
     }
@@ -1605,5 +1627,4 @@ public class RobotPeer implements Runnable, ContestantPeer {
         }
         return 0;
     }
-
 }

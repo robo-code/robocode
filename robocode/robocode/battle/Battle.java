@@ -108,7 +108,6 @@ import static robocode.io.Logger.logMessage;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
-import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.security.RobocodeClassLoader;
 
@@ -720,35 +719,16 @@ public final class Battle extends BaseBattle {
             if (r.isRunning()) {
                 // This call blocks until the
                 // robot's thread actually wakes up.
-                r.wakeup();
+                r.waitWakeup();
 
                 if (r.isAlive()) {
-                    synchronized (r) {
-                        // It's quite possible for simple robots to
-                        // complete their processing before we get here,
-                        // so we test if the robot is already asleep.
-
-                        if (!r.isSleeping()) {
-                            try {
-                                for (int i = millisWait; i > 0 && !r.isSleeping(); i--) {
-                                    r.wait(0, 999999);
-                                }
-                                if (!r.isSleeping()) {
-                                    r.wait(0, (int) (waitTime % 1000000));
-                                }
-                            } catch (InterruptedException e) {
-                                // Immediately reasserts the exception by interrupting the caller thread itself
-                                Thread.currentThread().interrupt();
-
-                                logMessage("Wait for " + r + " interrupted.");
-                            }
-                        }
-                    }
+                    r.waitSleeping(waitTime, millisWait);
                     r.setSkippedTurns();
                 }
             }
         }
     }
+
 
     private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
         final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
@@ -756,26 +736,12 @@ public final class Battle extends BaseBattle {
 
         for (RobotPeer r : robotsAtRandom) {
             if (r.isRunning()) {
-                r.wakeup();
+                r.waitWakeup();
             }
         }
         for (RobotPeer r : robotsAtRandom) {
             if (r.isRunning() && r.isAlive()) {
-                try {
-                    synchronized (r) {
-                        for (; millisWait > 0 && !r.isSleeping(); millisWait--) {
-                            r.wait(0, 999999);
-                        }
-                        if (!r.isSleeping()) {
-                            r.wait(0, (int) (waitTime % 1000000));
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    logMessage("Wait for " + r + " interrupted.");
-
-                    // Immediately reasserts the exception by interrupting the caller thread itself
-                    Thread.currentThread().interrupt();
-                }
+                r.waitSleeping(waitTime, millisWait);
             }
         }
         for (RobotPeer r : robotsAtRandom) {
