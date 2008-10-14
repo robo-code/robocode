@@ -31,27 +31,38 @@ import robocode.peer.BulletPeer;
  */
 public class Bullet {
 	private BulletPeer peer;
-	private double heading;
+	private double headingRadians;
 	private double x;
 	private double y;
 	private double power;
-	private String name;
+	private String ownerName;
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
+	 * 
+	 * @param heading the heading of the bullet, in radians.
+	 * @param x the starting x position of the bullet.
+	 * @param y the starting y position of the bullet.
+	 * @param power the power of the bullet.
+	 * @param ownerName the name of the owner robot that owns the bullet.
 	 */
-	public Bullet(double heading, double x, double y, double power, String name) {
-		this.heading = heading;
+	public Bullet(double heading, double x, double y, double power, String ownerName) {
+		this.headingRadians = heading;
 		this.x = x;
 		this.y = y;
 		this.power = power;
-		this.name = name;
+		this.ownerName = ownerName;
 	}
 
-	public void setPeer(BulletPeer peer) {
+    /**
+	 * This method is called by the game to set the bullet peer.
+	 *
+	 * @param peer the robot peer supplied by the game
+	 */
+	public final void setPeer(BulletPeer peer) {
 		this.peer = peer;
-		heading = peer.getHeading();
-		name = peer.getOwner().getName();
+		headingRadians = peer.getHeading();
+		ownerName = peer.getOwner().getName();
 		power = peer.getPower();
 	}
 
@@ -63,7 +74,7 @@ public class Bullet {
 	 * @return the direction the bullet is/was heading, in degrees
 	 */
 	public double getHeading() {
-		return Math.toDegrees(heading);
+		return Math.toDegrees(headingRadians);
 	}
 
 	/**
@@ -74,7 +85,7 @@ public class Bullet {
 	 * @return the direction the bullet is/was heading, in radians
 	 */
 	public double getHeadingRadians() {
-		return heading;
+		return headingRadians;
 	}
 
 	/**
@@ -83,7 +94,7 @@ public class Bullet {
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getName() {
-		return name;
+		return ownerName;
 	}
 
 	/**
@@ -106,7 +117,7 @@ public class Bullet {
 	 * @return the velocity of the bullet
 	 */
 	public double getVelocity() {
-		return Rules.getBulletSpeed(getPower());
+		return Rules.getBulletSpeed(power);
 	}
 
 	/**
@@ -145,6 +156,6 @@ public class Bullet {
 	 *         {@code false} otherwise
 	 */
 	public boolean isActive() {
-		return peer == null || peer.isActive();
+		return peer != null && peer.isActive();
 	}
 }
