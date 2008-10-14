@@ -186,7 +186,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public double getBodyHeading() {
 		getCall();
-		return status.getBodyHeadingRadians();
+		return status.getHeadingRadians();
 	}
 
 	public double getGunHeading() {
