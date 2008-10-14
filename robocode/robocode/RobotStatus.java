@@ -38,6 +38,7 @@ public final class RobotStatus {
 	private final double gunTurnRemaining;
 	private final double distanceRemaining;
 	private final double gunHeat;
+	private final long dataQuotaAvailable;
 	private final int others;
 	private final int roundNum;
 	private final long time;
@@ -63,6 +64,7 @@ public final class RobotStatus {
 			gunTurnRemaining = commands.getGunTurnRemaining();
 			distanceRemaining = commands.getDistanceRemaining();
 			gunHeat = robotPeer.getGunHeat();
+			dataQuotaAvailable = robotPeer.getDataQuotaAvailable();
 			others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
 			roundNum = battle.getRoundNum();
 			time = battle.getTime();
@@ -111,10 +113,6 @@ public final class RobotStatus {
 	 * @return the direction that the robot's body is facing, in radians.
 	 */
 	public double getHeadingRadians() {
-		return bodyHeading;
-	}
-
-	public double getBodyHeadingRadians() {
 		return bodyHeading;
 	}
 
@@ -206,10 +204,6 @@ public final class RobotStatus {
 	 * @return the angle remaining in the robots's turn, in radians
 	 */
 	public double getTurnRemainingRadians() {
-		return bodyTurnRemaining;
-	}
-
-	public double getBodyTurnRemainingRadians() {
 		return bodyTurnRemaining;
 	}
 
@@ -314,14 +308,55 @@ public final class RobotStatus {
 		return gunHeat;
 	}
 
+	/**
+	 * Returns the data quota available in your data directory, i.e. the amount
+	 * of bytes left in the data directory for the robot.
+	 *
+	 * @return the amount of bytes left in the robot's data directory
+	 * @see AdvancedRobot#getDataDirectory()
+	 * @see AdvancedRobot#getDataFile(String)
+	 */
+	public long getDataQuotaAvailable() {
+		return dataQuotaAvailable;
+	}
+
+	/**
+	 * Returns how many opponents that are left in the current round.
+	 *
+	 * @return how many opponents that are left in the current round.
+	 */
 	public int getOthers() {
 		return others;
 	}
 
+	/**
+	 * Returns the number of rounds in the current battle.
+	 *
+	 * @return the number of rounds in the current battle
+	 * @see #getRoundNum()
+	 */
+	public int getNumRounds() {
+		return battleRules.getNumRounds();
+	}
+
+	/**
+	 * Returns the current round number (0 to {@link #getNumRounds()} - 1) of
+	 * the battle.
+	 *
+	 * @return the current round number of the battle
+	 * @see #getNumRounds()
+	 */
 	public int getRoundNum() {
 		return roundNum;
 	}
 
+	/**
+	 * Returns the game time of the round, where the time is equal to the current turn in the round.
+	 *
+	 * @return the game time/turn of the current round.
+	 *
+	 * @since 1.6.2
+	 */
 	public long getTime() {
 		return time;
 	}
