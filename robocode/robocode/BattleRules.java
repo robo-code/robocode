@@ -11,80 +11,82 @@
  *******************************************************************************/
 package robocode;
 
+
 import robocode.battle.BattleProperties;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
 
 import java.io.Serializable;
 
+
 /**
  * @author Pavel Savara (original)
  * Immutable rules
  */
 public final class BattleRules implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final int battlefieldWidth;
-    private final int battlefieldHeight;
-    private final int numRounds;
-    private final double gunCoolingRate;
-    private final long inactivityTime;
+	private final int battlefieldWidth;
+	private final int battlefieldHeight;
+	private final int numRounds;
+	private final double gunCoolingRate;
+	private final long inactivityTime;
 
-    public BattleRules(BattleProperties source) {
-        this.battlefieldWidth = source.getBattlefieldWidth();
-        this.battlefieldHeight = source.getBattlefieldHeight();
-        this.numRounds = source.getNumRounds();
-        this.gunCoolingRate = source.getGunCoolingRate();
-        this.inactivityTime = source.getInactivityTime();
-    }
+	public BattleRules(BattleProperties source) {
+		this.battlefieldWidth = source.getBattlefieldWidth();
+		this.battlefieldHeight = source.getBattlefieldHeight();
+		this.numRounds = source.getNumRounds();
+		this.gunCoolingRate = source.getGunCoolingRate();
+		this.inactivityTime = source.getInactivityTime();
+	}
 
-    /**
-     * Gets the battlefieldWidth.
-     *
-     * @return Returns a int
-     */
-    public int getBattlefieldWidth() {
-        return battlefieldWidth;
-    }
+	/**
+	 * Gets the battlefieldWidth.
+	 *
+	 * @return Returns a int
+	 */
+	public int getBattlefieldWidth() {
+		return battlefieldWidth;
+	}
 
-    /**
-     * Gets the battlefieldHeight.
-     *
-     * @return Returns a int
-     */
-    public int getBattlefieldHeight() {
-        return battlefieldHeight;
-    }
+	/**
+	 * Gets the battlefieldHeight.
+	 *
+	 * @return Returns a int
+	 */
+	public int getBattlefieldHeight() {
+		return battlefieldHeight;
+	}
 
-    /**
-     * Gets the numRounds.
-     *
-     * @return Returns a int
-     */
-    public int getNumRounds() {
-        return numRounds;
-    }
+	/**
+	 * Gets the numRounds.
+	 *
+	 * @return Returns a int
+	 */
+	public int getNumRounds() {
+		return numRounds;
+	}
 
-    /**
-     * Gets the gunCoolingRate.
-     *
-     * @return Returns a double
-     */
-    public double getGunCoolingRate() {
-        return gunCoolingRate;
-    }
+	/**
+	 * Gets the gunCoolingRate.
+	 *
+	 * @return Returns a double
+	 */
+	public double getGunCoolingRate() {
+		return gunCoolingRate;
+	}
 
-    /**
-     * Gets the inactivityTime.
-     *
-     * @return Returns a int
-     */
-    public long getInactivityTime() {
-        return inactivityTime;
-    }
+	/**
+	 * Gets the inactivityTime.
+	 *
+	 * @return Returns a int
+	 */
+	public long getInactivityTime() {
+		return inactivityTime;
+	}
 
-    public BattleField getBattleField() {
-        return new DefaultBattleField(battlefieldWidth, battlefieldHeight);
-    }
+	public BattleField getBattleField() {
+		return new DefaultBattleField(battlefieldWidth, battlefieldHeight);
+	}
 
 }

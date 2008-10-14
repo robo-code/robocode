@@ -403,6 +403,7 @@ public class RobocodeCompilerFactory {
 			logMessage(command);
 
 			ProcessBuilder pb = new ProcessBuilder(command);
+
 			pb.directory(FileUtil.getCwd());
 			Process p = pb.start();
 
@@ -462,6 +463,7 @@ public class RobocodeCompilerFactory {
 
 		try {
 			ProcessBuilder pb = new ProcessBuilder("javac", "compilers/CompilerTest.java");
+
 			pb.directory(FileUtil.getCwd());
 			Process p = pb.start();
 
@@ -493,8 +495,10 @@ public class RobocodeCompilerFactory {
 		boolean jikesOk = false;
 
 		final String command = jikesBinary + " compilers/CompilerTest.java";
+
 		try {
 			ProcessBuilder pb = new ProcessBuilder(command.split(" "));
+
 			pb.directory(FileUtil.getCwd());
 			Process p = pb.start();
 

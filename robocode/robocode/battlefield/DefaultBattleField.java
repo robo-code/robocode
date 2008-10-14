@@ -22,7 +22,7 @@ import robocode.util.BoundingRectangle;
  * @author Flemming N. Larsen (contributor)
  */
 public class DefaultBattleField implements BattleField {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	private BoundingRectangle boundingBox;
 

@@ -16,6 +16,7 @@ package robocode.battlefield;
 
 import java.io.Serializable;
 
+
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)

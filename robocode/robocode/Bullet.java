@@ -31,24 +31,24 @@ import robocode.peer.BulletPeer;
  */
 public class Bullet {
 	private BulletPeer peer;
-    private double heading;
-    private double x;
-    private double y;
-    private double power;
-    private String name;
+	private double heading;
+	private double x;
+	private double y;
+	private double power;
+	private String name;
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
 	 */
-    public Bullet(double heading, double x, double y, double power, String name) {
-        this.heading = heading;
-        this.x = x;
-        this.y = y;
-        this.power = power;
-        this.name = name;
-    }
+	public Bullet(double heading, double x, double y, double power, String name) {
+		this.heading = heading;
+		this.x = x;
+		this.y = y;
+		this.power = power;
+		this.name = name;
+	}
 
-    public void setPeer(BulletPeer peer){
+	public void setPeer(BulletPeer peer) {
 		this.peer = peer;
 		heading = peer.getHeading();
 		name = peer.getOwner().getName();
@@ -106,7 +106,7 @@ public class Bullet {
 	 * @return the velocity of the bullet
 	 */
 	public double getVelocity() {
-        return Rules.getBulletSpeed(getPower());
+		return Rules.getBulletSpeed(getPower());
 	}
 
 	/**

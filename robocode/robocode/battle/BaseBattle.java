@@ -39,8 +39,8 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected final BattleEventDispatcher eventDispatcher;
 	protected RobocodeManager manager;
 
-    //rules
-    protected BattleRules battleRules;
+	// rules
+	protected BattleRules battleRules;
 
 	// Current round items
 	private int roundNum;
@@ -94,7 +94,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		this.roundNum = roundNum;
 	}
 
-    protected void setBattleRules(BattleRules battleRules) {
+	protected void setBattleRules(BattleRules battleRules) {
 		this.battleRules = battleRules;
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	public synchronized void cleanup() {
-        battleRules = null;
+		battleRules = null;
 		if (pendingCommands != null) {
 			pendingCommands.clear();
 			// don't pendingCommands = null;

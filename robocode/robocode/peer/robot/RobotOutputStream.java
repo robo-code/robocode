@@ -45,11 +45,11 @@ public class RobotOutputStream extends java.io.PrintStream {
 	public String readAndReset() {
 		synchronized (syncRoot) {
 
-            // Out's counter must be reset before processing event.
-            // Otherwise, it will not be reset when printing in the onScannedEvent()
-            // before a scan() call, which will potentially cause a new onScannedEvent()
-            // and therefore not be able to reset the counter.
-            count = 0;
+			// Out's counter must be reset before processing event.
+			// Otherwise, it will not be reset when printing in the onScannedEvent()
+			// before a scan() call, which will potentially cause a new onScannedEvent()
+			// and therefore not be able to reset the counter.
+			count = 0;
 
 			if (text.length() > 0) {
 				final String result = text.toString();

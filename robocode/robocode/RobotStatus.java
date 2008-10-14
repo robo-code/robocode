@@ -40,10 +40,10 @@ public final class RobotStatus {
 	private final double gunHeat;
 	private final int others;
 	private final int roundNum;
-    private final long time;
-    private final BattleRules battleRules;
+	private final long time;
+	private final BattleRules battleRules;
 
-    /**
+	/**
 	 * Creates a new RobotStatus based a a RobotPeer.
 	 * This constructor is called internally from the game.
 	 *
@@ -58,16 +58,16 @@ public final class RobotStatus {
 			gunHeading = robotPeer.getGunHeading();
 			radarHeading = robotPeer.getRadarHeading();
 			velocity = robotPeer.getVelocity();
-            bodyTurnRemaining = commands.getBodyTurnRemaining();
-            radarTurnRemaining = commands.getRadarTurnRemaining();
-            gunTurnRemaining = commands.getGunTurnRemaining();
-            distanceRemaining = commands.getDistanceRemaining();
+			bodyTurnRemaining = commands.getBodyTurnRemaining();
+			radarTurnRemaining = commands.getRadarTurnRemaining();
+			gunTurnRemaining = commands.getGunTurnRemaining();
+			distanceRemaining = commands.getDistanceRemaining();
 			gunHeat = robotPeer.getGunHeat();
 			others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
 			roundNum = battle.getRoundNum();
-            time = battle.getTime();
-            battleRules = robotPeer.getBattleRules();
-        }
+			time = battle.getTime();
+			battleRules = robotPeer.getBattleRules();
+		}
 	}
 
 	/**
@@ -114,9 +114,9 @@ public final class RobotStatus {
 		return bodyHeading;
 	}
 
-    public double getBodyHeadingRadians() {
-        return bodyHeading;
-    }
+	public double getBodyHeadingRadians() {
+		return bodyHeading;
+	}
 
 	/**
 	 * Returns the direction that the robot's body is facing, in degrees.
@@ -209,9 +209,9 @@ public final class RobotStatus {
 		return bodyTurnRemaining;
 	}
 
-    public double getBodyTurnRemainingRadians() {
-        return bodyTurnRemaining;
-    }
+	public double getBodyTurnRemainingRadians() {
+		return bodyTurnRemaining;
+	}
 
 	/**
 	 * Returns the angle remaining in the robots's turn, in degrees.
@@ -322,11 +322,11 @@ public final class RobotStatus {
 		return roundNum;
 	}
 
-    public long getTime() {
-        return time;
-    }
+	public long getTime() {
+		return time;
+	}
 
-    public BattleRules getBattleRules() {
-        return battleRules;
-    }
+	public BattleRules getBattleRules() {
+		return battleRules;
+	}
 }

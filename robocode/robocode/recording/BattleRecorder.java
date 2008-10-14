@@ -133,7 +133,7 @@ public class BattleRecorder implements IBattleRecorder {
 			if (!recordingEnabled) {
 				return;
 			}
-            currentRecord = null;
+			currentRecord = null;
 			try {
 				if (byteStream == null) {
 					byteStream = new ByteArrayOutputStream(initialSize);

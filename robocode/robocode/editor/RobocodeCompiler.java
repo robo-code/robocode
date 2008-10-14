@@ -63,11 +63,13 @@ public class RobocodeCompiler {
 		WindowUtil.centerShow(editor, console);
 
 		try {
-			StringBuffer command = new StringBuffer(compilerBinary).append(' ').append(compilerOptions).append(' ').append(compilerClassPath).append(' ').append(fileName);
+			StringBuffer command = new StringBuffer(compilerBinary).append(' ').append(compilerOptions).append(' ').append(compilerClassPath).append(' ').append(
+					fileName);
 
 			Logger.logMessage("Compile command: " + command);
 
 			ProcessBuilder pb = new ProcessBuilder(command.toString().split(" "));
+
 			pb.directory(FileUtil.getCwd());
 			Process p = pb.start();
 

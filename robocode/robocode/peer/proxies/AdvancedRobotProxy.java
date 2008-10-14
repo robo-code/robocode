@@ -81,31 +81,31 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 
 	// blocking actions
 	public void waitFor(Condition condition) {
-        waitCondition = condition;
-        do {
-            execute(); // Always tick at least once
-        } while (!condition.test());
+		waitCondition = condition;
+		do {
+			execute(); // Always tick at least once
+		} while (!condition.test());
 
-        waitCondition = null;
+		waitCondition = null;
 	}
 
 	// fast setters
 	public void setMaxTurnRate(double newTurnRate) {
 		setCall();
-        if (Double.isNaN(newTurnRate)) {
-            peer.getOut().println("You cannot setMaxTurnRate to: " + newTurnRate);
-            return;
-        }
-        commands.setMaxTurnRate(newTurnRate);
+		if (Double.isNaN(newTurnRate)) {
+			peer.getOut().println("You cannot setMaxTurnRate to: " + newTurnRate);
+			return;
+		}
+		commands.setMaxTurnRate(newTurnRate);
 	}
 
 	public void setMaxVelocity(double newVelocity) {
 		setCall();
-        if (Double.isNaN(newVelocity)) {
-            peer.getOut().println("You cannot setMaxVelocity to: " + newVelocity);
-            return;
-        }
-        commands.setMaxVelocity(newVelocity);
+		if (Double.isNaN(newVelocity)) {
+			peer.getOut().println("You cannot setMaxVelocity to: " + newVelocity);
+			return;
+		}
+		commands.setMaxVelocity(newVelocity);
 	}
 
 	// events manipulation

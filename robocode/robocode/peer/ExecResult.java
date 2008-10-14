@@ -11,14 +11,16 @@
  *******************************************************************************/
 package robocode.peer;
 
+
 import robocode.RobotStatus;
 
-public class ExecResult{
-    public ExecResult(RobotCommands commands, RobotStatus status){
-        this.commands=commands;
-        this.status=status;
-    }
 
-    public RobotCommands commands;
-    public RobotStatus status;
+public class ExecResult {
+	public ExecResult(RobotCommands commands, RobotStatus status) {
+		this.commands = commands;
+		this.status = status;
+	}
+
+	public RobotCommands commands;
+	public RobotStatus status;
 }

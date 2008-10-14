@@ -69,8 +69,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		safeSecurityContext = getSecurityContext();
 
 		BulletState s = BulletState.INACTIVE; // Fake class loading
-        ExecResult r = new ExecResult(null, null); // Fake class loading
-    }
+		ExecResult r = new ExecResult(null, null); // Fake class loading
+	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
 		outputStreamThreads.put(Thread.currentThread(), o);

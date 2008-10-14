@@ -23,57 +23,57 @@ import robocode.peer.robot.EventManager;
  */
 public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobotPeer {
 
-    private boolean isStopped;
-    private double saveAngleToTurn;
-    private double saveDistanceToGo;
-    private double saveGunAngleToTurn;
-    private double saveRadarAngleToTurn;
+	private boolean isStopped;
+	private double saveAngleToTurn;
+	private double saveDistanceToGo;
+	private double saveGunAngleToTurn;
+	private double saveRadarAngleToTurn;
 
 	public StandardRobotProxy(RobotPeer peer, RobotStatics statics) {
 		super(peer, statics);
 	}
 
-    @Override
-    public void initialize(){
-        super.initialize();
-        isStopped = true;
-    }
+	@Override
+	public void initialize() {
+		super.initialize();
+		isStopped = true;
+	}
 
 	// blocking actions
 	public void stop(boolean overwrite) {
-        setStopImpl(overwrite);
-        execute();
+		setStopImpl(overwrite);
+		execute();
 	}
 
 	public void resume() {
-        setResumeImpl();
-        execute();
+		setResumeImpl();
+		execute();
 	}
 
 	public void rescan() {
-        boolean reset = false;
-        boolean resetValue = false;
+		boolean reset = false;
+		boolean resetValue = false;
 
-        final EventManager eventManager = peer.getEventManager();
+		final EventManager eventManager = peer.getEventManager();
         
-        if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority()) {
-            reset = true;
-            resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());
-            eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), true);
-        }
+		if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority()) {
+			reset = true;
+			resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());
+			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), true);
+		}
 
-        commands.setScan(true);
-        executeImpl();
-        if (reset) {
-            eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), resetValue);
-        }
+		commands.setScan(true);
+		executeImpl();
+		if (reset) {
+			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), resetValue);
+		}
 	}
 
 	public void turnRadar(double radians) {
-        setTurnRadarImpl(radians);
-        do {
-            execute(); // Always tick at least once
-        } while (getRadarTurnRemaining() != 0);
+		setTurnRadarImpl(radians);
+		do {
+			execute(); // Always tick at least once
+		} while (getRadarTurnRemaining() != 0);
 	}
 
 	// fast setters
@@ -84,40 +84,40 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 
 	public void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
 		setCall();
-        commands.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
-        if (!commands.isAdjustRadarForBodyTurnSet()) {
-            commands.setAdjustRadarForBodyTurn(newAdjustRadarForGunTurn);
-        }
+		commands.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
+		if (!commands.isAdjustRadarForBodyTurnSet()) {
+			commands.setAdjustRadarForBodyTurn(newAdjustRadarForGunTurn);
+		}
 	}
 
 	public void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
 		setCall();
-        commands.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
-        commands.setAdjustRadarForBodyTurnSet(true);
+		commands.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
+		commands.setAdjustRadarForBodyTurnSet(true);
 	}
 
-    protected final void setResumeImpl() {
-        if (isStopped) {
-            isStopped = false;
-            commands.setDistanceRemaining(saveDistanceToGo);
-            commands.setBodyTurnRemaining(saveAngleToTurn);
-            commands.setGunTurnRemaining(saveGunAngleToTurn);
-            commands.setRadarTurnRemaining(saveRadarAngleToTurn);
-        }
-    }
+	protected final void setResumeImpl() {
+		if (isStopped) {
+			isStopped = false;
+			commands.setDistanceRemaining(saveDistanceToGo);
+			commands.setBodyTurnRemaining(saveAngleToTurn);
+			commands.setGunTurnRemaining(saveGunAngleToTurn);
+			commands.setRadarTurnRemaining(saveRadarAngleToTurn);
+		}
+	}
 
-    protected final void setStopImpl(boolean overwrite) {
-        if (!isStopped || overwrite) {
-            this.saveDistanceToGo = getDistanceRemaining();
-            this.saveAngleToTurn = getBodyTurnRemaining();
-            this.saveGunAngleToTurn = getGunTurnRemaining();
-            this.saveRadarAngleToTurn = getRadarTurnRemaining();
-        }
-        isStopped = true;
+	protected final void setStopImpl(boolean overwrite) {
+		if (!isStopped || overwrite) {
+			this.saveDistanceToGo = getDistanceRemaining();
+			this.saveAngleToTurn = getBodyTurnRemaining();
+			this.saveGunAngleToTurn = getGunTurnRemaining();
+			this.saveRadarAngleToTurn = getRadarTurnRemaining();
+		}
+		isStopped = true;
 
-        commands.setDistanceRemaining(0);
-        commands.setBodyTurnRemaining(0);
-        commands.setGunTurnRemaining(0);
-        commands.setRadarTurnRemaining(0);
-    }
+		commands.setDistanceRemaining(0);
+		commands.setBodyTurnRemaining(0);
+		commands.setGunTurnRemaining(0);
+		commands.setRadarTurnRemaining(0);
+	}
 }

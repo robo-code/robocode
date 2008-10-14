@@ -112,15 +112,15 @@ public class RobotMessageManager {
 		messageEvents.clear();
 	}
 
-    public void publishMessages(){
-        System.err.flush();
-        if (robotPeer.getMessageManager() != null) {
-            List<MessageEvent> messageEvents = getMessageEvents();
+	public void publishMessages() {
+		System.err.flush();
+		if (robotPeer.getMessageManager() != null) {
+			List<MessageEvent> messageEvents = getMessageEvents();
 
-            for (MessageEvent me : messageEvents) {
-                robotPeer.getEventManager().add(me);
-            }
-            messageEvents.clear();
-        }
-    }
+			for (MessageEvent me : messageEvents) {
+				robotPeer.getEventManager().add(me);
+			}
+			messageEvents.clear();
+		}
+	}
 }

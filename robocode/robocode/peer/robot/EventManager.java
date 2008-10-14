@@ -911,14 +911,13 @@ public class EventManager implements IEventManager {
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
-        final boolean assist = useFireAssist
-                && getTime() == e.getTime()
-                && robotProxy.getGunHeading() == robotProxy.getRadarHeading()
-                && e.getCanFireAssist();
-        if (assist) {
-            fireAssistAngle = Utils.normalAbsoluteAngle(robotProxy.getBodyHeading() + e.getBearingRadians());
-            fireAssistValid = true;
-        }
+		final boolean assist = useFireAssist && getTime() == e.getTime()
+				&& robotProxy.getGunHeading() == robotProxy.getRadarHeading() && e.getCanFireAssist();
+
+		if (assist) {
+			fireAssistAngle = Utils.normalAbsoluteAngle(robotProxy.getBodyHeading() + e.getBearingRadians());
+			fireAssistValid = true;
+		}
 
 		IBasicRobot robot = getRobot();
 
@@ -929,7 +928,7 @@ public class EventManager implements IEventManager {
 				listener.onScannedRobot(e);
 			}
 		}
-        fireAssistValid = false;
+		fireAssistValid = false;
 	}
 
 	public void onSkippedTurn(SkippedTurnEvent e) {

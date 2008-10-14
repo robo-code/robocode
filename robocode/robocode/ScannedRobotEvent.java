@@ -28,7 +28,7 @@ public class ScannedRobotEvent extends Event {
 	private double bearing;
 	private double distance;
 	private double velocity;
-    private boolean canFireAssist;
+	private boolean canFireAssist;
 
 	/**
 	 * Called by the game to create a new ScannedRobotEvent.
@@ -48,8 +48,8 @@ public class ScannedRobotEvent extends Event {
 		this.distance = distance;
 		this.heading = heading;
 		this.velocity = velocity;
-        this.canFireAssist=canFireAssist;
-    }
+		this.canFireAssist = canFireAssist;
+	}
 
 	/**
 	 * Returns the bearing to the robot you scanned, relative to your robot's
@@ -243,8 +243,8 @@ public class ScannedRobotEvent extends Event {
 		return 0;
 	}    
 
-    public boolean getCanFireAssist() {
-        return canFireAssist;
-    }
+	public boolean getCanFireAssist() {
+		return canFireAssist;
+	}
 
 }

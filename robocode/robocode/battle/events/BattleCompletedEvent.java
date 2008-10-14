@@ -21,17 +21,17 @@ import robocode.BattleRules;
  * @since 1.6.1
  */
 public class BattleCompletedEvent extends BattleEvent {
-    private final BattleRules battleRules;
+	private final BattleRules battleRules;
 	private final BattleResults[] results;
 
 	public BattleCompletedEvent(BattleRules battleRules, BattleResults[] results) {
-        this.battleRules = battleRules;
+		this.battleRules = battleRules;
 		this.results = results;
 	}
 
-    public BattleRules getBattleRules() {
-        return battleRules;
-    }
+	public BattleRules getBattleRules() {
+		return battleRules;
+	}
 
 	public BattleResults[] getResults() {
 		return results;
