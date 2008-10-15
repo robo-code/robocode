@@ -270,7 +270,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	// -------------------
 
 	public void setDuplicate(int count) {
-		statics = new RobotStatics(getRobotClassManager().getClassNameManager(), count);
+		statics = new RobotStatics(getRobotClassManager().getClassNameManager(), count, battle.getBattleRules());
 	}
 
 	public boolean isDuplicate() {
@@ -299,10 +299,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public boolean isTeamRobot() {
 		return statics.isTeamRobot();
-	}
-
-	public BattleRules getBattleRules() {
-		return battle.getBattleRules();
 	}
 
 	public String getName() {

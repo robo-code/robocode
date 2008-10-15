@@ -54,7 +54,7 @@ public class Bullet {
 		this.ownerName = ownerName;
 	}
 
-    /**
+	/**
 	 * This method is called by the game to set the bullet peer.
 	 *
 	 * @param peer the robot peer supplied by the game

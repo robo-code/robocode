@@ -171,7 +171,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public double getGunCoolingRate() {
 		getCall();
-		return status.getBattleRules().getGunCoolingRate();
+		return statics.getBattleRules().getGunCoolingRate();
 	}
 
 	public String getName() {
@@ -226,17 +226,17 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public double getBattleFieldHeight() {
 		getCall();
-		return status.getBattleRules().getBattlefieldHeight();
+		return statics.getBattleRules().getBattlefieldHeight();
 	}
 
 	public double getBattleFieldWidth() {
 		getCall();
-		return status.getBattleRules().getBattlefieldWidth();
+		return statics.getBattleRules().getBattlefieldWidth();
 	}
 
 	public int getNumRounds() {
 		getCall();
-		return status.getBattleRules().getNumRounds();
+		return statics.getBattleRules().getNumRounds();
 	}
 
 	public int getRoundNum() {

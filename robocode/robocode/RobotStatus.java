@@ -41,8 +41,8 @@ public final class RobotStatus {
 	private final long dataQuotaAvailable;
 	private final int others;
 	private final int roundNum;
+	private final int numRounds;
 	private final long time;
-	private final BattleRules battleRules;
 
 	/**
 	 * Creates a new RobotStatus based a a RobotPeer.
@@ -67,8 +67,8 @@ public final class RobotStatus {
 			dataQuotaAvailable = robotPeer.getDataQuotaAvailable();
 			others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
 			roundNum = battle.getRoundNum();
+			numRounds = battle.getNumRounds();
 			time = battle.getTime();
-			battleRules = robotPeer.getBattleRules();
 		}
 	}
 
@@ -336,7 +336,7 @@ public final class RobotStatus {
 	 * @see #getRoundNum()
 	 */
 	public int getNumRounds() {
-		return battleRules.getNumRounds();
+		return numRounds;
 	}
 
 	/**
@@ -359,9 +359,5 @@ public final class RobotStatus {
 	 */
 	public long getTime() {
 		return time;
-	}
-
-	public BattleRules getBattleRules() {
-		return battleRules;
 	}
 }

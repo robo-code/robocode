@@ -14,13 +14,14 @@ package robocode.peer;
 
 import robocode.repository.RobotFileSpecification;
 import robocode.manager.NameManager;
+import robocode.BattleRules;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public final class RobotStatics {
-	public RobotStatics(NameManager cnm, int duplicate) {
+	public RobotStatics(NameManager cnm, int duplicate, BattleRules rules) {
 		if (duplicate > 0) {
 			isDuplicate = true;
 
@@ -44,20 +45,22 @@ public final class RobotStatics {
 		isAdvancedRobot = false;
 		isTeamRobot = false;
 		isDroid = false;
+		battleRules = rules;
 	}
 
-	public RobotStatics(RobotFileSpecification spec, RobotStatics names) {
+	public RobotStatics(RobotFileSpecification spec, RobotStatics src) {
 		isJuniorRobot = spec.isJuniorRobot();
 		isInteractiveRobot = spec.isInteractiveRobot();
 		isPaintRobot = spec.isPaintRobot();
 		isAdvancedRobot = spec.isAdvancedRobot();
 		isTeamRobot = spec.isTeamRobot();
 		isDroid = spec.isDroid();
-		isDuplicate = names.isDuplicate();
-		name = names.getName();
-		shortName = names.getShortName();
-		veryShortName = names.getVeryShortName();
-		nonVersionedName = names.getNonVersionedName();
+		isDuplicate = src.isDuplicate();
+		name = src.getName();
+		shortName = src.getShortName();
+		veryShortName = src.getVeryShortName();
+		nonVersionedName = src.getNonVersionedName();
+		battleRules = src.getBattleRules();
 	}
 
 	private final boolean isDuplicate;
@@ -71,6 +74,7 @@ public final class RobotStatics {
 	private final String shortName;
 	private final String veryShortName;
 	private final String nonVersionedName;
+	private final BattleRules battleRules;
 
 	public boolean isDuplicate() {
 		return isDuplicate;
@@ -114,5 +118,9 @@ public final class RobotStatics {
 
 	public String getNonVersionedName() {
 		return nonVersionedName;
+	}
+
+	public BattleRules getBattleRules() {
+		return battleRules;
 	}
 }
