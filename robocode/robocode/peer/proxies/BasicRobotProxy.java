@@ -343,8 +343,12 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	}
 
 	// -----------
-	// statics for robot thread
+	// for robot thread
 	// -----------
+
+	public boolean getCanFireAssist() {
+		return this.commands.isCanFireAssist();
+	}
 
 	public void setTestingCondition(boolean testingCondition) {
 		this.testingCondition = testingCondition;

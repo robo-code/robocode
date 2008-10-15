@@ -28,7 +28,6 @@ public class ScannedRobotEvent extends Event {
 	private double bearing;
 	private double distance;
 	private double velocity;
-	private boolean canFireAssist;
 
 	/**
 	 * Called by the game to create a new ScannedRobotEvent.
@@ -40,7 +39,7 @@ public class ScannedRobotEvent extends Event {
 	 * @param heading  the heading of the scanned robot
 	 * @param velocity the velocity of the scanned robot
 	 */
-	public ScannedRobotEvent(String name, double energy, double bearing, double distance, double heading, double velocity, boolean canFireAssist) {
+	public ScannedRobotEvent(String name, double energy, double bearing, double distance, double heading, double velocity) {
 		super();
 		this.name = name;
 		this.energy = energy;
@@ -48,7 +47,6 @@ public class ScannedRobotEvent extends Event {
 		this.distance = distance;
 		this.heading = heading;
 		this.velocity = velocity;
-		this.canFireAssist = canFireAssist;
 	}
 
 	/**
@@ -242,9 +240,4 @@ public class ScannedRobotEvent extends Event {
 		// No difference found
 		return 0;
 	}    
-
-	public boolean getCanFireAssist() {
-		return canFireAssist;
-	}
-
 }

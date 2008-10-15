@@ -46,6 +46,7 @@ public class RobotCommands {
 
 	private boolean moved;
 	private boolean scan;
+	private boolean canFireAssist;
 	private List<Bullet> bullets = new ArrayList<Bullet>(2);
 
 	public RobotCommands() {
@@ -53,7 +54,7 @@ public class RobotCommands {
 		setMaxTurnRate(Double.MAX_VALUE);
 	}
 
-	public RobotCommands(RobotCommands origin, boolean clean) {
+	public RobotCommands(RobotCommands origin, boolean fromBattleToRobot) {
 		bodyTurnRemaining = origin.bodyTurnRemaining;
 		radarTurnRemaining = origin.radarTurnRemaining;
 		gunTurnRemaining = origin.gunTurnRemaining;
@@ -69,7 +70,9 @@ public class RobotCommands {
 		scanColor = origin.scanColor;
 		maxTurnRate = origin.maxTurnRate;
 		maxVelocity = origin.maxVelocity;
-		if (!clean) {
+		if (fromBattleToRobot) {
+			canFireAssist = origin.isCanFireAssist();
+		} else {
 			bullets = origin.bullets;
 			scan = origin.scan;
 			moved = origin.moved;
@@ -228,6 +231,10 @@ public class RobotCommands {
 
 	public List<Bullet> getBullets() {
 		return bullets;
+	}
+
+	public boolean isCanFireAssist() {
+		return canFireAssist;
 	}
 }
 

@@ -912,7 +912,7 @@ public class EventManager implements IEventManager {
 
 	public void onScannedRobot(ScannedRobotEvent e) {
 		final boolean assist = useFireAssist && getTime() == e.getTime()
-				&& robotProxy.getGunHeading() == robotProxy.getRadarHeading() && e.getCanFireAssist();
+				&& robotProxy.getGunHeading() == robotProxy.getRadarHeading() && robotProxy.getCanFireAssist();
 
 		if (assist) {
 			fireAssistAngle = Utils.normalAbsoluteAngle(robotProxy.getBodyHeading() + e.getBearingRadians());

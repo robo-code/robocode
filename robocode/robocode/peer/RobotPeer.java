@@ -620,6 +620,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	// -----------
 
 	public final ExecResult executeImpl(RobotCommands newCommands) {
+
+		// from robot to battle
 		loadCommands(new RobotCommands(newCommands, false));
 
 		if (newBullet != null) {
@@ -651,6 +653,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			setHalt(true);
 		}
 
+		// from battle to robot
 		final RobotCommands resCommands = new RobotCommands(this.commands.get(), true);
 		final RobotStatus resStatus = new RobotStatus(this, resCommands, battle);
 
@@ -920,7 +923,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		// scan
 		if (scan) {
-			scan(lastGunHeading, lastRadarHeading);
+			scan(currentCommands, lastGunHeading, lastRadarHeading);
 			scan = false;
 		}
 
@@ -1332,7 +1335,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	private void scan(double lastGunHeading, double lastRadarHeading) {
+	private void scan(RobotCommands currentCommands, double lastGunHeading, double lastRadarHeading) {
 		if (statics.isDroid()) {
 			return;
 		}
@@ -1367,11 +1370,12 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 				final ScannedRobotEvent event = new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
 						normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
-						robotPeer.getVelocity(), lastGunHeading == lastRadarHeading);
+						robotPeer.getVelocity());
 
 				eventManager.add(event);
 			}
 		}
+		currentCommands.canFireAssist = (lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading);
 	}
 
 	private boolean intersects(Arc2D arc, Rectangle2D rect) {
