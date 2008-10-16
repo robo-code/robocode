@@ -655,7 +655,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		// from battle to robot
 		final RobotCommands resCommands = new RobotCommands(this.commands.get(), true);
-		final RobotStatus resStatus = new RobotStatus(this, resCommands, battle);
+		final RobotStatus resStatus = status.get();
 
 		return new ExecResult(resCommands, resStatus);
 	}
