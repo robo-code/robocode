@@ -22,8 +22,8 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class HitByBulletEvent extends Event {
-	private double bearing;
-	private Bullet bullet;
+	private final double bearing;
+	private final Bullet bullet;
 
 	/**
 	 * Called by the game to create a new HitByBulletEvent.

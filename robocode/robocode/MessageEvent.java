@@ -25,8 +25,8 @@ import java.io.Serializable;
  * @author Mathew A. Nelson (original)
  */
 public class MessageEvent extends Event {
-	private String sender;
-	private Serializable message;
+	private final String sender;
+	private final Serializable message;
 
 	/**
 	 * Called by the game to create a new MessageEvent.

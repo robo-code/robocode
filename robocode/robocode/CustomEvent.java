@@ -24,7 +24,7 @@ package robocode;
  * @see #getCondition()
  */
 public class CustomEvent extends Event {
-	private Condition condition;
+	private final Condition condition;
 
 	/**
 	 * Called by the game to create a new CustomEvent when a condition is met.

@@ -22,7 +22,7 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class BulletMissedEvent extends Event {
-	private Bullet bullet;
+	private final Bullet bullet;
 
 	/**
 	 * Called by the game to create a new {@code BulletMissedEvent}.

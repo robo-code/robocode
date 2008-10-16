@@ -27,8 +27,8 @@ package robocode;
  */
 public class BattleEndedEvent extends Event {
 
-	private boolean aborted;
-	private BattleResults results;
+	private final boolean aborted;
+	private final BattleResults results;
 
 	/**
 	 * Called by the game to create a new BattleEndedEvent.

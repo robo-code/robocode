@@ -22,12 +22,12 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class ScannedRobotEvent extends Event {
-	private String name;
-	private double energy;
-	private double heading;
-	private double bearing;
-	private double distance;
-	private double velocity;
+	private final String name;
+	private final double energy;
+	private final double heading;
+	private final double bearing;
+	private final double distance;
+	private final double velocity;
 
 	/**
 	 * Called by the game to create a new ScannedRobotEvent.

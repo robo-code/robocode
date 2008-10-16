@@ -21,9 +21,9 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class BulletHitEvent extends Event {
-	private String name;
-	private double energy;
-	private Bullet bullet;
+	private final String name;
+	private final double energy;
+	private final Bullet bullet;
 
 	/**
 	 * Called by the game to create a new {@code BulletHitEvent}.

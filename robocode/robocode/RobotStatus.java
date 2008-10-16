@@ -38,7 +38,6 @@ public final class RobotStatus {
 	private final double gunTurnRemaining;
 	private final double distanceRemaining;
 	private final double gunHeat;
-	private final long dataQuotaAvailable;
 	private final int others;
 	private final int roundNum;
 	private final int numRounds;
@@ -49,6 +48,8 @@ public final class RobotStatus {
 	 * This constructor is called internally from the game.
 	 *
 	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
+	 * @param commands data from commands
+	 * @param battle data from battle
 	 */
 	public RobotStatus(RobotPeer robotPeer, RobotCommands commands, Battle battle) {
 		synchronized (robotPeer) {
@@ -59,12 +60,13 @@ public final class RobotStatus {
 			gunHeading = robotPeer.getGunHeading();
 			radarHeading = robotPeer.getRadarHeading();
 			velocity = robotPeer.getVelocity();
+			gunHeat = robotPeer.getGunHeat();
+
 			bodyTurnRemaining = commands.getBodyTurnRemaining();
 			radarTurnRemaining = commands.getRadarTurnRemaining();
 			gunTurnRemaining = commands.getGunTurnRemaining();
 			distanceRemaining = commands.getDistanceRemaining();
-			gunHeat = robotPeer.getGunHeat();
-			dataQuotaAvailable = robotPeer.getDataQuotaAvailable();
+
 			others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
 			roundNum = battle.getRoundNum();
 			numRounds = battle.getNumRounds();
@@ -306,18 +308,6 @@ public final class RobotStatus {
 	 */
 	public double getGunHeat() {
 		return gunHeat;
-	}
-
-	/**
-	 * Returns the data quota available in your data directory, i.e. the amount
-	 * of bytes left in the data directory for the robot.
-	 *
-	 * @return the amount of bytes left in the robot's data directory
-	 * @see AdvancedRobot#getDataDirectory()
-	 * @see AdvancedRobot#getDataFile(String)
-	 */
-	public long getDataQuotaAvailable() {
-		return dataQuotaAvailable;
 	}
 
 	/**

@@ -22,7 +22,7 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class HitWallEvent extends Event {
-	private double bearing = 0.0;
+	private final double bearing;
 
 	/**
 	 * Called by the game to create a new HitWallEvent.

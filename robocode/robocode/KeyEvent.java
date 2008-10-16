@@ -21,7 +21,7 @@ package robocode;
  * @since 1.6.1
  */
 public abstract class KeyEvent extends Event {
-	private java.awt.event.KeyEvent source;
+	private final java.awt.event.KeyEvent source;
 
 	/**
 	 * Called by the game to create a new KeyEvent.

@@ -21,7 +21,7 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class RobotDeathEvent extends Event {
-	private String robotName;
+	private final String robotName;
 
 	/**
 	 * Called by the game to create a new RobotDeathEvent.

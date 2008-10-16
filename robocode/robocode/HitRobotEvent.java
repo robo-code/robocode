@@ -22,10 +22,10 @@ package robocode;
  * @author Mathew A. Nelson (original)
  */
 public class HitRobotEvent extends Event {
-	private String robotName;
-	private double bearing;
-	private double energy;
-	private boolean atFault;
+	private final String robotName;
+	private final double bearing;
+	private final double energy;
+	private final boolean atFault;
 
 	/**
 	 * Called by the game to create a new HitRobotEvent.
