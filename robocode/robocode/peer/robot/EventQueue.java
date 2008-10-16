@@ -32,20 +32,6 @@ import java.util.Vector;
 @SuppressWarnings("serial")
 public class EventQueue extends Vector<Event> {
 
-	private final EventManager eventManager;
-
-	public EventQueue(EventManager eventManager) {
-		super();
-		this.eventManager = eventManager;
-	}
-
-	@Override
-	public boolean add(Event e) {
-		e.setPriority(eventManager.getEventPriority(e));
-		e.setTime(eventManager.getTime());
-		return super.add(e);
-	}
-
 	public void clear(boolean includingSystemEvents) {
 		if (includingSystemEvents) {
 			super.clear();

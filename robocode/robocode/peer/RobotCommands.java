@@ -233,9 +233,9 @@ public class RobotCommands {
 		return bullets;
 	}
 
-    public void setCanFireAssist(boolean value) {
-        canFireAssist = value;
-    }
+	public void setCanFireAssist(boolean value) {
+		canFireAssist = value;
+	}
 
 	public boolean getCanFireAssist() {
 		return canFireAssist;

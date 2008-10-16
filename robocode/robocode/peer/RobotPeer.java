@@ -929,7 +929,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		// publishMessages
 		if (statics.isTeamRobot()) {
-			getMessageManager().publishMessages();
+			getMessageManager().publishMessages(battle.getTime());
 		}
 	}
 
@@ -971,9 +971,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 						}
 					}
 					eventManager.add(
-							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - bodyHeading), r.getEnergy(), atFault));
+							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - bodyHeading), r.getEnergy(), atFault),
+							battle.getTime());
 					r.eventManager.add(
-							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getBodyHeading()), energy, false));
+							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getBodyHeading()), energy, false),
+							battle.getTime());
 				}
 			}
 		}
@@ -1012,7 +1014,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 
 		if (hitWall) {
-			eventManager.add(new HitWallEvent(angle));
+			eventManager.add(new HitWallEvent(angle), battle.getTime());
 
 			// only fix both x and y values if hitting wall at an angle
 			if ((bodyHeading % (Math.PI / 2)) != 0) {
@@ -1372,11 +1374,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 						normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
 						robotPeer.getVelocity());
 
-				eventManager.add(event);
+				eventManager.add(event, battle.getTime());
 			}
 		}
-        currentCommands.setCanFireAssist((lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading));
-    }
+		currentCommands.setCanFireAssist((lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading));
+	}
 
 	private boolean intersects(Arc2D arc, Rectangle2D rect) {
 		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
@@ -1422,7 +1424,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	public synchronized void kill() {
 		battle.resetInactiveTurnCount(10.0);
 		if (isAlive()) {
-			eventManager.add(new DeathEvent());
+			eventManager.add(new DeathEvent(), battle.getTime());
 			if (isTeamLeader()) {
 				for (RobotPeer teammate : teamPeer) {
 					if (!(teammate.isDead() || teammate == this)) {
@@ -1535,13 +1537,17 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void onInteractiveEvent(robocode.Event e) {
-		eventManager.add(e);
+		eventManager.add(e, battle.getTime());
 	}
 
 	public void publishStatus(boolean initialPropagation) {
 		final long currentTurn = battle.getTime();
 
-		eventManager.clear(currentTurn - 2); // TODO really -2 ?
+		// TODO consider this 
+		// clearig events which are older than last turn
+		// this is there from start of the version control
+		// but is that correct ? wanted ? I hope that yes.
+		eventManager.clear(currentTurn - 2);
 
 		final RobotStatus stat = updateRobotInterface(initialPropagation);
 
@@ -1550,10 +1556,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		((Graphics2DProxy) getGraphics()).clearQueue();
 
 		if (!isDead()) {
-			eventManager.add(new StatusEvent(stat));
+			eventManager.add(new StatusEvent(stat), battle.getTime());
 			// Add paint event, if robot is a paint robot and its painting is enabled
 			if (isPaintRobot() && isPaintEnabled() && currentTurn > 0) {
-				eventManager.add(new PaintEvent());
+				eventManager.add(new PaintEvent(), battle.getTime());
 			}
 		}
 	}
@@ -1614,7 +1620,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		} else {
 			skippedTurns++;
 
-			getEventManager().add(new SkippedTurnEvent());
+			getEventManager().add(new SkippedTurnEvent(), battle.getTime());
 
 			if ((!isIORobot() && (skippedTurns > maxSkippedTurns))
 					|| (isIORobot() && (skippedTurns > maxSkippedTurnsWithIO))) {

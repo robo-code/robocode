@@ -121,8 +121,8 @@ public class BulletPeer {
 				frame = 0;
 				x = lastX;
 				y = lastY;
-				owner.getEventManager().add(new BulletHitBulletEvent(bullet, b.bullet));
-				b.owner.getEventManager().add(new BulletHitBulletEvent(b.bullet, bullet));
+				owner.getEventManager().add(new BulletHitBulletEvent(bullet, b.bullet), battle.getTime());
+				b.owner.getEventManager().add(new BulletHitBulletEvent(b.bullet, bullet), battle.getTime());
 				break;
 			}
 		}
@@ -174,10 +174,12 @@ public class BulletPeer {
 
 				robotPeer.getEventManager().add(
 						new HitByBulletEvent(
-								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()));
+								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()),
+								battle.getTime());
 
 				state = BulletState.HIT_VICTIM;
-				owner.getEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet));
+				owner.getEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet),
+						battle.getTime());
 				frame = 0;
 				victim = robotPeer;
 
@@ -206,7 +208,7 @@ public class BulletPeer {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
-			owner.getEventManager().add(new BulletMissedEvent(bullet));
+			owner.getEventManager().add(new BulletMissedEvent(bullet), battle.getTime());
 		}
 	}
 

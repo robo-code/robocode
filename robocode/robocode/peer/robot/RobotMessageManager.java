@@ -112,13 +112,13 @@ public class RobotMessageManager {
 		messageEvents.clear();
 	}
 
-	public void publishMessages() {
+	public void publishMessages(long currentTime) {
 		System.err.flush();
 		if (robotPeer.getMessageManager() != null) {
 			List<MessageEvent> messageEvents = getMessageEvents();
 
 			for (MessageEvent me : messageEvents) {
-				robotPeer.getEventManager().add(me);
+				robotPeer.getEventManager().add(me, currentTime);
 			}
 			messageEvents.clear();
 		}

@@ -117,17 +117,19 @@ public class EventManager implements IEventManager {
 	public EventManager(BasicRobotProxy robotProxy) {
 		super();
 		this.robotProxy = robotProxy;
-		eventQueue = new EventQueue(this);
+		eventQueue = new EventQueue();
 		reset();
 	}
 
-	public boolean add(Event e) {
+	public boolean add(Event e, long currentTime) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				System.out.println(
 						"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE + " events in queue.");
 				return false;
 			}
+			e.setPriority(getEventPriority(e));
+			e.setTime(currentTime);
 			return eventQueue.add(e);
 		}
 		return false;
@@ -1003,7 +1005,7 @@ public class EventManager implements IEventManager {
 				conditionSatisfied = customEvent.test();
 				robotProxy.setTestingCondition(false);
 				if (conditionSatisfied) {
-					eventQueue.add(new CustomEvent(customEvent));
+					add(new CustomEvent(customEvent), getTime()); // TODO is that correct time ?
 				}
 			}
 		}
