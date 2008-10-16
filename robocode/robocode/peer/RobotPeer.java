@@ -1375,8 +1375,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				eventManager.add(event);
 			}
 		}
-		currentCommands.canFireAssist = (lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading);
-	}
+        currentCommands.setCanFireAssist((lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading));
+    }
 
 	private boolean intersects(Arc2D arc, Rectangle2D rect) {
 		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),

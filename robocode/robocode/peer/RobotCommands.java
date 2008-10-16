@@ -71,7 +71,7 @@ public class RobotCommands {
 		maxTurnRate = origin.maxTurnRate;
 		maxVelocity = origin.maxVelocity;
 		if (fromBattleToRobot) {
-			canFireAssist = origin.isCanFireAssist();
+			canFireAssist = origin.canFireAssist;
 		} else {
 			bullets = origin.bullets;
 			scan = origin.scan;
@@ -233,7 +233,11 @@ public class RobotCommands {
 		return bullets;
 	}
 
-	public boolean isCanFireAssist() {
+    public void setCanFireAssist(boolean value) {
+        canFireAssist = value;
+    }
+
+	public boolean getCanFireAssist() {
 		return canFireAssist;
 	}
 }
