@@ -14,6 +14,13 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot(ScannedRobotEvent)
  * onScannedRobot()} when you scan a robot.
@@ -21,7 +28,7 @@ package robocode;
  *
  * @author Mathew A. Nelson (original)
  */
-public class ScannedRobotEvent extends Event {
+public final class ScannedRobotEvent extends Event {
 	private final String name;
 	private final double energy;
 	private final double heading;
@@ -240,4 +247,28 @@ public class ScannedRobotEvent extends Event {
 		// No difference found
 		return 0;
 	}    
+
+	private static int classPriority = 10;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		classPriority = priority;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onScannedRobot(this);
+		}
+	}
 }

@@ -64,7 +64,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
     }
 
     public void onBattleStarted(BattleStartedEvent event) {
-        if (isDeterministic()){
+        if (isDeterministic() && event.getTurnSnapshot().getRobots().size() == 2){
             helpers.Assert.assertNear(0.9848415, RandomFactory.getRandom().nextDouble());
         }
     }
@@ -73,6 +73,10 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
     public int getNumRounds(){
         return 1;
+    }
+
+    public int getExpectedRobotCount(String list) {
+        return list.split("[\\s,;]+").length;
     }
 
     public boolean isDeterministic(){
@@ -98,7 +102,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
     public void run() {
         final String list = getRobotNames();
         final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
-        Assert.assertEquals(list.split("[\\s,;]+").length, robotSpecifications.length);
+        Assert.assertEquals(getExpectedRobotCount(list), robotSpecifications.length);
         engine.runBattle(new BattleSpecification(getNumRounds(), battleFieldSpec, robotSpecifications), true);
     }
 }

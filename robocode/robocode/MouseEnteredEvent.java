@@ -14,6 +14,14 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IInteractiveEvents;
+import robocode.robotinterfaces.IInteractiveRobot;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * A MouseEnteredEvent is sent to {@link Robot#onMouseEntered(java.awt.event.MouseEvent)
  * onMouseEntered()} when the mouse has entered the battle view.
@@ -37,5 +45,31 @@ public final class MouseEnteredEvent extends MouseEvent {
 	 */
 	public MouseEnteredEvent(java.awt.event.MouseEvent source) {
 		super(source);
+	}
+
+	private static int classPriority = 98;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		classPriority = priority;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isInteractiveRobot()) {
+			IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+			if (listener != null) {
+				listener.onMouseEntered(getSourceEvent());
+			}
+		}
 	}
 }

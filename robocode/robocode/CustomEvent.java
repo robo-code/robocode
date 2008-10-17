@@ -14,6 +14,14 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.IAdvancedRobot;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * This event is sent to {@link AdvancedRobot#onCustomEvent(CustomEvent)
  * onCustomEvent()} when a custom condition is met. Be sure to reset or remove
@@ -25,6 +33,7 @@ package robocode;
  */
 public class CustomEvent extends Event {
 	private final Condition condition;
+	private int priority;
 
 	/**
 	 * Called by the game to create a new CustomEvent when a condition is met.
@@ -32,6 +41,7 @@ public class CustomEvent extends Event {
 	 * @param condition the condition that must be met
 	 */
 	public CustomEvent(Condition condition) {
+		this.priority = getClassPriorityImpl();
 		this.condition = condition;
 	}
 
@@ -71,5 +81,48 @@ public class CustomEvent extends Event {
 	 */
 	public Condition getCondition() {
 		return condition;
+	}
+
+	private static int classPriority = 80; // System event -> cannot be changed!;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getPriority() {
+		return priority;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setPriority(int newPriority) {
+		priority = newPriority; 
+	}
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected final void setClassPriorityImpl(int priority) {
+		// System event -> cannot be changed!;
+		System.out.println("SYSTEM: You may not change the priority of CustomEvent.  setPriority ignored.");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isAdvancedRobot()) {
+			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+
+			if (listener != null) {
+				listener.onCustomEvent(this);
+			}
+		}
 	}
 }

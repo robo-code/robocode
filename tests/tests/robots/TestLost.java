@@ -41,6 +41,7 @@ public class TestLost extends RobotTestBed {
         return "sample.Fire,testing.BattleLost";
     }
 
+    @Override
     public void onTurnEnded(TurnEndedEvent event) {
         RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
         final String streamSnapshot = robot.getOutputStreamSnapshot();

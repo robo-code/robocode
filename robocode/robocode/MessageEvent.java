@@ -14,7 +14,11 @@
 package robocode;
 
 
+import robocode.robotinterfaces.*;
+import robocode.peer.RobotStatics;
+
 import java.io.Serializable;
+import java.awt.*;
 
 
 /**
@@ -24,7 +28,7 @@ import java.io.Serializable;
  *
  * @author Mathew A. Nelson (original)
  */
-public class MessageEvent extends Event {
+public final class MessageEvent extends Event {
 	private final String sender;
 	private final Serializable message;
 
@@ -55,5 +59,31 @@ public class MessageEvent extends Event {
 	 */
 	public Serializable getMessage() {
 		return message;
+	}
+
+	private static int classPriority = 75;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		classPriority = priority;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isTeamRobot()) {
+			ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
+
+			if (listener != null) {
+				listener.onMessageReceived(this);
+			}
+		}
 	}
 }

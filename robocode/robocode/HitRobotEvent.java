@@ -14,6 +14,13 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * A HitRobotEvent is sent to {@link Robot#onHitRobot(HitRobotEvent) onHitRobot()}
  * when your robot collides with another robot.
@@ -21,7 +28,7 @@ package robocode;
  *
  * @author Mathew A. Nelson (original)
  */
-public class HitRobotEvent extends Event {
+public final class HitRobotEvent extends Event {
 	private final String robotName;
 	private final double bearing;
 	private final double energy;
@@ -140,4 +147,27 @@ public class HitRobotEvent extends Event {
 		return 0;
 	}
 
+	private static int classPriority = 40;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		classPriority = priority;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onHitRobot(this);
+		}
+	}
 }

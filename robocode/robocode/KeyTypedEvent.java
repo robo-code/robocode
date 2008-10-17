@@ -14,6 +14,14 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IInteractiveEvents;
+import robocode.robotinterfaces.IInteractiveRobot;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * A KeyTypedEvent is sent to {@link Robot#onKeyTyped(java.awt.event.KeyEvent)
  * onKeyTyped()} when a key has been typed (pressed and released) on the keyboard.
@@ -32,5 +40,31 @@ public final class KeyTypedEvent extends KeyEvent {
 	 */
 	public KeyTypedEvent(java.awt.event.KeyEvent source) {
 		super(source);
+	}
+
+	private static int classPriority = 98;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		classPriority = priority;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isInteractiveRobot()) {
+			IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+			if (listener != null) {
+				listener.onKeyTyped(getSourceEvent());
+			}
+		}
 	}
 }

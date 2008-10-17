@@ -14,6 +14,14 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicEvents2;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * A BattleEndedEvent is sent to {@link Robot#onBattleEnded(BattleEndedEvent)
  * onBattleEnded()} when the battle is ended.
@@ -25,10 +33,36 @@ package robocode;
  * @see Robot#onBattleEnded(BattleEndedEvent)
  * @since 1.6.1
  */
-public class BattleEndedEvent extends Event {
+public final class BattleEndedEvent extends Event {
 
 	private final boolean aborted;
 	private final BattleResults results;
+	private static int classPriority = 100; // System event -> cannot be changed!;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		// System event -> cannot be changed!;
+		System.out.println("SYSTEM: You may not change the priority of BattleEndedEvent.  setPriority ignored.");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null && IBasicEvents2.class.isAssignableFrom(listener.getClass())) {
+				((IBasicEvents2) listener).onBattleEnded(this);
+			}
+		}
+	}
 
 	/**
 	 * Called by the game to create a new BattleEndedEvent.

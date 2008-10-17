@@ -14,13 +14,20 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * This event is sent to {@link Robot#onBulletHitBullet(BulletHitBulletEvent)
  * onBulletHitBullet} when one of your bullets has hit another bullet.
  *
  * @author Mathew A. Nelson (original)
  */
-public class BulletHitBulletEvent extends Event {
+public final class BulletHitBulletEvent extends Event {
 	private final Bullet bullet;
 	private final Bullet hitBullet;
 
@@ -52,5 +59,29 @@ public class BulletHitBulletEvent extends Event {
 	 */
 	public Bullet getHitBullet() {
 		return hitBullet;
+	}
+
+	private static int classPriority = 55;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		classPriority = priority;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onBulletHitBullet(this);
+		}
 	}
 }

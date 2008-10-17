@@ -34,6 +34,7 @@ public class TestPosition extends RobotTestBed {
         return "sample.Crazy,sample.Target";
     }
 
+    @Override
     public void onTurnEnded(TurnEndedEvent event) {
         Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 2572);
         RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);

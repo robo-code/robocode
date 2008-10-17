@@ -561,6 +561,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	// ------------
 
 	public boolean isTeammate(String name) {
+		// noinspection SuspiciousMethodCalls
 		return getTeamPeer() != null && getTeamPeer().contains(name);
 	}
 
@@ -702,6 +703,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				}
 			}
 			if (robotProxy != null) {
+				// noinspection InfiniteLoopStatement
 				for (;;) {
 					robotProxy.execute();
 				}
@@ -1479,7 +1481,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	public void publishStatus(boolean initialPropagation) {
 		final long currentTurn = battle.getTime();
 
-		// TODO consider this 
+		// consider this: 
 		// clearig events which are older than last turn
 		// this is there from start of the version control
 		// but is that correct ? wanted ? I hope that yes.
@@ -1566,7 +1568,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			newBullet = new BulletPeer(this, battle, bullet);
 
 			newBullet.setPower(firePower);
-			if (!turnedRadarWithGun || !bulletCmd.isFireAssistValid() || robotProxy.isAdvancedRobot()) {
+			if (!turnedRadarWithGun || !bulletCmd.isFireAssistValid() || statics.isAdvancedRobot()) {
 				newBullet.setHeading(gunHeading);
 			} else {
 				newBullet.setHeading(bulletCmd.getFireAssistAngle());
@@ -1579,7 +1581,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		if (newBullet != null) {
 			newBullet.update();
 			battle.addBullet(newBullet);
-			newBullet = null;
 		}
 	}
 

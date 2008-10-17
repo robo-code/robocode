@@ -22,14 +22,19 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * The superclass of all Robocode events.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class Event implements Comparable<Event> {
-	private int priority = 0;
+public abstract class Event implements Comparable<Event> {
 	private long time = 0;
 
 	/**
@@ -68,7 +73,7 @@ public class Event implements Comparable<Event> {
 		}
 
 		// Same time -> Compare the difference in priority
-		int priorityDiff = event.priority - priority;
+		int priorityDiff = event.getPriority() - getPriority();
 
 		if (priorityDiff != 0) {
 			return priorityDiff; // Priority differ
@@ -89,7 +94,7 @@ public class Event implements Comparable<Event> {
 	 * @return the priority of this event
 	 */
 	public int getPriority() {
-		return priority;
+		return getClassPriorityImpl();
 	}
 
 	/**
@@ -97,7 +102,7 @@ public class Event implements Comparable<Event> {
 	 *
 	 * @return the time this event occurred
 	 */
-	public long getTime() {
+	public final long getTime() {
 		return time;
 	}
 
@@ -112,7 +117,16 @@ public class Event implements Comparable<Event> {
 	 * @see AdvancedRobot#setEventPriority(String, int)
 	 */
 	public void setPriority(int newPriority) {
-		priority = newPriority;
+		if (newPriority < 0) {
+			System.out.println("SYSTEM: Priority must be between 0 and 99.");
+			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 0.");
+			newPriority = 0;
+		} else if (newPriority > 99) {
+			System.out.println("SYSTEM: Priority must be between 0 and 99.");
+			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 99.");
+			newPriority = 99;
+		}
+		setClassPriorityImpl(newPriority);
 	}
 
 	/**
@@ -123,4 +137,21 @@ public class Event implements Comparable<Event> {
 	public void setTime(long newTime) {
 		time = newTime;
 	}
+
+	/**
+	 * Do not call this method! Your robot will simply stop interacting with
+	 * the game.
+	 *
+	 * This method is called by the game. A robot peer is the object that deals
+	 * with game mechanics and rules, and makes sure your robot abides by them.
+	 * @param robot robot
+	 * @param statics statics
+	 * @param graphics graphics
+	 */
+	public abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
+
+	protected abstract int getClassPriorityImpl();
+
+	protected abstract void setClassPriorityImpl(int priority);
+
 }

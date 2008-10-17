@@ -30,6 +30,7 @@ public class TestAcceleration extends RobotTestBed {
         return "sample.Target,testing.Ahead";        
     }
 
+    @Override
     public void onTurnEnded(TurnEndedEvent event) {
         RobotSnapshot ahead = event.getTurnSnapshot().getRobots().get(1);
         switch (event.getTurnSnapshot().getTurn()){

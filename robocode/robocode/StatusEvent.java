@@ -12,6 +12,13 @@
 package robocode;
 
 
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * This event is sent to {@link Robot#onStatus(StatusEvent) onStatus()} every
  * turn in a battle to provide the status of the robot.
@@ -43,5 +50,29 @@ public final class StatusEvent extends Event {
 	 */
 	public RobotStatus getStatus() {
 		return status;
+	}
+
+	private static int classPriority = 99;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		classPriority = priority; 
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onStatus(this);
+		}
 	}
 }

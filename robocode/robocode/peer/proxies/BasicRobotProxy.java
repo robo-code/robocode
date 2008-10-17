@@ -301,7 +301,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		BulletCommand wrapper;
 		Event currentTopEvent = peer.getEventManager().getCurrentTopEvent();
 
-		if (currentTopEvent != null && currentTopEvent.getTime() == getTime() && !isAdvancedRobot()
+		if (currentTopEvent != null && currentTopEvent.getTime() == getTime() && !statics.isAdvancedRobot()
 				&& getGunHeading() == getRadarHeading()
 				&& ScannedRobotEvent.class.isAssignableFrom(currentTopEvent.getClass())) {
 			// this is angle assisted bullet
@@ -364,28 +364,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		this.testingCondition = testingCondition;
 	}
 
-	public boolean isDroid() {
-		return statics.isDroid();
+	public RobotStatics getRobotStatics() {
+		return statics;
 	}
-
-	public boolean isJuniorRobot() {
-		return statics.isJuniorRobot();
-	}
-
-	public boolean isInteractiveRobot() {
-		return statics.isInteractiveRobot();
-	}
-
-	public boolean isPaintRobot() {
-		return statics.isPaintRobot();
-	}
-
-	public boolean isAdvancedRobot() {
-		return statics.isAdvancedRobot();
-	}
-
-	public boolean isTeamRobot() {
-		return statics.isTeamRobot();
-	}
-
 }

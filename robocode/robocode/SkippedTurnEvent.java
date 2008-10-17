@@ -14,6 +14,12 @@
 package robocode;
 
 
+import robocode.robotinterfaces.*;
+import robocode.peer.RobotStatics;
+
+import java.awt.*;
+
+
 /**
  * A SkippedTurnEvent is sent to {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)
  * onSkippedTurn()} when your robot is forced to skipping a turn.
@@ -46,12 +52,39 @@ package robocode;
  * @see AdvancedRobot#onSkippedTurn(SkippedTurnEvent)
  * @see SkippedTurnEvent
  */
-public class SkippedTurnEvent extends Event {
+public final class SkippedTurnEvent extends Event {
 
 	/**
 	 * Called by the game to create a new SkippedTurnEvent.
 	 */
 	public SkippedTurnEvent() {
 		super();
+	}
+
+	private static int classPriority = 100; // System event -> cannot be changed!;
+
+	@Override
+	protected final int getClassPriorityImpl() {
+		return classPriority;
+	}
+
+	@Override
+	protected void setClassPriorityImpl(int priority) {
+		// System event -> cannot be changed!;
+		System.out.println("SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isAdvancedRobot()) {
+			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+
+			if (listener != null) {
+				listener.onSkippedTurn(this);
+			}
+		}
 	}
 }
