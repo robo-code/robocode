@@ -96,13 +96,10 @@ public class EventManager implements IEventManager {
 	private final int battleEndedEventPriority = 100; // System event -> cannot be changed!
 
 	private int currentTopEventPriority;
+	private Event currentTopEvent;
 
 	private List<Condition> customEvents = new CopyOnWriteArrayList<Condition>();
 	private final EventQueue eventQueue;
-
-	private double fireAssistAngle;
-	private boolean fireAssistValid;
-	private boolean useFireAssist = true;
 
 	private boolean interruptible[] = new boolean[MAX_PRIORITY + 1];
 
@@ -285,6 +282,10 @@ public class EventManager implements IEventManager {
 		return currentTopEventPriority;
 	}
 
+	public Event getCurrentTopEvent() {
+		return currentTopEvent; 
+	}
+
 	public int getEventPriority(String eventClass) {
 		if (eventClass == null) {
 			return -1;
@@ -432,10 +433,6 @@ public class EventManager implements IEventManager {
 		return 0;
 	}
 
-	public double getFireAssistAngle() {
-		return fireAssistAngle;
-	}
-
 	/**
 	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
@@ -530,9 +527,6 @@ public class EventManager implements IEventManager {
 
 	public void setRobot(IBasicRobot r) {
 		this.robot = r;
-		if (robotProxy.isAdvancedRobot()) {
-			useFireAssist = false;
-		}
 	}
 
 	/**
@@ -597,10 +591,6 @@ public class EventManager implements IEventManager {
 
 	public long getTime() {
 		return robotProxy.getTime();
-	}
-
-	public boolean isFireAssistValid() {
-		return fireAssistValid;
 	}
 
 	public void onStatus(StatusEvent e) {
@@ -913,14 +903,6 @@ public class EventManager implements IEventManager {
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
-		final boolean assist = useFireAssist && getTime() == e.getTime()
-				&& robotProxy.getGunHeading() == robotProxy.getRadarHeading() && robotProxy.getCanFireAssist();
-
-		if (assist) {
-			fireAssistAngle = Utils.normalAbsoluteAngle(robotProxy.getBodyHeading() + e.getBearingRadians());
-			fireAssistValid = true;
-		}
-
 		IBasicRobot robot = getRobot();
 
 		if (robot != null) {
@@ -930,7 +912,6 @@ public class EventManager implements IEventManager {
 				listener.onScannedRobot(e);
 			}
 		}
-		fireAssistValid = false;
 	}
 
 	public void onSkippedTurn(SkippedTurnEvent e) {
@@ -1032,6 +1013,7 @@ public class EventManager implements IEventManager {
 			int oldTopEventPriority = currentTopEventPriority;
 
 			currentTopEventPriority = currentEvent.getPriority();
+			currentTopEvent = currentEvent; 
 
 			eventQueue.remove(currentEvent);
 			try {
@@ -1041,12 +1023,14 @@ public class EventManager implements IEventManager {
 				setInterruptible(currentTopEventPriority, false);
 
 			} catch (EventInterruptedException e) {
-				fireAssistValid = false;
+				currentTopEvent = null;
 			} catch (RuntimeException e) {
 				currentTopEventPriority = oldTopEventPriority;
+				currentTopEvent = null;
 				throw e;
 			} catch (Error e) {
 				currentTopEventPriority = oldTopEventPriority;
+				currentTopEvent = null;
 				throw e;
 			}
 			currentTopEventPriority = oldTopEventPriority;
@@ -1214,10 +1198,6 @@ public class EventManager implements IEventManager {
 		} else {
 			robotProxy.getOut().println("SYSTEM: Unknown event class: " + eventClass);
 		}
-	}
-
-	public void setFireAssistValid(boolean newFireAssistValid) {
-		fireAssistValid = newFireAssistValid;
 	}
 
 	public void setInterruptible(int priority, boolean interruptable) {

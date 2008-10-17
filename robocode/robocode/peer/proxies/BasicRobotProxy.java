@@ -12,13 +12,10 @@
 package robocode.peer.proxies;
 
 
-import robocode.Bullet;
-import robocode.RobotStatus;
-import robocode.Condition;
-import robocode.peer.RobotPeer;
-import robocode.peer.RobotCommands;
-import robocode.peer.ExecResult;
-import robocode.peer.RobotStatics;
+import robocode.*;
+import robocode.Event;
+import robocode.util.Utils;
+import robocode.peer.*;
 import robocode.peer.robot.RobotOutputStream;
 import robocode.exception.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
@@ -301,8 +298,18 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		}
 
 		final Bullet bullet = new Bullet(getGunHeading(), getX(), getY(), power, getName());
+		Event currentTopEvent = peer.getEventManager().getCurrentTopEvent();
+		BulletCommand wrapper = new BulletCommand(bullet, false, 0);
 
-		commands.getBullets().add(bullet);
+		if (currentTopEvent != null && currentTopEvent.getTime() == getTime()
+				&& ScannedRobotEvent.class.isAssignableFrom(currentTopEvent.getClass())) {
+			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent; 
+
+			wrapper = new BulletCommand(bullet, true,
+					Utils.normalAbsoluteAngle(getBodyHeading() + e.getBearingRadians()));
+		}
+
+		commands.getBullets().add(wrapper);
 
 		return bullet;
 	}

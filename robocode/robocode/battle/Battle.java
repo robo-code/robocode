@@ -451,6 +451,8 @@ public final class Battle extends BaseBattle {
 
 		// Robot time!
 		wakeupRobots();
+
+		loadCommands();
 	}
 
 	@Override
@@ -683,6 +685,12 @@ public final class Battle extends BaseBattle {
 	private void publishStatuses() {
 		for (RobotPeer r : robots) {
 			r.publishStatus(false);
+		}
+	}
+
+	private void loadCommands() {
+		for (RobotPeer r : robots) {
+			r.loadCommands();
 		}
 	}
 

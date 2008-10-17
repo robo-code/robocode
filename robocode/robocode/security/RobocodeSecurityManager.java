@@ -31,6 +31,7 @@ import robocode.manager.ThreadManager;
 import robocode.peer.BulletState;
 import robocode.peer.RobotPeer;
 import robocode.peer.ExecResult;
+import robocode.peer.BulletCommand;
 import robocode.peer.robot.RobotFileSystemManager;
 
 import java.io.*;
@@ -68,8 +69,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 		this.experimental = experimental;
 		safeSecurityContext = getSecurityContext();
 
-		BulletState s = BulletState.INACTIVE; // Fake class loading
-		ExecResult r = new ExecResult(null, null); // Fake class loading
+		// Fake loading of classes
+		BulletState s = BulletState.INACTIVE;
+		BulletCommand c = new BulletCommand(null, false, 0);
+		ExecResult r = new ExecResult(null, null);
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {

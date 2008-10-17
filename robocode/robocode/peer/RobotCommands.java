@@ -47,7 +47,7 @@ public class RobotCommands {
 	private boolean moved;
 	private boolean scan;
 	private boolean canFireAssist;
-	private List<Bullet> bullets = new ArrayList<Bullet>(2);
+	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
 
 	public RobotCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
@@ -229,7 +229,7 @@ public class RobotCommands {
 		this.scan = scan;
 	}
 
-	public List<Bullet> getBullets() {
+	public List<BulletCommand> getBullets() {
 		return bullets;
 	}
 
