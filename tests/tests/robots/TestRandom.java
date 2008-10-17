@@ -15,6 +15,7 @@ import helpers.RobotTestBed;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
 import helpers.Assert;
+import org.junit.Test;
 
 /**
  * Repeatable random test
@@ -22,6 +23,11 @@ import helpers.Assert;
  * @author Pavel Savara (original)
  */
 public class TestRandom extends RobotTestBed {
+    @Test
+    public void run() {
+        super.run();
+    }
+
     public String getRobotNames() {
         return "sample.Fire,testing.Random";
     }

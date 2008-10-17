@@ -15,11 +15,17 @@ import helpers.RobotTestBed;
 import helpers.Assert;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
+import org.junit.Test;
 
 /**
  * @author Pavel Savara (original)
  */
 public class TestAcceleration extends RobotTestBed {
+    @Test
+    public void run() {
+        super.run();
+    }
+
     public String getRobotNames() {
         return "sample.Target,testing.Ahead";        
     }

@@ -12,10 +12,7 @@
 
 package helpers;
 
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.events.BattleMessageEvent;
-import robocode.battle.events.BattleErrorEvent;
+import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.*;
 import robocode.security.SecurePrintStream;
@@ -66,6 +63,12 @@ public abstract class RobotTestBed extends BattleAdaptor {
         }
     }
 
+    public void onBattleStarted(BattleStartedEvent event) {
+        if (isDeterministic()){
+            helpers.Assert.assertNear(0.9848415, RandomFactory.getRandom().nextDouble());
+        }
+    }
+
     public abstract String getRobotNames();
 
     public int getNumRounds(){
@@ -80,6 +83,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
     public void setup() {
         if (isDeterministic()){
             RandomFactory.resetDeterministic(0);
+            helpers.Assert.assertNear(0.730967, RandomFactory.getRandom().nextDouble());
         }
         errors = 0;
         messages = 0;

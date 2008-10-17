@@ -15,6 +15,7 @@ import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
 import org.junit.Assert;
 import org.junit.After;
+import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import helpers.RobotTestBed;
 
@@ -24,6 +25,11 @@ import helpers.RobotTestBed;
 public class TestLost extends RobotTestBed {
     private int lost=0;
     private int end=0;
+
+    @Test
+    public void run() {
+        super.run();
+    }
 
     @Override
     public int getNumRounds(){
