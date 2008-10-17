@@ -367,4 +367,9 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	public RobotStatics getRobotStatics() {
 		return statics;
 	}
+
+    @Override
+    public String toString() {
+        return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY();
+    }
 }

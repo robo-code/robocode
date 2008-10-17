@@ -1604,7 +1604,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		if (!isSleeping()) {
 			try {
-				for (int i = millisWait; i > 0 && isSleeping(); i--) {
+				for (int i = millisWait; i > 0 && !isSleeping(); i--) {
 					wait(0, 999999);
 				}
 				if (!isSleeping()) {
@@ -1655,4 +1655,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 		return 0;
 	}
+
+    @Override
+    public String toString() {
+        return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY();
+    }
+
 }
