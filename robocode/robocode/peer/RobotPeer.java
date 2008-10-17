@@ -624,7 +624,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		// from robot to battle
 		newCommands.validate(this);
 
-		commands.set(newCommands);
+		commands.set(new RobotCommands(newCommands, false));
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (battle.isAborted()) {
@@ -642,11 +642,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 
 		waitForNextRound();
-
-		// Halt robot if it is dead, so we do not need to force killing its thread
-		if (isDead()) {
-			setHalt(true);
-		}
 
 		// from battle to robot
 		final RobotCommands resCommands = new RobotCommands(this.commands.get(), true);
@@ -808,14 +803,13 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		status.set(new RobotStatus(this, commands.get(), battle));
 	}
 
-	public final synchronized void update(double zapEnergy) {
+	public final synchronized void update(RobotCommands currentCommands, double zapEnergy) {
 		// Reset robot state to active if it is not dead
 		if (isDead()) {
 			return;
 		}
-		setState(RobotState.ACTIVE);
 
-		RobotCommands currentCommands = commands.get();
+		setState(RobotState.ACTIVE);
 
 		updateGunHeat();
 
@@ -848,7 +842,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			scan = (lastHeading != bodyHeading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
 					|| lastX != x || lastY != y); // TODO || waitCondition != null
 		}
-		turnedRadarWithGun = (lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading);
 
 		if (isDead()) {
 			return;
@@ -863,9 +856,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			return;
 		}
 
+		turnedRadarWithGun = false;
 		// scan
 		if (scan) {
-			scan(currentCommands, lastGunHeading, lastRadarHeading);
+			scan(lastRadarHeading);
+			turnedRadarWithGun = (lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading);
 			scan = false;
 		}
 
@@ -1279,7 +1274,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	private void scan(RobotCommands currentCommands, double lastGunHeading, double lastRadarHeading) {
+	private void scan(double lastRadarHeading) {
 		if (statics.isDroid()) {
 			return;
 		}
@@ -1319,7 +1314,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				eventManager.add(event, battle.getTime());
 			}
 		}
-		currentCommands.setCanFireAssist((lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading));
 	}
 
 	private boolean intersects(Arc2D arc, Rectangle2D rect) {
@@ -1520,8 +1514,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return stat;
 	}
 
-	public void loadCommands() {
+	public RobotCommands loadCommands() {
 		RobotCommands currentCommands = commands.get();
+
+		fireBullets(currentCommands.getBullets());
 
 		if (currentCommands.isScan()) {
 			scan = true;
@@ -1537,9 +1533,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				moveDirection = -1;
 			}
 			slowingDown = false;
+			currentCommands.setMoved(false);
 		}
 
-		fireBullets(currentCommands.getBullets());
+		return currentCommands;
 	}
 
 	private void fireBullets(List<BulletCommand> bullets) {
@@ -1580,6 +1577,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 		// there is only last bullet in one turn
 		if (newBullet != null) {
+			newBullet.update();
 			battle.addBullet(newBullet);
 			newBullet = null;
 		}

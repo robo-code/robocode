@@ -191,6 +191,7 @@ public final class Battle extends BaseBattle {
 		RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota());
 		TeamPeer teamManager = robotClassManager.getTeamManager();
 
+		robotPeer.setBattle(this);
 		if (teamManager != null) {
 			teamManager.add(robotPeer);
 			addContestant(teamManager);
@@ -198,7 +199,6 @@ public final class Battle extends BaseBattle {
 		} else {
 			addContestant(robotPeer);
 		}
-		robotPeer.setBattle(this);
 		robotPeer.getOut();
 
 		int count = 0;
@@ -451,8 +451,6 @@ public final class Battle extends BaseBattle {
 
 		// Robot time!
 		wakeupRobots();
-
-		loadCommands();
 	}
 
 	@Override
@@ -508,9 +506,7 @@ public final class Battle extends BaseBattle {
 
 		if (getEndTimer() > 4 * 30) {
 			for (RobotPeer r : robots) {
-				if (!r.isDead()) {
-					r.setHalt(true);
-				}
+				r.setHalt(true);
 			}
 		}
 
@@ -641,10 +637,12 @@ public final class Battle extends BaseBattle {
 		// Move all bots
 		for (RobotPeer r : getRobotsAtRandom()) {
 
+			final RobotCommands currentCommands = r.loadCommands();
+
 			// update robots
 			final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
 
-			r.update(zapEnergy);
+			r.update(currentCommands, zapEnergy);
 
 			// publish deaths to live robots
 			if (!r.isDead()) {
@@ -685,12 +683,6 @@ public final class Battle extends BaseBattle {
 	private void publishStatuses() {
 		for (RobotPeer r : robots) {
 			r.publishStatus(false);
-		}
-	}
-
-	private void loadCommands() {
-		for (RobotPeer r : robots) {
-			r.loadCommands();
 		}
 	}
 

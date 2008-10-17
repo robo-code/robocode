@@ -297,16 +297,23 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 			return null;
 		}
 
-		final Bullet bullet = new Bullet(getGunHeading(), getX(), getY(), power, getName());
+		Bullet bullet;
+		BulletCommand wrapper;
 		Event currentTopEvent = peer.getEventManager().getCurrentTopEvent();
-		BulletCommand wrapper = new BulletCommand(bullet, false, 0);
 
-		if (currentTopEvent != null && currentTopEvent.getTime() == getTime()
+		if (currentTopEvent != null && currentTopEvent.getTime() == getTime() && !isAdvancedRobot()
+				&& getGunHeading() == getRadarHeading()
 				&& ScannedRobotEvent.class.isAssignableFrom(currentTopEvent.getClass())) {
-			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent; 
+			// this is angle assisted bullet
+			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent;
+			double fireAssistAngle = Utils.normalAbsoluteAngle(getBodyHeading() + e.getBearingRadians());
 
-			wrapper = new BulletCommand(bullet, true,
-					Utils.normalAbsoluteAngle(getBodyHeading() + e.getBearingRadians()));
+			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, getName());
+			wrapper = new BulletCommand(bullet, true, fireAssistAngle);
+		} else {
+			// this is normal bullet
+			bullet = new Bullet(getGunHeading(), getX(), getY(), power, getName());
+			wrapper = new BulletCommand(bullet, false, 0);
 		}
 
 		commands.getBullets().add(wrapper);
@@ -352,10 +359,6 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	// -----------
 	// for robot thread
 	// -----------
-
-	public boolean getCanFireAssist() {
-		return this.commands.getCanFireAssist();
-	}
 
 	public void setTestingCondition(boolean testingCondition) {
 		this.testingCondition = testingCondition;

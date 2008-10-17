@@ -15,6 +15,7 @@ import helpers.RobotTestBed;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;
+import org.junit.Test;
 
 import java.io.File;
 
@@ -22,6 +23,11 @@ import java.io.File;
  * @author Pavel Savara (original)
  */
 public class TestFileWrite extends RobotTestBed {
+
+    @Test
+    public void run() {
+        super.run();
+    }
 
     public String getRobotNames(){
         return "sample.Walls,sample.SittingDuck";

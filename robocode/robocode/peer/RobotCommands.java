@@ -12,7 +12,6 @@
 package robocode.peer;
 
 
-import robocode.Bullet;
 import robocode.Rules;
 
 import java.util.List;
@@ -46,7 +45,6 @@ public class RobotCommands {
 
 	private boolean moved;
 	private boolean scan;
-	private boolean canFireAssist;
 	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
 
 	public RobotCommands() {
@@ -70,9 +68,7 @@ public class RobotCommands {
 		scanColor = origin.scanColor;
 		maxTurnRate = origin.maxTurnRate;
 		maxVelocity = origin.maxVelocity;
-		if (fromBattleToRobot) {
-			canFireAssist = origin.canFireAssist;
-		} else {
+		if (!fromBattleToRobot) {
 			bullets = origin.bullets;
 			scan = origin.scan;
 			moved = origin.moved;
@@ -231,14 +227,6 @@ public class RobotCommands {
 
 	public List<BulletCommand> getBullets() {
 		return bullets;
-	}
-
-	public void setCanFireAssist(boolean value) {
-		canFireAssist = value;
-	}
-
-	public boolean getCanFireAssist() {
-		return canFireAssist;
 	}
 }
 

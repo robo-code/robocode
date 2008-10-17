@@ -16,6 +16,7 @@ import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
 import helpers.RobotTestBed;
 import helpers.Assert;
+import org.junit.Test;
 
 /**
  * Repeatable robot possition test
@@ -23,6 +24,11 @@ import helpers.Assert;
  * @author Pavel Savara (original)
  */
 public class TestPosition extends RobotTestBed {
+
+    @Test
+    public void run() {
+        super.run();
+    }
 
     public String getRobotNames() {
         return "sample.Crazy,sample.Target";
