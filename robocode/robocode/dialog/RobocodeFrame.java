@@ -64,6 +64,9 @@ public class RobocodeFrame extends JFrame {
 
 	private final static int UPDATE_TITLE_INTERVAL = 500; // milliseconds
 
+	private static final Cursor BUSY_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR); 
+
 	private EventHandler eventHandler = new EventHandler();
 	private BattleObserver battleObserver;
 
@@ -114,6 +117,10 @@ public class RobocodeFrame extends JFrame {
 		} finally {
 			super.finalize();
 		}
+	}
+
+	public void setBusyPointer(boolean enabled) {
+		setCursor(enabled ? BUSY_CURSOR : DEFAULT_CURSOR); 
 	}
 
 	public void addRobotButton(JButton b) {

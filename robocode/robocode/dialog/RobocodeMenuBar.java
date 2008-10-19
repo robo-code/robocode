@@ -31,7 +31,6 @@ import robocode.battle.IBattleManager;
 import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -294,7 +293,9 @@ public class RobocodeMenuBar extends JMenuBar {
 						"Records");
 
 				if (path != null) {
+					robocodeFrame.setBusyPointer(true);
 					manager.getBattleRecorder().saveRecord(path);
+					robocodeFrame.setBusyPointer(false);
 				}
 			} finally {
 				battleManager.resumeBattle();
@@ -939,7 +940,9 @@ public class RobocodeMenuBar extends JMenuBar {
 				"Recalculate CPU constant", JOptionPane.YES_NO_OPTION);
 
 		if (ok == JOptionPane.YES_OPTION) {
+			robocodeFrame.setBusyPointer(true);
 			manager.getCpuManager().calculateCpuConstant();
+			robocodeFrame.setBusyPointer(false);
 
 			long cpuConstant = manager.getCpuManager().getCpuConstant();
 
@@ -953,21 +956,9 @@ public class RobocodeMenuBar extends JMenuBar {
 				JOptionPane.YES_NO_OPTION);
 
 		if (ok == JOptionPane.YES_OPTION) {
-			// Run the robot cache clear in a safe thread
-			final RobocodeSecurityManager securityManager = (RobocodeSecurityManager) System.getSecurityManager();
-
-			Thread thread = new Thread() {
-				@Override
-				public void run() {
-					// Call AaronR's robot cache cleaner utility
-					ar.robocode.cachecleaner.CacheCleaner.clean();
-
-					securityManager.removeSafeThread(this);
-				}
-			};
-
-			securityManager.addSafeThread(thread);
-			thread.start();
+			robocodeFrame.setBusyPointer(true);
+			ar.robocode.cachecleaner.CacheCleaner.clean();
+			robocodeFrame.setBusyPointer(false);
 		}
 	}
 
