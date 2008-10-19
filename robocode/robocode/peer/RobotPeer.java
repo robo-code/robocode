@@ -91,6 +91,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.security.AccessControlException;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -130,6 +131,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private BasicRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
 	private AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
+	private AtomicReference<List<Event>> events = new AtomicReference<List<Event>>(new ArrayList<Event>());
 	private RobotStatics statics;
 	private BattleRules battleRules;
 
@@ -539,7 +541,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		final RobotCommands resCommands = new RobotCommands(this.commands.get(), null);
 		final RobotStatus resStatus = status.get();
 
-		return new ExecResult(resCommands, resStatus);
+		return new ExecResult(resCommands, resStatus, readoutEvents());
+	}
+
+	private List<Event> readoutEvents() {
+		return events.getAndSet(new ArrayList<Event>());
 	}
 
 	private void waitForBattleEndedEvent() {
@@ -586,7 +592,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 					// Process all events for the first turn.
 					// This is done as the first robot status event must occur before the robot
 					// has started running.
-					robotProxy.getEventManager().processEvents();
+					robotProxy.getEventManager().processEvents(null);
 
 					Runnable runnable = robot.getRobotRunnable();
 
@@ -811,10 +817,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void addEvent(Event event) {
-		robotProxy.getEventManager().add(event, battle.getTime());
-	}
-
 	private void checkWallCollision(RobotCommands currentCommands) {
 		boolean hitWall = false;
 		double fixx = 0, fixy = 0;
@@ -900,6 +902,18 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public synchronized void updateBoundingBox() {
 		boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
+	}
+
+	public void addEvent(Event event) {
+		final List<Event> queue = events.get();
+
+		if (queue.size() > EventManager.MAX_QUEUE_SIZE) {
+			getOut().println(
+					"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
+					+ " events in queue.");
+		}
+		event.setTime(battle.getTime());
+		queue.add(event);
 	}
 
 	private void updateGunHeading(RobotCommands currentCommands) {
@@ -1354,12 +1368,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public void publishStatus(boolean initialPropagation) {
 		final long currentTurn = battle.getTime();
-
-		// consider this: 
-		// clearig events which are older than last turn
-		// this is there from start of the version control
-		// but is that correct ? wanted ? I hope that yes.
-		robotProxy.getEventManager().clear(currentTurn - 2);
 
 		final RobotStatus stat = updateRobotInterface(initialPropagation);
 

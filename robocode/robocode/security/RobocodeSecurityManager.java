@@ -72,7 +72,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// Fake loading of classes
 		BulletState s = BulletState.INACTIVE;
 		BulletCommand c = new BulletCommand(null, false, 0);
-		ExecResult r = new ExecResult(null, null);
+		ExecResult r = new ExecResult(null, null, null);
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {

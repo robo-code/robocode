@@ -13,14 +13,19 @@ package robocode.peer;
 
 
 import robocode.RobotStatus;
+import robocode.Event;
+
+import java.util.List;
 
 
 public class ExecResult {
-	public ExecResult(RobotCommands commands, RobotStatus status) {
+	public ExecResult(RobotCommands commands, RobotStatus status, List<Event> events) {
 		this.commands = commands;
 		this.status = status;
+		this.events = events;
 	}
 
 	public RobotCommands commands;
 	public RobotStatus status;
+	public List<Event> events;
 }

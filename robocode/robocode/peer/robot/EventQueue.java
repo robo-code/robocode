@@ -22,7 +22,7 @@ import robocode.SkippedTurnEvent;
 import robocode.WinEvent;
 
 import java.util.Collections;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 /**
@@ -30,7 +30,7 @@ import java.util.Vector;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class EventQueue extends Vector<Event> {
+public class EventQueue extends ArrayList<Event> {
 
 	public void clear(boolean includingSystemEvents) {
 		if (includingSystemEvents) {
@@ -38,33 +38,27 @@ public class EventQueue extends Vector<Event> {
 			return;
 		}
 
-		synchronized (this) {
-			for (int i = 0; i < size(); i++) {
-				Event e = get(i);
+		for (int i = 0; i < size(); i++) {
+			Event e = get(i);
 
-				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
-					remove(i--);
-				}
+			if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+				remove(i--);
 			}
 		}
 	}
 
 	public void clear(long clearTime) {
-		synchronized (this) {
-			for (int i = 0; i < size(); i++) {
-				Event e = get(i);
+		for (int i = 0; i < size(); i++) {
+			Event e = get(i);
 
-				if ((e.getTime() <= clearTime)
-						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
-					remove(i--);
-				}
+			if ((e.getTime() <= clearTime)
+					&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+				remove(i--);
 			}
 		}
 	}
 
 	public void sort() {
-		synchronized (this) {
-			Collections.sort(this);
-		}
+		Collections.sort(this);
 	}
 }

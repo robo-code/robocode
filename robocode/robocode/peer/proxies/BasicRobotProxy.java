@@ -304,14 +304,10 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 		updateStatus(result.commands, result.status);
 
-		eventManager.processEvents();
+		eventManager.processEvents(result.events);
 	}
 
 	protected final void setMoveImpl(double distance) {
-		if (Double.isNaN(distance)) {
-			peer.getOut().println("SYSTEM: You cannot call move(NaN)");
-			return;
-		}
 		if (getEnergy() == 0) {
 			return;
 		}

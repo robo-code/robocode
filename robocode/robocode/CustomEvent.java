@@ -125,4 +125,13 @@ public class CustomEvent extends Event {
 			}
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	// final to disable overrides
+	public final int compareTo(Event event) {
+		return super.compareTo(event);
+	}    
 }

@@ -61,6 +61,7 @@ public class EventManager implements IEventManager {
 	private BasicRobotProxy robotProxy;
 
 	private final int MAX_PRIORITY = 100;
+	private final int MAX_EVENT_STACK = 2;
 
 	private int currentTopEventPriority;
 	private Event currentTopEvent;
@@ -70,7 +71,7 @@ public class EventManager implements IEventManager {
 
 	private boolean interruptible[] = new boolean[MAX_PRIORITY + 1];
 
-	private final static int MAX_QUEUE_SIZE = 256;
+	public final static int MAX_QUEUE_SIZE = 256;
 
 	private IBasicRobot robot;
 
@@ -86,14 +87,13 @@ public class EventManager implements IEventManager {
 		reset();
 	}
 
-	public boolean add(Event e, long currentTime) {
+	public boolean add(Event e) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				System.out.println(
 						"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE + " events in queue.");
 				return false;
 			}
-			e.setTime(currentTime);
 			return eventQueue.add(e);
 		}
 		return false;
@@ -105,10 +105,6 @@ public class EventManager implements IEventManager {
 
 	public void clearAllEvents(boolean includingSystemEvents) {
 		eventQueue.clear(includingSystemEvents);
-	}
-
-	public void clear(long clearTime) {
-		eventQueue.clear(clearTime);
 	}
 
 	public void cleanup() {
@@ -398,7 +394,14 @@ public class EventManager implements IEventManager {
 		return robotProxy.getTime();
 	}
 
-	public void processEvents() {
+	public void processEvents(List<Event> events) {
+		// add new events first
+		if (events != null) {
+			for (Event event : events) {
+				add(event);
+			}
+		}
+
 		// Process custom events
 		if (customEvents != null) {
 			boolean conditionSatisfied;
@@ -410,13 +413,20 @@ public class EventManager implements IEventManager {
 				conditionSatisfied = customEvent.test();
 				robotProxy.setTestingCondition(false);
 				if (conditionSatisfied) {
-					add(new CustomEvent(customEvent), getTime()); // TODO is that correct time ?
+					CustomEvent event = new CustomEvent(customEvent);
+
+					event.setTime(getTime()); // TODO is that correct time ?
+					add(event); 
 				}
 			}
 		}
 
+		// remove too old stuff
+		eventQueue.clear(getTime() - MAX_EVENT_STACK);
+
 		// Process event queue here
 		eventQueue.sort();
+        
 		Event currentEvent = null;
 
 		if (eventQueue.size() > 0) {
@@ -479,10 +489,13 @@ public class EventManager implements IEventManager {
 
 		if (robot != null && currentEvent != null) {
 			try {
-				currentEvent.dispatch(robot, robotProxy.getRobotStatics(), robotProxy.getGraphics());
-			} catch (Exception e2) {
+				// skip too old events
+				if (currentEvent.getTime() > getTime() - MAX_EVENT_STACK) {
+					currentEvent.dispatch(robot, robotProxy.getRobotStatics(), robotProxy.getGraphics());
+				}
+			} catch (Exception ex) {
 				robotProxy.getOut().println("SYSTEM: Exception occurred on " + currentEvent.getClass().getName());
-				e2.printStackTrace(robotProxy.getOut());
+				ex.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
