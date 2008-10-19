@@ -243,31 +243,6 @@ public class EventManager implements IEventManager {
 		return currentTopEvent;
 	}
 
-	public int getEventPriority(String eventClass) {
-		if (eventClass == null) {
-			return -1;
-		}
-		final Event event = namedEvents.get(eventClass);
-
-		if (event == null) {
-			return -1;
-		}
-		return event.getPriority();
-	}
-
-	public void setEventPriority(String eventClass, int priority) {
-		if (eventClass == null) {
-			return;
-		}
-		final Event event = namedEvents.get(eventClass);
-
-		if (event == null) {
-			robotProxy.getOut().println("SYSTEM: Unknown event class: " + eventClass);
-			return;
-		}
-		event.setPriority(priority);
-	}
-
 	/**
 	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
@@ -587,46 +562,72 @@ public class EventManager implements IEventManager {
 		return events;
 	}
 
+	public int getEventPriority(String eventClass) {
+		if (eventClass == null) {
+			return -1;
+		}
+		final Event event = namedEvents.get(eventClass);
+
+		if (event == null) {
+			return -1;
+		}
+		return event.getPriority();
+	}
+
+	public void setEventPriority(String eventClass, int priority) {
+		if (eventClass == null) {
+			return;
+		}
+		final Event event = namedEvents.get(eventClass);
+
+		if (event == null) {
+			robotProxy.getOut().println("SYSTEM: Unknown event class: " + eventClass);
+			return;
+		}
+		event.setPriority(priority);
+	}
+
 	private static Dictionary<String, Event> namedEvents;
 	private static ScannedRobotEvent dummyScannedRobotEvent; 
 
 	static {
 		namedEvents = new Hashtable<String, Event>();
 		dummyScannedRobotEvent = new ScannedRobotEvent(null, 0, 0, 0, 0, 0);
-		loadEvent(new BattleEndedEvent(false, null));
-		loadEvent(new BulletHitBulletEvent(null, null));
-		loadEvent(new BulletHitEvent(null, 0, null));
-		loadEvent(new BulletMissedEvent(null));
-		loadEvent(new DeathEvent());
-		loadEvent(new HitByBulletEvent(0, null));
-		loadEvent(new HitRobotEvent(null, 0, 0, false));
-		loadEvent(new HitWallEvent(0));
-		loadEvent(new KeyPressedEvent(null));
-		loadEvent(new KeyReleasedEvent(null));
-		loadEvent(new KeyTypedEvent(null));
-		loadEvent(new MessageEvent(null, null));
-		loadEvent(new MouseClickedEvent(null));
-		loadEvent(new MouseDraggedEvent(null));
-		loadEvent(new MouseEnteredEvent(null));
-		loadEvent(new MouseExitedEvent(null));
-		loadEvent(new MouseMovedEvent(null));
-		loadEvent(new MousePressedEvent(null));
-		loadEvent(new MouseReleasedEvent(null));
-		loadEvent(new MouseWheelMovedEvent(null));
-		loadEvent(new PaintEvent());
-		loadEvent(new RobotDeathEvent(null));
-		loadEvent(dummyScannedRobotEvent);
-		loadEvent(new SkippedTurnEvent());
-		loadEvent(new StatusEvent(null));
-		loadEvent(new WinEvent());
+		registerNamedEvent(new BattleEndedEvent(false, null));
+		registerNamedEvent(new BulletHitBulletEvent(null, null));
+		registerNamedEvent(new BulletHitEvent(null, 0, null));
+		registerNamedEvent(new BulletMissedEvent(null));
+		registerNamedEvent(new DeathEvent());
+		registerNamedEvent(new HitByBulletEvent(0, null));
+		registerNamedEvent(new HitRobotEvent(null, 0, 0, false));
+		registerNamedEvent(new HitWallEvent(0));
+		registerNamedEvent(new KeyPressedEvent(null));
+		registerNamedEvent(new KeyReleasedEvent(null));
+		registerNamedEvent(new KeyTypedEvent(null));
+		registerNamedEvent(new MessageEvent(null, null));
+		registerNamedEvent(new MouseClickedEvent(null));
+		registerNamedEvent(new MouseDraggedEvent(null));
+		registerNamedEvent(new MouseEnteredEvent(null));
+		registerNamedEvent(new MouseExitedEvent(null));
+		registerNamedEvent(new MouseMovedEvent(null));
+		registerNamedEvent(new MousePressedEvent(null));
+		registerNamedEvent(new MouseReleasedEvent(null));
+		registerNamedEvent(new MouseWheelMovedEvent(null));
+		registerNamedEvent(new PaintEvent());
+		registerNamedEvent(new RobotDeathEvent(null));
+		registerNamedEvent(dummyScannedRobotEvent);
+		registerNamedEvent(new SkippedTurnEvent());
+		registerNamedEvent(new StatusEvent(null));
+		registerNamedEvent(new WinEvent());
 
+		// same as any line above but for custom event
 		final DummyCustomEvent custom = new DummyCustomEvent();
 
 		namedEvents.put("robocode.CustomEvent", custom);
 		namedEvents.put("CustomEvent", custom);
 	}
 
-	private static void loadEvent(Event e) {
+	private static void registerNamedEvent(Event e) {
 		final String name = e.getClass().getName();
 
 		namedEvents.put(name, e);

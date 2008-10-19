@@ -868,7 +868,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		// publishMessages
 		if (statics.isTeamRobot()) {
-			getMessageManager().publishMessages(battle.getTime());
+			getMessageManager().publishMessages();
 		}
 	}
 
@@ -909,18 +909,20 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 							statistics.scoreRammingKill(i);
 						}
 					}
-					eventManager.add(
-							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - bodyHeading), r.getEnergy(), atFault),
-							battle.getTime());
-					r.eventManager.add(
-							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getBodyHeading()), energy, false),
-							battle.getTime());
+					addEvent(
+							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - bodyHeading), r.getEnergy(), atFault));
+					r.addEvent(
+							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getBodyHeading()), energy, false));
 				}
 			}
 		}
 		if (inCollision) {
 			setState(RobotState.HIT_ROBOT);
 		}
+	}
+
+	public void addEvent(Event event) {
+		eventManager.add(event, battle.getTime());
 	}
 
 	private void checkWallCollision(RobotCommands currentCommands) {
@@ -953,7 +955,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 
 		if (hitWall) {
-			eventManager.add(new HitWallEvent(angle), battle.getTime());
+			addEvent(new HitWallEvent(angle));
 
 			// only fix both x and y values if hitting wall at an angle
 			if ((bodyHeading % (Math.PI / 2)) != 0) {
@@ -1313,7 +1315,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 						normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
 						robotPeer.getVelocity());
 
-				eventManager.add(event, battle.getTime());
+				addEvent(event);
 			}
 		}
 	}
@@ -1362,7 +1364,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	public synchronized void kill() {
 		battle.resetInactiveTurnCount(10.0);
 		if (isAlive()) {
-			eventManager.add(new DeathEvent(), battle.getTime());
+			addEvent(new DeathEvent());
 			if (isTeamLeader()) {
 				for (RobotPeer teammate : teamPeer) {
 					if (!(teammate.isDead() || teammate == this)) {
@@ -1474,10 +1476,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return graphicsProxy;
 	}
 
-	public void onInteractiveEvent(robocode.Event e) {
-		eventManager.add(e, battle.getTime());
-	}
-
 	public void publishStatus(boolean initialPropagation) {
 		final long currentTurn = battle.getTime();
 
@@ -1494,10 +1492,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		((Graphics2DProxy) getGraphics()).clearQueue();
 
 		if (!isDead()) {
-			eventManager.add(new StatusEvent(stat), battle.getTime());
+			addEvent(new StatusEvent(stat));
 			// Add paint event, if robot is a paint robot and its painting is enabled
 			if (isPaintRobot() && isPaintEnabled() && currentTurn > 0) {
-				eventManager.add(new PaintEvent(), battle.getTime());
+				addEvent(new PaintEvent());
 			}
 		}
 	}
@@ -1656,9 +1654,9 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return 0;
 	}
 
-    @Override
-    public String toString() {
-        return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY();
-    }
+	@Override
+	public String toString() {
+		return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY();
+	}
 
 }

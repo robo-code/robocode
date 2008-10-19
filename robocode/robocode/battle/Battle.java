@@ -472,7 +472,7 @@ public final class Battle extends BaseBattle {
 							r.getRobotStatistics().scoreLastSurvivor();
 							r.setWinner(true);
 							r.getOut().println("SYSTEM: " + r.getName() + " wins the round.");
-							r.getEventManager().add(new WinEvent(), getTime());
+							r.addEvent(new WinEvent());
 							if (r.getTeamPeer() != null) {
 								if (r.isTeamLeader()) {
 									leaderFirsts = true;
@@ -500,7 +500,7 @@ public final class Battle extends BaseBattle {
 				RobotPeer r = orderedRobots.get(rank);
 				BattleResults resultsForRobots = r.getStatistics().getFinalResults(rank + 1);
 
-				r.getEventManager().add(new BattleEndedEvent(isAborted(), resultsForRobots), getTime());
+				r.addEvent(new BattleEndedEvent(isAborted(), resultsForRobots));
 			}
 		}
 
@@ -647,7 +647,7 @@ public final class Battle extends BaseBattle {
 			// publish deaths to live robots
 			if (!r.isDead()) {
 				for (RobotPeer de : deathRobots) {
-					r.getEventManager().add(new RobotDeathEvent(de.getName()), getTime());
+					r.addEvent(new RobotDeathEvent(de.getName()));
 					if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
 						r.getRobotStatistics().scoreSurvival();
 					}
@@ -1131,7 +1131,7 @@ public final class Battle extends BaseBattle {
 
 		public void execute() {
 			for (RobotPeer robot : robots) {
-				robot.onInteractiveEvent(event);
+				robot.addEvent(event);
 			}
 		}
 	}
