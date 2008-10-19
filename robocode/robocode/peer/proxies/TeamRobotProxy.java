@@ -54,6 +54,6 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 	// events
 	public List<MessageEvent> getMessageEvents() {
 		getCall();
-		return peer.getMessageEvents();
+		return eventManager.getMessageEvents();
 	}
 }

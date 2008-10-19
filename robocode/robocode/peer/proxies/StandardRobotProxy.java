@@ -54,8 +54,6 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 		boolean reset = false;
 		boolean resetValue = false;
 
-		final EventManager eventManager = peer.getEventManager();
-        
 		if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority()) {
 			reset = true;
 			resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());

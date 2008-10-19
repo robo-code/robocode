@@ -111,82 +111,82 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	// events manipulation
 	public void setInterruptible(boolean interruptable) {
 		setCall();
-		peer.setInterruptible(interruptable);
+		eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
 	}
 
 	public void setEventPriority(String eventClass, int priority) {
 		setCall();
-		peer.setEventPriority(eventClass, priority);
+		eventManager.setEventPriority(eventClass, priority);
 	}
 
 	public int getEventPriority(String eventClass) {
 		getCall();
-		return peer.getEventPriority(eventClass);
+		return eventManager.getEventPriority(eventClass);
 	}
 
 	public void removeCustomEvent(Condition condition) {
 		setCall();
-		peer.removeCustomEvent(condition);
+		eventManager.removeCustomEvent(condition);
 	}
 
 	public void addCustomEvent(Condition condition) {
 		setCall();
-		peer.addCustomEvent(condition);
+		eventManager.addCustomEvent(condition);
 	}
 
 	public void clearAllEvents() {
 		setCall();
-		peer.clearAllEvents();
+		eventManager.clearAllEvents(false);
 	}
 
 	public List<Event> getAllEvents() {
 		getCall();
-		return peer.getAllEvents();
+		return eventManager.getAllEvents();
 	}
 
 	public List<StatusEvent> getStatusEvents() {
 		getCall();
-		return peer.getStatusEvents();
+		return eventManager.getStatusEvents();
 	}
 
 	public List<BulletMissedEvent> getBulletMissedEvents() {
 		getCall();
-		return peer.getBulletMissedEvents();
+		return eventManager.getBulletMissedEvents();
 	}
 
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
 		getCall();
-		return peer.getBulletHitBulletEvents();
+		return eventManager.getBulletHitBulletEvents();
 	}
 
 	public List<BulletHitEvent> getBulletHitEvents() {
 		getCall();
-		return peer.getBulletHitEvents();
+		return eventManager.getBulletHitEvents();
 	}
 
 	public List<HitByBulletEvent> getHitByBulletEvents() {
 		getCall();
-		return peer.getHitByBulletEvents();
+		return eventManager.getHitByBulletEvents();
 	}
 
 	public List<HitRobotEvent> getHitRobotEvents() {
 		getCall();
-		return peer.getHitRobotEvents();
+		return eventManager.getHitRobotEvents();
 	}
 
 	public List<HitWallEvent> getHitWallEvents() {
 		getCall();
-		return peer.getHitWallEvents();
+		return eventManager.getHitWallEvents();
 	}
 
 	public List<RobotDeathEvent> getRobotDeathEvents() {
 		getCall();
-		return peer.getRobotDeathEvents();
+		return eventManager.getRobotDeathEvents();
 	}
 
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		getCall();
-		return peer.getScannedRobotEvents();
+		return eventManager.getScannedRobotEvents();
 	}
 
 	// data

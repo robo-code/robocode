@@ -120,7 +120,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private static final int maxSkippedTurnsWithIO = 240;
 
 	private Battle battle;
-	private EventManager eventManager;
 	private RobotClassManager robotClassManager;
 	private RobotFileSystemManager robotFileSystemManager;
 	private RobotThreadManager robotThreadManager;
@@ -196,7 +195,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			if (robot instanceof ITeamRobot) {
 				messageManager = new RobotMessageManager(this);
 			}
-			eventManager.setRobot(newRobot);
+			robotProxy.getEventManager().setRobot(newRobot);
 		}
 	}
 
@@ -219,7 +218,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		} else {
 			throw new AccessControlException("Unknown robot type");
 		}
-		eventManager = new EventManager(robotProxy);
 	}
 
 	public BasicRobotProxy getRobotProxy() {
@@ -259,10 +257,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public RobotThreadManager getRobotThreadManager() {
 		return robotThreadManager;
-	}
-
-	public EventManager getEventManager() {
-		return eventManager;
 	}
 
 	// -------------------
@@ -457,78 +451,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return commands.get().getScanColor();
 	}
 
-	public synchronized void setInterruptible(boolean interruptable) {
-		eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
-	}
-
-	// ------------
-	// events
-	// ------------
-
-	public int getEventPriority(String eventClass) {
-		return eventManager.getEventPriority(eventClass);
-	}
-
-	public void removeCustomEvent(Condition condition) {
-		eventManager.removeCustomEvent(condition);
-	}
-
-	public void addCustomEvent(Condition condition) {
-		eventManager.addCustomEvent(condition);
-	}
-
-	public void clearAllEvents() {
-		eventManager.clearAllEvents(false);
-	}
-
-	public List<Event> getAllEvents() {
-		return eventManager.getAllEvents();
-	}
-
-	public List<StatusEvent> getStatusEvents() {
-		return eventManager.getStatusEvents();
-	}
-
-	public List<BulletMissedEvent> getBulletMissedEvents() {
-		return eventManager.getBulletMissedEvents();
-	}
-
-	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
-		return eventManager.getBulletHitBulletEvents();
-	}
-
-	public List<BulletHitEvent> getBulletHitEvents() {
-		return eventManager.getBulletHitEvents();
-	}
-
-	public List<HitByBulletEvent> getHitByBulletEvents() {
-		return eventManager.getHitByBulletEvents();
-	}
-
-	public List<HitRobotEvent> getHitRobotEvents() {
-		return eventManager.getHitRobotEvents();
-	}
-
-	public List<HitWallEvent> getHitWallEvents() {
-		return eventManager.getHitWallEvents();
-	}
-
-	public List<RobotDeathEvent> getRobotDeathEvents() {
-		return eventManager.getRobotDeathEvents();
-	}
-
-	public List<ScannedRobotEvent> getScannedRobotEvents() {
-		return eventManager.getScannedRobotEvents();
-	}
-
-	public List<MessageEvent> getMessageEvents() {
-		return eventManager.getMessageEvents();
-	}
-
-	public void setEventPriority(String eventClass, int priority) {
-		eventManager.setEventPriority(eventClass, priority);
-	}
-
 	// -----------
 	// files
 	// -----------
@@ -653,7 +575,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	private void waitForBattleEndedEvent() {
 		if (battle.isAborted() || (battle.isLastRound() && isDead())) {
-			while (!getHalt() && !eventManager.processBattleEndedEvent()) {
+			while (!getHalt() && !robotProxy.getEventManager().processBattleEndedEvent()) {
 				waitForNextRound();
 			}
 		}
@@ -689,20 +611,21 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		setRunning(true);
 
 		try {
-			if (robot != null) {
-
-				// Process all events for the first turn.
-				// This is done as the first robot status event must occur before the robot
-				// has started running.
-				eventManager.processEvents();
-
-				Runnable runnable = robot.getRobotRunnable();
-
-				if (runnable != null) {
-					runnable.run();
-				}
-			}
 			if (robotProxy != null) {
+				if (robot != null) {
+
+					// Process all events for the first turn.
+					// This is done as the first robot status event must occur before the robot
+					// has started running.
+					robotProxy.getEventManager().processEvents();
+
+					Runnable runnable = robot.getRobotRunnable();
+
+					if (runnable != null) {
+						runnable.run();
+					}
+				}
+
 				// noinspection InfiniteLoopStatement
 				for (;;) {
 					robotProxy.execute();
@@ -792,8 +715,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		scanArc.setAngleStart(0);
 		scanArc.setAngleExtent(0);
 		scanArc.setFrame(-100, -100, 1, 1);
-
-		eventManager.reset();
 
 		statistics.initialize();
 
@@ -922,7 +843,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void addEvent(Event event) {
-		eventManager.add(event, battle.getTime());
+		robotProxy.getEventManager().add(event, battle.getTime());
 	}
 
 	private void checkWallCollision(RobotCommands currentCommands) {
@@ -1406,12 +1327,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		robot = null;
 
-		// Cleanup and remove the event manager
-		if (eventManager != null) {
-			eventManager.cleanup();
-			eventManager = null;
-		}
-
 		// Cleanup and remove class manager
 		if (robotClassManager != null) {
 			robotClassManager.cleanup();
@@ -1483,7 +1398,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		// clearig events which are older than last turn
 		// this is there from start of the version control
 		// but is that correct ? wanted ? I hope that yes.
-		eventManager.clear(currentTurn - 2);
+		robotProxy.getEventManager().clear(currentTurn - 2);
 
 		final RobotStatus stat = updateRobotInterface(initialPropagation);
 
@@ -1624,7 +1539,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		} else {
 			skippedTurns++;
 
-			getEventManager().add(new SkippedTurnEvent(), battle.getTime());
+			addEvent(new SkippedTurnEvent());
 
 			if ((!isIORobot() && (skippedTurns > maxSkippedTurns))
 					|| (isIORobot() && (skippedTurns > maxSkippedTurnsWithIO))) {

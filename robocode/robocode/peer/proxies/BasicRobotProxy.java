@@ -17,6 +17,7 @@ import robocode.Event;
 import robocode.util.Utils;
 import robocode.peer.*;
 import robocode.peer.robot.RobotOutputStream;
+import robocode.peer.robot.EventManager;
 import robocode.exception.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
@@ -32,6 +33,8 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
+	protected EventManager eventManager;
+
 	protected RobotPeer peer;
 	protected RobotStatus status;
 	protected RobotCommands commands;
@@ -46,15 +49,24 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	public BasicRobotProxy(RobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
+		eventManager = new EventManager(this); 
 	}
 
-	public void initialize() {}
+	public void initialize() {
+		eventManager.reset();
+	}
 
 	public void cleanup() {
 		// Cleanup and remove current wait condition
 		if (waitCondition != null) {
 			waitCondition.cleanup();
 			waitCondition = null;
+		}
+
+		// Cleanup and remove the event manager
+		if (eventManager != null) {
+			eventManager.cleanup();
+			eventManager = null;
 		}
 	}
 
@@ -273,7 +285,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 		updateStatus(result.commands, result.status);
 
-		peer.getEventManager().processEvents();
+		eventManager.processEvents();
 	}
 
 	protected final void setMoveImpl(double distance) {
@@ -299,7 +311,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 		Bullet bullet;
 		BulletCommand wrapper;
-		Event currentTopEvent = peer.getEventManager().getCurrentTopEvent();
+		Event currentTopEvent = eventManager.getCurrentTopEvent();
 
 		if (currentTopEvent != null && currentTopEvent.getTime() == getTime() && !statics.isAdvancedRobot()
 				&& getGunHeading() == getRadarHeading()
@@ -354,6 +366,10 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public RobotOutputStream getOut() {
 		return peer.getOut();
+	}
+
+	public EventManager getEventManager() {
+		return eventManager;
 	}
 
 	// -----------
