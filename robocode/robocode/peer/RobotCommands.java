@@ -13,6 +13,7 @@ package robocode.peer;
 
 
 import robocode.Rules;
+import robocode.robotpaint.Graphics2DProxy;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -46,13 +47,14 @@ public class RobotCommands {
 	private boolean moved;
 	private boolean scan;
 	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
+	private Graphics2DProxy graphicsProxy;
 
 	public RobotCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
 		setMaxTurnRate(Double.MAX_VALUE);
 	}
 
-	public RobotCommands(RobotCommands origin, boolean fromBattleToRobot) {
+	public RobotCommands(RobotCommands origin, Graphics2DProxy sourceGraphics) {
 		bodyTurnRemaining = origin.bodyTurnRemaining;
 		radarTurnRemaining = origin.radarTurnRemaining;
 		gunTurnRemaining = origin.gunTurnRemaining;
@@ -68,10 +70,12 @@ public class RobotCommands {
 		scanColor = origin.scanColor;
 		maxTurnRate = origin.maxTurnRate;
 		maxVelocity = origin.maxVelocity;
-		if (!fromBattleToRobot) {
+		if (sourceGraphics != null) {
 			bullets = origin.bullets;
 			scan = origin.scan;
 			moved = origin.moved;
+			graphicsProxy = (Graphics2DProxy) sourceGraphics.create();
+			(sourceGraphics).clearQueue();
 		}
 	}
 
@@ -227,6 +231,10 @@ public class RobotCommands {
 
 	public List<BulletCommand> getBullets() {
 		return bullets;
+	}
+
+	public Graphics2DProxy getGraphicsProxy() {
+		return graphicsProxy;
 	}
 }
 

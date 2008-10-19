@@ -14,6 +14,7 @@ package robocode.peer.proxies;
 
 import robocode.*;
 import robocode.Event;
+import robocode.robotpaint.Graphics2DProxy;
 import robocode.manager.HostManager;
 import robocode.util.Utils;
 import robocode.peer.*;
@@ -38,6 +39,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	protected HostManager hostManager;
 	protected EventManager eventManager;
 	protected RobotFileSystemManager robotFileSystemManager; // TODO move to advanced robot ?
+	private Graphics2DProxy graphicsProxy;
 
 	protected RobotPeer peer;
 	protected RobotStatus status;
@@ -59,6 +61,8 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota());
 		robotFileSystemManager.initializeQuota();
+
+		graphicsProxy = new Graphics2DProxy();
 	}
 
 	public void initialize() {
@@ -80,6 +84,9 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 			eventManager.cleanup();
 			eventManager = null;
 		}
+
+		// Cleanup graphics proxy
+		graphicsProxy = null;
 	}
 
 	// asynchronous actions
@@ -267,7 +274,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public Graphics2D getGraphics() {
 		getCall();
-		return peer.getGraphics();
+		return graphicsProxy;
 	}
 
 	// -----------

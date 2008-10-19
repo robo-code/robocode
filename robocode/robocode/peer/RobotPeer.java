@@ -84,7 +84,6 @@ import static robocode.util.Utils.*;
 import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import static java.lang.Math.*;
@@ -166,7 +165,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private RobotState state;
 	private Arc2D scanArc;
 	private BoundingRectangle boundingBox;
-	private Graphics2DProxy graphicsProxy;
 
 	public RobotPeer(RobotClassManager robotClassManager) {
 		super();
@@ -515,11 +513,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	// -----------
 
 	public final ExecResult executeImpl(RobotCommands newCommands) {
-
-		// from robot to battle
 		newCommands.validate(this);
-
-		commands.set(new RobotCommands(newCommands, false));
+        
+		// from robot to battle
+		commands.set(new RobotCommands(newCommands, (Graphics2DProxy) robotProxy.getGraphics()));
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (battle.isAborted()) {
@@ -539,7 +536,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		waitForNextRound();
 
 		// from battle to robot
-		final RobotCommands resCommands = new RobotCommands(this.commands.get(), true);
+		final RobotCommands resCommands = new RobotCommands(this.commands.get(), null);
 		final RobotStatus resStatus = status.get();
 
 		return new ExecResult(resCommands, resStatus);
@@ -1321,9 +1318,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		// Cleanup robot proxy
 		robotProxy = null;
-
-		// Cleanup graphics proxy
-		graphicsProxy = null;
 	}
 
 	private void cleanupStaticFields() {
@@ -1354,11 +1348,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public Graphics2D getGraphics() {
-		if (graphicsProxy == null) {
-			graphicsProxy = new Graphics2DProxy();
-		}
-		return graphicsProxy;
+	public Graphics2DProxy getGraphics() {
+		return commands.get().getGraphicsProxy();
 	}
 
 	public void publishStatus(boolean initialPropagation) {
@@ -1371,10 +1362,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		robotProxy.getEventManager().clear(currentTurn - 2);
 
 		final RobotStatus stat = updateRobotInterface(initialPropagation);
-
-		// Clear the queue of calls in the graphics proxy as these have already
-		// been processed, so calling onPaint() will add the new calls
-		((Graphics2DProxy) getGraphics()).clearQueue();
 
 		if (!isDead()) {
 			addEvent(new StatusEvent(stat));
@@ -1396,6 +1383,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			}
 			commands.set(robotCommands);
 		}
+
 		return stat;
 	}
 

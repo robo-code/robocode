@@ -147,9 +147,7 @@ public class RobotSnapshot implements Serializable {
 
 		scanArc = peer.getScanArc() != null ? new SerializableArc((Arc2D.Double) peer.getScanArc()) : null;
 
-		Graphics2D peerGfx = peer.getGraphics();
-
-		graphicsProxy = peerGfx != null ? (Graphics2DProxy) peerGfx.create() : null;
+		graphicsProxy = peer.getGraphics();
 
 		outputStreamSnapshot = peer.getOut().readAndReset();
 
