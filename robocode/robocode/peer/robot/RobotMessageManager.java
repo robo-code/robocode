@@ -59,7 +59,7 @@ public class RobotMessageManager {
 			in = new RobocodeObjectInputStream(bufOut.getInputStream(),
 					robotPeer.getRobotClassManager().getRobotClassLoader());
 		} catch (IOException e) {
-			robotPeer.getOut().println("Unable to initialize team message service.");
+			robotPeer.println("Unable to initialize team message service.");
 		}
 	}
 

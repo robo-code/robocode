@@ -199,7 +199,6 @@ public final class Battle extends BaseBattle {
 		} else {
 			addContestant(robotPeer);
 		}
-		robotPeer.getOut();
 
 		int count = 0;
 
@@ -359,7 +358,6 @@ public final class Battle extends BaseBattle {
 		}
 
 		for (RobotPeer r : robots) {
-			r.getOut().close();
 			r.getRobotThreadManager().cleanup();
 		}
 
@@ -459,7 +457,7 @@ public final class Battle extends BaseBattle {
 			if (isAborted()) {
 				for (RobotPeer r : getRobotsAtRandom()) {
 					if (!r.isDead()) {
-						r.getOut().println("SYSTEM: game aborted.");
+						r.println("SYSTEM: game aborted.");
 					}
 				}
 			} else if (oneTeamRemaining()) {
@@ -471,7 +469,7 @@ public final class Battle extends BaseBattle {
 						if (!r.isWinner()) {
 							r.getRobotStatistics().scoreLastSurvivor();
 							r.setWinner(true);
-							r.getOut().println("SYSTEM: " + r.getName() + " wins the round.");
+							r.println("SYSTEM: " + r.getName() + " wins the round.");
 							r.addEvent(new WinEvent());
 							if (r.getTeamPeer() != null) {
 								if (r.isTeamLeader()) {
@@ -544,8 +542,8 @@ public final class Battle extends BaseBattle {
 				initializeRobotPosition(r);
 
 			} catch (Throwable e) {
-				r.getOut().println("SYSTEM: Could not load " + r.getName() + " : " + e);
-				e.printStackTrace(r.getOut());
+				r.println("SYSTEM: Could not load " + r.getName() + " : " + e);
+				r.println(e.getStackTrace().toString());
 			}
 		}
 	}
@@ -792,9 +790,9 @@ public final class Battle extends BaseBattle {
 				r.preInitialize();
 			} 
 
-			r.getOut().println("=========================");
-			r.getOut().println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
-			r.getOut().println("=========================");
+			r.println("=========================");
+			r.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
+			r.println("=========================");
 		}
 
 		// At this point the unsafe loader thread is still waiting for a signal.
@@ -822,9 +820,9 @@ public final class Battle extends BaseBattle {
 				final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
 						+ " characters maximum please.";
 
-				r.getOut().println(message);
+				r.println(message);
 				logMessage(message);
-				r.getOut().println("SYSTEM: Robot disabled.");
+				r.println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 
@@ -833,9 +831,9 @@ public final class Battle extends BaseBattle {
 				final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
 						+ " characters maximum please.";
 
-				r.getOut().println(message);
+				r.println(message);
 				logMessage(message);
-				r.getOut().println("SYSTEM: Robot disabled.");
+				r.println("SYSTEM: Robot disabled.");
 				r.setEnergy(0);
 			}
 		}
@@ -1001,7 +999,7 @@ public final class Battle extends BaseBattle {
 					manager.getThreadManager().setLoadingRobot(robotPeer);
 					robotClass = robotPeer.getRobotClassManager().getRobotClass();
 					if (robotClass == null) {
-						robotPeer.getOut().println("SYSTEM: Skipping robot: " + robotPeer.getName());
+						robotPeer.println("SYSTEM: Skipping robot: " + robotPeer.getName());
 						robotPeer.setEnergy(0);
 						continue;
 					}
@@ -1009,19 +1007,19 @@ public final class Battle extends BaseBattle {
 
 					robotPeer.setRobot(bot);
 
-					bot.setOut(robotPeer.getOut());
+					bot.setOut(robotPeer.getRobotProxy().getOut());
 					bot.setPeer(robotPeer.getRobotProxy());
 				} catch (IllegalAccessException e) {
-					robotPeer.getOut().println("SYSTEM: Unable to instantiate this robot: " + e);
-					robotPeer.getOut().println("SYSTEM: Is your constructor marked public?");
+					robotPeer.println("SYSTEM: Unable to instantiate this robot: " + e);
+					robotPeer.println("SYSTEM: Is your constructor marked public?");
 					robotPeer.setEnergy(0);
 					robotPeer.setRobot(null);
 					logMessage(e);
 				} catch (Throwable e) {
-					robotPeer.getOut().println(
+					robotPeer.println(
 							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
-					robotPeer.getOut().println("SYSTEM: " + e);
-					e.printStackTrace(robotPeer.getOut());
+					robotPeer.println("SYSTEM: " + e);
+					robotPeer.println(e.getStackTrace().toString());
 					robotPeer.setRobot(null);
 					robotPeer.setEnergy(0);
 					logMessage(e);

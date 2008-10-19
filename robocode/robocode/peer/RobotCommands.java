@@ -48,6 +48,7 @@ public class RobotCommands {
 	private boolean scan;
 	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
 	private Graphics2DProxy graphicsProxy;
+	private String outputText;
 
 	public RobotCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
@@ -76,18 +77,19 @@ public class RobotCommands {
 			moved = origin.moved;
 			graphicsProxy = (Graphics2DProxy) sourceGraphics.create();
 			(sourceGraphics).clearQueue();
+			outputText = origin.outputText;
 		}
 	}
 
 	public void validate(RobotPeer peer) {
 		if (Double.isNaN(maxTurnRate)) {
-			peer.getOut().println("You cannot setMaxTurnRate to: " + maxTurnRate);
+			peer.println("You cannot setMaxTurnRate to: " + maxTurnRate);
 			return;
 		}
 		maxTurnRate = min(abs(maxTurnRate), Rules.MAX_TURN_RATE_RADIANS);
         
 		if (Double.isNaN(maxVelocity)) {
-			peer.getOut().println("You cannot setMaxVelocity to: " + maxVelocity);
+			peer.println("You cannot setMaxVelocity to: " + maxVelocity);
 			return;
 		}
 		maxVelocity = min(abs(maxVelocity), Rules.MAX_VELOCITY);
@@ -235,6 +237,14 @@ public class RobotCommands {
 
 	public Graphics2DProxy getGraphicsProxy() {
 		return graphicsProxy;
+	}
+
+	public String getOutputText() {
+		return outputText;
+	}
+
+	public void setOutputText(String out) {
+		outputText = out;
 	}
 }
 

@@ -381,11 +381,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (perm instanceof RobocodePermission) {
 
 			if (perm.getName().equals("System.out") || perm.getName().equals("System.err")) {
-				robotPeer.getOut().println("SYSTEM:  You cannot write to System.out or System.err.");
-				robotPeer.getOut().println("SYSTEM:  Please use out.println instead of System.out.println");
+				robotPeer.println("SYSTEM:  You cannot write to System.out or System.err.");
+				robotPeer.println("SYSTEM:  Please use out.println instead of System.out.println");
 				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access: " + perm);
 			} else if (perm.getName().equals("System.in")) {
-				robotPeer.getOut().println("SYSTEM:  You cannot read from System.in.");
+				robotPeer.println("SYSTEM:  You cannot read from System.in.");
 				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access: " + perm);
 
 			}
@@ -425,7 +425,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			File dir = robotPeer.getRobotFileSystemManager().getWritableDirectory();
 
 			addRobocodeOutputStream(o); // it's gone already...
-			robotPeer.getOut().println("SYSTEM: Creating a data directory for you.");
+			robotPeer.println("SYSTEM: Creating a data directory for you.");
 			dir.mkdir();
 			addRobocodeOutputStream(o); // one more time...
 			fos = new FileOutputStream(o.getName(), append);
@@ -486,7 +486,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			throw new AccessControlException("Cannot call threadOut from unknown thread.");
 		}
 
-		robotPeer.getOut().println(s);
+		robotPeer.println(s);
 	}
 
 	public PrintStream getRobotOutputStream() {
@@ -508,7 +508,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		try {
 			RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
 
-			return (robotPeer != null) ? robotPeer.getOut() : null;
+			return (robotPeer != null) ? robotPeer.getRobotProxy().getOut() : null;
 
 		} catch (Exception e) {
 			syserr.println("Unable to get output stream: " + e);
@@ -553,7 +553,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 				if (robotPeer != null) {
 					robotPeer.setEnergy(0);
 					if (!experimental && subPkg.equals("robotinterfaces.peer")) {
-						robotPeer.getOut().println(
+						robotPeer.println(
 								"SYSTEM: " + robotPeer.getName() + " is not allowed to access the internal Robocode package: "
 								+ pkg + "\n"
 								+ "SYSTEM: Perhaps you did not set the -DEXPERIMENTAL=true option in the robocode.bat or robocode.sh file?\n"
@@ -589,7 +589,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 					for (RobotPeer robotPeer : robotPeers) {
 						if (robotPeer != null) {
-							robotPeer.getOut().println("SYSTEM: Accessing the AWT Event Queue is not allowed!");
+							robotPeer.println("SYSTEM: Accessing the AWT Event Queue is not allowed!");
 
 							// Disable the robot
 							robotPeer.setEnergy(0);

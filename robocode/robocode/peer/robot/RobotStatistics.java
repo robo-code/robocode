@@ -248,8 +248,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 			bulletKillBonus += bonus;
 
-			robotPeer.getOut().println(
-					"SYSTEM: Bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
+			robotPeer.println("SYSTEM: Bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
 		}
 	}
 
@@ -273,7 +272,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 			}
 			rammingKillBonus += bonus;
 
-			robotPeer.getOut().println(
+			robotPeer.println(
 					"SYSTEM: Ram bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
 		}
 	}

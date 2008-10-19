@@ -18,9 +18,7 @@ import robocode.robotpaint.Graphics2DProxy;
 import robocode.manager.HostManager;
 import robocode.util.Utils;
 import robocode.peer.*;
-import robocode.peer.robot.RobotOutputStream;
 import robocode.peer.robot.EventManager;
-import robocode.peer.robot.RobotFileSystemManager;
 import robocode.exception.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
@@ -31,20 +29,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author Pavel Savara (original)
  */
-public class BasicRobotProxy implements IBasicRobotPeer {
+public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPeer {
 	private static final long
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
-	protected HostManager hostManager;
 	protected EventManager eventManager;
-	protected RobotFileSystemManager robotFileSystemManager; // TODO move to advanced robot ?
 	private Graphics2DProxy graphicsProxy;
 
-	protected RobotPeer peer;
 	protected RobotStatus status;
 	protected RobotCommands commands;
-	protected RobotStatics statics;
 
 	private AtomicInteger setCallCount = new AtomicInteger(0);
 	private AtomicInteger getCallCount = new AtomicInteger(0);
@@ -53,14 +47,9 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	protected boolean testingCondition;
 
 	public BasicRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
-		this.peer = peer;
-		this.statics = statics;
-		this.hostManager = hostManager;
+		super(hostManager, peer, statics);
 
 		eventManager = new EventManager(this);
-
-		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota());
-		robotFileSystemManager.initializeQuota();
 
 		graphicsProxy = new Graphics2DProxy();
 	}
@@ -69,10 +58,10 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		eventManager.reset();
 	}
 
+	@Override
 	public void cleanup() {
-		// Remove the file system and the manager
-		robotFileSystemManager = null;
-
+		super.cleanup();
+        
 		// Cleanup and remove current wait condition
 		if (waitCondition != null) {
 			waitCondition.cleanup();
@@ -158,7 +147,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		final int res = setCallCount.incrementAndGet();
 
 		if (res >= MAX_SET_CALL_COUNT) {
-			peer.getOut().println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
+			peer.println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
 			throw new DisabledException("Too many calls to setXX methods");
 		}
 	}
@@ -167,7 +156,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		final int res = getCallCount.incrementAndGet();
 
 		if (res >= MAX_GET_CALL_COUNT) {
-			peer.getOut().println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
+			peer.println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
 			throw new DisabledException("Too many calls to getXX methods");
 		}
 	}
@@ -300,6 +289,8 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 			commands.setScan(true);
 		}
 
+		commands.setOutputText(out.readAndReset());
+
 		ExecResult result = peer.executeImpl(commands);
 
 		updateStatus(result.commands, result.status);
@@ -317,7 +308,7 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	protected final Bullet setFireImpl(double power) {
 		if (Double.isNaN(power)) {
-			peer.getOut().println("SYSTEM: You cannot call fire(NaN)");
+			peer.println("SYSTEM: You cannot call fire(NaN)");
 			return null;
 		}
 		if (getGunHeat() > 0 || getEnergy() == 0) {
@@ -379,10 +370,6 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 		this.getCallCount.set(getCallCount);
 	}
 
-	public RobotOutputStream getOut() {
-		return peer.getOut();
-	}
-
 	public EventManager getEventManager() {
 		return eventManager;
 	}
@@ -393,25 +380,6 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public void setTestingCondition(boolean testingCondition) {
 		this.testingCondition = testingCondition;
-	}
-
-	public RobotStatics getRobotStatics() {
-		return statics;
-	}
-
-	// TODO temporary
-	public String getRootPackageDirectory() {
-		return peer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory(); 
-	}
-
-	// TODO temporary
-	public String getClassDirectory() {
-		return peer.getRobotClassManager().getRobotClassLoader().getClassDirectory();
-	}
-
-	// TODO temporary
-	public RobotFileSystemManager getRobotFileSystemManager() {
-		return robotFileSystemManager;
 	}
 
 	@Override

@@ -29,16 +29,13 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	private final static int MAX = 100;
 
-	private Thread battleThread;
-
 	private int count = 0;
 	private boolean messaged = false;
 	private StringBuilder text;
 	private final Object syncRoot = new Object();
 
-	public RobotOutputStream(Thread battleThread) {
+	public RobotOutputStream() {
 		super(new BufferedPipedOutputStream(128, true));
-		this.battleThread = battleThread;
 		this.text = new StringBuilder(8192);
 	}
 
@@ -64,9 +61,6 @@ public class RobotOutputStream extends java.io.PrintStream {
 	private boolean isOkToPrint() {
 		synchronized (syncRoot) {
 			if (count++ > MAX) {
-				if (Thread.currentThread() == battleThread) {
-					return true;
-				}
 				if (!messaged) {
 					text.append(
 							"SYSTEM: This robot is printing too much between actions.  Output stopped until next action.");

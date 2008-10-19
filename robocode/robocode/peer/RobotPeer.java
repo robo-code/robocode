@@ -132,10 +132,9 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
 	private AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
 	private AtomicReference<List<Event>> events = new AtomicReference<List<Event>>(new ArrayList<Event>());
+	private StringBuilder battleText = new StringBuilder(1024);
 	private RobotStatics statics;
 	private BattleRules battleRules;
-
-	private RobotOutputStream out;
 
 	private double energy;
 	private double velocity;
@@ -222,11 +221,16 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return robotProxy;
 	}
 
-	public synchronized RobotOutputStream getOut() {
-		if (out == null && battle != null) {
-			out = new RobotOutputStream(battle.getBattleThread());
-		}
-		return out;
+	public void println(String s) {
+		battleText.append(s);
+		battleText.append("\n");
+	}
+
+	public String getOutputText() {
+		final String robotText = commands.get().getOutputText() + battleText;
+
+		battleText.setLength(0);
+		return robotText;
 	}
 
 	public RobotStatistics getRobotStatistics() {
@@ -609,7 +613,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		} catch (AbortedException e) {
 			waitForBattleEndedEvent();
 		} catch (DeathException e) {
-			out.println("SYSTEM: " + getName() + " has died");
+			println("SYSTEM: " + getName() + " has died");
 			waitForBattleEndedEvent();
 		} catch (WinException e) { // Do nothing
 			waitForBattleEndedEvent();
@@ -622,21 +626,21 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			} else {
 				msg = ": " + msg;
 			}
-			out.println("SYSTEM: Robot disabled" + msg);
+			println("SYSTEM: Robot disabled" + msg);
 		} catch (Exception e) {
 			setEnergy(0);
 			final String message = getName() + ": Exception: " + e;
 
-			out.println(message);
-			out.printStackTrace(e);
+			println(message);
+			println(e.getStackTrace().toString());
 			logMessage(message);
 		} catch (Throwable t) {
 			setEnergy(0);
 			if (!(t instanceof ThreadDeath)) {
 				final String message = getName() + ": Throwable: " + t;
 
-				out.println(message);
-				out.printStackTrace(t);
+				println(message);
+				println(t.getStackTrace().toString());
 				logMessage(message);
 			} else {
 				logMessage(getName() + " stopped successfully.");
@@ -908,7 +912,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		final List<Event> queue = events.get();
 
 		if (queue.size() > EventManager.MAX_QUEUE_SIZE) {
-			getOut().println(
+			println(
 					"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
 					+ " events in queue.");
 		}
@@ -1321,7 +1325,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			statistics = null;
 		}
 
-		out = null;
 		battle = null;
 
 		robotThreadManager = null;
@@ -1427,11 +1430,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			Bullet bullet = bulletCmd.getBullet();
 
 			if (bullet == null) {
-				out.println("SYSTEM: Bad bullet command");
+				println("SYSTEM: Bad bullet command");
 				continue;
 			}
 			if (Double.isNaN(bullet.getPower())) {
-				out.println("SYSTEM: You cannot call fire(NaN)");
+				println("SYSTEM: You cannot call fire(NaN)");
 				continue;
 			}
 			if (gunHeat > 0 || energy == 0) {
@@ -1509,9 +1512,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 			if ((!isIORobot() && (skippedTurns > maxSkippedTurns))
 					|| (isIORobot() && (skippedTurns > maxSkippedTurnsWithIO))) {
-				getOut().println(
-						"SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
-				getOut().println("SYSTEM: No score will be generated.");
+				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
+				println("SYSTEM: No score will be generated.");
 				getRobotStatistics().setInactive();
 				getRobotThreadManager().forceStop();
 			}

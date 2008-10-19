@@ -94,7 +94,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	public void setMaxTurnRate(double newTurnRate) {
 		setCall();
 		if (Double.isNaN(newTurnRate)) {
-			peer.getOut().println("You cannot setMaxTurnRate to: " + newTurnRate);
+			peer.println("You cannot setMaxTurnRate to: " + newTurnRate);
 			return;
 		}
 		commands.setMaxTurnRate(newTurnRate);
@@ -103,7 +103,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	public void setMaxVelocity(double newVelocity) {
 		setCall();
 		if (Double.isNaN(newVelocity)) {
-			peer.getOut().println("You cannot setMaxVelocity to: " + newVelocity);
+			peer.println("You cannot setMaxVelocity to: " + newVelocity);
 			return;
 		}
 		commands.setMaxVelocity(newVelocity);
