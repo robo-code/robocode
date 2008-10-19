@@ -38,7 +38,11 @@ public class BattleRecorder implements IBattleRecorder {
 	}
 
 	protected void finalize() throws Throwable {
-		cleanup();
+		try {
+			cleanup();
+		} finally {
+			super.finalize();
+		}
 	}
 
 	private void cleanup() {
@@ -61,24 +65,32 @@ public class BattleRecorder implements IBattleRecorder {
 
 	public void saveRecord(String fileName) {
 		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
 		ObjectOutputStream oos = null;
+
 		FileInputStream fis = null;
+		BufferedInputStream bis = null;
 		ObjectInputStream ois = null;
 
 		try {
 			fos = new FileOutputStream(fileName);
+			bos = new BufferedOutputStream(fos, 1024 * 1024);
+			oos = new ObjectOutputStream(bos);
 
-			oos = new ObjectOutputStream(fos);
 			oos.writeObject(recordInfo);
 
 			if (recordInfo.numberOfTurns != null) {
 				fis = new FileInputStream(tempFile);
-				ois = new ObjectInputStream(fis);
+				bis = new BufferedInputStream(fis, 1024 * 1024);
+				ois = new ObjectInputStream(bis);
 
 				for (int i = 0; i < recordInfo.numberOfTurns.length; i++) {
 					for (int j = recordInfo.numberOfTurns[i] - 1; j >= 0; j--) {
 						try {
 							oos.writeObject(ois.readObject());
+							oos.flush();
+							bos.flush();
+							fos.flush();
 						} catch (ClassNotFoundException e) {
 							logError(e);
 						}
@@ -86,15 +98,19 @@ public class BattleRecorder implements IBattleRecorder {
 				}
 			}
 
-			oos.flush();
-			fos.flush();
-
 		} catch (IOException e) {
 			logError(e);
 		} finally {
 			if (ois != null) {
 				try {
 					ois.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+			if (bis != null) {
+				try {
+					bis.close();
 				} catch (IOException e) {
 					logError(e);
 				}
@@ -109,6 +125,13 @@ public class BattleRecorder implements IBattleRecorder {
 			if (oos != null) {
 				try {
 					oos.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+			if (bos != null) {
+				try {
+					bos.close();
 				} catch (IOException e) {
 					logError(e);
 				}
