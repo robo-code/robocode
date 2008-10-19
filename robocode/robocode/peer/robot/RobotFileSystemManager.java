@@ -19,6 +19,7 @@ package robocode.peer.robot;
 
 import robocode.RobocodeFileOutputStream;
 import robocode.peer.RobotPeer;
+import robocode.peer.proxies.BasicRobotProxy;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +33,7 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class RobotFileSystemManager {
-	private RobotPeer robotPeer;
+	private BasicRobotProxy robotProxy;
 	private long quotaUsed = 0;
 	private boolean quotaMessagePrinted = false;
 	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
@@ -41,8 +42,8 @@ public class RobotFileSystemManager {
 	/**
 	 * RobotFileSystemHandler constructor comment.
 	 */
-	public RobotFileSystemManager(RobotPeer robotPeer, long maxQuota) {
-		this.robotPeer = robotPeer;
+	public RobotFileSystemManager(BasicRobotProxy robotProxy, long maxQuota) {
+		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;
 	}
 
@@ -77,7 +78,7 @@ public class RobotFileSystemManager {
 			return;
 		}
 		if (!quotaMessagePrinted) {
-			robotPeer.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
+			robotProxy.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
 			quotaMessagePrinted = true;
 		}
 		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");
@@ -92,22 +93,22 @@ public class RobotFileSystemManager {
 	}
 
 	public File getReadableDirectory() {
-		if (robotPeer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory() == null) {
-			return null;
-		}
 		try {
-			return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory()).getCanonicalFile();
+			final String dir = robotProxy.getRootPackageDirectory();
+
+			return (dir == null) ? null : new File(dir).getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}
 	}
 
 	public File getWritableDirectory() {
-		if (robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory() == null) {
-			return null;
-		}
 		try {
-			return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory(), robotPeer.getRobotClassManager().getClassNameManager().getShortClassName() + ".data").getCanonicalFile();
+			final String dir = robotProxy.getClassDirectory();
+
+			return (dir == null)
+					? null
+					: new File(robotProxy.getClassDirectory(), robotProxy.getRobotStatics().getShortName() + ".data").getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}

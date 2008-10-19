@@ -65,6 +65,7 @@ package robocode.peer;
 
 import robocode.*;
 import robocode.Event;
+import robocode.manager.HostManager;
 import robocode.repository.RobotFileSpecification;
 import robocode.battle.Battle;
 import robocode.exception.AbortedException;
@@ -121,7 +122,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	private Battle battle;
 	private RobotClassManager robotClassManager;
-	private RobotFileSystemManager robotFileSystemManager;
 	private RobotThreadManager robotThreadManager;
 	private RobotStatistics statistics;
 	private RobotMessageManager messageManager;
@@ -155,7 +155,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private boolean isIORobot;
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
-	private boolean checkFileQuota;
 
 	// thread is running
 	private boolean isRunning;
@@ -169,11 +168,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private BoundingRectangle boundingBox;
 	private Graphics2DProxy graphicsProxy;
 
-	public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota) {
+	public RobotPeer(RobotClassManager robotClassManager) {
 		super();
 		this.robotClassManager = robotClassManager;
 		robotThreadManager = new RobotThreadManager(this);
-		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
 		teamPeer = robotClassManager.getTeamManager();
@@ -203,18 +201,18 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		setState(RobotState.DEAD);
 	}
 
-	public void createRobotProxy(RobotFileSpecification robotFileSpecification) {
+	public void createRobotProxy(HostManager hostManager, RobotFileSpecification robotFileSpecification) {
 		// update statics
 		statics = new RobotStatics(robotFileSpecification, statics);
 
 		if (statics.isTeamRobot()) {
-			robotProxy = new TeamRobotProxy(this, statics);
+			robotProxy = new TeamRobotProxy(hostManager, this, statics);
 		} else if (statics.isAdvancedRobot()) {
-			robotProxy = new AdvancedRobotProxy(this, statics);
+			robotProxy = new AdvancedRobotProxy(hostManager, this, statics);
 		} else if (statics.isInteractiveRobot()) {
-			robotProxy = new StandardRobotProxy(this, statics);
+			robotProxy = new StandardRobotProxy(hostManager, this, statics);
 		} else if (statics.isJuniorRobot()) {
-			robotProxy = new JuniorRobotProxy(this, statics);
+			robotProxy = new JuniorRobotProxy(hostManager, this, statics);
 		} else {
 			throw new AccessControlException("Unknown robot type");
 		}
@@ -251,12 +249,13 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return robotClassManager;
 	}
 
-	public RobotFileSystemManager getRobotFileSystemManager() {
-		return robotFileSystemManager;
-	}
-
 	public RobotThreadManager getRobotThreadManager() {
 		return robotThreadManager;
+	}
+
+	// TODO temporary
+	public RobotFileSystemManager getRobotFileSystemManager() {
+		return robotProxy.getRobotFileSystemManager();
 	}
 
 	// -------------------
@@ -449,33 +448,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public Color getScanColor() {
 		return commands.get().getScanColor();
-	}
-
-	// -----------
-	// files
-	// -----------
-
-	public boolean isCheckFileQuota() {
-		return checkFileQuota;
-	}
-
-	public void setCheckFileQuota(boolean newCheckFileQuota) {
-		out.println("CheckFileQuota on");
-		checkFileQuota = newCheckFileQuota;
-	}
-
-	public File getDataDirectory() {
-		setIORobot(true);
-		return getRobotFileSystemManager().getWritableDirectory();
-	}
-
-	public File getDataFile(String filename) {
-		setIORobot(true);
-		return new File(getRobotFileSystemManager().getWritableDirectory(), filename);
-	}
-
-	public long getDataQuotaAvailable() {
-		return getRobotFileSystemManager().getMaxQuota() - getRobotFileSystemManager().getQuotaUsed();
 	}
 
 	// ------------
@@ -1341,8 +1313,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		out = null;
 		battle = null;
 
-		// Remove the file system and the manager
-		robotFileSystemManager = null;
 		robotThreadManager = null;
 
 		if (robotProxy != null) {

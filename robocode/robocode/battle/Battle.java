@@ -188,7 +188,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
-		RobotPeer robotPeer = new RobotPeer(robotClassManager, manager.getProperties().getRobotFilesystemQuota());
+		RobotPeer robotPeer = new RobotPeer(robotClassManager);
 		TeamPeer teamManager = robotClassManager.getTeamManager();
 
 		robotPeer.setBattle(this);
@@ -538,10 +538,8 @@ public final class Battle extends BaseBattle {
 
 				classManager.setRobotClass(c);
 
-				r.getRobotFileSystemManager().initializeQuota();
-
 				// create proxy
-				r.createRobotProxy(classManager.getRobotSpecification());
+				r.createRobotProxy(manager.getHostManager(), classManager.getRobotSpecification());
 
 				initializeRobotPosition(r);
 
@@ -882,16 +880,19 @@ public final class Battle extends BaseBattle {
 			int len = coords.length;
 
 			if (len >= 1) {
+				// noinspection EmptyCatchBlock
 				try {
 					x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
 				} catch (NumberFormatException e) {}
 
 				if (len >= 2) {
+					// noinspection EmptyCatchBlock
 					try {
 						y = Double.parseDouble(coords[1].replaceAll("[\\D]", ""));
 					} catch (NumberFormatException e) {}
 
 					if (len >= 3) {
+						// noinspection EmptyCatchBlock
 						try {
 							heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[\\D]", "")));
 						} catch (NumberFormatException e) {}

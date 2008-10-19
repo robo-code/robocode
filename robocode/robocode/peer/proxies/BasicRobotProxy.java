@@ -14,10 +14,12 @@ package robocode.peer.proxies;
 
 import robocode.*;
 import robocode.Event;
+import robocode.manager.HostManager;
 import robocode.util.Utils;
 import robocode.peer.*;
 import robocode.peer.robot.RobotOutputStream;
 import robocode.peer.robot.EventManager;
+import robocode.peer.robot.RobotFileSystemManager;
 import robocode.exception.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
@@ -33,7 +35,9 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
+	protected HostManager hostManager;
 	protected EventManager eventManager;
+	protected RobotFileSystemManager robotFileSystemManager; // TODO move to advanced robot ?
 
 	protected RobotPeer peer;
 	protected RobotStatus status;
@@ -46,10 +50,15 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	protected Condition waitCondition;
 	protected boolean testingCondition;
 
-	public BasicRobotProxy(RobotPeer peer, RobotStatics statics) {
+	public BasicRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
-		eventManager = new EventManager(this); 
+		this.hostManager = hostManager;
+
+		eventManager = new EventManager(this);
+
+		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota());
+		robotFileSystemManager.initializeQuota();
 	}
 
 	public void initialize() {
@@ -57,6 +66,9 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 	}
 
 	public void cleanup() {
+		// Remove the file system and the manager
+		robotFileSystemManager = null;
+
 		// Cleanup and remove current wait condition
 		if (waitCondition != null) {
 			waitCondition.cleanup();
@@ -382,6 +394,21 @@ public class BasicRobotProxy implements IBasicRobotPeer {
 
 	public RobotStatics getRobotStatics() {
 		return statics;
+	}
+
+	// TODO temporary
+	public String getRootPackageDirectory() {
+		return peer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory(); 
+	}
+
+	// TODO temporary
+	public String getClassDirectory() {
+		return peer.getRobotClassManager().getRobotClassLoader().getClassDirectory();
+	}
+
+	// TODO temporary
+	public RobotFileSystemManager getRobotFileSystemManager() {
+		return robotFileSystemManager;
 	}
 
 	@Override

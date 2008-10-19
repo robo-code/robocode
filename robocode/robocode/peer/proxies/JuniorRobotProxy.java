@@ -18,6 +18,7 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.Rules;
+import robocode.manager.HostManager;
 
 
 /**
@@ -25,8 +26,8 @@ import robocode.Rules;
  */
 public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPeer {
 
-	public JuniorRobotProxy(RobotPeer peer, RobotStatics statics) {
-		super(peer, statics);
+	public JuniorRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+		super(hostManager, peer, statics);
 	}
 
 	public void turnAndMove(double distance, double radians) {

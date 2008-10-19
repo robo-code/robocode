@@ -15,6 +15,7 @@ package robocode.peer.proxies;
 
 
 import robocode.*;
+import robocode.manager.HostManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
@@ -29,8 +30,8 @@ import java.util.List;
  */
 public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-	public AdvancedRobotProxy(RobotPeer peer, RobotStatics statics) {
-		super(peer, statics);
+	public AdvancedRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+		super(hostManager, peer, statics);
 	}
 
 	public boolean isAdjustGunForBodyTurn() {
@@ -192,16 +193,18 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	// data
 	public File getDataDirectory() {
 		getCall();
-		return peer.getDataDirectory();
+		peer.setIORobot(true);
+		return robotFileSystemManager.getWritableDirectory();
 	}
 
 	public File getDataFile(String filename) {
 		getCall();
-		return peer.getDataFile(filename);
+		peer.setIORobot(true);
+		return new File(robotFileSystemManager.getWritableDirectory(), filename);
 	}
 
 	public long getDataQuotaAvailable() {
 		getCall();
-		return peer.getDataQuotaAvailable();
+		return robotFileSystemManager.getMaxQuota() - robotFileSystemManager.getQuotaUsed();
 	}
 }

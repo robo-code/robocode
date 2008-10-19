@@ -59,6 +59,7 @@ public class RobocodeManager {
 	private VersionManager versionManager;
 	private SoundManager soundManager;
 	private IBattleRecorder battleRecorder;
+	private HostManager hostManager;
 
 	private boolean slave;
 
@@ -85,6 +86,13 @@ public class RobocodeManager {
 			battleManager = new BattleManager(this);
 		}
 		return battleManager;
+	}
+
+	public HostManager getHostManager() {
+		if (hostManager == null) {
+			hostManager = new HostManager(this);
+		}
+		return hostManager;
 	}
 
 	/**
@@ -150,6 +158,7 @@ public class RobocodeManager {
 				logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 			} finally {
 				if (in != null) {
+					// noinspection EmptyCatchBlock
 					try {
 						in.close();
 					} catch (IOException e) {}
@@ -174,6 +183,7 @@ public class RobocodeManager {
 			Logger.logError(e);
 		} finally {
 			if (out != null) {
+				// noinspection EmptyCatchBlock
 				try {
 					out.close();
 				} catch (IOException e) {}
@@ -306,6 +316,10 @@ public class RobocodeManager {
 		if (battleManager != null) {
 			battleManager.cleanup();
 			battleManager = null;
+		}
+		if (hostManager != null) {
+			hostManager.cleanup();
+			hostManager = null;
 		}
 	}
 }
