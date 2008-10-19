@@ -89,6 +89,8 @@ public interface IBattleManager {
 
 	void setBattleFilename(String newBattleFilename);
 
+	void setRecordFilename(String newRecordFilename);
+
 	BattleProperties loadBattleProperties();
 
 	void saveBattleProperties();

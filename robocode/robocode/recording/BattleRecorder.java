@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Pavel Savara & Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package robocode.recording;
@@ -23,82 +23,29 @@ import java.io.*;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
 public class BattleRecorder implements IBattleRecorder {
 
 	private final RobocodeManager manager;
 	private BattleObserver battleObserver;
 	private boolean recordingEnabled;
-	private BattleRecord currentRecord;
+	private BattleRecordInfo recordInfo;
+	private File tempFile;
 
 	public BattleRecorder(RobocodeManager manager) {
 		this.manager = manager;
 	}
 
-	public void loadRecord(String fileName) {
-		FileInputStream fileStream = null;
-		ObjectInputStream objectStream = null;
+	protected void finalize() throws Throwable {
+		cleanup();
+	}
 
-		try {
-			fileStream = new FileInputStream(fileName);
-			objectStream = new ObjectInputStream(fileStream);
-			currentRecord = (BattleRecord) objectStream.readObject();
-		} catch (IOException e) {
-			logError(e);
-		} catch (ClassNotFoundException e) {
-			logError(e);
-		} finally {
-			if (objectStream != null) {
-				try {
-					objectStream.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-			if (fileStream != null) {
-				try {
-					fileStream.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
+	private void cleanup() {
+		if (tempFile != null && tempFile.exists()) {
+			tempFile.delete();
+			tempFile = null;
 		}
-	}
-
-	public void saveRecord(String fileName) {
-		FileOutputStream fileStream = null;
-		ObjectOutputStream objectStream = null;
-
-		try {
-			fileStream = new FileOutputStream(fileName);
-			objectStream = new ObjectOutputStream(fileStream);
-			objectStream.writeObject(currentRecord);
-		} catch (IOException e) {
-			logError(e);
-		} finally {
-			if (objectStream != null) {
-				try {
-					objectStream.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-			if (fileStream != null) {
-				try {
-					fileStream.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-		}
-	}
-
-	public boolean hasRecord() {
-		return currentRecord != null;
-	}
-
-	public BattleRecord getRecord() {
-		return currentRecord;
 	}
 
 	public void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher) {
@@ -108,13 +55,80 @@ public class BattleRecorder implements IBattleRecorder {
 		battleObserver = new BattleObserver(battleEventDispatcher);
 	}
 
+	public boolean hasRecord() {
+		return recordInfo != null;
+	}
+
+	public void saveRecord(String fileName) {
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+
+		try {
+			fos = new FileOutputStream(fileName);
+
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(recordInfo);
+
+			if (recordInfo.numberOfTurns != null) {
+				fis = new FileInputStream(tempFile);
+				ois = new ObjectInputStream(fis);
+
+				for (int i = 0; i < recordInfo.numberOfTurns.length; i++) {
+					for (int j = recordInfo.numberOfTurns[i] - 1; j >= 0; j--) {
+						try {
+							oos.writeObject(ois.readObject());
+						} catch (ClassNotFoundException e) {
+							logError(e);
+						}
+					}
+				}
+			}
+
+			oos.flush();
+			fos.flush();
+
+		} catch (IOException e) {
+			logError(e);
+		} finally {
+			if (ois != null) {
+				try {
+					ois.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+			if (oos != null) {
+				try {
+					oos.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+		}
+	}
+	
 	private class BattleObserver extends BattleAdaptor {
-
-		final int initialSize = 16 * 1024 * 1024; // preallocate to prevent reallocation
-
 		private robocode.battle.events.BattleEventDispatcher dispatcher;
-		private ByteArrayOutputStream byteStream;
+
+		private FileOutputStream fileStream;
 		private ObjectOutputStream objectStream;
+
 		private int currentTurn;
 		private int currentRound;
 
@@ -125,31 +139,63 @@ public class BattleRecorder implements IBattleRecorder {
 
 		public void dispose() {
 			dispatcher.removeListener(this);
+
+			cleanupStreams();
 		}
 
+		private void cleanupStreams() {
+			if (objectStream != null) {
+				try {
+					objectStream.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+				objectStream = null;
+			}
+
+			if (fileStream != null) {
+				try {
+					fileStream.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+				fileStream = null;
+			}			
+		}
+		
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
 			recordingEnabled = !event.isReplay() && manager.getProperties().getOptionsCommonEnableReplayRecording();
 			if (!recordingEnabled) {
 				return;
 			}
-			currentRecord = null;
+			recordInfo = null;
+
+			cleanupStreams();
+
 			try {
-				if (byteStream == null) {
-					byteStream = new ByteArrayOutputStream(initialSize);
+				if (tempFile == null) {
+					tempFile = File.createTempFile("robocode-battle-records", ".tmp");
+					tempFile.deleteOnExit();
+				} else {
+					tempFile.delete();
+					tempFile.createNewFile();
 				}
-				byteStream.reset();
-				objectStream = new ObjectOutputStream(byteStream);
+
+				fileStream = new FileOutputStream(tempFile);
+				objectStream = new ObjectOutputStream(fileStream);
 			} catch (IOException e) {
 				logError(e);
 			}
 
-			currentRecord = new BattleRecord();
-			currentRecord.robotCount = event.getTurnSnapshot().getRobots().size();
-			currentRecord.recordsInTurns = new int[event.getBattleRules().getNumRounds()];
-			currentRecord.battleRules = event.getBattleRules();
+			recordInfo = new BattleRecordInfo();
+			recordInfo.robotCount = event.getTurnSnapshot().getRobots().size();
+			recordInfo.numberOfTurns = new int[event.getBattleRules().getNumRounds()];
+			recordInfo.battleRules = event.getBattleRules();
+
 			currentRound = 0;
 			currentTurn = 1;
+
 			writeTurn(event.getTurnSnapshot());
 		}
 
@@ -159,26 +205,22 @@ public class BattleRecorder implements IBattleRecorder {
 				return;
 			}
 			if (event.isAborted()) {
-				currentRecord.recordsInTurns[currentRound] = currentTurn;
+				recordInfo.numberOfTurns[currentRound] = currentTurn;
 			}
-			currentRecord.rounds = currentRound;
+			recordInfo.rounds = currentRound;
+
 			try {
 				if (objectStream != null) {
 					objectStream.flush();
-					objectStream.close();
 				}
-				if (byteStream != null) {
-					byteStream.flush();
+				if (fileStream != null) {
+					fileStream.flush();
 				}
 			} catch (IOException e) {
 				logError(e);
 			}
-			if (byteStream != null) {
-				currentRecord.records = byteStream.toByteArray();
-				byteStream.reset();
-			} else {
-				currentRecord.records = null;
-			}
+
+			cleanupStreams();
 		}
 
 		@Override
@@ -186,7 +228,7 @@ public class BattleRecorder implements IBattleRecorder {
 			if (!recordingEnabled) {
 				return;
 			}
-			currentRecord.results = event.getResults();
+			recordInfo.results = event.getResults();
 		}
 
 		@Override
@@ -194,7 +236,7 @@ public class BattleRecorder implements IBattleRecorder {
 			if (!recordingEnabled) {
 				return;
 			}
-			currentRecord.recordsInTurns[currentRound] = currentTurn;
+			recordInfo.numberOfTurns[currentRound] = currentTurn;
 			currentTurn = 0;
 			currentRound++;
 		}
@@ -205,6 +247,7 @@ public class BattleRecorder implements IBattleRecorder {
 				return;
 			}
 			currentTurn++;
+
 			writeTurn(event.getTurnSnapshot());
 		}
 

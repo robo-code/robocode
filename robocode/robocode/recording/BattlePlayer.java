@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Pavel Savara & Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package robocode.recording;
@@ -18,24 +18,46 @@ import robocode.battle.events.*;
 import robocode.manager.RobocodeManager;
 import static robocode.io.Logger.logError;
 
-import java.io.ByteArrayInputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
 public final class BattlePlayer extends BaseBattle {
 
-	private final BattleRecord record; // Do not cleanup or null this!
-	private ByteArrayInputStream byteStream;
+	private String recordFilename;
+	private FileInputStream fileStream;
 	private ObjectInputStream objectStream;
+	private BattleRecordInfo recordInfo;
 
-	public BattlePlayer(BattleRecord record, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
-		super(manager, eventDispatcher, paused);
-		this.record = record;
+	public BattlePlayer(RobocodeManager manager, BattleEventDispatcher eventDispatcher) {
+		super(manager, eventDispatcher, false);
+	}
+
+	public void loadRecord(String filename) {
+		this.recordFilename = filename; 
+
+		cleanup();
+
+		try {
+			fileStream = new FileInputStream(recordFilename);
+			objectStream = new ObjectInputStream(fileStream);
+
+			recordInfo = (BattleRecordInfo) objectStream.readObject();
+
+			setBattleRules(recordInfo.battleRules);
+
+			eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), recordInfo.battleRules, true));
+			if (isPaused()) {
+				eventDispatcher.onBattlePaused(new BattlePausedEvent());
+			}
+		} catch (IOException e) {
+			logError(e);
+		} catch (ClassNotFoundException e) {
+			logError(e);
+		}
 	}
 
 	@Override
@@ -50,33 +72,24 @@ public final class BattlePlayer extends BaseBattle {
 			objectStream = null;
 		}
 
-		if (byteStream != null) {
+		if (fileStream != null) {
 			try {
-				byteStream.close();
+				fileStream.close();
 			} catch (IOException e) {/* Ignore here */}
 
-			byteStream = null;
+			fileStream = null;
 		}
 
-		// record = null;
+		recordInfo = null;
 	}
 
 	@Override
 	protected void initializeBattle() {
 		super.initializeBattle();
 
-		try {
-			// Assuming that 'record' is never nulled here
-			byteStream = new ByteArrayInputStream(record.records);
-			byteStream.reset();
-			objectStream = new ObjectInputStream(byteStream);
-		} catch (IOException e) {
-			logError(e);
-		}
+		setBattleRules(recordInfo.battleRules);
 
-		setBattleRules(record.battleRules);
-
-		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), record.battleRules, true));
+		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), recordInfo.battleRules, true));
 		if (isPaused()) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
@@ -86,12 +99,12 @@ public final class BattlePlayer extends BaseBattle {
 	protected void shutdownBattle() {
 		super.shutdownBattle();
 
-		boolean aborted = record.results == null || isAborted();
+		boolean aborted = recordInfo.results == null || isAborted();
 
-		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(aborted));
+		eventDispatcher.onBattleEnded(new BattleEndedEvent(aborted));
 
 		if (!aborted) {
-			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(record.battleRules, record.results));
+			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(recordInfo.battleRules, recordInfo.results));
 		}
 
 		cleanup();
@@ -127,7 +140,7 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected boolean isRoundOver() {
-		return (isAborted() || getTime() > record.recordsInTurns[getRoundNum()]);
+		return (isAborted() || getTime() > recordInfo.numberOfTurns[getRoundNum()]);
 	}
 
 	private TurnSnapshot readSnapshot() {

@@ -18,7 +18,6 @@ package robocode.peer.robot;
 
 
 import robocode.RobocodeFileOutputStream;
-import robocode.peer.RobotPeer;
 import robocode.peer.proxies.BasicRobotProxy;
 
 import java.io.File;

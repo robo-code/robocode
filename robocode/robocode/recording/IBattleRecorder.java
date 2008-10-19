@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Pavel Savara & Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package robocode.recording;
@@ -17,12 +17,11 @@ import robocode.battle.events.BattleEventDispatcher;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
 public interface IBattleRecorder {
 
 	void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher);
-	void loadRecord(String fileName);
 	void saveRecord(String fileName);
 	boolean hasRecord();
-	BattleRecord getRecord();
 }

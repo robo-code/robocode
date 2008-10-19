@@ -98,6 +98,8 @@ public class BattleManager implements IBattleManager {
 	private String battleFilename;
 	private String battlePath;
 
+	private String recordFilename;
+
 	private int pauseCount = 0;
 	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
@@ -305,8 +307,25 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		BattlePlayer battlePlayer = new BattlePlayer(manager.getBattleRecorder().getRecord(), manager,
-				battleEventDispatcher, false); // Replays are set to start immediately, i.e. not paused
+		BattlePlayer battlePlayer = new BattlePlayer(manager, battleEventDispatcher);
+
+		if (recordFilename == null) {
+			try {
+				File tmpFile = File.createTempFile("robocode-replay", ".tmp");
+
+				tmpFile.deleteOnExit();
+
+				recordFilename = tmpFile.getAbsolutePath();
+
+				manager.getBattleRecorder().saveRecord(recordFilename);
+
+			} catch (IOException e) {
+				logError(e);
+				return;
+			}
+		}
+
+		battlePlayer.loadRecord(recordFilename);
 
 		battle = battlePlayer;
 
@@ -335,6 +354,10 @@ public class BattleManager implements IBattleManager {
 
 	public void setBattleFilename(String newBattleFilename) {
 		battleFilename = newBattleFilename;
+	}
+
+	public void setRecordFilename(String newRecordFilename) {
+		recordFilename = newRecordFilename;
 	}
 
 	public String getBattlePath() {

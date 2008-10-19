@@ -269,13 +269,13 @@ public class RobocodeMenuBar extends JMenuBar {
 
 			if (path != null) {
 				manager.getBattleManager().stop(true);
-				manager.getBattleRecorder().loadRecord(path);
 
 				robocodeFrame.getReplayButton().setVisible(true);
 				robocodeFrame.getReplayButton().setEnabled(true);
 
 				getBattleSaveRecordAsMenuItem().setEnabled(true);
 
+				manager.getBattleManager().setRecordFilename(path);
 				battleManager.replay();
 			}
 		} finally {

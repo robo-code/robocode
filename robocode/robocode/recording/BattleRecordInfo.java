@@ -6,13 +6,12 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Pavel Savara & Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package robocode.recording;
 
 
-import robocode.battle.BattleProperties;
 import robocode.BattleResults;
 import robocode.BattleRules;
 
@@ -21,14 +20,14 @@ import java.io.Serializable;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
-public class BattleRecord implements Serializable {
+public class BattleRecordInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public int robotCount;
 	public int rounds;
 	public BattleRules battleRules;
-	public int[] recordsInTurns;
-	public byte[] records;
+	public int[] numberOfTurns;
 	public BattleResults[] results;
 }
