@@ -9,29 +9,26 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package robocode.peer.robot;
 
 
-import robocode.RobotStatus;
-import robocode.Event;
-import robocode.peer.robot.TeamMessage;
-
-import java.util.List;
 import java.io.Serializable;
 
 
-public class ExecResult implements Serializable {
+/**
+ * @author Pavel Savara (original)
+ */
+public class TeamMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public ExecResult(RobotCommands commands, RobotStatus status, List<Event> events, List<TeamMessage> teamMessages) {
-		this.commands = commands;
-		this.status = status;
-		this.events = events;
-		this.teamMessages = teamMessages;
+	public TeamMessage(String sender, String recipient, byte[] message) {
+		this.sender = sender;
+		this.recipient = recipient;
+		this.message = message;
+
 	}
 
-	public RobotCommands commands;
-	public RobotStatus status;
-	public List<Event> events;
-	public List<TeamMessage> teamMessages;
+	public String sender;
+	public String recipient;
+	public byte[] message;
 }

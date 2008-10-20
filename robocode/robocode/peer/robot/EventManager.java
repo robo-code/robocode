@@ -394,14 +394,7 @@ public class EventManager implements IEventManager {
 		return robotProxy.getTime();
 	}
 
-	public void processEvents(List<Event> events) {
-		// add new events first
-		if (events != null) {
-			for (Event event : events) {
-				add(event);
-			}
-		}
-
+	public void processEvents() {
 		// Process custom events
 		if (customEvents != null) {
 			boolean conditionSatisfied;

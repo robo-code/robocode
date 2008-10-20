@@ -13,6 +13,8 @@ package robocode.peer;
 
 
 import robocode.Rules;
+import robocode.MessageEvent;
+import robocode.peer.robot.TeamMessage;
 import robocode.robotpaint.Graphics2DProxy;
 
 import java.util.List;
@@ -49,6 +51,7 @@ public class RobotCommands {
 	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
 	private Graphics2DProxy graphicsProxy;
 	private String outputText;
+	private List<TeamMessage> teamMessages = new ArrayList<TeamMessage>();
 
 	public RobotCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
@@ -78,6 +81,7 @@ public class RobotCommands {
 			graphicsProxy = (Graphics2DProxy) sourceGraphics.create();
 			(sourceGraphics).clearQueue();
 			outputText = origin.outputText;
+			teamMessages = origin.teamMessages; 
 		}
 	}
 
@@ -245,6 +249,10 @@ public class RobotCommands {
 
 	public void setOutputText(String out) {
 		outputText = out;
+	}
+
+	public List<TeamMessage> getTeamMessages() {
+		return teamMessages;
 	}
 }
 

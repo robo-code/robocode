@@ -124,7 +124,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private RobotClassManager robotClassManager;
 	private RobotThreadManager robotThreadManager;
 	private RobotStatistics statistics;
-	private RobotMessageManager messageManager;
 	private TeamPeer teamPeer;
 
 	private IBasicRobot robot;
@@ -132,6 +131,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
 	private AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
 	private AtomicReference<List<Event>> events = new AtomicReference<List<Event>>(new ArrayList<Event>());
+	private AtomicReference<List<TeamMessage>> teamMessages = new AtomicReference<List<TeamMessage>>(
+			new ArrayList<TeamMessage>());
 	private StringBuilder battleText = new StringBuilder(1024);
 	private RobotStatics statics;
 	private BattleRules battleRules;
@@ -189,9 +190,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	public void setRobot(IBasicRobot newRobot) {
 		robot = newRobot;
 		if (robot != null) {
-			if (robot instanceof ITeamRobot) {
-				messageManager = new RobotMessageManager(this);
-			}
 			robotProxy.getEventManager().setRobot(newRobot);
 		}
 	}
@@ -243,10 +241,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public Battle getBattle() {
 		return battle;
-	}
-
-	public RobotMessageManager getMessageManager() {
-		return messageManager;
 	}
 
 	public RobotClassManager getRobotClassManager() {
@@ -500,20 +494,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	// messages
 	// -----------
 
-	public void sendMessage(String name, Serializable message) throws IOException {
-		if (getMessageManager() == null) {
-			throw new IOException("You are not on a team.");
-		}
-		getMessageManager().sendMessage(name, message);
-	}
-
-	public void broadcastMessage(Serializable message) throws IOException {
-		if (getMessageManager() == null) {
-			throw new IOException("You are not on a team.");
-		}
-		getMessageManager().sendMessage(null, message);
-	}
-
 	// -----------
 	// execute
 	// -----------
@@ -545,11 +525,15 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		final RobotCommands resCommands = new RobotCommands(this.commands.get(), null);
 		final RobotStatus resStatus = status.get();
 
-		return new ExecResult(resCommands, resStatus, readoutEvents());
+		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages());
 	}
 
 	private List<Event> readoutEvents() {
 		return events.getAndSet(new ArrayList<Event>());
+	}
+
+	private List<TeamMessage> readoutTeamMessages() {
+		return teamMessages.getAndSet(new ArrayList<TeamMessage>());
 	}
 
 	private void waitForBattleEndedEvent() {
@@ -596,7 +580,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 					// Process all events for the first turn.
 					// This is done as the first robot status event must occur before the robot
 					// has started running.
-					robotProxy.getEventManager().processEvents(null);
+					robotProxy.getEventManager().processEvents();
 
 					Runnable runnable = robot.getRobotRunnable();
 
@@ -766,10 +750,43 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			scan = false;
 		}
 
-		// publishMessages
-		if (statics.isTeamRobot()) {
-			getMessageManager().publishMessages();
+		// dispatch messages
+		if (statics.isTeamRobot() && teamPeer != null) {
+			for (TeamMessage teamMessage : currentCommands.getTeamMessages()) {
+				for (RobotPeer member : teamPeer) {
+					if (checkDispatchToMember(member, teamMessage.recipient)) {
+						member.addTeamMessage(teamMessage);
+					}
+				}
+			}
 		}
+	}
+
+	private void addTeamMessage(TeamMessage message) {
+		final List<TeamMessage> queue = teamMessages.get();
+
+		queue.add(message);
+	}
+
+	private boolean checkDispatchToMember(RobotPeer member, String recipient) {
+		if (member.isAlive()) {
+			if (recipient == null) {
+				if (member != this) {
+					return true;
+				}
+			} else {
+				final int nl = recipient.length();
+				final String currentName = member.getName();
+				final String currentNonVerName = member.getNonVersionedName();
+
+				if ((currentName.length() >= nl && currentName.substring(0, nl).equals(recipient))
+						|| (currentNonVerName.length() >= nl
+								&& member.getNonVersionedName().substring(0, nl).equals(recipient))) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private void checkRobotCollision(RobotCommands currentCommands) {

@@ -13,13 +13,15 @@ package robocode.peer.proxies;
 
 
 import robocode.MessageEvent;
+import robocode.io.Logger;
+import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.HostManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
+import robocode.peer.robot.TeamMessage;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.List;
 
 
@@ -27,8 +29,13 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer {
+	final int MAX_MESSAGE_SIZE = 32768;
+	private ByteArrayOutputStream byteStreamWriter;
+	private ObjectOutputStream objectStreamWriter;
+
 	public TeamRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
 		super(hostManager, peer, statics);
+		byteStreamWriter = new ByteArrayOutputStream(MAX_MESSAGE_SIZE);
 	}
 
 	// team
@@ -42,14 +49,59 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 		return peer.isTeammate(name);
 	}
 
-	public void sendMessage(String name, Serializable message) throws IOException {
-		setCall();
-		peer.sendMessage(name, message);
+	public void broadcastMessage(Serializable message) throws IOException {
+		sendMessage(null, message);
 	}
 
-	public void broadcastMessage(Serializable message) throws IOException {
+	public void sendMessage(String name, Serializable message) throws IOException {
 		setCall();
-		peer.broadcastMessage(message);
+
+		try {
+			if (!statics.isTeamRobot()) {
+				throw new IOException("You are not on a team.");
+			}
+			byteStreamWriter.reset();
+			objectStreamWriter = new ObjectOutputStream(byteStreamWriter);
+			objectStreamWriter.writeObject(message);
+			objectStreamWriter.flush();
+			byteStreamWriter.flush();
+			final byte[] bytes = byteStreamWriter.toByteArray();
+
+			objectStreamWriter.reset();
+			if (bytes.length > MAX_MESSAGE_SIZE) {
+				throw new IOException("Message too big. " + bytes.length + ">" + MAX_MESSAGE_SIZE);
+			}
+			commands.getTeamMessages().add(new TeamMessage(getName(), name, bytes));
+		} catch (IOException e) {
+			out.printStackTrace(e);
+			throw e;
+		}
+
+	}
+
+	@Override
+	protected final void loadTeamMessages(List<TeamMessage> teamMessages) {
+		if (teamMessages == null) {
+			return;
+		}
+		for (TeamMessage teamMessage : teamMessages) {
+			try {
+				ByteArrayInputStream byteStreamReader = new ByteArrayInputStream(teamMessage.message);
+
+				byteStreamReader.reset();
+				RobocodeObjectInputStream objectStreamReader = new RobocodeObjectInputStream(byteStreamReader,
+						peer.getRobotClassManager().getRobotClassLoader());
+				Serializable message = (Serializable) objectStreamReader.readObject();
+				final MessageEvent event = new MessageEvent(teamMessage.sender, message);
+
+				event.setTime(getTime());
+				eventManager.add(event);
+			} catch (IOException e) {
+				out.printStackTrace(e);
+			} catch (ClassNotFoundException e) {
+				out.printStackTrace(e);
+			}
+		}
 	}
 
 	// events

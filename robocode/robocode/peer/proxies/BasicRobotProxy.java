@@ -19,11 +19,13 @@ import robocode.manager.HostManager;
 import robocode.util.Utils;
 import robocode.peer.*;
 import robocode.peer.robot.EventManager;
+import robocode.peer.robot.TeamMessage;
 import robocode.exception.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 
 /**
@@ -295,8 +297,20 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		updateStatus(result.commands, result.status);
 
-		eventManager.processEvents(result.events);
+		// add new events first
+		if (result.events != null) {
+			for (Event event : result.events) {
+				eventManager.add(event);
+			}
+		}
+
+		// add new team messages
+		loadTeamMessages(result.teamMessages);
+
+		eventManager.processEvents();
 	}
+
+	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}
 
 	protected final void setMoveImpl(double distance) {
 		if (getEnergy() == 0) {

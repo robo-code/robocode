@@ -27,12 +27,14 @@ package robocode.security;
 
 
 import robocode.RobocodeFileOutputStream;
+import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.ThreadManager;
 import robocode.peer.BulletState;
 import robocode.peer.RobotPeer;
 import robocode.peer.ExecResult;
 import robocode.peer.BulletCommand;
 import robocode.peer.robot.RobotFileSystemManager;
+import robocode.peer.robot.TeamMessage;
 
 import java.io.*;
 import java.security.AccessControlException;
@@ -61,6 +63,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private Thread battleThread;
 
+	@SuppressWarnings({ "UnusedDeclaration", "EmptyCatchBlock"})
 	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
 		safeThreads.add(safeThread);
@@ -72,7 +75,12 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// Fake loading of classes
 		BulletState s = BulletState.INACTIVE;
 		BulletCommand c = new BulletCommand(null, false, 0);
-		ExecResult r = new ExecResult(null, null, null);
+		ExecResult r = new ExecResult(null, null, null, null);
+		TeamMessage t = new TeamMessage(null, null, null);
+
+		try {
+			RobocodeObjectInputStream is = new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
+		} catch (IOException e) {}
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
