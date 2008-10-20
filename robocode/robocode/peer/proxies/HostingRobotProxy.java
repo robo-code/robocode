@@ -53,7 +53,7 @@ public class HostingRobotProxy implements IHostingRobotProxy {
 		return out;
 	}
 
-	public RobotStatics getRobotStatics() {
+	public RobotStatics getStatics() {
 		return statics;
 	}
 

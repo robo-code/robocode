@@ -26,6 +26,6 @@ public interface IHostingRobotProxy {
 	String getRootPackageDirectory();
 	String getClassDirectory();
 	RobotFileSystemManager getRobotFileSystemManager();
-	RobotStatics getRobotStatics();
+	RobotStatics getStatics();
 
 }

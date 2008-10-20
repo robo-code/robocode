@@ -484,7 +484,7 @@ public class EventManager implements IEventManager {
 			try {
 				// skip too old events
 				if (currentEvent.getTime() > getTime() - MAX_EVENT_STACK) {
-					currentEvent.dispatch(robot, robotProxy.getRobotStatics(), robotProxy.getGraphics());
+					currentEvent.dispatch(robot, robotProxy.getStatics(), robotProxy.getGraphics());
 				}
 			} catch (Exception ex) {
 				robotProxy.getOut().println("SYSTEM: Exception occurred on " + currentEvent.getClass().getName());
