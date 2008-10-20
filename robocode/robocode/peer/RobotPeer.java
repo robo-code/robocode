@@ -200,7 +200,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public void createRobotProxy(HostManager hostManager, RobotFileSpecification robotFileSpecification) {
 		// update statics
-		statics = new RobotStatics(robotFileSpecification, statics);
+        boolean isLeader = teamPeer != null && teamPeer.getTeamLeader() == this;
+        statics = new RobotStatics(robotFileSpecification, isLeader, statics);
 
 		if (statics.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(hostManager, this, statics);
@@ -469,12 +470,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean isTeamLeader() {
-		return (getTeamPeer() != null && getTeamPeer().getTeamLeader() == this);
-	}
+        return statics.isTeamLeader();
+    }
 
 	public String[] getTeammates() {
-		robocode.peer.TeamPeer teamPeer = getTeamPeer();
-
 		if (teamPeer == null) {
 			return null;
 		}

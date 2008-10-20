@@ -22,7 +22,7 @@ import robocode.BattleRules;
  */
 public final class RobotStatics {
 	public RobotStatics(NameManager cnm, int duplicate, BattleRules rules) {
-		if (duplicate > 0) {
+		if (duplicate >= 0) {
 			isDuplicate = true;
 
 			String countString = " (" + (duplicate + 1) + ')';
@@ -44,18 +44,20 @@ public final class RobotStatics {
 		isPaintRobot = false;
 		isAdvancedRobot = false;
 		isTeamRobot = false;
-		isDroid = false;
+        isTeamLeader = false;
+        isDroid = false;
 		battleRules = rules;
 	}
 
-	public RobotStatics(RobotFileSpecification spec, RobotStatics src) {
+	public RobotStatics(RobotFileSpecification spec, boolean isLeader, RobotStatics src) {
 		isJuniorRobot = spec.isJuniorRobot();
 		isInteractiveRobot = spec.isInteractiveRobot();
 		isPaintRobot = spec.isPaintRobot();
 		isAdvancedRobot = spec.isAdvancedRobot();
 		isTeamRobot = spec.isTeamRobot();
 		isDroid = spec.isDroid();
-		isDuplicate = src.isDuplicate();
+        isTeamLeader = isLeader; 
+        isDuplicate = src.isDuplicate();
 		name = src.getName();
 		shortName = src.getShortName();
 		veryShortName = src.getVeryShortName();
@@ -69,6 +71,7 @@ public final class RobotStatics {
 	private final boolean isPaintRobot;
 	private final boolean isAdvancedRobot;
 	private final boolean isTeamRobot;
+    private final boolean isTeamLeader;
 	private final boolean isDroid;
 	private final String name;
 	private final String shortName;
@@ -99,6 +102,10 @@ public final class RobotStatics {
 	public boolean isTeamRobot() {
 		return isTeamRobot;
 	}
+
+    public boolean isTeamLeader() {
+        return isTeamLeader;
+    }
 
 	public boolean isDroid() {
 		return isDroid;

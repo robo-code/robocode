@@ -213,7 +213,7 @@ public final class Battle extends BaseBattle {
 				count++;
 			}
 		}
-		robotPeer.setDuplicate(count);
+		robotPeer.setDuplicate(count==0 ? -1 : count);
 		robots.add(robotPeer);
 	}
 
