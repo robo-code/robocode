@@ -39,9 +39,6 @@ package robocode.peer.robot;
 
 import robocode.BattleResults;
 import robocode.peer.RobotPeer;
-import robocode.peer.TeamPeer;
-
-import java.util.List;
 
 
 /**
@@ -55,11 +52,8 @@ import java.util.List;
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 	private RobotPeer robotPeer;
-	private TeamPeer teamPeer;
-
-	private List<RobotPeer> robots;
-
-	private boolean isActive;
+    private int robots;
+    private boolean isActive;
 
 	private double survivalScore;
 	private double lastSurvivorBonus;
@@ -82,14 +76,14 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	private int totalSeconds;
 	private int totalThirds;
 
-	public RobotStatistics(RobotPeer robotPeer) {
+	public RobotStatistics(RobotPeer robotPeer, int robots) {
 		super();
 		this.robotPeer = robotPeer;
-		this.teamPeer = robotPeer.getTeamPeer();
-	}
+        this.robots=robots;
+    }
 
-	public RobotStatistics(RobotPeer robotPeer, BattleResults results) {
-		this(robotPeer);
+	public RobotStatistics(RobotPeer robotPeer, int robots, BattleResults results) {
+		this(robotPeer, robots);
 
 		totalScore = results.getScore();
 		totalSurvivalScore = results.getSurvival();
@@ -104,8 +98,6 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	}
 
 	public void initialize() {
-		robots = robotPeer.getBattle().getRobots();
-
 		resetScores();
 
 		robotDamage = null;
@@ -207,75 +199,67 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 	public void scoreLastSurvivor() {
 		if (isActive) {
-			int enemyCount = robots.size() - 1;
+			int enemyCount = robots - 1;
 
-			if (teamPeer != null) {
-				enemyCount -= (teamPeer.size() - 1);
+			if (robotPeer.getTeamPeer() != null) {
+				enemyCount -= (robotPeer.getTeamPeer().size() - 1);
 			}
 			lastSurvivorBonus += 10 * enemyCount;
 
-			if (teamPeer == null || robotPeer.isTeamLeader()) {
+			if (robotPeer.getTeamPeer() == null || robotPeer.isTeamLeader()) {
 				totalFirsts++;
 			}
 		}
 	}
 
 	public void scoreBulletDamage(int robot, double damage) {
-		if (isTeammate(robot)) {
-			return;
-		}
 		if (isActive) {
 			getRobotDamage()[robot] += damage;
 			bulletDamageScore += damage;
 		}
 	}
 
-	public void scoreBulletKill(int robot) {
-		if (isTeammate(robot)) {
-			return;
-		}
-
+	public double scoreBulletKill(int robot) {
 		if (isActive) {
 			double bonus = 0;
 
-			if (teamPeer == null) {
+			if (robotPeer.getTeamPeer() == null) {
 				bonus = getRobotDamage()[robot] * .2;
 			} else {
-				for (RobotPeer teammate : teamPeer) {
+				for (RobotPeer teammate : robotPeer.getTeamPeer()) {
 					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .2;
 				}
 			}
 
 			bulletKillBonus += bonus;
-
-			robotPeer.println("SYSTEM: Bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
-		}
-	}
+            return bonus;
+        }
+        return 0;
+    }
 
 	public void scoreRammingDamage(int robot) {
-		if (isActive && !isTeammate(robot)) {
+		if (isActive) {
 			getRobotDamage()[robot] += robocode.Rules.ROBOT_HIT_DAMAGE;
 			rammingDamageScore += robocode.Rules.ROBOT_HIT_BONUS;
 		}
 	}
 
-	public void scoreRammingKill(int robot) {
-		if (isActive && !isTeammate(robot)) {
+	public double scoreRammingKill(int robot) {
+		if (isActive) {
 			double bonus = 0;
 
-			if (teamPeer == null) {
+			if (robotPeer.getTeamPeer() == null) {
 				bonus = getRobotDamage()[robot] * .3;
 			} else {
-				for (RobotPeer teammate : teamPeer) {
+				for (RobotPeer teammate : robotPeer.getTeamPeer()) {
 					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .3;
 				}
 			}
 			rammingKillBonus += bonus;
-
-			robotPeer.println(
-					"SYSTEM: Ram bonus for killing " + (robots.get(robot)).getName() + ": " + (int) (bonus + .5));
-		}
-	}
+            return bonus;
+        }
+        return 0;
+    }
 
 	public void scoreRobotDeath(int enemiesRemaining) {
 		switch (enemiesRemaining) {
@@ -321,13 +305,9 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 	private double[] getRobotDamage() {
 		if (robotDamage == null) {
-			robotDamage = new double[robots.size()];
+			robotDamage = new double[robots];
 		}
 		return robotDamage;
-	}
-
-	private boolean isTeammate(int robot) {
-		return (teamPeer != null && teamPeer == robots.get(robot).getTeamPeer());
 	}
 
 	public void cleanup() {// Do nothing, for now

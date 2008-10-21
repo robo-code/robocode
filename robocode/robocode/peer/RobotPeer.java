@@ -174,9 +174,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		scanArc = new Arc2D.Double();
 		teamPeer = robotClassManager.getTeamManager();
 		state = RobotState.ACTIVE;
-
-		// Create statistics after teamPeer set
-		statistics = new RobotStatistics(this);
 	}
 
 	public void setBattle(Battle newBattle) {
@@ -192,11 +189,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public synchronized void preInitialize() {
-		setState(RobotState.DEAD);
-	}
-
 	public void createRobotProxy(HostManager hostManager, RobotFileSpecification robotFileSpecification) {
+        // Create statistics after teamPeer set
+        statistics = new RobotStatistics(this, battle.getRobotsCount());
+
 		// update statics
 		boolean isLeader = teamPeer != null && teamPeer.getTeamLeader() == this;
 
@@ -836,15 +832,23 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 					x -= movedx;
 					y -= movedy;
 
-					statistics.scoreRammingDamage(i);
+                    boolean teamFire = (getTeamPeer() != null && getTeamPeer() == r.getTeamPeer());
+                    if (!teamFire){
+                        statistics.scoreRammingDamage(i);
+                    }
 
-					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
+                    this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
 
 					if (r.getEnergy() == 0) {
 						if (r.isAlive()) {
 							r.kill();
-							statistics.scoreRammingKill(i);
+                            if (!teamFire){
+                                final double bonus = statistics.scoreRammingKill(i);
+                                if (bonus>0){
+                                    println("SYSTEM: Ram bonus for killing " + r.getName() + ": " + (int) (bonus + .5));
+                                }
+                            }
 						}
 					}
 					addEvent(
@@ -1583,5 +1587,5 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	public String toString() {
 		return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY();
 	}
-
 }
+

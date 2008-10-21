@@ -19,6 +19,8 @@ import org.junit.Test;
 
 import java.io.File;
 
+import robocode.battle.events.TurnEndedEvent;
+
 /**
  * @author Pavel Savara (original)
  */
@@ -34,6 +36,9 @@ public class TestFileWrite extends RobotTestBed {
     }
 
     File file=new File("robots/sample/SittingDuck.data/count.dat");
+
+    public void onTurnEnded(TurnEndedEvent event) {
+    }
 
     @Before
     public void fileSetup() {

@@ -30,6 +30,9 @@ public class TestBadNamespace extends RobotTestBed {
         return 1;
     }
 
+    public void onTurnEnded(TurnEndedEvent event) {
+    }
+
     @Override
     public String getRobotNames(){
         return "sample.Fire,robocode.BadNamespace";

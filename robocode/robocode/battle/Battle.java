@@ -254,6 +254,10 @@ public final class Battle extends BaseBattle {
 		return robots;
 	}
 
+    public int getRobotsCount() {
+        return robots.size();
+    }
+
 	public boolean isDebugging() {
 		return isDebugging;
 	}
@@ -316,10 +320,9 @@ public final class Battle extends BaseBattle {
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
-
 		unsafeThreadGroup.setDaemon(true);
 		unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
-		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread();
+		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread(unsafeThreadGroup);
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
@@ -327,7 +330,7 @@ public final class Battle extends BaseBattle {
 		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 		// in the safe robot loader the class is linked.
 		synchronized (robots) {
-			initRobots();
+			initBattleRobots();
 
 			parallelOn = System.getProperty("PARALLEL", "false").equals("true");
 			if (parallelOn) {
@@ -383,7 +386,7 @@ public final class Battle extends BaseBattle {
 	@Override
 	protected void preloadRound() {
 		super.preloadRound();
-		loadRobots();
+		loadRoundRobots();
 
 		computeActiveRobots();
 
@@ -518,7 +521,7 @@ public final class Battle extends BaseBattle {
 		super.finalizeTurn();
 	}
 
-	private void initRobots() {
+	private void initBattleRobots() {
 		for (RobotPeer r : robots) {
 			try {
 				Class<?> c;
@@ -764,7 +767,7 @@ public final class Battle extends BaseBattle {
 		return count;
 	}
 
-	private void loadRobots() {
+	private void loadRoundRobots() {
 		// Flag that robots are not loaded
 		synchronized (isRobotsLoaded) {
 			isRobotsLoaded.set(false);
@@ -787,7 +790,7 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer r : robots) {
 			if (getRoundNum() > 0) {
 				// fake dead so robot won't display
-				r.preInitialize();
+				r.setState(RobotState.DEAD);
 			} 
 
 			r.println("=========================");
@@ -1041,8 +1044,8 @@ public final class Battle extends BaseBattle {
 
 	private class UnsafeLoadRobotsThread extends Thread {
 
-		public UnsafeLoadRobotsThread() {
-			super(new ThreadGroup("Robot Loader Group"), "Robot Loader");
+		public UnsafeLoadRobotsThread(ThreadGroup tg) {
+			super(tg, "Robot Loader");
 			setDaemon(true);
 		}
 
