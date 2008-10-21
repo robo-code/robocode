@@ -27,7 +27,7 @@ import static java.lang.Math.abs;
 /**
  * @author Pavel Savara (original)
  */
-public class RobotCommands {
+public final class RobotCommands {
 	private double bodyTurnRemaining;
 	private double radarTurnRemaining;
 	private double gunTurnRemaining;
@@ -58,7 +58,7 @@ public class RobotCommands {
 		setMaxTurnRate(Double.MAX_VALUE);
 	}
 
-	public RobotCommands(RobotCommands origin, Graphics2DProxy sourceGraphics) {
+	public RobotCommands(RobotCommands origin, boolean fromRobot) {
 		bodyTurnRemaining = origin.bodyTurnRemaining;
 		radarTurnRemaining = origin.radarTurnRemaining;
 		gunTurnRemaining = origin.gunTurnRemaining;
@@ -74,12 +74,11 @@ public class RobotCommands {
 		scanColor = origin.scanColor;
 		maxTurnRate = origin.maxTurnRate;
 		maxVelocity = origin.maxVelocity;
-		if (sourceGraphics != null) {
+		if (fromRobot) {
 			bullets = origin.bullets;
 			scan = origin.scan;
 			moved = origin.moved;
-			graphicsProxy = (Graphics2DProxy) sourceGraphics.create();
-			(sourceGraphics).clearQueue();
+			graphicsProxy = origin.graphicsProxy;
 			outputText = origin.outputText;
 			teamMessages = origin.teamMessages; 
 		}
@@ -254,5 +253,10 @@ public class RobotCommands {
 	public List<TeamMessage> getTeamMessages() {
 		return teamMessages;
 	}
+
+	public void setGraphicsProxy(Graphics2DProxy graphicsProxy) {
+		this.graphicsProxy = graphicsProxy;
+	}
+
 }
 

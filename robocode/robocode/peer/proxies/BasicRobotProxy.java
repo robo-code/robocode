@@ -25,7 +25,6 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.*;
 
 
 /**
@@ -41,6 +40,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected RobotStatus status;
 	protected RobotCommands commands;
+	private ExecResult execResult;
 
 	private AtomicInteger setCallCount = new AtomicInteger(0);
 	private AtomicInteger getCallCount = new AtomicInteger(0);
@@ -54,6 +54,9 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		eventManager = new EventManager(this);
 
 		graphicsProxy = new Graphics2DProxy();
+
+		// dummy
+		execResult = new ExecResult(null, null, null, null, false, false, false);
 	}
 
 	public void initialize() {
@@ -78,6 +81,9 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		// Cleanup graphics proxy
 		graphicsProxy = null;
+		execResult = null;
+		status = null;
+		commands = null;
 	}
 
 	// asynchronous actions
@@ -292,22 +298,50 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		}
 
 		commands.setOutputText(out.readAndReset());
+		commands.setGraphicsProxy((Graphics2DProxy) graphicsProxy.create());
+		graphicsProxy.clearQueue();
 
-		ExecResult result = peer.executeImpl(commands);
+		// call server
+		execResult = peer.executeImpl(commands);
 
-		updateStatus(result.commands, result.status);
+		updateStatus(execResult.commands, execResult.status);
 
 		// add new events first
-		if (result.events != null) {
-			for (Event event : result.events) {
+		if (execResult.events != null) {
+			for (Event event : execResult.events) {
 				eventManager.add(event);
 			}
 		}
 
 		// add new team messages
-		loadTeamMessages(result.teamMessages);
+		loadTeamMessages(execResult.teamMessages);
 
 		eventManager.processEvents();
+	}
+
+	public void waitForBattleEndImpl() {
+		eventManager.clearAllEvents(false);
+		while (!execResult.halt) {
+			commands.setOutputText(out.readAndReset());
+			commands.setGraphicsProxy((Graphics2DProxy) graphicsProxy.create());
+			graphicsProxy.clearQueue();
+
+			// call server
+			execResult = peer.waitForBattleEndImpl(commands);
+
+			updateStatus(execResult.commands, execResult.status);
+
+			// add new events
+			if (execResult.events != null) {
+				for (Event event : execResult.events) {
+					if (event instanceof BattleEndedEvent) {
+						eventManager.add(event);
+					}
+				}
+			}
+
+			eventManager.processEvents();
+		}
 	}
 
 	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}

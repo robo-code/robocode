@@ -464,19 +464,6 @@ public class EventManager implements IEventManager {
 		}
 	}
 
-	public boolean processBattleEndedEvent() {
-		synchronized (eventQueue) {
-			for (Event currentEvent : eventQueue) {
-				if (currentEvent instanceof BattleEndedEvent) {
-					eventQueue.remove(currentEvent);
-					dispatch(currentEvent);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	private void dispatch(Event currentEvent) {
 		final IBasicRobot robot = getRobot();
 

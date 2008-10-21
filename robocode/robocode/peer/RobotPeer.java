@@ -76,7 +76,6 @@ import static robocode.io.Logger.logMessage;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.ITeamRobot;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
@@ -84,8 +83,6 @@ import static robocode.util.Utils.*;
 import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.io.Serializable;
 import static java.lang.Math.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -133,7 +130,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private AtomicReference<List<Event>> events = new AtomicReference<List<Event>>(new ArrayList<Event>());
 	private AtomicReference<List<TeamMessage>> teamMessages = new AtomicReference<List<TeamMessage>>(
 			new ArrayList<TeamMessage>());
-	private StringBuilder battleText = new StringBuilder(1024);
+	private final StringBuilder battleText = new StringBuilder(1024);
+	private final StringBuilder proxyText = new StringBuilder(1024);
 	private RobotStatics statics;
 	private BattleRules battleRules;
 
@@ -200,8 +198,9 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public void createRobotProxy(HostManager hostManager, RobotFileSpecification robotFileSpecification) {
 		// update statics
-        boolean isLeader = teamPeer != null && teamPeer.getTeamLeader() == this;
-        statics = new RobotStatics(robotFileSpecification, isLeader, statics);
+		boolean isLeader = teamPeer != null && teamPeer.getTeamLeader() == this;
+
+		statics = new RobotStatics(robotFileSpecification, isLeader, statics);
 
 		if (statics.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(hostManager, this, statics);
@@ -221,15 +220,27 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void println(String s) {
-		battleText.append(s);
-		battleText.append("\n");
+		synchronized (battleText) {
+			battleText.append(s);
+			battleText.append("\n");
+		}
 	}
 
-	public String getOutputText() {
-		final String robotText = commands.get().getOutputText() + battleText;
+	public void printProxy(String s) {
+		synchronized (proxyText) {
+			proxyText.append(s);
+			proxyText.append("\n");
+		}
+	}
 
-		battleText.setLength(0);
-		return robotText;
+	public String readOutText() {
+		synchronized (proxyText) {
+			final String robotText = battleText.toString() + proxyText.toString();
+
+			battleText.setLength(0);
+			proxyText.setLength(0);
+			return robotText;
+		}
 	}
 
 	public RobotStatistics getRobotStatistics() {
@@ -377,7 +388,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return isSleeping;
 	}
 
-	private synchronized boolean getHalt() {
+	public synchronized boolean getHalt() {
 		return halt;
 	}
 
@@ -470,8 +481,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public boolean isTeamLeader() {
-        return statics.isTeamLeader();
-    }
+		return statics.isTeamLeader();
+	}
 
 	public String[] getTeammates() {
 		if (teamPeer == null) {
@@ -501,7 +512,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		newCommands.validate(this);
         
 		// from robot to battle
-		commands.set(new RobotCommands(newCommands, (Graphics2DProxy) robotProxy.getGraphics()));
+		commands.set(new RobotCommands(newCommands, true));
+		printProxy(newCommands.getOutputText());
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (battle.isAborted()) {
@@ -521,10 +533,29 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		waitForNextRound();
 
 		// from battle to robot
-		final RobotCommands resCommands = new RobotCommands(this.commands.get(), null);
+		final RobotCommands resCommands = new RobotCommands(this.commands.get(), false);
 		final RobotStatus resStatus = status.get();
 
-		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages());
+		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), isDead(),
+				isWinner());
+	}
+
+	public final ExecResult waitForBattleEndImpl(RobotCommands newCommands) {
+		if (battle.isAborted() || (battle.isLastRound() && isDead())) {
+			if (!getHalt()) {
+				// from robot to battle
+				commands.set(new RobotCommands(newCommands, true));
+				printProxy(newCommands.getOutputText());
+
+				waitForNextRound();
+			}
+		}
+		// from battle to robot
+		final RobotCommands resCommands = new RobotCommands(this.commands.get(), false);
+		final RobotStatus resStatus = status.get();
+
+		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), isDead(),
+				isWinner());
 	}
 
 	private List<Event> readoutEvents() {
@@ -533,14 +564,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	private List<TeamMessage> readoutTeamMessages() {
 		return teamMessages.getAndSet(new ArrayList<TeamMessage>());
-	}
-
-	private void waitForBattleEndedEvent() {
-		if (battle.isAborted() || (battle.isLastRound() && isDead())) {
-			while (!getHalt() && !robotProxy.getEventManager().processBattleEndedEvent()) {
-				waitForNextRound();
-			}
-		}
 	}
 
 	private void waitForNextRound() {
@@ -594,12 +617,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				}
 			}
 		} catch (AbortedException e) {
-			waitForBattleEndedEvent();
+			robotProxy.waitForBattleEndImpl();
 		} catch (DeathException e) {
 			println("SYSTEM: " + getName() + " has died");
-			waitForBattleEndedEvent();
-		} catch (WinException e) { // Do nothing
-			waitForBattleEndedEvent();
+			robotProxy.waitForBattleEndImpl();
+		} catch (WinException e) {// Do nothing
 		} catch (DisabledException e) {
 			setEnergy(0);
 			String msg = e.getMessage();
@@ -1482,37 +1504,41 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public synchronized void waitWakeup() {
-		if (isSleeping) {
-			// Wake up the thread
-			notifyAll();
-			try {
-				wait(10000);
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
+	public void waitWakeup() {
+		synchronized (this) {
+			if (isSleeping) {
+				// Wake up the thread
+				notifyAll();
+				try {
+					wait(10000);
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+				}
 			}
 		}
 	}
 
-	public synchronized void waitSleeping(long waitTime, int millisWait) {
-		// It's quite possible for simple robots to
-		// complete their processing before we get here,
-		// so we test if the robot is already asleep.
+	public void waitSleeping(long waitTime, int millisWait) {
+		synchronized (this) { 
+			// It's quite possible for simple robots to
+			// complete their processing before we get here,
+			// so we test if the robot is already asleep.
 
-		if (!isSleeping()) {
-			try {
-				for (int i = millisWait; i > 0 && !isSleeping(); i--) {
-					wait(0, 999999);
-				}
-				if (!isSleeping()) {
-					wait(0, (int) (waitTime % 1000000));
-				}
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
+			if (!isSleeping()) {
+				try {
+					for (int i = millisWait; i > 0 && !isSleeping(); i--) {
+						wait(0, 999999);
+					}
+					if (!isSleeping()) {
+						wait(0, (int) (waitTime % 1000000));
+					}
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
 
-				logMessage("Wait for " + getName() + " interrupted.");
+					logMessage("Wait for " + getName() + " interrupted.");
+				}
 			}
 		}
 	}

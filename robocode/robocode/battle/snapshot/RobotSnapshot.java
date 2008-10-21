@@ -149,7 +149,7 @@ public class RobotSnapshot implements Serializable {
 
 		graphicsProxy = peer.getGraphics();
 
-		outputStreamSnapshot = peer.getOutputText();
+		outputStreamSnapshot = peer.readOutText();
 
 		robotScoreSnapshot = new ScoreSnapshot(peer.getRobotStatistics(), peer.getName());
 	}
