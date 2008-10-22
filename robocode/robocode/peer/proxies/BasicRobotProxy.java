@@ -206,7 +206,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	public long getTime() {
 		getCall();
-		return status.getTime();
+		return getTimeImpl();
 	}
 
 	public double getBodyHeading() {
@@ -271,12 +271,20 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	public Graphics2D getGraphics() {
 		getCall();
-		return graphicsProxy;
+		return getGraphicsImpl();
 	}
 
 	// -----------
 	// implementations
 	// -----------
+
+	public long getTimeImpl() {
+		return status.getTime();
+	}
+
+	public Graphics2D getGraphicsImpl() {
+		return graphicsProxy;
+	}
 
 	protected final void executeImpl() {
 		// Entering tick
@@ -347,7 +355,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}
 
 	protected final void setMoveImpl(double distance) {
-		if (getEnergy() == 0) {
+		if (status.getEnergy() == 0) {
 			return;
 		}
 		commands.setDistanceRemaining(distance);
@@ -359,7 +367,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			peer.println("SYSTEM: You cannot call fire(NaN)");
 			return null;
 		}
-		if (getGunHeat() > 0 || getEnergy() == 0) {
+		if (status.getGunHeat() > 0 || status.getEnergy() == 0) {
 			return null;
 		}
 
@@ -367,18 +375,18 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		BulletCommand wrapper;
 		Event currentTopEvent = eventManager.getCurrentTopEvent();
 
-		if (currentTopEvent != null && currentTopEvent.getTime() == getTime() && !statics.isAdvancedRobot()
-				&& getGunHeading() == getRadarHeading()
+		if (currentTopEvent != null && currentTopEvent.getTime() == status.getTime() && !statics.isAdvancedRobot()
+				&& status.getGunHeading() == status.getRadarHeading()
 				&& ScannedRobotEvent.class.isAssignableFrom(currentTopEvent.getClass())) {
 			// this is angle assisted bullet
 			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent;
-			double fireAssistAngle = Utils.normalAbsoluteAngle(getBodyHeading() + e.getBearingRadians());
+			double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeading() + e.getBearingRadians());
 
-			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, getName());
+			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName());
 			wrapper = new BulletCommand(bullet, true, fireAssistAngle);
 		} else {
 			// this is normal bullet
-			bullet = new Bullet(getGunHeading(), getX(), getY(), power, getName());
+			bullet = new Bullet(status.getGunHeading(), getX(), getY(), power, statics.getName());
 			wrapper = new BulletCommand(bullet, false, 0);
 		}
 

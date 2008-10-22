@@ -52,8 +52,8 @@ import robocode.peer.RobotPeer;
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 	private RobotPeer robotPeer;
-    private int robots;
-    private boolean isActive;
+	private int robots;
+	private boolean isActive;
 
 	private double survivalScore;
 	private double lastSurvivorBonus;
@@ -79,8 +79,8 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	public RobotStatistics(RobotPeer robotPeer, int robots) {
 		super();
 		this.robotPeer = robotPeer;
-        this.robots=robots;
-    }
+		this.robots = robots;
+	}
 
 	public RobotStatistics(RobotPeer robotPeer, int robots, BattleResults results) {
 		this(robotPeer, robots);
@@ -232,10 +232,10 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 			}
 
 			bulletKillBonus += bonus;
-            return bonus;
-        }
-        return 0;
-    }
+			return bonus;
+		}
+		return 0;
+	}
 
 	public void scoreRammingDamage(int robot) {
 		if (isActive) {
@@ -256,10 +256,10 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 				}
 			}
 			rammingKillBonus += bonus;
-            return bonus;
-        }
-        return 0;
-    }
+			return bonus;
+		}
+		return 0;
+	}
 
 	public void scoreRobotDeath(int enemiesRemaining) {
 		switch (enemiesRemaining) {

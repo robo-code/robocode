@@ -190,8 +190,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void createRobotProxy(HostManager hostManager, RobotFileSpecification robotFileSpecification) {
-        // Create statistics after teamPeer set
-        statistics = new RobotStatistics(this, battle.getRobotsCount());
+		// Create statistics after teamPeer set
+		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
 		// update statics
 		boolean isLeader = teamPeer != null && teamPeer.getTeamLeader() == this;
@@ -225,7 +225,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	public void printProxy(String s) {
 		synchronized (proxyText) {
 			proxyText.append(s);
-			proxyText.append("\n");
 		}
 	}
 
@@ -832,23 +831,25 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 					x -= movedx;
 					y -= movedy;
 
-                    boolean teamFire = (getTeamPeer() != null && getTeamPeer() == r.getTeamPeer());
-                    if (!teamFire){
-                        statistics.scoreRammingDamage(i);
-                    }
+					boolean teamFire = (getTeamPeer() != null && getTeamPeer() == r.getTeamPeer());
 
-                    this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
+					if (!teamFire) {
+						statistics.scoreRammingDamage(i);
+					}
+
+					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
 					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
 
 					if (r.getEnergy() == 0) {
 						if (r.isAlive()) {
 							r.kill();
-                            if (!teamFire){
-                                final double bonus = statistics.scoreRammingKill(i);
-                                if (bonus>0){
-                                    println("SYSTEM: Ram bonus for killing " + r.getName() + ": " + (int) (bonus + .5));
-                                }
-                            }
+							if (!teamFire) {
+								final double bonus = statistics.scoreRammingKill(i);
+
+								if (bonus > 0) {
+									println("SYSTEM: Ram bonus for killing " + r.getName() + ": " + (int) (bonus + .5));
+								}
+							}
 						}
 					}
 					addEvent(
@@ -1585,7 +1586,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	@Override
 	public String toString() {
-		return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY();
+		return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY() + " "
+				+ state.toString() + (isSleeping ? (isRunning ? " sleeping " : " running") : " halted"); 
 	}
 }
 

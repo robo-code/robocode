@@ -91,7 +91,8 @@ public class EventManager implements IEventManager {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				System.out.println(
-						"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE + " events in queue.");
+						"Not adding to " + robotProxy.getStatics().getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE
+						+ " events in queue.");
 				return false;
 			}
 			return eventQueue.add(e);
@@ -391,7 +392,7 @@ public class EventManager implements IEventManager {
 	}
 
 	public long getTime() {
-		return robotProxy.getTime();
+		return robotProxy.getTimeImpl();
 	}
 
 	public void processEvents() {
@@ -471,7 +472,7 @@ public class EventManager implements IEventManager {
 			try {
 				// skip too old events
 				if (currentEvent.getTime() > getTime() - MAX_EVENT_STACK) {
-					currentEvent.dispatch(robot, robotProxy.getStatics(), robotProxy.getGraphics());
+					currentEvent.dispatch(robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
 				}
 			} catch (Exception ex) {
 				robotProxy.getOut().println("SYSTEM: Exception occurred on " + currentEvent.getClass().getName());
