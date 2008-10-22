@@ -162,21 +162,24 @@ public class BulletPeer {
 				}
 				robotPeer.setEnergy(robotPeer.getEnergy() - damage);
 
-                boolean teamFire = (owner.getTeamPeer() != null && owner.getTeamPeer() == robotPeer.getTeamPeer());
-                if (!teamFire){
-                    owner.getRobotStatistics().scoreBulletDamage(i, score);
-                }
+				boolean teamFire = (owner.getTeamPeer() != null && owner.getTeamPeer() == robotPeer.getTeamPeer());
 
-                if (robotPeer.getEnergy() <= 0) {
+				if (!teamFire) {
+					owner.getRobotStatistics().scoreBulletDamage(i, score);
+				}
+
+				if (robotPeer.getEnergy() <= 0) {
 					if (robotPeer.isAlive()) {
 						robotPeer.kill();
-                        if (!teamFire){
-                            final double bonus = owner.getRobotStatistics().scoreBulletKill(i);
-                            if (bonus>0){
-                                owner.println("SYSTEM: Bonus for killing " + (robotPeer.getName() + ": " + (int) (bonus + .5)));
-                            }
-                        }
-                    }
+						if (!teamFire) {
+							final double bonus = owner.getRobotStatistics().scoreBulletKill(i);
+
+							if (bonus > 0) {
+								owner.println(
+										"SYSTEM: Bonus for killing " + (robotPeer.getName() + ": " + (int) (bonus + .5)));
+							}
+						}
+					}
 				}
 				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
 

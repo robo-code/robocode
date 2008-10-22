@@ -818,9 +818,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
 			robotX = (int) (s.getX() + 0.5);
 			robotY = (int) (s.getY() + 0.5);
-			heading = (int) (toDegrees(s.getHeadingRadians()) + 0.5);
-			gunHeading = (int) (toDegrees(s.getGunHeadingRadians()) + 0.5);
-			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeadingRadians() - s.getHeadingRadians())) + 0.5);
+			heading = (int) (toDegrees(s.getHeading()) + 0.5);
+			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
+			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
 			gunReady = (s.getGunHeat() <= 0);
 
 			// Auto fire

@@ -36,14 +36,15 @@ public class TestPosition extends RobotTestBed {
 
     @Override
     public void onTurnEnded(TurnEndedEvent event) {
-        Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 2572);
+        Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 3048);
+        //System.out.println(event.getTurnSnapshot().getTurn());
         RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
         RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
         if (event.getTurnSnapshot().getTurn() == 2572) {
-            Assert.assertNear(280.5541067939999, crazy.getX());
-            Assert.assertNear(467.00715337600445, crazy.getY());
-            Assert.assertNear(495.85159572106136, target.getX());
-            Assert.assertNear(288.2519884518413, target.getY());
+            Assert.assertNear(394.4306300, crazy.getX());
+            Assert.assertNear(254.9486727, crazy.getY());
+            Assert.assertNear(250.1701010, target.getX());
+            Assert.assertNear(100.8631507, target.getY());
         }
     }
 }

@@ -44,8 +44,8 @@ public final class RobotStatics {
 		isPaintRobot = false;
 		isAdvancedRobot = false;
 		isTeamRobot = false;
-        isTeamLeader = false;
-        isDroid = false;
+		isTeamLeader = false;
+		isDroid = false;
 		battleRules = rules;
 	}
 
@@ -56,8 +56,8 @@ public final class RobotStatics {
 		isAdvancedRobot = spec.isAdvancedRobot();
 		isTeamRobot = spec.isTeamRobot();
 		isDroid = spec.isDroid();
-        isTeamLeader = isLeader; 
-        isDuplicate = src.isDuplicate();
+		isTeamLeader = isLeader; 
+		isDuplicate = src.isDuplicate();
 		name = src.getName();
 		shortName = src.getShortName();
 		veryShortName = src.getVeryShortName();
@@ -71,7 +71,7 @@ public final class RobotStatics {
 	private final boolean isPaintRobot;
 	private final boolean isAdvancedRobot;
 	private final boolean isTeamRobot;
-    private final boolean isTeamLeader;
+	private final boolean isTeamLeader;
 	private final boolean isDroid;
 	private final String name;
 	private final String shortName;
@@ -103,9 +103,9 @@ public final class RobotStatics {
 		return isTeamRobot;
 	}
 
-    public boolean isTeamLeader() {
-        return isTeamLeader;
-    }
+	public boolean isTeamLeader() {
+		return isTeamLeader;
+	}
 
 	public boolean isDroid() {
 		return isDroid;

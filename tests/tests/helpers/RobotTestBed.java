@@ -23,6 +23,8 @@ import org.junit.After;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 
+import java.util.Random;
+
 
 /**
  * @author Pavel Savara (original)
@@ -65,7 +67,8 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
     public void onBattleStarted(BattleStartedEvent event) {
         if (isDeterministic() && event.getTurnSnapshot().getRobots().size() == 2){
-            helpers.Assert.assertNear(0.9848415, RandomFactory.getRandom().nextDouble());
+            final Random random = RandomFactory.getRandom();
+            helpers.Assert.assertNear(0.24053641, random.nextDouble());
         }
     }
 

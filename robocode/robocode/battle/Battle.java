@@ -111,10 +111,10 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.security.RobocodeClassLoader;
 
-import static java.lang.Math.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
@@ -213,7 +213,7 @@ public final class Battle extends BaseBattle {
 				count++;
 			}
 		}
-		robotPeer.setDuplicate(count==0 ? -1 : count);
+		robotPeer.setDuplicate(count == 0 ? -1 : count);
 		robots.add(robotPeer);
 	}
 
@@ -254,9 +254,9 @@ public final class Battle extends BaseBattle {
 		return robots;
 	}
 
-    public int getRobotsCount() {
-        return robots.size();
-    }
+	public int getRobotsCount() {
+		return robots.size();
+	}
 
 	public boolean isDebugging() {
 		return isDebugging;
@@ -320,6 +320,7 @@ public final class Battle extends BaseBattle {
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
+
 		unsafeThreadGroup.setDaemon(true);
 		unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
 		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread(unsafeThreadGroup);
@@ -523,6 +524,29 @@ public final class Battle extends BaseBattle {
 
 	private void initBattleRobots() {
 		for (RobotPeer r : robots) {
+			String pkgn = r.getRobotClassManager().getClassNameManager().getFullPackage();
+
+			if (pkgn != null && pkgn.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+				final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+						+ " characters maximum please.";
+
+				r.println(message);
+				logMessage(message);
+				r.println("SYSTEM: Robot disabled.");
+				r.setEnergy(0);
+			}
+
+			String clsn = r.getRobotClassManager().getClassNameManager().getShortClassName();
+
+			if (clsn != null && clsn.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
+				final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+						+ " characters maximum please.";
+
+				r.println(message);
+				logMessage(message);
+				r.println("SYSTEM: Robot disabled.");
+				r.setEnergy(0);
+			}
 			try {
 				Class<?> c;
 
@@ -541,12 +565,10 @@ public final class Battle extends BaseBattle {
 
 				// create proxy
 				r.createRobotProxy(manager.getHostManager(), classManager.getRobotSpecification());
-
-				initializeRobotPosition(r);
-
 			} catch (Throwable e) {
 				r.println("SYSTEM: Could not load " + r.getName() + " : " + e);
 				r.println(e.getStackTrace().toString());
+				r.setEnergy(0);
 			}
 		}
 	}
@@ -554,7 +576,7 @@ public final class Battle extends BaseBattle {
 	private void startRobots() {
 		for (RobotPeer r : getRobotsAtRandom()) {
 			manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
-			long waitTime = min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
+			long waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
 			synchronized (r) {
 				try {
@@ -788,11 +810,6 @@ public final class Battle extends BaseBattle {
 		// At this point the unsafe loader thread will now set itself to wait for a notify
 
 		for (RobotPeer r : robots) {
-			if (getRoundNum() > 0) {
-				// fake dead so robot won't display
-				r.setState(RobotState.DEAD);
-			} 
-
 			r.println("=========================");
 			r.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
 			r.println("=========================");
@@ -813,31 +830,6 @@ public final class Battle extends BaseBattle {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 				}
-			}
-		}
-		String name;
-
-		for (RobotPeer r : robots) {
-			name = r.getRobotClassManager().getClassNameManager().getFullPackage();
-			if (name != null && name.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
-						+ " characters maximum please.";
-
-				r.println(message);
-				logMessage(message);
-				r.println("SYSTEM: Robot disabled.");
-				r.setEnergy(0);
-			}
-
-			name = r.getRobotClassManager().getClassNameManager().getShortClassName();
-			if (name != null && name.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-				final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
-						+ " characters maximum please.";
-
-				r.println(message);
-				logMessage(message);
-				r.println("SYSTEM: Robot disabled.");
-				r.setEnergy(0);
 			}
 		}
 	}
@@ -874,9 +866,11 @@ public final class Battle extends BaseBattle {
 		for (int i = 0; i < positions.size(); i++) {
 			coords = positions.get(i).split(",");
 
-			x = RobotPeer.WIDTH + random() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-			y = RobotPeer.HEIGHT + random() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
-			heading = 2 * PI * random();
+			final Random random = RandomFactory.getRandom();
+
+			x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+			y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+			heading = 2 * Math.PI * random.nextDouble();
 
 			int len = coords.length;
 
@@ -922,10 +916,12 @@ public final class Battle extends BaseBattle {
 
 		double x, y, heading;
 
+		final Random random = RandomFactory.getRandom();
+
 		for (int j = 0; j < 1000; j++) {
-			x = RobotPeer.WIDTH + random() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-			y = RobotPeer.HEIGHT + random() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
-			heading = 2 * PI * random();
+			x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+			y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+			heading = 2 * Math.PI * random.nextDouble();
 
 			robot.initialize(x, y, heading);
 
@@ -996,6 +992,8 @@ public final class Battle extends BaseBattle {
 			// Loading robots
 			for (RobotPeer robotPeer : robots) {
 				robotPeer.setRobot(null);
+				robotPeer.setState(RobotState.DEAD);
+				initializeRobotPosition(robotPeer);
 				Class<?> robotClass;
 
 				try {
@@ -1026,9 +1024,6 @@ public final class Battle extends BaseBattle {
 					robotPeer.setRobot(null);
 					robotPeer.setEnergy(0);
 					logMessage(e);
-				}
-				if (getRoundNum() > 0) {
-					initializeRobotPosition(robotPeer);
 				}
 			} // for
 
