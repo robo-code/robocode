@@ -75,6 +75,7 @@ import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
+import robocode.peer.robot.EventQueue;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.BoundingRectangle;
@@ -127,7 +128,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private BasicRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
 	private AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
-	private AtomicReference<List<Event>> events = new AtomicReference<List<Event>>(new ArrayList<Event>());
+	private AtomicReference<EventQueue> events = new AtomicReference<EventQueue>(new EventQueue());
 	private AtomicReference<List<TeamMessage>> teamMessages = new AtomicReference<List<TeamMessage>>(
 			new ArrayList<TeamMessage>());
 	private final StringBuilder battleText = new StringBuilder(1024);
@@ -554,7 +555,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	private List<Event> readoutEvents() {
-		return events.getAndSet(new ArrayList<Event>());
+		return events.getAndSet(new EventQueue());
 	}
 
 	private List<TeamMessage> readoutTeamMessages() {
@@ -952,16 +953,20 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void addEvent(Event event) {
-		final List<Event> queue = events.get();
+        if (isRunning()){
+            final List<Event> queue = events.get();
 
-		if (queue.size() > EventManager.MAX_QUEUE_SIZE) {
-			println(
-					"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
-					+ " events in queue.");
-		}
-		event.setTime(battle.getTime());
-		queue.add(event);
-	}
+            if ((queue.size() > EventManager.MAX_QUEUE_SIZE || !isRunning())
+                    && !(event instanceof DeathEvent || event instanceof WinEvent || event instanceof SkippedTurnEvent)) {
+                if (isRunning()) {
+                    println("Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE + " events in queue.");
+                }
+                return;
+            }
+            event.setTime(battle.getTime());
+            queue.add(event);
+        }
+    }
 
 	private void updateGunHeading(RobotCommands currentCommands) {
 		if (currentCommands.getGunTurnRemaining() > 0) {
@@ -1427,15 +1432,17 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	private RobotStatus updateRobotInterface(boolean initialPropagation) {
-		final RobotCommands robotCommands = new RobotCommands();
-		final RobotStatus stat = new RobotStatus(this, robotCommands, battle);
+        RobotCommands currentCommands = commands.get();
+        currentCommands = (currentCommands == null ? new RobotCommands() : currentCommands);
+        final RobotStatus stat = new RobotStatus(this, currentCommands, battle);
 
-		status.set(stat);
+        status.set(stat);
 		if (initialPropagation) {
+            final RobotCommands copyCommands = new RobotCommands(currentCommands, false);
 			if (robotProxy != null) {
-				robotProxy.updateStatus(robotCommands, stat);
+				robotProxy.updateStatus(copyCommands, stat);
 			}
-			commands.set(robotCommands);
+			commands.set(copyCommands);
 		}
 
 		return stat;
@@ -1554,7 +1561,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			skippedTurns = 0;
 		} else {
 			skippedTurns++;
-
+            events.get().clear(false);
 			addEvent(new SkippedTurnEvent());
 
 			if ((!isIORobot() && (skippedTurns > maxSkippedTurns))
