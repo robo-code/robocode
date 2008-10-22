@@ -376,17 +376,17 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		Event currentTopEvent = eventManager.getCurrentTopEvent();
 
 		if (currentTopEvent != null && currentTopEvent.getTime() == status.getTime() && !statics.isAdvancedRobot()
-				&& status.getGunHeading() == status.getRadarHeading()
+				&& status.getGunHeadingRadians() == status.getRadarHeadingRadians()
 				&& ScannedRobotEvent.class.isAssignableFrom(currentTopEvent.getClass())) {
 			// this is angle assisted bullet
 			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent;
-			double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeading() + e.getBearingRadians());
+			double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeadingRadians() + e.getBearingRadians());
 
 			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName());
 			wrapper = new BulletCommand(bullet, true, fireAssistAngle);
 		} else {
 			// this is normal bullet
-			bullet = new Bullet(status.getGunHeading(), getX(), getY(), power, statics.getName());
+			bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName());
 			wrapper = new BulletCommand(bullet, false, 0);
 		}
 
