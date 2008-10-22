@@ -782,23 +782,23 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	/**
 	 * The robot event handler for this robot.
 	 */
-	private EventHandler eventHandler;
+	private InnerEventHandler innerEventHandler;
 
 	/*
 	 * Returns the event handler of this robot.
 	 */
-	private EventHandler getEventHandler() {
-		if (eventHandler == null) {
-			eventHandler = new EventHandler();
+	private InnerEventHandler getEventHandler() {
+		if (innerEventHandler == null) {
+			innerEventHandler = new InnerEventHandler();
 		}
-		return eventHandler;
+		return innerEventHandler;
 	}
 
 	/*
 	 * The JuniorRobot event handler, which implements the basic robot events,
 	 * JuniorRobot event, and Runnable.
 	 */
-	private final class EventHandler implements IBasicEvents, Runnable {
+	private final class InnerEventHandler implements IBasicEvents, Runnable {
 
 		private double juniorFirePower;
 
@@ -806,7 +806,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			fieldWidth = (int) (peer.getBattleFieldWidth() + 0.5);
 			fieldHeight = (int) (peer.getBattleFieldHeight() + 0.5);
 
-			while (true) {
+            //noinspection InfiniteLoopStatement
+            while (true) {
 				JuniorRobot.this.run();
 			}
 		}
@@ -882,7 +883,5 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 			JuniorRobot.this.onScannedRobot();
 		}
-
-		public void onPaint(Graphics2D g) {}
 	}
 }
