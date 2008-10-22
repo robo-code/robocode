@@ -36,6 +36,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
     protected int messages = 0;
 
     public RobotTestBed() {
+        System.setProperty("EXPERIMENTAL", "true");
         engine = new RobocodeEngine2(FileUtil.getCwd());
         engine.addBattleListener(this);
     }
@@ -50,17 +51,29 @@ public abstract class RobotTestBed extends BattleAdaptor {
         errors++;
     }
 
+    public boolean isDumpingPositions(){
+        return false;
+    }
+
+    public boolean isDumpingTurns(){
+        return false;
+    }
+
     public void onTurnEnded(TurnEndedEvent event) {
-        SecurePrintStream.realOut.println(event.getTurnSnapshot().getTurn());
+        if (isDumpingTurns()){
+            SecurePrintStream.realOut.println("turn " + event.getTurnSnapshot().getTurn());
+        }
         for(RobotSnapshot robot : event.getTurnSnapshot().getRobots()){
-            SecurePrintStream.realOut.print(robot.getVeryShortName());
-            SecurePrintStream.realOut.print(" X:");
-            SecurePrintStream.realOut.print(robot.getX());
-            SecurePrintStream.realOut.print(" Y:");
-            SecurePrintStream.realOut.print(robot.getY());
-            SecurePrintStream.realOut.print(" V:");
-            SecurePrintStream.realOut.print(robot.getVelocity());
-            SecurePrintStream.realOut.println();
+            if (isDumpingPositions()){
+                SecurePrintStream.realOut.print(robot.getVeryShortName());
+                SecurePrintStream.realOut.print(" X:");
+                SecurePrintStream.realOut.print(robot.getX());
+                SecurePrintStream.realOut.print(" Y:");
+                SecurePrintStream.realOut.print(robot.getY());
+                SecurePrintStream.realOut.print(" V:");
+                SecurePrintStream.realOut.print(robot.getVelocity());
+                SecurePrintStream.realOut.println();
+            }
             SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
         }
     }

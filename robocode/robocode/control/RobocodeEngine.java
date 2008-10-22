@@ -134,7 +134,7 @@ public class RobocodeEngine {
 			return;
 		}
 
-		manager.initSecurity(true, false);
+		manager.initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
 		if (listener != null) {
 			battleObserver = new BattleObserver();
 			battleObserver.listener = listener;
