@@ -50,7 +50,7 @@ public class RobotClassManager {
 	private robocode.control.RobotSpecification controlRobotSpecification;
 
 	private String fullClassName;
-	private TeamPeer teamManager;
+	private String teamName;
 
 	private String uid = "";
 
@@ -63,10 +63,10 @@ public class RobotClassManager {
 		this(robotFileSpecification, null);
 	}
 
-	public RobotClassManager(RobotFileSpecification robotFileSpecification, TeamPeer teamManager) {
+	public RobotClassManager(RobotFileSpecification robotFileSpecification, String teamName) {
 		this.robotFileSpecification = robotFileSpecification;
 		this.fullClassName = robotFileSpecification.getName();
-		this.teamManager = teamManager;
+		this.teamName = teamName;
 	}
 
 	public String getRootPackage() {
@@ -177,10 +177,10 @@ public class RobotClassManager {
 	/**
 	 * Gets the teamManager.
 	 *
-	 * @return Returns a TeamManager
+	 * @return Returns a name of team
 	 */
-	public TeamPeer getTeamManager() {
-		return teamManager;
+	public String getTeamName() {
+		return teamName;
 	}
 
 	/**

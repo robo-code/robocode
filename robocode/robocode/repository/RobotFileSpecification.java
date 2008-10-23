@@ -20,6 +20,7 @@ package robocode.repository;
 
 import robocode.io.FileUtil;
 import robocode.io.Logger;
+import robocode.manager.NameManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,6 +56,13 @@ public class RobotFileSpecification extends FileSpecification {
 	private boolean isAdvancedRobot;
 	private boolean isTeamRobot;
 	private boolean isDroid;
+
+    public final NameManager getNameManager() {
+        if (nameManager == null) {
+            nameManager = new NameManager(name, version, developmentVersion, false);
+        }
+        return nameManager;
+    }
 
 	// Used in RobotRepositoryManager
 	protected RobotFileSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {

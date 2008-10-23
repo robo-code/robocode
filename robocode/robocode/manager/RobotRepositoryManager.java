@@ -232,7 +232,7 @@ public class RobotRepositoryManager {
 	}
 
 	private void cleanupDatabase() {
-		List<File> externalDirectories = Collections.synchronizedList(new ArrayList<File>());
+		List<File> externalDirectories = new ArrayList<File>();
 		String externalPath = manager.getProperties().getOptionsDevelopmentPath();
 		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
 
@@ -628,7 +628,7 @@ public class RobotRepositoryManager {
 							continue;
 						}
 					}
-					File parentDirectory = new File(out.getParent());
+					File parentDirectory = new File(out.getParent()).getCanonicalFile();
 
 					parentDirectory.mkdirs();
 

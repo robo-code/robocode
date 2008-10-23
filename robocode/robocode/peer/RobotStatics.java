@@ -21,10 +21,9 @@ import robocode.BattleRules;
  * @author Pavel Savara (original)
  */
 public final class RobotStatics {
-	public RobotStatics(NameManager cnm, int duplicate, BattleRules rules) {
-		if (duplicate >= 0) {
-			isDuplicate = true;
-
+	public RobotStatics(RobotFileSpecification spec, int duplicate, boolean isLeader, BattleRules rules) {
+        NameManager cnm = spec.getNameManager(); 
+        if (duplicate >= 0) {
 			String countString = " (" + (duplicate + 1) + ')';
 
 			name = cnm.getFullClassNameWithVersion() + countString;
@@ -32,40 +31,21 @@ public final class RobotStatics {
 			veryShortName = cnm.getUniqueVeryShortClassNameWithVersion() + countString;
 			nonVersionedName = cnm.getFullClassName() + countString;
 		} else {
-			isDuplicate = false;
-
 			name = cnm.getFullClassNameWithVersion();
 			shortName = cnm.getUniqueShortClassNameWithVersion();
 			veryShortName = cnm.getUniqueVeryShortClassNameWithVersion();
 			nonVersionedName = cnm.getFullClassName();
 		}
-		isJuniorRobot = false;
-		isInteractiveRobot = false;
-		isPaintRobot = false;
-		isAdvancedRobot = false;
-		isTeamRobot = false;
-		isTeamLeader = false;
-		isDroid = false;
-		battleRules = rules;
+        isJuniorRobot = spec.isJuniorRobot();
+        isInteractiveRobot = spec.isInteractiveRobot();
+        isPaintRobot = spec.isPaintRobot();
+        isAdvancedRobot = spec.isAdvancedRobot();
+        isTeamRobot = spec.isTeamRobot();
+        isDroid = spec.isDroid();
+        isTeamLeader = isLeader;
+        battleRules = rules;
 	}
 
-	public RobotStatics(RobotFileSpecification spec, boolean isLeader, RobotStatics src) {
-		isJuniorRobot = spec.isJuniorRobot();
-		isInteractiveRobot = spec.isInteractiveRobot();
-		isPaintRobot = spec.isPaintRobot();
-		isAdvancedRobot = spec.isAdvancedRobot();
-		isTeamRobot = spec.isTeamRobot();
-		isDroid = spec.isDroid();
-		isTeamLeader = isLeader; 
-		isDuplicate = src.isDuplicate();
-		name = src.getName();
-		shortName = src.getShortName();
-		veryShortName = src.getVeryShortName();
-		nonVersionedName = src.getNonVersionedName();
-		battleRules = src.getBattleRules();
-	}
-
-	private final boolean isDuplicate;
 	private final boolean isJuniorRobot;
 	private final boolean isInteractiveRobot;
 	private final boolean isPaintRobot;
@@ -78,10 +58,6 @@ public final class RobotStatics {
 	private final String veryShortName;
 	private final String nonVersionedName;
 	private final BattleRules battleRules;
-
-	public boolean isDuplicate() {
-		return isDuplicate;
-	}
 
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;

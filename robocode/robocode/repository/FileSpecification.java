@@ -64,7 +64,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	private String propertiesFileName;
 	private String thisFileName;
 	private String fileType;
-	private NameManager nameManager;
+	protected NameManager nameManager;
 	private long fileLastModified;
 	private long fileLength;
 
@@ -460,16 +460,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public NameManager getNameManager() {
-		if (nameManager == null) {
-			if (this instanceof RobotFileSpecification) {
-				nameManager = new NameManager(name, version, developmentVersion, false);
-			} else if (this instanceof TeamSpecification) {
-				nameManager = new NameManager(name, version, developmentVersion, true);
-			} else {
-				throw new RuntimeException("Cannot get a nameManager for file type " + getFileType());
-			}
-		}
-		return nameManager;
+        throw new RuntimeException("Cannot get a nameManager for file type " + getFileType());
 	}
 
 	public boolean exists() {

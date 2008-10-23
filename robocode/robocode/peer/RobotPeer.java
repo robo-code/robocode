@@ -167,21 +167,23 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private Arc2D scanArc;
 	private BoundingRectangle boundingBox;
 
-	public RobotPeer(RobotClassManager robotClassManager) {
+	public RobotPeer(Battle battle, RobotClassManager robotClassManager, int duplicate, TeamPeer team) {
 		super();
+        if (team!=null){
+            team.add(this);
+        }
 		this.robotClassManager = robotClassManager;
+        this.battle = battle;
 		robotThreadManager = new RobotThreadManager(this);
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
-		teamPeer = robotClassManager.getTeamManager();
+		teamPeer = team;
 		state = RobotState.ACTIVE;
-	}
-
-	public void setBattle(Battle newBattle) {
-		battle = newBattle;
-		battleRules = battle.getBattleRules();
-		updateRobotInterface(true);
-	}
+        boolean isLeader = teamPeer != null && teamPeer.size() == 1;
+        statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader, battle.getBattleRules());
+        battleRules = battle.getBattleRules();
+        updateRobotInterface(true);
+    }
 
 	public void setRobot(IBasicRobot newRobot) {
 		robot = newRobot;
@@ -190,14 +192,9 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void createRobotProxy(HostManager hostManager, RobotFileSpecification robotFileSpecification) {
+	public void createRobotProxy(HostManager hostManager) {
 		// Create statistics after teamPeer set
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
-
-		// update statics
-		boolean isLeader = teamPeer != null && teamPeer.getTeamLeader() == this;
-
-		statics = new RobotStatics(robotFileSpecification, isLeader, statics);
 
 		if (statics.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(hostManager, this, statics);
@@ -267,14 +264,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	// -------------------
 	// statics 
 	// -------------------
-
-	public void setDuplicate(int count) {
-		statics = new RobotStatics(getRobotClassManager().getClassNameManager(), count, battle.getBattleRules());
-	}
-
-	public boolean isDuplicate() {
-		return statics.isDuplicate();
-	}
 
 	public boolean isDroid() {
 		return statics.isDroid();

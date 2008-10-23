@@ -31,15 +31,10 @@ import java.util.ArrayList;
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
 	private String name;
-	private boolean isDuplicate;
 	private RobotPeer teamLeader;
 	private TeamStatistics teamStatistics;
 
-	public TeamPeer(String name, String version) {
-		if (version != null) {
-			name += " " + version;
-		}
-
+	public TeamPeer(String name) {
 		this.name = name;
 		this.teamStatistics = new TeamStatistics(this);
 	}
@@ -67,17 +62,6 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
 	public String getName() {
 		return name;
-	}
-
-	public void setDuplicate(int count) {
-		isDuplicate = true;
-		String countString = " (" + (count + 1) + ')';
-
-		name = name + countString;
-	}
-
-	public boolean isDuplicate() {
-		return isDuplicate;
 	}
 
 	public RobotPeer getTeamLeader() {
