@@ -460,7 +460,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public NameManager getNameManager() {
-        throw new RuntimeException("Cannot get a nameManager for file type " + getFileType());
+		throw new RuntimeException("Cannot get a nameManager for file type " + getFileType());
 	}
 
 	public boolean exists() {

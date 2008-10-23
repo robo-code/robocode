@@ -806,8 +806,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			fieldWidth = (int) (peer.getBattleFieldWidth() + 0.5);
 			fieldHeight = (int) (peer.getBattleFieldHeight() + 0.5);
 
-            //noinspection InfiniteLoopStatement
-            while (true) {
+			// noinspection InfiniteLoopStatement
+			while (true) {
 				JuniorRobot.this.run();
 			}
 		}

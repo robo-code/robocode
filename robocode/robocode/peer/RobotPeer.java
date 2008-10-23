@@ -169,21 +169,23 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public RobotPeer(Battle battle, RobotClassManager robotClassManager, int duplicate, TeamPeer team) {
 		super();
-        if (team!=null){
-            team.add(this);
-        }
+		if (team != null) {
+			team.add(this);
+		}
 		this.robotClassManager = robotClassManager;
-        this.battle = battle;
+		this.battle = battle;
 		robotThreadManager = new RobotThreadManager(this);
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
 		teamPeer = team;
 		state = RobotState.ACTIVE;
-        boolean isLeader = teamPeer != null && teamPeer.size() == 1;
-        statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader, battle.getBattleRules());
-        battleRules = battle.getBattleRules();
-        updateRobotInterface(true);
-    }
+		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
+
+		statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader,
+				battle.getBattleRules());
+		battleRules = battle.getBattleRules();
+		updateRobotInterface(true);
+	}
 
 	public void setRobot(IBasicRobot newRobot) {
 		robot = newRobot;
@@ -942,20 +944,22 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void addEvent(Event event) {
-        if (isRunning()){
-            final List<Event> queue = events.get();
+		if (isRunning()) {
+			final List<Event> queue = events.get();
 
-            if ((queue.size() > EventManager.MAX_QUEUE_SIZE || !isRunning())
-                    && !(event instanceof DeathEvent || event instanceof WinEvent || event instanceof SkippedTurnEvent)) {
-                if (isRunning()) {
-                    println("Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE + " events in queue.");
-                }
-                return;
-            }
-            event.setTime(battle.getTime());
-            queue.add(event);
-        }
-    }
+			if ((queue.size() > EventManager.MAX_QUEUE_SIZE || !isRunning())
+					&& !(event instanceof DeathEvent || event instanceof WinEvent || event instanceof SkippedTurnEvent)) {
+				if (isRunning()) {
+					println(
+							"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
+							+ " events in queue.");
+				}
+				return;
+			}
+			event.setTime(battle.getTime());
+			queue.add(event);
+		}
+	}
 
 	private void updateGunHeading(RobotCommands currentCommands) {
 		if (currentCommands.getGunTurnRemaining() > 0) {
@@ -1335,7 +1339,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			final ExplosionPeer fake = new ExplosionPeer(this, battle, robotBullet);
 
 			battle.addBullet(fake);
-            robotBullet.setPeer(fake);
+			robotBullet.setPeer(fake);
 		}
 		setEnergy(0);
 
@@ -1419,13 +1423,15 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	private RobotStatus updateRobotInterface(boolean initialPropagation) {
-        RobotCommands currentCommands = commands.get();
-        currentCommands = (currentCommands == null ? new RobotCommands() : currentCommands);
-        final RobotStatus stat = new RobotStatus(this, currentCommands, battle);
+		RobotCommands currentCommands = commands.get();
 
-        status.set(stat);
+		currentCommands = (currentCommands == null ? new RobotCommands() : currentCommands);
+		final RobotStatus stat = new RobotStatus(this, currentCommands, battle);
+
+		status.set(stat);
 		if (initialPropagation) {
-            final RobotCommands copyCommands = new RobotCommands(currentCommands, false);
+			final RobotCommands copyCommands = new RobotCommands(currentCommands, false);
+
 			if (robotProxy != null) {
 				robotProxy.updateStatus(copyCommands, stat);
 			}
@@ -1548,7 +1554,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			skippedTurns = 0;
 		} else {
 			skippedTurns++;
-            events.get().clear(false);
+			events.get().clear(false);
 			addEvent(new SkippedTurnEvent());
 
 			if ((!isIORobot() && (skippedTurns > maxSkippedTurns))

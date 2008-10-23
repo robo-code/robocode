@@ -57,12 +57,12 @@ public class RobotFileSpecification extends FileSpecification {
 	private boolean isTeamRobot;
 	private boolean isDroid;
 
-    public final NameManager getNameManager() {
-        if (nameManager == null) {
-            nameManager = new NameManager(name, version, developmentVersion, false);
-        }
-        return nameManager;
-    }
+	public final NameManager getNameManager() {
+		if (nameManager == null) {
+			nameManager = new NameManager(name, version, developmentVersion, false);
+		}
+		return nameManager;
+	}
 
 	// Used in RobotRepositoryManager
 	protected RobotFileSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {

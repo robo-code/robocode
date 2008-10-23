@@ -101,7 +101,7 @@ public class BulletPeer {
 	 *
 	 * @param owner  who fire the bullet
 	 * @param battle root battle
-     * @param bullet bullet
+	 * @param bullet bullet
 	 */
 	public BulletPeer(RobotPeer owner, Battle battle, Bullet bullet) {
 		super();
@@ -147,6 +147,7 @@ public class BulletPeer {
 
 	private void checkRobotCollision(List<RobotPeer> robots) {
 		RobotPeer robotPeer;
+
 		for (int i = 0; i < robots.size(); i++) {
 			robotPeer = robots.get(i);
 
@@ -306,8 +307,9 @@ public class BulletPeer {
 	public synchronized void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		if (isActive()) {
 			updateMovement();
-            if (bullets!=null)
-			checkBulletCollision(bullets);
+			if (bullets != null) {
+				checkBulletCollision(bullets);
+			}
 			if (isActive()) {
 				checkRobotCollision(robots);
 			}

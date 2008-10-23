@@ -71,8 +71,8 @@ public class TurnSnapshot implements java.io.Serializable {
 	 * Constructs a snapshot of the battle.
 	 *
 	 * @param battle the battle to make a snapshot of.
-     * @param battleRobots 
-     * @param battleBullets
+	 * @param battleRobots 
+	 * @param battleBullets
 	 */
 	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets) {
 		// fieldWidth = battle.getBattleField().getWidth();

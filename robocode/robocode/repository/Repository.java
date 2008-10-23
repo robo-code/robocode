@@ -38,21 +38,22 @@ import java.io.IOException;
  */
 public class Repository {
 	private List<FileSpecification> fileSpecifications = Collections.synchronizedList(new ArrayList<FileSpecification>());
-    private Hashtable<String,FileSpecification> fileSpecificationsDict = new Hashtable<String,FileSpecification>();
+	private Hashtable<String, FileSpecification> fileSpecificationsDict = new Hashtable<String, FileSpecification>();
 
 	public void add(FileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);
-        final String name = fileSpecification.getNameManager().getFullClassNameWithVersion();
-        final String rootDir = fileSpecification.getRootDir().toString();
-        fileSpecificationsDict.put(name, fileSpecification);
-        fileSpecificationsDict.put(rootDir+name, fileSpecification);
-    }
+		final String name = fileSpecification.getNameManager().getFullClassNameWithVersion();
+		final String rootDir = fileSpecification.getRootDir().toString();
 
-    public FileSpecification get(String fullClassNameWithVersion){ 
-        return fileSpecificationsDict.get(fullClassNameWithVersion);
-    }
+		fileSpecificationsDict.put(name, fileSpecification);
+		fileSpecificationsDict.put(rootDir + name, fileSpecification);
+	}
 
-    public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
+	public FileSpecification get(String fullClassNameWithVersion) { 
+		return fileSpecificationsDict.get(fullClassNameWithVersion);
+	}
+
+	public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
 
 		List<FileSpecification> v = Collections.synchronizedList(new ArrayList<FileSpecification>());

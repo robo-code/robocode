@@ -22,8 +22,9 @@ import robocode.BattleRules;
  */
 public final class RobotStatics {
 	public RobotStatics(RobotFileSpecification spec, int duplicate, boolean isLeader, BattleRules rules) {
-        NameManager cnm = spec.getNameManager(); 
-        if (duplicate >= 0) {
+		NameManager cnm = spec.getNameManager(); 
+
+		if (duplicate >= 0) {
 			String countString = " (" + (duplicate + 1) + ')';
 
 			name = cnm.getFullClassNameWithVersion() + countString;
@@ -36,14 +37,14 @@ public final class RobotStatics {
 			veryShortName = cnm.getUniqueVeryShortClassNameWithVersion();
 			nonVersionedName = cnm.getFullClassName();
 		}
-        isJuniorRobot = spec.isJuniorRobot();
-        isInteractiveRobot = spec.isInteractiveRobot();
-        isPaintRobot = spec.isPaintRobot();
-        isAdvancedRobot = spec.isAdvancedRobot();
-        isTeamRobot = spec.isTeamRobot();
-        isDroid = spec.isDroid();
-        isTeamLeader = isLeader;
-        battleRules = rules;
+		isJuniorRobot = spec.isJuniorRobot();
+		isInteractiveRobot = spec.isInteractiveRobot();
+		isPaintRobot = spec.isPaintRobot();
+		isAdvancedRobot = spec.isAdvancedRobot();
+		isTeamRobot = spec.isTeamRobot();
+		isDroid = spec.isDroid();
+		isTeamLeader = isLeader;
+		battleRules = rules;
 	}
 
 	private final boolean isJuniorRobot;

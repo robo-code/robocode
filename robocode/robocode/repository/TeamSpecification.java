@@ -47,12 +47,12 @@ public class TeamSpecification extends FileSpecification {
 	private String members = "";
 	private String uid = "";
 
-    public final NameManager getNameManager() {
-        if (nameManager == null) {
-            nameManager = new NameManager(name, version, developmentVersion, true);
-        }
-        return nameManager;
-    }
+	public final NameManager getNameManager() {
+		if (nameManager == null) {
+			nameManager = new NameManager(name, version, developmentVersion, true);
+		}
+		return nameManager;
+	}
 
 	// Used in FileSpecification
 	protected TeamSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
