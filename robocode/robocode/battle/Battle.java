@@ -149,8 +149,8 @@ public final class Battle extends BaseBattle {
 	private double parallelConstant;
 
 	// Objects in the battle
-	private List<RobotPeer> robots = new CopyOnWriteArrayList<RobotPeer>();
-	private List<ContestantPeer> contestants = new CopyOnWriteArrayList<ContestantPeer>();
+	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
+	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
 	private int activeRobots;
 
@@ -181,10 +181,6 @@ public final class Battle extends BaseBattle {
 		} catch (Exception e) {
 			Logger.logError("Exception setting battle properties", e);
 		}
-	}
-
-	public void addBullet(BulletPeer bullet) {
-		bullets.add(bullet);
 	}
 
 	public void addRobot(RobotClassManager robotClassManager) {
@@ -246,14 +242,6 @@ public final class Battle extends BaseBattle {
 		return battleRules;
 	}
 
-	public List<BulletPeer> getBullets() {
-		return bullets;
-	}
-
-	public List<RobotPeer> getRobots() {
-		return robots;
-	}
-
 	public int getRobotsCount() {
 		return robots.size();
 	}
@@ -265,6 +253,10 @@ public final class Battle extends BaseBattle {
 	public void removeBullet(BulletPeer bullet) {
 		bullets.remove(bullet);
 	}
+
+    public void addBullet(BulletPeer bullet) {
+        bullets.add(bullet);
+    }
 
 	public void resetInactiveTurnCount(double energyLoss) {
 		if (energyLoss < 0) {
@@ -327,24 +319,19 @@ public final class Battle extends BaseBattle {
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
-		// Pre-load robot classes without security...
-		// loadClass WILL NOT LINK the class, so static "cheats" will not work.
-		// in the safe robot loader the class is linked.
-		synchronized (robots) {
-			initBattleRobots();
+        initBattleRobots();
 
-			parallelOn = System.getProperty("PARALLEL", "false").equals("true");
-			if (parallelOn) {
-				// how could robots share CPUs ?
-				parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
-				// four CPUs can't run two single threaded robot faster than two CPUs
-				if (parallelConstant < 1) {
-					parallelConstant = 1;
-				}
-			}
-		}
+        parallelOn = System.getProperty("PARALLEL", "false").equals("true");
+        if (parallelOn) {
+            // how could robots share CPUs ?
+            parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
+            // four CPUs can't run two single threaded robot faster than two CPUs
+            if (parallelConstant < 1) {
+                parallelConstant = 1;
+            }
+        }
 
-		final TurnSnapshot snapshot = new TurnSnapshot(this);
+		final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets);
 
 		eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
 		if (isPaused()) {
@@ -517,7 +504,7 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this)));
+		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this, robots, bullets)));
 
 		super.finalizeTurn();
 	}
@@ -555,6 +542,9 @@ public final class Battle extends BaseBattle {
 
 				RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
 
+                // Pre-load robot classes without security...
+                // loadClass WILL NOT LINK the class, so static "cheats" will not work.
+                // in the safe robot loader the class is linked.
 				if (RobotClassManager.isSecutityOn()) {
 					c = classLoader.loadRobotClass(className, true);
 				} else {
@@ -583,7 +573,7 @@ public final class Battle extends BaseBattle {
 					Logger.logMessage(".", false);
 
 					// Add StatusEvent for the first turn
-					r.publishStatus(true);
+					r.publishStatus(true, getTime());
 
 					// Start the robot thread
 					r.getRobotThreadManager().start();
@@ -648,9 +638,12 @@ public final class Battle extends BaseBattle {
 
 	private void updateBullets() {
 		for (BulletPeer b : bullets) {
-			b.update();
+			b.update(robots, bullets);
+            if (b.getState() == BulletState.INACTIVE) {
+                bullets.remove(b);
+            }
 		}
-	}
+    }
 
 	private void updateRobots() {
 		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
@@ -658,12 +651,12 @@ public final class Battle extends BaseBattle {
 		// Move all bots
 		for (RobotPeer r : getRobotsAtRandom()) {
 
-			final RobotCommands currentCommands = r.loadCommands();
+			final RobotCommands currentCommands = r.loadCommands(robots, bullets);
 
 			// update robots
 			final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
 
-			r.update(currentCommands, zapEnergy);
+			r.update(currentCommands, robots, zapEnergy);
 
 			// publish deaths to live robots
 			if (!r.isDead()) {
@@ -703,7 +696,7 @@ public final class Battle extends BaseBattle {
 
 	private void publishStatuses() {
 		for (RobotPeer r : robots) {
-			r.publishStatus(false);
+			r.publishStatus(false, getTime());
 		}
 	}
 
@@ -721,15 +714,13 @@ public final class Battle extends BaseBattle {
 
 	private void wakeupRobots() {
 		// Wake up all robot threads
-		synchronized (robots) {
-			final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
+        final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
 
-			if (parallelOn) {
-				wakeupParallel(robotsAtRandom);
-			} else {
-				wakeupSerial(robotsAtRandom);
-			}
-		}
+        if (parallelOn) {
+            wakeupParallel(robotsAtRandom);
+        } else {
+            wakeupSerial(robotsAtRandom);
+        }
 	}
 
 	private void wakeupSerial(List<RobotPeer> robotsAtRandom) {

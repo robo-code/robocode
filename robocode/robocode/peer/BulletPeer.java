@@ -101,6 +101,7 @@ public class BulletPeer {
 	 *
 	 * @param owner  who fire the bullet
 	 * @param battle root battle
+     * @param bullet bullet
 	 */
 	public BulletPeer(RobotPeer owner, Battle battle, Bullet bullet) {
 		super();
@@ -113,8 +114,8 @@ public class BulletPeer {
 		color = owner.getBulletColor(); // Store current bullet color set on robot
 	}
 
-	private void checkBulletCollision() {
-		for (BulletPeer b : battle.getBullets()) {
+	private void checkBulletCollision(List<BulletPeer> bullets) {
+		for (BulletPeer b : bullets) {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
 				state = BulletState.HIT_BULLET;
 				b.setState(state);
@@ -144,10 +145,8 @@ public class BulletPeer {
 		return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1);
 	}
 
-	private void checkRobotCollision() {
+	private void checkRobotCollision(List<RobotPeer> robots) {
 		RobotPeer robotPeer;
-		List<RobotPeer> robots = battle.getRobots();
-
 		for (int i = 0; i < robots.size(); i++) {
 			robotPeer = robots.get(i);
 
@@ -304,13 +303,13 @@ public class BulletPeer {
 		state = newState;
 	}
 
-	public synchronized void update() {
+	public synchronized void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		if (isActive()) {
 			updateMovement();
-
-			checkBulletCollision();
+            if (bullets!=null)
+			checkBulletCollision(bullets);
 			if (isActive()) {
-				checkRobotCollision();
+				checkRobotCollision(robots);
 			}
 			if (isActive()) {
 				checkWallCollision();
@@ -338,10 +337,6 @@ public class BulletPeer {
 		case HIT_WALL:
 			state = BulletState.INACTIVE;
 			break;
-		}
-
-		if (state == BulletState.INACTIVE) {
-			battle.removeBullet(this);
 		}
 	}
 

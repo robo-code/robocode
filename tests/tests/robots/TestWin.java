@@ -48,7 +48,7 @@ public class TestWin extends RobotTestBed {
         if (streamSnapshot.contains("Win!")){
             win++;
         }
-        else if (streamSnapshot.contains("BattleEnded!")){
+        if (streamSnapshot.contains("BattleEnded!")){
             end++;
         }
         System.out.print(streamSnapshot);
@@ -56,8 +56,8 @@ public class TestWin extends RobotTestBed {
 
     @After
     public void tearDownWin(){
-        Assert.assertThat(win, is(getNumRounds()));
-        Assert.assertThat(end, is(1));
+        Assert.assertThat("always should win", win, is(getNumRounds()));
+        Assert.assertThat("should get BattleEnded event", end, is(1));
     }
 
 }

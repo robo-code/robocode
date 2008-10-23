@@ -48,7 +48,7 @@ public class TestLost extends RobotTestBed {
         if (streamSnapshot.contains("Death!")){
             lost++;
         }
-        else if (streamSnapshot.contains("BattleEnded!")){
+        if (streamSnapshot.contains("BattleEnded!")){
             end++;
         }
         System.out.print(streamSnapshot);
@@ -56,8 +56,8 @@ public class TestLost extends RobotTestBed {
 
     @After
     public void tearDownLost(){
-        Assert.assertThat(lost, is(getNumRounds()));
-        Assert.assertThat(end, is(1));
+        Assert.assertThat("always should loose",lost, is(getNumRounds()));
+        Assert.assertThat("should get BattleEnded event",end, is(1));
     }
 
 }

@@ -30,6 +30,8 @@ package robocode.peer;
 import robocode.battle.Battle;
 import robocode.Bullet;
 
+import java.util.List;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -53,7 +55,7 @@ public class ExplosionPeer extends BulletPeer {
 	}
 
 	@Override
-	public synchronized final void update() {
+	public synchronized final void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		x = owner.getX();
 		y = owner.getY();
 

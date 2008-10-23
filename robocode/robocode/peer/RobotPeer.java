@@ -706,7 +706,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		status.set(new RobotStatus(this, commands.get(), battle));
 	}
 
-	public final synchronized void update(RobotCommands currentCommands, double zapEnergy) {
+	public final synchronized void update(RobotCommands currentCommands, List<RobotPeer> robots, double zapEnergy) {
 		// Reset robot state to active if it is not dead
 		if (isDead()) {
 			return;
@@ -737,7 +737,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		checkWallCollision(currentCommands);
 
 		// Now check for robot collision
-		checkRobotCollision(currentCommands);
+		checkRobotCollision(currentCommands, robots);
 
 		// Scan false means robot did not call scan() manually.
 		// But if we're moving, scan
@@ -762,7 +762,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		turnedRadarWithGun = false;
 		// scan
 		if (scan) {
-			scan(lastRadarHeading);
+			scan(lastRadarHeading, robots);
 			turnedRadarWithGun = (lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading);
 			scan = false;
 		}
@@ -806,11 +806,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return false;
 	}
 
-	private void checkRobotCollision(RobotCommands currentCommands) {
+	private void checkRobotCollision(RobotCommands currentCommands, List<RobotPeer> robots) {
 		inCollision = false;
 
-		for (int i = 0; i < battle.getRobots().size(); i++) {
-			RobotPeer r = battle.getRobots().get(i);
+		for (int i = 0; i < robots.size(); i++) {
+			RobotPeer r = robots.get(i);
 
 			if (!(r == null || r == this || r.isDead()) && boundingBox.intersects(r.boundingBox)) {
 				// Bounce back
@@ -1234,7 +1234,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	private void scan(double lastRadarHeading) {
+	private void scan(double lastRadarHeading, List<RobotPeer> robots) {
 		if (statics.isDroid()) {
 			return;
 		}
@@ -1259,7 +1259,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		scanArc.setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
-		for (RobotPeer robotPeer : battle.getRobots()) {
+		for (RobotPeer robotPeer : robots) {
 			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead())
 					&& intersects(scanArc, robotPeer.boundingBox)) {
 				double dx = robotPeer.getX() - getX();
@@ -1346,7 +1346,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			final ExplosionPeer fake = new ExplosionPeer(this, battle, robotBullet);
 
 			battle.addBullet(fake);
-			robotBullet.setPeer(fake);
+            robotBullet.setPeer(fake);
 		}
 		setEnergy(0);
 
@@ -1417,9 +1417,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return commands.get().getGraphicsProxy();
 	}
 
-	public void publishStatus(boolean initialPropagation) {
-		final long currentTurn = battle.getTime();
-
+	public void publishStatus(boolean initialPropagation, long currentTurn) {
 		final RobotStatus stat = updateRobotInterface(initialPropagation);
 
 		if (!isDead()) {
@@ -1448,10 +1446,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return stat;
 	}
 
-	public RobotCommands loadCommands() {
+	public RobotCommands loadCommands(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		RobotCommands currentCommands = commands.get();
 
-		fireBullets(currentCommands.getBullets());
+		fireBullets(currentCommands.getBullets(), robots, bullets);
 
 		if (currentCommands.isScan()) {
 			scan = true;
@@ -1473,10 +1471,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return currentCommands;
 	}
 
-	private void fireBullets(List<BulletCommand> bullets) {
+	private void fireBullets(List<BulletCommand> bulletCommands, List<RobotPeer> robots, List<BulletPeer> bullets) {
 		BulletPeer newBullet = null;
 
-		for (BulletCommand bulletCmd : bullets) {
+		for (BulletCommand bulletCmd : bulletCommands) {
 			Bullet bullet = bulletCmd.getBullet();
 
 			if (bullet == null) {
@@ -1511,7 +1509,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 		// there is only last bullet in one turn
 		if (newBullet != null) {
-			newBullet.update();
+			newBullet.update(robots, bullets);
 			battle.addBullet(newBullet);
 		}
 	}
