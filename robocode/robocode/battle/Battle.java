@@ -312,7 +312,6 @@ public final class Battle extends BaseBattle {
 
 		// Starting loader thread
 		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
-
 		unsafeThreadGroup.setDaemon(true);
 		unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
 		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread(unsafeThreadGroup);
@@ -341,9 +340,13 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void shutdownBattle() {
-		unsafeLoadRobotsThread.interrupt();
 		try {
-			unsafeLoadRobotsThread.join();
+            synchronized (isUnsafeLoaderThreadRunning){
+                isUnsafeLoaderThreadRunning.notify();
+                isUnsafeLoaderThreadRunning.wait(10);
+            }
+            unsafeLoadRobotsThread.interrupt();
+            unsafeLoadRobotsThread.join(5000);
 		} catch (InterruptedException e) {
 			Logger.logError(e);
 		}
@@ -960,73 +963,73 @@ public final class Battle extends BaseBattle {
 		return true;
 	}
 
-	private void unsafeLoadRobots() {
-		while (true) {
-			synchronized (isUnsafeLoaderThreadRunning) {
-				try {
-					// Notify that the unsafe loader thread is now running
-					isUnsafeLoaderThreadRunning.set(true);
-					isUnsafeLoaderThreadRunning.notifyAll();
+	private boolean unsafeLoadRobots() {
+        synchronized (isUnsafeLoaderThreadRunning) {
+            try {
+                // Notify that the unsafe loader thread is now running
+                isUnsafeLoaderThreadRunning.set(true);
+                isUnsafeLoaderThreadRunning.notifyAll();
 
-					// Wait for a notify in order to continue
-					isUnsafeLoaderThreadRunning.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-			// Loader awake
-			if (getRoundNum() >= getNumRounds() || isAborted()) {
-				// Robot loader thread terminating
-				return;
-			}
-			// Loading robots
-			for (RobotPeer robotPeer : robots) {
-				robotPeer.setRobot(null);
-				robotPeer.setState(RobotState.DEAD);
-				initializeRobotPosition(robotPeer);
-				Class<?> robotClass;
+                // Wait for a notify in order to continue
+                isUnsafeLoaderThreadRunning.wait();
+            } catch (InterruptedException e) {
+                // Immediately reasserts the exception by interrupting the caller thread itself
+                Thread.currentThread().interrupt();
+            }
+        }
+        // Loader awake
+        if (getRoundNum() >= getNumRounds() || isAborted()) {
+            // Robot loader thread terminating
+            return false;
+        }
+        // Loading robots
+        for (RobotPeer robotPeer : robots) {
+            robotPeer.setRobot(null);
+            robotPeer.setState(RobotState.DEAD);
+            initializeRobotPosition(robotPeer);
+            Class<?> robotClass;
 
-				try {
-					manager.getThreadManager().setLoadingRobot(robotPeer);
-					robotClass = robotPeer.getRobotClassManager().getRobotClass();
-					if (robotClass == null) {
-						robotPeer.println("SYSTEM: Skipping robot: " + robotPeer.getName());
-						robotPeer.setEnergy(0);
-						continue;
-					}
-					IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
+            try {
+                manager.getThreadManager().setLoadingRobot(robotPeer);
+                robotClass = robotPeer.getRobotClassManager().getRobotClass();
+                if (robotClass == null) {
+                    robotPeer.println("SYSTEM: Skipping robot: " + robotPeer.getName());
+                    robotPeer.setEnergy(0);
+                    continue;
+                }
+                IBasicRobot bot = (IBasicRobot) robotClass.newInstance();
 
-					robotPeer.setRobot(bot);
+                robotPeer.setRobot(bot);
 
-					bot.setOut(robotPeer.getRobotProxy().getOut());
-					bot.setPeer(robotPeer.getRobotProxy());
-				} catch (IllegalAccessException e) {
-					robotPeer.println("SYSTEM: Unable to instantiate this robot: " + e);
-					robotPeer.println("SYSTEM: Is your constructor marked public?");
-					robotPeer.setEnergy(0);
-					robotPeer.setRobot(null);
-					logMessage(e);
-				} catch (Throwable e) {
-					robotPeer.println(
-							"SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
-					robotPeer.println("SYSTEM: " + e);
-					robotPeer.println(e.getStackTrace().toString());
-					robotPeer.setRobot(null);
-					robotPeer.setEnergy(0);
-					logMessage(e);
-				}
-			} // for
+                bot.setOut(robotPeer.getRobotProxy().getOut());
+                bot.setPeer(robotPeer.getRobotProxy());
+            } catch (IllegalAccessException e) {
+                robotPeer.println("SYSTEM: Unable to instantiate this robot: " + e);
+                robotPeer.println("SYSTEM: Is your constructor marked public?");
+                robotPeer.setEnergy(0);
+                robotPeer.setRobot(null);
+                logMessage(e);
+            } catch (Throwable e) {
+                robotPeer.println(
+                        "SYSTEM: An error occurred during initialization of " + robotPeer.getRobotClassManager());
+                robotPeer.println("SYSTEM: " + e);
+                robotPeer.println(e.getStackTrace().toString());
+                robotPeer.setRobot(null);
+                robotPeer.setEnergy(0);
+                logMessage(e);
+            }
+        } // for
 
-			manager.getThreadManager().setLoadingRobot(null);
+        manager.getThreadManager().setLoadingRobot(null);
 
-			// Notify that the robots has been loaded
-			synchronized (isRobotsLoaded) {
-				isRobotsLoaded.set(true);
-				isRobotsLoaded.notifyAll();
-			}
-		}
-	}
+        // Notify that the robots has been loaded
+        synchronized (isRobotsLoaded) {
+            isRobotsLoaded.set(true);
+            isRobotsLoaded.notifyAll();
+        }
+
+        return true;
+    }
 
 	private class UnsafeLoadRobotsThread extends Thread {
 
@@ -1038,8 +1041,9 @@ public final class Battle extends BaseBattle {
 		@Override
 		public void run() {
 			// Load robots
-			unsafeLoadRobots();
-		}
+            while (unsafeLoadRobots()) {
+            }
+        }
 	}
 
 	// --------------------------------------------------------------------------
