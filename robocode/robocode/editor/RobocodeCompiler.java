@@ -75,6 +75,7 @@ public class RobocodeCompiler {
 
 			// The waitFor() must done after reading the input and error stream of the process
 			console.processStream(p.getErrorStream());
+			console.processStream(p.getInputStream());
 			p.waitFor();
 
 			if (p.exitValue() == 0) {

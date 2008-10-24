@@ -408,6 +408,7 @@ public class RobocodeCompilerFactory {
 			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
+			console.processStream(p.getInputStream());
 			console.processStream(p.getErrorStream());
 			p.waitFor();
 
@@ -468,6 +469,7 @@ public class RobocodeCompilerFactory {
 			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
+			console.processStream(p.getInputStream());
 			console.processStream(p.getErrorStream());
 			p.waitFor();
 
@@ -503,6 +505,7 @@ public class RobocodeCompilerFactory {
 			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
+			console.processStream(p.getInputStream());
 			console.processStream(p.getErrorStream());
 			p.waitFor();
 
