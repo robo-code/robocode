@@ -146,7 +146,6 @@ public final class Battle extends BaseBattle {
 	private double parallelConstant;
 
 	// Objects in the battle
-	private List<RobotClassManager> battlingRobotsList;
 	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
 	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
@@ -168,14 +167,13 @@ public final class Battle extends BaseBattle {
 
 	public Battle(List<RobotClassManager> battlingRobotsList, BattleProperties battleProperties, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		super(manager, eventDispatcher, paused);
-		this.battlingRobotsList = battlingRobotsList;
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		setBattleRules(new BattleRules(battleProperties));
 		setInitialPositions(battleProperties.getInitialPositions());
-		createPeers();
+		createPeers(battlingRobotsList);
 	}
 
-	private void createPeers() {
+	private void createPeers(List<RobotClassManager> battlingRobotsList) {
 		// create teams
 		Hashtable<String, Integer> countedNames = new Hashtable<String, Integer>();
 		List<String> teams = new ArrayList<String>();
@@ -210,11 +208,12 @@ public final class Battle extends BaseBattle {
 			}
 		}
 
-		// name teams
 		Hashtable<String, TeamPeer> namedTeams = new Hashtable<String, TeamPeer>();
 
-		for (String teamFullName : teams) {
-			String name = teamFullName.substring(0, teamFullName.length() - 6);
+        // name teams
+        for (int i = teams.size() - 1; i >= 0; i--) {
+            String teamFullName = teams.get(i);
+            String name = teamFullName.substring(0, teamFullName.length() - 6);
 			final Integer value = countedNames.get(name);
 			String newName = name;
 
@@ -226,8 +225,9 @@ public final class Battle extends BaseBattle {
 		}
 
 		// name robots
-		for (RobotClassManager rcm : battlingRobotsList) {
-			final String name = rcm.getClassNameManager().getFullClassNameWithVersion();
+        for (int i = battlingRobotsList.size() - 1; i >= 0; i--) {
+            RobotClassManager rcm = battlingRobotsList.get(i);
+            final String name = rcm.getClassNameManager().getFullClassNameWithVersion();
 			final Integer value = countedNames.get(name);
 			int duplicate = -1;
 
@@ -244,7 +244,7 @@ public final class Battle extends BaseBattle {
 			}
 			RobotPeer robotPeer = new RobotPeer(this, rcm, duplicate, team);
 
-			robots.add(robotPeer);
+			robots.add(0, robotPeer);
 		}
 	}
 
