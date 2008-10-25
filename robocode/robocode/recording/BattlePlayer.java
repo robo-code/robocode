@@ -37,7 +37,7 @@ public final class BattlePlayer extends BaseBattle {
 	}
 
 	public void loadRecord(String filename) {
-		this.recordFilename = filename; 
+		this.recordFilename = filename;
 
 		cleanup();
 
@@ -47,7 +47,7 @@ public final class BattlePlayer extends BaseBattle {
 
 			recordInfo = (BattleRecordInfo) objectStream.readObject();
 
-			setBattleRules(recordInfo.battleRules);
+			battleRules = recordInfo.battleRules;
 
 			eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), recordInfo.battleRules, true));
 			if (isPaused()) {
@@ -87,7 +87,7 @@ public final class BattlePlayer extends BaseBattle {
 	protected void initializeBattle() {
 		super.initializeBattle();
 
-		setBattleRules(recordInfo.battleRules);
+		battleRules = recordInfo.battleRules;
 
 		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), recordInfo.battleRules, true));
 		if (isPaused()) {

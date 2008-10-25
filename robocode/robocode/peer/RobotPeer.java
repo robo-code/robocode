@@ -65,7 +65,10 @@ package robocode.peer;
 
 import robocode.*;
 import robocode.Event;
+import robocode.security.RobocodeClassLoader;
+import robocode.control.RandomFactory;
 import robocode.manager.HostManager;
+import robocode.manager.ThreadManager;
 import robocode.repository.RobotFileSpecification;
 import robocode.battle.Battle;
 import robocode.exception.AbortedException;
@@ -90,6 +93,7 @@ import java.lang.reflect.Modifier;
 import java.security.AccessControlException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -114,6 +118,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private static final int
 			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
 			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
+
+	// Allowed maximum length for a robot's full package name
+	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+	// Allowed maximum length for a robot's short class name
+	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
 
 	private static final int maxSkippedTurns = 30;
 	private static final int maxSkippedTurnsWithIO = 240;
@@ -181,22 +190,146 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		state = RobotState.ACTIVE;
 		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
 
+		statistics = new RobotStatistics(this, battle.getRobotsCount());
+
 		statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader,
 				battle.getBattleRules());
 		battleRules = battle.getBattleRules();
 		updateRobotInterface(true);
 	}
 
-	public void setRobot(IBasicRobot newRobot) {
-		robot = newRobot;
-		if (robot != null) {
-			robotProxy.getEventManager().setRobot(newRobot);
+	public void loadRobotClass() {
+		String pkgn = getRobotClassManager().getClassNameManager().getFullPackage();
+
+		if (pkgn != null && pkgn.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+			final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+					+ " characters maximum please.";
+
+			println(message);
+			logMessage(message);
+			println("SYSTEM: Robot disabled.");
+			setEnergy(0);
 		}
+
+		String clsn = getRobotClassManager().getClassNameManager().getShortClassName();
+
+		if (clsn != null && clsn.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
+			final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+					+ " characters maximum please.";
+
+			println(message);
+			logMessage(message);
+			println("SYSTEM: Robot disabled.");
+			setEnergy(0);
+		}
+		try {
+			Class<?> c;
+
+			RobotClassManager classManager = getRobotClassManager();
+			String className = classManager.getFullClassName();
+
+			RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
+
+			// Pre-load robot classes without security...
+			// loadClass WILL NOT LINK the class, so static "cheats" will not work.
+			// in the safe robot loader the class is linked.
+			if (RobotClassManager.isSecutityOn()) {
+				c = classLoader.loadRobotClass(className, true);
+			} else {
+				c = classLoader.loadClass(className);
+			}
+
+			classManager.setRobotClass(c);
+
+		} catch (Throwable e) {
+			println("SYSTEM: Could not load " + getName() + " : " + e);
+			println(e.getStackTrace().toString());
+			setEnergy(0);
+		}
+	}
+
+	public void initializeRobotPosition(List<RobotPeer> robots, double[][] initialRobotPositions) {
+		if (initialRobotPositions != null) {
+			int index = robots.indexOf(this);
+
+			if (index >= 0 && index < initialRobotPositions.length) {
+				double[] pos = initialRobotPositions[index];
+
+				initialize(pos[0], pos[1], pos[2]);
+				if (validSpot(robots)) {
+					return;
+				}
+			}
+		}
+
+		double x, y, heading;
+
+		final Random random = RandomFactory.getRandom();
+
+		for (int j = 0; j < 1000; j++) {
+			x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+			y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+			heading = 2 * Math.PI * random.nextDouble();
+
+			initialize(x, y, heading);
+
+			if (validSpot(robots)) {
+				break;
+			}
+		}
+	}
+
+	private boolean validSpot(List<RobotPeer> robots) {
+		updateBoundingBox();
+		for (RobotPeer r : robots) {
+			if (r != null && r != this) {
+				if (getBoundingBox().intersects(r.getBoundingBox())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public void unsafeLoadRoundRobot(ThreadManager threadManager) {
+
+		robot = null;
+		setState(RobotState.DEAD);
+		Class<?> robotClass;
+
+		try {
+			threadManager.setLoadingRobot(this);
+			robotClass = getRobotClassManager().getRobotClass();
+			if (robotClass == null) {
+				println("SYSTEM: Skipping robot: " + getName());
+				setEnergy(0);
+				return;
+			}
+			robot = (IBasicRobot) robotClass.newInstance();
+			robotProxy.getEventManager().setRobot(robot);
+			robot.setOut(getRobotProxy().getOut());
+			robot.setPeer(getRobotProxy());
+		} catch (IllegalAccessException e) {
+			println("SYSTEM: Unable to instantiate this robot: " + e);
+			println("SYSTEM: Is your constructor marked public?");
+			setEnergy(0);
+			robot = null;
+			logMessage(e);
+		} catch (Throwable e) {
+			println("SYSTEM: An error occurred during initialization of " + getRobotClassManager());
+			println("SYSTEM: " + e);
+			println(e.getStackTrace().toString());
+			robot = null;
+			setEnergy(0);
+			logMessage(e);
+		} finally {
+			threadManager.setLoadingRobot(null);
+		}
+
 	}
 
 	public void createRobotProxy(HostManager hostManager) {
 		// Create statistics after teamPeer set
-		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
 		if (statics.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(hostManager, this, statics);
@@ -448,7 +581,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	// ------------
-	// team
+	// team TODO Move
 	// ------------
 
 	public boolean isTeammate(String name) {
@@ -486,10 +619,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 		return s;
 	}
-
-	// -----------
-	// messages
-	// -----------
 
 	// -----------
 	// execute
@@ -1587,7 +1716,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	@Override
 	public String toString() {
 		return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY() + " "
-				+ state.toString() + (isSleeping ? (isRunning ? " sleeping " : " running") : " halted"); 
+				+ state.toString() + (isSleeping ? " sleeping " : "") + (isRunning ? " running" : "")
+				+ (halt ? " halted" : "");
 	}
 }
 

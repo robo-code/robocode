@@ -396,27 +396,22 @@ public class EventManager implements IEventManager {
 	}
 
 	public void processEvents() {
-		// Process custom events
-		if (customEvents != null) {
-			boolean conditionSatisfied;
-
-			// Do not turn this into a "for each" loop as this will cause a
-			// ConcurrentModificationException!
-			for (Condition customEvent : customEvents) {
-				robotProxy.setTestingCondition(true);
-				conditionSatisfied = customEvent.test();
-				robotProxy.setTestingCondition(false);
-				if (conditionSatisfied) {
-					CustomEvent event = new CustomEvent(customEvent);
-
-					event.setTime(getTime()); // TODO is that correct time ?
-					add(event); 
-				}
-			}
-		}
-
 		// remove too old stuff
 		eventQueue.clear(getTime() - MAX_EVENT_STACK);
+
+		// Process custom events
+		for (Condition customEvent : customEvents) {
+			robotProxy.setTestingCondition(true);
+			boolean conditionSatisfied = customEvent.test();
+
+			robotProxy.setTestingCondition(false);
+			if (conditionSatisfied) {
+				CustomEvent event = new CustomEvent(customEvent);
+
+				event.setTime(getTime()); // TODO is that correct time ?
+				add(event);
+			}
+		}
 
 		// Process event queue here
 		eventQueue.sort();
@@ -485,6 +480,10 @@ public class EventManager implements IEventManager {
 		customEvents.remove(condition);
 	}
 
+	public void resetCustomEvents() {
+		customEvents.clear();
+	}
+    
 	public synchronized void reset() {
 		currentTopEventPriority = Integer.MIN_VALUE;
 		clearAllEvents(true);

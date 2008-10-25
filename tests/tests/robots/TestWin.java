@@ -13,6 +13,8 @@ package robots;
 
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.events.BattleCompletedEvent;
+import robocode.BattleResults;
 import org.junit.Assert;
 import org.junit.After;
 import org.junit.Test;
@@ -25,6 +27,7 @@ import helpers.RobotTestBed;
 public class TestWin extends RobotTestBed {
     private int win =0;
     private int end=0;
+    private BattleResults[] results; 
 
     @Test
     public void run() {
@@ -54,10 +57,16 @@ public class TestWin extends RobotTestBed {
         System.out.print(streamSnapshot);
     }
 
+    public void onBattleCompleted(BattleCompletedEvent event) {
+        results = event.getResults();
+    }
+
     @After
     public void tearDownWin(){
         Assert.assertThat("always should win", win, is(getNumRounds()));
         Assert.assertThat("should get BattleEnded event", end, is(1));
+        Assert.assertThat("always should be FIRST", results[0].getTeamLeaderName(), is("testing.BattleWin"));
+        Assert.assertThat("always should get score",results[0].getScore(), is(897));
     }
 
 }

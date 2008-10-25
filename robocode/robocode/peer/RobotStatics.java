@@ -45,6 +45,7 @@ public final class RobotStatics {
 		isDroid = spec.isDroid();
 		isTeamLeader = isLeader;
 		battleRules = rules;
+		// TODO teammates =
 	}
 
 	private final boolean isJuniorRobot;
@@ -59,6 +60,7 @@ public final class RobotStatics {
 	private final String veryShortName;
 	private final String nonVersionedName;
 	private final BattleRules battleRules;
+	// TODO private final String[] teammates;
 
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;

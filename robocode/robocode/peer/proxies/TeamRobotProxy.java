@@ -13,7 +13,6 @@ package robocode.peer.proxies;
 
 
 import robocode.MessageEvent;
-import robocode.io.Logger;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.HostManager;
 import robocode.peer.RobotPeer;
@@ -31,7 +30,6 @@ import java.util.List;
 public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer {
 	final int MAX_MESSAGE_SIZE = 32768;
 	private ByteArrayOutputStream byteStreamWriter;
-	private ObjectOutputStream objectStreamWriter;
 
 	public TeamRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
 		super(hostManager, peer, statics);
@@ -61,7 +59,8 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 				throw new IOException("You are not on a team.");
 			}
 			byteStreamWriter.reset();
-			objectStreamWriter = new ObjectOutputStream(byteStreamWriter);
+			ObjectOutputStream objectStreamWriter = new ObjectOutputStream(byteStreamWriter);
+
 			objectStreamWriter.writeObject(message);
 			objectStreamWriter.flush();
 			byteStreamWriter.flush();

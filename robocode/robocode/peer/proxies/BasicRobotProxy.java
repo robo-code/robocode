@@ -347,7 +347,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 					}
 				}
 			}
-
+			eventManager.resetCustomEvents();
 			eventManager.processEvents();
 		}
 	}

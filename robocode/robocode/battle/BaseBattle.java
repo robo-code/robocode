@@ -94,10 +94,6 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		this.roundNum = roundNum;
 	}
 
-	protected void setBattleRules(BattleRules battleRules) {
-		this.battleRules = battleRules;
-	}
-
 	/**
 	 * Gets the roundNum.
 	 *
