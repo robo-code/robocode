@@ -12,40 +12,41 @@
 package robots;
 
 
-import helpers.RobotTestBed;
-import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.events.TurnEndedEvent;
-import helpers.Assert;
 import org.junit.Test;
+
+import helpers.RobotTestBed;
+import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.snapshot.RobotSnapshot;
+import robocode.security.SecurePrintStream;
+import junit.framework.Assert;
 
 
 /**
- * Repeatable random test
- *
  * @author Pavel Savara (original)
  */
-public class TestRandom extends RobotTestBed {
+public class TestJunior extends RobotTestBed {
 	@Test
 	public void run() {
 		super.run();
 	}
 
 	public String getRobotNames() {
-		return "sample.Fire,testing.Random";
+		return "testing.JuniorEvents,sample.SittingDuck";
 	}
 
-	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
-		Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 1223);
-		RobotSnapshot fire = event.getTurnSnapshot().getRobots().get(0);
-		RobotSnapshot random = event.getTurnSnapshot().getRobots().get(1);
+		final RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(0);
 
-		if (event.getTurnSnapshot().getTurn() == 1223) {
-			Assert.assertNear(566.296806911193, fire.getX());
-			Assert.assertNear(165.07893614917265, fire.getY());
-			Assert.assertNear(104.11480043566866, random.getX());
-			Assert.assertNear(582.0, random.getY());
-		}
+		System.out.println(event.getTurnSnapshot().getTurn());
+
+		/* if (event.getTurnSnapshot().getTurn() == 596) {
+		 final String out = robot.getOutputStreamSnapshot();
+
+		 Assert.assertTrue(out.contains("robocode.BulletMissedEvent 5"));
+		 Assert.assertTrue(out.contains("robocode.ScannedRobotEvent 105"));
+		 Assert.assertTrue(out.contains("robocode.BulletHitEvent 24"));
+		 Assert.assertTrue(out.contains("robocode.StatusEvent 595"));
+		 Assert.assertTrue(out.contains("robocode.WinEvent 1"));
+		 }*/
 	}
-
 }

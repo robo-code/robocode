@@ -17,6 +17,7 @@
   	<beautify dir="../../robocode"/>
   	<beautify dir="../../robocodeextract"/>
   	<beautify dir="../../roborumble"/>
+  	<beautify dir="../../tests"/>
   </target>
 
   <macrodef name="beautify">

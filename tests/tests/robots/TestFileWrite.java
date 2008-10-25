@@ -11,6 +11,7 @@
  *******************************************************************************/
 package robots;
 
+
 import helpers.RobotTestBed;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,31 +20,32 @@ import org.junit.Test;
 
 import java.io.File;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public class TestFileWrite extends RobotTestBed {
 
-    @Test
-    public void run() {
-        super.run();
-    }
+	@Test
+	public void run() {
+		super.run();
+	}
 
-    public String getRobotNames(){
-        return "sample.Walls,sample.SittingDuck";
-    }
+	public String getRobotNames() {
+		return "sample.Walls,sample.SittingDuck";
+	}
 
-    File file=new File("robots/sample/SittingDuck.data/count.dat");
+	File file = new File("robots/sample/SittingDuck.data/count.dat");
 
-    @Before
-    public void fileSetup() {
-        if (file.exists()){
-            file.delete();
-        }
-    }
+	@Before
+	public void fileSetup() {
+		if (file.exists()) {
+			file.delete();
+		}
+	}
 
-    @After
-    public void fileTearDown() {
-        Assert.assertTrue(file.exists());
-    }
+	@After
+	public void fileTearDown() {
+		Assert.assertTrue(file.exists());
+	}
 }

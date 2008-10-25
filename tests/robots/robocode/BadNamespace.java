@@ -9,49 +9,20 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package testing;
-
-
-import robocode.*;
+package robocode;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class BattleWin extends Robot {
-
+public class BadNamespace extends Robot {
 	@Override
 	public void run() {
 		while (true) {
-			ahead(100); // Move ahead 100
+			ahead(1); // Move ahead 100
 			turnGunRight(360); // Spin gun around
-			back(100); // Move back 100
+			back(1); // Move back 100
 			turnGunRight(360); // Spin gun around
 		}
-	}
-
-	@Override
-	public void onScannedRobot(ScannedRobotEvent e) {
-		fire(1);
-	}
-
-	@Override
-	public void onHitByBullet(HitByBulletEvent e) {
-		turnLeft(90 - e.getBearing());
-	}
-
-	@Override
-	public void onWin(WinEvent e) {
-		out.println("Win!");
-	}
-
-	@Override
-	public void onDeath(DeathEvent e) {
-		out.println("Death!");
-	}
-
-	@Override
-	public void onBattleEnded(BattleEndedEvent event) {
-		out.println("BattleEnded!");
 	}
 }

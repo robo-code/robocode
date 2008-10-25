@@ -9,49 +9,33 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package testing;
+package robots;
 
 
-import robocode.*;
+import helpers.RobotTestBed;
+import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.snapshot.RobotSnapshot;
+import org.junit.Test;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class BattleWin extends Robot {
-
-	@Override
+public class TestBadNamespace extends RobotTestBed {
+	@Test
 	public void run() {
-		while (true) {
-			ahead(100); // Move ahead 100
-			turnGunRight(360); // Spin gun around
-			back(100); // Move back 100
-			turnGunRight(360); // Spin gun around
-		}
+		super.run();
 	}
 
 	@Override
-	public void onScannedRobot(ScannedRobotEvent e) {
-		fire(1);
+	public int getExpectedRobotCount(String list) {
+		return 1;
 	}
 
-	@Override
-	public void onHitByBullet(HitByBulletEvent e) {
-		turnLeft(90 - e.getBearing());
-	}
+	public void onTurnEnded(TurnEndedEvent event) {}
 
 	@Override
-	public void onWin(WinEvent e) {
-		out.println("Win!");
-	}
-
-	@Override
-	public void onDeath(DeathEvent e) {
-		out.println("Death!");
-	}
-
-	@Override
-	public void onBattleEnded(BattleEndedEvent event) {
-		out.println("BattleEnded!");
+	public String getRobotNames() {
+		return "sample.Fire,robocode.BadNamespace";
 	}
 }

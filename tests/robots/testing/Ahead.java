@@ -11,15 +11,17 @@
  *******************************************************************************/
 package testing;
 
+
 import robocode.AdvancedRobot;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class Ahead extends AdvancedRobot {
 
-    @Override
-    public void run() {
-        ahead(100);
-    }
+	@Override
+	public void run() {
+		ahead(100);
+	}
 }
