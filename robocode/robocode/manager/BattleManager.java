@@ -168,8 +168,9 @@ public class BattleManager implements IBattleManager {
 			}
 
 			boolean failed = loadRobot(battlingRobotsList, bot, battleRobotSpec, String.format("%4d", num), false);
+            num++;
 
-			if (failed) {
+            if (failed) {
 				return false;
 			}
 		}

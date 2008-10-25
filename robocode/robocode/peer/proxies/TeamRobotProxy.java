@@ -39,12 +39,20 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 	// team
 	public String[] getTeammates() {
 		getCall();
-		return peer.getTeammates();
+		return statics.getTeammates();
 	}
 
 	public boolean isTeammate(String name) {
 		getCall();
-		return peer.isTeammate(name);
+		if (name.equals(statics.getName())) {
+			return true;
+		}
+		for (String mate : statics.getTeammates()) {
+			if (mate.equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void broadcastMessage(Serializable message) throws IOException {

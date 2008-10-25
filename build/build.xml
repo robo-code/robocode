@@ -194,6 +194,8 @@
       <!-- Compile robots -->
       <compile srcdir="${src.testrobots}" destdir="${build}/robots" classpath="${build}"/>
 
+      <copy file="${src.testrobots}/testing/TestTeam.team" toDir="${build}/robots/testing"/>
+
       <!-- Flag that robots have been built -->
       <touch file="${build}/.testrobots_build"/>
     </target>

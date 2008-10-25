@@ -193,7 +193,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
 		statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader,
-				battle.getBattleRules());
+				battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
 		updateRobotInterface(true);
 	}
@@ -581,43 +581,19 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	// ------------
-	// team TODO Move
+	// team
 	// ------------
-
-	public boolean isTeammate(String name) {
-		// noinspection SuspiciousMethodCalls
-		return getTeamPeer() != null && getTeamPeer().contains(name);
-	}
 
 	public TeamPeer getTeamPeer() {
 		return teamPeer;
 	}
 
 	public String getTeamName() {
-		if (teamPeer != null) {
-			return teamPeer.getName();
-		}
-		return getName();
+		return statics.getTeamName();
 	}
 
 	public boolean isTeamLeader() {
 		return statics.isTeamLeader();
-	}
-
-	public String[] getTeammates() {
-		if (teamPeer == null) {
-			return null;
-		}
-		String s[] = new String[teamPeer.size() - 1];
-
-		int index = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			if (teammate != this) {
-				s[index++] = teammate.getName();
-			}
-		}
-		return s;
 	}
 
 	// -----------

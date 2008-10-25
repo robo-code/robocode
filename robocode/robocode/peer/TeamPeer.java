@@ -20,6 +20,7 @@ package robocode.peer;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,12 +31,14 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
+	private List<String> memberNames;
 	private String name;
 	private RobotPeer teamLeader;
 	private TeamStatistics teamStatistics;
 
-	public TeamPeer(String name) {
+	public TeamPeer(String name, List<String> memberNames) {
 		this.name = name;
+		this.memberNames = memberNames;
 		this.teamStatistics = new TeamStatistics(this);
 	}
 
@@ -64,6 +67,10 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		return name;
 	}
 
+	public List<String> getMemberNames() {
+		return memberNames;
+	}
+
 	public RobotPeer getTeamLeader() {
 		return teamLeader;
 	}
@@ -74,17 +81,5 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 			teamLeader = r;
 		}
 		return super.add(r);
-	}
-
-	@Override
-	public boolean contains(Object s) {
-		if (s != null && s instanceof String) {
-			for (RobotPeer r : this) {
-				if (s.equals(r.getName())) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 }

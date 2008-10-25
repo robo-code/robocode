@@ -15,13 +15,31 @@ package robocode.peer;
 import robocode.repository.RobotFileSpecification;
 import robocode.manager.NameManager;
 import robocode.BattleRules;
+import robocode.io.Logger;
+
+import java.util.List;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public final class RobotStatics {
-	public RobotStatics(RobotFileSpecification spec, int duplicate, boolean isLeader, BattleRules rules) {
+	private final boolean isJuniorRobot;
+	private final boolean isInteractiveRobot;
+	private final boolean isPaintRobot;
+	private final boolean isAdvancedRobot;
+	private final boolean isTeamRobot;
+	private final boolean isTeamLeader;
+	private final boolean isDroid;
+	private final String name;
+	private final String shortName;
+	private final String veryShortName;
+	private final String nonVersionedName;
+	private final BattleRules battleRules;
+	private final String[] teammates;
+	private final String teamName;
+
+	public RobotStatics(RobotFileSpecification spec, int duplicate, boolean isLeader, BattleRules rules, TeamPeer team) {
 		NameManager cnm = spec.getNameManager(); 
 
 		if (duplicate >= 0) {
@@ -45,22 +63,22 @@ public final class RobotStatics {
 		isDroid = spec.isDroid();
 		isTeamLeader = isLeader;
 		battleRules = rules;
-		// TODO teammates =
-	}
 
-	private final boolean isJuniorRobot;
-	private final boolean isInteractiveRobot;
-	private final boolean isPaintRobot;
-	private final boolean isAdvancedRobot;
-	private final boolean isTeamRobot;
-	private final boolean isTeamLeader;
-	private final boolean isDroid;
-	private final String name;
-	private final String shortName;
-	private final String veryShortName;
-	private final String nonVersionedName;
-	private final BattleRules battleRules;
-	// TODO private final String[] teammates;
+		if (team != null) {
+            List<String> memberNames = team.getMemberNames();
+			teammates = new String[memberNames.size() - 1];
+			int index = 0;
+            for (String mate : memberNames) {
+                if (!name.equals(mate)) {
+					teammates[index++] = mate;
+                }
+			}
+			teamName = team.getName();
+		} else {
+			teammates = new String[0];
+			teamName = name;
+		}
+	}
 
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;
@@ -108,5 +126,13 @@ public final class RobotStatics {
 
 	public BattleRules getBattleRules() {
 		return battleRules;
+	}
+
+	public String[] getTeammates() {
+		return teammates.clone();
+	}
+
+	public String getTeamName() {
+		return teamName;
 	}
 }
