@@ -168,109 +168,116 @@ public final class Battle extends BaseBattle {
 		createPeers(battlingRobotsList);
 	}
 
-    private void createPeers(List<RobotClassManager> battlingRobotsList) {
-        // create teams
-        Hashtable<String, Integer> countedNames = new Hashtable<String, Integer>();
-        List<String> teams = new ArrayList<String>();
-        List<String> teamDuplicates = new ArrayList<String>();
-        List<Integer> robotDuplicates = new ArrayList<Integer>();
+	private void createPeers(List<RobotClassManager> battlingRobotsList) {
+		// create teams
+		Hashtable<String, Integer> countedNames = new Hashtable<String, Integer>();
+		List<String> teams = new ArrayList<String>();
+		List<String> teamDuplicates = new ArrayList<String>();
+		List<Integer> robotDuplicates = new ArrayList<Integer>();
 
-        // count duplicate robots, enumerate teams, enumerate team members
-        for (RobotClassManager rcm : battlingRobotsList) {
-            final String name = rcm.getClassNameManager().getFullClassNameWithVersion();
+		// count duplicate robots, enumerate teams, enumerate team members
+		for (RobotClassManager rcm : battlingRobotsList) {
+			final String name = rcm.getClassNameManager().getFullClassNameWithVersion();
 
-            if (countedNames.containsKey(name)) {
-                int value = countedNames.get(name);
+			if (countedNames.containsKey(name)) {
+				int value = countedNames.get(name);
 
-                countedNames.put(name, value == 1 ? 3 : value + 1);
-            } else {
-                countedNames.put(name, 1);
-            }
+				countedNames.put(name, value == 1 ? 3 : value + 1);
+			} else {
+				countedNames.put(name, 1);
+			}
 
-            String teamFullName = rcm.getTeamName();
+			String teamFullName = rcm.getTeamName();
 
-            if (teamFullName != null) {
-                if (!teams.contains(teamFullName)) {
-                    teams.add(teamFullName);
-                    String teamName = teamFullName.substring(0, teamFullName.length() - 6);
+			if (teamFullName != null) {
+				if (!teams.contains(teamFullName)) {
+					teams.add(teamFullName);
+					String teamName = teamFullName.substring(0, teamFullName.length() - 6);
 
-                    if (countedNames.containsKey(teamName)) {
-                        int value = countedNames.get(teamName);
+					if (countedNames.containsKey(teamName)) {
+						int value = countedNames.get(teamName);
 
-                        countedNames.put(teamName, value == 1 ? 3 : value + 1);
-                    } else {
-                        countedNames.put(teamName, 1);
-                    }
-                }
-            }
-        }
+						countedNames.put(teamName, value == 1 ? 3 : value + 1);
+					} else {
+						countedNames.put(teamName, 1);
+					}
+				}
+			}
+		}
 
-        Hashtable<String, List<String>> teamMembers = new Hashtable<String, List<String>>();
+		Hashtable<String, List<String>> teamMembers = new Hashtable<String, List<String>>();
 
-        // name teams
-        for (int i = teams.size() - 1; i >= 0; i--) {
-            String teamFullName = teams.get(i);
-            String name = teamFullName.substring(0, teamFullName.length() - 6);
-            Integer order = countedNames.get(name);
-            String newTeamName = name;
-            if (order > 1) {
-                newTeamName = name + " (" + (order - 1) + ")";
-            }
-            teamDuplicates.add(0, newTeamName);
-            teamMembers.put(teamFullName, new ArrayList<String>());
-            countedNames.put(name, order - 1);
-        }
+		// name teams
+		for (int i = teams.size() - 1; i >= 0; i--) {
+			String teamFullName = teams.get(i);
+			String name = teamFullName.substring(0, teamFullName.length() - 6);
+			Integer order = countedNames.get(name);
+			String newTeamName = name;
 
-        // name robots
-        for (int i = battlingRobotsList.size() - 1; i >= 0; i--) {
-            RobotClassManager rcm = battlingRobotsList.get(i);
-            String name = rcm.getClassNameManager().getFullClassNameWithVersion();
-            Integer order = countedNames.get(name);
-            int duplicate = -1;
+			if (order > 1) {
+				newTeamName = name + " (" + (order - 1) + ")";
+			}
+			teamDuplicates.add(0, newTeamName);
+			teamMembers.put(teamFullName, new ArrayList<String>());
+			countedNames.put(name, order - 1);
+		}
 
-            String newName = name;
-            if (order > 1) {
-                duplicate = (order - 2);
-                newName = name + " (" + (order - 1) + ")";
-            }
-            countedNames.put(name, (order - 1));
-            robotDuplicates.add(0, duplicate);
+		// name robots
+		for (int i = battlingRobotsList.size() - 1; i >= 0; i--) {
+			RobotClassManager rcm = battlingRobotsList.get(i);
+			String name = rcm.getClassNameManager().getFullClassNameWithVersion();
+			Integer order = countedNames.get(name);
+			int duplicate = -1;
 
-            String teamFullName = rcm.getTeamName();
-            if (teamFullName != null) {
-                List<String> members = teamMembers.get(teamFullName);
-                members.add(newName);
-            }
-        }
+			String newName = name;
 
-        //create teams
-        Hashtable<String, TeamPeer> namedTeams = new Hashtable<String, TeamPeer>();
-        for (int i = 0; i < teams.size(); i++) {
-            String newTeamName = teamDuplicates.get(i);
-            String teamFullName = teams.get(i);
-            TeamPeer team = new TeamPeer(newTeamName, teamMembers.get(teamFullName));
-            namedTeams.put(teamFullName, team);
-            contestants.add(team);
-        }
+			if (order > 1) {
+				duplicate = (order - 2);
+				newName = name + " (" + (order - 1) + ")";
+			}
+			countedNames.put(name, (order - 1));
+			robotDuplicates.add(0, duplicate);
 
-        //create robots
-        for (int i = 0; i < battlingRobotsList.size(); i++) {
-            RobotClassManager rcm = battlingRobotsList.get(i);
-            TeamPeer team = null;
+			String teamFullName = rcm.getTeamName();
 
-            String teamFullName = rcm.getTeamName();
-            if (teamFullName != null) {
-                team = namedTeams.get(teamFullName);
-            }
-            Integer duplicate = robotDuplicates.get(i);
-            RobotPeer robotPeer = new RobotPeer(this, rcm, duplicate, team);
+			if (teamFullName != null) {
+				List<String> members = teamMembers.get(teamFullName);
 
-            robots.add(robotPeer);
-            if (team == null) {
-                contestants.add(robotPeer);
-            }
-        }
-    }
+				members.add(newName);
+			}
+		}
+
+		// create teams
+		Hashtable<String, TeamPeer> namedTeams = new Hashtable<String, TeamPeer>();
+
+		for (int i = 0; i < teams.size(); i++) {
+			String newTeamName = teamDuplicates.get(i);
+			String teamFullName = teams.get(i);
+			TeamPeer team = new TeamPeer(newTeamName, teamMembers.get(teamFullName));
+
+			namedTeams.put(teamFullName, team);
+			contestants.add(team);
+		}
+
+		// create robots
+		for (int i = 0; i < battlingRobotsList.size(); i++) {
+			RobotClassManager rcm = battlingRobotsList.get(i);
+			TeamPeer team = null;
+
+			String teamFullName = rcm.getTeamName();
+
+			if (teamFullName != null) {
+				team = namedTeams.get(teamFullName);
+			}
+			Integer duplicate = robotDuplicates.get(i);
+			RobotPeer robotPeer = new RobotPeer(this, rcm, duplicate, team);
+
+			robots.add(robotPeer);
+			if (team == null) {
+				contestants.add(robotPeer);
+			}
+		}
+	}
 
 	public void registerDeathRobot(RobotPeer r) {
 		deathRobots.add(r);

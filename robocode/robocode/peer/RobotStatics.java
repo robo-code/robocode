@@ -65,13 +65,15 @@ public final class RobotStatics {
 		battleRules = rules;
 
 		if (team != null) {
-            List<String> memberNames = team.getMemberNames();
+			List<String> memberNames = team.getMemberNames();
+
 			teammates = new String[memberNames.size() - 1];
 			int index = 0;
-            for (String mate : memberNames) {
-                if (!name.equals(mate)) {
+
+			for (String mate : memberNames) {
+				if (!name.equals(mate)) {
 					teammates[index++] = mate;
-                }
+				}
 			}
 			teamName = team.getName();
 		} else {
