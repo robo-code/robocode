@@ -763,8 +763,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		} catch (DeathException e) {
 			out.println("SYSTEM: " + getName() + " has died");
 			waitForBattleEndedEvent();
-		} catch (WinException e) { // Do nothing
-			waitForBattleEndedEvent();
+		} catch (WinException e) {// Do nothing
 		} catch (DisabledException e) {
 			setEnergy(0);
 			String msg = e.getMessage();
@@ -843,11 +842,6 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		waitForNextRound();
 
 		eventManager.setFireAssistValid(false);
-
-		// Halt robot if it is dead, so we do not need to force killing its thread
-		if (isDead()) {
-			setHalt(true);
-		}
 
 		// Out's counter must be reset before processing event.
 		// Otherwise, it will not be reset when printing in the onScannedEvent()
