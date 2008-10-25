@@ -281,9 +281,9 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	private boolean validSpot(List<RobotPeer> robots) {
 		updateBoundingBox();
-		for (RobotPeer r : robots) {
-			if (r != null && r != this) {
-				if (getBoundingBox().intersects(r.getBoundingBox())) {
+		for (RobotPeer otherRobot : robots) {
+			if (otherRobot != null && otherRobot != this) {
+				if (getBoundingBox().intersects(otherRobot.getBoundingBox())) {
 					return false;
 				}
 			}
@@ -933,11 +933,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		inCollision = false;
 
 		for (int i = 0; i < robots.size(); i++) {
-			RobotPeer r = robots.get(i);
+			RobotPeer otherRobot = robots.get(i);
 
-			if (!(r == null || r == this || r.isDead()) && boundingBox.intersects(r.boundingBox)) {
+			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead()) && boundingBox.intersects(otherRobot.boundingBox)) {
 				// Bounce back
-				double angle = atan2(r.getX() - x, r.getY() - y);
+				double angle = atan2(otherRobot.getX() - x, otherRobot.getY() - y);
 
 				double movedx = velocity * sin(bodyHeading);
 				double movedy = velocity * cos(bodyHeading);
@@ -955,31 +955,31 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 					x -= movedx;
 					y -= movedy;
 
-					boolean teamFire = (getTeamPeer() != null && getTeamPeer() == r.getTeamPeer());
+					boolean teamFire = (getTeamPeer() != null && getTeamPeer() == otherRobot.getTeamPeer());
 
 					if (!teamFire) {
 						statistics.scoreRammingDamage(i);
 					}
 
 					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
+					otherRobot.setEnergy(otherRobot.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
 
-					if (r.getEnergy() == 0) {
-						if (r.isAlive()) {
-							r.kill();
+					if (otherRobot.getEnergy() == 0) {
+						if (otherRobot.isAlive()) {
+							otherRobot.kill();
 							if (!teamFire) {
 								final double bonus = statistics.scoreRammingKill(i);
 
 								if (bonus > 0) {
-									println("SYSTEM: Ram bonus for killing " + r.getName() + ": " + (int) (bonus + .5));
+									println("SYSTEM: Ram bonus for killing " + otherRobot.getName() + ": " + (int) (bonus + .5));
 								}
 							}
 						}
 					}
 					addEvent(
-							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - bodyHeading), r.getEnergy(), atFault));
-					r.addEvent(
-							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getBodyHeading()), energy, false));
+							new HitRobotEvent(otherRobot.getName(), normalRelativeAngle(angle - bodyHeading), otherRobot.getEnergy(), atFault));
+					otherRobot.addEvent(
+							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - otherRobot.getBodyHeading()), energy, false));
 				}
 			}
 		}

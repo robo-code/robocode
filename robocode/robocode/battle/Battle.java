@@ -331,8 +331,8 @@ public final class Battle extends BaseBattle {
 		}
 
 		if (robots != null) {
-			for (RobotPeer r : robots) {
-				r.cleanup();
+			for (RobotPeer robotPeer : robots) {
+				robotPeer.cleanup();
 			}
 			robots.clear();
 			robots = null;
@@ -375,10 +375,10 @@ public final class Battle extends BaseBattle {
 			}
 		}
 
-		for (RobotPeer r : robots) {
-			r.loadRobotClass();
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.loadRobotClass();
 			// create proxy
-			r.createRobotProxy(manager.getHostManager());
+			robotPeer.createRobotProxy(manager.getHostManager());
 		}
 
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
@@ -412,8 +412,8 @@ public final class Battle extends BaseBattle {
 			Logger.logError(e);
 		}
 
-		for (RobotPeer r : robots) {
-			r.getRobotThreadManager().cleanup();
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.getRobotThreadManager().cleanup();
 		}
 
 		super.shutdownBattle();
@@ -430,8 +430,8 @@ public final class Battle extends BaseBattle {
 	@Override
 	protected void finalizeBattle() {
 		super.finalizeBattle();
-		for (RobotPeer r : robots) {
-			r.getRobotStatistics().resetScores();
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.getRobotStatistics().resetScores();
 		}
 	}
 
@@ -453,8 +453,8 @@ public final class Battle extends BaseBattle {
 		// start robots
 		final long waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
-		for (RobotPeer r : getRobotsAtRandom()) {
-			r.startRoundRobot(manager.getThreadManager(), waitTime);
+		for (RobotPeer robotPeer : getRobotsAtRandom()) {
+			robotPeer.startRoundRobot(manager.getThreadManager(), waitTime);
 		}
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
@@ -472,9 +472,9 @@ public final class Battle extends BaseBattle {
 		super.cleanupRound();
 
 		bullets.clear();
-		for (RobotPeer r : robots) {
-			r.getRobotStatistics().generateTotals();
-			r.getRobotThreadManager().waitForStop();
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.getRobotStatistics().generateTotals();
+			robotPeer.getRobotThreadManager().waitForStop();
 		}
 	}
 
@@ -514,27 +514,27 @@ public final class Battle extends BaseBattle {
 	protected void shutdownTurn() {
 		if (getEndTimer() == 0) {
 			if (isAborted()) {
-				for (RobotPeer r : getRobotsAtRandom()) {
-					if (!r.isDead()) {
-						r.println("SYSTEM: game aborted.");
+				for (RobotPeer robotPeer : getRobotsAtRandom()) {
+					if (!robotPeer.isDead()) {
+						robotPeer.println("SYSTEM: game aborted.");
 					}
 				}
 			} else if (oneTeamRemaining()) {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
-				for (RobotPeer r : getRobotsAtRandom()) {
-					if (!r.isDead()) {
-						if (!r.isWinner()) {
-							r.getRobotStatistics().scoreLastSurvivor();
-							r.setWinner(true);
-							r.println("SYSTEM: " + r.getName() + " wins the round.");
-							r.addEvent(new WinEvent());
-							if (r.getTeamPeer() != null) {
-								if (r.isTeamLeader()) {
+				for (RobotPeer robotPeer : getRobotsAtRandom()) {
+					if (!robotPeer.isDead()) {
+						if (!robotPeer.isWinner()) {
+							robotPeer.getRobotStatistics().scoreLastSurvivor();
+							robotPeer.setWinner(true);
+							robotPeer.println("SYSTEM: " + robotPeer.getName() + " wins the round.");
+							robotPeer.addEvent(new WinEvent());
+							if (robotPeer.getTeamPeer() != null) {
+								if (robotPeer.isTeamLeader()) {
 									leaderFirsts = true;
 								} else {
-									winningTeam = r.getTeamPeer();
+									winningTeam = robotPeer.getTeamPeer();
 								}
 							}
 						}
@@ -554,16 +554,16 @@ public final class Battle extends BaseBattle {
 			Collections.reverse(orderedRobots);
 
 			for (int rank = 0; rank < robots.size(); rank++) {
-				RobotPeer r = orderedRobots.get(rank);
-				BattleResults resultsForRobots = r.getStatistics().getFinalResults(rank + 1);
+				RobotPeer robotPeer = orderedRobots.get(rank);
+				BattleResults resultsForRobots = robotPeer.getStatistics().getFinalResults(rank + 1);
 
-				r.addEvent(new BattleEndedEvent(isAborted(), resultsForRobots));
+				robotPeer.addEvent(new BattleEndedEvent(isAborted(), resultsForRobots));
 			}
 		}
 
 		if (getEndTimer() > 4 * 30) {
-			for (RobotPeer r : robots) {
-				r.setHalt(true);
+			for (RobotPeer robotPeer : robots) {
+				robotPeer.setHalt(true);
 			}
 		}
 
@@ -630,21 +630,21 @@ public final class Battle extends BaseBattle {
 		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
 
 		// Move all bots
-		for (RobotPeer r : getRobotsAtRandom()) {
+		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 
-			final RobotCommands currentCommands = r.loadCommands(robots, bullets);
+			final RobotCommands currentCommands = robotPeer.loadCommands(robots, bullets);
 
 			// update robots
 			final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
 
-			r.update(currentCommands, robots, zapEnergy);
+			robotPeer.update(currentCommands, robots, zapEnergy);
 
 			// publish deaths to live robots
-			if (!r.isDead()) {
+			if (!robotPeer.isDead()) {
 				for (RobotPeer de : deathRobots) {
-					r.addEvent(new RobotDeathEvent(de.getName()));
-					if (r.getTeamPeer() == null || r.getTeamPeer() != de.getTeamPeer()) {
-						r.getRobotStatistics().scoreSurvival();
+					robotPeer.addEvent(new RobotDeathEvent(de.getName()));
+					if (robotPeer.getTeamPeer() == null || robotPeer.getTeamPeer() != de.getTeamPeer()) {
+						robotPeer.getRobotStatistics().scoreSurvival();
 					}
 				}
 			}
@@ -654,20 +654,20 @@ public final class Battle extends BaseBattle {
 	private void handleDeathRobots() {
 
 		// Compute scores for dead robots
-		for (RobotPeer r : deathRobots) {
-			if (r.getTeamPeer() == null) {
-				r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
+		for (RobotPeer robotPeer : deathRobots) {
+			if (robotPeer.getTeamPeer() == null) {
+				robotPeer.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(robotPeer));
 			} else {
 				boolean teammatesalive = false;
 
 				for (RobotPeer tm : robots) {
-					if (tm.getTeamPeer() == r.getTeamPeer() && (!tm.isDead())) {
+					if (tm.getTeamPeer() == robotPeer.getTeamPeer() && (!tm.isDead())) {
 						teammatesalive = true;
 						break;
 					}
 				}
 				if (!teammatesalive) {
-					r.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(r));
+					robotPeer.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(robotPeer));
 				}
 			}
 		}
@@ -676,8 +676,8 @@ public final class Battle extends BaseBattle {
 	}
 
 	private void publishStatuses() {
-		for (RobotPeer r : robots) {
-			r.publishStatus(false, getTime());
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.publishStatus(false, getTime());
 		}
 	}
 
@@ -685,8 +685,8 @@ public final class Battle extends BaseBattle {
 		int ar = 0;
 
 		// Compute active robots
-		for (RobotPeer r : robots) {
-			if (!r.isDead()) {
+		for (RobotPeer robotPeer : robots) {
+			if (!robotPeer.isDead()) {
 				ar++;
 			}
 		}
@@ -708,15 +708,15 @@ public final class Battle extends BaseBattle {
 		final long waitTime = manager.getCpuManager().getCpuConstant();
 		int millisWait = (int) (waitTime / 1000000);
 
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning()) {
+		for (RobotPeer robotPeer : robotsAtRandom) {
+			if (robotPeer.isRunning()) {
 				// This call blocks until the
 				// robot's thread actually wakes up.
-				r.waitWakeup();
+				robotPeer.waitWakeup();
 
-				if (r.isAlive()) {
-					r.waitSleeping(waitTime, millisWait);
-					r.setSkippedTurns();
+				if (robotPeer.isAlive()) {
+					robotPeer.waitSleeping(waitTime, millisWait);
+					robotPeer.setSkippedTurns();
 				}
 			}
 		}
@@ -726,19 +726,19 @@ public final class Battle extends BaseBattle {
 		final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
 		int millisWait = (int) (waitTime / 1000000);
 
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning()) {
-				r.waitWakeup();
+		for (RobotPeer robotPeer : robotsAtRandom) {
+			if (robotPeer.isRunning()) {
+				robotPeer.waitWakeup();
 			}
 		}
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning() && r.isAlive()) {
-				r.waitSleeping(waitTime, millisWait);
+		for (RobotPeer robotPeer : robotsAtRandom) {
+			if (robotPeer.isRunning() && robotPeer.isAlive()) {
+				robotPeer.waitSleeping(waitTime, millisWait);
 			}
 		}
-		for (RobotPeer r : robotsAtRandom) {
-			if (r.isRunning() && r.isAlive()) {
-				r.setSkippedTurns();
+		for (RobotPeer robotPeer : robotsAtRandom) {
+			if (robotPeer.isRunning() && robotPeer.isAlive()) {
+				robotPeer.setSkippedTurns();
 			}
 		}
 	}
@@ -750,8 +750,8 @@ public final class Battle extends BaseBattle {
 			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
 				count++;
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
-				for (RobotPeer r : (TeamPeer) c) {
-					if (!r.isDead()) {
+				for (RobotPeer robotPeer : (TeamPeer) c) {
+					if (!robotPeer.isDead()) {
 						count++;
 						break;
 					}
@@ -770,10 +770,10 @@ public final class Battle extends BaseBattle {
 
 		// At this point the unsafe loader thread will now set itself to wait for a notify
 
-		for (RobotPeer r : robots) {
-			r.println("=========================");
-			r.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
-			r.println("=========================");
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.println("=========================");
+			robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
+			robotPeer.println("=========================");
 		}
 
 		// At this point the unsafe loader thread is still waiting for a signal.
@@ -794,8 +794,8 @@ public final class Battle extends BaseBattle {
 				}
 			}
 		}
-		for (RobotPeer r : robots) {
-			r.initializeRobotPosition(robots, initialRobotPositions);
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.initializeRobotPosition(robots, initialRobotPositions);
 		}
 	}
 
