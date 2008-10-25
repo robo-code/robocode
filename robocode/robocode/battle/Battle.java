@@ -104,7 +104,6 @@ import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
 import robocode.io.Logger;
-import static robocode.io.Logger.logMessage;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
 import robocode.peer.robot.RobotClassManager;
@@ -319,12 +318,12 @@ public final class Battle extends BaseBattle {
 	 *
 	 * @return Returns a int
 	 */
-	public synchronized int getActiveRobots() {
+	public int getActiveRobots() {
 		return activeRobots;
 	}
 
 	@Override
-	public synchronized void cleanup() {
+	public void cleanup() {
 
 		if (contestants != null) {
 			contestants.clear();
@@ -364,7 +363,23 @@ public final class Battle extends BaseBattle {
 		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
 		unsafeLoadRobotsThread.start();
 
-		initBattleRobots();
+		// Wait for the unsafe loader thread to start running
+		synchronized (isUnsafeLoaderThreadRunning) {
+			while (!isUnsafeLoaderThreadRunning.get()) {
+				try {
+					isUnsafeLoaderThreadRunning.wait();
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+				}
+			}
+		}
+
+		for (RobotPeer r : robots) {
+			r.loadRobotClass();
+			// create proxy
+			r.createRobotProxy(manager.getHostManager());
+		}
 
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
 		if (parallelOn) {
@@ -428,15 +443,19 @@ public final class Battle extends BaseBattle {
 		computeActiveRobots();
 
 		manager.getThreadManager().reset();
-
-		// Turning on robots
-		startRobots();
 	}
 
 	@Override
 	protected void initializeRound() {
 		super.initializeRound();
 		inactiveTurnCount = 0;
+
+		// start robots
+		final long waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
+
+		for (RobotPeer r : getRobotsAtRandom()) {
+			r.startRoundRobot(manager.getThreadManager(), waitTime);
+		}
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
 	}
@@ -558,47 +577,6 @@ public final class Battle extends BaseBattle {
 		super.finalizeTurn();
 	}
 
-	private void initBattleRobots() {
-		for (RobotPeer r : robots) {
-			r.loadRobotClass();
-			// create proxy
-			r.createRobotProxy(manager.getHostManager());
-		}
-	}
-
-	private void startRobots() {
-		for (RobotPeer r : getRobotsAtRandom()) {
-			manager.getThreadManager().addThreadGroup(r.getRobotThreadManager().getThreadGroup(), r);
-			long waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
-
-			synchronized (r) {
-				try {
-					Logger.logMessage(".", false);
-
-					// Add StatusEvent for the first turn
-					r.publishStatus(true, getTime());
-
-					// Start the robot thread
-					r.getRobotThreadManager().start();
-
-					if (!isDebugging) {
-						// Wait for the robot to go to sleep (take action)
-						r.wait(waitTime / 1000000, (int) (waitTime % 1000000));
-					}
-				} catch (InterruptedException e) {
-					logMessage("Wait for " + r + " interrupted.");
-
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-			if (!(r.isSleeping() || isDebugging)) {
-				logMessage(
-						"\n" + r.getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
-			}
-		}
-	}
-
 	private RobotResults[] computeResults() {
 		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(contestants);
 
@@ -703,7 +681,7 @@ public final class Battle extends BaseBattle {
 		}
 	}
 
-	private synchronized void computeActiveRobots() {
+	private void computeActiveRobots() {
 		int ar = 0;
 
 		// Compute active robots
@@ -790,17 +768,6 @@ public final class Battle extends BaseBattle {
 			isRobotsLoaded.notifyAll();
 		}
 
-		// Wait for the unsafe loader thread to start running
-		synchronized (isUnsafeLoaderThreadRunning) {
-			while (!isUnsafeLoaderThreadRunning.get()) {
-				try {
-					isUnsafeLoaderThreadRunning.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
 		// At this point the unsafe loader thread will now set itself to wait for a notify
 
 		for (RobotPeer r : robots) {

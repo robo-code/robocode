@@ -69,13 +69,13 @@ import robocode.security.RobocodeClassLoader;
 import robocode.control.RandomFactory;
 import robocode.manager.HostManager;
 import robocode.manager.ThreadManager;
-import robocode.repository.RobotFileSpecification;
 import robocode.battle.Battle;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
+import robocode.io.Logger;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.peer.robot.EventQueue;
@@ -325,7 +325,34 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		} finally {
 			threadManager.setLoadingRobot(null);
 		}
+	}
 
+	public void startRoundRobot(ThreadManager tm, long waitTime) {
+		tm.addThreadGroup(getRobotThreadManager().getThreadGroup(), this);
+		synchronized (this) {
+			try {
+				Logger.logMessage(".", false);
+
+				// Add StatusEvent for the first turn
+				publishStatus(true, 0);
+
+				// Start the robot thread
+				getRobotThreadManager().start();
+
+				if (!battle.isDebugging()) {
+					// Wait for the robot to go to sleep (take action)
+					wait(waitTime / 1000000, (int) (waitTime % 1000000));
+				}
+			} catch (InterruptedException e) {
+				logMessage("Wait for " + getName() + " interrupted.");
+
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+			}
+		}
+		if (!(isSleeping() || battle.isDebugging())) {
+			logMessage("\n" + getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
+		}
 	}
 
 	public void createRobotProxy(HostManager hostManager) {
@@ -839,7 +866,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		// But if we're moving, scan
 		if (!scan) {
 			scan = (lastHeading != bodyHeading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
-					|| lastX != x || lastY != y); // TODO || waitCondition != null
+					|| lastX != x || lastY != y);
 		}
 
 		if (isDead()) {
