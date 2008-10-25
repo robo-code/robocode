@@ -12,11 +12,13 @@
 
 package robots;
 
+
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
 import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
+
 
 /**
  * Repeatable robot possition test
@@ -25,26 +27,27 @@ import org.junit.Test;
  */
 public class TestPosition extends RobotTestBed {
 
-    @Test
-    public void run() {
-        super.run();
-    }
+	@Test
+	public void run() {
+		super.run();
+	}
 
-    public String getRobotNames() {
-        return "sample.Crazy,sample.Target";
-    }
+	public String getRobotNames() {
+		return "sample.Crazy,sample.Target";
+	}
 
-    @Override
-    public void onTurnEnded(TurnEndedEvent event) {
-        Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 3048);
-        //System.out.println(event.getTurnSnapshot().getTurn());
-        RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
-        RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
-        if (event.getTurnSnapshot().getTurn() == 2572) {
-            Assert.assertNear(394.4306300, crazy.getX());
-            Assert.assertNear(254.9486727, crazy.getY());
-            Assert.assertNear(250.1701010, target.getX());
-            Assert.assertNear(100.8631507, target.getY());
-        }
-    }
+	@Override
+	public void onTurnEnded(TurnEndedEvent event) {
+		Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 3048);
+		// System.out.println(event.getTurnSnapshot().getTurn());
+		RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
+		RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
+
+		if (event.getTurnSnapshot().getTurn() == 2572) {
+			Assert.assertNear(394.4306300, crazy.getX());
+			Assert.assertNear(254.9486727, crazy.getY());
+			Assert.assertNear(250.1701010, target.getX());
+			Assert.assertNear(100.8631507, target.getY());
+		}
+	}
 }

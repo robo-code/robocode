@@ -11,30 +11,31 @@
  *******************************************************************************/
 package robots;
 
+
 import helpers.RobotTestBed;
 import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.snapshot.RobotSnapshot;
 import org.junit.Test;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public class TestBadNamespace extends RobotTestBed {
-    @Test
-    public void run() {
-        super.run();
-    }
+	@Test
+	public void run() {
+		super.run();
+	}
 
-    @Override
-    public int getExpectedRobotCount(String list) {
-        return 1;
-    }
+	@Override
+	public int getExpectedRobotCount(String list) {
+		return 1;
+	}
 
-    public void onTurnEnded(TurnEndedEvent event) {
-    }
+	public void onTurnEnded(TurnEndedEvent event) {}
 
-    @Override
-    public String getRobotNames(){
-        return "sample.Fire,robocode.BadNamespace";
-    }
+	@Override
+	public String getRobotNames() {
+		return "sample.Fire,robocode.BadNamespace";
+	}
 }

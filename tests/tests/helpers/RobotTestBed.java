@@ -12,6 +12,7 @@
 
 package helpers;
 
+
 import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.*;
@@ -30,95 +31,97 @@ import java.util.Random;
  * @author Pavel Savara (original)
  */
 public abstract class RobotTestBed extends BattleAdaptor {
-    protected RobocodeEngine2 engine;
-    protected BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
-    protected int errors = 0;
-    protected int messages = 0;
+	protected RobocodeEngine2 engine;
+	protected BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
+	protected int errors = 0;
+	protected int messages = 0;
 
-    public RobotTestBed() {
-        System.setProperty("EXPERIMENTAL", "true");
-        engine = new RobocodeEngine2(FileUtil.getCwd());
-        engine.addBattleListener(this);
-    }
+	public RobotTestBed() {
+		System.setProperty("EXPERIMENTAL", "true");
+		engine = new RobocodeEngine2(FileUtil.getCwd());
+		engine.addBattleListener(this);
+	}
 
-    public void onBattleMessage(BattleMessageEvent event) {
-        SecurePrintStream.realOut.println(event.getMessage());
-        messages++;
-    }
+	public void onBattleMessage(BattleMessageEvent event) {
+		SecurePrintStream.realOut.println(event.getMessage());
+		messages++;
+	}
 
-    public void onBattleError(BattleErrorEvent event) {
-        SecurePrintStream.realErr.println(event.getError());
-        errors++;
-    }
+	public void onBattleError(BattleErrorEvent event) {
+		SecurePrintStream.realErr.println(event.getError());
+		errors++;
+	}
 
-    public boolean isDumpingPositions(){
-        return false;
-    }
+	public boolean isDumpingPositions() {
+		return false;
+	}
 
-    public boolean isDumpingTurns(){
-        return false;
-    }
+	public boolean isDumpingTurns() {
+		return false;
+	}
 
-    public void onTurnEnded(TurnEndedEvent event) {
-        if (isDumpingTurns()){
-            SecurePrintStream.realOut.println("turn " + event.getTurnSnapshot().getTurn());
-        }
-        for(RobotSnapshot robot : event.getTurnSnapshot().getRobots()){
-            if (isDumpingPositions()){
-                SecurePrintStream.realOut.print(robot.getVeryShortName());
-                SecurePrintStream.realOut.print(" X:");
-                SecurePrintStream.realOut.print(robot.getX());
-                SecurePrintStream.realOut.print(" Y:");
-                SecurePrintStream.realOut.print(robot.getY());
-                SecurePrintStream.realOut.print(" V:");
-                SecurePrintStream.realOut.print(robot.getVelocity());
-                SecurePrintStream.realOut.println();
-            }
-            SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
-        }
-    }
+	public void onTurnEnded(TurnEndedEvent event) {
+		if (isDumpingTurns()) {
+			SecurePrintStream.realOut.println("turn " + event.getTurnSnapshot().getTurn());
+		}
+		for (RobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
+			if (isDumpingPositions()) {
+				SecurePrintStream.realOut.print(robot.getVeryShortName());
+				SecurePrintStream.realOut.print(" X:");
+				SecurePrintStream.realOut.print(robot.getX());
+				SecurePrintStream.realOut.print(" Y:");
+				SecurePrintStream.realOut.print(robot.getY());
+				SecurePrintStream.realOut.print(" V:");
+				SecurePrintStream.realOut.print(robot.getVelocity());
+				SecurePrintStream.realOut.println();
+			}
+			SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
+		}
+	}
 
-    public void onBattleStarted(BattleStartedEvent event) {
-        if (isDeterministic() && event.getTurnSnapshot().getRobots().size() == 2){
-            final Random random = RandomFactory.getRandom();
-            helpers.Assert.assertNear(0.24053641, random.nextDouble());
-        }
-    }
+	public void onBattleStarted(BattleStartedEvent event) {
+		if (isDeterministic() && event.getTurnSnapshot().getRobots().size() == 2) {
+			final Random random = RandomFactory.getRandom();
 
-    public abstract String getRobotNames();
+			helpers.Assert.assertNear(0.24053641, random.nextDouble());
+		}
+	}
 
-    public int getNumRounds(){
-        return 1;
-    }
+	public abstract String getRobotNames();
 
-    public int getExpectedRobotCount(String list) {
-        return list.split("[\\s,;]+").length;
-    }
+	public int getNumRounds() {
+		return 1;
+	}
 
-    public boolean isDeterministic(){
-        return true;
-    }
+	public int getExpectedRobotCount(String list) {
+		return list.split("[\\s,;]+").length;
+	}
 
-    @Before
-    public void setup() {
-        if (isDeterministic()){
-            RandomFactory.resetDeterministic(0);
-            helpers.Assert.assertNear(0.730967, RandomFactory.getRandom().nextDouble());
-        }
-        errors = 0;
-        messages = 0;
-    }
+	public boolean isDeterministic() {
+		return true;
+	}
 
-    @After
-    public void tearDown(){
-        Assert.assertThat(errors, is(0));
-    }
+	@Before
+	public void setup() {
+		if (isDeterministic()) {
+			RandomFactory.resetDeterministic(0);
+			helpers.Assert.assertNear(0.730967, RandomFactory.getRandom().nextDouble());
+		}
+		errors = 0;
+		messages = 0;
+	}
 
-    @Test
-    public void run() {
-        final String list = getRobotNames();
-        final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
-        Assert.assertEquals(getExpectedRobotCount(list), robotSpecifications.length);
-        engine.runBattle(new BattleSpecification(getNumRounds(), battleFieldSpec, robotSpecifications), true);
-    }
+	@After
+	public void tearDown() {
+		Assert.assertThat(errors, is(0));
+	}
+
+	@Test
+	public void run() {
+		final String list = getRobotNames();
+		final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
+
+		Assert.assertEquals(getExpectedRobotCount(list), robotSpecifications.length);
+		engine.runBattle(new BattleSpecification(getNumRounds(), battleFieldSpec, robotSpecifications), true);
+	}
 }

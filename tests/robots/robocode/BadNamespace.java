@@ -11,17 +11,18 @@
  *******************************************************************************/
 package robocode;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public class BadNamespace extends Robot{
-    @Override
+public class BadNamespace extends Robot {
+	@Override
 	public void run() {
-        while (true) {
-            ahead(1); // Move ahead 100
-            turnGunRight(360); // Spin gun around
-            back(1); // Move back 100
-            turnGunRight(360); // Spin gun around
-        }
+		while (true) {
+			ahead(1); // Move ahead 100
+			turnGunRight(360); // Spin gun around
+			back(1); // Move back 100
+			turnGunRight(360); // Spin gun around
+		}
 	}
 }

@@ -11,13 +11,15 @@
  *******************************************************************************/
 package helpers;
 
+
 import robocode.util.Utils;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class Assert extends org.junit.Assert {
-    public static void assertNear(double v1, double v2) {
-        org.junit.Assert.assertEquals(v1, v2, Utils.NEAR_DELTA);
-    }
+	public static void assertNear(double v1, double v2) {
+		org.junit.Assert.assertEquals(v1, v2, Utils.NEAR_DELTA);
+	}
 }
