@@ -80,7 +80,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	}
 
 	public void onBattleStarted(BattleStartedEvent event) {
-		if (isDeterministic() && event.getTurnSnapshot().getRobots().size() == 2) {
+		if (isDeterministic() && isCheckOnBattleStart()) {
 			final Random random = RandomFactory.getRandom();
 
 			helpers.Assert.assertNear(0.24053641, random.nextDouble());
@@ -101,11 +101,17 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		return true;
 	}
 
+    public boolean isCheckOnBattleStart() {
+        return false;
+    }
+
 	@Before
 	public void setup() {
-		if (isDeterministic()) {
-			RandomFactory.resetDeterministic(0);
-			helpers.Assert.assertNear(0.730967, RandomFactory.getRandom().nextDouble());
+		if (isDeterministic() ) {
+            RandomFactory.resetDeterministic(0);
+            if (isCheckOnBattleStart()){
+                helpers.Assert.assertNear(0.730967, RandomFactory.getRandom().nextDouble());
+            }
 		}
 		errors = 0;
 		messages = 0;

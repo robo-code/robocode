@@ -436,9 +436,9 @@ public final class Battle extends BaseBattle {
 	@Override
 	protected void preloadRound() {
 		super.preloadRound();
-		loadRoundRobots();
+        loadRoundRobots();
 
-		computeActiveRobots();
+        computeActiveRobots();
 
 		manager.getThreadManager().reset();
 	}
@@ -768,12 +768,12 @@ public final class Battle extends BaseBattle {
 
 		// At this point the unsafe loader thread will now set itself to wait for a notify
 
-		for (RobotPeer robotPeer : robots) {
-			robotPeer.println("=========================");
-			robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
-			robotPeer.println("=========================");
+        for (RobotPeer robotPeer : robots) {
+            robotPeer.println("=========================");
+            robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
+            robotPeer.println("=========================");
             robotPeer.initializeRound(robots, initialRobotPositions);
-		}
+        }
 
 		// At this point the unsafe loader thread is still waiting for a signal.
 		// So, notify it to continue the loading.
@@ -1010,8 +1010,8 @@ public final class Battle extends BaseBattle {
 		}
 
 		public void execute() {
-			for (RobotPeer robot : robots) {
-				robot.addEvent(event);
+			for (RobotPeer robotPeer : robots) {
+				robotPeer.addEvent(event);
 			}
 		}
 	}

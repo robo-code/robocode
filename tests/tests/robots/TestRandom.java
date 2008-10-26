@@ -34,7 +34,12 @@ public class TestRandom extends RobotTestBed {
 		return "sample.Fire,testing.Random";
 	}
 
-	@Override
+    @Override
+    public boolean isCheckOnBattleStart() {
+        return true;
+    }
+
+    @Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 1223);
 		RobotSnapshot fire = event.getTurnSnapshot().getRobots().get(0);
