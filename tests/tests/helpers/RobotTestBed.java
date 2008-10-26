@@ -83,7 +83,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		if (isDeterministic() && isCheckOnBattleStart()) {
 			final Random random = RandomFactory.getRandom();
 
-			helpers.Assert.assertNear(0.24053641, random.nextDouble());
+			helpers.Assert.assertNear(0.98484154, random.nextDouble());
 		}
 	}
 

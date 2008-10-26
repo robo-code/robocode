@@ -388,13 +388,6 @@ public final class Battle extends BaseBattle {
 				parallelConstant = 1;
 			}
 		}
-
-		final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets);
-
-		eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
-		if (isPaused()) {
-			eventDispatcher.onBattlePaused(new BattlePausedEvent());
-		}
 	}
 
 	@Override
@@ -436,6 +429,25 @@ public final class Battle extends BaseBattle {
 	@Override
 	protected void preloadRound() {
 		super.preloadRound();
+
+
+        // At this point the unsafe loader thread will now set itself to wait for a notify
+
+        for (RobotPeer robotPeer : robots) {
+            robotPeer.println("=========================");
+            robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
+            robotPeer.println("=========================");
+            robotPeer.initializeRound(robots, initialRobotPositions);
+        }
+
+        if (getRoundNum()==0){
+            final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets);
+            eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
+            if (isPaused()) {
+                eventDispatcher.onBattlePaused(new BattlePausedEvent());
+            }
+        }
+
         loadRoundRobots();
 
         computeActiveRobots();
@@ -765,15 +777,6 @@ public final class Battle extends BaseBattle {
 			isRobotsLoaded.set(false);
 			isRobotsLoaded.notifyAll();
 		}
-
-		// At this point the unsafe loader thread will now set itself to wait for a notify
-
-        for (RobotPeer robotPeer : robots) {
-            robotPeer.println("=========================");
-            robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
-            robotPeer.println("=========================");
-            robotPeer.initializeRound(robots, initialRobotPositions);
-        }
 
 		// At this point the unsafe loader thread is still waiting for a signal.
 		// So, notify it to continue the loading.

@@ -15,6 +15,7 @@ package robots;
 
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.events.BattleStartedEvent;
 import helpers.RobotTestBed;
 import helpers.Assert;
 import static org.hamcrest.CoreMatchers.is;
@@ -39,10 +40,23 @@ public class TestPosition extends RobotTestBed {
 		return "sample.Crazy,sample.Target";
 	}
 
+    @Override
+    public void onBattleStarted(BattleStartedEvent event) {
+        super.onBattleStarted(event);
+        
+        RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
+        RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
+
+        Assert.assertNear(566.2968069, crazy.getX());
+        Assert.assertNear(165.0789361, crazy.getY());
+        Assert.assertNear(436.3146436, target.getX());
+        Assert.assertNear(350.7235444, target.getY());
+    }
+
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
         lastTurn = event.getTurnSnapshot().getTurn();
-        Assert.assertTrue(lastTurn <= 3048);
+
 		// System.out.println(event.getTurnSnapshot().getTurn());
 		RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
 		RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
