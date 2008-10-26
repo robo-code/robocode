@@ -121,7 +121,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		final String list = getRobotNames();
 		final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
 
-		Assert.assertEquals(getExpectedRobotCount(list), robotSpecifications.length);
+		Assert.assertEquals("Robot were not loaded", getExpectedRobotCount(list), robotSpecifications.length);
 		engine.runBattle(new BattleSpecification(getNumRounds(), battleFieldSpec, robotSpecifications), true);
 	}
 }

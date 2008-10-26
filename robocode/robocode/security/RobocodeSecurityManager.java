@@ -298,7 +298,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// If there is no readable directory, deny access.
 				if (fileSystemManager.getReadableDirectory() == null) {
-					robotPeer.setEnergy(0);
+					robotPeer.drainEnergy();
 					throw new AccessControlException(
 							"Preventing " + robotPeer.getName() + " from access: " + perm
 							+ ": Robots that are not in a package may not read any files.");
@@ -307,7 +307,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 				if (fileSystemManager.isReadable(fp.getName())) {
 					return;
 				} // Else disable robot
-				robotPeer.setEnergy(0);
+				robotPeer.drainEnergy();
 				throw new AccessControlException(
 						"Preventing " + robotPeer.getName() + " from access: " + perm
 						+ ": You may only read files in your own root package directory. ");
@@ -318,7 +318,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// There isn't one.  Deny access.
 				if (o == null) {
-					robotPeer.setEnergy(0);
+					robotPeer.drainEnergy();
 					throw new AccessControlException(
 							"Preventing " + robotPeer.getName() + " from access: " + perm
 							+ ": You must use a RobocodeOutputStream.");
@@ -331,7 +331,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// If there is no writable directory, deny access
 				if (fileSystemManager.getWritableDirectory() == null) {
-					robotPeer.setEnergy(0);
+					robotPeer.drainEnergy();
 
 					throw new AccessControlException(
 							"Preventing " + robotPeer.getName() + " from access: " + perm
@@ -347,7 +347,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 					return;
 				} // Not a writable directory.
 
-				robotPeer.setEnergy(0);
+				robotPeer.drainEnergy();
 				// robotPeer.out.println("I would allow access to: " + fileSystemManager.getWritableDirectory());
 				threadOut(
 						"Preventing " + robotPeer.getName() + " from access: " + perm
@@ -363,7 +363,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// If there is no writable directory, deny access
 				if (fileSystemManager.getWritableDirectory() == null) {
-					robotPeer.setEnergy(0);
+					robotPeer.drainEnergy();
 					throw new AccessControlException(
 							"Preventing " + robotPeer.getName() + " from access: " + perm
 							+ ": Robots that are not in a package may not delete any files.");
@@ -379,7 +379,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 					return;
 				} // Not a writable directory.
 
-				robotPeer.setEnergy(0);
+				robotPeer.drainEnergy();
 				throw new AccessControlException(
 						"Preventing " + robotPeer.getName() + " from access: " + perm
 						+ ": You may only delete files in your own data directory. ");
@@ -403,7 +403,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// Permission denied.
 		syserr.println("Preventing " + robotPeer.getName() + " from access: " + perm);
 
-		robotPeer.setEnergy(0);
+		robotPeer.drainEnergy();
 
 		if (perm instanceof java.awt.AWTPermission) {
 			if (perm.getName().equals("showWindowWithoutWarningBanner")) {
@@ -559,7 +559,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 				RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
 
 				if (robotPeer != null) {
-					robotPeer.setEnergy(0);
+					robotPeer.drainEnergy();
 					if (!experimental && subPkg.equals("robotinterfaces.peer")) {
 						robotPeer.println(
 								"SYSTEM: " + robotPeer.getName() + " is not allowed to access the internal Robocode package: "
@@ -600,7 +600,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 							robotPeer.println("SYSTEM: Accessing the AWT Event Queue is not allowed!");
 
 							// Disable the robot
-							robotPeer.setEnergy(0);
+							robotPeer.drainEnergy();
 						}
 					}
 

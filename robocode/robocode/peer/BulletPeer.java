@@ -160,7 +160,7 @@ public class BulletPeer {
 				if (score > robotPeer.getEnergy()) {
 					score = robotPeer.getEnergy();
 				}
-				robotPeer.setEnergy(robotPeer.getEnergy() - damage);
+				robotPeer.updateEnergy(-damage);
 
 				boolean teamFire = (owner.getTeamPeer() != null && owner.getTeamPeer() == robotPeer.getTeamPeer());
 
@@ -181,7 +181,7 @@ public class BulletPeer {
 						}
 					}
 				}
-				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
+				owner.updateEnergy(Rules.getBulletHitBonus(power));
 
 				HitByBulletEvent event = new HitByBulletEvent(
 						robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet());

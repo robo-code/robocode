@@ -208,7 +208,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			println(message);
 			logMessage(message);
 			println("SYSTEM: Robot disabled.");
-			setEnergy(0);
+			drainEnergy();
 		}
 
 		String clsn = getRobotClassManager().getClassNameManager().getShortClassName();
@@ -220,7 +220,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			println(message);
 			logMessage(message);
 			println("SYSTEM: Robot disabled.");
-			setEnergy(0);
+			drainEnergy();
 		}
 		try {
 			Class<?> c;
@@ -244,7 +244,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + getName() + " : " + e);
 			println(e.getStackTrace().toString());
-			setEnergy(0);
+			drainEnergy();
 		}
 	}
 
@@ -302,7 +302,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			robotClass = getRobotClassManager().getRobotClass();
 			if (robotClass == null) {
 				println("SYSTEM: Skipping robot: " + getName());
-				setEnergy(0);
+				drainEnergy();
 				return;
 			}
 			robot = (IBasicRobot) robotClass.newInstance();
@@ -312,7 +312,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		} catch (IllegalAccessException e) {
 			println("SYSTEM: Unable to instantiate this robot: " + e);
 			println("SYSTEM: Is your constructor marked public?");
-			setEnergy(0);
+			drainEnergy();
 			robot = null;
 			logMessage(e);
 		} catch (Throwable e) {
@@ -320,7 +320,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			println("SYSTEM: " + e);
 			println(e.getStackTrace().toString());
 			robot = null;
-			setEnergy(0);
+			drainEnergy();
 			logMessage(e);
 		} finally {
 			threadManager.setLoadingRobot(null);
@@ -742,7 +742,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			robotProxy.waitForBattleEndImpl();
 		} catch (WinException e) {// Do nothing
 		} catch (DisabledException e) {
-			setEnergy(0);
+			drainEnergy();
 			String msg = e.getMessage();
 
 			if (msg == null) {
@@ -752,14 +752,14 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			}
 			println("SYSTEM: Robot disabled" + msg);
 		} catch (Exception e) {
-			setEnergy(0);
+			drainEnergy();
 			final String message = getName() + ": Exception: " + e;
 
 			println(message);
 			println(e.getStackTrace().toString());
 			logMessage(message);
 		} catch (Throwable t) {
-			setEnergy(0);
+			drainEnergy();
 			if (!(t instanceof ThreadDeath)) {
 				final String message = getName() + ": Throwable: " + t;
 
@@ -935,7 +935,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		for (int i = 0; i < robots.size(); i++) {
 			RobotPeer otherRobot = robots.get(i);
 
-			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead()) && boundingBox.intersects(otherRobot.boundingBox)) {
+			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead())
+					&& boundingBox.intersects(otherRobot.boundingBox)) {
 				// Bounce back
 				double angle = atan2(otherRobot.getX() - x, otherRobot.getY() - y);
 
@@ -961,8 +962,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 						statistics.scoreRammingDamage(i);
 					}
 
-					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-					otherRobot.setEnergy(otherRobot.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
+					this.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
+					otherRobot.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
 
 					if (otherRobot.getEnergy() == 0) {
 						if (otherRobot.isAlive()) {
@@ -971,15 +972,19 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 								final double bonus = statistics.scoreRammingKill(i);
 
 								if (bonus > 0) {
-									println("SYSTEM: Ram bonus for killing " + otherRobot.getName() + ": " + (int) (bonus + .5));
+									println(
+											"SYSTEM: Ram bonus for killing " + otherRobot.getName() + ": "
+											+ (int) (bonus + .5));
 								}
 							}
 						}
 					}
 					addEvent(
-							new HitRobotEvent(otherRobot.getName(), normalRelativeAngle(angle - bodyHeading), otherRobot.getEnergy(), atFault));
+							new HitRobotEvent(otherRobot.getName(), normalRelativeAngle(angle - bodyHeading),
+							otherRobot.getEnergy(), atFault));
 					otherRobot.addEvent(
-							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - otherRobot.getBodyHeading()), energy, false));
+							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - otherRobot.getBodyHeading()), energy,
+							false));
 				}
 			}
 		}
@@ -1420,8 +1425,12 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public synchronized void setEnergy(double newEnergy) {
-		setEnergy(newEnergy, true);
+	public synchronized void drainEnergy() {
+		setEnergy(0, true);
+	}
+
+	public synchronized void updateEnergy(double delta) {
+		setEnergy(energy + delta, true);
 	}
 
 	private synchronized void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
@@ -1449,7 +1458,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			if (isTeamLeader()) {
 				for (RobotPeer teammate : teamPeer) {
 					if (!(teammate.isDead() || teammate == this)) {
-						teammate.setEnergy(teammate.getEnergy() - 30);
+						teammate.updateEnergy(-30);
 
 						Bullet robotBullet = new Bullet(0, teammate.getX(), teammate.getY(), 4, getName());
 						BulletPeer sBullet = new BulletPeer(this, battle, robotBullet);
@@ -1473,7 +1482,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			battle.addBullet(fake);
 			robotBullet.setPeer(fake);
 		}
-		setEnergy(0);
+		updateEnergy(-energy);
 
 		setState(RobotState.DEAD);
 	}
@@ -1618,7 +1627,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 			double firePower = min(energy, min(max(bullet.getPower(), Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
 
-			this.setEnergy(energy - firePower);
+			this.updateEnergy(-firePower);
 
 			gunHeat += Rules.getGunHeat(firePower);
 
