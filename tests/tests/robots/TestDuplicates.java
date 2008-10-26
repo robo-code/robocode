@@ -43,8 +43,6 @@ public class TestDuplicates extends RobotTestBed {
 		return 4;
 	}
 
-	public void onTurnEnded(TurnEndedEvent event) {}
-
 	@Override
 	public String getRobotNames() {
 		return "sample.Fire,sample.Crazy,sample.Crazy,sample.Fire,";

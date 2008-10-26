@@ -9,31 +9,46 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robots;
+package testing;
 
 
-import helpers.RobotTestBed;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
-import org.junit.Test;
+import robocode.AdvancedRobot;
+import robocode.ScannedRobotEvent;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestBadNamespace extends RobotTestBed {
-	@Test
+public class AwtAttack extends AdvancedRobot {
+
+	@Override
 	public void run() {
-		super.run();
+		// noinspection InfiniteLoopStatement
+		for (;;) {
+			turnLeft(100);
+			ahead(10);
+			turnLeft(100);
+			back(10);
+		}
 	}
 
 	@Override
-	public int getExpectedRobotCount(String list) {
-		return 1;
+	public void onScannedRobot(ScannedRobotEvent event) {
+		awtAttack();
 	}
 
-	@Override
-	public String getRobotNames() {
-		return "sample.Fire,robocode.BadNamespace";
+	private void awtAttack() {
+		try {
+			Runnable doHack = new Runnable() {
+				public void run() {
+					out.println("Hacked!!!");
+				}
+			};
+
+			javax.swing.SwingUtilities.invokeLater(doHack);
+		} catch (Throwable e) {
+			// swalow security exception
+			e.printStackTrace(out);
+		}
 	}
 }

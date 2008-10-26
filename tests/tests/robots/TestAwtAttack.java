@@ -13,27 +13,46 @@ package robots;
 
 
 import helpers.RobotTestBed;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
+import helpers.Assert;
 import org.junit.Test;
+import org.junit.After;
+import robocode.battle.events.TurnEndedEvent;
+
+import java.io.File;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestBadNamespace extends RobotTestBed {
+public class TestAwtAttack extends RobotTestBed {
+	boolean messagedAttack;
+	boolean messagedBreakthru;
+
 	@Test
 	public void run() {
 		super.run();
 	}
 
-	@Override
-	public int getExpectedRobotCount(String list) {
-		return 1;
+	public void onTurnEnded(TurnEndedEvent event) {
+        super.onTurnEnded(event);
+		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+
+		if (out.contains("Hacked!!!")) {
+			messagedBreakthru = true;
+		}
+		if (out.contains("java.security.AccessControlException: Preventing testing.AwtAttack from access to threadgroup")) {
+			messagedAttack = true;
+		}
 	}
 
 	@Override
 	public String getRobotNames() {
-		return "sample.Fire,robocode.BadNamespace";
+		return "sample.SittingDuck,testing.AwtAttack";
+	}
+
+	@After
+	public void tearDownAttack() {
+		Assert.assertFalse(messagedBreakthru);
+		Assert.assertTrue(messagedAttack);
 	}
 }

@@ -13,27 +13,44 @@ package robots;
 
 
 import helpers.RobotTestBed;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
+import helpers.Assert;
 import org.junit.Test;
+import org.junit.After;
+import robocode.battle.events.TurnEndedEvent;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestBadNamespace extends RobotTestBed {
+public class TestSkippedTurns extends RobotTestBed {
+	boolean messagedBattle;
+	boolean messagedEvent;
+
 	@Test
 	public void run() {
 		super.run();
 	}
 
-	@Override
-	public int getExpectedRobotCount(String list) {
-		return 1;
+	public void onTurnEnded(TurnEndedEvent event) {
+        super.onTurnEnded(event);
+        final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+
+		if (out.contains("Skipped!!!")) {
+			messagedEvent = true;
+		}
+		if (out.contains("not performed any actions in a reasonable")) {
+			messagedBattle = true;
+		}
 	}
 
 	@Override
 	public String getRobotNames() {
-		return "sample.Fire,robocode.BadNamespace";
+		return "sample.TrackFire,testing.SkipTurns";
+	}
+
+	@After
+	public void tearDownAttack() {
+		Assert.assertTrue(messagedEvent);
+		Assert.assertTrue(messagedBattle);
 	}
 }

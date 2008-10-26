@@ -80,10 +80,10 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	}
 
 	public void onBattleStarted(BattleStartedEvent event) {
-		if (isDeterministic() && event.getTurnSnapshot().getRobots().size() == 2) {
+		if (isDeterministic() && isCheckOnBattleStart()) {
 			final Random random = RandomFactory.getRandom();
 
-			helpers.Assert.assertNear(0.9848415, random.nextDouble());
+			helpers.Assert.assertNear(0.98484154, random.nextDouble());
 		}
 	}
 
@@ -101,11 +101,17 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		return true;
 	}
 
+	public boolean isCheckOnBattleStart() {
+		return false;
+	}
+
 	@Before
 	public void setup() {
 		if (isDeterministic()) {
 			RandomFactory.resetDeterministic(0);
-			helpers.Assert.assertNear(0.730967, RandomFactory.getRandom().nextDouble());
+			if (isCheckOnBattleStart()) {
+				helpers.Assert.assertNear(0.730967, RandomFactory.getRandom().nextDouble());
+			}
 		}
 		errors = 0;
 		messages = 0;
@@ -121,7 +127,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		final String list = getRobotNames();
 		final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
 
-		Assert.assertEquals(getExpectedRobotCount(list), robotSpecifications.length);
+		Assert.assertEquals("Robot were not loaded", getExpectedRobotCount(list), robotSpecifications.length);
 		engine.runBattle(new BattleSpecification(getNumRounds(), battleFieldSpec, robotSpecifications), true);
 	}
 }

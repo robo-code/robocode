@@ -12,42 +12,43 @@
 package robots;
 
 
-import org.junit.Test;
-
 import helpers.RobotTestBed;
+import helpers.Assert;
+import org.junit.Test;
+import org.junit.After;
 import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.security.SecurePrintStream;
-import junit.framework.Assert;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestJunior extends RobotTestBed {
+public class TestPrivateConstructor extends RobotTestBed {
+	boolean messaged;
+
 	@Test
 	public void run() {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "testing.JuniorEvents,sample.SittingDuck";
-	}
-
 	public void onTurnEnded(TurnEndedEvent event) {
         super.onTurnEnded(event);
-        final RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(0);
+		final RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
 
-		final String out = robot.getOutputStreamSnapshot();
-
-		if (event.getTurnSnapshot().getTurn() == 589) {
-        //if (out.contains("robocode.BulletMissedEvent")) {
-
-            Assert.assertTrue(out.contains("robocode.BulletMissedEvent 5"));
-			Assert.assertTrue(out.contains("robocode.ScannedRobotEvent 100"));
-			Assert.assertTrue(out.contains("robocode.BulletHitEvent 24"));
-			Assert.assertTrue(out.contains("robocode.StatusEvent 589"));
-			Assert.assertTrue(out.contains("robocode.WinEvent 1"));
+		if (robot.getOutputStreamSnapshot().contains("SYSTEM: Is your constructor marked public?")) {
+			messaged = true;
 		}
+		Assert.assertNear(0, robot.getEnergy());
+	}
+
+	@Override
+	public String getRobotNames() {
+		return "sample.Fire,testing.PrivateConstructor";
+	}
+
+	@After
+	public void tearDownPrivate() {
+		Assert.assertTrue(messaged);
 	}
 }
+

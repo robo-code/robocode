@@ -9,31 +9,16 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robots;
+package testing;
 
 
-import helpers.RobotTestBed;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
-import org.junit.Test;
+import robocode.Robot;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestBadNamespace extends RobotTestBed {
-	@Test
-	public void run() {
-		super.run();
-	}
-
-	@Override
-	public int getExpectedRobotCount(String list) {
-		return 1;
-	}
-
-	@Override
-	public String getRobotNames() {
-		return "sample.Fire,robocode.BadNamespace";
+public class PrivateConstructor extends Robot {
+	private PrivateConstructor() {// private 
 	}
 }

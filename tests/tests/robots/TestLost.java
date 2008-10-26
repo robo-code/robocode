@@ -43,13 +43,16 @@ public class TestLost extends RobotTestBed {
 		return "sample.Fire,testing.BattleLost";
 	}
 
+	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
+        super.onTurnEnded(event);
 		RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
 		final String streamSnapshot = robot.getOutputStreamSnapshot();
 
 		if (streamSnapshot.contains("Death!")) {
 			lost++;
-		} else if (streamSnapshot.contains("BattleEnded!")) {
+		}
+		if (streamSnapshot.contains("BattleEnded!")) {
 			end++;
 		}
 		System.out.print(streamSnapshot);
@@ -57,8 +60,8 @@ public class TestLost extends RobotTestBed {
 
 	@After
 	public void tearDownLost() {
-		Assert.assertThat(lost, is(getNumRounds()));
-		Assert.assertThat(end, is(1));
+		Assert.assertThat("always should loose", lost, is(getNumRounds()));
+		Assert.assertThat("should get BattleEnded event", end, is(1));
 	}
 
 }
