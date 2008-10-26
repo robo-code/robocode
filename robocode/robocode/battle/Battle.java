@@ -376,9 +376,7 @@ public final class Battle extends BaseBattle {
 		}
 
 		for (RobotPeer robotPeer : robots) {
-			robotPeer.loadRobotClass();
-			// create proxy
-			robotPeer.createRobotProxy(manager.getHostManager());
+			robotPeer.initializeBattle(manager.getHostManager());
 		}
 
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
@@ -774,7 +772,7 @@ public final class Battle extends BaseBattle {
 			robotPeer.println("=========================");
 			robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
 			robotPeer.println("=========================");
-            robotPeer.initializeRobotPosition(robots, initialRobotPositions);
+            robotPeer.initializeRound(robots, initialRobotPositions);
 		}
 
 		// At this point the unsafe loader thread is still waiting for a signal.
@@ -910,7 +908,7 @@ public final class Battle extends BaseBattle {
 		}
 		// Loading robots
 		for (RobotPeer robotPeer : robots) {
-			robotPeer.unsafeLoadRoundRobot(manager.getThreadManager());
+			robotPeer.unsafeLoadRound(manager.getThreadManager());
 		} // for
 
 		// Notify that the robots has been loaded
