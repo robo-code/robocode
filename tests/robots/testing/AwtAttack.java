@@ -15,13 +15,11 @@ package testing;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 
-import java.io.*;
-
 
 /**
  * @author Pavel Savara (original)
  */
-public class FileAttack extends AdvancedRobot {
+public class AwtAttack extends AdvancedRobot {
 
 	@Override
 	public void run() {
@@ -36,47 +34,21 @@ public class FileAttack extends AdvancedRobot {
 
 	@Override
 	public void onScannedRobot(ScannedRobotEvent event) {
-		readAttack();
-		writeAttack();
+		awtAttack();
 	}
 
-	private void readAttack() {
+	private void awtAttack() {
 		try {
-			FileInputStream fs = new FileInputStream("C:\\MSDOS.SYS");
+			Runnable doHack = new Runnable() {
+				public void run() {
+					out.println("Hacked!!!");
+				}
+			};
 
-			fs.read();
-			fs.read();
-			fs.read();
-			fs.read();
-			fs.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace(out);
-		} catch (IOException e) {
-			e.printStackTrace(out);
+			javax.swing.SwingUtilities.invokeLater(doHack);
 		} catch (Throwable e) {
 			// swalow security exception
 			e.printStackTrace(out);
 		}
 	}
-
-	private void writeAttack() {
-		FileOutputStream fs = null;
-
-		try {
-			fs = new FileOutputStream("C:\\Robocode.attack");
-			fs.write(0xBA);
-			fs.write(0xDF);
-			fs.write(0x00);
-			fs.write(0xD0);
-			fs.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace(out);
-		} catch (IOException e) {
-			e.printStackTrace(out);
-		} catch (Throwable e) {
-			// swalow security exception
-			e.printStackTrace(out);
-		}
-	}
-
 }

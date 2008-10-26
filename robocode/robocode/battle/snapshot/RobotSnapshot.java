@@ -412,10 +412,10 @@ public final class RobotSnapshot implements Serializable {
 			super(arc.getBounds(), arc.start, arc.extent, arc.getArcType());
 		}
 
-        @Override
-        public String toString() {
-            return shortName + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
-        }
+		@Override
+		public String toString() {
+			return shortName + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
+		}
 
 	}
 }

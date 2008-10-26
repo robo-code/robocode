@@ -29,9 +29,9 @@ import org.junit.After;
  * @author Pavel Savara (original)
  */
 public class TestPosition extends RobotTestBed {
-    int lastTurn;
+	int lastTurn;
 
-    @Test
+	@Test
 	public void run() {
 		super.run();
 	}
@@ -40,33 +40,33 @@ public class TestPosition extends RobotTestBed {
 		return "sample.Crazy,sample.Target";
 	}
 
-    @Override
-    public void onBattleStarted(BattleStartedEvent event) {
-        super.onBattleStarted(event);
+	@Override
+	public void onBattleStarted(BattleStartedEvent event) {
+		super.onBattleStarted(event);
         
-        RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
-        RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
+		RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
+		RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
 
-        Assert.assertNear(566.2968069, crazy.getX());
-        Assert.assertNear(165.0789361, crazy.getY());
-        Assert.assertNear(436.3146436, target.getX());
-        Assert.assertNear(350.7235444, target.getY());
-    }
+		Assert.assertNear(566.2968069, crazy.getX());
+		Assert.assertNear(165.0789361, crazy.getY());
+		Assert.assertNear(436.3146436, target.getX());
+		Assert.assertNear(350.7235444, target.getY());
+	}
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
-        lastTurn = event.getTurnSnapshot().getTurn();
+		lastTurn = event.getTurnSnapshot().getTurn();
 
 		// System.out.println(event.getTurnSnapshot().getTurn());
 		RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
 		RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
 
-        if (lastTurn == 1) {
-            Assert.assertNear(565.4354411, crazy.getX());
-            Assert.assertNear(164.5709508, crazy.getY());
-            Assert.assertNear(436.3146436, target.getX());
-            Assert.assertNear(350.7235444, target.getY());
-        }
+		if (lastTurn == 1) {
+			Assert.assertNear(565.4354411, crazy.getX());
+			Assert.assertNear(164.5709508, crazy.getY());
+			Assert.assertNear(436.3146436, target.getX());
+			Assert.assertNear(350.7235444, target.getY());
+		}
 
 		if (lastTurn == 2572) {
 			Assert.assertNear(394.4306300, crazy.getX());
@@ -76,8 +76,8 @@ public class TestPosition extends RobotTestBed {
 		}
 	}
 
-    @After
-    public void tearDownPos() {
-        Assert.assertThat(lastTurn,is(2188));
-    }
+	@After
+	public void tearDownPos() {
+		Assert.assertThat(lastTurn, is(2188));
+	}
 }

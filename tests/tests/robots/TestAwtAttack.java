@@ -24,9 +24,9 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class TestFileAttack extends RobotTestBed {
-	boolean messagedWrite;
-	boolean messagedRead;
+public class TestAwtAttack extends RobotTestBed {
+	boolean messagedAttack;
+	boolean messagedBreakthru;
 
 	@Test
 	public void run() {
@@ -36,26 +36,22 @@ public class TestFileAttack extends RobotTestBed {
 	public void onTurnEnded(TurnEndedEvent event) {
 		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
-		if (out.contains(
-				"java.security.AccessControlException: Preventing testing.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")) {
-			messagedRead = true;
+		if (out.contains("Hacked!!!")) {
+			messagedBreakthru = true;
 		}
-		if (out.contains(
-				"java.security.AccessControlException: Preventing testing.FileAttack from access: (java.io.FilePermission C:\\Robocode.attack write)")) {
-			messagedWrite = true;
+		if (out.contains("java.security.AccessControlException: Preventing testing.AwtAttack from access to threadgroup")) {
+			messagedAttack = true;
 		}
 	}
 
 	@Override
 	public String getRobotNames() {
-		return "sample.SittingDuck,testing.FileAttack";
+		return "sample.SittingDuck,testing.AwtAttack";
 	}
 
 	@After
 	public void tearDownAttack() {
-		Assert.assertTrue(messagedRead);
-		Assert.assertTrue(messagedWrite);
-		Assert.assertFalse(new File("C:\\Robocode.attack").exists());
+		Assert.assertFalse(messagedBreakthru);
+		Assert.assertTrue(messagedAttack);
 	}
-
 }

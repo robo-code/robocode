@@ -185,9 +185,9 @@ public final class TurnSnapshot implements java.io.Serializable {
 		return res;
 	}
 
-    @Override
-    public String toString() {
-        return this.round + "/" + turn + " (" + this.robots.size() + ")";
-    }
+	@Override
+	public String toString() {
+		return this.round + "/" + turn + " (" + this.robots.size() + ")";
+	}
 
 }

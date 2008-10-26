@@ -430,27 +430,27 @@ public final class Battle extends BaseBattle {
 	protected void preloadRound() {
 		super.preloadRound();
 
+		// At this point the unsafe loader thread will now set itself to wait for a notify
 
-        // At this point the unsafe loader thread will now set itself to wait for a notify
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.println("=========================");
+			robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
+			robotPeer.println("=========================");
+			robotPeer.initializeRound(robots, initialRobotPositions);
+		}
 
-        for (RobotPeer robotPeer : robots) {
-            robotPeer.println("=========================");
-            robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
-            robotPeer.println("=========================");
-            robotPeer.initializeRound(robots, initialRobotPositions);
-        }
+		if (getRoundNum() == 0) {
+			final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets);
 
-        if (getRoundNum()==0){
-            final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets);
-            eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
-            if (isPaused()) {
-                eventDispatcher.onBattlePaused(new BattlePausedEvent());
-            }
-        }
+			eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
+			if (isPaused()) {
+				eventDispatcher.onBattlePaused(new BattlePausedEvent());
+			}
+		}
 
-        loadRoundRobots();
+		loadRoundRobots();
 
-        computeActiveRobots();
+		computeActiveRobots();
 
 		manager.getThreadManager().reset();
 	}
