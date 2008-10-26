@@ -55,7 +55,7 @@ public class TestPosition extends RobotTestBed {
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
-        super.onTurnEnded(event);
+		super.onTurnEnded(event);
 		lastTurn = event.getTurnSnapshot().getTurn();
 
 		// System.out.println(event.getTurnSnapshot().getTurn());

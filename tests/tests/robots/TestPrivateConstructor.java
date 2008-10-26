@@ -32,7 +32,7 @@ public class TestPrivateConstructor extends RobotTestBed {
 	}
 
 	public void onTurnEnded(TurnEndedEvent event) {
-        super.onTurnEnded(event);
+		super.onTurnEnded(event);
 		final RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
 
 		if (robot.getOutputStreamSnapshot().contains("SYSTEM: Is your constructor marked public?")) {

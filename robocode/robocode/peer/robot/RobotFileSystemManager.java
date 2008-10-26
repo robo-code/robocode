@@ -148,9 +148,9 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-        if (attemptedFile.equals(allowedDirectory)){
-            return true; //recursive check
-        }
+		if (attemptedFile.equals(allowedDirectory)) {
+			return true; // recursive check
+		}
 
 		if (attemptedFile.getParent().indexOf(allowedDirectory.toString()) == 0) {
 			String fs = attemptedFile.toString();
@@ -185,9 +185,9 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-        if (attemptedFile.equals(allowedDirectory)){
-            return true; //recursive check
-        }
+		if (attemptedFile.equals(allowedDirectory)) {
+			return true; // recursive check
+		}
 
 		return attemptedFile.getParentFile().equals(allowedDirectory);
 

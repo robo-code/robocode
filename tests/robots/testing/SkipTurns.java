@@ -15,7 +15,6 @@ package testing;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 import robocode.SkippedTurnEvent;
-import robocode.exception.DeathException;
 
 
 /**
@@ -43,9 +42,9 @@ public class SkipTurns extends AdvancedRobot {
 	public void onSkippedTurn(SkippedTurnEvent event) {
 		out.println("Skipped!!!");
 
-        //satisfied, end battle please 
-        throw new Error();
-    }
+		// satisfied, end battle please 
+		throw new Error();
+	}
 
 	private void slowResponse() {
 		Object w = new Object();
@@ -54,8 +53,8 @@ public class SkipTurns extends AdvancedRobot {
 			try {
 				w.wait(1200);
 			} catch (InterruptedException e) {
-                //eat interupt
-                e.printStackTrace(out);
+				// eat interupt
+				e.printStackTrace(out);
 			}
 		}
 	}

@@ -41,6 +41,7 @@ public class BrowserManager {
 		final String command = browserCommand + ' ' + url;
 
 		ProcessBuilder pb = new ProcessBuilder(command.split(" "));
+
 		pb.directory(FileUtil.getCwd());
 		Process p = pb.start();
 

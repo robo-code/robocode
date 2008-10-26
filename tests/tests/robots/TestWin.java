@@ -48,7 +48,7 @@ public class TestWin extends RobotTestBed {
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
-        super.onTurnEnded(event);
+		super.onTurnEnded(event);
 		RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
 		final String streamSnapshot = robot.getOutputStreamSnapshot();
 

@@ -32,8 +32,8 @@ public class TestSkippedTurns extends RobotTestBed {
 	}
 
 	public void onTurnEnded(TurnEndedEvent event) {
-        super.onTurnEnded(event);
-        final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+		super.onTurnEnded(event);
+		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
 		if (out.contains("Skipped!!!")) {
 			messagedEvent = true;

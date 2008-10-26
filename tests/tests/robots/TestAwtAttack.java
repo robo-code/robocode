@@ -34,7 +34,7 @@ public class TestAwtAttack extends RobotTestBed {
 	}
 
 	public void onTurnEnded(TurnEndedEvent event) {
-        super.onTurnEnded(event);
+		super.onTurnEnded(event);
 		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
 		if (out.contains("Hacked!!!")) {
