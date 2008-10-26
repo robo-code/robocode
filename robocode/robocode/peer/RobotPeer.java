@@ -725,6 +725,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
                 }
             }
         }
+        
         setState(RobotState.ACTIVE);
 
         isWinner = false;
@@ -812,7 +813,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
             try {
                 Logger.logMessage(".", false);
 
-                // Add StatusEvent for the first turn
                 RobotCommands currentCommands = new RobotCommands();
                 RobotStatus stat = new RobotStatus(this, currentCommands, battle);
                 status.set(stat);

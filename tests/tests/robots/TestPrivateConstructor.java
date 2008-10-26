@@ -31,11 +31,6 @@ public class TestPrivateConstructor extends RobotTestBed {
 		super.run();
 	}
 
-	@Override
-	public int getExpectedRobotCount(String list) {
-		return 2;
-	}
-
 	public void onTurnEnded(TurnEndedEvent event) {
 		final RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
 
