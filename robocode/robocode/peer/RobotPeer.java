@@ -519,19 +519,19 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		this.isIORobot = ioRobot;
 	}
 
-	public synchronized RobotState getState() {
+	public RobotState getState() {
 		return state;
 	}
 
-	public synchronized void setState(RobotState state) {
+	public void setState(RobotState state) {
 		this.state = state;
 	}
 
-	public synchronized boolean isDead() {
+	public boolean isDead() {
 		return state == RobotState.DEAD;
 	}
 
-	public synchronized boolean isAlive() {
+	public boolean isAlive() {
 		return state != RobotState.DEAD;
 	}
 
@@ -579,27 +579,27 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return bodyHeading;
 	}
 
-	public synchronized double getRadarHeading() {
+	public double getRadarHeading() {
 		return radarHeading;
 	}
 
-	public synchronized double getVelocity() {
+	public double getVelocity() {
 		return velocity;
 	}
 
-	public synchronized double getX() {
+	public double getX() {
 		return x;
 	}
 
-	public synchronized double getY() {
+	public double getY() {
 		return y;
 	}
 
-	public synchronized double getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 
-	public synchronized double getGunHeat() {
+	public double getGunHeat() {
 		return gunHeat;
 	}
 
@@ -802,7 +802,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	// called on battle thread
 	// -----------
 
-	public synchronized void initialize(double x, double y, double heading) {
+	public void initialize(double x, double y, double heading) {
 		setState(RobotState.ACTIVE);
 
 		isWinner = false;
@@ -845,7 +845,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		status.set(new RobotStatus(this, commands.get(), battle));
 	}
 
-	public final synchronized void update(RobotCommands currentCommands, List<RobotPeer> robots, double zapEnergy) {
+	public final void update(RobotCommands currentCommands, List<RobotPeer> robots, double zapEnergy) {
 		// Reset robot state to active if it is not dead
 		if (isDead()) {
 			return;
@@ -1092,7 +1092,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return battleRules.getBattlefieldWidth();
 	}
 
-	public synchronized void updateBoundingBox() {
+	public void updateBoundingBox() {
 		boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
 	}
 
@@ -1373,7 +1373,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		currentCommands.setDistanceRemaining(currentCommands.getDistanceRemaining() - velocity);
 	}
 
-	private synchronized void updateGunHeat() {
+	private void updateGunHeat() {
 		gunHeat -= battleRules.getGunCoolingRate();
 		if (gunHeat < 0) {
 			gunHeat = 0;
@@ -1441,15 +1441,15 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public synchronized void drainEnergy() {
+	public void drainEnergy() {
 		setEnergy(0, true);
 	}
 
-	public synchronized void updateEnergy(double delta) {
+	public void updateEnergy(double delta) {
 		setEnergy(energy + delta, true);
 	}
 
-	private synchronized void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
+	private void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
 		if (resetInactiveTurnCount && (energy != newEnergy)) {
 			battle.resetInactiveTurnCount(energy - newEnergy);
 		}
@@ -1467,7 +1467,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		isWinner = newWinner;
 	}
 
-	public synchronized void kill() {
+	public void kill() {
 		battle.resetInactiveTurnCount(10.0);
 		if (isAlive()) {
 			addEvent(new DeathEvent());
