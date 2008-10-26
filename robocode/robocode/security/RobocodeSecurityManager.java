@@ -171,7 +171,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
-		throw new AccessControlException(
+        robotPeer.setEnergy(0);
+        throw new AccessControlException(
 				"Preventing " + Thread.currentThread().getName() + " from access to threadgroup: " + g.getName()
 				+ " -- you must use your own ThreadGroup.");
 
