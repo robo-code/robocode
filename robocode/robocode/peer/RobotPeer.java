@@ -196,7 +196,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader,
 				battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
-		updateRobotInterface(true);
 	}
 
 	public PrintStream getOut() { //TODO remove
@@ -644,6 +643,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
             throw new AccessControlException("Unknown robot type");
         }
 
+        commands.set(new RobotCommands());
+
         String pkgn = getRobotClassManager().getClassNameManager().getFullPackage();
 
         if (pkgn != null && pkgn.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
@@ -805,14 +806,17 @@ public final class RobotPeer implements Runnable, ContestantPeer {
         }
     }
 
-    public void startRoundRobot(ThreadManager tm, long waitTime) {
+    public void startRound(ThreadManager tm, long waitTime) {
         tm.addThreadGroup(getRobotThreadManager().getThreadGroup(), this);
         synchronized (this) {
             try {
                 Logger.logMessage(".", false);
 
                 // Add StatusEvent for the first turn
-                publishStatus(true, 0);
+                RobotCommands currentCommands = new RobotCommands();
+                RobotStatus stat = new RobotStatus(this, currentCommands, battle);
+                status.set(stat);
+                robotProxy.updateStatus(currentCommands, stat);
 
                 // Start the robot thread
                 getRobotThreadManager().start();
@@ -1555,8 +1559,9 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return commands.get().getGraphicsProxy();
 	}
 
-	public void publishStatus(boolean initialPropagation, long currentTurn) {
-		final RobotStatus stat = updateRobotInterface(initialPropagation);
+	public void publishStatus(long currentTurn) {
+        RobotStatus stat = new RobotStatus(this, commands.get(), battle);
+        status.set(stat);
 
 		if (!isDead()) {
 			addEvent(new StatusEvent(stat));
@@ -1565,25 +1570,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				addEvent(new PaintEvent());
 			}
 		}
-	}
-
-	private RobotStatus updateRobotInterface(boolean initialPropagation) {
-		RobotCommands currentCommands = commands.get();
-
-		currentCommands = (currentCommands == null ? new RobotCommands() : currentCommands);
-		final RobotStatus stat = new RobotStatus(this, currentCommands, battle);
-
-		status.set(stat);
-		if (initialPropagation) {
-			final RobotCommands copyCommands = new RobotCommands(currentCommands, false);
-
-			if (robotProxy != null) {
-				robotProxy.updateStatus(copyCommands, stat);
-			}
-			commands.set(copyCommands);
-		}
-
-		return stat;
 	}
 
 	public RobotCommands loadCommands(List<RobotPeer> robots, List<BulletPeer> bullets) {

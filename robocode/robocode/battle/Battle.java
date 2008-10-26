@@ -452,7 +452,7 @@ public final class Battle extends BaseBattle {
 		final long waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
-			robotPeer.startRoundRobot(manager.getThreadManager(), waitTime);
+			robotPeer.startRound(manager.getThreadManager(), waitTime);
 		}
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
@@ -675,7 +675,7 @@ public final class Battle extends BaseBattle {
 
 	private void publishStatuses() {
 		for (RobotPeer robotPeer : robots) {
-			robotPeer.publishStatus(false, getTime());
+			robotPeer.publishStatus(getTime());
 		}
 	}
 
