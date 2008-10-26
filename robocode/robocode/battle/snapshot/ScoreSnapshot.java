@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializable {
+public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final String name;

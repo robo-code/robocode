@@ -42,7 +42,7 @@ import java.util.List;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public class TurnSnapshot implements java.io.Serializable {
+public final class TurnSnapshot implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -184,4 +184,10 @@ public class TurnSnapshot implements java.io.Serializable {
 
 		return res;
 	}
+
+    @Override
+    public String toString() {
+        return this.round + "/" + turn + " (" + this.robots.size() + ")";
+    }
+
 }

@@ -42,7 +42,7 @@ import java.io.Serializable;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public class RobotSnapshot implements Serializable {
+public final class RobotSnapshot implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -411,5 +411,11 @@ public class RobotSnapshot implements Serializable {
 		public SerializableArc(Arc2D.Double arc) {
 			super(arc.getBounds(), arc.start, arc.extent, arc.getArcType());
 		}
+
+        @Override
+        public String toString() {
+            return shortName + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
+        }
+
 	}
 }

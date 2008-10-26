@@ -774,6 +774,7 @@ public final class Battle extends BaseBattle {
 			robotPeer.println("=========================");
 			robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
 			robotPeer.println("=========================");
+            robotPeer.initializeRobotPosition(robots, initialRobotPositions);
 		}
 
 		// At this point the unsafe loader thread is still waiting for a signal.
@@ -793,9 +794,6 @@ public final class Battle extends BaseBattle {
 					Thread.currentThread().interrupt();
 				}
 			}
-		}
-		for (RobotPeer robotPeer : robots) {
-			robotPeer.initializeRobotPosition(robots, initialRobotPositions);
 		}
 	}
 

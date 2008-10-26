@@ -516,7 +516,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		try {
 			RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
 
-			return (robotPeer != null) ? robotPeer.getRobotProxy().getOut() : null;
+			return (robotPeer != null) ? robotPeer.getOut() : null;
 
 		} catch (Exception e) {
 			syserr.println("Unable to get output stream: " + e);

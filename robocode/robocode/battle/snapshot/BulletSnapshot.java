@@ -40,7 +40,7 @@ import java.awt.*;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public class BulletSnapshot implements java.io.Serializable {
+public final class BulletSnapshot implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 

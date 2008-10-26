@@ -95,6 +95,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
+import java.io.PrintStream;
 
 
 /**
@@ -243,7 +244,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + getName() + " : " + e);
-			println(e.getStackTrace().toString());
+			print(e);
 			drainEnergy();
 		}
 	}
@@ -294,7 +295,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	public void unsafeLoadRoundRobot(ThreadManager threadManager) {
 
 		robot = null;
-		setState(RobotState.DEAD);
 		Class<?> robotClass;
 
 		try {
@@ -307,18 +307,19 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			}
 			robot = (IBasicRobot) robotClass.newInstance();
 			robotProxy.getEventManager().setRobot(robot);
-			robot.setOut(getRobotProxy().getOut());
-			robot.setPeer(getRobotProxy());
+			robot.setOut(robotProxy.getOut());
+			robot.setPeer(robotProxy);
 		} catch (IllegalAccessException e) {
 			println("SYSTEM: Unable to instantiate this robot: " + e);
 			println("SYSTEM: Is your constructor marked public?");
-			drainEnergy();
+			print(e);
 			robot = null;
+			drainEnergy();
 			logMessage(e);
 		} catch (Throwable e) {
 			println("SYSTEM: An error occurred during initialization of " + getRobotClassManager());
 			println("SYSTEM: " + e);
-			println(e.getStackTrace().toString());
+			print(e);
 			robot = null;
 			drainEnergy();
 			logMessage(e);
@@ -371,14 +372,29 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public BasicRobotProxy getRobotProxy() {
-		return robotProxy;
+	public PrintStream getOut() {
+		return robotProxy.getOut();
 	}
 
 	public void println(String s) {
 		synchronized (battleText) {
 			battleText.append(s);
 			battleText.append("\n");
+		}
+	}
+
+	private void print(Throwable ex) {
+		println(ex.toString());
+		StackTraceElement[] trace = ex.getStackTrace();
+
+		for (StackTraceElement aTrace : trace) {
+			println("\tat " + aTrace);
+		}
+
+		Throwable ourCause = ex.getCause();
+
+		if (ourCause != null) {
+			print(ourCause);
 		}
 	}
 
@@ -1054,7 +1070,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 			// Update energy, but do not reset inactiveTurnCount
 			if (statics.isAdvancedRobot()) {
-				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
+				setEnergy(energy - Rules.getWallHitDamage(velocity), false);
 			}
 
 			updateBoundingBox();
@@ -1627,7 +1643,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 			double firePower = min(energy, min(max(bullet.getPower(), Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
 
-			this.updateEnergy(-firePower);
+			updateEnergy(-firePower);
 
 			gunHeat += Rules.getGunHeat(firePower);
 
