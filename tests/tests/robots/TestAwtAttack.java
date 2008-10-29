@@ -16,8 +16,10 @@ import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
 import org.junit.After;
+import org.junit.Before;
 import robocode.battle.events.TurnEndedEvent;
 
+import javax.swing.*;
 import java.io.File;
 
 
@@ -47,12 +49,21 @@ public class TestAwtAttack extends RobotTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "sample.SittingDuck,testing.AwtAttack";
+		return "testing.BattleLost,testing.AwtAttack";
 	}
+
+    JFrame frame;
+    @Before
+    public void setupAttack() {
+        frame=new JFrame ();
+        frame.setVisible(true);
+    }
 
 	@After
 	public void tearDownAttack() {
-		Assert.assertFalse(messagedBreakthru);
+        frame.setVisible(false);
+        frame.dispose();
+        Assert.assertFalse(messagedBreakthru);
 		Assert.assertTrue(messagedAttack);
 	}
 }
