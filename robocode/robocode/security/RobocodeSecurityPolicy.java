@@ -52,6 +52,7 @@ public class RobocodeSecurityPolicy extends Policy {
 		String classPath = System.getProperty("java.class.path");
 		StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator);
 
+		// TODO skip robots path if is there
 		while (tokenizer.hasMoreTokens()) {
 			try {
 				URL u = new File(tokenizer.nextToken()).toURI().toURL();

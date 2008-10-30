@@ -42,6 +42,8 @@ import robocode.sound.SoundManager;
 import java.io.*;
 import java.security.Policy;
 
+import sun.awt.SunToolkit;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -293,6 +295,7 @@ public class RobocodeManager {
 				securityManager.addSafeThreadGroup(tg);
 				tg = tg.getParent();
 			}
+			SunToolkit.createNewAppContext();
 		}
 	}
 

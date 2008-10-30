@@ -184,6 +184,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
+		robotPeer.drainEnergy();
 		throw new AccessControlException(
 				"Preventing " + Thread.currentThread().getName() + " from access to threadgroup: " + g.getName()
 				+ " -- you must use your own ThreadGroup.");
@@ -198,7 +199,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	@Override
 	public void checkPermission(Permission perm, Object context) {
 		syserr.println("Checking permission " + perm + " for context " + context);
-		super.checkPermission(perm);
+		checkPermission(perm);
 	}
 
 	@Override
