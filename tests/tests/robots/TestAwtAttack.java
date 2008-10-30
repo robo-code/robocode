@@ -21,6 +21,9 @@ import robocode.battle.events.TurnEndedEvent;
 
 import javax.swing.*;
 import java.io.File;
+import java.awt.*;
+
+import sun.awt.AppContext;
 
 
 /**
@@ -42,7 +45,7 @@ public class TestAwtAttack extends RobotTestBed {
 		if (out.contains("Hacked!!!")) {
 			messagedBreakthru = true;
 		}
-		if (out.contains("java.security.AccessControlException: Preventing testing.AwtAttack from access to threadgroup")) {
+		if (out.contains("Preventing testing.AwtAttack from access to threadgroup")) {
 			messagedAttack = true;
 		}
 	}
@@ -52,18 +55,27 @@ public class TestAwtAttack extends RobotTestBed {
 		return "testing.BattleLost,testing.AwtAttack";
 	}
 
-    JFrame frame;
-    @Before
-    public void setupAttack() {
-        frame=new JFrame ();
-        frame.setVisible(true);
-    }
+	JFrame frame;
+	@Before
+	public void setupAttack() {
+		frame = new JFrame();
+		frame.setVisible(true);
+	}
 
 	@After
 	public void tearDownAttack() {
-        frame.setVisible(false);
-        frame.dispose();
-        Assert.assertFalse(messagedBreakthru);
+
+		Runnable doHack = new Runnable() {
+			public void run() {
+				System.out.println("works still!!!");
+			}
+		};
+
+		javax.swing.SwingUtilities.invokeLater(doHack);
+
+		frame.setVisible(false);
+		frame.dispose();
+		Assert.assertFalse(messagedBreakthru);
 		Assert.assertTrue(messagedAttack);
 	}
 }
