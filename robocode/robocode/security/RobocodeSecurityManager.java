@@ -609,7 +609,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// why we call that ? Because SunToolkit is caching AWTQueue instance form main thread group and use it on robots threads
 		// and he is not asking us for checkAwtEventQueueAccess above 
 		try {
-			final Class<?> sunToolkit = RobocodeSecurityManager.class.getClassLoader().loadClass("sun.awt.SunToolkit");
+			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.SunToolkit");
 			final Method createNewAppContext = sunToolkit.getDeclaredMethod("createNewAppContext");
 
 			createNewAppContext.invoke(null);
