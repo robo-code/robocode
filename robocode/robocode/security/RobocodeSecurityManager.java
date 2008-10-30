@@ -36,6 +36,8 @@ import java.io.*;
 import java.security.AccessControlException;
 import java.security.Permission;
 import java.util.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -68,6 +70,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		safeSecurityContext = getSecurityContext();
 
 		BulletState s = BulletState.INACTIVE; // Fake class loading
+
+		createNewAppContext();
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
@@ -598,4 +602,26 @@ public class RobocodeSecurityManager extends SecurityManager {
 			}
 		}
 	}
+
+	public void createNewAppContext() {
+		// same as SunToolkit.createNewAppContext();
+		// we can't assume that we are always on Suns JVM, so we can't reference it directly
+		// why we call that ? Because SunToolkit is caching AWTQueue instance form main thread group and use it on robots threads
+		// and he is not asking us for checkAwtEventQueueAccess above 
+		try {
+			final Class<?> sunToolkit = RobocodeSecurityManager.class.getClassLoader().loadClass("sun.awt.SunToolkit");
+			final Method createNewAppContext = sunToolkit.getDeclaredMethod("createNewAppContext");
+
+			createNewAppContext.invoke(null);
+		} catch (ClassNotFoundException e) {// we are not on sun JVM
+		} catch (NoSuchMethodException e) {
+			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
+		} catch (InvocationTargetException e) {
+			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
+		} catch (IllegalAccessException e) {
+			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
+		}
+		// end: same as SunToolkit.createNewAppContext();
+	}
+
 }
