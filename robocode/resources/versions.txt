@@ -1,9 +1,8 @@
 Version 1.6.1.4
-(10/27/2008)
+(10/30/2008)
 -------------
 o Bugfixes
   -- Loosing robots were not receiving onBattleEnded(BattleEndedEvent) events.
-  -- Fixed security issue with AWT event queue.
 
 o Changes
   -- The command-line option EXPERIMENTAL (true/false) allowing access to the robot interface peer
