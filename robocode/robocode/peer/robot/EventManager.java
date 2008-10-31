@@ -60,8 +60,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class EventManager implements IEventManager {
 	private BasicRobotProxy robotProxy;
 
-	private final int MAX_PRIORITY = 100;
-	private final int MAX_EVENT_STACK = 2;
+	private final static int MAX_PRIORITY = 100;
+	public final static int MAX_EVENT_STACK = 2;
 
 	private int currentTopEventPriority;
 	private Event currentTopEvent;

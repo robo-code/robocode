@@ -819,6 +819,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				RobotStatus stat = new RobotStatus(this, currentCommands, battle);
 
 				status.set(stat);
+				final StatusEvent start = new StatusEvent(stat);
+
+				start.setTime(0);
+				robotProxy.getEventManager().add(start);
 				robotProxy.updateStatus(currentCommands, stat);
 
 				// Start the robot thread
@@ -1093,15 +1097,15 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public void addEvent(Event event) {
 		if (isRunning()) {
-			final List<Event> queue = events.get();
+			final EventQueue queue = events.get();
 
-			if ((queue.size() > EventManager.MAX_QUEUE_SIZE || !isRunning())
+			if ((queue.size() > EventManager.MAX_QUEUE_SIZE)
 					&& !(event instanceof DeathEvent || event instanceof WinEvent || event instanceof SkippedTurnEvent)) {
-				if (isRunning()) {
-					println(
-							"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
-							+ " events in queue.");
-				}
+				println(
+						"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
+						+ " events in queue.");
+				// clean up old stuff                
+				queue.clear(battle.getTime() - EventManager.MAX_EVENT_STACK);
 				return;
 			}
 			event.setTime(battle.getTime());
