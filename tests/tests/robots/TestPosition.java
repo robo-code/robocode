@@ -20,7 +20,6 @@ import helpers.RobotTestBed;
 import helpers.Assert;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
-import org.junit.After;
 
 
 /**
@@ -55,6 +54,7 @@ public class TestPosition extends RobotTestBed {
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
+		super.onTurnEnded(event);
 		lastTurn = event.getTurnSnapshot().getTurn();
 
 		// System.out.println(event.getTurnSnapshot().getTurn());
@@ -76,8 +76,8 @@ public class TestPosition extends RobotTestBed {
 		}
 	}
 
-	@After
-	public void tearDownPos() {
+	@Override
+	protected void runTeardown() {
 		Assert.assertThat(lastTurn, is(2188));
 	}
 }

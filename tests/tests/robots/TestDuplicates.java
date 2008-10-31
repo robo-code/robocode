@@ -14,12 +14,11 @@ package robots;
 
 import helpers.RobotTestBed;
 import org.junit.Test;
-import org.junit.After;
 import org.junit.Assert;
 import static org.hamcrest.CoreMatchers.is;
-import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.events.BattleStartedEvent;
 import robocode.battle.events.BattleCompletedEvent;
+import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.BattleResults;
 
@@ -55,12 +54,21 @@ public class TestDuplicates extends RobotTestBed {
 	}
 
 	@Override
+	public void onBattleEnded(BattleEndedEvent event) {
+		if (event.isAborted()) {
+			results = null;
+		}
+	}
+
+	@Override
 	public void onBattleCompleted(BattleCompletedEvent event) {
 		results = event.getResults();
 	}
 
-	@After
-	public void tearDownDuplicates() {
+	@Override
+	protected void runTeardown() {
+		Assert.assertNotNull(results);
+		Assert.assertNotNull(robots);
 		Assert.assertThat(robots.get(0).getName(), is("sample.Fire (1)"));
 		Assert.assertThat(robots.get(1).getName(), is("sampleteam.MyFirstLeader (1)"));
 		Assert.assertThat(robots.get(2).getName(), is("sampleteam.MyFirstDroid (1)"));

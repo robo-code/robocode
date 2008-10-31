@@ -26,46 +26,51 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.util.Random;
 
+import robots.TestJunior;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public abstract class RobotTestBed extends BattleAdaptor {
-	protected RobocodeEngine2 engine;
+	protected static RobocodeEngine2 engine;
 	protected BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected int errors = 0;
 	protected int messages = 0;
 
-	public RobotTestBed() {
+	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		engine = new RobocodeEngine2(FileUtil.getCwd());
-		engine.addBattleListener(this);
 	}
 
+	public RobotTestBed() {}
+
 	public void onBattleMessage(BattleMessageEvent event) {
-		SecurePrintStream.realOut.println(event.getMessage());
+		if (isDumpingMessages) {
+			SecurePrintStream.realOut.println(event.getMessage());
+		}
 		messages++;
 	}
 
 	public void onBattleError(BattleErrorEvent event) {
-		SecurePrintStream.realErr.println(event.getError());
+		if (isDumpingErrors) {
+			SecurePrintStream.realErr.println(event.getError());
+		}
 		errors++;
 	}
 
-	public boolean isDumpingPositions() {
-		return false;
-	}
-
-	public boolean isDumpingTurns() {
-		return false;
-	}
+	public boolean isDumpingPositions = false;
+	public boolean isDumpingTurns = false;
+	public boolean isDumpingOutput = true;
+	public boolean isDumpingErrors = true;
+	public boolean isDumpingMessages = true;
 
 	public void onTurnEnded(TurnEndedEvent event) {
-		if (isDumpingTurns()) {
+		if (isDumpingTurns) {
 			SecurePrintStream.realOut.println("turn " + event.getTurnSnapshot().getTurn());
 		}
 		for (RobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
-			if (isDumpingPositions()) {
+			if (isDumpingPositions) {
 				SecurePrintStream.realOut.print(robot.getVeryShortName());
 				SecurePrintStream.realOut.print(" X:");
 				SecurePrintStream.realOut.print(robot.getX());
@@ -75,7 +80,9 @@ public abstract class RobotTestBed extends BattleAdaptor {
 				SecurePrintStream.realOut.print(robot.getVelocity());
 				SecurePrintStream.realOut.println();
 			}
-			SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
+			if (isDumpingOutput) {
+				SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
+			}
 		}
 	}
 
@@ -107,6 +114,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	@Before
 	public void setup() {
+		engine.addBattleListener(this);
 		if (isDeterministic()) {
 			RandomFactory.resetDeterministic(0);
 			if (isCheckOnBattleStart()) {
@@ -119,15 +127,25 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	@After
 	public void tearDown() {
-		Assert.assertThat(errors, is(0));
+		engine.removeBattleListener(this);
 	}
 
 	@Test
 	public void run() {
-		final String list = getRobotNames();
+		runSetup();
+		runBattle(getRobotNames(), getNumRounds());
+		runTeardown();
+		Assert.assertThat(errors, is(0));
+	}
+
+	protected void runSetup() {}
+
+	protected void runTeardown() {}
+
+	protected void runBattle(String list, int numRounds) {
 		final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
 
 		Assert.assertEquals("Robot were not loaded", getExpectedRobotCount(list), robotSpecifications.length);
-		engine.runBattle(new BattleSpecification(getNumRounds(), battleFieldSpec, robotSpecifications), true);
+		engine.runBattle(new BattleSpecification(numRounds, battleFieldSpec, robotSpecifications), true);
 	}
 }

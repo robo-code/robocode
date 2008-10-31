@@ -15,7 +15,6 @@ package robots;
 import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
-import org.junit.After;
 import robocode.battle.events.TurnEndedEvent;
 
 import java.io.File;
@@ -51,8 +50,8 @@ public class TestFileAttack extends RobotTestBed {
 		return "sample.SittingDuck,testing.FileAttack";
 	}
 
-	@After
-	public void tearDownAttack() {
+	@Override
+	protected void runTeardown() {
 		Assert.assertTrue(messagedRead);
 		Assert.assertTrue(messagedWrite);
 		Assert.assertFalse(new File("C:\\Robocode.attack").exists());

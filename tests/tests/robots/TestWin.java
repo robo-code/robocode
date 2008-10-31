@@ -17,7 +17,6 @@ import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.BattleResults;
 import org.junit.Assert;
-import org.junit.After;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import helpers.RobotTestBed;
@@ -48,6 +47,7 @@ public class TestWin extends RobotTestBed {
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
+		super.onTurnEnded(event);
 		RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
 		final String streamSnapshot = robot.getOutputStreamSnapshot();
 
@@ -64,8 +64,8 @@ public class TestWin extends RobotTestBed {
 		results = event.getResults();
 	}
 
-	@After
-	public void tearDownWin() {
+	@Override
+	protected void runTeardown() {
 		Assert.assertThat("always should win", win, is(getNumRounds()));
 		Assert.assertThat("should get BattleEnded event", end, is(1));
 		Assert.assertThat("always should be FIRST", results[0].getTeamLeaderName(), is("testing.BattleWin"));

@@ -15,7 +15,6 @@ package robots;
 import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
-import org.junit.After;
 import robocode.battle.events.TurnEndedEvent;
 
 
@@ -32,6 +31,7 @@ public class TestIncludeNamespaceAttack extends RobotTestBed {
 	}
 
 	public void onTurnEnded(TurnEndedEvent event) {
+		super.onTurnEnded(event);
 		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
 		if (out.contains(
@@ -48,8 +48,8 @@ public class TestIncludeNamespaceAttack extends RobotTestBed {
 		return "sample.SittingDuck,testing.IncludeNamespaceAttack";
 	}
 
-	@After
-	public void tearDownAttack() {
+	@Override
+	protected void runTeardown() {
 		Assert.assertFalse(messagedBreakthru);
 		Assert.assertTrue(messaged);
 	}

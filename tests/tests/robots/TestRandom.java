@@ -41,6 +41,8 @@ public class TestRandom extends RobotTestBed {
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
+		super.onTurnEnded(event);
+
 		Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 1223);
 		RobotSnapshot fire = event.getTurnSnapshot().getRobots().get(0);
 		RobotSnapshot random = event.getTurnSnapshot().getRobots().get(1);
