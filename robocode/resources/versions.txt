@@ -5,6 +5,8 @@ o Bugfixes
   -- Loosing robots were not receiving onBattleEnded(BattleEndedEvent) events.
   -- A new security issue fix for robots that were able to execute code thru the Event Dispatch
      Thread (EDT). Robots that try to access the EDT will be disabled!
+  -- [2210749] drawArc() does not work as expected: This bug has been fixed. In addition, both
+     drawArc() and fillArc() is now using the Robocode coordinate and angle system.
 
 o New feature
   -- The results and current rankings (during a battle) is now showing the score as percentage(s)
