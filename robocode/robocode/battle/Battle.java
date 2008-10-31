@@ -332,19 +332,17 @@ public class Battle implements Runnable {
 			}
 		}
 
-		// Notify that the battle is over
-		synchronized (isRunning) {
-			isRunning.set(false);
-			isRunning.notifyAll();
-		}
-
-		// At this point the 'running' state should be false = not running, before the scores are calculated
-
 		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
 
 		if (!isAborted()) {
 			eventDispatcher.onBattleCompleted(
 					new BattleCompletedEvent(manager.getBattleManager().getBattleProperties(), computeResults()));
+		}
+
+		// Notify that the battle is over
+		synchronized (isRunning) {
+			isRunning.set(false);
+			isRunning.notifyAll();
 		}
 
 		finalizeBattle();
