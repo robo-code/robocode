@@ -3,6 +3,8 @@ Version 1.6.1.4
 -------------
 o Bugfixes
   -- Loosing robots were not receiving onBattleEnded(BattleEndedEvent) events.
+  -- A new security issue fix for robots that were able to execute code thru the Event Dispatch
+     Thread (EDT). Robots that try to access the EDT will be disabled!
 
 o Changes
   -- The command-line option EXPERIMENTAL (true/false) allowing access to the robot interface peer
