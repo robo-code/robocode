@@ -15,8 +15,6 @@ package robots;
 import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
-import org.junit.After;
-import org.junit.Before;
 import robocode.battle.events.TurnEndedEvent;
 
 import javax.swing.*;
@@ -52,14 +50,15 @@ public class TestAwtAttack extends RobotTestBed {
 	}
 
 	JFrame frame;
-	@Before
-	public void setupAttack() {
+
+	@Override
+	protected void runSetup() {
 		frame = new JFrame();
 		frame.setVisible(true);
 	}
 
-	@After
-	public void tearDownAttack() {
+	@Override
+	protected void runTeardown() {
 
 		Runnable doHack = new Runnable() {
 			public void run() {

@@ -15,7 +15,6 @@ package robots;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.events.TurnEndedEvent;
 import org.junit.Assert;
-import org.junit.After;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import helpers.RobotTestBed;
@@ -58,8 +57,8 @@ public class TestLost extends RobotTestBed {
 		System.out.print(streamSnapshot);
 	}
 
-	@After
-	public void tearDownLost() {
+	@Override
+	protected void runTeardown() {
 		Assert.assertThat("always should loose", lost, is(getNumRounds()));
 		Assert.assertThat("should get BattleEnded event", end, is(1));
 	}

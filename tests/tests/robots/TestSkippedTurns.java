@@ -15,7 +15,6 @@ package robots;
 import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
-import org.junit.After;
 import robocode.battle.events.TurnEndedEvent;
 
 
@@ -48,8 +47,8 @@ public class TestSkippedTurns extends RobotTestBed {
 		return "sample.TrackFire,testing.SkipTurns";
 	}
 
-	@After
-	public void tearDownAttack() {
+	@Override
+	protected void runTeardown() {
 		Assert.assertTrue(messagedEvent);
 		Assert.assertTrue(messagedBattle);
 	}

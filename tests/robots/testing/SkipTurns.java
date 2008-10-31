@@ -15,26 +15,47 @@ package testing;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 import robocode.SkippedTurnEvent;
+import robocode.StatusEvent;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class SkipTurns extends AdvancedRobot {
+	private int skipped = 0;
+
+	final int limit = 5;
 
 	@Override
 	public void run() {
 		// noinspection InfiniteLoopStatement
 		for (;;) {
-			turnLeft(100);
-			ahead(10);
-			turnLeft(100);
-			back(10);
+			if (skipped > limit) {
+				// satisfied, end battle please
+				throw new Error();
+			}
+			turnLeft(10);
+			if (skipped > limit) {
+				// satisfied, end battle please
+				throw new Error();
+			}
+			ahead(1);
+			if (skipped > limit) {
+				// satisfied, end battle please
+				throw new Error();
+			}
+			turnLeft(10);
+			if (skipped > limit) {
+				// satisfied, end battle please
+				throw new Error();
+			}
+			back(1);
 		}
 	}
 
 	@Override
-	public void onScannedRobot(ScannedRobotEvent event) {
+	public void onStatus(StatusEvent e) {
+		out.println("live");
 		slowResponse();
 	}
 
@@ -42,8 +63,7 @@ public class SkipTurns extends AdvancedRobot {
 	public void onSkippedTurn(SkippedTurnEvent event) {
 		out.println("Skipped!!!");
 
-		// satisfied, end battle please 
-		throw new Error();
+		skipped++;
 	}
 
 	private void slowResponse() {
@@ -51,7 +71,11 @@ public class SkipTurns extends AdvancedRobot {
 
 		synchronized (w) {
 			try {
-				w.wait(1200);
+				if (skipped > 3) {
+					w.wait(1000);
+				} else {
+					w.wait(100);
+				}
 			} catch (InterruptedException e) {
 				// eat interupt
 				e.printStackTrace(out);

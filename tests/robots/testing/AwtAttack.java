@@ -48,7 +48,7 @@ public class AwtAttack extends AdvancedRobot {
 			javax.swing.SwingUtilities.invokeLater(doHack);
 		} catch (Throwable e) {
 			// swalow security exception
-			out.println(e.getMessage());
+			e.printStackTrace(out);
 		}
 	}
 }

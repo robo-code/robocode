@@ -14,8 +14,6 @@ package robots;
 
 import helpers.RobotTestBed;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
@@ -37,15 +35,15 @@ public class TestFileWrite extends RobotTestBed {
 
 	File file = new File("robots/sample/SittingDuck.data/count.dat");
 
-	@Before
-	public void fileSetup() {
+	@Override
+	protected void runSetup() {
 		if (file.exists()) {
 			file.delete();
 		}
 	}
 
-	@After
-	public void fileTearDown() {
+	@Override
+	protected void runTeardown() {
 		Assert.assertTrue(file.exists());
 	}
 }

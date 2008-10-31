@@ -46,8 +46,8 @@ public class TestScanForRobotsWhenHitWall extends RobotTestBed {
 		return "testing.ScanForRobotsWhenHitWall,testing.ScanForRobotsWhenHitWall";
 	}
 
-	@After
-	public void tearDown() {
+	@Override
+	protected void runTeardown() {
 		Assert.assertTrue(messagedScanned);
 	}
 }

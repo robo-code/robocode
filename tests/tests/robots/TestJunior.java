@@ -42,11 +42,15 @@ public class TestJunior extends RobotTestBed {
 		if (event.getTurnSnapshot().getTurn() == 589) {
 			// if (out.contains("robocode.BulletMissedEvent")) {
 
-			Assert.assertTrue(out.contains("robocode.BulletMissedEvent 5"));
-			Assert.assertTrue(out.contains("robocode.ScannedRobotEvent 100"));
-			Assert.assertTrue(out.contains("robocode.BulletHitEvent 24"));
-			Assert.assertTrue(out.contains("robocode.StatusEvent 589"));
-			Assert.assertTrue(out.contains("robocode.WinEvent 1"));
+			test(out, "robocode.BulletMissedEvent 5");
+			test(out, "robocode.ScannedRobotEvent 100");
+			test(out, "robocode.BulletHitEvent 24");
+			test(out, "robocode.StatusEvent 589");
+			test(out, "robocode.WinEvent 1");
 		}
+	}
+
+	private void test(String out, String in) {
+		Assert.assertTrue(in, out.contains(in));
 	}
 }
