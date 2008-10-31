@@ -191,34 +191,39 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	 * @see java.lang.Thread#run()
 	 */
 	public void run() {
-		initializeBattle();
+		try {
+			initializeBattle();
 
-		while (!isAborted && roundNum < getNumRounds()) {
-			try {
+			while (!isAborted && roundNum < getNumRounds()) {
+				try {
 
-				preloadRound();
+					preloadRound();
 
-				initializeRound();
+					initializeRound();
 
-				runRound();
+					runRound();
 
-				finalizeRound();
+					finalizeRound();
 
-				cleanupRound();
+					cleanupRound();
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				logError("Exception running a battle: ", e);
+				} catch (Exception e) {
+					e.printStackTrace();
+					logError("Exception running a battle round: ", e);
+					isAborted = true;
+				}
+
+				roundNum++;
 			}
 
-			roundNum++;
+			shutdownBattle();
+
+			finalizeBattle();
+
+			cleanup();
+		} catch (Throwable e) {
+			logError("Exception running a battle: ", e);
 		}
-
-		shutdownBattle();
-
-		finalizeBattle();
-
-		cleanup();
 	}
 
 	protected void initializeBattle() {
