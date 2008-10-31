@@ -97,8 +97,6 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void shutdownBattle() {
-		super.shutdownBattle();
-
 		boolean aborted = recordInfo.results == null || isAborted();
 
 		eventDispatcher.onBattleEnded(new BattleEndedEvent(aborted));
@@ -106,6 +104,8 @@ public final class BattlePlayer extends BaseBattle {
 		if (!aborted) {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(recordInfo.battleRules, recordInfo.results));
 		}
+
+		super.shutdownBattle();
 
 		cleanup();
 	}

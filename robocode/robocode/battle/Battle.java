@@ -407,15 +407,13 @@ public final class Battle extends BaseBattle {
 			robotPeer.getRobotThreadManager().cleanup();
 		}
 
-		super.shutdownBattle();
-
-		// At this point the 'running' state should be false = not running, before the scores are calculated
-
 		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
 
 		if (!isAborted()) {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeResults()));
 		}
+
+		super.shutdownBattle();
 	}
 
 	@Override
