@@ -6,46 +6,40 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package testing;
 
 
-import robocode.AdvancedRobot;
-import robocode.ScannedRobotEvent;
-import robocode.manager.BattleManager;
+import robocode.*;
 
 
 /**
- * @author Pavel Savara (original)
+ * Based on bug 2212289.
+ *
+ * Robot provided for the test named TestScanForRobotsWhenHitWall, which tests if onScannedRobot()
+ * is called when the radar is turned from within a onHitWall() event.
+ *
+ * @author Flemming N. Larsen (original)
  */
-public class IncludeNamespaceAttack extends AdvancedRobot {
+public class ScanForRobotsWhenHitWall extends Robot {
 
 	@Override
 	public void run() {
 		// noinspection InfiniteLoopStatement
 		for (;;) {
-			turnLeft(100);
-			ahead(10);
-			turnLeft(100);
-			back(10);
+			ahead(10); // make sure we eventually hits a wall to receive onHitWall
 		}
 	}
 
 	@Override
 	public void onScannedRobot(ScannedRobotEvent event) {
-		namespaceAttack();
+		out.println("Scanned!!!"); // a robot was scanned -> success!
 	}
 
-	private void namespaceAttack() {
-		try {
-			BattleManager bm = (BattleManager) BattleManager.class.newInstance();
-
-			bm.stop(true);
-		} catch (Throwable e) {
-			// swalow security exception
-			e.printStackTrace(out);
-		}
+	@Override
+	public void onHitWall(HitWallEvent e) {
+		turnRadarRight(360); // when the radar is turned here, at least another robot should be scanned
 	}
 }

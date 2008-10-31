@@ -17,7 +17,6 @@ import org.junit.Test;
 import org.junit.After;
 import org.junit.Assert;
 import static org.hamcrest.CoreMatchers.is;
-import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.events.BattleStartedEvent;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.snapshot.RobotSnapshot;

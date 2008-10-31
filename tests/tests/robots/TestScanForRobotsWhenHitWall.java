@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package robots;
@@ -16,18 +16,16 @@ import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
 import org.junit.After;
-import org.junit.Before;
 import robocode.battle.events.TurnEndedEvent;
-
-import javax.swing.*;
 
 
 /**
- * @author Pavel Savara (original)
+ * Test if onScannedRobot() is called when the radar is turned from within a onHitWall() event.
+ *
+ * @author Flemming N. Larsen (original)
  */
-public class TestAwtAttack extends RobotTestBed {
-	boolean messagedAttack;
-	boolean messagedBreakthru;
+public class TestScanForRobotsWhenHitWall extends RobotTestBed {
+	boolean messagedScanned;
 
 	@Test
 	public void run() {
@@ -38,40 +36,18 @@ public class TestAwtAttack extends RobotTestBed {
 		super.onTurnEnded(event);
 		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
-		if (out.contains("Hacked!!!")) {
-			messagedBreakthru = true;
-		}
-		if (out.contains("Preventing testing.AwtAttack from access to threadgroup")) {
-			messagedAttack = true;
+		if (out.contains("Scanned!!!")) {
+			messagedScanned = true;
 		}
 	}
 
 	@Override
 	public String getRobotNames() {
-		return "testing.BattleLost,testing.AwtAttack";
-	}
-
-	JFrame frame;
-	@Before
-	public void setupAttack() {
-		frame = new JFrame();
-		frame.setVisible(true);
+		return "testing.ScanForRobotsWhenHitWall,testing.ScanForRobotsWhenHitWall";
 	}
 
 	@After
-	public void tearDownAttack() {
-
-		Runnable doHack = new Runnable() {
-			public void run() {
-				System.out.println("works still!!!");
-			}
-		};
-
-		javax.swing.SwingUtilities.invokeLater(doHack);
-
-		frame.setVisible(false);
-		frame.dispose();
-		Assert.assertFalse(messagedBreakthru);
-		Assert.assertTrue(messagedAttack);
+	public void tearDown() {
+		Assert.assertTrue(messagedScanned);
 	}
 }
