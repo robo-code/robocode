@@ -22,6 +22,8 @@
  *       synchronized List and HashMap
  *     Nathaniel Troutman
  *     - Added sanity check on battle object in getRowCount()
+ *     Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh
+ *     - Score with % (percentage) in the table view
  *******************************************************************************/
 package robocode.ui;
 
@@ -34,6 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.util.Date;
 
 
@@ -42,6 +45,7 @@ import java.util.Date;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh (contributors)
  */
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
@@ -49,9 +53,28 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	private final BattleResults[] results;
 	private final int numRounds;
 
+	// The sum of the scores gathered by the robots.
+	private double totalScore;
+
 	public BattleResultsTableModel(BattleResults[] results, int numRounds) {
 		this.results = results;
 		this.numRounds = numRounds;
+		totalScore = countTotalScore();
+	}
+	
+	/**
+	 * Function for counting the sum of the scores gathered by the robots.
+	 * @return The sum.
+	 */
+	private double countTotalScore() {
+		
+		double totalScore = 0;
+		
+		for (int i = 0; i < results.length; i++) {
+			totalScore += results[i].getScore();
+		}
+		
+		return totalScore;
 	}
 
 	public int getColumnCount() {
@@ -68,7 +91,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return "Robot Name";
 
 		case 2:
-			return "Total Score";
+			return "    Total Score    ";
 
 		case 3:
 			return "Survival";
@@ -136,7 +159,8 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return statistics.getTeamLeaderName();
 
 		case 2:
-			return "" + (int) (statistics.getScore() + 0.5);
+			return "" + (int) (statistics.getScore() + 0.5) + " (" 
+					+ NumberFormat.getPercentInstance().format(statistics.getScore() / totalScore) + ")"; 
 
 		case 3:
 			return "" + (int) (statistics.getSurvival() + 0.5);

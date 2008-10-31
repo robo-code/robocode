@@ -1,10 +1,17 @@
 Version 1.6.1.4
-(10/30/2008)
+(10/31/2008)
 -------------
 o Bugfixes
   -- Loosing robots were not receiving onBattleEnded(BattleEndedEvent) events.
   -- A new security issue fix for robots that were able to execute code thru the Event Dispatch
      Thread (EDT). Robots that try to access the EDT will be disabled!
+
+o New feature
+  -- The results and current rankings (during a battle) is now showing the score as percentage(s)
+     in parenthesis right beside the score points like e.g. '7875 (12%)' for the total score in the
+     results and '21 / 2900  (7 / 14%)' with the current rankings.
+     -- Thanks goes to Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh for this
+        patch/contribution!
 
 o Changes
   -- The command-line option EXPERIMENTAL (true/false) allowing access to the robot interface peer

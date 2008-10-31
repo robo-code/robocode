@@ -21,6 +21,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh
+ *     - Score with % (percentage) in the table view
  *******************************************************************************/
 package robocode.ui;
 
@@ -30,6 +32,8 @@ import robocode.battle.snapshot.TurnSnapshot;
 import robocode.text.StringUtil;
 
 import javax.swing.table.AbstractTableModel;
+
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -40,15 +44,39 @@ import java.util.List;
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh (contributors)
  */
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
 	List<ScoreSnapshot> scoreSnapshotList;
+	
+	// The sum of the scores gathered by the robots in the actual round
+	private double currentSum;
+
+	// The sum of the scores gathered by the robots in the previous rounds
+	private double totalSum;
+	
+	/**
+	 * Function for counting the sum of the scores gathered by the robots.
+	 */
+	private void countTotalScores() {
+		currentSum = 0;
+		totalSum = 0;
+		Iterator<ScoreSnapshot> it = scoreSnapshotList.iterator();
+		
+		while (it.hasNext()) {
+			ScoreSnapshot score = it.next();
+
+			currentSum += score.getCurrentScore();
+			totalSum += score.getTotalScore();
+		}
+	}
 
 	public void updateSource(TurnSnapshot snapshot) {
 		if (snapshot != null) {
 			scoreSnapshotList = snapshot.getTeamScores();
+			countTotalScores();
 		} else {
 			scoreSnapshotList = null;
 		}
@@ -72,7 +100,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			return "Robot Name";
 
 		case 2:
-			return "    Total Score    ";
+			return "          Total Score          ";
 
 		case 3:
 			return "     Survival     ";
@@ -121,7 +149,9 @@ public class BattleRankingTableModel extends AbstractTableModel {
 			final double current = statistics.getCurrentScore();
 			final double total = statistics.getTotalScore();
 
-			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
+			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5) + "  ("
+					+ (int) (current / currentSum * 100) + " / " + (int) ((total + current) / (totalSum + currentSum) * 100)
+					+ "%)";
 		}
 
 		case 3: {
