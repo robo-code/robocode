@@ -240,6 +240,9 @@ public class BattleManager implements IBattleManager {
 		final String seed = System.getProperty("RANDOMSEED", "none");
 
 		if (!seed.equals("none")) {
+			// init soon as it reads random
+			manager.getCpuManager().getCpuConstant();
+            
 			RandomFactory.resetDeterministic(Long.valueOf(seed));
 		}
 
