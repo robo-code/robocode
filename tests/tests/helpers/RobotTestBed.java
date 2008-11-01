@@ -26,8 +26,6 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.util.Random;
 
-import robots.TestJunior;
-
 
 /**
  * @author Pavel Savara (original)

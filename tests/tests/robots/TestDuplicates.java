@@ -14,7 +14,6 @@ package robots;
 
 import helpers.RobotTestBed;
 import org.junit.Test;
-import org.junit.After;
 import org.junit.Assert;
 import static org.hamcrest.CoreMatchers.is;
 import robocode.battle.events.BattleStartedEvent;

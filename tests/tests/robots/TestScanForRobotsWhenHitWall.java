@@ -15,7 +15,6 @@ package robots;
 import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
-import org.junit.After;
 import robocode.battle.events.TurnEndedEvent;
 
 
