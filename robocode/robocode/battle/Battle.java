@@ -409,6 +409,7 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer robotPeer : robots) {
 			robotPeer.cleanup();
 		}
+        manager.getThreadManager().reset();
 
 		super.finalizeBattle();
 	}

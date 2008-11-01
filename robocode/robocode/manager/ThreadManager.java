@@ -111,10 +111,7 @@ public class ThreadManager {
 		for (int i = robots.size() - 1; i >= 0; i--) {
 			robotPeer = robots.get(i);
 			if (robotPeer != null) {
-				robot = robotPeer.getRobot();
-				if (robot != null) {
-					classes.add(robot.getClass());
-				}
+                classes.add(robotPeer.getRobotClassManager().getRobotClass());
 			}
 		}
 		return classes;
@@ -127,11 +124,9 @@ public class ThreadManager {
 			RobotPeer robotPeer = robots.get(i);
 
 			if (robotPeer != null) {
-				IBasicRobot robot = robotPeer.getRobot();
-
 				// NOTE: The check is on name level, as the equals() method does not work between
 				// the two classes, and isAssignableFrom() does not work here either! -FNL
-				if (robot != null && robot.getClass().getName().equals(robotClass.getName())) {
+				if (robotPeer.getRobotClassManager().getRobotClass().getName().equals(robotClass.getName())) {
 					robotPeers.add(robotPeer);
 				}
 			}
