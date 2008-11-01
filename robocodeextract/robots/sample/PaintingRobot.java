@@ -16,8 +16,8 @@ package sample;
 
 
 import robocode.HitByBulletEvent;
-import robocode.ScannedRobotEvent;
 import robocode.Robot;
+import robocode.ScannedRobotEvent;
 
 import java.awt.*;
 

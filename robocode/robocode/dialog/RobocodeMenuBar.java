@@ -27,8 +27,8 @@
 package robocode.dialog;
 
 
-import robocode.battle.IBattleManager;
 import robocode.battle.BattleProperties;
+import robocode.battle.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
@@ -36,7 +36,10 @@ import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 
 /**

@@ -12,9 +12,9 @@
 package robocode;
 
 
-import robocode.peer.RobotPeer;
-import robocode.peer.RobotCommands;
 import robocode.battle.Battle;
+import robocode.peer.RobotCommands;
+import robocode.peer.RobotPeer;
 
 
 /**

@@ -21,11 +21,11 @@
 package robocode.peer.robot;
 
 
+import robocode.exception.RobotException;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.peer.RobotPeer;
-import robocode.exception.RobotException;
 
 
 /**

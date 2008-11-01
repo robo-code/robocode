@@ -12,10 +12,9 @@
 package robocode.peer;
 
 
-import robocode.repository.RobotFileSpecification;
-import robocode.manager.NameManager;
 import robocode.BattleRules;
-import robocode.io.Logger;
+import robocode.manager.NameManager;
+import robocode.repository.RobotFileSpecification;
 
 import java.util.List;
 

@@ -12,10 +12,10 @@
 package robocode.peer.proxies;
 
 
-import robocode.robotinterfaces.peer.IStandardRobotPeer;
+import robocode.manager.HostManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
-import robocode.manager.HostManager;
+import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 
 /**

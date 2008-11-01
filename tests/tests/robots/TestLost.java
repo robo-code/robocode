@@ -12,12 +12,12 @@
 package robots;
 
 
-import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.events.TurnEndedEvent;
+import helpers.RobotTestBed;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
-import static org.hamcrest.CoreMatchers.is;
-import helpers.RobotTestBed;
+import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.snapshot.RobotSnapshot;
 
 
 /**

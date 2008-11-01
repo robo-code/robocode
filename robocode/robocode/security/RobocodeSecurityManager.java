@@ -29,19 +29,19 @@ package robocode.security;
 import robocode.RobocodeFileOutputStream;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.ThreadManager;
-import robocode.peer.BulletState;
-import robocode.peer.RobotPeer;
-import robocode.peer.ExecResult;
 import robocode.peer.BulletCommand;
+import robocode.peer.BulletState;
+import robocode.peer.ExecResult;
+import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.TeamMessage;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.security.Permission;
 import java.util.*;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 
 
 /**

@@ -27,12 +27,12 @@ package robocode.manager;
 
 
 import robocode.RobocodeFileOutputStream;
-import robocode.recording.BattleRecorder;
-import robocode.recording.IBattleRecorder;
 import robocode.battle.IBattleManager;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
+import robocode.recording.BattleRecorder;
+import robocode.recording.IBattleRecorder;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;

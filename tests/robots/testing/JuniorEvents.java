@@ -13,10 +13,10 @@ package testing;
 
 
 import robocode.*;
-import robocode.util.Utils;
-import robocode.robotinterfaces.IJuniorRobot;
 import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IJuniorRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.util.Utils;
 
 import java.io.PrintStream;
 import java.util.Hashtable;

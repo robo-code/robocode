@@ -13,15 +13,14 @@ package robocode.peer;
 
 
 import robocode.Rules;
-import robocode.MessageEvent;
 import robocode.peer.robot.TeamMessage;
 import robocode.robotpaint.Graphics2DProxy;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.awt.*;
-import static java.lang.Math.min;
 import static java.lang.Math.abs;
+import static java.lang.Math.min;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

@@ -12,7 +12,10 @@
 package testing;
 
 
-import robocode.*;
+import robocode.BattleEndedEvent;
+import robocode.DeathEvent;
+import robocode.Robot;
+import robocode.WinEvent;
 
 
 /**

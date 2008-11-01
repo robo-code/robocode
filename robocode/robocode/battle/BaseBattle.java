@@ -12,17 +12,19 @@
 package robocode.battle;
 
 
-import robocode.battle.events.*;
-import static robocode.io.Logger.logMessage;
-import static robocode.io.Logger.logError;
-import robocode.io.Logger;
-import robocode.common.Command;
-import robocode.manager.RobocodeManager;
 import robocode.BattleRules;
+import robocode.battle.events.BattleEventDispatcher;
+import robocode.battle.events.BattlePausedEvent;
+import robocode.battle.events.BattleResumedEvent;
+import robocode.common.Command;
+import robocode.io.Logger;
+import static robocode.io.Logger.logError;
+import static robocode.io.Logger.logMessage;
+import robocode.manager.RobocodeManager;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**

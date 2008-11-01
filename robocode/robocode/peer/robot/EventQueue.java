@@ -16,13 +16,10 @@
 package robocode.peer.robot;
 
 
-import robocode.DeathEvent;
 import robocode.Event;
-import robocode.SkippedTurnEvent;
-import robocode.WinEvent;
 
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**

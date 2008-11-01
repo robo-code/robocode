@@ -14,10 +14,10 @@
 package robocode;
 
 
-import robocode.robotinterfaces.IBasicRobot;
+import robocode.peer.RobotStatics;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicEvents2;
-import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 

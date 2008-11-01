@@ -27,8 +27,8 @@
 package robocode.peer;
 
 
-import robocode.battle.Battle;
 import robocode.Bullet;
+import robocode.battle.Battle;
 
 import java.util.List;
 

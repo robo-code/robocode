@@ -65,37 +65,37 @@ package robocode.peer;
 
 import robocode.*;
 import robocode.Event;
-import robocode.security.RobocodeClassLoader;
-import robocode.control.RandomFactory;
-import robocode.manager.HostManager;
-import robocode.manager.ThreadManager;
 import robocode.battle.Battle;
+import robocode.control.RandomFactory;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
-import static robocode.io.Logger.logMessage;
 import robocode.io.Logger;
+import static robocode.io.Logger.logMessage;
+import robocode.manager.HostManager;
+import robocode.manager.ThreadManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.peer.robot.EventQueue;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotpaint.Graphics2DProxy;
+import robocode.security.RobocodeClassLoader;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
+import java.io.PrintStream;
 import static java.lang.Math.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.security.AccessControlException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
-import java.io.PrintStream;
 
 
 /**

@@ -14,11 +14,13 @@
 package robocode;
 
 
-import robocode.robotinterfaces.*;
 import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.ITeamEvents;
+import robocode.robotinterfaces.ITeamRobot;
 
-import java.io.Serializable;
 import java.awt.*;
+import java.io.Serializable;
 
 
 /**

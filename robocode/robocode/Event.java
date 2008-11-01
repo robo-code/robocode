@@ -22,8 +22,8 @@
 package robocode;
 
 
-import robocode.robotinterfaces.IBasicRobot;
 import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 

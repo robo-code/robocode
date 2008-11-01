@@ -12,9 +12,9 @@
 package robocode;
 
 
-import robocode.robotinterfaces.IBasicRobot;
-import robocode.robotinterfaces.IBasicEvents;
 import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 

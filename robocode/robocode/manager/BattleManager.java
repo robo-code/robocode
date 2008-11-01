@@ -52,11 +52,10 @@ package robocode.manager;
 
 
 import robocode.Event;
-import robocode.recording.BattlePlayer;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
-import robocode.battle.IBattleManager;
 import robocode.battle.IBattle;
+import robocode.battle.IBattleManager;
 import robocode.battle.events.*;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
@@ -66,10 +65,11 @@ import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.peer.robot.RobotClassManager;
+import robocode.recording.BattlePlayer;
 import robocode.repository.FileSpecification;
+import robocode.repository.Repository;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
-import robocode.repository.Repository;
 import robocode.security.RobocodeSecurityManager;
 
 import java.io.*;

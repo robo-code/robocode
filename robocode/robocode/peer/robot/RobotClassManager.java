@@ -27,7 +27,6 @@ package robocode.peer.robot;
 
 import robocode.io.Logger;
 import robocode.manager.NameManager;
-import robocode.peer.TeamPeer;
 import robocode.repository.RobotFileSpecification;
 import robocode.security.RobocodeClassLoader;
 

@@ -12,12 +12,12 @@
 package robocode.peer;
 
 
-import robocode.RobotStatus;
 import robocode.Event;
+import robocode.RobotStatus;
 import robocode.peer.robot.TeamMessage;
 
-import java.util.List;
 import java.io.Serializable;
+import java.util.List;
 
 
 public class ExecResult implements Serializable {

@@ -12,10 +12,9 @@
 package robocode.recording;
 
 
-import static robocode.io.Logger.logError;
-
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
+import static robocode.io.Logger.logError;
 import robocode.manager.RobocodeManager;
 
 import java.io.*;

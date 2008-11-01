@@ -12,12 +12,12 @@
 package robocode.peer.proxies;
 
 
-import robocode.peer.robot.RobotOutputStream;
-import robocode.peer.robot.RobotFileSystemManager;
-import robocode.peer.RobotStatics;
-import robocode.peer.RobotPeer;
 import robocode.manager.HostManager;
 import robocode.manager.ThreadManager;
+import robocode.peer.RobotPeer;
+import robocode.peer.RobotStatics;
+import robocode.peer.robot.RobotFileSystemManager;
+import robocode.peer.robot.RobotOutputStream;
 
 
 /**

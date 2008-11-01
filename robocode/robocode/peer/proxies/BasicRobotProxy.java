@@ -14,15 +14,15 @@ package robocode.peer.proxies;
 
 import robocode.*;
 import robocode.Event;
-import robocode.robotpaint.Graphics2DProxy;
+import robocode.exception.DisabledException;
+import robocode.exception.RobotException;
 import robocode.manager.HostManager;
-import robocode.manager.ThreadManager;
-import robocode.util.Utils;
 import robocode.peer.*;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.TeamMessage;
-import robocode.exception.*;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotpaint.Graphics2DProxy;
+import robocode.util.Utils;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;

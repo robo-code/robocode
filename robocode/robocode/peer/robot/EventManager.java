@@ -43,7 +43,7 @@ package robocode.peer.robot;
 import robocode.*;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.proxies.BasicRobotProxy;
-import robocode.robotinterfaces.*;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;

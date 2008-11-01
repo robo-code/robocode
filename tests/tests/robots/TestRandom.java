@@ -12,11 +12,11 @@
 package robots;
 
 
-import helpers.RobotTestBed;
-import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.events.TurnEndedEvent;
 import helpers.Assert;
+import helpers.RobotTestBed;
 import org.junit.Test;
+import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.snapshot.RobotSnapshot;
 
 
 /**

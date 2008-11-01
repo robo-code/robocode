@@ -14,8 +14,10 @@
 package robocode;
 
 
-import robocode.robotinterfaces.*;
 import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.IAdvancedRobot;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 
