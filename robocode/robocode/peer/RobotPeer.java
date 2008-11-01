@@ -184,7 +184,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 		this.robotClassManager = robotClassManager;
 		this.battle = battle;
-		robotThreadManager = new RobotThreadManager(this);
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
 		teamPeer = team;
@@ -196,6 +195,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader,
 				battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
+
+		robotThreadManager = new RobotThreadManager(this);
 	}
 
 	public PrintStream getOut() { // TODO remove
@@ -294,27 +295,15 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public String getName() {
-		return (statics != null)
-				? statics.getName()
-				: robotClassManager.getClassNameManager().getFullClassNameWithVersion();
+		return statics.getName();
 	}
 
 	public String getShortName() {
-		return (statics != null)
-				? statics.getShortName()
-				: robotClassManager.getClassNameManager().getUniqueShortClassNameWithVersion();
+		return statics.getShortName();
 	}
 
 	public String getVeryShortName() {
-		return (statics != null)
-				? statics.getVeryShortName()
-				: robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
-	}
-
-	public String getNonVersionedName() {
-		return (statics != null)
-				? statics.getNonVersionedName()
-				: robotClassManager.getClassNameManager().getFullClassName();
+		return statics.getVeryShortName();
 	}
 
 	// -------------------
@@ -929,11 +918,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			} else {
 				final int nl = recipient.length();
 				final String currentName = member.getName();
-				final String currentNonVerName = member.getNonVersionedName();
+				final String currentNonVerName = member.statics.getNonVersionedName();
 
 				if ((currentName.length() >= nl && currentName.substring(0, nl).equals(recipient))
 						|| (currentNonVerName.length() >= nl
-								&& member.getNonVersionedName().substring(0, nl).equals(recipient))) {
+								&& member.statics.getNonVersionedName().substring(0, nl).equals(recipient))) {
 					return true;
 				}
 			}
