@@ -60,4 +60,13 @@ public final class DeathEvent extends Event {
 			listener.onDeath(this);
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final boolean isCriricalEvent() {
+		return true;
+	}
+
 }

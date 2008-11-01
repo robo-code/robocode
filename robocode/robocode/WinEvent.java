@@ -60,4 +60,13 @@ public final class WinEvent extends Event {
 			listener.onWin(this);
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final boolean isCriricalEvent() {
+		return true;
+	}
+
 }

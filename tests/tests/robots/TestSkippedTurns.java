@@ -12,45 +12,44 @@
 package robots;
 
 
-import org.junit.Test;
-
 import helpers.RobotTestBed;
+import helpers.Assert;
+import org.junit.Test;
 import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
-import junit.framework.Assert;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestJunior extends RobotTestBed {
+public class TestSkippedTurns extends RobotTestBed {
+	boolean messagedBattle;
+	boolean messagedEvent;
+
 	@Test
 	public void run() {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "testing.JuniorEvents,sample.SittingDuck";
-	}
-
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(0);
+		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
-		final String out = robot.getOutputStreamSnapshot();
-
-		if (event.getTurnSnapshot().getTurn() == 589) {
-			// if (out.contains("robocode.BulletMissedEvent")) {
-
-			test(out, "robocode.BulletMissedEvent 5");
-			test(out, "robocode.ScannedRobotEvent 100");
-			test(out, "robocode.BulletHitEvent 24");
-			test(out, "robocode.StatusEvent 589");
-			test(out, "robocode.WinEvent 1");
+		if (out.contains("Skipped!!!")) {
+			messagedEvent = true;
+		}
+		if (out.contains("not performed any actions in a reasonable")) {
+			messagedBattle = true;
 		}
 	}
 
-	private void test(String out, String in) {
-		Assert.assertTrue(in, out.contains(in));
+	@Override
+	public String getRobotNames() {
+		return "sample.TrackFire,testing.SkipTurns";
+	}
+
+	@Override
+	protected void runTeardown() {
+		Assert.assertTrue(messagedEvent);
+		Assert.assertTrue(messagedBattle);
 	}
 }

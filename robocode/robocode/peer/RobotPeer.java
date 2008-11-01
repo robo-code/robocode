@@ -497,26 +497,26 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		final RobotCommands resCommands = new RobotCommands(this.commands.get(), false);
 		final RobotStatus resStatus = status.get();
 
-		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), isDead(),
-				isWinner());
+		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
+
+		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), shouldWait);
 	}
 
 	public final ExecResult waitForBattleEndImpl(RobotCommands newCommands) {
-		if (battle.isAborted() || (battle.isLastRound() && isDead())) {
-			if (!getHalt()) {
-				// from robot to battle
-				commands.set(new RobotCommands(newCommands, true));
-				printProxy(newCommands.getOutputText());
+		if (!getHalt()) {
+			// from robot to battle
+			commands.set(new RobotCommands(newCommands, true));
+			printProxy(newCommands.getOutputText());
 
-				waitForNextRound();
-			}
+			waitForNextRound();
 		}
 		// from battle to robot
 		final RobotCommands resCommands = new RobotCommands(this.commands.get(), false);
 		final RobotStatus resStatus = status.get();
 
-		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), isDead(),
-				isWinner());
+		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && !isWinner());
+
+		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), shouldWait);
 	}
 
 	private List<Event> readoutEvents() {
@@ -555,7 +555,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public void run() {
 		setRunning(true);
-
 		try {
 			if (robotProxy != null) {
 				if (robot != null) {
@@ -577,12 +576,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 					robotProxy.execute();
 				}
 			}
-		} catch (AbortedException e) {
-			robotProxy.waitForBattleEndImpl();
+		} catch (WinException e) {// Do nothing
+		} catch (AbortedException e) {// Do nothing
 		} catch (DeathException e) {
 			println("SYSTEM: " + getName() + " has died");
-			robotProxy.waitForBattleEndImpl();
-		} catch (WinException e) {// Do nothing
 		} catch (DisabledException e) {
 			drainEnergy();
 			String msg = e.getMessage();
@@ -597,20 +594,20 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 			drainEnergy();
 			final String message = getName() + ": Exception: " + e;
 
-			println(message);
-			println(e.getStackTrace().toString());
+			print(e);
 			logMessage(message);
 		} catch (Throwable t) {
 			drainEnergy();
 			if (!(t instanceof ThreadDeath)) {
 				final String message = getName() + ": Throwable: " + t;
 
-				println(message);
-				println(t.getStackTrace().toString());
+				print(t);
 				logMessage(message);
 			} else {
 				logMessage(getName() + " stopped successfully.");
 			}
+		} finally {
+			robotProxy.waitForBattleEndImpl();
 		}
 
 		// If battle is waiting for us, well, all done!
@@ -1692,9 +1689,12 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		if (isSleeping() || !isRunning() || battle.isDebugging()) {
 			skippedTurns = 0;
 		} else {
+			println("SK");
 			skippedTurns++;
 			events.get().clear(false);
-			addEvent(new SkippedTurnEvent());
+			if (!isDead()) {
+				addEvent(new SkippedTurnEvent());
+			}
 
 			if ((!isIORobot() && (skippedTurns > maxSkippedTurns))
 					|| (isIORobot() && (skippedTurns > maxSkippedTurnsWithIO))) {

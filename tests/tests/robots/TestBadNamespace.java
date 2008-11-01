@@ -13,8 +13,6 @@ package robots;
 
 
 import helpers.RobotTestBed;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
 import org.junit.Test;
 
 

@@ -78,6 +78,6 @@ public class TestPosition extends RobotTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertThat(lastTurn, is(2188));
+		Assert.assertThat(lastTurn, is(2076));
 	}
 }

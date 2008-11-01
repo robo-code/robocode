@@ -134,4 +134,13 @@ public class CustomEvent extends Event {
 	public final int compareTo(Event event) {
 		return super.compareTo(event);
 	}    
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	// final to disable overrides
+	public final boolean isCriricalEvent() {
+		return false;
+	}
 }

@@ -87,4 +87,12 @@ public final class SkippedTurnEvent extends Event {
 			}
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final boolean isCriricalEvent() {
+		return true;
+	}
 }

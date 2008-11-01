@@ -41,7 +41,7 @@ public class EventQueue extends ArrayList<Event> {
 		for (int i = 0; i < size(); i++) {
 			Event e = get(i);
 
-			if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+			if (!e.isCriricalEvent()) {
 				remove(i--);
 			}
 		}
@@ -51,8 +51,7 @@ public class EventQueue extends ArrayList<Event> {
 		for (int i = 0; i < size(); i++) {
 			Event e = get(i);
 
-			if ((e.getTime() <= clearTime)
-					&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+			if ((e.getTime() <= clearTime) && !e.isCriricalEvent()) {
 				remove(i--);
 			}
 		}

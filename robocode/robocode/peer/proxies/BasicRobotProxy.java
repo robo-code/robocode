@@ -56,7 +56,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy = new Graphics2DProxy();
 
 		// dummy
-		execResult = new ExecResult(null, null, null, null, false, false, false);
+		execResult = new ExecResult(null, null, null, null, false, false);
 	}
 
 	public void initialize() {
@@ -329,7 +329,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	public void waitForBattleEndImpl() {
 		eventManager.clearAllEvents(false);
-		while (!execResult.halt) {
+		do {
 			commands.setOutputText(out.readAndReset());
 			commands.setGraphicsProxy((Graphics2DProxy) graphicsProxy.create());
 			graphicsProxy.clearQueue();
@@ -349,7 +349,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			}
 			eventManager.resetCustomEvents();
 			eventManager.processEvents();
-		}
+		} while (!execResult.halt && execResult.shouldWait);
 	}
 
 	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}

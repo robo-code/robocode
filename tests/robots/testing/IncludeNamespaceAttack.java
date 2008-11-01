@@ -14,7 +14,6 @@ package testing;
 
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
-import robocode.robotinterfaces.IBasicRobot;
 import robocode.manager.BattleManager;
 
 

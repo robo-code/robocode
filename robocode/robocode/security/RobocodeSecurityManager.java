@@ -77,7 +77,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// Fake loading of classes
 		BulletState s = BulletState.INACTIVE;
 		BulletCommand c = new BulletCommand(null, false, 0);
-		ExecResult r = new ExecResult(null, null, null, null, false, false, false);
+		ExecResult r = new ExecResult(null, null, null, null, false, false);
 		TeamMessage t = new TeamMessage(null, null, null);
 
 		try {

@@ -154,4 +154,11 @@ public abstract class Event implements Comparable<Event> {
 
 	protected abstract void setClassPriorityImpl(int priority);
 
+	/**
+	 * @return True when the event is delivered even after timeout. 
+	 */
+	public boolean isCriricalEvent() {
+		return false;
+	}
+
 }

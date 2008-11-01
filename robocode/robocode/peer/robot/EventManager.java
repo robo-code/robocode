@@ -466,7 +466,7 @@ public class EventManager implements IEventManager {
 		if (robot != null && currentEvent != null) {
 			try {
 				// skip too old events
-				if (currentEvent.getTime() > getTime() - MAX_EVENT_STACK) {
+				if ((currentEvent.getTime() > getTime() - MAX_EVENT_STACK) || currentEvent.isCriricalEvent()) {
 					currentEvent.dispatch(robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
 				}
 			} catch (Exception ex) {

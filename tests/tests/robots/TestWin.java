@@ -69,7 +69,7 @@ public class TestWin extends RobotTestBed {
 		Assert.assertThat("always should win", win, is(getNumRounds()));
 		Assert.assertThat("should get BattleEnded event", end, is(1));
 		Assert.assertThat("always should be FIRST", results[0].getTeamLeaderName(), is("testing.BattleWin"));
-		Assert.assertThat("always should get score", results[0].getScore(), is(892));
+		Assert.assertThat("always should get score", results[0].getScore(), is(895));
 	}
 
 }
