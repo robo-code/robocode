@@ -12,27 +12,19 @@
 package robocode.peer.proxies;
 
 
-import robocode.RobotStatus;
-import robocode.manager.ThreadManager;
-import robocode.peer.RobotCommands;
+import robocode.peer.RobotStatics;
+import robocode.peer.robot.RobotFileSystemManager;
+import robocode.peer.robot.RobotOutputStream;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IHostingRobotProxy extends IHostedThread {
-
-	String getRootPackageDirectory();
-	String getClassDirectory();
-
-	void initializeRound(RobotCommands commands, RobotStatus status);
-	void startThread(ThreadManager tm);
-	void forceStopThread();
-	boolean waitForStopThread();
-	boolean unsafeLoadRound(ThreadManager threadManager);
-
-	void setSetCallCount(int setCallCount); // TODO move to exec
-	void setGetCallCount(int getCallCount);
-	void cleanup();
-
+public interface IHostedThread extends Runnable {
+	void println(String s);
+	void drainEnergy();
+	Class getRobotClass();
+	RobotStatics getStatics();
+	RobotFileSystemManager getRobotFileSystemManager();
+	RobotOutputStream getOut();
 }

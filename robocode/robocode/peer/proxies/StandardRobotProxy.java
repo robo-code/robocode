@@ -12,12 +12,12 @@
 package robocode.peer.proxies;
 
 
+import robocode.RobotStatus;
 import robocode.manager.HostManager;
+import robocode.peer.RobotCommands;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
-import robocode.peer.RobotCommands;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
-import robocode.RobotStatus;
 
 
 /**

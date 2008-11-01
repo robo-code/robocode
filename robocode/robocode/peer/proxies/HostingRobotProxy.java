@@ -12,21 +12,21 @@
 package robocode.peer.proxies;
 
 
+import robocode.exception.AbortedException;
+import robocode.exception.DeathException;
+import robocode.exception.DisabledException;
+import robocode.exception.WinException;
+import static robocode.io.Logger.logMessage;
 import robocode.manager.HostManager;
 import robocode.manager.ThreadManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
+import robocode.peer.robot.EventManager;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.RobotOutputStream;
 import robocode.peer.robot.RobotThreadManager;
-import robocode.peer.robot.EventManager;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import static robocode.io.Logger.logMessage;
-import robocode.exception.*;
-import robocode.robotpaint.Graphics2DProxy;
-import robocode.Event;
-import robocode.BattleEndedEvent;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -126,6 +126,10 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		return peer.getRobotClassManager().getRobotClassLoader().getClassDirectory();
 	}
 
+	public Class getRobotClass() {
+		return peer.getRobotClassManager().getRobotClass();
+	}
+
 	// TODO temporary
 	public RobotFileSystemManager getRobotFileSystemManager() {
 		return robotFileSystemManager;
@@ -136,7 +140,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	// -----------
 
 	public void startThread(ThreadManager tm) {
-		tm.addThreadGroup(robotThreadManager.getThreadGroup(), peer);
+		tm.addThreadGroup(robotThreadManager.getThreadGroup(), this);
 		robotThreadManager.start();
 	}
 
@@ -156,7 +160,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		Class<?> robotClass;
 
 		try {
-			threadManager.setLoadingRobot(peer);
+			threadManager.setLoadingRobot(this);
 			robotClass = peer.getRobotClassManager().getRobotClass();
 			if (robotClass == null) {
 				peer.println("SYSTEM: Skipping robot: " + statics.getName());
@@ -254,4 +258,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	}
 
 	protected abstract void waitForBattleEndImpl();
+
+	// TODO do something with that
+	public void drainEnergy() {
+		peer.drainEnergy();
+	}
 }

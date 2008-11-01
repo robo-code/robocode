@@ -21,7 +21,7 @@ package robocode;
 import robocode.exception.RobotException;
 import robocode.io.Logger;
 import robocode.manager.ThreadManager;
-import robocode.peer.RobotPeer;
+import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.security.RobocodePermission;
 import robocode.security.RobocodeSecurityManager;
@@ -99,18 +99,18 @@ public class RobocodeFileOutputStream extends OutputStream {
 		Thread c = Thread.currentThread();
 
 		this.fileName = fileName;
-		RobotPeer robotPeer = threadManager.getRobotPeer(c);
+		IHostedThread robotProxy = threadManager.getRobotProxy(c);
 
-		if (robotPeer == null) {
-			Logger.logError("RobotPeer is null");
+		if (robotProxy == null) {
+			Logger.logError("RobotProxy is null");
 			return;
 		}
 
-		if (!robotPeer.isAdvancedRobot()) {
+		if (!robotProxy.getStatics().isAdvancedRobot()) {
 			throw new RobotException("Only advanced robots may write to the filesystem");
 		}
 
-		this.fileSystemManager = robotPeer.getRobotFileSystemManager();
+		this.fileSystemManager = robotProxy.getRobotFileSystemManager();
 
 		// First, we see if the file exists:
 		File f = new File(fileName);
