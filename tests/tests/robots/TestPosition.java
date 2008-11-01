@@ -68,11 +68,11 @@ public class TestPosition extends RobotTestBed {
 			Assert.assertNear(350.7235444, target.getY());
 		}
 
-		if (lastTurn == 2572) {
-			Assert.assertNear(394.4306300, crazy.getX());
-			Assert.assertNear(254.9486727, crazy.getY());
-			Assert.assertNear(250.1701010, target.getX());
-			Assert.assertNear(100.8631507, target.getY());
+		if (lastTurn == 2000) {
+			Assert.assertNear(301.3823965, crazy.getX());
+			Assert.assertNear(316.1103866, crazy.getY());
+			Assert.assertNear(370.7450460, target.getX());
+			Assert.assertNear(492.5622427, target.getY());
 		}
 	}
 

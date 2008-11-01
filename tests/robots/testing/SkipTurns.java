@@ -13,7 +13,6 @@ package testing;
 
 
 import robocode.AdvancedRobot;
-import robocode.ScannedRobotEvent;
 import robocode.SkippedTurnEvent;
 import robocode.StatusEvent;
 
