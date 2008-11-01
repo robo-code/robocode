@@ -448,7 +448,7 @@ public final class Battle extends BaseBattle {
 		final long waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
-			robotPeer.startRound(manager.getThreadManager(), waitTime);
+			robotPeer.startRound(waitTime);
 		}
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
@@ -897,7 +897,7 @@ public final class Battle extends BaseBattle {
 		}
 		// Loading robots
 		for (RobotPeer robotPeer : robots) {
-			robotPeer.unsafeLoadRound(manager.getThreadManager());
+			robotPeer.unsafeLoadRound();
 		} // for
 
 		// Notify that the robots has been loaded

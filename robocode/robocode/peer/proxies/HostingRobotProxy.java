@@ -220,9 +220,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	// /
 
 
-    protected abstract void executeImpl();
+	protected abstract void executeImpl();
 
-    public void run() {
+	public void run() {
 		peer.setRunning(true);
 		try {
 			if (robot != null) {

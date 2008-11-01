@@ -74,7 +74,6 @@ import robocode.exception.WinException;
 import robocode.io.Logger;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.HostManager;
-import robocode.manager.ThreadManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.peer.robot.EventQueue;
@@ -611,13 +610,13 @@ public final class RobotPeer implements ContestantPeer {
 		return true;
 	}
 
-	public void unsafeLoadRound(ThreadManager threadManager) {
-		if (!robotProxy.unsafeLoadRound(threadManager)) {
+	public void unsafeLoadRound() {
+		if (!robotProxy.unsafeLoadRound()) {
 			drainEnergy();
 		}
 	}
 
-	public void startRound(ThreadManager tm, long waitTime) {
+	public void startRound(long waitTime) {
 		synchronized (this) {
 			try {
 				Logger.logMessage(".", false);
@@ -629,7 +628,7 @@ public final class RobotPeer implements ContestantPeer {
 				robotProxy.initializeRound(currentCommands, stat);
 
 				// Start the robot thread
-				robotProxy.startThread(tm);
+				robotProxy.startThread();
 
 				if (!battle.isDebugging()) {
 					// Wait for the robot to go to sleep (take action)
