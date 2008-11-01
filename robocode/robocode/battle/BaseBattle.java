@@ -31,7 +31,7 @@ import java.util.Queue;
 public abstract class BaseBattle implements IBattle, Runnable {
 
 	// Maximum turns to display the battle when battle ended
-	private final static int TURNS_DISPLAYED_AFTER_ENDING = 35;
+	private final static int TURNS_DISPLAYED_AFTER_ENDING = 30;
 
 	// Objects we use
 	protected Thread battleThread;
