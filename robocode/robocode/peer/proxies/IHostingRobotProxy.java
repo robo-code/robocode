@@ -35,11 +35,13 @@ public interface IHostingRobotProxy extends Runnable {
 	void initializeRound(RobotCommands commands, RobotStatus status);
 	void startThread(ThreadManager tm);
 	void forceStopThread();
-	void waitForStopThread();
+	boolean waitForStopThread();
 	boolean unsafeLoadRound(ThreadManager threadManager);
 
 	void setSetCallCount(int setCallCount); // TODO move to exec
 	void setGetCallCount(int getCallCount);
 	void cleanup();
+
+	void println(String s);
 
 }

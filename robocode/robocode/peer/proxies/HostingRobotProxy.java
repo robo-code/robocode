@@ -54,7 +54,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		robotFileSystemManager.initializeQuota();
 
 		out = new RobotOutputStream();        
-		robotThreadManager = new RobotThreadManager(peer);
+		robotThreadManager = new RobotThreadManager(this);
 	}
 
 	public void cleanup() {
@@ -108,6 +108,10 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		return out;
 	}
 
+	public void println(String s) {
+		out.println(s);
+	}
+
 	public RobotStatics getStatics() {
 		return statics;
 	}
@@ -137,11 +141,14 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	}
 
 	public void forceStopThread() {
-		robotThreadManager.forceStop();
+		if (!robotThreadManager.forceStop()) {
+			peer.getRobotStatistics().setInactive();
+			peer.setRunning(false);
+		}
 	}
 
-	public void waitForStopThread() {
-		robotThreadManager.waitForStop();
+	public boolean waitForStopThread() {
+		return robotThreadManager.waitForStop();
 	}
 
 	public boolean unsafeLoadRound(ThreadManager threadManager) {

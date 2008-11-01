@@ -1378,10 +1378,6 @@ public final class RobotPeer implements ContestantPeer {
 		robotProxy.waitForStopThread();
 	}
 
-	public Runnable getRobotRunnable() {
-		return robotProxy;
-	}
-
 	/**
 	 * Clean things up removing all references to the robot.
 	 */
