@@ -216,8 +216,6 @@ public abstract class BaseBattle implements IBattle, Runnable {
 				roundNum++;
 			}
 
-			shutdownBattle();
-
 			finalizeBattle();
 
 			cleanup();
@@ -236,15 +234,13 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		}
 	}
 
-	protected void shutdownBattle() {
+	protected void finalizeBattle() {
 		// Notify that the battle is over
 		synchronized (isRunning) {
 			isRunning.set(false);
 			isRunning.notifyAll();
 		}
 	}
-
-	protected void finalizeBattle() {}
 
 	protected void preloadRound() {
 		logMessage("----------------------");

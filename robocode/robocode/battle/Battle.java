@@ -331,9 +331,6 @@ public final class Battle extends BaseBattle {
 		}
 
 		if (robots != null) {
-			for (RobotPeer robotPeer : robots) {
-				robotPeer.cleanup();
-			}
 			robots.clear();
 			robots = null;
 		}
@@ -391,7 +388,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	@Override
-	protected void shutdownBattle() {
+	protected void finalizeBattle() {
 		try {
 			synchronized (isUnsafeLoaderThreadRunning) {
 				isUnsafeLoaderThreadRunning.notify();
@@ -403,25 +400,18 @@ public final class Battle extends BaseBattle {
 			Logger.logError(e);
 		}
 
-		for (RobotPeer robotPeer : robots) {
-			robotPeer.getRobotThreadManager().cleanup();
-		}
-
 		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
 
 		if (!isAborted()) {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeResults()));
 		}
 
-		super.shutdownBattle();
-	}
+        for (RobotPeer robotPeer : robots) {
+			robotPeer.getRobotThreadManager().cleanup();
+            robotPeer.cleanup();
+        }
 
-	@Override
-	protected void finalizeBattle() {
 		super.finalizeBattle();
-		for (RobotPeer robotPeer : robots) {
-			robotPeer.getRobotStatistics().resetScores();
-		}
 	}
 
 	@Override
