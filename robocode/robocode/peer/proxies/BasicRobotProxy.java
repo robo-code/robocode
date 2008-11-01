@@ -80,10 +80,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			eventManager = null;
 		}
 
-		if (peer.getRobotThreadManager() != null) {
-			peer.getRobotThreadManager().cleanup();
-		}
-
 		// Cleanup graphics proxy
 		graphicsProxy = null;
 		execResult = null;
@@ -293,7 +289,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected final void executeImpl() {
 		// Entering tick
-		peer.getRobotThreadManager().checkRunThread();
+		robotThreadManager.checkRunThread();
 		if (testingCondition) {
 			throw new RobotException(
 					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");

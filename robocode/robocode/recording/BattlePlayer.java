@@ -13,12 +13,15 @@ package robocode.recording;
 
 
 import robocode.battle.BaseBattle;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.events.*;
-import robocode.manager.RobocodeManager;
+import robocode.battle.snapshot.TurnSnapshot;
 import static robocode.io.Logger.logError;
+import robocode.manager.RobocodeManager;
 
-import java.io.*;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 
 /**

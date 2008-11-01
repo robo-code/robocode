@@ -130,7 +130,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	private Battle battle;
 	private RobotClassManager robotClassManager;
-	private RobotThreadManager robotThreadManager;
 	private RobotStatistics statistics;
 	private TeamPeer teamPeer;
 
@@ -195,8 +194,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader,
 				battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
-
-		robotThreadManager = new RobotThreadManager(this);
 	}
 
 	public PrintStream getOut() { // TODO remove
@@ -255,14 +252,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 	public RobotClassManager getRobotClassManager() {
 		return robotClassManager;
-	}
-
-	public RobotThreadManager getRobotThreadManager() {
-		return robotThreadManager;
-	}
-
-	public void waitForStop() {
-		robotProxy.waitForStopThread();
 	}
 
 	// TODO temporary
@@ -1491,6 +1480,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		setState(RobotState.DEAD);
 	}
 
+	public void waitForStop() {
+		robotProxy.waitForStopThread();
+	}
+
 	/**
 	 * Clean things up removing all references to the robot.
 	 */
@@ -1516,8 +1509,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		if (robotProxy != null) {
 			robotProxy.cleanup();
 		}
-
-		robotThreadManager = null;
 
 		// Cleanup robot proxy
 		robotProxy = null;

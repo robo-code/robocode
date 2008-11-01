@@ -18,12 +18,14 @@ import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.RobotOutputStream;
+import robocode.peer.robot.RobotThreadManager;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class HostingRobotProxy implements IHostingRobotProxy {
+	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
 	protected RobotStatics statics;
 	protected RobotOutputStream out;
@@ -39,6 +41,7 @@ public class HostingRobotProxy implements IHostingRobotProxy {
 		robotFileSystemManager.initializeQuota();
 
 		out = new RobotOutputStream();        
+		robotThreadManager = new RobotThreadManager(peer);
 	}
 
 	public void cleanup() {
@@ -48,6 +51,11 @@ public class HostingRobotProxy implements IHostingRobotProxy {
 			out.close();
 			out = null;
 		}
+
+		if (robotThreadManager != null) {
+			robotThreadManager.cleanup();
+		}
+		robotThreadManager = null;
 	}
 
 	public RobotOutputStream getOut() {
@@ -78,16 +86,16 @@ public class HostingRobotProxy implements IHostingRobotProxy {
 	// -----------
 
 	public void startThread(ThreadManager tm) {
-		tm.addThreadGroup(peer.getRobotThreadManager().getThreadGroup(), peer);
-		peer.getRobotThreadManager().start();
+		tm.addThreadGroup(robotThreadManager.getThreadGroup(), peer);
+		robotThreadManager.start();
 	}
 
 	public void forceStopThread() {
-		peer.getRobotThreadManager().forceStop();
+		robotThreadManager.forceStop();
 	}
 
 	public void waitForStopThread() {
-		peer.getRobotThreadManager().waitForStop();
+		robotThreadManager.waitForStop();
 	}
 
 }
