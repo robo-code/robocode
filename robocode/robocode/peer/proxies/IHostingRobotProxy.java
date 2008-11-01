@@ -21,7 +21,7 @@ import robocode.peer.robot.RobotOutputStream;
 /**
  * @author Pavel Savara (original)
  */
-public interface IHostingRobotProxy {
+public interface IHostingRobotProxy extends Runnable {
 	RobotOutputStream getOut();
 
 	String getRootPackageDirectory();
@@ -32,4 +32,5 @@ public interface IHostingRobotProxy {
 	void startThread(ThreadManager tm);
 	void forceStopThread();
 	void waitForStopThread();
+	boolean unsafeLoadRound(ThreadManager threadManager);
 }

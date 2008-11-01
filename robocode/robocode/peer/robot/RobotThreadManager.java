@@ -131,7 +131,7 @@ public class RobotThreadManager {
 
 	public void start() {
 		try {
-			runThread = new Thread(runThreadGroup, robotPeer, robotPeer.getName());
+			runThread = new Thread(runThreadGroup, robotPeer.getRobotRunnable(), robotPeer.getName());
 			runThread.setDaemon(true);
 			runThread.setPriority(Thread.NORM_PRIORITY);
 			runThread.start();

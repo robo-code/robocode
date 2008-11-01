@@ -36,7 +36,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
-	protected EventManager eventManager;
 	private Graphics2DProxy graphicsProxy;
 
 	protected RobotStatus status;
@@ -60,7 +59,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		execResult = new ExecResult(null, null, null, null, false, false);
 	}
 
-	public void initialize() {
+	public void initializeRound() {
 		eventManager.reset();
 	}
 
@@ -326,7 +325,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		eventManager.processEvents();
 	}
 
-	public void waitForBattleEndImpl() {
+	@Override
+	protected final void waitForBattleEndImpl() {
 		eventManager.clearAllEvents(false);
 		do {
 			commands.setOutputText(out.readAndReset());

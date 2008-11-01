@@ -111,7 +111,7 @@ public class ThreadManager {
 		for (int i = robots.size() - 1; i >= 0; i--) {
 			robotPeer = robots.get(i);
 			if (robotPeer != null) {
-                classes.add(robotPeer.getRobotClassManager().getRobotClass());
+				classes.add(robotPeer.getRobotClassManager().getRobotClass());
 			}
 		}
 		return classes;

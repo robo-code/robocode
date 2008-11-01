@@ -45,5 +45,6 @@ public class TestFileWrite extends RobotTestBed {
 	@Override
 	protected void runTeardown() {
 		Assert.assertTrue(file.exists());
+		file.delete();
 	}
 }

@@ -34,8 +34,8 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 	}
 
 	@Override
-	public void initialize() {
-		super.initialize();
+	public void initializeRound() {
+		super.initializeRound();
 		isStopped = true;
 	}
 

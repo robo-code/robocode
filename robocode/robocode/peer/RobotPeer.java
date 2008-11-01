@@ -89,8 +89,6 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.io.PrintStream;
 import static java.lang.Math.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +108,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public final class RobotPeer implements Runnable, ContestantPeer {
+public final class RobotPeer implements ContestantPeer {
 
 	public static final int
 			WIDTH = 40,
@@ -133,7 +131,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	private RobotStatistics statistics;
 	private TeamPeer teamPeer;
 
-	private IBasicRobot robot;
 	private BasicRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
 	private AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
@@ -207,7 +204,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	private void print(Throwable ex) {
+	public void print(Throwable ex) {
 		println(ex.toString());
 		StackTraceElement[] trace = ex.getStackTrace();
 
@@ -535,74 +532,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 	}
 
-	public void run() {
-		setRunning(true);
-		try {
-			if (robotProxy != null) {
-				if (robot != null) {
-
-					// Process all events for the first turn.
-					// This is done as the first robot status event must occur before the robot
-					// has started running.
-					robotProxy.getEventManager().processEvents();
-
-					Runnable runnable = robot.getRobotRunnable();
-
-					if (runnable != null) {
-						runnable.run();
-					}
-				}
-
-				// noinspection InfiniteLoopStatement
-				for (;;) {
-					robotProxy.execute();
-				}
-			}
-		} catch (WinException e) {// Do nothing
-		} catch (AbortedException e) {// Do nothing
-		} catch (DeathException e) {
-			println("SYSTEM: " + getName() + " has died");
-		} catch (DisabledException e) {
-			drainEnergy();
-			String msg = e.getMessage();
-
-			if (msg == null) {
-				msg = "";
-			} else {
-				msg = ": " + msg;
-			}
-			println("SYSTEM: Robot disabled" + msg);
-		} catch (Exception e) {
-			drainEnergy();
-			final String message = getName() + ": Exception: " + e;
-
-			print(e);
-			logMessage(message);
-		} catch (Throwable t) {
-			drainEnergy();
-			if (!(t instanceof ThreadDeath)) {
-				final String message = getName() + ": Throwable: " + t;
-
-				print(t);
-				logMessage(message);
-			} else {
-				logMessage(getName() + " stopped successfully.");
-			}
-		} finally {
-			robotProxy.waitForBattleEndImpl();
-		}
-
-		// If battle is waiting for us, well, all done!
-		synchronized (this) {
-			isRunning = false;
-			notifyAll();
-		}
-	}
-
-	public IBasicRobot getRobot() {
-		return robot;
-	}
-
 	// -----------
 	// called on battle thread
 	// -----------
@@ -723,7 +652,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		}
 		gunHeat = 3;
 
-		robotProxy.initialize();
+		robotProxy.initializeRound();
 		setHalt(false);
 
 		scan = false;
@@ -753,38 +682,8 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void unsafeLoadRound(ThreadManager threadManager) {
-
-		robot = null;
-		Class<?> robotClass;
-
-		try {
-			threadManager.setLoadingRobot(this);
-			robotClass = getRobotClassManager().getRobotClass();
-			if (robotClass == null) {
-				println("SYSTEM: Skipping robot: " + getName());
-				drainEnergy();
-				return;
-			}
-			robot = (IBasicRobot) robotClass.newInstance();
-			robotProxy.getEventManager().setRobot(robot);
-			robot.setOut(robotProxy.getOut());
-			robot.setPeer(robotProxy);
-		} catch (IllegalAccessException e) {
-			println("SYSTEM: Unable to instantiate this robot: " + e);
-			println("SYSTEM: Is your constructor marked public?");
-			print(e);
-			robot = null;
+		if (!robotProxy.unsafeLoadRound(threadManager)) {
 			drainEnergy();
-			logMessage(e);
-		} catch (Throwable e) {
-			println("SYSTEM: An error occurred during initialization of " + getRobotClassManager());
-			println("SYSTEM: " + e);
-			print(e);
-			robot = null;
-			drainEnergy();
-			logMessage(e);
-		} finally {
-			threadManager.setLoadingRobot(null);
 		}
 	}
 
@@ -1484,15 +1383,14 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		robotProxy.waitForStopThread();
 	}
 
+	public Runnable getRobotRunnable() {
+		return robotProxy;
+	}
+
 	/**
 	 * Clean things up removing all references to the robot.
 	 */
 	public void cleanup() {
-		// Clear all static field on the robot (at class level)
-		cleanupStaticFields();
-
-		robot = null;
-
 		// Cleanup and remove class manager
 		if (robotClassManager != null) {
 			robotClassManager.cleanup();
@@ -1512,34 +1410,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		// Cleanup robot proxy
 		robotProxy = null;
-	}
-
-	private void cleanupStaticFields() {
-		if (robot == null) {
-			return;
-		}
-
-		Field[] fields = new Field[0];
-
-		// This try-catch-throwable must be here, as it is not always possible to get the
-		// declared fields without getting a Throwable like java.lang.NoClassDefFoundError.
-		try {
-			fields = robot.getClass().getDeclaredFields();
-		} catch (Throwable t) {// Do nothing
-		}
-
-		for (Field f : fields) {
-			int m = f.getModifiers();
-
-			if (Modifier.isStatic(m) && !(Modifier.isFinal(m) || f.getType().isPrimitive())) {
-				try {
-					f.setAccessible(true);
-					f.set(robot, null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	public Graphics2DProxy getGraphics() {
