@@ -295,7 +295,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		return graphicsProxy;
 	}
 
-	protected final void executeImpl() {
+    @Override
+    protected final void executeImpl() {
 		// Entering tick
 		robotThreadManager.checkRunThread();
 		if (testingCondition) {

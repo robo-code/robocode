@@ -220,9 +220,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	// /
 
 
-	public abstract void execute();
+    protected abstract void executeImpl();
 
-	public void run() {
+    public void run() {
 		peer.setRunning(true);
 		try {
 			if (robot != null) {
@@ -241,7 +241,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 
 			// noinspection InfiniteLoopStatement
 			for (;;) {
-				execute();
+				executeImpl();
 			}
 		} catch (WinException e) {// Do nothing
 		} catch (AbortedException e) {// Do nothing
