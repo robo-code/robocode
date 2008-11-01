@@ -38,14 +38,16 @@ public class RobotFileSystemManager {
 	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
 	private long maxQuota = 0;
 	private String classDirectory;
+	private String rootPackageDirectory;
 
 	/**
 	 * RobotFileSystemHandler constructor comment.
 	 */
-	public RobotFileSystemManager(IHostingRobotProxy robotProxy, long maxQuota, String classDirectory) {
+	public RobotFileSystemManager(IHostingRobotProxy robotProxy, long maxQuota, String classDirectory, String rootPackageDirectory) {
 		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;
 		this.classDirectory = classDirectory;
+		this.rootPackageDirectory = rootPackageDirectory;
 	}
 
 	public void addStream(RobocodeFileOutputStream s) throws IOException {
@@ -95,7 +97,7 @@ public class RobotFileSystemManager {
 
 	public File getReadableDirectory() {
 		try {
-			final String dir = robotProxy.getRootPackageDirectory();
+			final String dir = rootPackageDirectory;
 
 			return (dir == null) ? null : new File(dir).getCanonicalFile();
 		} catch (java.io.IOException e) {

@@ -19,8 +19,8 @@ import robocode.exception.RobotException;
 import robocode.manager.HostManager;
 import robocode.peer.*;
 import robocode.peer.robot.EventManager;
-import robocode.peer.robot.TeamMessage;
 import robocode.peer.robot.RobotClassManager;
+import robocode.peer.robot.TeamMessage;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.Utils;
@@ -58,6 +58,9 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		// dummy
 		execResult = new ExecResult(null, null, null, null, false, false);
+
+		setSetCallCount(0);
+		setGetCallCount(0);
 	}
 
 	public void initializeRound(RobotCommands commands, RobotStatus status) {
@@ -423,16 +426,12 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	// battle driven methods
 	// -----------
 
-	public void setSetCallCount(int setCallCount) {
+	private void setSetCallCount(int setCallCount) {
 		this.setCallCount.set(setCallCount);
 	}
 
-	public void setGetCallCount(int getCallCount) {
+	private void setGetCallCount(int getCallCount) {
 		this.getCallCount.set(getCallCount);
-	}
-
-	public EventManager getEventManager() {
-		return eventManager;
 	}
 
 	// -----------
@@ -445,6 +444,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	@Override
 	public String toString() {
-		return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY();
+		return statics.getShortName() + "(" + (int) status.getEnergy() + ") X" + (int) status.getX() + " Y"
+				+ (int) status.getY();
 	}
 }

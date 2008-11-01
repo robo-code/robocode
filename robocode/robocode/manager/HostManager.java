@@ -26,6 +26,10 @@ public class HostManager {
 		return manager.getProperties().getRobotFilesystemQuota();
 	}
 
+	public ThreadManager getThreadManager() {
+		return manager.getThreadManager(); 
+	}
+
 	public void cleanup() {// TODO
 	}
 }

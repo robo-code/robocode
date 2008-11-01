@@ -17,8 +17,8 @@ import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.HostManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
-import robocode.peer.robot.TeamMessage;
 import robocode.peer.robot.RobotClassManager;
+import robocode.peer.robot.TeamMessage;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.*;

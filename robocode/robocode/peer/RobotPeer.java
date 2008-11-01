@@ -597,8 +597,6 @@ public final class RobotPeer implements ContestantPeer {
 
 		statistics.initialize();
 
-		robotProxy.setSetCallCount(0);
-		robotProxy.setGetCallCount(0);
 		skippedTurns = 0;
 	}
 

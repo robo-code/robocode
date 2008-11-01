@@ -13,7 +13,6 @@ package robocode.peer.proxies;
 
 
 import robocode.RobotStatus;
-import robocode.manager.ThreadManager;
 import robocode.peer.RobotCommands;
 
 
@@ -22,16 +21,11 @@ import robocode.peer.RobotCommands;
  */
 public interface IHostingRobotProxy extends IHostedThread {
 
-	String getRootPackageDirectory();
-
 	void initializeRound(RobotCommands commands, RobotStatus status);
-	void startThread(ThreadManager tm);
+	void startThread();
 	void forceStopThread();
 	boolean waitForStopThread();
-	boolean unsafeLoadRound(ThreadManager threadManager);
-
-	void setSetCallCount(int setCallCount); // TODO move to exec
-	void setGetCallCount(int getCallCount);
+	boolean unsafeLoadRound();
 	void cleanup();
 
 }

@@ -18,7 +18,6 @@ import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.HostManager;
-import robocode.manager.ThreadManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.*;
@@ -56,7 +55,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		loadClassBattle();
 
 		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
-				robotClassManager.getRobotClassLoader().getClassDirectory());
+				robotClassManager.getRobotClassLoader().getClassDirectory(),
+				robotClassManager.getRobotClassLoader().getRootPackageDirectory());
 		robotFileSystemManager.initializeQuota();
 	}
 
@@ -129,11 +129,6 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		return statics;
 	}
 
-	// TODO temporary
-	public String getRootPackageDirectory() {
-		return robotClassManager.getRobotClassLoader().getRootPackageDirectory();
-	}
-
 	public Class getRobotClass() {
 		return robotClassManager.getRobotClass();
 	}
@@ -146,8 +141,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	// battle driven methods
 	// -----------
 
-	public void startThread(ThreadManager tm) {
-		tm.addThreadGroup(robotThreadManager.getThreadGroup(), this);
+	public void startThread() {
+		hostManager.getThreadManager().addThreadGroup(robotThreadManager.getThreadGroup(), this);
 		robotThreadManager.start();
 	}
 
@@ -187,12 +182,12 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		}
 	}
 
-	public boolean unsafeLoadRound(ThreadManager threadManager) {
+	public boolean unsafeLoadRound() {
 		robot = null;
 		Class<?> robotClass;
 
 		try {
-			threadManager.setLoadingRobot(this);
+			hostManager.getThreadManager().setLoadingRobot(this);
 			robotClass = robotClassManager.getRobotClass();
 			if (robotClass == null) {
 				peer.println("SYSTEM: Skipping robot: " + statics.getName());
@@ -217,7 +212,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 			logMessage(e);
 			return false;
 		} finally {
-			threadManager.setLoadingRobot(null);
+			hostManager.getThreadManager().setLoadingRobot(null);
 		}
 		return true;
 	}
