@@ -16,6 +16,7 @@ import robocode.*;
 import robocode.Event;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.manager.HostManager;
+import robocode.manager.ThreadManager;
 import robocode.util.Utils;
 import robocode.peer.*;
 import robocode.peer.robot.EventManager;
@@ -77,6 +78,10 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		if (eventManager != null) {
 			eventManager.cleanup();
 			eventManager = null;
+		}
+
+		if (peer.getRobotThreadManager() != null) {
+			peer.getRobotThreadManager().cleanup();
 		}
 
 		// Cleanup graphics proxy
@@ -288,9 +293,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected final void executeImpl() {
 		// Entering tick
-		if (Thread.currentThread() != peer.getRobotThreadManager().getRunThread()) {
-			throw new RobotException("You cannot take action in this thread!");
-		}
+		peer.getRobotThreadManager().checkRunThread();
 		if (testingCondition) {
 			throw new RobotException(
 					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");

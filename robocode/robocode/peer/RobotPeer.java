@@ -261,6 +261,10 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 		return robotThreadManager;
 	}
 
+	public void waitForStop() {
+		robotProxy.waitForStopThread();
+	}
+
 	// TODO temporary
 	public RobotFileSystemManager getRobotFileSystemManager() {
 		return robotProxy.getRobotFileSystemManager();
@@ -796,7 +800,6 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 	}
 
 	public void startRound(ThreadManager tm, long waitTime) {
-		tm.addThreadGroup(getRobotThreadManager().getThreadGroup(), this);
 		synchronized (this) {
 			try {
 				Logger.logMessage(".", false);
@@ -812,7 +815,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				robotProxy.updateStatus(currentCommands, stat);
 
 				// Start the robot thread
-				getRobotThreadManager().start();
+				robotProxy.startThread(tm);
 
 				if (!battle.isDebugging()) {
 					// Wait for the robot to go to sleep (take action)
@@ -1510,11 +1513,11 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 
 		battle = null;
 
-		robotThreadManager = null;
-
 		if (robotProxy != null) {
 			robotProxy.cleanup();
 		}
+
+		robotThreadManager = null;
 
 		// Cleanup robot proxy
 		robotProxy = null;
@@ -1690,7 +1693,7 @@ public final class RobotPeer implements Runnable, ContestantPeer {
 				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				getRobotStatistics().setInactive();
-				getRobotThreadManager().forceStop();
+				robotProxy.forceStopThread();
 			}
 		}
 	}

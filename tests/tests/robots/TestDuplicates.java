@@ -80,6 +80,6 @@ public class TestDuplicates extends RobotTestBed {
 		Assert.assertThat(results[0].getTeamLeaderName(), is("testing.TestTeam (1)"));
 		Assert.assertThat(results[1].getTeamLeaderName(), is("testing.TestTeam (2)"));
 		Assert.assertThat(results[2].getTeamLeaderName(), is("sample.Crazy"));
-        Assert.assertThat(results[3].getTeamLeaderName(), is("sample.Fire (1)"));
+		Assert.assertThat(results[3].getTeamLeaderName(), is("sample.Fire (1)"));
 	}
 }

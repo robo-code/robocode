@@ -406,10 +406,9 @@ public final class Battle extends BaseBattle {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeResults()));
 		}
 
-        for (RobotPeer robotPeer : robots) {
-			robotPeer.getRobotThreadManager().cleanup();
-            robotPeer.cleanup();
-        }
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.cleanup();
+		}
 
 		super.finalizeBattle();
 	}
@@ -472,7 +471,7 @@ public final class Battle extends BaseBattle {
 		bullets.clear();
 		for (RobotPeer robotPeer : robots) {
 			robotPeer.getRobotStatistics().generateTotals();
-			robotPeer.getRobotThreadManager().waitForStop();
+			robotPeer.waitForStop();
 		}
 	}
 

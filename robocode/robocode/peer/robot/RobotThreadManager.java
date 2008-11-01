@@ -25,6 +25,7 @@ import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.peer.RobotPeer;
+import robocode.exception.RobotException;
 
 
 /**
@@ -174,8 +175,10 @@ public class RobotThreadManager {
 	 *
 	 * @return Returns a Thread
 	 */
-	public Thread getRunThread() {
-		return runThread;
+	public void checkRunThread() {
+		if (Thread.currentThread() != runThread) {
+			throw new RobotException("You cannot take action in this thread!");
+		}
 	}
 
 	@SuppressWarnings("deprecation")

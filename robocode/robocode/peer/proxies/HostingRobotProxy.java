@@ -17,6 +17,7 @@ import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.RobotStatics;
 import robocode.peer.RobotPeer;
 import robocode.manager.HostManager;
+import robocode.manager.ThreadManager;
 
 
 /**
@@ -70,6 +71,23 @@ public class HostingRobotProxy implements IHostingRobotProxy {
 	// TODO temporary
 	public RobotFileSystemManager getRobotFileSystemManager() {
 		return robotFileSystemManager;
+	}
+
+	// -----------
+	// battle driven methods
+	// -----------
+
+	public void startThread(ThreadManager tm) {
+		tm.addThreadGroup(peer.getRobotThreadManager().getThreadGroup(), peer);
+		peer.getRobotThreadManager().start();
+	}
+
+	public void forceStopThread() {
+		peer.getRobotThreadManager().forceStop();
+	}
+
+	public void waitForStopThread() {
+		peer.getRobotThreadManager().waitForStop();
 	}
 
 }

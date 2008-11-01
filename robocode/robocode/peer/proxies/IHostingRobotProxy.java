@@ -15,6 +15,7 @@ package robocode.peer.proxies;
 import robocode.peer.robot.RobotOutputStream;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.RobotStatics;
+import robocode.manager.ThreadManager;
 
 
 /**
@@ -28,4 +29,7 @@ public interface IHostingRobotProxy {
 	RobotFileSystemManager getRobotFileSystemManager();
 	RobotStatics getStatics();
 
+	void startThread(ThreadManager tm);
+	void forceStopThread();
+	void waitForStopThread();
 }
