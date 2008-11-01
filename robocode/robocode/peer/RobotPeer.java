@@ -67,6 +67,7 @@ import robocode.*;
 import robocode.Event;
 import robocode.battle.Battle;
 import robocode.control.RandomFactory;
+import robocode.control.RobotSpecification;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
@@ -78,14 +79,12 @@ import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.peer.robot.EventQueue;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.security.RobocodeClassLoader;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
 import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
-import java.io.PrintStream;
 import static java.lang.Math.*;
 import java.security.AccessControlException;
 import java.util.ArrayList;
@@ -116,18 +115,13 @@ public final class RobotPeer implements ContestantPeer {
 			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
 			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
 
-	// Allowed maximum length for a robot's full package name
-	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
-	// Allowed maximum length for a robot's short class name
-	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
-
 	private static final int maxSkippedTurns = 30;
 	private static final int maxSkippedTurnsWithIO = 240;
 
 	private Battle battle;
-	private RobotClassManager robotClassManager;
 	private RobotStatistics statistics;
 	private TeamPeer teamPeer;
+	private RobotSpecification controlRobotSpecification;
 
 	private IHostingRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
@@ -171,12 +165,11 @@ public final class RobotPeer implements ContestantPeer {
 	private Arc2D scanArc;
 	private BoundingRectangle boundingBox;
 
-	public RobotPeer(Battle battle, RobotClassManager robotClassManager, int duplicate, TeamPeer team) {
+	public RobotPeer(Battle battle, HostManager hostManager, RobotClassManager robotClassManager, int duplicate, TeamPeer team) {
 		super();
 		if (team != null) {
 			team.add(this);
 		}
-		this.robotClassManager = robotClassManager;
 		this.battle = battle;
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
@@ -186,13 +179,26 @@ public final class RobotPeer implements ContestantPeer {
 
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-		statics = new RobotStatics(getRobotClassManager().getRobotSpecification(), duplicate, isLeader,
+		statics = new RobotStatics(robotClassManager.getRobotSpecification(), duplicate, isLeader,
 				battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
-	}
 
-	public PrintStream getOut() { // TODO remove
-		return robotProxy.getOut();
+		controlRobotSpecification = robotClassManager.getControlRobotSpecification(); 
+
+		if (statics.isTeamRobot()) {
+			robotProxy = new TeamRobotProxy(robotClassManager, hostManager, this, statics);
+		} else if (statics.isAdvancedRobot()) {
+			robotProxy = new AdvancedRobotProxy(robotClassManager, hostManager, this, statics);
+		} else if (statics.isInteractiveRobot()) {
+			robotProxy = new StandardRobotProxy(robotClassManager, hostManager, this, statics);
+		} else if (statics.isJuniorRobot()) {
+			robotProxy = new JuniorRobotProxy(robotClassManager, hostManager, this, statics);
+		} else {
+			throw new AccessControlException("Unknown robot type");
+		}
+
+		commands.set(new RobotCommands());
+
 	}
 
 	public void println(String s) {
@@ -241,17 +247,12 @@ public final class RobotPeer implements ContestantPeer {
 		return statistics;
 	}
 
-	public Battle getBattle() {
-		return battle;
+	public RobotSpecification getControlRobotSpecification() {
+		return controlRobotSpecification;
 	}
 
-	public RobotClassManager getRobotClassManager() {
-		return robotClassManager;
-	}
-
-	// TODO temporary
-	public RobotFileSystemManager getRobotFileSystemManager() {
-		return robotProxy.getRobotFileSystemManager();
+	public boolean isBattleRunning() {
+		return battle.isRunning();
 	}
 
 	// -------------------
@@ -533,72 +534,6 @@ public final class RobotPeer implements ContestantPeer {
 	// -----------
 	// called on battle thread
 	// -----------
-
-	public void initializeBattle(HostManager hostManager) {
-		// Create statistics after teamPeer set
-
-		if (statics.isTeamRobot()) {
-			robotProxy = new TeamRobotProxy(hostManager, this, statics);
-		} else if (statics.isAdvancedRobot()) {
-			robotProxy = new AdvancedRobotProxy(hostManager, this, statics);
-		} else if (statics.isInteractiveRobot()) {
-			robotProxy = new StandardRobotProxy(hostManager, this, statics);
-		} else if (statics.isJuniorRobot()) {
-			robotProxy = new JuniorRobotProxy(hostManager, this, statics);
-		} else {
-			throw new AccessControlException("Unknown robot type");
-		}
-
-		commands.set(new RobotCommands());
-
-		String pkgn = getRobotClassManager().getClassNameManager().getFullPackage();
-
-		if (pkgn != null && pkgn.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-			final String message = "SYSTEM: Your package name is too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
-					+ " characters maximum please.";
-
-			println(message);
-			logMessage(message);
-			println("SYSTEM: Robot disabled.");
-			drainEnergy();
-		}
-
-		String clsn = getRobotClassManager().getClassNameManager().getShortClassName();
-
-		if (clsn != null && clsn.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-			final String message = "SYSTEM: Your classname is too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
-					+ " characters maximum please.";
-
-			println(message);
-			logMessage(message);
-			println("SYSTEM: Robot disabled.");
-			drainEnergy();
-		}
-		try {
-			Class<?> c;
-
-			RobotClassManager classManager = getRobotClassManager();
-			String className = classManager.getFullClassName();
-
-			RobocodeClassLoader classLoader = classManager.getRobotClassLoader();
-
-			// Pre-load robot classes without security...
-			// loadClass WILL NOT LINK the class, so static "cheats" will not work.
-			// in the safe robot loader the class is linked.
-			if (RobotClassManager.isSecutityOn()) {
-				c = classLoader.loadRobotClass(className, true);
-			} else {
-				c = classLoader.loadClass(className);
-			}
-
-			classManager.setRobotClass(c);
-
-		} catch (Throwable e) {
-			println("SYSTEM: Could not load " + getName() + " : " + e);
-			print(e);
-			drainEnergy();
-		}
-	}
 
 	public void initializeRound(List<RobotPeer> robots, double[][] initialRobotPositions) {
 		boolean valid = false;
@@ -1380,12 +1315,6 @@ public final class RobotPeer implements ContestantPeer {
 	 * Clean things up removing all references to the robot.
 	 */
 	public void cleanup() {
-		// Cleanup and remove class manager
-		if (robotClassManager != null) {
-			robotClassManager.cleanup();
-			robotClassManager = null;
-		}
-
 		if (statistics != null) {
 			statistics.cleanup();
 			statistics = null;

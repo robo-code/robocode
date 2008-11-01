@@ -717,17 +717,24 @@ public class RobotRepositoryManager {
 		}
 	}
 
+	// Allowed maximum length for a robot's full package name
+	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+	// Allowed maximum length for a robot's short class name
+	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
+
 	// TODO: Needs to be updated?
 	public boolean verifyRootPackage(String robotName) {
 		int lIndex = robotName.indexOf(".");
+		String rootPackage = robotName;
 
 		if (lIndex > 0) {
-			String rootPackage = robotName.substring(0, lIndex);
+			rootPackage = robotName.substring(0, lIndex);
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
 				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
 				return false;
 			}
+
 			if (rootPackage.equalsIgnoreCase("sample")) {
 				if (robotName.equals("sample.Corners")) {
 					return true;
@@ -762,9 +769,30 @@ public class RobotRepositoryManager {
 				if (robotName.equals("sample.Walls")) {
 					return true;
 				}
-				return true; // false;
 			}
 		}
+		if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+			final String message = "Robot " + robotName + " have package name too long.  "
+					+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
+
+			logError(message);
+			return false;
+		}
+
+		int rIndex = robotName.lastIndexOf(".");
+		String shortClassName = robotName;
+
+		if (rIndex > 0) {
+			shortClassName = robotName.substring(rIndex + 1);
+		}
+		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
+			final String message = "Robot " + robotName + " have classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+					+ " characters maximum please.";
+
+			logError(message);
+			return false;
+		}
+
 		return true;
 	}
 

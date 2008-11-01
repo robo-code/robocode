@@ -18,6 +18,7 @@ import robocode.*;
 import robocode.manager.HostManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
+import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 import java.io.File;
@@ -30,8 +31,8 @@ import java.util.List;
  */
 public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-	public AdvancedRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
-		super(hostManager, peer, statics);
+	public AdvancedRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+		super(robotClassManager, hostManager, peer, statics);
 	}
 
 	public boolean isAdjustGunForBodyTurn() {

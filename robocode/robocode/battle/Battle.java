@@ -269,7 +269,7 @@ public final class Battle extends BaseBattle {
 				team = namedTeams.get(teamFullName);
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, rcm, duplicate, team);
+			RobotPeer robotPeer = new RobotPeer(this, manager.getHostManager(), rcm, duplicate, team);
 
 			robots.add(robotPeer);
 			if (team == null) {
@@ -370,10 +370,6 @@ public final class Battle extends BaseBattle {
 					Thread.currentThread().interrupt();
 				}
 			}
-		}
-
-		for (RobotPeer robotPeer : robots) {
-			robotPeer.initializeBattle(manager.getHostManager());
 		}
 
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
@@ -588,9 +584,9 @@ public final class Battle extends BaseBattle {
 			RobotSpecification robotSpec = null;
 
 			if (cp instanceof RobotPeer) {
-				robotSpec = ((RobotPeer) cp).getRobotClassManager().getControlRobotSpecification();
+				robotSpec = ((RobotPeer) cp).getControlRobotSpecification();
 			} else if (cp instanceof TeamPeer) {
-				robotSpec = ((TeamPeer) cp).getTeamLeader().getRobotClassManager().getControlRobotSpecification();
+				robotSpec = ((TeamPeer) cp).getTeamLeader().getControlRobotSpecification();
 			}
 			BattleResults battleResults = cp.getStatistics().getFinalResults(i + 1);
 

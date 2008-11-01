@@ -21,12 +21,10 @@ import robocode.manager.HostManager;
 import robocode.manager.ThreadManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
-import robocode.peer.robot.EventManager;
-import robocode.peer.robot.RobotFileSystemManager;
-import robocode.peer.robot.RobotOutputStream;
-import robocode.peer.robot.RobotThreadManager;
+import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.security.RobocodeClassLoader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -39,22 +37,27 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	protected EventManager eventManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
+	protected RobotClassManager robotClassManager;
 	protected RobotStatics statics;
 	protected RobotOutputStream out;
 	protected RobotPeer peer;
 	protected HostManager hostManager;
 	protected IBasicRobot robot;
 
-	HostingRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+	HostingRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, RobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;
+		this.robotClassManager = robotClassManager;
 
-		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota());
-		robotFileSystemManager.initializeQuota();
-
-		out = new RobotOutputStream();        
+		out = new RobotOutputStream();
 		robotThreadManager = new RobotThreadManager(this);
+
+		loadClassBattle();
+
+		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
+				robotClassManager.getRobotClassLoader().getClassDirectory());
+		robotFileSystemManager.initializeQuota();
 	}
 
 	public void cleanup() {
@@ -74,6 +77,12 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 			robotThreadManager.cleanup();
 		}
 		robotThreadManager = null;
+
+		// Cleanup and remove class manager
+		if (robotClassManager != null) {
+			robotClassManager.cleanup();
+			robotClassManager = null;
+		}
 	}
 
 	private void cleanupStaticFields() {
@@ -112,25 +121,23 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		out.println(s);
 	}
 
+	public void print(Throwable ex) {
+		out.print(ex);
+	}
+
 	public RobotStatics getStatics() {
 		return statics;
 	}
 
 	// TODO temporary
 	public String getRootPackageDirectory() {
-		return peer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory();
-	}
-
-	// TODO temporary
-	public String getClassDirectory() {
-		return peer.getRobotClassManager().getRobotClassLoader().getClassDirectory();
+		return robotClassManager.getRobotClassLoader().getRootPackageDirectory();
 	}
 
 	public Class getRobotClass() {
-		return peer.getRobotClassManager().getRobotClass();
+		return robotClassManager.getRobotClass();
 	}
 
-	// TODO temporary
 	public RobotFileSystemManager getRobotFileSystemManager() {
 		return robotFileSystemManager;
 	}
@@ -155,13 +162,38 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		return robotThreadManager.waitForStop();
 	}
 
+	private void loadClassBattle() {
+		try {
+			Class<?> c;
+
+			String className = robotClassManager.getFullClassName();
+			RobocodeClassLoader classLoader = robotClassManager.getRobotClassLoader(); 
+
+			// Pre-load robot classes without security...
+			// loadClass WILL NOT LINK the class, so static "cheats" will not work.
+			// in the safe robot loader the class is linked.
+			if (RobotClassManager.isSecutityOn()) {
+				c = classLoader.loadRobotClass(className, true);
+			} else {
+				c = classLoader.loadClass(className);
+			}
+
+			robotClassManager.setRobotClass(c);
+
+		} catch (Throwable e) {
+			println("SYSTEM: Could not load " + statics.getName() + " : " + e);
+			print(e);
+			drainEnergy();
+		}
+	}
+
 	public boolean unsafeLoadRound(ThreadManager threadManager) {
 		robot = null;
 		Class<?> robotClass;
 
 		try {
 			threadManager.setLoadingRobot(this);
-			robotClass = peer.getRobotClassManager().getRobotClass();
+			robotClass = robotClassManager.getRobotClass();
 			if (robotClass == null) {
 				peer.println("SYSTEM: Skipping robot: " + statics.getName());
 				return false;

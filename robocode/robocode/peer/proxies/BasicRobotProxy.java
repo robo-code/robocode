@@ -20,6 +20,7 @@ import robocode.manager.HostManager;
 import robocode.peer.*;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.TeamMessage;
+import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.Utils;
@@ -48,8 +49,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected Condition waitCondition;
 	protected boolean testingCondition;
 
-	public BasicRobotProxy(HostManager hostManager, RobotPeer peer, RobotStatics statics) {
-		super(hostManager, peer, statics);
+	public BasicRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+		super(robotClassManager, hostManager, peer, statics);
 
 		eventManager = new EventManager(this);
 

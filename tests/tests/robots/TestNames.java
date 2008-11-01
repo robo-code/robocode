@@ -9,29 +9,29 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.proxies;
+package robots;
 
 
-import robocode.RobotStatus;
-import robocode.manager.ThreadManager;
-import robocode.peer.RobotCommands;
+import helpers.RobotTestBed;
+import org.junit.Test;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IHostingRobotProxy extends IHostedThread {
+public class TestNames extends RobotTestBed {
+	@Test
+	public void run() {
+		super.run();
+	}
 
-	String getRootPackageDirectory();
+	@Override
+	public int getExpectedRobotCount(String list) {
+		return 1;
+	}
 
-	void initializeRound(RobotCommands commands, RobotStatus status);
-	void startThread(ThreadManager tm);
-	void forceStopThread();
-	boolean waitForStopThread();
-	boolean unsafeLoadRound(ThreadManager threadManager);
-
-	void setSetCallCount(int setCallCount); // TODO move to exec
-	void setGetCallCount(int getCallCount);
-	void cleanup();
-
+	@Override
+	public String getRobotNames() {
+		return "sample.Fire,robocode.BadNamespace,testing.TooLongNameThisIsReallyTooLongName,tooLongNamespaceThisIsReallyTooLongNamespace.TooLongNamespace";
+	}
 }

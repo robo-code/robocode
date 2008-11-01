@@ -37,13 +37,15 @@ public class RobotFileSystemManager {
 	private boolean quotaMessagePrinted = false;
 	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
 	private long maxQuota = 0;
+	private String classDirectory;
 
 	/**
 	 * RobotFileSystemHandler constructor comment.
 	 */
-	public RobotFileSystemManager(IHostingRobotProxy robotProxy, long maxQuota) {
+	public RobotFileSystemManager(IHostingRobotProxy robotProxy, long maxQuota, String classDirectory) {
 		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;
+		this.classDirectory = classDirectory;
 	}
 
 	public void addStream(RobocodeFileOutputStream s) throws IOException {
@@ -103,11 +105,11 @@ public class RobotFileSystemManager {
 
 	public File getWritableDirectory() {
 		try {
-			final String dir = robotProxy.getClassDirectory();
+			final String dir = classDirectory;
 
 			return (dir == null)
 					? null
-					: new File(robotProxy.getClassDirectory(), robotProxy.getStatics().getShortName() + ".data").getCanonicalFile();
+					: new File(classDirectory, robotProxy.getStatics().getShortName() + ".data").getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}
