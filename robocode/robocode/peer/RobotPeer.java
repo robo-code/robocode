@@ -131,7 +131,7 @@ public final class RobotPeer implements ContestantPeer {
 	private RobotStatistics statistics;
 	private TeamPeer teamPeer;
 
-	private BasicRobotProxy robotProxy;
+	private IHostingRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
 	private AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
 	private AtomicReference<EventQueue> events = new AtomicReference<EventQueue>(new EventQueue());
@@ -652,7 +652,6 @@ public final class RobotPeer implements ContestantPeer {
 		}
 		gunHeat = 3;
 
-		robotProxy.initializeRound();
 		setHalt(false);
 
 		scan = false;
@@ -696,11 +695,7 @@ public final class RobotPeer implements ContestantPeer {
 				RobotStatus stat = new RobotStatus(this, currentCommands, battle);
 
 				status.set(stat);
-				final StatusEvent start = new StatusEvent(stat);
-
-				start.setTime(0);
-				robotProxy.getEventManager().add(start);
-				robotProxy.updateStatus(currentCommands, stat);
+				robotProxy.initializeRound(currentCommands, stat);
 
 				// Start the robot thread
 				robotProxy.startThread(tm);
@@ -979,7 +974,7 @@ public final class RobotPeer implements ContestantPeer {
 			if ((queue.size() > EventManager.MAX_QUEUE_SIZE)
 					&& !(event instanceof DeathEvent || event instanceof WinEvent || event instanceof SkippedTurnEvent)) {
 				println(
-						"Not adding to " + robotProxy.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
+						"Not adding to " + statics.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
 						+ " events in queue.");
 				// clean up old stuff                
 				queue.clear(battle.getTime() - EventManager.MAX_EVENT_STACK);

@@ -14,8 +14,11 @@ package robocode.peer.proxies;
 
 import robocode.manager.ThreadManager;
 import robocode.peer.RobotStatics;
+import robocode.peer.RobotCommands;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.RobotOutputStream;
+import robocode.StatusEvent;
+import robocode.RobotStatus;
 
 
 /**
@@ -29,8 +32,14 @@ public interface IHostingRobotProxy extends Runnable {
 	RobotFileSystemManager getRobotFileSystemManager();
 	RobotStatics getStatics();
 
+	void initializeRound(RobotCommands commands, RobotStatus status);
 	void startThread(ThreadManager tm);
 	void forceStopThread();
 	void waitForStopThread();
 	boolean unsafeLoadRound(ThreadManager threadManager);
+
+	void setSetCallCount(int setCallCount); // TODO move to exec
+	void setGetCallCount(int getCallCount);
+	void cleanup();
+
 }

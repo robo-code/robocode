@@ -59,8 +59,13 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		execResult = new ExecResult(null, null, null, null, false, false);
 	}
 
-	public void initializeRound() {
+	public void initializeRound(RobotCommands commands, RobotStatus status) {
+		updateStatus(commands, status);
 		eventManager.reset();
+		final StatusEvent start = new StatusEvent(status);
+
+		start.setTime(0);
+		eventManager.add(start);
 	}
 
 	@Override
@@ -351,6 +356,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		} while (!execResult.halt && execResult.shouldWait);
 	}
 
+	private void updateStatus(RobotCommands commands, RobotStatus status) {
+		this.status = status;
+		this.commands = commands;
+	}
+
 	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}
 
 	protected final void setMoveImpl(double distance) {
@@ -411,11 +421,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	// -----------
 	// battle driven methods
 	// -----------
-
-	public void updateStatus(RobotCommands commands, RobotStatus status) {
-		this.status = status;
-		this.commands = commands;
-	}
 
 	public void setSetCallCount(int setCallCount) {
 		this.setCallCount.set(setCallCount);
