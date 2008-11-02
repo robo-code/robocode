@@ -32,7 +32,6 @@ import robocode.battle.snapshot.TurnSnapshot;
 import robocode.text.StringUtil;
 
 import javax.swing.table.AbstractTableModel;
-
 import java.util.Iterator;
 import java.util.List;
 

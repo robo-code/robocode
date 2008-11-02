@@ -11,9 +11,11 @@
  *******************************************************************************/
 package testing;
 
+
 import robocode.AdvancedRobot;
-import robocode.ScannedRobotEvent;
 import robocode.HitWallEvent;
+import robocode.ScannedRobotEvent;
+
 
 /**
  * @author Pavel Savara (original)
@@ -35,8 +37,8 @@ public class EventPriorityFilter extends AdvancedRobot {
 
 	@Override
 	public void onHitWall(HitWallEvent e) {
-        // when the radar is turned here, at least another robot should be scanned
-        // but event should not be dispatched because we are in handler with higher priority   
+		// when the radar is turned here, at least another robot should be scanned
+		// but event should not be dispatched because we are in handler with higher priority   
 		turnRadarRight(360);
-    }
+	}
 }

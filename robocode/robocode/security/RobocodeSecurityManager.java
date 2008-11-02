@@ -33,11 +33,11 @@ import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.security.Permission;
 import java.util.*;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 
 
 /**

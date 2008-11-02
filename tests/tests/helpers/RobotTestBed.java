@@ -13,16 +13,16 @@
 package helpers;
 
 
+import static org.hamcrest.CoreMatchers.is;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.*;
-import robocode.security.SecurePrintStream;
 import robocode.io.FileUtil;
-import org.junit.Before;
-import org.junit.Assert;
-import org.junit.After;
-import org.junit.Test;
-import static org.hamcrest.CoreMatchers.is;
+import robocode.security.SecurePrintStream;
 
 import java.util.Random;
 

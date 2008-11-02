@@ -37,7 +37,6 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import robocode.dialog.SplashScreen;
 
 
 /**

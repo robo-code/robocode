@@ -13,14 +13,14 @@ package robots;
 
 
 import helpers.RobotTestBed;
-import org.junit.Test;
-import org.junit.Assert;
 import static org.hamcrest.CoreMatchers.is;
-import robocode.battle.events.BattleStartedEvent;
+import org.junit.Assert;
+import org.junit.Test;
+import robocode.BattleResults;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.events.BattleStartedEvent;
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.BattleResults;
 
 import java.util.List;
 

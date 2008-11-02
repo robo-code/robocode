@@ -11,10 +11,12 @@
  *******************************************************************************/
 package robots;
 
-import helpers.RobotTestBed;
+
 import helpers.Assert;
+import helpers.RobotTestBed;
 import org.junit.Test;
 import robocode.battle.events.TurnEndedEvent;
+
 
 /**
  * @author Pavel Savara (original)
