@@ -1,7 +1,23 @@
-Version 1.6.2 Alpha
-(10/24/2008)
+Version 1.6.1.4
+(10/31/2008)
 -------------
+o Bugfixes
+  -- Loosing robots were not receiving onBattleEnded(BattleEndedEvent) events.
+  -- A new security issue fix for robots that were able to execute code thru the Event Dispatch
+     Thread (EDT). Robots that try to access the EDT will be disabled!
+  -- [2210749] drawArc() does not work as expected: This bug has been fixed. In addition, both
+     drawArc() and fillArc() is now using the Robocode coordinate and angle system.
 
+o New feature
+  -- The results and current rankings (during a battle) is now showing the score as percentage(s)
+     in parenthesis right beside the score points like e.g. '7875 (12%)' for the total score in the
+     results and '21 / 2900  (7 / 14%)' with the current rankings.
+     -- Thanks goes to Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh for this
+        patch/contribution!
+
+o Changes
+  -- The command-line option EXPERIMENTAL (true/false) allowing access to the robot interface peer
+     is now working for the RobocodeEngine class also.
 
 Version 1.6.1.3
 (10/24/2008)

@@ -12,7 +12,9 @@
 package testing;
 
 
-import robocode.*;
+import robocode.AdvancedRobot;
+import robocode.HitWallEvent;
+import robocode.ScannedRobotEvent;
 
 
 /**

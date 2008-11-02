@@ -32,6 +32,7 @@ public class TestFileAttack extends RobotTestBed {
 		super.run();
 	}
 
+	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
