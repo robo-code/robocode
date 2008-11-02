@@ -568,41 +568,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 	}
 
-	@Override
-	public void checkAwtEventQueueAccess() {
-		super.checkAwtEventQueueAccess();
-
-		// Prevent robots from accessing the AWT Event Queue, i.e. hacking Robocode
-
-		List<Class<?>> robotClasses = threadManager.getRobotClasses();
-
-		for (Class<?> contextClass : getClassContext()) {
-
-			// Check if a the context class is any of the robot classes
-			for (Class<?> robotClass : robotClasses) {
-				if (contextClass.getName().startsWith(robotClass.getName())) {
-
-					// We found a robot accessing the AWT Event Queue.
-					// Now, kill all robot instances of this robot class!
-
-					List<RobotPeer> robotPeers = threadManager.getRobotPeers(robotClass);
-
-					for (RobotPeer robotPeer : robotPeers) {
-						if (robotPeer != null) {
-							robotPeer.getOut().println("SYSTEM: Accessing the AWT Event Queue is not allowed!");
-
-							// Disable the robot
-							robotPeer.setEnergy(0);
-						}
-					}
-
-					// Kill the thread created thru the AWT Event Queue
-					throw new ThreadDeath();
-				}
-			}
-		}
-	}
-
 	public void createNewAppContext() {
 		// same as SunToolkit.createNewAppContext();
 		// we can't assume that we are always on Suns JVM, so we can't reference it directly
