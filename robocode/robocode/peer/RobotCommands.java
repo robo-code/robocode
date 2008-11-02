@@ -47,6 +47,7 @@ public final class RobotCommands {
 
 	private boolean moved;
 	private boolean scan;
+	private boolean isIORobot;
 	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
 	private Graphics2DProxy graphicsProxy;
 	private String outputText;
@@ -257,5 +258,12 @@ public final class RobotCommands {
 		this.graphicsProxy = graphicsProxy;
 	}
 
+	public boolean isIORobot() {
+		return isIORobot;
+	}
+
+	public void setIORobot() {
+		isIORobot = true;
+	}
 }
 

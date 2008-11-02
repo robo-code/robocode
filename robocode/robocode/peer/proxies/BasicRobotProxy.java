@@ -49,7 +49,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected Condition waitCondition;
 	protected boolean testingCondition;
 
-	public BasicRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+	public BasicRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeerRobot peer, RobotStatics statics) {
 		super(robotClassManager, hostManager, peer, statics);
 
 		eventManager = new EventManager(this);
@@ -63,7 +63,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		setGetCallCount(0);
 	}
 
-	public void initializeRound(RobotCommands commands, RobotStatus status) {
+	protected void initializeRound(RobotCommands commands, RobotStatus status) {
 		updateStatus(commands, status);
 		eventManager.reset();
 		final StatusEvent start = new StatusEvent(status);
@@ -164,7 +164,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		final int res = setCallCount.incrementAndGet();
 
 		if (res >= MAX_SET_CALL_COUNT) {
-			peer.println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
+			println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
 			throw new DisabledException("Too many calls to setXX methods");
 		}
 	}
@@ -173,7 +173,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		final int res = getCallCount.incrementAndGet();
 
 		if (res >= MAX_GET_CALL_COUNT) {
-			peer.println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
+			println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
 			throw new DisabledException("Too many calls to getXX methods");
 		}
 	}
@@ -210,7 +210,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	public String getName() {
 		getCall();
-		return peer.getName();
+		return statics.getName();
 	}
 
 	public long getTime() {
@@ -378,7 +378,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected final Bullet setFireImpl(double power) {
 		if (Double.isNaN(power)) {
-			peer.println("SYSTEM: You cannot call fire(NaN)");
+			println("SYSTEM: You cannot call fire(NaN)");
 			return null;
 		}
 		if (status.getGunHeat() > 0 || status.getEnergy() == 0) {

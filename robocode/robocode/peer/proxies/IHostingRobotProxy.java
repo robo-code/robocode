@@ -21,10 +21,14 @@ import robocode.peer.RobotCommands;
  */
 public interface IHostingRobotProxy extends IHostedThread {
 
-	void initializeRound(RobotCommands commands, RobotStatus status);
-	void startThread();
+	void startRound(RobotCommands commands, RobotStatus status);
+
+	boolean isRunning();
+
 	void forceStopThread();
+
 	boolean waitForStopThread();
+
 	void cleanup();
 
 }

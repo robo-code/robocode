@@ -15,8 +15,8 @@ package robocode.peer.proxies;
 import robocode.RobotStatus;
 import robocode.manager.HostManager;
 import robocode.peer.RobotCommands;
-import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
+import robocode.peer.IRobotPeerRobot;
 import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
@@ -32,12 +32,12 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 	private double saveGunAngleToTurn;
 	private double saveRadarAngleToTurn;
 
-	public StandardRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+	public StandardRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeerRobot peer, RobotStatics statics) {
 		super(robotClassManager, hostManager, peer, statics);
 	}
 
 	@Override
-	public void initializeRound(RobotCommands commands, RobotStatus status) {
+	protected void initializeRound(RobotCommands commands, RobotStatus status) {
 		super.initializeRound(commands, status);
 		isStopped = true;
 	}

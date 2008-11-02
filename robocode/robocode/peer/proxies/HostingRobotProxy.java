@@ -18,16 +18,18 @@ import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.HostManager;
-import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
-import robocode.peer.RobotState;
+import robocode.peer.IRobotPeerRobot;
+import robocode.peer.RobotCommands;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.security.RobocodeClassLoader;
+import robocode.RobotStatus;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -40,11 +42,14 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	protected RobotClassManager robotClassManager;
 	protected RobotStatics statics;
 	protected RobotOutputStream out;
-	protected RobotPeer peer;
+	protected IRobotPeerRobot peer;
 	protected HostManager hostManager;
 	protected IBasicRobot robot;
 
-	HostingRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+	// thread is running
+	private AtomicBoolean isRunning = new AtomicBoolean(false);
+
+	HostingRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeerRobot peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;
@@ -142,15 +147,18 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	// battle driven methods
 	// -----------
 
-	public void startThread() {
+	protected abstract void initializeRound(RobotCommands commands, RobotStatus status);
+	
+	public void startRound(RobotCommands commands, RobotStatus status) {
+		initializeRound(commands, status);
 		hostManager.getThreadManager().addThreadGroup(robotThreadManager.getThreadGroup(), this);
 		robotThreadManager.start();
 	}
 
 	public void forceStopThread() {
 		if (!robotThreadManager.forceStop()) {
-			peer.getRobotStatistics().setInactive();
-			peer.setRunning(false);
+			peer.setInactive();
+			isRunning.set(false);
 		}
 	}
 
@@ -225,13 +233,13 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 
 	public void run() {
 		if (!loadRobotRound()) {
-			peer.drainEnergy();
-			peer.setState(RobotState.DEAD);
+			drainEnergy();
+			peer.setInactive();
 			waitForBattleEndImpl();
 			return;
 		}
 
-		peer.setRunning(true);
+		isRunning.set(true);
 		try {
 			if (robot != null) {
 
@@ -254,9 +262,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		} catch (WinException e) {// Do nothing
 		} catch (AbortedException e) {// Do nothing
 		} catch (DeathException e) {
-			peer.println("SYSTEM: " + statics.getName() + " has died");
+			println("SYSTEM: " + statics.getName() + " has died");
 		} catch (DisabledException e) {
-			peer.drainEnergy();
+			drainEnergy();
 			String msg = e.getMessage();
 
 			if (msg == null) {
@@ -264,19 +272,19 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 			} else {
 				msg = ": " + msg;
 			}
-			peer.println("SYSTEM: Robot disabled" + msg);
+			println("SYSTEM: Robot disabled" + msg);
 		} catch (Exception e) {
-			peer.drainEnergy();
+			drainEnergy();
 			final String message = statics.getName() + ": Exception: " + e;
 
-			peer.print(e);
+			println(e);
 			logMessage(message);
 		} catch (Throwable t) {
-			peer.drainEnergy();
+			drainEnergy();
 			if (!(t instanceof ThreadDeath)) {
-				final String message = peer.getName() + ": Throwable: " + t;
+				final String message = statics.getName() + ": Throwable: " + t;
 
-				peer.print(t);
+				println(t);
 				logMessage(message);
 			} else {
 				logMessage(statics.getName() + " stopped successfully.");
@@ -287,15 +295,21 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 
 		// If battle is waiting for us, well, all done!
 		synchronized (this) {
-			peer.setRunning(false);
+			isRunning.set(false);
 			notifyAll();
 		}
 	}
 
 	protected abstract void waitForBattleEndImpl();
 
-	// TODO do something with that
+	// TODO minimize border crossing between battle and proxy spaces
 	public void drainEnergy() {
 		peer.drainEnergy();
 	}
+
+	// TODO minimize border crossing between battle and proxy spaces
+	public boolean isRunning() {
+		return isRunning.get();
+	}
+
 }

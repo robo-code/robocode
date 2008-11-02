@@ -104,7 +104,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public final class RobotPeer implements ContestantPeer {
+public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 
 	public static final int
 			WIDTH = 40,
@@ -153,8 +153,6 @@ public final class RobotPeer implements ContestantPeer {
 	private boolean paintEnabled;
 	private boolean sgPaintEnabled;
 
-	// thread is running
-	private boolean isRunning;
 	// waiting for next tick
 	private boolean isSleeping;
 	private boolean isWinner;
@@ -314,14 +312,6 @@ public final class RobotPeer implements ContestantPeer {
 		return sgPaintEnabled;
 	}
 
-	public boolean isIORobot() {
-		return isIORobot;
-	}
-
-	public void setIORobot(boolean ioRobot) {
-		this.isIORobot = ioRobot;
-	}
-
 	public RobotState getState() {
 		return state;
 	}
@@ -343,11 +333,7 @@ public final class RobotPeer implements ContestantPeer {
 	}
 
 	public synchronized boolean isRunning() {
-		return isRunning;
-	}
-
-	public synchronized void setRunning(boolean running) {
-		this.isRunning = running;
+		return robotProxy.isRunning();
 	}
 
 	public synchronized boolean isSleeping() {
@@ -619,10 +605,7 @@ public final class RobotPeer implements ContestantPeer {
 				RobotStatus stat = new RobotStatus(this, currentCommands, battle);
 
 				status.set(stat);
-				robotProxy.initializeRound(currentCommands, stat);
-
-				// Start the robot thread
-				robotProxy.startThread();
+				robotProxy.startRound(currentCommands, stat);
 
 				if (!battle.isDebugging()) {
 					// Wait for the robot to go to sleep (take action)
@@ -1240,6 +1223,11 @@ public final class RobotPeer implements ContestantPeer {
 		setEnergy(0, true);
 	}
 
+	public void setInactive() {
+		setState(RobotState.DEAD);
+		statistics.setInactive();
+	}
+
 	public void updateEnergy(double delta) {
 		setEnergy(energy + delta, true);
 	}
@@ -1346,6 +1334,10 @@ public final class RobotPeer implements ContestantPeer {
 
 		if (currentCommands.isScan()) {
 			scan = true;
+		}
+
+		if (currentCommands.isIORobot()) {
+			isIORobot = true;
 		}
 
 		if (currentCommands.isMoved()) {
@@ -1458,8 +1450,8 @@ public final class RobotPeer implements ContestantPeer {
 				addEvent(new SkippedTurnEvent());
 			}
 
-			if ((!isIORobot() && (skippedTurns > maxSkippedTurns))
-					|| (isIORobot() && (skippedTurns > maxSkippedTurnsWithIO))) {
+			if ((!isIORobot && (skippedTurns > maxSkippedTurns))
+					|| (isIORobot && (skippedTurns > maxSkippedTurnsWithIO))) {
 				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				getRobotStatistics().setInactive();
@@ -1488,7 +1480,7 @@ public final class RobotPeer implements ContestantPeer {
 	@Override
 	public String toString() {
 		return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY() + " "
-				+ state.toString() + (isSleeping ? " sleeping " : "") + (isRunning ? " running" : "")
+				+ state.toString() + (isSleeping ? " sleeping " : "") + (isRunning() ? " running" : "")
 				+ (halt ? " halted" : "");
 	}
 }

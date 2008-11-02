@@ -15,4 +15,10 @@ package robocode.peer;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerRobot {}
+public interface IRobotPeerRobot {
+
+	void drainEnergy();
+	void setInactive();
+	ExecResult waitForBattleEndImpl(RobotCommands newCommands);
+	ExecResult executeImpl(RobotCommands newCommands);
+}

@@ -16,8 +16,8 @@ package robocode.peer.proxies;
 
 import robocode.*;
 import robocode.manager.HostManager;
-import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
+import robocode.peer.IRobotPeerRobot;
 import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-	public AdvancedRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+	public AdvancedRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeerRobot peer, RobotStatics statics) {
 		super(robotClassManager, hostManager, peer, statics);
 	}
 
@@ -95,7 +95,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	public void setMaxTurnRate(double newTurnRate) {
 		setCall();
 		if (Double.isNaN(newTurnRate)) {
-			peer.println("You cannot setMaxTurnRate to: " + newTurnRate);
+			println("You cannot setMaxTurnRate to: " + newTurnRate);
 			return;
 		}
 		commands.setMaxTurnRate(newTurnRate);
@@ -104,7 +104,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	public void setMaxVelocity(double newVelocity) {
 		setCall();
 		if (Double.isNaN(newVelocity)) {
-			peer.println("You cannot setMaxVelocity to: " + newVelocity);
+			println("You cannot setMaxVelocity to: " + newVelocity);
 			return;
 		}
 		commands.setMaxVelocity(newVelocity);
@@ -194,13 +194,13 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	// data
 	public File getDataDirectory() {
 		getCall();
-		peer.setIORobot(true);
+		commands.setIORobot();
 		return robotFileSystemManager.getWritableDirectory();
 	}
 
 	public File getDataFile(String filename) {
 		getCall();
-		peer.setIORobot(true);
+		commands.setIORobot();
 		return new File(robotFileSystemManager.getWritableDirectory(), filename);
 	}
 

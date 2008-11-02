@@ -16,8 +16,8 @@ package robocode.peer.proxies;
 
 import robocode.Rules;
 import robocode.manager.HostManager;
-import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
+import robocode.peer.IRobotPeerRobot;
 import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
@@ -27,7 +27,7 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
  */
 public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPeer {
 
-	public JuniorRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, RobotPeer peer, RobotStatics statics) {
+	public JuniorRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeerRobot peer, RobotStatics statics) {
 		super(robotClassManager, hostManager, peer, statics);
 	}
 
