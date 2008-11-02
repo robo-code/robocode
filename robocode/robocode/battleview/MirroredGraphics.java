@@ -220,12 +220,12 @@ public class MirroredGraphics extends Graphics2D {
 
 	@Override
 	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-		g.drawArc(x, y, width, height, startAngle, startAngle);
+		g.drawArc(x, y, width, height, startAngle - 90, arcAngle); // Translated into the Robocode coordinate system
 	}
 
 	@Override
 	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-		g.fillArc(x, y, width, height, startAngle, startAngle);
+		g.fillArc(x, y, width, height, startAngle - 90, arcAngle); // Translated into the Robocode coordinate system
 	}
 
 	@Override
