@@ -23,7 +23,7 @@ import robocode.battle.events.TurnEndedEvent;
  *
  * @author Flemming N. Larsen (original)
  */
-public class TestScanForRobotsWhenHitWall extends RobotTestBed {
+public class TestInteruptibleEvent extends RobotTestBed {
 	boolean messagedScanned;
 
 	@Test
@@ -42,7 +42,7 @@ public class TestScanForRobotsWhenHitWall extends RobotTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "testing.ScanForRobotsWhenHitWall,testing.ScanForRobotsWhenHitWall";
+		return "testing.InteruptibleEvent,testing.InteruptibleEvent";
 	}
 
 	@Override

@@ -23,7 +23,7 @@ import robocode.*;
  *
  * @author Flemming N. Larsen (original)
  */
-public class ScanForRobotsWhenHitWall extends AdvancedRobot {
+public class InteruptibleEvent extends AdvancedRobot {
 
 	@Override
 	public void run() {
