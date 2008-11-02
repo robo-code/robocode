@@ -16,11 +16,11 @@ import robocode.Rules;
 import robocode.peer.robot.TeamMessage;
 import robocode.robotpaint.Graphics2DProxy;
 
-import java.awt.*;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.*;
 
 
 /**
@@ -37,11 +37,11 @@ public final class RobotCommands {
 	private boolean isAdjustRadarForBodyTurn;
 	private boolean isAdjustRadarForBodyTurnSet;
 
-	private Color bodyColor;
-	private Color gunColor;
-	private Color radarColor;
-	private Color bulletColor;
-	private Color scanColor;
+	private int bodyColor = 0xFF29298C;
+	private int gunColor = 0xFF29298C;
+	private int radarColor = 0xFF29298C;
+	private int scanColor = 0xFF0000FF;
+	private int bulletColor = 0xFFFFFFFF;
 	private double maxTurnRate;
 	private double maxVelocity;
 
@@ -49,7 +49,7 @@ public final class RobotCommands {
 	private boolean scan;
 	private boolean isIORobot;
 	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
-	private Graphics2DProxy graphicsProxy;
+	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
 	private String outputText;
 	private List<TeamMessage> teamMessages = new ArrayList<TeamMessage>();
 
@@ -78,7 +78,7 @@ public final class RobotCommands {
 			bullets = origin.bullets;
 			scan = origin.scan;
 			moved = origin.moved;
-			graphicsProxy = origin.graphicsProxy;
+			graphicsCalls = origin.graphicsCalls;
 			outputText = origin.outputText;
 			teamMessages = origin.teamMessages; 
 		}
@@ -98,43 +98,43 @@ public final class RobotCommands {
 		maxVelocity = min(abs(maxVelocity), Rules.MAX_VELOCITY);
 	}
 
-	public Color getBodyColor() {
+	public int getBodyColor() {
 		return bodyColor;
 	}
 
-	public Color getRadarColor() {
+	public int getRadarColor() {
 		return radarColor;
 	}
 
-	public Color getGunColor() {
+	public int getGunColor() {
 		return gunColor;
 	}
 
-	public Color getBulletColor() {
+	public int getBulletColor() {
 		return bulletColor;
 	}
 
-	public Color getScanColor() {
+	public int getScanColor() {
 		return scanColor;
 	}
 
-	public void setBodyColor(Color color) {
+	public void setBodyColor(int color) {
 		bodyColor = color;
 	}
 
-	public void setRadarColor(Color color) {
+	public void setRadarColor(int color) {
 		radarColor = color;
 	}
 
-	public void setGunColor(Color color) {
+	public void setGunColor(int color) {
 		gunColor = color;
 	}
 
-	public void setBulletColor(Color color) {
+	public void setBulletColor(int color) {
 		bulletColor = color;
 	}
 
-	public void setScanColor(Color color) {
+	public void setScanColor(int color) {
 		scanColor = color;
 	}
 
@@ -238,8 +238,12 @@ public final class RobotCommands {
 		return bullets;
 	}
 
-	public Graphics2DProxy getGraphicsProxy() {
-		return graphicsProxy;
+	public List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
+		return graphicsCalls;
+	}
+
+	public void setGraphicsCalls(List<Graphics2DProxy.QueuedCall> graphicsCalls) {
+		this.graphicsCalls = graphicsCalls;
 	}
 
 	public String getOutputText() {
@@ -252,10 +256,6 @@ public final class RobotCommands {
 
 	public List<TeamMessage> getTeamMessages() {
 		return teamMessages;
-	}
-
-	public void setGraphicsProxy(Graphics2DProxy graphicsProxy) {
-		this.graphicsProxy = graphicsProxy;
 	}
 
 	public boolean isIORobot() {

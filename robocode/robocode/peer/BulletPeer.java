@@ -46,7 +46,6 @@ package robocode.peer;
 import robocode.*;
 import robocode.battle.Battle;
 
-import java.awt.*;
 import java.awt.geom.Line2D;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -92,7 +91,7 @@ public class BulletPeer {
 
 	protected int frame;
 
-	private Color color;
+	private int color;
 
 	protected int explosionImageIndex;
 
@@ -276,7 +275,7 @@ public class BulletPeer {
 		return state;
 	}
 
-	public Color getColor() {
+	public int getColor() {
 		return color;
 	}
 

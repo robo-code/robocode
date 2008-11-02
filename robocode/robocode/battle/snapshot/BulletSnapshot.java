@@ -15,9 +15,6 @@ package robocode.battle.snapshot;
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;
 import robocode.peer.ExplosionPeer;
-import static robocode.util.ObjectCloner.deepCopy;
-
-import java.awt.*;
 
 
 /**
@@ -64,7 +61,7 @@ public final class BulletSnapshot implements java.io.Serializable {
 	private final double paintY;
 
 	// The color of the bullet
-	private final Color color;
+	private final int color;
 
 	// The current frame number to display
 	private final int frame;
@@ -93,7 +90,7 @@ public final class BulletSnapshot implements java.io.Serializable {
 		paintX = peer.getPaintX();
 		paintY = peer.getPaintY();
 
-		color = deepCopy(peer.getColor());
+		color = peer.getColor();
 
 		frame = peer.getFrame();
 
@@ -169,8 +166,8 @@ public final class BulletSnapshot implements java.io.Serializable {
 	 *
 	 * @return the color of the bullet.
 	 */
-	public Color getColor() {
-		return deepCopy(color);
+	public int getColor() {
+		return color;
 	}
 
 	/**

@@ -136,27 +136,27 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	// fast setters
 	public void setBodyColor(Color color) {
 		setCall();
-		commands.setBodyColor(color);
+		commands.setBodyColor(color.getRGB());
 	}
 
 	public void setGunColor(Color color) {
 		setCall();
-		commands.setGunColor(color);
+		commands.setGunColor(color.getRGB());
 	}
 
 	public void setRadarColor(Color color) {
 		setCall();
-		commands.setRadarColor(color);
+		commands.setRadarColor(color.getRGB());
 	}
 
 	public void setBulletColor(Color color) {
 		setCall();
-		commands.setBulletColor(color);
+		commands.setBulletColor(color.getRGB());
 	}
 
 	public void setScanColor(Color color) {
 		setCall();
-		commands.setScanColor(color);
+		commands.setScanColor(color.getRGB());
 	}
 
 	// counters
@@ -314,7 +314,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		}
 
 		commands.setOutputText(out.readAndReset());
-		commands.setGraphicsProxy((Graphics2DProxy) graphicsProxy.create());
+		commands.setGraphicsCalls(graphicsProxy.getQueuedCalls());
 		graphicsProxy.clearQueue();
 
 		// call server
@@ -340,7 +340,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		eventManager.clearAllEvents(false);
 		do {
 			commands.setOutputText(out.readAndReset());
-			commands.setGraphicsProxy((Graphics2DProxy) graphicsProxy.create());
+			commands.setGraphicsCalls(graphicsProxy.getQueuedCalls());
 			graphicsProxy.clearQueue();
 
 			// call server

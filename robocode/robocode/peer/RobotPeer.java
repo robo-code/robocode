@@ -81,7 +81,6 @@ import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
-import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import static java.lang.Math.*;
@@ -392,23 +391,23 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		return gunHeat;
 	}
 
-	public Color getBodyColor() {
+	public int getBodyColor() {
 		return commands.get().getBodyColor();
 	}
 
-	public Color getRadarColor() {
+	public int getRadarColor() {
 		return commands.get().getRadarColor();
 	}
 
-	public Color getGunColor() {
+	public int getGunColor() {
 		return commands.get().getGunColor();
 	}
 
-	public Color getBulletColor() {
+	public int getBulletColor() {
 		return commands.get().getBulletColor();
 	}
 
-	public Color getScanColor() {
+	public int getScanColor() {
 		return commands.get().getScanColor();
 	}
 
@@ -1309,8 +1308,8 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		robotProxy = null;
 	}
 
-	public Graphics2DProxy getGraphics() {
-		return commands.get().getGraphicsProxy();
+	public List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
+		return commands.get().getGraphicsCalls();
 	}
 
 	public void publishStatus(long currentTurn) {

@@ -16,6 +16,7 @@ package robocode.battleview;
 
 import robocode.battle.IBattleManager;
 import robocode.battle.events.BattleStartedEvent;
+import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.TurnSnapshot;
@@ -36,7 +37,7 @@ import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.*;
-import java.util.Random;
+import java.util.*;
 
 
 /**
@@ -101,10 +102,8 @@ public class BattleView extends Canvas {
 	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
 	private GraphicsState graphicsState = new GraphicsState();
+	private Graphics2DProxy[] robotGraphics; 
 
-	/**
-	 * BattleView constructor.
-	 */
 	public BattleView(RobocodeManager manager) {
 		super();
 
@@ -128,9 +127,6 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	/**
-	 * Shows the next frame. The game calls this every frame.
-	 */
 	private void update(TurnSnapshot snapshot) {
 		if (!initialized) {
 			initialize();
@@ -428,7 +424,10 @@ public class BattleView extends Canvas {
 
 		g.setClip(null);
 
+		int i = -1;
+
 		for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+			i++;
 			if (robotSnapshot.getState().isDead()) {
 				continue;
 			}
@@ -457,14 +456,14 @@ public class BattleView extends Canvas {
 						y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2, smallFont, smallFontMetrics);
 			}
 			if (robotSnapshot.isPaintEnabled()) {
-				drawRobotPaint(g, robotSnapshot);
+				drawRobotPaint(g, robotSnapshot, i);
 			}
 		}
 
 		g.setClip(savedClip);
 	}
 
-	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot) {
+	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot, int robotIndex) {
 		if (!robotSnapshot.isPaintRobot()) {
 			return;
 		}
@@ -476,9 +475,13 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		Graphics2DProxy gfxProxy = robotSnapshot.getGraphicsProxy();
+		final java.util.List<Graphics2DProxy.QueuedCall> graphicsCalls = robotSnapshot.getGraphicsCalls();
 
-		if (gfxProxy != null) {
+		if (graphicsCalls != null) {
+			Graphics2DProxy gfxProxy = getRobotGraphics(robotIndex);
+
+			gfxProxy.clearQueue();
+			gfxProxy.appendCalls(graphicsCalls);
 			if (robotSnapshot.isSGPaintEnabled()) {
 				gfxProxy.processTo(g);
 			} else {
@@ -490,6 +493,13 @@ public class BattleView extends Canvas {
 
 		// Restore the graphics state
 		gfxState.restore(g);
+	}
+
+	private Graphics2DProxy getRobotGraphics(int robotIndex) {
+		if (robotGraphics[robotIndex] == null) {
+			robotGraphics[robotIndex] = new Graphics2DProxy(); 
+		}
+		return robotGraphics[robotIndex];
 	}
 
 	private void drawBullets(Graphics2D g, TurnSnapshot snapShot) {
@@ -518,10 +528,8 @@ public class BattleView extends Canvas {
 				if (manager.getProperties().getOptionsRenderingForceBulletColor()) {
 					bulletColor = Color.WHITE;
 				} else {
-					bulletColor = bulletSnapshot.getColor();
-					if (bulletColor == null) {
-						bulletColor = Color.WHITE;
-					}
+					// TODO alpha invisible bullets ?
+					bulletColor = new Color(bulletSnapshot.getColor(), true);
 				}
 				g.setColor(bulletColor);
 				g.fill(bulletArea);
@@ -586,12 +594,9 @@ public class BattleView extends Canvas {
 		scanArc.setAngleStart((360 - scanArc.getAngleStart() - scanArc.getAngleExtent()) % 360);
 		scanArc.y = battleField.getHeight() - robotSnapshot.getY() - robocode.Rules.RADAR_SCAN_RADIUS;
 
-		Color scanColor = robotSnapshot.getScanColor();
+		int scanColor = robotSnapshot.getScanColor();
 
-		if (scanColor == null) {
-			scanColor = Color.BLUE;
-		}
-		g.setColor(scanColor);
+		g.setColor(new Color(scanColor, true));
 
 		if (abs(scanArc.getAngleExtent()) >= .5) {
 			g.fill(scanArc);
@@ -603,9 +608,6 @@ public class BattleView extends Canvas {
 		return scanArc.getBounds();
 	}
 
-	/**
-	 * Draws the Robocode logo
-	 */
 	private void paintRobocodeLogo(Graphics2D g) {
 		setBackground(Color.BLACK);
 		g.clearRect(0, 0, getWidth(), getHeight());
@@ -641,6 +643,13 @@ public class BattleView extends Canvas {
 			setVisible(true);
 			setInitialized(false);
 			super.onBattleStarted(event);
+			robotGraphics = new Graphics2DProxy[event.getTurnSnapshot().getRobots().size()];
+		}
+
+		@Override
+		public void onBattleEnded(BattleEndedEvent event) {
+			super.onBattleEnded(event);
+			robotGraphics = null;
 		}
 
 		protected void updateView(TurnSnapshot snapshot) {

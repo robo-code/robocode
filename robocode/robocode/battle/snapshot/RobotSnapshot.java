@@ -15,11 +15,10 @@ package robocode.battle.snapshot;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
 import robocode.robotpaint.Graphics2DProxy;
-import static robocode.util.ObjectCloner.deepCopy;
 
-import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -80,13 +79,13 @@ public final class RobotSnapshot implements Serializable {
 	private final double y;
 
 	// The color of the body
-	private final Color bodyColor;
+	private final int bodyColor;
 	// The color of the gun
-	private final Color gunColor;
+	private final int gunColor;
 	// The color of the radar
-	private final Color radarColor;
+	private final int radarColor;
 	// The color of the scan arc
-	private final Color scanColor;
+	private final int scanColor;
 	// The color of the bullet
 	// private final Color bulletColor;
 
@@ -103,7 +102,7 @@ public final class RobotSnapshot implements Serializable {
 	private final SerializableArc scanArc;
 
 	// The Graphics2D proxy
-	private final Graphics2DProxy graphicsProxy;
+	private final List<Graphics2DProxy.QueuedCall> graphicsCalls;
 
 	// The output print stream proxy
 	private final String outputStreamSnapshot;
@@ -134,10 +133,10 @@ public final class RobotSnapshot implements Serializable {
 		x = peer.getX();
 		y = peer.getY();
 
-		bodyColor = deepCopy(peer.getBodyColor());
-		gunColor = deepCopy(peer.getGunColor());
-		radarColor = deepCopy(peer.getRadarColor());
-		scanColor = deepCopy(peer.getScanColor());
+		bodyColor = peer.getBodyColor();
+		gunColor = peer.getGunColor();
+		radarColor = peer.getRadarColor();
+		scanColor = peer.getScanColor();
 		// bulletColor = deepCopy(peer.getBulletColor());
 
 		isDroid = peer.isDroid();
@@ -147,7 +146,7 @@ public final class RobotSnapshot implements Serializable {
 
 		scanArc = peer.getScanArc() != null ? new SerializableArc((Arc2D.Double) peer.getScanArc()) : null;
 
-		graphicsProxy = peer.getGraphics();
+		graphicsCalls = peer.getGraphicsCalls();
 
 		outputStreamSnapshot = peer.readOutText();
 
@@ -267,8 +266,8 @@ public final class RobotSnapshot implements Serializable {
 	 *
 	 * @return the color of the body.
 	 */
-	public Color getBodyColor() {
-		return deepCopy(bodyColor);
+	public int getBodyColor() {
+		return bodyColor;
 	}
 
 	/**
@@ -276,8 +275,8 @@ public final class RobotSnapshot implements Serializable {
 	 *
 	 * @return the color of the gun.
 	 */
-	public Color getGunColor() {
-		return deepCopy(gunColor);
+	public int getGunColor() {
+		return gunColor;
 	}
 
 	/**
@@ -285,8 +284,8 @@ public final class RobotSnapshot implements Serializable {
 	 *
 	 * @return the color of the radar.
 	 */
-	public Color getRadarColor() {
-		return deepCopy(radarColor);
+	public int getRadarColor() {
+		return radarColor;
 	}
 
 	/**
@@ -294,8 +293,8 @@ public final class RobotSnapshot implements Serializable {
 	 *
 	 * @return the color of the scan arc.
 	 */
-	public Color getScanColor() {
-		return deepCopy(scanColor);
+	public int getScanColor() {
+		return scanColor;
 	}
 
 	/**
@@ -358,12 +357,12 @@ public final class RobotSnapshot implements Serializable {
 	}
 
 	/**
-	 * Returns the Graphics2D proxy for this robot.
+	 * Returns the Graphics2D queued calls for this robot.
 	 *
-	 * @return the Graphics2D proxy for this robot.
+	 * @return the Graphics2D queued calls for this robot.
 	 */
-	public Graphics2DProxy getGraphicsProxy() {
-		return graphicsProxy != null ? (Graphics2DProxy) graphicsProxy.create() : null;
+	public java.util.List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
+		return graphicsCalls;
 	}
 
 	/**

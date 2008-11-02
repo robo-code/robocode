@@ -15,6 +15,7 @@ package robocode.ui;
 import robocode.battle.IBattleManager;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
+import robocode.io.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -131,10 +132,31 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 	private class QueuedTask implements Runnable {
 		public void run() {
-			if (!isRunning.get()) {
-				lastSnapshot = null;
-				updateView(null);
-			} else {
+			try {
+				if (!isRunning.get()) {
+					lastSnapshot = null;
+					updateView(null);
+				} else {
+					TurnSnapshot s = snapshot.get();
+
+					if (lastSnapshot != s || !skipSameFrames) {
+						lastSnapshot = s;
+
+						updateView(lastSnapshot);
+
+						calculateFPS();
+					}
+				}
+			} catch (Throwable t) {
+				Logger.logError(t);
+			}
+		}
+	}
+
+
+	private class TimerTask implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			try {
 				TurnSnapshot s = snapshot.get();
 
 				if (lastSnapshot != s || !skipSameFrames) {
@@ -144,21 +166,8 @@ public abstract class AwtBattleAdaptor extends BattleAdaptor {
 
 					calculateFPS();
 				}
-			}
-		}
-	}
-
-
-	private class TimerTask implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			TurnSnapshot s = snapshot.get();
-
-			if (lastSnapshot != s || !skipSameFrames) {
-				lastSnapshot = s;
-
-				updateView(lastSnapshot);
-
-				calculateFPS();
+			} catch (Throwable t) {
+				Logger.logError(t);
 			}
 		}
 	}

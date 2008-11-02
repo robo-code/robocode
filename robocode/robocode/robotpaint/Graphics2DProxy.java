@@ -27,10 +27,8 @@ import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -178,6 +176,14 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		gfxProxyCopy.color = deepCopy(color);
 		gfxProxyCopy.font = copyOf(font);
 		gfxProxyCopy.isInitialized = isInitialized;
+
+		return gfxProxyCopy;
+	}
+
+	public static Graphics createFromCalls(List<QueuedCall> queuedCalls) {
+		Graphics2DProxy gfxProxyCopy = new Graphics2DProxy();
+
+		gfxProxyCopy.queuedCalls = Collections.synchronizedList(new LinkedList<QueuedCall>(queuedCalls));
 
 		return gfxProxyCopy;
 	}
@@ -445,6 +451,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	public void dispose() {// Ignored here
 	}
 
+	@SuppressWarnings({ "deprecation"})
 	@Override
 	@Deprecated
 	public Rectangle getClipRect() {
@@ -800,6 +807,10 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		return (Paint) deepCopy(p);
 	}
 
+	private Color copyOf(Color c) {
+		return deepCopy(c);
+	}
+
 	private Stroke copyOf(Stroke s) {
 		if (s == null) {
 			return null;
@@ -825,6 +836,16 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		queuedCalls.add(new QueuedCall(method, args));
 	}
 
+	public void appendCalls(List<Graphics2DProxy.QueuedCall> graphicsCalls) {
+		for (QueuedCall call : graphicsCalls) {
+			try {
+				processQueuedCall(call, this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void processTo(Graphics2D g) {
 		if (!isInitialized) {
 			initialize(g);
@@ -841,6 +862,12 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	public void clearQueue() {
 		queuedCalls.clear();
+	}
+
+	public List<QueuedCall> getQueuedCalls() {
+		final List<QueuedCall> now = queuedCalls;
+
+		return now.size() == 0 ? null : new ArrayList<QueuedCall>(now);
 	}
 
 	private void initialize(Graphics2D g) {

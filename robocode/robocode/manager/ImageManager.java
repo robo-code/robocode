@@ -47,9 +47,9 @@ public class ImageManager {
 
 	private static final int MAX_NUM_COLORS = 256;
 
-	private HashMap<Color, RenderImage> robotBodyImageCache;
-	private HashMap<Color, RenderImage> robotGunImageCache;
-	private HashMap<Color, RenderImage> robotRadarImageCache;
+	private HashMap<Integer, RenderImage> robotBodyImageCache;
+	private HashMap<Integer, RenderImage> robotGunImageCache;
+	private HashMap<Integer, RenderImage> robotRadarImageCache;
 
 	public ImageManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -66,9 +66,9 @@ public class ImageManager {
 		bodyImage = null;
 		gunImage = null;
 		radarImage = null;
-		robotBodyImageCache = new RenderCache<Color, RenderImage>();
-		robotGunImageCache = new RenderCache<Color, RenderImage>();
-		robotRadarImageCache = new RenderCache<Color, RenderImage>();
+		robotBodyImageCache = new RenderCache<Integer, RenderImage>();
+		robotGunImageCache = new RenderCache<Integer, RenderImage>();
+		robotRadarImageCache = new RenderCache<Integer, RenderImage>();
 
 		// Read images into the cache
 		getBodyImage();
@@ -177,31 +177,31 @@ public class ImageManager {
 		return radarImage;
 	}
 
-	public RenderImage getColoredBodyRenderImage(Color color) {
+	public RenderImage getColoredBodyRenderImage(Integer color) {
 		RenderImage img = robotBodyImageCache.get(color);
 
 		if (img == null) {
-			img = new RenderImage(ImageUtil.createColouredRobotImage(getBodyImage(), color));
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getBodyImage(), new Color(color, true)));
 			robotBodyImageCache.put(color, img);
 		}
 		return img;
 	}
 
-	public RenderImage getColoredGunRenderImage(Color color) {
+	public RenderImage getColoredGunRenderImage(Integer color) {
 		RenderImage img = robotGunImageCache.get(color);
 
 		if (img == null) {
-			img = new RenderImage(ImageUtil.createColouredRobotImage(getGunImage(), color));
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getGunImage(), new Color(color, true)));
 			robotGunImageCache.put(color, img);
 		}
 		return img;
 	}
 
-	public RenderImage getColoredRadarRenderImage(Color color) {
+	public RenderImage getColoredRadarRenderImage(Integer color) {
 		RenderImage img = robotRadarImageCache.get(color);
 
 		if (img == null) {
-			img = new RenderImage(ImageUtil.createColouredRobotImage(getRadarImage(), color));
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getRadarImage(), new Color(color, true)));
 			robotRadarImageCache.put(color, img);
 		}
 		return img;
